@@ -20,7 +20,7 @@ struct c_sprite;
 struct e_asteroid;
 struct e_player;
 struct e_vfx_asteroid_hit;
-struct g_asteroids;
+struct g_custom_game;
 struct i_asset;
 struct i_lifecycle;
 struct i_listener;

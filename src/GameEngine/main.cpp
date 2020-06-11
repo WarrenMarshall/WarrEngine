@@ -12,7 +12,7 @@ std::unique_ptr<w_logfile> logfile;
 std::unique_ptr<w_engine> engine;
 
 // game
-std::unique_ptr<g_asteroids> game;
+std::unique_ptr<g_custom_game> game;
 
 // command line flags
 bool g_allow_hot_reload;
@@ -73,9 +73,7 @@ int main( int argc, char* argv[] )
 		{	// window
 			log_msg( "Creating window" );
 			if( !engine->window->init( "Game Engine [Asteroids]" ) )
-			{
 				return -1;
-			}
 		}
 
 		{	// opengl
@@ -91,9 +89,7 @@ int main( int argc, char* argv[] )
 		{	// audio
 			log_msg( "Initializing BASS audio" );
 			if( !BASS_Init( -1, 44100, 0, 0, NULL ) )
-			{
 				log_warning( "BASS Audio : init failed!" );
-			}
 		}
 
 		{
@@ -109,7 +105,7 @@ int main( int argc, char* argv[] )
 
 		{
 			log_msg( "Initializing game" );
-			game = std::make_unique<g_asteroids>();
+			game = std::make_unique<g_custom_game>();
 			game->new_game();
 		}
 
@@ -154,9 +150,7 @@ int main( int argc, char* argv[] )
 			*/
 
 			engine->render->begin();
-			{
-				engine->draw();
-			}
+			engine->draw();
 			engine->render->end();
 		}
 

@@ -2,12 +2,12 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-g_asteroids::g_asteroids()
+g_custom_game::g_custom_game()
 {
 	font = engine->get_asset<a_font>( "asteroids_font" );
 }
 
-void g_asteroids::new_game()
+void g_custom_game::new_game()
 {
 	w_game::new_game();
 
@@ -17,13 +17,13 @@ void g_asteroids::new_game()
 	player->post_spawn();
 }
 
-void g_asteroids::update()
+void g_custom_game::update()
 {
 	w_game::update();
 
 }
 
-void g_asteroids::update_fts()
+void g_custom_game::update_fts()
 {
 	w_game::update_fts();
 }

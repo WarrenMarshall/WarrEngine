@@ -53,7 +53,7 @@
 #include "file_mem.h"
 
 #include "game.h"
-#include "g_asteroids.h"
+#include "g_custom_game.h"
 
 // ----------------------------------------------------------------------------
 // globals for all to enjoy - don't judge
@@ -62,4 +62,4 @@ extern bool g_allow_hot_reload;
 
 extern std::unique_ptr<w_logfile> logfile;
 extern std::unique_ptr<w_engine> engine;
-extern std::unique_ptr<g_asteroids> game;
+extern std::unique_ptr<g_custom_game> game;

@@ -175,7 +175,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="g_asteroids.cpp" />
+    <ClCompile Include="g_custom_game.cpp" />
     <ClCompile Include="input_mgr.cpp" />
     <ClCompile Include="io_zip.cpp" />
     <ClCompile Include="i_lifecycle.cpp" />
@@ -231,7 +231,7 @@
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game_entities.h" />
-    <ClInclude Include="g_asteroids.h" />
+    <ClInclude Include="g_custom_game.h" />
     <ClInclude Include="input_mgr.h" />
     <ClInclude Include="i_lifecycle.h" />
     <ClInclude Include="i_speaker.h" />

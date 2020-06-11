@@ -1,6 +1,6 @@
 #pragma once
 
-struct g_asteroids : w_game
+struct g_custom_game : w_game
 {
 	a_font* font = nullptr;
 	e_player* player = nullptr;
@@ -12,7 +12,7 @@ struct g_asteroids : w_game
 	int player_hits = 0;
 	int fireball_spawn_rate = 2000;
 
-	g_asteroids();
+	g_custom_game();
 
 	virtual void new_game();
 	virtual void update();
