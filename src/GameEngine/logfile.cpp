@@ -52,11 +52,8 @@ void w_logfile::error( const std::string msg, ... )
 {
 	va_list vargs;
 	va_start( vargs, msg );
-	std::string str = w_stringutil::format_valist( "!! ERROR : " + msg, vargs );
+	std::string str = w_stringutil::format_valist( "!! : " + msg, vargs );
 	va_end( vargs );
 
-	_write_line( str );
-
-	// errors need to be dealt with before the game can run
-	assert( 0 );
+	throw( std::exception( str.c_str() ) );
 }
