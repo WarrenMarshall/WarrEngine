@@ -1,0 +1,13 @@
+#pragma once
+
+// ----------------------------------------------------------------------------
+
+struct i_lifecycle
+{
+	e_lifecycle lifecycle = e_lifecycle::alive;
+
+	virtual void set_life_cycle( e_lifecycle lifecycle );
+	bool is_alive();
+	bool is_dying();
+	bool is_dead();
+};

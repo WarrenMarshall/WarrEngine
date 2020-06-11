@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DRelease|x64">
+      <Configuration>DRelease</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{BF24BDDA-A452-42BA-84D2-A6BBDA169BF4}</ProjectGuid>
+    <RootNamespace>GameEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GameEngine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\</OutDir>
+    <IntDir>c:\temp\intermediate\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\</OutDir>
+    <IntDir>c:\temp\intermediate\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\</OutDir>
+    <IntDir>c:\temp\intermediate\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\bass24\c\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;bass.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>MSVCRT;LIBCMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DRELEASE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\bass24\c\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;bass.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\bass24\c\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;bass.lib;Xinput9_1_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="asset.cpp" />
+    <ClCompile Include="asset_definition_file.cpp" />
+    <ClCompile Include="asset_types.cpp" />
+    <ClCompile Include="bounds.cpp" />
+    <ClCompile Include="cache_assets.cpp" />
+    <ClCompile Include="asset_definition_file_cache.cpp" />
+    <ClCompile Include="component.cpp" />
+    <ClCompile Include="datatypes.cpp" />
+    <ClCompile Include="entity_fx.cpp" />
+    <ClCompile Include="filesystem.cpp" />
+    <ClCompile Include="file_mem.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="game_entities.cpp" />
+    <ClCompile Include="gen_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="g_asteroids.cpp" />
+    <ClCompile Include="input_mgr.cpp" />
+    <ClCompile Include="io_zip.cpp" />
+    <ClCompile Include="i_lifecycle.cpp" />
+    <ClCompile Include="i_speaker.cpp" />
+    <ClCompile Include="i_listener.cpp" />
+    <ClCompile Include="i_reloadable.cpp" />
+    <ClCompile Include="i_transform.cpp" />
+    <ClCompile Include="layer.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="layer_gameplay.cpp" />
+    <ClCompile Include="opengl.cpp" />
+    <ClCompile Include="parseutil.cpp" />
+    <ClCompile Include="particle_pool.cpp" />
+    <ClCompile Include="render_states.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="time.cpp" />
+    <ClCompile Include="tokenizer.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="layer_background.cpp" />
+    <ClCompile Include="logfile.cpp" />
+    <ClCompile Include="main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="random.cpp" />
+    <ClCompile Include="render.cpp" />
+    <ClCompile Include="layer_mainmenu.cpp" />
+    <ClCompile Include="layer_mgr.cpp" />
+    <ClCompile Include="stringutil.cpp" />
+    <ClCompile Include="tween.cpp" />
+    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="particle_emitter.cpp" />
+    <ClCompile Include="window.cpp" />
+    <ClCompile Include="render_buffer.cpp" />
+    <ClCompile Include="shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="asset.h" />
+    <ClInclude Include="asset_definition_file.h" />
+    <ClInclude Include="asset_types.h" />
+    <ClInclude Include="bounds.h" />
+    <ClInclude Include="cache_assets.h" />
+    <ClInclude Include="asset_definition_file_cache.h" />
+    <ClInclude Include="asset_definition.h" />
+    <ClInclude Include="component.h" />
+    <ClInclude Include="entity_fx.h" />
+    <ClInclude Include="filesystem.h" />
+    <ClInclude Include="file_mem.h" />
+    <ClInclude Include="io_zip.h" />
+    <ClInclude Include="i_transform.h" />
+    <ClInclude Include="master_fwd_decl.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="game_entities.h" />
+    <ClInclude Include="g_asteroids.h" />
+    <ClInclude Include="input_mgr.h" />
+    <ClInclude Include="i_lifecycle.h" />
+    <ClInclude Include="i_speaker.h" />
+    <ClInclude Include="i_listener.h" />
+    <ClInclude Include="i_reloadable.h" />
+    <ClInclude Include="layer.h" />
+    <ClInclude Include="datatypes.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="layer_gameplay.h" />
+    <ClInclude Include="master_enum.h" />
+    <ClInclude Include="master_pch.h" />
+    <ClInclude Include="opengl.h" />
+    <ClInclude Include="parseutil.h" />
+    <ClInclude Include="particle_pool.h" />
+    <ClInclude Include="render_states.h" />
+    <ClInclude Include="time.h" />
+    <ClInclude Include="tokenizer.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="layer_background.h" />
+    <ClInclude Include="logfile.h" />
+    <ClInclude Include="master_header.h" />
+    <ClInclude Include="mathutil.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="render.h" />
+    <ClInclude Include="layer_mainmenu.h" />
+    <ClInclude Include="layer_mgr.h" />
+    <ClInclude Include="stringutil.h" />
+    <ClInclude Include="tween.h" />
+    <ClInclude Include="particle.h" />
+    <ClInclude Include="particle_emitter.h" />
+    <ClInclude Include="window.h" />
+    <ClInclude Include="render_buffer.h" />
+    <ClInclude Include="shader.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
