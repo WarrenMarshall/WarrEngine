@@ -156,12 +156,6 @@ int main( int argc, char* argv[] )
 			engine->draw();
 		}
 		engine->render->end();
-		
-        // Swap buffers
-		glfwSwapBuffers( engine->window->window );
-
-        // poll for and process events
-        glfwPollEvents();
 	}
 
 	// Clean up

@@ -1,1 +1,1 @@
-python x:\gamedev\python_utils\gen_fwd_decls.py
+python x:\warrendev\python_utils\gen_fwd_decls.py

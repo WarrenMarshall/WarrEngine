@@ -237,7 +237,7 @@ void w_render::begin()
 }
 
 /*
-	call at end of frame to finalize frame and present it
+	call at end of frame to finalize frame and render all buffers
 */
 void w_render::end()
 {
@@ -280,6 +280,12 @@ void w_render::end()
 
 	engine->opengl->clear_texture_bind();
 	stats.num_frames_rendered.inc();
+
+    // Swap buffers
+	glfwSwapBuffers( engine->window->window );
+
+    // poll for and process events
+    glfwPollEvents();
 }
 
 /*

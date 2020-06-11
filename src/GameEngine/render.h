@@ -42,7 +42,6 @@ struct w_render
 	w_render_stats stats;
 
 	w_color current_clear_color = W_COLOR_DARK_GREY;
-	//std::unique_ptr<w_render_buffer> line_buffer = nullptr;
 
 	std::stack<glm::mat4> modelview_stack;
 
