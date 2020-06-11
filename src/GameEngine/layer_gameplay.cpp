@@ -41,9 +41,15 @@ void layer_gameplay::on_listener_event_received( e_event_id event, void* object 
 
 	if( event == e_event_id::input_pressed )
 	{
-		//switch( evt->data.input_id )
-		//{
-		//	case e_input_id::controller_button_dpad_left:
+		switch( evt->data.input_id )
+		{
+			case e_input_id::mouse_button_right:
+			{
+				log_msg( "thrust!" );
+			}
+			break;
+		}
+
 		//	case e_input_id::keyboard_left:
 		//		game->player->angle = 90;
 		//		break;
@@ -65,7 +71,7 @@ void layer_gameplay::on_listener_event_received( e_event_id event, void* object 
 	{
 		//log_msg( "%s : %f, %f", __FUNCTION__, evt->data.mouse.xdelta, evt->data.mouse.ydelta );
 
-		//game->player->angle -= evt->data.mouse.xdelta;
+		game->player->angle -= evt->data.xdelta;
 
 		//w_vec3 new_pos = game->player->pos;
 		//new_pos.x = evt->pos.x - v_window_hw;
