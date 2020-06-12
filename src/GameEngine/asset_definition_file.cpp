@@ -19,16 +19,16 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 		name = iter_ad->key_values["name"];
 		filename = "";
 
-		if( pass_num == 0 )
+		if (pass_num == 0)
 		{
-			if( type == "preproc" )
+			if (type == "preproc")
 			{
-				for( auto& iter : iter_ad->key_values )
+				for (auto& iter : iter_ad->key_values)
 				{
 					std::string key = iter.first.c_str();
 					std::string value = iter.second.c_str();
 
-					if( key != "name" && key != "type" )
+					if (key != "name" && key != "type")
 						engine->_symbol_to_value[key] = value;
 				}
 			}

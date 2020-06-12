@@ -58,4 +58,3 @@ struct w_render_buffer
 	unsigned int VBO = 0; // vertex buffer
     unsigned int EBO = 0; // index buffer
 };
-

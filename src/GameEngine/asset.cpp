@@ -27,9 +27,5 @@ void i_asset::draw( e_render_pass render_pass )
 void i_asset::clear_render_buffer()
 {
 	if( render_buffer )
-	{
 		render_buffer->clear();
-	}
 }
-
-// ----------------------------------------------------------------------------
