@@ -40,10 +40,7 @@ w_asset_definition_file* w_cache_asset_definition_files::find( const char* name,
 	if( iter == cache.end() )
 	{
 		if( !silent )
-		{
 			log_error( "%s : config not cached : [%s]", __FUNCTION__, name );
-		}
-		return nullptr;
 	}
 
 	return iter->second.get();

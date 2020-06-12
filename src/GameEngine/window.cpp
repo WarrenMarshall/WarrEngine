@@ -46,9 +46,7 @@ bool w_window::init( const std::string& title )
 
 	// Initialize GLFW
 	if( !glfwInit() )
-	{
 		log_error( "%s : GLFW failed to init", __FUNCTION__ );
-	}
 
 	// Create a windowed mode window and its OpenGL context
 
@@ -77,10 +75,7 @@ bool w_window::init( const std::string& title )
 	);
 
 	if( !window )
-	{
 		log_error( "%s : failed to create window", __FUNCTION__ );
-		glfwTerminate();
-	}
 
 	glfwSetWindowPos( window, static_cast<int>( window_pos.x ), static_cast<int>( window_pos.y ) );
 

@@ -52,8 +52,7 @@ int main( int argc, char* argv[] )
 			engine->init();
 		}
 
-		{
-			//command line parsing
+		{	// command line parsing
 
 			g_allow_hot_reload = false;
 

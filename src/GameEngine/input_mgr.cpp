@@ -366,7 +366,7 @@ void w_input_mgr::play_rumble( e_rumble_effect effect )
 	game_controller->play_rumble( intensity, duration_ms );
 }
 
-bool w_input_mgr::poll_button_state( e_input_id input_id )
+bool w_input_mgr::is_button_down( e_input_id input_id )
 {
 	return button_states[static_cast<int>( input_id )] == GLFW_PRESS;
 }
@@ -378,7 +378,7 @@ bool w_input_mgr::poll_button_state( e_input_id input_id )
 */
 
 static float controller_dead_zone = 0.15f;
-w_vec2 w_input_mgr::poll_axis_value( e_input_id input_id )
+w_vec2 w_input_mgr::axis_value_of( e_input_id input_id )
 {
 	if( !game_controller || !game_controller->is_being_used )
 	{
@@ -437,7 +437,6 @@ w_vec2 w_input_mgr::poll_axis_value( e_input_id input_id )
 		default:
 		{
 			log_error( "%s : unknown axis", __FUNCTION__ );
-			assert( false );
 		}
 		break;
 	}
@@ -481,7 +480,6 @@ void w_input_mgr::event_input_motion( e_event_id event_id, w_input_event_data da
 		default:
 		{
 			log_error( "%s : unsupported event id", __FUNCTION__ );
-			assert( false );
 		}
 		break;
 	}

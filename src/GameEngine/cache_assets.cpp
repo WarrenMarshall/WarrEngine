@@ -16,9 +16,7 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const char* name, 
 	asset->original_filename = filename;
 
 	if( g_allow_hot_reload )
-	{
 		engine->hot_reloadables.push_back( static_cast<i_reloadable*>( asset.get() ) );
-	}
 
 	// save it into the cache
 	log_msg( "%s : '%s' cached", __FUNCTION__, name );
@@ -34,9 +32,8 @@ i_asset* w_cache_assets::find( const char* name, bool silent )
 	if( iter == cache.end() )
 	{
 		if( !silent )
-		{
 			log_error( "%s : not found : [%s]", __FUNCTION__, name );
-		}
+
 		return nullptr;
 	}
 

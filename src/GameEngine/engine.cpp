@@ -30,8 +30,6 @@ std::string w_engine::find_val_from_symbol( std::string symbol )
 	if( !is_symbol_in_map( symbol ) )
 	{
 		log_error( "%s : '%s' not found in symbol table:", __FUNCTION__, symbol.c_str() );
-		assert( false );
-		return "n/a";
 	}
 
 	return _symbol_to_value[symbol];
@@ -236,7 +234,7 @@ void w_engine::update_fts()
 		asset.second->update_fts();
 	}
 
-	render->show_stats = input_mgr->poll_button_state( e_input_id::keyboard_a);
+	render->show_stats = input_mgr->is_button_down( e_input_id::keyboard_a);
 }
 
 void w_engine::toggle_pause()

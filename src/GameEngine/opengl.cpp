@@ -7,9 +7,7 @@
 void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
     if( type == GL_DEBUG_TYPE_ERROR )
-    {
         log_error( "OpenGL Error: [%s]", message );
-    }
 	else
 	{
 		// this is VERY spammy so use for debugging purposes only
@@ -23,9 +21,7 @@ void w_opengl::init()
 	GLenum err = glewInit();
 
 	if( GLEW_OK != err )
-	{
 		log_error( "%s : GLEW failed to init : [%s]", __FUNCTION__, glewGetErrorString( err ) );
-	}
 
 	// sets a callback function so opengl can report errors and warnings to us
 	glEnable( GL_DEBUG_OUTPUT );

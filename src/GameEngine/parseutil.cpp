@@ -144,9 +144,7 @@ std::unique_ptr<w_timeline> w_parser::parse_timeline_value( e_timeline_type type
 	int comma_count = static_cast<int>( std::count( str.begin(), str.end(), ',' ) );
 
 	if( ( comma_count % 2 ) == 0 )
-	{
 		log_error( "%s : '%s' has an odd number of arguments - needs to be even", __FUNCTION__, str.c_str() );
-	}
 
 	timeline->kf_clear();
 	for( int x = 0 ; x < comma_count ; x += 2 )

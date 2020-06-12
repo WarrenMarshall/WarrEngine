@@ -79,8 +79,8 @@ struct w_input_mgr : i_speaker
 
 	bool button_states[static_cast<int>( e_input_id::max )];
 
-	bool poll_button_state( e_input_id input_id );
-	w_vec2 poll_axis_value( e_input_id button );
+	bool is_button_down( e_input_id input_id );
+	w_vec2 axis_value_of( e_input_id button );
 
 	void init();
 	void deinit();

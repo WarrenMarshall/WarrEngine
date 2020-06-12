@@ -14,17 +14,13 @@ void a_texture::clean_up_internals()
 	render_buffer = nullptr;
 
 	if( id > 0 )
-	{
 		glDeleteTextures( 1, &id );
-	}
 }
 
 bool a_texture::create_internals( bool is_hot_reloading )
 {
 	if( original_filename == "" )
-	{
 		return true;
-	}
 	
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	int w, h, bpp;
@@ -37,16 +33,11 @@ bool a_texture::create_internals( bool is_hot_reloading )
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	if( !color_data )
-	{
 		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, original_filename.c_str() );
-		return false;
-	}
 
+	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-	{
-		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();
-	}
 
 	// create our render buffer
 	render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
@@ -241,9 +232,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 	if( g_allow_hot_reload )
 	{
 		if( is_hot_reloading )
-		{
 			send_event_to_listeners( e_event_id::emitter_params_hot_reload, this );
-		}
 
 		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();
@@ -257,9 +246,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 bool a_font_def::create_internals( bool is_hot_reloading )
 {
 	for( int x = 0; x < max_font_chars; ++x )
-	{
 		char_map[x] = std::make_unique<w_font_char>();
-	}
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
@@ -313,11 +300,9 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 		line = tok.get_next_token();
 	}
 
+	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-	{
-		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();
-	}
 
 	return true;
 }
@@ -339,13 +324,9 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 		pxch = font_def->char_map[iter].get();
 
 		if( iter == '{' )
-		{
 			inside_color_code = true;
-		}
 		else if( iter == '}' )
-		{
 			inside_color_code = false;
-		}
 		else if( !inside_color_code )
 		{
 			bounds.x += pxch->xadvance;
@@ -360,11 +341,9 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 
 bool a_9slice_def::create_internals( bool is_hot_reloading )
 {
+	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-	{
-		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();
-	}
 
 	return true;
 }
@@ -403,16 +382,11 @@ bool a_sound::create_internals( bool is_hot_reloading )
 	// fatal to the engine and should not crash you out.
 
 	if( !snd && !file_exists )
-	{
 		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, name.c_str() );
-		return false;
-	}
 
+	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-	{
-		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();
-	}
 
 	channel = BASS_SampleGetChannel( snd, false );
 
@@ -444,9 +418,7 @@ void a_music::stop()
 void a_music::clean_up_internals()
 {
 	if( mus > -1 )
-	{
 		BASS_SampleFree( mus );
-	}
 }
 
 bool a_music::create_internals( bool is_hot_reloading )
@@ -462,16 +434,11 @@ bool a_music::create_internals( bool is_hot_reloading )
 	// fatal to the engine and should not crash you out.
 
 	if( !mus && !file_exists )
-	{
 		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, name.c_str() );
-		return false;
-	}
 
+	// save the last time modified for hot reloading
 	if( g_allow_hot_reload && is_hot_reloading )
-	{
-		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();
-	}
 
 	channel = BASS_SampleGetChannel( mus, false );
 

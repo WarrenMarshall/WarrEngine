@@ -116,9 +116,7 @@ int w_layer_mgr::get_opaque_index( e_opaque opaque_flags )
 
 #if _DEBUG
 	if( opaque_index == -1 )
-	{
 		log_error( "layer_mgr::draw : no opaque layers found!" );
-	}
 #endif
 
 	return opaque_index;
