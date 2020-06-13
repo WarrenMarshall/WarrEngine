@@ -4,4 +4,3 @@ src/bin/GameEngine.exe
 *.ilk
 *.pdb
 src/.vs/GameEngine/v16
-External
