@@ -86,3 +86,14 @@
 	"texture" "tex_medieval_font"
 	"font_def" "medieval_font_def"
 }
+
+# ---------------------------------------------------------
+# Tile Atlas
+# ---------------------------------------------------------
+
+{
+	"type" "texture_atlas"
+	"name" "ultima_atlas"
+	"cells" "16,16"
+	"filename" "images/tileset.png"
+}
