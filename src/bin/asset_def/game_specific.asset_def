@@ -1,0 +1,88 @@
+{
+	"type" "texture"
+	"name" "tex_lota_font"
+	"filename" "fonts/font_lota.png"
+}
+
+{
+	"type" "font_def"
+	"name" "lota_font_def"
+	"filename" "fonts/font_lota.fnt"
+}
+
+{
+	"type" "font"
+	"name" "lota_font"
+	"texture" "tex_lota_font"
+	"font_def" "lota_font_def"
+}
+
+{
+	"type" "sound"
+	"name" "player_hit"
+	"filename" "audio/Fire_Spell_Impact.wav"
+}
+
+{
+	"type" "sound"
+	"name" "fireball_spawn"
+	"filename" "audio/Fire_Missile_Activate.wav"
+}
+
+{
+	"type" "sound"
+	"name" "fireball_blocked"
+	"filename" "audio/Shield_Buff_v2.wav"
+}
+
+{
+	"type" "music"
+	"name" "crackling_fire"
+	"filename" "audio/Fireplace 1 (loop).mp3"
+}
+
+# ---------------------------------------------------------
+# Asteroids font
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_asteroids_font"
+	"filename" "fonts/font_asteroids.png"
+}
+
+{
+	"type" "font_def"
+	"name" "asteroids_font_def"
+	"filename" "fonts/font_asteroids.fnt"
+}
+
+{
+	"type" "font"
+	"name" "asteroids_font"
+	"texture" "tex_asteroids_font"
+	"font_def" "asteroids_font_def"
+}
+
+# ---------------------------------------------------------
+# Medieval font
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_medieval_font"
+	"filename" "fonts/font_medieval.png"
+}
+
+{
+	"type" "font_def"
+	"name" "medieval_font_def"
+	"filename" "fonts/font_medieval.fnt"
+}
+
+{
+	"type" "font"
+	"name" "medieval_font"
+	"texture" "tex_medieval_font"
+	"font_def" "medieval_font_def"
+}

@@ -1,0 +1,98 @@
+
+# ---------------------------------------------------------
+# UI Master
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "ui_master"
+	"filename" "images/ui_master.png"
+}
+
+{
+	"type" "9slice_def"
+	"name" "ui_master_panel"
+	"patch_00" "0, 0, 8, 8"
+	"patch_10" "8, 0, 8, 8"
+	"patch_20" "16, 0, 8, 8"
+	"patch_01" "0, 8, 8, 8"
+	"patch_11" "8, 8, 8, 8"
+	"patch_21" "16, 8, 8, 8"
+	"patch_02" "0, 16, 8, 8"
+	"patch_12" "8, 16, 8, 8"
+	"patch_22" "16, 16, 8, 8"
+}
+
+{
+	"type" "9slice_def"
+	"name" "ui_master_button_up"
+	"patch_00" "24, 0, 8, 8"
+	"patch_10" "32, 0, 8, 8"
+	"patch_20" "40, 0, 8, 8"
+	"patch_01" "24, 8, 8, 24"
+	"patch_11" "32, 8, 8, 24"
+	"patch_21" "40, 8, 8, 24"
+	"patch_02" "24, 32, 8, 8"
+	"patch_12" "32, 32, 8, 8"
+	"patch_22" "40, 32, 8, 8"
+}
+
+{
+	"type" "9slice_def"
+	"name" "ui_master_button_down"
+	"patch_00" "48, 0, 8, 8"
+	"patch_10" "56, 0, 8, 8"
+	"patch_20" "64, 0, 8, 8"
+	"patch_01" "48, 8, 8, 24"
+	"patch_11" "56, 8, 8, 24"
+	"patch_21" "64, 8, 8, 24"
+	"patch_02" "48, 32, 8, 8"
+	"patch_12" "56, 32, 8, 8"
+	"patch_22" "64, 32, 8, 8"
+}
+
+# ---------------------------------------------------------
+# base UI font
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "ui_pixel_font"
+	"filename" "fonts/font_pixel.png"
+}
+
+{
+	"type" "font_def"
+	"name" "ui_pixel_font_def"
+	"filename" "fonts/font_pixel.fnt"
+}
+
+{
+	"type" "font"
+	"name" "ui_simple_font"
+	"texture" "ui_pixel_font"
+	"font_def" "ui_pixel_font_def"
+}
+
+# ---------------------------------------------------------
+# Larger UI font
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_large_font"
+	"filename" "fonts/font_larger.png"
+}
+
+{
+	"type" "font_def"
+	"name" "larger_font_font_def"
+	"filename" "fonts/font_larger.fnt"
+}
+
+{
+	"type" "font"
+	"name" "larger_font"
+	"texture" "tex_large_font"
+	"font_def" "larger_font_font_def"
+}

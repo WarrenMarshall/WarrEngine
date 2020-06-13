@@ -4,7 +4,7 @@
 
 g_custom_game::g_custom_game()
 {
-	font = engine->get_asset<a_font>( "asteroids_font" );
+	font = engine->get_asset<a_font>( "medieval_font" );
 }
 
 void g_custom_game::new_game()

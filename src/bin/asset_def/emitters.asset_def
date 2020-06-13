@@ -1,0 +1,113 @@
+# ----------------------------------------
+# fireball trail
+# ----------------------------------------
+
+{
+	"type" "emitter_params"
+	"name" "fireball_trail"
+	"texture_name" "fireball_particle"
+	"spawner_type" "circle,5"
+
+	"s_max_spawn_per_sec" "25"
+	"b_needs_warm_up" "false"
+	"a_dir" "inherit_from_parent"
+	"r_scale_spawn" "0.50, 0.75"
+	"t_scale" "0.0,1.0, 1.0,.15"
+	"r_lifespan" "1500, 2500"
+	"r_velocity_spawn" "5,5"
+	"t_color" "0,e_color_yellow, 1,e_color_red"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.1,1, 1,0"
+}
+
+{
+	"type" "emitter_params"
+	"name" "fireball_smoke"
+	"texture_name" "tex_fireball_smoke"
+
+	"b_needs_warm_up" "false"
+	"t_scale" "0.0,1.0, 1.0,.25"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.1,1, 1,0"
+	"s_max_spawn_per_sec" "10"
+	"a_dir" "0"
+	"r_scale_spawn" "0.25, 0.5"
+	"r_lifespan" "2500, 4500"
+	"r_velocity_spawn" "8,15"
+	"t_color" "0,e_color_dark_grey, 1,e_color_black"
+	"t_alpha" "0,0, 0.1,1, 1,0"
+}
+
+# ----------------------------------------
+# torch flames
+# ----------------------------------------
+
+{
+	"type" "emitter_params"
+	"name" "torch_flames"
+	"texture_name" "fireball_particle"
+	"spawner_type" "circle,3"
+
+	"s_max_spawn_per_sec" "50"
+	"b_needs_warm_up" "true"
+	"a_dir" "0"
+	"r_scale_spawn" "0.5, 1.0"
+	"t_scale" "0.0,0.0, 0.15,1.0, 1.0,0"
+	"r_lifespan" "750, 1500"
+	"r_velocity_spawn" "5,25"
+	"t_color" "0,e_color_white, .25,e_color_yellow, 1,e_color_red"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.25,1, 1,0"
+}
+
+# ----------------------------------------
+# shield hit
+# ----------------------------------------
+
+{
+	"type" "emitter_params"
+	"name" "shield_hit"
+	"texture_name" "tex_fireball_smoke"
+	"spawner_type" "point,1"
+
+	"b_one_shot" "true"
+	"a_dir" "inherit_from_parent"
+	"r_dir_var" "-45,45"
+	"s_max_spawn_per_sec" "150"
+	"b_needs_warm_up" "false"
+	"r_scale_spawn" "0.25, 0.5"
+	"t_scale" "0,.75, 0.15,1.0, 1.0,.75"
+	"r_lifespan" "100, 200"
+	"r_velocity_spawn" "150,175"
+	"t_color" "0,e_color_yellow, .75,e_color_red"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, .25,1, 1,0"
+}
+
+# ----------------------------------------
+# fireball hit
+# ----------------------------------------
+
+{
+	"type" "emitter_params"
+	"name" "fireball_hit"
+	"texture_name" "fireball_particle"
+	"spawner_type" "circle,5"
+
+	"r_dir_var" "0,-360"
+	"b_one_shot" "true"
+	"s_max_spawn_per_sec" "250"
+	"b_needs_warm_up" "false"
+	"r_scale_spawn" "0.5, 0.75"
+	"t_scale" "0,.75, 0.15,1.0, 1.0,.75"
+	"r_lifespan" "100, 150"
+	"r_velocity_spawn" "150,175"
+	"t_color" "0,e_color_yellow, .75,e_color_red"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, .25,1, 1,0"
+}

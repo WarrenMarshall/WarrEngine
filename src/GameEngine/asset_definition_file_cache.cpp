@@ -20,7 +20,6 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const char* name, 
 	if( cfg->create_internals( false ) )
 	{
 		// save it into the cache
-		//log_msg( "%s : caching : [%s]", __FUNCTION__, filename );
 
 		if( g_allow_hot_reload )
 		{

@@ -1,0 +1,112 @@
+
+# textures
+
+{
+	"type" "texture"
+	"name" "gameplay_background"
+	"filename" "images/gameplay_background.png"
+}
+{
+	"type" "texture"
+	"name" "gameplay_background_inner"
+	"filename" "images/gameplay_background_inner.png"
+}
+{
+	"type" "texture"
+	"name" "player"
+	"filename" "images/player_sprite.png"
+}
+{
+	"type" "texture"
+	"name" "player_shield"
+	"filename" "images/player_shield.png"
+}
+{
+	"type" "texture"
+	"name" "fireball"
+	"filename" "images/fireball_base.png"
+}
+{
+	"type" "texture"
+	"name" "fireball_particle"
+	"filename" "images/fireball_particle.png"
+}
+{
+	"type" "texture"
+	"name" "tex_fireball_smoke"
+	"filename" "images/fireball_smoke.png"
+}
+
+{
+	"type" "texture"
+	"name" "germ_red_idle_0"
+	"filename" "images/germ_red_idle_0.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_1"
+	"filename" "images/germ_red_idle_1.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_2"
+	"filename" "images/germ_red_idle_2.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_3"
+	"filename" "images/germ_red_idle_3.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_4"
+	"filename" "images/germ_red_idle_4.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_5"
+	"filename" "images/germ_red_idle_5.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_6"
+	"filename" "images/germ_red_idle_6.png"
+}
+{
+	"type" "texture"
+	"name" "germ_red_idle_7"
+	"filename" "images/germ_red_idle_7.png"
+}
+{
+	"type" "anim_texture"
+	"name" "germ_red_idle"
+	"frames" "\
+		germ_red_idle_0, germ_red_idle_1, germ_red_idle_2,\
+		germ_red_idle_3, germ_red_idle_4, germ_red_idle_5,\
+		germ_red_idle_6, germ_red_idle_7"
+}
+
+{
+	"type" "texture"
+	"name" "torch_holder"
+	"filename" "images/torch_holder.png"
+}
+{
+	"type" "texture"
+	"name" "selector_bracket"
+	"filename" "images/selectorA.png"
+}
+{
+	"type" "texture"
+	"name" "selector_bracket"
+	"filename" "images/selectorA.png"
+}
+
+# gradients
+
+{
+	"type" "gradient"
+	"name" "background_gradient"
+	"alignment" "e_align_vertical"
+	"colors" "e_color_black / e_color_dark_grey /  e_color_dark_grey / e_color_black"
+}

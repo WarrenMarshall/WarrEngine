@@ -128,8 +128,8 @@ constexpr float W_PI = 3.14159265358979323846f;
 	of these dimensions. the renderer handles scaling this up to the actual
 	game window the player sees. this makes a lot of things simpler.
 */
-constexpr float v_window_w = 320;
-constexpr float v_window_h = 320;
+constexpr float v_window_w = 16*19;
+constexpr float v_window_h = 16*9;
 
 constexpr float v_window_hw = v_window_w / 2.0f;
 constexpr float v_window_hh = v_window_h / 2.0f;
@@ -149,7 +149,9 @@ template<typename T> T inline w_min( T a, T b )
 template<typename T> T inline w_max( T a, T b )
 {
 	if( a > b )
+	{
 		return a;
+	}
 	
 	return b;
 }

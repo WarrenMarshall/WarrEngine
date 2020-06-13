@@ -71,7 +71,7 @@ int main( int argc, char* argv[] )
 
 		{	// window
 			log_msg( "Creating window" );
-			if( !engine->window->init( "Game Engine [Asteroids]" ) )
+			if( !engine->window->init( "Game Engine [Endless Adventure]" ) )
 				return -1;
 		}
 

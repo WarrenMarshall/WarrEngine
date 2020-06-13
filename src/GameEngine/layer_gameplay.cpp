@@ -32,7 +32,7 @@ void layer_gameplay::draw()
 	engine->render->draw( background_gradient, w_color( 1.0, 1.0, 1.0, 0.15f ), w_vec2( v_window_w, v_window_h ) );
 	engine->opengl->pop_matrix();
 
-	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 8, v_window_hh - 8, 1 ), "SHIELD MAIDEN", e_align::left, W_COLOR_WHITE );
+	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 8, v_window_hh - 8, 1 ), "Endless Adventure", e_align::left, W_COLOR_WHITE );
 }
 	
 void layer_gameplay::on_listener_event_received( e_event_id event, void* object )
