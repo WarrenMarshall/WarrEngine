@@ -9,6 +9,10 @@ void layer_gameplay::push()
 	img_atlas = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 16, 16, 16, 16 ) );
 	img_gradient = std::make_unique<w_image>( "background_gradient" );
 
+	img_grass = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 64, 0, 16, 16 ) );
+	img_town = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 160, 0, 16, 16 ) );
+	img_player = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 240, 16, 16, 16 ) );
+
 	engine->input_mgr->add_listener( this );
 }
 
@@ -33,9 +37,29 @@ void layer_gameplay::draw()
 	engine->render->draw( img_gradient.get(), w_sz( v_window_w, v_window_h ), w_color( 1.0, 1.0, 1.0, 0.15f ) );
 	engine->opengl->pop_matrix();
 
-	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 8, v_window_hh - 8, 1 ), "Endless Adventure", e_align::left, W_COLOR_WHITE );
+	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 8, v_window_hh - 8, 2 ), "Endless Adventure", e_align::left, W_COLOR_WHITE );
+	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 9, v_window_hh - 9, 1 ), "Endless Adventure", e_align::left, W_COLOR_BLACK );
 
-	engine->render->draw_sprite( img_atlas.get(), w_sz(16,16) );
+	engine->opengl->push_matrix();
+	engine->opengl->translate( w_vec3( -v_window_hw, -v_window_hh, 0 ) );
+
+	w_image* ptr = img_grass.get();
+	for( int y = 0 ; y < 9 ; ++y )
+	{
+		engine->opengl->push_matrix();
+		for( int x = 0 ; x < 19 ; ++x )
+		{
+			engine->render->draw( ptr );
+			engine->opengl->translate( w_vec3( 16, 0, 0 ) );
+		}
+		engine->opengl->pop_matrix();
+
+		engine->opengl->translate( w_vec3( 0, 16, 0 ) );
+	}
+
+	engine->opengl->pop_matrix();
+
+	engine->render->draw_sprite( img_player.get() );
 }
 	
 void layer_gameplay::on_listener_event_received( e_event_id event, void* object )

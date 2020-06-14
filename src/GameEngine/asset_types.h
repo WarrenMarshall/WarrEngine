@@ -34,7 +34,10 @@ struct w_image
 	// the rectangle of the area we want to extract from the source texture
 	w_rect rc_src = w_rect( 0, 0, -1, -1 );
 
-	// the uv coordinates that define this image within it's texture
+	// the width/height of this image, as per the dimensions passed to the ctor
+	w_sz sz;
+
+	// the uv coordinates that define this image within the texture
 	w_uv uv00 = w_uv( 0, 0 );
 	w_uv uv11 = w_uv( 1, 1 );
 

@@ -90,19 +90,26 @@ void a_texture::draw( e_render_pass render_pass )
 
 w_image::w_image( const std::string& texture_name, const w_rect& rc )
 {
+	// find the texture being referenced
 	texture = engine->get_asset<a_texture>( texture_name );
 
 	rc_src = rc;
+
 	if( rc.w == -1 ) { rc_src.w = texture->w; }
 	if( rc.h == -1 ) { rc_src.h = texture->h; }
 
+	rc_src.y = texture->h - rc.y - rc_src.h;
+
+	sz.w = rc_src.w;
+	sz.h = rc_src.h;
+
 	uv00 = w_uv(
-		rc.x / texture->w,
-		rc.y / texture->h
+		rc_src.x / texture->w,
+		rc_src.y / texture->h
 	);
 	uv11 = w_uv(
-		(rc.x + rc.w) / texture->w,
-		(rc.y + rc.h) / texture->h
+		( rc_src.x + rc_src.w ) / texture->w,
+		( rc_src.y + rc_src.h ) / texture->h
 	);
 }
 
@@ -317,7 +324,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->h = h;
 
 			a_texture* tex = engine->get_asset<a_texture>( texture_name );
-			fch->img = std::make_unique<w_image>( texture_name, w_rect( x, tex->h - y - h, w, h ) );
+			fch->img = std::make_unique<w_image>( texture_name, w_rect( x, y, w, h ) );
 
 			max_height = w_max<float>( max_height, fch->h + fch->yoffset );
 		}

@@ -84,10 +84,8 @@ void w_render::init()
 */
 void w_render::draw_sprite( w_image* image, const w_sz& sz, const w_color& color )
 {
-	a_texture* tex = image->get_texture();
-
-	float w = ( sz.w == -1 ) ? tex->w : sz.w;
-	float h = ( sz.h == -1 ) ? tex->h : sz.h;
+	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
+	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
 
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
@@ -97,6 +95,7 @@ void w_render::draw_sprite( w_image* image, const w_sz& sz, const w_color& color
 	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( image->uv11.u, image->uv00.v ), color );
 	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( image->uv00.u, image->uv00.v ), color );
 
+	a_texture* tex = image->get_texture();
 	tex->render_buffer->add_quad( v0, v1, v2, v3 );
 }
 
@@ -107,8 +106,8 @@ void w_render::draw( w_image* image, const w_sz& sz, const w_color& color )
 {
 	a_texture* tex = image->get_texture();
 
-	float w = ( sz.w == -1 ) ? tex->w : sz.w;
-	float h = ( sz.h == -1 ) ? tex->h : sz.h;
+	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
+	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
 
 	w_render_vert v0( w_vec3( 0, h, 0 ), w_vec2( image->uv00.u, image->uv11.v ), color );
 	w_render_vert v1( w_vec3( w, h, 0 ), w_vec2( image->uv11.u, image->uv11.v ), color );
@@ -240,7 +239,9 @@ void w_render::end()
 {
 	if( show_stats )
 	{
+		glDepthMask( GL_FALSE );
 		draw_stats();
+		glDepthMask( GL_TRUE );
 	}
 
 	// draw all render buffers
