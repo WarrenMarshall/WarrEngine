@@ -239,9 +239,7 @@ void w_render::end()
 {
 	if( show_stats )
 	{
-		glDepthMask( GL_FALSE );
 		draw_stats();
-		glDepthMask( GL_TRUE );
 	}
 
 	// draw all render buffers
