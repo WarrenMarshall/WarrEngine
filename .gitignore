@@ -4,3 +4,5 @@ src/bin/GameEngine.exe
 *.ilk
 *.pdb
 src/.vs/GameEngine/v16
+src/bin/GameEngine.iobj
+src/bin/GameEngine.ipdb

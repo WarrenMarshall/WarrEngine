@@ -70,8 +70,6 @@ void w_opengl::init()
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );
 	glEnable( GL_POINT_SMOOTH );
-
-	//glLineWidth( 4.0f );
 }
 
 void w_opengl::deinit()
