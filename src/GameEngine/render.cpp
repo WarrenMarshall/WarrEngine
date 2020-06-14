@@ -151,7 +151,7 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 	w_tokenizer tok( str, '}' );
 	for( int x = 0 ; x < str.length() ; ++x )
 	{
-		fch = font->font_def->char_map[text[x]].get();
+		fch = &( font->font_def->char_map[ text[ x ] ] );
 
 		if( text[x] == '\n' )
 		{

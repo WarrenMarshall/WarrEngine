@@ -7,6 +7,8 @@
 
 struct a_9slice_def;
 struct a_anim_texture;
+struct a_atlas;
+struct a_atlas_def;
 struct a_emitter_params;
 struct a_font;
 struct a_font_def;
@@ -17,7 +19,6 @@ struct a_texture;
 struct c_emitter;
 struct c_sound;
 struct c_sprite;
-struct e_asteroid;
 struct e_player;
 struct e_vfx_asteroid_hit;
 struct g_custom_game;

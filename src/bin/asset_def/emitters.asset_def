@@ -5,7 +5,7 @@
 {
 	"type" "emitter_params"
 	"name" "fireball_trail"
-	"texture_name" "fireball_particle"
+	"texture_name" "fire_particle"
 	"spawner_type" "circle,5"
 
 	"s_max_spawn_per_sec" "25"
@@ -24,7 +24,7 @@
 {
 	"type" "emitter_params"
 	"name" "fireball_smoke"
-	"texture_name" "tex_fireball_smoke"
+	"texture_name" "smoke_particle"
 
 	"b_needs_warm_up" "false"
 	"t_scale" "0.0,1.0, 1.0,.25"
@@ -47,7 +47,7 @@
 {
 	"type" "emitter_params"
 	"name" "torch_flames"
-	"texture_name" "fireball_particle"
+	"texture_name" "fire_particle"
 	"spawner_type" "circle,3"
 
 	"s_max_spawn_per_sec" "50"
@@ -70,7 +70,7 @@
 {
 	"type" "emitter_params"
 	"name" "shield_hit"
-	"texture_name" "tex_fireball_smoke"
+	"texture_name" "smoke_particle"
 	"spawner_type" "point,1"
 
 	"b_one_shot" "true"
@@ -95,7 +95,7 @@
 {
 	"type" "emitter_params"
 	"name" "fireball_hit"
-	"texture_name" "fireball_particle"
+	"texture_name" "fire_particle"
 	"spawner_type" "circle,5"
 
 	"r_dir_var" "0,-360"

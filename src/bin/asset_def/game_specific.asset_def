@@ -1,21 +1,3 @@
-{
-	"type" "texture"
-	"name" "tex_lota_font"
-	"filename" "fonts/font_lota.png"
-}
-
-{
-	"type" "font_def"
-	"name" "lota_font_def"
-	"filename" "fonts/font_lota.fnt"
-}
-
-{
-	"type" "font"
-	"name" "lota_font"
-	"texture" "tex_lota_font"
-	"font_def" "lota_font_def"
-}
 
 {
 	"type" "sound"
@@ -39,29 +21,6 @@
 	"type" "music"
 	"name" "crackling_fire"
 	"filename" "audio/Fireplace 1 (loop).mp3"
-}
-
-# ---------------------------------------------------------
-# Asteroids font
-# ---------------------------------------------------------
-
-{
-	"type" "texture"
-	"name" "tex_asteroids_font"
-	"filename" "fonts/font_asteroids.png"
-}
-
-{
-	"type" "font_def"
-	"name" "asteroids_font_def"
-	"filename" "fonts/font_asteroids.fnt"
-}
-
-{
-	"type" "font"
-	"name" "asteroids_font"
-	"texture" "tex_asteroids_font"
-	"font_def" "asteroids_font_def"
 }
 
 # ---------------------------------------------------------
@@ -92,8 +51,20 @@
 # ---------------------------------------------------------
 
 {
-	"type" "texture_atlas"
-	"name" "ultima_atlas"
-	"cells" "16,16"
+	"type" "texture"
+	"name" "tex_ultima_atlas"
 	"filename" "images/tileset.png"
 }
+
+#{
+#	"type" "atlas_def"
+#	"name" "ultima_tile_def"
+#	"filename" "images/tileset.atlas_def"
+#}
+
+#{
+#	"type" "atlas"
+#	"name" "ultima_atlas"
+#	"texture" "tex_ultima_atlas"
+#	"atlas_def" "ultima_tile_def"
+#}

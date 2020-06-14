@@ -23,7 +23,7 @@ std::string w_parser::parse_key_value( const std::string& src_string, const char
 		rd_ptr++;
 	}
 
-	return value;
+	return w_stringutil::trim( value );
 }
 
 int w_parser::parse_int_value( const std::string& str )

@@ -24,6 +24,7 @@
 	#include <stack>
 	#include <map>
 	#include <set>
+	#include <array>
 	#include <algorithm>
 	#include <thread>
 	#include <atomic>

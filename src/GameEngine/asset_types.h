@@ -99,7 +99,8 @@ struct a_font_def : i_asset
 
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.
-	std::unique_ptr<w_font_char> char_map[max_font_chars] = {};
+	std::array<w_font_char, max_font_chars> char_map;
+	//Pw_font_char char_map[max_font_chars];
 
 	virtual bool create_internals( bool is_hot_reloading );
 };
@@ -116,9 +117,28 @@ struct a_font : i_asset
 
 // ----------------------------------------------------------------------------
 
+struct a_atlas_def : i_asset
+{
+	// using an array here to maximize look ups later on. char values
+	// become indices into this array.
+	std::vector<w_atlas_tile> tile_map;
+
+	virtual bool create_internals( bool is_hot_reloading );
+};
+
+#if 0
+struct a_atlas : i_asset
+{
+	a_texture* tex = nullptr;
+	//a_font_def* font_def = nullptr;
+};
+#endif
+
+// ----------------------------------------------------------------------------
+
 struct a_9slice_def : i_asset
 {
-	w_rect patches[9];
+	std::array<w_rect, 9> patches;
 
 	virtual bool create_internals( bool is_hot_reloading );
 };

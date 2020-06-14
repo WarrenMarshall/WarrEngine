@@ -245,8 +245,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 
 bool a_font_def::create_internals( bool is_hot_reloading )
 {
-	for( int x = 0; x < max_font_chars; ++x )
-		char_map[x] = std::make_unique<w_font_char>();
+	ZeroMemory( char_map.data(), sizeof( w_font_char ) * max_font_chars );
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
@@ -270,7 +269,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 		{
 			// parse a char definition
 			int char_id = STRTOL( int, w_parser::parse_key_value( line, "id=" ) );
-			w_font_char* fch = char_map[char_id].get();
+			w_font_char* fch = &( char_map[ char_id ] );
 
 			x = STRTOF( float, w_parser::parse_key_value( line, "x=" ) );
 			y = STRTOF( float, ( w_parser::parse_key_value( line, "y=" ) ) );
@@ -309,6 +308,75 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 // ----------------------------------------------------------------------------
 
+bool a_atlas_def::create_internals( bool is_hot_reloading )
+{
+	tile_map.empty();
+
+	auto file = engine->fs->load_file_into_memory( original_filename );
+	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
+
+	w_mem_file* mf = file.get();
+	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
+
+	w_tokenizer tok( file_as_string, '\n', "" );
+
+	float texw, texh, x, y, w, h;
+
+	std::string line = tok.get_next_token();
+	while( !tok.is_eos() )
+	{
+		if( line.substr( 0, 5 ) == "name=" )
+		{
+			w_atlas_tile tile;
+
+			// parse a tile definition
+
+			tile.name = w_parser::parse_key_value( line, "name=" );
+			tile.x = STRTOF( float, w_parser::parse_key_value( line, "x=" ) );
+			tile.y = STRTOF( float, w_parser::parse_key_value( line, "y=" ) );
+			tile.w = STRTOF( float, w_parser::parse_key_value( line, "w=" ) );
+			tile.h = STRTOF( float, w_parser::parse_key_value( line, "h=" ) );
+
+			/*
+			int char_id = STRTOL( int, w_parser::parse_key_value( line, "id=" ) );
+			w_font_char* fch = &( char_map[ char_id ] );
+
+			x = STRTOF( float, w_parser::parse_key_value( line, "x=" ) );
+			y = STRTOF( float, ( w_parser::parse_key_value( line, "y=" ) ) );
+			w = STRTOF( float, ( w_parser::parse_key_value( line, "width=" ) ) );
+			h = STRTOF( float, ( w_parser::parse_key_value( line, "height=" ) ) );
+
+			fch->xoffset = STRTOF( float, ( w_parser::parse_key_value( line, "xoffset=" ) ) );
+			fch->yoffset = STRTOF( float, ( w_parser::parse_key_value( line, "yoffset=" ) ) );
+			fch->xadvance = STRTOF( float, ( w_parser::parse_key_value( line, "xadvance=" ) ) );
+
+			fch->w = w;
+			fch->h = h;
+
+			fch->uv00.u = x / texw;
+			fch->uv00.v = ( y + h ) / texh;
+			fch->uv11.u = ( x + w ) / texw;
+			fch->uv11.v = y / texh;
+
+			// fonts store their coordinates from 0-1 vertically and we need to flip
+			// that so it matches what OpenGL expects = 0 at the bottom
+			fch->uv00.v = 1.0f - fch->uv00.v;
+			fch->uv11.v = 1.0f - fch->uv11.v;
+			*/
+		}
+
+		line = tok.get_next_token();
+	}
+
+	// save the last time modified for hot reloading
+	if( g_allow_hot_reload )
+		last_modified = get_last_modified_from_disk();
+
+	return true;
+}
+
+// ----------------------------------------------------------------------------
+
 /*
 	computes how wide and how tall a string is using this font.
 */
@@ -321,7 +389,7 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 
 	for( auto& iter : text )
 	{
-		pxch = font_def->char_map[iter].get();
+		pxch = &( font_def->char_map[ iter ] );
 
 		if( iter == '{' )
 			inside_color_code = true;

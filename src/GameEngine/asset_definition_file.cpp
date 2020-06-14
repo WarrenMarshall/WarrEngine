@@ -138,6 +138,31 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				asset_ptr->clean_up_internals();
 				asset_ptr->create_internals( is_hot_reloading );
 			}
+			else if( type == "atlas_def" )
+			{
+				if( !iter_ad->key_values.count( "filename" ) )
+					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+
+				filename = iter_ad->key_values[ "filename" ];
+
+				// ------------------------------------------------------------------------
+
+				auto asset_ptr = engine->get_asset<a_atlas_def>( name.c_str(), true );
+
+				if( !asset_ptr )
+					asset_ptr = static_cast<a_atlas_def*>(
+						engine->asset_cache->add( std::make_unique<a_atlas_def>(), name.c_str(), filename.c_str() )
+						);
+
+				// ------------------------------------------------------------------------
+
+				asset_ptr->original_filename = filename;
+
+				// ------------------------------------------------------------------------
+
+				asset_ptr->clean_up_internals();
+				asset_ptr->create_internals( is_hot_reloading );
+			}
 			else if( type == "9slice_def" )
 			{
 				// ------------------------------------------------------------------------
