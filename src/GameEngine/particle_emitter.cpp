@@ -160,7 +160,6 @@ void w_particle_emitter::update_fts()
 	}
 
 	// a one-shot particle system spawns all of it's particles at once and then dies
-	// warren
 	if( params->b_one_shot && parent_component )
 	{
 		parent_component->set_life_cycle( e_lifecycle::dying );

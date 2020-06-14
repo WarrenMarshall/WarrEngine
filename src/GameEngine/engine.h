@@ -28,7 +28,7 @@ struct w_engine : i_listener
 	void toggle_pause();
 	void cache_asset_definition_files();
 	void precache_asset_resources();
-	template<typename T> T* get_asset( const char* name, bool silent = false )
+	template<typename T> T* get_asset( const std::string& name, bool silent = false )
 	{
 #ifdef _DEBUG
 		T* asset_ptr = dynamic_cast<T*>( asset_cache->find( name, silent ) );

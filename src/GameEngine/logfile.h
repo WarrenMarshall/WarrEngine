@@ -3,7 +3,7 @@
 
 struct w_logfile
 {
-	void init( const char* name );
+	void init( const std::string& name );
 	void deinit();
 
 	void _write_line( const std::string& string_to_log );

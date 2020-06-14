@@ -117,6 +117,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			{
 				if( !iter_ad->key_values.count( "filename" ) )
 					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				if( !iter_ad->key_values.count( "texture" ) )
+					log_error( "%s : '%s'.'%s' asset definition missing 'texture' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -132,6 +134,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				// ------------------------------------------------------------------------
 
 				asset_ptr->original_filename = filename;
+				asset_ptr->texture_name = iter_ad->key_values[ "texture" ];
 
 				// ------------------------------------------------------------------------
 

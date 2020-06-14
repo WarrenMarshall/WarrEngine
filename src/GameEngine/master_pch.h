@@ -167,3 +167,4 @@ template<typename T> T inline w_clamp( T v, T min, T max )
 */
 
 typedef w_vec2 w_uv;
+typedef w_vec2 w_sz;

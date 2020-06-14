@@ -23,6 +23,27 @@ struct a_texture : i_asset
 };
 
 // ----------------------------------------------------------------------------
+/*
+	a lightweight class that defines a renderable section of an a_texture
+*/
+struct w_image
+{
+	// the texture resource we draw pixels from
+	a_texture* texture;
+
+	// the rectangle of the area we want to extract from the source texture
+	w_rect rc_src = w_rect( 0, 0, -1, -1 );
+
+	// the uv coordinates that define this image within it's texture
+	w_uv uv00 = w_uv( 0, 0 );
+	w_uv uv11 = w_uv( 1, 1 );
+
+	w_image( const std::string& texture_name, const w_rect& rc );
+	w_image( const std::string& texture_name );
+	a_texture* get_texture();
+};
+
+// ----------------------------------------------------------------------------
 
 struct a_gradient : a_texture
 {
@@ -89,10 +110,25 @@ struct a_emitter_params : i_asset, i_speaker
 
 // ----------------------------------------------------------------------------
 
+struct w_font_char
+{
+	float w = 0.0f;
+	float h = 0.0f;
+	float xoffset = 0.0f;
+	float yoffset = 0.0f;
+	float xadvance = 0.0f;
+	std::unique_ptr<w_image> img = nullptr;
+};
+
+// ----------------------------------------------------------------------------
+
 constexpr int max_font_chars = 128;
 
 struct a_font_def : i_asset
 {
+	// the font texture this font definition is pulling from
+	std::string texture_name;
+	
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.
 	float max_height = 0.0f;
@@ -100,7 +136,6 @@ struct a_font_def : i_asset
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.
 	std::array<w_font_char, max_font_chars> char_map;
-	//Pw_font_char char_map[max_font_chars];
 
 	virtual bool create_internals( bool is_hot_reloading );
 };

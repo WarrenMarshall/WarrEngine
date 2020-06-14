@@ -3,7 +3,7 @@
 #include "master_header.h"
 
 // loads a config file from disk and stores it in the cache
-w_asset_definition_file* w_cache_asset_definition_files::add( const char* name, const char* filename )
+w_asset_definition_file* w_cache_asset_definition_files::add( const std::string& name, const std::string& filename )
 {
 	auto iter = cache.find( name );
 
@@ -26,13 +26,13 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const char* name, 
 			engine->hot_reloadables.push_back( cfg.get() );
 		}
 
-		cache.insert( std::make_pair( std::string( name ), std::move( cfg ) ) );
+		cache.insert( std::make_pair( name, std::move( cfg ) ) );
 	}
 
 	return cfg.get();
 }
 
-w_asset_definition_file* w_cache_asset_definition_files::find( const char* name, bool silent )
+w_asset_definition_file* w_cache_asset_definition_files::find( const std::string& name, bool silent )
 {
 	auto iter = cache.find( name );
 

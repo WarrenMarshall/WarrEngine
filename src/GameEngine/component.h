@@ -22,12 +22,12 @@ struct w_component : i_lifecycle, i_transform
 
 struct c_sprite : w_component
 {
-	a_texture* tex = nullptr;
+	std::unique_ptr<w_image> img = nullptr;
 	bool flip_x = false, flip_y = false;
 
 	c_sprite();
 
-	w_component* init( const char* tex_name );
+	w_component* init( const std::string& tex_name );
 	virtual void draw();
 };
 
@@ -39,7 +39,7 @@ struct c_emitter : w_component
 
 	c_emitter();
 
-	w_component* init( i_transform* parent_entity, const char* params_name );
+	w_component* init( i_transform* parent_entity, const std::string& params_name );
 	virtual void set_life_cycle( e_lifecycle lifecycle );
 	virtual bool is_fully_dead();
 	virtual void draw();
@@ -56,6 +56,6 @@ struct c_sound : w_component
 
 	c_sound();
 
-	w_component* init( const char* snd_name );
+	w_component* init( const std::string& snd_name );
 	virtual void draw();
 };

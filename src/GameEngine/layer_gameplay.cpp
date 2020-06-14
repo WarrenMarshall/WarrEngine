@@ -6,7 +6,8 @@
 
 void layer_gameplay::push()
 {
-	background_gradient = static_cast<a_gradient*>( engine->asset_cache->find( "background_gradient" ) );
+	img_atlas = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 16, 16, 16, 16 ) );
+	img_gradient = std::make_unique<w_image>( "background_gradient" );
 
 	engine->input_mgr->add_listener( this );
 }
@@ -29,10 +30,12 @@ void layer_gameplay::draw()
 
 	engine->opengl->push_matrix();
 	engine->opengl->translate( w_vec3( -v_window_hw, -v_window_hh, -100 ) );
-	engine->render->draw( background_gradient, w_color( 1.0, 1.0, 1.0, 0.15f ), w_vec2( v_window_w, v_window_h ) );
+	engine->render->draw( img_gradient.get(), w_sz( v_window_w, v_window_h ), w_color( 1.0, 1.0, 1.0, 0.15f ) );
 	engine->opengl->pop_matrix();
 
 	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 8, v_window_hh - 8, 1 ), "Endless Adventure", e_align::left, W_COLOR_WHITE );
+
+	engine->render->draw_sprite( img_atlas.get(), w_sz(16,16) );
 }
 	
 void layer_gameplay::on_listener_event_received( e_event_id event, void* object )

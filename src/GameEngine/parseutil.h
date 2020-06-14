@@ -4,7 +4,7 @@
 
 struct w_parser
 {
-	static std::string parse_key_value( const std::string& src_string, const char* key );
+	static std::string parse_key_value( const std::string& src_string, const std::string& key );
 	static bool parse_bool_value( const std::string& str );
 	static int parse_int_value( const std::string& str );
 	static float parse_float_value( const std::string& str );

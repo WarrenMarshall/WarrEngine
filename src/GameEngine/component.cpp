@@ -49,9 +49,9 @@ c_sprite::c_sprite()
 	type = e_component_type::sprite;
 }
 
-w_component* c_sprite::init( const char* tex_name )
+w_component* c_sprite::init( const std::string& tex_name )
 {
-	tex = engine->get_asset<a_texture>( tex_name );
+	img = std::make_unique<w_image>( tex_name );
 	return this;
 }
 
@@ -62,7 +62,7 @@ void c_sprite::draw()
 		return;
 	}
 
-	engine->render->draw_sprite( tex->get_texture() );
+	engine->render->draw_sprite( img.get() );
 }
 
 // ----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ c_emitter::c_emitter()
 	type = e_component_type::emitter;
 }
 
-w_component* c_emitter::init( i_transform* parent_entity, const char* params_name )
+w_component* c_emitter::init( i_transform* parent_entity, const std::string& params_name )
 {
 	this->parent_entity = parent_entity;
 
@@ -153,7 +153,7 @@ c_sound::c_sound()
 	type = e_component_type::sound;
 }
 
-w_component* c_sound::init( const char* snd_name )
+w_component* c_sound::init( const std::string& snd_name )
 {
 	snd = engine->get_asset<a_sound>( snd_name );
 

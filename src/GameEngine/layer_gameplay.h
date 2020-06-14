@@ -2,7 +2,8 @@
 
 struct layer_gameplay : w_layer
 {
-	a_gradient* background_gradient = nullptr;
+	std::unique_ptr<w_image> img_atlas = nullptr;
+	std::unique_ptr<w_image> img_gradient = nullptr;
 
 	virtual void push();
 	virtual void pop();

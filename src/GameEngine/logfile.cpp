@@ -2,9 +2,10 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_logfile::init( const char* name )
+void w_logfile::init( const std::string& name )
 {
-	fopen_s( &file, s_format( "%s_log.txt", name ).c_str(), "wt" );
+	fopen_s( &file, s_format( "%s_log.txt", name.c_str() ).c_str(), "wt" );
+	assert( file );
 }
 
 void w_logfile::deinit()

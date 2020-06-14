@@ -88,6 +88,39 @@ void a_texture::draw( e_render_pass render_pass )
 
 // ----------------------------------------------------------------------------
 
+w_image::w_image( const std::string& texture_name, const w_rect& rc )
+{
+	texture = engine->get_asset<a_texture>( texture_name );
+
+	rc_src = rc;
+	if( rc.w == -1 ) { rc_src.w = texture->w; }
+	if( rc.h == -1 ) { rc_src.h = texture->h; }
+
+	uv00 = w_uv(
+		rc.x / texture->w,
+		rc.y / texture->h
+	);
+	uv11 = w_uv(
+		(rc.x + rc.w) / texture->w,
+		(rc.y + rc.h) / texture->h
+	);
+}
+
+w_image::w_image( const std::string& texture_name )
+{
+	texture = engine->get_asset<a_texture>( texture_name );
+
+	rc_src.w = texture->w;
+	rc_src.h = texture->h;
+}
+
+a_texture* w_image::get_texture()
+{
+	return texture->get_texture();
+}
+
+// ----------------------------------------------------------------------------
+
 void a_gradient::clean_up_internals()
 {
 	render_buffer = nullptr;
@@ -283,15 +316,8 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->w = w;
 			fch->h = h;
 
-			fch->uv00.u = x / texw;
-			fch->uv00.v = ( y + h ) / texh;
-			fch->uv11.u = ( x + w ) / texw;
-			fch->uv11.v = y / texh;
-
-			// fonts store their coordinates from 0-1 vertically and we need to flip
-			// that so it matches what OpenGL expects = 0 at the bottom
-			fch->uv00.v = 1.0f - fch->uv00.v;
-			fch->uv11.v = 1.0f - fch->uv11.v;
+			a_texture* tex = engine->get_asset<a_texture>( texture_name );
+			fch->img = std::make_unique<w_image>( texture_name, w_rect( x, tex->h - y - h, w, h ) );
 
 			max_height = w_max<float>( max_height, fch->h + fch->yoffset );
 		}
@@ -310,7 +336,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 bool a_atlas_def::create_internals( bool is_hot_reloading )
 {
-	tile_map.empty();
+	tile_map.clear();
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
@@ -320,7 +346,7 @@ bool a_atlas_def::create_internals( bool is_hot_reloading )
 
 	w_tokenizer tok( file_as_string, '\n', "" );
 
-	float texw, texh, x, y, w, h;
+	//float texw, texh, x, y, w, h;
 
 	std::string line = tok.get_next_token();
 	while( !tok.is_eos() )

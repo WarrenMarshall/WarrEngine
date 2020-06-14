@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-std::string w_parser::parse_key_value( const std::string& src_string, const char* key )
+std::string w_parser::parse_key_value( const std::string& src_string, const std::string& key )
 {
 	size_t idx = src_string.find( key );
 
@@ -15,7 +15,7 @@ std::string w_parser::parse_key_value( const std::string& src_string, const char
 	}
 
 	std::string value = "";
-	char* rd_ptr = const_cast<char*>(src_string.c_str()) + idx + strlen( key );
+	char* rd_ptr = const_cast<char*>(src_string.c_str()) + idx + key.length();
 
 	while( *rd_ptr != ' ' && *rd_ptr != '\n' && *rd_ptr != '\"' )
 	{

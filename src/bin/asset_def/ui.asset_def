@@ -64,6 +64,7 @@
 {
 	"type" "font_def"
 	"name" "ui_pixel_font_def"
+	"texture" "ui_pixel_font"
 	"filename" "fonts/font_pixel.fnt"
 }
 
@@ -87,6 +88,7 @@
 {
 	"type" "font_def"
 	"name" "larger_font_font_def"
+	"texture" "tex_large_font"
 	"filename" "fonts/font_larger.fnt"
 }
 

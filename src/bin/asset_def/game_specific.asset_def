@@ -36,6 +36,7 @@
 {
 	"type" "font_def"
 	"name" "medieval_font_def"
+	"texture" "tex_medieval_font"
 	"filename" "fonts/font_medieval.fnt"
 }
 

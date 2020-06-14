@@ -190,18 +190,6 @@ struct w_bbox
 
 // ----------------------------------------------------------------------------
 
-struct w_font_char
-{
-	float w = 0.0f;
-	float h = 0.0f;
-	float xoffset = 0.0f;
-	float yoffset = 0.0f;
-	float xadvance = 0.0f;
-	w_uv uv00, uv11;
-};
-
-// ----------------------------------------------------------------------------
-
 struct w_atlas_tile
 {
 	std::string name;

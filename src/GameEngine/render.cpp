@@ -82,35 +82,38 @@ void w_render::init()
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-void w_render::draw_sprite( a_texture* texture, const w_color& color )
+void w_render::draw_sprite( w_image* image, const w_sz& sz, const w_color& color )
 {
-	float hw = texture->get_texture()->w / 2.0f;
-	float hh = texture->get_texture()->h / 2.0f;
-
-	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( 0, 1 ), color );
-	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( 1, 1 ), color );
-	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( 1, 0 ), color );
-	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( 0, 0 ), color );
-
-	texture->get_texture()->render_buffer->add_quad( v0, v1, v2, v3 );
-}
-
-/*
-	draws a texture onto a quad.
-
-	rc_src - defines a sub region within the texture.  good for sprite sheets, ui graphics, and fonts.
-*/
-void w_render::draw( a_texture* texture, const w_color& color, w_vec2 sz, w_rect rc_src )
-{
-	a_texture* tex = texture->get_texture();
+	a_texture* tex = image->get_texture();
 
 	float w = ( sz.w == -1 ) ? tex->w : sz.w;
 	float h = ( sz.h == -1 ) ? tex->h : sz.h;
 
-	w_render_vert v0( w_vec3( 0, h, 0 ), w_vec2( rc_src.u0, rc_src.v1 ), color );
-	w_render_vert v1( w_vec3( w, h, 0 ), w_vec2( rc_src.u1, rc_src.v1 ), color );
-	w_render_vert v2( w_vec3( w, 0, 0 ), w_vec2( rc_src.u1, rc_src.v0 ), color );
-	w_render_vert v3( w_vec3( 0, 0, 0 ), w_vec2( rc_src.u0, rc_src.v0 ), color );
+	float hw = w / 2.0f;
+	float hh = h / 2.0f;
+
+	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( image->uv00.u, image->uv11.v ), color );
+	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( image->uv11.u, image->uv11.v ), color );
+	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( image->uv11.u, image->uv00.v ), color );
+	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( image->uv00.u, image->uv00.v ), color );
+
+	tex->render_buffer->add_quad( v0, v1, v2, v3 );
+}
+
+/*
+	draws a texture onto a quad.
+*/
+void w_render::draw( w_image* image, const w_sz& sz, const w_color& color )
+{
+	a_texture* tex = image->get_texture();
+
+	float w = ( sz.w == -1 ) ? tex->w : sz.w;
+	float h = ( sz.h == -1 ) ? tex->h : sz.h;
+
+	w_render_vert v0( w_vec3( 0, h, 0 ), w_vec2( image->uv00.u, image->uv11.v ), color );
+	w_render_vert v1( w_vec3( w, h, 0 ), w_vec2( image->uv11.u, image->uv11.v ), color );
+	w_render_vert v2( w_vec3( w, 0, 0 ), w_vec2( image->uv11.u, image->uv00.v ), color );
+	w_render_vert v3( w_vec3( 0, 0, 0 ), w_vec2( image->uv00.u, image->uv00.v ), color );
 
 	tex->render_buffer->add_quad( v0, v1, v2, v3 );
 }
@@ -183,15 +186,9 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 				engine->opengl->push_matrix();
 				engine->opengl->translate( w_vec3( xpos + fch->xoffset, ypos - fch->h - fch->yoffset, pos.z ) );
 				draw(
-					font->tex,
-					color_stack.top(),
+					fch->img.get(),
 					w_vec2( fch->w, fch->h ),
-					w_rect(
-						fch->uv00.u,
-						fch->uv00.v,
-						fch->uv11.u,
-						fch->uv11.v
-					)
+					color_stack.top()
 				);
 				engine->opengl->pop_matrix();
 			}
@@ -341,7 +338,7 @@ void w_render::draw_stats()
 	assert( stat_lines.size() < stats_draw_reserve );
 
 	auto font = engine->get_asset<a_font>( "ui_simple_font" );
-	draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 5.0f, w_color( .25f, .25f, .25f, 0.75f ) );
+	draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f, w_color( .25f, .25f, .25f, 0.75f ) );
 
 	float y = v_window_hh;
 	for( auto& iter : stat_lines)

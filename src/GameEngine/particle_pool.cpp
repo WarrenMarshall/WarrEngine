@@ -51,7 +51,8 @@ void w_particle_pool::draw()
 						engine->opengl->rotate( iter.spin );
 						engine->opengl->scale( iter.base_scale * scale );
 
-						engine->render->draw_sprite( iter.tex, color );
+						// warren
+						//engine->render->draw_sprite( iter.tex, color );
 					}
 					engine->opengl->pop_matrix();
 				}
