@@ -1,0 +1,46 @@
+
+------------------------------------------------------------------
+COORDINATE SYSTEM + UVs
+------------------------------------------------------------------
+     Y+
+-X   +  X+
+     Y-
+
+0,1     1,1
+     +
+0,0     1,0
+
+-Z = away from camera
++Z = towards camera
+
+Since 0,0 is the bottom left corner of the texture, that's also
+where drawing originates from. So drawing a texture on the top left
+corner of the screen will make it invisible because it will draw
+upwards from there and you won't see any pixels.
+
+0,0 is considered the bottom left on both images and the screen itself.
+
+------------------------------------------------------------------
+VECTORS
+------------------------------------------------------------------
+
+Angle to directions reference:
+
+0   =   0.0, +1.0 (up)
+45  =  -0.7, +0.7
+90  =  -1.0,  0.0 (left)
+135 =  -0.7, -0.7
+180 =   0.0, -1.0 (down)
+225 =  +0.7, -0.7
+270 =  +1.0,  0.0 (right)
+315 =  +0.7, +0.7
+
+ 45    0    315
+
+ 90    +    270
+
+135   180   225
+
+Positive rotation values move counter clockwise.
+
+Since angle 0 is (0,1) graphics should be authored so they face UP (or vertical) by default.
