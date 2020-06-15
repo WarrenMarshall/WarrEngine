@@ -186,6 +186,7 @@
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="layer_gameplay.cpp" />
+    <ClCompile Include="mathutil.cpp" />
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />

@@ -10,7 +10,7 @@ void layer_gameplay::push()
 	img_gradient = std::make_unique<w_image>( "background_gradient" );
 
 	img_grass = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 64, 0, 16, 16 ) );
-	img_town = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 160, 0, 16, 16 ) );
+	img_town = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 48, 0, 16, 16 ) );
 	img_player = std::make_unique<w_image>( "tex_ultima_atlas", w_rect( 240, 16, 16, 16 ) );
 
 	engine->input_mgr->add_listener( this );
@@ -43,12 +43,14 @@ void layer_gameplay::draw()
 	engine->opengl->push_matrix();
 	engine->opengl->translate( w_vec3( -v_window_hw, -v_window_hh, 0 ) );
 
-	w_image* ptr = img_grass.get();
 	for( int y = 0 ; y < 9 ; ++y )
 	{
 		engine->opengl->push_matrix();
 		for( int x = 0 ; x < 19 ; ++x )
 		{
+			//w_image* ptr = engine->random->getb() ? img_grass.get() : img_town.get();
+			w_image* ptr = img_town.get();
+
 			engine->render->draw( ptr );
 			engine->opengl->translate( w_vec3( 16, 0, 0 ) );
 		}
@@ -72,7 +74,14 @@ void layer_gameplay::on_listener_event_received( e_event_id event, void* object 
 		{
 			case e_input_id::mouse_button_right:
 			{
-				log_msg( "thrust!" );
+				w_fibonacci fib;
+				std::string seq = "";
+
+				for( int x = 0 ; x < 50 ; ++x )
+				{
+					seq += s_format( "%d", fib.step() );
+				}
+				log_msg( "%s", seq.c_str() );
 			}
 			break;
 		}

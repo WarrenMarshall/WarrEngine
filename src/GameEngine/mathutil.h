@@ -17,3 +17,16 @@ namespace
         return std::sinf( deg2rad( angle ) );
     }
 }
+
+// ----------------------------------------------------------------------------
+
+struct w_fibonacci
+{
+    int v1 = 0;
+    int v2 = 0;
+    int sum = 0;
+
+    w_fibonacci();
+
+    int step();
+};
