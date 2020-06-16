@@ -35,7 +35,7 @@ struct w_particle : i_transform
 		velocity_per_sec = 0.0f;
 		t_color = nullptr;
 		t_alpha = nullptr;
-		pos = w_vec3( 0, 0, 0 );
+		pos = w_vec3::zero;
 		t_scale = nullptr;
 		base_scale = 0.0f;
 		spin = 0.0f;

@@ -156,6 +156,8 @@ struct w_vec3
 	w_vec3( float x, float y, float z );
 	w_vec3( std::string str );
 
+	static const w_vec3 zero;
+	
 	inline bool is_zero()
 	{
 		if( fequals( x, 0.0f ) && fequals( y, 0.0f ) && fequals( z, 0.0f ) )

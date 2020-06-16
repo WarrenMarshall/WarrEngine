@@ -293,16 +293,16 @@ void w_render::end()
 void w_render::draw_world_axis()
 {
 	SCOPED_VAR( rs_color( w_color(1.0f,0.0f,0.0f) ) );
-	draw_line( w_vec3( 0, 0, 0 ), w_vec3( 5000, 0, 500 ) );
-	
-	SCOPED_VAR( rs_color( w_color(0.5f,0.0f,0.0f) ) );
-	draw_line( w_vec3( 0, 0, 0 ), w_vec3( -5000, 0, 500 ) );
-	
-	SCOPED_VAR( rs_color( w_color(0.0f,1.0f,0.0f) ) );
-	draw_line( w_vec3( 0, 0, 0 ), w_vec3( 0, 5000, 500 ) );
-	
-	SCOPED_VAR( rs_color( w_color(0.0f,0.5f,0.0f) ) );
-	draw_line( w_vec3( 0, 0, 0 ), w_vec3( 0, -5000, 500 ) );
+	draw_line( w_vec3::zero, w_vec3( 5000, 0, 500 ) );
+
+	SCOPED_VAR( rs_color( w_color( 0.5f, 0.0f, 0.0f ) ) );
+	draw_line( w_vec3::zero, w_vec3( -5000, 0, 500 ) );
+
+	SCOPED_VAR( rs_color( w_color( 0.0f, 1.0f, 0.0f ) ) );
+	draw_line( w_vec3::zero, w_vec3( 0, 5000, 500 ) );
+
+	SCOPED_VAR( rs_color( w_color( 0.0f, 0.5f, 0.0f ) ) );
+	draw_line( w_vec3::zero, w_vec3( 0, -5000, 500 ) );
 }
 
 /*

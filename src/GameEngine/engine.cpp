@@ -162,7 +162,7 @@ void w_engine::draw()
 
 		w_vec3 v0, v1, v2, v3;
 
-		v0 = w_vec3( 0, 0, 0 );
+		v0 = w_vec3::zero;
 		v1 = w_vec3( v_window_w - 1, 0, 0 );
 		v2 = w_vec3( v_window_w - 1, v_window_h - 1, 0 );
 		v3 = w_vec3( 0, v_window_h - 1, 0 );
