@@ -1,19 +1,5 @@
 #pragma once
 
-struct w_accum_value
-{
-	float accumulator;
-	float value;
-
-	void init();
-	void update_value( int steps );
-	void update_value();
-	void accum( float value );
-	void inc();
-};
-
-// ----------------------------------------------------------------------------
-
 struct w_render_stats
 {
 	w_render_stats();

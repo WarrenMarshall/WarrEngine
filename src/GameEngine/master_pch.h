@@ -105,6 +105,10 @@ inline bool operator> (ENUMTYPE a, int b) {  return (((int)a) > b); }
 #include "stringutil.h"
 #include "logfile.h"
 
+#include "mathutil.h"
+#include "parseutil.h"
+#include "tokenizer.h"
+
 // ----------------------------------------------------------------------------
 // handy macros
 
@@ -121,8 +125,6 @@ bool inline fequals( float a, float b )
 {
 	return ( std::abs( (double)a - b ) < W_EPSILON );
 }
-
-constexpr float W_PI = 3.14159265358979323846f;
 
 /*
 	the size of the virtual screen. all rendering is done on the assumption

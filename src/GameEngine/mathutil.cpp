@@ -26,3 +26,32 @@ int w_fibonacci::step()
 
 	return sum;
 }
+
+// ----------------------------------------------------------------------------
+
+void w_accum_value::init()
+{
+	value = accumulator = 0.0f;
+}
+
+void w_accum_value::update_value( int steps )
+{
+	value = accumulator / static_cast<float>( steps );
+	accumulator = 0.0f;
+}
+
+void w_accum_value::update_value()
+{
+	value = accumulator;
+	accumulator = 0.0f;
+}
+
+void w_accum_value::accum( float value )
+{
+	accumulator += value;
+}
+
+void w_accum_value::inc()
+{
+	accumulator += 1.0f;
+}

@@ -1,5 +1,7 @@
 #pragma once
 
+constexpr float W_PI = 3.14159265358979323846f;
+
 namespace
 {
     inline float deg2rad( double d )
@@ -29,4 +31,18 @@ struct w_fibonacci
     w_fibonacci();
 
     int step();
+};
+
+// ----------------------------------------------------------------------------
+
+struct w_accum_value
+{
+    float accumulator;
+    float value;
+
+    void init();
+    void update_value( int steps );
+    void update_value();
+    void accum( float value );
+    void inc();
 };
