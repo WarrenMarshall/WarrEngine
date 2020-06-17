@@ -32,22 +32,24 @@ void layer_gameplay::draw()
 	engine->render->draw( img_gradient.get(), w_sz( v_window_w, v_window_h ), w_color( 1.0, 1.0, 1.0, 0.15f ) );
 	engine->opengl->pop_matrix();
 
-	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 8, v_window_hh - 8, 2 ), "Endless Adventure", e_align::left, W_COLOR_WHITE );
-	engine->render->draw_string( game->font, w_vec3( -v_window_hw + 9, v_window_hh - 9, 1 ), "Endless Adventure", e_align::left, W_COLOR_BLACK );
+	engine->render->draw_string( engine->get_asset<a_font>("larger_font"), w_vec3( -v_window_hw + 8, v_window_hh - 8, 2 ), "Endless Adventure", e_align::left, W_COLOR_WHITE );
+	engine->render->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( -v_window_hw + 9, v_window_hh - 9, 1 ), "Endless Adventure", e_align::left, W_COLOR_BLACK );
 
 	engine->opengl->push_matrix();
 	engine->opengl->translate( w_vec3( -v_window_hw, -v_window_hh, 0 ) );
 
-	for( int y = 0 ; y < 9 ; ++y )
+	for( int y = 0 ; y < ROOM_H ; ++y )
 	{
 		engine->opengl->push_matrix();
-		for( int x = 0 ; x < 19 ; ++x )
+		for( int x = 0 ; x < ROOM_W ; ++x )
 		{
-			w_tile* tile = game->get_tile( e_tile::grass );
-			if( (x%2) || (y%2) )
-				tile = game->get_tile( e_tile::grass_shrub );
+			//w_tile* tile = game->get_tile( 4 );
+			//if( (x%2) || (y%2) )
+			//	tile = game->get_tile( 5 );
 
-			engine->render->draw( tile->img.get() );
+			int idx = ( y * ROOM_W ) + x;
+
+			engine->render->draw( game->get_tile( game->test_room.tiles[ idx ] )->img.get() );
 			engine->opengl->translate( w_vec3( 16, 0, 0 ) );
 		}
 		engine->opengl->pop_matrix();
@@ -57,7 +59,7 @@ void layer_gameplay::draw()
 
 	engine->opengl->pop_matrix();
 
-	engine->render->draw_sprite( game->get_tile( e_tile::player )->img.get() );
+	engine->render->draw_sprite( game->get_tile( 31 )->img.get() );
 }
 	
 void layer_gameplay::on_listener_event_received( e_event_id event, void* object )

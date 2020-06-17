@@ -418,7 +418,6 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	w_tokenizer tok( file_as_string, '\n', "" );
 
 	std::string line = tok.get_next_token();
-	std::string more_line;
 	std::unique_ptr<w_asset_definition> current_asset_definition = nullptr;
 
 	while( !tok.is_eos() )

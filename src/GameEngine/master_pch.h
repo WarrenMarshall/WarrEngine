@@ -132,7 +132,7 @@ bool inline fequals( float a, float b )
 	game window the player sees. this makes a lot of things simpler.
 */
 constexpr float v_window_w = 16*19;
-constexpr float v_window_h = 16*9;
+constexpr float v_window_h = (16*9) + 100;
 
 constexpr float v_window_hw = v_window_w / 2.0f;
 constexpr float v_window_hh = v_window_h / 2.0f;
