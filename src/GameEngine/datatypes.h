@@ -189,15 +189,3 @@ struct w_bbox
 	void add( w_vec3 vtx );
 	void reset();
 };
-
-// ----------------------------------------------------------------------------
-
-struct w_atlas_tile
-{
-	std::string name;
-	float x = 0.0f;
-	float y = 0.0f;
-	float w = 0.0f;
-	float h = 0.0f;
-	w_uv uv00, uv11;
-};

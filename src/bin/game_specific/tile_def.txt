@@ -1,135 +1,271 @@
-000, "deep_water", 0, 0, true
-001, "shallow_water", 16, 0, true
-002, "river_water", 32, 0, true
-003, "grass_shrub", 48, 0, true
-004, "grass", 64, 0, true
-005, "light_trees", 80, 0, true
-006, "trees", 96, 0, true
-007, "hills", 112, 0, true
-008, "mountains", 128, 0, true
-009, "dungeon", 144, 0, true
-010, "town", 160, 0, true
-011, "fort", 176, 0, true
-012, "village", 192, 0, true
-013, "castle_left", 208, 0, true
-014, "castle_middle", 224, 0, true
-015, "castle_right", 240, 0, true
+000, tile_deep_water, true
+001, tile_shallow_water, true
+002, tile_river_water, true
+003, tile_grass_shrub, true
+004, tile_grass, true
+005, tile_light_trees, true
+006, tile_trees, true
+007, tile_hills, true
+008, tile_mountains, true
+009, tile_dungeon, true
+010, tile_town, true
+011, tile_fort, true
+012, tile_village, true
+013, tile_castle_left, true
+014, tile_castle_middle, true
+015, tile_castle_right, true
 
-016, "ship_left", 0, 16, true
-017, "ship_back", 16, 16, true
-018, "ship_right", 32, 16, true
-019, "ship_front", 48, 16, true
-020, "horse_left", 64, 16, true
-021, "horse_right", 80, 16, true
-022, "hex_floor", 96, 16, true
-023, "bridge", 112, 16, true
-024, "balloon", 128, 16, true
-025, "bridge_top", 144, 16, true
-026, "bridge_bottom", 160, 16, true
-027, "ladder_up", 176, 16, true
-028, "ladder_down", 192, 16, true
-029, "town_destroyed", 208, 16, true
-030, "shrine", 224, 16, true
-031, "player", 240, 16, true
+016, tile_ship_left, true
+017, tile_ship_back, true
+018, tile_ship_right, true
+019, tile_ship_front, true
+020, tile_horse_left, true
+021, tile_horse_right, true
+022, tile_hex_floor, true
+023, tile_bridge, true
+024, tile_balloon, true
+025, tile_bridge_top, true
+026, tile_bridge_bottom, true
+027, tile_ladder_up, true
+028, tile_ladder_down, true
+029, tile_town_destroyed, true
+030, tile_shrine, true
+031, tile_player, true
 
-032, "npc_a_01", 0, 32, true
-033, "npc_a_02", 16, 32, true
-034, "npc_b_01", 32, 32, true
-035, "npc_b_02", 48, 32, true
-036, "npc_c_01", 64, 32, true
-037, "npc_c_02", 80, 32, true
-038, "npc_d_01", 96, 32, true
-039, "npc_d_02", 112, 32, true
-040, "npc_e_01", 128, 32, true
-041, "npc_e_02", 144, 32, true
-042, "npc_f_01", 160, 32, true
-043, "npc_f_02", 176, 32, true
-044, "npc_g_01", 192, 32, true
-045, "npc_g_02", 208, 32, true
-046, "npc_h_01", 224, 32, true
-047, "npc_h_02", 240, 32, true
+032, tile_npc_a_01, true
+033, tile_npc_a_02, true
+034, tile_npc_b_01, true
+035, tile_npc_b_02, true
+036, tile_npc_c_01, true
+037, tile_npc_c_02, true
+038, tile_npc_d_01, true
+039, tile_npc_d_02, true
+040, tile_npc_e_01, true
+041, tile_npc_e_02, true
+042, tile_npc_f_01, true
+043, tile_npc_f_02, true
+044, tile_npc_g_01, true
+045, tile_npc_g_02, true
+046, tile_npc_h_01, true
+047, tile_npc_h_02, true
 
-048, "post", 0, 48, true
-049, "angle_bl", 16, 48, true
-050, "angle_br", 32, 48, true
-051, "angle_tl", 48, 48, true
-052, "angle_tr", 64, 48, true
-053, "deck_01", 80, 48, true
-054, "deck_02", 96, 48, true
-055, "rocks", 112, 48, true
-056, "body", 128, 48, true
-057, "stone_wall", 144, 48, true
-058, "door_open", 160, 48, true
-059, "door_locked", 176, 48, true
-060, "chest", 192, 48, true
-061, "ankh", 208, 48, true
-062, "brick_floor", 224, 48, true
-063, "deck", 240, 48, true
+048, tile_post, true
+049, tile_angle_bl, true
+050, tile_angle_br, true
+051, tile_angle_tl, true
+052, tile_angle_tr, true
+053, tile_deck_01, true
+054, tile_deck_02, true
+055, tile_rocks, true
+056, tile_body, true
+057, tile_stone_wall, true
+058, tile_door_open, true
+059, tile_door_locked, true
+060, tile_chest, true
+061, tile_ankh, true
+062, tile_brick_floor, true
+063, tile_deck, true
 
-064, "portal_01", 0, 64, true
-065, "portal_02", 16, 64, true
-066, "portal_03", 32, 64, true
-067, "portal_04", 48, 64, true
-068, "poison", 16, 64, true
-069, "blank_01", 80, 64, true
-070, "blank_02", 96, 64, true
-071, "blank_03", 112, 64, true
-072, "solid_wall", 128, 64, true
-073, "secret_brick_wall", 144, 64, true
-074, "bench", 160, 64, true
-075, "campfire", 176, 64, true
-076, "magic", 192, 64, true
-077, "missile_01", 208, 64, true
-078, "magic_01", 224, 64, true
-079, "magic_02", 240, 64, true
+064, tile_portal_01, true
+065, tile_portal_02, true
+066, tile_portal_03, true
+067, tile_portal_04, true
+068, tile_poison, true
+069, tile_blank_01, true
+070, tile_blank_02, true
+071, tile_blank_03, true
+072, tile_solid_wall, true
+073, tile_secret_brick_wall, true
+074, tile_bench, true
+075, tile_campfire, true
+076, tile_magic, true
+077, tile_missile_01, true
+078, tile_magic_01, true
+079, tile_magic_02, true
 
-080, "guard_02", 0, 80, true
-081, "guard_01", 16, 80, true
-082, "merchant_01", 32, 80, true
-083, "merchant_02", 48, 80, true
-084, "bard_01", 64, 80, true
-085, "bard_02", 80, 80, true
-086, "jester_01", 96, 80, true
-087, "jester_02", 112, 80, true
-088, "beggar_01", 128, 80, true
-089, "beggar_02", 144, 80, true
-090, "child_01", 160, 80, true
-091, "child_02", 176, 80, true
-092, "cow_01", 192, 80, true
-093, "cow_02", 208, 80, true
-094, "king_01", 224, 80, true
-095, "king_02", 240, 80, true
+080, tile_guard_02, true
+081, tile_guard_01, true
+082, tile_merchant_01, true
+083, tile_merchant_02, true
+084, tile_bard_01, true
+085, tile_bard_02, true
+086, tile_jester_01, true
+087, tile_jester_02, true
+088, tile_beggar_01, true
+089, tile_beggar_02, true
+090, tile_child_01, true
+091, tile_child_02, true
+092, tile_cow_01, true
+093, tile_cow_02, true
+094, tile_king_01, true
+095, tile_king_02, true
 
-096, "a", 0, 96, true
-097, "b", 16, 96, true
-098, "c", 32, 96, true
-099, "d", 48, 96, true
-100, "e", 64, 96, true
-101, "f", 80, 96, true
-102, "g", 96, 96, true
-103, "h", 112, 96, true
-104, "i", 128, 96, true
-105, "j", 144, 96, true
-106, "k", 160, 96, true
-107, "l", 176, 96, true
-108, "m", 192, 96, true
-109, "n", 208, 96, true
-110, "o", 224, 96, true
-111, "p", 240, 96, true
+096, tile_a, true
+097, tile_b, true
+098, tile_c, true
+099, tile_d, true
+100, tile_e, true
+101, tile_f, true
+102, tile_g, true
+103, tile_h, true
+104, tile_i, true
+105, tile_j, true
+106, tile_k, true
+107, tile_l, true
+108, tile_m, true
+109, tile_n, true
+110, tile_o, true
+111, tile_p, true
 
-112, "q", 0, 112, true
-113, "r", 16, 112, true
-114, "s", 32, 112, true
-115, "t", 48, 112, true
-116, "u", 64, 112, true
-117, "v", 80, 112, true
-118, "w", 96, 112, true
-119, "x", 112, 112, true
-120, "y", 128, 112, true
-121, "z", 144, 112, true
-122, "space", 160, 112, true
-123, "cap_right", 176, 112, true
-124, "cap_left", 192, 112, true
-125, "cap", 208, 112, true
-126, "blank", 224, 112, true
-127, "brick_wall", 240, 112, true
+112, tile_q, true
+113, tile_r, true
+114, tile_s, true
+115, tile_t, true
+116, tile_u, true
+117, tile_v, true
+118, tile_w, true
+119, tile_x, true
+120, tile_y, true
+121, tile_z, true
+122, tile_space, true
+123, tile_cap_right, true
+124, tile_cap_left, true
+125, tile_cap, true
+126, tile_blank, true
+127, tile_brick_wall, true
+
+128, tile_ship_left, true
+129, tile_ship_back, true
+130, tile_ship_right, true
+131, tile_ship_front, true
+132, tile_merman_01, true
+133, tile_merman_02, true
+134, tile_octopus_01, true
+135, tile_octopus_02, true
+136, tile_sea_snake_01, true
+137, tile_sea_snake_02, true
+138, tile_sea_horse_01, true
+139, tile_sea_horse_02, true
+140, tile_whirlpool_01, true
+141, tile_whirlpool_02, true
+142, tile_tornado_01, true
+143, tile_tornado_02, true
+
+144, tile_rat_01, true
+145, tile_rat_02, true
+146, tile_rat_03, true
+147, tile_rat_04, true
+148, tile_bat_01, true
+149, tile_bat_02, true
+150, tile_bat_03, true
+151, tile_bat_04, true
+152, tile_spider_01, true
+153, tile_spider_02, true
+154, tile_spider_03, true
+155, tile_spider_04, true
+156, tile_ghost_01, true
+157, tile_ghost_02, true
+158, tile_ghost_03, true
+159, tile_ghost_04, true
+
+160, tile_slime_01, true
+161, tile_slime_02, true
+162, tile_slime_03, true
+163, tile_slime_04, true
+164, tile_orc_01, true
+165, tile_orc_02, true
+166, tile_orc_03, true
+167, tile_orc_04, true
+168, tile_gumby_01, true
+169, tile_gumby_02, true
+170, tile_gumby_03, true
+171, tile_gumby_04, true
+172, tile_mimic_01, true
+173, tile_mimic_02, true
+174, tile_mimic_03, true
+175, tile_mimic_04, true
+
+176, tile_flayer_01, true
+177, tile_flayer_02, true
+178, tile_flayer_03, true
+179, tile_flayer_04, true
+180, tile_insects_01, true
+181, tile_insects_02, true
+182, tile_insects_03, true
+183, tile_insects_04, true
+184, tile_beholder_01, true
+185, tile_beholder_02, true
+186, tile_beholder_03, true
+187, tile_beholder_04, true
+188, tile_apparition_01, true
+189, tile_apparition_02, true
+190, tile_apparition_03, true
+191, tile_apparition_04, true
+
+192, tile_brute_01, true
+193, tile_brute_02, true
+194, tile_brute_03, true
+195, tile_brute_04, true
+196, tile_skeleton_01, true
+197, tile_skeleton_02, true
+198, tile_skeleton_03, true
+199, tile_skeleton_04, true
+200, tile_brigand_01, true
+201, tile_brigand_02, true
+202, tile_brigand_03, true
+203, tile_brigand_04, true
+204, tile_snake_01, true
+205, tile_snake_02, true
+206, tile_snake_03, true
+207, tile_snake_04, true
+
+208, tile_twohead_01, true
+209, tile_twohead_02, true
+210, tile_twohead_03, true
+211, tile_twohead_04, true
+212, tile_headless_01, true
+213, tile_headless_02, true
+214, tile_headless_03, true
+215, tile_headless_04, true
+216, tile_cyclops_01, true
+217, tile_cyclops_02, true
+218, tile_cyclops_03, true
+219, tile_cyclops_04, true
+220, tile_whisp_01, true
+221, tile_whisp_02, true
+222, tile_whisp_03, true
+223, tile_whisp_04, true
+
+224, tile_chief_01, true
+225, tile_chief_02, true
+226, tile_chief_03, true
+227, tile_chief_04, true
+228, tile_spectre_01, true
+229, tile_spectre_02, true
+230, tile_spectre_03, true
+231, tile_spectre_04, true
+232, tile_dragon_01, true
+233, tile_dragon_02, true
+234, tile_dragon_03, true
+235, tile_dragon_04, true
+236, tile_beast_01, true
+237, tile_beast_02, true
+238, tile_beast_03, true
+239, tile_beast_04, true
+
+240, tile_devil_01, true
+241, tile_devil_02, true
+242, tile_devil_03, true
+243, tile_devil_04, true
+244, tile_hydra_01, true
+245, tile_hydra_02, true
+246, tile_hydra_03, true
+247, tile_hydra_04, true
+248, tile_wyvern_01, true
+249, tile_wyvern_02, true
+250, tile_wyvern_03, true
+251, tile_wyvern_04, true
+252, tile_demon_01, true
+253, tile_demon_02, true
+254, tile_demon_03, true
+255, tile_demon_04, true

@@ -12,8 +12,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 	for( auto& iter_ad : asset_definitions )
 	{
-		if( !iter_ad->key_values.count( "type" ) || !iter_ad->key_values.count( "name" ) )
-			log_error( "%s : asset definition missing critical key/values", __FUNCTION__ );
+		assert_key_exists( *(iter_ad.get()), "type" );
+		assert_key_exists( *( iter_ad.get() ), "name" );
 
 		type = iter_ad->key_values["type"];
 		name = iter_ad->key_values["name"];
@@ -37,8 +37,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 		{
 			if( type == "texture" )
 			{
-				if( !iter_ad->key_values.count( "filename" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				assert_key_exists( *( iter_ad.get() ), "filename" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -62,11 +61,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "gradient" )
 			{
-				if( !iter_ad->key_values.count( "alignment" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'alignment' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
-
-				if( !iter_ad->key_values.count( "colors" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'colors' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				assert_key_exists( *( iter_ad.get() ), "alignment" );
+				assert_key_exists( *( iter_ad.get() ), "colors" );
 
 				// ------------------------------------------------------------------------
 
@@ -115,10 +111,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "font_def" )
 			{
-				if( !iter_ad->key_values.count( "filename" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
-				if( !iter_ad->key_values.count( "texture" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'texture' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				assert_key_exists( *( iter_ad.get() ), "filename" );
+				assert_key_exists( *( iter_ad.get() ), "texture" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -135,31 +129,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				asset_ptr->original_filename = filename;
 				asset_ptr->texture_name = iter_ad->key_values[ "texture" ];
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "atlas_def" )
-			{
-				if( !iter_ad->key_values.count( "filename" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
-
-				filename = iter_ad->key_values[ "filename" ];
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_atlas_def>( name.c_str(), true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_atlas_def*>(
-						engine->asset_cache->add( std::make_unique<a_atlas_def>(), name.c_str(), filename.c_str() )
-						);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->original_filename = filename;
 
 				// ------------------------------------------------------------------------
 
@@ -213,8 +182,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "sound" )
 			{
-				if( !iter_ad->key_values.count( "filename" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				assert_key_exists( *( iter_ad.get() ), "filename" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -238,8 +206,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "music" )
 			{
-				if( !iter_ad->key_values.count( "filename" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'filename' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				assert_key_exists( *( iter_ad.get() ), "filname" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -343,11 +310,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "font" )
 			{
-				if( !iter_ad->key_values.count( "texture" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'texture' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
-
-				if( !iter_ad->key_values.count( "font_def" ) )
-					log_error( "%s : '%s'.'%s' asset definition missing 'font_def' key/value", type.c_str(), name.c_str(), __FUNCTION__ );
+				assert_key_exists( *( iter_ad.get() ), "texture" );
+				assert_key_exists( *( iter_ad.get() ), "font_def" );
 
 				// ------------------------------------------------------------------------
 
@@ -394,8 +358,42 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				asset_ptr->clean_up_internals();
 				asset_ptr->create_internals( is_hot_reloading );
 			}
+			else if( type == "image" )
+			{
+				assert_key_exists( *( iter_ad.get() ), "filename" );
+				assert_key_exists( *( iter_ad.get() ), "texture" );
+				assert_key_exists( *( iter_ad.get() ), "rect" );
+
+				filename = iter_ad->key_values[ "filename" ];
+
+				// ------------------------------------------------------------------------
+
+				auto asset_ptr = engine->get_asset<a_image>( name.c_str(), true );
+
+				if( !asset_ptr )
+					asset_ptr = static_cast<a_image*>(
+						engine->asset_cache->add( std::make_unique<a_image>(), name.c_str(), filename.c_str() )
+						);
+
+				// ------------------------------------------------------------------------
+
+				asset_ptr->original_filename = filename;
+
+				// ------------------------------------------------------------------------
+
+				asset_ptr->clean_up_internals();
+				asset_ptr->create_internals( is_hot_reloading );
+			}
 		}
 	}
+}
+
+void w_asset_definition_file::assert_key_exists( const w_asset_definition& asset_def, const std::string& key )
+{
+	#if defined(_DEBUG) || defined(_DRELEASE)
+		if( !asset_def.key_values.count( key.c_str() ) )
+			log_error( "%s : asset definition missing '%s' key/value", __FUNCTION__, key.c_str() );
+	#endif
 }
 
 void w_asset_definition_file::clean_up_internals()

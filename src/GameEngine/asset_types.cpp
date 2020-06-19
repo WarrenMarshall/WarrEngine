@@ -88,7 +88,7 @@ void a_texture::draw( e_render_pass render_pass )
 
 // ----------------------------------------------------------------------------
 
-w_image::w_image( const std::string& texture_name, const w_rect& rc )
+a_image::a_image( const std::string& texture_name, const w_rect& rc )
 {
 	// find the texture being referenced
 	texture = engine->get_asset<a_texture>( texture_name );
@@ -113,7 +113,7 @@ w_image::w_image( const std::string& texture_name, const w_rect& rc )
 	);
 }
 
-w_image::w_image( const std::string& texture_name )
+a_image::a_image( const std::string& texture_name )
 {
 	texture = engine->get_asset<a_texture>( texture_name );
 
@@ -121,7 +121,7 @@ w_image::w_image( const std::string& texture_name )
 	rc_src.h = texture->h;
 }
 
-a_texture* w_image::get_texture()
+a_texture* a_image::get_texture()
 {
 	return texture->get_texture();
 }
@@ -324,78 +324,9 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->h = h;
 
 			a_texture* tex = engine->get_asset<a_texture>( texture_name );
-			fch->img = std::make_unique<w_image>( texture_name, w_rect( x, y, w, h ) );
+			fch->img = std::make_unique<a_image>( texture_name, w_rect( x, y, w, h ) );
 
 			max_height = w_max<float>( max_height, fch->h + fch->yoffset );
-		}
-
-		line = tok.get_next_token();
-	}
-
-	// save the last time modified for hot reloading
-	if( g_allow_hot_reload )
-		last_modified = get_last_modified_from_disk();
-
-	return true;
-}
-
-// ----------------------------------------------------------------------------
-
-bool a_atlas_def::create_internals( bool is_hot_reloading )
-{
-	tile_map.clear();
-
-	auto file = engine->fs->load_file_into_memory( original_filename );
-	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
-
-	w_mem_file* mf = file.get();
-	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
-
-	w_tokenizer tok( file_as_string, '\n', "" );
-
-	//float texw, texh, x, y, w, h;
-
-	std::string line = tok.get_next_token();
-	while( !tok.is_eos() )
-	{
-		if( line.substr( 0, 5 ) == "name=" )
-		{
-			w_atlas_tile tile;
-
-			// parse a tile definition
-
-			tile.name = w_parser::parse_key_value( line, "name=" );
-			tile.x = STRTOF( float, w_parser::parse_key_value( line, "x=" ) );
-			tile.y = STRTOF( float, w_parser::parse_key_value( line, "y=" ) );
-			tile.w = STRTOF( float, w_parser::parse_key_value( line, "w=" ) );
-			tile.h = STRTOF( float, w_parser::parse_key_value( line, "h=" ) );
-
-			/*
-			int char_id = STRTOL( int, w_parser::parse_key_value( line, "id=" ) );
-			w_font_char* fch = &( char_map[ char_id ] );
-
-			x = STRTOF( float, w_parser::parse_key_value( line, "x=" ) );
-			y = STRTOF( float, ( w_parser::parse_key_value( line, "y=" ) ) );
-			w = STRTOF( float, ( w_parser::parse_key_value( line, "width=" ) ) );
-			h = STRTOF( float, ( w_parser::parse_key_value( line, "height=" ) ) );
-
-			fch->xoffset = STRTOF( float, ( w_parser::parse_key_value( line, "xoffset=" ) ) );
-			fch->yoffset = STRTOF( float, ( w_parser::parse_key_value( line, "yoffset=" ) ) );
-			fch->xadvance = STRTOF( float, ( w_parser::parse_key_value( line, "xadvance=" ) ) );
-
-			fch->w = w;
-			fch->h = h;
-
-			fch->uv00.u = x / texw;
-			fch->uv00.v = ( y + h ) / texh;
-			fch->uv11.u = ( x + w ) / texw;
-			fch->uv11.v = y / texh;
-
-			// fonts store their coordinates from 0-1 vertically and we need to flip
-			// that so it matches what OpenGL expects = 0 at the bottom
-			fch->uv00.v = 1.0f - fch->uv00.v;
-			fch->uv11.v = 1.0f - fch->uv11.v;
-			*/
 		}
 
 		line = tok.get_next_token();

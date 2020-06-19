@@ -7,7 +7,8 @@
 e_player::e_player()
 	: w_entity()
 {
-	//add_component<c_sprite>()->init( "player" );
+	//auto c = add_component<c_sprite>();
+	//c->img = game->tile_masters[ 31 ].img;
 
 	// can we define a subtexture within a texture as a resource?
 	//

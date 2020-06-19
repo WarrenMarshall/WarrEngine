@@ -53,7 +53,7 @@ void w_render::init()
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-void w_render::draw_sprite( w_image* image, const w_sz& sz, const w_color& color )
+void w_render::draw_sprite( a_image* image, const w_sz& sz, const w_color& color )
 {
 	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
@@ -73,7 +73,7 @@ void w_render::draw_sprite( w_image* image, const w_sz& sz, const w_color& color
 /*
 	draws a texture onto a quad.
 */
-void w_render::draw( w_image* image, const w_sz& sz, const w_color& color )
+void w_render::draw( a_image* image, const w_sz& sz, const w_color& color )
 {
 	a_texture* tex = image->get_texture();
 

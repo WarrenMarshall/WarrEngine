@@ -6,10 +6,9 @@ constexpr int TILE_SZ = 16;
 
 struct w_tile
 {
-	int id;
-	std::string name;
-	bool show_in_browser;
-	std::unique_ptr<w_image> img = nullptr;
+	int id = 0;
+	bool show_in_browser = true;
+	a_image* img = nullptr;
 };
 
 struct w_world_room

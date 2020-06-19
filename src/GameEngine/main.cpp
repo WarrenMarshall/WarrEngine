@@ -121,12 +121,8 @@ int main( int argc, char* argv[] )
 		// initial layer set up
 
 		engine->layer_mgr->push( std::make_unique<layer_background>() );
-		//engine->layer_mgr->push( std::make_unique<layer_mainmenu>() );
-
-		// debug
+		engine->layer_mgr->push( std::make_unique<layer_gameviewport>() );
 		engine->layer_mgr->push( std::make_unique<layer_gameplay>() );
-		//engine->layer_mgr->push( std::make_unique<layer_gameover>() );
-		// debug
 
 		engine->is_running = true;
 

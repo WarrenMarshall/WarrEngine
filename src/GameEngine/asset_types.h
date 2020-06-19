@@ -26,9 +26,9 @@ struct a_texture : i_asset
 /*
 	a lightweight class that defines a renderable section of an a_texture
 */
-struct w_image
+struct a_image : i_asset
 {
-	// the texture resource we draw pixels from
+	// the texture asset we draw from
 	a_texture* texture;
 
 	// the rectangle of the area we want to extract from the source texture
@@ -41,8 +41,8 @@ struct w_image
 	w_uv uv00 = w_uv( 0, 0 );
 	w_uv uv11 = w_uv( 1, 1 );
 
-	w_image( const std::string& texture_name, const w_rect& rc );
-	w_image( const std::string& texture_name );
+	a_image( const std::string& texture_name, const w_rect& rc );
+	a_image( const std::string& texture_name );
 	a_texture* get_texture();
 };
 
@@ -120,7 +120,7 @@ struct w_font_char
 	float xoffset = 0.0f;
 	float yoffset = 0.0f;
 	float xadvance = 0.0f;
-	std::unique_ptr<w_image> img = nullptr;
+	std::unique_ptr<a_image> img = nullptr;
 };
 
 // ----------------------------------------------------------------------------
@@ -152,25 +152,6 @@ struct a_font : i_asset
 
 	w_vec2 get_string_extents( const std::string& text );
 };
-
-// ----------------------------------------------------------------------------
-
-struct a_atlas_def : i_asset
-{
-	// using an array here to maximize look ups later on. char values
-	// become indices into this array.
-	std::vector<w_atlas_tile> tile_map;
-
-	virtual bool create_internals( bool is_hot_reloading );
-};
-
-#if 0
-struct a_atlas : i_asset
-{
-	a_texture* tex = nullptr;
-	//a_font_def* font_def = nullptr;
-};
-#endif
 
 // ----------------------------------------------------------------------------
 

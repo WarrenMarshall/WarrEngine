@@ -49,9 +49,15 @@ c_sprite::c_sprite()
 	type = e_component_type::sprite;
 }
 
-w_component* c_sprite::init( const std::string& tex_name )
+w_component* c_sprite::init( const std::string& image_name )
 {
-	img = std::make_unique<w_image>( tex_name );
+	//img = std::make_unique<a_image>( image_name );
+	return this;
+}
+
+w_component* c_sprite::init( const std::string& image_name, const w_rect& rc )
+{
+	//img = std::make_unique<a_image>( image_name, rc );
 	return this;
 }
 
@@ -62,7 +68,7 @@ void c_sprite::draw()
 		return;
 	}
 
-	engine->render->draw_sprite( img.get() );
+	engine->render->draw_sprite( img );
 }
 
 // ----------------------------------------------------------------------------
