@@ -26,10 +26,11 @@ struct a_texture : i_asset
 /*
 	a lightweight class that defines a renderable section of an a_texture
 */
+
 struct a_image : i_asset
 {
 	// the texture asset we draw from
-	a_texture* texture;
+	a_texture* tex;
 
 	// the rectangle of the area we want to extract from the source texture
 	w_rect rc_src = w_rect( 0, 0, -1, -1 );
@@ -41,8 +42,8 @@ struct a_image : i_asset
 	w_uv uv00 = w_uv( 0, 0 );
 	w_uv uv11 = w_uv( 1, 1 );
 
-	a_image( const std::string& texture_name, const w_rect& rc );
-	a_image( const std::string& texture_name );
+	void create_from_texture( const std::string& tex_name );
+	void create_from_texture( const std::string& tex_name, const w_rect& rc );
 	a_texture* get_texture();
 };
 

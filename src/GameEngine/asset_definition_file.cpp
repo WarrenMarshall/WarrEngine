@@ -12,8 +12,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 	for( auto& iter_ad : asset_definitions )
 	{
-		assert_key_exists( *(iter_ad.get()), "type" );
-		assert_key_exists( *( iter_ad.get() ), "name" );
+		assert_key_exists( "??", *(iter_ad.get()), "type" );
+		assert_key_exists( "??", *( iter_ad.get() ), "name" );
 
 		type = iter_ad->key_values["type"];
 		name = iter_ad->key_values["name"];
@@ -37,7 +37,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 		{
 			if( type == "texture" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "filename" );
+				assert_key_exists( type, *( iter_ad.get() ), "filename" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -61,8 +61,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "gradient" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "alignment" );
-				assert_key_exists( *( iter_ad.get() ), "colors" );
+				assert_key_exists( type, *( iter_ad.get() ), "alignment" );
+				assert_key_exists( type, *( iter_ad.get() ), "colors" );
 
 				// ------------------------------------------------------------------------
 
@@ -111,8 +111,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "font_def" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "filename" );
-				assert_key_exists( *( iter_ad.get() ), "texture" );
+				assert_key_exists( type, *( iter_ad.get() ), "filename" );
+				assert_key_exists( type, *( iter_ad.get() ), "texture" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -182,7 +182,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "sound" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "filename" );
+				assert_key_exists( type, *( iter_ad.get() ), "filename" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -206,7 +206,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "music" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "filname" );
+				assert_key_exists( type, *( iter_ad.get() ), "filename" );
 
 				filename = iter_ad->key_values["filename"];
 
@@ -310,8 +310,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "font" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "texture" );
-				assert_key_exists( *( iter_ad.get() ), "font_def" );
+				assert_key_exists( type, *( iter_ad.get() ), "texture" );
+				assert_key_exists( type, *( iter_ad.get() ), "font_def" );
 
 				// ------------------------------------------------------------------------
 
@@ -360,11 +360,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "image" )
 			{
-				assert_key_exists( *( iter_ad.get() ), "filename" );
-				assert_key_exists( *( iter_ad.get() ), "texture" );
-				assert_key_exists( *( iter_ad.get() ), "rect" );
-
-				filename = iter_ad->key_values[ "filename" ];
+				assert_key_exists( type, *( iter_ad.get() ), "texture" );
+				assert_key_exists( type, *( iter_ad.get() ), "rect" );
 
 				// ------------------------------------------------------------------------
 
@@ -372,12 +369,13 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_image*>(
-						engine->asset_cache->add( std::make_unique<a_image>(), name.c_str(), filename.c_str() )
+						engine->asset_cache->add( std::make_unique<a_image>(), name.c_str(), "" )
 						);
-
 				// ------------------------------------------------------------------------
 
-				asset_ptr->original_filename = filename;
+				w_rect rc = w_parser::parse_rect_value( iter_ad->key_values[ "rect" ] );
+
+				asset_ptr->create_from_texture( iter_ad->key_values[ "texture" ], rc );
 
 				// ------------------------------------------------------------------------
 
@@ -388,11 +386,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 	}
 }
 
-void w_asset_definition_file::assert_key_exists( const w_asset_definition& asset_def, const std::string& key )
+void w_asset_definition_file::assert_key_exists( const std::string& type, const w_asset_definition& asset_def, const std::string& key )
 {
 	#if defined(_DEBUG) || defined(_DRELEASE)
 		if( !asset_def.key_values.count( key.c_str() ) )
-			log_error( "%s : asset definition missing '%s' key/value", __FUNCTION__, key.c_str() );
+			log_error( "%s : %s : asset definition missing '%s' key/value", __FUNCTION__, type.c_str(), key.c_str() );
 	#endif
 }
 

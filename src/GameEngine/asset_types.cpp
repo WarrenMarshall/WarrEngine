@@ -88,42 +88,42 @@ void a_texture::draw( e_render_pass render_pass )
 
 // ----------------------------------------------------------------------------
 
-a_image::a_image( const std::string& texture_name, const w_rect& rc )
+void a_image::create_from_texture( const std::string& tex_name )
+{
+	tex = engine->get_asset<a_texture>( tex_name );
+
+	rc_src.w = tex->w;
+	rc_src.h = tex->h;
+}
+
+void a_image::create_from_texture( const std::string& texture_name, const w_rect& rc )
 {
 	// find the texture being referenced
-	texture = engine->get_asset<a_texture>( texture_name );
+	tex = engine->get_asset<a_texture>( texture_name );
 
 	rc_src = rc;
 
-	if( rc.w == -1 ) { rc_src.w = texture->w; }
-	if( rc.h == -1 ) { rc_src.h = texture->h; }
+	if( rc.w == -1 ) { rc_src.w = tex->w; }
+	if( rc.h == -1 ) { rc_src.h = tex->h; }
 
-	rc_src.y = texture->h - rc.y - rc_src.h;
+	rc_src.y = tex->h - rc.y - rc_src.h;
 
 	sz.w = rc_src.w;
 	sz.h = rc_src.h;
 
 	uv00 = w_uv(
-		rc_src.x / texture->w,
-		rc_src.y / texture->h
+		rc_src.x / tex->w,
+		rc_src.y / tex->h
 	);
 	uv11 = w_uv(
-		( rc_src.x + rc_src.w ) / texture->w,
-		( rc_src.y + rc_src.h ) / texture->h
+		( rc_src.x + rc_src.w ) / tex->w,
+		( rc_src.y + rc_src.h ) / tex->h
 	);
-}
-
-a_image::a_image( const std::string& texture_name )
-{
-	texture = engine->get_asset<a_texture>( texture_name );
-
-	rc_src.w = texture->w;
-	rc_src.h = texture->h;
 }
 
 a_texture* a_image::get_texture()
 {
-	return texture->get_texture();
+	return tex->get_texture();
 }
 
 // ----------------------------------------------------------------------------
@@ -324,7 +324,8 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->h = h;
 
 			a_texture* tex = engine->get_asset<a_texture>( texture_name );
-			fch->img = std::make_unique<a_image>( texture_name, w_rect( x, y, w, h ) );
+			fch->img = std::make_unique<a_image>();
+			fch->img->create_from_texture( texture_name, w_rect( x, y, w, h ) );
 
 			max_height = w_max<float>( max_height, fch->h + fch->yoffset );
 		}

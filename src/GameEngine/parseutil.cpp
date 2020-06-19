@@ -115,6 +115,28 @@ w_range w_parser::parse_range_value( const std::string& str )
 	return range;
 }
 
+w_rect w_parser::parse_rect_value( const std::string& str )
+{
+	// If this str is a known symbol, return the value from the lookup table
+
+	//if( engine->is_symbol_in_map( str ) )
+	//{
+	//	return engine->find_range_from_symbol( str );
+	//}
+
+	// Otherwise, parse the string into the val
+
+	w_tokenizer tok( str, ',', "0" );
+
+	w_rect rect;
+	rect.x = parse_float_value( tok.get_next_token() );
+	rect.y = parse_float_value( tok.get_next_token() );
+	rect.w = parse_float_value( tok.get_next_token() );
+	rect.h = parse_float_value( tok.get_next_token() );
+
+	return rect;
+}
+
 w_vec2 w_parser::parse_vec2_value( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
