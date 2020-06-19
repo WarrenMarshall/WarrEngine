@@ -248,11 +248,8 @@ void w_render::end()
 	engine->opengl->clear_texture_bind();
 	stats.num_frames_rendered.inc();
 
-    // Swap buffers
+	// Swap buffers
 	glfwSwapBuffers( engine->window->window );
-
-    // poll for and process events
-    glfwPollEvents();
 }
 
 /*

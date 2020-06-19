@@ -15,8 +15,8 @@ void layer_gameviewport::draw()
 	w_layer::draw();
 
 	engine->opengl->push_matrix();
-	engine->opengl->translate( w_vec3( -v_window_hw, -v_window_hh, -100 ) );
-	engine->render->draw( img_gradient.get(), w_sz( v_window_w, v_window_h ), w_color( 1.0, 1.0, 1.0, 0.15f ) );
+	engine->opengl->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
+	engine->render->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ), w_color( 1.0, 1.0, 1.0, 0.25f ) );
 	engine->opengl->pop_matrix();
 
 	engine->render->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - (TILE_SZ * 1), 200 ), "Endless Adventure Editor", e_align::centered, W_COLOR_ORANGE );

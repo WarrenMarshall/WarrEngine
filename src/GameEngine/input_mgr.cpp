@@ -211,8 +211,8 @@ void w_input_mgr::init()
 
 	// callbacks so we can collect user input
 	glfwSetKeyCallback( engine->window->window, key_callback );
-	glfwSetMouseButtonCallback( engine->window->window, mouse_button_callback );
-	glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
+	//glfwSetMouseButtonCallback( engine->window->window, mouse_button_callback );
+	//glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
 
 	for( int x = 0; x < static_cast<int>( e_input_id::max ); ++x )
 	{

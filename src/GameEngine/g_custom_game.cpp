@@ -49,6 +49,8 @@ void g_custom_game::update()
 {
 	w_game::update();
 
+	for( int x = 0 ; x < ROOM_W * ROOM_H ; ++x )
+		test_room.tiles[ x ] = engine->random->geti_range( 0, 255 );
 }
 
 void g_custom_game::update_fts()

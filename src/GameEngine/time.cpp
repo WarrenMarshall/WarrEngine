@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-const int w_time::FTS_desired_frames_per_second = 30;
+const int w_time::FTS_desired_frames_per_second = 60;
 const int w_time::FTS_step_value_ms = static_cast<int>( 1000.0f / w_time::FTS_desired_frames_per_second );
 const float w_time::delta_time_ms_max = 1000.f / w_time::FTS_desired_frames_per_second;
 
