@@ -235,7 +235,7 @@ void w_render::end()
 	std::string new_title = s_format( "%s - %0.f FPS", engine->window->base_title.c_str(), stats.frame_count.value );
 	engine->window->set_title( new_title );
 
-	stats.frame_times_ms.accum( engine->time->delta_ms );
+	stats.frame_times_ms.accum( engine->time->FTS_step_value_ms );
 	stats.frame_count.inc();
 
 	// when the frame ends and we do the final matrix pop, there should be

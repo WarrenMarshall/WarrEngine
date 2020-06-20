@@ -30,7 +30,7 @@ void w_timer::update()
 		return;
 	}
 
-	time_remaining_ms -= engine->time->delta_ms;
+	time_remaining_ms -= engine->time->FTS_step_value_ms;
 }
 
 /*

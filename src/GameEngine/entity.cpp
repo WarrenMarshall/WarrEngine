@@ -13,14 +13,6 @@ w_entity::~w_entity()
 {
 }
 
-void w_entity::update()
-{
-	for( auto& iter : components )
-	{
-		iter->update();
-	}
-}
-
 void w_entity::update_fts()
 {
 	for( auto& iter : components )
@@ -126,13 +118,13 @@ w_entity_cozy::~w_entity_cozy()
 {
 }
 
-void w_entity_cozy::update()
+void w_entity_cozy::update_fts()
 {
-	w_entity::update();
+	w_entity::update_fts();
 
 	if( is_alive() )
 	{
-		life_remaining -= engine->time->delta_ms;
+		life_remaining -= engine->time->FTS_step_value_ms;
 
 		if( life_remaining <= 0.0f )
 		{

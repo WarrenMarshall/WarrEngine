@@ -136,9 +136,9 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 	}
 }
 
-void w_game_controller::update()
+void w_game_controller::update_fts()
 {
-	rumble_time_remaining_ms -= engine->time->delta_ms;
+	rumble_time_remaining_ms -= engine->time->FTS_step_value_ms;
 	if( rumble_time_remaining_ms <= 0 )
 	{
 		rumble_time_remaining_ms = 0;
@@ -154,7 +154,7 @@ void w_game_controller::update()
 	ZeroMemory( &xinput_state, sizeof( XINPUT_STATE ) );
 	XInputGetState( idx, &xinput_state );
 
-	// update state information and send events
+	// update state information anfd send events
 
 	update_button_state( e_input_id::controller_button_a, XINPUT_GAMEPAD_A );
 	update_button_state( e_input_id::controller_button_b, XINPUT_GAMEPAD_B );

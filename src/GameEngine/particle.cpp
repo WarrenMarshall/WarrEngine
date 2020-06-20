@@ -10,7 +10,7 @@ w_particle::w_particle()
 
 void w_particle::update()
 {
-	life_span -= engine->time->delta_ms;
+	life_span -= engine->time->FTS_step_value_ms;
 
 	if( life_span < 0 )
 	{
