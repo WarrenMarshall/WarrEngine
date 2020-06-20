@@ -305,7 +305,7 @@ void w_input_mgr::deinit()
 	game_controller = nullptr;
 }
 
-void w_input_mgr::update()
+void w_input_mgr::update_fts()
 {
 	// send the queued up events to anyone listening
 

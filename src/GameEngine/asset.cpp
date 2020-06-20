@@ -12,10 +12,6 @@ bool i_asset::create_internals( bool is_hot_reloading )
 	return false;
 }
 
-void i_asset::update()
-{
-}
-
 void i_asset::update_fts()
 {
 }

@@ -13,7 +13,6 @@ struct w_component : i_lifecycle, i_transform
 
 	virtual bool is_fully_dead();
 	virtual void draw() {}
-	virtual void update() {}
 	virtual void update_fts();
 	virtual void post_spawn() {}
 };
@@ -44,7 +43,6 @@ struct c_emitter : w_component
 	virtual void set_life_cycle( e_lifecycle lifecycle );
 	virtual bool is_fully_dead();
 	virtual void draw();
-	virtual void update();
 	virtual void update_fts();
 	virtual void post_spawn();
 };

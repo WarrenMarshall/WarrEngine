@@ -11,17 +11,14 @@ void w_game::new_game()
 	entities.clear();
 }
 
-void w_game::update()
+void w_game::update_fts()
 {
 	for( int x = 0; x < entities.size(); ++x )
 	{
-		w_entity* e = entities[x].get();
+		w_entity* e = entities[ x ].get();
 		e->update();
 	}
-}
 
-void w_game::update_fts()
-{
 	for( int x = 0; x < entities.size(); ++x )
 	{
 		w_entity* e = entities[x].get();

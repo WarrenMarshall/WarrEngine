@@ -14,7 +14,7 @@ w_tween::w_tween( e_tween_type type, float start, float end, float step_per_sec 
 	_ival = static_cast<int>( round( _fval ) );
 }
 
-void w_tween::update_limits()
+void w_tween::refresh_limits()
 {
 	switch( type )
 	{
@@ -66,30 +66,11 @@ void w_tween::update_limits()
 	}
 }
 
-void w_tween::update()
-{
-	if( use_fts_update )
-	{
-		return;
-	}
-
-	_fval += ( step_per_sec * engine->time->delta_s) * _dir;
-
-	update_limits();
-
-	_ival = static_cast<int>( round( _fval ) );
-}
-
 void w_tween::update_fts()
 {
-	if( !use_fts_update )
-	{
-		return;
-	}
-
 	_fval += ( step_per_sec * (w_time::FTS_step_value_ms / 1000.f)) * _dir;
 
-	update_limits();
+	refresh_limits();
 
 	_ival = static_cast<int>( round( _fval ) );
 }

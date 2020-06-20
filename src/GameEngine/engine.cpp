@@ -199,19 +199,16 @@ void w_engine::draw()
 	}
 }
 
-void w_engine::update()
+void w_engine::update_fts()
 {
-	input_mgr->update();
-	layer_mgr->update();
+	input_mgr->update_fts();
+	layer_mgr->update_fts();
 
 	for( auto& asset : asset_cache->cache )
 	{
 		asset.second->update();
 	}
-}
 
-void w_engine::update_fts()
-{
 	if( g_allow_hot_reload && hot_reloadables.size() )
 	{
 		hot_reloadables_idx = ( hot_reloadables_idx + 1 ) % static_cast<int>( hot_reloadables.size() );

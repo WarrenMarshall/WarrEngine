@@ -8,15 +8,8 @@ struct w_tween
 	int _ival = 0;
 	float _dir = 1.0f;
 
-	/*
-		if TRUE, this tween wants to use a fixed step update.
-		this is the default. otherwise, it will use update.
-	*/
-	bool use_fts_update = false;
-
 	w_tween( e_tween_type type, float start, float end, float step_per_sec );
-	void update_limits();
-	void update();
+	void refresh_limits();
 	void update_fts();
 	int get_ival();
 	float get_fval();

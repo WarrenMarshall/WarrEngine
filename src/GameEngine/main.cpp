@@ -125,20 +125,16 @@ int main( int argc, char* argv[] )
 		engine->layer_mgr->push( std::make_unique<layer_gameplay>() );
 
 		engine->is_running = true;
+		engine->time->init();
 
 		while( engine->is_running )
 		{
-			// poll for and process events
-			//glfwPollEvents();
-
 			engine->time->update();
-
-			engine->update();
-			game->update();
 
 			while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
 			{
 				engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
+
 				engine->update_fts();
 				game->update_fts();
 			}
@@ -147,9 +143,16 @@ int main( int argc, char* argv[] )
 				draw
 			*/
 
-			engine->render->begin();
+			/*
+				whatever remaining ms are left in engine->time->fts_accum_ms should be passed
+				to the render functions for interpolation/prediction
+			*/
+			engine->render->begin( /*engine->time->fts_accum_ms / 1000.f*/ );
 			engine->draw();
 			engine->render->end();
+
+			// clear out events
+			glfwPollEvents();
 		}
 
 		// Clean up

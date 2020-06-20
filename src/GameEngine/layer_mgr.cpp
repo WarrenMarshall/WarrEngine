@@ -56,21 +56,18 @@ w_layer* w_layer_mgr::get_top()
 	return layer_stack.front().get();
 }
 
-void w_layer_mgr::update()
+void w_layer_mgr::update_fts()
 {
 	for( auto& iter : layer_stack )
 	{
 		iter->update();
 
-		if( (iter->get_opaque_flags() & e_opaque::draw) > 0 )
+		if( ( iter->get_opaque_flags() & e_opaque::draw ) > 0 )
 		{
 			break;
 		}
 	}
-}
 
-void w_layer_mgr::update_fts()
-{
 	for( auto iter = layer_stack.begin(); iter != layer_stack.end(); iter++ )
 	{
 		if( ( *iter )->is_dead() )

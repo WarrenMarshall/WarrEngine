@@ -45,17 +45,12 @@ void g_custom_game::new_game()
 	player = game->spawn_entity<e_player>( w_vec3::zero, 30.f );
 }
 
-void g_custom_game::update()
-{
-	w_game::update();
-
-	for( int x = 0 ; x < ROOM_W * ROOM_H ; ++x )
-		test_room.tiles[ x ] = engine->random->geti_range( 0, 255 );
-}
-
 void g_custom_game::update_fts()
 {
 	w_game::update_fts();
+
+	for( int x = 0 ; x < ROOM_W * ROOM_H ; ++x )
+		test_room.tiles[ x ] = engine->random->geti_range( 0, 255 );
 }
 
 w_tile* g_custom_game::get_tile( int id )

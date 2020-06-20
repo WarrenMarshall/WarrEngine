@@ -23,7 +23,6 @@ struct w_engine : i_listener
 	void init();
 	void deinit();
 	void draw();
-	void update();
 	void update_fts();
 	void toggle_pause();
 	void cache_asset_definition_files();

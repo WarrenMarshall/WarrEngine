@@ -115,17 +115,6 @@ void c_emitter::draw()
 	engine->opengl->pop_matrix();
 }
 
-void c_emitter::update()
-{
-	if( is_dead() )
-	{
-		return;
-	}
-
-	emitter->particle_pool->update();
-	emitter->pos = parent_entity->pos;
-}
-
 void c_emitter::update_fts()
 {
 	if( is_dead() )
@@ -134,6 +123,8 @@ void c_emitter::update_fts()
 	}
 
 	emitter->update_fts();
+	emitter->particle_pool->update_fts();
+	emitter->pos = parent_entity->pos;
 }
 
 void c_emitter::set_life_cycle( e_lifecycle lifecycle )

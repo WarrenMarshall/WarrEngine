@@ -17,7 +17,6 @@ struct a_texture : i_asset
 	void bind();
 	void unbind();
 	virtual a_texture* get_texture();
-	virtual void update() {}
 	virtual void update_fts() {}
 	virtual void draw( e_render_pass render_pass );
 };
@@ -72,7 +71,6 @@ struct a_anim_texture : a_texture
 	void add_frame( a_texture* tex );
 	void set_speed( float indices_per_sec );
 	void randomize();
-	virtual void update();
 	virtual void update_fts();
 	virtual a_texture* get_texture();
 };

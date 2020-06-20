@@ -7,7 +7,6 @@ struct w_game
 	w_game();
 
 	virtual void new_game();
-	virtual void update();
 	virtual void update_fts();
 	virtual void draw_entities();
 
