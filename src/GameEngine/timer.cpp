@@ -13,23 +13,8 @@ void w_timer::reset()
 	time_remaining_ms = interval_ms;
 }
 
-void w_timer::update_fts()
-{
-	if( !use_fts_update )
-	{
-		return;
-	}
-
-	time_remaining_ms -= w_time::FTS_step_value_ms;
-}
-
 void w_timer::update()
 {
-	if( use_fts_update )
-	{
-		return;
-	}
-
 	time_remaining_ms -= engine->time->FTS_step_value_ms;
 }
 

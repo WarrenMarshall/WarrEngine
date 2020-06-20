@@ -18,6 +18,6 @@ struct w_layer_mgr
 	w_layer* get_top();
 
 	int get_opaque_index( e_opaque opaque_flags );
-	void update_fts();
+	void update();
 	void draw();
 };

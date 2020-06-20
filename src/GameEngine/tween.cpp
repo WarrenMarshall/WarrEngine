@@ -66,7 +66,7 @@ void w_tween::refresh_limits()
 	}
 }
 
-void w_tween::update_fts()
+void w_tween::update()
 {
 	_fval += ( step_per_sec * (w_time::FTS_step_value_ms / 1000.f)) * _dir;
 

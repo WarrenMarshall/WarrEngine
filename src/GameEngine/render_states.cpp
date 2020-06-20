@@ -14,7 +14,7 @@ void w_render_state::reset()
 	time_remaining_ms = static_cast<float>( time_interval_ms );
 }
 
-void w_render_state::update_fts()
+void w_render_state::update()
 {
 	time_remaining_ms -= engine->time->FTS_step_value_ms;
 	time_remaining_ms = w_max<float>( time_remaining_ms, 0 );

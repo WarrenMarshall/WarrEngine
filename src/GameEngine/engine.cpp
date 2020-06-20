@@ -199,10 +199,10 @@ void w_engine::draw()
 	}
 }
 
-void w_engine::update_fts()
+void w_engine::update()
 {
-	input_mgr->update_fts();
-	layer_mgr->update_fts();
+	input_mgr->update();
+	layer_mgr->update();
 
 	for( auto& asset : asset_cache->cache )
 	{
@@ -224,11 +224,11 @@ void w_engine::update_fts()
 
 	// Layers
 
-	layer_mgr->update_fts();
+	layer_mgr->update();
 
 	for( auto& asset : asset_cache->cache )
 	{
-		asset.second->update_fts();
+		asset.second->update();
 	}
 
 	render->show_stats = input_mgr->is_button_down( e_input_id::keyboard_a);

@@ -136,7 +136,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 	}
 }
 
-void w_game_controller::update_fts()
+void w_game_controller::update()
 {
 	rumble_time_remaining_ms -= engine->time->FTS_step_value_ms;
 	if( rumble_time_remaining_ms <= 0 )
@@ -305,7 +305,7 @@ void w_input_mgr::deinit()
 	game_controller = nullptr;
 }
 
-void w_input_mgr::update_fts()
+void w_input_mgr::update()
 {
 	// send the queued up events to anyone listening
 

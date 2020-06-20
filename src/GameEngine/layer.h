@@ -32,7 +32,6 @@ struct w_layer : i_listener, i_lifecycle
 	virtual void getting_covered() {}
 
 	virtual void update() {}
-	virtual void update_fts() {}
 	virtual void draw();
 	virtual e_opaque get_opaque_flags();
 };

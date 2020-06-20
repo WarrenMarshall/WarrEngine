@@ -64,7 +64,7 @@ struct w_particle_emitter : i_listener, i_transform
 	virtual void on_listener_event_received( e_event_id event, void* object );
 	void set_params( a_emitter_params* params );
 	virtual void post_spawn();
-	void update_fts();
+	void update();
 	void spawn_particle();
 	void warm_up();
 };

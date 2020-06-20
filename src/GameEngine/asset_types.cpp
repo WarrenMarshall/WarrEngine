@@ -223,11 +223,11 @@ void a_anim_texture::randomize()
 	frame_tween->randomize();
 }
 
-void a_anim_texture::update_fts()
+void a_anim_texture::update()
 {
 	assert( frame_tween );	// did you forget to call "set_speed"?
 
-	frame_tween->update_fts();
+	frame_tween->update();
 }
 
 a_texture* a_anim_texture::get_texture()

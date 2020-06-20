@@ -13,11 +13,11 @@ w_entity::~w_entity()
 {
 }
 
-void w_entity::update_fts()
+void w_entity::update()
 {
 	for( auto& iter : components )
 	{
-		iter->update_fts();
+		iter->update();
 	}
 }
 
@@ -118,9 +118,9 @@ w_entity_cozy::~w_entity_cozy()
 {
 }
 
-void w_entity_cozy::update_fts()
+void w_entity_cozy::update()
 {
-	w_entity::update_fts();
+	w_entity::update();
 
 	if( is_alive() )
 	{

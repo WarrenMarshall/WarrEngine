@@ -135,8 +135,8 @@ int main( int argc, char* argv[] )
 			{
 				engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
 
-				engine->update_fts();
-				game->update_fts();
+				engine->update();
+				game->update();
 			}
 
 			/*

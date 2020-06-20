@@ -31,7 +31,7 @@ struct w_render_state
 	virtual void apply() {};
 	virtual void remove() {};
 	virtual void reset();
-	virtual void update_fts();
+	virtual void update();
 };
 
 // ----------------------------------------------------------------------------

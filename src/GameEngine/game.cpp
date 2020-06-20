@@ -11,7 +11,7 @@ void w_game::new_game()
 	entities.clear();
 }
 
-void w_game::update_fts()
+void w_game::update()
 {
 	for( int x = 0; x < entities.size(); ++x )
 	{
@@ -30,7 +30,7 @@ void w_game::update_fts()
 		}
 		else
 		{
-			e->update_fts();
+			e->update();
 		}
 	}
 }

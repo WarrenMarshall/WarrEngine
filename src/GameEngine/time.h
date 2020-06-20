@@ -18,7 +18,7 @@ struct w_time
 
 	// fixed time step accumulator. this accrues each frame
 	// until it exceeds FTS_step_value_ms - then we call
-	// update_fts() until it is below the threshold again.
+	// update() until it is below the threshold again.
 	float fts_accum_ms = 0;
 
 	/*

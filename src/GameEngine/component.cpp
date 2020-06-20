@@ -33,7 +33,7 @@ bool w_component::is_fully_dead()
 	return true;
 }
 
-void w_component::update_fts()
+void w_component::update()
 {
 	if( is_dying() && is_fully_dead() )
 	{
@@ -115,15 +115,15 @@ void c_emitter::draw()
 	engine->opengl->pop_matrix();
 }
 
-void c_emitter::update_fts()
+void c_emitter::update()
 {
 	if( is_dead() )
 	{
 		return;
 	}
 
-	emitter->update_fts();
-	emitter->particle_pool->update_fts();
+	emitter->update();
+	emitter->particle_pool->update();
 	emitter->pos = parent_entity->pos;
 }
 

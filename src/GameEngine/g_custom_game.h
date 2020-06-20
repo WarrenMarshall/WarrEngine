@@ -28,7 +28,7 @@ struct g_custom_game : w_game
 	g_custom_game();
 
 	virtual void new_game();
-	virtual void update_fts();
+	virtual void update();
 
 	w_tile* get_tile( int id );
 };

@@ -10,7 +10,7 @@ struct w_tween
 
 	w_tween( e_tween_type type, float start, float end, float step_per_sec );
 	void refresh_limits();
-	void update_fts();
+	void update();
 	int get_ival();
 	float get_fval();
 

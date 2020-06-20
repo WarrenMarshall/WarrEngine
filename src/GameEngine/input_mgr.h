@@ -49,7 +49,7 @@ struct w_game_controller
 	~w_game_controller();
 
 	void update_button_state( e_input_id input_id, int xinput_button_bit );
-	void update_fts();
+	void update();
 	void play_rumble( int intensity, int ms );
 };
 

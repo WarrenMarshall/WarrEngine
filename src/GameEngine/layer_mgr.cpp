@@ -56,7 +56,7 @@ w_layer* w_layer_mgr::get_top()
 	return layer_stack.front().get();
 }
 
-void w_layer_mgr::update_fts()
+void w_layer_mgr::update()
 {
 	for( auto& iter : layer_stack )
 	{
@@ -78,7 +78,7 @@ void w_layer_mgr::update_fts()
 
 	for( auto& iter : layer_stack )
 	{
-		iter->update_fts();
+		iter->update();
 
 		// If this layer is completely opaque, don't bother updating the
 		// layers below it - they are not visible

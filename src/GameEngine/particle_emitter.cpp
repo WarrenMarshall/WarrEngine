@@ -110,7 +110,7 @@ void w_particle_emitter::post_spawn()
 	}
 }
 
-void w_particle_emitter::update_fts()
+void w_particle_emitter::update()
 {
 	// update living particles in fixed time
 	//
@@ -236,7 +236,7 @@ void w_particle_emitter::warm_up()
 		while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
 		{
 			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
-			update_fts();
+			update();
 		}
 
 		particle_pool->update();

@@ -25,7 +25,7 @@ struct w_entity : i_lifecycle, i_transform
 	~w_entity();
 
 	virtual bool bounds_contains_point( w_vec3 pos_to_check );
-	virtual void update_fts();
+	virtual void update();
 	virtual void draw_components();
 	virtual void draw();
 	virtual void post_spawn();
@@ -53,5 +53,5 @@ struct w_entity_cozy : w_entity
 	w_entity_cozy();
 	~w_entity_cozy();
 
-	virtual void update_fts();
+	virtual void update();
 };
