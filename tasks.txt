@@ -3,11 +3,10 @@
 [ ] sharpen knives
 [ ] cook lunches
 [*] trash/recycling to curb
-[ ] porch bulb
+[*] porch bulb
 
-- add a ping-pong graphic that moves back and forth
-- get the frame interpolation working to smooth it out
-- add a rotating graphic
+* add a ping-pong graphic that moves back and forth
+* add a rotating graphic
 - make interpolation work
 - add particle system
 - make interpolation work
