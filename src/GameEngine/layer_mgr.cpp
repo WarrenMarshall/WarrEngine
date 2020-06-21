@@ -58,16 +58,6 @@ w_layer* w_layer_mgr::get_top()
 
 void w_layer_mgr::update()
 {
-	for( auto& iter : layer_stack )
-	{
-		iter->update();
-
-		if( ( iter->get_opaque_flags() & e_opaque::draw ) > 0 )
-		{
-			break;
-		}
-	}
-
 	for( auto iter = layer_stack.begin(); iter != layer_stack.end(); iter++ )
 	{
 		if( ( *iter )->is_dead() )

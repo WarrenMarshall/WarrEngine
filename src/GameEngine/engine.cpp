@@ -222,15 +222,6 @@ void w_engine::update()
 		}
 	}
 
-	// Layers
-
-	layer_mgr->update();
-
-	for( auto& asset : asset_cache->cache )
-	{
-		asset.second->update();
-	}
-
 	render->show_stats = input_mgr->is_button_down( e_input_id::keyboard_a);
 }
 

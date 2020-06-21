@@ -2,7 +2,9 @@
 
 struct layer_gameplay : w_layer
 {
+	i_transform pingpong_xform;
 	std::unique_ptr<w_tween> tween_pingpong;
+	i_transform rotate_xform;
 	std::unique_ptr<w_tween> tween_rotate;
 
 	virtual void push();
