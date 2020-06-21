@@ -29,6 +29,19 @@ void w_logfile::_write_line( const std::string& string_to_log )
 	}
 }
 
+void w_logfile::time_stamp( const std::string msg )
+{
+	time_t raw_time;
+	tm time_info;
+	char time_str[ 100 ];
+
+	time( &raw_time );
+	localtime_s( &time_info, &raw_time );
+	strftime( &time_str[ 0 ], 100, "%c", &time_info );
+
+	log_msg( "%s : %s", msg.c_str(), time_str );
+}
+
 void w_logfile::msg( const std::string msg, ... )
 {
 	va_list vargs;

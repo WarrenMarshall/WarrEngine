@@ -44,6 +44,8 @@ struct a_image : i_asset
 	void create_from_texture( const std::string& tex_name );
 	void create_from_texture( const std::string& tex_name, const w_rect& rc );
 	a_texture* get_texture();
+	void bind();
+	void unbind();
 };
 
 // ----------------------------------------------------------------------------

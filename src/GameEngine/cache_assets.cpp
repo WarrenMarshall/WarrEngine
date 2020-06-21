@@ -8,7 +8,7 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string&
 
 	if( iter != cache.end() )
 	{
-		log_warning( "%s : asset '%s' already cached : [%s]", __FUNCTION__, name, filename );
+		log_warning( "%s : asset '%s' already cached : [%s]", __FUNCTION__, name, filename.c_str() );
 		return nullptr;
 	}
 
@@ -32,7 +32,7 @@ i_asset* w_cache_assets::find( const std::string& name, bool silent )
 	if( iter == cache.end() )
 	{
 		if( !silent )
-			log_error( "%s : not found : [%s]", __FUNCTION__, name );
+			log_error( "%s : not found : [%s]", __FUNCTION__, name.c_str() );
 
 		return nullptr;
 	}

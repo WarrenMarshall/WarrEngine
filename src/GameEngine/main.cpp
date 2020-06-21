@@ -36,15 +36,8 @@ int main( int argc, char* argv[] )
 		// create the game engine
 		engine = std::make_unique<w_engine>();
 
-		time_t raw_time;
-		tm time_info;
-		char time_str[100];
-
 		{	// starting
-			time( &raw_time );
-			localtime_s( &time_info, &raw_time );
-			strftime( &time_str[0], 100, "%c", &time_info );
-			log_msg( "Started : %s", time_str );
+			logfile->time_stamp( "Started" );
 		}
 
 		{	// engine
@@ -108,15 +101,14 @@ int main( int argc, char* argv[] )
 			game->new_game();
 		}
 
-		engine->white_wire = engine->get_asset<a_texture>( "engine_white_wire" );
-		engine->white_wire->render_buffer->prim_type = GL_LINES;
-		engine->white_solid = engine->get_asset<a_texture>( "engine_white_solid" );
+		engine->white_wire = engine->get_asset<a_image>( "engine_white_wire" );
+		engine->white_wire->get_texture()->render_buffer->prim_type = GL_LINES;
+		engine->white_solid = engine->get_asset<a_image>( "engine_white_solid" );
 
 		// input initialization
 
 		log_msg( "Initializing input" );
 		engine->input_mgr->init();
-		//engine->input_mgr->set_mouse_mode( e_mouse_mode::hidden );
 
 		// initial layer set up
 
@@ -127,11 +119,21 @@ int main( int argc, char* argv[] )
 		engine->is_running = true;
 		engine->time->init();
 
-		float frame_interpolate_pct = 0.0f;
+		/*
+			main game loop
+		*/
 
 		while( engine->is_running )
 		{
+			/*
+				update time
+			*/
+
 			engine->time->update();
+
+			/*
+				fixed time step updates
+			*/
 
 			while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
 			{
@@ -141,21 +143,24 @@ int main( int argc, char* argv[] )
 				game->update();
 			}
 
-			frame_interpolate_pct = engine->time->fts_accum_ms / w_time::FTS_step_value_ms;
-
 			/*
-				draw
+				draw the frame
 			*/
 
-			/*
-				whatever remaining ms are left in engine->time->fts_accum_ms should be passed
-				to the render functions for interpolation/prediction
-			*/
-			engine->render->begin( frame_interpolate_pct );
-			engine->draw();
+			// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
+			// to the render functions for interpolation/prediction
+			//
+			// it is passed a percentage for easier use : 0.0f-1.0f
+
+			engine->render->begin( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
+			{
+				engine->draw();
+			}
 			engine->render->end();
 
-			// clear out events
+			/*
+				event processing
+			*/
 			glfwPollEvents();
 		}
 
@@ -182,10 +187,7 @@ int main( int argc, char* argv[] )
 		engine->deinit();
 
 		{	// ended
-			time( &raw_time );
-			localtime_s( &time_info, &raw_time );
-			strftime( &time_str[0], 100, "%c", &time_info );
-			log_msg( "Ended : %s", time_str );
+			logfile->time_stamp( "Ended" );
 		}
 
 		// Do this last so we can log right up until the last moment

@@ -12,8 +12,8 @@ struct w_engine : i_listener
 	std::vector<i_reloadable*> hot_reloadables;
 	int hot_reloadables_idx = 0;
 
-	a_texture* white_wire = nullptr;
-	a_texture* white_solid = nullptr;
+	a_image* white_wire = nullptr;
+	a_image* white_solid = nullptr;
 
 	bool is_running = false;
 	bool is_paused = false;

@@ -126,6 +126,16 @@ a_texture* a_image::get_texture()
 	return tex->get_texture();
 }
 
+void a_image::bind()
+{
+	get_texture()->bind();
+}
+
+void a_image::unbind()
+{
+	get_texture()->unbind();
+}
+
 // ----------------------------------------------------------------------------
 
 void a_gradient::clean_up_internals()

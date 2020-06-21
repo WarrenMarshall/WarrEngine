@@ -55,7 +55,7 @@ void w_render::init()
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-void w_render::draw_sprite( a_image* image, const w_sz& sz, const w_color& color )
+void w_render::draw_sprite( a_image* image, const w_sz& sz )
 {
 	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
@@ -63,10 +63,10 @@ void w_render::draw_sprite( a_image* image, const w_sz& sz, const w_color& color
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( image->uv00.u, image->uv11.v ), color );
-	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( image->uv11.u, image->uv11.v ), color );
-	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( image->uv11.u, image->uv00.v ), color );
-	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( image->uv00.u, image->uv00.v ), color );
+	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( image->uv00.u, image->uv11.v ), current_color );
+	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( image->uv11.u, image->uv11.v ), current_color );
+	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( image->uv11.u, image->uv00.v ), current_color );
+	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( image->uv00.u, image->uv00.v ), current_color );
 
 	a_texture* tex = image->get_texture();
 	tex->render_buffer->add_quad( v0, v1, v2, v3 );
@@ -340,7 +340,7 @@ void w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z, w_color
 		color
 	);
 
-	engine->white_solid->render_buffer->add_quad( v0, v1, v2, v3 );
+	engine->white_solid->get_texture()->render_buffer->add_quad( v0, v1, v2, v3 );
 }
 
 // draws an empty rectangle
@@ -381,7 +381,7 @@ void w_render::draw_circle( w_vec3 origin, float radius )
 		v1.x = circle_sample_points[( x + 1 ) % circle_sample_points_max].x * radius;
 		v1.y = circle_sample_points[( x + 1 ) % circle_sample_points_max].y * radius;
 
-		engine->white_wire->render_buffer->add_line( v0, v1 );
+		engine->white_wire->get_texture()->render_buffer->add_line( v0, v1 );
 	}
 }
 
@@ -392,7 +392,7 @@ void w_render::draw_line( w_vec3 start, w_vec3 end )
 	w_render_vert v0( start, w_uv( 0, 0 ), current_color );
 	w_render_vert v1( end, w_uv( 0, 0 ), current_color );
 
-	engine->white_wire->render_buffer->add_line( v0, v1 );
+	engine->white_wire->get_texture()->render_buffer->add_line( v0, v1 );
 }
 
 void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z, w_color color )

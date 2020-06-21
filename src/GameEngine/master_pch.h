@@ -53,8 +53,6 @@
 
 #pragma warning(pop)	// turn warnings back on
 
-using namespace std::literals::chrono_literals;
-
 // ----------------------------------------------------------------------------
 
 /*

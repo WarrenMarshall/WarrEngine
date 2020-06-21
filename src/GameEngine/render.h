@@ -52,7 +52,7 @@ struct w_render
 
 	void init();
 
-	void draw_sprite( a_image* image, const w_sz& sz = w_sz( -1, -1 ), const w_color& color = W_COLOR_WHITE );
+	void draw_sprite( a_image* image, const w_sz& sz = w_sz( -1, -1 ) );
 	void draw( a_image* image, const w_sz& sz = w_vec2( -1, -1 ), const w_color& color = W_COLOR_WHITE );
 
 	void draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align, w_color color = W_COLOR_WHITE );
