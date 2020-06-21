@@ -27,6 +27,13 @@ struct w_render
 {
 	w_render_stats stats;
 
+	/*
+		a value from 0.0-1.0 that represents how near we are to the NEXT update
+		tick. this is used to interpolate/predict rendering for smooth
+		movement and rotations even at low FTS values.
+	*/
+	float frame_interpolate_pct;
+
 	w_color current_clear_color = W_COLOR_DARK_GREY;
 
 	std::stack<glm::mat4> modelview_stack;
@@ -57,7 +64,7 @@ struct w_render
 	void draw_circle( w_vec3 origin, float radius);
 
 	void set_clear_color( w_color clear_color );
-	void begin();
+	void begin( float frame_interpolate_pct );
 	void end();
 
 	void draw_world_axis();

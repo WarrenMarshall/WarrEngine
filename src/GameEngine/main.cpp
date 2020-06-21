@@ -127,6 +127,8 @@ int main( int argc, char* argv[] )
 		engine->is_running = true;
 		engine->time->init();
 
+		float frame_interpolate_pct = 0.0f;
+
 		while( engine->is_running )
 		{
 			engine->time->update();
@@ -139,6 +141,8 @@ int main( int argc, char* argv[] )
 				game->update();
 			}
 
+			frame_interpolate_pct = engine->time->fts_accum_ms / w_time::FTS_step_value_ms;
+
 			/*
 				draw
 			*/
@@ -147,7 +151,7 @@ int main( int argc, char* argv[] )
 				whatever remaining ms are left in engine->time->fts_accum_ms should be passed
 				to the render functions for interpolation/prediction
 			*/
-			engine->render->begin( /*engine->time->fts_accum_ms / 1000.f*/ );
+			engine->render->begin( frame_interpolate_pct );
 			engine->draw();
 			engine->render->end();
 

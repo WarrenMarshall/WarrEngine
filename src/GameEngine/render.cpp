@@ -9,11 +9,10 @@ w_render_stats::w_render_stats()
 
 void w_render_stats::update()
 {
-	stat_timer->update();
-
 	if( stat_timer->is_elapsed() )
 	{
 		stat_timer->reset();
+
 		frame_count.update_value();
 		int steps = static_cast<int>( frame_count.value );
 
@@ -22,7 +21,11 @@ void w_render_stats::update()
 		render_vertices.update_value( steps );
 		render_indices.update_value( steps );
 		num_entities.update_value( steps );
-		num_frames_rendered.update_value( steps );
+		num_frames_rendered.update_value();
+	}
+	else
+	{
+		stat_timer->update();
 	}
 }
 
@@ -170,8 +173,11 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 /*
 	call at the start of each frame to set up and clear the screen
 */
-void w_render::begin()
+void w_render::begin( float frame_interpolate_pct )
 {
+	this->frame_interpolate_pct = frame_interpolate_pct;
+	//log_msg( "interp : %1.2f", frame_interpolate_pct );
+
 	glClearColor( .25f, .25f, .25f, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -183,8 +189,6 @@ void w_render::begin()
 	}
 
     engine->shader->bind();
-
-	// set up baseline opengl matrices
 
 	// PROJECTION MATRIX (getting stuff into screen space from camera space)
 
@@ -211,6 +215,9 @@ void w_render::end()
 	{
 		draw_stats();
 	}
+	// update the window title to show the FPS and milliseconds per frame
+	std::string new_title = s_format( "%s - %d FPS", engine->window->base_title.c_str(), (int)stats.num_frames_rendered.value );
+	engine->window->set_title( new_title );
 
 	// draw all render buffers
 
@@ -227,14 +234,10 @@ void w_render::end()
 	glDepthMask( GL_TRUE );
 
 	// update stats
-
 	stats.update();
 
-	// update the window title to show the FPS and milliseconds per frame
-	std::string new_title = s_format( "%s - %0.f FPS", engine->window->base_title.c_str(), stats.frame_count.value );
-	engine->window->set_title( new_title );
-
-	stats.frame_times_ms.accum( static_cast<float>( engine->time->FTS_step_value_ms ) );
+	// accum stats
+	stats.frame_times_ms.accum( static_cast<float>( engine->time->delta_ms ) );
 	stats.frame_count.inc();
 
 	// when the frame ends and we do the final matrix pop, there should be
@@ -285,7 +288,7 @@ void w_render::draw_stats()
 	std::vector<std::string> stat_lines;
 	stat_lines.reserve( stats_draw_reserve );
 
-	stat_lines.emplace_back( s_format( "%0.f FPS", stats.frame_count.value ) );
+	stat_lines.emplace_back( s_format( "RENDER : %d FPS / UPDATE : %d FPS ", (int)stats.num_frames_rendered.value, (int)w_time::FTS_desired_frames_per_second ) );
 	stat_lines.emplace_back( s_format( "RB: %s, V: %s, I: %s",
 		s_commas( stats.render_buffers.value, "%0.f" ).c_str(),
 		s_commas( stats.render_vertices.value, "%0.f" ).c_str(),

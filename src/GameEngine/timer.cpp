@@ -15,7 +15,7 @@ void w_timer::reset()
 
 void w_timer::update()
 {
-	time_remaining_ms -= engine->time->FTS_step_value_ms;
+	time_remaining_ms -= engine->time->delta_ms;
 }
 
 /*

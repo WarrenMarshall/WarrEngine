@@ -49,8 +49,11 @@ void g_custom_game::update()
 {
 	w_game::update();
 
-	for( int x = 0 ; x < ROOM_W * ROOM_H ; ++x )
-		test_room.tiles[ x ] = engine->random->geti_range( 0, 255 );
+	int sz = ROOM_W * ROOM_H;
+	for( int x = 0 ; x < sz ; ++x )
+		test_room.tiles[ x ] = test_room.tiles[ ( x + 1 ) % sz ];
+
+	test_room.tiles[ sz ] = engine->random->geti_range( 0, 255 );
 }
 
 w_tile* g_custom_game::get_tile( int id )
