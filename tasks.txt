@@ -1,0 +1,30 @@
+
+[*] shave
+[ ] sharpen knives
+[ ] cook lunches
+[*] trash/recycling to curb
+[ ] porch bulb
+
+- add a ping-pong graphic that moves back and forth
+- get the frame interpolation working to smooth it out
+- add a rotating graphic
+- make interpolation work
+- add particle system
+- make interpolation work
+
+- clunky af
+	engine->white_wire->get_texture()->render_buffer->prim_type
+- prone to error, because the render_buffer in a_image is not real
+	- it comes from the base class - can we prevent this access somehow?
+	- probably through a virtual function that asserts in a_image
+		engine->white_wire->render_buffer->prim_type
+
+- refactor all "draw_" calls into the renderer to not pass things like color and scale and depth
+	- those should be handled via the render_state system
+
+- refactor all a_texture references into a_image
+	- would be cool if emitters could use an atlas if they want
+		- more efficient, all emitters using a single texture
+		- something like "image" "particle_master.fireball"
+- in fact, we should replace all "texture" references in asset_def files to be images
+	- move emitter parsing to the very end of the passes because we first need textures loaded and then all images as well BEFORE parsing emitter params
