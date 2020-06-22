@@ -18,7 +18,6 @@ struct w_render_stats
 	std::string stat_custom_string;
 
 	void update();
-	void init();
 };
 
 // ----------------------------------------------------------------------------
@@ -34,15 +33,10 @@ struct w_render
 	*/
 	float frame_interpolate_pct;
 
-	w_color current_clear_color = W_COLOR_DARK_GREY;
-
 	std::stack<glm::mat4> modelview_stack;
 
 	// the current render state
-	w_color current_color = W_COLOR_WHITE;
-	float current_scale = 1.0f;
-	float current_alpha = 1.0f;
-	float current_angle = 0.0f;
+	std::stack<w_color> color_stack;
 
 	bool show_stats = false;
 
@@ -53,9 +47,9 @@ struct w_render
 	void init();
 
 	void draw_sprite( a_image* image, const w_sz& sz = w_sz( -1, -1 ) );
-	void draw( a_image* image, const w_sz& sz = w_vec2( -1, -1 ), const w_color& color = W_COLOR_WHITE );
+	void draw( a_image* image, const w_sz& sz = w_vec2( -1, -1 ) );
 
-	void draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align, w_color color = W_COLOR_WHITE );
+	void draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
 	void draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z, w_color color = W_COLOR_WHITE );
 
 	void draw_rectangle( w_rect rc_dst );
@@ -63,7 +57,6 @@ struct w_render
 	void draw_line( w_vec3 start, w_vec3 end );
 	void draw_circle( w_vec3 origin, float radius);
 
-	void set_clear_color( w_color clear_color );
 	void begin( float frame_interpolate_pct );
 	void end();
 

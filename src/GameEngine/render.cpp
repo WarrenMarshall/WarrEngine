@@ -40,6 +40,12 @@ void w_render::init()
 	// matrix remaining when the frame finishes rendering.
 	engine->opengl->push_identity_matrix();
 
+	// initialize render state stacks
+	color_stack.push( W_COLOR_WHITE );
+
+	// generate the sample points for drawing a circle. these verts sit
+	// on a unit circle and are scaled to match the radius requesed for
+	// each circle draw.
 	float angle = 0;
 	float angle_step = 360.0f / static_cast<float>( circle_sample_points_max );
 	for( int x = 0; x < circle_sample_points_max; ++x )
@@ -63,10 +69,12 @@ void w_render::draw_sprite( a_image* image, const w_sz& sz )
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( image->uv00.u, image->uv11.v ), current_color );
-	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( image->uv11.u, image->uv11.v ), current_color );
-	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( image->uv11.u, image->uv00.v ), current_color );
-	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( image->uv00.u, image->uv00.v ), current_color );
+	w_color color = color_stack.top();
+
+	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( image->uv00.u, image->uv11.v ), color );
+	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( image->uv11.u, image->uv11.v ), color );
+	w_render_vert v2( w_vec3( hw, -hh, 0.0f ), w_vec2( image->uv11.u, image->uv00.v ), color );
+	w_render_vert v3( w_vec3( -hw, -hh, 0.0f ), w_vec2( image->uv00.u, image->uv00.v ), color );
 
 	a_texture* tex = image->get_texture();
 	tex->render_buffer->add_quad( v0, v1, v2, v3 );
@@ -75,13 +83,14 @@ void w_render::draw_sprite( a_image* image, const w_sz& sz )
 /*
 	draws a texture onto a quad.
 */
-void w_render::draw( a_image* image, const w_sz& sz, const w_color& color )
+void w_render::draw( a_image* image, const w_sz& sz )
 {
 	a_texture* tex = image->get_texture();
 
 	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
 
+	w_color color = color_stack.top();
 	w_render_vert v0( w_vec3( 0, h, 0 ), w_vec2( image->uv00.u, image->uv11.v ), color );
 	w_render_vert v1( w_vec3( w, h, 0 ), w_vec2( image->uv11.u, image->uv11.v ), color );
 	w_render_vert v2( w_vec3( w, 0, 0 ), w_vec2( image->uv11.u, image->uv00.v ), color );
@@ -93,7 +102,7 @@ void w_render::draw( a_image* image, const w_sz& sz, const w_color& color )
 /*
 	draws a string from a bitmap font, char by char
 */
-void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align, w_color color )
+void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align )
 {
 	const char* rd_ptr = text.c_str();
 	float xpos = pos.x;
@@ -117,9 +126,6 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 		ypos = pos.y + ( font->font_def->max_height / 2.0f );
 	}
 
-	std::stack<w_color> color_stack;
-	color_stack.push( color );
-
 	w_font_char* fch;
 	std::string str = text;
 	std::string token;
@@ -133,23 +139,6 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 			xpos = pos.x;
 			ypos -= font->font_def->max_height;
 		}
-		else if( text[x] == '{' )
-		{
-			tok.idx = x + 1;
-			token = tok.get_next_token();
-
-			if( token.length() )
-			{
-				w_color clr = engine->find_color_from_symbol( token );
-				color_stack.push( clr );
-				x += static_cast<int>( token.length() ) + 1;
-			}
-			else
-			{
-				color_stack.pop();
-				x++;
-			}
-		}
 		else
 		{
 			// small optimization to skip drawing completely blank characters
@@ -159,8 +148,7 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 				engine->opengl->translate( w_vec3( xpos + fch->xoffset, ypos - fch->h - fch->yoffset, pos.z ) );
 				draw(
 					fch->img.get(),
-					w_vec2( fch->w, fch->h ),
-					color_stack.top()
+					w_vec2( fch->w, fch->h )
 				);
 				engine->opengl->pop_matrix();
 			}
@@ -246,6 +234,10 @@ void w_render::end()
 	// there is an uneven push/pop combo somewhere in the code.
 
 	assert( engine->opengl->modelview_stack.size() == 1 );
+
+	// verify that state stacks are back where they started. if not,
+	// it means there's a push/pop mismatch somewhere in the code.
+	assert( color_stack.size() == 1 );
 
 	engine->opengl->clear_texture_bind();
 	stats.num_frames_rendered.inc();
@@ -370,8 +362,9 @@ void w_render::draw_rectangle( w_rect rc_dst )
 
 void w_render::draw_circle( w_vec3 origin, float radius )
 {
-	w_render_vert v0( origin, w_uv( 0, 0 ), current_color );
-	w_render_vert v1( origin, w_uv( 0, 0 ), current_color );
+	w_color color = color_stack.top();
+	w_render_vert v0( origin, w_uv( 0, 0 ), color );
+	w_render_vert v1( origin, w_uv( 0, 0 ), color );
 
 	for( int x = 0; x < circle_sample_points_max; ++x )
 	{
@@ -389,8 +382,9 @@ void w_render::draw_circle( w_vec3 origin, float radius )
 
 void w_render::draw_line( w_vec3 start, w_vec3 end )
 {
-	w_render_vert v0( start, w_uv( 0, 0 ), current_color );
-	w_render_vert v1( end, w_uv( 0, 0 ), current_color );
+	w_color color = color_stack.top();
+	w_render_vert v0( start, w_uv( 0, 0 ), color );
+	w_render_vert v1( end, w_uv( 0, 0 ), color );
 
 	engine->white_wire->get_texture()->render_buffer->add_line( v0, v1 );
 }
@@ -462,9 +456,4 @@ void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch
 	xpos += dst_w;
 	dst_w = slice_def->patches[(int)e_patch::P_22].w;
 	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_22], w_rect( xpos, ypos, dst_w, dst_h ), z );
-}
-
-void w_render::set_clear_color( w_color clear_color )
-{
-	current_clear_color = clear_color;
 }

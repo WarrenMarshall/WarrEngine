@@ -39,8 +39,6 @@ void layer_gameplay::draw()
 
 	// ----------------------------------------------------------------------------
 
-	//log_msg( "%1.2f", engine->render->frame_interpolate_pct );
-
 	engine->opengl->push_identity_matrix();
 	{
 		engine->opengl->add_transform( pingpong_xform );
