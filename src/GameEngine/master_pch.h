@@ -119,11 +119,16 @@ inline bool operator> (ENUMTYPE a, int b) {  return (((int)a) > b); }
 // leaving room to customize epsilon later if this is too small
 constexpr float W_EPSILON = FLT_EPSILON;
 
-bool inline fequals( float a, float b )
+bool inline fequals( const float& a, const float& b )
 {
 	float diff = a - b;
 
-	return ( diff < W_EPSILON && diff > -W_EPSILON );
+	if( diff < W_EPSILON && diff > -W_EPSILON )
+	{
+		return true;
+	}
+
+	return false;
 }
 
 /*

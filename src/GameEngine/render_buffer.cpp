@@ -53,17 +53,16 @@ w_render_buffer::~w_render_buffer()
     glDeleteVertexArrays( 1, &VAO );
 }
 
-int w_render_buffer::add( int render_pass, w_render_vert& render_vert )
+int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
 {
     // apply the current modelview matrix against the vertex being rendered.
     // until this point, the vertex has been in model coordinate space.
 
     glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
     v4 = (*engine->opengl->top_matrix()) * v4;
-    render_vert.x = v4.x;
-    render_vert.y = v4.y;
-    render_vert.z = v4.z;
 
+    w_render_vert rv( w_vec3( v4.x, v4.y, v4.z ), w_uv( render_vert.u, render_vert.v ), w_color( render_vert.r, render_vert.g, render_vert.b ) );
+    
     // look through the existing list of vertices and see if we can find
     // a matching vertex. if one is found, return the index of that vertex
     // instead of putting the new one into the list.
@@ -71,7 +70,7 @@ int w_render_buffer::add( int render_pass, w_render_vert& render_vert )
     int idx = 0;
     for( auto& iter : vertices[render_pass] )
     {
-        if( iter.is_same( render_vert ) )
+        if( iter.is_same( rv ) )
         {
             indices[render_pass].push_back( idx );
             return idx;
@@ -82,7 +81,7 @@ int w_render_buffer::add( int render_pass, w_render_vert& render_vert )
 
     // we have a unique vertex, so add it to the vertex and index lists.
 
-    vertices[render_pass].push_back( std::move(render_vert) );
+    vertices[render_pass].push_back( std::move( rv ) );
     indices[render_pass].push_back( (int)vertices[render_pass].size() - 1 );
 
     // return the newly created index
@@ -90,7 +89,7 @@ int w_render_buffer::add( int render_pass, w_render_vert& render_vert )
     return static_cast<int>( indices[render_pass].back() );
 }
 
-void w_render_buffer::add_quad( w_render_vert& v0, w_render_vert& v1, w_render_vert& v2, w_render_vert& v3 )
+void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
     int render_pass = static_cast<int>( e_render_pass::opaque );
     if( !fequals( v0.a + v1.a + v2.a + v3.a, 4.0f ) )
@@ -111,7 +110,7 @@ void w_render_buffer::add_quad( w_render_vert& v0, w_render_vert& v1, w_render_v
     add( render_pass, v3 );
 }
 
-void w_render_buffer::add_line( w_render_vert& v0, w_render_vert& v1 )
+void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1 )
 {
     int render_pass = static_cast<int>( e_render_pass::opaque );
     if( !fequals( v0.a + v1.a, 2.0f ) )

@@ -45,9 +45,9 @@ struct w_render_buffer
 	// indexes, in groups of 3 (aka triangles), into vertices array
 	std::vector<unsigned int> indices[2];
 
-	int add( int render_pass, w_render_vert& render_vert );
-	void add_quad( w_render_vert& v0, w_render_vert& v1, w_render_vert& v2, w_render_vert& v3 );
-	void add_line( w_render_vert& v0, w_render_vert& v1 );
+	int add( int render_pass, const w_render_vert& render_vert );
+	void add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 );
+	void add_line( const w_render_vert& v0, const w_render_vert& v1 );
 	void bind();
 	void unbind();
 	void draw( int render_pass );
