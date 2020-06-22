@@ -50,10 +50,10 @@ struct w_render
 	void draw( a_image* image, const w_sz& sz = w_vec2( -1, -1 ) );
 
 	void draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
-	void draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z, w_color color = W_COLOR_WHITE );
+	void draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z );
 
 	void draw_rectangle( w_rect rc_dst );
-	void draw_filled_rectangle( w_vec2 start, w_vec2 end, float z, w_color color );
+	void draw_filled_rectangle( w_vec2 start, w_vec2 end, float z );
 	void draw_line( w_vec3 start, w_vec3 end );
 	void draw_circle( w_vec3 origin, float radius);
 

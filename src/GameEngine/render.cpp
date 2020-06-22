@@ -203,9 +203,6 @@ void w_render::end()
 	{
 		draw_stats();
 	}
-	// update the window title to show the FPS and milliseconds per frame
-	std::string new_title = s_format( "%s - %d FPS", engine->window->base_title.c_str(), (int)stats.num_frames_rendered.value );
-	engine->window->set_title( new_title );
 
 	// draw all render buffers
 
@@ -299,7 +296,10 @@ void w_render::draw_stats()
 	assert( stat_lines.size() < stats_draw_reserve );
 
 	auto font = engine->get_asset<a_font>( "ui_simple_font" );
-	draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f, w_color( .25f, .25f, .25f, 0.75f ) );
+	{
+		SCOPED_VAR( rs_color( w_color( .25f, .25f, .25f, 0.75f ) ) );
+		draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f );
+	}
 
 	float y = v_window_hh;
 	for( auto& iter : stat_lines)
@@ -309,8 +309,10 @@ void w_render::draw_stats()
 	}
 }
 
-void w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z, w_color color )
+void w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
 {
+	w_color color = color_stack.top();
+
 	w_render_vert v0(
 		w_vec3( start.x, start.y, z ),
 		w_uv( 0, 0 ),
@@ -389,7 +391,7 @@ void w_render::draw_line( w_vec3 start, w_vec3 end )
 	engine->white_wire->get_texture()->render_buffer->add_line( v0, v1 );
 }
 
-void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z, w_color color )
+void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z )
 {
 	assert( false );// not implemented yet
 	a_9slice_def* slice_def = engine->get_asset<a_9slice_def>( patch_name.c_str() );
@@ -403,8 +405,6 @@ void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch
 	float ypos;
 	float dst_w;
 	float dst_h;
-
-	SCOPED_VAR( rs_color( color ) );
 
 	// top row
 

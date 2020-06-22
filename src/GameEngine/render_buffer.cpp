@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_render_vert::w_render_vert( w_vec3 pos, w_uv uv, w_color color )
+w_render_vert::w_render_vert( const w_vec3& pos, const w_uv& uv, const w_color& color )
     :   x( pos.x ), y( pos.y ), z( pos.z ),
         u( uv.u ), v( uv.v ),
         r( color.r ), g( color.g ), b( color.b ), a( color.a )

@@ -4,7 +4,7 @@
 
 struct w_render_vert
 {
-	w_render_vert( w_vec3 pos, w_uv uv, w_color color );
+	w_render_vert( const w_vec3& pos, const w_uv& uv, const w_color& color );
 
 	float x, y, z;
 	float u, v;

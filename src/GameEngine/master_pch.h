@@ -121,7 +121,9 @@ constexpr float W_EPSILON = FLT_EPSILON;
 
 bool inline fequals( float a, float b )
 {
-	return ( std::abs( (double)a - b ) < W_EPSILON );
+	float diff = a - b;
+
+	return ( diff < W_EPSILON && diff > -W_EPSILON );
 }
 
 /*
