@@ -1,24 +1,8 @@
 #pragma once
 
-constexpr float W_PI = 3.14159265358979323846f;
-
-namespace
-{
-    inline float deg2rad( double d )
-    {
-        return static_cast<float>( W_PI * d / 180.0);
-    }
-
-    inline float rad2deg( double r )
-    {
-        return static_cast<float>(180.0 * r / W_PI);
-    }
-
-    inline float sin_from_angle( double angle )
-    {
-        return std::sinf( deg2rad( angle ) );
-    }
-}
+#define deg2rad(d) ( W_PI * d / 180.0f )
+#define rad2deg(r) ( 180.0f * r / W_PI )
+#define sin_from_angle(a) ( std::sinf( deg2rad( a ) ) )
 
 // ----------------------------------------------------------------------------
 

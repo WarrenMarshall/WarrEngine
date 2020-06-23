@@ -27,7 +27,7 @@ struct w_particle : i_transform
 	void update();
 	bool is_alive();
 
-	inline void init_to_new()
+	void init_to_new()
 	{
 		life_span = 0.0f;
 		life_span_save = 0.0f;

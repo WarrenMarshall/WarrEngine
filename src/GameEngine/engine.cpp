@@ -201,7 +201,6 @@ void w_engine::draw()
 
 void w_engine::update()
 {
-	input_mgr->update();
 	layer_mgr->update();
 
 	for( auto& asset : asset_cache->cache )

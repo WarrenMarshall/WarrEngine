@@ -126,10 +126,16 @@ int main( int argc, char* argv[] )
 		while( engine->is_running )
 		{
 			/*
-				update time
+				time
 			*/
 
 			engine->time->update();
+
+			/*
+				input
+			*/
+
+			engine->input_mgr->update();
 
 			/*
 				fixed time step updates

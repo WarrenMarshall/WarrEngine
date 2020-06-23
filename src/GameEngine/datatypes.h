@@ -158,14 +158,6 @@ struct w_vec3
 
 	static const w_vec3 zero;
 	
-	inline bool is_zero()
-	{
-		if( fequals( x, 0.0f ) && fequals( y, 0.0f ) && fequals( z, 0.0f ) )
-			return true;
-		else
-			return false;
-	}
-
 	w_vec3 operator+( const w_vec3& v );
 	w_vec3 operator-( const w_vec3& v );
 	w_vec3 operator=( const w_vec3& v );

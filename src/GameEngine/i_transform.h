@@ -16,10 +16,5 @@ struct i_transform
 	i_transform();
 	~i_transform();
 
-	inline void set_transform( const w_vec3& pos, float angle, float scale )
-	{
-		this->pos = pos;
-		this->angle = angle;
-		this->scale = scale;
-	}
+	void set_transform( const w_vec3& pos, const float& angle, const float& scale );
 };

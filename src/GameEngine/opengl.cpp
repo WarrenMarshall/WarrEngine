@@ -107,7 +107,7 @@ void w_opengl::add_transform( const i_transform& t )
 
 void w_opengl::translate( w_vec3 v )
 {
-	if( !v.is_zero() )
+	if( !fequals( v.x + v.y + v.z, 0.0f ) )
 	{
 		glm::mat4* mptr = top_matrix();
 		*mptr = glm::translate( *mptr, glm::vec3( v.x, v.y, v.z ) );

@@ -10,7 +10,7 @@ struct w_render_vert
 	float u, v;
 	float r, g, b, a;
 
-    bool const inline is_same( const w_render_vert& other )
+    bool const is_same( const w_render_vert& other )
     {
         if( fequals( x, other.x )
             && fequals( y, other.y )

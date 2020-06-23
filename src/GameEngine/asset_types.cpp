@@ -330,7 +330,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->img = std::make_unique<a_image>();
 			fch->img->create_from_texture( texture_name, w_rect( x, y, w, h ) );
 
-			max_height = w_max<float>( max_height, fch->h + fch->yoffset );
+			max_height = w_max( max_height, fch->h + fch->yoffset );
 		}
 
 		line = tok.get_next_token();
@@ -366,7 +366,7 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 		else if( !inside_color_code )
 		{
 			bounds.x += pxch->xadvance;
-			bounds.y = w_max<float>( bounds.y, pxch->h + pxch->yoffset );
+			bounds.y = w_max( bounds.y, pxch->h + pxch->yoffset );
 		}
 	}
 

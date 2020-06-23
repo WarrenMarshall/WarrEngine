@@ -15,5 +15,5 @@ struct w_tokenizer
 
 	std::string get_next_token();
 
-	inline bool is_eos() { return end_of_string; }
+	bool is_eos() { return end_of_string; }
 };

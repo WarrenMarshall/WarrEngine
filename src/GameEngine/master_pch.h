@@ -118,21 +118,16 @@ inline bool operator> (ENUMTYPE a, int b) {  return (((int)a) > b); }
 #define log_warning logfile->warning
 #define log_error logfile->error
 
-// leaving room to customize epsilon later if this is too small
-constexpr float W_EPSILON = FLT_EPSILON;
+// ----------------------------------------------------------------------------
 
-bool inline fequals( const float& a, const float& b )
-{
-	float diff = a - b;
+constexpr float W_PI = 3.14159265358979323846f;
 
-	if( diff < W_EPSILON && diff > -W_EPSILON )
-	{
-		return true;
-	}
+// ----------------------------------------------------------------------------
 
-	return false;
-}
+// quickly compare 2 floats to see if they are equal within the epsilon tolerance
+#define fequals(a,b) ( (a-b) < FLT_EPSILON && (a-b) > -FLT_EPSILON )
 
+// ----------------------------------------------------------------------------
 /*
 	the size of the virtual screen. all rendering is done on the assumption
 	of these dimensions. the renderer handles scaling this up to the actual
@@ -144,36 +139,14 @@ constexpr float v_window_h = (16*9) + 100;
 constexpr float v_window_hw = v_window_w / 2.0f;
 constexpr float v_window_hh = v_window_h / 2.0f;
 
-/*
-	templated min/max functions
-*/
+// ----------------------------------------------------------------------------
 
-template<typename T> T inline w_min( T a, T b )
-{
-	if( a < b )
-		return a;
-	
-	return b;
-}
+#define w_min(a,b) (((a) < (b)) ? (a) : (b))
+#define w_max(a,b) (((a) > (b)) ? (a) : (b))
+#define w_clamp(v,min,max) (w_max( min, w_min( max, v ) ))
 
-template<typename T> T inline w_max( T a, T b )
-{
-	if( a > b )
-	{
-		return a;
-	}
-	
-	return b;
-}
-
-template<typename T> T inline w_clamp( T v, T min, T max )
-{
-	return w_max( min, w_min( max, v ) );
-}
-
-/*
-	useful type definitions to increase code readability
-*/
+// ----------------------------------------------------------------------------
+//	useful type definitions to increase code readability
 
 typedef w_vec2 w_uv;
 typedef w_vec2 w_sz;
