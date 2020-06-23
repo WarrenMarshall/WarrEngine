@@ -215,7 +215,7 @@ bool a_anim_texture::create_internals( bool is_hot_reloading )
 
 void a_anim_texture::add_frame( a_texture* tex )
 {
-	frames.push_back( tex );
+	frames.emplace_back( tex );
 }
 
 void a_anim_texture::set_speed( float indices_per_sec )

@@ -91,7 +91,7 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 			if( ext == extension )
 			{
-				filenames.push_back( filename );
+				filenames.emplace_back( filename );
 			}
 		}
 	}
@@ -108,7 +108,7 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 		if( foldername == folder )
 		{
-			filenames.push_back( iter.second->filename );
+			filenames.emplace_back( iter.second->filename );
 		}
 	}
 }

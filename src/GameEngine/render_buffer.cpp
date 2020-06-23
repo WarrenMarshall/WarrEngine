@@ -72,7 +72,7 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
     {
         if( iter.is_same( rv ) )
         {
-            indices[render_pass].push_back( idx );
+            indices[render_pass].emplace_back( idx );
             return idx;
         }
 
@@ -81,8 +81,8 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
 
     // we have a unique vertex, so add it to the vertex and index lists.
 
-    vertices[render_pass].push_back( std::move( rv ) );
-    indices[render_pass].push_back( (int)vertices[render_pass].size() - 1 );
+    vertices[render_pass].emplace_back( rv );
+    indices[render_pass].emplace_back( (int)vertices[render_pass].size() - 1 );
 
     // return the newly created index
 
@@ -105,8 +105,8 @@ void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1
     add( render_pass, v1 );
     int idx2 = add( render_pass, v2 );
 
-    indices[render_pass].push_back( idx0 );
-    indices[render_pass].push_back( idx2 );
+    indices[render_pass].emplace_back( idx0 );
+    indices[render_pass].emplace_back( idx2 );
     add( render_pass, v3 );
 }
 

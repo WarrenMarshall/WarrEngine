@@ -289,7 +289,7 @@ void w_render::draw_stats()
 
 	if( stats.stat_custom_string.length() )
 	{
-		stat_lines.push_back( stats.stat_custom_string );
+		stat_lines.emplace_back( stats.stat_custom_string );
 		stats.stat_custom_string = "";
 	}
 

@@ -40,7 +40,7 @@ w_timeline* w_timeline::kf_clear()
 
 w_timeline* w_timeline::kf_add( w_keyframe keyframe )
 {
-	keyframes.push_back( std::move( keyframe ) );
+	keyframes.emplace_back( std::move( keyframe ) );
 	return this;
 }
 

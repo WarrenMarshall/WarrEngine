@@ -57,7 +57,7 @@ struct w_game_controller
 
 struct w_input_mgr : i_speaker
 {
-	std::map<int, e_input_id> glfw_codes;
+	std::unordered_map<int, e_input_id> glfw_codes;
 	int event_queue_idx = 0;
 	static const int event_queue_max = 10;
 	std::unique_ptr<std::vector<w_input_event>> event_queue;

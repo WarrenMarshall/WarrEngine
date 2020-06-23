@@ -91,7 +91,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					if( val == "n/a" )
 						break;
 
-					color_values.push_back( w_stringutil::trim( val ) );
+					color_values.emplace_back( w_stringutil::trim( val ) );
 				}
 
 				for( auto& iter : color_values )
@@ -101,7 +101,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					if( engine->is_symbol_in_map( val ) )
 						val = engine->find_val_from_symbol( val );
 
-					asset_ptr->colors.push_back( w_color( val ) );
+					asset_ptr->colors.emplace_back( w_color( val ) );
 				}
 
 				// ------------------------------------------------------------------------
@@ -350,7 +350,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				for( ; num_frames > 0 ; --num_frames )
 				{
 					auto tex = engine->get_asset<a_texture>( tok.get_next_token().c_str() );
-					asset_ptr->frames.push_back( tex );
+					asset_ptr->frames.emplace_back( tex );
 				}
 
 				// ------------------------------------------------------------------------
@@ -439,7 +439,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 				current_asset_definition = std::make_unique<w_asset_definition>();
 			else if( line[0] == '}' )
 			{
-				asset_definitions.push_back( std::move( current_asset_definition ) );
+				asset_definitions.emplace_back( std::move( current_asset_definition ) );
 				current_asset_definition = nullptr;
 			}
 			else

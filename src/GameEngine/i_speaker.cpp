@@ -13,7 +13,7 @@ void i_speaker::add_listener( i_listener* listener )
 		return;
 	}
 
-	listeners.push_back( listener );
+	listeners.emplace_back( listener );
 }
 
 // removes a listener from this speaker

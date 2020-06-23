@@ -23,7 +23,7 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 
 		if( g_allow_hot_reload )
 		{
-			engine->hot_reloadables.push_back( cfg.get() );
+			engine->hot_reloadables.emplace_back( cfg.get() );
 		}
 
 		cache.insert( std::make_pair( name, std::move( cfg ) ) );
