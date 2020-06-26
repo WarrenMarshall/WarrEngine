@@ -188,6 +188,7 @@
     <ClCompile Include="layer_gameplay.cpp" />
     <ClCompile Include="layer_gameviewport.cpp" />
     <ClCompile Include="mathutil.cpp" />
+    <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="layer_gameplay.h" />
     <ClInclude Include="master_enum.h" />
     <ClInclude Include="master_pch.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="opengl.h" />
     <ClInclude Include="parseutil.h" />
     <ClInclude Include="particle_pool.h" />

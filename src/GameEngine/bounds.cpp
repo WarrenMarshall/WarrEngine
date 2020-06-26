@@ -49,7 +49,7 @@ bool w_bounds_circle::is_intersecting( w_bounds other )
 void w_bounds_circle::draw_bounds()
 {
 	//SCOPED_VAR( W_COLOR_TEAL );
-	//engine->render->draw_circle( parent->pos, radius );
+	//RENDER->draw_circle( parent->pos, radius );
 }
 
 // ----------------------------------------------------------------------------
@@ -68,5 +68,5 @@ void w_bounds_bbox::draw_bounds()
 	//rc.y += parent->pos.y;
 
 	//SCOPED_VAR( W_COLOR_TEAL );
-	//engine->render->draw_solid_rectangle( rc );
+	//RENDER->draw_solid_rectangle( rc );
 }

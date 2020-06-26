@@ -53,7 +53,7 @@ bool a_texture::create_internals( bool is_hot_reloading )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
-	engine->opengl->clear_texture_bind();
+	OPENGL->clear_texture_bind();
 
 	stbi_image_free( color_data );
 	color_data = nullptr;
@@ -185,7 +185,7 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, color_data );
-	engine->opengl->clear_texture_bind();
+	OPENGL->clear_texture_bind();
 
 	// clean up
 

@@ -25,12 +25,12 @@ void w_entity::draw_components()
 {
 	for( auto const& iter : components )
 	{
-		engine->opengl->push_matrix();
-		{
-			engine->opengl->add_transform( (*iter.get()) );
-			iter->draw();
-		}
-		engine->opengl->pop_matrix();
+		OPENGL
+			->push( false )
+			->add_transform( ( *iter.get() ) );
+		iter->draw();
+		OPENGL
+			->pop();
 	}
 }
 

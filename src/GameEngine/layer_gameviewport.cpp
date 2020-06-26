@@ -14,37 +14,47 @@ void layer_gameviewport::draw()
 {
 	w_layer::draw();
 
-	engine->opengl->push_matrix();
-	engine->opengl->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
-	{
-		SCOPED_VAR( rs_color( w_color( 1.0, 1.0, 1.0, 0.25f ) ) );
-		engine->render->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) );
-	}
-	engine->opengl->pop_matrix();
+	// gradient
 
-	{
-		SCOPED_VAR( rs_color( W_COLOR_ORANGE ) );
-		engine->render->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered );
-	}
+	OPENGL
+		->push( false )
+		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
+	RENDER
+		->begin()
+		->rs_color( w_color( 1.0, 1.0, 1.0, 0.25f ) )
+		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
+		->end();
+	OPENGL
+		->pop();
 
-	engine->opengl->push_matrix();
-	engine->opengl->translate( w_vec3( -v_window_hw, v_window_hh - (TILE_SZ * 3), 0 ) );
+	// title
+
+	RENDER
+		->begin()
+		->rs_color( W_COLOR_ORANGE )
+		->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered )
+		->end();
+
+	// tiles
+
+	w_matrix* mtx =
+		OPENGL
+			->push( false )
+			->translate( w_vec3( -v_window_hw, v_window_hh - (TILE_SZ * 3), 0 ) );
+
+	for( int y = 0 ; y < ROOM_H ; ++y )
 	{
-		for( int y = 0 ; y < ROOM_H ; ++y )
+		for( int x = 0 ; x < ROOM_W ; ++x )
 		{
-			engine->opengl->push_matrix();
-			for( int x = 0 ; x < ROOM_W ; ++x )
-			{
-				int idx = ( y * ROOM_W ) + x;
+			int idx = ( y * ROOM_W ) + x;
 
-				engine->render->draw( game->get_tile( game->test_room.tiles[ idx ] )->img );
-				engine->opengl->translate( w_vec3( TILE_SZ, 0, 0 ) );
-			}
-			engine->opengl->pop_matrix();
-
-			engine->opengl->translate( w_vec3( 0, -TILE_SZ, 0 ) );
+			RENDER->draw( game->get_tile( game->test_room.tiles[ idx ] )->img );
+			mtx->translate( w_vec3( TILE_SZ, 0, 0 ) );
 		}
+
+		mtx->translate( w_vec3( -( TILE_SZ * ROOM_W ), 0, 0 ) );
+		mtx->translate( w_vec3( 0, -TILE_SZ, 0 ) );
 	}
-	engine->opengl->pop_matrix();
+
+	OPENGL->pop();
 }
-	

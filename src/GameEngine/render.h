@@ -35,8 +35,17 @@ struct w_render
 
 	std::stack<glm::mat4> modelview_stack;
 
+	// ----------------------------------------------------------------------------
 	// the current render state
-	std::stack<w_color> color_stack;
+
+	bool rs_color_used = false;
+	std::stack<w_color> rs_color_stack;
+
+	w_render* begin();
+	w_render* rs_color( const w_color& color );
+	void end();
+
+	// ----------------------------------------------------------------------------
 
 	bool show_stats = false;
 
@@ -46,20 +55,20 @@ struct w_render
 
 	void init();
 
-	void draw_sprite( a_image* image, const w_sz& sz = w_sz( -1, -1 ) );
-	void draw( a_image* image, const w_sz& sz = w_vec2( -1, -1 ) );
+	w_render* draw_sprite( a_image* image, const w_sz& sz = w_sz( -1, -1 ) );
+	w_render* draw( a_image* image, const w_sz& sz = w_vec2( -1, -1 ) );
+	w_render* draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
+	w_render* draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z );
 
-	void draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
-	void draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z );
+	w_render* draw_rectangle( w_rect rc_dst );
+	w_render* draw_filled_rectangle( w_vec2 start, w_vec2 end, float z );
+	w_render* draw_line( w_vec3 start, w_vec3 end );
+	w_render* draw_circle( w_vec3 origin, float radius);
 
-	void draw_rectangle( w_rect rc_dst );
-	void draw_filled_rectangle( w_vec2 start, w_vec2 end, float z );
-	void draw_line( w_vec3 start, w_vec3 end );
-	void draw_circle( w_vec3 origin, float radius);
+	void begin_frame( float frame_interpolate_pct );
+	void end_frame();
 
-	void begin( float frame_interpolate_pct );
-	void end();
-
-	void draw_world_axis();
-	void draw_stats();
+	w_render* draw_world_axis();
+	w_render* draw_stats();
 };
+

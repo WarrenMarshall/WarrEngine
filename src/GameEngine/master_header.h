@@ -1,5 +1,6 @@
 #pragma once
 
+#include "matrix.h"
 #include "opengl.h"
 #include "shader.h"
 #include "render_buffer.h"

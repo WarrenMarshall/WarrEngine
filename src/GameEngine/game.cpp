@@ -41,15 +41,15 @@ void w_game::draw_entities()
 	{
 		w_entity* e = entities[x].get();
 
-		engine->opengl->push_matrix();
-		{
-			engine->opengl->add_transform( *e );
+		OPENGL
+			->push( false )
+			->add_transform( *e );
 
-			e->draw_components();
-			e->draw();
-		}
-		engine->opengl->pop_matrix();
+		e->draw_components();
+		e->draw();
 
-		engine->render->stats.num_entities.inc();
+		OPENGL->pop();
+
+		RENDER->stats.num_entities.inc();
 	}
 }

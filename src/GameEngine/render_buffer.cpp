@@ -59,7 +59,7 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
     // until this point, the vertex has been in model coordinate space.
 
     glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
-    v4 = (*engine->opengl->top_matrix()) * v4;
+    v4 = OPENGL->top()->m * v4;
 
     w_render_vert rv( w_vec3( v4.x, v4.y, v4.z ), w_uv( render_vert.u, render_vert.v ), w_color( render_vert.r, render_vert.g, render_vert.b ) );
     
@@ -169,9 +169,9 @@ void w_render_buffer::draw( int render_pass )
             break;
         }
 
-        engine->render->stats.render_buffers.inc();
-        engine->render->stats.render_vertices.accum( static_cast<float>( vertices[render_pass].size() ) );
-        engine->render->stats.render_indices.accum( static_cast<float>( indices[render_pass].size() ) );
+        RENDER->stats.render_buffers.inc();
+        RENDER->stats.render_vertices.accum( static_cast<float>( vertices[render_pass].size() ) );
+        RENDER->stats.render_indices.accum( static_cast<float>( indices[render_pass].size() ) );
 
     glDrawElements( prim_type, (int) indices[render_pass].size(), GL_UNSIGNED_INT, 0 );
 

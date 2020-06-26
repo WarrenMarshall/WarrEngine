@@ -21,12 +21,12 @@ void e_player::draw()
 {
 	w_entity::draw();
 
-	//engine->render->draw_circle( w_vec3::zero, 16 );
+	//RENDER->draw_circle( w_vec3::zero, 16 );
 
 	// todo : this needs to be a in a static draw buffer
-	//engine->render->draw_line(w_vec3(0, 8, 0), w_vec3(-4, -8, 0));
-	//engine->render->draw_line( w_vec3( 0, 8, 0 ), w_vec3( +4, -8, 0 ) );
-	//engine->render->draw_line( w_vec3( -4, -6, 0 ), w_vec3( +4, -6, 0 ) );
+	//RENDER->draw_line(w_vec3(0, 8, 0), w_vec3(-4, -8, 0));
+	//RENDER->draw_line( w_vec3( 0, 8, 0 ), w_vec3( +4, -8, 0 ) );
+	//RENDER->draw_line( w_vec3( -4, -6, 0 ), w_vec3( +4, -6, 0 ) );
 }
 
 // ----------------------------------------------------------------------------

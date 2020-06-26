@@ -30,7 +30,7 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 		engine->window->viewport_pos_sz.y = ( height - engine->window->viewport_pos_sz.h ) / 2.0f;
 	}
 
-	engine->opengl->refresh_primitive_sizes();
+	OPENGL->refresh_primitive_sizes();
 
 	glViewport(
 		static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
@@ -92,7 +92,7 @@ bool w_window::init( const std::string& title )
 	// 1 = v-sync on
 	glfwSwapInterval( 0 );
 
-	engine->opengl->refresh_primitive_sizes();
+	OPENGL->refresh_primitive_sizes();
 
 	return true;
 }

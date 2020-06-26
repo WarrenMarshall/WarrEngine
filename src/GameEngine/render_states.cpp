@@ -23,12 +23,12 @@ rs_color::~rs_color()
 
 void rs_color::push()
 {
-	engine->render->color_stack.push( new_color );
+	RENDER->rs_color_stack.push( new_color );
 }
 
 void rs_color::pop()
 {
-	engine->render->color_stack.pop();
+	RENDER->rs_color_stack.pop();
 }
 
 // ----------------------------------------------------------------------------

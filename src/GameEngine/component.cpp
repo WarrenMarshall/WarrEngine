@@ -68,7 +68,7 @@ void c_sprite::draw()
 		return;
 	}
 
-	engine->render->draw_sprite( img );
+	RENDER->draw_sprite( img );
 }
 
 // ----------------------------------------------------------------------------
@@ -110,9 +110,13 @@ void c_emitter::draw()
 		return;
 	}
 
-	engine->opengl->push_identity_matrix();
+	OPENGL
+		->push( true );
+
 	emitter->particle_pool->draw();
-	engine->opengl->pop_matrix();
+
+	OPENGL
+		->pop();
 }
 
 void c_emitter::update()

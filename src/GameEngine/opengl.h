@@ -9,24 +9,16 @@
 
 */
 
-// ----------------------------------------------------------------------------
-
 struct w_opengl
 {
-	std::stack<glm::mat4> modelview_stack;
-	glm::mat4 mtx_modelview;
+	std::stack<w_matrix> modelview_stack;
 
 	void init();
 	void deinit();
 
-	void push_matrix();
-	void push_identity_matrix();
-	void pop_matrix();
-	glm::mat4* top_matrix();
-	void add_transform( const i_transform& t );
-	void translate( w_vec3 v );
-	void scale( float v );
-	void rotate( float v );
+	w_matrix* push( bool identity );
+	w_matrix* top();
+	void pop();
 
 	void clear_texture_bind();
 

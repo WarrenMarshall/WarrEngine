@@ -24,42 +24,39 @@ void w_particle_pool::draw()
 	float pct_of_life, angle;
 	w_color color;
 
-	engine->opengl->push_matrix();
+	OPENGL->push( false );
+
+	for( auto& iter : *particles )
 	{
-		for( auto& iter : *particles )
+		if( iter.is_alive() )
 		{
-			if( iter.is_alive() )
-			{
-				pct_of_life = fabs( 1.0f - ( iter.life_span / iter.life_span_save ) );
-				pct_of_life = w_clamp( pct_of_life, 0.0f, 1.0f );
+			pct_of_life = fabs( 1.0f - ( iter.life_span / iter.life_span_save ) );
+			pct_of_life = w_clamp( pct_of_life, 0.0f, 1.0f );
 
-				iter.t_color->get_value( pct_of_life, &color );
+			iter.t_color->get_value( pct_of_life, &color );
 
-				float wk;
-				iter.t_alpha->get_value( pct_of_life, &wk );
-				color.a = wk;
+			float wk;
+			iter.t_alpha->get_value( pct_of_life, &wk );
+			color.a = wk;
 
-				angle = iter.spin;
+			angle = iter.spin;
 
-				{
-					float scale;
-					iter.t_scale->get_value( pct_of_life, &scale );
+			float scale;
+			iter.t_scale->get_value( pct_of_life, &scale );
 
-					engine->opengl->push_matrix();
-					{
-						engine->opengl->translate( iter.pos );
-						engine->opengl->rotate( iter.spin );
-						engine->opengl->scale( iter.base_scale * scale );
+			OPENGL
+				->push( false )
+				->translate( iter.pos )
+				->rotate( iter.spin )
+				->scale( iter.base_scale * scale );
 
-						// warren
-						//engine->render->draw_sprite( iter.tex, color );
-					}
-					engine->opengl->pop_matrix();
-				}
-			}
+			// warren
+			//RENDER->draw_sprite( iter.tex, color );
+
+			OPENGL->pop();
 		}
 	}
-	engine->opengl->pop_matrix();
+	OPENGL->pop();
 }
 
 void w_particle_pool::update()

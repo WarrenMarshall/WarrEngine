@@ -38,10 +38,11 @@ void w_render::init()
 	// push an identity matrix onto the stack. this will always live
 	// as the last element in the stack and should be the only
 	// matrix remaining when the frame finishes rendering.
-	engine->opengl->push_identity_matrix();
+	OPENGL
+		->push( true );
 
 	// initialize render state stacks
-	color_stack.push( W_COLOR_WHITE );
+	rs_color_stack.push( W_COLOR_WHITE );
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requesed for
@@ -55,13 +56,36 @@ void w_render::init()
 	}
 }
 
+w_render* w_render::begin()
+{
+	rs_color_used = false;
+
+	return this;
+}
+
+w_render* w_render::rs_color( const w_color& color )
+{
+	rs_color_used = true;
+	rs_color_stack.push( color );
+
+	return this;
+}
+
+void w_render::end()
+{
+	if( rs_color_used )
+		rs_color_stack.pop();
+
+	rs_color_used = false;
+}
+
 /*
 	draws a texture as a sprite onto the screen.
 
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-void w_render::draw_sprite( a_image* image, const w_sz& sz )
+w_render* w_render::draw_sprite( a_image* image, const w_sz& sz )
 {
 	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
@@ -69,7 +93,7 @@ void w_render::draw_sprite( a_image* image, const w_sz& sz )
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_color color = color_stack.top();
+	w_color color = rs_color_stack.top();
 
 	w_render_vert v0( w_vec3( -hw, hh, 0.0f ), w_vec2( image->uv00.u, image->uv11.v ), color );
 	w_render_vert v1( w_vec3( hw, hh, 0.0f ), w_vec2( image->uv11.u, image->uv11.v ), color );
@@ -78,31 +102,35 @@ void w_render::draw_sprite( a_image* image, const w_sz& sz )
 
 	a_texture* tex = image->get_texture();
 	tex->render_buffer->add_quad( v0, v1, v2, v3 );
+
+	return this;
 }
 
 /*
 	draws a texture onto a quad.
 */
-void w_render::draw( a_image* image, const w_sz& sz )
+w_render* w_render::draw( a_image* image, const w_sz& sz )
 {
 	a_texture* tex = image->get_texture();
 
 	float w = ( sz.w == -1 ) ? image->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? image->sz.h : sz.h;
 
-	w_color color = color_stack.top();
+	w_color color = rs_color_stack.top();
 	w_render_vert v0( w_vec3( 0, h, 0 ), w_vec2( image->uv00.u, image->uv11.v ), color );
 	w_render_vert v1( w_vec3( w, h, 0 ), w_vec2( image->uv11.u, image->uv11.v ), color );
 	w_render_vert v2( w_vec3( w, 0, 0 ), w_vec2( image->uv11.u, image->uv00.v ), color );
 	w_render_vert v3( w_vec3( 0, 0, 0 ), w_vec2( image->uv00.u, image->uv00.v ), color );
 
 	tex->render_buffer->add_quad( v0, v1, v2, v3 );
+
+	return this;
 }
 
 /*
 	draws a string from a bitmap font, char by char
 */
-void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align )
+w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align )
 {
 	const char* rd_ptr = text.c_str();
 	float xpos = pos.x;
@@ -144,24 +172,28 @@ void w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e
 			// small optimization to skip drawing completely blank characters
 			if( fch->w > 0 )
 			{
-				engine->opengl->push_matrix();
-				engine->opengl->translate( w_vec3( xpos + fch->xoffset, ypos - fch->h - fch->yoffset, pos.z ) );
+				OPENGL
+					->push( false )
+					->translate( w_vec3( xpos + fch->xoffset, ypos - fch->h - fch->yoffset, pos.z ) );
 				draw(
 					fch->img.get(),
 					w_vec2( fch->w, fch->h )
 				);
-				engine->opengl->pop_matrix();
+				OPENGL
+					->pop();
 			}
 
 			xpos += fch->xadvance;
 		}
 	}
+
+	return this;
 }
 
 /*
 	call at the start of each frame to set up and clear the screen
 */
-void w_render::begin( float frame_interpolate_pct )
+void w_render::begin_frame( float frame_interpolate_pct )
 {
 	this->frame_interpolate_pct = frame_interpolate_pct;
 	//log_msg( "interp : %1.2f", frame_interpolate_pct );
@@ -197,7 +229,7 @@ void w_render::begin( float frame_interpolate_pct )
 /*
 	call at end of frame to finalize frame and render all buffers
 */
-void w_render::end()
+void w_render::end_frame()
 {
 	if( show_stats )
 	{
@@ -230,13 +262,13 @@ void w_render::end()
 	// at the renderer start up). If there are any other number, then
 	// there is an uneven push/pop combo somewhere in the code.
 
-	assert( engine->opengl->modelview_stack.size() == 1 );
+	assert( OPENGL->modelview_stack.size() == 1 );
 
 	// verify that state stacks are back where they started. if not,
 	// it means there's a push/pop mismatch somewhere in the code.
-	assert( color_stack.size() == 1 );
+	assert( rs_color_stack.size() == 1 );
 
-	engine->opengl->clear_texture_bind();
+	OPENGL->clear_texture_bind();
 	stats.num_frames_rendered.inc();
 
 	// Swap buffers
@@ -249,7 +281,7 @@ void w_render::end()
 	positive directions are brighter than the negative ones
 */
 
-void w_render::draw_world_axis()
+w_render* w_render::draw_world_axis()
 {
 	SCOPED_VAR( rs_color( w_color(1.0f,0.0f,0.0f) ) );
 	draw_line( w_vec3::zero, w_vec3( 5000, 0, 500 ) );
@@ -262,6 +294,8 @@ void w_render::draw_world_axis()
 
 	SCOPED_VAR( rs_color( w_color( 0.0f, 0.5f, 0.0f ) ) );
 	draw_line( w_vec3::zero, w_vec3( 0, -5000, 500 ) );
+
+	return this;
 }
 
 /*
@@ -272,7 +306,7 @@ void w_render::draw_world_axis()
 */
 
 constexpr int stats_draw_reserve = 10;
-void w_render::draw_stats()
+w_render* w_render::draw_stats()
 {
 	std::vector<std::string> stat_lines;
 	stat_lines.reserve( stats_draw_reserve );
@@ -297,21 +331,26 @@ void w_render::draw_stats()
 
 	auto font = engine->get_asset<a_font>( "ui_simple_font" );
 	{
-		SCOPED_VAR( rs_color( w_color( .25f, .25f, .25f, 0.75f ) ) );
-		draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f );
+		RENDER
+			->begin()
+			->rs_color( w_color( .25f, .25f, .25f, 0.75f ) )
+			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f )
+			->end();
 	}
 
 	float y = v_window_hh;
 	for( auto& iter : stat_lines)
 	{
-		draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
+		RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
 		y -= font->font_def->max_height;
 	}
+
+	return this;
 }
 
-void w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
+w_render* w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
 {
-	w_color color = color_stack.top();
+	w_color color = rs_color_stack.top();
 
 	w_render_vert v0(
 		w_vec3( start.x, start.y, z ),
@@ -335,11 +374,13 @@ void w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
 	);
 
 	engine->white_solid->get_texture()->render_buffer->add_quad( v0, v1, v2, v3 );
+
+	return this;
 }
 
 // draws an empty rectangle
 
-void w_render::draw_rectangle( w_rect rc_dst )
+w_render* w_render::draw_rectangle( w_rect rc_dst )
 {
 	assert( false );// not implemented yet
 	w_bbox box;
@@ -358,13 +399,15 @@ void w_render::draw_rectangle( w_rect rc_dst )
 	draw_line( w_vec3( box.max.x, box.min.y, 0.0f ), w_vec3( box.max.x, box.max.y, 0.0f ) );
 	draw_line( w_vec3( box.max.x, box.max.y, 0.0f ), w_vec3( box.min.x, box.max.y, 0.0f ) );
 	draw_line( w_vec3( box.min.x, box.max.y, 0.0f ), w_vec3( box.min.x, box.min.y, 0.0f ) );
+
+	return this;
 }
 
 // draws a circle with line segments
 
-void w_render::draw_circle( w_vec3 origin, float radius )
+w_render* w_render::draw_circle( w_vec3 origin, float radius )
 {
-	w_color color = color_stack.top();
+	w_color color = rs_color_stack.top();
 	w_render_vert v0( origin, w_uv( 0, 0 ), color );
 	w_render_vert v1( origin, w_uv( 0, 0 ), color );
 
@@ -378,27 +421,31 @@ void w_render::draw_circle( w_vec3 origin, float radius )
 
 		engine->white_wire->get_texture()->render_buffer->add_line( v0, v1 );
 	}
+
+	return this;
 }
 
 // draws a line
 
-void w_render::draw_line( w_vec3 start, w_vec3 end )
+w_render* w_render::draw_line( w_vec3 start, w_vec3 end )
 {
-	w_color color = color_stack.top();
+	w_color color = rs_color_stack.top();
 	w_render_vert v0( start, w_uv( 0, 0 ), color );
 	w_render_vert v1( end, w_uv( 0, 0 ), color );
 
 	engine->white_wire->get_texture()->render_buffer->add_line( v0, v1 );
+
+	return this;
 }
 
-void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z )
+w_render* w_render::draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z )
 {
 	assert( false );// not implemented yet
 	a_9slice_def* slice_def = engine->get_asset<a_9slice_def>( patch_name.c_str() );
 	if( slice_def == nullptr )
 	{
 		assert( false );
-		return;
+		return nullptr;
 	}
 
 	float xpos;
@@ -456,4 +503,6 @@ void w_render::draw_sliced_texture( a_texture* texture, const std::string& patch
 	xpos += dst_w;
 	dst_w = slice_def->patches[(int)e_patch::P_22].w;
 	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_22], w_rect( xpos, ypos, dst_w, dst_h ), z );
+
+	return this;
 }

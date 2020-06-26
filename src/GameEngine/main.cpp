@@ -70,12 +70,12 @@ int main( int argc, char* argv[] )
 
 		{	// opengl
 			log_msg( "Initializing OpenGL" );
-			engine->opengl->init();
+			OPENGL->init();
 		}
 
 		{	// renderer
 			log_msg( "Initializing renderer" );
-			engine->render->init();
+			RENDER->init();
 		}
 
 		{	// audio
@@ -158,11 +158,11 @@ int main( int argc, char* argv[] )
 			//
 			// it is passed a percentage for easier use : 0.0f-1.0f
 
-			engine->render->begin( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
+			RENDER->begin_frame( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
 			{
 				engine->draw();
 			}
-			engine->render->end();
+			RENDER->end_frame();
 
 			/*
 				event processing

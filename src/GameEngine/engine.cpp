@@ -157,8 +157,9 @@ void w_engine::draw()
 
 	if( is_paused )
 	{
-		opengl->push_identity_matrix();
-		opengl->translate( w_vec3( -v_window_hw, -v_window_hh, 200 ) );
+		opengl
+			->push( true )
+			->translate( w_vec3( -v_window_hw, -v_window_hh, 200 ) );
 
 		w_vec3 v0, v1, v2, v3;
 
@@ -195,7 +196,7 @@ void w_engine::draw()
 		render->draw_line( v2, v3 );
 		render->draw_line( v3, v0 );
 
-		opengl->pop_matrix();
+		opengl->pop();
 	}
 }
 
@@ -267,7 +268,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 	{
 		case e_event_id::input_motion:
 		{
-			//engine->render->update_virtual_mouse_pos( w_vec2( evt->pos.x, evt->pos.y ) );
+			//RENDER->update_virtual_mouse_pos( w_vec2( evt->pos.x, evt->pos.y ) );
 		}
 		break;
 

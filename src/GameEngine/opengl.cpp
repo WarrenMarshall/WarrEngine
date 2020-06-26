@@ -1,6 +1,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// ----------------------------------------------------------------------------
+
 /*
 	callback so OpenGL can relay messages and warnings
 */
@@ -14,6 +16,8 @@ void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, G
         //log_msg( "OpenGL : [%s]", message );
 	}
 }
+
+// ----------------------------------------------------------------------------
 
 void w_opengl::init()
 {
@@ -77,59 +81,33 @@ void w_opengl::deinit()
 
 }
 
-void w_opengl::push_matrix()
+// pushes a new matrix on top of the stack.
+//
+// this can either be an identity matrix, or a copy of the
+// existing top matrix
+
+w_matrix* w_opengl::push( bool identity )
 {
-	glm::mat4 mtx = *top_matrix();
-	modelview_stack.push( mtx );
+	if( identity )
+		modelview_stack.push( w_matrix::make_identity() );
+	else
+		modelview_stack.push( *top() );
+
+	return top();
 }
 
-void w_opengl::push_identity_matrix()
-{
-	modelview_stack.push( glm::mat4( 1 ) );
-}
+// removes the top matrix from the stack
 
-void w_opengl::pop_matrix()
+void w_opengl::pop()
 {
 	modelview_stack.pop();
 }
 
-glm::mat4* w_opengl::top_matrix()
+// returns a pointer to the top matrix on the stack
+
+w_matrix* w_opengl::top()
 {
 	return &(modelview_stack.top());
-}
-
-void w_opengl::add_transform( const i_transform& t )
-{
-	translate( t.pos );
-	rotate( t.angle );
-	scale( t.scale );
-}
-
-void w_opengl::translate( w_vec3 v )
-{
-	if( !fequals( v.x + v.y + v.z, 0.0f ) )
-	{
-		glm::mat4* mptr = top_matrix();
-		*mptr = glm::translate( *mptr, glm::vec3( v.x, v.y, v.z ) );
-	}
-}
-
-void w_opengl::scale( float v )
-{
-	if( !fequals( v, 1.0f ) )
-	{
-		glm::mat4* mptr = top_matrix();
-		*mptr = glm::scale( *mptr, glm::vec3( v, v, v ) );
-	}
-}
-
-void w_opengl::rotate( float v )
-{
-	if( fmod( v, 360.0f ) )
-	{
-		glm::mat4* mptr = top_matrix();
-		*mptr = glm::rotate( *mptr, glm::radians( v ), glm::vec3( 0.f, 0.f, 1.f ) );
-	}
 }
 
 void w_opengl::clear_texture_bind()

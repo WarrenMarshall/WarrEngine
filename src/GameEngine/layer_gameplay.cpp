@@ -23,7 +23,6 @@ void layer_gameplay::update()
 {
 	w_layer::update();
 
-	//log_msg( "UPDATE!" );
 	tween_pingpong->update();
 	pingpong_xform.pos.x = tween_pingpong->get_fval();
 	
@@ -39,36 +38,36 @@ void layer_gameplay::draw()
 
 	// ----------------------------------------------------------------------------
 
-	engine->opengl->push_identity_matrix();
-	{
-		engine->opengl->add_transform( pingpong_xform );
-		
-		float step_per_fts = tween_pingpong->step_per_sec / w_time::FTS_desired_frames_per_second;
-		step_per_fts *= tween_pingpong->_dir;
-		engine->opengl->translate( w_vec3( step_per_fts * engine->render->frame_interpolate_pct, 0, 0 ) );
-		
-		{
-			SCOPED_VAR( rs_color( W_COLOR_TEAL ) );
-			engine->render->draw_sprite( engine->white_solid );
-		}
-	}
-	engine->opengl->pop_matrix();
+	float step_per_fts = tween_pingpong->step_per_sec / w_time::FTS_desired_frames_per_second;
+	step_per_fts *= tween_pingpong->_dir;
 
+	OPENGL
+		->push( true )
+		->add_transform( pingpong_xform )
+		->translate( w_vec3( step_per_fts * RENDER->frame_interpolate_pct, 0, 0 ) );
+	RENDER
+		->begin()
+		->rs_color( W_COLOR_TEAL )
+		->draw_sprite( engine->white_solid )
+		->end();
+	OPENGL
+		->pop();
+	
 	// ----------------------------------------------------------------------------
 
-	engine->opengl->push_identity_matrix();
-	{
-		engine->opengl->add_transform( rotate_xform );
+	step_per_fts = tween_rotate->step_per_sec / w_time::FTS_desired_frames_per_second;
 
-		float step_per_fts = tween_rotate->step_per_sec / w_time::FTS_desired_frames_per_second;
-		engine->opengl->rotate( step_per_fts * engine->render->frame_interpolate_pct );
-		
-		{
-			SCOPED_VAR( rs_color( W_COLOR_ORANGE ) );
-			engine->render->draw_sprite( engine->white_solid );
-		}
-	}
-	engine->opengl->pop_matrix();
+	OPENGL
+		->push( true )
+		->add_transform( rotate_xform )
+		->rotate( step_per_fts * RENDER->frame_interpolate_pct );
+	RENDER
+		->begin()
+		->rs_color( W_COLOR_ORANGE )
+		->draw_sprite( engine->white_solid )
+		->end();
+	OPENGL
+		->pop();
 }
 
 void layer_gameplay::on_listener_event_received( e_event_id event, void* object )
