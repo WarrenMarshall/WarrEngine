@@ -4,33 +4,33 @@
 
 // ------------------------------------------------------------------------------
 
-void layer_gameplay::push()
+void layer_editor::push()
 {
 	engine->input_mgr->add_listener( this );
-	tween_pingpong = std::make_unique<w_tween>( e_tween_type::pingpong, -150.0f, 150.0f, 15.0f );
-	tween_rotate = std::make_unique<w_tween>( e_tween_type::loop, 0.0f, 360.0f, 50.0f );
+	//tween_pingpong = std::make_unique<w_tween>( e_tween_type::pingpong, -150.0f, 150.0f, 15.0f );
+	//tween_rotate = std::make_unique<w_tween>( e_tween_type::loop, 0.0f, 360.0f, 50.0f );
 
-	pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
-	rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
+	//pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
+	//rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
 }
 
-void layer_gameplay::pop()
+void layer_editor::pop()
 {
 	engine->input_mgr->remove_listener( this );
 }
 
-void layer_gameplay::update()
+void layer_editor::update()
 {
 	w_layer::update();
 
-	tween_pingpong->update();
-	pingpong_xform.pos.x = tween_pingpong->get_fval();
-	
-	tween_rotate->update();
-	rotate_xform.angle = tween_rotate->get_fval();
+	//tween_pingpong->update();
+	//pingpong_xform.pos.x = tween_pingpong->get_fval();
+	//
+	//tween_rotate->update();
+	//rotate_xform.angle = tween_rotate->get_fval();
 }
 
-void layer_gameplay::draw()
+void layer_editor::draw()
 {
 	w_layer::draw();
 
@@ -38,6 +38,7 @@ void layer_gameplay::draw()
 
 	// ----------------------------------------------------------------------------
 
+	/*
 	float step_per_fts = tween_pingpong->step_per_sec / w_time::FTS_desired_frames_per_second;
 	step_per_fts *= tween_pingpong->_dir;
 
@@ -47,7 +48,7 @@ void layer_gameplay::draw()
 		->translate( w_vec3( step_per_fts * RENDER->frame_interpolate_pct, 0, 0 ) );
 	RENDER
 		->begin()
-		->rs_color( W_COLOR_TEAL )
+		->push_color( W_COLOR_TEAL )
 		->draw_sprite( engine->white_solid )
 		->end();
 	OPENGL
@@ -63,33 +64,44 @@ void layer_gameplay::draw()
 		->rotate( step_per_fts * RENDER->frame_interpolate_pct );
 	RENDER
 		->begin()
-		->rs_color( W_COLOR_ORANGE )
+		->push_color( W_COLOR_ORANGE )
 		->draw_sprite( engine->white_solid )
 		->end();
 	OPENGL
 		->pop();
+	*/
 }
 
-void layer_gameplay::on_listener_event_received( e_event_id event, void* object )
+void layer_editor::on_listener_event_received( e_event_id event, void* object )
 {
 	w_input_event* evt = static_cast<w_input_event*>( object );
 
-	if( event == e_event_id::input_pressed )
+	switch( event )
 	{
-		switch( evt->data.input_id )
+		case e_event_id::input_motion:
 		{
-			case e_input_id::mouse_button_right:
-			{
-				w_fibonacci fib;
-				std::string seq = "";
-
-				for( int x = 0 ; x < 50 ; ++x )
-				{
-					seq += s_format( "%d", fib.step() );
-				}
-				log_msg( "%s", seq.c_str() );
-			}
-			break;
+			//log_msg( "%1.2f, %1.2f", evt->data.xpos, evt->data.ypos );
 		}
+		break;
+
+		case e_event_id::input_pressed:
+		{
+			switch( evt->data.input_id )
+			{
+				case e_input_id::mouse_button_right:
+				{
+					w_fibonacci fib;
+					std::string seq = "";
+
+					for( int x = 0 ; x < 50 ; ++x )
+					{
+						seq += s_format( "%d", fib.step() );
+					}
+					log_msg( "%s", seq.c_str() );
+				}
+				break;
+			}
+		}
+		break;
 	}
 }

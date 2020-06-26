@@ -21,7 +21,7 @@ void layer_gameviewport::draw()
 		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
 	RENDER
 		->begin()
-		->rs_color( w_color( 1.0, 1.0, 1.0, 0.25f ) )
+		->push_color( w_color( 1.0, 1.0, 1.0, 0.25f ) )
 		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
 		->end();
 	OPENGL
@@ -29,11 +29,11 @@ void layer_gameviewport::draw()
 
 	// title
 
-	RENDER
-		->begin()
-		->rs_color( W_COLOR_ORANGE )
-		->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered )
-		->end();
+	//RENDER
+	//	->begin()
+	//	->push_color( W_COLOR_ORANGE )
+	//	->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered )
+	//	->end();
 
 	// tiles
 

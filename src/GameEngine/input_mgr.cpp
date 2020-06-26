@@ -89,6 +89,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 w_input_event_data::w_input_event_data()
 {
+	input_id = e_input_id::invalid;
 	mods = -1;
 	xpos = ypos = 0.0f;
 	xdelta = ydelta = 0.0f;

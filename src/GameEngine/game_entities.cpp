@@ -7,8 +7,8 @@
 e_player::e_player()
 	: w_entity()
 {
-	//auto c = add_component<c_sprite>();
-	//c->img = game->tile_masters[ 31 ].img;
+	auto c = add_component<c_sprite>();
+	c->img = game->tile_masters[ 31 ].img;
 
 	// can we define a subtexture within a texture as a resource?
 	//
@@ -21,12 +21,9 @@ void e_player::draw()
 {
 	w_entity::draw();
 
-	//RENDER->draw_circle( w_vec3::zero, 16 );
-
-	// todo : this needs to be a in a static draw buffer
-	//RENDER->draw_line(w_vec3(0, 8, 0), w_vec3(-4, -8, 0));
-	//RENDER->draw_line( w_vec3( 0, 8, 0 ), w_vec3( +4, -8, 0 ) );
-	//RENDER->draw_line( w_vec3( -4, -6, 0 ), w_vec3( +4, -6, 0 ) );
+	RENDER
+		->push_color( W_COLOR_GREEN )
+		->draw_circle( w_vec3::zero, 8 );
 }
 
 // ----------------------------------------------------------------------------

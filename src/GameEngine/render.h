@@ -38,11 +38,11 @@ struct w_render
 	// ----------------------------------------------------------------------------
 	// the current render state
 
-	bool rs_color_used = false;
+	int rs_color_count = 0;
 	std::stack<w_color> rs_color_stack;
 
 	w_render* begin();
-	w_render* rs_color( const w_color& color );
+	w_render* push_color( const w_color& color );
 	void end();
 
 	// ----------------------------------------------------------------------------

@@ -4,6 +4,8 @@ constexpr int ROOM_W = 19;
 constexpr int ROOM_H = 9;
 constexpr int TILE_SZ = 16;
 
+// ----------------------------------------------------------------------------
+
 struct w_tile
 {
 	int id = 0;
@@ -11,10 +13,14 @@ struct w_tile
 	a_image* img = nullptr;
 };
 
+// ----------------------------------------------------------------------------
+
 struct w_world_room
 {
 	std::array< int, ROOM_W* ROOM_H> tiles;
 };
+
+// ----------------------------------------------------------------------------
 
 struct g_custom_game : w_game
 {

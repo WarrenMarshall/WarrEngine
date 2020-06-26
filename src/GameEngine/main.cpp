@@ -114,7 +114,7 @@ int main( int argc, char* argv[] )
 
 		engine->layer_mgr->push( std::make_unique<layer_background>() );
 		engine->layer_mgr->push( std::make_unique<layer_gameviewport>() );
-		engine->layer_mgr->push( std::make_unique<layer_gameplay>() );
+		engine->layer_mgr->push( std::make_unique<layer_editor>() );
 
 		engine->is_running = true;
 		engine->time->init();

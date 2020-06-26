@@ -58,14 +58,14 @@ void w_render::init()
 
 w_render* w_render::begin()
 {
-	rs_color_used = false;
+	rs_color_count = 0;
 
 	return this;
 }
 
-w_render* w_render::rs_color( const w_color& color )
+w_render* w_render::push_color( const w_color& color )
 {
-	rs_color_used = true;
+	rs_color_count++;
 	rs_color_stack.push( color );
 
 	return this;
@@ -73,10 +73,13 @@ w_render* w_render::rs_color( const w_color& color )
 
 void w_render::end()
 {
-	if( rs_color_used )
+	while( rs_color_count )
+	{
 		rs_color_stack.pop();
+		rs_color_count--;
+	}
 
-	rs_color_used = false;
+	rs_color_count = 0;
 }
 
 /*
@@ -283,16 +286,16 @@ void w_render::end_frame()
 
 w_render* w_render::draw_world_axis()
 {
-	SCOPED_VAR( rs_color( w_color(1.0f,0.0f,0.0f) ) );
+	SCOPED_VAR( push_color( w_color(1.0f,0.0f,0.0f) ) );
 	draw_line( w_vec3::zero, w_vec3( 5000, 0, 500 ) );
 
-	SCOPED_VAR( rs_color( w_color( 0.5f, 0.0f, 0.0f ) ) );
+	SCOPED_VAR( push_color( w_color( 0.5f, 0.0f, 0.0f ) ) );
 	draw_line( w_vec3::zero, w_vec3( -5000, 0, 500 ) );
 
-	SCOPED_VAR( rs_color( w_color( 0.0f, 1.0f, 0.0f ) ) );
+	SCOPED_VAR( push_color( w_color( 0.0f, 1.0f, 0.0f ) ) );
 	draw_line( w_vec3::zero, w_vec3( 0, 5000, 500 ) );
 
-	SCOPED_VAR( rs_color( w_color( 0.0f, 0.5f, 0.0f ) ) );
+	SCOPED_VAR( push_color( w_color( 0.0f, 0.5f, 0.0f ) ) );
 	draw_line( w_vec3::zero, w_vec3( 0, -5000, 500 ) );
 
 	return this;
@@ -330,20 +333,23 @@ w_render* w_render::draw_stats()
 	assert( stat_lines.size() < stats_draw_reserve );
 
 	auto font = engine->get_asset<a_font>( "ui_simple_font" );
+
+	RENDER->begin();
 	{
 		RENDER
-			->begin()
-			->rs_color( w_color( .25f, .25f, .25f, 0.75f ) )
-			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f )
-			->end();
-	}
+			->push_color( w_color( .25f, .25f, .25f, 0.75f ) )
+			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f );
 
-	float y = v_window_hh;
-	for( auto& iter : stat_lines)
-	{
-		RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
-		y -= font->font_def->max_height;
+		RENDER->push_color( W_COLOR_WHITE );
+
+		float y = v_window_hh;
+		for( auto& iter : stat_lines )
+		{
+			RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
+			y -= font->font_def->max_height;
+		}
 	}
+	RENDER->end();
 
 	return this;
 }

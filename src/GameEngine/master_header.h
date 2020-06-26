@@ -43,7 +43,7 @@
 #include "layer_mgr.h"
 #include "layer_background.h"
 #include "layer_mainmenu.h"
-#include "layer_gameplay.h"
+#include "layer_editor.h"
 #include "layer_gameviewport.h"
 
 #include "io_zip.h"

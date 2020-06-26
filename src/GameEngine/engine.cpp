@@ -161,6 +161,8 @@ void w_engine::draw()
 			->push( true )
 			->translate( w_vec3( -v_window_hw, -v_window_hh, 200 ) );
 
+		render->begin();
+
 		w_vec3 v0, v1, v2, v3;
 
 		v0 = w_vec3::zero;
@@ -168,7 +170,7 @@ void w_engine::draw()
 		v2 = w_vec3( v_window_w - 1, v_window_h - 1, 0 );
 		v3 = w_vec3( 0, v_window_h - 1, 0 );
 
-		SCOPED_VAR( rs_color( W_COLOR_YELLOW ) );
+		render->push_color( W_COLOR_YELLOW );
 		render->draw_line( v0, v1 );
 		render->draw_line( v1, v2 );
 		render->draw_line( v2, v3 );
@@ -179,7 +181,7 @@ void w_engine::draw()
 		v2 = w_vec3( v_window_w - 2, v_window_h - 2, 0 );
 		v3 = w_vec3( 1, v_window_h - 2, 0 );
 
-		SCOPED_VAR( rs_color( W_COLOR_ORANGE ) );
+		render->push_color( W_COLOR_ORANGE );
 		render->draw_line( v0, v1 );
 		render->draw_line( v1, v2 );
 		render->draw_line( v2, v3 );
@@ -190,7 +192,7 @@ void w_engine::draw()
 		v2 = w_vec3( v_window_w - 3, v_window_h - 3, 0 );
 		v3 = w_vec3( 2, v_window_h - 3, 0 );
 
-		SCOPED_VAR( rs_color( W_COLOR_RED ) );
+		render->push_color( W_COLOR_RED );
 		render->draw_line( v0, v1 );
 		render->draw_line( v1, v2 );
 		render->draw_line( v2, v3 );
@@ -198,6 +200,8 @@ void w_engine::draw()
 
 		opengl->pop();
 	}
+
+	render->end();
 }
 
 void w_engine::update()

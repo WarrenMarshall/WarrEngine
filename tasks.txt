@@ -5,12 +5,6 @@
 [*] trash/recycling to curb
 [*] porch bulb
 
-* add a ping-pong graphic that moves back and forth
-* add a rotating graphic
-- make interpolation work
-- add particle system
-- make interpolation work
-
 - clunky af
 	engine->white_wire->get_texture()->render_buffer->prim_type
 - prone to error, because the render_buffer in a_image is not real

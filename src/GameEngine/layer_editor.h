@@ -1,6 +1,6 @@
 #pragma once
 
-struct layer_gameplay : w_layer
+struct layer_editor : w_layer
 {
 	i_transform pingpong_xform;
 	std::unique_ptr<w_tween> tween_pingpong;

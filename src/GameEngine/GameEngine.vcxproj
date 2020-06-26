@@ -185,7 +185,7 @@
     <ClCompile Include="i_transform.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="layer_gameplay.cpp" />
+    <ClCompile Include="layer_editor.cpp" />
     <ClCompile Include="layer_gameviewport.cpp" />
     <ClCompile Include="mathutil.cpp" />
     <ClCompile Include="matrix.cpp" />
@@ -244,7 +244,7 @@
     <ClInclude Include="layer.h" />
     <ClInclude Include="datatypes.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="layer_gameplay.h" />
+    <ClInclude Include="layer_editor.h" />
     <ClInclude Include="master_enum.h" />
     <ClInclude Include="master_pch.h" />
     <ClInclude Include="matrix.h" />
