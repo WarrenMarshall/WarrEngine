@@ -24,7 +24,7 @@ void w_particle_pool::draw()
 	float pct_of_life, angle;
 	w_color color;
 
-	OPENGL->push( false );
+	MATRIX->push();
 
 	for( auto& iter : *particles )
 	{
@@ -44,19 +44,17 @@ void w_particle_pool::draw()
 			float scale;
 			iter.t_scale->get_value( pct_of_life, &scale );
 
-			OPENGL
-				->push( false )
-				->translate( iter.pos )
-				->rotate( iter.spin )
-				->scale( iter.base_scale * scale );
+			MATRIX
+				->push()
+				->add_transform( iter.pos, iter.spin, iter.base_scale * scale );
 
 			// warren
 			//RENDER->draw_sprite( iter.tex, color );
 
-			OPENGL->pop();
+			MATRIX->pop();
 		}
 	}
-	OPENGL->pop();
+	MATRIX->pop();
 }
 
 void w_particle_pool::update()

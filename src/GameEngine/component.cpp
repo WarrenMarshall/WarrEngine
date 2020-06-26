@@ -110,12 +110,12 @@ void c_emitter::draw()
 		return;
 	}
 
-	OPENGL
-		->push( true );
+	MATRIX
+		->push_identity();
 
 	emitter->particle_pool->draw();
 
-	OPENGL
+	MATRIX
 		->pop();
 }
 

@@ -12,6 +12,7 @@ void layer_editor::push()
 
 	//pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
 	//rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
+	selection_bracket = engine->get_asset<a_image>( "selection_bracket" );
 }
 
 void layer_editor::pop()
@@ -35,6 +36,11 @@ void layer_editor::draw()
 	w_layer::draw();
 
 	game->draw_entities();
+
+	if( draw_selection_bracket )
+	{
+
+	}
 
 	// ----------------------------------------------------------------------------
 
@@ -80,6 +86,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 	{
 		case e_event_id::input_motion:
 		{
+			tile_from_screen_pos( evt->data.xpos, evt->data.ypos );
 			//log_msg( "%1.2f, %1.2f", evt->data.xpos, evt->data.ypos );
 		}
 		break;
@@ -104,4 +111,22 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 		}
 		break;
 	}
+}
+
+// takes a position within the game viewport and converts it into
+// a tile index within the current room
+
+int layer_editor::tile_from_screen_pos( float xpos, float ypos )
+{
+	//w_world_room* room = &game->test_room;
+
+	float tiles_x = 0;
+	float tiles_y = TILE_SZ * 2;
+
+	int tile_x = static_cast<int>( ( xpos - tiles_x ) / TILE_SZ );
+	int tile_y = static_cast<int>( ( ypos - tiles_y ) / TILE_SZ );
+
+	log_msg( "%d,%d", tile_x, tile_y );
+
+	return 0;
 }

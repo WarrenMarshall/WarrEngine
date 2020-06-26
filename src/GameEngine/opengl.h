@@ -16,7 +16,8 @@ struct w_opengl
 	void init();
 	void deinit();
 
-	w_matrix* push( bool identity );
+	w_matrix* push();
+	w_matrix* push_identity();
 	w_matrix* top();
 	void pop();
 

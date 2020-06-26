@@ -59,7 +59,7 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
     // until this point, the vertex has been in model coordinate space.
 
     glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
-    v4 = OPENGL->top()->m * v4;
+    v4 = MATRIX->top()->m * v4;
 
     w_render_vert rv( w_vec3( v4.x, v4.y, v4.z ), w_uv( render_vert.u, render_vert.v ), w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a ) );
     

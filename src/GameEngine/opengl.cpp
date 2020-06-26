@@ -86,13 +86,15 @@ void w_opengl::deinit()
 // this can either be an identity matrix, or a copy of the
 // existing top matrix
 
-w_matrix* w_opengl::push( bool identity )
+w_matrix* w_opengl::push_identity()
 {
-	if( identity )
-		modelview_stack.push( w_matrix::make_identity() );
-	else
-		modelview_stack.push( *top() );
+	modelview_stack.push( w_matrix::make_identity() );
+	return top();
+}
 
+w_matrix* w_opengl::push()
+{
+	modelview_stack.push( *top() );
 	return top();
 }
 

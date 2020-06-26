@@ -36,10 +36,10 @@ void w_render::init()
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
 	// push an identity matrix onto the stack. this will always live
-	// as the last element in the stack and should be the only
+	// as the first element in the stack and should be the only
 	// matrix remaining when the frame finishes rendering.
-	OPENGL
-		->push( true );
+	MATRIX
+		->push_identity();
 
 	// initialize render state stacks
 	rs_color_stack.push( W_COLOR_WHITE );
@@ -175,14 +175,14 @@ w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& te
 			// small optimization to skip drawing completely blank characters
 			if( fch->w > 0 )
 			{
-				OPENGL
-					->push( false )
+				MATRIX
+					->push()
 					->translate( w_vec3( xpos + fch->xoffset, ypos - fch->h - fch->yoffset, pos.z ) );
 				draw(
 					fch->img.get(),
 					w_vec2( fch->w, fch->h )
 				);
-				OPENGL
+				MATRIX
 					->pop();
 			}
 

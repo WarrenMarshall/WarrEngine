@@ -158,7 +158,7 @@ void w_engine::draw()
 	if( is_paused )
 	{
 		opengl
-			->push( true )
+			->push_identity()
 			->translate( w_vec3( -v_window_hw, -v_window_hh, 200 ) );
 
 		render->begin();

@@ -151,5 +151,6 @@ constexpr float v_window_hh = v_window_h / 2.0f;
 typedef w_vec2 w_uv;
 typedef w_vec2 w_sz;
 
+#define MATRIX engine->opengl
 #define OPENGL engine->opengl
 #define RENDER engine->render

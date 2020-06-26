@@ -7,9 +7,16 @@ struct layer_editor : w_layer
 	i_transform rotate_xform;
 	std::unique_ptr<w_tween> tween_rotate;
 
+	bool draw_selection_bracket = false;
+	a_image* selection_bracket = nullptr;
+
+	w_vec2 hover_tile = w_vec2( -1.0f, -1.0f );
+
 	virtual void push();
 	virtual void pop();
 	virtual void update();
 	virtual void draw();
 	void on_listener_event_received( e_event_id event, void* object );
+
+	int tile_from_screen_pos( float xpos, float ypos );
 };

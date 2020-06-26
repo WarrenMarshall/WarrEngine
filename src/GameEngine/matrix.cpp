@@ -17,6 +17,15 @@ w_matrix* w_matrix::add_transform( const i_transform& t )
 	return this;
 }
 
+w_matrix* w_matrix::add_transform( const w_vec3& pos, const float& angle, const float& _scale )
+{
+	translate( pos );
+	rotate( angle );
+	scale( _scale );
+
+	return this;
+}
+
 w_matrix* w_matrix::translate( const w_vec3& v )
 {
 	if( !fequals( v.x + v.y + v.z, 0.0f ) )

@@ -16,31 +16,31 @@ void layer_gameviewport::draw()
 
 	// gradient
 
-	OPENGL
-		->push( false )
+	MATRIX
+		->push()
 		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
 	RENDER
 		->begin()
 		->push_color( w_color( 1.0, 1.0, 1.0, 0.25f ) )
 		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
 		->end();
-	OPENGL
+	MATRIX
 		->pop();
 
 	// title
 
-	//RENDER
-	//	->begin()
-	//	->push_color( W_COLOR_ORANGE )
-	//	->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered )
-	//	->end();
+	RENDER
+		->begin()
+		->push_color( W_COLOR_ORANGE )
+		->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered )
+		->end();
 
 	// tiles
 
 	w_matrix* mtx =
-		OPENGL
-			->push( false )
-			->translate( w_vec3( -v_window_hw, v_window_hh - (TILE_SZ * 3), 0 ) );
+		MATRIX
+		->push()
+		->translate( w_vec3( -v_window_hw, v_window_hh - (TILE_SZ * 3), 0 ) );
 
 	for( int y = 0 ; y < ROOM_H ; ++y )
 	{
@@ -56,5 +56,5 @@ void layer_gameviewport::draw()
 		mtx->translate( w_vec3( 0, -TILE_SZ, 0 ) );
 	}
 
-	OPENGL->pop();
+	MATRIX->pop();
 }
