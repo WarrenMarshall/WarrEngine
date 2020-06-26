@@ -12,7 +12,8 @@ void layer_editor::push()
 
 	//pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
 	//rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
-	selection_bracket = engine->get_asset<a_image>( "selection_bracket" );
+	selector_bracket = std::make_unique<a_image>();
+	selector_bracket->create_from_texture( "selector_bracket" );
 }
 
 void layer_editor::pop()
@@ -37,9 +38,16 @@ void layer_editor::draw()
 
 	game->draw_entities();
 
-	if( draw_selection_bracket )
+	if( draw_selector_bracket )
 	{
-
+		MATRIX
+			->push_identity()
+			->translate( w_vec3(
+				-v_window_hw + ( hover_tile.x * TILE_SZ ),
+				0,// ( TILE_SZ * 2 ) + hover_tile.y * TILE_SZ,
+				1000 ) );
+		RENDER->draw_sprite( selector_bracket.get() );
+		MATRIX->pop();
 	}
 
 	// ----------------------------------------------------------------------------
@@ -126,7 +134,10 @@ int layer_editor::tile_from_screen_pos( float xpos, float ypos )
 	int tile_x = static_cast<int>( ( xpos - tiles_x ) / TILE_SZ );
 	int tile_y = static_cast<int>( ( ypos - tiles_y ) / TILE_SZ );
 
-	log_msg( "%d,%d", tile_x, tile_y );
+	//log_msg( "%d,%d", tile_x, tile_y );
+
+	hover_tile = w_vec2( static_cast<float>( tile_x ), static_cast<float>( tile_y ) );
+	draw_selector_bracket = ( tile_x > -1 && tile_x < 19 && tile_y > -1 && tile_y < 10 );
 
 	return 0;
 }
