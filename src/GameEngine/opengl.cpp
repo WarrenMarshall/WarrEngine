@@ -88,7 +88,7 @@ void w_opengl::deinit()
 
 w_matrix* w_opengl::push_identity()
 {
-	modelview_stack.push( w_matrix::make_identity() );
+	modelview_stack.push( w_matrix() );
 	return top();
 }
 

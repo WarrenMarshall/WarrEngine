@@ -20,7 +20,7 @@ void layer_gameviewport::draw()
 		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
 	RENDER
 		->begin()
-		->push_color( w_color( 1.0, 1.0, 1.0, 0.35f ) )
+		->push_color( w_color( 1.0f, 1.0f, 1.0f, 0.35f ) )
 		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
 		->end();
 	MATRIX

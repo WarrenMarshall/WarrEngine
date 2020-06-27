@@ -2,9 +2,9 @@
 
 struct w_matrix
 {
-	glm::mat4 m;
+	glm::mat4 m = glm::mat4(1);
 
-	static w_matrix make_identity();
+	w_matrix() = default;
 
 	w_matrix* add_transform( const i_transform& t );
 	w_matrix* add_transform( const w_vec3& pos, const float& angle, const float& _scale );

@@ -125,7 +125,7 @@ constexpr float W_PI = 3.14159265358979323846f;
 // ----------------------------------------------------------------------------
 
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
-#define fequals(a,b) ( (a-b) < FLT_EPSILON && (a-b) > -FLT_EPSILON )
+#define fequals(a,b) ( ((a)-(b)) < FLT_EPSILON && ((a)-(b)) > -FLT_EPSILON )
 
 // ----------------------------------------------------------------------------
 /*
