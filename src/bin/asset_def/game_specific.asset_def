@@ -1,28 +1,4 @@
 
-{
-	"type" "sound"
-	"name" "player_hit"
-	"filename" "audio/Fire_Spell_Impact.wav"
-}
-
-{
-	"type" "sound"
-	"name" "fireball_spawn"
-	"filename" "audio/Fire_Missile_Activate.wav"
-}
-
-{
-	"type" "sound"
-	"name" "fireball_blocked"
-	"filename" "audio/Shield_Buff_v2.wav"
-}
-
-{
-	"type" "music"
-	"name" "crackling_fire"
-	"filename" "audio/Fireplace 1 (loop).mp3"
-}
-
 # ---------------------------------------------------------
 # Medieval font
 # ---------------------------------------------------------

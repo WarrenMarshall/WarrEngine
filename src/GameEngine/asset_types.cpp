@@ -88,15 +88,15 @@ void a_texture::draw( e_render_pass render_pass )
 
 // ----------------------------------------------------------------------------
 
-void a_image::create_from_texture( const std::string& tex_name )
+a_image::a_image( const std::string& tex_name )
 {
 	tex = engine->get_asset<a_texture>( tex_name );
 
-	rc_src.w = tex->w;
-	rc_src.h = tex->h;
+	rc_src.w = sz.w = tex->w;
+	rc_src.h = sz.h = tex->h;
 }
 
-void a_image::create_from_texture( const std::string& texture_name, const w_rect& rc )
+a_image::a_image( const std::string& texture_name, const w_rect& rc )
 {
 	// find the texture being referenced
 	tex = engine->get_asset<a_texture>( texture_name );
@@ -326,9 +326,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->w = w;
 			fch->h = h;
 
-			a_texture* tex = engine->get_asset<a_texture>( texture_name );
-			fch->img = std::make_unique<a_image>();
-			fch->img->create_from_texture( texture_name, w_rect( x, y, w, h ) );
+			fch->img = std::make_unique<a_image>( texture_name, w_rect( x, y, w, h ) );
 
 			max_height = w_max( max_height, fch->h + fch->yoffset );
 		}

@@ -368,14 +368,12 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				auto asset_ptr = engine->get_asset<a_image>( name.c_str(), true );
 
 				if( !asset_ptr )
+				{
+					w_rect rc = w_parser::parse_rect_value( iter_ad->key_values[ "rect" ] );
 					asset_ptr = static_cast<a_image*>(
-						engine->asset_cache->add( std::make_unique<a_image>(), name.c_str(), "" )
-						);
-				// ------------------------------------------------------------------------
-
-				w_rect rc = w_parser::parse_rect_value( iter_ad->key_values[ "rect" ] );
-
-				asset_ptr->create_from_texture( iter_ad->key_values[ "texture" ], rc );
+						engine->asset_cache->add( std::make_unique<a_image>( iter_ad->key_values[ "texture" ], rc ), name.c_str(), "" )
+					);
+				}
 
 				// ------------------------------------------------------------------------
 

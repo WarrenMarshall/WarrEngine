@@ -6,8 +6,7 @@
 
 void layer_gameviewport::push()
 {
-	img_gradient = std::make_unique<a_image>();
-	img_gradient->create_from_texture( "background_gradient" );
+	img_gradient = std::make_unique<a_image>( "background_gradient" );
 }
 
 void layer_gameviewport::draw()
@@ -21,7 +20,7 @@ void layer_gameviewport::draw()
 		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
 	RENDER
 		->begin()
-		->push_color( w_color( 1.0, 1.0, 1.0, 0.15f ) )
+		->push_color( w_color( 1.0, 1.0, 1.0, 0.35f ) )
 		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
 		->end();
 	MATRIX

@@ -41,8 +41,9 @@ struct a_image : i_asset
 	w_uv uv00 = w_uv( 0, 0 );
 	w_uv uv11 = w_uv( 1, 1 );
 
-	void create_from_texture( const std::string& tex_name );
-	void create_from_texture( const std::string& tex_name, const w_rect& rc );
+	a_image( const std::string& tex_name );
+	a_image( const std::string& tex_name, const w_rect& rc );
+
 	a_texture* get_texture();
 	void bind();
 	void unbind();
