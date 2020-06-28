@@ -13,12 +13,16 @@ void layer_editor::push()
 	//pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
 	//rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
 	selector_bracket = std::make_unique<a_image>( "selector_bracket" );
-	mouse_cursor = std::make_unique<a_image>( "ui_cursor" );
+	mouse_cursor = engine->get_asset<a_cursor>( "ui_cursor" );
+
+	engine->input_mgr->set_mouse_mode( e_mouse_mode::hidden );
 }
 
 void layer_editor::pop()
 {
 	engine->input_mgr->remove_listener( this );
+
+	engine->input_mgr->set_mouse_mode( e_mouse_mode::normal );
 }
 
 void layer_editor::update()
@@ -49,6 +53,20 @@ void layer_editor::draw()
 		
 		MATRIX->pop();
 	}
+
+	// mouse cursor test
+
+	//log_msg( "fuck : %1.2f", v_window_hh - engine->input_mgr->mouse_vwindow_pos.y );
+	MATRIX
+		->push_identity()
+		->translate( w_vec3(
+			-v_window_hw + engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
+			v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y,
+			1000 ) );
+
+	RENDER->draw( mouse_cursor->img.get() );
+
+	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
 

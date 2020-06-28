@@ -373,6 +373,15 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 
 // ----------------------------------------------------------------------------
 
+bool a_cursor::create_internals( bool is_hot_reloading )
+{
+	img = std::make_unique<a_image>( tex->name );
+
+	return true;
+}
+
+// ----------------------------------------------------------------------------
+
 bool a_9slice_def::create_internals( bool is_hot_reloading )
 {
 	// save the last time modified for hot reloading

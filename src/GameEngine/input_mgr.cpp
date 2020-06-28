@@ -82,6 +82,9 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 		data.xpos = vx;
 		data.ypos = vy;
 
+		engine->input_mgr->mouse_vwindow_pos.x = vx;
+		engine->input_mgr->mouse_vwindow_pos.y = vy;
+
 		engine->input_mgr->event_input_motion( e_event_id::input_motion, data );
 	}
 }

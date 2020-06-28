@@ -61,6 +61,8 @@ struct w_input_mgr : i_speaker
 	int event_queue_idx = 0;
 	static const int event_queue_max = 10;
 	std::unique_ptr<std::vector<w_input_event>> event_queue;
+	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
+	
 	w_input_event* get_next_event_slot();
 
 	/*

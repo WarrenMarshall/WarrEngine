@@ -158,8 +158,11 @@ struct a_font : i_asset
 
 struct a_cursor : i_asset
 {
-	w_vec2 hotspot_offset;
+	w_vec2 hotspot_offset = w_vec2( 0, 0 );
 	a_texture* tex = nullptr;
+	std::unique_ptr<a_image> img = nullptr;
+
+	virtual bool create_internals( bool is_hot_reloading );
 };
 
 // ----------------------------------------------------------------------------
