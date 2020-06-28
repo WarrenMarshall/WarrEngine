@@ -118,7 +118,6 @@ void w_engine::init()
 	asset_definition_file_cache = std::make_unique<w_cache_asset_definition_files>();
 	asset_cache = std::make_unique<w_cache_assets>();
 	layer_mgr = std::make_unique<w_layer_mgr>();
-	random = std::make_unique<w_random>();
 	window = std::make_unique<w_window>();
 	render = std::make_unique<w_render>();
 	input_mgr = std::make_unique<w_input_mgr>();
@@ -127,7 +126,7 @@ void w_engine::init()
 	opengl = std::make_unique<w_opengl>();
 
 	input_mgr->add_listener( this );
-	random->seed();
+	w_random::seed();
 	fs->init();
 
 	if( g_allow_hot_reload )

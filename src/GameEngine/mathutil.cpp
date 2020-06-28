@@ -6,11 +6,11 @@
 
 w_fibonacci::w_fibonacci()
 {
-	v1 = engine->random->geti_range( 1, 9 );
+	v1 = w_random::geti_range( 1, 9 );
 	v2 = v1;
 
 	while( v1 == v2)
-		v2 = engine->random->geti_range( 1, 9 );
+		v2 = w_random::geti_range( 1, 9 );
 
 	sum = ( v1 + v2 ) % 10;
 }

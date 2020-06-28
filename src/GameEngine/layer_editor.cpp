@@ -139,7 +139,7 @@ int layer_editor::tile_from_screen_pos( float xpos, float ypos )
 	//log_msg( "%d,%d", tile_x, tile_y );
 
 	hover_tile = w_vec2( static_cast<float>( tile_x ), static_cast<float>( tile_y ) );
-	draw_selector_bracket = ( tile_x > -1 && tile_x < 19 && tile_y > -1 && tile_y < 9 );
+	draw_selector_bracket = ( tile_x >= 0 && tile_x < 19 && tile_y >= 0 && tile_y < 9 );
 
 	return 0;
 }

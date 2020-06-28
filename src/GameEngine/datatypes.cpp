@@ -127,7 +127,7 @@ w_range::w_range( std::string str )
 
 float w_range::get_value()
 {
-	return min + ( ( max - min ) * engine->random->getf() );
+	return min + ( ( max - min ) * w_random::getf() );
 }
 
 // ----------------------------------------------------------------------------

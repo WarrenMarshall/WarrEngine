@@ -51,7 +51,6 @@ struct w_engine : i_listener
 	std::unique_ptr<w_time> time = nullptr;
 	std::unique_ptr<w_cache_assets> asset_cache = nullptr;
 	std::unique_ptr<w_layer_mgr> layer_mgr = nullptr;
-	std::unique_ptr<w_random> random = nullptr;
 	std::unique_ptr<w_window> window = nullptr;
 	std::unique_ptr<w_render> render = nullptr;
 	std::unique_ptr<w_input_mgr> input_mgr = nullptr;

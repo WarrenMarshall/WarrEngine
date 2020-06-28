@@ -106,6 +106,6 @@ float w_tween::get_fval()
 */
 void w_tween::randomize()
 {
-	_fval = start + ( ( end - start ) * engine->random->getf() );
+	_fval = start + ( ( end - start ) * w_random::getf() );
 	_ival = static_cast<int>( round( _fval ) );
 }
