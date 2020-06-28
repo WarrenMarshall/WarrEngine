@@ -9,6 +9,7 @@ struct layer_editor : w_layer
 
 	bool draw_selector_bracket = false;
 	std::unique_ptr<a_image> selector_bracket = nullptr;
+	std::unique_ptr<a_image> mouse_cursor = nullptr;
 
 	w_vec2 hover_tile = w_vec2( -1.0f, -1.0f );
 

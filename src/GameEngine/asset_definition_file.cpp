@@ -76,7 +76,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				// ------------------------------------------------------------------------
 
 				asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->key_values["alignment"] ) );
-				
+
 				asset_ptr->colors.clear();
 
 				std::string color_list = iter_ad->key_values["colors"];
@@ -430,7 +430,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 
 	w_mem_file* mf = file.get();
 	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
-	
+
 	w_tokenizer tok( file_as_string, '\n', "" );
 
 	std::string line = tok.get_next_token();
@@ -451,7 +451,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 
 			// strip comments off the back ends of lines
 			size_t pos = line.find_first_of( "#" );
-				
+
 			if( pos != std::string::npos )
 				line = w_stringutil::rtrim( line.substr( 0, pos ) );
 

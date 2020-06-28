@@ -13,6 +13,7 @@ void layer_editor::push()
 	//pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
 	//rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
 	selector_bracket = std::make_unique<a_image>( "selector_bracket" );
+	mouse_cursor = std::make_unique<a_image>( "ui_cursor" );
 }
 
 void layer_editor::pop()

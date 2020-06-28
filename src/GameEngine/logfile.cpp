@@ -4,7 +4,7 @@
 
 void w_logfile::init( const std::string& name )
 {
-	fopen_s( &file, s_format( "%s_log.txt", name.c_str() ).c_str(), "wt" );
+	fopen_s( &file, (name + "_log.txt").c_str(), "wt" );
 	assert( file );
 }
 
@@ -39,7 +39,7 @@ void w_logfile::time_stamp( const std::string msg )
 	localtime_s( &time_info, &raw_time );
 	strftime( &time_str[ 0 ], 100, "%c", &time_info );
 
-	log_msg( "%s : %s", msg.c_str(), time_str );
+	log_msg( msg + " : " + time_str );
 }
 
 void w_logfile::msg( const std::string msg, ... )
