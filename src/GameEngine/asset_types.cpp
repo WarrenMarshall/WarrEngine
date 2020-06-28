@@ -358,7 +358,7 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 
 	bool inside_color_code = false;
 
-	for( auto& iter : text )
+	for( const auto& iter : text )
 	{
 		pxch = &( font_def->char_map[ iter ] );
 

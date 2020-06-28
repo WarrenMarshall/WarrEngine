@@ -45,6 +45,7 @@ struct w_engine : i_listener
 	w_color find_color_from_symbol( std::string str, w_color def_value = W_COLOR_WHITE );
 	w_range find_range_from_symbol( std::string str, w_range def_value = w_range( 0, 1 ) );
 	w_vec2 find_vec2_from_symbol( std::string str, w_vec2 def_value = w_vec2( 0, 0 ) );
+	w_vec3 find_vec3_from_symbol( std::string str, w_vec3 def_value = w_vec3( 0, 0, 0 ) );
 
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
 

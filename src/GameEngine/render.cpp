@@ -205,7 +205,7 @@ void w_render::begin_frame( float frame_interpolate_pct )
 
 	// reset all render buffers
 
-	for( auto& iter : engine->asset_cache->cache )
+	for( const auto& iter : engine->asset_cache->cache )
 	{
 		iter.second->clear_render_buffer();
 	}
@@ -240,12 +240,12 @@ void w_render::end_frame()
 
 	// draw all render buffers
 
-	for( auto& iter : engine->asset_cache->cache )
+	for( const auto& iter : engine->asset_cache->cache )
 	{
 		iter.second->draw( e_render_pass::opaque );
 	}
 
-	for( auto& iter : engine->asset_cache->cache )
+	for( const auto& iter : engine->asset_cache->cache )
 	{
 		glDepthMask( GL_FALSE );
 		iter.second->draw( e_render_pass::transparent );
@@ -342,7 +342,7 @@ w_render* w_render::draw_stats()
 		RENDER->push_color( W_COLOR_WHITE );
 
 		float y = v_window_hh;
-		for( auto& iter : stat_lines )
+		for( const auto& iter : stat_lines )
 		{
 			RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
 			y -= font->font_def->max_height;

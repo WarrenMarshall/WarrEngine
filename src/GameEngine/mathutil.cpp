@@ -31,27 +31,27 @@ int w_fibonacci::step()
 
 void w_accum_value::init()
 {
-	value = accumulator = 0.0f;
+	value = _accumulator = 0.0f;
 }
 
 void w_accum_value::update_value( int steps )
 {
-	value = accumulator / static_cast<float>( steps );
-	accumulator = 0.0f;
+	value = _accumulator / static_cast<float>( steps );
+	_accumulator = 0.0f;
 }
 
 void w_accum_value::update_value()
 {
-	value = accumulator;
-	accumulator = 0.0f;
+	value = _accumulator;
+	_accumulator = 0.0f;
 }
 
 void w_accum_value::accum( float value )
 {
-	accumulator += value;
+	_accumulator += value;
 }
 
 void w_accum_value::inc()
 {
-	accumulator += 1.0f;
+	_accumulator += 1.0f;
 }

@@ -10,7 +10,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 {
 	std::string type, name, filename;
 
-	for( auto& iter_ad : asset_definitions )
+	for( const auto& iter_ad : asset_definitions )
 	{
 		assert_key_exists( "??", *(iter_ad.get()), "type" );
 		assert_key_exists( "??", *( iter_ad.get() ), "name" );
@@ -103,7 +103,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					color_values.emplace_back( w_stringutil::trim( val ) );
 				}
 
-				for( auto& iter : color_values )
+				for( const auto& iter : color_values )
 				{
 					val = iter;
 
@@ -157,7 +157,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				for( auto& iter : iter_ad->key_values )
+				for( const auto& iter : iter_ad->key_values )
 				{
 					std::string key = iter.first;
 					std::string value = iter.second;
@@ -253,7 +253,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				for( auto& iter : iter_ad->key_values )
+				for( const auto& iter : iter_ad->key_values )
 				{
 					std::string key = iter.first;
 					std::string value = iter.second;

@@ -31,7 +31,7 @@ void i_speaker::remove_listener( i_listener* listener )
 
 void i_speaker::send_event_to_listeners( e_event_id event, void* object )
 {
-	for( auto iter : listeners )
+	for( const auto& iter : listeners )
 	{
 		iter->on_listener_event_received( event, object );
 	}

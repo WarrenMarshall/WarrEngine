@@ -105,6 +105,19 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string symbol, w_vec2 def_value )
 	return w_vec2( sval );
 }
 
+w_vec3 w_engine::find_vec3_from_symbol( std::string symbol, w_vec3 def_value )
+{
+	std::string sval = find_val_from_symbol( symbol );
+
+	if( sval == "n/a" )
+	{
+		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		sval = "0,0,0";
+	}
+
+	return w_vec3( sval );
+}
+
 /*
 	called ONCE, as the engine is starting up
 */
@@ -207,7 +220,7 @@ void w_engine::update()
 {
 	layer_mgr->update();
 
-	for( auto& asset : asset_cache->cache )
+	for( const auto& asset : asset_cache->cache )
 	{
 		asset.second->update();
 	}
@@ -240,7 +253,7 @@ void w_engine::cache_asset_definition_files()
 	std::vector<std::string> filenames;
 	engine->fs->scan_folder_for_ext( filenames, "asset_def", ".asset_def" );
 
-	for( auto& iter : filenames )
+	for( const auto& iter : filenames )
 	{
 		engine->asset_definition_file_cache->add( iter.c_str(), iter.c_str() );
 	}
@@ -256,7 +269,7 @@ void w_engine::precache_asset_resources()
 {
 	for( int p = 0; p < w_engine::num_asset_def_passes; ++p )
 	{
-		for( auto& iter_adf : engine->asset_definition_file_cache->cache )
+		for( const auto& iter_adf : engine->asset_definition_file_cache->cache )
 		{
 			iter_adf.second->precache_asset_resources( p, false );
 		}
@@ -338,7 +351,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 					w_render_buffer* rb;
 
-					for( auto const &iter : asset_cache->cache )
+					for( const auto& iter : asset_cache->cache )
 					{
 						if( iter.second->render_buffer )
 						{

@@ -15,7 +15,7 @@ w_entity::~w_entity()
 
 void w_entity::update()
 {
-	for( auto& iter : components )
+	for( const auto& iter : components )
 	{
 		iter->update();
 	}
@@ -23,7 +23,7 @@ void w_entity::update()
 
 void w_entity::draw_components()
 {
-	for( auto const& iter : components )
+	for( const auto& iter : components )
 	{
 		MATRIX
 			->push()
@@ -49,7 +49,7 @@ void w_entity::draw()
 
 void w_entity::post_spawn()
 {
-	for( auto const& iter : components )
+	for( const auto& iter : components )
 	{
 		iter->post_spawn();
 	}
@@ -83,7 +83,7 @@ bool w_entity::can_be_deleted()
 		// entity is dying, but can't be deleted until all
 		// components are dead
 
-		for( auto& iter : components )
+		for( const auto& iter : components )
 		{
 			if( !iter->is_fully_dead() )
 			{
@@ -100,7 +100,7 @@ void w_entity::set_life_cycle( e_lifecycle lifecycle )
 {
 	i_lifecycle::set_life_cycle( lifecycle );
 
-	for( auto& iter : components )
+	for( const auto& iter : components )
 	{
 		iter->set_life_cycle( lifecycle );
 	}

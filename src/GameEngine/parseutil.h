@@ -12,6 +12,7 @@ struct w_parser
 	static w_range parse_range_value( const std::string& str );
 	static w_rect parse_rect_value( const std::string& str );
 	static w_vec2 parse_vec2_value( const std::string& str );
+	static w_vec3 parse_vec3_value( const std::string& str );
 	static std::unique_ptr<w_timeline> parse_timeline_value( e_timeline_type type, const std::string& str );
 };
 

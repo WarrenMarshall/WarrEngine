@@ -18,10 +18,11 @@ struct w_fibonacci
 };
 
 // ----------------------------------------------------------------------------
+// a value that wants to accumulate over a period of time, and then report
+// an averaged value for that period.
 
 struct w_accum_value
 {
-    float accumulator;
     float value;
 
     void init();
@@ -29,4 +30,7 @@ struct w_accum_value
     void update_value();
     void accum( float value );
     void inc();
+
+private:
+    float _accumulator;
 };
