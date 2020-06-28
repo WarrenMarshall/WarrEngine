@@ -20,6 +20,11 @@ upwards from there and you won't see any pixels.
 
 0,0 is considered the bottom left on both images and the screen itself.
 
+  +y
+  |
+  |screen/texture
+0,0---- +x
+
 ------------------------------------------------------------------
 VECTORS
 ------------------------------------------------------------------

@@ -76,13 +76,14 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	float vx = static_cast<float>( ( xpos - engine->window->viewport_pos_sz.x ) * ratio );
 	float vy = static_cast<float>( ( ypos - engine->window->viewport_pos_sz.y ) * ratio );
 
-	vx = w_clamp( vx, 0.0f, v_window_w );
-	vy = w_clamp( vy, 0.0f, v_window_h );
+	// only send events if the mouse is moving over the virtual window itself
+	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
+	{
+		data.xpos = vx;
+		data.ypos = vy;
 
-	data.xpos = vx;
-	data.ypos = vy;
-
-	engine->input_mgr->event_input_motion( e_event_id::input_motion, data );
+		engine->input_mgr->event_input_motion( e_event_id::input_motion, data );
+	}
 }
 
 // ----------------------------------------------------------------------------

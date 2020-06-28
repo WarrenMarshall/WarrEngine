@@ -36,7 +36,7 @@ int w_parser::parse_int_value( const std::string& str )
 	}
 
 	// Otherwise, parse the string into the val
-	int val = STRTOL( int, str );
+	int val = static_cast<int>( strtol( str.c_str(), (char**) NULL, 10 ) );
 
 	return val;
 }
@@ -68,7 +68,7 @@ float w_parser::parse_float_value( const std::string& str )
 	}
 
 	// Otherwise, parse the string into the val
-	float val = STRTOF( float, str );
+	float val = static_cast<float>( strtof( str.c_str(), (char**) NULL ) );
 
 	return val;
 }

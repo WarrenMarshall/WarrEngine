@@ -199,7 +199,6 @@ w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& te
 void w_render::begin_frame( float frame_interpolate_pct )
 {
 	this->frame_interpolate_pct = frame_interpolate_pct;
-	//log_msg( "interp : %1.2f", frame_interpolate_pct );
 
 	glClearColor( .25f, .25f, .25f, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -260,7 +259,7 @@ void w_render::end_frame()
 	stats.frame_times_ms.accum( static_cast<float>( engine->time->delta_ms ) );
 	stats.frame_count.inc();
 
-	// when the frame ends and we do the final matrix pop, there should be
+	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
 	// at the renderer start up). If there are any other number, then
 	// there is an uneven push/pop combo somewhere in the code.
@@ -271,11 +270,11 @@ void w_render::end_frame()
 	// it means there's a push/pop mismatch somewhere in the code.
 	assert( rs_color_stack.size() == 1 );
 
-	OPENGL->clear_texture_bind();
-	stats.num_frames_rendered.inc();
-
 	// Swap buffers
 	glfwSwapBuffers( engine->window->window );
+
+	OPENGL->clear_texture_bind();
+	stats.num_frames_rendered.inc();
 }
 
 /*
@@ -286,16 +285,16 @@ void w_render::end_frame()
 
 w_render* w_render::draw_world_axis()
 {
-	SCOPED_VAR( push_color( w_color(1.0f,0.0f,0.0f) ) );
+	push_color( w_color( 1.0f, 0.0f, 0.0f ) );
 	draw_line( w_vec3::zero, w_vec3( 5000, 0, 500 ) );
 
-	SCOPED_VAR( push_color( w_color( 0.5f, 0.0f, 0.0f ) ) );
+	push_color( w_color( 0.5f, 0.0f, 0.0f ) );
 	draw_line( w_vec3::zero, w_vec3( -5000, 0, 500 ) );
 
-	SCOPED_VAR( push_color( w_color( 0.0f, 1.0f, 0.0f ) ) );
+	push_color( w_color( 0.0f, 1.0f, 0.0f ) );
 	draw_line( w_vec3::zero, w_vec3( 0, 5000, 500 ) );
 
-	SCOPED_VAR( push_color( w_color( 0.0f, 0.5f, 0.0f ) ) );
+	push_color( w_color( 0.0f, 0.5f, 0.0f ) );
 	draw_line( w_vec3::zero, w_vec3( 0, -5000, 500 ) );
 
 	return this;

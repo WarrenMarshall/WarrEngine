@@ -62,9 +62,9 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
     v4 = MATRIX->top()->m * v4;
 
     w_render_vert rv(
-        { v4.x, v4.y, v4.z },
-        { render_vert.u, render_vert.v },
-        { render_vert.r, render_vert.g, render_vert.b, render_vert.a }
+        w_vec3( v4.x, v4.y, v4.z ),
+        w_uv( render_vert.u, render_vert.v ),
+        w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
     );
     
     // look through the existing list of vertices and see if we can find

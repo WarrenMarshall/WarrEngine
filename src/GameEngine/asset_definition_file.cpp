@@ -168,10 +168,10 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 						else if( key == "patch_22" )	patch_idx = (int)e_patch::P_22;
 
 						w_tokenizer tok( value, ',' );
-						asset_ptr->patches[patch_idx].x = STRTOF( float, tok.get_next_token() );
-						asset_ptr->patches[patch_idx].y = STRTOF( float, tok.get_next_token() );
-						asset_ptr->patches[patch_idx].w = STRTOF( float, tok.get_next_token() );
-						asset_ptr->patches[patch_idx].h = STRTOF( float, tok.get_next_token() );
+						asset_ptr->patches[patch_idx].x = w_parser::parse_float_value( tok.get_next_token() );
+						asset_ptr->patches[patch_idx].y = w_parser::parse_float_value( tok.get_next_token() );
+						asset_ptr->patches[patch_idx].w = w_parser::parse_float_value( tok.get_next_token() );
+						asset_ptr->patches[patch_idx].h = w_parser::parse_float_value( tok.get_next_token() );
 					}
 				}
 

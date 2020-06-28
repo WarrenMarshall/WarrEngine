@@ -25,8 +25,7 @@ struct w_color
 
 	w_color() {}
 	w_color( const w_color& other );
-	w_color( float r, float g, float b );
-	w_color( float r, float g, float b, float a );
+	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( std::string str );
 
 	//std::string to_string();

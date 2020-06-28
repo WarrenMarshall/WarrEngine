@@ -50,7 +50,7 @@ int w_engine::find_int_from_symbol( std::string symbol, int def_value )
 		sval = "0";
 	}
 
-	return STRTOL( int, sval );
+	return static_cast<int>( strtol( sval.c_str(), (char**) NULL, 10 ) );
 }
 
 float w_engine::find_float_from_symbol( std::string symbol, float def_value )
@@ -63,7 +63,7 @@ float w_engine::find_float_from_symbol( std::string symbol, float def_value )
 		sval = "0.0";
 	}
 
-	return STRTOF( float, sval );
+	return static_cast<float>( strtof( sval.c_str(), (char**) NULL ) );
 }
 
 w_color w_engine::find_color_from_symbol( std::string symbol, w_color def_value )

@@ -90,9 +90,6 @@ inline bool operator> (ENUMTYPE a, int b) {  return (((int)a) > b); }
 
 #define SCOPED_VAR(code) auto TMP_VAR_HELPER2(_tmp_var_, __LINE__) = code;
 
-#define STRTOL(type, code) static_cast<type>( strtol( code.c_str(), (char**) NULL, 10 ) )
-#define STRTOF(type, code) static_cast<type>( strtof( code.c_str(), (char**) NULL ) )
-
 // ----------------------------------------------------------------------------
 // game engine specific stuff that doesn't change often
 //

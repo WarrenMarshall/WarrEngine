@@ -39,9 +39,6 @@ void layer_editor::draw()
 
 	if( draw_selector_bracket )
 	{
-		float x = -v_window_hw + ( hover_tile.x * TILE_SZ );
-		float y = v_window_hh - ( TILE_SZ * 3 ) - ( hover_tile.y * TILE_SZ );
-
 		MATRIX
 			->push_identity()
 			->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0 ) )
