@@ -9,6 +9,14 @@ struct a_texture : i_asset
 	unsigned int id = 0;
 	float w = 0.0f;
 	float h = 0.0f;
+
+	/*
+		this is automatically created when the texture is precached. it's
+		a convenience so you don't have to declare a matching a_image for
+		every a_texture in the asset_def files.
+
+		call "get_image" on your a_texture to get to it.
+	*/
 	a_image* img = nullptr;
 
 	~a_texture();

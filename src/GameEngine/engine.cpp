@@ -261,6 +261,8 @@ void w_engine::precache_asset_resources()
 			iter_adf.second->precache_asset_resources( p, false );
 		}
 	}
+
+	log_msg( "%s : %d assets precached", __FUNCTION__, engine->asset_cache->cache.size() );
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )

@@ -1,26 +1,12 @@
 
 {
 	"type" "texture"
-	"name" "tex_engine_white_wire"
+	"name" "engine_white_wire"
 	"filename" "engine_resources/white_square.png"
 }
 
 {
 	"type" "texture"
-	"name" "tex_engine_white_solid"
-	"filename" "engine_resources/white_square.png"
-}
-
-{
-	"type" "image"
-	"name" "engine_white_wire"
-	"texture" "tex_engine_white_wire"
-	"rect" "0,0,-1,-1"
-}
-
-{
-	"type" "image"
 	"name" "engine_white_solid"
-	"texture" "tex_engine_white_solid"
-	"rect" "0,0,-1,-1"
+	"filename" "engine_resources/white_square.png"
 }

@@ -19,7 +19,7 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string&
 		engine->hot_reloadables.emplace_back( static_cast<i_reloadable*>( asset.get() ) );
 
 	// save it into the cache
-	log_msg( "%s : '%s' cached", __FUNCTION__, name.c_str() );
+	//log_msg( "%s : '%s' cached", __FUNCTION__, name.c_str() );
 	cache.insert( std::make_pair( name, std::move( asset ) ) );
 
 	return find( name, true );

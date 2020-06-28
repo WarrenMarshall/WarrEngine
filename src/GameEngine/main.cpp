@@ -101,9 +101,9 @@ int main( int argc, char* argv[] )
 			game->new_game();
 		}
 
-		engine->white_wire = engine->get_asset<a_image>( "engine_white_wire" );
+		engine->white_wire = engine->get_asset<a_texture>( "engine_white_wire" )->get_image();
 		engine->white_wire->get_texture()->render_buffer->prim_type = GL_LINES;
-		engine->white_solid = engine->get_asset<a_image>( "engine_white_solid" );
+		engine->white_solid = engine->get_asset<a_texture>( "engine_white_solid" )->get_image();
 
 		// input initialization
 
