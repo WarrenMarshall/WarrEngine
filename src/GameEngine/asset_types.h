@@ -149,10 +149,17 @@ struct a_font_def : i_asset
 
 struct a_font : i_asset
 {
-	a_texture* tex = nullptr;
 	a_font_def* font_def = nullptr;
 
 	w_vec2 get_string_extents( const std::string& text );
+};
+
+// ----------------------------------------------------------------------------
+
+struct a_cursor : i_asset
+{
+	w_vec2 hotspot_offset;
+	a_texture* tex = nullptr;
 };
 
 // ----------------------------------------------------------------------------

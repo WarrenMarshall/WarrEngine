@@ -10,6 +10,19 @@
 }
 
 {
+	"type" "texture"
+	"name" "tex_ui_cursor"
+	"filename" "images/ui_cursor.png"
+}
+
+{
+	"type" "cursor"
+	"name" "ui_cursor"
+	"texture" "tex_ui_cursor"
+	"hotspot" "1, 14"	# from bottom left of image
+}
+
+{
 	"type" "9slice_def"
 	"name" "ui_master_panel"
 	"patch_00" "0, 0, 8, 8"
@@ -71,7 +84,6 @@
 {
 	"type" "font"
 	"name" "ui_simple_font"
-	"texture" "ui_pixel_font"
 	"font_def" "ui_pixel_font_def"
 }
 
@@ -95,6 +107,5 @@
 {
 	"type" "font"
 	"name" "larger_font"
-	"texture" "tex_large_font"
 	"font_def" "larger_font_font_def"
 }

@@ -29,7 +29,6 @@
 #include "particle_pool.h"
 
 #include "render.h"
-#include "render_states.h"
 #include "window.h"
 #include "cache_assets.h"
 

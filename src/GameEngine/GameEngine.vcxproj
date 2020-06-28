@@ -195,7 +195,6 @@
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
-    <ClCompile Include="render_states.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
@@ -254,7 +253,6 @@
     <ClInclude Include="opengl.h" />
     <ClInclude Include="parseutil.h" />
     <ClInclude Include="particle_pool.h" />
-    <ClInclude Include="render_states.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="timer.h" />

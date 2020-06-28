@@ -25,8 +25,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			{
 				for (auto& iter : iter_ad->key_values)
 				{
-					std::string key = iter.first.c_str();
-					std::string value = iter.second.c_str();
+					std::string key = iter.first;
+					std::string value = iter.second;
 
 					if (key != "name" && key != "type")
 						engine->_symbol_to_value[key] = value;
@@ -43,11 +43,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_texture>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_texture>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_texture*>(
-						engine->asset_cache->add( std::make_unique<a_texture>(), name.c_str(), filename.c_str() )
+						engine->asset_cache->add( std::make_unique<a_texture>(), name, filename )
 					);
 
 				// ------------------------------------------------------------------------
@@ -66,11 +66,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_gradient>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_gradient>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_gradient*>(
-						engine->asset_cache->add( std::make_unique<a_gradient>(), name.c_str(), "" )
+						engine->asset_cache->add( std::make_unique<a_gradient>(), name, "" )
 					);
 
 				// ------------------------------------------------------------------------
@@ -118,11 +118,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_font_def>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_font_def>( name, true );
 
 				if( !asset_ptr  )
 					asset_ptr = static_cast<a_font_def*>(
-						engine->asset_cache->add( std::make_unique<a_font_def>(), name.c_str(), filename.c_str() )
+						engine->asset_cache->add( std::make_unique<a_font_def>(), name, filename )
 					);
 
 				// ------------------------------------------------------------------------
@@ -139,19 +139,19 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			{
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_9slice_def>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_9slice_def>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_9slice_def*>(
-						engine->asset_cache->add( std::make_unique<a_9slice_def>(), name.c_str(), filename.c_str() )
+						engine->asset_cache->add( std::make_unique<a_9slice_def>(), name, filename )
 					);
 
 				// ------------------------------------------------------------------------
 
 				for( auto& iter : iter_ad->key_values )
 				{
-					std::string key = iter.first.c_str();
-					std::string value = iter.second.c_str();
+					std::string key = iter.first;
+					std::string value = iter.second;
 
 					if( key.substr( 0, 6 ) == "patch_" )
 					{
@@ -188,11 +188,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_sound>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_sound>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_sound*>(
-						engine->asset_cache->add( std::make_unique<a_sound>(), name.c_str(), filename.c_str() )
+						engine->asset_cache->add( std::make_unique<a_sound>(), name, filename )
 					);
 
 				// ------------------------------------------------------------------------
@@ -212,11 +212,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_music>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_music>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_music*>(
-						engine->asset_cache->add( std::make_unique<a_music>(), name.c_str(), filename.c_str() )
+						engine->asset_cache->add( std::make_unique<a_music>(), name, filename )
 					);
 
 				// ------------------------------------------------------------------------
@@ -235,19 +235,19 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			{
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_emitter_params>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_emitter_params>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_emitter_params*>(
-						engine->asset_cache->add( std::make_unique<a_emitter_params>(), name.c_str(), "" )
+						engine->asset_cache->add( std::make_unique<a_emitter_params>(), name, "" )
 					);
 
 				// ------------------------------------------------------------------------
 
 				for( auto& iter : iter_ad->key_values )
 				{
-					std::string key = iter.first.c_str();
-					std::string value = iter.second.c_str();
+					std::string key = iter.first;
+					std::string value = iter.second;
 
 					if( key == "name" || key == "type" )
 					{
@@ -258,7 +258,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					else if( key == "b_one_shot" )
 						asset_ptr->b_one_shot = ( value == "true" ) ? true : false;
 					else if( key == "texture_name" )
-						asset_ptr->tex = engine->get_asset<a_texture>( value.c_str() );
+						asset_ptr->tex = engine->get_asset<a_texture>( value );
 					else if( key == "spawner_type" )
 					{
 						w_tokenizer tok( value, ',' );
@@ -310,22 +310,44 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "font" )
 			{
-				assert_key_exists( type, *( iter_ad.get() ), "texture" );
 				assert_key_exists( type, *( iter_ad.get() ), "font_def" );
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_font>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_font>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_font*>(
-						engine->asset_cache->add( std::make_unique<a_font>(), name.c_str(), "" )
+						engine->asset_cache->add( std::make_unique<a_font>(), name, "" )
 					);
 
 				// ------------------------------------------------------------------------
 
-				asset_ptr->tex = engine->get_asset<a_texture>( iter_ad->key_values["texture"].c_str() );
-				asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->key_values["font_def"].c_str() );
+				asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->key_values["font_def"] );
+
+				// ------------------------------------------------------------------------
+
+				asset_ptr->clean_up_internals();
+				asset_ptr->create_internals( is_hot_reloading );
+			}
+			else if( type == "cursor" )
+			{
+				assert_key_exists( type, *( iter_ad.get() ), "texture" );
+				assert_key_exists( type, *( iter_ad.get() ), "hotspot" );
+
+				// ------------------------------------------------------------------------
+
+				auto asset_ptr = engine->get_asset<a_cursor>( name, true );
+
+				if( !asset_ptr )
+					asset_ptr = static_cast<a_cursor*>(
+						engine->asset_cache->add( std::make_unique<a_cursor>(), name, "" )
+						);
+
+				// ------------------------------------------------------------------------
+
+				asset_ptr->tex = engine->get_asset<a_texture>( iter_ad->key_values.at( "texture" ) );
+				asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
 
 				// ------------------------------------------------------------------------
 
@@ -334,11 +356,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			}
 			else if( type == "anim_texture" )
 			{
-				auto asset_ptr = engine->get_asset<a_anim_texture>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_anim_texture>( name, true );
 
 				if( !asset_ptr )
 					asset_ptr = static_cast<a_anim_texture*>(
-						engine->asset_cache->add( std::make_unique<a_anim_texture>(), name.c_str(), "" )
+						engine->asset_cache->add( std::make_unique<a_anim_texture>(), name, "" )
 					);
 
 				// ------------------------------------------------------------------------
@@ -349,7 +371,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				w_tokenizer tok( frames, ',' );
 				for( ; num_frames > 0 ; --num_frames )
 				{
-					auto tex = engine->get_asset<a_texture>( tok.get_next_token().c_str() );
+					auto tex = engine->get_asset<a_texture>( tok.get_next_token() );
 					asset_ptr->frames.emplace_back( tex );
 				}
 
@@ -365,13 +387,13 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				auto asset_ptr = engine->get_asset<a_image>( name.c_str(), true );
+				auto asset_ptr = engine->get_asset<a_image>( name, true );
 
 				if( !asset_ptr )
 				{
 					w_rect rc = w_parser::parse_rect_value( iter_ad->key_values[ "rect" ] );
 					asset_ptr = static_cast<a_image*>(
-						engine->asset_cache->add( std::make_unique<a_image>( iter_ad->key_values[ "texture" ], rc ), name.c_str(), "" )
+						engine->asset_cache->add( std::make_unique<a_image>( iter_ad->key_values[ "texture" ], rc ), name, "" )
 					);
 				}
 
@@ -387,7 +409,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 void w_asset_definition_file::assert_key_exists( const std::string& type, const w_asset_definition& asset_def, const std::string& key )
 {
 	#if defined(_DEBUG) || defined(_DRELEASE)
-		if( !asset_def.key_values.count( key.c_str() ) )
+		if( !asset_def.key_values.count( key ) )
 			log_error( "%s : %s : asset definition missing '%s' key/value", __FUNCTION__, type.c_str(), key.c_str() );
 	#endif
 }

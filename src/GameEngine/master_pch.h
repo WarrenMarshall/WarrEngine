@@ -85,10 +85,10 @@ inline bool operator> (ENUMTYPE a, int b) {  return (((int)a) > b); }
 
 	variable lives on the stack and is destroyed when the scope is exited.
 */
-#define TMP_VAR_HELPER1(x, y) x ## y
-#define TMP_VAR_HELPER2(x, y) TMP_VAR_HELPER1(x, y)
-
-#define SCOPED_VAR(code) auto TMP_VAR_HELPER2(_tmp_var_, __LINE__) = code;
+//#define TMP_VAR_HELPER1(x, y) x ## y
+//#define TMP_VAR_HELPER2(x, y) TMP_VAR_HELPER1(x, y)
+//
+//#define SCOPED_VAR(code) auto TMP_VAR_HELPER2(_tmp_var_, __LINE__) = code;
 
 // ----------------------------------------------------------------------------
 // game engine specific stuff that doesn't change often
