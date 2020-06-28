@@ -56,7 +56,6 @@ void layer_editor::draw()
 
 	// mouse cursor test
 
-	//log_msg( "fuck : %1.2f", v_window_hh - engine->input_mgr->mouse_vwindow_pos.y );
 	MATRIX
 		->push_identity()
 		->translate( w_vec3(
@@ -64,7 +63,7 @@ void layer_editor::draw()
 			v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y,
 			1000 ) );
 
-	RENDER->draw( mouse_cursor->img.get() );
+	RENDER->draw( mouse_cursor->img );
 
 	MATRIX->pop();
 

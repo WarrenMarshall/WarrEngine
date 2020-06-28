@@ -9,6 +9,7 @@ struct a_texture : i_asset
 	unsigned int id = 0;
 	float w = 0.0f;
 	float h = 0.0f;
+	a_image* img = nullptr;
 
 	~a_texture();
 
@@ -17,6 +18,7 @@ struct a_texture : i_asset
 	void bind();
 	void unbind();
 	virtual a_texture* get_texture();
+	virtual a_image* get_image();
 	virtual void update() {}
 	virtual void draw( e_render_pass render_pass );
 };
@@ -159,10 +161,7 @@ struct a_font : i_asset
 struct a_cursor : i_asset
 {
 	w_vec2 hotspot_offset = w_vec2( 0, 0 );
-	a_texture* tex = nullptr;
-	std::unique_ptr<a_image> img = nullptr;
-
-	virtual bool create_internals( bool is_hot_reloading );
+	a_image* img = nullptr;
 };
 
 // ----------------------------------------------------------------------------

@@ -76,6 +76,11 @@ a_texture* a_texture::get_texture()
 	return this;
 }
 
+a_image* a_texture::get_image()
+{
+	return get_texture()->img;
+}
+
 void a_texture::draw( e_render_pass render_pass )
 {
 	if( render_buffer )
@@ -369,15 +374,6 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 	}
 
 	return bounds;
-}
-
-// ----------------------------------------------------------------------------
-
-bool a_cursor::create_internals( bool is_hot_reloading )
-{
-	img = std::make_unique<a_image>( tex->name );
-
-	return true;
 }
 
 // ----------------------------------------------------------------------------

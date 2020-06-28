@@ -58,6 +58,15 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				asset_ptr->clean_up_internals();
 				asset_ptr->create_internals( is_hot_reloading );
+
+				// Every texture that gets loaded gets a full size
+				// a_image created for it automatically.
+
+				auto img = static_cast<a_image*>(
+					engine->asset_cache->add( std::make_unique<a_image>( asset_ptr->name ),
+											  "auto_img_" + asset_ptr->name, "")
+					);
+				asset_ptr->img = img;
 			}
 			else if( type == "gradient" )
 			{
@@ -346,7 +355,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 				// ------------------------------------------------------------------------
 
-				asset_ptr->tex = engine->get_asset<a_texture>( iter_ad->key_values.at( "texture" ) );
+				asset_ptr->img = engine->get_asset<a_texture>( iter_ad->key_values.at( "texture" ) )->get_image();
 				asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
 
 				// ------------------------------------------------------------------------
