@@ -234,7 +234,7 @@ void w_engine::update()
 		{
 			log_msg( "%s : Hot reloading [%s]", __FUNCTION__, rl->original_filename.c_str() );
 			rl->clean_up_internals();
-			rl->create_internals( true );
+			rl->create_internals( b_is_hot_reloading( true ) );
 		}
 	}
 
@@ -271,7 +271,7 @@ void w_engine::precache_asset_resources()
 	{
 		for( const auto& iter_adf : engine->asset_definition_file_cache->cache )
 		{
-			iter_adf.second->precache_asset_resources( p, false );
+			iter_adf.second->precache_asset_resources( p, b_is_hot_reloading(false) );
 		}
 	}
 

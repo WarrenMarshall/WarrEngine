@@ -161,11 +161,12 @@ w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& te
 	std::string str = text;
 	std::string token;
 	w_tokenizer tok( str, '}' );
-	for( int x = 0 ; x < str.length() ; ++x )
-	{
-		fch = &( font->font_def->char_map[ text[ x ] ] );
 
-		if( text[x] == '\n' )
+	for( const auto& iter : str )
+	{
+		fch = &( font->font_def->char_map[ iter ] );
+
+		if( iter == '\n' )
 		{
 			xpos = pos.x;
 			ypos -= font->font_def->max_height;

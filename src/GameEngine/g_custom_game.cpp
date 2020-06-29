@@ -14,8 +14,6 @@ g_custom_game::g_custom_game()
 
 	while( !tok.is_eos() )
 	{
-		line = w_stringutil::trim( line );
-
 		if( line.length() > 0 )
 		{
 			w_tokenizer line_tok( line, ',', "" );
@@ -49,11 +47,6 @@ void g_custom_game::update()
 {
 	w_game::update();
 
-	//int sz = ROOM_W * ROOM_H;
-	//for( int x = 0 ; x < sz ; ++x )
-	//	test_room.tiles[ x ] = test_room.tiles[ ( x + 1 ) % sz ];
-
-	//test_room.tiles[ sz-1 ] = engine->random->geti_range( 0, 255 );
 }
 
 w_tile* g_custom_game::get_tile( int id )

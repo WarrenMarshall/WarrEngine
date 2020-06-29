@@ -31,7 +31,7 @@ struct w_render
 		tick. this is used to interpolate/predict rendering for smooth
 		movement and rotations even at low FTS values.
 	*/
-	float frame_interpolate_pct;
+	float frame_interpolate_pct = 0.0f;
 
 	std::stack<glm::mat4> modelview_stack;
 

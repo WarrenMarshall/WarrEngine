@@ -7,7 +7,7 @@
 struct w_window
 {
 	bool is_fullscreen = false;
-	w_rect save_window_rect;
+	w_rect save_window_rect = w_rect( 0, 0, 0, 0 );
 	std::string base_title;
 
 	GLFWwindow* window = nullptr;
@@ -15,7 +15,10 @@ struct w_window
 	const GLFWvidmode* vidmode = nullptr;
 	struct
 	{
-		int x, y, w, h;
+		int x = 0;
+		int y = 0;
+		int w = 0;
+		int h = 0;
 	} save_windowed_state;
 
 	bool init( const std::string& title );

@@ -50,7 +50,7 @@ void layer_editor::draw()
 			->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0 ) );
 
 		RENDER->draw( selector_bracket.get() );
-		
+
 		MATRIX->pop();
 	}
 
@@ -84,7 +84,7 @@ void layer_editor::draw()
 		->end();
 	OPENGL
 		->pop();
-	
+
 	// ----------------------------------------------------------------------------
 
 	step_per_fts = tween_rotate->step_per_sec / w_time::FTS_desired_frames_per_second;
@@ -105,7 +105,7 @@ void layer_editor::draw()
 
 void layer_editor::on_listener_event_received( e_event_id event, void* object )
 {
-	w_input_event* evt = static_cast<w_input_event*>( object );
+	const w_input_event* evt = static_cast<w_input_event*>( object );
 
 	switch( event )
 	{

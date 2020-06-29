@@ -22,7 +22,7 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string&
 	//log_msg( "%s : '%s' cached", __FUNCTION__, name.c_str() );
 	cache.insert( std::make_pair( name, std::move( asset ) ) );
 
-	return find( name, true );
+	return find( name, b_silent(true) );
 }
 
 i_asset* w_cache_assets::find( const std::string& name, bool silent )

@@ -8,7 +8,7 @@ const std::string w_stringutil::format( const std::string sFormat, ... )
 {
     va_list vargs;
     va_start( vargs, sFormat );
-    std::string str = w_stringutil::format_valist( sFormat, vargs );
+    const std::string str = w_stringutil::format_valist( sFormat, vargs );
     va_end( vargs );
 
     return str;
@@ -25,7 +25,7 @@ const std::string w_stringutil::format_valist( const std::string sFormat, va_lis
 
     va_list vaCopy;
     va_copy( vaCopy, argp );
-    size_t iLen = vsnprintf( nullptr, 0, zcFormat, vaCopy );
+    const size_t iLen = vsnprintf( nullptr, 0, zcFormat, vaCopy );
     va_end( vaCopy );
 
     // return a formatted string without
@@ -47,13 +47,13 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 
 const std::string w_stringutil::ltrim( const std::string& s )
 {
-    size_t start = s.find_first_not_of( WHITESPACE );
+    const size_t start = s.find_first_not_of( WHITESPACE );
     return ( start == std::string::npos ) ? "" : s.substr( start );
 }
 
 const std::string w_stringutil::rtrim( const std::string& s )
 {
-    size_t end = s.find_last_not_of( WHITESPACE );
+    const size_t end = s.find_last_not_of( WHITESPACE );
     return ( end == std::string::npos ) ? "" : s.substr( 0, end + 1 );
 }
 

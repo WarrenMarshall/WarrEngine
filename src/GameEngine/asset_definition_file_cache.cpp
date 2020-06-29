@@ -5,7 +5,7 @@
 // loads a config file from disk and stores it in the cache
 w_asset_definition_file* w_cache_asset_definition_files::add( const std::string& name, const std::string& filename )
 {
-	auto iter = cache.find( name );
+	const auto iter = cache.find( name );
 
 	if( iter != cache.end() )
 	{
@@ -30,17 +30,4 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 	}
 
 	return cfg.get();
-}
-
-w_asset_definition_file* w_cache_asset_definition_files::find( const std::string& name, bool silent )
-{
-	auto iter = cache.find( name );
-
-	if( iter == cache.end() )
-	{
-		if( !silent )
-			log_error( "%s : config not cached : [%s]", __FUNCTION__, name );
-	}
-
-	return iter->second.get();
 }

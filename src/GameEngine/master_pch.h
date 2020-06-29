@@ -151,3 +151,8 @@ typedef w_vec2 w_sz;
 #define MATRIX engine->opengl
 #define OPENGL engine->opengl
 #define RENDER engine->render
+
+// ----------------------------------------------------------------------------
+
+typedef bool b_is_hot_reloading;
+typedef bool b_silent;

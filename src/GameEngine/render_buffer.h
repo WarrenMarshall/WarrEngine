@@ -37,7 +37,7 @@ struct w_render_buffer
 	w_render_buffer( unsigned int prim_type );
 	~w_render_buffer();
 
-	unsigned int prim_type;
+	unsigned int prim_type = GL_TRIANGLES;
 
 	// unique vertices
 	std::vector<w_render_vert> vertices[2];

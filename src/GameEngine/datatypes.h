@@ -42,7 +42,7 @@ struct w_keyframe
 {
 	float pct_marker = 0.0f;
 	float float_value = 0.0f;
-	w_color color_value = W_COLOR_WHITE;;
+	w_color color_value = W_COLOR_WHITE;
 
 	w_keyframe() {}
 	w_keyframe( const w_keyframe& other );

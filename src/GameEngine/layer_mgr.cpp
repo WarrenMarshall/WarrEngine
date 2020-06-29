@@ -92,13 +92,14 @@ int w_layer_mgr::get_opaque_index( e_opaque opaque_flags )
 		2. iterate backwards from there until back at the start of the stack
 	*/
 	int opaque_index = -1;
-	for( int x = 0; x < layer_stack.size(); ++x )
+	for( const auto& iter : layer_stack )
 	{
-		if( (layer_stack[x].get()->get_opaque_flags() & opaque_flags) > 0 )
+		if( (iter->get_opaque_flags() & opaque_flags) > 0 )
 		{
-			opaque_index = x;
 			break;
 		}
+
+		opaque_index++;
 	}
 
 #if _DEBUG

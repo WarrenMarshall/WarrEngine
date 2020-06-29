@@ -221,7 +221,7 @@ void w_input_mgr::init()
 
 	for( int x = 0; x < static_cast<int>( e_input_id::max ); ++x )
 	{
-		button_states[x] = false;;
+		button_states[x] = false;
 	}
 
 	glfw_codes.insert( std::make_pair( GLFW_KEY_ESCAPE, e_input_id::keyboard_esc ) );

@@ -61,7 +61,7 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
     glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
     v4 = MATRIX->top()->m * v4;
 
-    w_render_vert rv(
+    const w_render_vert rv(
         w_vec3( v4.x, v4.y, v4.z ),
         w_uv( render_vert.u, render_vert.v ),
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
@@ -105,9 +105,9 @@ void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1
     // in the quad, we can skip the process of transforming them and searching the vertex
     // array by caching the index they are assigned the first time through and re-using it.
 
-    int idx0 = add( render_pass, v0 );
+    const int idx0 = add( render_pass, v0 );
     add( render_pass, v1 );
-    int idx2 = add( render_pass, v2 );
+    const int idx2 = add( render_pass, v2 );
 
     indices[render_pass].emplace_back( idx0 );
     indices[render_pass].emplace_back( idx2 );

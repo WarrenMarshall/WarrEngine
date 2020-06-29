@@ -13,11 +13,14 @@ void w_game::new_game()
 
 void w_game::update()
 {
-	for( int x = 0; x < entities.size(); ++x )
+	for( const auto& iter : entities )
 	{
-		w_entity* e = entities[ x ].get();
-		e->update();
+		//w_entity* e = entities[ x ].get();
+		iter->update();
 	}
+
+	// uses standard 'for' loop because it manipulates the
+	// vector as it runs.
 
 	for( int x = 0; x < entities.size(); ++x )
 	{
@@ -37,16 +40,14 @@ void w_game::update()
 
 void w_game::draw_entities()
 {
-	for( int x = 0; x < entities.size(); ++x )
+	for( const auto& iter : entities )
 	{
-		w_entity* e = entities[x].get();
-
 		MATRIX
 			->push()
-			->add_transform( *e );
+			->add_transform( *iter );
 
-		e->draw_components();
-		e->draw();
+		iter->draw_components();
+		iter->draw();
 
 		MATRIX->pop();
 

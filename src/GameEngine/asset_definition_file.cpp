@@ -15,402 +15,412 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 		assert_key_exists( "??", *(iter_ad.get()), "type" );
 		assert_key_exists( "??", *( iter_ad.get() ), "name" );
 
-		type = iter_ad->key_values["type"];
-		name = iter_ad->key_values["name"];
+		type = iter_ad->key_values.at( "type" );
+		name = iter_ad->key_values.at( "name" );
 		filename = "";
 
-		if (pass_num == 0)
+		switch( pass_num )
 		{
-			if (type == "preproc")
+			case 0:
 			{
-				for (auto& iter : iter_ad->key_values)
+				if( type == "preproc" )
 				{
-					std::string key = iter.first;
-					std::string value = iter.second;
-
-					if (key != "name" && key != "type")
-						engine->_symbol_to_value[key] = value;
-				}
-			}
-		}
-		else if( pass_num == 1 )
-		{
-			if( type == "texture" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "filename" );
-
-				filename = iter_ad->key_values["filename"];
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_texture>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_texture*>(
-						engine->asset_cache->add( std::make_unique<a_texture>(), name, filename )
-					);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->original_filename = filename;
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-
-				// Every texture that gets loaded gets a full size
-				// a_image created for it automatically.
-
-				auto img = static_cast<a_image*>(
-					engine->asset_cache->add( std::make_unique<a_image>( asset_ptr->name ),
-											  "auto_img_" + asset_ptr->name, "")
-					);
-				asset_ptr->img = img;
-			}
-			else if( type == "gradient" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "alignment" );
-				assert_key_exists( type, *( iter_ad.get() ), "colors" );
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_gradient>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_gradient*>(
-						engine->asset_cache->add( std::make_unique<a_gradient>(), name, "" )
-					);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->key_values["alignment"] ) );
-
-				asset_ptr->colors.clear();
-
-				std::string color_list = iter_ad->key_values["colors"];
-
-				w_tokenizer tok( color_list, '/', "n/a" );
-				std::string val;
-
-				std::vector<std::string> color_values;
-				while( true )
-				{
-					val = tok.get_next_token();
-					if( val == "n/a" )
-						break;
-
-					color_values.emplace_back( w_stringutil::trim( val ) );
-				}
-
-				for( const auto& iter : color_values )
-				{
-					val = iter;
-
-					if( engine->is_symbol_in_map( val ) )
-						val = engine->find_val_from_symbol( val );
-
-					asset_ptr->colors.emplace_back( w_color( val ) );
-				}
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "font_def" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "filename" );
-				assert_key_exists( type, *( iter_ad.get() ), "texture" );
-
-				filename = iter_ad->key_values["filename"];
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_font_def>( name, true );
-
-				if( !asset_ptr  )
-					asset_ptr = static_cast<a_font_def*>(
-						engine->asset_cache->add( std::make_unique<a_font_def>(), name, filename )
-					);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->original_filename = filename;
-				asset_ptr->texture_name = iter_ad->key_values[ "texture" ];
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "9slice_def" )
-			{
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_9slice_def>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_9slice_def*>(
-						engine->asset_cache->add( std::make_unique<a_9slice_def>(), name, filename )
-					);
-
-				// ------------------------------------------------------------------------
-
-				for( const auto& iter : iter_ad->key_values )
-				{
-					std::string key = iter.first;
-					std::string value = iter.second;
-
-					if( key.substr( 0, 6 ) == "patch_" )
+					for( auto& iter : iter_ad->key_values )
 					{
-						int patch_idx;
+						std::string key = iter.first;
+						std::string value = iter.second;
 
-						if( key == "patch_00" )			patch_idx = (int)e_patch::P_00;
-						else if( key == "patch_10" )	patch_idx = (int)e_patch::P_10;
-						else if( key == "patch_20" )	patch_idx = (int)e_patch::P_20;
-						else if( key == "patch_01" )	patch_idx = (int)e_patch::P_01;
-						else if( key == "patch_11" )	patch_idx = (int)e_patch::P_11;
-						else if( key == "patch_21" )	patch_idx = (int)e_patch::P_21;
-						else if( key == "patch_02" )	patch_idx = (int)e_patch::P_02;
-						else if( key == "patch_12" )	patch_idx = (int)e_patch::P_12;
-						else if( key == "patch_22" )	patch_idx = (int)e_patch::P_22;
-
-						w_tokenizer tok( value, ',' );
-						asset_ptr->patches[patch_idx].x = w_parser::parse_float_value( tok.get_next_token() );
-						asset_ptr->patches[patch_idx].y = w_parser::parse_float_value( tok.get_next_token() );
-						asset_ptr->patches[patch_idx].w = w_parser::parse_float_value( tok.get_next_token() );
-						asset_ptr->patches[patch_idx].h = w_parser::parse_float_value( tok.get_next_token() );
+						if( key != "name" && key != "type" )
+							engine->_symbol_to_value[ key ] = value;
 					}
 				}
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
 			}
-			else if( type == "sound" )
+			break;
+
+			case 1:
 			{
-				assert_key_exists( type, *( iter_ad.get() ), "filename" );
-
-				filename = iter_ad->key_values["filename"];
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_sound>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_sound*>(
-						engine->asset_cache->add( std::make_unique<a_sound>(), name, filename )
-					);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->original_filename = filename;
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "music" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "filename" );
-
-				filename = iter_ad->key_values["filename"];
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_music>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_music*>(
-						engine->asset_cache->add( std::make_unique<a_music>(), name, filename )
-					);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->original_filename = filename;
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-		}
-		else if( pass_num == 2 )
-		{
-			if( type == "emitter_params" )
-			{
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_emitter_params>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_emitter_params*>(
-						engine->asset_cache->add( std::make_unique<a_emitter_params>(), name, "" )
-					);
-
-				// ------------------------------------------------------------------------
-
-				for( const auto& iter : iter_ad->key_values )
+				if( type == "texture" )
 				{
-					std::string key = iter.first;
-					std::string value = iter.second;
+					assert_key_exists( type, *( iter_ad.get() ), "filename" );
 
-					if( key == "name" || key == "type" )
-					{
-						// these are valid, we just don't need them here
-					}
-					else if( key == "b_needs_warm_up" )
-						asset_ptr->b_needs_warm_up = ( value == "true" ) ? true : false;
-					else if( key == "b_one_shot" )
-						asset_ptr->b_one_shot = ( value == "true" ) ? true : false;
-					else if( key == "texture_name" )
-						asset_ptr->tex = engine->get_asset<a_texture>( value );
-					else if( key == "spawner_type" )
-					{
-						w_tokenizer tok( value, ',' );
-						std::string type = tok.get_next_token();
+					filename = iter_ad->key_values.at( "filename" );
 
-						if( type == "point" )
-						{
-							// the default spawner type, don't need to do anything for this
-						}
-						else if( type == "box" )
-							asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
-						else if( type == "circle" )
-							asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
-						else
-							log_error( "%s : unknown emitter spawn type : [%s]", __FUNCTION__, type.c_str() );
+					// ------------------------------------------------------------------------
 
-						asset_ptr->particle_spawner->parse_from_config_string( value );
-					}
-					else if( key == "a_dir" )
-						asset_ptr->a_dir = w_parser::parse_float_value( value );
-					else if( key == "r_dir_var" )
-						asset_ptr->r_dir_var = w_parser::parse_range_value( value );
-					else if( key == "r_scale_spawn" )
-						asset_ptr->r_scale_spawn = w_parser::parse_range_value( value );
-					else if( key == "t_scale" )
-						asset_ptr->t_scale = w_parser::parse_timeline_value( e_timeline_type::float_type, value );
-					else if( key == "s_max_spawn_per_sec" )
-						asset_ptr->s_max_spawn_per_sec = w_parser::parse_float_value( value );
-					else if( key == "r_lifespan" )
-						asset_ptr->r_lifespan = w_parser::parse_range_value( value );
-					else if( key == "r_velocity_spawn" )
-						asset_ptr->r_velocity_spawn = w_parser::parse_range_value( value );
-					else if( key == "t_color" )
-						asset_ptr->t_color = w_parser::parse_timeline_value( e_timeline_type::color_type, value );
-					else if( key == "r_spin_spawn" )
-						asset_ptr->r_spin_spawn = w_parser::parse_range_value( value );
-					else if( key == "r_spin_per_sec" )
-						asset_ptr->r_spin_per_sec = w_parser::parse_range_value( value );
-					else if( key == "t_alpha" )
-						asset_ptr->t_alpha = w_parser::parse_timeline_value( e_timeline_type::float_type, value );
-					else
-						log_msg( "%s : unknown key read from config block : [%s -> \"%s\"]", __FUNCTION__, name.c_str(), key.c_str() );
-				}
+					auto asset_ptr = engine->get_asset<a_texture>( name, b_silent(true) );
 
-				// ------------------------------------------------------------------------
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_texture*>(
+							engine->asset_cache->add( std::make_unique<a_texture>(), name, filename )
+							);
 
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "font" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "font_def" );
+					// ------------------------------------------------------------------------
 
-				// ------------------------------------------------------------------------
+					asset_ptr->original_filename = filename;
 
-				auto asset_ptr = engine->get_asset<a_font>( name, true );
+					// ------------------------------------------------------------------------
 
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_font*>(
-						engine->asset_cache->add( std::make_unique<a_font>(), name, "" )
-					);
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
 
-				// ------------------------------------------------------------------------
+					// Every texture that gets loaded gets a full size
+					// a_image created for it automatically.
 
-				asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->key_values["font_def"] );
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "cursor" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "texture" );
-				assert_key_exists( type, *( iter_ad.get() ), "hotspot" );
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_cursor>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_cursor*>(
-						engine->asset_cache->add( std::make_unique<a_cursor>(), name, "" )
+					auto img = static_cast<a_image*>(
+						engine->asset_cache->add( std::make_unique<a_image>( asset_ptr->name ),
+												  "auto_img_" + asset_ptr->name, "" )
 						);
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->img = engine->get_asset<a_texture>( iter_ad->key_values.at( "texture" ) )->get_image();
-				asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "anim_texture" )
-			{
-				auto asset_ptr = engine->get_asset<a_anim_texture>( name, true );
-
-				if( !asset_ptr )
-					asset_ptr = static_cast<a_anim_texture*>(
-						engine->asset_cache->add( std::make_unique<a_anim_texture>(), name, "" )
-					);
-
-				// ------------------------------------------------------------------------
-
-				std::string frames = iter_ad->key_values["frames"];
-				size_t num_frames = std::count( frames.begin(), frames.end(), ',' ) + 1;
-
-				w_tokenizer tok( frames, ',' );
-				for( ; num_frames > 0 ; --num_frames )
-				{
-					auto tex = engine->get_asset<a_texture>( tok.get_next_token() );
-					asset_ptr->frames.emplace_back( tex );
+					asset_ptr->img = img;
 				}
-
-				// ------------------------------------------------------------------------
-
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
-			}
-			else if( type == "image" )
-			{
-				assert_key_exists( type, *( iter_ad.get() ), "texture" );
-				assert_key_exists( type, *( iter_ad.get() ), "rect" );
-
-				// ------------------------------------------------------------------------
-
-				auto asset_ptr = engine->get_asset<a_image>( name, true );
-
-				if( !asset_ptr )
+				else if( type == "gradient" )
 				{
-					w_rect rc = w_parser::parse_rect_value( iter_ad->key_values[ "rect" ] );
-					asset_ptr = static_cast<a_image*>(
-						engine->asset_cache->add( std::make_unique<a_image>( iter_ad->key_values[ "texture" ], rc ), name, "" )
-					);
+					assert_key_exists( type, *( iter_ad.get() ), "alignment" );
+					assert_key_exists( type, *( iter_ad.get() ), "colors" );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_gradient>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_gradient*>(
+							engine->asset_cache->add( std::make_unique<a_gradient>(), name, "" )
+							);
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->key_values.at( "alignment" ) ) );
+
+					asset_ptr->colors.clear();
+
+					std::string color_list = iter_ad->key_values.at( "colors" );
+
+					w_tokenizer tok( color_list, '/', "n/a" );
+					std::string val;
+
+					std::vector<std::string> color_values;
+					while( true )
+					{
+						val = tok.get_next_token();
+						if( val == "n/a" )
+							break;
+
+						color_values.emplace_back( val );
+					}
+
+					for( const auto& iter : color_values )
+					{
+						val = iter;
+
+						if( engine->is_symbol_in_map( val ) )
+							val = engine->find_val_from_symbol( val );
+
+						asset_ptr->colors.emplace_back( w_color( val ) );
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
 				}
+				else if( type == "font_def" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "filename" );
+					assert_key_exists( type, *( iter_ad.get() ), "texture" );
 
-				// ------------------------------------------------------------------------
+					filename = iter_ad->key_values.at( "filename" );
 
-				asset_ptr->clean_up_internals();
-				asset_ptr->create_internals( is_hot_reloading );
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_font_def>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_font_def*>(
+							engine->asset_cache->add( std::make_unique<a_font_def>(), name, filename )
+							);
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->original_filename = filename;
+					asset_ptr->texture_name = iter_ad->key_values.at( "texture" );
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "9slice_def" )
+				{
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_9slice_def>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_9slice_def*>(
+							engine->asset_cache->add( std::make_unique<a_9slice_def>(), name, filename )
+							);
+
+					// ------------------------------------------------------------------------
+
+					for( const auto& iter : iter_ad->key_values )
+					{
+						std::string key = iter.first;
+						std::string value = iter.second;
+
+						if( key.substr( 0, 6 ) == "patch_" )
+						{
+							int patch_idx;
+
+							if( key == "patch_00" )			patch_idx = (int) e_patch::P_00;
+							else if( key == "patch_10" )	patch_idx = (int) e_patch::P_10;
+							else if( key == "patch_20" )	patch_idx = (int) e_patch::P_20;
+							else if( key == "patch_01" )	patch_idx = (int) e_patch::P_01;
+							else if( key == "patch_11" )	patch_idx = (int) e_patch::P_11;
+							else if( key == "patch_21" )	patch_idx = (int) e_patch::P_21;
+							else if( key == "patch_02" )	patch_idx = (int) e_patch::P_02;
+							else if( key == "patch_12" )	patch_idx = (int) e_patch::P_12;
+							else if( key == "patch_22" )	patch_idx = (int) e_patch::P_22;
+
+							w_tokenizer tok( value, ',' );
+							asset_ptr->patches[ patch_idx ].x = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ patch_idx ].y = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ patch_idx ].w = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ patch_idx ].h = w_parser::parse_float_value( tok.get_next_token() );
+						}
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "sound" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "filename" );
+
+					filename = iter_ad->key_values.at( "filename" );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_sound>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_sound*>(
+							engine->asset_cache->add( std::make_unique<a_sound>(), name, filename )
+							);
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->original_filename = filename;
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "music" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "filename" );
+
+					filename = iter_ad->key_values.at( "filename" );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_music>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_music*>(
+							engine->asset_cache->add( std::make_unique<a_music>(), name, filename )
+							);
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->original_filename = filename;
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
 			}
+			break;
+
+			case 2:
+			{
+				if( type == "emitter_params" )
+				{
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_emitter_params>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_emitter_params*>(
+							engine->asset_cache->add( std::make_unique<a_emitter_params>(), name, "" )
+							);
+
+					// ------------------------------------------------------------------------
+
+					for( const auto& iter : iter_ad->key_values )
+					{
+						std::string key = iter.first;
+						std::string value = iter.second;
+
+						if( key == "name" || key == "type" )
+						{
+							// these are valid, we just don't need them here
+						}
+						else if( key == "b_needs_warm_up" )
+							asset_ptr->b_needs_warm_up = bool( value == "true" );
+						else if( key == "b_one_shot" )
+							asset_ptr->b_one_shot = bool( value == "true" );
+						else if( key == "texture_name" )
+							asset_ptr->tex = engine->get_asset<a_texture>( value );
+						else if( key == "spawner_type" )
+						{
+							w_tokenizer tok( value, ',' );
+							std::string type = tok.get_next_token();
+
+							if( type == "point" )
+							{
+								// the default spawner type, don't need to do anything for this
+							}
+							else if( type == "box" )
+								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
+							else if( type == "circle" )
+								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
+							else
+								log_error( "%s : unknown emitter spawn type : [%s]", __FUNCTION__, type.c_str() );
+
+							asset_ptr->particle_spawner->parse_from_config_string( value );
+						}
+						else if( key == "a_dir" )
+							asset_ptr->a_dir = w_parser::parse_float_value( value );
+						else if( key == "r_dir_var" )
+							asset_ptr->r_dir_var = w_parser::parse_range_value( value );
+						else if( key == "r_scale_spawn" )
+							asset_ptr->r_scale_spawn = w_parser::parse_range_value( value );
+						else if( key == "t_scale" )
+							asset_ptr->t_scale = w_parser::parse_timeline_value( e_timeline_type::float_type, value );
+						else if( key == "s_max_spawn_per_sec" )
+							asset_ptr->s_max_spawn_per_sec = w_parser::parse_float_value( value );
+						else if( key == "r_lifespan" )
+							asset_ptr->r_lifespan = w_parser::parse_range_value( value );
+						else if( key == "r_velocity_spawn" )
+							asset_ptr->r_velocity_spawn = w_parser::parse_range_value( value );
+						else if( key == "t_color" )
+							asset_ptr->t_color = w_parser::parse_timeline_value( e_timeline_type::color_type, value );
+						else if( key == "r_spin_spawn" )
+							asset_ptr->r_spin_spawn = w_parser::parse_range_value( value );
+						else if( key == "r_spin_per_sec" )
+							asset_ptr->r_spin_per_sec = w_parser::parse_range_value( value );
+						else if( key == "t_alpha" )
+							asset_ptr->t_alpha = w_parser::parse_timeline_value( e_timeline_type::float_type, value );
+						else
+							log_msg( "%s : unknown key read from config block : [%s -> \"%s\"]", __FUNCTION__, name.c_str(), key.c_str() );
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "font" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "font_def" );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_font>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_font*>(
+							engine->asset_cache->add( std::make_unique<a_font>(), name, "" )
+							);
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->key_values.at( "font_def" ) );
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "cursor" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "texture" );
+					assert_key_exists( type, *( iter_ad.get() ), "hotspot" );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_cursor>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_cursor*>(
+							engine->asset_cache->add( std::make_unique<a_cursor>(), name, "" )
+							);
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->img = engine->get_asset<a_texture>( iter_ad->key_values.at( "texture" ) )->get_image();
+					asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "anim_texture" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "frames" );
+
+					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+						asset_ptr = static_cast<a_anim_texture*>(
+							engine->asset_cache->add( std::make_unique<a_anim_texture>(), name, "" )
+							);
+
+					// ------------------------------------------------------------------------
+
+					std::string frames = iter_ad->key_values.at( "frames" );
+					size_t num_frames = std::count( frames.begin(), frames.end(), ',' ) + 1;
+
+					w_tokenizer tok( frames, ',' );
+					for( ; num_frames > 0 ; --num_frames )
+					{
+						auto tex = engine->get_asset<a_texture>( tok.get_next_token() );
+						asset_ptr->frames.emplace_back( tex );
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "image" )
+				{
+					assert_key_exists( type, *( iter_ad.get() ), "texture" );
+					assert_key_exists( type, *( iter_ad.get() ), "rect" );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = engine->get_asset<a_image>( name, b_silent( true ) );
+
+					if( !asset_ptr )
+					{
+						w_rect rc = w_parser::parse_rect_value( iter_ad->key_values.at( "rect" ) );
+						asset_ptr = static_cast<a_image*>(
+							engine->asset_cache->add( std::make_unique<a_image>( iter_ad->key_values.at( "texture" ), rc ), name, "" )
+							);
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals( is_hot_reloading );
+				}
+			}
+			break;
 		}
 	}
 }
@@ -447,8 +457,6 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 
 	while( !tok.is_eos() )
 	{
-		line = w_stringutil::trim( line );
-
 		// ignore blank lines and lines that are entirely commented
 		if( line.size() > 0 && line[0] != '#' )
 		{
