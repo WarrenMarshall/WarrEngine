@@ -61,7 +61,7 @@ struct w_particle_emitter : i_listener, i_transform
 	w_particle_emitter();
 	~w_particle_emitter();
 
-	virtual void on_listener_event_received( e_event_id event, void* object );
+	void on_listener_event_received( e_event_id event, void* object ) override;
 	void set_params( a_emitter_params* params );
 	virtual void post_spawn();
 	void update();

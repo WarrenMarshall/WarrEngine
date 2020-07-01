@@ -29,7 +29,7 @@ struct i_speaker;
 struct i_transform;
 struct layer_background;
 struct layer_editor;
-struct layer_gameviewport;
+struct layer_worldviewport;
 struct layer_mainmenu;
 struct w_accum_value;
 struct w_asset_definition;

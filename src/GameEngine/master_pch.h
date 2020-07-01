@@ -61,7 +61,7 @@
 	this was taken from the internet. it apparently used to be included in winnt.h
 	and it allows you to use bitmasking operations on an enum.
 
-	just add:
+	just add_render_vert:
 
 	DEFINE_ENUM_FLAG_OPERATOR( my_enum_name )
 

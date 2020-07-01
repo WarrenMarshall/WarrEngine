@@ -21,14 +21,16 @@ struct a_texture : i_asset
 
 	~a_texture();
 
-	virtual void clean_up_internals();
-	virtual bool create_internals( bool is_hot_reloading );
+	void clean_up_internals() override;
+	bool create_internals( bool is_hot_reloading ) override;
+
 	void bind();
 	void unbind();
+
 	virtual a_texture* get_texture();
 	virtual a_image* get_image();
-	virtual void update() {}
-	virtual void draw( e_render_pass render_pass );
+
+	void draw( e_render_pass render_pass ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -66,8 +68,8 @@ struct a_gradient : a_texture
 	e_align alignment = e_align::horizontal;
 	std::vector<w_color> colors;
 
-	virtual void clean_up_internals();
-	virtual bool create_internals( bool is_hot_reloading );
+	void clean_up_internals() override;
+	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -79,13 +81,14 @@ struct a_anim_texture : a_texture
 
 	a_anim_texture();
 
-	virtual void clean_up_internals();
-	virtual bool create_internals( bool is_hot_reloading );
+	void clean_up_internals() override;
+	bool create_internals( bool is_hot_reloading ) override;
 	void add_frame( a_texture* tex );
 	void set_speed( float indices_per_sec );
 	void randomize();
-	virtual void update();
-	virtual a_texture* get_texture();
+
+	void update() override;
+	a_texture* get_texture() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -120,7 +123,7 @@ struct a_emitter_params : i_asset, i_speaker
 
 	a_emitter_params();
 
-	virtual bool create_internals( bool is_hot_reloading );
+	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -152,7 +155,7 @@ struct a_font_def : i_asset
 	// become indices into this array.
 	std::array<w_font_char, max_font_chars> char_map;
 
-	virtual bool create_internals( bool is_hot_reloading );
+	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -178,7 +181,7 @@ struct a_9slice_def : i_asset
 {
 	std::array<w_rect, 9> patches;
 
-	virtual bool create_internals( bool is_hot_reloading );
+	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -191,8 +194,8 @@ struct a_sound : i_asset
 	~a_sound();
 
 	void play();
-	virtual void clean_up_internals();
-	virtual bool create_internals( bool is_hot_reloading );
+	void clean_up_internals() override;
+	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -207,8 +210,8 @@ struct a_music : i_asset
 	void play();
 	void stop();
 
-	virtual void clean_up_internals();
-	virtual bool create_internals( bool is_hot_reloading );
+	void clean_up_internals() override;
+	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------

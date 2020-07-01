@@ -10,6 +10,8 @@ struct w_render_vert
 	float u, v;
 	float r, g, b, a;
 
+	// disabled because (a) this is kind of slow and (b) nobodyd needs it right now
+	/*
     bool const is_same( const w_render_vert& other )
     {
         if( fequals( x, other.x )
@@ -27,6 +29,7 @@ struct w_render_vert
 
         return false;
     }
+	*/
 };
 
 // ----------------------------------------------------------------------------
@@ -45,7 +48,6 @@ struct w_render_buffer
 	// indexes, in groups of 3 (aka triangles), into vertices array
 	std::vector<unsigned int> indices[2];
 
-	int add( int render_pass, const w_render_vert& render_vert );
 	void add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 );
 	void add_line( const w_render_vert& v0, const w_render_vert& v1 );
 	void bind();
@@ -54,7 +56,11 @@ struct w_render_buffer
 	void clear();
 	void log_stats( i_asset* asset );
 
+private:
+
 	unsigned int VAO = 0; // vertex array object
 	unsigned int VBO = 0; // vertex buffer
     unsigned int EBO = 0; // index buffer
+
+	int add_render_vert( int render_pass, const w_render_vert& render_vert );
 };

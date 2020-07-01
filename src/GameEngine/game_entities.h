@@ -6,7 +6,7 @@ struct e_player : w_entity
 {
 	e_player();
 
-	virtual void draw();
+	void draw() override;
 };
 
 // ----------------------------------------------------------------------------

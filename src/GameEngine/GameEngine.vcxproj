@@ -173,6 +173,7 @@
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_entities.cpp" />
+    <ClCompile Include="layer_browser.cpp" />
     <ClCompile Include="master_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
@@ -189,7 +190,7 @@
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="layer_editor.cpp" />
-    <ClCompile Include="layer_gameviewport.cpp" />
+    <ClCompile Include="layer_worldviewport.cpp" />
     <ClCompile Include="mathutil.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
@@ -209,7 +210,6 @@
     </ClCompile>
     <ClCompile Include="random.cpp" />
     <ClCompile Include="render.cpp" />
-    <ClCompile Include="layer_mainmenu.cpp" />
     <ClCompile Include="layer_mgr.cpp" />
     <ClCompile Include="stringutil.cpp" />
     <ClCompile Include="tween.cpp" />
@@ -233,7 +233,8 @@
     <ClInclude Include="file_mem.h" />
     <ClInclude Include="io_zip.h" />
     <ClInclude Include="i_transform.h" />
-    <ClInclude Include="layer_gameviewport.h" />
+    <ClInclude Include="layer_browser.h" />
+    <ClInclude Include="layer_worldviewport.h" />
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game_entities.h" />
@@ -263,7 +264,6 @@
     <ClInclude Include="mathutil.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="render.h" />
-    <ClInclude Include="layer_mainmenu.h" />
     <ClInclude Include="layer_mgr.h" />
     <ClInclude Include="stringutil.h" />
     <ClInclude Include="tween.h" />

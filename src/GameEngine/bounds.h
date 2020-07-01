@@ -22,9 +22,9 @@ struct w_bounds_circle : w_bounds
 
 	int radius = 0;
 
-	virtual bool contains_pt( w_vec3 world_space_pos_to_check );
-	virtual bool is_intersecting( w_bounds other );
-	virtual void draw_bounds();
+	bool contains_pt( w_vec3 world_space_pos_to_check ) override;
+	bool is_intersecting( w_bounds other ) override;
+	void draw_bounds() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -34,5 +34,5 @@ struct w_bounds_bbox : w_bounds
 	w_bounds_bbox();
 
 	w_bbox box;
-	virtual void draw_bounds();
+	void draw_bounds() override;
 };

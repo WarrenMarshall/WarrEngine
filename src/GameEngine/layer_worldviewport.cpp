@@ -4,12 +4,12 @@
 
 // ------------------------------------------------------------------------------
 
-void layer_gameviewport::push()
+void layer_worldviewport::push()
 {
 	img_gradient = std::make_unique<a_image>( "background_gradient" );
 }
 
-void layer_gameviewport::draw()
+void layer_worldviewport::draw()
 {
 	w_layer::draw();
 
@@ -31,7 +31,7 @@ void layer_gameviewport::draw()
 	RENDER
 		->begin()
 		->push_color( W_COLOR_ORANGE )
-		->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), "Endless Adventure Editor", e_align::centered )
+		->draw_string( engine->get_asset<a_font>( "larger_font" ), w_vec3( 0, v_window_hh - ( TILE_SZ * 1 ), 200 ), game->viewport_caption, e_align::centered )
 		->end();
 
 	// tiles

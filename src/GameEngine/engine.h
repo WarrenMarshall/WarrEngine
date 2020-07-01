@@ -60,6 +60,6 @@ struct w_engine : i_listener
 
 	//std::thread thread_sample;
 	//std::atomic_bool exit_thread_sample = false;
-
-	virtual void on_listener_event_received( e_event_id event, void* object );
+	
+	void on_listener_event_received( e_event_id event, void* object ) override;
 };

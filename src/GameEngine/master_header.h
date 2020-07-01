@@ -41,9 +41,9 @@
 #include "layer.h"
 #include "layer_mgr.h"
 #include "layer_background.h"
-#include "layer_mainmenu.h"
+#include "layer_browser.h"
 #include "layer_editor.h"
-#include "layer_gameviewport.h"
+#include "layer_worldviewport.h"
 
 #include "io_zip.h"
 #include "filesystem.h"

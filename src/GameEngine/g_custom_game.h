@@ -26,6 +26,7 @@ struct g_custom_game : w_game
 {
 	a_font* font = nullptr;
 	e_player* player = nullptr;
+	std::string viewport_caption = "";
 
 	int current_room = 0;
 	std::array<w_world_room, 10> rooms;
@@ -34,8 +35,8 @@ struct g_custom_game : w_game
 
 	g_custom_game();
 
-	virtual void new_game();
-	virtual void update();
+	void new_game() override;
+	void update() override;
 
 	w_tile* get_tile( int id );
 };

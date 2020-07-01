@@ -113,7 +113,7 @@ int main( int argc, char* argv[] )
 		// initial layer set up
 
 		engine->layer_mgr->push( std::make_unique<layer_background>() );
-		engine->layer_mgr->push( std::make_unique<layer_gameviewport>() );
+		engine->layer_mgr->push( std::make_unique<layer_worldviewport>() );
 		engine->layer_mgr->push( std::make_unique<layer_editor>() );
 
 		engine->is_running = true;

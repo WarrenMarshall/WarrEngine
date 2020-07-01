@@ -347,7 +347,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "cursor" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "texture" );
+					assert_key_exists( type, *( iter_ad.get() ), "image" );
 					assert_key_exists( type, *( iter_ad.get() ), "hotspot" );
 
 					// ------------------------------------------------------------------------
@@ -361,7 +361,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->img = engine->get_asset<a_texture>( iter_ad->key_values.at( "texture" ) )->get_image();
+					asset_ptr->img = engine->get_asset<a_image>( iter_ad->key_values.at( "image" ) );
 					asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
 
 					// ------------------------------------------------------------------------

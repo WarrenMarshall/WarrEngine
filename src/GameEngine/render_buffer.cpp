@@ -53,46 +53,6 @@ w_render_buffer::~w_render_buffer()
     glDeleteVertexArrays( 1, &VAO );
 }
 
-int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
-{
-    // apply the current modelview matrix against the vertex being rendered.
-    // until this point, the vertex has been in model coordinate space.
-
-    glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
-    v4 = MATRIX->top()->m * v4;
-
-    const w_render_vert rv(
-        w_vec3( v4.x, v4.y, v4.z ),
-        w_uv( render_vert.u, render_vert.v ),
-        w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
-    );
-    
-    // look through the existing list of vertices and see if we can find
-    // a matching vertex. if one is found, return the index of that vertex
-    // instead of putting the new one into the list.
-
-    //int idx = 0;
-    //for( auto& iter : vertices[render_pass] )
-    //{
-    //    if( iter.is_same( rv ) )
-    //    {
-    //        indices[render_pass].emplace_back( idx );
-    //        return idx;
-    //    }
-
-    //    idx++;
-    //}
-
-    // we have a unique vertex, so add it to the vertex and index lists.
-
-    vertices[render_pass].emplace_back( rv );
-    indices[render_pass].emplace_back( (int)vertices[render_pass].size() - 1 );
-
-    // return the newly created index
-
-    return static_cast<int>( indices[render_pass].back() );
-}
-
 void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
     int render_pass = static_cast<int>( e_render_pass::opaque );
@@ -105,13 +65,13 @@ void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1
     // in the quad, we can skip the process of transforming them and searching the vertex
     // array by caching the index they are assigned the first time through and re-using it.
 
-    const int idx0 = add( render_pass, v0 );
-    add( render_pass, v1 );
-    const int idx2 = add( render_pass, v2 );
+    const int idx0 = add_render_vert( render_pass, v0 );
+    add_render_vert( render_pass, v1 );
+    const int idx2 = add_render_vert( render_pass, v2 );
 
     indices[render_pass].emplace_back( idx0 );
     indices[render_pass].emplace_back( idx2 );
-    add( render_pass, v3 );
+    add_render_vert( render_pass, v3 );
 }
 
 void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1 )
@@ -122,8 +82,8 @@ void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1
         render_pass = static_cast<int>( e_render_pass::transparent );
     }
 
-    add( render_pass, v0 );
-    add( render_pass, v1 );
+    add_render_vert( render_pass, v0 );
+    add_render_vert( render_pass, v1 );
 }
 
 void w_render_buffer::bind()
@@ -199,4 +159,48 @@ void w_render_buffer::log_stats( i_asset* asset )
     {
 	    log_msg( "\t\t[%s]: [%d verts, %d indices]", asset->name.c_str(), vertices[0].size() + vertices[1].size(), indices[0].size() + indices[1].size() );
     }
+}
+
+int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& render_vert )
+{
+    // apply the current modelview matrix against the vertex being rendered.
+    // until this point, the vertex has been in model coordinate space.
+
+    glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
+    v4 = MATRIX->top()->m * v4;
+
+    const w_render_vert rv(
+        w_vec3( v4.x, v4.y, v4.z ),
+        w_uv( render_vert.u, render_vert.v ),
+        w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
+    );
+
+    // look through the existing list of vertices and see if we can find
+    // a matching vertex. if one is found, return the index of that vertex
+    // instead of putting the new one into the list.
+    //
+    // NOTE : this is a good idea in theory, but it ends up being slower 
+    // than just throwing 3 unique indices for each triangles at the video card
+
+    //int idx = 0;
+    //for( auto& iter : vertices[render_pass] )
+    //{
+    //    if( iter.is_same( rv ) )
+    //    {
+    //        indices[render_pass].emplace_back( idx );
+    //        return idx;
+    //    }
+
+    //    idx++;
+    //}
+
+    // we have a unique vertex, so add_render_vert it to the vertex and index lists.
+
+    vertices[ render_pass ].emplace_back( rv );
+    int idx = (int) vertices[ render_pass ].size() - 1;
+    indices[ render_pass ].emplace_back( idx );
+
+    // return the newly created index
+
+    return static_cast<int>( idx );
 }

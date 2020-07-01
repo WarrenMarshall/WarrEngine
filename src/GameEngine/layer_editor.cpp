@@ -7,12 +7,8 @@
 void layer_editor::push()
 {
 	engine->input_mgr->add_listener( this );
-	//tween_pingpong = std::make_unique<w_tween>( e_tween_type::pingpong, -150.0f, 150.0f, 15.0f );
-	//tween_rotate = std::make_unique<w_tween>( e_tween_type::loop, 0.0f, 360.0f, 50.0f );
 
-	//pingpong_xform.set_transform( w_vec3( 0, -72, 0 ), 0, 1.0f );
-	//rotate_xform.set_transform( w_vec3( 0, -96, 0 ), 0, 1.0f );
-	selector_bracket = std::make_unique<a_image>( "selector_bracket" );
+	selector_bracket = engine->get_asset<a_image>( "selector_bracket" );
 	mouse_cursor = engine->get_asset<a_cursor>( "ui_cursor" );
 
 	engine->input_mgr->set_mouse_mode( e_mouse_mode::hidden );
@@ -25,15 +21,9 @@ void layer_editor::pop()
 	engine->input_mgr->set_mouse_mode( e_mouse_mode::normal );
 }
 
-void layer_editor::update()
+void layer_editor::becoming_top_layer()
 {
-	w_layer::update();
-
-	//tween_pingpong->update();
-	//pingpong_xform.pos.x = tween_pingpong->get_fval();
-	//
-	//tween_rotate->update();
-	//rotate_xform.angle = tween_rotate->get_fval();
+	game->viewport_caption = "Edit Mode";
 }
 
 void layer_editor::draw()
@@ -49,7 +39,7 @@ void layer_editor::draw()
 			->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0 ) )
 			->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0 ) );
 
-		RENDER->draw( selector_bracket.get() );
+		RENDER->draw( selector_bracket );
 
 		MATRIX->pop();
 	}
@@ -194,18 +184,14 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 
 int layer_editor::tile_from_screen_pos( float xpos, float ypos )
 {
-	//w_world_room* room = &game->test_room;
+	float tiles_x = TILE_SZ / 2;
+	float tiles_y = TILE_SZ * 2.5;
 
-	float tiles_x = 0;
-	float tiles_y = TILE_SZ * 2;
+	float tile_x = round(( xpos - tiles_x ) / (float)TILE_SZ);
+	float tile_y = round(( ypos - tiles_y ) / (float)TILE_SZ);
 
-	int tile_x = static_cast<int>( ( xpos - tiles_x ) / (float)TILE_SZ );
-	int tile_y = static_cast<int>( ( ypos - tiles_y ) / (float)TILE_SZ );
-
-	//log_msg( "%d,%d", tile_x, tile_y );
-
-	hover_tile = w_vec2( static_cast<float>( tile_x ), static_cast<float>( tile_y ) );
 	draw_selector_bracket = ( tile_x >= 0 && tile_x < 19 && tile_y >= 0 && tile_y < 9 );
+	hover_tile = w_vec2( round( tile_x ), round( tile_y ) );
 
 	return 0;
 }

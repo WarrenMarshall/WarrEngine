@@ -15,9 +15,10 @@
 }
 
 {
-	"type" "texture"
+	"type" "image"
 	"name" "selector_bracket"
-	"filename" "images/selectorA.png"
+	"texture" "tex_ui_master"
+	"rect" "0,40,16,16"
 }
 
 # ---------------------------------------------------------

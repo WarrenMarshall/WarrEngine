@@ -2,6 +2,6 @@
 
 struct layer_background : w_layer
 {
-	virtual void draw();
-	virtual e_opaque get_opaque_flags();
+	void draw() override;
+	e_opaque get_opaque_flags() override;
 };

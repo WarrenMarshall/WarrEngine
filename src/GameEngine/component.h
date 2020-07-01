@@ -28,7 +28,7 @@ struct c_sprite : w_component
 
 	w_component* init( const std::string& img_name );
 	w_component* init( const std::string& image_name, const w_rect& rc );
-	virtual void draw();
+	void draw() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -40,11 +40,11 @@ struct c_emitter : w_component
 	c_emitter();
 
 	w_component* init( i_transform* parent_entity, const std::string& params_name );
-	virtual void set_life_cycle( e_lifecycle lifecycle );
-	virtual bool is_fully_dead();
-	virtual void draw();
-	virtual void update();
-	virtual void post_spawn();
+	void set_life_cycle( e_lifecycle lifecycle ) override;
+	bool is_fully_dead() override;
+	void draw() override;
+	void update() override;
+	void post_spawn() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -56,5 +56,5 @@ struct c_sound : w_component
 	c_sound();
 
 	w_component* init( const std::string& snd_name );
-	virtual void draw();
+	void draw() override;
 };
