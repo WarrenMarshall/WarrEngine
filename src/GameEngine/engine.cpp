@@ -210,10 +210,9 @@ void w_engine::draw()
 		render->draw_line( v2, v3 );
 		render->draw_line( v3, v0 );
 
+		render->end();
 		opengl->pop();
 	}
-
-	render->end();
 }
 
 void w_engine::update()

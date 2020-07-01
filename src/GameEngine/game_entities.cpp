@@ -22,8 +22,10 @@ void e_player::draw()
 	w_entity::draw();
 
 	RENDER
+		->begin()
 		->push_color( W_COLOR_GREEN )
-		->draw_circle( w_vec3::zero, 8 );
+		->draw_circle( w_vec3::zero, 8 )
+		->end();
 }
 
 // ----------------------------------------------------------------------------

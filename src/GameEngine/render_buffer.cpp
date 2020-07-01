@@ -71,17 +71,17 @@ int w_render_buffer::add( int render_pass, const w_render_vert& render_vert )
     // a matching vertex. if one is found, return the index of that vertex
     // instead of putting the new one into the list.
 
-    int idx = 0;
-    for( auto& iter : vertices[render_pass] )
-    {
-        if( iter.is_same( rv ) )
-        {
-            indices[render_pass].emplace_back( idx );
-            return idx;
-        }
+    //int idx = 0;
+    //for( auto& iter : vertices[render_pass] )
+    //{
+    //    if( iter.is_same( rv ) )
+    //    {
+    //        indices[render_pass].emplace_back( idx );
+    //        return idx;
+    //    }
 
-        idx++;
-    }
+    //    idx++;
+    //}
 
     // we have a unique vertex, so add it to the vertex and index lists.
 

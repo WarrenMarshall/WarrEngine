@@ -29,12 +29,11 @@ struct w_engine : i_listener
 	void precache_asset_resources();
 	template<typename T> T* get_asset( const std::string& name, bool silent = false )
 	{
-#ifdef _DEBUG
-		T* asset_ptr = dynamic_cast<T*>( asset_cache->find( name, silent ) );
+#if defined(_DEBUG) || defined(_DRELEASE)
+		return dynamic_cast<T*>( asset_cache->find( name, silent ) );
 #else
-		T* asset_ptr = static_cast<T*>( asset_cache->find( name, silent ) );
+		return static_cast<T*>( asset_cache->find( name, silent ) );
 #endif
-		return asset_ptr;
 	}
 
 	std::unordered_map<std::string, std::string> _symbol_to_value;

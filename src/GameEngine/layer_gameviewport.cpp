@@ -47,7 +47,7 @@ void layer_gameviewport::draw()
 		{
 			int idx = ( y * ROOM_W ) + x;
 
-			RENDER->draw( game->get_tile( game->test_room.tiles[ idx ] )->img );
+			RENDER->draw( game->get_tile( game->rooms[game->current_room].tiles[ idx ] )->img );
 			mtx->translate( w_vec3( TILE_SZ, 0, 0 ) );
 		}
 

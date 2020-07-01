@@ -132,6 +132,57 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 					log_msg( "%s", seq.c_str() );
 				}
 				break;
+
+				case e_input_id::keyboard_0:
+				{
+					game->current_room = 0;
+				}
+				break;
+				case e_input_id::keyboard_1:
+				{
+					game->current_room = 1;
+				}
+				break;
+				case e_input_id::keyboard_2:
+				{
+					game->current_room = 2;
+				}
+				break;
+				case e_input_id::keyboard_3:
+				{
+					game->current_room = 3;
+				}
+				break;
+				case e_input_id::keyboard_4:
+				{
+					game->current_room = 4;
+				}
+				break;
+				case e_input_id::keyboard_5:
+				{
+					game->current_room = 5;
+				}
+				break;
+				case e_input_id::keyboard_6:
+				{
+					game->current_room = 6;
+				}
+				break;
+				case e_input_id::keyboard_7:
+				{
+					game->current_room = 7;
+				}
+				break;
+				case e_input_id::keyboard_8:
+				{
+					game->current_room = 8;
+				}
+				break;
+				case e_input_id::keyboard_9:
+				{
+					game->current_room = 9;
+				}
+				break;
 			}
 		}
 		break;

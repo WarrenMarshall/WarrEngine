@@ -32,15 +32,24 @@ g_custom_game::g_custom_game()
 
 	font = engine->get_asset<a_font>( "medieval_font" );
 
-	for( int x = 0 ; x < ROOM_W * ROOM_H ; ++x )
-		test_room.tiles[ x ] = 4;// engine->random->geti_range( 0, 255 );
+	// populate the rooms with default tile values
+
+	int debug_tile_id = 0;
+	for( auto& iter : rooms )
+	{
+		for( int x = 0 ; x < ROOM_W * ROOM_H ; ++x )
+		{
+			iter.tiles[ x ] = debug_tile_id;
+		}
+		debug_tile_id++;
+	}
 }
 
 void g_custom_game::new_game()
 {
 	w_game::new_game();
 
-	//player = game->spawn_entity<e_player>( w_vec3::zero, 30.f );
+	player = game->spawn_entity<e_player>( w_vec3( 0, -100, 0 ), 30.f );
 }
 
 void g_custom_game::update()

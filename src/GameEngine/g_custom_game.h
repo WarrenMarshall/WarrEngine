@@ -27,7 +27,8 @@ struct g_custom_game : w_game
 	a_font* font = nullptr;
 	e_player* player = nullptr;
 
-	w_world_room test_room;
+	int current_room = 0;
+	std::array<w_world_room, 10> rooms;
 
 	std::array<w_tile, static_cast<size_t>( 256 )> tile_masters;
 

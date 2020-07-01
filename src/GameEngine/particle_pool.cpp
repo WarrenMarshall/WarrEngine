@@ -48,8 +48,10 @@ void w_particle_pool::draw()
 				->push()
 				->add_transform( iter.pos, iter.spin, iter.base_scale * scale );
 
-			// warren
-			//RENDER->draw_sprite( iter.tex, color );
+			RENDER->begin()
+				->push_color( color )
+				->draw_sprite( iter.tex->get_image() )
+				->end();
 
 			MATRIX->pop();
 		}

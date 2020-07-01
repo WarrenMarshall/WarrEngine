@@ -50,7 +50,7 @@ struct w_render
 	bool show_stats = false;
 
 	// circle sample points are stored in a unit circle
-	static constexpr int circle_sample_points_max = 32;
+	static constexpr int circle_sample_points_max = 16;
 	w_vec2 circle_sample_points[circle_sample_points_max];
 
 	void init();
