@@ -157,12 +157,12 @@ void w_opengl::refresh_primitive_sizes()
 
 	if( w_ratio > h_ratio )
 	{
-		glLineWidth( w_ratio );
-		glPointSize( w_ratio );
+		glLineWidth( w_ratio > 0 ? w_ratio : 1 );
+		glPointSize( w_ratio > 0 ? w_ratio : 1 );
 	}
 	else
 	{
-		glLineWidth( h_ratio );
-		glPointSize( h_ratio );
+		glLineWidth( h_ratio > 0 ? w_ratio : 1 );
+		glPointSize( h_ratio > 0 ? w_ratio : 1 );
 	}
 }
