@@ -298,7 +298,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 		case e_event_id::input_pressed:
 		{
-			switch( evt->data.input_id )
+			switch( evt->input_id )
 			{
 				case e_input_id::keyboard_esc:
 				{
@@ -333,7 +333,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 				case e_input_id::keyboard_enter:
 				{
-					bool alt_down = ( evt->data.mods & GLFW_MOD_ALT );
+					bool alt_down = ( evt->mods & GLFW_MOD_ALT );
 
 					if( alt_down )
 					{

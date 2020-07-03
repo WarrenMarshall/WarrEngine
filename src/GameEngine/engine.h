@@ -30,7 +30,7 @@ struct w_engine : i_listener
 	void precache_asset_resources();
 	template<typename T> T* get_asset( const std::string& name, bool silent = false )
 	{
-#if defined(_DEBUG) || defined(_DRELEASE)
+#if !defined(FINALRELEASE)
 		return dynamic_cast<T*>( asset_cache->find( name, silent ) );
 #else
 		return static_cast<T*>( asset_cache->find( name, silent ) );

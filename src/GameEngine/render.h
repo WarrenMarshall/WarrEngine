@@ -60,6 +60,7 @@ struct w_render
 	w_render* draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
 	w_render* draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z );
 
+	void init_projection();
 	w_render* draw_rectangle( w_rect rc_dst );
 	w_render* draw_filled_rectangle( w_vec2 start, w_vec2 end, float z );
 	w_render* draw_line( w_vec3 start, w_vec3 end );

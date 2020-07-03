@@ -87,25 +87,50 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 	{
 		case e_event_id::input_motion:
 		{
-			tile_from_screen_pos( evt->data.xpos, evt->data.ypos );
-			//log_msg( "%1.2f, %1.2f", evt->data.xpos, evt->data.ypos );
+			switch( evt->input_id )
+			{
+				case e_input_id::mouse:
+				{
+					tile_from_screen_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
+				}
+				break;
+			}
 		}
 		break;
 
 		case e_event_id::input_pressed:
 		{
-			switch( evt->data.input_id )
+			switch( evt->input_id )
 			{
-				case e_input_id::mouse_button_right:
+				case e_input_id::controller_button_dpad_left:
+				case e_input_id::keyboard_left:
 				{
-					w_fibonacci fib;
-					std::string seq = "";
+					hover_tile.x--;
+					hover_tile.x = w_clamp( hover_tile.x, 0, 18 );
+				}
+				break;
 
-					for( int x = 0 ; x < 50 ; ++x )
-					{
-						seq += s_format( "%d", fib.step() );
-					}
-					log_msg( "%s", seq.c_str() );
+				case e_input_id::controller_button_dpad_right:
+				case e_input_id::keyboard_right:
+				{
+					hover_tile.x++;
+					hover_tile.x = w_clamp( hover_tile.x, 0, 18 );
+				}
+				break;
+
+				case e_input_id::controller_button_dpad_up:
+				case e_input_id::keyboard_up:
+				{
+					hover_tile.y--;
+					hover_tile.y = w_clamp( hover_tile.y, 0, 8 );
+				}
+				break;
+
+				case e_input_id::controller_button_dpad_down:
+				case e_input_id::keyboard_down:
+				{
+					hover_tile.y++;
+					hover_tile.y = w_clamp( hover_tile.y, 0, 8 );
 				}
 				break;
 
@@ -168,7 +193,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 // takes a position within the game viewport and converts it into
 // a tile index within the current room
 
-int layer_editor::tile_from_screen_pos( float xpos, float ypos )
+void layer_editor::tile_from_screen_pos( float xpos, float ypos )
 {
 	float tiles_x = TILE_SZ / 2;
 	float tiles_y = TILE_SZ * 2.5;
@@ -178,6 +203,4 @@ int layer_editor::tile_from_screen_pos( float xpos, float ypos )
 
 	draw_selector_bracket = ( tile_x >= 0 && tile_x < 19 && tile_y >= 0 && tile_y < 9 );
 	hover_tile = w_vec2( round( tile_x ), round( tile_y ) );
-
-	return 0;
 }

@@ -23,7 +23,7 @@ int main( int argc, char* argv[] )
 {
 	try
 	{
-#if !defined(_DEBUG) && !defined(_DRELEASE)
+#if defined(FINALRELEASE)
 		ShowWindow( GetConsoleWindow(), SW_HIDE );
 #endif
 
@@ -134,6 +134,8 @@ int main( int argc, char* argv[] )
 		/*
 			main game loop
 		*/
+
+		RENDER->init_projection();
 
 		while( engine->is_running )
 		{

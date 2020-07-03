@@ -48,14 +48,14 @@ void layer_browser::on_listener_event_received( e_event_id event, void* object )
 	{
 		case e_event_id::input_motion:
 		{
-			tile_from_screen_pos( evt->data.xpos, evt->data.ypos );
-			//log_msg( "%1.2f, %1.2f", evt->data.xpos, evt->data.ypos );
+			tile_from_screen_pos( evt->mouse.pos.x, evt->mouse.pos.y );
+			//log_msg( "%1.2f, %1.2f", evt->xpos, evt->ypos );
 		}
 		break;
 
 		//case e_event_id::input_pressed:
 		//{
-		//	switch( evt->data.input_id )
+		//	switch( evt->input_id )
 		//	{
 		//		case e_input_id::keyboard_9:
 		//		{

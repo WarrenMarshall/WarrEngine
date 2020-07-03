@@ -2,72 +2,60 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+/*
+	input system design notes
+
+	- buttons being pressed and released are sent as listener events
+		- (keypresses, mouse buttons, or controller buttons)
+
+	- buttons can also be queried as needed
+		- (keypresses, mouse buttons, or controller buttons)
+
+	- mouse motion
+		- only sent as an event, can't be queried
+		- the delta is updated in real time via the callback function but the
+		  event is only sent once per call to Update()
+
+	- controller motion
+		- must be queried, it's never sent as an event
+		- controller motion is pressure sensitive so you need to poll each frame
+		  to see how hard the user is pushing the stick or the trigger you want
+*/
+
+// ----------------------------------------------------------------------------
+
 void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
-	switch( action )
-	{
-		case GLFW_PRESS:
-		{
-			w_input_event_data data;
-			data.input_id = engine->input_mgr->glfw_codes[key];
-			data.mods = mods;
+	bool pressed = !( action == GLFW_RELEASE );
 
-			engine->input_mgr->button_states[static_cast<int>( data.input_id )] = true;
-			engine->input_mgr->event_input_pressed( e_event_id::input_pressed, data );
-		}
-		break;
+	w_input_event evt;
+	evt.event_id = pressed ? e_event_id::input_pressed : e_event_id::input_released;
+	evt.input_id = engine->input_mgr->glfw_codes[ key ];
+	evt.mods = mods;
 
-		case GLFW_RELEASE:
-		{
-			w_input_event_data data;
-			data.input_id = engine->input_mgr->glfw_codes[key];
-			data.mods = mods;
-
-			engine->input_mgr->button_states[static_cast<int>( data.input_id )] = false;
-			engine->input_mgr->event_input_released( e_event_id::input_released, data );
-		}
-		break;
-	}
+	engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ] = pressed;
+	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 }
 
 void mouse_button_callback( GLFWwindow* window, int button, int action, int mods )
 {
-	switch( action )
-	{
-		case GLFW_PRESS:
-		{
-			w_input_event_data data;
-			data.input_id = engine->input_mgr->glfw_codes[button];
-			data.mods = mods;
+	bool pressed = !( action == GLFW_RELEASE );
 
-			engine->input_mgr->button_states[static_cast<int>( data.input_id )] = true;
-			engine->input_mgr->event_input_pressed( e_event_id::input_pressed, data );
-		}
-		break;
+	w_input_event evt;
+	evt.event_id = pressed ? e_event_id::input_pressed : e_event_id::input_released;
+	evt.input_id = engine->input_mgr->glfw_codes[ button ];
+	evt.mods = mods;
 
-		case GLFW_RELEASE:
-		{
-			w_input_event_data data;
-			data.input_id = engine->input_mgr->glfw_codes[button];
-			data.mods = mods;
-
-			engine->input_mgr->button_states[static_cast<int>( data.input_id )] = false;
-			engine->input_mgr->event_input_released( e_event_id::input_released, data );
-		}
-		break;
-	}
+	engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ] = pressed;
+	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 }
 
 static w_vec2 last_mouse_pos( 0, 0 );
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
-	w_input_event_data data;
-
-	// raw mouse delta
-
-	data.xdelta = static_cast<float>( xpos ) - last_mouse_pos.x;
-	data.ydelta = static_cast<float>( ypos ) - last_mouse_pos.y;
+	engine->input_mgr->mouse_move_delta.x += static_cast<float>( xpos ) - last_mouse_pos.x;
+	engine->input_mgr->mouse_move_delta.y += static_cast<float>( ypos ) - last_mouse_pos.y;
 
 	last_mouse_pos = w_vec2( static_cast<float>( xpos ), static_cast<float>( ypos ) );
 
@@ -76,27 +64,12 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	float vx = static_cast<float>( ( xpos - engine->window->viewport_pos_sz.x ) * ratio );
 	float vy = static_cast<float>( ( ypos - engine->window->viewport_pos_sz.y ) * ratio );
 
-	// only send events if the mouse is moving over the virtual window itself
+	// only update the position if the mouse is moving over the virtual window itself
 	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
 	{
-		data.xpos = vx;
-		data.ypos = vy;
-
 		engine->input_mgr->mouse_vwindow_pos.x = vx;
 		engine->input_mgr->mouse_vwindow_pos.y = vy;
-
-		engine->input_mgr->event_input_motion( e_event_id::input_motion, data );
 	}
-}
-
-// ----------------------------------------------------------------------------
-
-w_input_event_data::w_input_event_data()
-{
-	input_id = e_input_id::invalid;
-	mods = -1;
-	xpos = ypos = 0.0f;
-	xdelta = ydelta = 0.0f;
 }
 
 // ----------------------------------------------------------------------------
@@ -118,18 +91,21 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 
 	if( !last_state && current_state )
 	{
-		w_input_event_data data;
-		data.input_id = input_id;
+		w_input_event evt;
+		evt.event_id = e_event_id::input_pressed;
+		evt.input_id = input_id;
+
+		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 
 		is_being_used = true;
-		engine->input_mgr->event_input_pressed( e_event_id::input_pressed, data );
 	}
 	else if( last_state && !current_state )
 	{
-		w_input_event_data data;
-		data.input_id = input_id;
+		w_input_event evt;
+		evt.event_id = e_event_id::input_released;
+		evt.input_id = input_id;
 
-		engine->input_mgr->event_input_released( e_event_id::input_released, data );
+		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 	}
 }
 
@@ -178,14 +154,6 @@ void w_game_controller::play_rumble( int intensity, int ms )
 }
 
 // ----------------------------------------------------------------------------
-
-/*
-	design notes
-
-	- buttons being pressed and released are sent as listener events
-	- buttons being held can be queried as needed
-	- motion can be queried (and accumulated +/- until queried?)
-*/
 
 void w_input_mgr::init()
 {
@@ -276,20 +244,6 @@ void w_input_mgr::init()
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_LEFT, e_input_id::mouse_button_left ) );
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_MIDDLE, e_input_id::mouse_button_middle ) );
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, e_input_id::mouse_button_right ) );
-	//glfw_codes.insert( std::make_pair( GLFW_GAMEPAD_BUTTON_A, e_input_id::controller_button_a) );
-	//glfw_codes.insert( std::make_pair( GLFW_GAMEPAD_BUTTON_B, e_input_id::controller_button_b) );
-	//glfw_codes.insert( std::make_pair( GLFW_GAMEPAD_BUTTON_X, e_input_id::controller_button_x) );
-	//glfw_codes.insert( std::make_pair( GLFW_GAMEPAD_BUTTON_Y, e_input_id::controller_button_y) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_DPAD_LEFT, e_input_id::controller_button_dpad_left) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_DPAD_RIGHT, e_input_id::controller_button_dpad_right) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_DPAD_UP, e_input_id::controller_button_dpad_up) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_DPAD_DOWN, e_input_id::controller_button_dpad_down) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_START, e_input_id::controller_button_start) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_BACK, e_input_id::controller_button_back) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_LEFT_THUMB, e_input_id::controller_button_left_thumb) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_RIGHT_THUMB, e_input_id::controller_button_right_thumb) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_LEFT_SHOULDER, e_input_id::controller_button_left_shoulder ) );
-	//glfw_codes.insert( std::make_pair( XINPUT_GAMEPAD_RIGHT_SHOULDER, e_input_id::controller_button_right_shoulder ) );
 }
 
 void w_input_mgr::deinit()
@@ -299,18 +253,31 @@ void w_input_mgr::deinit()
 
 void w_input_mgr::update()
 {
-	// send the queued up events to anyone listening
-
 	for( auto& evt : event_queue )
 	{
 		send_event_to_listeners( evt.event_id, &evt );
 	}
 
-	if( event_queue.size() )
-	{
-		log_msg( "sent %d events", (int)event_queue.size() );
-	}
+	//if( event_queue.size() )
+	//{
+	//	log_msg( "sent %d events", (int)event_queue.size() );
+	//}
 	event_queue.clear();
+
+	// mouse motion
+	// NOTE : mouse motion deltas are sent once per update, not for each message from the OS
+
+	if( !fequals( mouse_move_delta.x, 0.0f ) || !fequals( mouse_move_delta.y, 0.0f ) )
+	{
+		w_input_event evt;
+		evt.event_id = e_event_id::input_motion;
+		evt.input_id = e_input_id::mouse;
+		evt.mouse.delta = mouse_move_delta;
+
+		send_event_to_listeners( e_event_id::input_motion, &evt );
+
+		mouse_move_delta = w_vec2( 0.0f, 0.0f );
+	}
 
 	// update game controller states
 
@@ -441,46 +408,46 @@ w_vec2 w_input_mgr::axis_value_of( e_input_id input_id )
 
 // a button has been pushed down
 
-void w_input_mgr::event_input_pressed( e_event_id event_id, w_input_event_data data )
-{
-	w_input_event evt;
-	evt.event_id = event_id;
-	evt.data = data;
-
-	event_queue.push_back( std::move( evt ) );
-}
-
-// a button has been released
-
-void w_input_mgr::event_input_released( e_event_id event_id, w_input_event_data data )
-{
-	w_input_event evt;
-	evt.event_id = event_id;
-	evt.data = data;
-
-	event_queue.push_back( std::move( evt ) );
-}
-
+//void w_input_mgr::event_input_pressed( e_event_id event_id, w_input_event_data data )
+//{
+//	w_input_event evt;
+//	evt.event_id = event_id;
+//	evt.data = data;
+//
+//	event_queue.emplace_back( std::move( evt ) );
+//}
+//
+//// a button has been released
+//
+//void w_input_mgr::event_input_released( e_event_id event_id, w_input_event_data data )
+//{
+//	w_input_event evt;
+//	evt.event_id = event_id;
+//	evt.data = data;
+//
+//	event_queue.emplace_back( std::move( evt ) );
+//}
+//
 // some sort of movement has happened
 
-void w_input_mgr::event_input_motion( e_event_id event_id, w_input_event_data data )
-{
-	switch( event_id )
-	{
-		case e_event_id::input_motion:
-		{
-			w_input_event evt;
-			evt.event_id = event_id;
-			evt.data = data;
-
-			event_queue.push_back( std::move( evt ) );
-		}
-		break;
-
-		default:
-		{
-			log_error( "%s : unsupported event id", __FUNCTION__ );
-		}
-		break;
-	}
-}
+//void w_input_mgr::event_input_motion( e_event_id event_id, w_input_event_data data )
+//{
+//	switch( event_id )
+//	{
+//		case e_event_id::input_motion:
+//		{
+//			w_input_event evt;
+//			evt.event_id = event_id;
+//			evt.data = data;
+//
+//			event_queue.emplace_back( std::move( evt ) );
+//		}
+//		break;
+//
+//		default:
+//		{
+//			log_error( "%s : unsupported event id", __FUNCTION__ );
+//		}
+//		break;
+//	}
+//}

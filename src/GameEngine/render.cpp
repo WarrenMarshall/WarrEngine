@@ -211,22 +211,7 @@ void w_render::begin_frame( float frame_interpolate_pct )
 		iter.second->clear_render_buffer();
 	}
 
-    engine->shader->bind();
-
-	// PROJECTION MATRIX (getting stuff into screen space from camera space)
-
-	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::ortho<float>(
-		0, v_window_w, -v_window_h, 0,
-		-1000.0f, 1000.0f );
-
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-
-	// VIEW MATRIX (getting stuff into camera space from worldspace)
-
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate( view, glm::vec3( v_window_hw, -v_window_hh, 0.0f ) );
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	engine->shader->bind();
 }
 
 /*
@@ -234,7 +219,7 @@ void w_render::begin_frame( float frame_interpolate_pct )
 */
 void w_render::end_frame()
 {
-	if( show_stats )
+	//if( show_stats )
 	{
 		draw_stats();
 	}
@@ -311,45 +296,60 @@ w_render* w_render::draw_world_axis()
 constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
-	std::vector<std::string> stat_lines;
-	stat_lines.reserve( stats_draw_reserve );
-
-	stat_lines.emplace_back( s_format( "RENDER : %d FPS / UPDATE : %d FPS ", (int)stats.num_frames_rendered.value, (int)w_time::FTS_desired_frames_per_second ) );
-	stat_lines.emplace_back( s_format( "RB: %s, V: %s, I: %s",
-		s_commas( stats.render_buffers.value, "%0.f" ).c_str(),
-		s_commas( stats.render_vertices.value, "%0.f" ).c_str(),
-		s_commas( stats.render_indices.value, "%0.f" ).c_str() )
-	);
-	stat_lines.emplace_back( s_format( "Layers : %d", engine->layer_mgr->layer_stack.size() ) );
-	stat_lines.emplace_back( s_format( "Entities : %s", s_commas( stats.num_entities.value, "%0.f" ).c_str() ) );
-	stat_lines.emplace_back( s_format( "Time Dilation: %.2f", engine->time->dilation ) );
-
-	if( stats.stat_custom_string.length() )
-	{
-		stat_lines.emplace_back( stats.stat_custom_string );
-		stats.stat_custom_string = "";
-	}
-
-	assert( stat_lines.size() < stats_draw_reserve );
-
 	auto font = engine->get_asset<a_font>( "ui_simple_font" );
 
-	RENDER->begin();
+	if( show_stats )
 	{
-		RENDER
-			->push_color( w_color( .25f, .25f, .25f, 0.75f ) )
-			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f );
+		std::vector<std::string> stat_lines;
+		stat_lines.reserve( stats_draw_reserve );
 
-		RENDER->push_color( W_COLOR_WHITE );
+		stat_lines.emplace_back( s_format( "RENDER : %s FPS / UPDATE : %d FPS",
+										   s_commas( (int) stats.num_frames_rendered.value, "%d" ).c_str(),
+										   (int) w_time::FTS_desired_frames_per_second ) );
+		stat_lines.emplace_back( s_format( "RB: %s, V: %s, I: %s",
+										   s_commas( stats.render_buffers.value, "%0.f" ).c_str(),
+										   s_commas( stats.render_vertices.value, "%0.f" ).c_str(),
+										   s_commas( stats.render_indices.value, "%0.f" ).c_str() )
+		);
+		stat_lines.emplace_back( s_format( "Layers : %d", engine->layer_mgr->layer_stack.size() ) );
+		stat_lines.emplace_back( s_format( "Entities : %s", s_commas( stats.num_entities.value, "%0.f" ).c_str() ) );
+		stat_lines.emplace_back( s_format( "Time Dilation: %.2f", engine->time->dilation ) );
 
-		float y = v_window_hh;
-		for( const auto& iter : stat_lines )
+		if( stats.stat_custom_string.length() )
 		{
-			RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
-			y -= font->font_def->max_height;
+			stat_lines.emplace_back( stats.stat_custom_string );
+			stats.stat_custom_string = "";
 		}
+
+		assert( stat_lines.size() < stats_draw_reserve );
+
+		RENDER->begin();
+		{
+			RENDER
+				->push_color( w_color( .25f, .25f, .25f, 0.75f ) )
+				->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f );
+
+			RENDER->push_color( W_COLOR_WHITE );
+
+			float y = v_window_hh;
+			for( const auto& iter : stat_lines )
+			{
+				RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
+				y -= font->font_def->max_height;
+			}
+		}
+		RENDER->end();
 	}
-	RENDER->end();
+	else
+	{
+	#if !defined(FINALRELEASE)
+		std::string fps_stats( s_format( "%s FPS", s_commas( (int)stats.num_frames_rendered.value, "%d" ).c_str() ) );
+
+		RENDER->begin()
+			->draw_string( font, w_vec3( v_window_hw, v_window_hh, 1000.0f ), fps_stats, e_align::right )
+			->end();
+	#endif
+	}
 
 	return this;
 }
@@ -511,4 +511,30 @@ w_render* w_render::draw_sliced_texture( a_texture* texture, const std::string& 
 	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_22], w_rect( xpos, ypos, dst_w, dst_h ), z );
 
 	return this;
+}
+
+void w_render::init_projection()
+{
+	// setting this stuff up one time as we only use a single shader and the camera never moves.
+	//
+	// as we get fancier, parts of this may have to move to the start of each rendering frame.
+
+	engine->shader->bind();
+
+	// PROJECTION MATRIX (getting stuff into screen space from camera space)
+
+	glm::mat4 projection = glm::mat4( 1.0f );
+	projection = glm::ortho<float>(
+		0, v_window_w, -v_window_h, 0,
+		-1000.0f, 1000.0f );
+
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+
+	// VIEW MATRIX (getting stuff into camera space from worldspace)
+
+	glm::mat4 view = glm::mat4( 1.0f );
+	view = glm::translate( view, glm::vec3( v_window_hw, -v_window_hh, 0.0f ) );
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+
+	engine->shader->unbind();
 }

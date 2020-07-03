@@ -18,5 +18,5 @@ struct layer_editor : w_layer
 	void draw() override;
 	void on_listener_event_received( e_event_id event, void* object ) override;
 
-	int tile_from_screen_pos( float xpos, float ypos );
+	void tile_from_screen_pos( float xpos, float ypos );
 };

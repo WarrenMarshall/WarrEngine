@@ -88,6 +88,8 @@ enum struct e_input_id : int
 	mouse_button_left,
 	mouse_button_middle,
 	mouse_button_right,
+	mouse,
+
 	keyboard_a,
 	keyboard_b,
 	keyboard_c,

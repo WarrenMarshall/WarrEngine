@@ -429,7 +429,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 void w_asset_definition_file::assert_key_exists( const std::string& type, const w_asset_definition& asset_def, const std::string& key )
 {
-	#if defined(_DEBUG) || defined(_DRELEASE)
+	#if !defined(FINALRELEASE)
 		if( !asset_def.key_values.count( key ) )
 			log_error( "%s : %s : asset definition missing '%s' key/value", __FUNCTION__, type.c_str(), key.c_str() );
 	#endif

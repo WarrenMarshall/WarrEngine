@@ -1,26 +1,21 @@
 #pragma once
 
-// ----------------------------------------------------------------------------
-
-struct w_input_event_data
-{
-	w_input_event_data();
-
-	// the key, mouse button, or controller button generating the event
-	e_input_id input_id;
-
-	// any modifier keys that were pressed at the time of the input event
-	int mods;
-
-	// mouse specific fields
-	float xpos, ypos;
-	float xdelta, ydelta;
-};
-
 struct w_input_event
 {
+	// which event this is. required when processing events through the queue.
 	e_event_id event_id = e_event_id::invalid;
-	w_input_event_data data;
+		
+	// the key, mouse button, or controller button generating the event
+	e_input_id input_id = e_input_id::invalid;
+
+	// any modifier keys that were pressed at the time of the input event
+	int mods = 0;
+
+	struct  
+	{
+		w_vec2 pos;
+		w_vec2 delta;
+	} mouse;
 };
 
 // ----------------------------------------------------------------------------
@@ -56,6 +51,11 @@ struct w_input_mgr : i_speaker
 {
 	std::unordered_map<int, e_input_id> glfw_codes;
 	std::vector<w_input_event> event_queue;
+
+	// tracks the mouse movement delta since the last call to Update()
+	w_vec2 mouse_move_delta = w_vec2( 0, 0 );
+
+	// where the mouse currently sits in the virtual window
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
 	
 	/*
@@ -83,7 +83,7 @@ struct w_input_mgr : i_speaker
 
 	void play_rumble( e_rumble_effect effect );
 
-	void event_input_pressed( e_event_id event_id, w_input_event_data data );
-	void event_input_released( e_event_id event_id, w_input_event_data data );
-	void event_input_motion( e_event_id event_id, w_input_event_data data );
+	//void event_input_pressed( e_event_id event_id, w_input_event_data data );
+	//void event_input_released( e_event_id event_id, w_input_event_data data );
+	//void event_input_motion( e_event_id event_id, w_input_event_data data );
 };
