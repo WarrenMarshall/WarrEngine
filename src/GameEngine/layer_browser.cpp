@@ -8,7 +8,7 @@ void layer_browser::push()
 {
 	engine->input_mgr->add_listener( this );
 
-	selector_bracket = engine->get_asset<a_image>( "selector_bracket" );
+	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 }
 
 void layer_browser::pop()

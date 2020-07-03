@@ -11,12 +11,6 @@ w_render_vert::w_render_vert( const w_vec3& pos, const w_uv& uv, const w_color& 
 
 // ----------------------------------------------------------------------------
 
-w_render_buffer::w_render_buffer()
-{
-    // this ctor is invalid
-    assert( false );
-}
-
 w_render_buffer::w_render_buffer( unsigned int prim_type )
     : prim_type( prim_type )
 {
@@ -108,8 +102,8 @@ void w_render_buffer::draw( int render_pass )
         bind();
 
         // send the data to the video card
-        glBufferData( GL_ARRAY_BUFFER, vertices[render_pass].size() * sizeof( w_render_vert ), vertices[render_pass].data(), GL_DYNAMIC_DRAW );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices[render_pass].size() * sizeof( unsigned int ), indices[render_pass].data(), GL_DYNAMIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, vertices[render_pass].size() * sizeof( w_render_vert ), vertices[render_pass].data(), usage );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices[render_pass].size() * sizeof( unsigned int ), indices[render_pass].data(), usage );
 
         switch( prim_type )
         {
@@ -175,26 +169,27 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
     );
 
-    // look through the existing list of vertices and see if we can find
-    // a matching vertex. if one is found, return the index of that vertex
-    // instead of putting the new one into the list.
-    //
-    // NOTE : this is a good idea in theory, but it ends up being slower 
-    // than just throwing 3 unique indices for each triangles at the video card
+    /*
+	// look through the existing list of vertices and see if we can find
+	// a matching vertex. if one is found, return the index of that vertex
+	// instead of putting the new one into the list.
+	//
+	// this is slow, which is why we only do this check on static buffers
 
-    //int idx = 0;
-    //for( auto& iter : vertices[render_pass] )
-    //{
-    //    if( iter.is_same( rv ) )
-    //    {
-    //        indices[render_pass].emplace_back( idx );
-    //        return idx;
-    //    }
+	int idx = 0;
+	for( auto& iter : vertices[ render_pass ] )
+	{
+		if( iter.is_same( rv ) )
+		{
+			indices[ render_pass ].emplace_back( idx );
+			return idx;
+		}
 
-    //    idx++;
-    //}
+		idx++;
+	}
+    */
 
-    // we have a unique vertex, so add_render_vert it to the vertex and index lists.
+    // add the render_vert to the vertex and index lists.
 
     vertices[ render_pass ].emplace_back( rv );
     int idx = (int) vertices[ render_pass ].size() - 1;

@@ -13,16 +13,15 @@ struct w_opengl
 {
 	std::stack<w_matrix> modelview_stack;
 
-	void init();
-	void deinit();
+	void init() const;
 
 	w_matrix* push();
 	w_matrix* push_identity();
 	w_matrix* top();
 	void pop();
 
-	void clear_texture_bind();
+	void clear_texture_bind() const;
 
-	void set_blend( e_opengl_blend blend );
-	void refresh_primitive_sizes();
+	void set_blend( e_opengl_blend blend ) const;
+	void refresh_primitive_sizes() const;
 };

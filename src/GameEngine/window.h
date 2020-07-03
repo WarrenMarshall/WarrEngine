@@ -25,6 +25,7 @@ struct w_window
 	void deinit();
 	void toggle_fullscreen();
 	void set_title( const std::string& title );
+	void set_mouse_mode( e_mouse_mode mode );
 
 	w_rect viewport_pos_sz;
 };

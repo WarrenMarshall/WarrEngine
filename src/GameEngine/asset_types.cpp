@@ -76,7 +76,7 @@ a_texture* a_texture::get_texture()
 	return this;
 }
 
-a_image* a_texture::get_image()
+a_subtexture* a_texture::get_subtexture()
 {
 	return get_texture()->img;
 }
@@ -93,7 +93,7 @@ void a_texture::draw( e_render_pass render_pass )
 
 // ----------------------------------------------------------------------------
 
-a_image::a_image( const std::string& tex_name )
+a_subtexture::a_subtexture( const std::string& tex_name )
 {
 	tex = engine->get_asset<a_texture>( tex_name );
 
@@ -101,7 +101,7 @@ a_image::a_image( const std::string& tex_name )
 	rc_src.h = sz.h = tex->h;
 }
 
-a_image::a_image( const std::string& texture_name, const w_rect& rc )
+a_subtexture::a_subtexture( const std::string& texture_name, const w_rect& rc )
 {
 	// find the texture being referenced
 	tex = engine->get_asset<a_texture>( texture_name );
@@ -126,17 +126,17 @@ a_image::a_image( const std::string& texture_name, const w_rect& rc )
 	);
 }
 
-a_texture* a_image::get_texture()
+a_texture* a_subtexture::get_texture()
 {
 	return tex->get_texture();
 }
 
-void a_image::bind()
+void a_subtexture::bind()
 {
 	get_texture()->bind();
 }
 
-void a_image::unbind()
+void a_subtexture::unbind()
 {
 	get_texture()->unbind();
 }
@@ -331,7 +331,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->w = w;
 			fch->h = h;
 
-			fch->img = std::make_unique<a_image>( texture_name, w_rect( x, y, w, h ) );
+			fch->img = std::make_unique<a_subtexture>( texture_name, w_rect( x, y, w, h ) );
 
 			max_height = w_max( max_height, fch->h + fch->yoffset );
 		}

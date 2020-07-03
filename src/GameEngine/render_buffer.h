@@ -10,10 +10,9 @@ struct w_render_vert
 	float u, v;
 	float r, g, b, a;
 
-	// disabled because (a) this is kind of slow and (b) nobodyd needs it right now
-	/*
     bool const is_same( const w_render_vert& other )
     {
+		assert( false );	// this shouldn't be getting called from anywhere - why are you here?
         if( fequals( x, other.x )
             && fequals( y, other.y )
             && fequals( z, other.z )
@@ -29,20 +28,19 @@ struct w_render_vert
 
         return false;
     }
-	*/
 };
 
 // ----------------------------------------------------------------------------
 
 struct w_render_buffer
 {
-	w_render_buffer();
+	w_render_buffer() = delete;
 	w_render_buffer( unsigned int prim_type );
 	~w_render_buffer();
 
 	unsigned int prim_type = GL_TRIANGLES;
+	unsigned int usage = GL_DYNAMIC_DRAW;
 
-	// unique vertices
 	std::vector<w_render_vert> vertices[2];
 
 	// indexes, in groups of 3 (aka triangles), into vertices array

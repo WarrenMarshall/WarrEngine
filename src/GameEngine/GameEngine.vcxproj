@@ -215,6 +215,7 @@
     <ClCompile Include="tween.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particle_emitter.cpp" />
+    <ClCompile Include="ui_mgr.cpp" />
     <ClCompile Include="window.cpp" />
     <ClCompile Include="render_buffer.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="tween.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_emitter.h" />
+    <ClInclude Include="ui_mgr.h" />
     <ClInclude Include="window.h" />
     <ClInclude Include="render_buffer.h" />
     <ClInclude Include="shader.h" />

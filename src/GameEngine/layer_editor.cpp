@@ -8,17 +8,16 @@ void layer_editor::push()
 {
 	engine->input_mgr->add_listener( this );
 
-	selector_bracket = engine->get_asset<a_image>( "selector_bracket" );
-	mouse_cursor = engine->get_asset<a_cursor>( "ui_cursor" );
+	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 
-	engine->input_mgr->set_mouse_mode( e_mouse_mode::hidden );
+	engine->ui_mgr->set_mouse_visible( true );
 }
 
 void layer_editor::pop()
 {
 	engine->input_mgr->remove_listener( this );
 
-	engine->input_mgr->set_mouse_mode( e_mouse_mode::normal );
+	engine->ui_mgr->set_mouse_visible( false );
 }
 
 void layer_editor::becoming_top_layer()
@@ -43,19 +42,6 @@ void layer_editor::draw()
 
 		MATRIX->pop();
 	}
-
-	// mouse cursor test
-
-	MATRIX
-		->push_identity()
-		->translate( w_vec3(
-			-v_window_hw + engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
-			v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y,
-			1000 ) );
-
-	RENDER->draw( mouse_cursor->img );
-
-	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
 

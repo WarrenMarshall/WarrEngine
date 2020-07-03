@@ -15,7 +15,7 @@
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "selector_bracket"
 	"texture" "tex_ui_master"
 	"rect" "0,40,16,16"

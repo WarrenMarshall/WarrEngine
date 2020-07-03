@@ -10,7 +10,7 @@ struct w_tile
 {
 	int id = 0;
 	bool show_in_browser = true;
-	a_image* img = nullptr;
+	a_subtexture* img = nullptr;
 };
 
 // ----------------------------------------------------------------------------

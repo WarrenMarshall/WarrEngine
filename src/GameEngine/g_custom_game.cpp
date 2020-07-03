@@ -24,7 +24,7 @@ g_custom_game::g_custom_game()
 
 			tile_masters[ tile_id ].id = tile_id;
 			tile_masters[ tile_id ].show_in_browser = tile_show_in_browser;
-			tile_masters[ tile_id ].img = engine->get_asset<a_image>( tile_name );
+			tile_masters[ tile_id ].img = engine->get_asset<a_subtexture>( tile_name );
 		}
 
 		line = tok.get_next_token();

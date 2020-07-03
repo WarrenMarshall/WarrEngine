@@ -19,7 +19,7 @@ void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, G
 
 // ----------------------------------------------------------------------------
 
-void w_opengl::init()
+void w_opengl::init() const
 {
 	// Init GLEW
 	GLenum err = glewInit();
@@ -76,11 +76,6 @@ void w_opengl::init()
 	glEnable( GL_POINT_SMOOTH );
 }
 
-void w_opengl::deinit()
-{
-
-}
-
 // pushes a new matrix on top of the stack.
 //
 // this can either be an identity matrix, or a copy of the
@@ -112,12 +107,12 @@ w_matrix* w_opengl::top()
 	return &(modelview_stack.top());
 }
 
-void w_opengl::clear_texture_bind()
+void w_opengl::clear_texture_bind() const
 {
 	glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
-void w_opengl::set_blend( e_opengl_blend blend )
+void w_opengl::set_blend( e_opengl_blend blend ) const
 {
 	switch( blend )
 	{
@@ -147,22 +142,29 @@ void w_opengl::set_blend( e_opengl_blend blend )
 // this makes it so lines and points look more like they
 // belong in the game world.
 
-void w_opengl::refresh_primitive_sizes()
+void w_opengl::refresh_primitive_sizes() const
 {
 	int w, h;
 	glfwGetWindowSize( engine->window->window, &w, &h );
 
-	float w_ratio = w / v_window_w;
-	float h_ratio = h / v_window_h;
+	// this can happen if the user does something like WIN+D.
+	// this check prevents an opengl crash below when setting line size.
+	if( !w && !h )
+	{
+		return;
+	}
+
+	const float w_ratio = w / v_window_w;
+	const float h_ratio = h / v_window_h;
 
 	if( w_ratio > h_ratio )
 	{
-		glLineWidth( w_ratio > 0 ? w_ratio : 1 );
-		glPointSize( w_ratio > 0 ? w_ratio : 1 );
+		glLineWidth( w_ratio );
+		glPointSize( w_ratio );
 	}
 	else
 	{
-		glLineWidth( h_ratio > 0 ? w_ratio : 1 );
-		glPointSize( h_ratio > 0 ? w_ratio : 1 );
+		glLineWidth( h_ratio );
+		glPointSize( h_ratio );
 	}
 }

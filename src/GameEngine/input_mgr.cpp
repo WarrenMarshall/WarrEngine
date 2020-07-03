@@ -101,14 +101,6 @@ w_input_event_data::w_input_event_data()
 
 // ----------------------------------------------------------------------------
 
-w_input_event::w_input_event()
-{
-	dead = true;
-	event_id = e_event_id::invalid;
-}
-
-// ----------------------------------------------------------------------------
-
 w_game_controller::w_game_controller( int idx )
 	: idx( idx )
 {
@@ -208,11 +200,6 @@ void w_input_mgr::init()
 		log_msg( "%s : using controller : %d", __FUNCTION__, 0 );
 		game_controller = std::make_unique<w_game_controller>( 0 );
 	}
-
-	// set up states and queues
-
-	event_queue = std::make_unique<std::vector<w_input_event>>( w_input_mgr::event_queue_max );
-	event_queue_idx = 0;
 
 	// callbacks so we can collect user input
 	glfwSetKeyCallback( engine->window->window, key_callback );
@@ -314,14 +301,16 @@ void w_input_mgr::update()
 {
 	// send the queued up events to anyone listening
 
-	for( auto& evt : *event_queue )
+	for( auto& evt : event_queue )
 	{
-		if( evt.dead == false )
-		{
-			send_event_to_listeners( evt.event_id, &evt );
-			evt.dead = true;
-		}
+		send_event_to_listeners( evt.event_id, &evt );
 	}
+
+	if( event_queue.size() )
+	{
+		log_msg( "sent %d events", (int)event_queue.size() );
+	}
+	event_queue.clear();
 
 	// update game controller states
 
@@ -454,18 +443,22 @@ w_vec2 w_input_mgr::axis_value_of( e_input_id input_id )
 
 void w_input_mgr::event_input_pressed( e_event_id event_id, w_input_event_data data )
 {
-	w_input_event* evt = get_next_event_slot();
-	evt->event_id = event_id;
-	evt->data = data;
+	w_input_event evt;
+	evt.event_id = event_id;
+	evt.data = data;
+
+	event_queue.push_back( std::move( evt ) );
 }
 
 // a button has been released
 
 void w_input_mgr::event_input_released( e_event_id event_id, w_input_event_data data )
 {
-	w_input_event* evt = get_next_event_slot();
-	evt->event_id = event_id;
-	evt->data = data;
+	w_input_event evt;
+	evt.event_id = event_id;
+	evt.data = data;
+
+	event_queue.push_back( std::move( evt ) );
 }
 
 // some sort of movement has happened
@@ -476,54 +469,17 @@ void w_input_mgr::event_input_motion( e_event_id event_id, w_input_event_data da
 	{
 		case e_event_id::input_motion:
 		{
-			w_input_event* evt = get_next_event_slot();
-			evt->event_id = event_id;
-			evt->data = data;
+			w_input_event evt;
+			evt.event_id = event_id;
+			evt.data = data;
+
+			event_queue.push_back( std::move( evt ) );
 		}
 		break;
 
 		default:
 		{
 			log_error( "%s : unsupported event id", __FUNCTION__ );
-		}
-		break;
-	}
-}
-
-w_input_event* w_input_mgr::get_next_event_slot()
-{
-	event_queue_idx = ( event_queue_idx + 1 ) % w_input_mgr::event_queue_max;
-
-	w_input_event* evt = &( *event_queue )[event_queue_idx];
-	evt->event_id = e_event_id::invalid;
-
-	evt->data.input_id = e_input_id::invalid;
-	evt->data.mods = -1;
-
-	evt->dead = false;
-
-	return evt;
-}
-
-void w_input_mgr::set_mouse_mode( e_mouse_mode mode )
-{
-	switch( mode )
-	{
-		case e_mouse_mode::normal:
-		{
-			glfwSetInputMode( engine->window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
-		}
-		break;
-
-		case e_mouse_mode::hidden:
-		{
-			glfwSetInputMode( engine->window->window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
-		}
-		break;
-
-		case e_mouse_mode::locked:
-		{
-			glfwSetInputMode( engine->window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
 		}
 		break;
 	}

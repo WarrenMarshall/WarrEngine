@@ -101,10 +101,6 @@ int main( int argc, char* argv[] )
 			game->new_game();
 		}
 
-		engine->white_wire = engine->get_asset<a_texture>( "engine_white_wire" )->get_image();
-		engine->white_wire->get_texture()->render_buffer->prim_type = GL_LINES;
-		engine->white_solid = engine->get_asset<a_texture>( "engine_white_solid" )->get_image();
-
 		// input initialization
 
 		log_msg( "Initializing input" );
@@ -118,6 +114,22 @@ int main( int argc, char* argv[] )
 
 		engine->is_running = true;
 		engine->time->init();
+
+		// initialize random internals
+		{
+			// used for wireframe drawing
+			engine->white_wire = engine->get_asset<a_texture>( "engine_white_wire" )->get_subtexture();
+			engine->white_wire->get_texture()->render_buffer->prim_type = GL_LINES;
+
+			// used for solid drawing
+			engine->white_solid = engine->get_asset<a_texture>( "engine_white_solid" )->get_subtexture();
+
+			// #configfile - needs to be replaced with some sort of config file setting
+			engine->ui_mgr->init( "ui_cursor" );
+
+			// using a custom mouse cursor, so hide the system mouse
+			engine->window->set_mouse_mode( e_mouse_mode::hidden );
+		}
 
 		/*
 			main game loop

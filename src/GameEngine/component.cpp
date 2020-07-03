@@ -49,15 +49,15 @@ c_sprite::c_sprite()
 	type = e_component_type::sprite;
 }
 
-w_component* c_sprite::init( const std::string& image_name )
+w_component* c_sprite::init( const std::string& subtexture_name )
 {
-	//img = std::make_unique<a_image>( image_name );
+	//img = std::make_unique<a_subtexture>( subtexture_name );
 	return this;
 }
 
-w_component* c_sprite::init( const std::string& image_name, const w_rect& rc )
+w_component* c_sprite::init( const std::string& subtexture_name, const w_rect& rc )
 {
-	//img = std::make_unique<a_image>( image_name, rc );
+	//img = std::make_unique<a_subtexture>( image_name, rc );
 	return this;
 }
 

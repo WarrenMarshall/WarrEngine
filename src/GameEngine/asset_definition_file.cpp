@@ -64,11 +64,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					asset_ptr->create_internals( is_hot_reloading );
 
 					// Every texture that gets loaded gets a full size
-					// a_image created for it automatically.
+					// a_subtexture created for it automatically.
 
-					auto img = static_cast<a_image*>(
-						engine->asset_cache->add( std::make_unique<a_image>( asset_ptr->name ),
-												  "auto_img_" + asset_ptr->name, "" )
+					auto img = static_cast<a_subtexture*>(
+						engine->asset_cache->add( std::make_unique<a_subtexture>( asset_ptr->name ),
+												  "auto_subt_" + asset_ptr->name, "" )
 						);
 					asset_ptr->img = img;
 				}
@@ -82,9 +82,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					auto asset_ptr = engine->get_asset<a_gradient>( name, b_silent( true ) );
 
 					if( !asset_ptr )
+					{
 						asset_ptr = static_cast<a_gradient*>(
 							engine->asset_cache->add( std::make_unique<a_gradient>(), name, "" )
 							);
+					}
 
 					// ------------------------------------------------------------------------
 
@@ -166,25 +168,25 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 						std::string key = iter.first;
 						std::string value = iter.second;
 
-						if( key.substr( 0, 6 ) == "patch_" )
+						if( key.substr( 0, 6 ) == "subtexture_" )
 						{
-							int patch_idx;
+							int subtexture_idx;
 
-							if( key == "patch_00" )			patch_idx = (int) e_patch::P_00;
-							else if( key == "patch_10" )	patch_idx = (int) e_patch::P_10;
-							else if( key == "patch_20" )	patch_idx = (int) e_patch::P_20;
-							else if( key == "patch_01" )	patch_idx = (int) e_patch::P_01;
-							else if( key == "patch_11" )	patch_idx = (int) e_patch::P_11;
-							else if( key == "patch_21" )	patch_idx = (int) e_patch::P_21;
-							else if( key == "patch_02" )	patch_idx = (int) e_patch::P_02;
-							else if( key == "patch_12" )	patch_idx = (int) e_patch::P_12;
-							else if( key == "patch_22" )	patch_idx = (int) e_patch::P_22;
+							if( key == "subtexture_00" )		subtexture_idx = (int) e_patch::P_00;
+							else if( key == "subtexture_10" )	subtexture_idx = (int) e_patch::P_10;
+							else if( key == "subtexture_20" )	subtexture_idx = (int) e_patch::P_20;
+							else if( key == "subtexture_01" )	subtexture_idx = (int) e_patch::P_01;
+							else if( key == "subtexture_11" )	subtexture_idx = (int) e_patch::P_11;
+							else if( key == "subtexture_21" )	subtexture_idx = (int) e_patch::P_21;
+							else if( key == "subtexture_02" )	subtexture_idx = (int) e_patch::P_02;
+							else if( key == "subtexture_12" )	subtexture_idx = (int) e_patch::P_12;
+							else if( key == "subtexture_22" )	subtexture_idx = (int) e_patch::P_22;
 
 							w_tokenizer tok( value, ',' );
-							asset_ptr->patches[ patch_idx ].x = w_parser::parse_float_value( tok.get_next_token() );
-							asset_ptr->patches[ patch_idx ].y = w_parser::parse_float_value( tok.get_next_token() );
-							asset_ptr->patches[ patch_idx ].w = w_parser::parse_float_value( tok.get_next_token() );
-							asset_ptr->patches[ patch_idx ].h = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ subtexture_idx ].x = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ subtexture_idx ].y = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ subtexture_idx ].w = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ subtexture_idx ].h = w_parser::parse_float_value( tok.get_next_token() );
 						}
 					}
 
@@ -347,7 +349,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "cursor" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "image" );
+					assert_key_exists( type, *( iter_ad.get() ), "subtexture" );
 					assert_key_exists( type, *( iter_ad.get() ), "hotspot" );
 
 					// ------------------------------------------------------------------------
@@ -361,7 +363,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->img = engine->get_asset<a_image>( iter_ad->key_values.at( "image" ) );
+					asset_ptr->img = engine->get_asset<a_subtexture>( iter_ad->key_values.at( "subtexture" ) );
 					asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
 
 					// ------------------------------------------------------------------------
@@ -397,20 +399,20 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals( is_hot_reloading );
 				}
-				else if( type == "image" )
+				else if( type == "subtexture" )
 				{
 					assert_key_exists( type, *( iter_ad.get() ), "texture" );
 					assert_key_exists( type, *( iter_ad.get() ), "rect" );
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_image>( name, b_silent( true ) );
+					auto asset_ptr = engine->get_asset<a_subtexture>( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
 						w_rect rc = w_parser::parse_rect_value( iter_ad->key_values.at( "rect" ) );
-						asset_ptr = static_cast<a_image*>(
-							engine->asset_cache->add( std::make_unique<a_image>( iter_ad->key_values.at( "texture" ), rc ), name, "" )
+						asset_ptr = static_cast<a_subtexture*>(
+							engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->key_values.at( "texture" ), rc ), name, "" )
 							);
 					}
 

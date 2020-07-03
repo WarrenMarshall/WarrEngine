@@ -12,12 +12,12 @@ struct a_texture : i_asset
 
 	/*
 		this is automatically created when the texture is precached. it's
-		a convenience so you don't have to declare a matching a_image for
+		a convenience so you don't have to declare a matching a_subtexture for
 		every a_texture in the asset_def files.
 
 		call "get_image" on your a_texture to get to it.
 	*/
-	a_image* img = nullptr;
+	a_subtexture* img = nullptr;
 
 	~a_texture();
 
@@ -28,17 +28,17 @@ struct a_texture : i_asset
 	void unbind();
 
 	virtual a_texture* get_texture();
-	virtual a_image* get_image();
+	virtual a_subtexture* get_subtexture();
 
 	void draw( e_render_pass render_pass ) override;
 };
 
 // ----------------------------------------------------------------------------
 /*
-	a lightweight class that defines a renderable section of an a_texture
+	a lightweight class that defines a renderable subsection of an a_texture
 */
 
-struct a_image : i_asset
+struct a_subtexture : i_asset
 {
 	// the texture asset we draw from
 	a_texture* tex;
@@ -53,8 +53,8 @@ struct a_image : i_asset
 	w_uv uv00 = w_uv( 0, 0 );
 	w_uv uv11 = w_uv( 1, 1 );
 
-	a_image( const std::string& tex_name );
-	a_image( const std::string& tex_name, const w_rect& rc );
+	a_subtexture( const std::string& tex_name );
+	a_subtexture( const std::string& tex_name, const w_rect& rc );
 
 	a_texture* get_texture();
 	void bind();
@@ -135,7 +135,7 @@ struct w_font_char
 	float xoffset = 0.0f;
 	float yoffset = 0.0f;
 	float xadvance = 0.0f;
-	std::unique_ptr<a_image> img = nullptr;
+	std::unique_ptr<a_subtexture> img = nullptr;
 };
 
 // ----------------------------------------------------------------------------
@@ -172,7 +172,7 @@ struct a_font : i_asset
 struct a_cursor : i_asset
 {
 	w_vec2 hotspot_offset = w_vec2( 0, 0 );
-	a_image* img = nullptr;
+	a_subtexture* img = nullptr;
 };
 
 // ----------------------------------------------------------------------------

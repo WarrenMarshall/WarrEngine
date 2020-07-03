@@ -19,11 +19,8 @@ struct w_input_event_data
 
 struct w_input_event
 {
-	bool dead;
-	e_event_id event_id;
+	e_event_id event_id = e_event_id::invalid;
 	w_input_event_data data;
-
-	w_input_event();
 };
 
 // ----------------------------------------------------------------------------
@@ -58,13 +55,9 @@ struct w_game_controller
 struct w_input_mgr : i_speaker
 {
 	std::unordered_map<int, e_input_id> glfw_codes;
-	int event_queue_idx = 0;
-	static const int event_queue_max = 10;
-	std::unique_ptr<std::vector<w_input_event>> event_queue;
+	std::vector<w_input_event> event_queue;
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
 	
-	w_input_event* get_next_event_slot();
-
 	/*
 		there is one entry in this vector for each joystick currently
 		present. this list can change over the course of the game
@@ -87,9 +80,6 @@ struct w_input_mgr : i_speaker
 	void init();
 	void deinit();
 	void update();
-
-	e_mouse_mode mouse_mode;
-	void set_mouse_mode( e_mouse_mode mode );
 
 	void play_rumble( e_rumble_effect effect );
 

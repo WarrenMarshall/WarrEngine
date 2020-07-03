@@ -21,13 +21,13 @@ struct w_component : i_lifecycle, i_transform
 
 struct c_sprite : w_component
 {
-	a_image* img = nullptr;
+	a_subtexture* img = nullptr;
 	bool flip_x = false, flip_y = false;
 
 	c_sprite();
 
-	w_component* init( const std::string& img_name );
-	w_component* init( const std::string& image_name, const w_rect& rc );
+	w_component* init( const std::string& subtexture_name );
+	w_component* init( const std::string& subtexture_name, const w_rect& rc );
 	void draw() override;
 };
 

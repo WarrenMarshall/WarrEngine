@@ -8,8 +8,7 @@ struct layer_editor : w_layer
 	std::unique_ptr<w_tween> tween_rotate;
 
 	bool draw_selector_bracket = false;
-	a_image* selector_bracket = nullptr;
-	a_cursor* mouse_cursor = nullptr;
+	a_subtexture* selector_bracket = nullptr;
 
 	w_vec2 hover_tile = w_vec2( -1.0f, -1.0f );
 

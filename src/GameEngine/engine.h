@@ -12,8 +12,8 @@ struct w_engine : i_listener
 	std::vector<i_reloadable*> hot_reloadables;
 	int hot_reloadables_idx = 0;
 
-	a_image* white_wire = nullptr;
-	a_image* white_solid = nullptr;
+	a_subtexture* white_wire = nullptr;
+	a_subtexture* white_solid = nullptr;
 
 	bool is_running = false;
 	bool is_paused = false;
@@ -25,6 +25,7 @@ struct w_engine : i_listener
 	void draw();
 	void update();
 	void toggle_pause();
+	void set_pause( bool paused );
 	void cache_asset_definition_files();
 	void precache_asset_resources();
 	template<typename T> T* get_asset( const std::string& name, bool silent = false )
@@ -54,6 +55,7 @@ struct w_engine : i_listener
 	std::unique_ptr<w_window> window = nullptr;
 	std::unique_ptr<w_render> render = nullptr;
 	std::unique_ptr<w_input_mgr> input_mgr = nullptr;
+	std::unique_ptr<w_ui_mgr> ui_mgr = nullptr;
 	std::unique_ptr<w_file_system> fs = nullptr;
 	std::unique_ptr<w_shader> shader = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;

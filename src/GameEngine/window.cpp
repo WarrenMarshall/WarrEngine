@@ -38,6 +38,11 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 	);
 }	
 
+void focus_change_callback( GLFWwindow* window, int focused )
+{
+	engine->set_pause( ( focused == 0 ) );
+}
+
 // ----------------------------------------------------------------------------
 
 bool w_window::init( const std::string& title )
@@ -73,7 +78,7 @@ bool w_window::init( const std::string& title )
 
 	window = glfwCreateWindow(
 		static_cast<int>( window_pos.w ), static_cast<int>( window_pos.h ),
-		base_title.c_str(), NULL, NULL
+		base_title.c_str(), nullptr, nullptr
 	);
 
 	if( !window )
@@ -83,9 +88,8 @@ bool w_window::init( const std::string& title )
 					  static_cast<int>( window_pos.x ),
 					  static_cast<int>( window_pos.y ) );
 
-	// whenever the frame buffer changes size, we need to know so we can adjust
-	// the opengl viewport
 	glfwSetFramebufferSizeCallback( window, framebuffer_size_callback );
+	glfwSetWindowFocusCallback( window, focus_change_callback );
 
 	viewport_pos_sz = w_rect( 0, 0, window_pos.w, window_pos.h );
 
@@ -121,7 +125,7 @@ void w_window::toggle_fullscreen()
 	}
 	else
 	{
-		glfwSetWindowMonitor( window, NULL,
+		glfwSetWindowMonitor( window, nullptr,
 			save_windowed_state.x, save_windowed_state.y,
 			save_windowed_state.w, save_windowed_state.h, 0 );
 	}
@@ -130,4 +134,28 @@ void w_window::toggle_fullscreen()
 void w_window::set_title( const std::string& title )
 {
 	glfwSetWindowTitle( window, title.c_str() );
+}
+
+void w_window::set_mouse_mode( e_mouse_mode mode )
+{
+	switch( mode )
+	{
+		case e_mouse_mode::normal:
+		{
+			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
+		}
+		break;
+
+		case e_mouse_mode::hidden:
+		{
+			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
+		}
+		break;
+
+		case e_mouse_mode::locked:
+		{
+			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+		}
+		break;
+	}
 }

@@ -2,7 +2,7 @@
 
 struct layer_browser : w_layer
 {
-	a_image* selector_bracket = nullptr;
+	a_subtexture* selector_bracket = nullptr;
 	w_vec2 hover_tile = w_vec2( 0, 0 );
 
 	void push() override;

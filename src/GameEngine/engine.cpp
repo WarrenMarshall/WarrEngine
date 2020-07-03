@@ -134,6 +134,7 @@ void w_engine::init()
 	window = std::make_unique<w_window>();
 	render = std::make_unique<w_render>();
 	input_mgr = std::make_unique<w_input_mgr>();
+	ui_mgr = std::make_unique<w_ui_mgr>();
 	fs = std::make_unique<w_file_system>();
 	shader = std::make_unique<w_shader>();
 	opengl = std::make_unique<w_opengl>();
@@ -157,8 +158,6 @@ void w_engine::deinit()
 	//thread_sample.join();
 
 	input_mgr->remove_listener( this );
-
-	opengl->deinit();
 }
 
 void w_engine::draw()
@@ -213,6 +212,9 @@ void w_engine::draw()
 		render->end();
 		opengl->pop();
 	}
+
+	// UI code that needs to draw last
+	ui_mgr->draw_top_level();
 }
 
 void w_engine::update()
@@ -243,6 +245,11 @@ void w_engine::update()
 void w_engine::toggle_pause()
 {
 	is_paused = !is_paused;
+}
+
+void w_engine::set_pause( bool paused )
+{
+	is_paused = paused;
 }
 
 // loads and caches every "*.asset_def" file it sees in the "asset_def" folder
@@ -302,12 +309,6 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 				case e_input_id::keyboard_pause:
 				{
 					toggle_pause();
-				}
-				break;
-
-				case e_input_id::keyboard_f5:
-				{
-					render->show_stats = !render->show_stats;
 				}
 				break;
 

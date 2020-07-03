@@ -38,1792 +38,1792 @@
 # ---------------------------------------------------------
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_deep_water"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_shallow_water"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_river_water"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_grass_shrub"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_grass"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_light_trees"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_trees"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_hills"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_mountains"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_dungeon"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_town"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_fort"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_village"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_castle_left"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_castle_middle"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_castle_right"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 0, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_left"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_back"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_right"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_front"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_horse_left"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_horse_right"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_hex_floor"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bridge"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_balloon"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bridge_top"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bridge_bottom"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ladder_up"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ladder_down"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_town_destroyed"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_shrine"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_player"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 16, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_a_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_a_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_b_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_b_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_c_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_c_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_d_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_d_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_e_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_e_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_f_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_f_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_g_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_g_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_h_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_npc_h_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 32, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_post"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_angle_bl"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_angle_br"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_angle_tl"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_angle_tr"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_deck_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_deck_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_rocks"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_body"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_stone_wall"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_door_open"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_door_locked"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_chest"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ankh"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brick_floor"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_deck"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 48, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_portal_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_portal_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_portal_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_portal_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_poison"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_blank_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_blank_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_blank_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_solid_wall"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_secret_brick_wall"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bench"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_campfire"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_magic"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_missile_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_magic_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_magic_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 64, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_guard_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_guard_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_merchant_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_merchant_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bard_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bard_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_jester_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_jester_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beggar_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beggar_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_child_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_child_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cow_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cow_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_king_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_king_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 80, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_a"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_b"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_c"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_d"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_e"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_f"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_g"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_h"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_i"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_j"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_k"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_l"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_m"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_n"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_o"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_p"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 96, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_q"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_r"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_s"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_t"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_u"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_v"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_w"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_x"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_y"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_z"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_space"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cap_right"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cap_left"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cap"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_blank"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brick_wall"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 112, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_left"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_back"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_right"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ship_front"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_merman_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_merman_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_octopus_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_octopus_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_sea_snake_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_sea_snake_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_sea_horse_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_sea_horse_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_whirlpool_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_whirlpool_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_tornado_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_tornado_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 128, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_rat_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_rat_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_rat_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_rat_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bat_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bat_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bat_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_bat_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spider_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spider_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spider_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spider_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ghost_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ghost_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ghost_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_ghost_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 144, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_slime_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_slime_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_slime_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_slime_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_orc_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_orc_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_orc_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_orc_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_gumby_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_gumby_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_gumby_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_gumby_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_mimic_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_mimic_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_mimic_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_mimic_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 160, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_flayer_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_flayer_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_flayer_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_flayer_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_insects_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_insects_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_insects_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_insects_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beholder_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beholder_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beholder_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beholder_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_apparition_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_apparition_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_apparition_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_apparition_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 176, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brute_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brute_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brute_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brute_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_skeleton_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_skeleton_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_skeleton_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_skeleton_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brigand_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brigand_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brigand_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_brigand_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_snake_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_snake_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_snake_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_snake_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 192, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_twohead_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_twohead_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_twohead_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_twohead_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_headless_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_headless_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_headless_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_headless_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cyclops_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cyclops_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cyclops_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_cyclops_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_whisp_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_whisp_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_whisp_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_whisp_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 208, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_chief_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_chief_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_chief_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_chief_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spectre_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spectre_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spectre_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_spectre_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_dragon_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_dragon_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_dragon_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_dragon_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beast_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beast_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beast_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_beast_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 224, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_devil_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "0, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_devil_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "16, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_devil_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "32, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_devil_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "48, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_hydra_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "64, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_hydra_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "80, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_hydra_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "96, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_hydra_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "112, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_wyvern_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "128, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_wyvern_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "144, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_wyvern_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "160, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_wyvern_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "176, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_demon_01"
 	"texture" "tex_ultima_atlas"
 	"rect" "192, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_demon_02"
 	"texture" "tex_ultima_atlas"
 	"rect" "208, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_demon_03"
 	"texture" "tex_ultima_atlas"
 	"rect" "224, 240, 16, 16"
 }
 
 {
-	"type" "image"
+	"type" "subtexture"
 	"name" "tile_demon_04"
 	"texture" "tex_ultima_atlas"
 	"rect" "240, 240, 16, 16"

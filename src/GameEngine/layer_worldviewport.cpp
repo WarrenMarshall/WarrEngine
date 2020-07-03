@@ -6,11 +6,23 @@
 
 void layer_worldviewport::push()
 {
-	img_gradient = std::make_unique<a_image>( "background_gradient" );
+	img_gradient = std::make_unique<a_subtexture>( "background_gradient" );
 }
 
 void layer_worldviewport::draw()
 {
+	// background
+
+	MATRIX
+		->push_identity()
+		->translate( w_vec3( 0, 0, -900 ) );
+	RENDER
+		->begin()
+		->push_color( w_color( 0.2f, 0.2f, 0.2f ) )
+		->draw_sprite( engine->white_solid, w_sz( v_window_w, v_window_h ) )
+		->end();
+	MATRIX->pop();
+
 	w_layer::draw();
 
 	// gradient
@@ -20,7 +32,7 @@ void layer_worldviewport::draw()
 		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100 ) );
 	RENDER
 		->begin()
-		->push_color( w_color( 1.0f, 1.0f, 1.0f, 0.35f ) )
+		->push_color( w_color( 1.0f, 1.0f, 1.0f, 0.75f ) )
 		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
 		->end();
 	MATRIX
