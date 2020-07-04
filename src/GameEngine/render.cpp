@@ -187,59 +187,55 @@ w_render* w_render::draw_string( a_font* font, const std::string& text )
 	e_align rs_align = rs_align_stack.top();
 
 	const char* rd_ptr = text.c_str();
-	w_vec2 render_pos( 0.0f, 0.0f );
+	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
 	if( (rs_align & e_align::hcenter) > 0 )
 	{
 		w_vec2 extents = font->get_string_extents( text );
-		render_pos.x -= extents.x / 2.0f;
+		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 	else if( (rs_align & e_align::right) > 0 )
 	{
 		w_vec2 extents = font->get_string_extents( text );
-		render_pos.x -= extents.x;
+		alignment_pos_adjustment.x -= extents.x;
 	}
 
 	if( (rs_align & e_align::vcenter) > 0 )
 	{
-		render_pos.y += font->font_def->max_height / 2.0f;
+		alignment_pos_adjustment.y += font->font_def->max_height / 2.0f;
 	}
 
+	// ----------------------------------------------------------------------------
+
 	w_font_char* fch;
-	std::string str = text;
-	std::string token;
-	w_tokenizer tok( str, '}' );
 
-	w_vec2 save_render_pos = render_pos;
+	MATRIX
+		->push()
+		->translate( w_vec3( alignment_pos_adjustment.x, alignment_pos_adjustment.y, 0.0f ) );
 
-	for( const auto& iter : str )
+	w_matrix* mtx = MATRIX->top();
+
+	for( const auto& iter : text )
 	{
 		fch = &( font->font_def->char_map[ iter ] );
 
-		if( iter == '\n' )
+		// small optimization to skip drawing completely blank characters
+		if( fch->w > 0 )
 		{
-			render_pos.x = save_render_pos.x;
-			render_pos.y -= font->font_def->max_height;
-		}
-		else
-		{
-			// small optimization to skip drawing completely blank characters
-			if( fch->w > 0 )
-			{
-				MATRIX
-					->push()
-					->translate( w_vec3( render_pos.x + fch->xoffset, render_pos.y - fch->h - fch->yoffset, 0.0f ) );
-				draw(
-					fch->img.get(),
-					w_vec2( fch->w, fch->h )
-				);
-				MATRIX
-					->pop();
-			}
+			mtx->translate( w_vec3( fch->xoffset, -( fch->h + fch->yoffset ), 0.0f ) );
 
-			render_pos.x += fch->xadvance;
+			draw(
+				fch->img.get(),
+				w_vec2( fch->w, fch->h )
+			);
+
+			mtx->translate( w_vec3( -fch->xoffset, ( fch->h + fch->yoffset ), 0.0f ) );
 		}
+
+		mtx->translate( w_vec3( fch->xadvance, 0.0f, 0.0f ) );
 	}
+
+	MATRIX->pop();
 
 	return this;
 }
