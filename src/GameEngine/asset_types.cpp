@@ -326,7 +326,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 			fch->img = std::make_unique<a_subtexture>( texture_name, w_rect( x, y, w, h ) );
 
-			max_height = w_max( max_height, fch->h + fch->yoffset );
+			max_height = w_max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
 		}
 
 		line = tok.get_next_token();

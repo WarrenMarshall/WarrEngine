@@ -18,7 +18,7 @@ struct w_opengl
 	w_matrix* push();
 	w_matrix* push_identity();
 	w_matrix* top();
-	void pop();
+	w_matrix* pop();
 
 	void clear_texture_bind() const;
 

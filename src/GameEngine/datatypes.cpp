@@ -271,6 +271,11 @@ w_vec3::w_vec3( float x, float y, float z )
 {
 }
 
+w_vec3::w_vec3( int x, int y, int z )
+	: x( (float)x ), y( (float) y ), z( (float) z )
+{
+}
+
 w_vec3::w_vec3( std::string str )
 {
 	w_tokenizer tok( str, ',' );

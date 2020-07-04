@@ -9,14 +9,14 @@ struct w_input_event
 	e_input_id input_id = e_input_id::invalid;
 
 	// any modifier keys that were pressed at the time of the input event
-	bool alt_down;
-	bool shift_down;
-	bool ctrl_down;
+	bool alt_down = false;
+	bool shift_down = false;
+	bool ctrl_down = false;
 
 	struct  
 	{
-		w_vec2 pos;
-		w_vec2 delta;
+		w_vec2 pos = w_vec2( 0, 0 );
+		w_vec2 delta = w_vec2( 0, 0 );
 	} mouse;
 };
 
@@ -85,8 +85,4 @@ struct w_input_mgr : i_speaker
 	void update();
 
 	void play_rumble( e_rumble_effect effect );
-
-	//void event_input_pressed( e_event_id event_id, w_input_event_data data );
-	//void event_input_released( e_event_id event_id, w_input_event_data data );
-	//void event_input_motion( e_event_id event_id, w_input_event_data data );
 };

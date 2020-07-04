@@ -9,8 +9,6 @@ void layer_editor::push()
 	engine->input_mgr->add_listener( this );
 
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
-	germ_img = engine->get_asset<a_subtexture>( "germ_orange_0" );
-	germ_anim = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
 
 	engine->ui_mgr->set_mouse_visible( true );
 }
@@ -33,77 +31,20 @@ void layer_editor::draw()
 
 	game->draw_entities();
 
-	if( draw_selector_bracket )
-	{
-		MATRIX
-			->push_identity()
-			->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0 ) )
-			->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0 ) );
+	MATRIX
+		->push_identity()
+		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0.0f ) )
+		->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0.0f ) );
 
-		RENDER->draw( selector_bracket );
+	RENDER->draw( selector_bracket );
 
-		MATRIX->pop();
-	}
-
-	MATRIX->push_identity();
-	RENDER->draw_sprite( germ_img );
-
-	RENDER->begin()
-		->push_scale( 0.5f );
-
-	static float offset_01 = w_random::getf();
-	static float offset_02 = w_random::getf();
-	static float offset_03 = w_random::getf();
-	static float offset_04 = w_random::getf();
-
-	MATRIX->top()->translate( w_vec3( -40, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim->get_subtexture( offset_01 ) );
-	MATRIX->top()->translate( w_vec3( -40, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim->get_subtexture( offset_02 ) );
-	RENDER->push_scale( 1.5f );
-	MATRIX->top()->translate( w_vec3( 120, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim->get_subtexture( offset_03 ) );
-	MATRIX->top()->translate( w_vec3( 40, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim->get_subtexture( offset_04 ) );
-
-	RENDER->end();
-	
 	MATRIX->pop();
 
-	// ----------------------------------------------------------------------------
-
-	/*
-	float step_per_fts = tween_pingpong->step_per_sec / w_time::FTS_desired_frames_per_second;
-	step_per_fts *= tween_pingpong->_dir;
-
-	OPENGL
-		->push( true )
-		->add_transform( pingpong_xform )
-		->translate( w_vec3( step_per_fts * RENDER->frame_interpolate_pct, 0, 0 ) );
-	RENDER
-		->begin()
-		->push_color( W_COLOR_TEAL )
-		->draw_sprite( engine->white_solid )
-		->end();
-	OPENGL
-		->pop();
-
-	// ----------------------------------------------------------------------------
-
-	step_per_fts = tween_rotate->step_per_sec / w_time::FTS_desired_frames_per_second;
-
-	OPENGL
-		->push( true )
-		->add_transform( rotate_xform )
-		->rotate( step_per_fts * RENDER->frame_interpolate_pct );
-	RENDER
-		->begin()
-		->push_color( W_COLOR_ORANGE )
-		->draw_sprite( engine->white_solid )
-		->end();
-	OPENGL
-		->pop();
-	*/
+	MATRIX
+		->push_identity()
+		->translate( w_vec3( -v_window_hw, -(TILE_SZ * 4.0f), 100.0f ) );
+	RENDER->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) );
+	MATRIX->pop();
 }
 
 void layer_editor::on_listener_event_received( e_event_id event, void* object )
@@ -118,6 +59,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 			{
 				case e_input_id::mouse:
 				{
+					// warren - check if mouse is inside of the tile area - if not, don't let it change the hover_tile
 					tile_from_screen_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
 				}
 				break;
@@ -132,16 +74,32 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 				case e_input_id::controller_button_dpad_left:
 				case e_input_id::keyboard_left:
 				{
-					hover_tile.x--;
-					hover_tile.x = w_clamp( hover_tile.x, 0, 18 );
+					if( evt->alt_down )
+					{
+						game->current_room--;
+						game->current_room = w_max( game->current_room, 0 );
+					}
+					else
+					{
+						hover_tile.x--;
+						hover_tile.x = w_max( hover_tile.x, 0 );
+					}
 				}
 				break;
 
 				case e_input_id::controller_button_dpad_right:
 				case e_input_id::keyboard_right:
 				{
-					hover_tile.x++;
-					hover_tile.x = w_clamp( hover_tile.x, 0, 18 );
+					if( evt->alt_down )
+					{
+						game->current_room++;
+						game->current_room = w_min( game->current_room, static_cast<int>( game->rooms.size() - 1 ) );
+					}
+					else
+					{
+						hover_tile.x++;
+						hover_tile.x = w_min( hover_tile.x, 18 );
+					}
 				}
 				break;
 
@@ -149,7 +107,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 				case e_input_id::keyboard_up:
 				{
 					hover_tile.y--;
-					hover_tile.y = w_clamp( hover_tile.y, 0, 8 );
+					hover_tile.y = w_max( hover_tile.y, 0 );
 				}
 				break;
 
@@ -157,58 +115,22 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 				case e_input_id::keyboard_down:
 				{
 					hover_tile.y++;
-					hover_tile.y = w_clamp( hover_tile.y, 0, 8 );
+					hover_tile.y = w_min( hover_tile.y, 8 );
 				}
 				break;
 
 				case e_input_id::keyboard_0:
-				{
-					game->current_room = 0;
-				}
-				break;
 				case e_input_id::keyboard_1:
-				{
-					game->current_room = 1;
-				}
-				break;
 				case e_input_id::keyboard_2:
-				{
-					game->current_room = 2;
-				}
-				break;
 				case e_input_id::keyboard_3:
-				{
-					game->current_room = 3;
-				}
-				break;
 				case e_input_id::keyboard_4:
-				{
-					game->current_room = 4;
-				}
-				break;
 				case e_input_id::keyboard_5:
-				{
-					game->current_room = 5;
-				}
-				break;
 				case e_input_id::keyboard_6:
-				{
-					game->current_room = 6;
-				}
-				break;
 				case e_input_id::keyboard_7:
-				{
-					game->current_room = 7;
-				}
-				break;
 				case e_input_id::keyboard_8:
-				{
-					game->current_room = 8;
-				}
-				break;
 				case e_input_id::keyboard_9:
 				{
-					game->current_room = 9;
+					game->current_room = static_cast<int>( evt->input_id ) - static_cast<int>( e_input_id::keyboard_0 );
 				}
 				break;
 			}
@@ -228,6 +150,7 @@ void layer_editor::tile_from_screen_pos( float xpos, float ypos )
 	float tile_x = round(( xpos - tiles_x ) / (float)TILE_SZ);
 	float tile_y = round(( ypos - tiles_y ) / (float)TILE_SZ);
 
-	draw_selector_bracket = ( tile_x >= 0 && tile_x < 19 && tile_y >= 0 && tile_y < 9 );
 	hover_tile = w_vec2( round( tile_x ), round( tile_y ) );
+	hover_tile.x = w_clamp( hover_tile.x, 0, 18 );
+	hover_tile.y = w_clamp( hover_tile.y, 0, 8 );
 }

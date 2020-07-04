@@ -5,6 +5,7 @@
 void w_ui_mgr::init( const std::string& mouse_cursor_name )
 {
 	mouse_cursor = engine->get_asset<a_cursor>( mouse_cursor_name, b_silent(true) );
+	ui_font = engine->get_asset<a_font>( "ui_simple_font" );
 }
 
 void w_ui_mgr::set_mouse_visible( bool visible )
@@ -23,7 +24,7 @@ void w_ui_mgr::draw_top_level()
 			->translate( w_vec3(
 				-v_window_hw + engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
 				v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y,
-				1000 ) );
+				1000.0f ) );
 
 		RENDER->draw( mouse_cursor->img );
 

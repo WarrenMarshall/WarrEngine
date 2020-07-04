@@ -150,7 +150,7 @@ struct a_font_def : i_asset
 	
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.
-	float max_height = 0.0f;
+	int max_height = 0;
 
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.

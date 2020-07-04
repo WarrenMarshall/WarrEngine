@@ -42,10 +42,13 @@ struct w_render
 	std::stack<w_color> rs_color_stack;
 	int rs_scale_count = 0;
 	std::stack<float> rs_scale_stack;
+	int rs_align_count = 0;
+	std::stack<e_align> rs_align_stack;
 
 	w_render* begin();
 	w_render* push_color( const w_color& color );
 	w_render* push_scale( const float& scale );
+	w_render* push_align( const e_align& align );
 	void end();
 
 	// ----------------------------------------------------------------------------
@@ -64,7 +67,7 @@ struct w_render
 	w_render* draw( a_texture* tex, const w_sz& sz = w_vec2( -1, -1 ) );
 	w_render* draw( a_subtexture* subtex, const w_sz& sz = w_vec2( -1, -1 ) );
 	
-	w_render* draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
+	w_render* draw_string( a_font* font, const std::string& text );
 
 	w_render* draw_sliced( a_texture* tex, const std::string& patch_name, w_rect rc_dst, float z );
 	w_render* draw_sliced( a_subtexture* subtex, const std::string& patch_name, w_rect rc_dst, float z );

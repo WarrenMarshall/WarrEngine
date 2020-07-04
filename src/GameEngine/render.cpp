@@ -44,6 +44,7 @@ void w_render::init()
 	// initialize render state stacks
 	rs_color_stack.push( W_COLOR_WHITE );
 	rs_scale_stack.push( 1.0f );
+	rs_align_stack.push( e_align::left );
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requesed for
@@ -80,6 +81,14 @@ w_render* w_render::push_scale( const float& scale )
 	return this;
 }
 
+w_render* w_render::push_align( const e_align& align )
+{
+	rs_align_count++;
+	rs_align_stack.push( align );
+
+	return this;
+}
+
 void w_render::end()
 {
 	while( rs_color_count )
@@ -96,6 +105,12 @@ void w_render::end()
 	}
 	rs_scale_count = 0;
 
+	while( rs_align_count )
+	{
+		rs_align_stack.pop();
+		rs_align_count--;
+	}
+	rs_align_count = 0;
 }
 
 /*
@@ -154,10 +169,10 @@ w_render* w_render::draw( a_subtexture* subtex, const w_sz& sz )
 
 	w_color rs_color = rs_color_stack.top();
 
-	w_render_vert v0( w_vec3( 0, h, 0 ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
-	w_render_vert v1( w_vec3( w, h, 0 ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
-	w_render_vert v2( w_vec3( w, 0, 0 ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
-	w_render_vert v3( w_vec3( 0, 0, 0 ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_vert v0( w_vec3( 0.0f, h, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
+	w_render_vert v1( w_vec3( w, h, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
+	w_render_vert v2( w_vec3( w, 0.0f, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
+	w_render_vert v3( w_vec3( 0.0f, 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
 
 	subtex->tex->render_buffer->add_quad( v0, v1, v2, v3 );
 
@@ -167,28 +182,27 @@ w_render* w_render::draw( a_subtexture* subtex, const w_sz& sz )
 /*
 	draws a string from a bitmap font, char by char
 */
-w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align )
+w_render* w_render::draw_string( a_font* font, const std::string& text )
 {
+	e_align rs_align = rs_align_stack.top();
+
 	const char* rd_ptr = text.c_str();
-	float xpos = pos.x;
-	float ypos = pos.y;
+	w_vec2 render_pos( 0.0f, 0.0f );
 
-	w_vec2 extents;
-
-	if( (align & e_align::hcenter) > 0 )
+	if( (rs_align & e_align::hcenter) > 0 )
 	{
-		extents = font->get_string_extents( text );
-		xpos = pos.x - ( extents.x / 2.0f );
+		w_vec2 extents = font->get_string_extents( text );
+		render_pos.x -= extents.x / 2.0f;
 	}
-	else if( (align & e_align::right) > 0 )
+	else if( (rs_align & e_align::right) > 0 )
 	{
-		extents = font->get_string_extents( text );
-		xpos = pos.x - extents.x;
+		w_vec2 extents = font->get_string_extents( text );
+		render_pos.x -= extents.x;
 	}
 
-	if( (align & e_align::vcenter) > 0 )
+	if( (rs_align & e_align::vcenter) > 0 )
 	{
-		ypos = pos.y + ( font->font_def->max_height / 2.0f );
+		render_pos.y += font->font_def->max_height / 2.0f;
 	}
 
 	w_font_char* fch;
@@ -196,14 +210,16 @@ w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& te
 	std::string token;
 	w_tokenizer tok( str, '}' );
 
+	w_vec2 save_render_pos = render_pos;
+
 	for( const auto& iter : str )
 	{
 		fch = &( font->font_def->char_map[ iter ] );
 
 		if( iter == '\n' )
 		{
-			xpos = pos.x;
-			ypos -= font->font_def->max_height;
+			render_pos.x = save_render_pos.x;
+			render_pos.y -= font->font_def->max_height;
 		}
 		else
 		{
@@ -212,7 +228,7 @@ w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& te
 			{
 				MATRIX
 					->push()
-					->translate( w_vec3( xpos + fch->xoffset, ypos - fch->h - fch->yoffset, pos.z ) );
+					->translate( w_vec3( render_pos.x + fch->xoffset, render_pos.y - fch->h - fch->yoffset, 0.0f ) );
 				draw(
 					fch->img.get(),
 					w_vec2( fch->w, fch->h )
@@ -221,7 +237,7 @@ w_render* w_render::draw_string( a_font* font, w_vec3 pos, const std::string& te
 					->pop();
 			}
 
-			xpos += fch->xadvance;
+			render_pos.x += fch->xadvance;
 		}
 	}
 
@@ -253,10 +269,7 @@ void w_render::begin_frame( float frame_interpolate_pct )
 */
 void w_render::end_frame()
 {
-	//if( show_stats )
-	{
-		draw_stats();
-	}
+	draw_stats();
 
 	// draw all render buffers
 
@@ -290,6 +303,7 @@ void w_render::end_frame()
 	// it means there's a push/pop mismatch somewhere in the code.
 	assert( rs_color_stack.size() == 1 );
 	assert( rs_scale_stack.size() == 1 );
+	assert( rs_align_stack.size() == 1 );
 
 	// Swap buffers
 	glfwSwapBuffers( engine->window->window );
@@ -331,8 +345,6 @@ w_render* w_render::draw_world_axis()
 constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
-	auto font = engine->get_asset<a_font>( "ui_simple_font" );
-
 	if( show_stats )
 	{
 		std::vector<std::string> stat_lines;
@@ -357,32 +369,43 @@ w_render* w_render::draw_stats()
 		}
 
 		assert( stat_lines.size() < stats_draw_reserve );
+		int font_max_height = engine->ui_mgr->ui_font->font_def->max_height;
 
-		RENDER->begin();
+
+		MATRIX->push_identity();
+		RENDER->begin()
+			->push_color( w_color( .25f, .25f, .25f, 0.75f ) )
+			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font_max_height * stat_lines.size() ) ), 999.0f )
+			->end();
+		MATRIX->pop();
+
+		MATRIX->push_identity()
+			->translate( w_vec3( 0.0f, v_window_hh, 1000.0f ) );
+
+		RENDER->begin()
+			->push_color( W_COLOR_WHITE )
+			->push_align( e_align::hcenter );
+
+		for( const auto& iter : stat_lines )
 		{
-			RENDER
-				->push_color( w_color( .25f, .25f, .25f, 0.75f ) )
-				->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font->font_def->max_height * stat_lines.size() ) ), 999.0f );
-
-			RENDER->push_color( W_COLOR_WHITE );
-
-			float y = v_window_hh;
-			for( const auto& iter : stat_lines )
-			{
-				RENDER->draw_string( font, w_vec3( 0, y, 1000.0f ), iter.c_str(), e_align::hcenter );
-				y -= font->font_def->max_height;
-			}
+			RENDER->draw_string( engine->ui_mgr->ui_font, iter.c_str() );
+			MATRIX->top()->translate( w_vec3( 0, -font_max_height, 0 ) );
 		}
 		RENDER->end();
+		MATRIX->pop();
 	}
 	else
 	{
 	#if !defined(FINALRELEASE)
 		std::string fps_stats( s_format( "%s FPS", s_commas( (int)stats.num_frames_rendered.value, "%d" ).c_str() ) );
 
+		MATRIX->push()
+			->translate( w_vec3( v_window_hw, v_window_hh, 1000.0f ) );
 		RENDER->begin()
-			->draw_string( font, w_vec3( v_window_hw, v_window_hh, 1000.0f ), fps_stats, e_align::right )
+			->push_align( e_align::right )
+			->draw_string( engine->ui_mgr->ui_font, fps_stats )
 			->end();
+		MATRIX->pop();
 	#endif
 	}
 

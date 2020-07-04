@@ -29,8 +29,8 @@ void layer_browser::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0 ) )
-		->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0 ) );
+		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0.0f ) )
+		->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0.0f ) );
 
 	RENDER->begin()
 		->push_color( W_COLOR_TEAL )

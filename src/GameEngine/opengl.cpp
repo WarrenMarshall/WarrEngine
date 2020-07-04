@@ -95,9 +95,10 @@ w_matrix* w_opengl::push()
 
 // removes the top matrix from the stack
 
-void w_opengl::pop()
+w_matrix* w_opengl::pop()
 {
 	modelview_stack.pop();
+	return top();
 }
 
 // returns a pointer to the top matrix on the stack
@@ -149,7 +150,7 @@ void w_opengl::refresh_primitive_sizes() const
 
 	// this can happen if the user does something like WIN+D.
 	// this check prevents an opengl crash below when setting line size.
-	if( !w && !h )
+	if( !w || !h )
 	{
 		return;
 	}

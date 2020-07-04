@@ -2,18 +2,9 @@
 
 struct layer_editor : w_layer
 {
-	i_transform pingpong_xform;
-	std::unique_ptr<w_tween> tween_pingpong;
-	i_transform rotate_xform;
-	std::unique_ptr<w_tween> tween_rotate;
-
-	a_subtexture* germ_img = nullptr;
-	a_anim_texture* germ_anim = nullptr;
-
-	bool draw_selector_bracket = false;
 	a_subtexture* selector_bracket = nullptr;
 
-	w_vec2 hover_tile = w_vec2( -1.0f, -1.0f );
+	w_vec2 hover_tile = w_vec2( 0.0f, 0.0f );
 
 	void push() override;
 	void pop() override;

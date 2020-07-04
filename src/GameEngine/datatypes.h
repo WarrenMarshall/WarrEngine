@@ -143,6 +143,7 @@ struct w_vec3
 	w_vec3();
 	w_vec3( const w_vec3& v );
 	w_vec3( float x, float y, float z );
+	w_vec3( int x, int y, int z );
 	w_vec3( std::string str );
 
 	w_vec3 operator+( const w_vec3& v );
