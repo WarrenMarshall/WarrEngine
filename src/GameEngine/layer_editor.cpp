@@ -47,8 +47,21 @@ void layer_editor::draw()
 
 	MATRIX->push_identity();
 	RENDER->draw_sprite( germ_img );
-	MATRIX->top()->translate( w_vec3( 80, 0, 0 ) );
+
+	RENDER->begin()
+		->push_scale( 0.5f );
+
+	MATRIX->top()->translate( w_vec3( -40, 0, 0 ) );
 	RENDER->draw_sprite( germ_anim );
+	MATRIX->top()->translate( w_vec3( -40, 0, 0 ) );
+	RENDER->draw_sprite( germ_anim );
+	MATRIX->top()->translate( w_vec3( 120, 0, 0 ) );
+	RENDER->draw_sprite( germ_anim );
+	MATRIX->top()->translate( w_vec3( 40, 0, 0 ) );
+	RENDER->draw_sprite( germ_anim );
+
+	RENDER->end();
+	
 	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------

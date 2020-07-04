@@ -393,11 +393,10 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					std::string frames = iter_ad->key_values.at( "frames" );
-					size_t num_frames = std::count( frames.begin(), frames.end(), ',' ) + 1;
+					const std::string frames = iter_ad->key_values.at( "frames" );
 
 					w_tokenizer tok( frames, ',' );
-					for( ; num_frames > 0 ; --num_frames )
+					while( !tok.is_eos() )
 					{
 						auto tex = engine->get_asset<a_subtexture>( tok.get_next_token() );
 						asset_ptr->frames.emplace_back( tex );

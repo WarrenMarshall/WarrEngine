@@ -87,26 +87,12 @@ struct w_range
 
 struct w_rect
 {
-	union
-	{
-		struct
-		{
-			float x;
-			float y;
-			float w;
-			float h;
-		};
-		struct
-		{
-			float u0;
-			float v0;
-			float u1;
-			float v1;
-		};
-	};
+	float x = 0.0f;
+	float y = 0.0f;
+	float w = 0.0f;
+	float h = 0.0f;
 
 	w_rect();
-	w_rect( float x, float y );
 	w_rect( float x, float y, float w, float h );
 };
 
@@ -148,15 +134,17 @@ struct w_vec2
 
 struct w_vec3
 {
-	float x = 0.0f, y = 0.0f, z = 0.0f;
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+
+	static const w_vec3 zero;
 
 	w_vec3();
 	w_vec3( const w_vec3& v );
 	w_vec3( float x, float y, float z );
 	w_vec3( std::string str );
 
-	static const w_vec3 zero;
-	
 	w_vec3 operator+( const w_vec3& v );
 	w_vec3 operator-( const w_vec3& v );
 	w_vec3 operator=( const w_vec3& v );

@@ -10,6 +10,7 @@
 #include "random.h"
 #include "tween.h"
 #include "timer.h"
+#include "keyvalues.h"
 
 #include "i_transform.h"
 #include "i_listener.h"

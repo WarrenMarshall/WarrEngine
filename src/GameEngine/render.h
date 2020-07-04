@@ -40,9 +40,12 @@ struct w_render
 
 	int rs_color_count = 0;
 	std::stack<w_color> rs_color_stack;
+	int rs_scale_count = 0;
+	std::stack<float> rs_scale_stack;
 
 	w_render* begin();
 	w_render* push_color( const w_color& color );
+	w_render* push_scale( const float& scale );
 	void end();
 
 	// ----------------------------------------------------------------------------
