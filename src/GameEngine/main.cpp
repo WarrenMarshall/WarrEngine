@@ -119,7 +119,7 @@ int main( int argc, char* argv[] )
 		{
 			// used for wireframe drawing
 			engine->white_wire = engine->get_asset<a_texture>( "engine_white_wire" )->get_subtexture();
-			engine->white_wire->get_texture()->render_buffer->prim_type = GL_LINES;
+			engine->white_wire->tex->render_buffer->prim_type = GL_LINES;
 
 			// used for solid drawing
 			engine->white_solid = engine->get_asset<a_texture>( "engine_white_solid" )->get_subtexture();

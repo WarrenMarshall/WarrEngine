@@ -15,9 +15,9 @@ struct a_texture : i_asset
 		a convenience so you don't have to declare a matching a_subtexture for
 		every a_texture in the asset_def files.
 
-		call "get_image" on your a_texture to get to it.
+		call "get_subtexture" on your a_texture to get to it.
 	*/
-	a_subtexture* img = nullptr;
+	a_subtexture* subtex = nullptr;
 
 	~a_texture();
 
@@ -27,7 +27,6 @@ struct a_texture : i_asset
 	void bind();
 	void unbind();
 
-	virtual a_texture* get_texture();
 	virtual a_subtexture* get_subtexture();
 
 	void draw( e_render_pass render_pass ) override;
@@ -56,7 +55,6 @@ struct a_subtexture : i_asset
 	a_subtexture( const std::string& tex_name );
 	a_subtexture( const std::string& tex_name, const w_rect& rc );
 
-	a_texture* get_texture();
 	void bind();
 	void unbind();
 };
@@ -76,19 +74,22 @@ struct a_gradient : a_texture
 
 struct a_anim_texture : a_texture
 {
-	std::vector<a_texture*> frames;
+	std::vector<a_subtexture*> frames;
 	std::unique_ptr<w_tween> frame_tween = nullptr;
 
-	a_anim_texture();
+	e_tween_type tween_type = e_tween_type::loop;
+	int frames_per_second = 1;
+
+	a_anim_texture() = delete;
+	a_anim_texture( e_tween_type tween_type, int frames_per_second );
 
 	void clean_up_internals() override;
 	bool create_internals( bool is_hot_reloading ) override;
-	void add_frame( a_texture* tex );
-	void set_speed( float indices_per_sec );
+	void add_frame( a_subtexture* tex );
 	void randomize();
 
 	void update() override;
-	a_texture* get_texture() override;
+	a_subtexture* get_subtexture() override;
 };
 
 // ----------------------------------------------------------------------------

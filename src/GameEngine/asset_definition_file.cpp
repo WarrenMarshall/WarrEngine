@@ -66,11 +66,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					// Every texture that gets loaded gets a full size
 					// a_subtexture created for it automatically.
 
-					auto img = static_cast<a_subtexture*>(
+					auto subtex = static_cast<a_subtexture*>(
 						engine->asset_cache->add( std::make_unique<a_subtexture>( asset_ptr->name ),
 												  "auto_subt_" + asset_ptr->name, "" )
 						);
-					asset_ptr->img = img;
+					asset_ptr->subtex = subtex;
 				}
 				else if( type == "gradient" )
 				{
@@ -374,13 +374,22 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				else if( type == "anim_texture" )
 				{
 					assert_key_exists( type, *( iter_ad.get() ), "frames" );
+					assert_key_exists( type, *( iter_ad.get() ), "tween" );
+					assert_key_exists( type, *( iter_ad.get() ), "frames_per_sec" );
 
 					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
 
+					int frames_per_sec = w_parser::parse_int_value( iter_ad->key_values.at( "frames_per_sec" ) );
+					e_tween_type tween_type = static_cast<e_tween_type>( w_parser::parse_int_value( iter_ad->key_values.at( "tween" ) ) );
+
 					if( !asset_ptr )
+					{
 						asset_ptr = static_cast<a_anim_texture*>(
-							engine->asset_cache->add( std::make_unique<a_anim_texture>(), name, "" )
+							engine->asset_cache->add(
+								std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
+								name, "" )
 							);
+					}
 
 					// ------------------------------------------------------------------------
 
@@ -390,7 +399,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					w_tokenizer tok( frames, ',' );
 					for( ; num_frames > 0 ; --num_frames )
 					{
-						auto tex = engine->get_asset<a_texture>( tok.get_next_token() );
+						auto tex = engine->get_asset<a_subtexture>( tok.get_next_token() );
 						asset_ptr->frames.emplace_back( tex );
 					}
 

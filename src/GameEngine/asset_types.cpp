@@ -71,14 +71,9 @@ void a_texture::unbind()
 	glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
-a_texture* a_texture::get_texture()
-{
-	return this;
-}
-
 a_subtexture* a_texture::get_subtexture()
 {
-	return get_texture()->img;
+	return subtex;
 }
 
 void a_texture::draw( e_render_pass render_pass )
@@ -126,19 +121,14 @@ a_subtexture::a_subtexture( const std::string& texture_name, const w_rect& rc )
 	);
 }
 
-a_texture* a_subtexture::get_texture()
-{
-	return tex->get_texture();
-}
-
 void a_subtexture::bind()
 {
-	get_texture()->bind();
+	tex->bind();
 }
 
 void a_subtexture::unbind()
 {
-	get_texture()->unbind();
+	tex->unbind();
 }
 
 // ----------------------------------------------------------------------------
@@ -201,9 +191,10 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 
 // ----------------------------------------------------------------------------
 
-a_anim_texture::a_anim_texture()
+a_anim_texture::a_anim_texture( e_tween_type tween_type, int frames_per_second )
+	: tween_type( tween_type ), frames_per_second( frames_per_second )
 {
-	frames.clear();
+	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() - 1 ), static_cast<float>( frames_per_second ) );
 }
 
 void a_anim_texture::clean_up_internals()
@@ -213,19 +204,12 @@ void a_anim_texture::clean_up_internals()
 
 bool a_anim_texture::create_internals( bool is_hot_reloading )
 {
-	set_speed( 10 );
-
 	return true;
 }
 
-void a_anim_texture::add_frame( a_texture* tex )
+void a_anim_texture::add_frame( a_subtexture* tex )
 {
 	frames.emplace_back( tex );
-}
-
-void a_anim_texture::set_speed( float indices_per_sec )
-{
-	frame_tween = std::make_unique<w_tween>( e_tween_type::pingpong, 0.0f, static_cast<float>( frames.size() - 1 ), indices_per_sec );
 }
 
 /*
@@ -233,21 +217,21 @@ void a_anim_texture::set_speed( float indices_per_sec )
 */
 void a_anim_texture::randomize()
 {
-	assert( frame_tween );	// did you forget to call "set_speed"?
+	assert( frames.size() );	// did you forget to call "add_frame"?
 
 	frame_tween->randomize();
 }
 
 void a_anim_texture::update()
 {
-	assert( frame_tween );	// did you forget to call "set_speed"?
+	assert( frames.size() );	// did you forget to call "add_frame"?
 
 	frame_tween->update();
 }
 
-a_texture* a_anim_texture::get_texture()
+a_subtexture* a_anim_texture::get_subtexture()
 {
-	assert( frame_tween );	// did you forget to call "set_speed"?
+	assert( frames.size() );	// did you forget to call "add_frame"?
 
 	int idx = frame_tween->get_ival();
 	idx = idx % frames.size();

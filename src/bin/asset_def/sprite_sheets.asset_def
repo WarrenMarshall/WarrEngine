@@ -1,0 +1,56 @@
+
+{
+	"type" "texture"
+	"name" "orange_germ_sheet"
+	"filename" "images/germ_sheet.png"
+}
+
+{
+	"type" "subtexture"
+	"name" "germ_orange_0"
+	"texture" "orange_germ_sheet"
+	"rect" "0,0,64,64"
+}
+{
+	"type" "subtexture"
+	"name" "germ_orange_1"
+	"texture" "orange_germ_sheet"
+	"rect" "64,0,64,64"
+}
+{
+	"type" "subtexture"
+	"name" "germ_orange_2"
+	"texture" "orange_germ_sheet"
+	"rect" "128,0,64,64"
+}
+{
+	"type" "subtexture"
+	"name" "germ_orange_3"
+	"texture" "orange_germ_sheet"
+	"rect" "192,0,64,64"
+}
+{
+	"type" "subtexture"
+	"name" "germ_orange_4"
+	"texture" "orange_germ_sheet"
+	"rect" "256,0,64,64"
+}
+{
+	"type" "subtexture"
+	"name" "germ_orange_5"
+	"texture" "orange_germ_sheet"
+	"rect" "320,0,64,64"
+}
+
+{
+	"type" "anim_texture"
+	"name" "anim_germ_orange"
+	"frames_per_sec" "6"
+	"tween" "tween_linear"
+	"frames" "germ_orange_0,\
+			  germ_orange_1,\
+			  germ_orange_2,\
+			  germ_orange_3,\
+			  germ_orange_4,\
+			  germ_orange_5"
+}

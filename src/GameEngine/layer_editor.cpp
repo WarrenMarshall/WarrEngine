@@ -9,6 +9,8 @@ void layer_editor::push()
 	engine->input_mgr->add_listener( this );
 
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
+	germ_img = engine->get_asset<a_subtexture>( "germ_orange_0" );
+	germ_anim = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
 
 	engine->ui_mgr->set_mouse_visible( true );
 }
@@ -42,6 +44,12 @@ void layer_editor::draw()
 
 		MATRIX->pop();
 	}
+
+	MATRIX->push_identity();
+	RENDER->draw_sprite( germ_img );
+	MATRIX->top()->translate( w_vec3( 80, 0, 0 ) );
+	RENDER->draw_sprite( germ_anim );
+	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
 

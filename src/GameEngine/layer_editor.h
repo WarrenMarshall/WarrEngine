@@ -7,6 +7,9 @@ struct layer_editor : w_layer
 	i_transform rotate_xform;
 	std::unique_ptr<w_tween> tween_rotate;
 
+	a_subtexture* germ_img = nullptr;
+	a_anim_texture* germ_anim = nullptr;
+
 	bool draw_selector_bracket = false;
 	a_subtexture* selector_bracket = nullptr;
 

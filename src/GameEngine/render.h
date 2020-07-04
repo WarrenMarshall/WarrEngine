@@ -55,10 +55,16 @@ struct w_render
 
 	void init();
 
-	w_render* draw_sprite( a_subtexture* image, const w_sz& sz = w_sz( -1, -1 ) );
-	w_render* draw( a_subtexture* image, const w_sz& sz = w_vec2( -1, -1 ) );
+	w_render* draw_sprite( a_subtexture* subtex, const w_sz& sz = w_sz( -1, -1 ) );
+	w_render* draw_sprite( a_texture* tex, const w_sz& sz = w_sz( -1, -1 ) );
+	
+	w_render* draw( a_texture* tex, const w_sz& sz = w_vec2( -1, -1 ) );
+	w_render* draw( a_subtexture* subtex, const w_sz& sz = w_vec2( -1, -1 ) );
+	
 	w_render* draw_string( a_font* font, w_vec3 pos, const std::string& text, e_align align );
-	w_render* draw_sliced_texture( a_texture* texture, const std::string& patch_name, w_rect rc_dst, float z );
+
+	w_render* draw_sliced( a_texture* tex, const std::string& patch_name, w_rect rc_dst, float z );
+	w_render* draw_sliced( a_subtexture* subtex, const std::string& patch_name, w_rect rc_dst, float z );
 
 	void init_projection();
 	w_render* draw_rectangle( w_rect rc_dst );

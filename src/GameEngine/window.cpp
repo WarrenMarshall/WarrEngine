@@ -82,7 +82,9 @@ bool w_window::init( const std::string& title )
 	);
 
 	if( !window )
+	{
 		log_error( "%s : failed to create window", __FUNCTION__ );
+	}
 
 	glfwSetWindowPos( window,
 					  static_cast<int>( window_pos.x ),

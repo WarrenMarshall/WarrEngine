@@ -77,6 +77,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 w_game_controller::w_game_controller( int idx )
 	: idx( idx )
 {
+	timer_repeat = std::make_unique<w_timer>( 150 );
 }
 
 w_game_controller::~w_game_controller()
@@ -98,6 +99,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 
 		is_being_used = true;
+		timer_repeat->reset();
 	}
 	else if( last_state && !current_state )
 	{
@@ -106,6 +108,19 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 		evt.input_id = input_id;
 
 		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+	}
+	else if( last_state && current_state )
+	{
+		timer_repeat->update();
+
+		if( timer_repeat->get_elapsed_count() )
+		{
+			w_input_event evt;
+			evt.event_id = e_event_id::input_pressed;
+			evt.input_id = input_id;
+
+			engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+		}
 	}
 }
 
