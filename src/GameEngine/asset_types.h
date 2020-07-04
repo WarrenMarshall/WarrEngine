@@ -27,7 +27,7 @@ struct a_texture : i_asset
 	void bind();
 	void unbind();
 
-	virtual a_subtexture* get_subtexture();
+	virtual a_subtexture* get_subtexture( float offset = 0.0f );
 
 	void draw( e_render_pass render_pass ) override;
 };
@@ -89,7 +89,7 @@ struct a_anim_texture : a_texture
 	void randomize();
 
 	void update() override;
-	a_subtexture* get_subtexture() override;
+	a_subtexture* get_subtexture( float offset ) override;
 };
 
 // ----------------------------------------------------------------------------

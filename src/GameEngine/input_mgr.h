@@ -9,7 +9,9 @@ struct w_input_event
 	e_input_id input_id = e_input_id::invalid;
 
 	// any modifier keys that were pressed at the time of the input event
-	int mods = 0;
+	bool alt_down;
+	bool shift_down;
+	bool ctrl_down;
 
 	struct  
 	{

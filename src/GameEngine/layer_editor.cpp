@@ -51,14 +51,20 @@ void layer_editor::draw()
 	RENDER->begin()
 		->push_scale( 0.5f );
 
+	static float offset_01 = w_random::getf();
+	static float offset_02 = w_random::getf();
+	static float offset_03 = w_random::getf();
+	static float offset_04 = w_random::getf();
+
 	MATRIX->top()->translate( w_vec3( -40, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim );
+	RENDER->draw_sprite( germ_anim->get_subtexture( offset_01 ) );
 	MATRIX->top()->translate( w_vec3( -40, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim );
+	RENDER->draw_sprite( germ_anim->get_subtexture( offset_02 ) );
+	RENDER->push_scale( 1.5f );
 	MATRIX->top()->translate( w_vec3( 120, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim );
+	RENDER->draw_sprite( germ_anim->get_subtexture( offset_03 ) );
 	MATRIX->top()->translate( w_vec3( 40, 0, 0 ) );
-	RENDER->draw_sprite( germ_anim );
+	RENDER->draw_sprite( germ_anim->get_subtexture( offset_04 ) );
 
 	RENDER->end();
 	

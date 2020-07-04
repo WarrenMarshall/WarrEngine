@@ -9,6 +9,9 @@ struct w_component : i_lifecycle, i_transform
 	e_component_type type = e_component_type::invalid;
 	i_transform* parent_entity = nullptr;
 
+	// used for offsetting whatever the component needs to
+	float anim_offset = 0.0f;
+
 	w_component();
 
 	virtual bool is_fully_dead();

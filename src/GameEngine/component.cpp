@@ -7,6 +7,7 @@
 w_component::w_component()
 	: i_transform()
 {
+	anim_offset = w_random::getf();
 }
 
 /*

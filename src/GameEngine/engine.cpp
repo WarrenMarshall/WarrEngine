@@ -333,9 +333,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 				case e_input_id::keyboard_enter:
 				{
-					bool alt_down = ( evt->mods & GLFW_MOD_ALT );
-
-					if( alt_down )
+					if( evt->alt_down )
 					{
 						window->toggle_fullscreen();
 					}

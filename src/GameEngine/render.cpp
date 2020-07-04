@@ -423,6 +423,7 @@ w_render* w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
 
 w_render* w_render::draw_rectangle( w_rect rc_dst )
 {
+	// warren
 	assert( false );// not implemented yet
 	w_bbox box;
 	box.add( w_vec3(
@@ -486,13 +487,11 @@ w_render* w_render::draw_sliced( a_texture* tex, const std::string& patch_name, 
 
 w_render* w_render::draw_sliced( a_subtexture* subtex, const std::string& patch_name, w_rect rc_dst, float z )
 {
+	// warren
 	assert( false );// not implemented yet
+	
 	a_9slice_def* slice_def = engine->get_asset<a_9slice_def>( patch_name.c_str() );
-	if( slice_def == nullptr )
-	{
-		assert( false );
-		return nullptr;
-	}
+	assert( slice_def );
 
 	float xpos;
 	float ypos;

@@ -71,7 +71,7 @@ void a_texture::unbind()
 	glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
-a_subtexture* a_texture::get_subtexture()
+a_subtexture* a_texture::get_subtexture( float offset )
 {
 	return subtex;
 }
@@ -229,11 +229,20 @@ void a_anim_texture::update()
 	frame_tween->update();
 }
 
-a_subtexture* a_anim_texture::get_subtexture()
+a_subtexture* a_anim_texture::get_subtexture( float offset )
 {
 	assert( frames.size() );	// did you forget to call "add_frame"?
 
+
+	// apply random offset if needed
+
 	int idx = frame_tween->get_ival();
+
+	if( offset )
+	{
+		idx += static_cast<int>( offset * frames.size() );
+	}
+
 	idx = idx % frames.size();
 	return frames[idx];
 }

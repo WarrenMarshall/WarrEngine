@@ -31,7 +31,10 @@ void key_callback( GLFWwindow* window, int key, int scancode, int action, int mo
 	w_input_event evt;
 	evt.event_id = pressed ? e_event_id::input_pressed : e_event_id::input_released;
 	evt.input_id = engine->input_mgr->glfw_codes[ key ];
-	evt.mods = mods;
+
+	evt.alt_down = ( mods & GLFW_MOD_ALT );
+	evt.shift_down = ( mods & GLFW_MOD_SHIFT );
+	evt.ctrl_down = ( mods & GLFW_MOD_CONTROL );
 
 	engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ] = pressed;
 	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
@@ -44,7 +47,10 @@ void mouse_button_callback( GLFWwindow* window, int button, int action, int mods
 	w_input_event evt;
 	evt.event_id = pressed ? e_event_id::input_pressed : e_event_id::input_released;
 	evt.input_id = engine->input_mgr->glfw_codes[ button ];
-	evt.mods = mods;
+
+	evt.alt_down = ( mods & GLFW_MOD_ALT );
+	evt.shift_down = ( mods & GLFW_MOD_SHIFT );
+	evt.ctrl_down = ( mods & GLFW_MOD_CONTROL );
 
 	engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ] = pressed;
 	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
