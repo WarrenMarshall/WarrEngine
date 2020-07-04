@@ -152,6 +152,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "9slice_def" )
 				{
+					assert_key_exists( type, *( iter_ad.get() ), "texture" );
+
 					// ------------------------------------------------------------------------
 
 					auto asset_ptr = engine->get_asset<a_9slice_def>( name, b_silent( true ) );
@@ -163,30 +165,27 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
+					std::string tex_name = iter_ad->key_values.at( "texture" );
+
 					for( const auto& iter : iter_ad->key_values )
 					{
 						std::string key = iter.first;
 						std::string value = iter.second;
 
-						if( key.substr( 0, 6 ) == "subtexture_" )
+						int subtexture_idx = 0;
+
+						if( key.substr( 0, 2 ) == "p_" )
 						{
-							int subtexture_idx;
+							subtexture_idx = w_parser::parse_int_value( key );
+							w_rect rc = w_parser::parse_rect_value( value );
 
-							if( key == "subtexture_00" )		subtexture_idx = (int) e_patch::P_00;
-							else if( key == "subtexture_10" )	subtexture_idx = (int) e_patch::P_10;
-							else if( key == "subtexture_20" )	subtexture_idx = (int) e_patch::P_20;
-							else if( key == "subtexture_01" )	subtexture_idx = (int) e_patch::P_01;
-							else if( key == "subtexture_11" )	subtexture_idx = (int) e_patch::P_11;
-							else if( key == "subtexture_21" )	subtexture_idx = (int) e_patch::P_21;
-							else if( key == "subtexture_02" )	subtexture_idx = (int) e_patch::P_02;
-							else if( key == "subtexture_12" )	subtexture_idx = (int) e_patch::P_12;
-							else if( key == "subtexture_22" )	subtexture_idx = (int) e_patch::P_22;
+							std::string subtex_name = name + "_" + key;
 
-							w_tokenizer tok( value, ',' );
-							asset_ptr->patches[ subtexture_idx ].x = w_parser::parse_float_value( tok.get_next_token() );
-							asset_ptr->patches[ subtexture_idx ].y = w_parser::parse_float_value( tok.get_next_token() );
-							asset_ptr->patches[ subtexture_idx ].w = w_parser::parse_float_value( tok.get_next_token() );
-							asset_ptr->patches[ subtexture_idx ].h = w_parser::parse_float_value( tok.get_next_token() );
+							asset_ptr->patches[ subtexture_idx ] = static_cast<a_subtexture*>(
+								engine->asset_cache->add(
+									std::make_unique<a_subtexture>( iter_ad->key_values.at( "texture" ), rc ), subtex_name, ""
+								)
+							);
 						}
 					}
 

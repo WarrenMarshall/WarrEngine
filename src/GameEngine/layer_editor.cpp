@@ -9,6 +9,7 @@ void layer_editor::push()
 	engine->input_mgr->add_listener( this );
 
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
+	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 
 	engine->ui_mgr->set_mouse_visible( true );
 }
@@ -31,6 +32,8 @@ void layer_editor::draw()
 
 	game->draw_entities();
 
+	// ----------------------------------------------------------------------------
+
 	MATRIX
 		->push_identity()
 		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0.0f ) )
@@ -40,11 +43,35 @@ void layer_editor::draw()
 
 	MATRIX->pop();
 
+	// ----------------------------------------------------------------------------
+
 	MATRIX
 		->push_identity()
 		->translate( w_vec3( -v_window_hw, -(TILE_SZ * 4.0f), 100.0f ) );
 	RENDER->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) );
 	MATRIX->pop();
+	// ----------------------------------------------------------------------------
+
+	MATRIX
+		->push_identity()
+		->translate( w_vec3( -v_window_hw, -( TILE_SZ * 4.0f ), 100.0f ) );
+
+	RENDER->draw_sliced(
+		engine->get_asset<a_texture>( "tex_ui_master" ),
+		panel_slice_def,
+		w_sz( 100, 60)
+	);
+
+	MATRIX->top()->translate( w_vec3( 50, 30, 0 ) );
+
+	RENDER->draw_sliced(
+		engine->get_asset<a_texture>( "tex_ui_master" ),
+		panel_slice_def,
+		w_sz( 200, 40 )
+	);
+
+	MATRIX->pop();
+
 }
 
 void layer_editor::on_listener_event_received( e_event_id event, void* object )

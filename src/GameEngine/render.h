@@ -69,8 +69,8 @@ struct w_render
 	
 	w_render* draw_string( a_font* font, const std::string& text );
 
-	w_render* draw_sliced( a_texture* tex, const std::string& patch_name, w_rect rc_dst, float z );
-	w_render* draw_sliced( a_subtexture* subtex, const std::string& patch_name, w_rect rc_dst, float z );
+	w_render* draw_sliced( a_texture* tex, const a_9slice_def* slice_def, const w_sz& sz );
+	w_render* draw_sliced( a_subtexture* subtex, const a_9slice_def* slice_def, const w_sz& sz );
 
 	void init_projection();
 	w_render* draw_rectangle( w_rect rc_dst );

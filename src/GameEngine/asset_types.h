@@ -180,7 +180,7 @@ struct a_cursor : i_asset
 
 struct a_9slice_def : i_asset
 {
-	std::array<w_rect, 9> patches;
+	std::array<a_subtexture*, 9> patches;
 
 	bool create_internals( bool is_hot_reloading ) override;
 };

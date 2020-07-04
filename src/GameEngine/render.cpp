@@ -499,74 +499,59 @@ w_render* w_render::draw_line( w_vec3 start, w_vec3 end )
 	return this;
 }
 
-w_render* w_render::draw_sliced( a_texture* tex, const std::string& patch_name, w_rect rc_dst, float z )
+w_render* w_render::draw_sliced( a_texture* tex, const a_9slice_def* slice_def, const w_sz& sz )
 {
-	return draw_sliced( tex->get_subtexture(), patch_name, rc_dst, z );
+	return draw_sliced( tex->get_subtexture(), slice_def, sz );
 }
 
-w_render* w_render::draw_sliced( a_subtexture* subtex, const std::string& patch_name, w_rect rc_dst, float z )
+w_render* w_render::draw_sliced( a_subtexture* subtex, const a_9slice_def* slice_def, const w_sz& sz )
 {
-	// warren
-	assert( false );// not implemented yet
-	
-	a_9slice_def* slice_def = engine->get_asset<a_9slice_def>( patch_name.c_str() );
-	assert( slice_def );
+	w_matrix* mtx = nullptr;
 
-	float xpos;
-	float ypos;
-	float dst_w;
-	float dst_h;
+	a_subtexture* p_00 = slice_def->patches[ (int) e_patch::P_00 ];
+	a_subtexture* p_10 = slice_def->patches[ (int) e_patch::P_10 ];
+	a_subtexture* p_20 = slice_def->patches[ (int) e_patch::P_20 ];
+	a_subtexture* p_01 = slice_def->patches[ (int) e_patch::P_01 ];
+	a_subtexture* p_11 = slice_def->patches[ (int) e_patch::P_11 ];
+	a_subtexture* p_21 = slice_def->patches[ (int) e_patch::P_21 ];
+	a_subtexture* p_02 = slice_def->patches[ (int) e_patch::P_02 ];
+	a_subtexture* p_12 = slice_def->patches[ (int) e_patch::P_12 ];
+	a_subtexture* p_22 = slice_def->patches[ (int) e_patch::P_22 ];
+
+	float inner_w = sz.w - p_00->sz.w - p_20->sz.w;
+	float inner_h = sz.h - p_00->sz.h - p_02->sz.h;
 
 	// top row
 
-	xpos = rc_dst.x;
-	ypos = rc_dst.y;
-
-	dst_w = slice_def->patches[(int)e_patch::P_00].w;
-	dst_h = slice_def->patches[(int)e_patch::P_00].h;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_00], w_rect( xpos, ypos, dst_w, dst_h ), z );
-
-	xpos += dst_w;
-	dst_w = rc_dst.w - slice_def->patches[(int)e_patch::P_00].w - slice_def->patches[(int)e_patch::P_20].w;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_10], w_rect( xpos, ypos, dst_w, dst_h ), z );
-
-	xpos += dst_w;
-	dst_w = slice_def->patches[(int)e_patch::P_20].w;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_20], w_rect( xpos, ypos, dst_w, dst_h ), z );
+	mtx = MATRIX->push();
+	draw( p_00, w_sz( p_00->sz.w, p_00->sz.h ) );
+	mtx->translate( w_vec3( p_00->sz.w, 0.0f, 0.0f ) );
+	draw( p_10, w_sz( inner_w, p_10->sz.h ) );
+	mtx->translate( w_vec3( inner_w, 0.0f, 0.0f ) );
+	draw( p_20, w_sz( p_20->sz.w, p_20->sz.h ) );
+	MATRIX->pop();
 
 	// middle row
 
-	xpos = rc_dst.x;
-	ypos += dst_h;
-
-	dst_w = slice_def->patches[(int)e_patch::P_01].w;
-	dst_h = rc_dst.h - slice_def->patches[(int)e_patch::P_00].h - slice_def->patches[(int)e_patch::P_02].h;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_01], w_rect( xpos, ypos, dst_w, dst_h ), z );
-
-	xpos += dst_w;
-	dst_w = rc_dst.w - slice_def->patches[(int)e_patch::P_01].w - slice_def->patches[(int)e_patch::P_21].w;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_11], w_rect( xpos, ypos, dst_w, dst_h ), z );
-
-	xpos += dst_w;
-	dst_w = slice_def->patches[(int)e_patch::P_21].w;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_21], w_rect( xpos, ypos, dst_w, dst_h ), z );
+	mtx = MATRIX->push();
+	mtx->translate( w_vec3( 0.0f, -inner_h, 0.0f ) );
+	draw( p_01, w_sz( p_01->sz.w, inner_h ) );
+	mtx->translate( w_vec3( p_01->sz.w, 0.0f, 0.0f ) );
+	draw( p_11, w_sz( inner_w, inner_h ) );
+	mtx->translate( w_vec3( inner_w, 0.0f, 0.0f ) );
+	draw( p_21, w_sz( p_21->sz.w, inner_h ) );
+	MATRIX->pop();
 
 	// bottom row
 
-	xpos = rc_dst.x;
-	ypos += dst_h;
-
-	dst_w = slice_def->patches[(int)e_patch::P_02].w;
-	dst_h = slice_def->patches[(int)e_patch::P_02].h;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_02], w_rect( xpos, ypos, dst_w, dst_h ), z );
-
-	xpos += dst_w;
-	dst_w = rc_dst.w - slice_def->patches[(int)e_patch::P_02].w - slice_def->patches[(int)e_patch::P_22].w;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_12], w_rect( xpos, ypos, dst_w, dst_h ), z );
-
-	xpos += dst_w;
-	dst_w = slice_def->patches[(int)e_patch::P_22].w;
-	//draw_sub_texture( texture->get_texture(), slice_def->patches[(int)e_patch::P_22], w_rect( xpos, ypos, dst_w, dst_h ), z );
+	mtx = MATRIX->push();
+	mtx->translate( w_vec3( 0.0f, -(inner_h + p_02->sz.h), 0.0f ) );
+	draw( p_02, w_sz( p_02->sz.w, p_02->sz.h ) );
+	mtx->translate( w_vec3( p_02->sz.w, 0.0f, 0.0f ) );
+	draw( p_12, w_sz( inner_w, p_12->sz.h ) );
+	mtx->translate( w_vec3( inner_w, 0.0f, 0.0f ) );
+	draw( p_22, w_sz( p_22->sz.w, p_22->sz.h ) );
+	MATRIX->pop();
 
 	return this;
 }
