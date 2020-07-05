@@ -16,5 +16,4 @@ struct w_asset_definition_file : i_reloadable
 
 	void clean_up_internals();
 	bool create_internals( bool is_hot_reloading );
-	void assert_key_exists( const std::string& type, const w_asset_definition& asset_def, const std::string& key );
 };

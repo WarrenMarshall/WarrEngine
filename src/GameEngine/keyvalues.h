@@ -2,6 +2,11 @@
 
 struct w_keyvalues
 {
-	std::unordered_map<std::string, std::string> key_values;
-};
+	bool does_key_exist( const std::string& key ) const;
+	std::string find_value( const std::string& key ) const;
+	void add( const std::string& key, const std::string& value );
+	std::map<std::string, std::string>* data();
 
+private:
+	std::map<std::string, std::string> _data;
+};

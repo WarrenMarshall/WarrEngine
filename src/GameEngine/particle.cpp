@@ -18,10 +18,10 @@ void w_particle::update()
 	}
 
 	w_vec2 v = w_vec2::from_angle( a_dir );
-	pos.x += (v.x * velocity_per_sec) * engine->time->delta_s;
-	pos.y += (v.y * velocity_per_sec) * engine->time->delta_s;
+	pos.x += (v.x * velocity_per_sec) * (engine->time->FTS_step_value_ms / 1000.f);
+	pos.y += (v.y * velocity_per_sec) * (engine->time->FTS_step_value_ms / 1000.f );
 
-	spin += spin_per_sec * engine->time->delta_s;
+	spin += spin_per_sec * (engine->time->FTS_step_value_ms / 1000.f);
 }
 
 bool w_particle::is_alive()

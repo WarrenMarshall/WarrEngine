@@ -36,7 +36,7 @@ void layer_editor::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 0.0f ) )
+		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 10.0f ) )
 		->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0.0f ) );
 
 	RENDER->draw( selector_bracket );
@@ -50,28 +50,6 @@ void layer_editor::draw()
 		->translate( w_vec3( -v_window_hw, -(TILE_SZ * 4.0f), 100.0f ) );
 	RENDER->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) );
 	MATRIX->pop();
-	// ----------------------------------------------------------------------------
-
-	MATRIX
-		->push_identity()
-		->translate( w_vec3( -v_window_hw, -( TILE_SZ * 4.0f ), 100.0f ) );
-
-	RENDER->draw_sliced(
-		engine->get_asset<a_texture>( "tex_ui_master" ),
-		panel_slice_def,
-		w_sz( 100, 60)
-	);
-
-	MATRIX->top()->translate( w_vec3( 50, 30, 0 ) );
-
-	RENDER->draw_sliced(
-		engine->get_asset<a_texture>( "tex_ui_master" ),
-		panel_slice_def,
-		w_sz( 200, 40 )
-	);
-
-	MATRIX->pop();
-
 }
 
 void layer_editor::on_listener_event_received( e_event_id event, void* object )

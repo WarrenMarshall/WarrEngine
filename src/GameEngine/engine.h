@@ -37,7 +37,7 @@ struct w_engine : i_listener
 #endif
 	}
 
-	std::unordered_map<std::string, std::string> _symbol_to_value;
+	std::map<std::string, std::string> _symbol_to_value;
 	bool is_symbol_in_map( std::string str );
 	std::string find_val_from_symbol( std::string str );
 	int find_int_from_symbol( std::string str, int def_value = 0 );

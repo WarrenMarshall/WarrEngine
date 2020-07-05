@@ -12,11 +12,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 	for( const auto& iter_ad : asset_definitions )
 	{
-		assert_key_exists( "??", *(iter_ad.get()), "type" );
-		assert_key_exists( "??", *( iter_ad.get() ), "name" );
-
-		type = iter_ad->key_values.at( "type" );
-		name = iter_ad->key_values.at( "name" );
+		type = iter_ad->kv.find_value( "type" );
+		name = iter_ad->kv.find_value( "name" );
 		filename = "";
 
 		switch( pass_num )
@@ -25,7 +22,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			{
 				if( type == "preproc" )
 				{
-					for( auto& iter : iter_ad->key_values )
+					for( auto& iter : *(iter_ad->kv.data()) )
 					{
 						std::string key = iter.first;
 						std::string value = iter.second;
@@ -41,9 +38,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			{
 				if( type == "texture" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "filename" );
-
-					filename = iter_ad->key_values.at( "filename" );
+					filename = iter_ad->kv.find_value( "filename");
 
 					// ------------------------------------------------------------------------
 
@@ -74,9 +69,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "gradient" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "alignment" );
-					assert_key_exists( type, *( iter_ad.get() ), "colors" );
-
 					// ------------------------------------------------------------------------
 
 					auto asset_ptr = engine->get_asset<a_gradient>( name, b_silent( true ) );
@@ -90,11 +82,11 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->key_values.at( "alignment" ) ) );
+					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->kv.find_value( "alignment" ) ) );
 
 					asset_ptr->colors.clear();
 
-					std::string color_list = iter_ad->key_values.at( "colors" );
+					std::string color_list = iter_ad->kv.find_value( "colors");
 
 					w_tokenizer tok( color_list, '/', "n/a" );
 					std::string val;
@@ -126,10 +118,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "font_def" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "filename" );
-					assert_key_exists( type, *( iter_ad.get() ), "texture" );
-
-					filename = iter_ad->key_values.at( "filename" );
+					filename = iter_ad->kv.find_value( "filename");
 
 					// ------------------------------------------------------------------------
 
@@ -143,7 +132,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					// ------------------------------------------------------------------------
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->texture_name = iter_ad->key_values.at( "texture" );
+					asset_ptr->texture_name = iter_ad->kv.find_value( "texture");
 
 					// ------------------------------------------------------------------------
 
@@ -152,8 +141,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "9slice_def" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "texture" );
-
 					// ------------------------------------------------------------------------
 
 					auto asset_ptr = engine->get_asset<a_9slice_def>( name, b_silent( true ) );
@@ -165,9 +152,9 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					std::string tex_name = iter_ad->key_values.at( "texture" );
+					std::string tex_name = iter_ad->kv.find_value( "texture");
 
-					for( const auto& iter : iter_ad->key_values )
+					for( const auto& iter : (*iter_ad->kv.data()) )
 					{
 						std::string key = iter.first;
 						std::string value = iter.second;
@@ -183,7 +170,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 							asset_ptr->patches[ subtexture_idx ] = static_cast<a_subtexture*>(
 								engine->asset_cache->add(
-									std::make_unique<a_subtexture>( iter_ad->key_values.at( "texture" ), rc ), subtex_name, ""
+									std::make_unique<a_subtexture>( tex_name, rc ), subtex_name, ""
 								)
 							);
 						}
@@ -196,9 +183,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "sound" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "filename" );
-
-					filename = iter_ad->key_values.at( "filename" );
+					filename = iter_ad->kv.find_value( "filename");
 
 					// ------------------------------------------------------------------------
 
@@ -220,9 +205,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "music" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "filename" );
-
-					filename = iter_ad->key_values.at( "filename" );
+					filename = iter_ad->kv.find_value( "filename");
 
 					// ------------------------------------------------------------------------
 
@@ -260,7 +243,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					for( const auto& iter : iter_ad->key_values )
+					for( const auto& iter : (*iter_ad->kv.data()) )
 					{
 						std::string key = iter.first;
 						std::string value = iter.second;
@@ -326,10 +309,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "font" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "font_def" );
-
-					// ------------------------------------------------------------------------
-
 					auto asset_ptr = engine->get_asset<a_font>( name, b_silent( true ) );
 
 					if( !asset_ptr )
@@ -339,7 +318,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->key_values.at( "font_def" ) );
+					asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->kv.find_value( "font_def") );
 
 					// ------------------------------------------------------------------------
 
@@ -348,11 +327,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "cursor" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "subtexture" );
-					assert_key_exists( type, *( iter_ad.get() ), "hotspot" );
-
-					// ------------------------------------------------------------------------
-
 					auto asset_ptr = engine->get_asset<a_cursor>( name, b_silent( true ) );
 
 					if( !asset_ptr )
@@ -362,8 +336,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->img = engine->get_asset<a_subtexture>( iter_ad->key_values.at( "subtexture" ) );
-					asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->key_values.at( "hotspot" ) );
+					asset_ptr->img = engine->get_asset<a_subtexture>( iter_ad->kv.find_value( "subtexture") );
+					asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->kv.find_value( "hotspot") );
 
 					// ------------------------------------------------------------------------
 
@@ -372,14 +346,10 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "anim_texture" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "frames" );
-					assert_key_exists( type, *( iter_ad.get() ), "tween" );
-					assert_key_exists( type, *( iter_ad.get() ), "frames_per_sec" );
-
 					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
 
-					int frames_per_sec = w_parser::parse_int_value( iter_ad->key_values.at( "frames_per_sec" ) );
-					e_tween_type tween_type = static_cast<e_tween_type>( w_parser::parse_int_value( iter_ad->key_values.at( "tween" ) ) );
+					int frames_per_sec = w_parser::parse_int_value( iter_ad->kv.find_value( "frames_per_sec") );
+					e_tween_type tween_type = static_cast<e_tween_type>( w_parser::parse_int_value( iter_ad->kv.find_value( "tween") ) );
 
 					if( !asset_ptr )
 					{
@@ -392,7 +362,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					const std::string frames = iter_ad->key_values.at( "frames" );
+					const std::string frames = iter_ad->kv.find_value( "frames");
 
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
@@ -408,18 +378,13 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				}
 				else if( type == "subtexture" )
 				{
-					assert_key_exists( type, *( iter_ad.get() ), "texture" );
-					assert_key_exists( type, *( iter_ad.get() ), "rect" );
-
-					// ------------------------------------------------------------------------
-
 					auto asset_ptr = engine->get_asset<a_subtexture>( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
-						w_rect rc = w_parser::parse_rect_value( iter_ad->key_values.at( "rect" ) );
+						w_rect rc = w_parser::parse_rect_value( iter_ad->kv.find_value( "rect") );
 						asset_ptr = static_cast<a_subtexture*>(
-							engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->key_values.at( "texture" ), rc ), name, "" )
+							engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->kv.find_value( "texture"), rc ), name, "" )
 							);
 					}
 
@@ -432,14 +397,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 			break;
 		}
 	}
-}
-
-void w_asset_definition_file::assert_key_exists( const std::string& type, const w_asset_definition& asset_def, const std::string& key )
-{
-	#if !defined(FINALRELEASE)
-		if( !asset_def.key_values.count( key ) )
-			log_error( "%s : %s : asset definition missing '%s' key/value", __FUNCTION__, type.c_str(), key.c_str() );
-	#endif
 }
 
 void w_asset_definition_file::clean_up_internals()
@@ -497,7 +454,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 				tok.get_next_token();
 				std::string value = tok.get_next_token();
 
-				current_asset_definition->key_values.insert( std::make_pair( key, value ) );
+				current_asset_definition->kv.add( key, value );
 			}
 		}
 

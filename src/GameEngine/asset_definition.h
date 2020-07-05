@@ -18,5 +18,6 @@
 
 struct w_asset_definition
 {
-	std::unordered_map<std::string, std::string> key_values;
+	//std::map<std::string, std::string> key_values;
+	w_keyvalues kv;
 };
