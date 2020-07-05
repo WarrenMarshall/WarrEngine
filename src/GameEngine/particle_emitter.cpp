@@ -28,7 +28,7 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 
 	max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.max / 1000.f ) );
 	// warren
-	max_particles_alive = 1;
+	//max_particles_alive = 1;
 
 	particle_pool = std::make_unique<w_particle_pool>( max_particles_alive );
 }

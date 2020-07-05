@@ -21,9 +21,6 @@ w_particle* w_particle_pool::get_next_particle()
 
 void w_particle_pool::draw()
 {
-	float pct_of_life;
-	w_color color;
-
 	MATRIX->push();
 
 	for( auto& iter : *particles )
@@ -32,17 +29,17 @@ void w_particle_pool::draw()
 		{
 			float interp_life_span = RENDER->calc_interpolated_per_sec_value( iter.life_span, -engine->time->FTS_step_value_ms );
 
-			pct_of_life = 1.0f - ( interp_life_span / iter.life_span_save );
+			float pct_of_life = fabs( 1.0f - ( interp_life_span / iter.life_span_save ) );
 			pct_of_life = w_clamp( pct_of_life, 0.0f, 1.0f );
 
 			// color + alpha
+			w_color color;
 			iter.t_color->get_value( pct_of_life, &color );
 			iter.t_alpha->get_value( pct_of_life, &color.a );
 
 			// scale
 			float scale;
 			iter.t_scale->get_value( pct_of_life, &scale );
-			log_msg( "%1.2f, %1.2f", pct_of_life, scale );
 
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
 

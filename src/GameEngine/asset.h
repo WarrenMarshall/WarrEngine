@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct i_asset : i_reloadable
+struct i_asset
 {
 	std::string name = "";
 	std::unique_ptr<w_render_buffer> render_buffer = nullptr;
