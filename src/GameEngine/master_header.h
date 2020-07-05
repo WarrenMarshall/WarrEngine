@@ -27,6 +27,7 @@
 #include "engine.h"
 
 #include "particle.h"
+#include "particle_spawner.h"
 #include "particle_emitter.h"
 #include "particle_pool.h"
 

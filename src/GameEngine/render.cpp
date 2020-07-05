@@ -581,3 +581,10 @@ void w_render::init_projection()
 
 	engine->shader->unbind();
 }
+
+// call this function to figure out a new value based on the frame interpolation percentage.
+
+float w_render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const
+{
+	return current_value + ( ( step_per_second * w_time::FTS_step_value_s ) * RENDER->frame_interpolate_pct );
+}

@@ -15,7 +15,6 @@ void w_game::update()
 {
 	for( const auto& iter : entities )
 	{
-		//w_entity* e = entities[ x ].get();
 		iter->update();
 	}
 
@@ -30,10 +29,6 @@ void w_game::update()
 		{
 			entities.erase( entities.begin() + x );
 			x--;
-		}
-		else
-		{
-			e->update();
 		}
 	}
 }

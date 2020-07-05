@@ -4,11 +4,12 @@ struct w_time
 {
 	// set to however many times per second you want the logic updated
 	static const float FTS_desired_frames_per_second;
-	// how large a time step in fixed time is - computed automatically
+	// how large a time step in fixed time is
 	static const float FTS_step_value_ms;
+	// how much of 1 second is covered by the fixed time step
+	static const float FTS_step_value_s;
 
 	float delta_ms = 0.0f;
-	float delta_s = 0.0f;
 	uint64_t prev_frame_ms = 0;
 
 	// fixed time step accumulator. this accrues each frame

@@ -83,5 +83,7 @@ struct w_render
 
 	w_render* draw_world_axis();
 	w_render* draw_stats();
+
+	float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 };
 

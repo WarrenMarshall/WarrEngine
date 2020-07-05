@@ -21,7 +21,7 @@ w_particle* w_particle_pool::get_next_particle()
 
 void w_particle_pool::draw()
 {
-	float pct_of_life, angle;
+	float pct_of_life;
 	w_color color;
 
 	MATRIX->push();
@@ -30,23 +30,32 @@ void w_particle_pool::draw()
 	{
 		if( iter.is_alive() )
 		{
-			pct_of_life = fabs( 1.0f - ( iter.life_span / iter.life_span_save ) );
+			float interp_life_span = RENDER->calc_interpolated_per_sec_value( iter.life_span, -engine->time->FTS_step_value_ms );
+
+			pct_of_life = 1.0f - ( interp_life_span / iter.life_span_save );
 			pct_of_life = w_clamp( pct_of_life, 0.0f, 1.0f );
 
+			// color + alpha
 			iter.t_color->get_value( pct_of_life, &color );
+			iter.t_alpha->get_value( pct_of_life, &color.a );
 
-			float wk;
-			iter.t_alpha->get_value( pct_of_life, &wk );
-			color.a = wk;
-
-			angle = iter.spin;
-
+			// scale
 			float scale;
 			iter.t_scale->get_value( pct_of_life, &scale );
+			log_msg( "%1.2f, %1.2f", pct_of_life, scale );
+
+			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
+
+			w_vec2 v = w_vec2::from_angle( iter.a_dir );
+			w_vec3 iterp_pos(
+				RENDER->calc_interpolated_per_sec_value( iter.pos.x, ( v.x * iter.velocity_per_sec ) ),
+				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) ),
+				iter.pos.z
+			);
 
 			MATRIX
 				->push()
-				->add_transform( iter.pos, iter.spin, iter.base_scale * scale );
+				->add_transform( iterp_pos, interp_angle, iter.base_scale * scale );
 
 			RENDER->begin()
 				->push_color( color )
@@ -61,11 +70,6 @@ void w_particle_pool::draw()
 
 void w_particle_pool::update()
 {
-	// update living particles in real time
-	//
-	// individual particles are updated in real time because we want
-	// updates to their positions and rotations to be as smooth as possible.
-
 	num_particles_alive = 0;
 	for( auto& iter : *particles )
 	{

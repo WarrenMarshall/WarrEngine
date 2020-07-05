@@ -2,77 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-// ----------------------------------------------------------------------------
-
-void w_particle_spawner::find_spawn_pos_for_new_particle( w_particle* particle, w_vec3& pos )
-{
-	particle->pos = pos;
-}
-
-// ----------------------------------------------------------------------------
-
-w_particle_spawner_box::w_particle_spawner_box( const w_particle_spawner_box& other )
-{
-	w = other.w;
-	h = other.h;
-}
-
-w_particle_spawner_box::w_particle_spawner_box( int w, int h )
-	: w( w ), h( h )
-{
-}
-
-void w_particle_spawner_box::find_spawn_pos_for_new_particle( w_particle* particle, w_vec3& pos )
-{
-	particle->pos.x = pos.x + w_range( -( w / 2.0f ), ( w / 2.0f ) ).get_value();
-	particle->pos.y = pos.y + w_range( -( h / 2.0f ), ( h / 2.0f ) ).get_value();
-}
-
-void w_particle_spawner_box::parse_from_config_string( std::string value )
-{
-	w_tokenizer tok( value, ',' );
-	tok.get_next_token();	// throw away the type
-	w = w_parser::parse_int_value( tok.get_next_token() );
-	h = w_parser::parse_int_value( tok.get_next_token() );
-}
-
-// ----------------------------------------------------------------------------
-
-w_particle_spawner_circle::w_particle_spawner_circle( const w_particle_spawner_circle& other )
-	: radius( other.radius )
-{
-}
-
-w_particle_spawner_circle::w_particle_spawner_circle( float radius )
-	: radius( radius )
-{
-}
-
-void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* particle, w_vec3& pos )
-{
-	// getting random values between -1 and 1 ... this gives us a position on the outer
-	// edge of the unit circle
-	w_vec3 v( w_random::getf() - 0.5f, w_random::getf() - 0.5f, w_random::getf() - 0.5f );
-	v = w_vec3::normalize( v );
-
-	// then multiply against a random value from 0-radius to place
-	// the particle somewhere within the spawn zone
-	v.x *= radius * w_random::getf();
-	v.y *= radius * w_random::getf();
-	v.z *= radius * w_random::getf();
-
-	particle->pos = pos + v;
-}
-
-void w_particle_spawner_circle::parse_from_config_string( std::string value )
-{
-	w_tokenizer tok( value, ',' );
-	tok.get_next_token();	// throw away the type
-	radius = w_parser::parse_float_value( tok.get_next_token() );
-}
-
-// ----------------------------------------------------------------------------
-
 w_particle_emitter::w_particle_emitter()
 	: i_transform()
 {
@@ -98,6 +27,8 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 	params->add_listener( this );
 
 	max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.max / 1000.f ) );
+	// warren
+	max_particles_alive = 1;
 
 	particle_pool = std::make_unique<w_particle_pool>( max_particles_alive );
 }
@@ -112,20 +43,12 @@ void w_particle_emitter::post_spawn()
 
 void w_particle_emitter::update()
 {
-	// update living particles in fixed time
-	//
-	// new particles are spawned in batches during fixed time because we
-	// want to minimize the cost.
-	//
-	// individual particles don't have a fixed time update call
-	// because they do their internal updates in real time.
-
 	// if we are below the max particle count, spawn more particles
 
 	if( particle_pool->num_particles_alive < max_particles_alive )
 	{
 		// accumulate the time step into our spawn count
-		particles_to_spawn_accum += params->s_max_spawn_per_sec * (w_time::FTS_step_value_ms / 1000.f);
+		particles_to_spawn_accum += params->s_max_spawn_per_sec * w_time::FTS_step_value_s;
 
 		// strip off the fractional part of the accum to get the number to spawn
 		int particles_to_spawn = static_cast<int>( particles_to_spawn_accum );
@@ -223,12 +146,14 @@ void w_particle_emitter::spawn_particle()
 */
 void w_particle_emitter::warm_up()
 {
-	float max_life_span = 25000;// params->r_lifespan.max;
+	// warren - this needs to be change to warm up in fixed time steps
+	/*
+	float max_life_span = params->r_lifespan.max;
 
 	engine->time->delta_ms = 1000;
 	engine->time->delta_s = engine->time->delta_ms / 1000.f;
 	engine->time->fts_accum_ms = 0;
-	
+
 	while( max_life_span > 0 )
 	{
 		engine->time->fts_accum_ms += engine->time->delta_ms;
@@ -245,4 +170,5 @@ void w_particle_emitter::warm_up()
 	}
 
 	engine->time->prev_frame_ms = engine->time->get_ticks();
+	*/
 }

@@ -12,16 +12,17 @@ void w_particle::update()
 {
 	life_span -= engine->time->FTS_step_value_ms;
 
-	if( life_span < 0 )
+	if( !is_alive() )
 	{
 		return;
 	}
 
 	w_vec2 v = w_vec2::from_angle( a_dir );
-	pos.x += (v.x * velocity_per_sec) * (engine->time->FTS_step_value_ms / 1000.f);
-	pos.y += (v.y * velocity_per_sec) * (engine->time->FTS_step_value_ms / 1000.f );
+	pos.x += v.x * ( velocity_per_sec * w_time::FTS_step_value_s );
+	pos.y += v.y * ( velocity_per_sec * w_time::FTS_step_value_s );
 
-	spin += spin_per_sec * (engine->time->FTS_step_value_ms / 1000.f);
+	spin += spin_per_sec * w_time::FTS_step_value_s;
+	spin = fmod( spin, 360.f );
 }
 
 bool w_particle::is_alive()

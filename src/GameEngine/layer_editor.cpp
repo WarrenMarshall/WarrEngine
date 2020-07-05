@@ -64,6 +64,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 			{
 				case e_input_id::mouse:
 				{
+					// todo : these magic numbers should go into some sort of rect or consts somewhere
 					if( engine->input_mgr->mouse_vwindow_pos.y > 32 && engine->input_mgr->mouse_vwindow_pos.y < 32 + (TILE_SZ * 9) )
 					{
 						tile_from_screen_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );

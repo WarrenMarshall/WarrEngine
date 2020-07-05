@@ -15,8 +15,9 @@ std::string w_keyvalues::find_value( const std::string& key ) const
 	}
 	catch( const std::out_of_range& oor )
 	{
-		log_error( "%s : key not found : '%s'", __FUNCTION__, key.c_str() );
+		log_error( "%s : %s : '%s'", __FUNCTION__, oor.what(), key.c_str() );
 		assert( false );
+		return nullptr;
 	}
 }
 
