@@ -64,8 +64,10 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 			{
 				case e_input_id::mouse:
 				{
-					// warren - check if mouse is inside of the tile area - if not, don't let it change the hover_tile
-					tile_from_screen_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
+					if( engine->input_mgr->mouse_vwindow_pos.y > 32 && engine->input_mgr->mouse_vwindow_pos.y < 32 + (TILE_SZ * 9) )
+					{
+						tile_from_screen_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
+					}
 				}
 				break;
 			}

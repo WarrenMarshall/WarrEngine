@@ -10,17 +10,23 @@
 }
 
 {
+	"type" "texture"
+	"name" "tex_uipack_sheet"
+	"filename" "images/uipack_rpg_sheet.png"
+}
+
+{
 	"type" "subtexture"
 	"name" "img_mouse_cursor"
-	"texture" "tex_ui_master"
-	"rect" "0,24,16,16"
+	"texture" "tex_uipack_sheet"
+	"rect" "168,76,16,18"
 }
 
 {
 	"type" "cursor"
 	"name" "ui_cursor"
 	"subtexture" "img_mouse_cursor"
-	"hotspot" "1, 14"	# from bottom left of image
+	"hotspot" "1, 17"	# from bottom left of image
 }
 
 {
