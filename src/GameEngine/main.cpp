@@ -184,7 +184,8 @@ int main( int argc, char* argv[] )
 			/*
 				event processing
 			*/
-			glfwPollEvents();
+			//glfwPollEvents();
+			glfwWaitEventsTimeout( 0.001 );
 		}
 
 		// Clean up
