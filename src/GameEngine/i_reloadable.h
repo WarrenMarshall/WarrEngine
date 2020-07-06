@@ -9,9 +9,9 @@ struct i_reloadable
 	std::string original_filename = "";
 
 	// the "last modified" date/time for this resources file on disk
-	long long last_modified = 0;
+	std::filesystem::file_time_type last_modified;
 
-	long long get_last_modified_from_disk();
+	std::filesystem::file_time_type get_last_modified_from_disk();
 	bool needs_reloading();
 
 	virtual void clean_up_internals() = 0;

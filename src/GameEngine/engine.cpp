@@ -226,20 +226,27 @@ void w_engine::update()
 		asset.second->update();
 	}
 
-	if( g_allow_hot_reload && hot_reloadables.size() )
-	{
-		hot_reloadables_idx = ( hot_reloadables_idx + 1 ) % static_cast<int>( hot_reloadables.size() );
-		i_reloadable* rl = hot_reloadables[hot_reloadables_idx];
+	render->show_stats = input_mgr->is_button_down( e_input_id::keyboard_a);
+}
 
-		if( rl->needs_reloading() )
-		{
-			log_msg( "%s : Hot reloading [%s]", __FUNCTION__, rl->original_filename.c_str() );
-			rl->clean_up_internals();
-			rl->create_internals( b_is_hot_reloading( true ) );
-		}
+// each time this is called, it checks the reload status for a single i_reloadable
+
+void w_engine::update_hot_reload()
+{
+	if( !g_allow_hot_reload || hot_reloadables.size() == 0 )
+	{
+		return;
 	}
 
-	render->show_stats = input_mgr->is_button_down( e_input_id::keyboard_a);
+	hot_reloadables_idx = ( hot_reloadables_idx + 1 ) % static_cast<int>( hot_reloadables.size() );
+	i_reloadable* rl = hot_reloadables[ hot_reloadables_idx ];
+
+	if( rl->needs_reloading() )
+	{
+		log_msg( "%s : Hot reloading [%s]", __FUNCTION__, rl->original_filename.c_str() );
+		rl->clean_up_internals();
+		rl->create_internals( b_is_hot_reloading( true ) );
+	}
 }
 
 void w_engine::toggle_pause()

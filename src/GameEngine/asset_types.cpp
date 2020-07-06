@@ -37,7 +37,9 @@ bool a_texture::create_internals( bool is_hot_reloading )
 
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
+	{
 		last_modified = get_last_modified_from_disk();
+	}
 
 	// create our render buffer
 	render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
@@ -273,7 +275,9 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 	if( g_allow_hot_reload )
 	{
 		if( is_hot_reloading )
+		{
 			send_event_to_listeners( e_event_id::emitter_params_hot_reload, this );
+		}
 
 		// save the last time modified for hot reloading
 		last_modified = get_last_modified_from_disk();

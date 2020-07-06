@@ -24,6 +24,7 @@ struct w_engine : i_listener
 	void deinit();
 	void draw();
 	void update();
+	void update_hot_reload();
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files();

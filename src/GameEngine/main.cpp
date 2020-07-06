@@ -157,13 +157,14 @@ int main( int argc, char* argv[] )
 
 			while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
 			{
-				//log_msg( "MAIN UPDATE : %1.2f fts accum ms", engine->time->fts_accum_ms );
 				engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
 
 				engine->update();
 				game->update();
 
 			}
+
+			engine->update_hot_reload();
 
 			/*
 				draw the frame
