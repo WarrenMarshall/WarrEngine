@@ -58,14 +58,44 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals( is_hot_reloading );
 
-					// Every texture that gets loaded gets a full size
-					// a_subtexture created for it automatically.
+					// if the "subtexture" key exists, create a subtexture for this texture
+					// that represents it's entirety.
 
-					auto subtex = static_cast<a_subtexture*>(
-						engine->asset_cache->add( std::make_unique<a_subtexture>( asset_ptr->name ),
-												  "auto_subt_" + asset_ptr->name, "" )
-						);
-					asset_ptr->subtex = subtex;
+					if( iter_ad->kv.does_key_exist( "subtexture" ) )
+					{
+						auto subtex = static_cast<a_subtexture*>(
+							engine->asset_cache->add( std::make_unique<a_subtexture>( name ),
+													  iter_ad->kv.find_value( "subtexture" ), "" )
+							);
+
+						// #todo - is this subtex pointer inside a_texture still useful?
+						asset_ptr->subtex = subtex;
+					}
+
+					// the "subtextures" k/v is a convenient way to specify a set
+					// of subtextures belonging to a texture. an easy way to break
+					// down atlas textures or sprite sheets into subtextures.
+
+					if( iter_ad->kv.does_key_exist( "subtextures" ) )
+					{
+						std::string subtex_list = iter_ad->kv.find_value( "subtextures" );
+
+						w_tokenizer tok( subtex_list, ',' );
+
+						while( !tok.is_eos() )
+						{
+							std::string subtex_name = tok.get_next_token();
+
+							float x = w_parser::float_from_str( tok.get_next_token() );
+							float y = w_parser::float_from_str( tok.get_next_token() );
+							float w = w_parser::float_from_str( tok.get_next_token() );
+							float h = w_parser::float_from_str( tok.get_next_token() );
+
+							w_rect rc( x, y, w, h );
+
+							engine->asset_cache->add( std::make_unique<a_subtexture>( name, rc ), subtex_name, "" );
+						}
+					}
 				}
 				else if( type == "gradient" )
 				{
@@ -163,8 +193,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 						if( key.substr( 0, 2 ) == "p_" )
 						{
-							subtexture_idx = w_parser::parse_int_value( key );
-							w_rect rc = w_parser::parse_rect_value( value );
+							subtexture_idx = w_parser::int_from_str( key );
+							w_rect rc = w_parser::rect_from_str( value );
 
 							std::string subtex_name = name + "_" + key;
 
@@ -277,27 +307,27 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 							asset_ptr->particle_spawner->parse_from_config_string( value );
 						}
 						else if( key == "a_dir" )
-							asset_ptr->a_dir = w_parser::parse_float_value( value );
+							asset_ptr->a_dir = w_parser::float_from_str( value );
 						else if( key == "r_dir_var" )
-							asset_ptr->r_dir_var = w_parser::parse_range_value( value );
+							asset_ptr->r_dir_var = w_parser::range_from_str( value );
 						else if( key == "r_scale_spawn" )
-							asset_ptr->r_scale_spawn = w_parser::parse_range_value( value );
+							asset_ptr->r_scale_spawn = w_parser::range_from_str( value );
 						else if( key == "t_scale" )
-							asset_ptr->t_scale = w_parser::parse_timeline_value( e_timeline_type::float_type, value );
+							asset_ptr->t_scale = w_parser::timeline_from_str( e_timeline_type::float_type, value );
 						else if( key == "s_max_spawn_per_sec" )
-							asset_ptr->s_max_spawn_per_sec = w_parser::parse_float_value( value );
+							asset_ptr->s_max_spawn_per_sec = w_parser::float_from_str( value );
 						else if( key == "r_lifespan" )
-							asset_ptr->r_lifespan = w_parser::parse_range_value( value );
+							asset_ptr->r_lifespan = w_parser::range_from_str( value );
 						else if( key == "r_velocity_spawn" )
-							asset_ptr->r_velocity_spawn = w_parser::parse_range_value( value );
+							asset_ptr->r_velocity_spawn = w_parser::range_from_str( value );
 						else if( key == "t_color" )
-							asset_ptr->t_color = w_parser::parse_timeline_value( e_timeline_type::color_type, value );
+							asset_ptr->t_color = w_parser::timeline_from_str( e_timeline_type::color_type, value );
 						else if( key == "r_spin_spawn" )
-							asset_ptr->r_spin_spawn = w_parser::parse_range_value( value );
+							asset_ptr->r_spin_spawn = w_parser::range_from_str( value );
 						else if( key == "r_spin_per_sec" )
-							asset_ptr->r_spin_per_sec = w_parser::parse_range_value( value );
+							asset_ptr->r_spin_per_sec = w_parser::range_from_str( value );
 						else if( key == "t_alpha" )
-							asset_ptr->t_alpha = w_parser::parse_timeline_value( e_timeline_type::float_type, value );
+							asset_ptr->t_alpha = w_parser::timeline_from_str( e_timeline_type::float_type, value );
 						else
 							log_msg( "%s : unknown key read from config block : [%s -> \"%s\"]", __FUNCTION__, name.c_str(), key.c_str() );
 					}
@@ -337,7 +367,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					// ------------------------------------------------------------------------
 
 					asset_ptr->img = engine->get_asset<a_subtexture>( iter_ad->kv.find_value( "subtexture") );
-					asset_ptr->hotspot_offset = w_parser::parse_vec2_value( iter_ad->kv.find_value( "hotspot") );
+					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->kv.find_value( "hotspot") );
 
 					// ------------------------------------------------------------------------
 
@@ -348,8 +378,8 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 				{
 					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
 
-					int frames_per_sec = w_parser::parse_int_value( iter_ad->kv.find_value( "frames_per_sec") );
-					e_tween_type tween_type = static_cast<e_tween_type>( w_parser::parse_int_value( iter_ad->kv.find_value( "tween") ) );
+					int frames_per_sec = w_parser::int_from_str( iter_ad->kv.find_value( "frames_per_sec") );
+					e_tween_type tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->kv.find_value( "tween") ) );
 
 					if( !asset_ptr )
 					{
@@ -382,7 +412,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					if( !asset_ptr )
 					{
-						w_rect rc = w_parser::parse_rect_value( iter_ad->kv.find_value( "rect") );
+						w_rect rc = w_parser::rect_from_str( iter_ad->kv.find_value( "rect") );
 						asset_ptr = static_cast<a_subtexture*>(
 							engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->kv.find_value( "texture"), rc ), name, "" )
 							);
@@ -392,6 +422,9 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals( is_hot_reloading );
+				}
+				else if( type == "subtexture_list" )
+				{
 				}
 			}
 			break;

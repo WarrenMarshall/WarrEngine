@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-std::string w_parser::parse_key_value( const std::string& src_string, const std::string& key )
+std::string w_parser::key_from_str( const std::string& src_string, const std::string& key )
 {
 	size_t idx = src_string.find( key );
 
@@ -26,7 +26,7 @@ std::string w_parser::parse_key_value( const std::string& src_string, const std:
 	return w_stringutil::trim( value );
 }
 
-int w_parser::parse_int_value( const std::string& str )
+int w_parser::int_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -41,7 +41,7 @@ int w_parser::parse_int_value( const std::string& str )
 	return val;
 }
 
-bool w_parser::parse_bool_value( const std::string& str )
+bool w_parser::bool_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -58,7 +58,7 @@ bool w_parser::parse_bool_value( const std::string& str )
 	return false;
 }
 
-float w_parser::parse_float_value( const std::string& str )
+float w_parser::float_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -73,7 +73,7 @@ float w_parser::parse_float_value( const std::string& str )
 	return val;
 }
 	
-w_color w_parser::parse_color_value( const std::string& str )
+w_color w_parser::color_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -87,15 +87,15 @@ w_color w_parser::parse_color_value( const std::string& str )
 	w_tokenizer tok( str, '/', "1.0f" );
 
 	w_color color;
-	color.r = parse_float_value( tok.get_next_token() );
-	color.g = parse_float_value( tok.get_next_token() );
-	color.b = parse_float_value( tok.get_next_token() );
-	color.a = parse_float_value( tok.get_next_token() );
+	color.r = w_parser::float_from_str( tok.get_next_token() );
+	color.g = w_parser::float_from_str( tok.get_next_token() );
+	color.b = w_parser::float_from_str( tok.get_next_token() );
+	color.a = w_parser::float_from_str( tok.get_next_token() );
 
 	return color;
 }
 
-w_range w_parser::parse_range_value( const std::string& str )
+w_range w_parser::range_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -109,13 +109,13 @@ w_range w_parser::parse_range_value( const std::string& str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_range range;
-	range.min = parse_float_value( tok.get_next_token() );
-	range.max = parse_float_value( tok.get_next_token() );
+	range.min = w_parser::float_from_str( tok.get_next_token() );
+	range.max = w_parser::float_from_str( tok.get_next_token() );
 
 	return range;
 }
 
-w_rect w_parser::parse_rect_value( const std::string& str )
+w_rect w_parser::rect_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -129,15 +129,15 @@ w_rect w_parser::parse_rect_value( const std::string& str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_rect rect;
-	rect.x = parse_float_value( tok.get_next_token() );
-	rect.y = parse_float_value( tok.get_next_token() );
-	rect.w = parse_float_value( tok.get_next_token() );
-	rect.h = parse_float_value( tok.get_next_token() );
+	rect.x = w_parser::float_from_str( tok.get_next_token() );
+	rect.y = w_parser::float_from_str( tok.get_next_token() );
+	rect.w = w_parser::float_from_str( tok.get_next_token() );
+	rect.h = w_parser::float_from_str( tok.get_next_token() );
 
 	return rect;
 }
 
-w_vec2 w_parser::parse_vec2_value( const std::string& str )
+w_vec2 w_parser::vec2_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -151,13 +151,13 @@ w_vec2 w_parser::parse_vec2_value( const std::string& str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_vec2 vec2;
-	vec2.x = parse_float_value( tok.get_next_token() );
-	vec2.y = parse_float_value( tok.get_next_token() );
+	vec2.x = w_parser::float_from_str( tok.get_next_token() );
+	vec2.y = w_parser::float_from_str( tok.get_next_token() );
 
 	return vec2;
 }
 
-w_vec3 w_parser::parse_vec3_value( const std::string& str )
+w_vec3 w_parser::vec3_from_str( const std::string& str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -171,14 +171,14 @@ w_vec3 w_parser::parse_vec3_value( const std::string& str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_vec3 vec3;
-	vec3.x = parse_float_value( tok.get_next_token() );
-	vec3.y = parse_float_value( tok.get_next_token() );
-	vec3.z = parse_float_value( tok.get_next_token() );
+	vec3.x = w_parser::float_from_str( tok.get_next_token() );
+	vec3.y = w_parser::float_from_str( tok.get_next_token() );
+	vec3.z = w_parser::float_from_str( tok.get_next_token() );
 
 	return vec3;
 }
 
-std::unique_ptr<w_timeline> w_parser::parse_timeline_value( e_timeline_type type, const std::string& str )
+std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, const std::string& str )
 {
 	w_tokenizer tok( str, ',' );
 
@@ -194,19 +194,19 @@ std::unique_ptr<w_timeline> w_parser::parse_timeline_value( e_timeline_type type
 	{
 		w_keyframe kf;
 
-		kf.pct_marker = w_parser::parse_float_value( tok.get_next_token() );
+		kf.pct_marker = w_parser::float_from_str( tok.get_next_token() );
 
 		switch( type )
 		{
 			case e_timeline_type::float_type:
 			{
-				kf.float_value = w_parser::parse_float_value( tok.get_next_token() );
+				kf.float_value = w_parser::float_from_str( tok.get_next_token() );
 			}
 			break;
 
 			case e_timeline_type::color_type:
 			{
-				kf.color_value = w_parser::parse_color_value( tok.get_next_token() );
+				kf.color_value = w_parser::color_from_str( tok.get_next_token() );
 			}
 			break;
 

@@ -16,7 +16,12 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string&
 	asset->original_filename = filename;
 
 	if( g_allow_hot_reload )
-		engine->hot_reloadables.emplace_back( static_cast<i_reloadable*>( asset.get() ) );
+	{
+		if( asset->original_filename.length() > 0 )
+		{
+			engine->hot_reloadables.emplace_back( static_cast<i_reloadable*>( asset.get() ) );
+		}
+	}
 
 	// save it into the cache
 	//log_msg( "%s : '%s' cached", __FUNCTION__, name.c_str() );

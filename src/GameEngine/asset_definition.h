@@ -16,8 +16,8 @@
 //		"key" "value"
 // }
 
+// #todo - does this class need to exist?
 struct w_asset_definition
 {
-	//std::map<std::string, std::string> key_values;
 	w_keyvalues kv;
 };

@@ -307,23 +307,23 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 	{
 		if( line.substr( 0, 7 ) == "common " )
 		{
-			texw = w_parser::parse_float_value( w_parser::parse_key_value( line, "scaleW=" ) );
-			texh = w_parser::parse_float_value( w_parser::parse_key_value( line, "scaleH=" ) );
+			texw = w_parser::float_from_str( w_parser::key_from_str( line, "scaleW=" ) );
+			texh = w_parser::float_from_str( w_parser::key_from_str( line, "scaleH=" ) );
 		}
 		else if( line.substr( 0, 5 ) == "char " )
 		{
 			// parse a char definition
-			int char_id = w_parser::parse_int_value( w_parser::parse_key_value( line, "id=" ) );
+			int char_id = w_parser::int_from_str( w_parser::key_from_str( line, "id=" ) );
 			w_font_char* fch = &( char_map[ char_id ] );
 
-			x = w_parser::parse_float_value( w_parser::parse_key_value( line, "x=" ) );
-			y = w_parser::parse_float_value( w_parser::parse_key_value( line, "y=" ) );
-			w = w_parser::parse_float_value( w_parser::parse_key_value( line, "width=" ) );
-			h = w_parser::parse_float_value( w_parser::parse_key_value( line, "height=" ) );
+			x = w_parser::float_from_str( w_parser::key_from_str( line, "x=" ) );
+			y = w_parser::float_from_str( w_parser::key_from_str( line, "y=" ) );
+			w = w_parser::float_from_str( w_parser::key_from_str( line, "width=" ) );
+			h = w_parser::float_from_str( w_parser::key_from_str( line, "height=" ) );
 
-			fch->xoffset = w_parser::parse_float_value( w_parser::parse_key_value( line, "xoffset=" ) );
-			fch->yoffset = w_parser::parse_float_value( w_parser::parse_key_value( line, "yoffset=" ) );
-			fch->xadvance = w_parser::parse_float_value( w_parser::parse_key_value( line, "xadvance=" ) );
+			fch->xoffset = w_parser::float_from_str( w_parser::key_from_str( line, "xoffset=" ) );
+			fch->yoffset = w_parser::float_from_str( w_parser::key_from_str( line, "yoffset=" ) );
+			fch->xadvance = w_parser::float_from_str( w_parser::key_from_str( line, "xadvance=" ) );
 
 			fch->w = w;
 			fch->h = h;

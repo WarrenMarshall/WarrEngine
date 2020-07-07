@@ -18,9 +18,9 @@ g_custom_game::g_custom_game()
 		{
 			w_tokenizer line_tok( line, ',', "" );
 
-			int tile_id = w_parser::parse_int_value( line_tok.get_next_token() );
+			int tile_id = w_parser::int_from_str( line_tok.get_next_token() );
 			std::string tile_name = line_tok.get_next_token();
-			bool tile_show_in_browser = w_parser::parse_bool_value( line_tok.get_next_token() );
+			bool tile_show_in_browser = w_parser::bool_from_str( line_tok.get_next_token() );
 
 			tile_masters[ tile_id ].id = tile_id;
 			tile_masters[ tile_id ].show_in_browser = tile_show_in_browser;
@@ -29,8 +29,6 @@ g_custom_game::g_custom_game()
 
 		line = tok.get_next_token();
 	}
-
-	font = engine->get_asset<a_font>( "medieval_font" );
 
 	// populate the rooms with default tile values
 

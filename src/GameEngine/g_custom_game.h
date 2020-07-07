@@ -24,7 +24,6 @@ struct w_world_room
 
 struct g_custom_game : w_game
 {
-	a_font* font = nullptr;
 	e_player* player = nullptr;
 	std::string viewport_caption = "";
 

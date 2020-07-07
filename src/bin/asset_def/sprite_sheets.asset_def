@@ -3,43 +3,13 @@
 	"type" "texture"
 	"name" "orange_germ_sheet"
 	"filename" "images/germ_sheet.png"
-}
-
-{
-	"type" "subtexture"
-	"name" "germ_orange_0"
-	"texture" "orange_germ_sheet"
-	"rect" "0,0,64,64"
-}
-{
-	"type" "subtexture"
-	"name" "germ_orange_1"
-	"texture" "orange_germ_sheet"
-	"rect" "64,0,64,64"
-}
-{
-	"type" "subtexture"
-	"name" "germ_orange_2"
-	"texture" "orange_germ_sheet"
-	"rect" "128,0,64,64"
-}
-{
-	"type" "subtexture"
-	"name" "germ_orange_3"
-	"texture" "orange_germ_sheet"
-	"rect" "192,0,64,64"
-}
-{
-	"type" "subtexture"
-	"name" "germ_orange_4"
-	"texture" "orange_germ_sheet"
-	"rect" "256,0,64,64"
-}
-{
-	"type" "subtexture"
-	"name" "germ_orange_5"
-	"texture" "orange_germ_sheet"
-	"rect" "320,0,64,64"
+	"subtextures" "\
+		germ_orange_0, 0, 0, 64, 64,\
+		germ_orange_1, 64, 0, 64, 64,\
+		germ_orange_2, 128, 0, 64, 64,\
+		germ_orange_3, 192, 0, 64, 64,\
+		germ_orange_4, 256, 0, 64, 64,\
+		germ_orange_5, 320, 0, 64, 64"
 }
 
 {

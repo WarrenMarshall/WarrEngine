@@ -10,6 +10,7 @@ void layer_editor::push()
 
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
+	germ = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
 
 	engine->ui_mgr->set_mouse_visible( true );
 }
@@ -49,6 +50,11 @@ void layer_editor::draw()
 		->push_identity()
 		->translate( w_vec3( -v_window_hw, -(TILE_SZ * 4.0f), 100.0f ) );
 	RENDER->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) );
+	MATRIX->pop();
+
+	MATRIX->push_identity()
+		->translate( { 0,0,100 } );
+	RENDER->draw_sprite( germ );
 	MATRIX->pop();
 }
 

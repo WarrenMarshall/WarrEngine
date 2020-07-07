@@ -5,20 +5,16 @@
 
 {
 	"type" "texture"
-	"name" "fire_particle"
+	"name" "tex_fire_particle"
+	"subtexture" "fire_particle"
 	"filename" "images/fire_particle.png"
-}
-{
-	"type" "texture"
-	"name" "smoke_particle"
-	"filename" "images/smoke_particle.png"
 }
 
 {
-	"type" "subtexture"
-	"name" "selector_bracket"
-	"texture" "tex_ui_master"
-	"rect" "0,40,16,16"
+	"type" "texture"
+	"name" "tex_smoke_particle"
+	"subtexture" "smoke_particle"
+	"filename" "images/smoke_particle.png"
 }
 
 # ---------------------------------------------------------

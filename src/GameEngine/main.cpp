@@ -118,11 +118,11 @@ int main( int argc, char* argv[] )
 		// initialize random internals
 		{
 			// used for wireframe drawing
-			engine->white_wire = engine->get_asset<a_texture>( "engine_white_wire" )->get_subtexture();
+			engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
 			engine->white_wire->tex->render_buffer->prim_type = GL_LINES;
 
 			// used for solid drawing
-			engine->white_solid = engine->get_asset<a_texture>( "engine_white_solid" )->get_subtexture();
+			engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
 
 			// #configfile - needs to be replaced with some sort of config file setting
 			engine->ui_mgr->init( "ui_cursor" );
@@ -184,7 +184,7 @@ int main( int argc, char* argv[] )
 			/*
 				event processing
 			*/
-			//glfwPollEvents();
+			// #todo - this magic value is arbitrary. is this ok or do we need to do something fancier?
 			glfwWaitEventsTimeout( 0.001 );
 		}
 

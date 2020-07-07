@@ -5,7 +5,7 @@
 {
 	"type" "emitter_params"
 	"name" "emitter_debug"
-	"texture_name" "fire_particle"
+	"texture_name" "tex_fire_particle"
 	"spawner_type" "box,v_window_w,8"
 
 	"s_max_spawn_per_sec" "500"
