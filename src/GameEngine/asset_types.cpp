@@ -45,7 +45,7 @@ bool a_texture::create_internals( bool is_hot_reloading )
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
 	{
-		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	// create our render buffer
@@ -286,7 +286,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 		}
 
 		// save the last time modified for hot reloading
-		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	return true;
@@ -344,7 +344,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 
 	return true;
 }
@@ -420,7 +420,7 @@ bool a_sound::create_internals( bool is_hot_reloading )
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
 	{
-		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	channel = BASS_SampleGetChannel( snd, false );
@@ -478,7 +478,7 @@ bool a_music::create_internals( bool is_hot_reloading )
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload && is_hot_reloading )
 	{
-		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	channel = BASS_SampleGetChannel( mus, false );

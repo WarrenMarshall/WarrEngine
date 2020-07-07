@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-std::filesystem::file_time_type i_reloadable::get_last_write_time_from_disk()
+std::filesystem::file_time_type i_reloadable::retrieve_last_write_time_from_disk()
 {
 	std::filesystem::file_time_type blank;
 
@@ -27,8 +27,11 @@ bool i_reloadable::needs_reloading()
 	if( was_loaded_from_zip_file )
 		return false;
 
+	std::scoped_lock lock( mutex_last_write_time );
 	if( last_write_time_on_disk == last_write_time )
+	{
 		return false;
+	}
 
 	return true;
 }

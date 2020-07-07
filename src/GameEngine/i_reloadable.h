@@ -9,10 +9,11 @@ struct i_reloadable
 	std::string original_filename = "";
 
 	// the "last modified" date/time for this resources file on disk
+	std::mutex mutex_last_write_time;
 	std::filesystem::file_time_type last_write_time_on_disk;
 	std::filesystem::file_time_type last_write_time;
 
-	std::filesystem::file_time_type get_last_write_time_from_disk();
+	std::filesystem::file_time_type retrieve_last_write_time_from_disk();
 	bool needs_reloading();
 
 	virtual void clean_up_internals() = 0;

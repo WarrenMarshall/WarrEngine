@@ -144,6 +144,7 @@ int main( int argc, char* argv[] )
 			*/
 
 			engine->time->update();
+			engine->hot_reload_timer->update();
 
 			/*
 				input
@@ -164,7 +165,14 @@ int main( int argc, char* argv[] )
 
 			}
 
-			engine->update_hot_reload();
+			/*
+				at regular intervals, check if any assets need to be reloaded
+			*/
+
+			if( engine->hot_reload_timer->get_elapsed_count() )
+			{
+				engine->update_hot_reload();
+			}
 
 			/*
 				draw the frame

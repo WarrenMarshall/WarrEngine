@@ -4,13 +4,25 @@
 
 void tw_refresh_reloadables()
 {
+	log_msg( "Worker thread starting : %s", __FUNCTION__ );
+
+#if !defined( FINALRELEASE )
 	while( !engine->exit_thread_sample )
 	{
-		// do work here
-		log_msg( "In the thread!" );
+		for( auto& iter : engine->hot_reloadables )
+		{
+			{
+				//log_msg( "%s", iter->original_filename.c_str() );
+				std::scoped_lock lock( iter->mutex_last_write_time );
+				iter->last_write_time_on_disk = iter->retrieve_last_write_time_from_disk();
+			}
 
-		std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+			std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
+		}
 	}
+#endif
+
+	log_msg( "Worker thread exiting : %s", __FUNCTION__ );
 }
 
 /*
@@ -142,12 +154,12 @@ void w_engine::init()
 	w_random::seed();
 	fs->init();
 
+	hot_reload_timer = std::make_unique<w_timer>( 1000 );
+
 	if( g_allow_hot_reload )
 	{
 		hot_reloadables.clear();
-		hot_reloadables_idx = 0;
 	}
-	t_refresh_reloadables = std::thread( tw_refresh_reloadables );
 }
 
 void w_engine::deinit()
@@ -232,20 +244,24 @@ void w_engine::update()
 
 void w_engine::update_hot_reload()
 {
-	if( !g_allow_hot_reload || hot_reloadables.size() == 0 )
+	if( !g_allow_hot_reload )
 	{
 		return;
 	}
 
-	hot_reloadables_idx = ( hot_reloadables_idx + 1 ) % static_cast<int>( hot_reloadables.size() );
-	i_reloadable* rl = hot_reloadables[ hot_reloadables_idx ];
-
-	if( rl->needs_reloading() )
+	for( auto& iter : hot_reloadables )
 	{
-		log_msg( "%s : Hot reloading [%s]", __FUNCTION__, rl->original_filename.c_str() );
-		rl->clean_up_internals();
-		rl->create_internals( b_is_hot_reloading( true ) );
+		if( iter->needs_reloading() )
+		{
+			std::scoped_lock lock( iter->mutex_last_write_time );
+
+			log_msg( "%s : Hot reloading [%s]", __FUNCTION__, iter->original_filename.c_str() );
+			iter->clean_up_internals();
+			iter->create_internals( b_is_hot_reloading( true ) );
+			iter->last_write_time = iter->last_write_time_on_disk;
+		}
 	}
+
 }
 
 void w_engine::toggle_pause()
@@ -288,6 +304,9 @@ void w_engine::precache_asset_resources()
 	}
 
 	log_msg( "%s : %d assets precached", __FUNCTION__, engine->asset_cache->cache.size() );
+
+	// start the thread that monitors the reloadables for changes
+	t_refresh_reloadables = std::thread( tw_refresh_reloadables );
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )

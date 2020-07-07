@@ -10,7 +10,7 @@ struct w_engine : i_listener
 {
 	// these are only used if "+hot_reload" is passed into the command line
 	std::vector<i_reloadable*> hot_reloadables;
-	int hot_reloadables_idx = 0;
+	std::unique_ptr<w_timer> hot_reload_timer = nullptr;
 
 	a_subtexture* white_wire = nullptr;
 	a_subtexture* white_solid = nullptr;

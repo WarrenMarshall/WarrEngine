@@ -8,7 +8,7 @@
 	"name" "tex_ui_master"
 	"filename" "images/ui_master.png"
 	"subtextures" "\
-		selector_bracket,0,40,16,16
+		selector_bracket,0,40,16,16"
 }
 
 {
