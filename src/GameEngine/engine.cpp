@@ -2,17 +2,16 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-/*
-void worker_sample()
+void tw_refresh_reloadables()
 {
 	while( !engine->exit_thread_sample )
 	{
 		// do work here
+		log_msg( "In the thread!" );
 
-		std::this_thread::sleep_for( 1s );
+		std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
 	}
 }
-*/
 
 /*
 	checks if 'symbol' exists in the map
@@ -148,14 +147,14 @@ void w_engine::init()
 		hot_reloadables.clear();
 		hot_reloadables_idx = 0;
 	}
-	//thread_sample = std::thread( worker_sample );
+	t_refresh_reloadables = std::thread( tw_refresh_reloadables );
 }
 
 void w_engine::deinit()
 {
 	// wait for threads to finish
-	//exit_thread_sample = true;
-	//thread_sample.join();
+	exit_thread_sample = true;
+	t_refresh_reloadables.join();
 
 	input_mgr->remove_listener( this );
 }

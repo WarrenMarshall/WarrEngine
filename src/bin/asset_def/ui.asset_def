@@ -8,8 +8,7 @@
 	"name" "tex_ui_master"
 	"filename" "images/ui_master.png"
 	"subtextures" "\
-		selector_bracket,0,40,16,16,\
-		img_mouse_cursor,168,76,16,18"
+		selector_bracket,0,40,16,16
 }
 
 {
@@ -17,6 +16,8 @@
 	"name" "tex_uipack_sheet"
 	"subtexture" "uipack_sheet"
 	"filename" "images/uipack_rpg_sheet.png"
+	"subtextures" "\
+		img_mouse_cursor,168,76,16,18"
 }
 
 {

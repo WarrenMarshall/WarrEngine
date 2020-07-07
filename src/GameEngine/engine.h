@@ -61,8 +61,8 @@ struct w_engine : i_listener
 	std::unique_ptr<w_shader> shader = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
 
-	//std::thread thread_sample;
-	//std::atomic_bool exit_thread_sample = false;
+	std::thread t_refresh_reloadables;
+	std::atomic_bool exit_thread_sample = false;
 	
 	void on_listener_event_received( e_event_id event, void* object ) override;
 };

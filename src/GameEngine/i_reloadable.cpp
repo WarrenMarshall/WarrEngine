@@ -2,17 +2,17 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-std::filesystem::file_time_type i_reloadable::get_last_modified_from_disk()
+std::filesystem::file_time_type i_reloadable::get_last_write_time_from_disk()
 {
 	std::filesystem::file_time_type blank;
 
 	if( !g_allow_hot_reload )
 		return blank;
 
-	if( was_loaded_from_zip_file )
+	if( original_filename.length() == 0 )
 		return blank;
 
-	if( original_filename.length() == 0 )
+	if( was_loaded_from_zip_file )
 		return blank;
 
 	std::filesystem::path path = original_filename;
@@ -27,7 +27,7 @@ bool i_reloadable::needs_reloading()
 	if( was_loaded_from_zip_file )
 		return false;
 
-	if( get_last_modified_from_disk() == last_modified )
+	if( last_write_time_on_disk == last_write_time )
 		return false;
 
 	return true;

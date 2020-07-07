@@ -14,13 +14,18 @@ void a_texture::clean_up_internals()
 	render_buffer = nullptr;
 
 	if( id > 0 )
+	{
 		glDeleteTextures( 1, &id );
+	}
 }
 
 bool a_texture::create_internals( bool is_hot_reloading )
 {
+	// #todo - should this be an assert? why is a blank filename allowed? gradients?
 	if( original_filename == "" )
+	{
 		return true;
+	}
 	
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	int w, h, bpp;
@@ -33,12 +38,14 @@ bool a_texture::create_internals( bool is_hot_reloading )
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	if( !color_data )
+	{
 		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, original_filename.c_str() );
+	}
 
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
 	{
-		last_modified = get_last_modified_from_disk();
+		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
 	}
 
 	// create our render buffer
@@ -235,7 +242,6 @@ a_subtexture* a_anim_texture::get_subtexture( float offset )
 {
 	assert( frames.size() );	// did you forget to call "add_frame"?
 
-
 	// apply random offset if needed
 
 	int idx = frame_tween->get_ival();
@@ -280,7 +286,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 		}
 
 		// save the last time modified for hot reloading
-		last_modified = get_last_modified_from_disk();
+		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
 	}
 
 	return true;
@@ -338,7 +344,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-		last_modified = get_last_modified_from_disk();
+		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
 
 	return true;
 }
@@ -375,17 +381,6 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 
 // ----------------------------------------------------------------------------
 
-bool a_9slice_def::create_internals( bool is_hot_reloading )
-{
-	// save the last time modified for hot reloading
-	if( g_allow_hot_reload )
-		last_modified = get_last_modified_from_disk();
-
-	return true;
-}
-
-// ----------------------------------------------------------------------------
-
 a_sound::~a_sound()
 {
 	clean_up_internals();
@@ -418,11 +413,15 @@ bool a_sound::create_internals( bool is_hot_reloading )
 	// fatal to the engine and should not crash you out.
 
 	if( !snd && !file_exists )
+	{
 		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, name.c_str() );
+	}
 
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
-		last_modified = get_last_modified_from_disk();
+	{
+		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+	}
 
 	channel = BASS_SampleGetChannel( snd, false );
 
@@ -454,7 +453,9 @@ void a_music::stop()
 void a_music::clean_up_internals()
 {
 	if( mus > -1 )
+	{
 		BASS_SampleFree( mus );
+	}
 }
 
 bool a_music::create_internals( bool is_hot_reloading )
@@ -470,11 +471,15 @@ bool a_music::create_internals( bool is_hot_reloading )
 	// fatal to the engine and should not crash you out.
 
 	if( !mus && !file_exists )
+	{
 		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, name.c_str() );
+	}
 
 	// save the last time modified for hot reloading
 	if( g_allow_hot_reload && is_hot_reloading )
-		last_modified = get_last_modified_from_disk();
+	{
+		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
+	}
 
 	channel = BASS_SampleGetChannel( mus, false );
 

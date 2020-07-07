@@ -497,7 +497,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	if( g_allow_hot_reload )
 	{
 		// save the last time modified for hot reloading
-		last_modified = get_last_modified_from_disk();
+		last_write_time = last_write_time_on_disk = get_last_write_time_from_disk();
 
 		if( is_hot_reloading )
 			for( int p = 0; p < w_engine::num_asset_def_passes; ++p )
