@@ -10,7 +10,6 @@ void layer_editor::push()
 
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
-	germ = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
 
 	engine->ui_mgr->set_mouse_visible( true );
 }
@@ -24,14 +23,12 @@ void layer_editor::pop()
 
 void layer_editor::becoming_top_layer()
 {
-	game->viewport_caption = "Edit Mode";
+	game->viewport_caption = "Endless Adventure Editor";
 }
 
 void layer_editor::draw()
 {
 	w_layer::draw();
-
-	game->draw_entities();
 
 	// ----------------------------------------------------------------------------
 
@@ -48,14 +45,37 @@ void layer_editor::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( w_vec3( -v_window_hw, -(TILE_SZ * 4.0f), 100.0f ) );
+		->translate( { -v_window_hw, -( TILE_SZ * 4.0f ), 100.0f } );
 	RENDER->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) );
 	MATRIX->pop();
 
+	// ----------------------------------------------------------------------------
+	// frames
+
 	MATRIX->push_identity()
-		->translate( { 0,0,100 } );
-	RENDER->draw_sprite( germ );
+		->translate( { -v_window_hw, v_window_hh, 50.0f } );
+	{
+		// title bar
+
+		RENDER->begin()
+			->push_color( W_COLOR_DARK_GREY )
+			->draw_sliced( panel_slice_def, { v_window_w,TILE_SZ*2 } )
+			->end();
+
+		// title bar
+
+		MATRIX->push()->translate( { 0.0f, -(TILE_SZ * 11.0f), 0.0f } );
+		RENDER->begin()
+			->push_color( W_COLOR_DARK_GREY )
+			->draw_sliced( panel_slice_def, { v_window_w,TILE_SZ * 4 } )
+			->end();
+		MATRIX->pop();
+	}
 	MATRIX->pop();
+
+	//MATRIX->push()->translate( { 0.0f, 0.0f, 500.0f } );
+	game->draw_entities();
+	//MATRIX->pop();
 }
 
 void layer_editor::on_listener_event_received( e_event_id event, void* object )

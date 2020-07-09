@@ -137,10 +137,6 @@
 		tile_cap, 208, 112, 16, 16,\
 		tile_blank, 224, 112, 16, 16,\
 		tile_brick_wall, 240, 112, 16, 16,\
-		tile_ship_left, 0, 128, 16, 16,\
-		tile_ship_back, 16, 128, 16, 16,\
-		tile_ship_right, 32, 128, 16, 16,\
-		tile_ship_front, 48, 128, 16, 16,\
 		tile_merman_01, 64, 128, 16, 16,\
 		tile_merman_02, 80, 128, 16, 16,\
 		tile_octopus_01, 96, 128, 16, 16,\

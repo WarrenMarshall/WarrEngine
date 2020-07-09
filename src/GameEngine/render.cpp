@@ -124,7 +124,7 @@ w_render* w_render::draw_sprite( a_texture* tex, const w_sz& sz )
 	return draw_sprite( tex->get_subtexture(), sz );
 }
 
-w_render* w_render::draw_sprite( a_subtexture * subtex, const w_sz & sz )
+w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_sz & sz )
 {
 	float w = ( sz.w == -1 ) ? subtex->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? subtex->sz.h : sz.h;
@@ -157,7 +157,7 @@ w_render* w_render::draw( a_texture* tex, const w_sz& sz )
 	return draw( tex->get_subtexture(), sz );
 }
 
-w_render* w_render::draw( a_subtexture* subtex, const w_sz& sz )
+w_render* w_render::draw( const a_subtexture* subtex, const w_sz& sz )
 {
 	float w = ( sz.w == -1 ) ? subtex->sz.w : sz.w;
 	float h = ( sz.h == -1 ) ? subtex->sz.h : sz.h;
@@ -408,7 +408,7 @@ w_render* w_render::draw_stats()
 	return this;
 }
 
-w_render* w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
+w_render* w_render::draw_filled_rectangle( const w_vec2& start, const w_vec2& end, float z )
 {
 	w_color rs_color = rs_color_stack.top();
 
@@ -440,7 +440,7 @@ w_render* w_render::draw_filled_rectangle( w_vec2 start, w_vec2 end, float z )
 
 // draws an empty rectangle
 
-w_render* w_render::draw_rectangle( w_rect rc_dst )
+w_render* w_render::draw_rectangle( const w_rect& rc_dst )
 {
 	// warren
 	assert( false );// not implemented yet
@@ -466,7 +466,7 @@ w_render* w_render::draw_rectangle( w_rect rc_dst )
 
 // draws a circle with line segments
 
-w_render* w_render::draw_circle( w_vec3 origin, float radius )
+w_render* w_render::draw_circle( const w_vec3& origin, float radius )
 {
 	w_color rs_color = rs_color_stack.top();
 	w_render_vert v0( origin, w_uv( 0, 0 ), rs_color );
@@ -488,7 +488,7 @@ w_render* w_render::draw_circle( w_vec3 origin, float radius )
 
 // draws a line
 
-w_render* w_render::draw_line( w_vec3 start, w_vec3 end )
+w_render* w_render::draw_line( const w_vec3& start, const w_vec3& end )
 {
 	w_color rs_color = rs_color_stack.top();
 	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
@@ -499,12 +499,7 @@ w_render* w_render::draw_line( w_vec3 start, w_vec3 end )
 	return this;
 }
 
-w_render* w_render::draw_sliced( a_texture* tex, const a_9slice_def* slice_def, const w_sz& sz )
-{
-	return draw_sliced( tex->get_subtexture(), slice_def, sz );
-}
-
-w_render* w_render::draw_sliced( a_subtexture* subtex, const a_9slice_def* slice_def, const w_sz& sz )
+w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_sz& sz )
 {
 	w_matrix* mtx = nullptr;
 
@@ -517,6 +512,10 @@ w_render* w_render::draw_sliced( a_subtexture* subtex, const a_9slice_def* slice
 	a_subtexture* p_02 = slice_def->patches[ (int) e_patch::P_02 ];
 	a_subtexture* p_12 = slice_def->patches[ (int) e_patch::P_12 ];
 	a_subtexture* p_22 = slice_def->patches[ (int) e_patch::P_22 ];
+
+	// nudge the rendering matrix down the height of the top row of subtextures. this
+	// allows us to think of the top/left of this window as the actual graphical top/left.
+	MATRIX->push()->translate( { 0.0f, -p_00->sz.h, 0.0f } );
 
 	float inner_w = sz.w - p_00->sz.w - p_20->sz.w;
 	float inner_h = sz.h - p_00->sz.h - p_02->sz.h;
@@ -553,10 +552,13 @@ w_render* w_render::draw_sliced( a_subtexture* subtex, const a_9slice_def* slice
 	draw( p_22, w_sz( p_22->sz.w, p_22->sz.h ) );
 	MATRIX->pop();
 
+	// remove the top line nudge
+	MATRIX->pop();
+
 	return this;
 }
 
-void w_render::init_projection()
+void w_render::init_projection() const
 {
 	// setting this stuff up one time as we only use a single shader and the camera never moves.
 	//

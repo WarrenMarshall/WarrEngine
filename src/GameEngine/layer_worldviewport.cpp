@@ -6,12 +6,13 @@
 
 void layer_worldviewport::push()
 {
-	img_gradient = std::make_unique<a_subtexture>( "background_gradient" );
 }
 
 void layer_worldviewport::draw()
 {
-	// background
+	w_layer::draw();
+
+	// solid background
 
 	MATRIX
 		->push_identity()
@@ -23,30 +24,16 @@ void layer_worldviewport::draw()
 		->end();
 	MATRIX->pop();
 
-	w_layer::draw();
-
-	// gradient
-
-	MATRIX
-		->push()
-		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 2 ), -100.0f ) );
-	RENDER
-		->begin()
-		->push_color( w_color( 1.0f, 1.0f, 1.0f, 0.75f ) )
-		->draw( img_gradient.get(), w_sz( v_window_w, TILE_SZ * 2 ) )
-		->end();
-	MATRIX
-		->pop();
-
 	// title
 
+	static a_font* larger_font = engine->get_asset<a_font>( "larger_font" );
 	MATRIX->push_identity()
-		->translate( w_vec3( 0.0f, v_window_hh - (TILE_SZ * 1.25f), 200.0f ) );
+		->translate( w_vec3( 0.0f, v_window_hh - (TILE_SZ * 0.25f), 200.0f ) );
 	RENDER
 		->begin()
 		->push_color( W_COLOR_ORANGE )
-		->push_align( e_align::centered )
-		->draw_string( engine->get_asset<a_font>( "larger_font" ), game->viewport_caption )
+		->push_align( e_align::hcenter )
+		->draw_string( larger_font, game->viewport_caption )
 		->end();
 	MATRIX->pop();
 
