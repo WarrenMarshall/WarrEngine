@@ -94,12 +94,12 @@ int w_layer_mgr::get_opaque_index( e_opaque opaque_flags )
 	int opaque_index = -1;
 	for( const auto& iter : layer_stack )
 	{
+		opaque_index++;
+
 		if( (iter->get_opaque_flags() & opaque_flags) > 0 )
 		{
 			break;
 		}
-
-		opaque_index++;
 	}
 
 #if _DEBUG
