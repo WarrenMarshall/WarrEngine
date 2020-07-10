@@ -10,7 +10,7 @@ struct w_game
 	virtual void update();
 	virtual void draw_entities();
 
-	template<typename T> T* spawn_entity( w_vec3 pos = w_vec3::zero, float angle = 0.0f, float scale = 1.0f )
+	template<typename T> T* spawn_entity( w_vec2 pos = w_vec2::zero, float angle = 0.0f, float scale = 1.0f )
 	{
 		entities.emplace_back( std::make_unique<T>() );
 

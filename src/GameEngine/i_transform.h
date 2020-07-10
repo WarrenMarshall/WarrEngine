@@ -5,7 +5,7 @@
 struct i_transform
 {
 	// position
-	w_vec3 pos;
+	w_vec2 pos;
 
 	// rotation (around z axis)
 	float angle = 0.0f;
@@ -16,5 +16,5 @@ struct i_transform
 	i_transform();
 	~i_transform();
 
-	void set_transform( const w_vec3& pos, const float& angle, const float& scale );
+	void set_transform( const w_vec2& pos, const float& angle, const float& scale );
 };

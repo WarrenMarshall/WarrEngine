@@ -8,10 +8,6 @@ struct w_particle_emitter : i_listener, i_transform
 	c_emitter* parent_component = nullptr;
 	std::unique_ptr<w_particle_pool> particle_pool = nullptr;
 
-	// the position of this particlesystem in the world. this is the origin
-	// point for spawning particles.
-	w_vec3 pos;
-
 	// how many particles from this emitter are allowed to 
 	// be alive at any given moment
 	int max_particles_alive = 0;

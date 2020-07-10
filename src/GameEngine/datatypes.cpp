@@ -177,8 +177,15 @@ w_color w_color::from_string( std::string text )
 
 // ----------------------------------------------------------------------------
 
+const w_vec2 w_vec2::zero = w_vec2( 0, 0 );
+
 w_vec2::w_vec2()
 	: x( 0.0f ), y( 0.0f )
+{
+}
+
+w_vec2::w_vec2( int x, int y )
+	: x( static_cast<float>( x ) ), y( static_cast<float>( y ) )
 {
 }
 

@@ -23,8 +23,9 @@ void e_player::draw()
 
 	RENDER
 		->begin()
+		->push_depth( 700 )
 		->push_color( W_COLOR_GREEN )
-		->draw_circle( w_vec3::zero, 8 )
+		->draw_circle( w_vec2::zero, 8 )
 		->end();
 }
 

@@ -21,12 +21,16 @@ void w_ui_mgr::draw_top_level()
 	{
 		MATRIX
 			->push_identity()
-			->translate( w_vec3(
+			->translate( w_vec2(
 				-v_window_hw + engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
-				v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y,
-				1000.0f ) );
+				v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y )
+			);
 
-		RENDER->draw( mouse_cursor->img );
+		RENDER
+			->begin()
+			->push_depth( 1000.0f )
+			->draw( mouse_cursor->img )
+			->end();
 
 		MATRIX->pop();
 	}

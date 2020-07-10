@@ -2,8 +2,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_render_vert::w_render_vert( const w_vec3& pos, const w_uv& uv, const w_color& color )
-    :   x( pos.x ), y( pos.y ), z( pos.z ),
+w_render_vert::w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& color )
+    :   x( pos.x ), y( pos.y ), z( engine->render->rs_depth_stack.top() ),
         u( uv.u ), v( uv.v ),
         r( color.r ), g( color.g ), b( color.b ), a( color.a )
 {
@@ -164,7 +164,7 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
     v4 = MATRIX->top()->m * v4;
 
     const w_render_vert rv(
-        w_vec3( v4.x, v4.y, v4.z ),
+        w_vec2( v4.x, v4.y ),
         w_uv( render_vert.u, render_vert.v ),
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
     );
@@ -174,7 +174,7 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
 	// a matching vertex. if one is found, return the index of that vertex
 	// instead of putting the new one into the list.
 	//
-	// this is slow, which is why we only do this check on static buffers
+	// #note - this is slow, which is why we don't do this check right now. it's faster to just throw dupes at the video card.
 
 	int idx = 0;
 	for( auto& iter : vertices[ render_pass ] )

@@ -10,7 +10,7 @@ w_matrix* w_matrix::add_transform( const i_transform& t )
 	return this;
 }
 
-w_matrix* w_matrix::add_transform( const w_vec3& pos, const float& angle, const float& _scale )
+w_matrix* w_matrix::add_transform( const w_vec2& pos, const float& angle, const float& _scale )
 {
 	translate( pos );
 	rotate( angle );
@@ -19,9 +19,9 @@ w_matrix* w_matrix::add_transform( const w_vec3& pos, const float& angle, const 
 	return this;
 }
 
-w_matrix* w_matrix::translate( const w_vec3& v )
+w_matrix* w_matrix::translate( const w_vec2& v )
 {
-	m = glm::translate( m, glm::vec3( v.x, v.y, v.z ) );
+	m = glm::translate( m, glm::vec3( v.x, v.y, 0.0f ) );
 	return this;
 }
 

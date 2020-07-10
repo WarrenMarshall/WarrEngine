@@ -44,17 +44,17 @@ void w_particle_pool::draw()
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
 
 			w_vec2 v = w_vec2::from_angle( iter.a_dir );
-			w_vec3 iterp_pos(
+			w_vec2 iterp_pos(
 				RENDER->calc_interpolated_per_sec_value( iter.pos.x, ( v.x * iter.velocity_per_sec ) ),
-				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) ),
-				iter.pos.z
+				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) )
 			);
 
 			MATRIX
 				->push()
 				->add_transform( iterp_pos, interp_angle, iter.base_scale * scale );
 
-			RENDER->begin()
+			RENDER
+				->begin()
 				->push_color( color )
 				->draw_sprite( iter.tex->get_subtexture() )
 				->end();

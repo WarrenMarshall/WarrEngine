@@ -116,7 +116,10 @@ struct w_vec2
 		};
 	};
 
+	static const w_vec2 zero;
+
 	w_vec2();
+	w_vec2( int x, int y );
 	w_vec2( float x, float y );
 	w_vec2( std::string str );
 

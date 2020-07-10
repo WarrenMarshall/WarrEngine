@@ -181,16 +181,18 @@ void w_engine::draw()
 	{
 		opengl
 			->push_identity()
-			->translate( w_vec3( -v_window_hw, -v_window_hh, 200.0f ) );
+			->translate( { -v_window_hw, -v_window_hh } );
 
-		render->begin();
+		render
+			->begin()
+			->push_depth( 200.0f );
 
-		w_vec3 v0, v1, v2, v3;
+		w_vec2 v0, v1, v2, v3;
 
-		v0 = w_vec3::zero;
-		v1 = w_vec3( v_window_w - 1, 0.0f, 0.0f );
-		v2 = w_vec3( v_window_w - 1, v_window_h - 1, 0.0f );
-		v3 = w_vec3( 0.0f, v_window_h - 1, 0.0f );
+		v0 = w_vec2::zero;
+		v1 = w_vec2( v_window_w - 1, 0.0f );
+		v2 = w_vec2( v_window_w - 1, v_window_h - 1 );
+		v3 = w_vec2( 0.0f, v_window_h - 1 );
 
 		render->push_color( W_COLOR_YELLOW );
 		render->draw_line( v0, v1 );
@@ -198,10 +200,10 @@ void w_engine::draw()
 		render->draw_line( v2, v3 );
 		render->draw_line( v3, v0 );
 
-		v0 = w_vec3( 1, 1, 0 );
-		v1 = w_vec3( v_window_w - 2, 1.0f, 0.0f );
-		v2 = w_vec3( v_window_w - 2, v_window_h - 2, 0.0f );
-		v3 = w_vec3( 1.0f, v_window_h - 2, 0.0f );
+		v0 = w_vec2( 1, 1 );
+		v1 = w_vec2( v_window_w - 2, 1.0f );
+		v2 = w_vec2( v_window_w - 2, v_window_h - 2 );
+		v3 = w_vec2( 1.0f, v_window_h - 2 );
 
 		render->push_color( W_COLOR_ORANGE );
 		render->draw_line( v0, v1 );
@@ -209,10 +211,10 @@ void w_engine::draw()
 		render->draw_line( v2, v3 );
 		render->draw_line( v3, v0 );
 
-		v0 = w_vec3( 2.0f, 2.0f, 0.0f );
-		v1 = w_vec3( v_window_w - 3, 2.0f, 0.0f );
-		v2 = w_vec3( v_window_w - 3, v_window_h - 3, 0.0f );
-		v3 = w_vec3( 2.0f, v_window_h - 3, 0.0f );
+		v0 = w_vec2( 2.0f, 2.0f );
+		v1 = w_vec2( v_window_w - 3, 2.0f );
+		v2 = w_vec2( v_window_w - 3, v_window_h - 3 );
+		v3 = w_vec2( 2.0f, v_window_h - 3 );
 
 		render->push_color( W_COLOR_RED );
 		render->draw_line( v0, v1 );

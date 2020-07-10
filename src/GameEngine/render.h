@@ -33,6 +33,11 @@ struct w_render
 	*/
 	float frame_interpolate_pct = 0.0f;
 
+	/*
+		The current depth value being applied to every vertex pushed
+		through to the renderer.
+	*/
+
 	std::stack<glm::mat4> modelview_stack;
 
 	// ----------------------------------------------------------------------------
@@ -44,11 +49,14 @@ struct w_render
 	std::stack<float> rs_scale_stack;
 	int rs_align_count = 0;
 	std::stack<e_align> rs_align_stack;
+	int rs_depth_count = 0;
+	std::stack<float> rs_depth_stack;
 
 	w_render* begin();
 	w_render* push_color( const w_color& color );
 	w_render* push_scale( const float& scale );
 	w_render* push_align( const e_align& align );
+	w_render* push_depth( const float& depth );
 	void end();
 
 	// ----------------------------------------------------------------------------
@@ -73,9 +81,9 @@ struct w_render
 
 	void init_projection() const;
 	w_render* draw_rectangle( const w_rect& rc_dst );
-	w_render* draw_filled_rectangle( const w_vec2& start, const w_vec2& end, float z );
-	w_render* draw_line( const w_vec3& start, const w_vec3& end );
-	w_render* draw_circle( const w_vec3& origin, float radius);
+	w_render* draw_filled_rectangle( const w_vec2& start, const w_vec2& end );
+	w_render* draw_line( const w_vec2& start, const w_vec2& end );
+	w_render* draw_circle( const w_vec2& origin, float radius);
 
 	void begin_frame( float frame_interpolate_pct );
 	void end_frame();

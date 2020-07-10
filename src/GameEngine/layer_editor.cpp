@@ -34,10 +34,14 @@ void layer_editor::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( w_vec3( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ), 10.0f ) )
-		->translate( w_vec3( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ), 0.0f ) );
+		->translate( w_vec2( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ) ) )
+		->translate( w_vec2( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ) ) );
 
-	RENDER->draw( selector_bracket );
+	RENDER
+		->begin()
+		->push_depth( 10.f )
+		->draw( selector_bracket )
+		->end();
 
 	MATRIX->pop();
 
@@ -45,37 +49,42 @@ void layer_editor::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( { -v_window_hw, -( TILE_SZ * 4.0f ), 100.0f } );
-	RENDER->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) );
+		->translate( { -v_window_hw, -( TILE_SZ * 4.0f ) } );
+	RENDER
+		->begin()
+		->push_depth( 100.0f )
+		->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) )
+		->end();
 	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
 	// frames
 
 	MATRIX->push_identity()
-		->translate( { -v_window_hw, v_window_hh, 50.0f } );
+		->translate( { -v_window_hw, v_window_hh } );
 	{
 		// title bar
 
 		RENDER->begin()
+			->push_depth( 50.0f )
 			->push_color( W_COLOR_DARK_GREY )
-			->draw_sliced( panel_slice_def, { v_window_w,TILE_SZ*2 } )
+			->draw_sliced( panel_slice_def, { v_window_w, TILE_SZ*2.0f } )
 			->end();
 
 		// title bar
 
-		MATRIX->push()->translate( { 0.0f, -(TILE_SZ * 11.0f), 0.0f } );
+		MATRIX->push()->translate( { 0.0f, -(TILE_SZ * 11.0f) } );
 		RENDER->begin()
 			->push_color( W_COLOR_DARK_GREY )
-			->draw_sliced( panel_slice_def, { v_window_w,TILE_SZ * 4 } )
+			->draw_sliced( panel_slice_def, { v_window_w, TILE_SZ * 4.0f } )
 			->end();
 		MATRIX->pop();
 	}
 	MATRIX->pop();
 
-	//MATRIX->push()->translate( { 0.0f, 0.0f, 500.0f } );
+	MATRIX->push();
 	game->draw_entities();
-	//MATRIX->pop();
+	MATRIX->pop();
 }
 
 void layer_editor::on_listener_event_received( e_event_id event, void* object )
