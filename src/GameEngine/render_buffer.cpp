@@ -47,6 +47,7 @@ w_render_buffer::~w_render_buffer()
     glDeleteVertexArrays( 1, &VAO );
 }
 
+// #todo - change this so that it sorts verts into buckets based on the current blending mode, not the render pass
 void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
     int render_pass = static_cast<int>( e_render_pass::opaque );

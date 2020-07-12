@@ -18,7 +18,7 @@ void layer_browser::pop()
 
 void layer_browser::becoming_top_layer()
 {
-	game->viewport_caption = "Edit Mode";
+	game->viewport_caption = "Select A Tile";
 }
 
 void layer_browser::draw()

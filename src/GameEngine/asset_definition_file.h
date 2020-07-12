@@ -8,7 +8,7 @@
 struct w_asset_definition_file : i_reloadable
 {
 	std::string name = "";
-	std::vector<std::unique_ptr<w_asset_definition>> asset_definitions;
+	std::vector<std::unique_ptr<w_keyvalues>> asset_definitions;
 
 	~w_asset_definition_file();
 

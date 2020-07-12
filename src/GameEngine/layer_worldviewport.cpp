@@ -25,20 +25,6 @@ void layer_worldviewport::draw()
 		->end();
 	MATRIX->pop();
 
-	// title
-
-	static a_font* larger_font = engine->get_asset<a_font>( "larger_font" );
-	MATRIX->push_identity()
-		->translate( w_vec2( 0.0f, v_window_hh - (TILE_SZ * 0.25f) ) );
-	RENDER
-		->begin()
-		->push_depth( 200.0f )
-		->push_color( W_COLOR_ORANGE )
-		->push_align( e_align::hcenter )
-		->draw_string( larger_font, game->viewport_caption )
-		->end();
-	MATRIX->pop();
-
 	// tiles
 
 	MATRIX

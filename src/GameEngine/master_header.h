@@ -20,7 +20,6 @@
 #include "asset.h"
 #include "asset_types.h"
 #include "input_mgr.h"
-#include "asset_definition.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
 #include "ui_mgr.h"

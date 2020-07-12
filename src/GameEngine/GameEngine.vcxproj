@@ -229,7 +229,6 @@
     <ClInclude Include="bounds.h" />
     <ClInclude Include="cache_assets.h" />
     <ClInclude Include="asset_definition_file_cache.h" />
-    <ClInclude Include="asset_definition.h" />
     <ClInclude Include="component.h" />
     <ClInclude Include="entity_fx.h" />
     <ClInclude Include="filesystem.h" />

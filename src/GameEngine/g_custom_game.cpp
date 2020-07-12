@@ -47,7 +47,7 @@ void g_custom_game::new_game()
 {
 	w_game::new_game();
 
-	player = game->spawn_entity<e_player>( { 0, -100 }, 30.f );
+	//player = game->spawn_entity<e_player>( { 0, -100 }, 30.f );
 }
 
 void g_custom_game::update()
@@ -65,4 +65,19 @@ w_tile* g_custom_game::get_tile( int id )
 	assert( tile->img != nullptr );	// there is no tile definition at the requested index - double check "tile_def.txt"
 	
 	return tile;
+}
+
+void g_custom_game::draw_viewport_caption()
+{
+	static a_font* larger_font = engine->get_asset<a_font>( "larger_font" );
+	MATRIX->push_identity()
+		->translate( w_vec2( 0.0f, v_window_hh - ( TILE_SZ * 0.25f ) ) );
+	RENDER
+		->begin()
+		->push_depth( 200.0f )
+		->push_color( W_COLOR_ORANGE )
+		->push_align( e_align::hcenter )
+		->draw_string( larger_font, game->viewport_caption )
+		->end();
+	MATRIX->pop();
 }

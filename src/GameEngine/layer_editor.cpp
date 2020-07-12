@@ -49,7 +49,7 @@ void layer_editor::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( { -v_window_hw, -( TILE_SZ * 4.0f ) } );
+		->translate( { -v_window_hw + 8, -60.0f } );
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
@@ -71,12 +71,14 @@ void layer_editor::draw()
 			->draw_sliced( panel_slice_def, { v_window_w, TILE_SZ*2.0f } )
 			->end();
 
-		// title bar
+		game->draw_viewport_caption();
+
+		// info bars
 
 		MATRIX->push()->translate( { 0.0f, -(TILE_SZ * 11.0f) } );
 		RENDER->begin()
 			->push_color( W_COLOR_DARK_GREY )
-			->draw_sliced( panel_slice_def, { v_window_w, TILE_SZ * 4.0f } )
+			->draw_sliced( panel_slice_def, { 116.0f, TILE_SZ * 4.0f } )
 			->end();
 		MATRIX->pop();
 	}

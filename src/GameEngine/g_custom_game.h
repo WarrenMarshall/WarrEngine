@@ -38,4 +38,5 @@ struct g_custom_game : w_game
 	void update() override;
 
 	w_tile* get_tile( int id );
+	void draw_viewport_caption();
 };

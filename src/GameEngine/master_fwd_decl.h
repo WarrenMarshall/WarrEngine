@@ -33,7 +33,6 @@ struct layer_browser;
 struct layer_editor;
 struct layer_worldviewport;
 struct w_accum_value;
-struct w_asset_definition;
 struct w_asset_definition_file;
 struct w_bbox;
 struct w_bounds;
