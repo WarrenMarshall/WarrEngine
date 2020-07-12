@@ -61,8 +61,6 @@ void w_render::init()
 
 w_render* w_render::begin()
 {
-	rs_color_count = 0;
-
 	return this;
 }
 
@@ -463,18 +461,14 @@ w_render* w_render::draw_filled_rectangle( const w_vec2& start, const w_vec2& en
 
 w_render* w_render::draw_rectangle( const w_rect& rc_dst )
 {
-	// warren
-	assert( false );// not implemented yet
 	w_bbox box;
-	box.add( w_vec3(
+	box.add( w_vec2(
 		static_cast<float>( rc_dst.x ),
-		static_cast<float>( rc_dst.y ),
-		0.0f )
+		static_cast<float>( rc_dst.y ) )
 	);
-	box.add( w_vec3(
+	box.add( w_vec2(
 		static_cast<float>( rc_dst.x + rc_dst.w ),
-		static_cast<float>( rc_dst.y + rc_dst.h ),
-		0.0f )
+		static_cast<float>( rc_dst.y + rc_dst.h ) )
 	);
 
 	draw_line( w_vec2( box.min.x, box.min.y ), w_vec2( box.max.x, box.min.y ) );

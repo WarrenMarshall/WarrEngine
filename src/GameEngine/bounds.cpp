@@ -9,7 +9,7 @@ w_bounds::w_bounds()
 {
 }
 
-bool w_bounds::contains_pt( w_vec3 world_space_pos_to_check )
+bool w_bounds::contains_pt( w_vec2 world_space_pos_to_check )
 {
 	return false;
 }
@@ -31,9 +31,9 @@ w_bounds_circle::w_bounds_circle( int radius )
 {
 }
 
-bool w_bounds_circle::contains_pt( w_vec3 world_space_pos_to_check )
+bool w_bounds_circle::contains_pt( w_vec2 world_space_pos_to_check )
 {
-	//if( w_vec3::get_distance_between( parent->pos, world_space_pos_to_check ) < radius )
+	//if( w_vec2::get_distance_between( parent->pos, world_space_pos_to_check ) < radius )
 	//{
 	//	return true;
 	//}

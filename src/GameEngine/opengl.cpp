@@ -53,11 +53,26 @@ void w_opengl::init() const
 	// texture mapping
 	glEnable( GL_TEXTURE_2D );
 
-	// z/depth buffer testing
+	// depth buffer testing
+	//
+	// NOTE : we have to use a depth buffer because we are rendering in batches.
+	//		  it's tempting to try and remove this and think of the renderer as a
+	//		  back-to-front series of quad draws, but that's not how it works.
+	//
+	//		  1. all triangles for a given texture batch draw at once, regardless of
+	//		  which layer sent the commands.
+	//
+	//		  2. the texture batches draw in arbitrary order, based on the texture
+	//		  list in the asset cache.
+	//
+	//		  3. you have little to no control here, other than the depth value.
+	//
+	//		  disabling the depth buffer is a trap that will cost you time until you
+	//		  remember this. just walk away.
+
 	glEnable( GL_DEPTH_TEST );	// turn on z-buffer
 	glDepthFunc( GL_LEQUAL );
 	glDepthMask( GL_TRUE );		// enable depth writing (reading is always enabled)
-								// when we get fancier, we could toggle writing off for things that are transparent (and render those things last each frame)
 
 	// allows the alpha channel of the texture to be used for transparency - this has nothing
 	// to go with drawing things transparently or blending.

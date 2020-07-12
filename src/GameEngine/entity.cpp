@@ -60,7 +60,7 @@ void w_entity::post_spawn()
 	within the bounds of this entities collision bounds
 */
 
-bool w_entity::bounds_contains_point( w_vec3 pos_to_check )
+bool w_entity::bounds_contains_point( w_vec2 pos_to_check )
 {
 	if( bounds->contains_pt( pos_to_check ) )
 	{

@@ -33,22 +33,20 @@ struct w_render
 	*/
 	float frame_interpolate_pct = 0.0f;
 
-	/*
-		The current depth value being applied to every vertex pushed
-		through to the renderer.
-	*/
-
 	std::stack<glm::mat4> modelview_stack;
 
 	// ----------------------------------------------------------------------------
-	// the current render state
+	// the current render state stacks
 
 	int rs_color_count = 0;
 	std::stack<w_color> rs_color_stack;
+
 	int rs_scale_count = 0;
 	std::stack<float> rs_scale_stack;
+	
 	int rs_align_count = 0;
 	std::stack<e_align> rs_align_stack;
+	
 	int rs_depth_count = 0;
 	std::stack<float> rs_depth_stack;
 

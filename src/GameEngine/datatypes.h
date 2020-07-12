@@ -165,10 +165,10 @@ struct w_vec3
 
 struct w_bbox
 {
-	w_vec3 min, max;
+	w_vec2 min, max;
 
 	w_bbox();
 
-	void add( w_vec3 vtx );
+	void add( w_vec2 vtx );
 	void reset();
 };

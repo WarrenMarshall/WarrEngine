@@ -356,19 +356,17 @@ w_bbox::w_bbox()
 	reset();
 }
 
-void w_bbox::add( w_vec3 vtx )
+void w_bbox::add( w_vec2 vtx )
 {
 	min.x = w_min( min.x, vtx.x );
 	min.y = w_min( min.y, vtx.y );
-	min.z = w_min( min.z, vtx.z );
 
 	max.x = w_max( max.x, vtx.x );
 	max.y = w_max( max.y, vtx.y );
-	max.z = w_max( max.z, vtx.z );
 }
 
 void w_bbox::reset()
 {
-	min.x = min.y = min.z = std::numeric_limits<float>::max();
-	max.x = max.y = max.z = std::numeric_limits<float>::min();
+	min.x = min.y = std::numeric_limits<float>::max();
+	max.x = max.y = std::numeric_limits<float>::min();
 }
