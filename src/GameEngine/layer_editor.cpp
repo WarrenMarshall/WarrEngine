@@ -35,7 +35,7 @@ void layer_editor::draw()
 	MATRIX
 		->push_identity()
 		->translate( w_vec2( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ) ) )
-		->translate( w_vec2( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ) ) );
+		->translate( w_vec2( ( current_tile.x * TILE_SZ ), -( current_tile.y * TILE_SZ ) ) );
 
 	RENDER
 		->begin()
@@ -49,12 +49,20 @@ void layer_editor::draw()
 
 	MATRIX
 		->push_identity()
-		->translate( { -v_window_hw + 8, -60.0f } );
+		->translate( { -84.0f, -68.0f } );
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
 		->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) )
 		->end();
+
+	MATRIX->top()->translate( { -32, -22 } );
+	RENDER
+		->begin()
+		->push_depth( 100.0f )
+		->draw_sprite( game->get_tile( current_tile_idx )->img, { 32,32 } )
+		->end();
+
 	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
@@ -78,7 +86,14 @@ void layer_editor::draw()
 		MATRIX->push()->translate( { 0.0f, -(TILE_SZ * 11.0f) } );
 		RENDER->begin()
 			->push_color( W_COLOR_DARK_GREY )
-			->draw_sliced( panel_slice_def, { 116.0f, TILE_SZ * 4.0f } )
+			->draw_sliced( panel_slice_def, { v_window_w, 68.0f } )
+			->end();
+
+		MATRIX->top()->translate( { 12, -12 } );
+		RENDER->begin()
+			->push_color( W_COLOR_DARK_GREY )
+			->push_depth( 50.f )
+			->draw_sliced( panel_slice_def, { 48.0f, 48.0f } )
 			->end();
 		MATRIX->pop();
 	}
@@ -104,8 +119,27 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 					// todo : these magic numbers should go into some sort of rect or consts somewhere
 					if( engine->input_mgr->mouse_vwindow_pos.y > 32 && engine->input_mgr->mouse_vwindow_pos.y < 32 + (TILE_SZ * 9) )
 					{
-						tile_from_screen_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
+						set_current_tile_from_mouse_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
+
+						if( is_painting )
+						{
+							paint_current_tile();
+						}
 					}
+				}
+				break;
+			}
+		}
+		break;
+
+		case e_event_id::input_released:
+		{
+			switch( evt->input_id )
+			{
+				case e_input_id::mouse_button_left:
+				case e_input_id::keyboard_space:
+				{
+					is_painting = false;
 				}
 				break;
 			}
@@ -116,7 +150,29 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 		{
 			switch( evt->input_id )
 			{
-				case e_input_id::controller_button_dpad_left:
+				case e_input_id::mouse_button_left:
+				case e_input_id::keyboard_space:
+				{
+					is_painting = true;
+					paint_current_tile();
+				}
+				break;
+
+				case e_input_id::mouse_button_right:
+				{
+					set_current_tile_idx_from_current_tile();
+				}
+				break;
+
+				case e_input_id::keyboard_c:
+				{
+					if( evt->ctrl_down )
+					{
+						set_current_tile_idx_from_current_tile();
+					}
+				}
+				break;
+
 				case e_input_id::keyboard_left:
 				{
 					if( evt->alt_down )
@@ -126,13 +182,12 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 					}
 					else
 					{
-						hover_tile.x--;
-						hover_tile.x = w_max( hover_tile.x, 0 );
+						current_tile.x--;
+						current_tile.x = w_max( current_tile.x, 0 );
 					}
 				}
 				break;
 
-				case e_input_id::controller_button_dpad_right:
 				case e_input_id::keyboard_right:
 				{
 					if( evt->alt_down )
@@ -142,25 +197,23 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 					}
 					else
 					{
-						hover_tile.x++;
-						hover_tile.x = w_min( hover_tile.x, 18 );
+						current_tile.x++;
+						current_tile.x = w_min( current_tile.x, 18 );
 					}
 				}
 				break;
 
-				case e_input_id::controller_button_dpad_up:
 				case e_input_id::keyboard_up:
 				{
-					hover_tile.y--;
-					hover_tile.y = w_max( hover_tile.y, 0 );
+					current_tile.y--;
+					current_tile.y = w_max( current_tile.y, 0 );
 				}
 				break;
 
-				case e_input_id::controller_button_dpad_down:
 				case e_input_id::keyboard_down:
 				{
-					hover_tile.y++;
-					hover_tile.y = w_min( hover_tile.y, 8 );
+					current_tile.y++;
+					current_tile.y = w_min( current_tile.y, 8 );
 				}
 				break;
 
@@ -187,7 +240,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 // takes a position within the game viewport and converts it into
 // a tile index within the current room
 
-void layer_editor::tile_from_screen_pos( float xpos, float ypos )
+void layer_editor::set_current_tile_from_mouse_pos( float xpos, float ypos )
 {
 	float tiles_x = TILE_SZ / 2;
 	float tiles_y = TILE_SZ * 2.5;
@@ -195,7 +248,19 @@ void layer_editor::tile_from_screen_pos( float xpos, float ypos )
 	float tile_x = round(( xpos - tiles_x ) / (float)TILE_SZ);
 	float tile_y = round(( ypos - tiles_y ) / (float)TILE_SZ);
 
-	hover_tile = w_vec2( round( tile_x ), round( tile_y ) );
-	hover_tile.x = w_clamp( hover_tile.x, 0, 18 );
-	hover_tile.y = w_clamp( hover_tile.y, 0, 8 );
+	current_tile = w_vec2( round( tile_x ), round( tile_y ) );
+	current_tile.x = w_clamp( current_tile.x, 0, 18 );
+	current_tile.y = w_clamp( current_tile.y, 0, 8 );
+}
+
+void layer_editor::paint_current_tile()
+{
+	int idx = static_cast<int>( ( current_tile.y * ROOM_W ) + current_tile.x );
+	game->rooms[ game->current_room ].tiles[ idx ] = current_tile_idx;
+}
+
+void layer_editor::set_current_tile_idx_from_current_tile()
+{
+	int idx = static_cast<int>( ( current_tile.y * ROOM_W ) + current_tile.x );
+	current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
 }

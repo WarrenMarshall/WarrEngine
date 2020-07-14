@@ -140,20 +140,21 @@ int main( int argc, char* argv[] )
 		while( engine->is_running )
 		{
 			/*
-				time
+				update core engine stuff - time, timers, etc
 			*/
 
 			engine->time->update();
 			engine->hot_reload_timer->update();
 
 			/*
-				input
+				process user input
 			*/
 
 			engine->input_mgr->update();
 
 			/*
-				fixed time step updates
+				if we have fixed time steps to perform, walk
+				through them one at a time
 			*/
 
 			while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
@@ -162,7 +163,6 @@ int main( int argc, char* argv[] )
 
 				engine->update();
 				game->update();
-
 			}
 
 			/*
@@ -175,7 +175,7 @@ int main( int argc, char* argv[] )
 			}
 
 			/*
-				draw the frame
+				draw everything
 			*/
 
 			// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
@@ -217,22 +217,19 @@ int main( int argc, char* argv[] )
 
 		log_msg( "Shutting down engine" );
 		engine->deinit();
-
-		{	// ended
-			logfile->time_stamp( "Ended" );
-		}
-
-		// Do this last so we can log right up until the last moment
-		log_msg( "Finished!" );
-		logfile->deinit();
 	}
 	catch( std::exception& e )
 	{
 		log_msg( "!! EXCEPTION" );
 		log_msg( "\t%s", e.what() );
 
-		MessageBoxA( NULL, e.what(), "Exception!", MB_OK );
+		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );
 	}
+
+	// Do this last so we can log right up until the last moment
+	logfile->time_stamp( "Ended" );
+	log_msg( "Finished!" );
+	logfile->deinit();
 
 	return 0;
 }

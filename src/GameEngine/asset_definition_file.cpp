@@ -454,6 +454,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	std::string line = tok.get_next_token();
 	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
 
+	// loop through every line of the asset_def fil and 
 	while( !tok.is_eos() )
 	{
 		// ignore blank lines and lines that are entirely commented
@@ -465,19 +466,25 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 				line += tok.get_next_token();
 			}
 
-			// strip comments off the back ends of lines
+			// remove comments from the ends of lines, if they are there
 			size_t pos = line.find_first_of( "#" );
-
 			if( pos != std::string::npos )
+			{
 				line = w_stringutil::rtrim( line.substr( 0, pos ) );
+			}
 
-			if( line[0] == '{' )
+			// a "{" marks the beginning of a new asset definition
+			if( line[ 0 ] == '{' )
+			{
 				current_asset_definition = std::make_unique<w_keyvalues>();
+			}
+			// a "}" marks the end of the current asset definition
 			else if( line[0] == '}' )
 			{
 				asset_definitions.emplace_back( std::move( current_asset_definition ) );
 				current_asset_definition = nullptr;
 			}
+			// parse each line into a key/value pair for the current asset definition
 			else
 			{
 				w_tokenizer tok( line, '\"' );
@@ -497,6 +504,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	if( g_allow_hot_reload )
 	{
 		// save the last time modified for hot reloading
+		std::scoped_lock lock( mutex_last_write_time );
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 
 		if( is_hot_reloading )

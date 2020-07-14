@@ -23,6 +23,10 @@ std::string w_keyvalues::find_value( const std::string& key ) const
 
 void w_keyvalues::add( const std::string& key, const std::string& value )
 {
+	#if !defined(FINALRELEASE)
+		assert( !does_key_exist( key ) );
+	#endif
+
 	_data.insert( std::make_pair( key, value ) );
 }
 
