@@ -44,7 +44,12 @@
 	#undef APIENTRY
 
 	// image loading
+	// (https://github.com/nothings/stb)
 	#include "stb_image.h"
+
+	// cute headers
+	// (https://github.com/RandyGaul/cute_headers)
+	#include "cute_c2.h"
 
 	// sound and music library
 	#include <bass.h>

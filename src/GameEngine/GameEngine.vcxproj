@@ -81,7 +81,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DRELEASE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;FINALRELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -166,9 +166,9 @@
     <ClCompile Include="bounds.cpp" />
     <ClCompile Include="cache_assets.cpp" />
     <ClCompile Include="asset_definition_file_cache.cpp" />
-    <ClCompile Include="component.cpp" />
+    <ClCompile Include="impl_cute_headers.cpp" />
+    <ClCompile Include="entity_component.cpp" />
     <ClCompile Include="datatypes.cpp" />
-    <ClCompile Include="entity_fx.cpp" />
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
@@ -197,7 +197,7 @@
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
-    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="impl_stb_image.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />
@@ -229,8 +229,7 @@
     <ClInclude Include="bounds.h" />
     <ClInclude Include="cache_assets.h" />
     <ClInclude Include="asset_definition_file_cache.h" />
-    <ClInclude Include="component.h" />
-    <ClInclude Include="entity_fx.h" />
+    <ClInclude Include="entity_component.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_mem.h" />
     <ClInclude Include="io_zip.h" />

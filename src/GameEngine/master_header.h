@@ -35,8 +35,7 @@
 #include "cache_assets.h"
 
 #include "bounds.h"
-#include "component.h"
-#include "entity_fx.h"
+#include "entity_component.h"
 #include "entity.h"
 #include "game_entities.h"
 
