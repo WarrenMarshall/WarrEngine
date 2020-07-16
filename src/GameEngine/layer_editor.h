@@ -5,9 +5,7 @@ struct layer_editor : w_layer
 	a_subtexture* selector_bracket = nullptr;
 	a_9slice_def* panel_slice_def = nullptr;
 
-	w_vec2 current_tile = w_vec2( 0.0f, 0.0f );
 	bool is_painting = false;
-	int current_tile_idx = 0;
 
 	void push() override;
 	void pop() override;

@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-w_component::w_component()
+w_entity_component::w_entity_component()
 	: i_transform()
 {
 	anim_offset = w_random::getf();
@@ -24,7 +24,7 @@ w_component::w_component()
 	- you are waiting for a sound effect to finish playing
 	- etc
 */
-bool w_component::is_fully_dead()
+bool w_entity_component::is_fully_dead()
 {
 	if( is_alive() )
 	{
@@ -34,7 +34,7 @@ bool w_component::is_fully_dead()
 	return true;
 }
 
-void w_component::update()
+void w_entity_component::update()
 {
 	if( is_dying() && is_fully_dead() )
 	{
@@ -45,18 +45,18 @@ void w_component::update()
 // ----------------------------------------------------------------------------
 
 c_sprite::c_sprite()
-	: w_component()
+	: w_entity_component()
 {
 	type = e_component_type::sprite;
 }
 
-w_component* c_sprite::init( const std::string& subtexture_name )
+w_entity_component* c_sprite::init( const std::string& subtexture_name )
 {
 	//img = std::make_unique<a_subtexture>( subtexture_name );
 	return this;
 }
 
-w_component* c_sprite::init( const std::string& subtexture_name, const w_rect& rc )
+w_entity_component* c_sprite::init( const std::string& subtexture_name, const w_rect& rc )
 {
 	//img = std::make_unique<a_subtexture>( image_name, rc );
 	return this;
@@ -75,12 +75,12 @@ void c_sprite::draw()
 // ----------------------------------------------------------------------------
 
 c_emitter::c_emitter()
-	: w_component()
+	: w_entity_component()
 {
 	type = e_component_type::emitter;
 }
 
-w_component* c_emitter::init( i_transform* parent_entity, const std::string& params_name )
+w_entity_component* c_emitter::init( i_transform* parent_entity, const std::string& params_name )
 {
 	this->parent_entity = parent_entity;
 
@@ -93,7 +93,7 @@ w_component* c_emitter::init( i_transform* parent_entity, const std::string& par
 
 bool c_emitter::is_fully_dead()
 {
-	if( w_component::is_fully_dead() )
+	if( w_entity_component::is_fully_dead() )
 	{
 		if( is_dying() && emitter->particle_pool->num_particles_alive == 0 )
 		{
@@ -150,12 +150,12 @@ void c_emitter::post_spawn()
 // ----------------------------------------------------------------------------
 
 c_sound::c_sound()
-	: w_component()
+	: w_entity_component()
 {
 	type = e_component_type::sound;
 }
 
-w_component* c_sound::init( const std::string& snd_name )
+w_entity_component* c_sound::init( const std::string& snd_name )
 {
 	snd = engine->get_asset<a_sound>( snd_name );
 

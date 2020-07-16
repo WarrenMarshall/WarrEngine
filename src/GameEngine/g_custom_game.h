@@ -25,10 +25,15 @@ struct w_world_room
 struct g_custom_game : w_game
 {
 	e_player* player = nullptr;
-	std::string viewport_caption = "";
 
 	int current_room = 0;
 	std::array<w_world_room, 10> rooms;
+
+	// edit mode specific
+	std::string viewport_caption = "";
+	w_vec2 current_tile = w_vec2( 0.0f, 0.0f );
+	int current_tile_idx = 0;
+	// edit mode specific
 
 	std::array<w_tile, static_cast<size_t>( 256 )> tile_masters;
 

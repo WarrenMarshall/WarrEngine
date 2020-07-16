@@ -4,7 +4,7 @@
 
 struct w_entity : i_lifecycle, i_transform
 {
-	std::vector<std::unique_ptr<w_component>> components;
+	std::vector<std::unique_ptr<w_entity_component>> components;
 
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	virtual bool can_be_deleted();

@@ -17,7 +17,6 @@ void layer_editor::push()
 void layer_editor::pop()
 {
 	engine->input_mgr->remove_listener( this );
-
 	engine->ui_mgr->set_mouse_visible( false );
 }
 
@@ -35,7 +34,7 @@ void layer_editor::draw()
 	MATRIX
 		->push_identity()
 		->translate( w_vec2( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ) ) )
-		->translate( w_vec2( ( current_tile.x * TILE_SZ ), -( current_tile.y * TILE_SZ ) ) );
+		->translate( w_vec2( ( game->current_tile.x * TILE_SZ ), -( game->current_tile.y * TILE_SZ ) ) );
 
 	RENDER
 		->begin()
@@ -60,7 +59,7 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		->draw_sprite( game->get_tile( current_tile_idx )->img, { 32,32 } )
+		->draw_sprite( game->get_tile( game->current_tile_idx )->img, { 32,32 } )
 		->end();
 
 	MATRIX->pop();
@@ -182,8 +181,8 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 					}
 					else
 					{
-						current_tile.x--;
-						current_tile.x = w_max( current_tile.x, 0 );
+						game->current_tile.x--;
+						game->current_tile.x = w_max( game->current_tile.x, 0 );
 					}
 				}
 				break;
@@ -197,23 +196,23 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 					}
 					else
 					{
-						current_tile.x++;
-						current_tile.x = w_min( current_tile.x, 18 );
+						game->current_tile.x++;
+						game->current_tile.x = w_min( game->current_tile.x, 18 );
 					}
 				}
 				break;
 
 				case e_input_id::keyboard_up:
 				{
-					current_tile.y--;
-					current_tile.y = w_max( current_tile.y, 0 );
+					game->current_tile.y--;
+					game->current_tile.y = w_max( game->current_tile.y, 0 );
 				}
 				break;
 
 				case e_input_id::keyboard_down:
 				{
-					current_tile.y++;
-					current_tile.y = w_min( current_tile.y, 8 );
+					game->current_tile.y++;
+					game->current_tile.y = w_min( game->current_tile.y, 8 );
 				}
 				break;
 
@@ -248,19 +247,19 @@ void layer_editor::set_current_tile_from_mouse_pos( float xpos, float ypos )
 	float tile_x = round(( xpos - tiles_x ) / (float)TILE_SZ);
 	float tile_y = round(( ypos - tiles_y ) / (float)TILE_SZ);
 
-	current_tile = w_vec2( round( tile_x ), round( tile_y ) );
-	current_tile.x = w_clamp( current_tile.x, 0, 18 );
-	current_tile.y = w_clamp( current_tile.y, 0, 8 );
+	game->current_tile = w_vec2( round( tile_x ), round( tile_y ) );
+	game->current_tile.x = w_clamp( game->current_tile.x, 0, 18 );
+	game->current_tile.y = w_clamp( game->current_tile.y, 0, 8 );
 }
 
 void layer_editor::paint_current_tile()
 {
-	int idx = static_cast<int>( ( current_tile.y * ROOM_W ) + current_tile.x );
-	game->rooms[ game->current_room ].tiles[ idx ] = current_tile_idx;
+	int idx = static_cast<int>( ( game->current_tile.y * ROOM_W ) + game->current_tile.x );
+	game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 }
 
 void layer_editor::set_current_tile_idx_from_current_tile()
 {
-	int idx = static_cast<int>( ( current_tile.y * ROOM_W ) + current_tile.x );
-	current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
+	int idx = static_cast<int>( ( game->current_tile.y * ROOM_W ) + game->current_tile.x );
+	game->current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
 }

@@ -41,7 +41,7 @@ struct w_bounds_circle;
 struct w_cache_asset_definition_files;
 struct w_cache_assets;
 struct w_color;
-struct w_component;
+struct w_entity_component;
 struct w_engine;
 struct w_entity;
 struct w_entity_cozy;
