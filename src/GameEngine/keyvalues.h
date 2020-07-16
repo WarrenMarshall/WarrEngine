@@ -8,5 +8,5 @@ struct w_keyvalues
 	std::map<std::string, std::string>* data();
 
 private:
-	std::map<std::string, std::string> _data;
+	std::map<std::string, std::string> _kv;
 };

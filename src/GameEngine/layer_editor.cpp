@@ -12,6 +12,12 @@ void layer_editor::push()
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 
 	engine->ui_mgr->set_mouse_visible( true );
+
+	tile_display_area.min = { 0, 32 };
+	tile_display_area.max = { v_window_w, 32 + ( TILE_SZ * 9 ) };
+
+	browse_button.min = { 0,0 };
+	browse_button.max = { 16,16 };
 }
 
 void layer_editor::pop()
@@ -46,6 +52,8 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
+	// current room
+
 	MATRIX
 		->push_identity()
 		->translate( { -84.0f, -68.0f } );
@@ -54,6 +62,9 @@ void layer_editor::draw()
 		->push_depth( 100.0f )
 		->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) )
 		->end();
+
+	// current tile
+
 
 	MATRIX->top()->translate( { -32, -22 } );
 	RENDER
@@ -115,8 +126,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 			{
 				case e_input_id::mouse:
 				{
-					// todo : these magic numbers should go into some sort of rect or consts somewhere
-					if( engine->input_mgr->mouse_vwindow_pos.y > 32 && engine->input_mgr->mouse_vwindow_pos.y < 32 + (TILE_SZ * 9) )
+					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, tile_display_area ) )
 					{
 						set_current_tile_from_mouse_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
 
@@ -150,6 +160,19 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 			switch( evt->input_id )
 			{
 				case e_input_id::mouse_button_left:
+				{
+					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, browse_button ) )
+					{
+						log_msg( "CLICK BROWSE BUTTON!" );
+					}
+					else if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, tile_display_area ) )
+					{
+						is_painting = true;
+						paint_current_tile();
+					}
+				}
+				break;
+
 				case e_input_id::keyboard_space:
 				{
 					is_painting = true;

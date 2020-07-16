@@ -166,13 +166,13 @@
     <ClCompile Include="bounds.cpp" />
     <ClCompile Include="cache_assets.cpp" />
     <ClCompile Include="asset_definition_file_cache.cpp" />
-    <ClCompile Include="impl_cute_headers.cpp" />
     <ClCompile Include="entity_component.cpp" />
     <ClCompile Include="datatypes.cpp" />
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_entities.cpp" />
+    <ClCompile Include="impl_cute_headers.cpp" />
     <ClCompile Include="layer_browser.cpp" />
     <ClCompile Include="master_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,5 +1,5 @@
 
 #include "master_pch.h"
 
-#define TINYC2_IMPL
+#define CUTE_C2_IMPLEMENTATION
 #include "cute_c2.h"

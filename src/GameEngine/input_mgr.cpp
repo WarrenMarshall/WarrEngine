@@ -75,6 +75,9 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	{
 		engine->input_mgr->mouse_vwindow_pos.x = vx;
 		engine->input_mgr->mouse_vwindow_pos.y = vy;
+
+		engine->input_mgr->c2_mouse_vpos.p = { engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y };
+		engine->input_mgr->c2_mouse_vpos.r = 1.0f;
 	}
 }
 
