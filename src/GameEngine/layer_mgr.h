@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_layer_mgr
+struct w_layer_mgr : i_listener
 {
 	/*
 		the layers are stored front-to-back
@@ -17,7 +17,10 @@ struct w_layer_mgr
 	void pop();
 	w_layer* get_top();
 
-	int get_opaque_index( e_opaque opaque_flags );
+	int get_topmost_opaque_idx();
 	void update();
 	void draw();
+
+	w_layer* find_topmost_input_listener();
+	void on_listener_event_received( e_event_id event, void* object ) override;
 };

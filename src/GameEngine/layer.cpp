@@ -14,3 +14,7 @@ e_opaque w_layer::get_opaque_flags()
 {
 	return e_opaque::input;
 }
+
+void w_layer::handle_input_event( const w_input_event* evt )
+{
+}

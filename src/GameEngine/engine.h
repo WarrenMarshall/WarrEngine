@@ -62,7 +62,7 @@ struct w_engine : i_listener
 	std::unique_ptr<w_opengl> opengl = nullptr;
 
 	std::thread t_refresh_reloadables;
-	std::atomic_bool exit_thread_sample = false;
+	std::atomic_bool exit_tw_refresh_reloadables = false;
 	
 	void on_listener_event_received( e_event_id event, void* object ) override;
 };

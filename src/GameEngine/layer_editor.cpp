@@ -6,8 +6,6 @@
 
 void layer_editor::push()
 {
-	engine->input_mgr->add_listener( this );
-
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 
@@ -16,13 +14,12 @@ void layer_editor::push()
 	tile_display_area.min = { 0, 32 };
 	tile_display_area.max = { v_window_w, 32 + ( TILE_SZ * 9 ) };
 
-	browse_button.min = { 0,0 };
-	browse_button.max = { 16,16 };
+	browse_button.min = { 20,196 };
+	browse_button.max = { 20+32,196+32 };
 }
 
 void layer_editor::pop()
 {
-	engine->input_mgr->remove_listener( this );
 	engine->ui_mgr->set_mouse_visible( false );
 }
 
@@ -113,12 +110,10 @@ void layer_editor::draw()
 	game->draw_entities();
 	MATRIX->pop();
 }
-
-void layer_editor::on_listener_event_received( e_event_id event, void* object )
+	
+void layer_editor::handle_input_event( const w_input_event* evt )
 {
-	const w_input_event* evt = static_cast<w_input_event*>( object );
-
-	switch( event )
+	switch( evt->event_id )
 	{
 		case e_event_id::input_motion:
 		{
@@ -163,7 +158,7 @@ void layer_editor::on_listener_event_received( e_event_id event, void* object )
 				{
 					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, browse_button ) )
 					{
-						log_msg( "CLICK BROWSE BUTTON!" );
+						engine->layer_mgr->push( std::make_unique<layer_browser>() );
 					}
 					else if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, tile_display_area ) )
 					{

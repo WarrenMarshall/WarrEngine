@@ -372,6 +372,7 @@ w_render* w_render::draw_stats()
 		stat_lines.emplace_back( s_format( "Layers : %d", engine->layer_mgr->layer_stack.size() ) );
 		stat_lines.emplace_back( s_format( "Entities : %s", s_commas( stats.num_entities.value, "%0.f" ).c_str() ) );
 		stat_lines.emplace_back( s_format( "Time Dilation: %.2f", engine->time->dilation ) );
+		stat_lines.emplace_back( s_format( "Mouse VPos: %.0f, %.0f", engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y ) );
 
 		if( stats.stat_custom_string.length() )
 		{

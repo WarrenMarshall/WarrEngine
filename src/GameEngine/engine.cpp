@@ -7,12 +7,11 @@ void tw_refresh_reloadables()
 	log_msg( "Worker thread starting : %s", __FUNCTION__ );
 
 #if !defined( FINALRELEASE )
-	while( !engine->exit_thread_sample )
+	while( !engine->exit_tw_refresh_reloadables )
 	{
 		for( auto& iter : engine->hot_reloadables )
 		{
 			{
-				//log_msg( "%s", iter->original_filename.c_str() );
 				std::scoped_lock lock( iter->mutex_last_write_time );
 				iter->last_write_time_on_disk = iter->retrieve_last_write_time_from_disk();
 			}
@@ -151,6 +150,8 @@ void w_engine::init()
 	opengl = std::make_unique<w_opengl>();
 
 	input_mgr->add_listener( this );
+	input_mgr->add_listener( layer_mgr.get() );
+	
 	w_random::seed();
 	fs->init();
 
@@ -164,11 +165,12 @@ void w_engine::init()
 
 void w_engine::deinit()
 {
-	// wait for threads to finish
-	exit_thread_sample = true;
-	t_refresh_reloadables.join();
-
 	input_mgr->remove_listener( this );
+	input_mgr->remove_listener( layer_mgr.get() );
+
+	// wait for threads to finish
+	exit_tw_refresh_reloadables = true;
+	t_refresh_reloadables.join();
 }
 
 void w_engine::draw()

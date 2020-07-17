@@ -77,7 +77,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 		engine->input_mgr->mouse_vwindow_pos.y = vy;
 
 		engine->input_mgr->c2_mouse_vpos.p = { engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y };
-		engine->input_mgr->c2_mouse_vpos.r = 1.0f;
+		engine->input_mgr->c2_mouse_vpos.r = 2.0f;	// gives the mouse a little play with the clicking zone
 	}
 }
 
@@ -87,10 +87,6 @@ w_game_controller::w_game_controller( int idx )
 	: idx( idx )
 {
 	timer_repeat = std::make_unique<w_timer>( 150 );
-}
-
-w_game_controller::~w_game_controller()
-{
 }
 
 void w_game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )

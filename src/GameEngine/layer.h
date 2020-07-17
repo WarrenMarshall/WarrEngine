@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_layer : i_listener, i_lifecycle
+struct w_layer : i_lifecycle
 {
 	w_layer();
 
@@ -34,4 +34,6 @@ struct w_layer : i_listener, i_lifecycle
 	virtual void update() {}
 	virtual void draw();
 	virtual e_opaque get_opaque_flags();
+
+	virtual void handle_input_event( const w_input_event* evt );
 };

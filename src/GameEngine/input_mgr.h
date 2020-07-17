@@ -41,7 +41,6 @@ struct w_game_controller
 	XINPUT_STATE xinput_state;
 
 	w_game_controller( int idx );
-	~w_game_controller();
 
 	void update_button_state( e_input_id input_id, int xinput_button_bit );
 	void update();

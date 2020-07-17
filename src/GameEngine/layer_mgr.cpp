@@ -83,7 +83,7 @@ void w_layer_mgr::update()
 	loops through the layer stack, front to back, and returns
 	the first layer index that is e_opaque::draw
 */
-int w_layer_mgr::get_opaque_index( e_opaque opaque_flags )
+int w_layer_mgr::get_topmost_opaque_idx()
 {
 	/*
 		drawing is a back-to-front sequence.
@@ -96,7 +96,7 @@ int w_layer_mgr::get_opaque_index( e_opaque opaque_flags )
 	{
 		opaque_index++;
 
-		if( (iter->get_opaque_flags() & opaque_flags) > 0 )
+		if( ( iter->get_opaque_flags() & e_opaque::draw ) > 0 )
 		{
 			break;
 		}
@@ -110,13 +110,30 @@ int w_layer_mgr::get_opaque_index( e_opaque opaque_flags )
 	return opaque_index;
 }
 
+w_layer* w_layer_mgr::find_topmost_input_listener()
+{
+	int opaque_index = -1;
+	for( auto& iter : layer_stack )
+	{
+		opaque_index++;
+
+		if( ( iter->get_opaque_flags() & e_opaque::input ) > 0 )
+		{
+			return iter.get();
+		}
+	}
+
+	// there are no layers currently active and listening for input
+	return nullptr;
+}
+
 /*
 	called once per frame to:
 		- let active layers draw
 */
 void w_layer_mgr::draw()
 {
-	int starting_layer_idx = get_opaque_index( e_opaque::draw );
+	int starting_layer_idx = get_topmost_opaque_idx();
 
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{
@@ -125,4 +142,17 @@ void w_layer_mgr::draw()
 			layer_stack[x]->draw();
 		}
 	}
+}
+
+void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
+{
+	w_layer* layer = find_topmost_input_listener();
+
+	if( !layer )
+	{
+		return;
+	}
+
+	const w_input_event* evt = static_cast<w_input_event*>( object );
+	layer->handle_input_event( evt );
 }
