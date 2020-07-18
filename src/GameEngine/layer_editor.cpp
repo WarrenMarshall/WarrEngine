@@ -67,7 +67,7 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		->draw_sprite( game->get_tile( game->current_tile_idx )->img, { 32,32 } )
+		->draw_sprite( game->get_tile( game->current_tile_idx )->subtexture, { 32,32 } )
 		->end();
 
 	MATRIX->pop();
@@ -104,10 +104,6 @@ void layer_editor::draw()
 			->end();
 		MATRIX->pop();
 	}
-	MATRIX->pop();
-
-	MATRIX->push();
-	game->draw_entities();
 	MATRIX->pop();
 }
 	

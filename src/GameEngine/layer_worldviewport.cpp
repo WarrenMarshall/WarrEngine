@@ -38,7 +38,7 @@ void layer_worldviewport::draw()
 		{
 			int idx = ( y * ROOM_W ) + x;
 
-			RENDER->draw( game->get_tile( game->rooms[game->current_room].tiles[ idx ] )->img );
+			RENDER->draw( game->get_tile( game->rooms[game->current_room].tiles[ idx ] )->subtexture );
 			MATRIX->top()->translate( w_vec2( TILE_SZ, 0 ) );
 		}
 		MATRIX->pop()

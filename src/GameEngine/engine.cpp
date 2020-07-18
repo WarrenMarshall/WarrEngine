@@ -175,8 +175,6 @@ void w_engine::deinit()
 
 void w_engine::draw()
 {
-	engine->layer_mgr->draw();
-
 	// If engine is paused, draw a border around the screen for visibility
 
 	if( is_paused )
@@ -227,9 +225,6 @@ void w_engine::draw()
 		render->end();
 		opengl->pop();
 	}
-
-	// UI code that needs to draw last
-	ui_mgr->draw_top_level();
 }
 
 void w_engine::update()

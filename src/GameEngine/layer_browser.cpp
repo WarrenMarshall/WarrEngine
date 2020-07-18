@@ -18,16 +18,9 @@ void layer_browser::becoming_top_layer()
 	game->viewport_caption = "Select A Tile";
 }
 
-e_opaque layer_browser::get_opaque_flags()
-{
-	return e_opaque::input;
-}
-
 void layer_browser::draw()
 {
 	w_layer::draw();
-
-	game->draw_entities();
 
 	MATRIX
 		->push_identity()

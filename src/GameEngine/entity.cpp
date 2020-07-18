@@ -34,14 +34,6 @@ void w_entity::draw_components()
 	}
 }
 
-void w_entity::draw()
-{
-	// custom drawing code that entities might want to do
-	//
-	// entity can assume that it's transform has been applied
-	// and that drawing is taking place at the modelview origin
-}
-
 // let's components do anything that need to do after the entity
 // is fully spawned.
 //

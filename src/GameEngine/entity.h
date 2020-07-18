@@ -27,7 +27,6 @@ struct w_entity : i_lifecycle, i_transform
 	virtual bool bounds_contains_point( w_vec2 pos_to_check );
 	virtual void update();
 	virtual void draw_components();
-	virtual void draw();
 	virtual void post_spawn();
 
 	template<typename T> T* add_component()

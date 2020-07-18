@@ -42,7 +42,6 @@ void w_game::draw_entities()
 			->add_transform( *iter );
 
 		iter->draw_components();
-		iter->draw();
 
 		MATRIX->pop();
 

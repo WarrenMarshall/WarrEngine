@@ -5,7 +5,7 @@
 struct w_particle_emitter : i_listener, i_transform
 {
 	a_emitter_params* params = nullptr;
-	c_emitter* parent_component = nullptr;
+	ec_emitter* parent_component = nullptr;
 	std::unique_ptr<w_particle_pool> particle_pool = nullptr;
 
 	// how many particles from this emitter are allowed to 

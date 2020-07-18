@@ -286,7 +286,7 @@ void w_render::end_frame()
 
 	for( const auto& iter : engine->asset_cache->cache )
 	{
-		iter.second->draw( e_render_pass::opaque );
+		iter.second->draw( e_render_pass::solid );
 	}
 
 	for( const auto& iter : engine->asset_cache->cache )

@@ -44,43 +44,37 @@ void w_entity_component::update()
 
 // ----------------------------------------------------------------------------
 
-c_sprite::c_sprite()
+ec_sprite::ec_sprite()
 	: w_entity_component()
 {
 	type = e_component_type::sprite;
 }
 
-w_entity_component* c_sprite::init( const std::string& subtexture_name )
+w_entity_component* ec_sprite::init( a_subtexture* subtexture )
 {
-	//img = std::make_unique<a_subtexture>( subtexture_name );
+	this->subtexture = subtexture;
 	return this;
 }
 
-w_entity_component* c_sprite::init( const std::string& subtexture_name, const w_rect& rc )
-{
-	//img = std::make_unique<a_subtexture>( image_name, rc );
-	return this;
-}
-
-void c_sprite::draw()
+void ec_sprite::draw()
 {
 	if( is_dead() )
 	{
 		return;
 	}
 
-	RENDER->draw_sprite( img );
+	RENDER->draw_sprite( subtexture );
 }
 
 // ----------------------------------------------------------------------------
 
-c_emitter::c_emitter()
+ec_emitter::ec_emitter()
 	: w_entity_component()
 {
 	type = e_component_type::emitter;
 }
 
-w_entity_component* c_emitter::init( i_transform* parent_entity, const std::string& params_name )
+w_entity_component* ec_emitter::init( i_transform* parent_entity, const std::string& params_name )
 {
 	this->parent_entity = parent_entity;
 
@@ -91,7 +85,7 @@ w_entity_component* c_emitter::init( i_transform* parent_entity, const std::stri
 	return this;
 }
 
-bool c_emitter::is_fully_dead()
+bool ec_emitter::is_fully_dead()
 {
 	if( w_entity_component::is_fully_dead() )
 	{
@@ -104,7 +98,7 @@ bool c_emitter::is_fully_dead()
 	return false;
 }
 
-void c_emitter::draw()
+void ec_emitter::draw()
 {
 	if( is_dead() )
 	{
@@ -120,7 +114,7 @@ void c_emitter::draw()
 		->pop();
 }
 
-void c_emitter::update()
+void ec_emitter::update()
 {
 	if( is_dead() )
 	{
@@ -132,7 +126,7 @@ void c_emitter::update()
 	emitter->pos = parent_entity->pos;
 }
 
-void c_emitter::set_life_cycle( e_lifecycle lifecycle )
+void ec_emitter::set_life_cycle( e_lifecycle lifecycle )
 {
 	i_lifecycle::set_life_cycle( lifecycle );
 
@@ -142,20 +136,20 @@ void c_emitter::set_life_cycle( e_lifecycle lifecycle )
 	}
 }
 
-void c_emitter::post_spawn()
+void ec_emitter::post_spawn()
 {
 	emitter->post_spawn();
 }
 
 // ----------------------------------------------------------------------------
 
-c_sound::c_sound()
+ec_sound::ec_sound()
 	: w_entity_component()
 {
 	type = e_component_type::sound;
 }
 
-w_entity_component* c_sound::init( const std::string& snd_name )
+w_entity_component* ec_sound::init( const std::string& snd_name )
 {
 	snd = engine->get_asset<a_sound>( snd_name );
 
@@ -163,7 +157,7 @@ w_entity_component* c_sound::init( const std::string& snd_name )
 
 }
 
-void c_sound::draw()
+void ec_sound::draw()
 {
 	if( snd )
 	{

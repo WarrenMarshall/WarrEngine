@@ -214,15 +214,6 @@ enum struct e_event_id : int
 
 // ----------------------------------------------------------------------------
 
-enum struct e_opaque : int
-{
-	draw = 1,
-	input = 2
-};
-DEFINE_ENUM_FLAG_OPERATOR( e_opaque )
-
-// ----------------------------------------------------------------------------
-
 enum struct e_tween_type : int
 {
 	linear = 1,		// value iterates from start to end, once
@@ -262,7 +253,7 @@ enum struct e_opengl_blend : unsigned int
 
 enum struct e_render_pass : int
 {
-	opaque = 0,
+	solid = 0,
 	transparent
 };
 

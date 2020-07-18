@@ -7,26 +7,8 @@
 e_player::e_player()
 	: w_entity()
 {
-	auto c = add_component<c_sprite>();
-	add_component<c_emitter>()->init( this, "emitter_debug" );
-	c->img = game->tile_masters[ 31 ].img;
-
-	// can we define a subtexture within a texture as a resource?
-	//
-
-	//draw_bounds = true;
-}
-
-void e_player::draw()
-{
-	w_entity::draw();
-
-	RENDER
-		->begin()
-		->push_depth( 700 )
-		->push_color( W_COLOR_GREEN )
-		->draw_circle( w_vec2::zero, 8 )
-		->end();
+	add_component<ec_sprite>()->init( game->tile_masters[ 31 ].subtexture );
+	add_component<ec_emitter>()->init( this, "emitter_debug" );
 }
 
 // ----------------------------------------------------------------------------
@@ -34,6 +16,6 @@ void e_player::draw()
 e_vfx_asteroid_hit::e_vfx_asteroid_hit()
 	: w_entity_cozy()
 {
-	add_component<c_emitter>()->init( this, "fireball_hit" );
-	add_component<c_sound>()->init( "player_hit" );
+	add_component<ec_emitter>()->init( this, "fireball_hit" );
+	add_component<ec_sound>()->init( "player_hit" );
 }

@@ -58,6 +58,7 @@ w_layer* w_layer_mgr::get_top()
 
 void w_layer_mgr::update()
 {
+	// remove any dead layers
 	for( auto iter = layer_stack.begin(); iter != layer_stack.end(); iter++ )
 	{
 		if( ( *iter )->is_dead() )
@@ -66,74 +67,35 @@ void w_layer_mgr::update()
 		}
 	}
 
+	// update the living layers
 	for( auto& iter : layer_stack )
 	{
 		iter->update();
-
-		// If this layer is completely opaque, don't bother updating the
-		// layers below it - they are not visible
-		if( ( iter->get_opaque_flags() & e_opaque::draw ) > 0 )
-		{
-			break;
-		}
 	}
-}
-
-/*
-	loops through the layer stack, front to back, and returns
-	the first layer index that is e_opaque::draw
-*/
-int w_layer_mgr::get_topmost_opaque_idx()
-{
-	/*
-		drawing is a back-to-front sequence.
-
-		1. iterate forwards in the stack until an opaque layer is found
-		2. iterate backwards from there until back at the start of the stack
-	*/
-	int opaque_index = -1;
-	for( const auto& iter : layer_stack )
-	{
-		opaque_index++;
-
-		if( ( iter->get_opaque_flags() & e_opaque::draw ) > 0 )
-		{
-			break;
-		}
-	}
-
-#if _DEBUG
-	if( opaque_index == -1 )
-		log_error( "layer_mgr::draw : no opaque layers found!" );
-#endif
-
-	return opaque_index;
 }
 
 w_layer* w_layer_mgr::find_topmost_input_listener()
 {
-	int opaque_index = -1;
-	for( auto& iter : layer_stack )
-	{
-		opaque_index++;
-
-		if( ( iter->get_opaque_flags() & e_opaque::input ) > 0 )
-		{
-			return iter.get();
-		}
-	}
-
-	// there are no layers currently active and listening for input
 	return nullptr;
 }
 
-/*
-	called once per frame to:
-		- let active layers draw
-*/
 void w_layer_mgr::draw()
 {
-	int starting_layer_idx = get_topmost_opaque_idx();
+	// Locate the first completely solid layer, starting at the top
+	// and moving backward.
+
+	int starting_layer_idx = 0;
+	for( const auto& iter : layer_stack )
+	{
+		if( iter->draws_completely_solid )
+		{
+			break;
+		}
+
+		starting_layer_idx++;
+	}
+
+	// then draw that layer and every layer above it
 
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{

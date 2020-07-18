@@ -185,6 +185,9 @@ int main( int argc, char* argv[] )
 
 			RENDER->begin_frame( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
 			{
+				engine->layer_mgr->draw();
+				game->draw_entities();
+				engine->ui_mgr->draw_top_level();
 				engine->draw();
 			}
 			RENDER->end_frame();
