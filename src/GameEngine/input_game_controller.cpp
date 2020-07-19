@@ -9,9 +9,10 @@ w_game_controller::w_game_controller( int idx )
 
 void w_game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )
 {
-	bool last_state = engine->input_mgr->button_states[static_cast<int>( input_id )];
+	bool last_state = engine->input_mgr->button_states[ static_cast<int>( input_id ) ] == e_button_state::pressed;
 	bool current_state = (xinput_state.Gamepad.wButtons & xinput_button_bit) > 0;
-	engine->input_mgr->button_states[static_cast<int>( input_id )] = current_state;
+
+	engine->input_mgr->button_states[static_cast<int>( input_id )] = current_state ? e_button_state::pressed : e_button_state::released;
 
 	if( !last_state && current_state )
 	{

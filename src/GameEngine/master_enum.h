@@ -292,3 +292,14 @@ enum struct e_ui_id : int
 	browse,
 	max
 };
+
+// ----------------------------------------------------------------------------
+
+enum struct e_button_state : int
+{
+	invalid = 0,
+	pressed,
+	held,
+	released,
+	max
+};

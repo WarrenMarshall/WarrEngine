@@ -50,40 +50,46 @@ bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc 
 {
 	bool result = false;
 
-	if( id == active )
+	bool button_is_down = engine->input_mgr->is_button_down( e_input_id::mouse_button_left );
+
+	if( button_is_down )
 	{
-		if( !engine->input_mgr->is_button_down( e_input_id::mouse_button_left ) )
+		if( is_mouse_inside( rc ) )
 		{
-			if( id == hot )
+			if( hover_id == id )
+			{
+				clicked_id = id;
+			}
+		}
+	}
+	else
+	{
+		if( is_mouse_inside( rc ) )
+		{
+			if( clicked_id == id && hover_id == id )
 			{
 				result = true;
+				clicked_id = e_ui_id::invalid;
 			}
-			active = e_ui_id::invalid;
-		}
-	}
-	else if( id == hot )
-	{
-		if( engine->input_mgr->is_button_down( e_input_id::mouse_button_left ) )
-		{
-			active = id;
-		}
-	}
 
-	if( active == e_ui_id::invalid && is_mouse_inside( rc ) )
-	{
-		hot = id;
+			hover_id = id;
+		}
+		else
+		{
+			hover_id = clicked_id = e_ui_id::invalid;
+		}
 	}
 
 	// ----------------------------------------------------------------------------
 
 	w_color color = W_COLOR_DARK_GREY;
-	if( hot == id )
+	if( hover_id == id )
 	{
-		color = W_COLOR_RED;
+		color = W_COLOR_GREY;
 	}
-	if( active == id )
+	if( clicked_id == id )
 	{
-		color = W_COLOR_YELLOW;
+		color = W_COLOR_LIGHT_GREY;
 	}
 
 	MATRIX

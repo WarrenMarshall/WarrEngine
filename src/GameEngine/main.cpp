@@ -140,6 +140,12 @@ int main( int argc, char* argv[] )
 		while( engine->is_running )
 		{
 			/*
+				event processing
+			*/
+			// #todo - this magic value is arbitrary. is this ok or do we need to do something fancier?
+			glfwWaitEventsTimeout( 0.001 );
+
+			/*
 				update core engine stuff - time, timers, etc
 			*/
 
@@ -191,12 +197,6 @@ int main( int argc, char* argv[] )
 				engine->draw();
 			}
 			RENDER->end_frame();
-
-			/*
-				event processing
-			*/
-			// #todo - this magic value is arbitrary. is this ok or do we need to do something fancier?
-			glfwWaitEventsTimeout( 0.001 );
 		}
 
 		// Clean up

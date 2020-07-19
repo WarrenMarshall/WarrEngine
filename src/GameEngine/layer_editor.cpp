@@ -108,7 +108,7 @@ void layer_editor::draw()
 	// ----------------------------------------------------------------------------
 	// IMGUI
 
-	engine->ui_mgr->hot = e_ui_id::invalid;
+	//engine->ui_mgr->hover_id = e_ui_id::invalid;
 
 	MATRIX	->push_identity()
 			->translate( { -v_window_hw, v_window_hh } );

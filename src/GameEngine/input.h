@@ -22,9 +22,13 @@ struct w_input_event
 
 // ----------------------------------------------------------------------------
 
-struct w_input_mgr : i_speaker
+struct w_input : i_speaker
 {
+	// a way to map GLFW input codes to our internal codes
 	std::map<int, e_input_id> glfw_codes;
+
+	// holds onto generated input events until the update
+	// function can send them to anyone listening
 	std::vector<w_input_event> event_queue;
 
 	// tracks the mouse movement delta since the last call to Update()
@@ -48,12 +52,7 @@ struct w_input_mgr : i_speaker
 	*/
 	bool game_controller_being_used = false;
 
-	// 0 = unpressed
-	// 1 = pressed
-	// 2 = held
-	// 3 = released
-
-	std::array<int, (int)e_input_id::max> button_states;
+	std::array<e_button_state, (int)e_input_id::max> button_states;
 
 	bool is_button_down( e_input_id input_id );
 	w_vec2 axis_value_of( e_input_id button );

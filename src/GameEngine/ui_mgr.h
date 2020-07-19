@@ -7,10 +7,10 @@ struct w_ui_mgr
 	bool visible = false;
 
 	// which UI control the mouse is hovering over
-	e_ui_id hot = e_ui_id::invalid;
+	e_ui_id hover_id = e_ui_id::invalid;
 
 	// a hot id is one the user has clicked the mouse on but hasn't unclicked yet
-	e_ui_id active = e_ui_id::invalid;
+	e_ui_id clicked_id = e_ui_id::invalid;
 
 	void init( const std::string& mouse_cursor_name );
 	void set_mouse_visible( bool visible );

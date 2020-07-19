@@ -36,7 +36,24 @@ void key_callback( GLFWwindow* window, int key, int scancode, int action, int mo
 	evt.shift_down = ( mods & GLFW_MOD_SHIFT );
 	evt.ctrl_down = ( mods & GLFW_MOD_CONTROL );
 
-	engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ] = pressed;
+	e_button_state& button_state = engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ];
+
+	if( action == GLFW_PRESS )
+	{
+		log_msg( "PRESSED" );
+		button_state = e_button_state::pressed;
+	}
+	else if( action == GLFW_REPEAT )
+	{
+		log_msg( "HELD" );
+		button_state = e_button_state::held;
+	}
+	else
+	{
+		log_msg( "RELEASED" );
+		button_state = e_button_state::released;
+	}
+
 	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 }
 
@@ -52,7 +69,24 @@ void mouse_button_callback( GLFWwindow* window, int button, int action, int mods
 	evt.shift_down = ( mods & GLFW_MOD_SHIFT );
 	evt.ctrl_down = ( mods & GLFW_MOD_CONTROL );
 
-	engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ] = pressed;
+	e_button_state& button_state = engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ];
+
+	if( action == GLFW_PRESS )
+	{
+		log_msg( "PRESSED" );
+		button_state = e_button_state::pressed;
+	}
+	else if( action == GLFW_REPEAT )
+	{
+		log_msg( "HELD" );
+		button_state = e_button_state::held;
+	}
+	else
+	{
+		log_msg( "RELEASE" );
+		button_state = e_button_state::released;
+	}
+
 	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 }
 
@@ -83,7 +117,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 // ----------------------------------------------------------------------------
 
-void w_input_mgr::init()
+void w_input::init()
 {
 	// look for an attached xbox controller
 
@@ -104,7 +138,7 @@ void w_input_mgr::init()
 
 	for( int x = 0; x < static_cast<int>( e_input_id::max ); ++x )
 	{
-		button_states[x] = false;
+		button_states[x] = e_button_state::released;
 	}
 
 	glfw_codes.insert( std::make_pair( GLFW_KEY_ESCAPE, e_input_id::keyboard_esc ) );
@@ -174,12 +208,12 @@ void w_input_mgr::init()
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, e_input_id::mouse_button_right ) );
 }
 
-void w_input_mgr::deinit()
+void w_input::deinit()
 {
 	game_controller = nullptr;
 }
 
-void w_input_mgr::update()
+void w_input::update()
 {
 	// mouse motion
 	//
@@ -215,7 +249,7 @@ void w_input_mgr::update()
 	}
 }
 
-void w_input_mgr::play_rumble( e_rumble_effect effect )
+void w_input::play_rumble( e_rumble_effect effect )
 {
 	if( !game_controller || !game_controller->is_being_used )
 	{
@@ -253,9 +287,9 @@ void w_input_mgr::play_rumble( e_rumble_effect effect )
 	game_controller->play_rumble( intensity, duration_ms );
 }
 
-bool w_input_mgr::is_button_down( e_input_id input_id )
+bool w_input::is_button_down( e_input_id input_id )
 {
-	return button_states[static_cast<int>( input_id )] == GLFW_PRESS;
+	return button_states[static_cast<int>( input_id )] != e_button_state::released;
 }
 
 /*
@@ -265,7 +299,7 @@ bool w_input_mgr::is_button_down( e_input_id input_id )
 */
 
 static float controller_dead_zone = 0.15f;
-w_vec2 w_input_mgr::axis_value_of( e_input_id input_id )
+w_vec2 w_input::axis_value_of( e_input_id input_id )
 {
 	if( !game_controller || !game_controller->is_being_used )
 	{

@@ -51,7 +51,7 @@ struct w_font_char;
 struct w_game;
 struct w_game_controller;
 struct w_input_event;
-struct w_input_mgr;
+struct w_input;
 struct w_io_zip;
 struct w_keyframe;
 struct w_keyvalues;

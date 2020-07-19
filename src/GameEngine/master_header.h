@@ -20,7 +20,7 @@
 #include "asset.h"
 #include "asset_types.h"
 #include "input_game_controller.h"
-#include "input_mgr.h"
+#include "input.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
 #include "ui_mgr.h"

@@ -143,7 +143,7 @@ void w_engine::init()
 	layer_mgr = std::make_unique<w_layer_mgr>();
 	window = std::make_unique<w_window>();
 	render = std::make_unique<w_render>();
-	input_mgr = std::make_unique<w_input_mgr>();
+	input_mgr = std::make_unique<w_input>();
 	ui_mgr = std::make_unique<w_ui_mgr>();
 	fs = std::make_unique<w_file_system>();
 	shader = std::make_unique<w_shader>();

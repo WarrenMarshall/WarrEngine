@@ -181,7 +181,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="g_custom_game.cpp" />
-    <ClCompile Include="input_mgr.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="io_zip.cpp" />
     <ClCompile Include="i_lifecycle.cpp" />
     <ClCompile Include="i_speaker.cpp" />
@@ -242,7 +242,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="game_entities.h" />
     <ClInclude Include="g_custom_game.h" />
-    <ClInclude Include="input_mgr.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="i_lifecycle.h" />
     <ClInclude Include="i_speaker.h" />
     <ClInclude Include="i_listener.h" />
