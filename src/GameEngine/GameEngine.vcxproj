@@ -173,6 +173,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_entities.cpp" />
     <ClCompile Include="impl_cute_headers.cpp" />
+    <ClCompile Include="input_game_controller.cpp" />
     <ClCompile Include="layer_browser.cpp" />
     <ClCompile Include="master_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -232,6 +233,7 @@
     <ClInclude Include="entity_component.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="input_game_controller.h" />
     <ClInclude Include="io_zip.h" />
     <ClInclude Include="i_transform.h" />
     <ClInclude Include="layer_browser.h" />
