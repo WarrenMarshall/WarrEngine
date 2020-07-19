@@ -150,15 +150,15 @@ void w_render::end()
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-w_render* w_render::draw_sprite( a_texture* tex, const w_sz& sz )
+w_render* w_render::draw_sprite( a_texture* tex, const w_rect& dst )
 {
-	return draw_sprite( tex->get_subtexture(), sz );
+	return draw_sprite( tex->get_subtexture(), dst );
 }
 
-w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_sz & sz )
+w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_rect& dst )
 {
-	float w = ( sz.w == -1 ) ? subtex->sz.w : sz.w;
-	float h = ( sz.h == -1 ) ? subtex->sz.h : sz.h;
+	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
+	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 	
 	float rs_scale = rs_scale_stack.top();
 
@@ -171,12 +171,14 @@ w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_sz & sz )
 	w_color rs_color = rs_color_stack.top();
 	rs_color.a = rs_alpha_stack.top();
 
-	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
-	w_render_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
-	w_render_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
-	w_render_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
+	w_render_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
+	w_render_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
+	MATRIX->push()->translate( { dst.x, dst.y } );
 	subtex->tex->render_buffer->add_quad( v0, v1, v2, v3 );
+	MATRIX->pop();
 
 	return this;
 }
@@ -611,7 +613,7 @@ void w_render::init_projection() const
 
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
-		0, v_window_w, -v_window_h, 0,
+		0, v_window_w, v_window_h, 0,
 		-1000.0f, 1000.0f );
 
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
@@ -619,7 +621,7 @@ void w_render::init_projection() const
 	// VIEW MATRIX (getting stuff into camera space from worldspace)
 
 	glm::mat4 view = glm::mat4( 1.0f );
-	view = glm::translate( view, glm::vec3( v_window_hw, -v_window_hh, 0.0f ) );
+	//view = glm::translate( view, glm::vec3( 0, 0, 0.0f ) );
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 
 	engine->shader->unbind();

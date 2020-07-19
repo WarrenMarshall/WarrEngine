@@ -21,7 +21,7 @@ void layer_worldviewport::draw()
 		->begin()
 		->push_depth( -900 )
 		->push_color( w_color( 0.2f, 0.2f, 0.2f ) )
-		->draw_sprite( engine->white_solid, w_sz( v_window_w, v_window_h ) )
+		//->draw_sprite( engine->white_solid, w_sz( v_window_w, v_window_h ) )
 		->end();
 	MATRIX->pop();
 }

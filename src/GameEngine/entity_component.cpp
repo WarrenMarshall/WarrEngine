@@ -63,7 +63,7 @@ void ec_sprite::draw()
 		return;
 	}
 
-	RENDER->draw_sprite( subtexture );
+	//RENDER->draw_sprite( subtexture );
 }
 
 // ----------------------------------------------------------------------------

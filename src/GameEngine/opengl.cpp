@@ -42,7 +42,8 @@ void w_opengl::init() const
 #ifdef _DEBUG
 	// in debug mode, use a shader that colors backfacing triangles in red and disables culling
 	glDisable( GL_CULL_FACE );
-	engine->shader->create_and_compile( "simple", "simple_debug" );
+	//engine->shader->create_and_compile( "simple", "simple_debug" );
+	engine->shader->create_and_compile( "simple", "simple" );
 #else
 	// in release mode, use a more optimal shader and turn on backface culling
 	glEnable( GL_CULL_FACE );

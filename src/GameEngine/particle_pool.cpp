@@ -59,7 +59,7 @@ void w_particle_pool::draw()
 				->begin()
 				->push_color( color )
 				->push_alpha( color.a )
-				->draw_sprite( iter.tex->get_subtexture() )
+				//->draw_sprite( iter.tex->get_subtexture() )
 				->end();
 
 			MATRIX->pop();
