@@ -290,6 +290,7 @@ CUTE_C2_API int c2CircletoPoly(c2Circle A, const c2Poly* B, const c2x* bx);
 CUTE_C2_API int c2AABBtoPoly(c2AABB A, const c2Poly* B, const c2x* bx);
 CUTE_C2_API int c2CapsuletoPoly(c2Capsule A, const c2Poly* B, const c2x* bx);
 CUTE_C2_API int c2PolytoPoly(const c2Poly* A, const c2x* ax, const c2Poly* B, const c2x* bx);
+CUTE_C2_API int c2AABBtoPoint( c2AABB A, c2v B );
 
 // ray operations
 // output is placed into the c2Raycast struct, which represents the hit location

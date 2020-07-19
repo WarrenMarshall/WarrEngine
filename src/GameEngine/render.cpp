@@ -186,15 +186,15 @@ w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_rect& dst 
 /*
 	draws a texture onto a quad.
 */
-w_render* w_render::draw( a_texture* tex, const w_sz& sz )
+w_render* w_render::draw( a_texture* tex, const w_rect& dst )
 {
-	return draw( tex->get_subtexture(), sz );
+	return draw( tex->get_subtexture(), dst );
 }
 
-w_render* w_render::draw( const a_subtexture* subtex, const w_sz& sz )
+w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
-	float w = ( sz.w == -1 ) ? subtex->sz.w : sz.w;
-	float h = ( sz.h == -1 ) ? subtex->sz.h : sz.h;
+	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
+	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 
 	float rs_scale = rs_scale_stack.top();
 
@@ -204,12 +204,14 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_sz& sz )
 	w_color rs_color = rs_color_stack.top();
 	rs_color.a = rs_alpha_stack.top();
 
-	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
-	w_render_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
-	w_render_vert v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
-	w_render_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
+	w_render_vert v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
+	w_render_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
+	MATRIX->push()->translate( { dst.x, dst.y } );
 	subtex->tex->render_buffer->add_quad( v0, v1, v2, v3 );
+	MATRIX->pop();
 
 	return this;
 }
@@ -217,7 +219,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_sz& sz )
 /*
 	draws a string from a bitmap font, char by char
 */
-w_render* w_render::draw_string( a_font* font, const std::string& text )
+w_render* w_render::draw_string( a_font* font, const std::string& text, const w_rect& dst )
 {
 	e_align rs_align = rs_align_stack.top();
 
@@ -237,7 +239,7 @@ w_render* w_render::draw_string( a_font* font, const std::string& text )
 
 	if( (rs_align & e_align::vcenter) > 0 )
 	{
-		alignment_pos_adjustment.y += font->font_def->max_height / 2.0f;
+		alignment_pos_adjustment.y -= font->font_def->max_height / 2.0f;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -250,6 +252,9 @@ w_render* w_render::draw_string( a_font* font, const std::string& text )
 
 	w_matrix* mtx = MATRIX->top();
 
+	float xpos = dst.x;
+	float ypos = dst.y;
+
 	for( const auto& iter : text )
 	{
 		fch = &( font->font_def->char_map[ iter ] );
@@ -257,17 +262,15 @@ w_render* w_render::draw_string( a_font* font, const std::string& text )
 		// small optimization to skip drawing completely blank characters
 		if( fch->w > 0 )
 		{
-			mtx->translate( { fch->xoffset, -( fch->h + fch->yoffset ) } );
-
 			draw(
 				fch->img.get(),
-				w_vec2( fch->w, fch->h )
+				w_rect( xpos, ypos + fch->yoffset )
 			);
 
-			mtx->translate( { -fch->xoffset, ( fch->h + fch->yoffset ) } );
+			xpos += fch->xoffset;
 		}
 
-		mtx->translate( { fch->xadvance, 0.0f } );
+		xpos += fch->xadvance;
 	}
 
 	MATRIX->pop();
@@ -407,25 +410,25 @@ w_render* w_render::draw_stats()
 		MATRIX->push_identity();
 
 		RENDER->begin()
-			->push_color( w_color( .25f, .25f, .25f ) )
+			->push_color( w_color( .55f, .25f, .25f ) )
 			->push_alpha( 0.75f )
 			->push_depth( 999.0f )
-			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font_max_height * stat_lines.size() ) ) )
+			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->end();
 
 		MATRIX->pop();
 
-		MATRIX->push_identity()
-			->translate( w_vec2( 0.0f, v_window_hh ) );
+		MATRIX->push_identity();
 		RENDER->begin()
 			->push_depth( 1000.0f )
 			->push_color( W_COLOR_WHITE )
 			->push_align( e_align::hcenter );
 
+		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( engine->ui_mgr->ui_font, iter.c_str() );
-			MATRIX->top()->translate( w_vec2( 0, -font_max_height ) );
+			RENDER->draw_string( engine->ui_mgr->ui_font, iter.c_str(), w_rect(v_window_hw, ypos) );
+			ypos += font_max_height;
 		}
 
 		RENDER->end();
@@ -436,12 +439,11 @@ w_render* w_render::draw_stats()
 	#if !defined(FINALRELEASE)
 		std::string fps_stats( s_format( "%s FPS", s_commas( (int)stats.num_frames_rendered.value, "%d" ).c_str() ) );
 
-		MATRIX->push()
-			->translate( { v_window_hw, v_window_hh } );
+		MATRIX->push();
 		RENDER->begin()
 			->push_depth( 1000.0f )
 			->push_align( e_align::right )
-			->draw_string( engine->ui_mgr->ui_font, fps_stats )
+			->draw_string( engine->ui_mgr->ui_font, fps_stats, w_rect( v_window_w, 0 ) )
 			->end();
 		MATRIX->pop();
 	#endif
@@ -450,28 +452,28 @@ w_render* w_render::draw_stats()
 	return this;
 }
 
-w_render* w_render::draw_filled_rectangle( const w_vec2& start, const w_vec2& end )
+w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
 	w_color rs_color = rs_color_stack.top();
 	rs_color.a = rs_alpha_stack.top();
 
 	w_render_vert v0(
-		w_vec2( start.x, start.y ),
+		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
 		rs_color
 	);
 	w_render_vert v1(
-		w_vec2( end.x, start.y ),
+		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
 		rs_color
 	);
 	w_render_vert v2(
-		w_vec2( end.x, end.y ),
+		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
 		rs_color
 	);
 	w_render_vert v3(
-		w_vec2( start.x, end.y ),
+		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
 		rs_color
 	);
@@ -483,16 +485,16 @@ w_render* w_render::draw_filled_rectangle( const w_vec2& start, const w_vec2& en
 
 // draws an empty rectangle
 
-w_render* w_render::draw_rectangle( const w_rect& rc_dst )
+w_render* w_render::draw_rectangle( const w_rect& dst )
 {
 	w_bbox box;
 	box.add( w_vec2(
-		static_cast<float>( rc_dst.x ),
-		static_cast<float>( rc_dst.y ) )
+		static_cast<float>( dst.x ),
+		static_cast<float>( dst.y ) )
 	);
 	box.add( w_vec2(
-		static_cast<float>( rc_dst.x + rc_dst.w ),
-		static_cast<float>( rc_dst.y + rc_dst.h ) )
+		static_cast<float>( dst.x + dst.w ),
+		static_cast<float>( dst.y + dst.h ) )
 	);
 
 	draw_line( w_vec2( box.min.x, box.min.y ), w_vec2( box.max.x, box.min.y ) );
@@ -542,7 +544,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	return this;
 }
 
-w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_sz& sz )
+w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )
 {
 	w_matrix* mtx = nullptr;
 
@@ -558,45 +560,41 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_sz& sz )
 
 	// nudge the rendering matrix down the height of the top row of subtextures. this
 	// allows us to think of the top/left of this window as the actual graphical top/left.
-	MATRIX->push()->translate( w_vec2( 0.0f, -p_00->sz.h ) );
+	//MATRIX->push()->translate( w_vec2( 0.0f, -p_00->sz.h ) );
 
-	float inner_w = sz.w - p_00->sz.w - p_20->sz.w;
-	float inner_h = sz.h - p_00->sz.h - p_02->sz.h;
+	float xpos = dst.x;
+	float ypos = dst.y;
+
+	float inner_w = dst.w - p_00->sz.w - p_20->sz.w;
+	float inner_h = dst.h - p_00->sz.h - p_02->sz.h;
 
 	// top row
 
-	mtx = MATRIX->push();
-	draw( p_00, w_sz( p_00->sz.w, p_00->sz.h ) );
-	mtx->translate( w_vec2( p_00->sz.w, 0.0f) );
-	draw( p_10, w_sz( inner_w, p_10->sz.h ) );
-	mtx->translate( w_vec2( inner_w, 0.0f ) );
-	draw( p_20, w_sz( p_20->sz.w, p_20->sz.h ) );
-	MATRIX->pop();
+	draw( p_00, w_rect( xpos, ypos, p_00->sz.w, p_00->sz.h ) );
+	xpos += p_00->sz.w;
+	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->sz.h ) );
+	xpos += inner_w;
+	draw( p_20, w_rect( xpos, ypos, p_20->sz.w, p_20->sz.h ) );
 
 	// middle row
 
-	mtx = MATRIX->push();
-	mtx->translate( w_vec2( 0.0f, -inner_h ) );
-	draw( p_01, w_sz( p_01->sz.w, inner_h ) );
-	mtx->translate( w_vec2( p_01->sz.w, 0.0f ) );
-	draw( p_11, w_sz( inner_w, inner_h ) );
-	mtx->translate( w_vec2( inner_w, 0.0f ) );
-	draw( p_21, w_sz( p_21->sz.w, inner_h ) );
-	MATRIX->pop();
+	xpos = dst.x;
+	ypos += p_00->sz.h;
+	draw( p_01, w_rect( xpos, ypos, p_01->sz.w, inner_h ) );
+	xpos += p_01->sz.w;
+	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
+	xpos += inner_w;
+	draw( p_21, w_rect( xpos, ypos, p_21->sz.w, inner_h ) );
 
 	// bottom row
 
-	mtx = MATRIX->push();
-	mtx->translate( w_vec2( 0.0f, -(inner_h + p_02->sz.h) ) );
-	draw( p_02, w_sz( p_02->sz.w, p_02->sz.h ) );
-	mtx->translate( w_vec2( p_02->sz.w, 0.0f ) );
-	draw( p_12, w_sz( inner_w, p_12->sz.h ) );
-	mtx->translate( w_vec2( inner_w, 0.0f ) );
-	draw( p_22, w_sz( p_22->sz.w, p_22->sz.h ) );
-	MATRIX->pop();
-
-	// remove the top line nudge
-	MATRIX->pop();
+	xpos = dst.x;
+	ypos += inner_h;
+	draw( p_02, w_rect( xpos, ypos, p_02->sz.w, p_02->sz.h ) );
+	xpos += p_02->sz.w;
+	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->sz.h ) );
+	xpos += inner_w;
+	draw( p_22, w_rect( xpos, ypos, p_22->sz.w, p_22->sz.h ) );
 
 	return this;
 }

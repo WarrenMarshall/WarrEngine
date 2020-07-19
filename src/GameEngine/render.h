@@ -74,16 +74,16 @@ struct w_render
 	w_render* draw_sprite( a_texture* tex, const w_rect& dst );
 	w_render* draw_sprite( const a_subtexture* subtex, const w_rect& dst );
 
-	w_render* draw( a_texture* tex, const w_sz& sz = w_vec2( -1, -1 ) );
-	w_render* draw( const a_subtexture* subtex, const w_sz& sz = w_vec2( -1, -1 ) );
+	w_render* draw( a_texture* tex, const w_rect& dst );
+	w_render* draw( const a_subtexture* subtex, const w_rect& dst );
 
-	w_render* draw_sliced( const a_9slice_def* slice_def, const w_sz& sz );
+	w_render* draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );
 
-	w_render* draw_string( a_font* font, const std::string& text );
+	w_render* draw_string( a_font* font, const std::string& text, const w_rect& dst );
 
 	void init_projection() const;
-	w_render* draw_rectangle( const w_rect& rc_dst );
-	w_render* draw_filled_rectangle( const w_vec2& start, const w_vec2& end );
+	w_render* draw_rectangle( const w_rect& dst );
+	w_render* draw_filled_rectangle( const w_rect& dst );
 	w_render* draw_line( const w_vec2& start, const w_vec2& end );
 	w_render* draw_circle( const w_vec2& origin, float radius);
 

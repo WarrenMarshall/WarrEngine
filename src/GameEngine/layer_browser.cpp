@@ -22,17 +22,7 @@ void layer_browser::draw()
 {
 	w_layer::draw();
 
-	MATRIX
-		->push_identity()
-		->translate( w_vec2( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ) ) )
-		->translate( w_vec2( ( hover_tile.x * TILE_SZ ), -( hover_tile.y * TILE_SZ ) ) );
 
-	RENDER->begin()
-		->push_color( W_COLOR_TEAL )
-		->draw( selector_bracket )
-		->end();
-
-	MATRIX->pop();
 }
 
 // takes a position within the game viewport and converts it into

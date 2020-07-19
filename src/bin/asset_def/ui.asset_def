@@ -24,7 +24,7 @@
 	"type" "cursor"
 	"name" "ui_cursor"
 	"subtexture" "img_mouse_cursor"
-	"hotspot" "1, 17"	# from bottom left of image
+	"hotspot" "1, 1"
 }
 
 {

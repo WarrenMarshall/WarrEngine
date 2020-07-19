@@ -33,100 +33,62 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	MATRIX
-		->push_identity()
-		->translate( w_vec2( -v_window_hw, v_window_hh - ( TILE_SZ * 3 ) ) )
-		->translate( w_vec2( ( game->current_tile.x * TILE_SZ ), -( game->current_tile.y * TILE_SZ ) ) );
-
-	RENDER
-		->begin()
-		->push_depth( 10.f )
-		->draw( selector_bracket )
-		->end();
-
-	MATRIX->pop();
-
-	// ----------------------------------------------------------------------------
-
 	// current room
 
-	MATRIX
-		->push_identity()
-		->translate( { -84.0f, -68.0f } );
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ) )
+		->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ),
+			w_rect( 68.0f, 206.0f ) )
 		->end();
 
 	// current tile
 
-
-	MATRIX->top()->translate( { -32, -22 } );
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		//->draw_sprite( game->get_tile( game->current_tile_idx )->subtexture, { 32,32 } )
+		->draw_sprite( game->get_tile( game->current_tile_idx )->subtexture, w_rect( 32, v_window_h - 22, 32,32 ) )
 		->end();
-
-	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
 	// frames
 
-	MATRIX->push_identity()
-		->translate( { -v_window_hw, v_window_hh } );
-	{
-		// title bar
+	// title bar
 
-		RENDER->begin()
-			->push_depth( 50.0f )
-			->push_color( W_COLOR_DARK_GREY )
-			->draw_sliced( panel_slice_def, { v_window_w, TILE_SZ*2.0f } )
-			->end();
+	RENDER->begin()
+		->push_depth( 50.0f )
+		->push_color( W_COLOR_DARK_GREY )
+		->draw_sliced( panel_slice_def, w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f ) )
+		->end();
 
-		game->draw_viewport_caption();
+	game->draw_viewport_caption();
 
-		// info bars
+	// info bars
 
-		MATRIX->push()->translate( { 0.0f, -(TILE_SZ * 11.0f) } );
-		RENDER->begin()
-			->push_color( W_COLOR_DARK_GREY )
-			->draw_sliced( panel_slice_def, { v_window_w, 68.0f } )
-			->end();
-
-		MATRIX->top()->translate( { 12, -12 } );
-		RENDER->begin()
-			->push_color( W_COLOR_DARK_GREY )
-			->push_depth( 50.f )
-			->draw_sliced( panel_slice_def, { 48.0f, 48.0f } )
-			->end();
-		MATRIX->pop();
-	}
-	MATRIX->pop();
+	RENDER->begin()
+		->push_color( W_COLOR_DARK_GREY )
+		->draw_sliced( panel_slice_def, w_rect( 0.0f, v_window_h - 68.0f, v_window_w, 68.0f ) )
+		->end();
 
 	// ----------------------------------------------------------------------------
 	// tiles
 
-	MATRIX->push_identity();
+	float ypos = TILE_SZ * 2;
 
-	for( int y = 0 ; y < 1/*ROOM_H*/ ; ++y )
+	for( int y = 0 ; y < ROOM_H ; ++y )
 	{
 		e_ui_id id = e_ui_id::tile_start;
-		for( int x = 0 ; x < 1/*ROOM_W*/ ; ++x )
+		for( int x = 0 ; x < ROOM_W ; ++x )
 		{
 			int idx = ( y * ROOM_W ) + x;
 
-			//(float) ( -v_window_hw + ( x * TILE_SZ ) ),
-			//(float) ( ( v_window_hh - ( TILE_SZ * 3 ) ) - ( y * TILE_SZ ) ),
-
 			w_rect rc = w_rect(
-				(float) ( x * TILE_SZ ),
-				(float) ( ( v_window_hh - ( TILE_SZ * 2 ) ) - ( y * TILE_SZ ) ),
+				x * (float)TILE_SZ, ypos + (y * (float) TILE_SZ),
 				TILE_SZ, TILE_SZ
 			);
 
-			log_msg( "%.f, %.f, %.f, %.f", rc.x, rc.y, rc.w, rc.h );
+			//RENDER->draw( game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, rc );
+
 			if( engine->ui_mgr->im_image( id, game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, rc ) )
 			{
 				log_msg( "clicked tile!" );
@@ -134,22 +96,12 @@ void layer_editor::draw()
 		}
 	}
 
-	MATRIX->pop();
-
 	// ----------------------------------------------------------------------------
 
-	//engine->ui_mgr->hover_id = e_ui_id::invalid;
-
-	MATRIX	->push_identity()
-			->translate( { -v_window_hw, v_window_hh } );
-	{
- 		if( engine->ui_mgr->im_button( e_ui_id::browse, panel_slice_def, rc_button_browse ) )
- 		{
- 			log_msg( "BUTTON CLICKED!" );
- 		}
+ 	if( engine->ui_mgr->im_button( e_ui_id::browse, panel_slice_def, rc_button_browse ) )
+ 	{
+ 		log_msg( "BUTTON CLICKED!" );
 	}
-	MATRIX	->pop();
-
 }
 	
 void layer_editor::handle_input_event( const w_input_event* evt )
@@ -162,6 +114,7 @@ void layer_editor::handle_input_event( const w_input_event* evt )
 			{
 				case e_input_id::mouse:
 				{
+					/*
 					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, tile_display_area ) )
 					{
 						set_current_tile_from_mouse_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
@@ -171,6 +124,7 @@ void layer_editor::handle_input_event( const w_input_event* evt )
 							paint_current_tile();
 						}
 					}
+					*/
 				}
 				break;
 			}
@@ -197,11 +151,7 @@ void layer_editor::handle_input_event( const w_input_event* evt )
 			{
 				case e_input_id::mouse_button_left:
 				{
-					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, rc_button_browse ) )
-					{
-						engine->layer_mgr->push( std::make_unique<layer_browser>() );
-					}
-					else if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, tile_display_area ) )
+					if( c2AABBtoPoint( tile_display_area, engine->input_mgr->mouse_vwindow_pos ) )
 					{
 						is_painting = true;
 						paint_current_tile();

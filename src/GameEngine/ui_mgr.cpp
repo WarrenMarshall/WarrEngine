@@ -19,31 +19,23 @@ void w_ui_mgr::draw_top_level()
 
 	if( visible && mouse_cursor != nullptr )
 	{
-		MATRIX
-			->push_identity()
-			->translate( w_vec2(
-				-v_window_hw + engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
-				v_window_hh - engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y )
-			);
-
 		RENDER
 			->begin()
 			->push_depth( 1000.0f )
-			->draw( mouse_cursor->img )
+			->draw_line( { 0,0 }, engine->input_mgr->mouse_vwindow_pos )
+			->draw( mouse_cursor->img,
+					w_rect(
+						engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
+						engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y
+					)
+			)
 			->end();
-
-		MATRIX->pop();
 	}
 }
 
 bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 {
-	if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, rc ) )
-	{
-		return true;
-	}
-
-	return false;
+	return c2AABBtoPoint( rc, engine->input_mgr->mouse_vwindow_pos );
 }
 
 bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc )
@@ -92,16 +84,12 @@ bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc 
 		color = W_COLOR_LIGHT_GREY;
 	}
 
-	MATRIX
-		->push()
-		->translate( { rc.x, -rc.y } );
 	RENDER
 		->begin()
 		->push_color( color )
 		->push_depth( 100 )
-		->draw_sliced( slice_def, { rc.w, rc.h } )
+		->draw_sliced( slice_def, rc )
 		->end();
-	MATRIX->pop();
 	
 	return result;
 }
@@ -150,16 +138,16 @@ bool w_ui_mgr::im_image( e_ui_id id, const a_subtexture* subtexture, w_rect& rc 
 		color = W_COLOR_WHITE;
 	}
 
-	MATRIX
-		->push()
-		->translate( { rc.x, rc.y } );
+	//MATRIX
+	//	->push()
+	//	->translate( { rc.x, rc.y } );
 	RENDER
 		->begin()
 		->push_color( color )
 		->push_depth( 100 )
-		->draw( subtexture, { rc.w, rc.h } )
+		->draw( subtexture, rc )
 		->end();
-	MATRIX->pop();
+	//MATRIX->pop();
 
 	return result;
 }

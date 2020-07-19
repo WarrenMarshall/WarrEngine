@@ -142,6 +142,15 @@ struct w_vec2
 	static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );
 	static w_vec2 from_angle( float angle );
+
+	operator c2v()
+	{
+		c2v v;
+		v.x = x;
+		v.y = y;
+
+		return v;
+	}
 };
 
 struct w_vec3
