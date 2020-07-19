@@ -40,17 +40,17 @@ void key_callback( GLFWwindow* window, int key, int scancode, int action, int mo
 
 	if( action == GLFW_PRESS )
 	{
-		log_msg( "PRESSED" );
+		//log_msg( "PRESSED" );
 		button_state = e_button_state::pressed;
 	}
 	else if( action == GLFW_REPEAT )
 	{
-		log_msg( "HELD" );
+		//log_msg( "HELD" );
 		button_state = e_button_state::held;
 	}
 	else
 	{
-		log_msg( "RELEASED" );
+		//log_msg( "RELEASED" );
 		button_state = e_button_state::released;
 	}
 
@@ -73,17 +73,12 @@ void mouse_button_callback( GLFWwindow* window, int button, int action, int mods
 
 	if( action == GLFW_PRESS )
 	{
-		log_msg( "PRESSED" );
+		//log_msg( "PRESSED" );
 		button_state = e_button_state::pressed;
-	}
-	else if( action == GLFW_REPEAT )
-	{
-		log_msg( "HELD" );
-		button_state = e_button_state::held;
 	}
 	else
 	{
-		log_msg( "RELEASE" );
+		//log_msg( "RELEASE" );
 		button_state = e_button_state::released;
 	}
 

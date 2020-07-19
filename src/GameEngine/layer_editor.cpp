@@ -106,7 +106,37 @@ void layer_editor::draw()
 	MATRIX->pop();
 
 	// ----------------------------------------------------------------------------
-	// IMGUI
+	// tiles
+
+	MATRIX->push_identity();
+
+	for( int y = 0 ; y < 1/*ROOM_H*/ ; ++y )
+	{
+		e_ui_id id = e_ui_id::tile_start;
+		for( int x = 0 ; x < 1/*ROOM_W*/ ; ++x )
+		{
+			int idx = ( y * ROOM_W ) + x;
+
+			//(float) ( -v_window_hw + ( x * TILE_SZ ) ),
+			//(float) ( ( v_window_hh - ( TILE_SZ * 3 ) ) - ( y * TILE_SZ ) ),
+
+			w_rect rc = w_rect(
+				(float) ( x * TILE_SZ ),
+				(float) ( ( v_window_hh - ( TILE_SZ * 2 ) ) - ( y * TILE_SZ ) ),
+				TILE_SZ, TILE_SZ
+			);
+
+			log_msg( "%.f, %.f, %.f, %.f", rc.x, rc.y, rc.w, rc.h );
+			if( engine->ui_mgr->im_image( id, game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, rc ) )
+			{
+				log_msg( "clicked tile!" );
+			}
+		}
+	}
+
+	MATRIX->pop();
+
+	// ----------------------------------------------------------------------------
 
 	//engine->ui_mgr->hover_id = e_ui_id::invalid;
 

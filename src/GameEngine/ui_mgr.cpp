@@ -105,3 +105,61 @@ bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc 
 	
 	return result;
 }
+
+bool w_ui_mgr::im_image( e_ui_id id, const a_subtexture* subtexture, w_rect& rc )
+{
+	bool result = false;
+
+	bool button_is_down = engine->input_mgr->is_button_down( e_input_id::mouse_button_left );
+
+	if( button_is_down )
+	{
+		if( is_mouse_inside( rc ) )
+		{
+			if( hover_id == id )
+			{
+				clicked_id = id;
+			}
+		}
+	}
+	else
+	{
+		if( is_mouse_inside( rc ) )
+		{
+			if( clicked_id == id && hover_id == id )
+			{
+				result = true;
+				clicked_id = e_ui_id::invalid;
+			}
+
+			hover_id = id;
+		}
+		else
+		{
+			hover_id = clicked_id = e_ui_id::invalid;
+		}
+	}
+
+	w_color color = RENDER->rs_color_stack.top();
+	if( hover_id == id )
+	{
+		color = W_COLOR_GREY;
+	}
+	if( clicked_id == id )
+	{
+		color = W_COLOR_WHITE;
+	}
+
+	MATRIX
+		->push()
+		->translate( { rc.x, rc.y } );
+	RENDER
+		->begin()
+		->push_color( color )
+		->push_depth( 100 )
+		->draw( subtexture, { rc.w, rc.h } )
+		->end();
+	MATRIX->pop();
+
+	return result;
+}

@@ -17,6 +17,7 @@ struct w_ui_mgr
 	void draw_top_level();
 
 	bool im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc );
+	bool im_image( e_ui_id id, const a_subtexture* subtexture, w_rect& rc );
 
 	bool is_mouse_inside( w_rect& rc ) const;
 };

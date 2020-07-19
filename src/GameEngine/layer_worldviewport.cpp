@@ -24,26 +24,4 @@ void layer_worldviewport::draw()
 		->draw_sprite( engine->white_solid, w_sz( v_window_w, v_window_h ) )
 		->end();
 	MATRIX->pop();
-
-	// tiles
-
-	MATRIX
-		->push()
-		->translate( w_vec2( -v_window_hw, v_window_hh - (TILE_SZ * 3) ) );
-
-	for( int y = 0 ; y < ROOM_H ; ++y )
-	{
-		MATRIX->push();
-		for( int x = 0 ; x < ROOM_W ; ++x )
-		{
-			int idx = ( y * ROOM_W ) + x;
-
-			RENDER->draw( game->get_tile( game->rooms[game->current_room].tiles[ idx ] )->subtexture );
-			MATRIX->top()->translate( w_vec2( TILE_SZ, 0 ) );
-		}
-		MATRIX->pop()
-			->translate( w_vec2( 0, -TILE_SZ ) );
-	}
-
-	MATRIX->pop();
 }

@@ -18,12 +18,23 @@ where drawing originates from. So drawing a texture on the top left
 corner of the screen will make it invisible because it will draw
 upwards from there and you won't see any pixels.
 
+--
+
 0,0 is considered the bottom left on both images and the screen itself.
 
   +y
   |
   |screen/texture
 0,0---- +x
+
+--
+
+0,0 is considered the top left on the virtual screen.
+
+0,0---- +x
+  |virtual screen
+  |
+  +y
 
 ------------------------------------------------------------------
 VECTORS

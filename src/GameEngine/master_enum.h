@@ -290,6 +290,8 @@ enum struct e_ui_id : int
 {
 	invalid = 0,
 	browse,
+	tile_start,
+	tile_end = tile_start + ( 19 * 9 ),
 	max
 };
 
