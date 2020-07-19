@@ -273,31 +273,31 @@ void w_input_mgr::deinit()
 
 void w_input_mgr::update()
 {
-	for( auto& evt : event_queue )
-	{
-		send_event_to_listeners( evt.event_id, &evt );
-	}
-
-	//if( event_queue.size() )
-	//{
-	//	log_msg( "sent %d events", (int)event_queue.size() );
-	//}
-	event_queue.clear();
-
 	// mouse motion
-	// NOTE : mouse motion deltas are sent once per update, not for each message from the OS
+	//
+	// NOTE	- mouse motion deltas are sent once per update, not for each message from the OS
+	//		- this is done to prevent tons of little messages from clogging up the works
 
-	if( !fequals( mouse_move_delta.x, 0.0f ) || !fequals( mouse_move_delta.y, 0.0f ) )
+	if( !fequals( mouse_move_delta.x + mouse_move_delta.y, 0.0f ) )
 	{
 		w_input_event evt;
 		evt.event_id = e_event_id::input_motion;
 		evt.input_id = e_input_id::mouse;
 		evt.mouse.delta = mouse_move_delta;
 
-		send_event_to_listeners( e_event_id::input_motion, &evt );
+		event_queue.emplace_back( std::move( evt ) );
 
 		mouse_move_delta = w_vec2( 0.0f, 0.0f );
 	}
+
+	// send every accumulated input message to anyone listening
+
+	for( auto& evt : event_queue )
+	{
+		send_event_to_listeners( evt.event_id, &evt );
+	}
+
+	event_queue.clear();
 
 	// update game controller states
 
@@ -305,8 +305,6 @@ void w_input_mgr::update()
 	{
 		game_controller->update();
 	}
-
-	// NOTE : mouse and keyboard states are updated through the glfw callback functions
 }
 
 void w_input_mgr::play_rumble( e_rumble_effect effect )

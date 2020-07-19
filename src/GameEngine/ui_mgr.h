@@ -6,7 +6,17 @@ struct w_ui_mgr
 	a_font* ui_font = nullptr;
 	bool visible = false;
 
+	// which UI control the mouse is hovering over
+	e_ui_id hot = e_ui_id::invalid;
+
+	// a hot id is one the user has clicked the mouse on but hasn't unclicked yet
+	e_ui_id active = e_ui_id::invalid;
+
 	void init( const std::string& mouse_cursor_name );
 	void set_mouse_visible( bool visible );
 	void draw_top_level();
+
+	bool im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc );
+
+	bool is_mouse_inside( w_rect& rc ) const;
 };

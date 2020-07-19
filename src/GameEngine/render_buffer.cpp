@@ -175,7 +175,8 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
 	// a matching vertex. if one is found, return the index of that vertex
 	// instead of putting the new one into the list.
 	//
-	// #note - this is slow, which is why we don't do this check right now. it's faster to just throw dupes at the video card.
+	// NOTE - this is slow, which is why we don't do this check right now.
+    //      - it's faster to just throw the dupes at the video card than try to weed them out.
 
 	int idx = 0;
 	for( auto& iter : vertices[ render_pass ] )

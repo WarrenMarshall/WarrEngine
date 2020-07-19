@@ -94,6 +94,15 @@ struct w_rect
 
 	w_rect();
 	w_rect( float x, float y, float w, float h );
+
+	operator c2AABB()
+	{
+		c2AABB bb;
+		bb.min = { x, y };
+		bb.max = { x + w, y + h };
+
+		return bb;
+	}
 };
 
 // ----------------------------------------------------------------------------

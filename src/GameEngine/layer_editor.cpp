@@ -14,8 +14,7 @@ void layer_editor::push()
 	tile_display_area.min = { 0, 32 };
 	tile_display_area.max = { v_window_w, 32 + ( TILE_SZ * 9 ) };
 
-	browse_button.min = { 20,196 };
-	browse_button.max = { 20+32,196+32 };
+	rc_button_browse = w_rect( 12, 188, 48, 48 );
 }
 
 void layer_editor::pop()
@@ -105,6 +104,22 @@ void layer_editor::draw()
 		MATRIX->pop();
 	}
 	MATRIX->pop();
+
+	// ----------------------------------------------------------------------------
+	// IMGUI
+
+	engine->ui_mgr->hot = e_ui_id::invalid;
+
+	MATRIX	->push_identity()
+			->translate( { -v_window_hw, v_window_hh } );
+	{
+ 		if( engine->ui_mgr->im_button( e_ui_id::browse, panel_slice_def, rc_button_browse ) )
+ 		{
+ 			log_msg( "BUTTON CLICKED!" );
+ 		}
+	}
+	MATRIX	->pop();
+
 }
 	
 void layer_editor::handle_input_event( const w_input_event* evt )
@@ -152,7 +167,7 @@ void layer_editor::handle_input_event( const w_input_event* evt )
 			{
 				case e_input_id::mouse_button_left:
 				{
-					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, browse_button ) )
+					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, rc_button_browse ) )
 					{
 						engine->layer_mgr->push( std::make_unique<layer_browser>() );
 					}

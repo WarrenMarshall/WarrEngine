@@ -283,3 +283,12 @@ enum struct e_mouse_mode : int
 	hidden,
 	locked
 };
+
+// ----------------------------------------------------------------------------
+
+enum struct e_ui_id : int
+{
+	invalid = 0,
+	browse,
+	max
+};

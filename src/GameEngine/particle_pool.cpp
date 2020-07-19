@@ -53,9 +53,12 @@ void w_particle_pool::draw()
 				->push()
 				->add_transform( iterp_pos, interp_angle, iter.base_scale * scale );
 
+			// #optimization	- bypassing the render state stacks would make this more performant
+			//					- just set the color/alpha directly, and skip the push/pop for every particle
 			RENDER
 				->begin()
 				->push_color( color )
+				->push_alpha( color.a )
 				->draw_sprite( iter.tex->get_subtexture() )
 				->end();
 

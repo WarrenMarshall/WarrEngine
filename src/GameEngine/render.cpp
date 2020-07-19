@@ -43,6 +43,7 @@ void w_render::init()
 
 	// initialize render state stacks
 	rs_color_stack.push( W_COLOR_WHITE );
+	rs_alpha_stack.push( 1.0f );
 	rs_scale_stack.push( 1.0f );
 	rs_depth_stack.push( 0.0f );
 	rs_align_stack.push( e_align::left );
@@ -68,6 +69,14 @@ w_render* w_render::push_color( const w_color& color )
 {
 	rs_color_count++;
 	rs_color_stack.push( color );
+
+	return this;
+}
+
+w_render* w_render::push_alpha( const float& alpha )
+{
+	rs_alpha_count++;
+	rs_alpha_stack.push( alpha );
 
 	return this;
 }
@@ -104,6 +113,13 @@ void w_render::end()
 		rs_color_count--;
 	}
 	rs_color_count = 0;
+
+	while( rs_alpha_count )
+	{
+		rs_alpha_stack.pop();
+		rs_alpha_count--;
+	}
+	rs_alpha_count = 0;
 
 	while( rs_scale_count )
 	{
@@ -153,6 +169,7 @@ w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_sz & sz )
 	float hh = h / 2.0f;
 
 	w_color rs_color = rs_color_stack.top();
+	rs_color.a = rs_alpha_stack.top();
 
 	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 	w_render_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
@@ -183,6 +200,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_sz& sz )
 	h *= rs_scale;
 
 	w_color rs_color = rs_color_stack.top();
+	rs_color.a = rs_alpha_stack.top();
 
 	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 	w_render_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
@@ -313,6 +331,7 @@ void w_render::end_frame()
 	// verify that state stacks are back where they started. if not,
 	// it means there's a push/pop mismatch somewhere in the code.
 	assert( rs_color_stack.size() == 1 );
+	assert( rs_alpha_stack.size() == 1 );
 	assert( rs_scale_stack.size() == 1 );
 	assert( rs_align_stack.size() == 1 );
 
@@ -386,7 +405,8 @@ w_render* w_render::draw_stats()
 		MATRIX->push_identity();
 
 		RENDER->begin()
-			->push_color( w_color( .25f, .25f, .25f, 0.75f ) )
+			->push_color( w_color( .25f, .25f, .25f ) )
+			->push_alpha( 0.75f )
 			->push_depth( 999.0f )
 			->draw_filled_rectangle( w_vec2( -v_window_hw, v_window_hh ), w_vec2( v_window_hw, v_window_hh - ( font_max_height * stat_lines.size() ) ) )
 			->end();
@@ -431,6 +451,7 @@ w_render* w_render::draw_stats()
 w_render* w_render::draw_filled_rectangle( const w_vec2& start, const w_vec2& end )
 {
 	w_color rs_color = rs_color_stack.top();
+	rs_color.a = rs_alpha_stack.top();
 
 	w_render_vert v0(
 		w_vec2( start.x, start.y ),
@@ -485,6 +506,8 @@ w_render* w_render::draw_rectangle( const w_rect& rc_dst )
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
 	w_color rs_color = rs_color_stack.top();
+	rs_color.a = rs_alpha_stack.top();
+
 	w_render_vert v0( origin, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( origin, w_uv( 0, 0 ), rs_color );
 
@@ -507,6 +530,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
 	w_color rs_color = rs_color_stack.top();
+	rs_color.a = rs_alpha_stack.top();
+
 	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( end, w_uv( 0, 0 ), rs_color );
 

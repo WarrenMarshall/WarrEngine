@@ -75,7 +75,12 @@ struct w_input_mgr : i_speaker
 	*/
 	bool game_controller_being_used = false;
 
-	bool button_states[static_cast<int>( e_input_id::max )];
+	// 0 = unpressed
+	// 1 = pressed
+	// 2 = held
+	// 3 = released
+
+	std::array<int, (int)e_input_id::max> button_states;
 
 	bool is_button_down( e_input_id input_id );
 	w_vec2 axis_value_of( e_input_id button );
