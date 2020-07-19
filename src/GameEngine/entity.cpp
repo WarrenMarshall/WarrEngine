@@ -25,12 +25,9 @@ void w_entity::draw_components()
 {
 	for( const auto& iter : components )
 	{
-		MATRIX
-			->push()
-			->add_transform( ( *iter.get() ) );
+		//MATRIX->push()->add_transform( ( *iter.get() ) );
 		iter->draw();
-		MATRIX
-			->pop();
+		//MATRIX->pop();
 	}
 }
 
@@ -45,21 +42,6 @@ void w_entity::post_spawn()
 	{
 		iter->post_spawn();
 	}
-}
-
-/*
-	takes a worldspace position and checks to see if it's
-	within the bounds of this entities collision bounds
-*/
-
-bool w_entity::bounds_contains_point( w_vec2 pos_to_check )
-{
-	if( bounds->contains_pt( pos_to_check ) )
-	{
-		return true;
-	}
-
-	return false;
 }
 
 bool w_entity::can_be_deleted()

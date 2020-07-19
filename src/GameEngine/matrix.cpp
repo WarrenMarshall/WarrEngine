@@ -27,12 +27,20 @@ w_matrix* w_matrix::translate( const w_vec2& v )
 
 w_matrix* w_matrix::scale( float v )
 {
-	m = glm::scale( m, glm::vec3( v, v, v ) );
+	if( !fequals( v, 1.0f ) )
+	{
+		m = glm::scale( m, glm::vec3( v, v, v ) );
+	}
+
 	return this;
 }
 
 w_matrix* w_matrix::rotate( float v )
 {
-	m = glm::rotate( m, glm::radians( v ), glm::vec3( 0.f, 0.f, 1.f ) );
+	if( !fequals( v, 0.0f ) )
+	{
+		m = glm::rotate( m, glm::radians( v ), glm::vec3( 0.f, 0.f, 1.f ) );
+	}
+
 	return this;
 }

@@ -9,22 +9,13 @@ struct w_entity : i_lifecycle, i_transform
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	virtual bool can_be_deleted();
 
-#ifdef _DEBUG
-	// if true, this entity will draw it's bounds every frame
-	bool draw_bounds = false;
-#endif
-
 	// movement direction and speed
 	w_vec2 dir;
 	float speed = 1.0f;
 
-	// collision bounds
-	std::unique_ptr<w_bounds> bounds = nullptr;
-
 	w_entity();
 	~w_entity();
 
-	virtual bool bounds_contains_point( w_vec2 pos_to_check );
 	virtual void update();
 	virtual void draw_components();
 	virtual void post_spawn();

@@ -36,20 +36,9 @@ void w_opengl::init() const
 	log_msg( "GLEW Version : [%s]", glewGetString( GLEW_VERSION ) );
 	log_msg( "Renderer: [%s]", glGetString( GL_RENDERER ) );
 
-	// front facing polygons are wound clockwise
-	glFrontFace( GL_CW );
-
-#ifdef _DEBUG
-	// in debug mode, use a shader that colors backfacing triangles in red and disables culling
+	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
-	//engine->shader->create_and_compile( "simple", "simple_debug" );
 	engine->shader->create_and_compile( "simple", "simple" );
-#else
-	// in release mode, use a more optimal shader and turn on backface culling
-	glEnable( GL_CULL_FACE );
-	glCullFace( GL_BACK );
-	engine->shader->create_and_compile( "simple", "simple" );
-#endif
 
 	// texture mapping
 	glEnable( GL_TEXTURE_2D );

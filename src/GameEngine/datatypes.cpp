@@ -253,8 +253,8 @@ w_vec2 w_vec2::from_angle( float angle )
 	w_vec2 v;
 
 	float rad = deg2rad( angle );
-	v.x = -std::sinf( rad );
-	v.y = std::cosf( rad );
+	v.x = std::sinf( rad );
+	v.y = -std::cosf( rad );
 
 	return v;
 }
@@ -335,18 +335,6 @@ w_vec3 w_vec3::normalize( w_vec3 a )
 {
 	float sz = w_vec3::get_size_squared( a );
 	return w_vec3( a.x / sz, a.y / sz, a.z / sz );
-}
-
-w_vec3 w_vec3::from_angle( float angle )
-{
-	w_vec3 v;
-
-	float rad = deg2rad( angle );
-	v.x = -std::sinf( rad );
-	v.y = std::cosf( rad );
-	v.z = 0.0f;
-
-	return v;
 }
 
 // ----------------------------------------------------------------------------

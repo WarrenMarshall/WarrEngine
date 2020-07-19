@@ -47,7 +47,7 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		->draw_sprite( game->get_tile( game->current_tile_idx )->subtexture, w_rect( 32, v_window_h - 22, 32,32 ) )
+		->draw_sprite( game->get_tile( game->current_tile_idx )->subtexture, w_rect( 36,212, 32,32 ) )
 		->end();
 
 	// ----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ void layer_editor::draw()
 
 			w_rect rc = w_rect(
 				x * (float)TILE_SZ, ypos + (y * (float) TILE_SZ),
-				TILE_SZ, TILE_SZ
+				TILE_SZ - 1, TILE_SZ - 1
 			);
 
 			//RENDER->draw( game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, rc );

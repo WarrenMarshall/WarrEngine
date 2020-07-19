@@ -138,16 +138,12 @@ bool w_ui_mgr::im_image( e_ui_id id, const a_subtexture* subtexture, w_rect& rc 
 		color = W_COLOR_WHITE;
 	}
 
-	//MATRIX
-	//	->push()
-	//	->translate( { rc.x, rc.y } );
 	RENDER
 		->begin()
 		->push_color( color )
 		->push_depth( 100 )
 		->draw( subtexture, rc )
 		->end();
-	//MATRIX->pop();
 
 	return result;
 }

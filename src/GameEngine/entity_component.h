@@ -25,7 +25,7 @@ struct ec_sprite : w_entity_component
 
 	ec_sprite();
 
-	w_entity_component* init( a_subtexture* subtexture );
+	w_entity_component* init( i_transform* parent_entity, a_subtexture* subtexture );
 	void draw() override;
 };
 

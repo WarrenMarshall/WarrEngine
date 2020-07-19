@@ -4,9 +4,9 @@
 
 void tw_refresh_reloadables()
 {
+#if !defined( FINALRELEASE )
 	log_msg( "Worker thread starting : %s", __FUNCTION__ );
 
-#if !defined( FINALRELEASE )
 	while( !engine->exit_tw_refresh_reloadables )
 	{
 		for( auto& iter : engine->hot_reloadables )
@@ -19,9 +19,9 @@ void tw_refresh_reloadables()
 			std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
 		}
 	}
-#endif
 
 	log_msg( "Worker thread exiting : %s", __FUNCTION__ );
+#endif
 }
 
 /*
@@ -179,10 +179,6 @@ void w_engine::draw()
 
 	if( is_paused )
 	{
-		opengl
-			->push_identity()
-			->translate( { -v_window_hw, -v_window_hh } );
-
 		render
 			->begin()
 			->push_depth( 200.0f );
@@ -223,7 +219,6 @@ void w_engine::draw()
 		render->draw_line( v3, v0 );
 
 		render->end();
-		opengl->pop();
 	}
 }
 

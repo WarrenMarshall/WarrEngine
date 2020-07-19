@@ -45,6 +45,37 @@ int main( int argc, char* argv[] )
 			engine->init();
 		}
 
+		/*
+		float angle = 0.0f;
+		w_vec2 dir;
+
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+		angle += 45;
+		dir = w_vec2::from_angle( angle );
+		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
+
+		return 1;
+		*/
+
 		{	// command line parsing
 
 			g_allow_hot_reload = false;
@@ -192,7 +223,11 @@ int main( int argc, char* argv[] )
 			RENDER->begin_frame( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
 			{
 				engine->layer_mgr->draw();
+
+				RENDER->begin()->push_depth( 1000 );
 				game->draw_entities();
+				RENDER->end();
+				
 				engine->ui_mgr->draw_top_level();
 				engine->draw();
 			}

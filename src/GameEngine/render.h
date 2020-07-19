@@ -47,6 +47,9 @@ struct w_render
 	int rs_scale_count = 0;
 	std::stack<float> rs_scale_stack;
 	
+	int rs_angle_count = 0;
+	std::stack<float> rs_angle_stack;
+
 	int rs_align_count = 0;
 	std::stack<e_align> rs_align_stack;
 	
@@ -57,6 +60,7 @@ struct w_render
 	w_render* push_color( const w_color& color );
 	w_render* push_alpha( const float& alpha );
 	w_render* push_scale( const float& scale );
+	w_render* push_angle( const float& angle );
 	w_render* push_align( const e_align& align );
 	w_render* push_depth( const float& depth );
 	void end();

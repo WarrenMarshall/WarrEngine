@@ -45,6 +45,7 @@ void w_render::init()
 	rs_color_stack.push( W_COLOR_WHITE );
 	rs_alpha_stack.push( 1.0f );
 	rs_scale_stack.push( 1.0f );
+	rs_angle_stack.push( 0.0f );
 	rs_depth_stack.push( 0.0f );
 	rs_align_stack.push( e_align::left );
 
@@ -89,6 +90,14 @@ w_render* w_render::push_scale( const float& scale )
 	return this;
 }
 
+w_render* w_render::push_angle( const float& angle )
+{
+	rs_angle_count++;
+	rs_angle_stack.push( angle );
+
+	return this;
+}
+
 w_render* w_render::push_align( const e_align& align )
 {
 	rs_align_count++;
@@ -128,6 +137,13 @@ void w_render::end()
 	}
 	rs_scale_count = 0;
 
+	while( rs_angle_count )
+	{
+		rs_angle_stack.pop();
+		rs_angle_count--;
+	}
+	rs_angle_count = 0;
+
 	while( rs_align_count )
 	{
 		rs_align_stack.pop();
@@ -161,6 +177,7 @@ w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_rect& dst 
 	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 	
 	float rs_scale = rs_scale_stack.top();
+	float rs_angle = rs_angle_stack.top();
 
 	w *= rs_scale;
 	h *= rs_scale;
@@ -176,7 +193,7 @@ w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_rect& dst 
 	w_render_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
 	w_render_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
-	MATRIX->push()->translate( { dst.x, dst.y } );
+	MATRIX->push()->translate( { dst.x, dst.y } )->rotate( rs_angle );
 	subtex->tex->render_buffer->add_quad( v0, v1, v2, v3 );
 	MATRIX->pop();
 
@@ -249,8 +266,6 @@ w_render* w_render::draw_string( a_font* font, const std::string& text, const w_
 	MATRIX
 		->push()
 		->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
-
-	w_matrix* mtx = MATRIX->top();
 
 	float xpos = dst.x;
 	float ypos = dst.y;
@@ -407,8 +422,6 @@ w_render* w_render::draw_stats()
 		assert( stat_lines.size() < stats_draw_reserve );
 		int font_max_height = engine->ui_mgr->ui_font->font_def->max_height;
 
-		MATRIX->push_identity();
-
 		RENDER->begin()
 			->push_color( w_color( .55f, .25f, .25f ) )
 			->push_alpha( 0.75f )
@@ -416,9 +429,6 @@ w_render* w_render::draw_stats()
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->end();
 
-		MATRIX->pop();
-
-		MATRIX->push_identity();
 		RENDER->begin()
 			->push_depth( 1000.0f )
 			->push_color( W_COLOR_WHITE )
@@ -432,20 +442,17 @@ w_render* w_render::draw_stats()
 		}
 
 		RENDER->end();
-		MATRIX->pop();
 	}
 	else
 	{
 	#if !defined(FINALRELEASE)
 		std::string fps_stats( s_format( "%s FPS", s_commas( (int)stats.num_frames_rendered.value, "%d" ).c_str() ) );
 
-		MATRIX->push();
 		RENDER->begin()
 			->push_depth( 1000.0f )
 			->push_align( e_align::right )
 			->draw_string( engine->ui_mgr->ui_font, fps_stats, w_rect( v_window_w, 0 ) )
 			->end();
-		MATRIX->pop();
 	#endif
 	}
 
@@ -512,16 +519,16 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_color rs_color = rs_color_stack.top();
 	rs_color.a = rs_alpha_stack.top();
 
-	w_render_vert v0( origin, w_uv( 0, 0 ), rs_color );
-	w_render_vert v1( origin, w_uv( 0, 0 ), rs_color );
+	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
+	w_render_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 
 	for( int x = 0; x < circle_sample_points_max; ++x )
 	{
-		v0.x = circle_sample_points[x].x * radius;
-		v0.y = circle_sample_points[x].y * radius;
+		v0.x = origin.x + (circle_sample_points[x].x * radius);
+		v0.y = origin.y + (circle_sample_points[x].y * radius);
 
-		v1.x = circle_sample_points[( x + 1 ) % circle_sample_points_max].x * radius;
-		v1.y = circle_sample_points[( x + 1 ) % circle_sample_points_max].y * radius;
+		v1.x = origin.x + (circle_sample_points[( x + 1 ) % circle_sample_points_max].x * radius);
+		v1.y = origin.y + (circle_sample_points[( x + 1 ) % circle_sample_points_max].y * radius);
 
 		engine->white_wire->tex->render_buffer->add_line( v0, v1 );
 	}
@@ -560,7 +567,6 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 
 	// nudge the rendering matrix down the height of the top row of subtextures. this
 	// allows us to think of the top/left of this window as the actual graphical top/left.
-	//MATRIX->push()->translate( w_vec2( 0.0f, -p_00->sz.h ) );
 
 	float xpos = dst.x;
 	float ypos = dst.y;

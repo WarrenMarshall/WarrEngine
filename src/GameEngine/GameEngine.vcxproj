@@ -163,7 +163,6 @@
     <ClCompile Include="asset.cpp" />
     <ClCompile Include="asset_definition_file.cpp" />
     <ClCompile Include="asset_types.cpp" />
-    <ClCompile Include="bounds.cpp" />
     <ClCompile Include="cache_assets.cpp" />
     <ClCompile Include="asset_definition_file_cache.cpp" />
     <ClCompile Include="entity_component.cpp" />
@@ -227,7 +226,6 @@
     <ClInclude Include="asset.h" />
     <ClInclude Include="asset_definition_file.h" />
     <ClInclude Include="asset_types.h" />
-    <ClInclude Include="bounds.h" />
     <ClInclude Include="cache_assets.h" />
     <ClInclude Include="asset_definition_file_cache.h" />
     <ClInclude Include="entity_component.h" />

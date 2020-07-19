@@ -21,7 +21,7 @@ w_particle* w_particle_pool::get_next_particle()
 
 void w_particle_pool::draw()
 {
-	MATRIX->push();
+	//MATRIX->push();
 
 	for( auto& iter : *particles )
 	{
@@ -44,14 +44,14 @@ void w_particle_pool::draw()
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
 
 			w_vec2 v = w_vec2::from_angle( iter.a_dir );
-			w_vec2 iterp_pos(
+			w_vec2 interp_pos(
 				RENDER->calc_interpolated_per_sec_value( iter.pos.x, ( v.x * iter.velocity_per_sec ) ),
 				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) )
 			);
 
-			MATRIX
-				->push()
-				->add_transform( iterp_pos, interp_angle, iter.base_scale * scale );
+			//MATRIX
+				//->push()
+				//->add_transform( interp_pos, interp_angle, iter.base_scale * scale );
 
 			// #optimization	- bypassing the render state stacks would make this more performant
 			//					- just set the color/alpha directly, and skip the push/pop for every particle
@@ -59,13 +59,16 @@ void w_particle_pool::draw()
 				->begin()
 				->push_color( color )
 				->push_alpha( color.a )
-				//->draw_sprite( iter.tex->get_subtexture() )
+				->push_scale( iter.base_scale * scale )
+				->push_angle( interp_angle )
+				->push_depth( 1000 )
+				->draw_sprite( iter.tex->get_subtexture(), w_rect( interp_pos.x, interp_pos.y ) )
 				->end();
 
-			MATRIX->pop();
+			//MATRIX->pop();
 		}
 	}
-	MATRIX->pop();
+	//MATRIX->pop();
 }
 
 void w_particle_pool::update()

@@ -36,7 +36,6 @@ struct w_input : i_speaker
 
 	// where the mouse currently sits in the virtual window
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
-	//c2Circle c2_mouse_vpos;
 
 	/*
 		there is one entry in this vector for each joystick currently

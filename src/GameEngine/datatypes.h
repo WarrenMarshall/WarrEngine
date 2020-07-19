@@ -176,7 +176,6 @@ struct w_vec3
 	static float get_size( w_vec3 a );
 	static float get_distance_between( w_vec3 a, w_vec3 b );
 	static w_vec3 normalize( w_vec3 a );
-	static w_vec3 from_angle( float angle );
 };
 
 // ----------------------------------------------------------------------------
