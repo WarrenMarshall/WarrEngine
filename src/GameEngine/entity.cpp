@@ -25,9 +25,7 @@ void w_entity::draw_components()
 {
 	for( const auto& iter : components )
 	{
-		//MATRIX->push()->add_transform( ( *iter.get() ) );
 		iter->draw();
-		//MATRIX->pop();
 	}
 }
 

@@ -37,14 +37,7 @@ void w_game::draw_entities()
 {
 	for( const auto& iter : entities )
 	{
-		//MATRIX
-		//	->push()
-		//	->add_transform( *iter );
-
 		iter->draw_components();
-
-		//MATRIX->pop();
-
 		RENDER->stats.num_entities.inc();
 	}
 }

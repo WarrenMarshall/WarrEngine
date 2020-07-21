@@ -21,8 +21,6 @@ w_particle* w_particle_pool::get_next_particle()
 
 void w_particle_pool::draw()
 {
-	//MATRIX->push();
-
 	for( auto& iter : *particles )
 	{
 		if( iter.is_alive() )
@@ -49,10 +47,6 @@ void w_particle_pool::draw()
 				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) )
 			);
 
-			//MATRIX
-				//->push()
-				//->add_transform( interp_pos, interp_angle, iter.base_scale * scale );
-
 			// #optimization	- bypassing the render state stacks would make this more performant
 			//					- just set the color/alpha directly, and skip the push/pop for every particle
 			RENDER
@@ -64,11 +58,8 @@ void w_particle_pool::draw()
 				->push_depth( 1000 )
 				->draw_sprite( iter.tex->get_subtexture(), w_rect( interp_pos.x, interp_pos.y ) )
 				->end();
-
-			//MATRIX->pop();
 		}
 	}
-	//MATRIX->pop();
 }
 
 void w_particle_pool::update()

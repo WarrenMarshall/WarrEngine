@@ -38,8 +38,7 @@ void w_render::init()
 	// push an identity matrix onto the stack. this will always live
 	// as the first element in the stack and should be the only
 	// matrix remaining when the frame finishes rendering.
-	MATRIX
-		->push_identity();
+	MATRIX->push_identity();
 
 	// initialize render state stacks
 	rs_color_stack.push( W_COLOR_WHITE );
