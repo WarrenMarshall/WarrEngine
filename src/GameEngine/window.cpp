@@ -98,9 +98,11 @@ bool w_window::init( const std::string& title )
 	// Make the window's context current
 	glfwMakeContextCurrent( window );
 
-	// 0 = no v-sync
-	// 1 = v-sync on
+	// 0 = v-sync off, 1 = v-sync on
 	glfwSwapInterval( 0 );
+
+	glfwSetInputMode( window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE );
+	glfwSetInputMode( window, GLFW_STICKY_KEYS, GLFW_TRUE );
 
 	OPENGL->refresh_primitive_sizes();
 

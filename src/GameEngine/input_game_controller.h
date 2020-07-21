@@ -7,7 +7,7 @@ struct w_game_controller
 
 	int idx = -1;
 	float rumble_time_remaining_ms = 0;
-	std::unique_ptr<w_timer> timer_repeat = nullptr;
+	//std::unique_ptr<w_timer> timer_repeat = nullptr;
 
 	/*
 		 set to true the first time a button is pressed on the controller
@@ -22,6 +22,6 @@ struct w_game_controller
 
 	void update_button_state( e_input_id input_id, int xinput_button_bit );
 	void update();
+	void play_rumble( e_rumble_effect effect );
 	void play_rumble( int intensity, int ms );
 };
-

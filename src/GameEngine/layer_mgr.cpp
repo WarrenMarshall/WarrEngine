@@ -48,7 +48,7 @@ void w_layer_mgr::pop()
 
 w_layer* w_layer_mgr::get_top()
 {
-	if( layer_stack.size() == 0 )
+	if( layer_stack.empty() )
 	{
 		return nullptr;
 	}
@@ -72,11 +72,6 @@ void w_layer_mgr::update()
 	{
 		iter->update();
 	}
-}
-
-w_layer* w_layer_mgr::find_topmost_input_listener()
-{
-	return nullptr;
 }
 
 void w_layer_mgr::draw()
@@ -108,13 +103,13 @@ void w_layer_mgr::draw()
 
 void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 {
-	w_layer* layer = find_topmost_input_listener();
-
-	if( !layer )
-	{
-		return;
-	}
-
 	const w_input_event* evt = static_cast<w_input_event*>( object );
-	layer->handle_input_event( evt );
+
+	for( const auto& iter : layer_stack )
+	{
+		if( iter->handle_input_event( evt ) )
+		{
+			break;
+		}
+	}
 }

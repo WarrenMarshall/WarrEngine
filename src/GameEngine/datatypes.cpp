@@ -175,6 +175,13 @@ w_color w_color::from_string( std::string text )
 	return *this;
 }
 
+void w_color::scale( w_color& color, float s )
+{
+	color.r *= s;
+	color.g *= s;
+	color.b *= s;
+}
+
 // ----------------------------------------------------------------------------
 
 const w_vec2 w_vec2::zero = w_vec2( 0, 0 );

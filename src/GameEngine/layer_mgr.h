@@ -18,6 +18,5 @@ struct w_layer_mgr : i_listener
 	void update();
 	void draw();
 
-	w_layer* find_topmost_input_listener();
 	void on_listener_event_received( e_event_id event, void* object ) override;
 };

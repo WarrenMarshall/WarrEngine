@@ -4,15 +4,15 @@
 w_game_controller::w_game_controller( int idx )
 	: idx( idx )
 {
-	timer_repeat = std::make_unique<w_timer>( 150 );
+	//timer_repeat = std::make_unique<w_timer>( 150 );
 }
 
 void w_game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )
 {
-	bool last_state = engine->input_mgr->button_states[ static_cast<int>( input_id ) ] == e_button_state::pressed;
+	bool last_state = engine->input_mgr->button_states_last_frame[ static_cast<int>( input_id ) ];
 	bool current_state = (xinput_state.Gamepad.wButtons & xinput_button_bit) > 0;
 
-	engine->input_mgr->button_states[static_cast<int>( input_id )] = current_state ? e_button_state::pressed : e_button_state::released;
+	engine->input_mgr->button_states[static_cast<int>( input_id )] = current_state;
 
 	if( !last_state && current_state )
 	{
@@ -23,7 +23,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
 
 		is_being_used = true;
-		timer_repeat->reset();
+		//timer_repeat->reset();
 	}
 	else if( last_state && !current_state )
 	{
@@ -35,16 +35,16 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 	}
 	else if( last_state && current_state )
 	{
-		timer_repeat->update();
+		//timer_repeat->update();
 
-		if( timer_repeat->get_elapsed_count() )
-		{
+		//if( timer_repeat->get_elapsed_count() )
+		//{
 			w_input_event evt;
 			evt.event_id = e_event_id::input_pressed;
 			evt.input_id = input_id;
 
 			engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
-		}
+		//}
 	}
 }
 
@@ -80,6 +80,39 @@ void w_game_controller::update()
 	update_button_state( e_input_id::controller_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
 	update_button_state( e_input_id::controller_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
 	update_button_state( e_input_id::controller_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
+}
+
+void w_game_controller::play_rumble( e_rumble_effect effect )
+{
+	int rumble_max = 65535;
+	int intensity = 65535;
+	int duration_ms = 600;
+
+	switch( effect )
+	{
+		case e_rumble_effect::medium:
+		{
+			intensity = static_cast<int>( rumble_max * 0.75f );
+			duration_ms = 400;
+		}
+		break;
+
+		case e_rumble_effect::small:
+		{
+			intensity = static_cast<int>( rumble_max * 0.5f );
+			duration_ms = 300;
+		}
+		break;
+
+		case e_rumble_effect::tiny:
+		{
+			intensity = static_cast<int>( rumble_max * 0.35f );
+			duration_ms = 200;
+		}
+		break;
+	}
+
+	play_rumble( intensity, duration_ms );
 }
 
 void w_game_controller::play_rumble( int intensity, int ms )

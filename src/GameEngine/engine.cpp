@@ -2,6 +2,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// ----------------------------------------------------------------------------
+
 void tw_refresh_reloadables()
 {
 #if !defined( FINALRELEASE )
@@ -23,6 +25,8 @@ void tw_refresh_reloadables()
 	log_msg( "Worker thread exiting : %s", __FUNCTION__ );
 #endif
 }
+
+// ----------------------------------------------------------------------------
 
 /*
 	checks if 'symbol' exists in the map
@@ -231,7 +235,7 @@ void w_engine::update()
 		asset.second->update();
 	}
 
-	render->show_stats = input_mgr->is_button_down( e_input_id::keyboard_a);
+	render->show_stats = input_mgr->is_button_down( e_input_id::key_a);
 }
 
 // each time this is called, it checks the reload status for a single i_reloadable
@@ -319,38 +323,38 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 		{
 			switch( evt->input_id )
 			{
-				case e_input_id::keyboard_esc:
+				case e_input_id::key_esc:
 				{
 					is_running = false;
 				}
 				break;
 
-				case e_input_id::keyboard_pause:
+				case e_input_id::key_pause:
 				{
 					toggle_pause();
 				}
 				break;
 
-				case e_input_id::keyboard_f11:
+				case e_input_id::key_f11:
 				{
 					window->toggle_fullscreen();
 				}
 				break;
 
-				case e_input_id::keyboard_left_bracket:
+				case e_input_id::key_left_bracket:
 				{
 					time->dilation -= 0.1f;
 					time->dilation = w_max( time->dilation, 0.1f );
 				}
 				break;
 
-				case e_input_id::keyboard_right_bracket:
+				case e_input_id::key_right_bracket:
 				{
 					time->dilation += 0.1f;
 				}
 				break;
 
-				case e_input_id::keyboard_enter:
+				case e_input_id::key_enter:
 				{
 					if( evt->alt_down )
 					{
@@ -359,7 +363,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 				}
 				break;
 
-				case e_input_id::keyboard_f10:
+				case e_input_id::key_f10:
 				{
 					log_msg( " " );
 					log_msg( "-- RENDER STATS -----------------" );

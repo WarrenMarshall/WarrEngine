@@ -30,6 +30,7 @@ struct w_input : i_speaker
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
 	std::vector<w_input_event> event_queue;
+	std::unique_ptr<w_timer> timer_repeat = nullptr;
 
 	// tracks the mouse movement delta since the last call to Update()
 	w_vec2 mouse_move_delta = w_vec2( 0, 0 );
@@ -51,14 +52,17 @@ struct w_input : i_speaker
 	*/
 	bool game_controller_being_used = false;
 
-	std::array<e_button_state, (int)e_input_id::max> button_states;
+	std::array<bool, (int) e_input_id::max> button_states;
+	std::array<bool, (int) e_input_id::max> button_states_last_frame;
 
 	bool is_button_down( e_input_id input_id );
+	e_button_state get_button_state( e_input_id input_id );
 	w_vec2 axis_value_of( e_input_id button );
 
 	void init();
 	void deinit();
 	void update();
 
+	void update_button_state( e_input_id input_id, int glfw_state );
 	void play_rumble( e_rumble_effect effect );
 };

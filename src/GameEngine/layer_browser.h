@@ -11,5 +11,4 @@ struct layer_browser : w_layer
 	void draw() override;
 
 	int tile_from_screen_pos( float xpos, float ypos );
-	virtual void handle_input_event( const w_input_event* evt );
 };

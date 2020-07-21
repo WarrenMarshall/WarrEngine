@@ -40,8 +40,3 @@ int layer_browser::tile_from_screen_pos( float xpos, float ypos )
 
 	return 0;
 }
-
-void layer_browser::handle_input_event( const w_input_event* evt )
-{
-	log_msg( "Hi!" );
-}

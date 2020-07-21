@@ -84,61 +84,45 @@ void layer_editor::draw()
 
 			w_rect rc = w_rect(
 				x * (float)TILE_SZ, ypos + (y * (float) TILE_SZ),
-				TILE_SZ - 1, TILE_SZ - 1
+				TILE_SZ, TILE_SZ
 			);
 
-			//RENDER->draw( game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, rc );
-
-			if( engine->ui_mgr->im_image( id, game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, rc ) )
-			{
-				log_msg( "clicked tile!" );
-			}
+			//if( engine->ui_mgr->im_image( id, game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, W_COLOR_LIGHT_GREY, rc ) )
+			//{
+			//	log_msg( "clicked tile!" );
+			//}	
 		}
 	}
 
 	// ----------------------------------------------------------------------------
 
- 	if( engine->ui_mgr->im_button( e_ui_id::browse, panel_slice_def, rc_button_browse ) )
+	engine->ui_mgr->hover_id = e_ui_id::invalid;
+
+ 	if( engine->ui_mgr->im_button( e_ui_id::browse, panel_slice_def, W_COLOR_DARK_GREY, rc_button_browse ) )
  	{
  		log_msg( "BUTTON CLICKED!" );
 	}
+
+	w_rect button2 = rc_button_browse;
+	button2.x += 50;
+	if( engine->ui_mgr->im_button( e_ui_id::tile_start, panel_slice_def, W_COLOR_DARK_GREY, button2 ) )
+	{
+		log_msg( "BUTTON 2 CLICKED!" );
+	}
 }
 	
-void layer_editor::handle_input_event( const w_input_event* evt )
+bool layer_editor::handle_input_event( const w_input_event* evt )
 {
 	switch( evt->event_id )
 	{
-		case e_event_id::input_motion:
-		{
-			switch( evt->input_id )
-			{
-				case e_input_id::mouse:
-				{
-					/*
-					if( c2CircletoAABB( engine->input_mgr->c2_mouse_vpos, tile_display_area ) )
-					{
-						set_current_tile_from_mouse_pos( engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y );
-
-						if( is_painting )
-						{
-							paint_current_tile();
-						}
-					}
-					*/
-				}
-				break;
-			}
-		}
-		break;
-
 		case e_event_id::input_released:
 		{
 			switch( evt->input_id )
 			{
 				case e_input_id::mouse_button_left:
-				case e_input_id::keyboard_space:
 				{
 					is_painting = false;
+					return true;
 				}
 				break;
 			}
@@ -155,94 +139,63 @@ void layer_editor::handle_input_event( const w_input_event* evt )
 					{
 						is_painting = true;
 						paint_current_tile();
+						return true;
 					}
 				}
 				break;
 
-				case e_input_id::keyboard_space:
+				case e_input_id::key_space:
 				{
 					is_painting = true;
 					paint_current_tile();
+					return true;
 				}
 				break;
 
 				case e_input_id::mouse_button_right:
 				{
 					set_current_tile_idx_from_current_tile();
+					return true;
 				}
 				break;
 
-				case e_input_id::keyboard_c:
+				case e_input_id::key_left:
 				{
-					if( evt->ctrl_down )
-					{
-						set_current_tile_idx_from_current_tile();
-					}
+					game->current_room--;
+					game->current_room = w_max( game->current_room, 0 );
+					return true;
 				}
 				break;
 
-				case e_input_id::keyboard_left:
+				case e_input_id::key_right:
 				{
-					if( evt->alt_down )
-					{
-						game->current_room--;
-						game->current_room = w_max( game->current_room, 0 );
-					}
-					else
-					{
-						game->current_tile.x--;
-						game->current_tile.x = w_max( game->current_tile.x, 0 );
-					}
+					game->current_room++;
+					game->current_room = w_min( game->current_room, static_cast<int>( game->rooms.size() - 1 ) );
+					return true;
 				}
 				break;
 
-				case e_input_id::keyboard_right:
+				case e_input_id::key_0:
+				case e_input_id::key_1:
+				case e_input_id::key_2:
+				case e_input_id::key_3:
+				case e_input_id::key_4:
+				case e_input_id::key_5:
+				case e_input_id::key_6:
+				case e_input_id::key_7:
+				case e_input_id::key_8:
+				case e_input_id::key_9:
 				{
-					if( evt->alt_down )
-					{
-						game->current_room++;
-						game->current_room = w_min( game->current_room, static_cast<int>( game->rooms.size() - 1 ) );
-					}
-					else
-					{
-						game->current_tile.x++;
-						game->current_tile.x = w_min( game->current_tile.x, 18 );
-					}
-				}
-				break;
-
-				case e_input_id::keyboard_up:
-				{
-					game->current_tile.y--;
-					game->current_tile.y = w_max( game->current_tile.y, 0 );
-				}
-				break;
-
-				case e_input_id::keyboard_down:
-				{
-					game->current_tile.y++;
-					game->current_tile.y = w_min( game->current_tile.y, 8 );
-				}
-				break;
-
-				case e_input_id::keyboard_0:
-				case e_input_id::keyboard_1:
-				case e_input_id::keyboard_2:
-				case e_input_id::keyboard_3:
-				case e_input_id::keyboard_4:
-				case e_input_id::keyboard_5:
-				case e_input_id::keyboard_6:
-				case e_input_id::keyboard_7:
-				case e_input_id::keyboard_8:
-				case e_input_id::keyboard_9:
-				{
-					game->current_room = static_cast<int>( evt->input_id ) - static_cast<int>( e_input_id::keyboard_0 );
+					game->current_room = static_cast<int>( evt->input_id ) - static_cast<int>( e_input_id::key_0 );
+					return true;
 				}
 				break;
 			}
 		}
 		break;
 	}
+
+	return false;
 }
 
 // takes a position within the game viewport and converts it into

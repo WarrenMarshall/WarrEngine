@@ -10,6 +10,7 @@ void w_layer::draw()
 {
 }
 
-void w_layer::handle_input_event( const w_input_event* evt )
+bool w_layer::handle_input_event( const w_input_event* evt )
 {
+	return false;
 }

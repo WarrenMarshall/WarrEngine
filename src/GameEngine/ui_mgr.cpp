@@ -22,7 +22,6 @@ void w_ui_mgr::draw_top_level()
 		RENDER
 			->begin()
 			->push_depth( 1000.0f )
-			->draw_line( { 0,0 }, engine->input_mgr->mouse_vwindow_pos )
 			->draw( mouse_cursor->img,
 					w_rect(
 						engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
@@ -38,55 +37,66 @@ bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 	return c2AABBtoPoint( rc, engine->input_mgr->mouse_vwindow_pos );
 }
 
-bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc )
+bool w_ui_mgr::update_im_state( e_ui_id id, w_rect rc )
 {
+	/*
+		 reduce the size of the hit rectangle. this gives more breathing room
+		 when mousing over tightly packed UI elements and stops the user
+		 from being able to highlight/click more than one at a time.
+	*/
+
+	rc.w -= 0.5f;
+	rc.h -= 0.5f;
+
 	bool result = false;
+	e_button_state bs = engine->input_mgr->get_button_state( e_input_id::mouse_button_left );
 
-	bool button_is_down = engine->input_mgr->is_button_down( e_input_id::mouse_button_left );
+	if( is_mouse_inside( rc ) && clicked_id == e_ui_id::invalid )
+	{
+		hover_id = id;
+	}
 
-	if( button_is_down )
+	if( bs == e_button_state::pressed )
 	{
 		if( is_mouse_inside( rc ) )
 		{
-			if( hover_id == id )
-			{
-				clicked_id = id;
-			}
+			clicked_id = id;
 		}
 	}
-	else
+	else if( bs == e_button_state::released )
 	{
-		if( is_mouse_inside( rc ) )
+		if( is_mouse_inside( rc ) && clicked_id == id )
 		{
-			if( clicked_id == id && hover_id == id )
-			{
-				result = true;
-				clicked_id = e_ui_id::invalid;
-			}
+			result = true;
+		}
 
-			hover_id = id;
-		}
-		else
-		{
-			hover_id = clicked_id = e_ui_id::invalid;
-		}
+		hover_id = clicked_id = e_ui_id::invalid;
+	}
+
+	return result;
+}
+
+bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, const w_color& color, w_rect& rc )
+{
+	bool result = update_im_state( id, rc );
+
+	// ----------------------------------------------------------------------------
+
+	w_color final_color = color;
+	if( hover_id == id )
+	{
+		w_color::scale( final_color, 1.25f );
+	}
+	if( clicked_id == id )
+	{
+		w_color::scale( final_color, 1.75f );
 	}
 
 	// ----------------------------------------------------------------------------
 
-	w_color color = W_COLOR_DARK_GREY;
-	if( hover_id == id )
-	{
-		color = W_COLOR_GREY;
-	}
-	if( clicked_id == id )
-	{
-		color = W_COLOR_LIGHT_GREY;
-	}
-
 	RENDER
 		->begin()
-		->push_color( color )
+		->push_color( final_color )
 		->push_depth( 100 )
 		->draw_sliced( slice_def, rc )
 		->end();
@@ -94,53 +104,27 @@ bool w_ui_mgr::im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc 
 	return result;
 }
 
-bool w_ui_mgr::im_image( e_ui_id id, const a_subtexture* subtexture, w_rect& rc )
+bool w_ui_mgr::im_image( e_ui_id id, const a_subtexture* subtexture, const w_color& color, w_rect& rc )
 {
-	bool result = false;
+	bool result = update_im_state( id, rc );
 
-	bool button_is_down = engine->input_mgr->is_button_down( e_input_id::mouse_button_left );
+	// ----------------------------------------------------------------------------
 
-	if( button_is_down )
-	{
-		if( is_mouse_inside( rc ) )
-		{
-			if( hover_id == id )
-			{
-				clicked_id = id;
-			}
-		}
-	}
-	else
-	{
-		if( is_mouse_inside( rc ) )
-		{
-			if( clicked_id == id && hover_id == id )
-			{
-				result = true;
-				clicked_id = e_ui_id::invalid;
-			}
-
-			hover_id = id;
-		}
-		else
-		{
-			hover_id = clicked_id = e_ui_id::invalid;
-		}
-	}
-
-	w_color color = RENDER->rs_color_stack.top();
+	w_color final_color = color;
 	if( hover_id == id )
 	{
-		color = W_COLOR_GREY;
+		w_color::scale( final_color, 1.25f );
 	}
 	if( clicked_id == id )
 	{
-		color = W_COLOR_WHITE;
+		w_color::scale( final_color, 1.75f );
 	}
+
+	// ----------------------------------------------------------------------------
 
 	RENDER
 		->begin()
-		->push_color( color )
+		->push_color( final_color )
 		->push_depth( 100 )
 		->draw( subtexture, rc )
 		->end();

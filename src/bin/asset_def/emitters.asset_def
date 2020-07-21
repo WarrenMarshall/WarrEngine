@@ -6,11 +6,11 @@
 	"type" "emitter_params"
 	"name" "emitter_debug"
 	"texture_name" "tex_fire_particle"
-	"spawner_type" "box,v_window_w,8"
+	"spawner_type" "box,v_window_w,4"
 
 	"s_max_spawn_per_sec" "150"
 	"b_needs_warm_up" "false"
-	"a_dir" "45"
+	"a_dir" "0"
 	"r_scale_spawn" "0.5, 1.25"
 	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
 	"r_lifespan" "2000, 4000"

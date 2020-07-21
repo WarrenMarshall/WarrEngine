@@ -23,10 +23,12 @@ struct w_color
 {
 	float r = 0.0f, g = 0.0f, b = 0.0f, a = 1.0f;
 
-	w_color() {}
+	w_color() = default;
 	w_color( const w_color& other );
 	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( std::string str );
+
+	static void scale( w_color& color, float s );
 
 	//std::string to_string();
 	w_color from_string( std::string text );
@@ -44,7 +46,7 @@ struct w_keyframe
 	float float_value = 0.0f;
 	w_color color_value = W_COLOR_WHITE;
 
-	w_keyframe() {}
+	w_keyframe() = default;
 	w_keyframe( const w_keyframe& other );
 	w_keyframe( float pct_marker, float value );
 	w_keyframe( float pct_marker, w_color value );
@@ -76,7 +78,7 @@ struct w_range
 	float min = 0.0f;
 	float max = 1.0f;
 
-	w_range() {}
+	w_range() = default;
 	w_range( float min, float max );
 	w_range( std::string str );
 

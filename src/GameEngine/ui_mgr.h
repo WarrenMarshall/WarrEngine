@@ -16,8 +16,9 @@ struct w_ui_mgr
 	void set_mouse_visible( bool visible );
 	void draw_top_level();
 
-	bool im_button( e_ui_id id, const a_9slice_def* slice_def, w_rect& rc );
-	bool im_image( e_ui_id id, const a_subtexture* subtexture, w_rect& rc );
+	bool im_button( e_ui_id id, const a_9slice_def* slice_def, const w_color& color, w_rect& rc );
+	bool im_image( e_ui_id id, const a_subtexture* subtexture, const w_color& color, w_rect& rc );
 
 	bool is_mouse_inside( w_rect& rc ) const;
+	bool update_im_state( e_ui_id id, w_rect rc );
 };

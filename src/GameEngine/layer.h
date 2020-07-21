@@ -38,5 +38,5 @@ struct w_layer : i_lifecycle
 	virtual void update() {}
 	virtual void draw();
 
-	virtual void handle_input_event( const w_input_event* evt );
+	virtual bool handle_input_event( const w_input_event* evt );
 };
