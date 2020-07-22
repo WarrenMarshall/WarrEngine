@@ -7,6 +7,7 @@ struct layer_editor : w_layer
 
 	c2AABB tile_display_area;
 	w_rect rc_button_browse;
+	w_rect rc_button_browse2;
 
 	bool is_painting = false;
 

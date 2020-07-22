@@ -15,6 +15,7 @@ void layer_editor::push()
 	tile_display_area.max = { v_window_w, 32 + ( TILE_SZ * 9 ) };
 
 	rc_button_browse = w_rect( 12, 188, 48, 48 );
+	rc_button_browse2 = w_rect( 80, 188, 32, 32 );
 }
 
 void layer_editor::pop()
@@ -96,19 +97,25 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	engine->ui_mgr->hover_id = e_ui_id::invalid;
-
- 	if( engine->ui_mgr->im_button( e_ui_id::browse, panel_slice_def, W_COLOR_DARK_GREY, rc_button_browse ) )
+	//engine->ui_mgr->hover_id = -1;
+	if( engine->ui_mgr->im_button( 667, panel_slice_def, W_COLOR_DARK_GREY, rc_button_browse2 ) )
+	{
+		log_msg( "BUTTON 2 CLICKED!" );
+	}
+	//engine->ui_mgr->hover_id = -1;
+ 	if( engine->ui_mgr->im_button( 666, panel_slice_def, W_COLOR_DARK_GREY, rc_button_browse ) )
  	{
  		log_msg( "BUTTON CLICKED!" );
 	}
 
-	w_rect button2 = rc_button_browse;
-	button2.x += 50;
-	if( engine->ui_mgr->im_button( e_ui_id::tile_start, panel_slice_def, W_COLOR_DARK_GREY, button2 ) )
-	{
-		log_msg( "BUTTON 2 CLICKED!" );
-	}
+	RENDER
+		->begin()
+		->push_depth( 1000 )
+		->draw_string(
+			engine->ui_mgr->ui_font,
+			s_format( "%d / %d", engine->ui_mgr->hover_id, engine->ui_mgr->clicked_id ),
+			w_rect( 0, 0 ) )
+		->end();
 }
 	
 bool layer_editor::handle_input_event( const w_input_event* evt )
