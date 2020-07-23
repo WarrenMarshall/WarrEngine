@@ -90,8 +90,8 @@ static w_vec2 last_mouse_pos( 0, 0 );
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
-	engine->input_mgr->mouse_move_delta.x += static_cast<float>( xpos ) - last_mouse_pos.x;
-	engine->input_mgr->mouse_move_delta.y += static_cast<float>( ypos ) - last_mouse_pos.y;
+	engine->input->mouse_move_delta.x += static_cast<float>( xpos ) - last_mouse_pos.x;
+	engine->input->mouse_move_delta.y += static_cast<float>( ypos ) - last_mouse_pos.y;
 
 	last_mouse_pos = w_vec2( static_cast<float>( xpos ), static_cast<float>( ypos ) );
 
@@ -103,8 +103,8 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	// only update the position if the mouse is moving over the virtual window itself
 	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
 	{
-		engine->input_mgr->mouse_vwindow_pos.x = vx;
-		engine->input_mgr->mouse_vwindow_pos.y = vy;
+		engine->input->mouse_vwindow_pos.x = vx;
+		engine->input->mouse_vwindow_pos.y = vy;
 	}
 }
 
@@ -326,7 +326,7 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 		evt.event_id = e_event_id::input_pressed;
 		evt.input_id = input_id;
 
-		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+		engine->input->event_queue.emplace_back( std::move( evt ) );
 
 		//is_being_used = true;
 		timer_repeat->reset();
@@ -337,7 +337,7 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 		evt.event_id = e_event_id::input_released;
 		evt.input_id = input_id;
 
-		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+		engine->input->event_queue.emplace_back( std::move( evt ) );
 	}
 	else if( bs == e_button_state::held )
 	{
@@ -349,7 +349,7 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 			evt.event_id = e_event_id::input_pressed;
 			evt.input_id = input_id;
 
-			engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+			engine->input->event_queue.emplace_back( std::move( evt ) );
 		}
 	}
 }

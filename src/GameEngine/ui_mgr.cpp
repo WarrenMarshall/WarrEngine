@@ -2,39 +2,24 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_ui_mgr::init( const std::string& mouse_cursor_name )
+void w_ui_mgr::init()
 {
-	mouse_cursor = engine->get_asset<a_cursor>( mouse_cursor_name, b_silent(true) );
-	ui_font = engine->get_asset<a_font>( "ui_simple_font" );
+	theme = std::make_unique<w_ui_theme>();
 }
 
 void w_ui_mgr::set_mouse_visible( bool visible )
 {
-	this->visible = visible;
+	this->is_mouse_visible = visible;
 }
 
-void w_ui_mgr::draw_top_level()
+void w_ui_mgr::draw_topmost()
 {
-	// mouse cursor
-
-	if( visible && mouse_cursor != nullptr )
-	{
-		RENDER
-			->begin()
-			->push_depth( 1000.0f )
-			->draw( mouse_cursor->img,
-					w_rect(
-						engine->input_mgr->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
-						engine->input_mgr->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y
-					)
-			)
-			->end();
-	}
+	theme->draw_topmost();
 }
 
 bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 {
-	return c2AABBtoPoint( rc, engine->input_mgr->mouse_vwindow_pos );
+	return c2AABBtoPoint( rc, engine->input->mouse_vwindow_pos );
 }
 
 bool w_ui_mgr::update_im_state( int id, w_rect rc )
@@ -49,7 +34,7 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 	rc.h -= 0.5f;
 
 	bool result = false;
-	e_button_state bs = engine->input_mgr->get_button_state( e_input_id::mouse_button_left );
+	e_button_state bs = engine->input->get_button_state( e_input_id::mouse_button_left );
 	bool mouse_is_inside = is_mouse_inside( rc );
 
 	if( mouse_is_inside )
@@ -87,32 +72,18 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 	return result;
 }
 
-bool w_ui_mgr::im_button( int id, const a_9slice_def* slice_def, const w_color& color, w_rect& rc )
+bool w_ui_mgr::im_button( int id, const w_rect& rc )
 {
 	bool result = update_im_state( id, rc );
+	theme->draw_button( id, rc );
 
-	// ----------------------------------------------------------------------------
+	return result;
+}
 
-	w_color final_color = color;
-	if( hover_id == id )
-	{
-		w_color::scale( final_color, 1.25f );
-		final_color = W_COLOR_YELLOW;
-	}
-	if( clicked_id == id )
-	{
-		w_color::scale( final_color, 1.75f );
-		final_color = W_COLOR_GREEN;
-	}
+bool w_ui_mgr::im_image_button( int id, const w_rect& rc, a_subtexture* subtexture )
+{
+	bool result = update_im_state( id, rc );
+	theme->draw_image_button( id, rc, subtexture );
 
-	// ----------------------------------------------------------------------------
-
-	RENDER
-		->begin()
-		->push_color( final_color )
-		->push_depth( 100 )
-		->draw_sliced( slice_def, rc )
-		->end();
-	
 	return result;
 }

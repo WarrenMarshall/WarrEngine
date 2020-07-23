@@ -2,12 +2,7 @@
 
 struct layer_editor : w_layer
 {
-	a_subtexture* selector_bracket = nullptr;
-	a_9slice_def* panel_slice_def = nullptr;
-
-	c2AABB tile_display_area;
-	w_rect rc_button_browse;
-	w_rect rc_button_browse2;
+	w_rect tile_display_area;
 
 	bool is_painting = false;
 

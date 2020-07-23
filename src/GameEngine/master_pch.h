@@ -149,14 +149,16 @@ constexpr float v_window_hh = v_window_h / 2.0f;
 // ----------------------------------------------------------------------------
 //	useful type definitions to increase code readability
 
-typedef w_vec2 w_uv;
-typedef w_vec2 w_sz;
+using w_uv = w_vec2;
+using w_sz = w_vec2;
 
 #define MATRIX engine->opengl
 #define OPENGL engine->opengl
 #define RENDER engine->render
+#define UI engine->ui
 
 // ----------------------------------------------------------------------------
 
-typedef bool b_is_hot_reloading;
-typedef bool b_silent;
+using b_is_hot_reloading = bool;
+using b_silent = bool;
+using b_draw_button = bool;

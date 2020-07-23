@@ -135,7 +135,7 @@ int main( int argc, char* argv[] )
 		// input initialization
 
 		log_msg( "Initializing input" );
-		engine->input_mgr->init();
+		engine->input->init();
 
 		// initial layer set up
 
@@ -155,8 +155,8 @@ int main( int argc, char* argv[] )
 			// used for solid drawing
 			engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
 
-			// #configfile - needs to be replaced with some sort of config file setting
-			engine->ui_mgr->init( "ui_cursor" );
+			engine->ui->init();
+			engine->ui->theme->init();
 
 			// using a custom mouse cursor, so hide the system mouse
 			engine->window->set_mouse_mode( e_mouse_mode::hidden );
@@ -173,7 +173,7 @@ int main( int argc, char* argv[] )
 			/*
 				event processing
 			*/
-			// #todo - this magic value is arbitrary. is this ok or do we need to do something fancier?
+			// #todo - this magic value is arbitrary. this feels OK but do we need to do something fancier?
 			glfwWaitEventsTimeout( 0.001 );
 
 			/*
@@ -187,7 +187,7 @@ int main( int argc, char* argv[] )
 				process user input
 			*/
 
-			engine->input_mgr->update();
+			engine->input->update();
 
 			/*
 				if we have fixed time steps to perform, walk
@@ -228,7 +228,7 @@ int main( int argc, char* argv[] )
 				game->draw_entities();
 				RENDER->end();
 				
-				engine->ui_mgr->draw_top_level();
+				engine->ui->draw_topmost();
 				engine->draw();
 			}
 			RENDER->end_frame();
@@ -251,7 +251,7 @@ int main( int argc, char* argv[] )
 		BASS_Free();
 
 		log_msg( "Shutting down input" );
-		engine->input_mgr->deinit();
+		engine->input->deinit();
 
 		log_msg( "Shutting down engine" );
 		engine->deinit();

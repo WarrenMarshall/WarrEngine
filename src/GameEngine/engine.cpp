@@ -147,14 +147,14 @@ void w_engine::init()
 	layer_mgr = std::make_unique<w_layer_mgr>();
 	window = std::make_unique<w_window>();
 	render = std::make_unique<w_render>();
-	input_mgr = std::make_unique<w_input>();
-	ui_mgr = std::make_unique<w_ui_mgr>();
+	input = std::make_unique<w_input>();
+	ui = std::make_unique<w_ui_mgr>();
 	fs = std::make_unique<w_file_system>();
 	shader = std::make_unique<w_shader>();
 	opengl = std::make_unique<w_opengl>();
 
-	input_mgr->add_listener( this );
-	input_mgr->add_listener( layer_mgr.get() );
+	input->add_listener( this );
+	input->add_listener( layer_mgr.get() );
 	
 	w_random::seed();
 	fs->init();
@@ -169,8 +169,8 @@ void w_engine::init()
 
 void w_engine::deinit()
 {
-	input_mgr->remove_listener( this );
-	input_mgr->remove_listener( layer_mgr.get() );
+	input->remove_listener( this );
+	input->remove_listener( layer_mgr.get() );
 
 	// wait for threads to finish
 	exit_tw_refresh_reloadables = true;
@@ -235,7 +235,7 @@ void w_engine::update()
 		asset.second->update();
 	}
 
-	render->show_stats = input_mgr->is_button_down( e_input_id::key_a);
+	render->show_stats = input->is_button_down( e_input_id::key_a);
 }
 
 // each time this is called, it checks the reload status for a single i_reloadable

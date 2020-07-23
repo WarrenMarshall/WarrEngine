@@ -6,21 +6,14 @@
 
 void layer_editor::push()
 {
-	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
-	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
+	engine->ui->set_mouse_visible( true );
 
-	engine->ui_mgr->set_mouse_visible( true );
-
-	tile_display_area.min = { 0, 32 };
-	tile_display_area.max = { v_window_w, 32 + ( TILE_SZ * 9 ) };
-
-	rc_button_browse = w_rect( 12, 188, 48, 48 );
-	rc_button_browse2 = w_rect( 80, 188, 32, 32 );
+	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * 9 );
 }
 
 void layer_editor::pop()
 {
-	engine->ui_mgr->set_mouse_visible( false );
+	engine->ui->set_mouse_visible( false );
 }
 
 void layer_editor::becoming_top_layer()
@@ -39,7 +32,7 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		->draw_string( engine->ui_mgr->ui_font, s_format( "Current Room: %d", game->current_room ),
+		->draw_string( UI->theme->small_font, s_format( "Current Room: %d", game->current_room ),
 			w_rect( 68.0f, 206.0f ) )
 		->end();
 
@@ -56,29 +49,21 @@ void layer_editor::draw()
 
 	// title bar
 
-	RENDER->begin()
-		->push_depth( 50.0f )
-		->push_color( W_COLOR_DARK_GREY )
-		->draw_sliced( panel_slice_def, w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f ) )
-		->end();
-
+	UI->theme->draw_panel( -1, w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f ) );
 	game->draw_viewport_caption();
 
 	// info bars
 
-	RENDER->begin()
-		->push_color( W_COLOR_DARK_GREY )
-		->draw_sliced( panel_slice_def, w_rect( 0.0f, v_window_h - 68.0f, v_window_w, 68.0f ) )
-		->end();
+	UI->theme->draw_panel( -1, w_rect( 0.0f, v_window_h - 68.0f, v_window_w, 68.0f ) );
 
 	// ----------------------------------------------------------------------------
 	// tiles
 
 	float ypos = TILE_SZ * 2;
 
+	int id = (int) e_ui_id::tile_start;
 	for( int y = 0 ; y < ROOM_H ; ++y )
 	{
-		e_ui_id id = e_ui_id::tile_start;
 		for( int x = 0 ; x < ROOM_W ; ++x )
 		{
 			int idx = ( y * ROOM_W ) + x;
@@ -88,34 +73,34 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			//if( engine->ui_mgr->im_image( id, game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture, W_COLOR_LIGHT_GREY, rc ) )
-			//{
-			//	log_msg( "clicked tile!" );
-			//}	
+			if( engine->ui->im_image_button( id, rc, game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture ) )
+			{
+				game->rooms[ game->current_room ].tiles[ idx ]++;
+			}
+			id++;
 		}
 	}
 
 	// ----------------------------------------------------------------------------
 
-	//engine->ui_mgr->hover_id = -1;
-	if( engine->ui_mgr->im_button( 667, panel_slice_def, W_COLOR_DARK_GREY, rc_button_browse2 ) )
-	{
-		log_msg( "BUTTON 2 CLICKED!" );
-	}
-	//engine->ui_mgr->hover_id = -1;
- 	if( engine->ui_mgr->im_button( 666, panel_slice_def, W_COLOR_DARK_GREY, rc_button_browse ) )
+	//if( engine->ui->im_button( 666, panel_slice_def, W_COLOR_DARK_GREY, w_rect( 12, 188, 48, 48 ) ) )
+	if( engine->ui->im_button( 666, w_rect( 12, 188, 48, 48 ) ) )
  	{
  		log_msg( "BUTTON CLICKED!" );
 	}
+	//if( engine->ui->im_button( 667, panel_slice_def, W_COLOR_DARK_GREY, w_rect( 80, 188, 32, 32 ) ) )
+	//{
+	//	log_msg( "BUTTON 2 CLICKED!" );
+	//}
 
-	RENDER
-		->begin()
-		->push_depth( 1000 )
-		->draw_string(
-			engine->ui_mgr->ui_font,
-			s_format( "%d / %d", engine->ui_mgr->hover_id, engine->ui_mgr->clicked_id ),
-			w_rect( 0, 0 ) )
-		->end();
+	//RENDER
+	//	->begin()
+	//	->push_depth( 1000 )
+	//	->draw_string(
+	//		engine->ui_mgr->ui_font,
+	//		s_format( "%d / %d", engine->ui_mgr->hover_id, engine->ui_mgr->clicked_id ),
+	//		w_rect( 0, 0 ) )
+	//	->end();
 }
 	
 bool layer_editor::handle_input_event( const w_input_event* evt )
@@ -142,7 +127,7 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 			{
 				case e_input_id::mouse_button_left:
 				{
-					if( c2AABBtoPoint( tile_display_area, engine->input_mgr->mouse_vwindow_pos ) )
+					if( c2AABBtoPoint( tile_display_area, engine->input->mouse_vwindow_pos ) )
 					{
 						is_painting = true;
 						paint_current_tile();

@@ -410,7 +410,7 @@ w_render* w_render::draw_stats()
 		stat_lines.emplace_back( s_format( "Layers : %d", engine->layer_mgr->layer_stack.size() ) );
 		stat_lines.emplace_back( s_format( "Entities : %s", s_commas( stats.num_entities.value, "%0.f" ).c_str() ) );
 		stat_lines.emplace_back( s_format( "Time Dilation: %.2f", engine->time->dilation ) );
-		stat_lines.emplace_back( s_format( "Mouse VPos: %.0f, %.0f", engine->input_mgr->mouse_vwindow_pos.x, engine->input_mgr->mouse_vwindow_pos.y ) );
+		stat_lines.emplace_back( s_format( "Mouse VPos: %.0f, %.0f", engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
 
 		if( stats.stat_custom_string.length() )
 		{
@@ -419,7 +419,7 @@ w_render* w_render::draw_stats()
 		}
 
 		assert( stat_lines.size() < stats_draw_reserve );
-		int font_max_height = engine->ui_mgr->ui_font->font_def->max_height;
+		int font_max_height = UI->theme->small_font->font_def->max_height;
 
 		RENDER->begin()
 			->push_color( w_color( .55f, .25f, .25f ) )
@@ -436,7 +436,7 @@ w_render* w_render::draw_stats()
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( engine->ui_mgr->ui_font, iter.c_str(), w_rect(v_window_hw, ypos) );
+			RENDER->draw_string( UI->theme->small_font, iter.c_str(), w_rect(v_window_hw, ypos) );
 			ypos += font_max_height;
 		}
 
@@ -450,7 +450,7 @@ w_render* w_render::draw_stats()
 		RENDER->begin()
 			->push_depth( 1000.0f )
 			->push_align( e_align::right )
-			->draw_string( engine->ui_mgr->ui_font, fps_stats, w_rect( v_window_w, 0 ) )
+			->draw_string( UI->theme->small_font, fps_stats, w_rect( v_window_w, 0 ) )
 			->end();
 	#endif
 	}

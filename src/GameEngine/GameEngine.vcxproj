@@ -221,6 +221,7 @@
     <ClCompile Include="render_buffer.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="keyvalues.cpp" />
+    <ClCompile Include="ui_theme.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asset.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="render_buffer.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="keyvalues.h" />
+    <ClInclude Include="ui_theme.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

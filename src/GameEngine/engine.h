@@ -55,8 +55,8 @@ struct w_engine : i_listener
 	std::unique_ptr<w_layer_mgr> layer_mgr = nullptr;
 	std::unique_ptr<w_window> window = nullptr;
 	std::unique_ptr<w_render> render = nullptr;
-	std::unique_ptr<w_input> input_mgr = nullptr;
-	std::unique_ptr<w_ui_mgr> ui_mgr = nullptr;
+	std::unique_ptr<w_input> input = nullptr;
+	std::unique_ptr<w_ui_mgr> ui = nullptr;
 	std::unique_ptr<w_file_system> fs = nullptr;
 	std::unique_ptr<w_shader> shader = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;

@@ -9,10 +9,10 @@ w_game_controller::w_game_controller( int idx )
 
 void w_game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )
 {
-	bool last_state = engine->input_mgr->button_states_last_frame[ static_cast<int>( input_id ) ];
+	bool last_state = engine->input->button_states_last_frame[ static_cast<int>( input_id ) ];
 	bool current_state = (xinput_state.Gamepad.wButtons & xinput_button_bit) > 0;
 
-	engine->input_mgr->button_states[static_cast<int>( input_id )] = current_state;
+	engine->input->button_states[static_cast<int>( input_id )] = current_state;
 
 	if( !last_state && current_state )
 	{
@@ -20,7 +20,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 		evt.event_id = e_event_id::input_pressed;
 		evt.input_id = input_id;
 
-		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+		engine->input->event_queue.emplace_back( std::move( evt ) );
 
 		is_being_used = true;
 		//timer_repeat->reset();
@@ -31,7 +31,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 		evt.event_id = e_event_id::input_released;
 		evt.input_id = input_id;
 
-		engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+		engine->input->event_queue.emplace_back( std::move( evt ) );
 	}
 	else if( last_state && current_state )
 	{
@@ -43,7 +43,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 			evt.event_id = e_event_id::input_pressed;
 			evt.input_id = input_id;
 
-			engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
+			engine->input->event_queue.emplace_back( std::move( evt ) );
 		//}
 	}
 }

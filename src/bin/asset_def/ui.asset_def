@@ -8,7 +8,8 @@
 	"name" "tex_ui_master"
 	"filename" "images/ui_master.png"
 	"subtextures" "\
-		selector_bracket,0,40,16,16"
+		toon_hand_cursor, 0, 24, 16, 16,\
+		selector_bracket, 0, 40, 16, 16"
 }
 
 {
@@ -23,7 +24,7 @@
 {
 	"type" "cursor"
 	"name" "ui_cursor"
-	"subtexture" "img_mouse_cursor"
+	"subtexture" "toon_hand_cursor"
 	"hotspot" "1, 1"
 }
 

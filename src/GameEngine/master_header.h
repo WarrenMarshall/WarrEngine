@@ -23,6 +23,7 @@
 #include "input.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
+#include "ui_theme.h"
 #include "ui_mgr.h"
 #include "engine.h"
 
