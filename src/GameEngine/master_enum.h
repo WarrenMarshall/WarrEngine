@@ -300,9 +300,15 @@ enum struct e_button_state : int
 
 enum struct e_im_result : int
 {
+	// nothing happened
 	none = 0,
+	// mouse is within the controls rectangle
 	hovered = 1,
+	// control has been clicked but the mouse hasn't been released yet
 	hot = 2,
-	clicked = 4
+	// the control was clicked and that click needs processing now
+	left_clicked = 4,
+	// same as clicked, but right mouse button
+	right_clicked = 8
 };
 DEFINE_ENUM_FLAG_OPERATOR( e_im_result )

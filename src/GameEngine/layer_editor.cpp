@@ -75,35 +75,41 @@ void layer_editor::draw()
 			a_subtexture* subtexture = game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture;
 			
 			e_im_result ir = UI->im_active( rc, &( w_ui_style_tile( subtexture ) ) );
-			if( ( ir & e_im_result::clicked ) > 0 )
+
+			if( ( ir & e_im_result::left_clicked ) > 0 )
 			{
 				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
-				//is_painting = true;
+			}
+			if( ( ir & e_im_result::hot ) > 0 )
+			{
+				is_painting = true;
+			}
+			if( ( ir & e_im_result::hovered ) > 0 && is_painting )
+			{
+				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 			}
 		}
 	}
 
 	// ----------------------------------------------------------------------------
 
-	if( (UI->im_active( w_rect( 12, 188, 48, 48 ), &( w_ui_style_pushbutton() ) ) & e_im_result::clicked) > 0 )
+	if( (UI->im_active( w_rect( 12, 188, 48, 48 ), &( w_ui_style_pushbutton() ) ) & e_im_result::left_clicked ) > 0 )
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}
-	//if( UI->im_active( w_rect( 80, 188, 32, 32 ), &( w_ui_style_pushbutton() ) ) )
-	//{
-	//	log_msg( "BUTTON 2 CLICKED!" );
-	//}
 
 	// ----------------------------------------------------------------------------
 
+#if 1
 	RENDER
 		->begin()
 		->push_depth( 1000 )
 		->draw_string(
 			UI->theme->small_font,
-			s_format( "%d / %d", UI->hover_id, UI->hot_id ),
+			s_format( "HV:%d / HT:%d / RBS: %d", UI->hover_id, UI->hot_id, engine->input->get_button_state( e_input_id::mouse_button_right) ),
 			w_rect( 0, 0 ) )
 		->end();
+#endif
 }
 	
 bool layer_editor::handle_input_event( const w_input_event* evt )
@@ -128,30 +134,6 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 		{
 			switch( evt->input_id )
 			{
-				case e_input_id::key_space:
-				{
-					is_painting = true;
-					paint_current_tile();
-					return true;
-				}
-				break;
-
-				case e_input_id::key_left:
-				{
-					game->current_room--;
-					game->current_room = w_max( game->current_room, 0 );
-					return true;
-				}
-				break;
-
-				case e_input_id::key_right:
-				{
-					game->current_room++;
-					game->current_room = w_min( game->current_room, static_cast<int>( game->rooms.size() - 1 ) );
-					return true;
-				}
-				break;
-
 				case e_input_id::key_0:
 				case e_input_id::key_1:
 				case e_input_id::key_2:

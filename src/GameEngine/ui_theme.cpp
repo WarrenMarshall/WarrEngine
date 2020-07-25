@@ -2,6 +2,67 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+e_im_result w_ui_style::update_im_state( int id, w_rect rc )
+{
+	e_im_result imresult = e_im_result::none;
+
+	/*
+		 reduce the size of the hit rectangle. this gives more breathing room
+		 when mousing over tightly packed UI elements and stops the user
+		 from being able to highlight/click more than one at a time.
+	*/
+
+	rc.w -= 1.0f;
+	rc.h -= 1.0f;
+
+	bool result = false;
+	e_button_state bs_left = engine->input->get_button_state( e_input_id::mouse_button_left );
+	bool mouse_is_inside = UI->is_mouse_inside( rc );
+
+	if( mouse_is_inside )
+	{
+		if( bs_left == e_button_state::up || ( bs_left == e_button_state::held && UI->hot_id == id ) )
+		{
+			UI->hover_id = id;
+		}
+		else if( bs_left == e_button_state::pressed )
+		{
+			UI->hot_id = id;
+		}
+		else if( bs_left == e_button_state::released )
+		{
+			if( UI->hot_id == id && UI->hover_id == id )
+			{
+				imresult |= e_im_result::left_clicked;
+			}
+			UI->hover_id = UI->hot_id = -1;
+		}
+	}
+	else
+	{
+		if( UI->hover_id == id )
+		{
+			UI->hover_id = -1;
+		}
+
+		if( bs_left == e_button_state::released && UI->hot_id == id )
+		{
+			UI->hot_id = -1;
+		}
+	}
+
+	if( UI->hover_id == id )
+	{
+		imresult |= e_im_result::hovered;
+	}
+	if( UI->hot_id == id )
+	{
+		imresult |= e_im_result::hot;
+	}
+
+	return imresult;
+}
+
 // ----------------------------------------------------------------------------
 
 w_ui_style_pushbutton::w_ui_style_pushbutton()
@@ -65,7 +126,7 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 	w_color bracket_color = W_COLOR_BLACK;
 	bracket_color.a = 0.0f;
 
-	if( being_clicked )
+	if( being_clicked && being_hovered )
 	{
 		bracket_color = W_COLOR_WHITE;
 		bracket_color.a = 1.0f;
@@ -88,6 +149,62 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 		->draw( selector_bracket, rc );
 
 	RENDER->end();
+}
+
+e_im_result w_ui_style_tile::update_im_state( int id, w_rect rc )
+{
+	e_im_result imresult = e_im_result::none;
+
+	/*
+		 reduce the size of the hit rectangle. this gives more breathing room
+		 when mousing over tightly packed UI elements and stops the user
+		 from being able to highlight/click more than one at a time.
+	*/
+
+	rc.w -= 1.0f;
+	rc.h -= 1.0f;
+
+	bool result = false;
+	e_button_state bs_left = engine->input->get_button_state( e_input_id::mouse_button_left );
+	bool mouse_is_inside = UI->is_mouse_inside( rc );
+
+	if( mouse_is_inside )
+	{
+		if( bs_left == e_button_state::up || ( bs_left == e_button_state::held && UI->hot_id != -1 ) )
+		{
+			UI->hover_id = id;
+		}
+		else if( bs_left == e_button_state::pressed )
+		{
+			UI->hot_id = id;
+		}
+		else if( bs_left == e_button_state::released )
+		{
+			if( UI->hot_id == id && UI->hover_id == id )
+			{
+				imresult |= e_im_result::left_clicked;
+			}
+			UI->hover_id = UI->hot_id = -1;
+		}
+	}
+	else
+	{
+		if( bs_left == e_button_state::released && UI->hot_id == id )
+		{
+			UI->hot_id = -1;
+		}
+	}
+
+	if( UI->hover_id == id )
+	{
+		imresult |= e_im_result::hovered;
+	}
+	if( UI->hot_id == id )
+	{
+		imresult |= e_im_result::hot;
+	}
+
+	return imresult;
 }
 
 // ----------------------------------------------------------------------------
