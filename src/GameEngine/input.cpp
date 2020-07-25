@@ -103,6 +103,8 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	// only update the position if the mouse is moving over the virtual window itself
 	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
 	{
+		// integer mouse coordinates make things like UI click
+		// detection simpler and less error prone
 		engine->input->mouse_vwindow_pos.x = round( vx );
 		engine->input->mouse_vwindow_pos.y = round( vy );
 	}
@@ -125,8 +127,6 @@ void w_input::init()
 	}
 
 	// callbacks so we can collect user input
-	//glfwSetKeyCallback( engine->window->window, key_callback );
-	//glfwSetMouseButtonCallback( engine->window->window, mouse_button_callback );
 	glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
 
 	for( int x = 0; x < static_cast<int>( e_input_id::max ); ++x )
@@ -297,6 +297,13 @@ void w_input::update()
 	update_button_state( e_input_id::key_slash, glfwGetKey( engine->window->window, GLFW_KEY_SLASH ) );
 	update_button_state( e_input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
 
+	// update game controller states
+
+	if( game_controller )
+	{
+		game_controller->update();
+	}
+
 	// send every accumulated input message to anyone listening
 
 	for( auto& evt : event_queue )
@@ -305,13 +312,6 @@ void w_input::update()
 	}
 
 	event_queue.clear();
-
-	// update game controller states
-
-	if( game_controller )
-	{
-		game_controller->update();
-	}
 }
 
 void w_input::update_button_state( e_input_id input_id, int glfw_state )
