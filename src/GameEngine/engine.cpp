@@ -4,9 +4,9 @@
 
 // ----------------------------------------------------------------------------
 
+#if !defined( FINALRELEASE )
 void tw_refresh_reloadables()
 {
-#if !defined( FINALRELEASE )
 	log_msg( "Worker thread starting : %s", __FUNCTION__ );
 
 	while( !engine->exit_tw_refresh_reloadables )
@@ -23,8 +23,8 @@ void tw_refresh_reloadables()
 	}
 
 	log_msg( "Worker thread exiting : %s", __FUNCTION__ );
-#endif
 }
+#endif
 
 // ----------------------------------------------------------------------------
 
@@ -173,8 +173,10 @@ void w_engine::deinit()
 	input->remove_listener( layer_mgr.get() );
 
 	// wait for threads to finish
+#if !defined( FINALRELEASE )
 	exit_tw_refresh_reloadables = true;
 	t_refresh_reloadables.join();
+#endif
 }
 
 void w_engine::draw()
@@ -304,7 +306,9 @@ void w_engine::precache_asset_resources()
 	log_msg( "%s : %d assets precached", __FUNCTION__, engine->asset_cache->cache.size() );
 
 	// start the thread that monitors the reloadables for changes
+#if !defined( FINALRELEASE )
 	t_refresh_reloadables = std::thread( tw_refresh_reloadables );
+#endif
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )
