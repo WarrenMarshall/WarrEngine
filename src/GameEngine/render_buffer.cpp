@@ -95,16 +95,18 @@ void w_render_buffer::unbind()
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
-void w_render_buffer::draw( int render_pass )
+void w_render_buffer::draw( e_render_pass render_pass )
 {
-    if( indices[render_pass].size() > 0 )
+    int rp = static_cast<int>( render_pass );
+
+    if( !indices[rp].empty() )
     {
         // bind the buffers
         bind();
 
         // send the data to the video card
-        glBufferData( GL_ARRAY_BUFFER, vertices[render_pass].size() * sizeof( w_render_vert ), vertices[render_pass].data(), usage );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices[render_pass].size() * sizeof( unsigned int ), indices[render_pass].data(), usage );
+        glBufferData( GL_ARRAY_BUFFER, vertices[rp].size() * sizeof( w_render_vert ), vertices[rp].data(), usage );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices[rp].size() * sizeof( unsigned int ), indices[rp].data(), usage );
 
         switch( prim_type )
         {
@@ -129,13 +131,13 @@ void w_render_buffer::draw( int render_pass )
         }
 
         RENDER->stats.render_buffers.inc();
-        RENDER->stats.render_vertices.accum( static_cast<float>( vertices[render_pass].size() ) );
-        RENDER->stats.render_indices.accum( static_cast<float>( indices[render_pass].size() ) );
+        RENDER->stats.render_vertices.accum( static_cast<float>( vertices[rp].size() ) );
+        RENDER->stats.render_indices.accum( static_cast<float>( indices[rp].size() ) );
 
-    glDrawElements( prim_type, (int) indices[render_pass].size(), GL_UNSIGNED_INT, 0 );
+        glDrawElements( prim_type, (int) indices[rp].size(), GL_UNSIGNED_INT, nullptr );
 
-    // clean up
-    unbind();
+        // clean up
+        unbind();
     }
 }
 
@@ -150,7 +152,7 @@ void w_render_buffer::clear()
 
 void w_render_buffer::log_stats( i_asset* asset )
 {
-    if( indices[0].size() || indices[1].size() )
+    if( !(indices[0].empty()) || !(indices[1].empty()) )
     {
 	    log_msg( "\t\t[%s]: [%d verts, %d indices]", asset->name.c_str(), vertices[0].size() + vertices[1].size(), indices[0].size() + indices[1].size() );
     }
@@ -158,8 +160,10 @@ void w_render_buffer::log_stats( i_asset* asset )
 
 int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& render_vert )
 {
-    // apply the current modelview matrix against the vertex being rendered.
-    // until this point, the vertex has been in model coordinate space.
+    // multiply the current modelview matrix against the vertex being rendered.
+    //
+    // until this point, the vertex has been in model coordinate space. this
+    // moves it into world space.
 
     glm::vec4 v4( render_vert.x, render_vert.y, render_vert.z, 1.0f );
     v4 = MATRIX->top()->m * v4;
@@ -170,14 +174,13 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
     );
 
-    /*
 	// look through the existing list of vertices and see if we can find
 	// a matching vertex. if one is found, return the index of that vertex
 	// instead of putting the new one into the list.
 	//
 	// NOTE - this is slow, which is why we don't do this check right now.
-    //      - it's faster to just throw the dupes at the video card than try to weed them out.
-
+	//      - it's faster to just throw the duplicates at the video card.
+#if 0
 	int idx = 0;
 	for( auto& iter : vertices[ render_pass ] )
 	{
@@ -189,7 +192,7 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
 
 		idx++;
 	}
-    */
+#endif
 
     // add the render_vert to the vertex and index lists.
 
@@ -197,7 +200,5 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
     int idx = (int) vertices[ render_pass ].size() - 1;
     indices[ render_pass ].emplace_back( idx );
 
-    // return the newly created index
-
-    return static_cast<int>( idx );
+    return idx;
 }

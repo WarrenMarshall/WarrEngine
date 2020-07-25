@@ -1,10 +1,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_shader::w_shader()
-{
-}
-
 void w_shader::create_and_compile( const std::string& vert_filename, const std::string& frag_filename )
 {
     int  success;
@@ -18,13 +14,13 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
     unsigned int vertex_id = glCreateShader( GL_VERTEX_SHADER );
     wk = std::string( vertex_shader_src->buffer->begin(), vertex_shader_src->buffer->end() );
     cptr = wk.c_str();
-    glShaderSource( vertex_id, 1, &cptr, NULL );
+    glShaderSource( vertex_id, 1, &cptr, nullptr );
     glCompileShader( vertex_id );
 
     glGetShaderiv( vertex_id, GL_COMPILE_STATUS, &success );
     if( !success )
     {
-        glGetShaderInfoLog( vertex_id, 512, NULL, infoLog );
+        glGetShaderInfoLog( vertex_id, 512, nullptr, infoLog );
         log_error( "%s : Vertex Shader : %s", __FUNCTION__, infoLog );
     }
 
@@ -34,13 +30,13 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
     unsigned int fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
     wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
     cptr = wk.c_str();
-    glShaderSource( fragment_id, 1, &cptr, NULL );
+    glShaderSource( fragment_id, 1, &cptr, nullptr );
     glCompileShader( fragment_id );
 
     glGetShaderiv( fragment_id, GL_COMPILE_STATUS, &success );
     if( !success )
     {
-        glGetShaderInfoLog( fragment_id, 512, NULL, infoLog );
+        glGetShaderInfoLog( fragment_id, 512, nullptr, infoLog );
         log_error( "%s : Fragment Shader :  %s", __FUNCTION__, infoLog );
     }
 
@@ -55,7 +51,7 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
     glGetProgramiv( id, GL_LINK_STATUS, &success );
     if( !success )
     {
-        glGetProgramInfoLog( id, 512, NULL, infoLog );
+        glGetProgramInfoLog( id, 512, nullptr, infoLog );
         log_error( "%s : Shader Program :  %s", __FUNCTION__, infoLog );
     }
 

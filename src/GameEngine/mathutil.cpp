@@ -20,6 +20,7 @@ int w_fibonacci::step()
 	v1 = v2;
 	v2 = sum;
 
+	// #todo - it feels like I'm doing this wrong ... should this be "% 100" ?
 	sum = (v1 + v2) % 10;
 	if( sum == 0 )
 		sum++;

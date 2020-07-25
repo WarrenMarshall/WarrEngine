@@ -9,15 +9,15 @@ void i_lifecycle::set_life_cycle( e_lifecycle lifecycle )
 
 bool i_lifecycle::is_alive()
 {
-	return lifecycle == e_lifecycle::alive;
+	return ( lifecycle == e_lifecycle::alive );
 }
 
 bool i_lifecycle::is_dying()
 {
-	return lifecycle == e_lifecycle::dying;
+	return ( lifecycle == e_lifecycle::dying );
 }
 
 bool i_lifecycle::is_dead()
 {
-	return lifecycle == e_lifecycle::dead;
+	return ( lifecycle == e_lifecycle::dead );
 }

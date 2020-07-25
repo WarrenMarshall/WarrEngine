@@ -2,12 +2,12 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-// Inits the random index from the current ticks.
-// Call this whenever it's convenient to shake up the randomness.
+// inits the random index from the current ticks.
+// call this whenever it's convenient to shake up the randomness.
 
 void w_random::seed()
 {
-    srand( static_cast<unsigned int>( time( 0 ) ) );
+    srand( static_cast<unsigned int>( time( nullptr ) ) );
 }
 
 // returns an integer value between 0 and RAND_MAX

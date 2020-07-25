@@ -35,7 +35,7 @@ void w_io_zip::scan_and_build_table_of_contents()
 				char filename[FILENAME_MAX];
 				const char* rptr = buffer.data();
 
-				while( 1 )
+				while( true )
 				{
 					// local file header
 					if( *( (int*) rptr ) == 0x04034b50 )
@@ -83,7 +83,7 @@ void w_io_zip::scan_and_build_table_of_contents()
 	}
 }
 
-bool w_io_zip::toc_contains_filename( std::string filename )
+bool w_io_zip::does_toc_contain_filename( std::string filename )
 {
 	if( table_of_contents.count( filename ) > 0 )
 	{
@@ -95,7 +95,7 @@ bool w_io_zip::toc_contains_filename( std::string filename )
 
 w_zip_toc_entry* w_io_zip::get_toc_entry_for_filename( std::string filename )
 {
-	if( !toc_contains_filename( filename ) )
+	if( !does_toc_contain_filename( filename ) )
 	{
 		return nullptr;
 	}

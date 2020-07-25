@@ -4,8 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-w_entity_component::w_entity_component()
-	: i_transform()
+w_entity_component::w_entity_component() 
 {
 	anim_offset = w_random::getf();
 }

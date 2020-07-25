@@ -14,7 +14,7 @@ std::string w_parser::key_from_str( const std::string& src_string, const std::st
 		return "";
 	}
 
-	std::string value = "";
+	std::string value;
 	char* rd_ptr = const_cast<char*>(src_string.c_str()) + idx + key.length();
 
 	while( *rd_ptr != ' ' && *rd_ptr != '\n' && *rd_ptr != '\"' )
@@ -36,7 +36,7 @@ int w_parser::int_from_str( const std::string& str )
 	}
 
 	// Otherwise, parse the string into the val
-	int val = static_cast<int>( strtol( str.c_str(), (char**) NULL, 10 ) );
+	int val = static_cast<int>( strtol( str.c_str(), (char**) nullptr, 10 ) );
 
 	return val;
 }
@@ -68,7 +68,7 @@ float w_parser::float_from_str( const std::string& str )
 	}
 
 	// Otherwise, parse the string into the val
-	float val = static_cast<float>( strtof( str.c_str(), (char**) NULL ) );
+	float val = static_cast<float>( strtof( str.c_str(), (char**) nullptr ) );
 
 	return val;
 }
@@ -117,15 +117,6 @@ w_range w_parser::range_from_str( const std::string& str )
 
 w_rect w_parser::rect_from_str( const std::string& str )
 {
-	// If this str is a known symbol, return the value from the lookup table
-
-	//if( engine->is_symbol_in_map( str ) )
-	//{
-	//	return engine->find_range_from_symbol( str );
-	//}
-
-	// Otherwise, parse the string into the val
-
 	w_tokenizer tok( str, ',', "0" );
 
 	w_rect rect;

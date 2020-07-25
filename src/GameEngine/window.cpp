@@ -66,10 +66,8 @@ bool w_window::init( const std::string& title )
 
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.
-	int wdiv = static_cast<int>(
-		std::floorf( desktop_w / static_cast<float>( v_window_w ) ) );
-	int hdiv = static_cast<int>(
-		std::floorf( desktop_h / static_cast<float>( v_window_h ) ) );
+	auto wdiv = static_cast<int>( std::floorf( desktop_w / static_cast<float>( v_window_w ) ) );
+	auto hdiv = static_cast<int>( std::floorf( desktop_h / static_cast<float>( v_window_h ) ) );
 	int div = w_min( wdiv, hdiv );
 
 	w_rect window_pos( 0.0f, 0.0f, v_window_w * div, v_window_h * div );

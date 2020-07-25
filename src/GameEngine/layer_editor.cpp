@@ -175,12 +175,12 @@ void layer_editor::set_current_tile_from_mouse_pos( float xpos, float ypos )
 
 void layer_editor::paint_current_tile()
 {
-	int idx = static_cast<int>( ( game->current_tile.y * ROOM_W ) + game->current_tile.x );
+	auto idx = static_cast<int>( ( game->current_tile.y * ROOM_W ) + game->current_tile.x );
 	game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 }
 
 void layer_editor::set_current_tile_idx_from_current_tile()
 {
-	int idx = static_cast<int>( ( game->current_tile.y * ROOM_W ) + game->current_tile.x );
+	auto idx = static_cast<int>( ( game->current_tile.y * ROOM_W ) + game->current_tile.x );
 	game->current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
 }

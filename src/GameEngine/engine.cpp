@@ -64,7 +64,7 @@ int w_engine::find_int_from_symbol( std::string symbol, int def_value )
 		sval = "0";
 	}
 
-	return static_cast<int>( strtol( sval.c_str(), (char**) NULL, 10 ) );
+	return static_cast<int>( strtol( sval.c_str(), (char**) nullptr, 10 ) );
 }
 
 float w_engine::find_float_from_symbol( std::string symbol, float def_value )
@@ -77,7 +77,7 @@ float w_engine::find_float_from_symbol( std::string symbol, float def_value )
 		sval = "0.0";
 	}
 
-	return static_cast<float>( strtof( sval.c_str(), (char**) NULL ) );
+	return static_cast<float>( strtof( sval.c_str(), (char**) nullptr ) );
 }
 
 w_color w_engine::find_color_from_symbol( std::string symbol, w_color def_value )
@@ -283,7 +283,7 @@ void w_engine::cache_asset_definition_files()
 
 	for( const auto& iter : filenames )
 	{
-		engine->asset_definition_file_cache->add( iter.c_str(), iter.c_str() );
+		engine->asset_definition_file_cache->add( iter, iter );
 	}
 }
 

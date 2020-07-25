@@ -2,8 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_particle::w_particle()
-	: i_transform()
+w_particle::w_particle() 
 {
 	init_to_new();
 }
@@ -28,4 +27,19 @@ void w_particle::update()
 bool w_particle::is_alive()
 {
 	return ( life_span > 0 );
+}
+
+void w_particle::init_to_new()
+{
+	life_span = 0.0f;
+	life_span_save = 0.0f;
+	a_dir = 0.0f;
+	velocity_per_sec = 0.0f;
+	t_color = nullptr;
+	t_alpha = nullptr;
+	pos = w_vec2::zero;
+	t_scale = nullptr;
+	base_scale = 0.0f;
+	spin = 0.0f;
+	spin_per_sec = 0.0f;
 }

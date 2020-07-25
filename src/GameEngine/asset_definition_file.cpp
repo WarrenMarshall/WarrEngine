@@ -423,9 +423,6 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals( is_hot_reloading );
 				}
-				else if( type == "subtexture_list" )
-				{
-				}
 			}
 			break;
 		}
@@ -458,7 +455,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	while( !tok.is_eos() )
 	{
 		// ignore blank lines and lines that are entirely commented
-		if( line.size() > 0 && line[0] != '#' )
+		if( !line.empty() && line[0] != '#' )
 		{
 			while( line.back() == '\\' )
 			{

@@ -9,7 +9,7 @@ std::filesystem::file_time_type i_reloadable::retrieve_last_write_time_from_disk
 	if( !g_allow_hot_reload )
 		return blank;
 
-	if( original_filename.length() == 0 )
+	if( original_filename.empty() )
 		return blank;
 
 	if( was_loaded_from_zip_file )

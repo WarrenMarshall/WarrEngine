@@ -132,10 +132,6 @@ float w_range::get_value()
 
 // ----------------------------------------------------------------------------
 
-w_rect::w_rect()
-{
-}
-
 w_rect::w_rect( float x, float y, float w, float h )
 	: x( x ), y( y ), w( w ), h( h )
 {
@@ -143,11 +139,7 @@ w_rect::w_rect( float x, float y, float w, float h )
 
 // ----------------------------------------------------------------------------
 
-w_color::w_color( const w_color& other )
-	: r( other.r ), g( other.g ), b( other.b ), a( other.a )
-{
-}
-
+w_color::w_color( const w_color& other ) = default;
 w_color::w_color( float r, float g, float b, float a )
 	: r( r ), g( g ), b( b ), a( a )
 {
@@ -275,10 +267,7 @@ w_vec3::w_vec3()
 {
 }
 
-w_vec3::w_vec3( const w_vec3& v )
-	: x( v.x ), y( v.y ), z( v.z )
-{
-}
+w_vec3::w_vec3( const w_vec3& v ) = default;
 
 w_vec3::w_vec3( float x, float y, float z )
 	: x( x ), y( y ), z( z )

@@ -2,10 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_game::w_game()
-{
-}
-
 void w_game::new_game()
 {
 	entities.clear();

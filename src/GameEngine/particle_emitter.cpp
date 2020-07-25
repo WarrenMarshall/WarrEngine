@@ -2,11 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_particle_emitter::w_particle_emitter()
-	: i_transform()
-{
-}
-
 w_particle_emitter::~w_particle_emitter()
 {
 	params->remove_listener( this );
@@ -146,7 +141,7 @@ void w_particle_emitter::spawn_particle()
 */
 void w_particle_emitter::warm_up()
 {
-	// warren - this needs to be change to warm up in fixed time steps
+	// #todo - this needs to be change to warm up in fixed time steps
 	/*
 	float max_life_span = params->r_lifespan.max;
 

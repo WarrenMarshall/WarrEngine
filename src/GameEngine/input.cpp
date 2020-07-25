@@ -96,17 +96,17 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	last_mouse_pos = w_vec2( static_cast<float>( xpos ), static_cast<float>( ypos ) );
 
 	// convert the window space window mouse position into a position on the virtual screen.
-	float ratio = ( v_window_w / engine->window->viewport_pos_sz.w );
-	float vx = static_cast<float>( ( xpos - engine->window->viewport_pos_sz.x ) * ratio );
-	float vy = static_cast<float>( ( ypos - engine->window->viewport_pos_sz.y ) * ratio );
+	auto ratio = ( v_window_w / engine->window->viewport_pos_sz.w );
+	auto vx = ( xpos - engine->window->viewport_pos_sz.x ) * ratio;
+	auto vy = ( ypos - engine->window->viewport_pos_sz.y ) * ratio;
 
 	// only update the position if the mouse is moving over the virtual window itself
 	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
 	{
 		// integer mouse coordinates make things like UI click
 		// detection simpler and less error prone
-		engine->input->mouse_vwindow_pos.x = round( vx );
-		engine->input->mouse_vwindow_pos.y = round( vy );
+		engine->input->mouse_vwindow_pos.x = round( static_cast<float>( vx ) );
+		engine->input->mouse_vwindow_pos.y = round( static_cast<float>( vy ) );
 	}
 }
 
@@ -225,7 +225,7 @@ void w_input::update()
 
 		event_queue.emplace_back( std::move( evt ) );
 
-		mouse_move_delta = w_vec2( 0.0f, 0.0f );
+		mouse_move_delta = w_vec2::zero;
 	}
 
 	// update button states
@@ -375,17 +375,17 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 	e_button_state bs = e_button_state::up;
 
 	bool state = button_states[ (int) input_id ];
-	bool state_lf = button_states_last_frame[ (int) input_id ];
+	bool state_last_frame = button_states_last_frame[ (int) input_id ];
 
-	if( state && state_lf )
+	if( state && state_last_frame )
 	{
 		bs = e_button_state::held;
 	}
-	else if( state && !state_lf )
+	else if( state && !state_last_frame )
 	{
 		bs = e_button_state::pressed;
 	}
-	else if( !state && state_lf )
+	else if( !state && state_last_frame )
 	{
 		bs = e_button_state::released;
 	}
@@ -404,7 +404,7 @@ w_vec2 w_input::axis_value_of( e_input_id input_id )
 {
 	if( !game_controller || !game_controller->is_being_used )
 	{
-		return w_vec2( 0, 0 );
+		return w_vec2::zero;
 	}
 
 	game_controller->update();
@@ -463,6 +463,6 @@ w_vec2 w_input::axis_value_of( e_input_id input_id )
 		break;
 	}
 
-	// the value being returned should be normalized
+	// note : the value being returned should be normalized
 	return value;
 }

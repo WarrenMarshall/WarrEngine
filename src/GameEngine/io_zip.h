@@ -45,7 +45,7 @@ struct w_io_zip
 	std::map<std::string, std::unique_ptr<w_zip_toc_entry>> table_of_contents;
 
 	void scan_and_build_table_of_contents();
-	bool toc_contains_filename( std::string filename );
+	bool does_toc_contain_filename( std::string filename );
 	w_zip_toc_entry* get_toc_entry_for_filename( std::string filename );
 	std::unique_ptr<std::vector<char>> get_data_for_filename( std::string filename );
 };

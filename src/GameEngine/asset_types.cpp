@@ -21,8 +21,8 @@ void a_texture::clean_up_internals()
 
 bool a_texture::create_internals( bool is_hot_reloading )
 {
-	// #todo - should this be an assert? why is a blank filename allowed? gradients?
-	if( original_filename == "" )
+	// #todo - shouldn't this be an assert? why is a blank filename allowed - for gradients?
+	if( original_filename.empty() )
 	{
 		return true;
 	}
@@ -90,7 +90,7 @@ void a_texture::draw( e_render_pass render_pass )
 	if( render_buffer )
 	{
 		bind();
-		render_buffer->draw( static_cast<int>( render_pass ) );
+		render_buffer->draw( render_pass );
 		unbind();
 	}
 }
@@ -226,21 +226,21 @@ void a_anim_texture::add_frame( a_subtexture* tex )
 */
 void a_anim_texture::randomize()
 {
-	assert( frames.size() );	// did you forget to call "add_frame"?
+	assert( !frames.empty() );	// did you forget to call "add_frame"?
 
 	frame_tween->randomize();
 }
 
 void a_anim_texture::update()
 {
-	assert( frames.size() );	// did you forget to call "add_frame"?
+	assert( !frames.empty() );	// did you forget to call "add_frame"?
 
 	frame_tween->update();
 }
 
 a_subtexture* a_anim_texture::get_subtexture( float offset )
 {
-	assert( frames.size() );	// did you forget to call "add_frame"?
+	assert( !frames.empty() );	// did you forget to call "add_frame"?
 
 	// apply random offset if needed
 

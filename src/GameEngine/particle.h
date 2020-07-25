@@ -24,21 +24,8 @@ struct w_particle : i_transform
 	float spin_per_sec = 0.0f;
 
 	w_particle();
+
 	void update();
 	bool is_alive();
-
-	void init_to_new()
-	{
-		life_span = 0.0f;
-		life_span_save = 0.0f;
-		a_dir = 0.0f;
-		velocity_per_sec = 0.0f;
-		t_color = nullptr;
-		t_alpha = nullptr;
-		pos = w_vec2::zero;
-		t_scale = nullptr;
-		base_scale = 0.0f;
-		spin = 0.0f;
-		spin_per_sec = 0.0f;
-	}
+	void init_to_new();
 };

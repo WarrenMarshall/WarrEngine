@@ -45,7 +45,9 @@ int main( int argc, char* argv[] )
 			engine->init();
 		}
 
-		/*
+		// this is debug code for testing out angles and verifying which
+		// direction vector they correspond to.
+#if 0
 		float angle = 0.0f;
 		w_vec2 dir;
 
@@ -74,8 +76,9 @@ int main( int argc, char* argv[] )
 		log_msg( "%.f : %1.5f, %1.5f", angle, dir.x, dir.y );
 
 		return 1;
-		*/
+#endif
 
+		// #todo : write a proper command line parsing class
 		{	// command line parsing
 
 			g_allow_hot_reload = false;
@@ -111,7 +114,7 @@ int main( int argc, char* argv[] )
 
 		{	// audio
 			log_msg( "Initializing BASS audio" );
-			if( !BASS_Init( -1, 44100, 0, 0, NULL ) )
+			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
 				log_warning( "BASS Audio : init failed!" );
 		}
 

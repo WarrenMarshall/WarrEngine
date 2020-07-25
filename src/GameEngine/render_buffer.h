@@ -50,7 +50,7 @@ struct w_render_buffer
 	void add_line( const w_render_vert& v0, const w_render_vert& v1 );
 	void bind();
 	void unbind();
-	void draw( int render_pass );
+	void draw( e_render_pass render_pass );
 	void clear();
 	void log_stats( i_asset* asset );
 

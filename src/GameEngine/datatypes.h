@@ -94,7 +94,7 @@ struct w_rect
 	float w = 0.0f;
 	float h = 0.0f;
 
-	w_rect();
+	w_rect() = default;
 	w_rect( float x, float y, float w = -1.0f, float h = -1.0f );
 
 	operator c2AABB()

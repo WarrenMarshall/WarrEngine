@@ -5,11 +5,6 @@
 // ----------------------------------------------------------------------------
 
 w_entity::w_entity()
-	: i_transform()
-{
-}
-
-w_entity::~w_entity()
 {
 }
 
@@ -84,10 +79,6 @@ w_entity_cozy::w_entity_cozy()
 	: w_entity()
 {
 	life_remaining = 500;
-}
-
-w_entity_cozy::~w_entity_cozy()
-{
 }
 
 void w_entity_cozy::update()

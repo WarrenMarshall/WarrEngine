@@ -14,7 +14,6 @@ struct w_entity : i_lifecycle, i_transform
 	float speed = 1.0f;
 
 	w_entity();
-	~w_entity();
 
 	virtual void update();
 	virtual void draw_components();
@@ -23,9 +22,7 @@ struct w_entity : i_lifecycle, i_transform
 	template<typename T> T* add_component()
 	{
 		components.emplace_back( std::make_unique<T>() );
-
-		T* new_component = static_cast<T*>( components.back().get() );
-		return new_component;
+		return static_cast<T*>( components.back().get() );
 	}
 };
 
@@ -41,7 +38,6 @@ struct w_entity_cozy : w_entity
 	float life_remaining = 0.0f;
 
 	w_entity_cozy();
-	~w_entity_cozy();
 
-	virtual void update();
+	void update() override;
 };

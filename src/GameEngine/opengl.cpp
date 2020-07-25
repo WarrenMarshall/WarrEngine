@@ -10,11 +10,6 @@ void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, G
 {
     if( type == GL_DEBUG_TYPE_ERROR )
         log_error( "OpenGL Error: [%s]", message );
-	else
-	{
-		// this is VERY spammy so use for debugging purposes only
-        //log_msg( "OpenGL : [%s]", message );
-	}
 }
 
 // ----------------------------------------------------------------------------

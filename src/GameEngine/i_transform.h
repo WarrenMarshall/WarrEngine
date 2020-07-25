@@ -13,8 +13,5 @@ struct i_transform
 	// scale
 	float scale = 1.0f;
 
-	i_transform();
-	~i_transform();
-
 	void set_transform( const w_vec2& pos, const float& angle, const float& scale );
 };

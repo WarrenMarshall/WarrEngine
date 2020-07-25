@@ -2,8 +2,6 @@
 
 struct w_layer : i_lifecycle
 {
-	w_layer();
-
 	// indicates that this layer completely covers and
 	// obscures the layers below it in the stack.
 	bool draws_completely_solid = false;
@@ -36,7 +34,7 @@ struct w_layer : i_lifecycle
 	virtual void getting_covered() {}
 
 	virtual void update() {}
-	virtual void draw();
+	virtual void draw() {}
 
 	virtual bool handle_input_event( const w_input_event* evt );
 };

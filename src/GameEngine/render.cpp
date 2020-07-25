@@ -53,9 +53,9 @@ void w_render::init()
 	// each circle draw.
 	float angle = 0;
 	float angle_step = 360.0f / static_cast<float>( circle_sample_points_max );
-	for( int x = 0; x < circle_sample_points_max; ++x )
+	for( auto& circle_sample_point : circle_sample_points )
 	{
-		circle_sample_points[x] = w_vec2::from_angle( angle );
+		circle_sample_point = w_vec2::from_angle( angle );
 		angle += angle_step;
 	}
 }
@@ -176,7 +176,6 @@ void w_render::end()
 		rs_depth_count--;
 	}
 	rs_depth_count = 0;
-
 }
 
 /*
@@ -455,7 +454,7 @@ w_render* w_render::draw_stats()
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( UI->theme->small_font, iter.c_str(), w_rect(v_window_hw, ypos) );
+			RENDER->draw_string( UI->theme->small_font, iter, w_rect(v_window_hw, ypos) );
 			ypos += font_max_height;
 		}
 

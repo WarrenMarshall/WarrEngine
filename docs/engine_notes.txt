@@ -20,19 +20,19 @@ upwards from there and you won't see any pixels.
 
 --
 
-0,0 is considered the bottom left on both images and the screen itself.
+0,0 is considered the bottom left on images.
 
   +y
   |
-  |screen/texture
+  |texture
 0,0---- +x
 
 --
 
-0,0 is considered the top left on the virtual screen.
+0,0 is considered the top left on the virtual screen and the window.
 
 0,0---- +x
-  |virtual screen
+  |virtual screen/window
   |
   +y
 
@@ -51,12 +51,12 @@ Angle to directions reference:
 270 =  -1.0,  0.0 (right)
 315 =  -0.7, -0.7
 
- 45    0    315
+315    0     45
 
- 90    +    270
+270    +     90
 
-135   180   225
+225   180   135
 
 Positive rotation values move counter clockwise.
 
-Since angle 0 is (0,1) graphics should be authored so they face UP (or vertical) by default.
+Since angle 0 is (0,-1) graphics should be authored so they face UP (or vertical) by default.
