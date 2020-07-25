@@ -200,6 +200,10 @@ void w_input::init()
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, e_input_id::mouse_button_right ) );
 	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_SHIFT, e_input_id::key_shift_left ) );
 	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_SHIFT, e_input_id::key_shift_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_CONTROL, e_input_id::key_control_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_CONTROL, e_input_id::key_control_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_ALT, e_input_id::key_alt_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_ALT, e_input_id::key_alt_right ) );
 
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
@@ -298,6 +302,10 @@ void w_input::update()
 	update_button_state( e_input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
 	update_button_state( e_input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
 	update_button_state( e_input_id::key_shift_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_SHIFT ) );
+	update_button_state( e_input_id::key_control_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_CONTROL ) );
+	update_button_state( e_input_id::key_control_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_CONTROL ) );
+	update_button_state( e_input_id::key_alt_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_ALT ) );
+	update_button_state( e_input_id::key_alt_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_ALT ) );
 
 	// update game controller states
 
@@ -376,6 +384,22 @@ bool w_input::is_shift_down()
 {
 	e_button_state bs_left = get_button_state( e_input_id::key_shift_left );
 	e_button_state bs_right = get_button_state( e_input_id::key_shift_right );
+
+	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
+}
+
+bool w_input::is_control_down()
+{
+	e_button_state bs_left = get_button_state( e_input_id::key_control_left );
+	e_button_state bs_right = get_button_state( e_input_id::key_control_right );
+
+	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
+}
+
+bool w_input::is_alt_down()
+{
+	e_button_state bs_left = get_button_state( e_input_id::key_alt_left );
+	e_button_state bs_right = get_button_state( e_input_id::key_alt_right );
 
 	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
 }

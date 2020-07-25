@@ -176,6 +176,10 @@ enum struct e_input_id : int
 
 	key_shift_left,
 	key_shift_right,
+	key_control_left,
+	key_control_right,
+	key_alt_left,
+	key_alt_right,
 
 	max
 };

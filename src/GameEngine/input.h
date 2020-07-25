@@ -57,6 +57,8 @@ struct w_input : i_speaker
 
 	bool is_button_down( e_input_id input_id );
 	bool is_shift_down();
+	bool is_control_down();
+	bool is_alt_down();
 	e_button_state get_button_state( e_input_id input_id );
 	w_vec2 axis_value_of( e_input_id button );
 
