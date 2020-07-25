@@ -15,14 +15,14 @@ std::string w_tokenizer::get_next_token()
 		return w_stringutil::trim( def_value );
 	}
 
-	int start = idx;
-	int end = static_cast<int>( string_buffer.find( delim, start ) );
+	size_t start = idx;
+	size_t end = static_cast<int>( string_buffer.find( delim, start ) );
 
 	if( end == std::string::npos )
 	{
 		// delimiter was not found so set 'end' to consume the rest of the string
-		end = static_cast<int>( string_buffer.length() );
-		idx = end;
+		end = string_buffer.length();
+		idx = static_cast<int>( end );
 		end_of_string = true;
 	}
 	else if( start == end )
@@ -32,7 +32,7 @@ std::string w_tokenizer::get_next_token()
 	}
 
 	// extract the token
-	std::string ret = string_buffer.substr( start, static_cast<size_t>( end - start ) );
+	std::string ret = string_buffer.substr( start, end - start );
 
 	// move the index to beyond the returning token
 	idx += static_cast<int>( ret.length() ) + 1;

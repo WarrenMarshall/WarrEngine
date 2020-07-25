@@ -29,7 +29,7 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 
 	RENDER
 		->begin()
-		->push_color( final_color )
+		->push_rgb( final_color )
 		->push_depth( 100 )
 		->draw_sliced( slice_def, w_rect( rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h ) )
 		->end();
@@ -46,7 +46,7 @@ void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked 
 {
 	RENDER
 		->begin()
-		->push_color( W_COLOR_DARK_GREY )
+		->push_rgb( W_COLOR_DARK_GREY )
 		->push_depth( 100 )
 		->draw_sliced( slice_def, rc )
 		->end();
@@ -83,8 +83,7 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 		->draw( tile_subtexture, rc );
 
 	RENDER
-		->push_color( bracket_color )
-		->push_alpha( bracket_color.a )
+		->push_rgba( bracket_color )
 		->push_depth_nudge( 10 )
 		->draw( selector_bracket, rc );
 

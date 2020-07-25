@@ -52,8 +52,8 @@ struct w_input : i_speaker
 	*/
 	bool game_controller_being_used = false;
 
-	std::array<bool, (int) e_input_id::max> button_states;
-	std::array<bool, (int) e_input_id::max> button_states_last_frame;
+	std::array<bool, (int) e_input_id::max> button_states = {};
+	std::array<bool, (int) e_input_id::max> button_states_last_frame = {};
 
 	bool is_button_down( e_input_id input_id );
 	e_button_state get_button_state( e_input_id input_id );

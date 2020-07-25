@@ -73,7 +73,9 @@ void layer_editor::draw()
 			);
 
 			a_subtexture* subtexture = game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture;
-			if( UI->im_active( rc, &( w_ui_style_tile( subtexture ) ) ) )
+			
+			e_im_result ir = UI->im_active( rc, &( w_ui_style_tile( subtexture ) ) );
+			if( ( ir & e_im_result::clicked ) > 0 )
 			{
 				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 				//is_painting = true;
@@ -83,7 +85,7 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	if( UI->im_active( w_rect( 12, 188, 48, 48 ), &( w_ui_style_pushbutton() ) ) )
+	if( (UI->im_active( w_rect( 12, 188, 48, 48 ), &( w_ui_style_pushbutton() ) ) & e_im_result::clicked) > 0 )
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}

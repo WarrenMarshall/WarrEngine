@@ -51,8 +51,7 @@ void w_particle_pool::draw()
 			//					- just set the color/alpha directly, and skip the push/pop for every particle
 			RENDER
 				->begin()
-				->push_color( color )
-				->push_alpha( color.a )
+				->push_rgba( color )
 				->push_scale( iter.base_scale * scale )
 				->push_angle( interp_angle )
 				->push_depth( 1000 )

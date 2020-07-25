@@ -27,7 +27,7 @@ struct g_custom_game : w_game
 	e_player* player = nullptr;
 
 	int current_room = 0;
-	std::array<w_world_room, 10> rooms;
+	std::array<w_world_room, 10> rooms = {};
 
 	// edit mode specific
 	std::string viewport_caption = "";

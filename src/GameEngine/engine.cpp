@@ -194,7 +194,7 @@ void w_engine::draw()
 		v2 = w_vec2( v_window_w - 1, v_window_h - 1 );
 		v3 = w_vec2( 0.0f, v_window_h - 1 );
 
-		render->push_color( W_COLOR_YELLOW );
+		render->push_rgb( W_COLOR_YELLOW );
 		render->draw_line( v0, v1 );
 		render->draw_line( v1, v2 );
 		render->draw_line( v2, v3 );
@@ -205,7 +205,7 @@ void w_engine::draw()
 		v2 = w_vec2( v_window_w - 2, v_window_h - 2 );
 		v3 = w_vec2( 1.0f, v_window_h - 2 );
 
-		render->push_color( W_COLOR_ORANGE );
+		render->push_rgb( W_COLOR_ORANGE );
 		render->draw_line( v0, v1 );
 		render->draw_line( v1, v2 );
 		render->draw_line( v2, v3 );
@@ -216,7 +216,7 @@ void w_engine::draw()
 		v2 = w_vec2( v_window_w - 3, v_window_h - 3 );
 		v3 = w_vec2( 2.0f, v_window_h - 3 );
 
-		render->push_color( W_COLOR_RED );
+		render->push_rgb( W_COLOR_RED );
 		render->draw_line( v0, v1 );
 		render->draw_line( v1, v2 );
 		render->draw_line( v2, v3 );

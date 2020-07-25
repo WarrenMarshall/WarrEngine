@@ -300,7 +300,7 @@ enum struct e_button_state : int
 
 enum struct e_im_result : int
 {
-	invalid = 0,
+	none = 0,
 	hovered = 1,
 	hot = 2,
 	clicked = 4

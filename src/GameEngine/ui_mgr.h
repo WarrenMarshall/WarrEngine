@@ -18,11 +18,11 @@ struct w_ui_mgr
 
 	int im_id = 0;
 	void im_reset();
-	bool im_active( w_rect rc, w_ui_style* ui_style );
-	bool im_passive( w_rect rc, w_ui_style* ui_style );
+	e_im_result im_active( w_rect rc, w_ui_style* ui_style );
+	e_im_result im_passive( w_rect rc, w_ui_style* ui_style );
 
 	bool is_mouse_inside( w_rect& rc ) const;
 
 private:
-	bool update_im_state( int id, w_rect rc );
+	e_im_result update_im_state( int id, w_rect rc );
 };

@@ -57,7 +57,8 @@ struct w_render
 	std::stack<float> rs_depth_stack;
 
 	w_render* begin();
-	w_render* push_color( const w_color& color );
+	w_render* push_rgb( const w_color& color );
+	w_render* push_rgba( const w_color& color );
 	w_render* push_alpha( const float& alpha );
 	w_render* push_scale( const float& scale );
 	w_render* push_angle( const float& angle );

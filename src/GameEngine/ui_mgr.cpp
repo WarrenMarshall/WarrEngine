@@ -22,8 +22,10 @@ bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 	return c2AABBtoPoint( rc, engine->input->mouse_vwindow_pos );
 }
 
-bool w_ui_mgr::update_im_state( int id, w_rect rc )
+e_im_result w_ui_mgr::update_im_state( int id, w_rect rc )
 {
+	e_im_result imresult = e_im_result::none;
+
 	/*
 		 reduce the size of the hit rectangle. this gives more breathing room
 		 when mousing over tightly packed UI elements and stops the user
@@ -51,7 +53,7 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 		{
 			if( hot_id == id && hover_id == id )
 			{
-				result = true;
+				imresult |= e_im_result::clicked;
 			}
 			hover_id = hot_id = -1;
 		}
@@ -69,7 +71,16 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 		}
 	}
 
-	return result;
+	if( hover_id == id )
+	{
+		imresult |= e_im_result::hovered;
+	}
+	if( hot_id == id )
+	{
+		imresult |= e_im_result::hot;
+	}
+
+	return imresult;
 }
 
 void w_ui_mgr::im_reset()
@@ -77,19 +88,19 @@ void w_ui_mgr::im_reset()
 	im_id = 0;
 }
 
-bool w_ui_mgr::im_active( w_rect rc, w_ui_style* ui_style )
+e_im_result w_ui_mgr::im_active( w_rect rc, w_ui_style* ui_style )
 {
 	im_id++;
 
-	bool result = update_im_state( im_id, rc );
+	e_im_result result = update_im_state( im_id, rc );
 	ui_style->draw( rc, hover_id == im_id, hot_id == im_id );
 
 	return result;
 }
 
-bool w_ui_mgr::im_passive( w_rect rc, w_ui_style* ui_style )
+e_im_result w_ui_mgr::im_passive( w_rect rc, w_ui_style* ui_style )
 {
 	ui_style->draw( rc, false, false );
 
-	return false;
+	return e_im_result::none;
 }

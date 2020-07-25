@@ -65,10 +65,18 @@ w_render* w_render::begin()
 	return this;
 }
 
-w_render* w_render::push_color( const w_color& color )
+w_render* w_render::push_rgb( const w_color& color )
 {
 	rs_color_count++;
 	rs_color_stack.push( color );
+
+	return this;
+}
+
+w_render* w_render::push_rgba( const w_color& color )
+{
+	push_rgb( color );
+	push_alpha( color.a );
 
 	return this;
 }
@@ -381,16 +389,16 @@ void w_render::end_frame()
 
 w_render* w_render::draw_world_axis()
 {
-	push_color( w_color( 1.0f, 0.0f, 0.0f ) );
+	push_rgb( w_color( 1.0f, 0.0f, 0.0f ) );
 	draw_line( w_vec2::zero, w_vec2( 5000, 0 ) );
 
-	push_color( w_color( 0.5f, 0.0f, 0.0f ) );
+	push_rgb( w_color( 0.5f, 0.0f, 0.0f ) );
 	draw_line( w_vec2::zero, w_vec2( -5000, 0 ) );
 
-	push_color( w_color( 0.0f, 1.0f, 0.0f ) );
+	push_rgb( w_color( 0.0f, 1.0f, 0.0f ) );
 	draw_line( w_vec2::zero, w_vec2( 0, 5000 ) );
 
-	push_color( w_color( 0.0f, 0.5f, 0.0f ) );
+	push_rgb( w_color( 0.0f, 0.5f, 0.0f ) );
 	draw_line( w_vec2::zero, w_vec2( 0, -5000 ) );
 
 	return this;
@@ -434,15 +442,14 @@ w_render* w_render::draw_stats()
 		int font_max_height = UI->theme->small_font->font_def->max_height;
 
 		RENDER->begin()
-			->push_color( w_color( .55f, .25f, .25f ) )
-			->push_alpha( 0.75f )
+			->push_rgba( w_color( .55f, .25f, .25f, 0.75f ) )
 			->push_depth( 999.0f )
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->end();
 
 		RENDER->begin()
 			->push_depth( 1000.0f )
-			->push_color( W_COLOR_WHITE )
+			->push_rgb( W_COLOR_WHITE )
 			->push_align( e_align::hcenter );
 
 		float ypos = 0;

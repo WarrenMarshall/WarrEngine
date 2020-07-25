@@ -16,7 +16,7 @@ struct w_game_controller
 	*/
 	bool is_being_used = false;
 
-	XINPUT_STATE xinput_state;
+	XINPUT_STATE xinput_state = { 0 };
 
 	w_game_controller( int idx );
 

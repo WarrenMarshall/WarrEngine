@@ -9,11 +9,11 @@
 	#include <glm\gtc\matrix_transform.hpp>
 	#include <glm\gtc\type_ptr.hpp>
 
-	#include <assert.h>
-	#include <stdio.h>
-	#include <stdlib.h>
+	#include <cassert>
+	#include <cstdio>
+	#include <cstdlib>
 	#include <iostream> 
-	#include <time.h> 
+	#include <ctime>
 	#include <typeinfo>
 	#include <cmath>
 

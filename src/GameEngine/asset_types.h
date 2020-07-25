@@ -180,7 +180,7 @@ struct a_cursor : i_asset
 
 struct a_9slice_def : i_asset
 {
-	std::array<a_subtexture*, 9> patches;
+	std::array<a_subtexture*, 9> patches = {};
 };
 
 // ----------------------------------------------------------------------------
