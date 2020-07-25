@@ -235,6 +235,13 @@ void w_input::update()
 	// update button states
 
 	button_states_last_frame = button_states;
+
+	update_button_state( e_input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
+	update_button_state( e_input_id::key_shift_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_SHIFT ) );
+	update_button_state( e_input_id::key_control_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_CONTROL ) );
+	update_button_state( e_input_id::key_control_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_CONTROL ) );
+	update_button_state( e_input_id::key_alt_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_ALT ) );
+	update_button_state( e_input_id::key_alt_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_ALT ) );
 	update_button_state( e_input_id::mouse_button_left, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_LEFT ) );
 	update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_MIDDLE ) );
 	update_button_state( e_input_id::mouse_button_right, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_RIGHT ) );
@@ -300,12 +307,6 @@ void w_input::update()
 	update_button_state( e_input_id::key_comma, glfwGetKey( engine->window->window, GLFW_KEY_COMMA ) );
 	update_button_state( e_input_id::key_slash, glfwGetKey( engine->window->window, GLFW_KEY_SLASH ) );
 	update_button_state( e_input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
-	update_button_state( e_input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
-	update_button_state( e_input_id::key_shift_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_SHIFT ) );
-	update_button_state( e_input_id::key_control_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_CONTROL ) );
-	update_button_state( e_input_id::key_control_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_CONTROL ) );
-	update_button_state( e_input_id::key_alt_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_ALT ) );
-	update_button_state( e_input_id::key_alt_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_ALT ) );
 
 	// update game controller states
 

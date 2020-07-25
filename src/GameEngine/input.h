@@ -8,11 +8,6 @@ struct w_input_event
 	// the key, mouse button, or controller button generating the event
 	e_input_id input_id = e_input_id::invalid;
 
-	// any modifier keys that were pressed at the time of the input event
-	bool alt_down = false;
-	bool shift_down = false;
-	bool ctrl_down = false;
-
 	struct  
 	{
 		w_vec2 pos = w_vec2( 0, 0 );

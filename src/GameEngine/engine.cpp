@@ -360,7 +360,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 				case e_input_id::key_enter:
 				{
-					if( evt->alt_down )
+					if( engine->input->is_alt_down() )
 					{
 						window->toggle_fullscreen();
 					}
