@@ -174,6 +174,9 @@ enum struct e_input_id : int
 	key_backquote,
 	key_pause,
 
+	key_shift_left,
+	key_shift_right,
+
 	max
 };
 

@@ -59,6 +59,7 @@ void layer_editor::draw()
 	// ----------------------------------------------------------------------------
 	// tiles
 
+	bool shift_is_down = engine->input->is_shift_down();
 	float ypos = TILE_SZ * 2;
 
 	for( int y = 0 ; y < ROOM_H ; ++y )
@@ -82,7 +83,14 @@ void layer_editor::draw()
 			}
 			if( ( ir & e_im_result::hot ) > 0 )
 			{
-				is_painting = true;
+				if( shift_is_down )
+				{
+					game->current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
+				}
+				else
+				{
+					is_painting = true;
+				}
 			}
 			if( ( ir & e_im_result::hovered ) > 0 && is_painting )
 			{

@@ -22,8 +22,6 @@
 		  to see how hard the user is pushing the stick or the trigger you want
 */
 
-// ----------------------------------------------------------------------------
-
 /*
 void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
 {
@@ -200,6 +198,8 @@ void w_input::init()
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_LEFT, e_input_id::mouse_button_left ) );
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_MIDDLE, e_input_id::mouse_button_middle ) );
 	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, e_input_id::mouse_button_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_SHIFT, e_input_id::key_shift_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_SHIFT, e_input_id::key_shift_right ) );
 
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
@@ -296,6 +296,8 @@ void w_input::update()
 	update_button_state( e_input_id::key_comma, glfwGetKey( engine->window->window, GLFW_KEY_COMMA ) );
 	update_button_state( e_input_id::key_slash, glfwGetKey( engine->window->window, GLFW_KEY_SLASH ) );
 	update_button_state( e_input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
+	update_button_state( e_input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
+	update_button_state( e_input_id::key_shift_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_SHIFT ) );
 
 	// update game controller states
 
@@ -368,6 +370,14 @@ bool w_input::is_button_down( e_input_id input_id )
 {
 	e_button_state bs = get_button_state( input_id );
 	return ( bs == e_button_state::pressed || bs == e_button_state::held );
+}
+
+bool w_input::is_shift_down()
+{
+	e_button_state bs_left = get_button_state( e_input_id::key_shift_left );
+	e_button_state bs_right = get_button_state( e_input_id::key_shift_right );
+
+	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
 }
 
 e_button_state w_input::get_button_state( e_input_id input_id )
