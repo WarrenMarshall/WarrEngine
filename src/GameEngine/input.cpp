@@ -103,8 +103,8 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	// only update the position if the mouse is moving over the virtual window itself
 	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
 	{
-		engine->input->mouse_vwindow_pos.x = vx;
-		engine->input->mouse_vwindow_pos.y = vy;
+		engine->input->mouse_vwindow_pos.x = round( vx );
+		engine->input->mouse_vwindow_pos.y = round( vy );
 	}
 }
 

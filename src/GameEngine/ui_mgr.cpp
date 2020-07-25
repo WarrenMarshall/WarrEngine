@@ -30,8 +30,8 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 		 from being able to highlight/click more than one at a time.
 	*/
 
-	rc.w -= 0.5f;
-	rc.h -= 0.5f;
+	rc.w -= 1.0f;
+	rc.h -= 1.0f;
 
 	bool result = false;
 	e_button_state bs = engine->input->get_button_state( e_input_id::mouse_button_left );
@@ -39,21 +39,21 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 
 	if( mouse_is_inside )
 	{
-		if( bs == e_button_state::up || ( bs == e_button_state::held && clicked_id == id ) )
+		if( bs == e_button_state::up || ( bs == e_button_state::held && hot_id == id ) )
 		{
 			hover_id = id;
 		}
 		else if( bs == e_button_state::pressed )
 		{
-			clicked_id = id;
+			hot_id = id;
 		}
 		else if( bs == e_button_state::released )
 		{
-			if( clicked_id == id && hover_id == id )
+			if( hot_id == id && hover_id == id )
 			{
 				result = true;
 			}
-			hover_id = clicked_id = -1;
+			hover_id = hot_id = -1;
 		}
 	}
 	else
@@ -63,27 +63,33 @@ bool w_ui_mgr::update_im_state( int id, w_rect rc )
 			hover_id = -1;
 		}
 
-		if( bs == e_button_state::released && clicked_id == id )
+		if( bs == e_button_state::released && hot_id == id )
 		{
-			clicked_id = -1;
+			hot_id = -1;
 		}
 	}
 
 	return result;
 }
 
-bool w_ui_mgr::im_button( int id, const w_rect& rc )
+void w_ui_mgr::im_reset()
 {
-	bool result = update_im_state( id, rc );
-	theme->draw_button( id, rc );
+	im_id = 0;
+}
+
+bool w_ui_mgr::im_active( w_rect rc, w_ui_style* ui_style )
+{
+	im_id++;
+
+	bool result = update_im_state( im_id, rc );
+	ui_style->draw( rc, hover_id == im_id, hot_id == im_id );
 
 	return result;
 }
 
-bool w_ui_mgr::im_image_button( int id, const w_rect& rc, a_subtexture* subtexture )
+bool w_ui_mgr::im_passive( w_rect rc, w_ui_style* ui_style )
 {
-	bool result = update_im_state( id, rc );
-	theme->draw_image_button( id, rc, subtexture );
+	ui_style->draw( rc, false, false );
 
-	return result;
+	return false;
 }

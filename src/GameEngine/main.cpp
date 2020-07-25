@@ -188,6 +188,7 @@ int main( int argc, char* argv[] )
 			*/
 
 			engine->input->update();
+			UI->im_reset();
 
 			/*
 				if we have fixed time steps to perform, walk
@@ -228,7 +229,7 @@ int main( int argc, char* argv[] )
 				game->draw_entities();
 				RENDER->end();
 				
-				engine->ui->draw_topmost();
+				UI->draw_topmost();
 				engine->draw();
 			}
 			RENDER->end_frame();

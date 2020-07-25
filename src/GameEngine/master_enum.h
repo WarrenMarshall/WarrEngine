@@ -286,17 +286,6 @@ enum struct e_mouse_mode : int
 
 // ----------------------------------------------------------------------------
 
-enum struct e_ui_id : int
-{
-	invalid = 0,
-	browse,
-	tile_start,
-	tile_end = tile_start + ( 19 * 9 ),
-	max
-};
-
-// ----------------------------------------------------------------------------
-
 enum struct e_button_state : int
 {
 	invalid = 0,
@@ -306,3 +295,14 @@ enum struct e_button_state : int
 	up,
 	max
 };
+
+// ----------------------------------------------------------------------------
+
+enum struct e_im_result : int
+{
+	invalid = 0,
+	hovered = 1,
+	hot = 2,
+	clicked = 4
+};
+DEFINE_ENUM_FLAG_OPERATOR( e_im_result )

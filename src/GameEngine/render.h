@@ -63,6 +63,7 @@ struct w_render
 	w_render* push_angle( const float& angle );
 	w_render* push_align( const e_align& align );
 	w_render* push_depth( const float& depth );
+	w_render* push_depth_nudge( const float& addsub );
 	void end();
 
 	// ----------------------------------------------------------------------------

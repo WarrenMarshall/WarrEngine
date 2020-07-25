@@ -10,14 +10,16 @@ struct w_ui_mgr
 	int hover_id = -1;
 
 	// a hot id is one the user has clicked the mouse on but hasn't unclicked yet
-	int clicked_id = -1;
+	int hot_id = -1;
 
 	void init();
 	void set_mouse_visible( bool visible );
 	void draw_topmost();
 
-	bool im_button( int id, const w_rect& rc );
-	bool im_image_button( int id, const w_rect& rc, a_subtexture* subtexture );
+	int im_id = 0;
+	void im_reset();
+	bool im_active( w_rect rc, w_ui_style* ui_style );
+	bool im_passive( w_rect rc, w_ui_style* ui_style );
 
 	bool is_mouse_inside( w_rect& rc ) const;
 
