@@ -176,7 +176,6 @@ int main( int argc, char* argv[] )
 			/*
 				event processing
 			*/
-			// #todo - this magic value is arbitrary. this feels OK but do we need to do something fancier?
 			glfwWaitEventsTimeout( 0.001 );
 
 			/*

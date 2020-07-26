@@ -14,7 +14,7 @@ void w_render_stats::update()
 		stat_timer->reset();
 
 		frame_count.update_value();
-		int steps = static_cast<int>( frame_count.value );
+		auto steps = static_cast<int>( frame_count.value );
 
 		frame_times_ms.update_value( steps );
 		render_buffers.update_value( steps );
@@ -297,7 +297,7 @@ w_render* w_render::draw_string( a_font* font, const std::string& text, const w_
 		if( fch->w > 0 )
 		{
 			draw(
-				fch->img.get(),
+				fch->subtex.get(),
 				w_rect( xpos, ypos + fch->yoffset )
 			);
 

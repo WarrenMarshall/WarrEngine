@@ -22,7 +22,7 @@ w_render_buffer::w_render_buffer( unsigned int prim_type )
     // data buffers
 
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_vert ), (void*) 0 );
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_vert ), (void*) nullptr );
     glEnableVertexAttribArray( 0 );
 	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_vert ), (void*) ( sizeof( float ) * 3 ) );
     glEnableVertexAttribArray( 1 );
@@ -50,7 +50,7 @@ w_render_buffer::~w_render_buffer()
 // #todo - change this so that it sorts verts into buckets based on the current blending mode, not the render pass
 void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
-    int render_pass = static_cast<int>( e_render_pass::solid );
+    auto render_pass = static_cast<int>( e_render_pass::solid );
     if( !fequals( v0.a + v1.a + v2.a + v3.a, 4.0f ) )
     {
         render_pass = static_cast<int>( e_render_pass::transparent );
@@ -71,7 +71,7 @@ void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1
 
 void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1 )
 {
-    int render_pass = static_cast<int>( e_render_pass::solid );
+    auto render_pass = static_cast<int>( e_render_pass::solid );
     if( !fequals( v0.a + v1.a, 2.0f ) )
     {
         render_pass = static_cast<int>( e_render_pass::transparent );
@@ -97,7 +97,7 @@ void w_render_buffer::unbind()
 
 void w_render_buffer::draw( e_render_pass render_pass )
 {
-    int rp = static_cast<int>( render_pass );
+    auto rp = static_cast<int>( render_pass );
 
     if( !indices[rp].empty() )
     {

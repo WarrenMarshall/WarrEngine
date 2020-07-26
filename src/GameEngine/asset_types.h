@@ -85,7 +85,7 @@ struct a_anim_texture : a_texture
 
 	void clean_up_internals() override;
 	bool create_internals( bool is_hot_reloading ) override;
-	void add_frame( a_subtexture* tex );
+	void add_frame( a_subtexture* subtex );
 	void randomize();
 
 	void update() override;
@@ -136,7 +136,7 @@ struct w_font_char
 	float xoffset = 0.0f;
 	float yoffset = 0.0f;
 	float xadvance = 0.0f;
-	std::unique_ptr<a_subtexture> img = nullptr;
+	std::unique_ptr<a_subtexture> subtex = nullptr;
 };
 
 // ----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ struct a_font : i_asset
 struct a_cursor : i_asset
 {
 	w_vec2 hotspot_offset = w_vec2( 0, 0 );
-	a_subtexture* img = nullptr;
+	a_subtexture* subtex = nullptr;
 };
 
 // ----------------------------------------------------------------------------

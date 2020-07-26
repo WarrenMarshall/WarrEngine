@@ -28,11 +28,11 @@ struct w_ui_style_panel : w_ui_style
 
 struct w_ui_style_tile : w_ui_style
 {
-	a_subtexture* tile_subtexture = nullptr;
+	a_subtexture* tile_subtex = nullptr;
 	a_subtexture* selector_bracket = nullptr;
 
 	w_ui_style_tile() = delete;
-	w_ui_style_tile( a_subtexture* tile_subtexture );
+	w_ui_style_tile( a_subtexture* tile_subtex );
 
 	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
 	e_im_result update_im_state( int id, w_rect rc ) override;

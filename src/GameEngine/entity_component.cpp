@@ -49,10 +49,10 @@ ec_sprite::ec_sprite()
 	type = e_component_type::sprite;
 }
 
-w_entity_component* ec_sprite::init( i_transform* parent_entity, a_subtexture* subtexture )
+w_entity_component* ec_sprite::init( i_transform* parent_entity, a_subtexture* subtex )
 {
 	this->parent_entity = parent_entity;
-	this->subtexture = subtexture;
+	this->subtex = subtex;
 	return this;
 }
 
@@ -63,7 +63,7 @@ void ec_sprite::draw()
 		return;
 	}
 
-	RENDER->draw_sprite( subtexture, w_rect( parent_entity->pos.x, parent_entity->pos.y ) );
+	RENDER->draw_sprite( subtex, w_rect( parent_entity->pos.x, parent_entity->pos.y ) );
 
 	RENDER->draw_circle( parent_entity->pos, 16.0f );
 }

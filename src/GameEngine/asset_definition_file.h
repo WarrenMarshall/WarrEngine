@@ -12,7 +12,7 @@ struct w_asset_definition_file : i_reloadable
 
 	~w_asset_definition_file();
 
-	void precache_asset_resources( int pass_num, bool is_hot_reloading );
+	void precache_asset_resources( size_t pass_num, bool is_hot_reloading );
 
 	void clean_up_internals();
 	bool create_internals( bool is_hot_reloading );

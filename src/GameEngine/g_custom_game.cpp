@@ -24,7 +24,7 @@ g_custom_game::g_custom_game()
 
 			tile_masters[ tile_id ].id = tile_id;
 			tile_masters[ tile_id ].show_in_browser = tile_show_in_browser;
-			tile_masters[ tile_id ].subtexture = engine->get_asset<a_subtexture>( tile_name );
+			tile_masters[ tile_id ].subtex = engine->get_asset<a_subtexture>( tile_name );
 		}
 
 		line = tok.get_next_token();
@@ -62,7 +62,7 @@ w_tile* g_custom_game::get_tile( int id )
 	assert( id < 256 );
 
 	w_tile* tile = &( tile_masters[ id ] );
-	assert( tile->subtexture != nullptr );	// there is no tile definition at the requested index - double check "tile_def.txt"
+	assert( tile->subtex != nullptr );	// there is no tile definition at the requested index - double check "tile_def.txt"
 	
 	return tile;
 }

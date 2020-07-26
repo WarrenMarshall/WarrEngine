@@ -22,10 +22,12 @@ void a_texture::clean_up_internals()
 bool a_texture::create_internals( bool is_hot_reloading )
 {
 	// #todo - shouldn't this be an assert? why is a blank filename allowed - for gradients?
-	if( original_filename.empty() )
-	{
-		return true;
-	}
+	// #testing - has this been crashing? can we remove the "if" below?
+	assert( !original_filename.empty() );
+	//if( original_filename.empty() )
+	//{
+	//	return true;
+	//}
 	
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	int w, h, bpp;
@@ -149,13 +151,14 @@ void a_gradient::clean_up_internals()
 
 bool a_gradient::create_internals( bool is_hot_reloading )
 {
-	int num_colors = static_cast<int>( colors.size() );
+	auto num_colors = static_cast<int>( colors.size() );
 	w = ( alignment == e_align::horizontal ) ? num_colors : 1.0f;
 	h = ( alignment == e_align::vertical ) ? num_colors : 1.0f;
 
 	// create a buffer of color data, and fill it with the gradient colors
 
-	float* color_data = (float*) ( ::malloc( sizeof( float ) * 4 * static_cast<int>( w ) * static_cast<int>( h ) ) );
+	// #todo - can this be turned into a std::array or something and remove the allocation/free calls?
+	auto* color_data = static_cast<float*>( ::malloc( sizeof( float ) * 4 * static_cast<int>( w ) * static_cast<int>( h ) ) );
 	int clridx = 0;
 
 	float* wptr = color_data;
@@ -216,9 +219,9 @@ bool a_anim_texture::create_internals( bool is_hot_reloading )
 	return true;
 }
 
-void a_anim_texture::add_frame( a_subtexture* tex )
+void a_anim_texture::add_frame( a_subtexture* subtex )
 {
-	frames.emplace_back( tex );
+	frames.emplace_back( subtex );
 }
 
 /*
@@ -334,7 +337,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 			fch->w = w;
 			fch->h = h;
 
-			fch->img = std::make_unique<a_subtexture>( texture_name, w_rect( x, y, w, h ) );
+			fch->subtex = std::make_unique<a_subtexture>( texture_name, w_rect( x, y, w, h ) );
 
 			max_height = w_max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
 		}

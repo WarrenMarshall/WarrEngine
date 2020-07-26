@@ -6,7 +6,7 @@ w_asset_definition_file::~w_asset_definition_file()
 	clean_up_internals();
 }
 
-void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_hot_reloading )
+void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is_hot_reloading )
 {
 	std::string type, name, filename;
 
@@ -68,7 +68,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 													  iter_ad->find_value( "subtexture" ), "" )
 							);
 
-						// #todo - is this subtex pointer inside a_texture still useful?
+						// #todo	- is this subtex pointer inside a_texture still useful?
 						asset_ptr->subtex = subtex;
 					}
 
@@ -189,16 +189,18 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 						std::string key = iter.first;
 						std::string value = iter.second;
 
-						int subtexture_idx = 0;
+						int subtex_idx = 0;
+						w_rect rc = {};
+						std::string subtex_name;
 
 						if( key.substr( 0, 2 ) == "p_" )
 						{
-							subtexture_idx = w_parser::int_from_str( key );
-							w_rect rc = w_parser::rect_from_str( value );
+							subtex_idx = w_parser::int_from_str( key );
+							rc = w_parser::rect_from_str( value );
 
-							std::string subtex_name = name + "_" + key;
+							subtex_name = name + "_" + key;
 
-							asset_ptr->patches[ subtexture_idx ] = static_cast<a_subtexture*>(
+							asset_ptr->patches[ subtex_idx ] = static_cast<a_subtexture*>(
 								engine->asset_cache->add(
 									std::make_unique<a_subtexture>( tex_name, rc ), subtex_name, ""
 								)
@@ -366,7 +368,7 @@ void w_asset_definition_file::precache_asset_resources( int pass_num, bool is_ho
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->img = engine->get_asset<a_subtexture>( iter_ad->find_value( "subtexture") );
+					asset_ptr->subtex = engine->get_asset<a_subtexture>( iter_ad->find_value( "subtexture") );
 					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot") );
 
 					// ------------------------------------------------------------------------
@@ -505,7 +507,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 
 		if( is_hot_reloading )
-			for( int p = 0; p < w_engine::num_asset_def_passes; ++p )
+			for( size_t p = 0; p < w_engine::num_asset_def_passes; ++p )
 				precache_asset_resources( p, is_hot_reloading );
 	}
 

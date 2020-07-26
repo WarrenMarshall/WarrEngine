@@ -41,7 +41,7 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth( 100.0f )
-		->draw_sprite( game->get_tile( game->current_tile_idx )->subtexture, w_rect( 36,212, 32,32 ) )
+		->draw_sprite( game->get_tile( game->current_tile_idx )->subtex, w_rect( 36,212, 32,32 ) )
 		->end();
 
 	// ----------------------------------------------------------------------------
@@ -73,9 +73,9 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			a_subtexture* subtexture = game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtexture;
+			a_subtexture* subtex = game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtex;
 			
-			e_im_result ir = UI->im_active( rc, &( w_ui_style_tile( subtexture ) ) );
+			e_im_result ir = UI->im_active( rc, &( w_ui_style_tile( subtex ) ) );
 
 			if( ( ir & e_im_result::left_clicked ) > 0 )
 			{

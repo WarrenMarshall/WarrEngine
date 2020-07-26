@@ -115,8 +115,8 @@ void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked 
 
 // ----------------------------------------------------------------------------
 
-w_ui_style_tile::w_ui_style_tile( a_subtexture* tile_subtexture )
-	: tile_subtexture( tile_subtexture )
+w_ui_style_tile::w_ui_style_tile( a_subtexture* tile_subtex )
+	: tile_subtex( tile_subtex )
 {
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 }
@@ -141,7 +141,7 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 
 	RENDER
 		->push_depth( 100 )
-		->draw( tile_subtexture, rc );
+		->draw( tile_subtex, rc );
 
 	RENDER
 		->push_rgba( bracket_color )
@@ -224,7 +224,7 @@ void w_ui_theme::draw_topmost()
 		RENDER
 			->begin()
 			->push_depth( 1000.0f )
-			->draw( mouse_cursor->img,
+			->draw( mouse_cursor->subtex,
 					w_rect(
 						engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
 						engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y

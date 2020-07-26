@@ -20,12 +20,12 @@ struct w_entity_component : i_lifecycle, i_transform
 
 struct ec_sprite : w_entity_component
 {
-	a_subtexture* subtexture = nullptr;
+	a_subtexture* subtex = nullptr;
 	bool flip_x = false, flip_y = false;
 
 	ec_sprite();
 
-	w_entity_component* init( i_transform* parent_entity, a_subtexture* subtexture );
+	w_entity_component* init( i_transform* parent_entity, a_subtexture* subtex );
 	void draw() override;
 };
 
