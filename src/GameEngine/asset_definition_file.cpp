@@ -136,6 +136,19 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 						asset_ptr->colors.emplace_back( w_color( val ) );
 					}
 
+					// if the "subtexture" key exists, create a subtexture for this texture
+					// that represents it's entirety.
+
+					if( iter_ad->does_key_exist( "subtexture" ) )
+					{
+						auto subtex = static_cast<a_subtexture*>(
+							engine->asset_cache->add( std::make_unique<a_subtexture>( name ),
+													  iter_ad->find_value( "subtexture" ), "" )
+							);
+
+						asset_ptr->subtex = subtex;
+					}
+
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();

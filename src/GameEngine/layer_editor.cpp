@@ -11,6 +11,7 @@ void layer_editor::push()
 	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * 9 );
 
 	germ = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
+	grad = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
 void layer_editor::pop()
@@ -104,7 +105,9 @@ void layer_editor::draw()
 		->begin()
 		->push_depth_nudge( 200 )
 		->draw_sprite( germ, w_rect( 32, 32 ) )
+		->draw( grad, w_rect( 64, 64, 128, 128 ) )
 		->end();
+
 
 	// ----------------------------------------------------------------------------
 

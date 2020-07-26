@@ -16,7 +16,7 @@
 	"type" "anim_texture"
 	"name" "anim_germ_orange"
 	"frames_per_sec" "6"
-	"tween" "tween_linear"
+	"tween" "tween_loop"
 	"randomize_start_frame" "yes"
 	"frames" "germ_orange_0,\
 			  germ_orange_1,\

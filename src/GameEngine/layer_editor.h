@@ -4,6 +4,7 @@ struct layer_editor : w_layer
 {
 	w_rect tile_display_area;
 	a_anim_texture* germ = nullptr;
+	a_gradient* grad = nullptr;
 
 	bool is_painting = false;
 
