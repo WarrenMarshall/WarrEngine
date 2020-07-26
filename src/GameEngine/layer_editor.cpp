@@ -9,6 +9,8 @@ void layer_editor::push()
 	UI->set_mouse_visible( true );
 
 	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * 9 );
+
+	germ = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
 }
 
 void layer_editor::pop()
@@ -97,6 +99,12 @@ void layer_editor::draw()
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}
+
+	RENDER
+		->begin()
+		->push_depth_nudge( 200 )
+		->draw_sprite( germ, w_rect( 32, 32 ) )
+		->end();
 
 	// ----------------------------------------------------------------------------
 

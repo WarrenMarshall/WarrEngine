@@ -205,7 +205,6 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 a_anim_texture::a_anim_texture( e_tween_type tween_type, int frames_per_second )
 	: tween_type( tween_type ), frames_per_second( frames_per_second )
 {
-	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() - 1 ), static_cast<float>( frames_per_second ) );
 }
 
 a_anim_texture::~a_anim_texture()
@@ -221,6 +220,8 @@ void a_anim_texture::clean_up_internals()
 
 bool a_anim_texture::create_internals( bool is_hot_reloading )
 {
+	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() - 1 ), static_cast<float>( frames_per_second ) );
+
 	return true;
 }
 
@@ -242,11 +243,6 @@ void a_anim_texture::randomize()
 void a_anim_texture::update()
 {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
-
-	// #hack - I had to add this to make the app run, why is the tween null on the loaded anim texture?
-	//		- try drawing it and see what's up
-	if( !frame_tween )
-		return;
 
 	frame_tween->update();
 }
