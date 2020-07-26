@@ -4,7 +4,7 @@
 
 bool w_keyvalues::does_key_exist( const std::string& key ) const
 {
-	return (_kv.count( key ) > 0);
+	return _kv.count( key ) > 0;
 }
 
 std::string w_keyvalues::find_value( const std::string& key ) const

@@ -9,15 +9,15 @@ w_game_controller::w_game_controller( int idx )
 
 void w_game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )
 {
-	bool last_state = engine->input->button_states_last_frame[ static_cast<int>( input_id ) ];
-	bool current_state = (xinput_state.Gamepad.wButtons & xinput_button_bit) > 0;
+	bool last_state = engine->input->button_states_last_frame[ input_id ];
+	bool current_state = xinput_state.Gamepad.wButtons & xinput_button_bit;
 
-	engine->input->button_states[static_cast<int>( input_id )] = current_state;
+	engine->input->button_states[ input_id ] = current_state;
 
 	if( !last_state && current_state )
 	{
 		w_input_event evt;
-		evt.event_id = e_event_id::input_pressed;
+		evt.event_id = event_id::input_pressed;
 		evt.input_id = input_id;
 
 		engine->input->event_queue.emplace_back( std::move( evt ) );
@@ -28,7 +28,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 	else if( last_state && !current_state )
 	{
 		w_input_event evt;
-		evt.event_id = e_event_id::input_released;
+		evt.event_id = event_id::input_released;
 		evt.input_id = input_id;
 
 		engine->input->event_queue.emplace_back( std::move( evt ) );
@@ -40,7 +40,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 		//if( timer_repeat->get_elapsed_count() )
 		//{
 			w_input_event evt;
-			evt.event_id = e_event_id::input_pressed;
+			evt.event_id = event_id::input_pressed;
 			evt.input_id = input_id;
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
@@ -68,18 +68,18 @@ void w_game_controller::update()
 
 	// update state information anfd send events
 
-	update_button_state( e_input_id::controller_button_a, XINPUT_GAMEPAD_A );
-	update_button_state( e_input_id::controller_button_b, XINPUT_GAMEPAD_B );
-	update_button_state( e_input_id::controller_button_x, XINPUT_GAMEPAD_X );
-	update_button_state( e_input_id::controller_button_y, XINPUT_GAMEPAD_Y );
-	update_button_state( e_input_id::controller_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
-	update_button_state( e_input_id::controller_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
-	update_button_state( e_input_id::controller_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
-	update_button_state( e_input_id::controller_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
-	update_button_state( e_input_id::controller_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
-	update_button_state( e_input_id::controller_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
-	update_button_state( e_input_id::controller_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
-	update_button_state( e_input_id::controller_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
+	update_button_state( input_id::controller_button_a, XINPUT_GAMEPAD_A );
+	update_button_state( input_id::controller_button_b, XINPUT_GAMEPAD_B );
+	update_button_state( input_id::controller_button_x, XINPUT_GAMEPAD_X );
+	update_button_state( input_id::controller_button_y, XINPUT_GAMEPAD_Y );
+	update_button_state( input_id::controller_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
+	update_button_state( input_id::controller_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
+	update_button_state( input_id::controller_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
+	update_button_state( input_id::controller_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
+	update_button_state( input_id::controller_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
+	update_button_state( input_id::controller_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
+	update_button_state( input_id::controller_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
+	update_button_state( input_id::controller_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
 }
 
 void w_game_controller::play_rumble( e_rumble_effect effect )
@@ -90,21 +90,21 @@ void w_game_controller::play_rumble( e_rumble_effect effect )
 
 	switch( effect )
 	{
-		case e_rumble_effect::medium:
+		case rumble_effect::medium:
 		{
 			intensity = static_cast<int>( rumble_max * 0.75f );
 			duration_ms = 400;
 		}
 		break;
 
-		case e_rumble_effect::small:
+		case rumble_effect::small:
 		{
 			intensity = static_cast<int>( rumble_max * 0.5f );
 			duration_ms = 300;
 		}
 		break;
 
-		case e_rumble_effect::tiny:
+		case rumble_effect::tiny:
 		{
 			intensity = static_cast<int>( rumble_max * 0.35f );
 			duration_ms = 200;

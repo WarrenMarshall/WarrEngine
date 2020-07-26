@@ -91,7 +91,7 @@ void w_entity_cozy::update()
 
 		if( life_remaining <= 0.0f )
 		{
-			set_life_cycle( e_lifecycle::dying );
+			set_life_cycle( lifecycle::dying );
 		}
 	}
 }

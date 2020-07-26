@@ -65,83 +65,83 @@ void w_input::init()
 	// callbacks so we can collect user input
 	glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
 
-	for( int x = 0; x < static_cast<int>( e_input_id::max ); ++x )
+	for( int x = 0; x < input_id::max; ++x )
 	{
 		button_states[ x ] = false;
 		button_states_last_frame[ x ] = false;
 	}
 
-	glfw_codes.insert( std::make_pair( GLFW_KEY_ESCAPE, e_input_id::key_esc ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_PAUSE, e_input_id::key_pause ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_BRACKET, e_input_id::key_left_bracket ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_BRACKET, e_input_id::key_right_bracket ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_ENTER, e_input_id::key_enter ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_SPACE, e_input_id::key_space ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F1, e_input_id::key_f1 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F2, e_input_id::key_f2 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F3, e_input_id::key_f3 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F4, e_input_id::key_f4 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F5, e_input_id::key_f5 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F6, e_input_id::key_f6 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F7, e_input_id::key_f7 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F8, e_input_id::key_f8 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F9, e_input_id::key_f9 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F10, e_input_id::key_f10 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F11, e_input_id::key_f11 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F12, e_input_id::key_f12 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_A, e_input_id::key_a ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_B, e_input_id::key_b ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_C, e_input_id::key_c ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_D, e_input_id::key_d ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_E, e_input_id::key_e ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F, e_input_id::key_f ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_G, e_input_id::key_g ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_H, e_input_id::key_h ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_I, e_input_id::key_i ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_I, e_input_id::key_j ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_K, e_input_id::key_k ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_L, e_input_id::key_l ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_M, e_input_id::key_m ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_N, e_input_id::key_n ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_O, e_input_id::key_o ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_P, e_input_id::key_p ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_Q, e_input_id::key_q ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_R, e_input_id::key_r ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_S, e_input_id::key_s ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_T, e_input_id::key_t ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_U, e_input_id::key_u ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_V, e_input_id::key_v ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_W, e_input_id::key_w ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_X, e_input_id::key_x ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_Y, e_input_id::key_y ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_Z, e_input_id::key_z ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_0, e_input_id::key_0 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_1, e_input_id::key_1 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_2, e_input_id::key_2 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_3, e_input_id::key_3 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_4, e_input_id::key_4 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_5, e_input_id::key_5 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_6, e_input_id::key_6 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_7, e_input_id::key_7 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_8, e_input_id::key_8 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_9, e_input_id::key_9 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_UP, e_input_id::key_up ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_DOWN, e_input_id::key_down ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT, e_input_id::key_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT, e_input_id::key_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_PERIOD, e_input_id::key_period ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_COMMA, e_input_id::key_comma ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_SLASH, e_input_id::key_slash ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_GRAVE_ACCENT, e_input_id::key_tilde ) );
-	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_LEFT, e_input_id::mouse_button_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_MIDDLE, e_input_id::mouse_button_middle ) );
-	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, e_input_id::mouse_button_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_SHIFT, e_input_id::key_shift_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_SHIFT, e_input_id::key_shift_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_CONTROL, e_input_id::key_control_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_CONTROL, e_input_id::key_control_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_ALT, e_input_id::key_alt_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_ALT, e_input_id::key_alt_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_ESCAPE, input_id::key_esc ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_PAUSE, input_id::key_pause ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_BRACKET, input_id::key_left_bracket ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_BRACKET, input_id::key_right_bracket ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_ENTER, input_id::key_enter ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_SPACE, input_id::key_space ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F1, input_id::key_f1 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F2, input_id::key_f2 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F3, input_id::key_f3 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F4, input_id::key_f4 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F5, input_id::key_f5 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F6, input_id::key_f6 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F7, input_id::key_f7 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F8, input_id::key_f8 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F9, input_id::key_f9 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F10, input_id::key_f10 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F11, input_id::key_f11 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F12, input_id::key_f12 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_A, input_id::key_a ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_B, input_id::key_b ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_C, input_id::key_c ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_D, input_id::key_d ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_E, input_id::key_e ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_F, input_id::key_f ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_G, input_id::key_g ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_H, input_id::key_h ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_I, input_id::key_i ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_I, input_id::key_j ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_K, input_id::key_k ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_L, input_id::key_l ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_M, input_id::key_m ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_N, input_id::key_n ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_O, input_id::key_o ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_P, input_id::key_p ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_Q, input_id::key_q ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_R, input_id::key_r ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_S, input_id::key_s ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_T, input_id::key_t ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_U, input_id::key_u ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_V, input_id::key_v ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_W, input_id::key_w ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_X, input_id::key_x ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_Y, input_id::key_y ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_Z, input_id::key_z ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_0, input_id::key_0 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_1, input_id::key_1 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_2, input_id::key_2 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_3, input_id::key_3 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_4, input_id::key_4 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_5, input_id::key_5 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_6, input_id::key_6 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_7, input_id::key_7 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_8, input_id::key_8 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_9, input_id::key_9 ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_UP, input_id::key_up ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_DOWN, input_id::key_down ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT, input_id::key_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT, input_id::key_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_PERIOD, input_id::key_period ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_COMMA, input_id::key_comma ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_SLASH, input_id::key_slash ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_GRAVE_ACCENT, input_id::key_tilde ) );
+	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_LEFT, input_id::mouse_button_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_MIDDLE, input_id::mouse_button_middle ) );
+	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, input_id::mouse_button_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_SHIFT, input_id::key_shift_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_SHIFT, input_id::key_shift_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_CONTROL, input_id::key_control_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_CONTROL, input_id::key_control_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_ALT, input_id::key_alt_left ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_ALT, input_id::key_alt_right ) );
 
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
@@ -161,8 +161,8 @@ void w_input::update()
 	if( !fequals( mouse_move_delta.x + mouse_move_delta.y, 0.0f ) )
 	{
 		w_input_event evt;
-		evt.event_id = e_event_id::input_motion;
-		evt.input_id = e_input_id::mouse;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::mouse;
 		evt.mouse.delta = mouse_move_delta;
 
 		event_queue.emplace_back( std::move( evt ) );
@@ -174,77 +174,77 @@ void w_input::update()
 
 	button_states_last_frame = button_states;
 
-	update_button_state( e_input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
-	update_button_state( e_input_id::key_shift_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_SHIFT ) );
-	update_button_state( e_input_id::key_control_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_CONTROL ) );
-	update_button_state( e_input_id::key_control_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_CONTROL ) );
-	update_button_state( e_input_id::key_alt_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_ALT ) );
-	update_button_state( e_input_id::key_alt_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_ALT ) );
-	update_button_state( e_input_id::mouse_button_left, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_LEFT ) );
-	update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_MIDDLE ) );
-	update_button_state( e_input_id::mouse_button_right, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_RIGHT ) );
-	update_button_state( e_input_id::key_esc, glfwGetKey( engine->window->window, GLFW_KEY_ESCAPE ) );
-	update_button_state( e_input_id::key_pause, glfwGetKey( engine->window->window, GLFW_KEY_PAUSE ) );
-	update_button_state( e_input_id::key_left_bracket, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_BRACKET ) );
-	update_button_state( e_input_id::key_right_bracket, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_BRACKET ) );
-	update_button_state( e_input_id::key_enter, glfwGetKey( engine->window->window, GLFW_KEY_ENTER ) );
-	update_button_state( e_input_id::key_space, glfwGetKey( engine->window->window, GLFW_KEY_SPACE ) );
-	update_button_state( e_input_id::key_f1, glfwGetKey( engine->window->window, GLFW_KEY_F1 ) );
-	update_button_state( e_input_id::key_f2, glfwGetKey( engine->window->window, GLFW_KEY_F2 ) );
-	update_button_state( e_input_id::key_f3, glfwGetKey( engine->window->window, GLFW_KEY_F3 ) );
-	update_button_state( e_input_id::key_f4, glfwGetKey( engine->window->window, GLFW_KEY_F4 ) );
-	update_button_state( e_input_id::key_f5, glfwGetKey( engine->window->window, GLFW_KEY_F5 ) );
-	update_button_state( e_input_id::key_f6, glfwGetKey( engine->window->window, GLFW_KEY_F6 ) );
-	update_button_state( e_input_id::key_f7, glfwGetKey( engine->window->window, GLFW_KEY_F7 ) );
-	update_button_state( e_input_id::key_f8, glfwGetKey( engine->window->window, GLFW_KEY_F8 ) );
-	update_button_state( e_input_id::key_f9, glfwGetKey( engine->window->window, GLFW_KEY_F9 ) );
-	update_button_state( e_input_id::key_f10, glfwGetKey( engine->window->window, GLFW_KEY_F10 ) );
-	update_button_state( e_input_id::key_f11, glfwGetKey( engine->window->window, GLFW_KEY_F11 ) );
-	update_button_state( e_input_id::key_f12, glfwGetKey( engine->window->window, GLFW_KEY_F12 ) );
-	update_button_state( e_input_id::key_a, glfwGetKey( engine->window->window, GLFW_KEY_A ) );
-	update_button_state( e_input_id::key_b, glfwGetKey( engine->window->window, GLFW_KEY_B ) );
-	update_button_state( e_input_id::key_c, glfwGetKey( engine->window->window, GLFW_KEY_C ) );
-	update_button_state( e_input_id::key_d, glfwGetKey( engine->window->window, GLFW_KEY_D ) );
-	update_button_state( e_input_id::key_e, glfwGetKey( engine->window->window, GLFW_KEY_E ) );
-	update_button_state( e_input_id::key_f, glfwGetKey( engine->window->window, GLFW_KEY_F ) );
-	update_button_state( e_input_id::key_g, glfwGetKey( engine->window->window, GLFW_KEY_G ) );
-	update_button_state( e_input_id::key_h, glfwGetKey( engine->window->window, GLFW_KEY_H ) );
-	update_button_state( e_input_id::key_i, glfwGetKey( engine->window->window, GLFW_KEY_I ) );
-	update_button_state( e_input_id::key_j, glfwGetKey( engine->window->window, GLFW_KEY_I ) );
-	update_button_state( e_input_id::key_k, glfwGetKey( engine->window->window, GLFW_KEY_K ) );
-	update_button_state( e_input_id::key_l, glfwGetKey( engine->window->window, GLFW_KEY_L ) );
-	update_button_state( e_input_id::key_m, glfwGetKey( engine->window->window, GLFW_KEY_M ) );
-	update_button_state( e_input_id::key_n, glfwGetKey( engine->window->window, GLFW_KEY_M ) );
-	update_button_state( e_input_id::key_o, glfwGetKey( engine->window->window, GLFW_KEY_O ) );
-	update_button_state( e_input_id::key_p, glfwGetKey( engine->window->window, GLFW_KEY_P ) );
-	update_button_state( e_input_id::key_q, glfwGetKey( engine->window->window, GLFW_KEY_Q ) );
-	update_button_state( e_input_id::key_r, glfwGetKey( engine->window->window, GLFW_KEY_R ) );
-	update_button_state( e_input_id::key_s, glfwGetKey( engine->window->window, GLFW_KEY_S ) );
-	update_button_state( e_input_id::key_t, glfwGetKey( engine->window->window, GLFW_KEY_T ) );
-	update_button_state( e_input_id::key_u, glfwGetKey( engine->window->window, GLFW_KEY_U ) );
-	update_button_state( e_input_id::key_v, glfwGetKey( engine->window->window, GLFW_KEY_V ) );
-	update_button_state( e_input_id::key_w, glfwGetKey( engine->window->window, GLFW_KEY_W ) );
-	update_button_state( e_input_id::key_x, glfwGetKey( engine->window->window, GLFW_KEY_X ) );
-	update_button_state( e_input_id::key_y, glfwGetKey( engine->window->window, GLFW_KEY_Y ) );
-	update_button_state( e_input_id::key_z, glfwGetKey( engine->window->window, GLFW_KEY_Z ) );
-	update_button_state( e_input_id::key_0, glfwGetKey( engine->window->window, GLFW_KEY_0 ) );
-	update_button_state( e_input_id::key_1, glfwGetKey( engine->window->window, GLFW_KEY_1 ) );
-	update_button_state( e_input_id::key_2, glfwGetKey( engine->window->window, GLFW_KEY_2 ) );
-	update_button_state( e_input_id::key_3, glfwGetKey( engine->window->window, GLFW_KEY_3 ) );
-	update_button_state( e_input_id::key_4, glfwGetKey( engine->window->window, GLFW_KEY_4 ) );
-	update_button_state( e_input_id::key_5, glfwGetKey( engine->window->window, GLFW_KEY_5 ) );
-	update_button_state( e_input_id::key_6, glfwGetKey( engine->window->window, GLFW_KEY_6 ) );
-	update_button_state( e_input_id::key_7, glfwGetKey( engine->window->window, GLFW_KEY_7 ) );
-	update_button_state( e_input_id::key_8, glfwGetKey( engine->window->window, GLFW_KEY_8 ) );
-	update_button_state( e_input_id::key_9, glfwGetKey( engine->window->window, GLFW_KEY_9 ) );
-	update_button_state( e_input_id::key_up, glfwGetKey( engine->window->window, GLFW_KEY_UP ) );
-	update_button_state( e_input_id::key_down, glfwGetKey( engine->window->window, GLFW_KEY_DOWN ) );
-	update_button_state( e_input_id::key_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT ) );
-	update_button_state( e_input_id::key_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT ) );
-	update_button_state( e_input_id::key_period, glfwGetKey( engine->window->window, GLFW_KEY_PERIOD ) );
-	update_button_state( e_input_id::key_comma, glfwGetKey( engine->window->window, GLFW_KEY_COMMA ) );
-	update_button_state( e_input_id::key_slash, glfwGetKey( engine->window->window, GLFW_KEY_SLASH ) );
-	update_button_state( e_input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
+	update_button_state( input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
+	update_button_state( input_id::key_shift_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_SHIFT ) );
+	update_button_state( input_id::key_control_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_CONTROL ) );
+	update_button_state( input_id::key_control_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_CONTROL ) );
+	update_button_state( input_id::key_alt_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_ALT ) );
+	update_button_state( input_id::key_alt_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_ALT ) );
+	update_button_state( input_id::mouse_button_left, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_LEFT ) );
+	update_button_state( input_id::mouse_button_middle, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_MIDDLE ) );
+	update_button_state( input_id::mouse_button_right, glfwGetMouseButton( engine->window->window, GLFW_MOUSE_BUTTON_RIGHT ) );
+	update_button_state( input_id::key_esc, glfwGetKey( engine->window->window, GLFW_KEY_ESCAPE ) );
+	update_button_state( input_id::key_pause, glfwGetKey( engine->window->window, GLFW_KEY_PAUSE ) );
+	update_button_state( input_id::key_left_bracket, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_BRACKET ) );
+	update_button_state( input_id::key_right_bracket, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT_BRACKET ) );
+	update_button_state( input_id::key_enter, glfwGetKey( engine->window->window, GLFW_KEY_ENTER ) );
+	update_button_state( input_id::key_space, glfwGetKey( engine->window->window, GLFW_KEY_SPACE ) );
+	update_button_state( input_id::key_f1, glfwGetKey( engine->window->window, GLFW_KEY_F1 ) );
+	update_button_state( input_id::key_f2, glfwGetKey( engine->window->window, GLFW_KEY_F2 ) );
+	update_button_state( input_id::key_f3, glfwGetKey( engine->window->window, GLFW_KEY_F3 ) );
+	update_button_state( input_id::key_f4, glfwGetKey( engine->window->window, GLFW_KEY_F4 ) );
+	update_button_state( input_id::key_f5, glfwGetKey( engine->window->window, GLFW_KEY_F5 ) );
+	update_button_state( input_id::key_f6, glfwGetKey( engine->window->window, GLFW_KEY_F6 ) );
+	update_button_state( input_id::key_f7, glfwGetKey( engine->window->window, GLFW_KEY_F7 ) );
+	update_button_state( input_id::key_f8, glfwGetKey( engine->window->window, GLFW_KEY_F8 ) );
+	update_button_state( input_id::key_f9, glfwGetKey( engine->window->window, GLFW_KEY_F9 ) );
+	update_button_state( input_id::key_f10, glfwGetKey( engine->window->window, GLFW_KEY_F10 ) );
+	update_button_state( input_id::key_f11, glfwGetKey( engine->window->window, GLFW_KEY_F11 ) );
+	update_button_state( input_id::key_f12, glfwGetKey( engine->window->window, GLFW_KEY_F12 ) );
+	update_button_state( input_id::key_a, glfwGetKey( engine->window->window, GLFW_KEY_A ) );
+	update_button_state( input_id::key_b, glfwGetKey( engine->window->window, GLFW_KEY_B ) );
+	update_button_state( input_id::key_c, glfwGetKey( engine->window->window, GLFW_KEY_C ) );
+	update_button_state( input_id::key_d, glfwGetKey( engine->window->window, GLFW_KEY_D ) );
+	update_button_state( input_id::key_e, glfwGetKey( engine->window->window, GLFW_KEY_E ) );
+	update_button_state( input_id::key_f, glfwGetKey( engine->window->window, GLFW_KEY_F ) );
+	update_button_state( input_id::key_g, glfwGetKey( engine->window->window, GLFW_KEY_G ) );
+	update_button_state( input_id::key_h, glfwGetKey( engine->window->window, GLFW_KEY_H ) );
+	update_button_state( input_id::key_i, glfwGetKey( engine->window->window, GLFW_KEY_I ) );
+	update_button_state( input_id::key_j, glfwGetKey( engine->window->window, GLFW_KEY_I ) );
+	update_button_state( input_id::key_k, glfwGetKey( engine->window->window, GLFW_KEY_K ) );
+	update_button_state( input_id::key_l, glfwGetKey( engine->window->window, GLFW_KEY_L ) );
+	update_button_state( input_id::key_m, glfwGetKey( engine->window->window, GLFW_KEY_M ) );
+	update_button_state( input_id::key_n, glfwGetKey( engine->window->window, GLFW_KEY_M ) );
+	update_button_state( input_id::key_o, glfwGetKey( engine->window->window, GLFW_KEY_O ) );
+	update_button_state( input_id::key_p, glfwGetKey( engine->window->window, GLFW_KEY_P ) );
+	update_button_state( input_id::key_q, glfwGetKey( engine->window->window, GLFW_KEY_Q ) );
+	update_button_state( input_id::key_r, glfwGetKey( engine->window->window, GLFW_KEY_R ) );
+	update_button_state( input_id::key_s, glfwGetKey( engine->window->window, GLFW_KEY_S ) );
+	update_button_state( input_id::key_t, glfwGetKey( engine->window->window, GLFW_KEY_T ) );
+	update_button_state( input_id::key_u, glfwGetKey( engine->window->window, GLFW_KEY_U ) );
+	update_button_state( input_id::key_v, glfwGetKey( engine->window->window, GLFW_KEY_V ) );
+	update_button_state( input_id::key_w, glfwGetKey( engine->window->window, GLFW_KEY_W ) );
+	update_button_state( input_id::key_x, glfwGetKey( engine->window->window, GLFW_KEY_X ) );
+	update_button_state( input_id::key_y, glfwGetKey( engine->window->window, GLFW_KEY_Y ) );
+	update_button_state( input_id::key_z, glfwGetKey( engine->window->window, GLFW_KEY_Z ) );
+	update_button_state( input_id::key_0, glfwGetKey( engine->window->window, GLFW_KEY_0 ) );
+	update_button_state( input_id::key_1, glfwGetKey( engine->window->window, GLFW_KEY_1 ) );
+	update_button_state( input_id::key_2, glfwGetKey( engine->window->window, GLFW_KEY_2 ) );
+	update_button_state( input_id::key_3, glfwGetKey( engine->window->window, GLFW_KEY_3 ) );
+	update_button_state( input_id::key_4, glfwGetKey( engine->window->window, GLFW_KEY_4 ) );
+	update_button_state( input_id::key_5, glfwGetKey( engine->window->window, GLFW_KEY_5 ) );
+	update_button_state( input_id::key_6, glfwGetKey( engine->window->window, GLFW_KEY_6 ) );
+	update_button_state( input_id::key_7, glfwGetKey( engine->window->window, GLFW_KEY_7 ) );
+	update_button_state( input_id::key_8, glfwGetKey( engine->window->window, GLFW_KEY_8 ) );
+	update_button_state( input_id::key_9, glfwGetKey( engine->window->window, GLFW_KEY_9 ) );
+	update_button_state( input_id::key_up, glfwGetKey( engine->window->window, GLFW_KEY_UP ) );
+	update_button_state( input_id::key_down, glfwGetKey( engine->window->window, GLFW_KEY_DOWN ) );
+	update_button_state( input_id::key_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT ) );
+	update_button_state( input_id::key_right, glfwGetKey( engine->window->window, GLFW_KEY_RIGHT ) );
+	update_button_state( input_id::key_period, glfwGetKey( engine->window->window, GLFW_KEY_PERIOD ) );
+	update_button_state( input_id::key_comma, glfwGetKey( engine->window->window, GLFW_KEY_COMMA ) );
+	update_button_state( input_id::key_slash, glfwGetKey( engine->window->window, GLFW_KEY_SLASH ) );
+	update_button_state( input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
 
 	// update game controller states
 
@@ -265,16 +265,16 @@ void w_input::update()
 
 void w_input::update_button_state( e_input_id input_id, int glfw_state )
 {
-	button_states[ (int) input_id ] = glfw_state;
+	button_states[ input_id ] = glfw_state;
 
 	e_button_state bs = get_button_state( input_id );
 
 	switch( bs )
 	{
-		case e_button_state::pressed:
+		case button_state::pressed:
 		{
 			w_input_event evt;
-			evt.event_id = e_event_id::input_pressed;
+			evt.event_id = event_id::input_pressed;
 			evt.input_id = input_id;
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
@@ -284,24 +284,24 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 		}
 		break;
 
-		case e_button_state::released:
+		case button_state::released:
 		{
 			w_input_event evt;
-			evt.event_id = e_event_id::input_released;
+			evt.event_id = event_id::input_released;
 			evt.input_id = input_id;
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
 		}
 		break;
 
-		case e_button_state::held:
+		case button_state::held:
 		{
 			timer_repeat->update();
 
 			if( timer_repeat->get_elapsed_count() )
 			{
 				w_input_event evt;
-				evt.event_id = e_event_id::input_pressed;
+				evt.event_id = event_id::input_pressed;
 				evt.input_id = input_id;
 
 				engine->input->event_queue.emplace_back( std::move( evt ) );
@@ -324,51 +324,51 @@ void w_input::play_rumble( e_rumble_effect effect )
 bool w_input::is_button_down( e_input_id input_id )
 {
 	e_button_state bs = get_button_state( input_id );
-	return ( bs == e_button_state::pressed || bs == e_button_state::held );
+	return ( bs == button_state::pressed || bs == button_state::held );
 }
 
 bool w_input::is_shift_down()
 {
-	e_button_state bs_left = get_button_state( e_input_id::key_shift_left );
-	e_button_state bs_right = get_button_state( e_input_id::key_shift_right );
+	e_button_state bs_left = get_button_state( input_id::key_shift_left );
+	e_button_state bs_right = get_button_state( input_id::key_shift_right );
 
-	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
+	return ( bs_left == button_state::pressed || bs_left == button_state::held || bs_right == button_state::pressed || bs_right == button_state::held );
 }
 
 bool w_input::is_control_down()
 {
-	e_button_state bs_left = get_button_state( e_input_id::key_control_left );
-	e_button_state bs_right = get_button_state( e_input_id::key_control_right );
+	e_button_state bs_left = get_button_state( input_id::key_control_left );
+	e_button_state bs_right = get_button_state( input_id::key_control_right );
 
-	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
+	return ( bs_left == button_state::pressed || bs_left == button_state::held || bs_right == button_state::pressed || bs_right == button_state::held );
 }
 
 bool w_input::is_alt_down()
 {
-	e_button_state bs_left = get_button_state( e_input_id::key_alt_left );
-	e_button_state bs_right = get_button_state( e_input_id::key_alt_right );
+	e_button_state bs_left = get_button_state( input_id::key_alt_left );
+	e_button_state bs_right = get_button_state( input_id::key_alt_right );
 
-	return ( bs_left == e_button_state::pressed || bs_left == e_button_state::held || bs_right == e_button_state::pressed || bs_right == e_button_state::held );
+	return ( bs_left == button_state::pressed || bs_left == button_state::held || bs_right == button_state::pressed || bs_right == button_state::held );
 }
 
 e_button_state w_input::get_button_state( e_input_id input_id )
 {
-	e_button_state bs = e_button_state::up;
+	e_button_state bs = button_state::up;
 
-	bool state = button_states[ (int) input_id ];
-	bool state_last_frame = button_states_last_frame[ (int) input_id ];
+	bool state = button_states[ input_id ];
+	bool state_last_frame = button_states_last_frame[ input_id ];
 
 	if( state && state_last_frame )
 	{
-		bs = e_button_state::held;
+		bs = button_state::held;
 	}
 	else if( state && !state_last_frame )
 	{
-		bs = e_button_state::pressed;
+		bs = button_state::pressed;
 	}
 	else if( !state && state_last_frame )
 	{
-		bs = e_button_state::released;
+		bs = button_state::released;
 	}
 
 	return bs;
@@ -393,7 +393,7 @@ w_vec2 w_input::axis_value_of( e_input_id input_id )
 
 	switch( input_id )
 	{
-		case e_input_id::controller_left_stick:
+		case input_id::controller_left_stick:
 		{
 			value.x = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLX / 32767.0f );
 			value.y = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLY / 32767.0f ) * -1.0f;
@@ -409,7 +409,7 @@ w_vec2 w_input::axis_value_of( e_input_id input_id )
 		}
 		break;
 
-		case e_input_id::controller_right_stick:
+		case input_id::controller_right_stick:
 		{
 			value.x = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRX / 32767.0f );
 			value.y = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRY / 32767.0f ) * -1.0f;
@@ -425,13 +425,13 @@ w_vec2 w_input::axis_value_of( e_input_id input_id )
 		}
 		break;
 
-		case e_input_id::controller_left_trigger:
+		case input_id::controller_left_trigger:
 		{
 			value.x = game_controller->xinput_state.Gamepad.bLeftTrigger / 255.0f;
 		}
 		break;
 
-		case e_input_id::controller_right_trigger:
+		case input_id::controller_right_trigger:
 		{
 			value.x = game_controller->xinput_state.Gamepad.bRightTrigger / 255.0f;
 		}

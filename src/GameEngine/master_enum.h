@@ -1,9 +1,22 @@
 #pragma once
 
 // ----------------------------------------------------------------------------
+// macros to make enum definitions easier to read
 
-enum struct e_align : int
-{
+#define enum_begin( name )\
+	using e_##name = int;\
+	namespace name\
+	{\
+		enum\
+		{
+
+#define enum_end\
+		};\
+	};
+
+// ----------------------------------------------------------------------------
+
+enum_begin( align )
 	invalid = 0,
 	left = 1,
 	right = 2,
@@ -12,13 +25,11 @@ enum struct e_align : int
 	horizontal = 16,
 	vertical = 32,
 	centered = hcenter | vcenter
-};
-DEFINE_ENUM_FLAG_OPERATOR( e_align )
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_color : int
-{
+enum_begin( color )
 	white = 1,
 	black,
 	red,
@@ -32,37 +43,19 @@ enum struct e_color : int
 	dark_grey,
 	grey,
 	light_grey
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_timeline_type : int
-{
+enum_begin( timeline_type )
 	invalid = 0,
 	float_type,
 	color_type
-};
-
-// ----------------------------------------------------------------------------
-// event IDs for the UI system
-
-enum struct e_ui_event : int
-{
-	none = 0,
-	play_clicked,
-	exit_clicked,
-	back_clicked,
-	advance_clicked,
-	realtime_clicked,
-	clear_clicked,
-	slower_clicked,
-	faster_clicked
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_input_id : int
-{
+enum_begin( input_id )
 	invalid = 0,
 	controller_button_dpad_up,
 	controller_button_dpad_down,
@@ -182,59 +175,54 @@ enum struct e_input_id : int
 	key_alt_right,
 
 	max
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-#undef small	// fixes dumb compile problem in release
+#undef small	// fixes dumb compile problem
 
-enum struct e_rumble_effect : int
-{
+enum_begin( rumble_effect )
 	tiny,
 	small,
 	medium,
 	large
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_lifecycle : int
-{
+enum_begin( lifecycle )
 	invalid = 0,
 	alive,
 	dying,			// pending delete whenever the object is finished doing everything (components are finished, etc)
 	dead			// delete next update iteration, this object isn't needed anymore and has finished all of it's work
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_event_id : int
-{
-	invalid,
+enum_begin( event_id )
+	invalid = 0,
 	
 	emitter_params_hot_reload,
 
 	input_pressed,
 	input_released,
 	input_motion
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_tween_type : int
-{
+enum_begin( tween_type )
 	linear = 1,		// value iterates from start to end, once
 	loop,			// value iterates from start to end and resets to start, looping
 	pingpong,		// value iterates from start to end and back again, looping
 	half_sine,		// uses half a sin wave to bounce
 	sine			// a full sin wave
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 //	a definition for the source coordinates of a 9-slice image
 
-enum struct e_patch : int
-{
+enum_begin( slicedef_patch )
 	P_00 = 0,
 	P_10,
 	P_20,
@@ -244,78 +232,69 @@ enum struct e_patch : int
 	P_02,
 	P_12,
 	P_22
-};
+enum_end
 
 // ----------------------------------------------------------------------------
-//	opengl blending modes
 
-enum struct e_opengl_blend : unsigned int
-{
-	alpha,
+enum_begin( opengl_blend )
+	alpha = 0,
 	add,
 	multiply
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_render_pass : int
-{
+enum_begin( render_pass )
 	solid = 0,
 	transparent
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_component_type : int
-{
+enum_begin( component_type )
 	invalid = 0,
 	sprite,
 	emitter,
 	sound
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_particle_spawn_dir : int
-{
+enum_begin( particle_spawn_dir )
 	inherit_from_parent = -1,
 	away_from_parent = -2
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_mouse_mode : int
-{
-	normal,
+enum_begin( mouse_mode )
+	normal = 0,
 	hidden,
 	locked
-};
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_button_state : int
-{
+enum_begin( button_state )
 	invalid = 0,
-	pressed,
-	held,
-	released,
-	up,
-	max
-};
+	pressed = 1,
+	held = 2,
+	released = 3,
+	up = 4,
+	max = 5
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum struct e_im_result : int
-{
-	// nothing happened
+enum_begin( im_result )
 	none = 0,
-	// mouse is within the controls rectangle
 	hovered = 1,
-	// control has been clicked but the mouse hasn't been released yet
 	hot = 2,
-	// the control was clicked and that click needs processing now
 	left_clicked = 4,
-	// same as clicked, but right mouse button
 	right_clicked = 8
-};
-DEFINE_ENUM_FLAG_OPERATOR( e_im_result )
+enum_end
+
+// ----------------------------------------------------------------------------
+
+#undef enum_begin
+#undef enum_end

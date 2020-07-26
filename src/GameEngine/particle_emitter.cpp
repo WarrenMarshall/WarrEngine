@@ -9,7 +9,7 @@ w_particle_emitter::~w_particle_emitter()
 
 void w_particle_emitter::on_listener_event_received( e_event_id event, void* object )
 {
-	if( event == e_event_id::emitter_params_hot_reload && params == object )
+	if( event == event_id::emitter_params_hot_reload && params == object )
 	{
 		set_params( params );
 	}
@@ -80,7 +80,7 @@ void w_particle_emitter::update()
 	// a one-shot particle system spawns all of it's particles at once and then dies
 	if( params->b_one_shot && parent_component )
 	{
-		parent_component->set_life_cycle( e_lifecycle::dying );
+		parent_component->set_life_cycle( lifecycle::dying );
 	}
 }
 
@@ -95,7 +95,7 @@ void w_particle_emitter::spawn_particle()
 
 	switch( static_cast<e_particle_spawn_dir>( params->a_dir ) )
 	{
-		case e_particle_spawn_dir::inherit_from_parent:
+		case particle_spawn_dir::inherit_from_parent:
 		{
 			assert( parent_component );
 			assert( parent_component->parent_entity );
@@ -104,7 +104,7 @@ void w_particle_emitter::spawn_particle()
 		}
 		break;
 
-		case e_particle_spawn_dir::away_from_parent:
+		case particle_spawn_dir::away_from_parent:
 		{
 			assert( parent_component );
 			assert( parent_component->parent_entity );

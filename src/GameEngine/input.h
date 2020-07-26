@@ -3,10 +3,10 @@
 struct w_input_event
 {
 	// which event this is. required when processing events through the queue.
-	e_event_id event_id = e_event_id::invalid;
+	e_event_id event_id = event_id::invalid;
 		
 	// the key, mouse button, or controller button generating the event
-	e_input_id input_id = e_input_id::invalid;
+	e_input_id input_id = input_id::invalid;
 
 	struct  
 	{
@@ -47,8 +47,8 @@ struct w_input : i_speaker
 	*/
 	bool game_controller_being_used = false;
 
-	std::array<bool, (int) e_input_id::max> button_states = {};
-	std::array<bool, (int) e_input_id::max> button_states_last_frame = {};
+	std::array<bool, input_id::max> button_states = {};
+	std::array<bool, input_id::max> button_states_last_frame = {};
 
 	bool is_button_down( e_input_id input_id );
 	bool is_shift_down();

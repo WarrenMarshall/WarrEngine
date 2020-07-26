@@ -17,14 +17,13 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string&
 
 	if( g_allow_hot_reload )
 	{
-		if( asset->original_filename.length() > 0 )
+		if( !asset->original_filename.empty() )
 		{
 			engine->hot_reloadables.emplace_back( static_cast<i_reloadable*>( asset.get() ) );
 		}
 	}
 
 	// save it into the cache
-	//log_msg( "%s : '%s' cached", __FUNCTION__, name.c_str() );
 	cache.insert( std::make_pair( name, std::move( asset ) ) );
 
 	return find( name, b_silent(true) );

@@ -142,19 +142,19 @@ void w_window::set_mouse_mode( e_mouse_mode mode )
 {
 	switch( mode )
 	{
-		case e_mouse_mode::normal:
+		case mouse_mode::normal:
 		{
 			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
 		}
 		break;
 
-		case e_mouse_mode::hidden:
+		case mouse_mode::hidden:
 		{
 			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
 		}
 		break;
 
-		case e_mouse_mode::locked:
+		case mouse_mode::locked:
 		{
 			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
 		}

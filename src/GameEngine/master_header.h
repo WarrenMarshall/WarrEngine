@@ -1,5 +1,9 @@
 #pragma once
 
+#pragma warning(disable : 26444)	// https://docs.microsoft.com/en-us/visualstudio/code-quality/c26444?view=vs-2019
+#pragma warning(disable : 6011)
+#pragma warning(disable : 26812)	// https://docs.microsoft.com/en-us/visualstudio/code-quality/c26812?view=vs-2019
+
 #include "matrix.h"
 #include "opengl.h"
 #include "shader.h"

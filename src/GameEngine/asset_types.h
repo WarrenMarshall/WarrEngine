@@ -63,7 +63,7 @@ struct a_subtexture : i_asset
 
 struct a_gradient : a_texture
 {
-	e_align alignment = e_align::horizontal;
+	e_align alignment = align::horizontal;
 	std::vector<w_color> colors;
 
 	void clean_up_internals() override;
@@ -77,7 +77,7 @@ struct a_anim_texture : a_texture
 	std::vector<a_subtexture*> frames;
 	std::unique_ptr<w_tween> frame_tween = nullptr;
 
-	e_tween_type tween_type = e_tween_type::loop;
+	e_tween_type tween_type = tween_type::loop;
 	int frames_per_second = 1;
 
 	a_anim_texture() = delete;
@@ -103,7 +103,7 @@ struct a_emitter_params : i_asset, i_speaker
 
 	// where to spawn new particles
 	std::unique_ptr<w_particle_spawner> particle_spawner = std::make_unique<w_particle_spawner>();
-	std::unique_ptr<w_timeline> t_scale = std::make_unique<w_timeline>( e_timeline_type::float_type );
+	std::unique_ptr<w_timeline> t_scale = std::make_unique<w_timeline>( timeline_type::float_type );
 
 	w_range r_velocity_spawn = w_range( 50, 50 );	// initial velocity
 	w_range r_scale_spawn = w_range( 1, 1 );		// scale - spawn value and timeline
@@ -113,8 +113,8 @@ struct a_emitter_params : i_asset, i_speaker
 	w_range r_dir_var = w_range( 0, 0 );			// variance for the spawn direction
 
 	// timelines for interpolating color and alpha
-	std::unique_ptr<w_timeline> t_color = std::make_unique<w_timeline>( e_timeline_type::color_type );
-	std::unique_ptr<w_timeline> t_alpha = std::make_unique<w_timeline>( e_timeline_type::float_type );
+	std::unique_ptr<w_timeline> t_color = std::make_unique<w_timeline>( timeline_type::color_type );
+	std::unique_ptr<w_timeline> t_alpha = std::make_unique<w_timeline>( timeline_type::float_type );
 
 	float s_max_spawn_per_sec = 0.0f;	// how many particles to spawn from this emitter, per second
 	float a_dir = 0.0f;					// the base direction that particles start moving in when they spawn

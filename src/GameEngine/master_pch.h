@@ -1,8 +1,5 @@
 #pragma once
 
-#pragma warning(disable : 26444)	// disabling : https://docs.microsoft.com/en-us/visualstudio/code-quality/c26444?view=vs-2019
-#pragma warning(disable : 6011)
-
 #pragma warning(push, 0)	// turn off all warnings for external libraries
 
 	#include <glm\glm.hpp>
@@ -58,41 +55,6 @@
 	#include <Xinput.h>
 
 #pragma warning(pop)	// turn warnings back on
-
-// ----------------------------------------------------------------------------
-
-/*
-	this was taken from the internet. it apparently used to be included in winnt.h
-	and it allows you to use bitmasking operations on an enum.
-
-	just add_render_vert:
-
-	DEFINE_ENUM_FLAG_OPERATOR( my_enum_name )
-
-	...after your declaration to get access to bitmasking functions and comparisons.
-*/
-
-#undef DEFINE_ENUM_FLAG_OPERATORS
-#define DEFINE_ENUM_FLAG_OPERATOR(ENUMTYPE) \
-inline ENUMTYPE operator | (ENUMTYPE a, ENUMTYPE b) { return ENUMTYPE(((int)a) | ((int)b)); } \
-inline ENUMTYPE &operator |= (ENUMTYPE &a, ENUMTYPE b) { return (ENUMTYPE &)(((int &)a) |= ((int)b)); } \
-inline ENUMTYPE operator & (ENUMTYPE a, ENUMTYPE b) { return ENUMTYPE(((int)a) & ((int)b)); } \
-inline ENUMTYPE &operator &= (ENUMTYPE &a, ENUMTYPE b) { return (ENUMTYPE &)(((int &)a) &= ((int)b)); } \
-inline ENUMTYPE operator ~ (ENUMTYPE a) { return ENUMTYPE(~((int)a)); } \
-inline ENUMTYPE operator ^ (ENUMTYPE a, ENUMTYPE b) { return ENUMTYPE(((int)a) ^ ((int)b)); } \
-inline ENUMTYPE &operator ^= (ENUMTYPE &a, ENUMTYPE b) { return (ENUMTYPE &)(((int &)a) ^= ((int)b)); }\
-inline bool operator> (ENUMTYPE a, int b) {  return (((int)a) > b); }
-
-/*
-	The TMP_VAR macro generates a unique variable name to hold an object
-	and manage it's lifetime within a scope.
-
-	variable lives on the stack and is destroyed when the scope is exited.
-*/
-//#define TMP_VAR_HELPER1(x, y) x ## y
-//#define TMP_VAR_HELPER2(x, y) TMP_VAR_HELPER1(x, y)
-//
-//#define SCOPED_VAR(code) auto TMP_VAR_HELPER2(_tmp_var_, __LINE__) = code;
 
 // ----------------------------------------------------------------------------
 // game engine specific stuff that doesn't change often

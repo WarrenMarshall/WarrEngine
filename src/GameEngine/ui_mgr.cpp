@@ -41,5 +41,5 @@ e_im_result w_ui_mgr::im_passive( w_rect rc, w_ui_style* ui_style )
 {
 	ui_style->draw( rc, false, false );
 
-	return e_im_result::none;
+	return im_result::none;
 }

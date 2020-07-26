@@ -49,12 +49,12 @@ void layer_editor::draw()
 
 	// title bar
 
-	UI->im_passive( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f ), &( w_ui_style_panel() ) );
+	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, &w_ui_style_panel() );
 	game->draw_viewport_caption();
 
 	// info bars
 
-	UI->im_passive( w_rect( 0.0f, v_window_h - 68.0f, v_window_w, 68.0f ), &( w_ui_style_panel() ) );
+	UI->im_passive( { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, &w_ui_style_panel() );
 
 	// ----------------------------------------------------------------------------
 	// tiles
@@ -75,13 +75,13 @@ void layer_editor::draw()
 
 			a_subtexture* subtex = game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtex;
 			
-			e_im_result ir = UI->im_active( rc, &( w_ui_style_tile( subtex ) ) );
+			e_im_result ir = UI->im_active( rc, &w_ui_style_tile( subtex ) );
 
-			if( ( ir & e_im_result::left_clicked ) > 0 )
+			if( ir & im_result::left_clicked )
 			{
 				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 			}
-			if( ( ir & e_im_result::hot ) > 0 )
+			if( ir & im_result::hot )
 			{
 				if( shift_is_down )
 				{
@@ -92,7 +92,7 @@ void layer_editor::draw()
 					is_painting = true;
 				}
 			}
-			if( ( ir & e_im_result::hovered ) > 0 && is_painting )
+			if( ( ir & im_result::hovered ) && is_painting )
 			{
 				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 			}
@@ -101,7 +101,7 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	if( (UI->im_active( w_rect( 12, 188, 48, 48 ), &( w_ui_style_pushbutton() ) ) & e_im_result::left_clicked ) > 0 )
+	if( UI->im_active( { 12, 188, 48, 48 }, &w_ui_style_pushbutton() ) & im_result::left_clicked )
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}
@@ -114,7 +114,7 @@ void layer_editor::draw()
 		->push_depth( 1000 )
 		->draw_string(
 			UI->theme->small_font,
-			s_format( "HV:%d / HT:%d / RBS: %d", UI->hover_id, UI->hot_id, engine->input->get_button_state( e_input_id::mouse_button_right) ),
+			s_format( "HV:%d / HT:%d / RBS: %d", UI->hover_id, UI->hot_id, engine->input->get_button_state( input_id::mouse_button_right) ),
 			w_rect( 0, 0 ) )
 		->end();
 #endif
@@ -124,11 +124,11 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 {
 	switch( evt->event_id )
 	{
-		case e_event_id::input_released:
+		case event_id::input_released:
 		{
 			switch( evt->input_id )
 			{
-				case e_input_id::mouse_button_left:
+				case input_id::mouse_button_left:
 				{
 					is_painting = false;
 					return true;
@@ -138,22 +138,22 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 		}
 		break;
 
-		case e_event_id::input_pressed:
+		case event_id::input_pressed:
 		{
 			switch( evt->input_id )
 			{
-				case e_input_id::key_0:
-				case e_input_id::key_1:
-				case e_input_id::key_2:
-				case e_input_id::key_3:
-				case e_input_id::key_4:
-				case e_input_id::key_5:
-				case e_input_id::key_6:
-				case e_input_id::key_7:
-				case e_input_id::key_8:
-				case e_input_id::key_9:
+				case input_id::key_0:
+				case input_id::key_1:
+				case input_id::key_2:
+				case input_id::key_3:
+				case input_id::key_4:
+				case input_id::key_5:
+				case input_id::key_6:
+				case input_id::key_7:
+				case input_id::key_8:
+				case input_id::key_9:
 				{
-					game->current_room = static_cast<int>( evt->input_id ) - static_cast<int>( e_input_id::key_0 );
+					game->current_room = evt->input_id - input_id::key_0;
 					return true;
 				}
 				break;

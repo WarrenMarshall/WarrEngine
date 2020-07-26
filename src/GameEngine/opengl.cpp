@@ -69,7 +69,7 @@ void w_opengl::init() const
 
 	// by default, set up blending so that alpha channels will work
 	glEnable(GL_BLEND);
-	set_blend( e_opengl_blend::alpha );
+	set_blend( opengl_blend::alpha );
 
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );
@@ -117,19 +117,19 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 {
 	switch( blend )
 	{
-		case e_opengl_blend::alpha:
+		case opengl_blend::alpha:
 		{
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		}
 		break;
 
-		case e_opengl_blend::add:
+		case opengl_blend::add:
 		{
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 		}
 		break;
 
-		case e_opengl_blend::multiply:
+		case opengl_blend::multiply:
 		{
 			glBlendFunc( GL_DST_COLOR, GL_ZERO );
 		}

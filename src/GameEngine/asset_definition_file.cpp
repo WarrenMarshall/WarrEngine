@@ -315,7 +315,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 						else if( key == "r_scale_spawn" )
 							asset_ptr->r_scale_spawn = w_parser::range_from_str( value );
 						else if( key == "t_scale" )
-							asset_ptr->t_scale = w_parser::timeline_from_str( e_timeline_type::float_type, value );
+							asset_ptr->t_scale = w_parser::timeline_from_str( timeline_type::float_type, value );
 						else if( key == "s_max_spawn_per_sec" )
 							asset_ptr->s_max_spawn_per_sec = w_parser::float_from_str( value );
 						else if( key == "r_lifespan" )
@@ -323,13 +323,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 						else if( key == "r_velocity_spawn" )
 							asset_ptr->r_velocity_spawn = w_parser::range_from_str( value );
 						else if( key == "t_color" )
-							asset_ptr->t_color = w_parser::timeline_from_str( e_timeline_type::color_type, value );
+							asset_ptr->t_color = w_parser::timeline_from_str( timeline_type::color_type, value );
 						else if( key == "r_spin_spawn" )
 							asset_ptr->r_spin_spawn = w_parser::range_from_str( value );
 						else if( key == "r_spin_per_sec" )
 							asset_ptr->r_spin_per_sec = w_parser::range_from_str( value );
 						else if( key == "t_alpha" )
-							asset_ptr->t_alpha = w_parser::timeline_from_str( e_timeline_type::float_type, value );
+							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
 						else
 							log_msg( "%s : unknown key read from config block : [%s -> \"%s\"]", __FUNCTION__, name.c_str(), key.c_str() );
 					}

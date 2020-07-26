@@ -50,10 +50,10 @@ w_render_buffer::~w_render_buffer()
 // #todo - change this so that it sorts verts into buckets based on the current blending mode, not the render pass
 void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
-    auto render_pass = static_cast<int>( e_render_pass::solid );
+    auto render_pass = static_cast<int>( render_pass::solid );
     if( !fequals( v0.a + v1.a + v2.a + v3.a, 4.0f ) )
     {
-        render_pass = static_cast<int>( e_render_pass::transparent );
+        render_pass = static_cast<int>( render_pass::transparent );
     }
 
     // this looks a little messy but since we know that vertices 0 and 2 are going to be shared
@@ -71,10 +71,10 @@ void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1
 
 void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1 )
 {
-    auto render_pass = static_cast<int>( e_render_pass::solid );
+    auto render_pass = render_pass::solid;
     if( !fequals( v0.a + v1.a, 2.0f ) )
     {
-        render_pass = static_cast<int>( e_render_pass::transparent );
+        render_pass = render_pass::transparent;
     }
 
     add_render_vert( render_pass, v0 );
@@ -134,7 +134,7 @@ void w_render_buffer::draw( e_render_pass render_pass )
         RENDER->stats.render_vertices.accum( static_cast<float>( vertices[rp].size() ) );
         RENDER->stats.render_indices.accum( static_cast<float>( indices[rp].size() ) );
 
-        glDrawElements( prim_type, (int) indices[rp].size(), GL_UNSIGNED_INT, nullptr );
+        glDrawElements( prim_type, static_cast<int>( indices[ rp ].size() ), GL_UNSIGNED_INT, nullptr );
 
         // clean up
         unbind();
@@ -197,7 +197,7 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
     // add the render_vert to the vertex and index lists.
 
     vertices[ render_pass ].emplace_back( rv );
-    int idx = (int) vertices[ render_pass ].size() - 1;
+    int idx = static_cast<int>( vertices[ render_pass ].size() ) - 1;
     indices[ render_pass ].emplace_back( idx );
 
     return idx;

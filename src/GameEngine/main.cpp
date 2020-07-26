@@ -162,7 +162,7 @@ int main( int argc, char* argv[] )
 			engine->ui->theme->init();
 
 			// using a custom mouse cursor, so hide the system mouse
-			engine->window->set_mouse_mode( e_mouse_mode::hidden );
+			engine->window->set_mouse_mode( mouse_mode::hidden );
 		}
 
 		/*

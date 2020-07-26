@@ -35,10 +35,8 @@ int w_parser::int_from_str( const std::string& str )
 		return engine->find_int_from_symbol( str );
 	}
 
-	// Otherwise, parse the string into the val
-	int val = static_cast<int>( strtol( str.c_str(), (char**) nullptr, 10 ) );
-
-	return val;
+	// Otherwise, parse the string...
+	return static_cast<int>( strtol( str.c_str(), ( char** ) nullptr, 10 ) );
 }
 
 bool w_parser::bool_from_str( const std::string& str )
@@ -67,10 +65,8 @@ float w_parser::float_from_str( const std::string& str )
 		return engine->find_float_from_symbol( str );
 	}
 
-	// Otherwise, parse the string into the val
-	float val = static_cast<float>( strtof( str.c_str(), (char**) nullptr ) );
-
-	return val;
+	// Otherwise, parse the string...
+	return static_cast<float>( strtof( str.c_str(), ( char** ) nullptr ) );
 }
 	
 w_color w_parser::color_from_str( const std::string& str )
@@ -82,7 +78,7 @@ w_color w_parser::color_from_str( const std::string& str )
 		return engine->find_color_from_symbol( str );
 	}
 
-	// Otherwise, parse the string into the val
+	// Otherwise, parse the string...
 
 	w_tokenizer tok( str, '/', "1.0f" );
 
@@ -104,7 +100,7 @@ w_range w_parser::range_from_str( const std::string& str )
 		return engine->find_range_from_symbol( str );
 	}
 
-	// Otherwise, parse the string into the val
+	// Otherwise, parse the string...
 
 	w_tokenizer tok( str, ',', "0" );
 
@@ -137,7 +133,7 @@ w_vec2 w_parser::vec2_from_str( const std::string& str )
 		return engine->find_vec2_from_symbol( str );
 	}
 
-	// Otherwise, parse the string into the val
+	// Otherwise, parse the string...
 
 	w_tokenizer tok( str, ',', "0" );
 
@@ -157,7 +153,7 @@ w_vec3 w_parser::vec3_from_str( const std::string& str )
 		return engine->find_vec3_from_symbol( str );
 	}
 
-	// Otherwise, parse the string into the val
+	// Otherwise, parse the string...
 
 	w_tokenizer tok( str, ',', "0" );
 
@@ -189,13 +185,13 @@ std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, c
 
 		switch( type )
 		{
-			case e_timeline_type::float_type:
+			case timeline_type::float_type:
 			{
 				kf.float_value = w_parser::float_from_str( tok.get_next_token() );
 			}
 			break;
 
-			case e_timeline_type::color_type:
+			case timeline_type::color_type:
 			{
 				kf.color_value = w_parser::color_from_str( tok.get_next_token() );
 			}

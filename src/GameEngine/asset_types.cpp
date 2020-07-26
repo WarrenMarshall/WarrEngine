@@ -13,7 +13,7 @@ void a_texture::clean_up_internals()
 {
 	render_buffer = nullptr;
 
-	if( id > 0 )
+	if( id )
 	{
 		glDeleteTextures( 1, &id );
 	}
@@ -23,6 +23,7 @@ bool a_texture::create_internals( bool is_hot_reloading )
 {
 	// #todo - shouldn't this be an assert? why is a blank filename allowed - for gradients?
 	// #testing - has this been crashing? can we remove the "if" below?
+	//			- load a gradient and display it to test ... then clean up code
 	assert( !original_filename.empty() );
 	//if( original_filename.empty() )
 	//{
@@ -151,14 +152,13 @@ void a_gradient::clean_up_internals()
 
 bool a_gradient::create_internals( bool is_hot_reloading )
 {
-	auto num_colors = static_cast<int>( colors.size() );
-	w = ( alignment == e_align::horizontal ) ? num_colors : 1.0f;
-	h = ( alignment == e_align::vertical ) ? num_colors : 1.0f;
+	w = ( alignment == align::horizontal ) ? colors.size() : 1.0f;
+	h = ( alignment == align::vertical ) ? colors.size() : 1.0f;
 
 	// create a buffer of color data, and fill it with the gradient colors
 
 	// #todo - can this be turned into a std::array or something and remove the allocation/free calls?
-	auto* color_data = static_cast<float*>( ::malloc( sizeof( float ) * 4 * static_cast<int>( w ) * static_cast<int>( h ) ) );
+	auto* color_data = static_cast<float*>( ::malloc( sizeof( float ) * 4 * static_cast<int>( w * h ) ) );
 	int clridx = 0;
 
 	float* wptr = color_data;
@@ -285,7 +285,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 	{
 		if( is_hot_reloading )
 		{
-			send_event_to_listeners( e_event_id::emitter_params_hot_reload, this );
+			send_event_to_listeners( event_id::emitter_params_hot_reload, this );
 		}
 
 		// save the last time modified for hot reloading

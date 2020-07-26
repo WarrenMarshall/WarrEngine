@@ -40,7 +40,7 @@ void w_io_zip::scan_and_build_table_of_contents()
 					// local file header
 					if( *( (int*) rptr ) == 0x04034b50 )
 					{
-						zip_local_file_header* hdr = (zip_local_file_header*) rptr;
+						auto hdr = (zip_local_file_header*) rptr;
 						rptr += sizeof( zip_local_file_header );
 
 						if( hdr->version_needed_to_extract == 10 )

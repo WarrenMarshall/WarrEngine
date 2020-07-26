@@ -2,7 +2,7 @@
 
 struct w_entity_component : i_lifecycle, i_transform
 {
-	e_component_type type = e_component_type::invalid;
+	e_component_type type = component_type::invalid;
 	i_transform* parent_entity = nullptr;
 
 	// used for offsetting whatever the component needs to

@@ -37,7 +37,7 @@ void w_entity_component::update()
 {
 	if( is_dying() && is_fully_dead() )
 	{
-		set_life_cycle( e_lifecycle::dead );
+		set_life_cycle( lifecycle::dead );
 	}
 }
 
@@ -46,7 +46,7 @@ void w_entity_component::update()
 ec_sprite::ec_sprite()
 	: w_entity_component()
 {
-	type = e_component_type::sprite;
+	type = component_type::sprite;
 }
 
 w_entity_component* ec_sprite::init( i_transform* parent_entity, a_subtexture* subtex )
@@ -73,7 +73,7 @@ void ec_sprite::draw()
 ec_emitter::ec_emitter()
 	: w_entity_component()
 {
-	type = e_component_type::emitter;
+	type = component_type::emitter;
 }
 
 w_entity_component* ec_emitter::init( i_transform* parent_entity, const std::string& params_name )
@@ -142,7 +142,7 @@ void ec_emitter::post_spawn()
 ec_sound::ec_sound()
 	: w_entity_component()
 {
-	type = e_component_type::sound;
+	type = component_type::sound;
 }
 
 w_entity_component* ec_sound::init( const std::string& snd_name )

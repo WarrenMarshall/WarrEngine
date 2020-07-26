@@ -26,7 +26,7 @@ void w_particle::update()
 
 bool w_particle::is_alive()
 {
-	return ( life_span > 0 );
+	return life_span > 0;
 }
 
 void w_particle::init_to_new()

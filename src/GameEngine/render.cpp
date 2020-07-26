@@ -46,7 +46,7 @@ void w_render::init()
 	rs_scale_stack.push( 1.0f );
 	rs_angle_stack.push( 0.0f );
 	rs_depth_stack.push( 0.0f );
-	rs_align_stack.push( e_align::left );
+	rs_align_stack.push( align::left );
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requesed for
@@ -189,11 +189,11 @@ w_render* w_render::draw_sprite( a_texture* tex, const w_rect& dst )
 	return draw_sprite( tex->get_subtexture(), dst );
 }
 
-w_render* w_render::draw_sprite( const a_subtexture * subtex, const w_rect& dst )
+w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 {
 	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
 	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
-	
+
 	float rs_scale = rs_scale_stack.top();
 	float rs_angle = rs_angle_stack.top();
 
@@ -261,19 +261,19 @@ w_render* w_render::draw_string( a_font* font, const std::string& text, const w_
 	const char* rd_ptr = text.c_str();
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
-	if( (rs_align & e_align::hcenter) > 0 )
+	if( rs_align & align::hcenter )
 	{
 		w_vec2 extents = font->get_string_extents( text );
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
-	if( (rs_align & e_align::right) > 0 )
+	if( rs_align & align::right )
 	{
 		w_vec2 extents = font->get_string_extents( text );
 		alignment_pos_adjustment.x -= extents.x;
 	}
 
-	if( (rs_align & e_align::vcenter) > 0 )
+	if( rs_align & align::vcenter )
 	{
 		alignment_pos_adjustment.y -= font->font_def->max_height / 2.0f;
 	}
@@ -343,13 +343,13 @@ void w_render::end_frame()
 
 	for( const auto& iter : engine->asset_cache->cache )
 	{
-		iter.second->draw( e_render_pass::solid );
+		iter.second->draw( render_pass::solid );
 	}
 
 	for( const auto& iter : engine->asset_cache->cache )
 	{
 		glDepthMask( GL_FALSE );
-		iter.second->draw( e_render_pass::transparent );
+		iter.second->draw( render_pass::transparent );
 	}
 	glDepthMask( GL_TRUE );
 
@@ -420,8 +420,8 @@ w_render* w_render::draw_stats()
 		stat_lines.reserve( stats_draw_reserve );
 
 		stat_lines.emplace_back( s_format( "RENDER : %s FPS / UPDATE : %d FPS",
-										   s_commas( (int) stats.num_frames_rendered.value, "%d" ).c_str(),
-										   (int) w_time::FTS_desired_frames_per_second ) );
+										   s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ).c_str(),
+										   static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
 		stat_lines.emplace_back( s_format( "RB: %s, V: %s, I: %s",
 										   s_commas( stats.render_buffers.value, "%0.f" ).c_str(),
 										   s_commas( stats.render_vertices.value, "%0.f" ).c_str(),
@@ -450,12 +450,12 @@ w_render* w_render::draw_stats()
 		RENDER->begin()
 			->push_depth( 1000.0f )
 			->push_rgb( W_COLOR_WHITE )
-			->push_align( e_align::hcenter );
+			->push_align( align::hcenter );
 
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( UI->theme->small_font, iter, w_rect(v_window_hw, ypos) );
+			RENDER->draw_string( UI->theme->small_font, iter, w_rect( v_window_hw, ypos ) );
 			ypos += font_max_height;
 		}
 
@@ -463,12 +463,12 @@ w_render* w_render::draw_stats()
 	}
 	else
 	{
-	#if !defined(FINALRELEASE)
-		std::string fps_stats( s_format( "%s FPS", s_commas( (int)stats.num_frames_rendered.value, "%d" ).c_str() ) );
+#if !defined(FINALRELEASE)
+		std::string fps_stats( s_format( "%s FPS", s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ).c_str() ) );
 
 		RENDER->begin()
 			->push_depth( 1000.0f )
-			->push_align( e_align::right )
+			->push_align( align::right )
 			->draw_string( UI->theme->small_font, fps_stats, w_rect( v_window_w, 0 ) )
 			->end();
 	#endif
@@ -573,15 +573,15 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 {
 	w_matrix* mtx = nullptr;
 
-	a_subtexture* p_00 = slice_def->patches[ (int) e_patch::P_00 ];
-	a_subtexture* p_10 = slice_def->patches[ (int) e_patch::P_10 ];
-	a_subtexture* p_20 = slice_def->patches[ (int) e_patch::P_20 ];
-	a_subtexture* p_01 = slice_def->patches[ (int) e_patch::P_01 ];
-	a_subtexture* p_11 = slice_def->patches[ (int) e_patch::P_11 ];
-	a_subtexture* p_21 = slice_def->patches[ (int) e_patch::P_21 ];
-	a_subtexture* p_02 = slice_def->patches[ (int) e_patch::P_02 ];
-	a_subtexture* p_12 = slice_def->patches[ (int) e_patch::P_12 ];
-	a_subtexture* p_22 = slice_def->patches[ (int) e_patch::P_22 ];
+	a_subtexture* p_00 = slice_def->patches[ slicedef_patch::P_00 ];
+	a_subtexture* p_10 = slice_def->patches[ slicedef_patch::P_10 ];
+	a_subtexture* p_20 = slice_def->patches[ slicedef_patch::P_20 ];
+	a_subtexture* p_01 = slice_def->patches[ slicedef_patch::P_01 ];
+	a_subtexture* p_11 = slice_def->patches[ slicedef_patch::P_11 ];
+	a_subtexture* p_21 = slice_def->patches[ slicedef_patch::P_21 ];
+	a_subtexture* p_02 = slice_def->patches[ slicedef_patch::P_02 ];
+	a_subtexture* p_12 = slice_def->patches[ slicedef_patch::P_12 ];
+	a_subtexture* p_22 = slice_def->patches[ slicedef_patch::P_22 ];
 
 	// nudge the rendering matrix down the height of the top row of subtextures. this
 	// allows us to think of the top/left of this window as the actual graphical top/left.

@@ -18,7 +18,7 @@ void w_tween::refresh_limits()
 {
 	switch( type )
 	{
-		case e_tween_type::linear:
+		case tween_type::linear:
 		{
 			if( _fval >= end )
 			{
@@ -32,9 +32,9 @@ void w_tween::refresh_limits()
 		}
 		break;
 
-		case e_tween_type::loop:
-		case e_tween_type::sine:
-		case e_tween_type::half_sine:
+		case tween_type::loop:
+		case tween_type::sine:
+		case tween_type::half_sine:
 		{
 			if( _fval >= end )
 			{
@@ -48,7 +48,7 @@ void w_tween::refresh_limits()
 		}
 		break;
 
-		case e_tween_type::pingpong:
+		case tween_type::pingpong:
 		{
 			if( _fval >= end )
 			{
@@ -90,10 +90,10 @@ float w_tween::get_fval()
 {
 	switch( type )
 	{
-		case e_tween_type::sine:
+		case tween_type::sine:
 			return sin_from_angle( _fval );
 
-		case e_tween_type::half_sine:
+		case tween_type::half_sine:
 			return fabs( sin_from_angle( _fval ) );
 	}
 

@@ -237,7 +237,7 @@ void w_engine::update()
 		asset.second->update();
 	}
 
-	render->show_stats = input->is_button_down( e_input_id::key_a);
+	render->show_stats = input->is_button_down( input_id::key_a);
 }
 
 // each time this is called, it checks the reload status for a single i_reloadable
@@ -317,48 +317,48 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 	switch( event )
 	{
-		case e_event_id::input_motion:
+		case event_id::input_motion:
 		{
 			//RENDER->update_virtual_mouse_pos( w_vec2( evt->pos.x, evt->pos.y ) );
 		}
 		break;
 
-		case e_event_id::input_pressed:
+		case event_id::input_pressed:
 		{
 			switch( evt->input_id )
 			{
-				case e_input_id::key_esc:
+				case input_id::key_esc:
 				{
 					is_running = false;
 				}
 				break;
 
-				case e_input_id::key_pause:
+				case input_id::key_pause:
 				{
 					toggle_pause();
 				}
 				break;
 
-				case e_input_id::key_f11:
+				case input_id::key_f11:
 				{
 					window->toggle_fullscreen();
 				}
 				break;
 
-				case e_input_id::key_left_bracket:
+				case input_id::key_left_bracket:
 				{
 					time->dilation -= 0.1f;
 					time->dilation = w_max( time->dilation, 0.1f );
 				}
 				break;
 
-				case e_input_id::key_right_bracket:
+				case input_id::key_right_bracket:
 				{
 					time->dilation += 0.1f;
 				}
 				break;
 
-				case e_input_id::key_enter:
+				case input_id::key_enter:
 				{
 					if( engine->input->is_alt_down() )
 					{
@@ -367,7 +367,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 				}
 				break;
 
-				case e_input_id::key_f10:
+				case input_id::key_f10:
 				{
 					log_msg( " " );
 					log_msg( "-- RENDER STATS -----------------" );
