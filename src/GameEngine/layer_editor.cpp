@@ -36,14 +36,6 @@ void layer_editor::draw()
 			w_rect( 68.0f, 206.0f ) )
 		->end();
 
-	// current tile
-
-	RENDER
-		->begin()
-		->push_depth( 100.0f )
-		->draw_sprite( game->get_tile( game->current_tile_idx )->subtex, w_rect( 36,212, 32,32 ) )
-		->end();
-
 	// ----------------------------------------------------------------------------
 	// frames
 
@@ -101,7 +93,7 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	if( UI->im_active( { 12, 188, 48, 48 }, &w_ui_style_pushbutton() ) & im_result::left_clicked )
+	if( UI->im_active( { 12, 188, 48, 48 }, &w_ui_style_bitmapbutton( game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}

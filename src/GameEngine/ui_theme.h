@@ -17,6 +17,15 @@ struct w_ui_style_pushbutton : w_ui_style
 	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
 };
 
+struct w_ui_style_bitmapbutton : w_ui_style_pushbutton
+{
+	w_ui_style_bitmapbutton( a_subtexture* subtex );
+
+	a_subtexture* subtex;
+
+	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
+};
+
 struct w_ui_style_panel : w_ui_style
 {
 	a_9slice_def* slice_def = nullptr;

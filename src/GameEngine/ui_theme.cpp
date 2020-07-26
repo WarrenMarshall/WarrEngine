@@ -88,11 +88,51 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 		rc_click_offset = { 1, 1 };
 	}
 
+	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h };
+
 	RENDER
 		->begin()
 		->push_rgb( final_color )
 		->push_depth( 100 )
-		->draw_sliced( slice_def, w_rect( rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h ) )
+		->draw_sliced( slice_def, rc_draw )
+		->end();
+}
+
+// ----------------------------------------------------------------------------
+
+w_ui_style_bitmapbutton::w_ui_style_bitmapbutton( a_subtexture* subtex )
+	: subtex( subtex )
+{
+}
+
+void w_ui_style_bitmapbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+{
+	w_color final_color = W_COLOR_DARK_GREY;
+	w_vec2 rc_click_offset = { 0, 0 };
+	if( being_clicked )
+	{
+		w_color::scale( final_color, 1.75f );
+	}
+	else if( being_hovered )
+	{
+		w_color::scale( final_color, 1.25f );
+	}
+
+	if( being_hovered && being_clicked )
+	{
+		rc_click_offset = { 1, 1 };
+	}
+
+	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h };
+
+	RENDER
+		->begin()
+		->push_rgb( final_color )
+		->push_depth( 100 )
+		->draw_sliced( slice_def, rc_draw )
+		->push_rgb( W_COLOR_WHITE )
+		->push_depth_nudge( 10 )
+		->draw_sprite( subtex, w_rect( rc_draw.x + ( rc.w / 2 ), rc_draw.y + ( rc.h / 2 ), ( rc.w / 2 ), ( rc.h / 2 ) ) )
 		->end();
 }
 
