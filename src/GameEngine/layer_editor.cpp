@@ -43,12 +43,12 @@ void layer_editor::draw()
 
 	// title bar
 
-	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, w_ui_style_panel() );
+	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, w_ui_style_panel( UI->theme->panel_slice_def) );
 	game->draw_viewport_caption();
 
 	// info bars
 
-	UI->im_passive( { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, w_ui_style_panel() );
+	UI->im_passive( { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, w_ui_style_panel( UI->theme->panel_slice_def ) );
 
 	// ----------------------------------------------------------------------------
 	// tiles
@@ -95,7 +95,7 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	if( UI->im_active( { 12, 188, 48, 48 }, w_ui_style_bitmapbutton( game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
+	if( UI->im_active( { 12, 188, 48, 48 }, w_ui_style_pushbutton( UI->theme->button_slice_def, game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}

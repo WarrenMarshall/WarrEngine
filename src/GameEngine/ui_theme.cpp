@@ -64,9 +64,9 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc ) const
 
 // ----------------------------------------------------------------------------
 
-w_ui_style_pushbutton::w_ui_style_pushbutton()
+w_ui_style_pushbutton::w_ui_style_pushbutton( a_9slice_def* slice_def, a_subtexture* subtex )
+	: slice_def( slice_def ), subtex( subtex )
 {
-	slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 }
 
 void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
@@ -89,57 +89,30 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 
 	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h };
 
-	RENDER
-		->begin()
-		->push_rgb( final_color )
-		->push_depth( 100 )
-		->draw_sliced( slice_def, rc_draw )
-		->end();
+	RENDER->begin();
+
+	if( slice_def )
+	{
+		RENDER->push_rgb( final_color )
+			->push_depth( 100 )
+			->draw_sliced( slice_def, rc_draw );
+	}
+
+	if( subtex )
+	{
+		RENDER->push_rgb( W_COLOR_WHITE )
+			->push_depth( 110 )
+			->draw_sprite( subtex, w_rect( rc_draw.x + ( rc.w / 2 ), rc_draw.y + ( rc.h / 2 ), ( rc.w / 2 ), ( rc.h / 2 ) ) );
+	}
+
+	RENDER->end();
 }
 
 // ----------------------------------------------------------------------------
 
-w_ui_style_bitmapbutton::w_ui_style_bitmapbutton( a_subtexture* subtex )
-	: subtex( subtex )
+w_ui_style_panel::w_ui_style_panel( a_9slice_def* slice_def )
+	: slice_def( slice_def )
 {
-}
-
-void w_ui_style_bitmapbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
-{
-	w_color final_color = W_COLOR_DARK_GREY;
-	w_vec2 rc_click_offset = { 0, 0 };
-	if( being_clicked )
-	{
-		w_color::scale( final_color, 1.75f );
-	}
-	else if( being_hovered )
-	{
-		w_color::scale( final_color, 1.25f );
-	}
-
-	if( being_hovered && being_clicked )
-	{
-		rc_click_offset = { 1, 1 };
-	}
-
-	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h };
-
-	RENDER
-		->begin()
-		->push_rgb( final_color )
-		->push_depth( 100 )
-		->draw_sliced( slice_def, rc_draw )
-		->push_rgb( W_COLOR_WHITE )
-		->push_depth_nudge( 10 )
-		->draw_sprite( subtex, w_rect( rc_draw.x + ( rc.w / 2 ), rc_draw.y + ( rc.h / 2 ), ( rc.w / 2 ), ( rc.h / 2 ) ) )
-		->end();
-}
-
-// ----------------------------------------------------------------------------
-
-w_ui_style_panel::w_ui_style_panel()
-{
-	slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 }
 
 void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
@@ -251,6 +224,9 @@ void w_ui_theme::init()
 {
 	mouse_cursor = engine->get_asset<a_cursor>( "ui_cursor", b_silent( true ) );
 	small_font = engine->get_asset<a_font>( "ui_simple_font" );
+
+	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
+	button_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 }
 
 void w_ui_theme::draw_topmost()

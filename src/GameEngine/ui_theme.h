@@ -10,18 +10,10 @@ struct w_ui_style
 
 struct w_ui_style_pushbutton : w_ui_style
 {
-	w_ui_style_pushbutton();
+	w_ui_style_pushbutton( a_9slice_def* slice_def, a_subtexture* subtex );
 
 	a_9slice_def* slice_def = nullptr;
-
-	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
-};
-
-struct w_ui_style_bitmapbutton : w_ui_style_pushbutton
-{
-	w_ui_style_bitmapbutton( a_subtexture* subtex );
-
-	a_subtexture* subtex;
+	a_subtexture* subtex = nullptr;
 
 	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
 };
@@ -30,7 +22,7 @@ struct w_ui_style_panel : w_ui_style
 {
 	a_9slice_def* slice_def = nullptr;
 
-	w_ui_style_panel();
+	w_ui_style_panel( a_9slice_def* slice_def );
 
 	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
 };
@@ -53,6 +45,9 @@ struct w_ui_theme
 {
 	a_cursor* mouse_cursor = nullptr;
 	a_font* small_font = nullptr;
+
+	a_9slice_def* panel_slice_def = nullptr;
+	a_9slice_def* button_slice_def = nullptr;
 
 	void init();
 	void draw_topmost();
