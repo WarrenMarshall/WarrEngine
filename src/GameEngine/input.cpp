@@ -22,68 +22,6 @@
 		  to see how hard the user is pushing the stick or the trigger you want
 */
 
-/*
-void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
-{
-	bool pressed = !( action == GLFW_RELEASE );
-
-	w_input_event evt;
-	evt.event_id = pressed ? e_event_id::input_pressed : e_event_id::input_released;
-	evt.input_id = engine->input_mgr->glfw_codes[ key ];
-
-	evt.alt_down = ( mods & GLFW_MOD_ALT );
-	evt.shift_down = ( mods & GLFW_MOD_SHIFT );
-	evt.ctrl_down = ( mods & GLFW_MOD_CONTROL );
-
-	e_button_state& button_state = engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ];
-
-	if( action == GLFW_PRESS )
-	{
-		button_state = e_button_state::pressed;
-	}
-	else if( action == GLFW_REPEAT )
-	{
-		button_state = e_button_state::held;
-	}
-	else if( action == GLFW_RELEASE )
-	{
-		button_state = e_button_state::released;
-	}
-	else
-	{
-		button_state = e_button_state::up;
-	}
-
-	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
-}
-
-void mouse_button_callback( GLFWwindow* window, int button, int action, int mods )
-{
-	bool pressed = !( action == GLFW_RELEASE );
-
-	w_input_event evt;
-	evt.event_id = pressed ? e_event_id::input_pressed : e_event_id::input_released;
-	evt.input_id = engine->input_mgr->glfw_codes[ button ];
-
-	evt.alt_down = ( mods & GLFW_MOD_ALT );
-	evt.shift_down = ( mods & GLFW_MOD_SHIFT );
-	evt.ctrl_down = ( mods & GLFW_MOD_CONTROL );
-
-	e_button_state& button_state = engine->input_mgr->button_states[ static_cast<int>( evt.input_id ) ];
-
-	if( action == GLFW_PRESS )
-	{
-		button_state = e_button_state::pressed;
-	}
-	else
-	{
-		button_state = e_button_state::released;
-	}
-
-	engine->input_mgr->event_queue.emplace_back( std::move( evt ) );
-}
-*/
-
 static w_vec2 last_mouse_pos( 0, 0 );
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
@@ -331,37 +269,45 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 	e_button_state bs = get_button_state( input_id );
 
-	if( bs == e_button_state::pressed )
+	switch( bs )
 	{
-		w_input_event evt;
-		evt.event_id = e_event_id::input_pressed;
-		evt.input_id = input_id;
-
-		engine->input->event_queue.emplace_back( std::move( evt ) );
-
-		//is_being_used = true;
-		timer_repeat->reset();
-	}
-	else if( bs == e_button_state::released )
-	{
-		w_input_event evt;
-		evt.event_id = e_event_id::input_released;
-		evt.input_id = input_id;
-
-		engine->input->event_queue.emplace_back( std::move( evt ) );
-	}
-	else if( bs == e_button_state::held )
-	{
-		timer_repeat->update();
-
-		if( timer_repeat->get_elapsed_count() )
+		case e_button_state::pressed:
 		{
 			w_input_event evt;
 			evt.event_id = e_event_id::input_pressed;
 			evt.input_id = input_id;
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
+
+			//is_being_used = true;
+			timer_repeat->reset();
 		}
+		break;
+
+		case e_button_state::released:
+		{
+			w_input_event evt;
+			evt.event_id = e_event_id::input_released;
+			evt.input_id = input_id;
+
+			engine->input->event_queue.emplace_back( std::move( evt ) );
+		}
+		break;
+
+		case e_button_state::held:
+		{
+			timer_repeat->update();
+
+			if( timer_repeat->get_elapsed_count() )
+			{
+				w_input_event evt;
+				evt.event_id = e_event_id::input_pressed;
+				evt.input_id = input_id;
+
+				engine->input->event_queue.emplace_back( std::move( evt ) );
+			}
+		}
+		break;
 	}
 }
 

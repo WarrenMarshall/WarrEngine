@@ -266,7 +266,8 @@ w_render* w_render::draw_string( a_font* font, const std::string& text, const w_
 		w_vec2 extents = font->get_string_extents( text );
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
-	else if( (rs_align & e_align::right) > 0 )
+
+	if( (rs_align & e_align::right) > 0 )
 	{
 		w_vec2 extents = font->get_string_extents( text );
 		alignment_pos_adjustment.x -= extents.x;
