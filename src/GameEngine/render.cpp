@@ -258,7 +258,6 @@ w_render* w_render::draw_string( a_font* font, const std::string& text, const w_
 {
 	e_align rs_align = rs_align_stack.top();
 
-	const char* rd_ptr = text.c_str();
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
 	if( rs_align & align::hcenter )
@@ -571,8 +570,6 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 
 w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )
 {
-	w_matrix* mtx = nullptr;
-
 	a_subtexture* p_00 = slice_def->patches[ slicedef_patch::P_00 ];
 	a_subtexture* p_10 = slice_def->patches[ slicedef_patch::P_10 ];
 	a_subtexture* p_20 = slice_def->patches[ slicedef_patch::P_20 ];

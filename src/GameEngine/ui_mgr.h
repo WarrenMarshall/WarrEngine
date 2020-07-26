@@ -18,8 +18,8 @@ struct w_ui_mgr
 
 	int im_id = 0;
 	void im_reset();
-	e_im_result im_active( w_rect rc, w_ui_style* ui_style );
-	e_im_result im_passive( w_rect rc, w_ui_style* ui_style );
+	e_im_result im_active( w_rect rc, const w_ui_style& ui_style );
+	e_im_result im_passive( w_rect rc, const w_ui_style& ui_style );
 
 	bool is_mouse_inside( w_rect& rc ) const;
 

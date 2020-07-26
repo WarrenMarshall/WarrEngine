@@ -6,6 +6,8 @@ struct w_layer : i_lifecycle
 	// obscures the layers below it in the stack.
 	bool draws_completely_solid = false;
 
+	virtual ~w_layer() = default;
+
 	/*
 		called each time the layer is pushed onto the stack
 	

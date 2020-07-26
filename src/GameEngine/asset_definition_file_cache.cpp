@@ -9,7 +9,7 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 
 	if( iter != cache.end() )
 	{
-		log_warning( "%s : asset definition file already cached : [%s]", __FUNCTION__, filename );
+		log_warning( "%s : asset definition file already cached : [%s]", __FUNCTION__, filename.c_str() );
 		return nullptr;
 	}
 
@@ -29,5 +29,5 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 		cache.insert( std::make_pair( name, std::move( cfg ) ) );
 	}
 
-	return cfg.get();
+	return cache.find( name )->second.get();
 }

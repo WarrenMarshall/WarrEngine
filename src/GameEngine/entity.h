@@ -13,7 +13,7 @@ struct w_entity : i_lifecycle, i_transform
 	w_vec2 dir;
 	float speed = 1.0f;
 
-	w_entity();
+	virtual ~w_entity() = default;
 
 	virtual void update();
 	virtual void draw_components();

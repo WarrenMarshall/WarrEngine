@@ -4,6 +4,8 @@
 
 struct i_asset : i_reloadable
 {
+	virtual ~i_asset( ) = default;
+
 	std::string name = "";
 	std::unique_ptr<w_render_buffer> render_buffer = nullptr;
 	std::unique_ptr<w_render_buffer> render_buffer_static = nullptr;

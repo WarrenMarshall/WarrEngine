@@ -5,6 +5,7 @@ struct w_game
 	std::vector<std::unique_ptr<w_entity>> entities;
 
 	w_game() = default;
+	virtual ~w_game() = default;
 
 	virtual void new_game();
 	virtual void update();

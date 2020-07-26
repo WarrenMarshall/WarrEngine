@@ -20,6 +20,8 @@ struct w_engine : i_listener
 
 	static constexpr int num_asset_def_passes = 3;
 
+	virtual ~w_engine() = default;
+
 	void init();
 	void deinit();
 	void draw();

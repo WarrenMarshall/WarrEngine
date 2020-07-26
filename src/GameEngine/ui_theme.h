@@ -4,8 +4,8 @@ struct w_ui_style
 {
 	w_ui_style() = default;
 
-	virtual void draw( w_rect& rc, bool being_hovered, bool being_clicked ) = 0;
-	virtual e_im_result update_im_state( int id, w_rect rc );
+	virtual void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const = 0;
+	virtual e_im_result update_im_state( int id, w_rect rc ) const;
 };
 
 struct w_ui_style_pushbutton : w_ui_style
@@ -14,7 +14,7 @@ struct w_ui_style_pushbutton : w_ui_style
 
 	a_9slice_def* slice_def = nullptr;
 
-	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
+	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
 };
 
 struct w_ui_style_bitmapbutton : w_ui_style_pushbutton
@@ -23,7 +23,7 @@ struct w_ui_style_bitmapbutton : w_ui_style_pushbutton
 
 	a_subtexture* subtex;
 
-	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
+	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
 };
 
 struct w_ui_style_panel : w_ui_style
@@ -32,7 +32,7 @@ struct w_ui_style_panel : w_ui_style
 
 	w_ui_style_panel();
 
-	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
+	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
 };
 
 struct w_ui_style_tile : w_ui_style
@@ -43,8 +43,8 @@ struct w_ui_style_tile : w_ui_style
 	w_ui_style_tile() = delete;
 	w_ui_style_tile( a_subtexture* tile_subtex );
 
-	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
-	e_im_result update_im_state( int id, w_rect rc ) override;
+	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) const override;
+	e_im_result update_im_state( int id, w_rect rc ) const override;
 };
 
 // ----------------------------------------------------------------------------

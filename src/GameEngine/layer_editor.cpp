@@ -41,12 +41,12 @@ void layer_editor::draw()
 
 	// title bar
 
-	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, &w_ui_style_panel() );
+	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, w_ui_style_panel() );
 	game->draw_viewport_caption();
 
 	// info bars
 
-	UI->im_passive( { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, &w_ui_style_panel() );
+	UI->im_passive( { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, w_ui_style_panel() );
 
 	// ----------------------------------------------------------------------------
 	// tiles
@@ -67,7 +67,7 @@ void layer_editor::draw()
 
 			a_subtexture* subtex = game->get_tile( game->rooms[ game->current_room ].tiles[ idx ] )->subtex;
 			
-			e_im_result ir = UI->im_active( rc, &w_ui_style_tile( subtex ) );
+			e_im_result ir = UI->im_active( rc, w_ui_style_tile( subtex ) );
 
 			if( ir & im_result::left_clicked )
 			{
@@ -93,7 +93,7 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-	if( UI->im_active( { 12, 188, 48, 48 }, &w_ui_style_bitmapbutton( game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
+	if( UI->im_active( { 12, 188, 48, 48 }, w_ui_style_bitmapbutton( game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
 	{
 		log_msg( "BUTTON CLICKED!" );
 	}

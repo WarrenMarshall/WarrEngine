@@ -53,7 +53,7 @@ void w_io_zip::scan_and_build_table_of_contents()
 							table_of_contents.insert(
 								std::make_pair(
 									filename,
-									std::move( std::make_unique<w_zip_toc_entry>( zip_filename, filename, (int) ( rptr - buffer.data() ), hdr->uncompressed_size ) )
+									std::make_unique<w_zip_toc_entry>( zip_filename, filename, (int) ( rptr - buffer.data() ), hdr->uncompressed_size )
 								)
 							);
 							rptr += hdr->uncompressed_size;

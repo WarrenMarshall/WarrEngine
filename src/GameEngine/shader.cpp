@@ -59,9 +59,6 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
 
     glDeleteShader( vertex_id );
     glDeleteShader( fragment_id );
-
-	vertex_id = 0;
-	fragment_id = 0;
 }
 
 unsigned int w_shader::_compile_shader( unsigned int type, const std::string& source )

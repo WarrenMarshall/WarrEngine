@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 w_tokenizer::w_tokenizer( const std::string& string_buffer, char delim, std::string def_value )
-	: string_buffer( string_buffer ), delim( delim ), def_value( def_value ), idx( 0 ), end_of_string( false )
+	: string_buffer( string_buffer ), delim( delim ), def_value( def_value )
 {
 }
 

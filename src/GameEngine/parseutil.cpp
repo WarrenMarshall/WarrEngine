@@ -10,7 +10,7 @@ std::string w_parser::key_from_str( const std::string& src_string, const std::st
 
 	if( idx == std::string::npos )
 	{
-		log_warning( "%s : no value found for key : [%s]", __FUNCTION__, key );
+		log_warning( "%s : no value found for key : [%s]", __FUNCTION__, key.c_str() );
 		return "";
 	}
 

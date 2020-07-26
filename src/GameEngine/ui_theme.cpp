@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-e_im_result w_ui_style::update_im_state( int id, w_rect rc )
+e_im_result w_ui_style::update_im_state( int id, w_rect rc ) const
 {
 	e_im_result imresult = im_result::none;
 
@@ -15,7 +15,6 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 	rc.w -= 1.0f;
 	rc.h -= 1.0f;
 
-	bool result = false;
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
 	bool mouse_is_inside = UI->is_mouse_inside( rc );
 
@@ -70,7 +69,7 @@ w_ui_style_pushbutton::w_ui_style_pushbutton()
 	slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 }
 
-void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
 {
 	w_color final_color = W_COLOR_DARK_GREY;
 	w_vec2 rc_click_offset = { 0, 0 };
@@ -105,7 +104,7 @@ w_ui_style_bitmapbutton::w_ui_style_bitmapbutton( a_subtexture* subtex )
 {
 }
 
-void w_ui_style_bitmapbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_bitmapbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
 {
 	w_color final_color = W_COLOR_DARK_GREY;
 	w_vec2 rc_click_offset = { 0, 0 };
@@ -143,7 +142,7 @@ w_ui_style_panel::w_ui_style_panel()
 	slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 }
 
-void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
 {
 	RENDER
 		->begin()
@@ -161,7 +160,7 @@ w_ui_style_tile::w_ui_style_tile( a_subtexture* tile_subtex )
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 }
 
-void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
 {
 	w_color bracket_color = W_COLOR_BLACK;
 	bracket_color.a = 0.0f;
@@ -191,7 +190,7 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 	RENDER->end();
 }
 
-e_im_result w_ui_style_tile::update_im_state( int id, w_rect rc )
+e_im_result w_ui_style_tile::update_im_state( int id, w_rect rc ) const
 {
 	e_im_result imresult = im_result::none;
 
@@ -204,7 +203,6 @@ e_im_result w_ui_style_tile::update_im_state( int id, w_rect rc )
 	rc.w -= 1.0f;
 	rc.h -= 1.0f;
 
-	bool result = false;
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
 	bool mouse_is_inside = UI->is_mouse_inside( rc );
 

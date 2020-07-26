@@ -4,10 +4,6 @@
 
 // ----------------------------------------------------------------------------
 
-w_entity::w_entity()
-{
-}
-
 void w_entity::update()
 {
 	for( const auto& iter : components )

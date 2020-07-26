@@ -6,7 +6,7 @@
 
 a_texture::~a_texture()
 {
-	clean_up_internals();
+	a_texture::clean_up_internals();
 }
 
 void a_texture::clean_up_internals()
@@ -21,14 +21,7 @@ void a_texture::clean_up_internals()
 
 bool a_texture::create_internals( bool is_hot_reloading )
 {
-	// #todo - shouldn't this be an assert? why is a blank filename allowed - for gradients?
-	// #testing - has this been crashing? can we remove the "if" below?
-	//			- load a gradient and display it to test ... then clean up code
 	assert( !original_filename.empty() );
-	//if( original_filename.empty() )
-	//{
-	//	return true;
-	//}
 	
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	int w, h, bpp;
@@ -145,6 +138,12 @@ void a_subtexture::unbind()
 
 // ----------------------------------------------------------------------------
 
+a_gradient::~a_gradient()
+{
+	a_texture::~a_texture();
+	a_gradient::clean_up_internals();
+}
+
 void a_gradient::clean_up_internals()
 {
 	render_buffer = nullptr;
@@ -158,7 +157,7 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 	// create a buffer of color data, and fill it with the gradient colors
 
 	// #todo - can this be turned into a std::array or something and remove the allocation/free calls?
-	auto* color_data = static_cast<float*>( ::malloc( sizeof( float ) * 4 * static_cast<int>( w * h ) ) );
+	auto* color_data = static_cast<float*>( ::malloc( sizeof( float ) * 4 * static_cast<int>( w ) * static_cast<int>( h ) ) );
 	int clridx = 0;
 
 	float* wptr = color_data;
@@ -209,9 +208,15 @@ a_anim_texture::a_anim_texture( e_tween_type tween_type, int frames_per_second )
 	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() - 1 ), static_cast<float>( frames_per_second ) );
 }
 
+a_anim_texture::~a_anim_texture()
+{
+	a_texture::~a_texture();
+	a_anim_texture::clean_up_internals();
+}
+
 void a_anim_texture::clean_up_internals()
 {
-	render_buffer = nullptr;
+	frame_tween = nullptr;
 }
 
 bool a_anim_texture::create_internals( bool is_hot_reloading )
@@ -237,6 +242,11 @@ void a_anim_texture::randomize()
 void a_anim_texture::update()
 {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
+
+	// #hack - I had to add this to make the app run, why is the tween null on the loaded anim texture?
+	//		- try drawing it and see what's up
+	if( !frame_tween )
+		return;
 
 	frame_tween->update();
 }
@@ -304,22 +314,16 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
-	w_mem_file* mf = file.get();
 	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
 	
 	w_tokenizer tok( file_as_string, '\n', "" );
 
-	float texw, texh, x, y, w, h;
+	float x, y, w, h;
 
 	std::string line = tok.get_next_token();
 	while( !tok.is_eos() )
 	{
-		if( line.substr( 0, 7 ) == "common " )
-		{
-			texw = w_parser::float_from_str( w_parser::key_from_str( line, "scaleW=" ) );
-			texh = w_parser::float_from_str( w_parser::key_from_str( line, "scaleH=" ) );
-		}
-		else if( line.substr( 0, 5 ) == "char " )
+		if( line.substr( 0, 5 ) == "char " )
 		{
 			// parse a char definition
 			int char_id = w_parser::int_from_str( w_parser::key_from_str( line, "id=" ) );
@@ -386,7 +390,7 @@ w_vec2 a_font::get_string_extents( const std::string& text )
 
 a_sound::~a_sound()
 {
-	clean_up_internals();
+	a_sound::clean_up_internals();
 }
 
 void a_sound::clean_up_internals()
@@ -435,7 +439,7 @@ bool a_sound::create_internals( bool is_hot_reloading )
 
 a_music::~a_music()
 {
-	clean_up_internals();
+	a_music::clean_up_internals();
 }
 
 void a_music::play()
@@ -455,6 +459,8 @@ void a_music::stop()
 
 void a_music::clean_up_internals()
 {
+	i_asset::clean_up_internals();
+
 	if( mus > -1 )
 	{
 		BASS_SampleFree( mus );

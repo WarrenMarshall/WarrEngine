@@ -19,7 +19,7 @@ struct a_texture : i_asset
 	*/
 	a_subtexture* subtex = nullptr;
 
-	~a_texture();
+	~a_texture() override;
 
 	void clean_up_internals() override;
 	bool create_internals( bool is_hot_reloading ) override;
@@ -63,6 +63,8 @@ struct a_subtexture : i_asset
 
 struct a_gradient : a_texture
 {
+	~a_gradient() override;
+
 	e_align alignment = align::horizontal;
 	std::vector<w_color> colors;
 
@@ -82,6 +84,7 @@ struct a_anim_texture : a_texture
 
 	a_anim_texture() = delete;
 	a_anim_texture( e_tween_type tween_type, int frames_per_second );
+	~a_anim_texture() override;
 
 	void clean_up_internals() override;
 	bool create_internals( bool is_hot_reloading ) override;
@@ -190,7 +193,7 @@ struct a_sound : i_asset
 	int snd = -1;
 	int channel = -1;
 
-	~a_sound();
+	~a_sound() override;
 
 	void play();
 	void clean_up_internals() override;
@@ -204,7 +207,7 @@ struct a_music : i_asset
 	int mus = -1;
 	int channel = -1;
 
-	~a_music();
+	~a_music() override;
 
 	void play();
 	void stop();

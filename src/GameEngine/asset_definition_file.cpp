@@ -1,11 +1,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_asset_definition_file::~w_asset_definition_file()
-{
-	clean_up_internals();
-}
-
 void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is_hot_reloading )
 {
 	std::string type, name, filename;
@@ -445,7 +440,6 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
-	w_mem_file* mf = file.get();
 	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
 
 	w_tokenizer tok( file_as_string, '\n', "" );

@@ -9,6 +9,7 @@ struct w_entity_component : i_lifecycle, i_transform
 	float anim_offset = 0.0f;
 
 	w_entity_component();
+	virtual ~w_entity_component() = default;
 
 	virtual bool is_fully_dead();
 	virtual void draw() {}
