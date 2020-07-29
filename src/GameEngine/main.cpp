@@ -169,8 +169,6 @@ int main( int argc, char* argv[] )
 			main game loop
 		*/
 
-		RENDER->init_projection();
-
 		while( engine->is_running )
 		{
 			/*
@@ -217,6 +215,8 @@ int main( int argc, char* argv[] )
 			/*
 				draw everything
 			*/
+
+			RENDER->init_projection();
 
 			// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
 			// to the render functions for interpolation/prediction

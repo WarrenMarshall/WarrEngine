@@ -86,6 +86,15 @@
 constexpr float W_PI = 3.14159265358979323846f;
 
 // ----------------------------------------------------------------------------
+// standard rendering start depths
+
+constexpr float zdepth_nudge = 10.0f;
+constexpr float zdepth_stats = 9000.0f;
+constexpr float zdepth_background = 0.0f;
+constexpr float zdepth_layers = 1000.0f;
+constexpr float zdepth_layer_step = 500.0f;
+
+// ----------------------------------------------------------------------------
 
 template<typename T>
 constexpr T w_min( T a, T b )

@@ -89,6 +89,14 @@ w_render* w_render::push_alpha( const float& alpha )
 	return this;
 }
 
+w_render* w_render::pop_alpha()
+{
+	rs_alpha_count--;
+	rs_alpha_stack.pop();
+
+	return this;
+}
+
 w_render* w_render::push_scale( const float& scale )
 {
 	rs_scale_count++;
@@ -441,13 +449,11 @@ w_render* w_render::draw_stats()
 		int font_max_height = UI->theme->small_font->font_def->max_height;
 
 		RENDER->begin()
-			->push_rgba( w_color( .55f, .25f, .25f, 0.75f ) )
-			->push_depth( 999.0f )
+			->push_rgba( w_color( .25f, .25f, .25f, 0.75f ) )
+			->push_depth( zdepth_stats )
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
-			->end();
-
-		RENDER->begin()
-			->push_depth( 1000.0f )
+			->pop_alpha()
+			->push_depth_nudge()
 			->push_rgb( W_COLOR_WHITE )
 			->push_align( align::hcenter );
 
@@ -466,7 +472,7 @@ w_render* w_render::draw_stats()
 		std::string fps_stats( s_format( "%s FPS", s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ).c_str() ) );
 
 		RENDER->begin()
-			->push_depth( 1000.0f )
+			->push_depth( zdepth_stats )
 			->push_align( align::right )
 			->draw_string( UI->theme->small_font, fps_stats, w_rect( v_window_w, 0 ) )
 			->end();
@@ -633,7 +639,7 @@ void w_render::init_projection() const
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
 		0, v_window_w, v_window_h, 0,
-		-1000.0f, 1000.0f );
+		-10000.0f, 10000.0f );
 
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 
