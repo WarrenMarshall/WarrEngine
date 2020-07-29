@@ -9,9 +9,6 @@ void layer_editor::push()
 	UI->set_mouse_visible( true );
 
 	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * 9 );
-
-	germ = engine->get_asset<a_anim_texture>( "anim_germ_orange" );
-	grad = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
 void layer_editor::pop()
@@ -38,9 +35,6 @@ void layer_editor::draw()
 		->draw_string( UI->theme->small_font, s_format( "Current Room: %d", game->current_room ),
 			w_rect( 68.0f, 206.0f ) )
 		->end();
-
-	// ----------------------------------------------------------------------------
-	// frames
 
 	// title bar
 
@@ -98,16 +92,8 @@ void layer_editor::draw()
 
 	if( UI->im_active( { 12, 188, 48, 48 }, w_ui_style_pushbutton( UI->theme->button_slice_def, game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
 	{
-		log_msg( "BUTTON CLICKED!" );
+		engine->layer_mgr->push( std::make_unique<layer_browser>() );
 	}
-
-	RENDER
-		->begin()
-		->push_depth_nudge( 200 )
-		->draw_sprite( germ, w_rect( 32, 32 ) )
-		->draw( grad, w_rect( 64, 64, 128, 128 ) )
-		->end();
-
 
 	// ----------------------------------------------------------------------------
 
@@ -180,8 +166,8 @@ void layer_editor::set_current_tile_from_mouse_pos( float xpos, float ypos )
 	float tile_y = round(( ypos - tiles_y ) / (float)TILE_SZ);
 
 	game->current_tile = w_vec2( round( tile_x ), round( tile_y ) );
-	game->current_tile.x = w_clamp( game->current_tile.x, 0, 18 );
-	game->current_tile.y = w_clamp( game->current_tile.y, 0, 8 );
+	game->current_tile.x = w_clamp( game->current_tile.x, 0.f, 18.f );
+	game->current_tile.y = w_clamp( game->current_tile.y, 0.f, 8.f );
 }
 
 void layer_editor::paint_current_tile()

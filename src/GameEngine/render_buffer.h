@@ -10,23 +10,24 @@ struct w_render_vert
 	float u, v;
 	float r, g, b, a;
 
-    bool const is_same( const w_render_vert& other )
+    bool is_same( const w_render_vert& other )
     {
 		assert( false );	// this shouldn't be getting called from anywhere - why are you here?
-        if( fequals( x, other.x )
-            && fequals( y, other.y )
-            && fequals( z, other.z )
-            && fequals( u, other.u )
-            && fequals( v, other.v )
-            && fequals( r, other.r )
-            && fequals( g, other.g )
-            && fequals( b, other.b )
-            && fequals( a, other.a ) )
+		
+		if( !fequals( x, other.x )
+            || !fequals( y, other.y )
+            || !fequals( z, other.z )
+            || !fequals( u, other.u )
+            || !fequals( v, other.v )
+            || !fequals( r, other.r )
+            || !fequals( g, other.g )
+            || !fequals( b, other.b )
+            || !fequals( a, other.a ) )
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 };
 

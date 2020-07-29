@@ -6,7 +6,7 @@
 
 void layer_browser::push()
 {
-	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
+	grad_overlay = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
 void layer_browser::pop()
@@ -22,21 +22,11 @@ void layer_browser::draw()
 {
 	w_layer::draw();
 
+	UI->im_passive( { 16.0f, 0.0f, v_window_w - 32.0f, v_window_h - 32.0f }, w_ui_style_panel( UI->theme->panel_slice_def ) );
+	game->draw_viewport_caption();
 
-}
-
-// takes a position within the game viewport and converts it into
-// a tile index within the current room
-
-int layer_browser::tile_from_screen_pos( float xpos, float ypos )
-{
-	float tiles_x = TILE_SZ / 2;
-	float tiles_y = TILE_SZ * 2.5;
-
-	float tile_x = round( ( xpos - tiles_x ) / (float) TILE_SZ );
-	float tile_y = round( ( ypos - tiles_y ) / (float) TILE_SZ );
-
-	hover_tile = w_vec2( round( tile_x ), round( tile_y ) );
-
-	return 0;
+	if( UI->im_active( { 24.0f, 16.0f, 24, 24 }, w_ui_style_pushbutton( UI->theme->button_slice_def, nullptr ) ) & im_result::left_clicked )
+	{
+		engine->layer_mgr->pop();
+	}
 }

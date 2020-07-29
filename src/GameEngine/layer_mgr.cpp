@@ -59,11 +59,12 @@ w_layer* w_layer_mgr::get_top()
 void w_layer_mgr::update()
 {
 	// remove any dead layers
-	for( auto iter = layer_stack.begin(); iter != layer_stack.end(); iter++ )
+	for( size_t x = 0 ; x < layer_stack.size() ; ++x )
 	{
-		if( ( *iter )->is_dead() )
+		if( layer_stack[x]->is_dead() )
 		{
-			layer_stack.erase( iter-- );
+			layer_stack.erase( layer_stack.begin() + x );
+			x--;
 		}
 	}
 

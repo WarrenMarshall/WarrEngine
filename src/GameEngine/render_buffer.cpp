@@ -174,6 +174,8 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
     );
 
+    int idx = 0;
+
 	// look through the existing list of vertices and see if we can find
 	// a matching vertex. if one is found, return the index of that vertex
 	// instead of putting the new one into the list.
@@ -181,7 +183,6 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
 	// NOTE - this is slow, which is why we don't do this check right now.
 	//      - it's faster to just throw the duplicates at the video card.
 #if 0
-	int idx = 0;
 	for( auto& iter : vertices[ render_pass ] )
 	{
 		if( iter.is_same( rv ) )
@@ -197,7 +198,7 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
     // add the render_vert to the vertex and index lists.
 
     vertices[ render_pass ].emplace_back( rv );
-    int idx = static_cast<int>( vertices[ render_pass ].size() ) - 1;
+    idx = static_cast<int>( vertices[ render_pass ].size() ) - 1;
     indices[ render_pass ].emplace_back( idx );
 
     return idx;

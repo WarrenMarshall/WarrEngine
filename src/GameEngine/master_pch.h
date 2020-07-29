@@ -87,8 +87,36 @@ constexpr float W_PI = 3.14159265358979323846f;
 
 // ----------------------------------------------------------------------------
 
+template<typename T>
+constexpr T w_min( T a, T b )
+{
+	return ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) );
+}
+template<typename T>
+constexpr T w_max( T a, T b )
+{
+	return ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) );
+}
+template<typename T>
+constexpr T w_clamp( T v, T min, T max )
+{
+	return ( w_max( min, w_min( max, v ) ) );
+}
+
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
-#define fequals(a,b) ( ((a)-(b)) < FLT_EPSILON && ((a)-(b)) > -FLT_EPSILON )
+//#define fequals(a,b) 
+
+constexpr bool fequals( float a, float b )
+{
+	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
+}
+
+// ----------------------------------------------------------------------------
+
+#define MATRIX engine->opengl
+#define OPENGL engine->opengl
+#define RENDER engine->render
+#define UI engine->ui
 
 // ----------------------------------------------------------------------------
 /*
@@ -103,21 +131,10 @@ constexpr float v_window_hw = v_window_w / 2.0f;
 constexpr float v_window_hh = v_window_h / 2.0f;
 
 // ----------------------------------------------------------------------------
-
-#define w_min(a,b) (((a) < (b)) ? (a) : (b))
-#define w_max(a,b) (((a) > (b)) ? (a) : (b))
-#define w_clamp(v,min,max) (w_max( min, w_min( max, v ) ))
-
-// ----------------------------------------------------------------------------
 //	useful type definitions to increase code readability
 
 using w_uv = w_vec2;
 using w_sz = w_vec2;
-
-#define MATRIX engine->opengl
-#define OPENGL engine->opengl
-#define RENDER engine->render
-#define UI engine->ui
 
 // ----------------------------------------------------------------------------
 

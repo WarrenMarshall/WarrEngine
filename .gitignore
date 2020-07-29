@@ -7,3 +7,4 @@ src/.vs/GameEngine/v16
 src/bin/GameEngine.iobj
 src/bin/GameEngine.ipdb
 .vs
+*.lastcodeanalysissucceeded
