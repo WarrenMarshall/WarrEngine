@@ -24,15 +24,15 @@ bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 
 void w_ui_mgr::im_reset()
 {
-	im_id = 0;
+	im_automatic_id = 0;
 }
 
 e_im_result w_ui_mgr::im_active( w_rect rc, const w_ui_style& ui_style )
 {
-	im_id++;
+	im_automatic_id++;
 
-	e_im_result result = ui_style.update_im_state( im_id, rc );
-	ui_style.draw( rc, hover_id == im_id, hot_id == im_id );
+	e_im_result result = ui_style.update_im_state( im_automatic_id, rc );
+	ui_style.draw( rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
 	return result;
 }
