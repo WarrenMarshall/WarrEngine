@@ -73,7 +73,7 @@ void g_custom_game::draw_viewport_caption()
 
 	RENDER
 		->begin()
-		->push_depth( 200.0f )
+		->push_depth_nudge( 20 )
 		->push_rgb( W_COLOR_ORANGE )
 		->push_align( align::centered )
 		->draw_string( larger_font, game->viewport_caption, w_rect( v_window_hw, 18.f ) )

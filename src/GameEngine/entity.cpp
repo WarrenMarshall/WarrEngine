@@ -16,6 +16,7 @@ void w_entity::draw_components()
 {
 	for( const auto& iter : components )
 	{
+		RENDER->push_depth_nudge();
 		iter->draw();
 	}
 }

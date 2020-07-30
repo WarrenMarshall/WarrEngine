@@ -93,13 +93,18 @@ void w_layer_mgr::draw()
 
 	// then draw that layer and every layer above it
 
+	RENDER->begin()->push_depth( zdepth_layers );
+
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{
 		if( layer_stack[x]->is_alive() )
 		{
-			layer_stack[x]->draw();
+			RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+			layer_stack[ x ]->draw();
 		}
 	}
+
+	RENDER->end();
 }
 
 void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )

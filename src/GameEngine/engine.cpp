@@ -187,7 +187,7 @@ void w_engine::draw()
 	{
 		render
 			->begin()
-			->push_depth( 200.0f );
+			->push_depth( zdepth_engine );
 
 		w_vec2 v0, v1, v2, v3;
 

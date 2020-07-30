@@ -54,7 +54,7 @@ void w_particle_pool::draw()
 				->push_rgba( color )
 				->push_scale( iter.base_scale * scale )
 				->push_angle( interp_angle )
-				->push_depth( 1000 )
+				->push_depth_nudge()
 				->draw_sprite( iter.tex->get_subtexture(), w_rect( interp_pos.x, interp_pos.y ) )
 				->end();
 		}

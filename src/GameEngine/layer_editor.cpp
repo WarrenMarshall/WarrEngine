@@ -31,7 +31,7 @@ void layer_editor::draw()
 
 	RENDER
 		->begin()
-		->push_depth( 100.0f )
+		->push_depth_nudge()
 		->draw_string( UI->theme->small_font, s_format( "Current Room: %d", game->current_room ),
 			w_rect( 68.0f, 206.0f ) )
 		->end();
@@ -97,16 +97,11 @@ void layer_editor::draw()
 
 	// ----------------------------------------------------------------------------
 
-#if 0
 	RENDER
 		->begin()
-		->push_depth( 1000 )
-		->draw_string(
-			UI->theme->small_font,
-			s_format( "HV:%d / HT:%d / RBS: %d", UI->hover_id, UI->hot_id, engine->input->get_button_state( input_id::mouse_button_right) ),
-			w_rect( 0, 0 ) )
-		->end();
-#endif
+		->push_depth_nudge( 100 );
+	game->draw_entities();
+	RENDER->end();
 }
 	
 bool layer_editor::handle_input_event( const w_input_event* evt )

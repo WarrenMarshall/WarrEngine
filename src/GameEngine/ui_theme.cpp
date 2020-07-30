@@ -89,19 +89,19 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 
 	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h };
 
-	RENDER->begin();
+	RENDER->begin()
+		->push_depth_nudge();
 
 	if( slice_def )
 	{
 		RENDER->push_rgb( final_color )
-			->push_depth( 100 )
 			->draw_sliced( slice_def, rc_draw );
 	}
 
 	if( subtex )
 	{
 		RENDER->push_rgb( W_COLOR_WHITE )
-			->push_depth( 110 )
+			->push_depth_nudge()
 			->draw_sprite( subtex, w_rect( rc_draw.x + ( rc.w / 2 ), rc_draw.y + ( rc.h / 2 ), ( rc.w / 2 ), ( rc.h / 2 ) ) );
 	}
 
@@ -119,8 +119,8 @@ void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked 
 {
 	RENDER
 		->begin()
+		->push_depth_nudge()
 		->push_rgb( W_COLOR_DARK_GREY )
-		->push_depth( 100 )
 		->draw_sliced( slice_def, rc )
 		->end();
 }
@@ -149,15 +149,16 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 		bracket_color.a = 0.5f;
 	}
 
-	RENDER->begin();
+	RENDER
+		->begin()
+		->push_depth_nudge();
 
 	RENDER
-		->push_depth( 100 )
 		->draw( tile_subtex, rc );
 
 	RENDER
 		->push_rgba( bracket_color )
-		->push_depth_nudge( 10 )
+		->push_depth_nudge()
 		->draw( selector_bracket, rc );
 
 	RENDER->end();
@@ -237,7 +238,7 @@ void w_ui_theme::draw_topmost()
 	{
 		RENDER
 			->begin()
-			->push_depth( 1000.0f )
+			->push_depth( zdepth_engine )
 			->draw( mouse_cursor->subtex,
 					w_rect(
 						engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,

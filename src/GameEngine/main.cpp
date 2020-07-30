@@ -227,10 +227,6 @@ int main( int argc, char* argv[] )
 			{
 				engine->layer_mgr->draw();
 
-				RENDER->begin()->push_depth( 1000 );
-				game->draw_entities();
-				RENDER->end();
-				
 				UI->draw_topmost();
 				engine->draw();
 			}

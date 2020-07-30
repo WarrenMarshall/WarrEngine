@@ -45,7 +45,6 @@ void w_render::init()
 	rs_alpha_stack.push( 1.0f );
 	rs_scale_stack.push( 1.0f );
 	rs_angle_stack.push( 0.0f );
-	//rs_depth_stack.push( 0.0f );
 	zdepth = zdepth_background;
 	zdepth_nudge_accum = 0.0f;
 	rs_align_stack.push( align::left );
@@ -125,9 +124,6 @@ w_render* w_render::push_align( const e_align& align )
 
 w_render* w_render::push_depth( const float& depth )
 {
-	//rs_depth_count++;
-	//rs_depth_stack.push( depth );
-	// 
 	zdepth = depth;
 	zdepth_nudge_accum = 0.0f;
 
@@ -140,9 +136,6 @@ w_render* w_render::push_depth( const float& depth )
 
 w_render* w_render::push_depth_nudge( const float& nudge )
 {
-	//rs_depth_count++;
-	//rs_depth_stack.push( rs_depth_stack.top() + addsub );
-
 	zdepth += nudge;
 	zdepth_nudge_accum += nudge;
 
@@ -186,12 +179,6 @@ void w_render::end()
 	}
 	rs_align_count = 0;
 
-	//while( rs_depth_count )
-	//{
-	//	rs_depth_stack.pop();
-	//	rs_depth_count--;
-	//}
-	//rs_depth_count = 0;
 	zdepth -= zdepth_nudge_accum;
 	zdepth_nudge_accum = 0.0f;
 }
@@ -431,6 +418,8 @@ w_render* w_render::draw_world_axis()
 constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
+	RENDER->begin()->push_depth( zdepth_stats );
+
 	if( show_stats )
 	{
 		std::vector<std::string> stat_lines;
@@ -460,7 +449,6 @@ w_render* w_render::draw_stats()
 
 		RENDER->begin()
 			->push_rgba( w_color( .25f, .25f, .25f, 0.75f ) )
-			->push_depth( zdepth_stats )
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->pop_alpha()
 			->push_depth_nudge()
@@ -482,12 +470,13 @@ w_render* w_render::draw_stats()
 		std::string fps_stats( s_format( "%s FPS", s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ).c_str() ) );
 
 		RENDER->begin()
-			->push_depth( zdepth_stats )
 			->push_align( align::right )
 			->draw_string( UI->theme->small_font, fps_stats, w_rect( v_window_w, 0 ) )
 			->end();
 	#endif
 	}
+
+	RENDER->end();
 
 	return this;
 }
