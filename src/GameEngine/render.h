@@ -53,8 +53,11 @@ struct w_render
 	int rs_align_count = 0;
 	std::stack<e_align> rs_align_stack;
 	
-	int rs_depth_count = 0;
-	std::stack<float> rs_depth_stack;
+	//int rs_depth_count = 0;
+	//std::vector<float> rs_depth_stack;
+
+	float zdepth;
+	float zdepth_nudge_accum;
 
 	w_render* begin();
 	w_render* push_rgb( const w_color& color );
@@ -64,8 +67,10 @@ struct w_render
 	w_render* push_scale( const float& scale );
 	w_render* push_angle( const float& angle );
 	w_render* push_align( const e_align& align );
+
 	w_render* push_depth( const float& depth );
-	w_render* push_depth_nudge( const float& addsub = zdepth_nudge );
+	w_render* push_depth_nudge( const float& nudge = zdepth_nudge );
+
 	void end();
 
 	// ----------------------------------------------------------------------------

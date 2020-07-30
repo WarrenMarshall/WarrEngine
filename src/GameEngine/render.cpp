@@ -45,7 +45,9 @@ void w_render::init()
 	rs_alpha_stack.push( 1.0f );
 	rs_scale_stack.push( 1.0f );
 	rs_angle_stack.push( 0.0f );
-	rs_depth_stack.push( 0.0f );
+	//rs_depth_stack.push( 0.0f );
+	zdepth = zdepth_background;
+	zdepth_nudge_accum = 0.0f;
 	rs_align_stack.push( align::left );
 
 	// generate the sample points for drawing a circle. these verts sit
@@ -123,8 +125,11 @@ w_render* w_render::push_align( const e_align& align )
 
 w_render* w_render::push_depth( const float& depth )
 {
-	rs_depth_count++;
-	rs_depth_stack.push( depth );
+	//rs_depth_count++;
+	//rs_depth_stack.push( depth );
+	// 
+	zdepth = depth;
+	zdepth_nudge_accum = 0.0f;
 
 	return this;
 }
@@ -133,10 +138,13 @@ w_render* w_render::push_depth( const float& depth )
 // to, for example, nudge something in front of something else without
 // having to know the current depth
 
-w_render* w_render::push_depth_nudge( const float& addsub )
+w_render* w_render::push_depth_nudge( const float& nudge )
 {
-	rs_depth_count++;
-	rs_depth_stack.push( rs_depth_stack.top() + addsub );
+	//rs_depth_count++;
+	//rs_depth_stack.push( rs_depth_stack.top() + addsub );
+
+	zdepth += nudge;
+	zdepth_nudge_accum += nudge;
 
 	return this;
 }
@@ -178,12 +186,14 @@ void w_render::end()
 	}
 	rs_align_count = 0;
 
-	while( rs_depth_count )
-	{
-		rs_depth_stack.pop();
-		rs_depth_count--;
-	}
-	rs_depth_count = 0;
+	//while( rs_depth_count )
+	//{
+	//	rs_depth_stack.pop();
+	//	rs_depth_count--;
+	//}
+	//rs_depth_count = 0;
+	zdepth -= zdepth_nudge_accum;
+	zdepth_nudge_accum = 0.0f;
 }
 
 /*

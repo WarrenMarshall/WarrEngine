@@ -3,7 +3,7 @@
 #include "master_header.h"
 
 w_render_vert::w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& color )
-    :   x( pos.x ), y( pos.y ), z( engine->render->rs_depth_stack.top() ),
+    :   x( pos.x ), y( pos.y ), z( RENDER->zdepth ),
         u( uv.u ), v( uv.v ),
         r( color.r ), g( color.g ), b( color.b ), a( color.a )
 {
