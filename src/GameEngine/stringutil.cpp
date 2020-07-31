@@ -61,3 +61,16 @@ const std::string w_stringutil::trim( const std::string& s )
 {
     return w_stringutil::rtrim( w_stringutil::ltrim( s ) );
 }
+
+const std::string w_stringutil::format_with_commas( float value )
+{
+	std::string numWithCommas = fmt::format( "{:.0f}", value );
+	int insertPosition = static_cast<int>( numWithCommas.length() ) - 3;
+	while( insertPosition > 0 )
+	{
+		numWithCommas.insert( insertPosition, "," );
+		insertPosition -= 3;
+	}
+
+	return numWithCommas;
+}

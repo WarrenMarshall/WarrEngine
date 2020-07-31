@@ -7,7 +7,7 @@
 #if !defined( FINALRELEASE )
 void tw_refresh_reloadables()
 {
-	log_msg( fmt::format( "Worker thread starting : %s", __FUNCTION__ ) );
+	log_msg( fmt::format( "Worker thread starting : {}", __FUNCTION__ ) );
 
 	while( !engine->exit_tw_refresh_reloadables )
 	{
@@ -22,7 +22,7 @@ void tw_refresh_reloadables()
 		}
 	}
 
-	log_msg( fmt::format( "Worker thread exiting : %s", __FUNCTION__ ) );
+	log_msg( fmt::format( "Worker thread exiting : {}", __FUNCTION__ ) );
 }
 #endif
 
@@ -303,7 +303,7 @@ void w_engine::precache_asset_resources()
 		}
 	}
 
-	log_msg( fmt::format( "{} : {} assets precached", __FUNCTION__, engine->asset_cache->cache.size() ) );
+	log_msg( fmt::format( "{} : {} assets precached", __FUNCTION__, s_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) ) );
 
 	// start the thread that monitors the reloadables for changes
 #if !defined( FINALRELEASE )
@@ -313,16 +313,10 @@ void w_engine::precache_asset_resources()
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )
 {
-	w_input_event* evt = static_cast<w_input_event*>( object );
+	auto evt = static_cast<w_input_event*>( object );
 
 	switch( event )
 	{
-		case event_id::input_motion:
-		{
-			//RENDER->update_virtual_mouse_pos( w_vec2( evt->pos.x, evt->pos.y ) );
-		}
-		break;
-
 		case event_id::input_pressed:
 		{
 			switch( evt->input_id )

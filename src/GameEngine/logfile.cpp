@@ -17,7 +17,7 @@ void w_logfile::_write_line( const std::string& string_to_log )
 {
 	if( string_to_log.length() )
 	{
-		printf( "%s\n", string_to_log.c_str() );
+		fmt::print( "{}\n", string_to_log.c_str() );
 
 		fwrite( string_to_log.c_str(), 1, string_to_log.length(), file );
 		fwrite( "\n", 1, 1, file );

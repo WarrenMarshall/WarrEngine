@@ -7,20 +7,7 @@ struct w_stringutil
     static const std::string ltrim( const std::string& str );
     static const std::string rtrim( const std::string& str );
     static const std::string trim( const std::string& str );
-
-    template<class T>
-    static std::string format_with_commas( T value, const std::string& format )
-    {
-        std::string numWithCommas = w_stringutil::format( format, value );
-        int insertPosition = static_cast<int>( numWithCommas.length() ) - 3;
-        while( insertPosition > 0 )
-        {
-            numWithCommas.insert( insertPosition, "," );
-            insertPosition -= 3;
-        }
-
-        return numWithCommas;
-    }
+    static const std::string format_with_commas( float value );
 
 private:
 	w_stringutil() {}
