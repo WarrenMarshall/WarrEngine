@@ -35,7 +35,7 @@ bool a_texture::create_internals( bool is_hot_reloading )
 
 	if( !color_data )
 	{
-		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, original_filename.c_str() );
+		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, original_filename ) );
 	}
 
 	// save the last time modified for hot reloading
@@ -417,7 +417,7 @@ bool a_sound::create_internals( bool is_hot_reloading )
 
 	if( !snd && !file_exists )
 	{
-		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, name.c_str() );
+		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
 
 	// save the last time modified for hot reloading
@@ -477,7 +477,7 @@ bool a_music::create_internals( bool is_hot_reloading )
 
 	if( !mus && !file_exists )
 	{
-		log_error( "%s : couldn't load the file : [%s]", __FUNCTION__, name.c_str() );
+		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
 
 	// save the last time modified for hot reloading

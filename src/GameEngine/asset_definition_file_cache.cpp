@@ -9,7 +9,7 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 
 	if( iter != cache.end() )
 	{
-		log_warning( "%s : asset definition file already cached : [%s]", __FUNCTION__, filename.c_str() );
+		log_warning( fmt::format( "{} : asset definition file already cached : [{}]", __FUNCTION__, filename ) );
 		return nullptr;
 	}
 

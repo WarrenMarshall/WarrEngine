@@ -41,32 +41,17 @@ void w_logfile::time_stamp( const std::string msg )
 	log_msg( msg + " : " + time_str );
 }
 
-void w_logfile::msg( const std::string msg, ... )
+void w_logfile::msg( const std::string& msg )
 {
-	va_list vargs;
-	va_start( vargs, msg );
-	std::string str = w_stringutil::format_valist( msg, vargs );
-	va_end( vargs );
-
-	_write_line( str );
+	_write_line( msg );
 }
 
-void w_logfile::warning( const std::string msg, ... )
+void w_logfile::warning( const std::string& msg )
 {
-	va_list vargs;
-	va_start( vargs, msg );
-	std::string str = w_stringutil::format_valist( "WARNING : " + msg, vargs );
-	va_end( vargs );
-
-	_write_line( str );
+	_write_line( "WARNING : " + msg );
 }
 
-void w_logfile::error( const std::string msg, ... )
+void w_logfile::error( const std::string& msg )
 {
-	va_list vargs;
-	va_start( vargs, msg );
-	std::string str = w_stringutil::format_valist( "!! : " + msg, vargs );
-	va_end( vargs );
-
-	throw( std::exception( str.c_str() ) );
+	throw( std::exception( ( "!! : " + msg ).c_str() ) );
 }

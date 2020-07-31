@@ -7,7 +7,7 @@
 #if !defined( FINALRELEASE )
 void tw_refresh_reloadables()
 {
-	log_msg( "Worker thread starting : %s", __FUNCTION__ );
+	log_msg( fmt::format( "Worker thread starting : %s", __FUNCTION__ ) );
 
 	while( !engine->exit_tw_refresh_reloadables )
 	{
@@ -22,7 +22,7 @@ void tw_refresh_reloadables()
 		}
 	}
 
-	log_msg( "Worker thread exiting : %s", __FUNCTION__ );
+	log_msg( fmt::format( "Worker thread exiting : %s", __FUNCTION__ ) );
 }
 #endif
 
@@ -43,7 +43,7 @@ std::string w_engine::find_val_from_symbol( std::string symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
-		log_error( "%s : '%s' not found in symbol table:", __FUNCTION__, symbol.c_str() );
+		log_error( fmt::format( "{} : '{}' not found in symbol table:", __FUNCTION__, symbol ) );
 	}
 
 	return _symbol_to_value[symbol];
@@ -60,7 +60,7 @@ int w_engine::find_int_from_symbol( std::string symbol, int def_value )
 
 	if( sval == "n/a" )
 	{
-		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
 		sval = "0";
 	}
 
@@ -73,7 +73,7 @@ float w_engine::find_float_from_symbol( std::string symbol, float def_value )
 
 	if( sval == "n/a" )
 	{
-		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
 		sval = "0.0";
 	}
 
@@ -86,7 +86,7 @@ w_color w_engine::find_color_from_symbol( std::string symbol, w_color def_value 
 
 	if( sval == "n/a" )
 	{
-		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
 		sval = "1.0,1.0,1.0,1.0";
 	}
 
@@ -99,7 +99,7 @@ w_range w_engine::find_range_from_symbol( std::string symbol, w_range def_value 
 
 	if( sval == "n/a" )
 	{
-		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
 		sval = "0,1";
 	}
 
@@ -112,7 +112,7 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string symbol, w_vec2 def_value )
 
 	if( sval == "n/a" )
 	{
-		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
 		sval = "0,0";
 	}
 
@@ -125,7 +125,7 @@ w_vec3 w_engine::find_vec3_from_symbol( std::string symbol, w_vec3 def_value )
 
 	if( sval == "n/a" )
 	{
-		log_msg( "%s : '%s' is not in the symbol map : value defaulted", __FUNCTION__, symbol.c_str() );
+		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
 		sval = "0,0,0";
 	}
 
@@ -255,7 +255,7 @@ void w_engine::update_hot_reload()
 		{
 			std::scoped_lock lock( iter->mutex_last_write_time );
 
-			log_msg( "%s : Hot reloading [%s]", __FUNCTION__, iter->original_filename.c_str() );
+			log_msg( fmt::format( "{} : Hot reloading [{}]", __FUNCTION__, iter->original_filename ) );
 			iter->clean_up_internals();
 			iter->create_internals( b_is_hot_reloading( true ) );
 			iter->last_write_time = iter->last_write_time_on_disk;
@@ -303,7 +303,7 @@ void w_engine::precache_asset_resources()
 		}
 	}
 
-	log_msg( "%s : %d assets precached", __FUNCTION__, engine->asset_cache->cache.size() );
+	log_msg( fmt::format( "{} : {} assets precached", __FUNCTION__, engine->asset_cache->cache.size() ) );
 
 	// start the thread that monitors the reloadables for changes
 #if !defined( FINALRELEASE )

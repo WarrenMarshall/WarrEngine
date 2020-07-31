@@ -67,7 +67,7 @@ void w_io_zip::scan_and_build_table_of_contents()
 						{
 							// Anything else means the entry is compressed and/or
 							// encrypted, which we don't support
-							log_error( "%S : compression and/or encryption are NOT supported in ZIP files : [%s]", __FUNCTION__, zip_filename.c_str() );
+							log_error( fmt::format( "{} : compression and/or encryption are NOT supported in ZIP files : [{}]", __FUNCTION__, zip_filename ) );
 						}
 					}
 					// central directory file header

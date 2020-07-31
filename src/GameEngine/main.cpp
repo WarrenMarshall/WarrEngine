@@ -26,7 +26,6 @@ int main( int argc, char* argv[] )
 #if defined(FINALRELEASE)
 		ShowWindow( GetConsoleWindow(), SW_HIDE );
 #endif
-
 		stbi_set_flip_vertically_on_load( 1 );
 
 		// get the log file running so we can immediately start writing into it
@@ -258,7 +257,7 @@ int main( int argc, char* argv[] )
 	catch( std::exception& e )
 	{
 		log_msg( "!! EXCEPTION" );
-		log_msg( "\t%s", e.what() );
+		log_msg( fmt::format( "\t{}", e.what() ) );
 
 		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );
 	}

@@ -51,6 +51,12 @@
 	// sound and music library
 	#include <bass.h>
 
+	// {fmt}
+	#define FMT_HEADER_ONLY
+	#include "fmt/core.h"
+	#include "fmt/format.h"
+	#include "fmt/format-inl.h"
+
 	// XBox controller + haptics support
 	#include <Xinput.h>
 
@@ -75,7 +81,7 @@
 // ----------------------------------------------------------------------------
 // handy macros
 
-#define s_format w_stringutil::format
+//#define s_format fmt::format
 #define s_commas w_stringutil::format_with_commas
 #define log_msg logfile->msg
 #define log_warning logfile->warning

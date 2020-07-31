@@ -10,7 +10,7 @@ std::string w_parser::key_from_str( const std::string& src_string, const std::st
 
 	if( idx == std::string::npos )
 	{
-		log_warning( "%s : no value found for key : [%s]", __FUNCTION__, key.c_str() );
+		log_warning( fmt::format( "{} : no value found for key : [{}]", __FUNCTION__, key ) );
 		return "";
 	}
 
@@ -174,7 +174,7 @@ std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, c
 	int comma_count = static_cast<int>( std::count( str.begin(), str.end(), ',' ) );
 
 	if( ( comma_count % 2 ) == 0 )
-		log_error( "%s : '%s' has an odd number of arguments - needs to be even", __FUNCTION__, str.c_str() );
+		log_error( fmt::format( "{} : '{}' has an odd number of arguments - needs to be even", __FUNCTION__, str ) );
 
 	timeline->kf_clear();
 	for( int x = 0 ; x < comma_count ; x += 2 )

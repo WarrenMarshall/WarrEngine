@@ -312,7 +312,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 							else if( type == "circle" )
 								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
 							else
-								log_error( "%s : unknown emitter spawn type : [%s]", __FUNCTION__, type.c_str() );
+								log_error( fmt::format( "{} : unknown emitter spawn type : [{}]", __FUNCTION__, type ) );
 
 							asset_ptr->particle_spawner->parse_from_config_string( value );
 						}
@@ -339,7 +339,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 						else if( key == "t_alpha" )
 							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
 						else
-							log_msg( "%s : unknown key read from config block : [%s -> \"%s\"]", __FUNCTION__, name.c_str(), key.c_str() );
+							log_msg( fmt::format( "{} : unknown key read from config block : [{} -> \"{}\"]", __FUNCTION__, name, key ) );
 					}
 
 					// ------------------------------------------------------------------------

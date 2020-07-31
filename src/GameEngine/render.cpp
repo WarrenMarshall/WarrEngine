@@ -425,18 +425,18 @@ w_render* w_render::draw_stats()
 		std::vector<std::string> stat_lines;
 		stat_lines.reserve( stats_draw_reserve );
 
-		stat_lines.emplace_back( s_format( "RENDER : %s FPS / UPDATE : %d FPS",
-										   s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ).c_str(),
+		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS / UPDATE : {} FPS",
+										   s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%0.f" ),
 										   static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
-		stat_lines.emplace_back( s_format( "RB: %s, V: %s, I: %s",
-										   s_commas( stats.render_buffers.value, "%0.f" ).c_str(),
-										   s_commas( stats.render_vertices.value, "%0.f" ).c_str(),
-										   s_commas( stats.render_indices.value, "%0.f" ).c_str() )
+		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
+											  s_commas( stats.render_buffers.value, "%0.f" ),
+											  s_commas( stats.render_vertices.value, "%0.f" ),
+											  s_commas( stats.render_indices.value, "%0.f" ) )
 		);
-		stat_lines.emplace_back( s_format( "Layers : %d", engine->layer_mgr->layer_stack.size() ) );
-		stat_lines.emplace_back( s_format( "Entities : %s", s_commas( stats.num_entities.value, "%0.f" ).c_str() ) );
-		stat_lines.emplace_back( s_format( "Time Dilation: %.2f", engine->time->dilation ) );
-		stat_lines.emplace_back( s_format( "Mouse VPos: %.2f, %.2f", engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
+		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
+		stat_lines.emplace_back( fmt::format( "Entities : {}", s_commas( stats.num_entities.value, "%0.f" ) ) );
+		stat_lines.emplace_back( fmt::format( "Time Dilation: {}", engine->time->dilation ) );
+		stat_lines.emplace_back( fmt::format( "Mouse VPos: {}, {}", engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
 
 		if( stats.stat_custom_string.length() )
 		{
@@ -467,7 +467,7 @@ w_render* w_render::draw_stats()
 	else
 	{
 #if !defined(FINALRELEASE)
-		std::string fps_stats( s_format( "%s FPS", s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ).c_str() ) );
+		std::string fps_stats( fmt::format( "{} FPS", s_commas( static_cast<int>( stats.num_frames_rendered.value ), "%d" ) ) );
 
 		RENDER->begin()
 			->push_align( align::right )

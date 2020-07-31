@@ -125,7 +125,7 @@ void w_render_buffer::draw( e_render_pass render_pass )
 
             default:
             {
-                log_error( "%s : unsupported primitive type", __FUNCTION__ );
+                log_error( fmt::format( "{} : unsupported primitive type", __FUNCTION__ ) );
             }
             break;
         }
@@ -154,7 +154,7 @@ void w_render_buffer::log_stats( i_asset* asset )
 {
     if( !(indices[0].empty()) || !(indices[1].empty()) )
     {
-	    log_msg( "\t\t[%s]: [%d verts, %d indices]", asset->name.c_str(), vertices[0].size() + vertices[1].size(), indices[0].size() + indices[1].size() );
+	    log_msg( fmt::format( "\t\t[{}]: [{} verts, {} indices]", asset->name, vertices[0].size() + vertices[1].size(), indices[0].size() + indices[1].size() ) );
     }
 }
 

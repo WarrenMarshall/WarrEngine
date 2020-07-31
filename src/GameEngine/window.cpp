@@ -51,7 +51,7 @@ bool w_window::init( const std::string& title )
 
 	// Initialize GLFW
 	if( !glfwInit() )
-		log_error( "%s : GLFW failed to init", __FUNCTION__ );
+		log_error( fmt::format( "{} : GLFW failed to init", __FUNCTION__ ) );
 
 	// Create a windowed mode window and its OpenGL context
 
@@ -59,7 +59,7 @@ bool w_window::init( const std::string& title )
 	vidmode = glfwGetVideoMode( primary_monitor );
 
 	const char* monitor_name = glfwGetMonitorName( primary_monitor );
-	log_msg( "%s : Using monitor [%s - %dx%d]", __FUNCTION__, monitor_name, vidmode->width, vidmode->height );
+	log_msg( fmt::format( "{} : Using monitor [{} - {}x{}]", __FUNCTION__, monitor_name, vidmode->width, vidmode->height ) );
 
 	float desktop_w = vidmode->width - v_window_hw;
 	float desktop_h = vidmode->height - v_window_hh;
@@ -81,7 +81,7 @@ bool w_window::init( const std::string& title )
 
 	if( !window )
 	{
-		log_error( "%s : failed to create window", __FUNCTION__ );
+		log_error( fmt::format( "{} : failed to create window", __FUNCTION__ ) );
 	}
 
 	glfwSetWindowPos( window,

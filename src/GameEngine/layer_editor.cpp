@@ -32,7 +32,7 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->draw_string( UI->theme->small_font, s_format( "Current Room: %d", game->current_room ),
+		->draw_string( UI->theme->small_font, fmt::format( "Current Room: {}", game->current_room ),
 			w_rect( 68.0f, 206.0f ) )
 		->end();
 
