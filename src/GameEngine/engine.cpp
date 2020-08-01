@@ -31,22 +31,22 @@ void tw_refresh_reloadables()
 /*
 	checks if 'symbol' exists in the map
 */
-bool w_engine::is_symbol_in_map( std::string symbol )
+bool w_engine::is_symbol_in_map( const std::string_view symbol )
 {
-	return _symbol_to_value.count( symbol ) > 0;
+	return _symbol_to_value.count( std::string( symbol ) ) > 0;
 }
 
 /*
 	returns a void* to the value stored for 'symbol'
 */
-std::string w_engine::find_val_from_symbol( std::string symbol )
+std::string_view w_engine::find_val_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
 		log_error( fmt::format( "{} : '{}' not found in symbol table:", __FUNCTION__, symbol ) );
 	}
 
-	return _symbol_to_value[symbol];
+	return _symbol_to_value[ std::string( symbol ) ];
 }
 
 /*
@@ -54,9 +54,9 @@ std::string w_engine::find_val_from_symbol( std::string symbol )
 
 	if no value is found for 'symbol', the default value is returned
 */
-int w_engine::find_int_from_symbol( std::string symbol, int def_value )
+int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string_view sval = find_val_from_symbol( symbol );
 
 	if( sval == "n/a" )
 	{
@@ -64,12 +64,12 @@ int w_engine::find_int_from_symbol( std::string symbol, int def_value )
 		sval = "0";
 	}
 
-	return static_cast<int>( strtol( sval.c_str(), (char**) nullptr, 10 ) );
+	return static_cast<int>( strtol( sval.data(), (char**) nullptr, 10 ) );
 }
 
-float w_engine::find_float_from_symbol( std::string symbol, float def_value )
+float w_engine::find_float_from_symbol( std::string_view symbol, float def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string_view sval = find_val_from_symbol( symbol );
 
 	if( sval == "n/a" )
 	{
@@ -77,12 +77,12 @@ float w_engine::find_float_from_symbol( std::string symbol, float def_value )
 		sval = "0.0";
 	}
 
-	return static_cast<float>( strtof( sval.c_str(), (char**) nullptr ) );
+	return static_cast<float>( strtof( sval.data(), (char**) nullptr ) );
 }
 
-w_color w_engine::find_color_from_symbol( std::string symbol, w_color def_value )
+w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string_view sval = find_val_from_symbol( symbol );
 
 	if( sval == "n/a" )
 	{
@@ -93,9 +93,9 @@ w_color w_engine::find_color_from_symbol( std::string symbol, w_color def_value 
 	return w_color( sval );
 }
 
-w_range w_engine::find_range_from_symbol( std::string symbol, w_range def_value )
+w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string_view sval = find_val_from_symbol( symbol );
 
 	if( sval == "n/a" )
 	{
@@ -106,9 +106,9 @@ w_range w_engine::find_range_from_symbol( std::string symbol, w_range def_value 
 	return w_range( sval );
 }
 
-w_vec2 w_engine::find_vec2_from_symbol( std::string symbol, w_vec2 def_value )
+w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string_view sval = find_val_from_symbol( symbol );
 
 	if( sval == "n/a" )
 	{
@@ -119,9 +119,9 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string symbol, w_vec2 def_value )
 	return w_vec2( sval );
 }
 
-w_vec3 w_engine::find_vec3_from_symbol( std::string symbol, w_vec3 def_value )
+w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string_view sval = find_val_from_symbol( symbol );
 
 	if( sval == "n/a" )
 	{

@@ -103,8 +103,8 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 		filename = iter.first;
 
 		w_tokenizer tok( filename, '/', "" );
-		std::string foldername = tok.get_next_token();
-		std::string filename = tok.get_next_token();
+		std::string_view foldername = tok.get_next_token();
+		std::string_view filename = tok.get_next_token();
 
 		if( foldername == folder )
 		{

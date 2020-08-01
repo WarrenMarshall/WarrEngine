@@ -73,13 +73,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( iter_ad->does_key_exist( "subtextures" ) )
 					{
-						std::string subtex_list = iter_ad->find_value( "subtextures" );
+						std::string_view subtex_list = iter_ad->find_value( "subtextures" );
 
 						w_tokenizer tok( subtex_list, ',' );
 
 						while( !tok.is_eos() )
 						{
-							std::string subtex_name = tok.get_next_token();
+							std::string_view subtex_name = tok.get_next_token();
 
 							float x = w_parser::float_from_str( tok.get_next_token() );
 							float y = w_parser::float_from_str( tok.get_next_token() );
@@ -111,7 +111,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					asset_ptr->colors.clear();
 
-					std::string color_list = iter_ad->find_value( "colors");
+					std::string_view color_list = iter_ad->find_value( "colors");
 
 					w_tokenizer tok( color_list, '/', "n/a" );
 					std::string val;
@@ -190,7 +190,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					// ------------------------------------------------------------------------
 
-					std::string tex_name = iter_ad->find_value( "texture");
+					std::string_view tex_name = iter_ad->find_value( "texture");
 
 					for( const auto& iter : (*iter_ad->data()) )
 					{
@@ -301,7 +301,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 						else if( key == "spawner_type" )
 						{
 							w_tokenizer tok( value, ',' );
-							std::string type = tok.get_next_token();
+							std::string_view type = tok.get_next_token();
 
 							if( type == "point" )
 							{
@@ -389,7 +389,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
 
 					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec") );
-					e_tween_type tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween") ) );
+					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween") ) );
 
 					if( !asset_ptr )
 					{
@@ -402,7 +402,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					// ------------------------------------------------------------------------
 
-					const std::string frames = iter_ad->find_value( "frames");
+					const std::string_view frames = iter_ad->find_value( "frames");
 
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
@@ -457,8 +457,9 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 
 	w_tokenizer tok( file_as_string, '\n', "" );
 
-	std::string line = tok.get_next_token();
+	std::string_view line = tok.get_next_token();
 	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
+	std::string line_extended;
 
 	// loop through every line of the asset_def fil and 
 	while( !tok.is_eos() )
@@ -466,11 +467,13 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 		// ignore blank lines and lines that are entirely commented
 		if( !line.empty() && line[0] != '#' )
 		{
-			while( line.back() == '\\' )
+			line_extended = line;
+			while( line_extended.back() == '\\' )
 			{
-				line = line.substr( 0, line.length() - 1 );
-				line += tok.get_next_token();
+				line_extended = line_extended.substr( 0, line_extended.length() - 1 );
+				line_extended += tok.get_next_token();
 			}
+			line = line_extended;
 
 			// remove comments from the ends of lines, if they are there
 			size_t pos = line.find_first_of( "#" );
@@ -496,9 +499,9 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 				w_tokenizer tok( line, '\"' );
 
 				tok.get_next_token();
-				std::string key = tok.get_next_token();
+				std::string_view key = tok.get_next_token();
 				tok.get_next_token();
-				std::string value = tok.get_next_token();
+				std::string_view value = tok.get_next_token();
 
 				current_asset_definition->add( key, value );
 			}

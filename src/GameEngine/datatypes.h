@@ -26,7 +26,9 @@ struct w_color
 	w_color() = default;
 	w_color( const w_color& other );
 	w_color( float r, float g, float b, float a = 1.0f );
+	// #cleanup - kill these std::string ctors
 	w_color( std::string str );
+	w_color( std::string_view str );
 
 	static void scale( w_color& color, float s );
 
@@ -81,6 +83,7 @@ struct w_range
 	w_range() = default;
 	w_range( float min, float max );
 	w_range( std::string str );
+	w_range( std::string_view str );
 
 	float get_value();
 };
@@ -133,6 +136,7 @@ struct w_vec2
 	w_vec2( int x, int y );
 	w_vec2( float x, float y );
 	w_vec2( std::string str );
+	w_vec2( std::string_view str );
 
 	w_vec2 operator+( const w_vec2& v );
 	w_vec2 operator-( const w_vec2& v );
@@ -168,6 +172,7 @@ struct w_vec3
 	w_vec3( float x, float y, float z );
 	w_vec3( int x, int y, int z );
 	w_vec3( std::string str );
+	w_vec3( std::string_view str );
 
 	w_vec3 operator+( const w_vec3& v );
 	w_vec3 operator-( const w_vec3& v );

@@ -4,9 +4,9 @@
 
 // ----------------------------------------------------------------------------
 
-std::string w_parser::key_from_str( const std::string& src_string, const std::string& key )
+std::string_view w_parser::key_from_str( std::string_view src_string, std::string_view key )
 {
-	size_t idx = src_string.find( key );
+	size_t idx = src_string.find( key.data() );
 
 	if( idx == std::string::npos )
 	{
@@ -14,19 +14,13 @@ std::string w_parser::key_from_str( const std::string& src_string, const std::st
 		return "";
 	}
 
-	std::string value;
-	char* rd_ptr = const_cast<char*>(src_string.c_str()) + idx + key.length();
+	auto end_idx = src_string.find_first_of( " \n\"", idx + key.length() );
+	std::string_view value = src_string.substr( idx + key.length(), end_idx - ( idx + key.length() ) );
 
-	while( *rd_ptr != ' ' && *rd_ptr != '\n' && *rd_ptr != '\"' )
-	{
-		value += *rd_ptr;
-		rd_ptr++;
-	}
-
-	return w_stringutil::trim( value );
+	return value;
 }
 
-int w_parser::int_from_str( const std::string& str )
+int w_parser::int_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -36,10 +30,10 @@ int w_parser::int_from_str( const std::string& str )
 	}
 
 	// Otherwise, parse the string...
-	return static_cast<int>( strtol( str.c_str(), ( char** ) nullptr, 10 ) );
+	return static_cast<int>( strtol( str.data(), ( char** ) nullptr, 10 ) );
 }
 
-bool w_parser::bool_from_str( const std::string& str )
+bool w_parser::bool_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -56,7 +50,7 @@ bool w_parser::bool_from_str( const std::string& str )
 	return false;
 }
 
-float w_parser::float_from_str( const std::string& str )
+float w_parser::float_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -66,10 +60,10 @@ float w_parser::float_from_str( const std::string& str )
 	}
 
 	// Otherwise, parse the string...
-	return static_cast<float>( strtof( str.c_str(), ( char** ) nullptr ) );
+	return static_cast<float>( strtof( str.data(), ( char** ) nullptr ) );
 }
 	
-w_color w_parser::color_from_str( const std::string& str )
+w_color w_parser::color_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -91,7 +85,7 @@ w_color w_parser::color_from_str( const std::string& str )
 	return color;
 }
 
-w_range w_parser::range_from_str( const std::string& str )
+w_range w_parser::range_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -111,7 +105,7 @@ w_range w_parser::range_from_str( const std::string& str )
 	return range;
 }
 
-w_rect w_parser::rect_from_str( const std::string& str )
+w_rect w_parser::rect_from_str( const std::string_view str )
 {
 	w_tokenizer tok( str, ',', "0" );
 
@@ -124,7 +118,7 @@ w_rect w_parser::rect_from_str( const std::string& str )
 	return rect;
 }
 
-w_vec2 w_parser::vec2_from_str( const std::string& str )
+w_vec2 w_parser::vec2_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -144,7 +138,7 @@ w_vec2 w_parser::vec2_from_str( const std::string& str )
 	return vec2;
 }
 
-w_vec3 w_parser::vec3_from_str( const std::string& str )
+w_vec3 w_parser::vec3_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -165,7 +159,7 @@ w_vec3 w_parser::vec3_from_str( const std::string& str )
 	return vec3;
 }
 
-std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, const std::string& str )
+std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, const std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 

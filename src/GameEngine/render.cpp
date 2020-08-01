@@ -435,7 +435,7 @@ w_render* w_render::draw_stats()
 		);
 		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
 		stat_lines.emplace_back( fmt::format( "Entities : {}", s_commas( stats.num_entities.value ) ) );
-		stat_lines.emplace_back( fmt::format( "Time Dilation: {}", engine->time->dilation ) );
+		stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
 		stat_lines.emplace_back( fmt::format( "Mouse VPos: {:.0f}, {:.0f}", engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
 
 		if( stats.stat_custom_string.length() )

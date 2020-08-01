@@ -10,7 +10,7 @@ g_custom_game::g_custom_game()
 
 	w_tokenizer tok( file_as_string, '\n', "" );
 
-	std::string line = tok.get_next_token();
+	std::string_view line = tok.get_next_token();
 
 	while( !tok.is_eos() )
 	{
@@ -19,7 +19,7 @@ g_custom_game::g_custom_game()
 			w_tokenizer line_tok( line, ',', "" );
 
 			int tile_id = w_parser::int_from_str( line_tok.get_next_token() );
-			std::string tile_name = line_tok.get_next_token();
+			std::string_view tile_name = line_tok.get_next_token();
 			bool tile_show_in_browser = w_parser::bool_from_str( line_tok.get_next_token() );
 
 			tile_masters[ tile_id ].id = tile_id;

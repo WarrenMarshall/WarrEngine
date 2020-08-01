@@ -3,12 +3,12 @@
 
 // ----------------------------------------------------------------------------
 
-w_tokenizer::w_tokenizer( const std::string& string_buffer, char delim, std::string def_value )
+w_tokenizer::w_tokenizer( const std::string_view string_buffer, char delim, const std::string& def_value )
 	: string_buffer( string_buffer ), delim( delim ), def_value( def_value )
 {
 }
 
-std::string w_tokenizer::get_next_token()
+std::string_view w_tokenizer::get_next_token()
 {
 	if( is_eos() )
 	{
@@ -28,11 +28,11 @@ std::string w_tokenizer::get_next_token()
 	else if( start == end )
 	{
 		idx++;
-		return "";
+		return std::string_view("");
 	}
 
 	// extract the token
-	std::string ret = string_buffer.substr( start, end - start );
+	std::string_view ret = string_buffer.substr( start, end - start );
 
 	// move the index to beyond the returning token
 	idx += static_cast<int>( ret.length() ) + 1;

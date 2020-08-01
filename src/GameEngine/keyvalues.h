@@ -2,9 +2,11 @@
 
 struct w_keyvalues
 {
-	bool does_key_exist( const std::string& key ) const;
-	std::string find_value( const std::string& key ) const;
-	void add( const std::string& key, const std::string& value );
+	bool does_key_exist( const std::string_view key ) const;
+	std::string_view find_value( const std::string_view key ) const;
+	void add( const std::string_view key, const std::string_view value );
+
+	// #cleanup - what is this for?
 	std::map<std::string, std::string>* data();
 
 private:

@@ -93,7 +93,7 @@ void a_texture::draw( e_render_pass render_pass )
 
 // ----------------------------------------------------------------------------
 
-a_subtexture::a_subtexture( const std::string& tex_name )
+a_subtexture::a_subtexture( const std::string_view tex_name )
 {
 	tex = engine->get_asset<a_texture>( tex_name );
 
@@ -101,7 +101,7 @@ a_subtexture::a_subtexture( const std::string& tex_name )
 	rc_src.h = sz.h = tex->h;
 }
 
-a_subtexture::a_subtexture( const std::string& texture_name, const w_rect& rc )
+a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& rc )
 {
 	// find the texture being referenced
 	tex = engine->get_asset<a_texture>( texture_name );
@@ -316,7 +316,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 	float x, y, w, h;
 
-	std::string line = tok.get_next_token();
+	std::string_view line = tok.get_next_token();
 	while( !tok.is_eos() )
 	{
 		if( line.substr( 0, 5 ) == "char " )

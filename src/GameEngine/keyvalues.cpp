@@ -2,26 +2,26 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-bool w_keyvalues::does_key_exist( const std::string& key ) const
+bool w_keyvalues::does_key_exist( const std::string_view key ) const
 {
-	return _kv.count( key ) > 0;
+	return _kv.count( key.data() ) > 0;
 }
 
-std::string w_keyvalues::find_value( const std::string& key ) const
+std::string_view w_keyvalues::find_value( const std::string_view key ) const
 {
 	try
 	{
-		return _kv.at( key );
+		return std::string_view( _kv.at( key.data() ) );
 	}
 	catch( const std::out_of_range& oor )
 	{
-		log_error( fmt::format( "{} : {} : '{}'", __FUNCTION__, oor.what(), key.c_str() ) );
+		log_error( fmt::format( "{} : {} : '{}'", __FUNCTION__, oor.what(), key ) );
 		assert( false );
 		return nullptr;
 	}
 }
 
-void w_keyvalues::add( const std::string& key, const std::string& value )
+void w_keyvalues::add( const std::string_view key, const std::string_view value )
 {
 	_kv.insert( std::make_pair( key, value ) );
 }

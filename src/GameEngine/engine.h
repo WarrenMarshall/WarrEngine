@@ -31,20 +31,20 @@ struct w_engine : i_listener
 	void set_pause( bool paused );
 	void cache_asset_definition_files();
 	void precache_asset_resources();
-	template<typename T> T* get_asset( const std::string& name, bool silent = false )
+	template<typename T> T* get_asset( const std::string_view name, bool silent = false )
 	{
 		return static_cast<T*>( asset_cache->find( name, silent ) );
 	}
 
 	std::map<std::string, std::string> _symbol_to_value;
-	bool is_symbol_in_map( std::string str );
-	std::string find_val_from_symbol( std::string str );
-	int find_int_from_symbol( std::string str, int def_value = 0 );
-	float find_float_from_symbol( std::string str, float def_value = 0.0f );
-	w_color find_color_from_symbol( std::string str, w_color def_value = W_COLOR_WHITE );
-	w_range find_range_from_symbol( std::string str, w_range def_value = w_range( 0, 1 ) );
-	w_vec2 find_vec2_from_symbol( std::string str, w_vec2 def_value = w_vec2( 0, 0 ) );
-	w_vec3 find_vec3_from_symbol( std::string str, w_vec3 def_value = w_vec3( 0, 0, 0 ) );
+	bool is_symbol_in_map( const std::string_view str );
+	std::string_view find_val_from_symbol( const std::string_view str );
+	int find_int_from_symbol( const std::string_view str, int def_value = 0 );
+	float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
+	w_color find_color_from_symbol( const std::string_view str, w_color def_value = W_COLOR_WHITE );
+	w_range find_range_from_symbol( const std::string_view str, w_range def_value = w_range( 0, 1 ) );
+	w_vec2 find_vec2_from_symbol( const std::string_view str, w_vec2 def_value = w_vec2( 0, 0 ) );
+	w_vec3 find_vec3_from_symbol( const std::string_view str, w_vec3 def_value = w_vec3( 0, 0, 0 ) );
 
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
 

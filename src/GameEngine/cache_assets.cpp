@@ -2,9 +2,9 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string& name, const std::string& filename )
+i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string_view name, const std::string_view filename )
 {
-	auto iter = cache.find( name );
+	auto iter = cache.find( std::string( name ) );
 
 	if( iter != cache.end() )
 	{
@@ -29,9 +29,9 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string&
 	return find( name, b_silent(true) );
 }
 
-i_asset* w_cache_assets::find( const std::string& name, bool silent )
+i_asset* w_cache_assets::find( const std::string_view name, bool silent )
 {
-	auto iter = cache.find( name );
+	auto iter = cache.find( std::string( name ) );
 
 	if( iter == cache.end() )
 	{

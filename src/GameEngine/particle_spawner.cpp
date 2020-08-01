@@ -28,7 +28,7 @@ void w_particle_spawner_box::find_spawn_pos_for_new_particle( w_particle* partic
 	particle->pos.y = pos.y + w_range( -( h / 2.0f ), ( h / 2.0f ) ).get_value();
 }
 
-void w_particle_spawner_box::parse_from_config_string( std::string value )
+void w_particle_spawner_box::parse_from_config_string( std::string_view value )
 {
 	w_tokenizer tok( value, ',' );
 	tok.get_next_token();	// throw away the type
@@ -63,7 +63,7 @@ void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* par
 	particle->pos = pos + v;
 }
 
-void w_particle_spawner_circle::parse_from_config_string( std::string value )
+void w_particle_spawner_circle::parse_from_config_string( std::string_view value )
 {
 	w_tokenizer tok( value, ',' );
 	tok.get_next_token();	// throw away the type

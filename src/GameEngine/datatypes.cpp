@@ -125,6 +125,14 @@ w_range::w_range( std::string str )
 	max = w_parser::float_from_str( tok.get_next_token() );
 }
 
+w_range::w_range( std::string_view str )
+{
+	w_tokenizer tok( str, ',' );
+
+	min = w_parser::float_from_str( tok.get_next_token() );
+	max = w_parser::float_from_str( tok.get_next_token() );
+}
+
 float w_range::get_value()
 {
 	return min + ( ( max - min ) * w_random::getf() );
@@ -155,6 +163,17 @@ w_color::w_color( std::string str )
 	a = w_parser::float_from_str( tok.get_next_token() );
 }
 
+w_color::w_color( std::string_view str )
+{
+	w_tokenizer tok( str, ',', "1.0f" );
+
+	r = w_parser::float_from_str( tok.get_next_token() );
+	g = w_parser::float_from_str( tok.get_next_token() );
+	b = w_parser::float_from_str( tok.get_next_token() );
+	a = w_parser::float_from_str( tok.get_next_token() );
+}
+
+// #cleanup - do we need this?
 w_color w_color::from_string( std::string text )
 {
 	w_tokenizer tok( text, ',' );
@@ -194,6 +213,14 @@ w_vec2::w_vec2( float x, float y )
 }
 
 w_vec2::w_vec2( std::string str )
+{
+	w_tokenizer tok( str, ',' );
+
+	x = w_parser::float_from_str( tok.get_next_token() );
+	y = w_parser::float_from_str( tok.get_next_token() );
+}
+
+w_vec2::w_vec2( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 
@@ -280,6 +307,15 @@ w_vec3::w_vec3( int x, int y, int z )
 }
 
 w_vec3::w_vec3( std::string str )
+{
+	w_tokenizer tok( str, ',' );
+
+	x = w_parser::float_from_str( tok.get_next_token() );
+	y = w_parser::float_from_str( tok.get_next_token() );
+	z = w_parser::float_from_str( tok.get_next_token() );
+}
+
+w_vec3::w_vec3( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 
