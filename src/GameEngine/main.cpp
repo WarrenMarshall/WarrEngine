@@ -84,7 +84,7 @@ int main( int argc, char* argv[] )
 
 			for( int a = 1; a < argc; ++a )
 			{
-				std::string arg( argv[a] );
+				std::string_view arg( argv[a] );
 
 				// +hot_reload - enable hot reloading of asset definition files (defaults to false)
 				if( arg == "+hot_reload" )
@@ -256,7 +256,7 @@ int main( int argc, char* argv[] )
 	}
 	catch( std::exception& e )
 	{
-		log_msg( "!! EXCEPTION" );
+		log_msg( "!! EXCEPTION CAUGHT !!" );
 		log_msg( fmt::format( "\t{}", e.what() ) );
 
 		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );

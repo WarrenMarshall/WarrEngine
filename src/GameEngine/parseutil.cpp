@@ -8,7 +8,7 @@ std::string_view w_parser::key_from_str( std::string_view src_string, std::strin
 {
 	size_t idx = src_string.find( key.data() );
 
-	if( idx == std::string::npos )
+	if( idx == std::string_view::npos )
 	{
 		log_warning( fmt::format( "{} : no value found for key : [{}]", __FUNCTION__, key ) );
 		return "";

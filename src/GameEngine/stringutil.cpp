@@ -13,13 +13,13 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 const std::string_view w_stringutil::ltrim( const std::string_view s )
 {
     const size_t start = s.find_first_not_of( WHITESPACE );
-    return ( start == std::string::npos ) ? "" : s.substr( start );
+    return ( start == std::string_view::npos ) ? "" : s.substr( start );
 }
 
 const std::string_view w_stringutil::rtrim( const std::string_view s )
 {
     const size_t end = s.find_last_not_of( WHITESPACE );
-    return ( end == std::string::npos ) ? "" : s.substr( 0, end + 1 );
+    return ( end == std::string_view::npos ) ? "" : s.substr( 0, end + 1 );
 }
 
 const std::string_view w_stringutil::trim( const std::string_view s )

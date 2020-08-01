@@ -13,14 +13,14 @@ void w_file_system::init()
 	zip_io->scan_and_build_table_of_contents();
 }
 
-bool w_file_system::file_exists_on_disk( const std::string& filename )
+bool w_file_system::file_exists_on_disk( const std::string_view filename )
 {
 	return std::filesystem::exists( filename );
 }
 
 // checks to see if a filename is valid either on the disk or in a zip file.
 
-bool w_file_system::file_exists_on_disk_or_in_zip( const std::string& filename )
+bool w_file_system::file_exists_on_disk_or_in_zip( const std::string_view filename )
 {
 	if( file_exists_on_disk( filename ) )
 	{
@@ -48,11 +48,11 @@ bool w_file_system::file_exists_on_disk_or_in_zip( const std::string& filename )
 // work on loose files during development and then ZIP everything up for
 // release.
 
-std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string filename )
+std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string_view filename )
 {
 	if( file_exists_on_disk( filename ) )
 	{
-		std::ifstream file( filename.c_str(), std::ios::binary | std::ios::ate );
+		std::ifstream file( filename.data(), std::ios::binary | std::ios::ate );
 		std::streamsize size = file.tellg();
 		file.seekg( 0, std::ios::beg );
 
@@ -75,9 +75,13 @@ std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string fi
 	return nullptr;
 }
 
-void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, std::string folder, std::string extension )
+void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, std::string_view folder, std::string_view extension )
 {
-	std::string stem, ext, filename;
+	// note : I haven't had luck in converting these to string_view.
+	// the ".string()" calls below return bad values to a string_view for some reason.
+	//
+	// however, this function is called at start up and never again, so don't worry about it.
+	std::string filename, ext;
 
 	// look on disk
 
@@ -85,9 +89,8 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 	{
 		for( auto& iter : std::filesystem::directory_iterator( folder ) )
 		{
-			filename = iter.path().generic_string();
-			stem = iter.path().filename().stem().generic_string();
-			ext = iter.path().filename().extension().generic_string();
+			filename = iter.path().string();
+			ext = iter.path().filename().extension().string();
 
 			if( ext == extension )
 			{

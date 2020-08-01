@@ -99,8 +99,6 @@ struct a_anim_texture : a_texture
 
 struct a_emitter_params : i_asset, i_speaker
 {
-	std::string name;
-
 	// texture to draw for this particle
 	a_texture* tex = nullptr;
 
@@ -168,7 +166,7 @@ struct a_font : i_asset
 {
 	a_font_def* font_def = nullptr;
 
-	w_vec2 get_string_extents( const std::string& text );
+	w_vec2 get_string_extents( const std::string_view text );
 };
 
 // ----------------------------------------------------------------------------

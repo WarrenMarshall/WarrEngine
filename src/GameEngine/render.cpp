@@ -259,7 +259,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 /*
 	draws a string from a bitmap font, char by char
 */
-w_render* w_render::draw_string( a_font* font, const std::string& text, const w_rect& dst )
+w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
 	e_align rs_align = rs_align_stack.top();
 
@@ -467,11 +467,12 @@ w_render* w_render::draw_stats()
 	else
 	{
 #if !defined(FINALRELEASE)
-		std::string fps_stats( fmt::format( "{} FPS", s_commas( stats.num_frames_rendered.value ) ) );
-
 		RENDER->begin()
 			->push_align( align::right )
-			->draw_string( UI->theme->small_font, fps_stats, w_rect( v_window_w, 0 ) )
+			->draw_string(
+				UI->theme->small_font,
+				fmt::format( "{} FPS", s_commas( stats.num_frames_rendered.value ) ),
+				w_rect( v_window_w, 0 ) )
 			->end();
 	#endif
 	}

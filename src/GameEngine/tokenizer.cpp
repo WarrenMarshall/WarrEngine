@@ -18,7 +18,7 @@ std::string_view w_tokenizer::get_next_token()
 	size_t start = idx;
 	size_t end = static_cast<int>( string_buffer.find( delim, start ) );
 
-	if( end == std::string::npos )
+	if( end == std::string_view::npos )
 	{
 		// delimiter was not found so set 'end' to consume the rest of the string
 		end = string_buffer.length();

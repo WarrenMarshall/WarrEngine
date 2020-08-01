@@ -1,7 +1,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_zip_toc_entry::w_zip_toc_entry( std::string zip_filename, std::string filename, int offset, int size )
+w_zip_toc_entry::w_zip_toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size )
 	: zip_filename( zip_filename ), filename( filename ), offset_from_start_of_file( offset ), size( size )
 {
 }
@@ -12,20 +12,20 @@ void w_io_zip::scan_and_build_table_of_contents()
 {
 	table_of_contents.clear();
 
-	std::string ext, zip_filename;
+	std::string zip_filename, ext;
 
 	// iterate all the files in the active folder
 	for( auto& iter : std::filesystem::directory_iterator( "." ) )
 	{
-		zip_filename = iter.path().generic_string();
-		ext = iter.path().filename().extension().generic_string();
+		zip_filename = iter.path().string();
+		ext = iter.path().filename().extension().string();
 
 		// for each zip file we find...
 		if( ext == ".zip" )
 		{
 			// read the zip file into memory for quick parsing via pointer arithmetic
 
-			std::ifstream file( zip_filename.c_str(), std::ios::binary | std::ios::ate );
+			std::ifstream file( zip_filename.data(), std::ios::binary | std::ios::ate );
 			std::streamsize size = file.tellg();
 			file.seekg( 0, std::ios::beg );
 
@@ -83,9 +83,9 @@ void w_io_zip::scan_and_build_table_of_contents()
 	}
 }
 
-bool w_io_zip::does_toc_contain_filename( std::string filename )
+bool w_io_zip::does_toc_contain_filename( std::string_view filename )
 {
-	if( table_of_contents.count( filename ) > 0 )
+	if( table_of_contents.count( std::string( filename ) ) > 0 )
 	{
 		return true;
 	}
@@ -93,17 +93,17 @@ bool w_io_zip::does_toc_contain_filename( std::string filename )
 	return false;
 }
 
-w_zip_toc_entry* w_io_zip::get_toc_entry_for_filename( std::string filename )
+w_zip_toc_entry* w_io_zip::get_toc_entry_for_filename( std::string_view filename )
 {
 	if( !does_toc_contain_filename( filename ) )
 	{
 		return nullptr;
 	}
 
-	return table_of_contents[filename].get();
+	return table_of_contents[ std::string( filename ) ].get();
 }
 
-std::unique_ptr<std::vector<char>> w_io_zip::get_data_for_filename( std::string filename )
+std::unique_ptr<std::vector<char>> w_io_zip::get_data_for_filename( std::string_view filename )
 {
 	w_zip_toc_entry* toc_entry = get_toc_entry_for_filename( filename );
 

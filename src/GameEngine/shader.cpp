@@ -1,7 +1,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_shader::create_and_compile( const std::string& vert_filename, const std::string& frag_filename )
+void w_shader::create_and_compile( const std::string_view vert_filename, const std::string_view frag_filename )
 {
     int  success;
     char infoLog[512];
@@ -10,7 +10,7 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
 
     // vertex shader
 
-    auto vertex_shader_src = engine->fs->load_file_into_memory( "shaders/" + vert_filename + ".vert" );
+    auto vertex_shader_src = engine->fs->load_file_into_memory( fmt::format( "shaders/{}.vert" , vert_filename ) );
     unsigned int vertex_id = glCreateShader( GL_VERTEX_SHADER );
     wk = std::string( vertex_shader_src->buffer->begin(), vertex_shader_src->buffer->end() );
     cptr = wk.c_str();
@@ -26,7 +26,7 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
 
     // fragment shader
 
-    auto fragment_shader_src = engine->fs->load_file_into_memory( "shaders/" + frag_filename + ".frag" );
+    auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "shaders/{}.frag", frag_filename ) );
     unsigned int fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
     wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
     cptr = wk.c_str();
@@ -61,11 +61,11 @@ void w_shader::create_and_compile( const std::string& vert_filename, const std::
     glDeleteShader( fragment_id );
 }
 
-unsigned int w_shader::_compile_shader( unsigned int type, const std::string& source )
+unsigned int w_shader::_compile_shader( unsigned int type, const std::string_view source )
 {
     unsigned int id = glCreateShader( type );
 
-    const char* src = source.c_str();
+    const char* src = source.data();
     glShaderSource( id, 1, &src, nullptr );
     glCompileShader( id );
 

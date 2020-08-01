@@ -3,9 +3,9 @@
 #include "master_header.h"
 
 // loads a config file from disk and stores it in the cache
-w_asset_definition_file* w_cache_asset_definition_files::add( const std::string& name, const std::string& filename )
+w_asset_definition_file* w_cache_asset_definition_files::add( const std::string_view name, const std::string_view filename )
 {
-	const auto iter = cache.find( name );
+	const auto iter = cache.find( std::string( name ) );
 
 	if( iter != cache.end() )
 	{
@@ -15,7 +15,6 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 
 	auto cfg = std::make_unique<w_asset_definition_file>();
 
-	cfg->name = name;
 	cfg->original_filename = filename;
 	if( cfg->create_internals( false ) )
 	{
@@ -29,5 +28,5 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string&
 		cache.insert( std::make_pair( name, std::move( cfg ) ) );
 	}
 
-	return cache.find( name )->second.get();
+	return cache.find( std::string( name ) )->second.get();
 }

@@ -91,7 +91,7 @@ struct w_render
 
 	w_render* draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );
 
-	w_render* draw_string( a_font* font, const std::string& text, const w_rect& dst );
+	w_render* draw_string( a_font* font, const std::string_view text, const w_rect& dst );
 
 	void init_projection() const;
 	w_render* draw_rectangle( const w_rect& dst );

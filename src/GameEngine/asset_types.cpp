@@ -310,8 +310,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
-	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
-	
+	std::string_view file_as_string = file->buffer->data();	
 	w_tokenizer tok( file_as_string, '\n', "" );
 
 	float x, y, w, h;
@@ -357,7 +356,7 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 /*
 	computes how wide and how tall a string is using this font.
 */
-w_vec2 a_font::get_string_extents( const std::string& text )
+w_vec2 a_font::get_string_extents( const std::string_view text )
 {
 	w_font_char* pxch;
 	w_vec2 bounds;

@@ -45,10 +45,8 @@ void focus_change_callback( GLFWwindow* window, int focused )
 
 // ----------------------------------------------------------------------------
 
-bool w_window::init( const std::string& title )
+bool w_window::init( const std::string_view title )
 {
-	base_title = title;
-
 	// Initialize GLFW
 	if( !glfwInit() )
 		log_error( fmt::format( "{} : GLFW failed to init", __FUNCTION__ ) );
@@ -76,7 +74,7 @@ bool w_window::init( const std::string& title )
 
 	window = glfwCreateWindow(
 		static_cast<int>( window_pos.w ), static_cast<int>( window_pos.h ),
-		base_title.c_str(), nullptr, nullptr
+		title.data(), nullptr, nullptr
 	);
 
 	if( !window )
@@ -133,9 +131,9 @@ void w_window::toggle_fullscreen()
 	}
 }
 
-void w_window::set_title( const std::string& title )
+void w_window::set_title( const std::string_view title )
 {
-	glfwSetWindowTitle( window, title.c_str() );
+	glfwSetWindowTitle( window, title.data() );
 }
 
 void w_window::set_mouse_mode( e_mouse_mode mode )

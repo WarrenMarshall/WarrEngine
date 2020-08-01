@@ -117,14 +117,6 @@ w_range::w_range( float min, float max )
 {
 }
 
-w_range::w_range( std::string str )
-{
-	w_tokenizer tok( str, ',' );
-
-	min = w_parser::float_from_str( tok.get_next_token() );
-	max = w_parser::float_from_str( tok.get_next_token() );
-}
-
 w_range::w_range( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
@@ -153,16 +145,6 @@ w_color::w_color( float r, float g, float b, float a )
 {
 }
 
-w_color::w_color( std::string str )
-{
-	w_tokenizer tok( str, ',', "1.0f" );
-
-	r = w_parser::float_from_str( tok.get_next_token() );
-	g = w_parser::float_from_str( tok.get_next_token() );
-	b = w_parser::float_from_str( tok.get_next_token() );
-	a = w_parser::float_from_str( tok.get_next_token() );
-}
-
 w_color::w_color( std::string_view str )
 {
 	w_tokenizer tok( str, ',', "1.0f" );
@@ -171,19 +153,6 @@ w_color::w_color( std::string_view str )
 	g = w_parser::float_from_str( tok.get_next_token() );
 	b = w_parser::float_from_str( tok.get_next_token() );
 	a = w_parser::float_from_str( tok.get_next_token() );
-}
-
-// #cleanup - do we need this?
-w_color w_color::from_string( std::string text )
-{
-	w_tokenizer tok( text, ',' );
-
-	r = w_parser::float_from_str( tok.get_next_token() );
-	g = w_parser::float_from_str( tok.get_next_token() );
-	b = w_parser::float_from_str( tok.get_next_token() );
-	a = w_parser::float_from_str( tok.get_next_token() );
-
-	return *this;
 }
 
 void w_color::scale( w_color& color, float s )
@@ -210,14 +179,6 @@ w_vec2::w_vec2( int x, int y )
 w_vec2::w_vec2( float x, float y )
 	: x( x ), y( y )
 {
-}
-
-w_vec2::w_vec2( std::string str )
-{
-	w_tokenizer tok( str, ',' );
-
-	x = w_parser::float_from_str( tok.get_next_token() );
-	y = w_parser::float_from_str( tok.get_next_token() );
 }
 
 w_vec2::w_vec2( std::string_view str )
@@ -304,15 +265,6 @@ w_vec3::w_vec3( float x, float y, float z )
 w_vec3::w_vec3( int x, int y, int z )
 	: x( (float)x ), y( (float) y ), z( (float) z )
 {
-}
-
-w_vec3::w_vec3( std::string str )
-{
-	w_tokenizer tok( str, ',' );
-
-	x = w_parser::float_from_str( tok.get_next_token() );
-	y = w_parser::float_from_str( tok.get_next_token() );
-	z = w_parser::float_from_str( tok.get_next_token() );
 }
 
 w_vec3::w_vec3( std::string_view str )

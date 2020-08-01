@@ -17,10 +17,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 			{
 				if( type == "preproc" )
 				{
-					for( auto& iter : *(iter_ad->data()) )
+					for( auto& iter : iter_ad->kv )
 					{
 						std::string key = iter.first;
-						std::string value = iter.second;
+						std::string_view value = iter.second;
 
 						if( key != "name" && key != "type" )
 							engine->_symbol_to_value[ key ] = value;
@@ -114,9 +114,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					std::string_view color_list = iter_ad->find_value( "colors");
 
 					w_tokenizer tok( color_list, '/', "n/a" );
-					std::string val;
+					std::string_view val;
 
-					std::vector<std::string> color_values;
+					std::vector<std::string_view> color_values;
 					while( true )
 					{
 						val = tok.get_next_token();
@@ -192,21 +192,20 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					std::string_view tex_name = iter_ad->find_value( "texture");
 
-					for( const auto& iter : (*iter_ad->data()) )
+					for( const auto& iter : iter_ad->kv )
 					{
-						std::string key = iter.first;
-						std::string value = iter.second;
+						std::string_view key = iter.first;
+						std::string_view value = iter.second;
 
 						int subtex_idx = 0;
 						w_rect rc = {};
-						std::string subtex_name;
 
 						if( key.substr( 0, 2 ) == "p_" )
 						{
 							subtex_idx = w_parser::int_from_str( key );
 							rc = w_parser::rect_from_str( value );
 
-							subtex_name = name + "_" + key;
+							std::string subtex_name = name + "_" + key.data();
 
 							asset_ptr->patches[ subtex_idx ] = static_cast<a_subtexture*>(
 								engine->asset_cache->add(
@@ -283,10 +282,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					// ------------------------------------------------------------------------
 
-					for( const auto& iter : (*iter_ad->data()) )
+					for( const auto& iter : iter_ad->kv )
 					{
-						std::string key = iter.first;
-						std::string value = iter.second;
+						std::string_view key = iter.first;
+						std::string_view value = iter.second;
 
 						if( key == "name" || key == "type" )
 						{
@@ -453,8 +452,7 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
-	std::string file_as_string = std::string( file->buffer->begin(), file->buffer->end() );
-
+	std::string_view file_as_string = file->buffer->data();
 	w_tokenizer tok( file_as_string, '\n', "" );
 
 	std::string_view line = tok.get_next_token();
@@ -467,17 +465,23 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 		// ignore blank lines and lines that are entirely commented
 		if( !line.empty() && line[0] != '#' )
 		{
-			line_extended = line;
-			while( line_extended.back() == '\\' )
+			// when a multi line statement is found, concatenate the lines
+			// that follow it until it is complete - then parse as normal.
+			// #bug - this doesn't handle any of the lines having a comment in them
+			if( line.back() == '\\' )
 			{
-				line_extended = line_extended.substr( 0, line_extended.length() - 1 );
-				line_extended += tok.get_next_token();
+				line_extended = line;
+				while( line_extended.back() == '\\' )
+				{
+					line_extended = line_extended.substr( 0, line_extended.length() - 1 );
+					line_extended += tok.get_next_token();
+				}
+				line = line_extended;
 			}
-			line = line_extended;
 
 			// remove comments from the ends of lines, if they are there
 			size_t pos = line.find_first_of( "#" );
-			if( pos != std::string::npos )
+			if( pos != std::string_view::npos )
 			{
 				line = w_stringutil::rtrim( line.substr( 0, pos ) );
 			}

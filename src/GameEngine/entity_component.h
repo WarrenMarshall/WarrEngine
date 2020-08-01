@@ -38,7 +38,7 @@ struct ec_emitter : w_entity_component
 
 	ec_emitter();
 
-	w_entity_component* init( i_transform* parent_entity, const std::string& params_name );
+	w_entity_component* init( i_transform* parent_entity, const std::string_view params_name );
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	bool is_fully_dead() override;
 	void draw() override;
@@ -54,6 +54,6 @@ struct ec_sound : w_entity_component
 
 	ec_sound();
 
-	w_entity_component* init( const std::string& snd_name );
+	w_entity_component* init( const std::string_view snd_name );
 	void draw() override;
 };

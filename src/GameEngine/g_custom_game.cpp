@@ -6,8 +6,7 @@ g_custom_game::g_custom_game()
 {
 	auto file = engine->fs->load_file_into_memory( "game_specific\\tile_def.txt" );
 	w_mem_file* mf = file.get();
-	std::string file_as_string = std::string( mf->buffer->begin(), mf->buffer->end() );
-
+	std::string_view file_as_string = mf->buffer->data();
 	w_tokenizer tok( file_as_string, '\n', "" );
 
 	std::string_view line = tok.get_next_token();

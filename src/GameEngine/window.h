@@ -8,7 +8,6 @@ struct w_window
 {
 	bool is_fullscreen = false;
 	w_rect save_window_rect = w_rect( 0, 0, 0, 0 );
-	std::string base_title;
 
 	GLFWwindow* window = nullptr;
 	GLFWmonitor* primary_monitor = nullptr;
@@ -21,10 +20,10 @@ struct w_window
 		int h = 0;
 	} save_windowed_state;
 
-	bool init( const std::string& title );
+	bool init( const std::string_view title );
 	void deinit();
 	void toggle_fullscreen();
-	void set_title( const std::string& title );
+	void set_title( const std::string_view title );
 	void set_mouse_mode( e_mouse_mode mode );
 
 	w_rect viewport_pos_sz;

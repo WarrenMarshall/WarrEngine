@@ -76,7 +76,7 @@ ec_emitter::ec_emitter()
 	type = component_type::emitter;
 }
 
-w_entity_component* ec_emitter::init( i_transform* parent_entity, const std::string& params_name )
+w_entity_component* ec_emitter::init( i_transform* parent_entity, const std::string_view params_name )
 {
 	this->parent_entity = parent_entity;
 
@@ -145,7 +145,7 @@ ec_sound::ec_sound()
 	type = component_type::sound;
 }
 
-w_entity_component* ec_sound::init( const std::string& snd_name )
+w_entity_component* ec_sound::init( const std::string_view snd_name )
 {
 	snd = engine->get_asset<a_sound>( snd_name );
 

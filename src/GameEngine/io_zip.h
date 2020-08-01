@@ -31,7 +31,7 @@ struct zip_local_file_header
 
 struct w_zip_toc_entry
 {
-	w_zip_toc_entry( std::string zip_filename, std::string filename, int offset, int size );
+	w_zip_toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size );
 	std::string zip_filename = "";
 	std::string filename = "";
 	int offset_from_start_of_file = 0;
@@ -45,7 +45,7 @@ struct w_io_zip
 	std::map<std::string, std::unique_ptr<w_zip_toc_entry>> table_of_contents;
 
 	void scan_and_build_table_of_contents();
-	bool does_toc_contain_filename( std::string filename );
-	w_zip_toc_entry* get_toc_entry_for_filename( std::string filename );
-	std::unique_ptr<std::vector<char>> get_data_for_filename( std::string filename );
+	bool does_toc_contain_filename( std::string_view filename );
+	w_zip_toc_entry* get_toc_entry_for_filename( std::string_view filename );
+	std::unique_ptr<std::vector<char>> get_data_for_filename( std::string_view filename );
 };
