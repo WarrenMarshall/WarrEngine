@@ -42,12 +42,12 @@ void w_render::init()
 
 	// initialize render state stacks
 	rs_color_stack.push( W_COLOR_WHITE );
-	rs_alpha_stack.push( 1.0f );
-	rs_scale_stack.push( 1.0f );
-	rs_angle_stack.push( 0.0f );
+	rs_alpha_stack = 1.0f;
+	rs_scale_stack = 1.0f;
+	rs_angle_stack = 0.0f;
 	zdepth = zdepth_background;
 	zdepth_nudge_accum = 0.0f;
-	rs_align_stack.push( align::left );
+	rs_align_stack = align::left;
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requesed for
@@ -84,40 +84,35 @@ w_render* w_render::push_rgba( const w_color& color )
 
 w_render* w_render::push_alpha( const float& alpha )
 {
-	rs_alpha_count++;
-	rs_alpha_stack.push( alpha );
+	rs_alpha_stack += alpha;
 
 	return this;
 }
 
 w_render* w_render::pop_alpha()
 {
-	rs_alpha_count--;
-	rs_alpha_stack.pop();
+	rs_alpha_stack = rs_alpha_stack.erase( rs_alpha_stack.length() - 1 );
 
 	return this;
 }
 
 w_render* w_render::push_scale( const float& scale )
 {
-	rs_scale_count++;
-	rs_scale_stack.push( scale );
+	rs_scale_stack += scale;
 
 	return this;
 }
 
 w_render* w_render::push_angle( const float& angle )
 {
-	rs_angle_count++;
-	rs_angle_stack.push( angle );
+	rs_angle_stack += angle;
 
 	return this;
 }
 
 w_render* w_render::push_align( const e_align& align )
 {
-	rs_align_count++;
-	rs_align_stack.push( align );
+	rs_align_stack += align;
 
 	return this;
 }
@@ -151,33 +146,10 @@ void w_render::end()
 	}
 	rs_color_count = 0;
 
-	while( rs_alpha_count )
-	{
-		rs_alpha_stack.pop();
-		rs_alpha_count--;
-	}
-	rs_alpha_count = 0;
-
-	while( rs_scale_count )
-	{
-		rs_scale_stack.pop();
-		rs_scale_count--;
-	}
-	rs_scale_count = 0;
-
-	while( rs_angle_count )
-	{
-		rs_angle_stack.pop();
-		rs_angle_count--;
-	}
-	rs_angle_count = 0;
-
-	while( rs_align_count )
-	{
-		rs_align_stack.pop();
-		rs_align_count--;
-	}
-	rs_align_count = 0;
+	rs_alpha_stack = 1.0f;
+	rs_scale_stack = 1.0f;
+	rs_angle_stack = 0.0f;
+	rs_align_stack = align::left;
 
 	zdepth -= zdepth_nudge_accum;
 	zdepth_nudge_accum = 0.0f;
@@ -199,8 +171,8 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
 	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 
-	float rs_scale = rs_scale_stack.top();
-	float rs_angle = rs_angle_stack.top();
+	float rs_scale = rs_scale_stack.back();
+	float rs_angle = rs_angle_stack.back();
 
 	w *= rs_scale;
 	h *= rs_scale;
@@ -209,7 +181,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 	float hh = h / 2.0f;
 
 	w_color rs_color = rs_color_stack.top();
-	rs_color.a = rs_alpha_stack.top();
+	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
 	w_render_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
@@ -236,13 +208,13 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
 	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 
-	float rs_scale = rs_scale_stack.top();
+	float rs_scale = rs_scale_stack.back();
 
 	w *= rs_scale;
 	h *= rs_scale;
 
 	w_color rs_color = rs_color_stack.top();
-	rs_color.a = rs_alpha_stack.top();
+	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
 	w_render_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
@@ -261,7 +233,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 */
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
-	e_align rs_align = rs_align_stack.top();
+	e_align rs_align = rs_align_stack.back();
 
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
@@ -374,9 +346,9 @@ void w_render::end_frame()
 	// verify that state stacks are back where they started. if not,
 	// it means there's a push/pop mismatch somewhere in the code.
 	assert( rs_color_stack.size() == 1 );
-	assert( rs_alpha_stack.size() == 1 );
-	assert( rs_scale_stack.size() == 1 );
-	assert( rs_align_stack.size() == 1 );
+	assert( rs_alpha_stack.length() == 1 );
+	assert( rs_scale_stack.length() == 1 );
+	assert( rs_align_stack.length() == 1 );
 
 	// Swap buffers
 	glfwSwapBuffers( engine->window->window );
@@ -485,7 +457,7 @@ w_render* w_render::draw_stats()
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
 	w_color rs_color = rs_color_stack.top();
-	rs_color.a = rs_alpha_stack.top();
+	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0(
 		w_vec2( dst.x, dst.y ),
@@ -540,7 +512,7 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
 	w_color rs_color = rs_color_stack.top();
-	rs_color.a = rs_alpha_stack.top();
+	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
@@ -564,7 +536,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
 	w_color rs_color = rs_color_stack.top();
-	rs_color.a = rs_alpha_stack.top();
+	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( end, w_uv( 0, 0 ), rs_color );

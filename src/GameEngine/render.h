@@ -41,21 +41,13 @@ struct w_render
 	int rs_color_count = 0;
 	std::stack<w_color> rs_color_stack;
 
-	int rs_alpha_count = 0;
-	std::stack<float> rs_alpha_stack;
+	std::basic_string<float> rs_alpha_stack;
+	std::basic_string<float> rs_scale_stack;
+	std::basic_string<float> rs_angle_stack;
 
-	int rs_scale_count = 0;
-	std::stack<float> rs_scale_stack;
+	//int rs_align_count = 0;
+	std::basic_string<e_align> rs_align_stack;
 	
-	int rs_angle_count = 0;
-	std::stack<float> rs_angle_stack;
-
-	int rs_align_count = 0;
-	std::stack<e_align> rs_align_stack;
-	
-	//int rs_depth_count = 0;
-	//std::vector<float> rs_depth_stack;
-
 	float zdepth;
 	float zdepth_nudge_accum;
 
