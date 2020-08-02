@@ -47,7 +47,7 @@ void layer_editor::draw()
 	// ----------------------------------------------------------------------------
 	// tiles
 
-	bool shift_is_down = engine->input->is_shift_down();
+	bool c_key_is_pressed = engine->input->is_button_down( input_id::key_c );
 	float ypos = TILE_SZ * 2;
 
 	for( int y = 0 ; y < ROOM_H ; ++y )
@@ -71,7 +71,7 @@ void layer_editor::draw()
 			}
 			if( ir & im_result::hot )
 			{
-				if( shift_is_down )
+				if( c_key_is_pressed )
 				{
 					game->current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
 				}
