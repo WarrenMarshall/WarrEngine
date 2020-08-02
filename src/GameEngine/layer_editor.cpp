@@ -59,6 +59,8 @@ void flood_fill_room( int idx_clicked, int old_tile_id, int new_tile_id )
 
 void layer_editor::draw()
 {
+	static a_font* larger_font = engine->get_asset<a_font>( "larger_font" );
+
 	w_layer::draw();
 
 	// current room
@@ -66,8 +68,11 @@ void layer_editor::draw()
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->draw_string( UI->theme->small_font, fmt::format( "Current Room: {}", game->current_room ),
-			w_rect( 68.0f, 206.0f ) )
+		->draw_string( UI->theme->small_font, "Room", w_rect( 88.0f, 192.0f ) )
+		->push_align( align::centered )
+		->push_depth_nudge()
+		->push_rgb( W_COLOR_TEAL )
+		->draw_string( larger_font, fmt::format( "{}", game->current_room ), w_rect( 102.0f, 218.0f ) )
 		->end();
 
 	// title bar
@@ -134,6 +139,16 @@ void layer_editor::draw()
 	if( UI->im_active( this, { 12, 188, 48, 48 }, w_ui_style_pushbutton( UI->theme->button_slice_def, game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->push( std::make_unique<layer_browser>() );
+	}
+	if( UI->im_active( this, { 76.0f, 208.0f, 16, 16 }, w_ui_style_pushbutton( UI->theme->button_slice_def, engine->get_asset<a_subtexture>( "ui_arrow_left" ) ) ) & im_result::left_clicked )
+	{
+		game->current_room--;
+		game->current_room = w_clamp( game->current_room, 0, 9 );
+	}
+	if( UI->im_active( this, { 114.0f, 208.0f, 16, 16 }, w_ui_style_pushbutton( UI->theme->button_slice_def, engine->get_asset<a_subtexture>( "ui_arrow_right" ) ) ) & im_result::left_clicked )
+	{
+		game->current_room++;
+		game->current_room = w_clamp( game->current_room, 0, 9 );
 	}
 
 	RENDER
