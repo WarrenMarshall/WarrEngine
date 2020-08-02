@@ -18,13 +18,15 @@
 	"subtexture" "uipack_sheet"
 	"filename" "images/uipack_rpg_sheet.png"
 	"subtextures" "\
-		img_mouse_cursor,168,76,16,18"
+		ui_sword_cursor,168,76,16,18\
+		ui_arrow_left,140,242,12,12,\
+		ui_arrow_right,130,242,12,12"
 }
 
 {
 	"type" "cursor"
 	"name" "ui_cursor"
-	"subtexture" "toon_hand_cursor"
+	"subtexture" "ui_sword_cursor"
 	"hotspot" "1, 1"
 }
 

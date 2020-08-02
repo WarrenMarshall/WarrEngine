@@ -61,8 +61,6 @@ void layer_editor::draw()
 {
 	w_layer::draw();
 
-	// ----------------------------------------------------------------------------
-
 	// current room
 
 	RENDER
@@ -81,7 +79,6 @@ void layer_editor::draw()
 
 	UI->im_passive( this, { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, w_ui_style_panel( UI->theme->panel_slice_def ) );
 
-	// ----------------------------------------------------------------------------
 	// tiles
 
 	bool c_key_is_down = engine->input->is_button_down( input_id::key_c );
@@ -134,14 +131,10 @@ void layer_editor::draw()
 		}
 	}
 
-	// ----------------------------------------------------------------------------
-
 	if( UI->im_active( this, { 12, 188, 48, 48 }, w_ui_style_pushbutton( UI->theme->button_slice_def, game->get_tile( game->current_tile_idx )->subtex ) ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->push( std::make_unique<layer_browser>() );
 	}
-
-	// ----------------------------------------------------------------------------
 
 	RENDER
 		->begin()
@@ -172,6 +165,20 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 		{
 			switch( evt->input_id )
 			{
+				case input_id::key_right_bracket:
+				{
+					game->current_room++;
+					game->current_room = w_clamp( game->current_room, 0, 9 );
+				}
+				break;
+
+				case input_id::key_left_bracket:
+				{
+					game->current_room--;
+					game->current_room = w_clamp( game->current_room, 0, 9 );
+				}
+				break;
+
 				case input_id::key_0:
 				case input_id::key_1:
 				case input_id::key_2:
