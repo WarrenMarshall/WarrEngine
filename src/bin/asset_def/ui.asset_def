@@ -18,9 +18,10 @@
 	"subtexture" "uipack_sheet"
 	"filename" "images/uipack_rpg_sheet.png"
 	"subtextures" "\
-		ui_sword_cursor,168,76,16,18\
-		ui_arrow_left,140,242,12,12,\
-		ui_arrow_right,130,242,12,12"
+		ui_sword_cursor,168,76,16,18,\
+		ui_arrow_left,140,243,12,12,\
+		ui_arrow_right,129,243,12,12,\
+		ui_close_x,185,30,8,8"
 }
 
 {

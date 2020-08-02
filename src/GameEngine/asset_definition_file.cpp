@@ -72,6 +72,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					{
 						std::string_view subtex_list = iter_ad->find_value( "subtextures" );
 
+						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
+
+						if( ( comma_count % 5 ) != 4 )
+							log_error( fmt::format( "{} : '{}' has bad formatting - too many or too few commas", __FUNCTION__, subtex_list ) );
+
 						w_tokenizer tok( subtex_list, ',' );
 
 						while( !tok.is_eos() )
