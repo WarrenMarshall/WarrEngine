@@ -46,7 +46,7 @@ void g_custom_game::new_game()
 {
 	w_game::new_game();
 
-	player = game->spawn_entity<e_player>( { 152, 188 }, 0.f );
+	//player = game->spawn_entity<e_player>( { 152, 188 }, 0.f );
 }
 
 void g_custom_game::update()

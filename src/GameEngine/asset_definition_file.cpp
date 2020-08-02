@@ -507,7 +507,10 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 				tok.get_next_token();
 				std::string_view value = tok.get_next_token();
 
-				current_asset_definition->add( key, value );
+				if( key.length() && value.length() )
+				{
+					current_asset_definition->add( key, value );
+				}
 			}
 		}
 
