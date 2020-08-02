@@ -9,7 +9,7 @@ void w_ui_mgr::init()
 
 void w_ui_mgr::set_mouse_visible( bool visible )
 {
-	this->is_mouse_visible = visible;
+	this->mouse_is_visible = visible;
 }
 
 void w_ui_mgr::draw_topmost()
@@ -33,7 +33,7 @@ e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, const w_ui_sty
 
 	e_im_result result = im_result::none;
 
-	if( engine->layer_mgr->get_top() == layer )
+	if( mouse_is_visible && engine->layer_mgr->get_top() == layer )
 	{
 		result = ui_style.update_im_state( im_automatic_id, rc );
 	}
