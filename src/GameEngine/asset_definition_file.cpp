@@ -17,11 +17,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 			{
 				if( type == "preproc" )
 				{
-					for( auto& iter : iter_ad->kv )
+					for( auto& [key,value] : iter_ad->kv )
 					{
-						std::string key = iter.first;
-						std::string_view value = iter.second;
-
 						if( key != "name" && key != "type" )
 							engine->_symbol_to_value[ key ] = value;
 					}
@@ -192,11 +189,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					std::string_view tex_name = iter_ad->find_value( "texture");
 
-					for( const auto& iter : iter_ad->kv )
+					for( const auto& [key, value] : iter_ad->kv )
 					{
-						std::string_view key = iter.first;
-						std::string_view value = iter.second;
-
 						int subtex_idx = 0;
 						w_rect rc = {};
 
@@ -205,7 +199,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 							subtex_idx = w_parser::int_from_str( key );
 							rc = w_parser::rect_from_str( value );
 
-							std::string subtex_name = name + "_" + key.data();
+							std::string subtex_name = name + "_" + key;
 
 							asset_ptr->patches[ subtex_idx ] = static_cast<a_subtexture*>(
 								engine->asset_cache->add(
@@ -282,11 +276,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					// ------------------------------------------------------------------------
 
-					for( const auto& iter : iter_ad->kv )
+					for( const auto& [key, value] : iter_ad->kv )
 					{
-						std::string_view key = iter.first;
-						std::string_view value = iter.second;
-
 						if( key == "name" || key == "type" )
 						{
 							// these are valid, we just don't need them here

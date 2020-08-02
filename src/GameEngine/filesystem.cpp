@@ -101,17 +101,15 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 	// look in ZIP files
 
-	for( auto& iter : zip_io->table_of_contents )
+	for( auto& [filename, toc_entry] : zip_io->table_of_contents )
 	{
-		filename = iter.first;
-
 		w_tokenizer tok( filename, '/', "" );
 		std::string_view foldername = tok.get_next_token();
 		std::string_view filename = tok.get_next_token();
 
 		if( foldername == folder )
 		{
-			filenames.emplace_back( iter.second->filename );
+			filenames.emplace_back( toc_entry->filename );
 		}
 	}
 }

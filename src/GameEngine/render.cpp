@@ -300,9 +300,9 @@ void w_render::begin_frame( float frame_interpolate_pct )
 
 	// reset all render buffers
 
-	for( const auto& iter : engine->asset_cache->cache )
+	for( const auto& [xxx, asset] : engine->asset_cache->cache )
 	{
-		iter.second->clear_render_buffer();
+		asset->clear_render_buffer();
 	}
 
 	engine->shader->bind();
@@ -317,15 +317,15 @@ void w_render::end_frame()
 
 	// draw all render buffers
 
-	for( const auto& iter : engine->asset_cache->cache )
+	for( const auto& [xxx, asset] : engine->asset_cache->cache )
 	{
-		iter.second->draw( render_pass::solid );
+		asset->draw( render_pass::solid );
 	}
 
-	for( const auto& iter : engine->asset_cache->cache )
+	for( const auto& [xxx, asset] : engine->asset_cache->cache )
 	{
 		glDepthMask( GL_FALSE );
-		iter.second->draw( render_pass::transparent );
+		asset->draw( render_pass::transparent );
 	}
 	glDepthMask( GL_TRUE );
 

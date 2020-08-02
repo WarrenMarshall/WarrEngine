@@ -232,9 +232,9 @@ void w_engine::update()
 {
 	layer_mgr->update();
 
-	for( const auto& asset : asset_cache->cache )
+	for( const auto& [xxx, asset] : asset_cache->cache )
 	{
-		asset.second->update();
+		asset->update();
 	}
 
 	render->show_stats = input->is_button_down( input_id::key_a);
@@ -297,9 +297,9 @@ void w_engine::precache_asset_resources()
 {
 	for( int p = 0; p < w_engine::num_asset_def_passes; ++p )
 	{
-		for( const auto& iter_adf : engine->asset_definition_file_cache->cache )
+		for( const auto& [xxx, asset_definition_file] : engine->asset_definition_file_cache->cache )
 		{
-			iter_adf.second->precache_asset_resources( p, b_is_hot_reloading(false) );
+			asset_definition_file->precache_asset_resources( p, b_is_hot_reloading(false) );
 		}
 	}
 
@@ -370,12 +370,12 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 					w_render_buffer* rb;
 
-					for( const auto& iter : asset_cache->cache )
+					for( const auto& [xxx, asset] : asset_cache->cache )
 					{
-						if( iter.second->render_buffer )
+						if( asset->render_buffer )
 						{
-							rb = iter.second->render_buffer.get();
-							rb->log_stats( iter.second.get() );
+							rb = asset->render_buffer.get();
+							rb->log_stats( asset.get() );
 						}
 					}
 

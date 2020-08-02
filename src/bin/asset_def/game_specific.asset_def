@@ -77,7 +77,7 @@
 		tile_portal_02, 16, 64, 16, 16,\
 		tile_portal_03, 32, 64, 16, 16,\
 		tile_portal_04, 48, 64, 16, 16,\
-		tile_poison, 16, 64, 16, 16,\
+		tile_poison, 64, 64, 16, 16,\
 		tile_blank_01, 80, 64, 16, 16,\
 		tile_blank_02, 96, 64, 16, 16,\
 		tile_blank_03, 112, 64, 16, 16,\
