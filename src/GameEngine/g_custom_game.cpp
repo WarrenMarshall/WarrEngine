@@ -66,7 +66,7 @@ w_tile* g_custom_game::get_tile( int id )
 	return tile;
 }
 
-void g_custom_game::draw_viewport_caption()
+void g_custom_game::draw_viewport_caption( const std::string_view caption, float ypos)
 {
 	static a_font* larger_font = engine->get_asset<a_font>( "larger_font" );
 
@@ -75,6 +75,6 @@ void g_custom_game::draw_viewport_caption()
 		->push_depth_nudge( 20 )
 		->push_rgb( W_COLOR_ORANGE )
 		->push_align( align::centered )
-		->draw_string( larger_font, game->viewport_caption, w_rect( v_window_hw, 18.f ) )
+		->draw_string( larger_font, caption, w_rect( v_window_hw, ypos ) )
 		->end();
 }

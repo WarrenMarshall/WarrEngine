@@ -30,7 +30,6 @@ struct g_custom_game : w_game
 	std::array<w_world_room, 10> rooms = {};
 
 	// edit mode specific
-	std::string viewport_caption = "";
 	w_vec2 current_tile = w_vec2( 0.0f, 0.0f );
 	int current_tile_idx = 0;
 	// edit mode specific
@@ -43,5 +42,5 @@ struct g_custom_game : w_game
 	void update() override;
 
 	w_tile* get_tile( int id );
-	void draw_viewport_caption();
+	void draw_viewport_caption( const std::string_view caption, float ypos );
 };

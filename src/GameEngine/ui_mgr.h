@@ -17,11 +17,10 @@ struct w_ui_mgr
 	void draw_topmost();
 
 	void im_reset();
-	e_im_result im_active( w_rect rc, const w_ui_style& ui_style );
-	e_im_result im_passive( w_rect rc, const w_ui_style& ui_style );
+	e_im_result im_active( const w_layer* layer, w_rect rc, const w_ui_style& ui_style );
+	e_im_result im_passive( const w_layer* layer, w_rect rc, const w_ui_style& ui_style );
 
 	bool is_mouse_inside( w_rect& rc ) const;
 
-private:
 	int im_automatic_id = 0;
 };
