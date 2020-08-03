@@ -154,7 +154,7 @@ void w_render_buffer::log_stats( i_asset* asset )
 {
     if( !(indices[0].empty()) || !(indices[1].empty()) )
     {
-	    log_msg( fmt::format( "\t\t[{}]: [{} verts, {} indices]", asset->name, vertices[0].size() + vertices[1].size(), indices[0].size() + indices[1].size() ) );
+        log_msg( fmt::format( "\t\t[{}]: [{} verts, {} indices]", asset->name, s_commas( vertices[ 0 ].size() + vertices[ 1 ].size() ), s_commas( indices[ 0 ].size() + indices[ 1 ].size() ) ) );
     }
 }
 
