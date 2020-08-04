@@ -156,24 +156,19 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 
 	// create a buffer of color data, and fill it with the gradient colors
 
-	// #todo - can this be turned into a std::array or something and remove the allocation/free calls?
-	auto* color_data = static_cast<float*>( ::malloc( sizeof( float ) * 4 * static_cast<int>( w ) * static_cast<int>( h ) ) );
-	int clridx = 0;
-
-	float* wptr = color_data;
+	std::basic_string<float> color_data;
+	int color_idx = 0;
 
 	for( int y = 0; y < h; ++y )
 	{
 		for( int x = 0; x < w; ++x )
 		{
-			const w_color& clr = colors[clridx];
+			color_data += colors[ color_idx ].r;
+			color_data += colors[ color_idx ].g;
+			color_data += colors[ color_idx ].b;
+			color_data += colors[ color_idx ].a;
 
-			*wptr++ = clr.r;
-			*wptr++ = clr.g;
-			*wptr++ = clr.b;
-			*wptr++ = clr.a;
-
-			clridx++;
+			color_idx++;
 		}
 	}
 
@@ -190,12 +185,8 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, color_data );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, color_data.data() );
 	OPENGL->clear_texture_bind();
-
-	// clean up
-
-	::free( color_data );
 
 	return true;
 }

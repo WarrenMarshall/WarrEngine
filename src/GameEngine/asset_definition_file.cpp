@@ -60,7 +60,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 													  iter_ad->find_value( "subtexture" ), "" )
 							);
 
-						// #todo	- is this subtex pointer inside a_texture still useful?
 						asset_ptr->subtex = subtex;
 					}
 

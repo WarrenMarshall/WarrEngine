@@ -15,6 +15,9 @@ struct a_texture : i_asset
 		a convenience so you don't have to declare a matching a_subtexture for
 		every a_texture in the asset_def files.
 
+		this is mainly used for things that generate subtextures for
+		themselves like gradients.
+
 		call "get_subtexture" on your a_texture to get to it.
 	*/
 	a_subtexture* subtex = nullptr;
