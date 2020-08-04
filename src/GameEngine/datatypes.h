@@ -2,7 +2,6 @@
 
 // ----------------------------------------------------------------------------
 
-// #todo - constexpr these?
 #define W_COLOR_WHITE		w_color( 1.0f, 1.0f, 1.0f )
 #define W_COLOR_BLACK		w_color( 0.0f, 0.0f, 0.0f )
 #define W_COLOR_RED			w_color( 1.0f, 0.0f, 0.0f )

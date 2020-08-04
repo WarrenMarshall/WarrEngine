@@ -106,14 +106,18 @@ void layer_editor::draw()
 			
 			e_im_result ir = UI->im_active( this, rc, w_ui_style_tile( subtex ) );
 
-			if( (ir & im_result::left_clicked) && !f_key_is_down )
+			if( ir & im_result::hot )
 			{
-				// by default, just drop down the current 
 				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
+				is_painting = true;
 			}
-			else if( ir & im_result::hot )
+			else if( ir & im_result::hovered )
 			{
-				if( c_key_is_down )
+				if( is_painting )
+				{
+					game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
+				}
+				else if( c_key_is_down )
 				{
 					// copy tile clicked to the current tile
 					game->current_tile_idx = game->rooms[ game->current_room ].tiles[ idx ];
@@ -123,15 +127,6 @@ void layer_editor::draw()
 					// take the current tile, and flood fill into the room starting with the clicked tile
 					flood_fill_room( idx, game->rooms[ game->current_room ].tiles[ idx ], game->current_tile_idx );
 				}
-				else
-				{
-					game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
-					is_painting = true;
-				}
-			}
-			else if( ( ir & im_result::hovered ) && is_painting )
-			{
-				game->rooms[ game->current_room ].tiles[ idx ] = game->current_tile_idx;
 			}
 		}
 	}

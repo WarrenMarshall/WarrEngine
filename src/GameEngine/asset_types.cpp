@@ -157,6 +157,7 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 	// create a buffer of color data, and fill it with the gradient colors
 
 	std::basic_string<float> color_data;
+	color_data.reserve( 4 * static_cast<int>( w * h ) );
 	int color_idx = 0;
 
 	for( int y = 0; y < h; ++y )
