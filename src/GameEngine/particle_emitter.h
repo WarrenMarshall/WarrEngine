@@ -16,7 +16,6 @@ struct w_particle_emitter : i_listener, i_transform
 	// than 1.0, it's time to spawn a particle.
 	float particles_to_spawn_accum = 0.0f;
 
-	w_particle_emitter() = default;
 	~w_particle_emitter();
 
 	void on_listener_event_received( e_event_id event, void* object ) override;
