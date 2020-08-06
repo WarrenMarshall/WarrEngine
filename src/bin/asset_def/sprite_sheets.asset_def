@@ -1,4 +1,7 @@
 
+# break the sprite sheet into subtexture names and
+# use those to define an anim_texture
+
 {
 	"type" "texture"
 	"name" "orange_germ_sheet"

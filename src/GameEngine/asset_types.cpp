@@ -299,16 +299,12 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 {
 	ZeroMemory( char_map.data(), sizeof( w_font_char ) * max_font_chars );
 
-	auto file = engine->fs->load_file_into_memory( original_filename );
+	auto file = engine->fs->load_text_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
-
-	std::string_view file_as_string = file->buffer->data();	
-	w_tokenizer tok( file_as_string, '\n', "" );
 
 	float x, y, w, h;
 
-	std::string_view line = tok.get_next_token();
-	while( !tok.is_eos() )
+	for( const auto& line : *( file.get()->lines.get() ) )
 	{
 		if( line.substr( 0, 5 ) == "char " )
 		{
@@ -332,8 +328,6 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 			max_height = w_max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
 		}
-
-		line = tok.get_next_token();
 	}
 
 	// save the last time modified for hot reloading
