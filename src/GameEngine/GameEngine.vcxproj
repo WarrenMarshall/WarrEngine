@@ -180,7 +180,7 @@
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_entities.cpp" />
-    <ClCompile Include="impl_cute_headers.cpp" />
+    <ClCompile Include="impl_header_only.cpp" />
     <ClCompile Include="input_game_controller.cpp" />
     <ClCompile Include="layer_browser.cpp" />
     <ClCompile Include="master_pch.cpp">
@@ -206,7 +206,6 @@
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
-    <ClCompile Include="impl_stb_image.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />

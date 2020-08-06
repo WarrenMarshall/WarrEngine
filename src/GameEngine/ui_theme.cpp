@@ -110,6 +110,37 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 
 // ----------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------
+
+w_ui_style_radiobutton::w_ui_style_radiobutton( a_9slice_def* slice_def, a_subtexture* subtex, a_subtexture* subtex_radio_on )
+	: w_ui_style_pushbutton( slice_def, subtex ),
+	subtex_radio_on( subtex_radio_on )
+{
+}
+
+void w_ui_style_radiobutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
+{
+	w_ui_style_pushbutton::draw( rc, being_hovered, being_clicked );
+
+	w_vec2 rc_click_offset = { 0, 0 };
+	if( being_hovered && being_clicked )
+	{
+		rc_click_offset = { 1, 1 };
+	}
+
+	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, subtex_radio_on->sz.w, subtex_radio_on->sz.h };
+
+	RENDER->begin();
+
+	RENDER->push_rgb( W_COLOR_DARK_GREY )
+		->push_depth_nudge( 50 )
+		->draw_sprite( subtex_radio_on, w_rect( rc_draw.x + ( rc.w / 2 ), rc_draw.y + ( rc.h / 2 ), ( rc_draw.w / 2 ), ( rc_draw.h / 2 ) ) );
+
+	RENDER->end();
+}
+
+// ----------------------------------------------------------------------------
+
 w_ui_style_panel::w_ui_style_panel( a_9slice_def* slice_def )
 	: slice_def( slice_def )
 {
@@ -225,6 +256,7 @@ void w_ui_theme::init()
 {
 	mouse_cursor = engine->get_asset<a_cursor>( "ui_cursor", b_silent( true ) );
 	small_font = engine->get_asset<a_font>( "ui_simple_font" );
+	large_font = engine->get_asset<a_font>( "larger_font" );
 
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
 	button_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );

@@ -131,6 +131,7 @@ int main( int argc, char* argv[] )
 		{
 			log_msg( "Initializing game" );
 			game = std::make_unique<g_custom_game>();
+			game->init();
 			game->new_game();
 		}
 
