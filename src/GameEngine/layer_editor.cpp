@@ -93,10 +93,11 @@ void layer_editor::draw()
 
 	RENDER
 		->begin()
+		->push_alpha( 0.25f )
 		->draw( gradient, w_rect( 0, ypos, v_window_w, ROOM_SZ * TILE_SZ ) )
 		->end();
 
-		for( int y = 0 ; y < ROOM_SZ ; ++y )
+	for( int y = 0 ; y < ROOM_SZ ; ++y )
 	{
 		for( int x = 0 ; x < ROOM_SZ ; ++x )
 		{
