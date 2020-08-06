@@ -9,7 +9,8 @@ struct w_mem_file
 	bool was_loaded_from_zip_file = false;
 	std::unique_ptr<std::vector<char>> buffer = nullptr;
 
-	w_mem_file();
+	w_mem_file() = default;
+	w_mem_file( int size );
 };
 
 // ----------------------------------------------------------------------------
@@ -20,6 +21,7 @@ struct w_mem_file_text : w_mem_file
 {
 	std::unique_ptr<std::vector<std::string>> lines = nullptr;
 
-	w_mem_file_text();
+	w_mem_file_text() = default;
+	w_mem_file_text( int size);
 	void preprocess();
 };

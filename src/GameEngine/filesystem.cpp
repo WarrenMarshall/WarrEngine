@@ -56,20 +56,20 @@ std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string_vi
 		std::streamsize size = file.tellg();
 		file.seekg( 0, std::ios::beg );
 
-		std::unique_ptr<w_mem_file> mem_file = std::make_unique<w_mem_file>();
-		mem_file->buffer->reserve( size );
-		file.read( mem_file->buffer->data(), size );
+		std::unique_ptr<w_mem_file> mem_file = std::make_unique<w_mem_file>( static_cast<int>( size ) );
+		file.read( &(*mem_file->buffer)[0], size );
 		return std::move( mem_file );
 	}
 	else
 	{
 		w_zip_toc_entry* toc_entry = zip_io->get_toc_entry_for_filename( filename );
 		if( toc_entry == nullptr )
+		{
 			log_error( fmt::format( "{} : file not found on disk OR in a zip file : [{}]", __FUNCTION__, filename ) );
+		}
 		else
 		{
-			auto mem_file = std::make_unique<w_mem_file>();
-			mem_file->buffer->reserve( toc_entry->size );
+			auto mem_file = std::make_unique<w_mem_file>( toc_entry->size );
 			mem_file->buffer = zip_io->get_data_for_filename( filename );
 			mem_file->was_loaded_from_zip_file = true;
 			return std::move( mem_file );
@@ -87,22 +87,24 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 		std::streamsize size = file.tellg();
 		file.seekg( 0, std::ios::beg );
 
-		auto mem_file = std::make_unique<w_mem_file_text>();
-		mem_file->buffer->reserve( size );
+		auto mem_file = std::make_unique<w_mem_file_text>( static_cast<int>( size ) );
 		file.read( mem_file->buffer->data(), size );
+		mem_file->preprocess();
 		return std::move( mem_file );
 	}
 	else
 	{
 		w_zip_toc_entry* toc_entry = zip_io->get_toc_entry_for_filename( filename );
 		if( toc_entry == nullptr )
+		{
 			log_error( fmt::format( "{} : file not found on disk OR in a zip file : [{}]", __FUNCTION__, filename ) );
+		}
 		else
 		{
-			auto mem_file = std::make_unique<w_mem_file_text>();
-			mem_file->buffer->reserve( toc_entry->size );
+			auto mem_file = std::make_unique<w_mem_file_text>( toc_entry->size );
 			mem_file->buffer = zip_io->get_data_for_filename( filename );
 			mem_file->was_loaded_from_zip_file = true;
+			mem_file->preprocess();
 			return std::move( mem_file );
 		}
 	}

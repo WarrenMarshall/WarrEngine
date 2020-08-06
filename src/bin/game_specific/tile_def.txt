@@ -1,9 +1,13 @@
+# first bank of tiles
 000, tile_deep_water, true
-001, tile_shallow_water, true
+001, tile_shallow_water, true	# use this for rivers
 002, tile_river_water, true
 003, tile_grass_shrub, true
 004, tile_grass, true
-005, tile_light_trees, true
+005,\
+	# big ass comment
+	tile_light_trees,\	# light forested areas
+	true
 006, tile_trees, true
 007, tile_hills, true
 008, tile_mountains, true
@@ -15,6 +19,8 @@
 014, tile_castle_middle, true
 015, tile_castle_right, true
 
+# this is a multiple line comment
+# that extends for 2 lines # with a friend on the end
 016, tile_ship_left, false
 017, tile_ship_back, false
 018, tile_ship_right, false
