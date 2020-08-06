@@ -3,6 +3,7 @@
 struct layer_editor : w_layer
 {
 	w_rect tile_display_area;
+	a_gradient* gradient = nullptr;
 
 	bool is_painting = false;
 

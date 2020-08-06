@@ -9,6 +9,7 @@ void layer_editor::push()
 	UI->set_mouse_visible( true );
 
 	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * ROOM_SZ );
+	gradient = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
 void layer_editor::pop()
@@ -90,7 +91,12 @@ void layer_editor::draw()
 	float xpos = (v_window_w - ( ROOM_SZ * TILE_SZ )) / 2.0f;
 	float ypos = TILE_SZ * 2;
 
-	for( int y = 0 ; y < ROOM_SZ ; ++y )
+	RENDER
+		->begin()
+		->draw( gradient, w_rect( 0, ypos, v_window_w, ROOM_SZ * TILE_SZ ) )
+		->end();
+
+		for( int y = 0 ; y < ROOM_SZ ; ++y )
 	{
 		for( int x = 0 ; x < ROOM_SZ ; ++x )
 		{
