@@ -444,72 +444,40 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	// read the contents of the asset definition file and break it up
 	// into individual asset definitions
 
-	auto file = engine->fs->load_file_into_memory( original_filename );
+	auto file = engine->fs->load_text_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
-	std::string_view file_as_string = file->buffer->data();
-	w_tokenizer tok( file_as_string, '\n', "" );
-
-	std::string_view line = tok.get_next_token();
 	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
-	std::string line_extended;
 
 	// loop through every line of the asset_def fil and 
-	while( !tok.is_eos() )
+	for( const auto& line : *( file.get()->lines.get() ) )
 	{
-		// ignore blank lines and lines that are entirely commented
-		if( !line.empty() && line[0] != '#' )
+		// a "{" marks the beginning of a new asset definition
+		if( line[ 0 ] == '{' )
 		{
-			// when a multi line statement is found, concatenate the lines
-			// that follow it until it is complete - then parse as normal.
-			// #bug - this doesn't handle any of the lines having a comment in them
-			if( line.back() == '\\' )
-			{
-				line_extended = line;
-				while( line_extended.back() == '\\' )
-				{
-					line_extended = line_extended.substr( 0, line_extended.length() - 1 );
-					line_extended += tok.get_next_token();
-				}
-				line = line_extended;
-			}
+			current_asset_definition = std::make_unique<w_keyvalues>();
+		}
+		// a "}" marks the end of the current asset definition
+		else if( line[0] == '}' )
+		{
+			asset_definitions.emplace_back( std::move( current_asset_definition ) );
+			current_asset_definition = nullptr;
+		}
+		// parse each line into a key/value pair for the current asset definition
+		else
+		{
+			w_tokenizer tok_kv( line, '\"' );
 
-			// remove comments from the ends of lines, if they are there
-			size_t pos = line.find_first_of( "#" );
-			if( pos != std::string_view::npos )
-			{
-				line = w_stringutil::rtrim( line.substr( 0, pos ) );
-			}
+			tok_kv.get_next_token();
+			std::string_view key = tok_kv.get_next_token();
+			tok_kv.get_next_token();
+			std::string_view value = tok_kv.get_next_token();
 
-			// a "{" marks the beginning of a new asset definition
-			if( line[ 0 ] == '{' )
+			if( key.length() && value.length() )
 			{
-				current_asset_definition = std::make_unique<w_keyvalues>();
-			}
-			// a "}" marks the end of the current asset definition
-			else if( line[0] == '}' )
-			{
-				asset_definitions.emplace_back( std::move( current_asset_definition ) );
-				current_asset_definition = nullptr;
-			}
-			// parse each line into a key/value pair for the current asset definition
-			else
-			{
-				w_tokenizer tok( line, '\"' );
-
-				tok.get_next_token();
-				std::string_view key = tok.get_next_token();
-				tok.get_next_token();
-				std::string_view value = tok.get_next_token();
-
-				if( key.length() && value.length() )
-				{
-					current_asset_definition->add( key, value );
-				}
+				current_asset_definition->add( key, value );
 			}
 		}
-
-		line = tok.get_next_token();
 	}
 
 	if( g_allow_hot_reload )
