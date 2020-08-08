@@ -1,20 +1,6 @@
 #pragma once
 
 // ----------------------------------------------------------------------------
-// macros to make enum definitions easier to read
-
-#define enum_begin( name )\
-	using e_##name = int;\
-	namespace name\
-	{\
-		enum\
-		{
-
-#define enum_end\
-		};\
-	};
-
-// ----------------------------------------------------------------------------
 
 enum_begin( align )
 	invalid = 0,
@@ -295,6 +281,3 @@ enum_begin( im_result )
 enum_end
 
 // ----------------------------------------------------------------------------
-
-#undef enum_begin
-#undef enum_end

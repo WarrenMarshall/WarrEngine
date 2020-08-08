@@ -69,6 +69,20 @@
 // putting things in here will speed up partial compiles
 // ----------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------
+// macros to make enum definitions easier to read
+
+#define enum_begin( name )\
+	using e_##name = int;\
+	namespace name\
+	{\
+		enum\
+		{
+
+#define enum_end\
+		};\
+	};
+
 #include "master_fwd_decl.h"
 #include "master_enum.h"
 

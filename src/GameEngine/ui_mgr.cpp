@@ -38,14 +38,14 @@ e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, const w_ui_sty
 		result = ui_style.update_im_state( im_automatic_id, rc );
 	}
 
-	ui_style.draw( rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
+	ui_style.draw(rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
 	return result;
 }
 
 e_im_result w_ui_mgr::im_passive( const w_layer* layer, w_rect rc, const w_ui_style& ui_style )
 {
-	ui_style.draw( rc, false, false );
+	ui_style.draw(rc, false, false );
 
 	return im_result::none;
 }
