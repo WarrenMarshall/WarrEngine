@@ -64,17 +64,9 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc ) const
 
 // ----------------------------------------------------------------------------
 
-w_ui_style::w_ui_style( const std::string_view label )
-	: label( label )
+w_ui_style_pushbutton::w_ui_style_pushbutton()
 {
-}
-
-
-// ----------------------------------------------------------------------------
-
-w_ui_style_pushbutton::w_ui_style_pushbutton( const std::string_view label, a_9slice_def* slice_def, a_subtexture* subtex )
-	: w_ui_style( label ), slice_def( slice_def ), subtex( subtex )
-{
+	slice_def = UI->theme->button_slice_def;
 }
 
 void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
@@ -113,6 +105,9 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 		rc_client.x += slice_def ? slice_def->patches[ slicedef_patch::P_00 ]->sz.w : 0;
 		rc_client.y += slice_def ? slice_def->patches[ slicedef_patch::P_00 ]->sz.h : 0;
 
+		rc_client.x += subtex_offset.x * ( subtex_offset.x != -1 );
+		rc_client.y += subtex_offset.y * ( subtex_offset.y != -1 );
+
 		rc_client.w = subtex_sz.w == -1 ? subtex->rc_src.w : subtex_sz.w;
 		rc_client.h = subtex_sz.h == -1 ? subtex->rc_src.h : subtex_sz.h;
 
@@ -126,11 +121,7 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 
 // ----------------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
-
-w_ui_style_radiobutton::w_ui_style_radiobutton( const std::string_view label, a_9slice_def* slice_def, a_subtexture* subtex, a_subtexture* subtex_radio_on )
-	: w_ui_style_pushbutton( label, slice_def, subtex ),
-	subtex_radio_on( subtex_radio_on )
+w_ui_style_radiobutton::w_ui_style_radiobutton()
 {
 }
 
@@ -161,30 +152,13 @@ void w_ui_style_radiobutton::draw( w_rect& rc, bool being_hovered, bool being_cl
 			->draw_sprite( subtex_radio_on, rc_client )
 			->end();
 	}
-
-	// label
-
-	if( label.length() )
-	{
-		w_rect rc_draw = {
-			rc.x + 8 + rc_click_offset.x + subtex->sz.w,
-			rc.y + 8 + rc_click_offset.y + (subtex->sz.h / 2),
-			-1, -1 };
-
-		RENDER->begin()
-			->push_rgb( ( being_hovered || being_clicked ) ? W_COLOR_WHITE : W_COLOR_LIGHT_GREY )
-			->push_depth_nudge( 50 )
-			->push_align( align::vcenter )
-			->draw_string( UI->theme->small_font, label, rc_draw )
-			->end();
-	}
 }
 
 // ----------------------------------------------------------------------------
 
-w_ui_style_panel::w_ui_style_panel( const std::string_view label, a_9slice_def* slice_def )
-	: w_ui_style( label ), slice_def( slice_def )
+w_ui_style_panel::w_ui_style_panel()
 {
+	slice_def = UI->theme->panel_slice_def;
 }
 
 void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
@@ -192,15 +166,14 @@ void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked 
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->push_rgb( W_COLOR_DARK_GREY )
+		->push_rgb( color )
 		->draw_sliced( slice_def, rc )
 		->end();
 }
 
 // ----------------------------------------------------------------------------
 
-w_ui_style_tile::w_ui_style_tile( const std::string_view label, a_subtexture* tile_subtex )
-	: w_ui_style( label ), tile_subtex( tile_subtex )
+w_ui_style_tile::w_ui_style_tile()
 {
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 }
@@ -224,7 +197,7 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->draw( tile_subtex, rc )
+		->draw( subtex_tile, rc )
 		->push_rgba( bracket_color )
 		->push_depth_nudge()
 		->draw( selector_bracket, rc );

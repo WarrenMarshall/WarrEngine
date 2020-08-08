@@ -10,12 +10,6 @@ void layer_editor::push()
 
 	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * ROOM_SZ );
 	gradient = engine->get_asset<a_gradient>( "background_gradient" );
-
-	// UI styles
-
-	browse_button_style = std::make_unique<w_ui_style_pushbutton>();
-	browse_button_style->slice_def = UI->theme->button_slice_def;
-	browse_button_style->subtex_sz = w_sz( 32, 32 );
 }
 
 void layer_editor::pop()
@@ -66,6 +60,24 @@ void flood_fill_room( int idx_clicked, int old_tile_id, int new_tile_id )
 
 void layer_editor::draw()
 {
+	if( !style_browse  )
+	{
+		style_browse = std::make_unique<w_ui_style_pushbutton>();
+		style_browse->subtex_sz = w_sz( 32, 32 );
+
+		style_arrow_button = std::make_unique<w_ui_style_pushbutton>();
+		style_arrow_button->subtex_offset = w_vec2( -4, -4 );
+		style_arrow_button->subtex_sz = w_sz( 8, 8 );
+
+		style_panel = std::make_unique<w_ui_style_panel>();
+		style_panel->color = W_COLOR_DARK_GREY;
+
+		style_tile = std::make_unique<w_ui_style_tile>();
+
+		style_radio_button = std::make_unique<w_ui_style_radiobutton>();
+		style_radio_button->subtex = engine->get_asset<a_subtexture>( "ui_radio" );
+	}
+
 	w_layer::draw();
 
 	// current room
@@ -82,12 +94,12 @@ void layer_editor::draw()
 
 	// title bar
 
-	UI->im_passive( this, { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, w_ui_style_panel( "", UI->theme->panel_slice_def) );
+	UI->im_passive( this, { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_panel.get() ) );
 	game->draw_viewport_caption( "Endless Adventure Editor", 18.0f);
 
 	// info bars
 
-	UI->im_passive( this, { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, w_ui_style_panel( "", UI->theme->panel_slice_def ) );
+	UI->im_passive( this, { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, *( style_panel.get() ) );
 
 	// tiles
 
@@ -114,9 +126,8 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			a_subtexture* subtex = game->get_tile( game->geometry_layer[ game->current_room_idx ].tiles[ idx ] )->subtex;
-			
-			e_im_result ir = UI->im_active( this, rc, w_ui_style_tile( "", subtex ) );
+			style_tile->subtex_tile = game->get_tile( game->geometry_layer[ game->current_room_idx ].tiles[ idx ] )->subtex;
+			e_im_result ir = UI->im_active( this, rc, *( style_tile.get() ) );
 
 			if( ir & im_result::hot )
 			{
@@ -143,17 +154,21 @@ void layer_editor::draw()
 		}
 	}
 
-	browse_button_style->subtex = game->get_tile( game->current_tile_idx )->subtex;
-	if( UI->im_active( this, { 12, 188, 48, 48 }, *(browse_button_style.get()) ) & im_result::left_clicked )
+	style_browse->subtex = game->get_tile( game->current_tile_idx )->subtex;
+	if( UI->im_active( this, { 12, 188, 48, 48 }, *( style_browse.get() ) ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->push( std::make_unique<layer_browser>() );
 	}
-	if( UI->im_active( this, { 76.0f, 208.0f, 16, 16 }, w_ui_style_pushbutton( "", UI->theme->button_slice_def, engine->get_asset<a_subtexture>( "ui_arrow_left" ) ) ) & im_result::left_clicked )
+	
+	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );
+	if( UI->im_active( this, { 76.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
 		game->current_room_idx--;
 		game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
 	}
-	if( UI->im_active( this, { 114.0f, 208.0f, 16, 16 }, w_ui_style_pushbutton( "", UI->theme->button_slice_def, engine->get_asset<a_subtexture>( "ui_arrow_right" ) ) ) & im_result::left_clicked )
+
+	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_right" );
+	if( UI->im_active( this, { 114.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
 		game->current_room_idx++;
 		game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
@@ -170,20 +185,21 @@ void layer_editor::draw()
 	*/
 
 	static a_subtexture* checkmark = engine->get_asset<a_subtexture>( "ui_checkmark" );
-	static a_subtexture* subtex_radio_button = engine->get_asset<a_subtexture>( "ui_radio" );
+
+	style_radio_button->subtex_radio_on = game->tile_layer == tile_layer::geometry ? checkmark : nullptr;
 	if( UI->im_active(
 		this,
 		{ 140.0f, 188.0f, 24, 24 },
-		w_ui_style_radiobutton( "Geometry", nullptr, subtex_radio_button, ( game->tile_layer == tile_layer::geometry ) ? checkmark : nullptr ) )
-		& im_result::left_clicked )
+		*(style_radio_button.get())) & im_result::left_clicked )
 	{
 		game->tile_layer = tile_layer::geometry;
 	}
+
+	style_radio_button->subtex_radio_on = game->tile_layer == tile_layer::items ? checkmark : nullptr;
 	if( UI->im_active(
 		this,
 		{ 140.0f, 212.0f, 24, 24 },
-		w_ui_style_radiobutton( "Items", nullptr, subtex_radio_button, ( game->tile_layer == tile_layer::items ) ? checkmark : nullptr ) )
-		& im_result::left_clicked )
+		*(style_radio_button.get())) & im_result::left_clicked )
 	{
 		game->tile_layer = tile_layer::items;
 	}
