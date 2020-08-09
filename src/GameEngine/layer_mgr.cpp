@@ -97,6 +97,9 @@ void w_layer_mgr::draw()
 
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{
+		// Only UI elements on the topmost layer respond to user input
+		UI->owning_layer_is_topmost = !x;
+
 		if( layer_stack[x]->is_alive() )
 		{
 			RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );

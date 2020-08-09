@@ -34,10 +34,10 @@ void layer_browser::draw()
 
 	w_layer::draw();
 
-	UI->im_passive( this, { 16.0f, 16.0f, v_window_w - 32.0f, v_window_h - 32.0f }, *( style_panel.get() ) );
+	UI->im_passive( { 16.0f, 16.0f, v_window_w - 32.0f, v_window_h - 32.0f }, *( style_panel.get() ) );
 	game->draw_viewport_caption( "Select A Tile", 34.0f );
 
-	if( UI->im_active( this, { 24.0f, 24.0f, 16, 16 }, *( style_close_button.get() ) ) & im_result::left_clicked )
+	if( UI->im_active( { 24.0f, 24.0f, 16, 16 }, *( style_close_button.get() ) ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->pop();
 	}
@@ -52,7 +52,7 @@ void layer_browser::draw()
 		{
 			w_rect rc( draw_pos.x, draw_pos.y, TILE_SZ, TILE_SZ );
 			style_tile->subtex_tile = tile.subtex;
-			e_im_result ir = UI->im_active( this, rc, *( style_tile.get() ) );
+			e_im_result ir = UI->im_active( rc, *( style_tile.get() ) );
 
 			if( ir == im_result::left_clicked )
 			{

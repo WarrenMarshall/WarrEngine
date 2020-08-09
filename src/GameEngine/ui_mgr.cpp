@@ -25,15 +25,16 @@ bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 void w_ui_mgr::im_reset()
 {
 	im_automatic_id = 0;
+	owning_layer_is_topmost = false;
 }
 
-e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, w_ui_style& ui_style )
+e_im_result w_ui_mgr::im_active( w_rect rc, w_ui_style& ui_style )
 {
 	im_automatic_id++;
 
 	e_im_result result = im_result::none;
 
-	if( mouse_is_visible && engine->layer_mgr->get_top() == layer )
+	if( mouse_is_visible && owning_layer_is_topmost )
 	{
 		result = ui_style.update_im_state( im_automatic_id, rc );
 	}
@@ -43,7 +44,7 @@ e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, w_ui_style& ui
 	return result;
 }
 
-e_im_result w_ui_mgr::im_passive( const w_layer* layer, w_rect rc, w_ui_style& ui_style )
+e_im_result w_ui_mgr::im_passive( w_rect rc, w_ui_style& ui_style )
 {
 	ui_style.draw(rc, false, false );
 
