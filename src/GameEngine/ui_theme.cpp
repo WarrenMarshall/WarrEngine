@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-e_im_result w_ui_style::update_im_state( int id, w_rect rc ) const
+e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 {
 	e_im_result imresult = im_result::none;
 
@@ -64,6 +64,16 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc ) const
 	return imresult;
 }
 
+w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
+{
+	if( being_hovered && being_clicked )
+	{
+		return clicked_offset;
+	}
+
+	return w_offset( 0, 0 );
+}
+
 // ----------------------------------------------------------------------------
 
 w_ui_style_pushbutton::w_ui_style_pushbutton()
@@ -71,10 +81,9 @@ w_ui_style_pushbutton::w_ui_style_pushbutton()
 	slice_def = UI->theme->button_slice_def;
 }
 
-void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
+void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	w_color final_color = W_COLOR_DARK_GREY;
-	w_vec2 rc_click_offset = { 0, 0 };
 	if( being_clicked )
 	{
 		w_color::scale( final_color, 1.75f );
@@ -84,12 +93,8 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 		w_color::scale( final_color, 1.25f );
 	}
 
-	if( being_hovered && being_clicked )
-	{
-		rc_click_offset = { 1, 1 };
-	}
-
-	w_rect rc_draw = { rc.x + rc_click_offset.x, rc.y + rc_click_offset.y, rc.w, rc.h };
+	w_offset offset = get_click_offset( being_hovered, being_clicked );
+	w_rect rc_draw = { rc.x + offset.x, rc.y + offset.y, rc.w, rc.h };
 
 	RENDER->begin()
 		->push_depth_nudge();
@@ -107,8 +112,8 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 		rc_client.x += slice_def ? slice_def->patches[ slicedef_patch::P_00 ]->sz.w : 0;
 		rc_client.y += slice_def ? slice_def->patches[ slicedef_patch::P_00 ]->sz.h : 0;
 
-		rc_client.x += subtex_offset.x * ( subtex_offset.x != -1 );
-		rc_client.y += subtex_offset.y * ( subtex_offset.y != -1 );
+		rc_client.x += subtex_pos_offset.x * ( subtex_pos_offset.x != -1 );
+		rc_client.y += subtex_pos_offset.y * ( subtex_pos_offset.y != -1 );
 
 		rc_client.w = subtex_sz.w == -1 ? subtex->rc_src.w : subtex_sz.w;
 		rc_client.h = subtex_sz.h == -1 ? subtex->rc_src.h : subtex_sz.h;
@@ -127,15 +132,11 @@ w_ui_style_radiobutton::w_ui_style_radiobutton()
 {
 }
 
-void w_ui_style_radiobutton::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
+void w_ui_style_radiobutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	w_ui_style_pushbutton::draw(rc, being_hovered, being_clicked );
 
-	w_vec2 rc_click_offset = { 0, 0 };
-	if( being_hovered && being_clicked )
-	{
-		rc_click_offset = { 1, 1 };
-	}
+	w_offset offset = get_click_offset( being_hovered, being_clicked );
 
 	// radio "on"
 
@@ -143,8 +144,8 @@ void w_ui_style_radiobutton::draw( w_rect& rc, bool being_hovered, bool being_cl
 	{
 		w_rect rc_client = rc;
 
-		rc_client.x += ( subtex->sz.w / 2 ) + rc_click_offset.x;
-		rc_client.y += ( subtex->sz.h / 2 ) + rc_click_offset.y;
+		rc_client.x += ( subtex->sz.w / 2 ) + offset.x;
+		rc_client.y += ( subtex->sz.h / 2 ) + offset.y;
 		rc_client.w = subtex_radio_on->sz.w;
 		rc_client.h = subtex_radio_on->sz.w;
 
@@ -163,7 +164,7 @@ w_ui_style_panel::w_ui_style_panel()
 	slice_def = UI->theme->panel_slice_def;
 }
 
-void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
+void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	RENDER
 		->begin()
@@ -180,7 +181,7 @@ w_ui_style_tile::w_ui_style_tile()
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 }
 
-void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked ) const
+void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	w_color bracket_color = W_COLOR_BLACK;
 	bracket_color.a = 0.0f;
@@ -207,7 +208,7 @@ void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 	RENDER->end();
 }
 
-e_im_result w_ui_style_tile::update_im_state( int id, w_rect rc ) const
+e_im_result w_ui_style_tile::update_im_state( int id, w_rect rc )
 {
 	e_im_result imresult = im_result::none;
 

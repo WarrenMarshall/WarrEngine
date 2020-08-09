@@ -166,6 +166,7 @@ constexpr float v_window_hh = v_window_h / 2.0f;
 
 using w_uv = w_vec2;
 using w_sz = w_vec2;
+using w_offset = w_vec2;
 
 // ----------------------------------------------------------------------------
 

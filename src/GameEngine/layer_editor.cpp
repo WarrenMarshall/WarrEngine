@@ -66,7 +66,7 @@ void layer_editor::draw()
 		style_browse->subtex_sz = w_sz( 32, 32 );
 
 		style_arrow_button = std::make_unique<w_ui_style_pushbutton>();
-		style_arrow_button->subtex_offset = w_vec2( -4, -4 );
+		style_arrow_button->subtex_pos_offset = w_vec2( -4, -4 );
 		style_arrow_button->subtex_sz = w_sz( 8, 8 );
 
 		style_panel = std::make_unique<w_ui_style_panel>();

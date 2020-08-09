@@ -27,7 +27,7 @@ void w_ui_mgr::im_reset()
 	im_automatic_id = 0;
 }
 
-e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, const w_ui_style& ui_style )
+e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, w_ui_style& ui_style )
 {
 	im_automatic_id++;
 
@@ -43,7 +43,7 @@ e_im_result w_ui_mgr::im_active( const w_layer* layer, w_rect rc, const w_ui_sty
 	return result;
 }
 
-e_im_result w_ui_mgr::im_passive( const w_layer* layer, w_rect rc, const w_ui_style& ui_style )
+e_im_result w_ui_mgr::im_passive( const w_layer* layer, w_rect rc, w_ui_style& ui_style )
 {
 	ui_style.draw(rc, false, false );
 
