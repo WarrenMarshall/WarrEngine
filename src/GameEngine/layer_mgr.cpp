@@ -13,7 +13,7 @@ void w_layer_mgr::push( std::unique_ptr<w_layer> layer )
 	layer->push();
 	layer->becoming_top_layer();
 
-	layer_stack.push_front( std::move( layer ) );
+	layer_stack.insert( layer_stack.begin(), std::move( layer ) );
 }
 
 void w_layer_mgr::pop()
