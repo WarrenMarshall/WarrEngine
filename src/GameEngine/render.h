@@ -33,20 +33,13 @@ struct w_render
 	*/
 	float frame_interpolate_pct = 0.0f;
 
-	std::stack<glm::mat4> modelview_stack;
-
 	// ----------------------------------------------------------------------------
 	// the current render state stacks
 
-	//int rs_color_count = 0;
-	//std::stack<w_color> rs_color_stack;
 	std::basic_string<float> rs_color_stack;	// 3 floats per color
-
 	std::basic_string<float> rs_alpha_stack;
 	std::basic_string<float> rs_scale_stack;
 	std::basic_string<float> rs_angle_stack;
-
-	//int rs_align_count = 0;
 	std::basic_string<e_align> rs_align_stack;
 	
 	float zdepth;

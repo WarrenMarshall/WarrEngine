@@ -204,13 +204,13 @@ void layer_editor::draw()
 		game->tile_layer = tile_layer::items;
 	}
 
-	/*
+	
 	RENDER
 		->begin()
 		->push_depth_nudge( 100 );
 	game->draw_entities();
 	RENDER->end();
-	*/
+	
 }
 	
 bool layer_editor::handle_input_event( const w_input_event* evt )

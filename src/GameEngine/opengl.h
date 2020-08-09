@@ -11,7 +11,8 @@
 
 struct w_opengl
 {
-	std::stack<w_matrix> modelview_stack;
+	//std::stack<w_matrix> modelview_stack;
+	std::vector<w_matrix> modelview_stack;
 
 	void init() const;
 

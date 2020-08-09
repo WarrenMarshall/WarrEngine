@@ -83,13 +83,13 @@ void w_opengl::init() const
 
 w_matrix* w_opengl::push_identity()
 {
-	modelview_stack.push( w_matrix() );
+	modelview_stack.push_back( w_matrix() );
 	return top();
 }
 
 w_matrix* w_opengl::push()
 {
-	modelview_stack.push( *top() );
+	modelview_stack.push_back( *top() );
 	return top();
 }
 
@@ -97,7 +97,7 @@ w_matrix* w_opengl::push()
 
 w_matrix* w_opengl::pop()
 {
-	modelview_stack.pop();
+	modelview_stack.pop_back();
 	return top();
 }
 
@@ -105,7 +105,7 @@ w_matrix* w_opengl::pop()
 
 w_matrix* w_opengl::top()
 {
-	return &(modelview_stack.top());
+	return &(modelview_stack.back());
 }
 
 void w_opengl::clear_texture_bind() const
