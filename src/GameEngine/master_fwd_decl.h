@@ -83,7 +83,7 @@ struct w_tween;
 struct w_ui_mgr;
 struct w_ui_style;
 struct w_ui_style_panel;
-struct w_ui_style_pushbutton;
+struct w_ui_style_button;
 struct w_ui_style_radiobutton;
 struct w_ui_style_tile;
 struct w_ui_theme;

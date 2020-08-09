@@ -16,9 +16,9 @@ struct w_ui_style
 
 // ----------------------------------------------------------------------------
 
-struct w_ui_style_pushbutton : w_ui_style
+struct w_ui_style_button : w_ui_style
 {
-	w_ui_style_pushbutton();
+	w_ui_style_button();
 
 	// [optional] background for the button
 	a_9slice_def* slice_def = nullptr;
@@ -27,17 +27,6 @@ struct w_ui_style_pushbutton : w_ui_style
 	a_subtexture* subtex = nullptr;
 	w_offset subtex_pos_offset = w_offset( -1, -1 );
 	w_sz subtex_sz = w_sz( -1, -1 );
-
-	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
-};
-
-// ----------------------------------------------------------------------------
-
-struct w_ui_style_radiobutton : w_ui_style_pushbutton
-{
-	w_ui_style_radiobutton();
-
-	a_subtexture* subtex_radio_on = nullptr;
 
 	void draw( w_rect& rc, bool being_hovered, bool being_clicked ) override;
 };

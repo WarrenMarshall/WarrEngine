@@ -5,11 +5,12 @@ struct layer_editor : w_layer
 	w_rect tile_display_area;
 	a_gradient* gradient = nullptr;
 
-	std::unique_ptr<w_ui_style_pushbutton> style_browse = nullptr;
-	std::unique_ptr<w_ui_style_pushbutton> style_arrow_button = nullptr;
+	std::unique_ptr<w_ui_style_button> style_browse = nullptr;
+	std::unique_ptr<w_ui_style_button> style_arrow_button = nullptr;
 	std::unique_ptr<w_ui_style_panel> style_panel = nullptr;
 	std::unique_ptr<w_ui_style_tile> style_tile = nullptr;
-	std::unique_ptr<w_ui_style_radiobutton> style_radio_button = nullptr;
+	std::unique_ptr<w_ui_style_button> style_radio_button_on = nullptr;
+	std::unique_ptr<w_ui_style_button> style_radio_button_off = nullptr;
 
 	bool is_painting = false;
 

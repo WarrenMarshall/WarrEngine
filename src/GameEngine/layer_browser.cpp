@@ -21,7 +21,7 @@ void layer_browser::draw()
 {
 	if( !style_panel )
 	{
-		style_close_button = std::make_unique<w_ui_style_pushbutton>();
+		style_close_button = std::make_unique<w_ui_style_button>();
 		style_close_button->subtex = engine->get_asset<a_subtexture>( "ui_close_x" );
 		style_close_button->subtex_pos_offset = w_vec2( -4, -4 );
 		style_close_button->subtex_sz = w_sz( 8, 8 );

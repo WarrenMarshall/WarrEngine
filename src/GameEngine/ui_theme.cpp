@@ -76,12 +76,12 @@ w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
 
 // ----------------------------------------------------------------------------
 
-w_ui_style_pushbutton::w_ui_style_pushbutton()
+w_ui_style_button::w_ui_style_button()
 {
 	slice_def = UI->theme->button_slice_def;
 }
 
-void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_button::draw( w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	w_color final_color = W_COLOR_DARK_GREY;
 	if( being_clicked )
@@ -124,37 +124,6 @@ void w_ui_style_pushbutton::draw( w_rect& rc, bool being_hovered, bool being_cli
 	}
 
 	RENDER->end();
-}
-
-// ----------------------------------------------------------------------------
-
-w_ui_style_radiobutton::w_ui_style_radiobutton()
-{
-}
-
-void w_ui_style_radiobutton::draw( w_rect& rc, bool being_hovered, bool being_clicked )
-{
-	w_ui_style_pushbutton::draw(rc, being_hovered, being_clicked );
-
-	w_offset offset = get_click_offset( being_hovered, being_clicked );
-
-	// radio "on"
-
-	if( subtex_radio_on )
-	{
-		w_rect rc_client = rc;
-
-		rc_client.x += ( subtex->sz.w / 2 ) + offset.x;
-		rc_client.y += ( subtex->sz.h / 2 ) + offset.y;
-		rc_client.w = subtex_radio_on->sz.w;
-		rc_client.h = subtex_radio_on->sz.w;
-
-		RENDER->begin()
-			->push_rgb( W_COLOR_DARK_GREY )
-			->push_depth_nudge( 50 )
-			->draw_sprite( subtex_radio_on, rc_client )
-			->end();
-	}
 }
 
 // ----------------------------------------------------------------------------

@@ -62,10 +62,10 @@ void layer_editor::draw()
 {
 	if( !style_browse  )
 	{
-		style_browse = std::make_unique<w_ui_style_pushbutton>();
+		style_browse = std::make_unique<w_ui_style_button>();
 		style_browse->subtex_sz = w_sz( 32, 32 );
 
-		style_arrow_button = std::make_unique<w_ui_style_pushbutton>();
+		style_arrow_button = std::make_unique<w_ui_style_button>();
 		style_arrow_button->subtex_pos_offset = w_vec2( -4, -4 );
 		style_arrow_button->subtex_sz = w_sz( 8, 8 );
 
@@ -74,8 +74,13 @@ void layer_editor::draw()
 
 		style_tile = std::make_unique<w_ui_style_tile>();
 
-		style_radio_button = std::make_unique<w_ui_style_radiobutton>();
-		style_radio_button->subtex = engine->get_asset<a_subtexture>( "ui_radio" );
+		style_radio_button_on = std::make_unique<w_ui_style_button>();
+		style_radio_button_on->slice_def = nullptr;
+		style_radio_button_on->subtex = engine->get_asset<a_subtexture>( "ui_radio_on" );
+
+		style_radio_button_off = std::make_unique<w_ui_style_button>();
+		style_radio_button_off->slice_def = nullptr;
+		style_radio_button_off->subtex = engine->get_asset<a_subtexture>( "ui_radio_off" );
 	}
 
 	w_layer::draw();
@@ -184,22 +189,22 @@ void layer_editor::draw()
 		->end();
 	*/
 
-	static a_subtexture* checkmark = engine->get_asset<a_subtexture>( "ui_checkmark" );
+	w_ui_style* style = nullptr;
 
-	style_radio_button->subtex_radio_on = game->tile_layer == tile_layer::geometry ? checkmark : nullptr;
+	style = ( game->tile_layer == tile_layer::geometry ) ? style_radio_button_on.get() : style_radio_button_off.get();
 	if( UI->im_active(
 		this,
 		{ 140.0f, 188.0f, 24, 24 },
-		*(style_radio_button.get())) & im_result::left_clicked )
+		*style) & im_result::left_clicked )
 	{
 		game->tile_layer = tile_layer::geometry;
 	}
 
-	style_radio_button->subtex_radio_on = game->tile_layer == tile_layer::items ? checkmark : nullptr;
+	style = ( game->tile_layer == tile_layer::items ) ? style_radio_button_on.get() : style_radio_button_off.get();
 	if( UI->im_active(
 		this,
 		{ 140.0f, 212.0f, 24, 24 },
-		*(style_radio_button.get())) & im_result::left_clicked )
+		*style) & im_result::left_clicked )
 	{
 		game->tile_layer = tile_layer::items;
 	}

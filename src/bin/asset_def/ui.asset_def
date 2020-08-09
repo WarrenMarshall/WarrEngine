@@ -21,8 +21,8 @@
 		ui_sword_cursor,168,76,16,18,\
 		ui_arrow_left,140,243,12,12,\
 		ui_arrow_right,129,243,12,12,\
-		ui_radio,168,0,18,18,\
-		ui_checkmark,185,38,8,7,\
+		ui_radio_off,168,0,18,18,\
+		ui_radio_on,168,19,18,18,\
 		ui_close_x,188,30,8,8"
 }
 
