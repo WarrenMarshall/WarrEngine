@@ -33,6 +33,8 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc ) const
 			if( UI->hot_id == id && UI->hover_id == id )
 			{
 				imresult |= im_result::left_clicked;
+				static a_sound* snd_click = engine->get_asset<a_sound>( "ui_click_01" );
+				snd_click->play();
 			}
 			UI->hover_id = UI->hot_id = -1;
 		}
