@@ -38,8 +38,9 @@ struct w_render
 	// ----------------------------------------------------------------------------
 	// the current render state stacks
 
-	int rs_color_count = 0;
-	std::stack<w_color> rs_color_stack;
+	//int rs_color_count = 0;
+	//std::stack<w_color> rs_color_stack;
+	std::basic_string<float> rs_color_stack;	// 3 floats per color
 
 	std::basic_string<float> rs_alpha_stack;
 	std::basic_string<float> rs_scale_stack;

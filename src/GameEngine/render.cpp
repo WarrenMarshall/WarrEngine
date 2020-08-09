@@ -41,7 +41,7 @@ void w_render::init()
 	MATRIX->push_identity();
 
 	// initialize render state stacks
-	rs_color_stack.push( W_COLOR_WHITE );
+	rs_color_stack = { 1.0f, 1.0f, 1.0f };
 	rs_alpha_stack = 1.0f;
 	rs_scale_stack = 1.0f;
 	rs_angle_stack = 0.0f;
@@ -68,8 +68,7 @@ w_render* w_render::begin()
 
 w_render* w_render::push_rgb( const w_color& color )
 {
-	rs_color_count++;
-	rs_color_stack.push( color );
+	rs_color_stack += { color.r, color.g, color.b };
 
 	return this;
 }
@@ -139,13 +138,7 @@ w_render* w_render::push_depth_nudge( const float& nudge )
 
 void w_render::end()
 {
-	while( rs_color_count )
-	{
-		rs_color_stack.pop();
-		rs_color_count--;
-	}
-	rs_color_count = 0;
-
+	rs_color_stack = { 1.0f, 1.0f, 1.0f };
 	rs_alpha_stack = 1.0f;
 	rs_scale_stack = 1.0f;
 	rs_angle_stack = 0.0f;
@@ -180,7 +173,9 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_color rs_color = rs_color_stack.top();
+	size_t length = rs_color_stack.length();
+	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
+
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
@@ -213,7 +208,9 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w *= rs_scale;
 	h *= rs_scale;
 
-	w_color rs_color = rs_color_stack.top();
+	size_t length = rs_color_stack.length();
+	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
+
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
@@ -345,7 +342,7 @@ void w_render::end_frame()
 
 	// verify that state stacks are back where they started. if not,
 	// it means there's a push/pop mismatch somewhere in the code.
-	assert( rs_color_stack.size() == 1 );
+	assert( rs_color_stack.size() == 3 );
 	assert( rs_alpha_stack.length() == 1 );
 	assert( rs_scale_stack.length() == 1 );
 	assert( rs_align_stack.length() == 1 );
@@ -398,8 +395,8 @@ w_render* w_render::draw_stats()
 		stat_lines.reserve( stats_draw_reserve );
 
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS / UPDATE : {} FPS",
-										   s_commas( stats.num_frames_rendered.value ),
-										   static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
+											  s_commas( stats.num_frames_rendered.value ),
+											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
 		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
 											  s_commas( stats.render_buffers.value ),
 											  s_commas( stats.render_vertices.value ),
@@ -446,7 +443,7 @@ w_render* w_render::draw_stats()
 				fmt::format( "{} FPS", s_commas( stats.num_frames_rendered.value ) ),
 				w_rect( v_window_w, 0 ) )
 			->end();
-	#endif
+#endif
 	}
 
 	RENDER->end();
@@ -456,7 +453,9 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	w_color rs_color = rs_color_stack.top();
+	size_t length = rs_color_stack.length();
+	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
+
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0(
@@ -511,7 +510,9 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	w_color rs_color = rs_color_stack.top();
+	size_t length = rs_color_stack.length();
+	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
+
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
@@ -519,11 +520,11 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 
 	for( int x = 0; x < circle_sample_points_max; ++x )
 	{
-		v0.x = origin.x + (circle_sample_points[x].x * radius);
-		v0.y = origin.y + (circle_sample_points[x].y * radius);
+		v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
+		v0.y = origin.y + ( circle_sample_points[ x ].y * radius );
 
-		v1.x = origin.x + (circle_sample_points[( x + 1 ) % circle_sample_points_max].x * radius);
-		v1.y = origin.y + (circle_sample_points[( x + 1 ) % circle_sample_points_max].y * radius);
+		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
 		engine->white_wire->tex->render_buffer->add_line( v0, v1 );
 	}
@@ -535,7 +536,9 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	w_color rs_color = rs_color_stack.top();
+	size_t length = rs_color_stack.length();
+	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
+
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
