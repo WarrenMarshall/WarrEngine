@@ -17,7 +17,7 @@ struct w_ui_mgr
 	void draw_topmost();
 
 	void im_reset();
-	[[nodiscard]] e_im_result im_active( w_rect rc, w_ui_style& ui_style );
+	[[nodiscard]] e_im_result im_active( std::string_view label, w_rect rc, w_ui_style& ui_style );
 	e_im_result im_passive( w_rect rc, w_ui_style& ui_style );
 
 	[[nodiscard]] bool is_mouse_inside( w_rect& rc ) const;

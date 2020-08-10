@@ -132,7 +132,7 @@ void layer_editor::draw()
 			);
 
 			style_tile->subtex_tile = game->get_tile( game->geometry_layer[ game->current_room_idx ].tiles[ idx ] )->subtex;
-			e_im_result ir = UI->im_active( rc, *( style_tile.get() ) );
+			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			if( ir & im_result::hot )
 			{
@@ -160,40 +160,31 @@ void layer_editor::draw()
 	}
 
 	style_browse->subtex = game->get_tile( game->current_tile_idx )->subtex;
-	if( UI->im_active( { 12, 188, 48, 48 }, *( style_browse.get() ) ) & im_result::left_clicked )
+	if( UI->im_active( "", { 12, 188, 48, 48 }, *( style_browse.get() ) ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->push( std::make_unique<layer_browser>() );
 	}
 	
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );
-	if( UI->im_active( { 76.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
+	if( UI->im_active( "", { 76.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
 		game->current_room_idx--;
 		game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
 	}
 
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_right" );
-	if( UI->im_active( { 114.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
+	if( UI->im_active( "", { 114.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
 		game->current_room_idx++;
 		game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
 	}
 
-	/*
-	RENDER
-		->begin()
-		->push_depth_nudge()
-		->push_align( align::vcenter )
-		->draw_string( UI->theme->small_font, "Geometry", w_rect( 164.0f, 202.0f ) )
-		->draw_string( UI->theme->small_font, "Items", w_rect( 164.0f, 222.0f ) )
-		->end();
-	*/
-
 	w_ui_style* style = nullptr;
 
 	style = ( game->tile_layer == tile_layer::geometry ) ? style_radio_button_on.get() : style_radio_button_off.get();
 	if( UI->im_active(
-		{ 140.0f, 188.0f, 24, 24 },
+		"Geometry",
+		{ 140.0f, 188.0f, 80, 24 },
 		*style) & im_result::left_clicked )
 	{
 		game->tile_layer = tile_layer::geometry;
@@ -201,7 +192,8 @@ void layer_editor::draw()
 
 	style = ( game->tile_layer == tile_layer::items ) ? style_radio_button_on.get() : style_radio_button_off.get();
 	if( UI->im_active(
-		{ 140.0f, 212.0f, 24, 24 },
+		"Items",
+		{ 140.0f, 212.0f, 80, 24 },
 		*style) & im_result::left_clicked )
 	{
 		game->tile_layer = tile_layer::items;

@@ -28,7 +28,7 @@ void w_ui_mgr::im_reset()
 	owning_layer_is_topmost = false;
 }
 
-e_im_result w_ui_mgr::im_active( w_rect rc, w_ui_style& ui_style )
+e_im_result w_ui_mgr::im_active( std::string_view label, w_rect rc, w_ui_style& ui_style )
 {
 	im_automatic_id++;
 
@@ -39,14 +39,14 @@ e_im_result w_ui_mgr::im_active( w_rect rc, w_ui_style& ui_style )
 		result = ui_style.update_im_state( im_automatic_id, rc );
 	}
 
-	ui_style.draw(rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
+	ui_style.draw( label, rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
 	return result;
 }
 
 e_im_result w_ui_mgr::im_passive( w_rect rc, w_ui_style& ui_style )
 {
-	ui_style.draw(rc, false, false );
+	ui_style.draw( "", rc, false, false );
 
 	return im_result::none;
 }

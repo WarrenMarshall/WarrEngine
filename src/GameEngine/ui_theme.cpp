@@ -64,6 +64,21 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 	return imresult;
 }
 
+w_color w_ui_style::get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked )
+{
+	w_color color = base_color;
+	if( being_clicked )
+	{
+		w_color::scale( color, 1.75f );
+	}
+	else if( being_hovered )
+	{
+		w_color::scale( color, 1.25f );
+	}
+
+	return color;
+}
+
 w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
 {
 	if( being_hovered && being_clicked )
@@ -81,27 +96,20 @@ w_ui_style_button::w_ui_style_button()
 	slice_def = UI->theme->button_slice_def;
 }
 
-void w_ui_style_button::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
 {
-	w_color final_color = W_COLOR_DARK_GREY;
-	if( being_clicked )
-	{
-		w_color::scale( final_color, 1.75f );
-	}
-	else if( being_hovered )
-	{
-		w_color::scale( final_color, 1.25f );
-	}
-
 	w_offset offset = get_click_offset( being_hovered, being_clicked );
 	w_rect rc_draw = { rc.x + offset.x, rc.y + offset.y, rc.w, rc.h };
+
+	w_pos label_pos = { rc_draw.x + ( rc_draw.w / 2 ), rc_draw.y + ( rc_draw.h / 2 ) };
+	e_align label_align = align::centered;
 
 	RENDER->begin()
 		->push_depth_nudge();
 
 	if( slice_def )
 	{
-		RENDER->push_rgb( final_color )
+		RENDER->push_rgb( get_adjusted_color( W_COLOR_DARK_GREY, being_hovered, being_clicked ) )
 			->draw_sliced( slice_def, rc_draw );
 	}
 
@@ -118,9 +126,20 @@ void w_ui_style_button::draw( w_rect& rc, bool being_hovered, bool being_clicked
 		rc_client.w = subtex_sz.w == -1 ? subtex->rc_src.w : subtex_sz.w;
 		rc_client.h = subtex_sz.h == -1 ? subtex->rc_src.h : subtex_sz.h;
 
-		RENDER->push_rgb( W_COLOR_WHITE )
+		RENDER->push_rgb( get_adjusted_color( W_COLOR_LIGHT_GREY, being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( subtex, rc_client );
+
+		label_pos = { rc_draw.x + rc_client.w + UI->theme->control_padding, rc_draw.y + ( rc_client.h / 2 ) };
+		label_align = align::left | align::vcenter;
+	}
+
+	if( label.length() )
+	{
+		RENDER
+			->push_rgb( get_adjusted_color( W_COLOR_LIGHT_GREY, being_hovered, being_clicked ) )
+			->push_align( label_align )
+			->draw_string( UI->theme->small_font, label, w_rect( label_pos.x, label_pos.y, -1, -1 ) );
 	}
 
 	RENDER->end();
@@ -133,7 +152,7 @@ w_ui_style_panel::w_ui_style_panel()
 	slice_def = UI->theme->panel_slice_def;
 }
 
-void w_ui_style_panel::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	RENDER
 		->begin()
@@ -150,7 +169,7 @@ w_ui_style_tile::w_ui_style_tile()
 	selector_bracket = engine->get_asset<a_subtexture>( "selector_bracket" );
 }
 
-void w_ui_style_tile::draw( w_rect& rc, bool being_hovered, bool being_clicked )
+void w_ui_style_tile::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	w_color bracket_color = W_COLOR_BLACK;
 	bracket_color.a = 0.0f;
