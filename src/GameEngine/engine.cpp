@@ -43,7 +43,7 @@ std::string_view w_engine::find_val_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
-		return "n/a";
+		return str_not_found;
 	}
 
 	return _symbol_to_value[ std::string( symbol ) ];
@@ -58,31 +58,31 @@ int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {
 	std::string_view sval = find_val_from_symbol( symbol );
 
-	if( sval == "n/a" )
+	if( sval == str_not_found )
 	{
 		sval = fmt::format( "{}", def_value );
 	}
 
-	return static_cast<int>( strtol( sval.data(), (char**) nullptr, 10 ) );
+	return static_cast<int>( strtol( sval.data(), ( char** ) nullptr, 10 ) );
 }
 
 float w_engine::find_float_from_symbol( std::string_view symbol, float def_value )
 {
 	std::string_view sval = find_val_from_symbol( symbol );
 
-	if( sval == "n/a" )
+	if( sval == str_not_found )
 	{
 		sval = fmt::format( "{}", def_value );
 	}
 
-	return static_cast<float>( strtof( sval.data(), (char**) nullptr ) );
+	return static_cast<float>( strtof( sval.data(), ( char** ) nullptr ) );
 }
 
 w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_value )
 {
 	std::string_view sval = find_val_from_symbol( symbol );
 
-	if( sval == "n/a" )
+	if( sval == str_not_found )
 	{
 		sval = fmt::format( "{},{},{},{}", def_value.r, def_value.g, def_value.b, def_value.a );
 	}
@@ -94,7 +94,7 @@ w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_v
 {
 	std::string_view sval = find_val_from_symbol( symbol );
 
-	if( sval == "n/a" )
+	if( sval == str_not_found )
 	{
 		sval = fmt::format( "{},{}", def_value.min, def_value.max );
 	}
@@ -106,7 +106,7 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_valu
 {
 	std::string_view sval = find_val_from_symbol( symbol );
 
-	if( sval == "n/a" )
+	if( sval == str_not_found )
 	{
 		sval = fmt::format( "{},{}", def_value.x, def_value.y );
 	}
@@ -118,7 +118,7 @@ w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_valu
 {
 	std::string_view sval = find_val_from_symbol( symbol );
 
-	if( sval == "n/a" )
+	if( sval == str_not_found )
 	{
 		sval = fmt::format( "{},{},{}", def_value.x, def_value.y, def_value.z );
 	}
