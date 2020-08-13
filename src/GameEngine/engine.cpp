@@ -43,7 +43,7 @@ std::string_view w_engine::find_val_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
-		log_error( fmt::format( "{} : '{}' not found in symbol table:", __FUNCTION__, symbol ) );
+		return "n/a";
 	}
 
 	return _symbol_to_value[ std::string( symbol ) ];
@@ -60,8 +60,7 @@ int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 
 	if( sval == "n/a" )
 	{
-		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
-		sval = "0";
+		sval = fmt::format( "{}", def_value );
 	}
 
 	return static_cast<int>( strtol( sval.data(), (char**) nullptr, 10 ) );
@@ -73,8 +72,7 @@ float w_engine::find_float_from_symbol( std::string_view symbol, float def_value
 
 	if( sval == "n/a" )
 	{
-		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
-		sval = "0.0";
+		sval = fmt::format( "{}", def_value );
 	}
 
 	return static_cast<float>( strtof( sval.data(), (char**) nullptr ) );
@@ -86,8 +84,7 @@ w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_v
 
 	if( sval == "n/a" )
 	{
-		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
-		sval = "1.0,1.0,1.0,1.0";
+		sval = fmt::format( "{},{},{},{}", def_value.r, def_value.g, def_value.b, def_value.a );
 	}
 
 	return w_color( sval );
@@ -99,8 +96,7 @@ w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_v
 
 	if( sval == "n/a" )
 	{
-		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
-		sval = "0,1";
+		sval = fmt::format( "{},{}", def_value.min, def_value.max );
 	}
 
 	return w_range( sval );
@@ -112,8 +108,7 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_valu
 
 	if( sval == "n/a" )
 	{
-		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
-		sval = "0,0";
+		sval = fmt::format( "{},{}", def_value.x, def_value.y );
 	}
 
 	return w_vec2( sval );
@@ -125,8 +120,7 @@ w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_valu
 
 	if( sval == "n/a" )
 	{
-		log_msg( fmt::format( "{} : '{}' is not in the symbol map : value defaulted", __FUNCTION__, symbol ) );
-		sval = "0,0,0";
+		sval = fmt::format( "{},{},{}", def_value.x, def_value.y, def_value.z );
 	}
 
 	return w_vec3( sval );

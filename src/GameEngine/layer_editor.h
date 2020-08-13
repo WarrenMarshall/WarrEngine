@@ -8,6 +8,7 @@ struct layer_editor : w_layer
 	std::unique_ptr<w_ui_style_button> style_browse = nullptr;
 	std::unique_ptr<w_ui_style_button> style_arrow_button = nullptr;
 	std::unique_ptr<w_ui_style_panel> style_panel = nullptr;
+	std::unique_ptr<w_ui_style_panel> style_thin_panel = nullptr;
 	std::unique_ptr<w_ui_style_tile> style_tile = nullptr;
 	std::unique_ptr<w_ui_style_button> style_radio_button_on = nullptr;
 	std::unique_ptr<w_ui_style_button> style_radio_button_off = nullptr;

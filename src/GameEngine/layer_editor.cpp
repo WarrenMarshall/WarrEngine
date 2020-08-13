@@ -72,6 +72,10 @@ void layer_editor::draw()
 		style_panel = std::make_unique<w_ui_style_panel>();
 		style_panel->color = W_COLOR_DARK_GREY;
 
+		style_thin_panel = std::make_unique<w_ui_style_panel>();
+		//style_thin_panel->color = W_COLOR_DARK_GREY;
+		style_thin_panel->slice_def = engine->get_asset<a_9slice_def>( "ui_thin_panel" );
+
 		style_tile = std::make_unique<w_ui_style_tile>();
 
 		style_radio_button_on = std::make_unique<w_ui_style_button>();
@@ -99,7 +103,7 @@ void layer_editor::draw()
 
 	// title bar
 
-	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_panel.get() ) );
+	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_thin_panel.get() ) );
 	game->draw_viewport_caption( "Endless Adventure Editor", 18.0f);
 
 	// info bars

@@ -189,6 +189,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 							engine->asset_cache->add( std::make_unique<a_9slice_def>(), name, filename )
 							);
 
+					auto fill_mode = iter_ad->find_value_opt( "fill_mode" );
+					asset_ptr->fill_mode = engine->find_int_from_symbol( fill_mode, fill_mode::scaled );
+
 					// ------------------------------------------------------------------------
 
 					std::string_view tex_name = iter_ad->find_value( "texture");
