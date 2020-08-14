@@ -273,8 +273,8 @@ a_emitter_params::a_emitter_params()
 
 	t_color
 		->kf_clear()
-		->kf_add( w_keyframe( 0.00f, W_COLOR_WHITE ) )
-		->kf_add( w_keyframe( 1.0f, W_COLOR_WHITE ) );
+		->kf_add( w_keyframe( 0.00f, w_color::white ) )
+		->kf_add( w_keyframe( 1.0f, w_color::white ) );
 }
 
 bool a_emitter_params::create_internals( bool is_hot_reloading )

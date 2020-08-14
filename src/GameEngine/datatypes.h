@@ -2,26 +2,26 @@
 
 // ----------------------------------------------------------------------------
 
-#define W_COLOR_WHITE		w_color( 1.0f, 1.0f, 1.0f )
-#define W_COLOR_BLACK		w_color( 0.0f, 0.0f, 0.0f )
-#define W_COLOR_RED			w_color( 1.0f, 0.0f, 0.0f )
-#define W_COLOR_GREEN		w_color( 0.0f, 1.0f, 0.0f )
-#define W_COLOR_BLUE		w_color( 0.0f, 0.0f, 1.0f )
-#define W_COLOR_LIGHT_BLUE	w_color( 0.5f, 0.5f, 1.0f )
-#define W_COLOR_ORANGE		w_color( 1.0f, 0.5f, 0.0f )
-#define W_COLOR_YELLOW		w_color( 1.0f, 1.0f, 0.0f )
-#define W_COLOR_TEAL		w_color( 0.3f, 0.8f, 1.0f )
-#define W_COLOR_DARK_TEAL	w_color( 0.2f, 0.4f, 0.5f )
-#define W_COLOR_DARK_GREY	w_color( 0.25f, 0.25f, 0.25f )
-#define W_COLOR_GREY		w_color( 0.5f, 0.5f, 0.5f )
-#define W_COLOR_LIGHT_GREY	w_color( 0.75f, 0.75f, 0.75f )
-#define W_COLOR_LIGHT_GREEN	w_color( 0.5f, 1.0f, 0.5f )
-#define W_COLOR_DARK_GREEN	w_color( 0.25f, 0.5f, 0.25f )
-#define W_COLOR_MAGENTA		w_color( 0.96f, 0.32f, 0.65f )
-
 struct w_color
 {
 	float r = 0.0f, g = 0.0f, b = 0.0f, a = 1.0f;
+
+	static const w_color white;
+	static const w_color black;
+	static const w_color red;
+	static const w_color green;
+	static const w_color blue;
+	static const w_color light_blue;
+	static const w_color orange;
+	static const w_color yellow;
+	static const w_color teal;
+	static const w_color dark_teal;
+	static const w_color dark_grey;
+	static const w_color grey;
+	static const w_color light_grey;
+	static const w_color light_green;
+	static const w_color dark_green;
+	static const w_color magenta;
 
 	w_color() = default;
 	w_color( const w_color& other );
@@ -41,7 +41,7 @@ struct w_keyframe
 {
 	float pct_marker = 0.0f;
 	float float_value = 0.0f;
-	w_color color_value = W_COLOR_WHITE;
+	w_color color_value = w_color::white;
 
 	w_keyframe() = default;
 	w_keyframe( const w_keyframe& other );

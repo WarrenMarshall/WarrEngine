@@ -70,10 +70,10 @@ void layer_editor::draw()
 		style_arrow_button->subtex_sz = w_sz( 8, 8 );
 
 		style_panel = std::make_unique<w_ui_style_panel>();
-		style_panel->color = W_COLOR_DARK_GREY;
+		style_panel->color = w_color::dark_grey;
 
 		style_thin_panel = std::make_unique<w_ui_style_panel>();
-		//style_thin_panel->color = W_COLOR_DARK_GREY;
+		//style_thin_panel->color = w_color::dark_grey;
 		style_thin_panel->slice_def = engine->get_asset<a_9slice_def>( "ui_thin_panel" );
 
 		style_tile = std::make_unique<w_ui_style_tile>();
@@ -97,7 +97,7 @@ void layer_editor::draw()
 		->draw_string( UI->theme->small_font, "Room", w_rect( 88.0f, 192.0f ) )
 		->push_align( align::centered )
 		->push_depth_nudge()
-		->push_rgb( W_COLOR_TEAL )
+		->push_rgb( w_color::teal )
 		->draw_string( UI->theme->large_font, fmt::format( "{}", game->current_room_idx ), w_rect( 102.0f, 218.0f ) )
 		->end();
 

@@ -41,7 +41,7 @@ struct w_engine : i_listener
 	std::string_view find_val_from_symbol( const std::string_view str );
 	int find_int_from_symbol( const std::string_view str, int def_value = 0 );
 	float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
-	w_color find_color_from_symbol( const std::string_view str, w_color def_value = W_COLOR_WHITE );
+	w_color find_color_from_symbol( const std::string_view str, w_color def_value = w_color::white );
 	w_range find_range_from_symbol( const std::string_view str, w_range def_value = w_range( 0, 1 ) );
 	w_vec2 find_vec2_from_symbol( const std::string_view str, w_vec2 def_value = w_vec2( 0, 0 ) );
 	w_vec3 find_vec3_from_symbol( const std::string_view str, w_vec3 def_value = w_vec3( 0, 0, 0 ) );

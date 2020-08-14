@@ -421,7 +421,7 @@ w_render* w_render::draw_stats()
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->pop_alpha()
 			->push_depth_nudge()
-			->push_rgb( W_COLOR_WHITE )
+			->push_rgb( w_color::white )
 			->push_align( align::hcenter );
 
 		float ypos = 0;

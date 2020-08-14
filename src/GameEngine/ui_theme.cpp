@@ -109,7 +109,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 
 	if( slice_def )
 	{
-		RENDER->push_rgb( get_adjusted_color( W_COLOR_DARK_GREY, being_hovered, being_clicked ) )
+		RENDER->push_rgb( get_adjusted_color( w_color::dark_grey, being_hovered, being_clicked ) )
 			->draw_sliced( slice_def, rc_draw );
 	}
 
@@ -126,7 +126,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		rc_client.w = subtex_sz.w == -1 ? subtex->rc_src.w : subtex_sz.w;
 		rc_client.h = subtex_sz.h == -1 ? subtex->rc_src.h : subtex_sz.h;
 
-		RENDER->push_rgb( get_adjusted_color( W_COLOR_LIGHT_GREY, being_hovered, being_clicked ) )
+		RENDER->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( subtex, rc_client );
 
@@ -137,7 +137,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	if( label.length() )
 	{
 		RENDER
-			->push_rgb( get_adjusted_color( W_COLOR_LIGHT_GREY, being_hovered, being_clicked ) )
+			->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_align( label_align )
 			->draw_string( UI->theme->small_font, label, w_rect( label_pos.x, label_pos.y, -1, -1 ) );
 	}
@@ -171,17 +171,17 @@ w_ui_style_tile::w_ui_style_tile()
 
 void w_ui_style_tile::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
 {
-	w_color bracket_color = W_COLOR_BLACK;
+	w_color bracket_color = w_color::black;
 	bracket_color.a = 0.0f;
 
 	if( being_clicked && being_hovered )
 	{
-		bracket_color = W_COLOR_WHITE;
+		bracket_color = w_color::white;
 		bracket_color.a = 1.0f;
 	}
 	else if( being_hovered )
 	{
-		bracket_color = W_COLOR_WHITE;
+		bracket_color = w_color::white;
 		bracket_color.a = 0.5f;
 	}
 

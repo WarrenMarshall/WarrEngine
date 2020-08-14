@@ -27,7 +27,7 @@ void layer_browser::draw()
 		style_close_button->subtex_sz = w_sz( 8, 8 );
 
 		style_panel = std::make_unique<w_ui_style_panel>();
-		style_panel->color = W_COLOR_DARK_GREY;
+		style_panel->color = w_color::dark_grey;
 
 		style_tile = std::make_unique<w_ui_style_tile>();
 	}

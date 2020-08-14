@@ -10,7 +10,6 @@
 	"v_window_h"		"480"
 
 	# -----------------------------------------------------
-	# basics
 
 	"true"		"1"
 	"yes"		"1"
@@ -43,22 +42,22 @@
 	# -----------------------------------------------------
 	# colors
 
-	"e_color_white"			"1.0, 1.0, 1.0"
-	"e_color_black"			"0.0, 0.0, 0.0"
-	"e_color_red"			"1.0, 0.0, 0.0"
-	"e_color_green"			"0.0, 1.0, 0.0"
-	"e_color_blue"			"0.0, 0.0, 1.0"
-	"e_color_light_blue"	"0.5, 0.5, 1.0"
-	"e_color_orange"		"1.0, 0.5, 0.0"
-	"e_color_yellow"		"1.0, 1.0, 0.0"
-	"e_color_teal"			"0.3, 0.8, 1.0"
-	"e_color_dark_teal"		"0.2, 0.4, 0.5"
-	"e_color_dark_grey"		"0.25, 0.25, 0.25"
-	"e_color_grey"			"0.5, 0.5, 0.5"
-	"e_color_light_grey"	"0.75, 0.75, 0.75"
-	"e_color_light_green"	"0.5, 1.0, 0.5"
-	"e_color_dark_green"	"0.25, 0.5, 0.25"
-	"e_color_magenta"		"0.96, 0.32, 0.65"
+	"color.white"		"1.0, 1.0, 1.0"
+	"color.black"		"0.0, 0.0, 0.0"
+	"color.red"			"1.0, 0.0, 0.0"
+	"color.green"		"0.0, 1.0, 0.0"
+	"color.blue"		"0.0, 0.0, 1.0"
+	"color.light_blue"	"0.5, 0.5, 1.0"
+	"color.orange"		"1.0, 0.5, 0.0"
+	"color.yellow"		"1.0, 1.0, 0.0"
+	"color.teal"		"0.3, 0.8, 1.0"
+	"color.dark_teal"	"0.2, 0.4, 0.5"
+	"color.dark_grey"	"0.25, 0.25, 0.25"
+	"color.grey"		"0.5, 0.5, 0.5"
+	"color.light_grey"	"0.75, 0.75, 0.75"
+	"color.light_green"	"0.5, 1.0, 0.5"
+	"color.dark_green"	"0.25, 0.5, 0.25"
+	"color.magenta"		"0.96, 0.32, 0.65"
 
 	# -----------------------------------------------------
 	# tween types

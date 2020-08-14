@@ -139,6 +139,23 @@ w_rect::w_rect( float x, float y, float w, float h )
 
 // ----------------------------------------------------------------------------
 
+const w_color w_color::white = w_color( 1.0f, 1.0f, 1.0f );
+const w_color w_color::black = w_color( 0.0f, 0.0f, 0.0f );
+const w_color w_color::red = w_color( 1.0f, 0.0f, 0.0f );
+const w_color w_color::green = w_color( 0.0f, 1.0f, 0.0f );
+const w_color w_color::blue = w_color( 0.0f, 0.0f, 1.0f );
+const w_color w_color::light_blue = w_color( 0.5f, 0.5f, 1.0f );
+const w_color w_color::orange = w_color( 1.0f, 0.5f, 0.0f );
+const w_color w_color::yellow = w_color( 1.0f, 1.0f, 0.0f );
+const w_color w_color::teal = w_color( 0.3f, 0.8f, 1.0f );
+const w_color w_color::dark_teal = w_color( 0.2f, 0.4f, 0.5f );
+const w_color w_color::dark_grey = w_color( 0.25f, 0.25f, 0.25f );
+const w_color w_color::grey = w_color( 0.5f, 0.5f, 0.5f );
+const w_color w_color::light_grey = w_color( 0.75f, 0.75f, 0.75f );
+const w_color w_color::light_green = w_color( 0.5f, 1.0f, 0.5f );
+const w_color w_color::dark_green = w_color( 0.25f, 0.5f, 0.25f );
+const w_color w_color::magenta = w_color( 0.96f, 0.32f, 0.65f );
+
 w_color::w_color( const w_color& other ) = default;
 w_color::w_color( float r, float g, float b, float a )
 	: r( r ), g( g ), b( b ), a( a )

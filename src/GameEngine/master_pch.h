@@ -32,6 +32,7 @@
 	#include <sstream>
 	#include <iomanip>
 	#include <locale>
+	#include <type_traits>
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC
@@ -154,6 +155,8 @@ constexpr bool fequals( float a, float b )
 	the size of the virtual screen. all rendering is done on the assumption
 	of these dimensions. the renderer handles scaling this up to the actual
 	game window the player sees. this makes a lot of things simpler.
+
+	make sure the values in preproc.asset_def match these values.
 */
 constexpr float v_window_w = 16 * 19;
 constexpr float v_window_h = ( 16 * 9 ) + 100;
