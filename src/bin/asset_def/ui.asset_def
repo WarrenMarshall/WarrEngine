@@ -56,7 +56,7 @@
 	"type" "9slice_def"
 	"name" "ui_thin_panel"
 	"texture" "tex_uipack_sheet"
-	"fill_mode" "fill_tiled"
+	"fill_mode" "fill.tiled"
 	"p_00" "95, 0, 4, 4"
 	"p_10" "99, 0, 42, 4"
 	"p_20" "141, 0, 4, 4"

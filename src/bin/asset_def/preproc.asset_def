@@ -25,19 +25,19 @@
 	# -----------------------------------------------------
 	# opengl blending options
 
-	"e_opengl_blend_add"		"0"
-	"e_opengl_blend_add"		"1"
-	"e_opengl_blend_multiply"	"2"
+	"opengl_blend.add"		"0"
+	"opengl_blend.add"		"1"
+	"opengl_blend.multiply"	"2"
 
 	# -----------------------------------------------------
 	# alignment options
 
-	"e_align_left"			"1"
-	"e_align_right"			"2"
-	"e_align_hcenter"		"4"
-	"e_align_vcenter"		"8"
-	"e_align_horizontal"	"16"
-	"e_align_vertical"		"32"
+	"align.left"			"1"
+	"align.right"			"2"
+	"align.hcenter"			"4"
+	"align.vcenter"			"8"
+	"align.horizontal"		"16"
+	"align.vertical"		"32"
 
 	# -----------------------------------------------------
 	# colors
@@ -62,11 +62,11 @@
 	# -----------------------------------------------------
 	# tween types
 
-	"tween_linear"		"1"
-	"tween_loop"		"2"
-	"tween_pingpong"	"3"
-	"tween_half_sine"	"4"
-	"tween_sine"		"5"
+	"tween.linear"		"1"
+	"tween.loop"		"2"
+	"tween.pingpong"	"3"
+	"tween.half_sine"	"4"
+	"tween.sine"		"5"
 
 	# -----------------------------------------------------
 	# sliced texture patches
@@ -83,6 +83,6 @@
 
 	# -----------------------------------------------------
 
-	"fill_scaled" "0"
-	"fill_tiled" "1"
+	"fill.scaled"	"0"
+	"fill.tiled"	"1"
 }

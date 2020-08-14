@@ -25,6 +25,6 @@
 	"type" "gradient"
 	"name" "background_gradient"
 	"subtexture" "s_background_gradient"
-	"alignment" "e_align_horizontal"
+	"alignment" "align.horizontal"
 	"colors" "color.dark_grey /  color.black /  color.black /  color.black /  color.black /  color.black /  color.black /  color.black /  color.dark_grey"
 }
