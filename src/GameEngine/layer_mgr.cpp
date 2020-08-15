@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_layer_mgr::push( std::unique_ptr<w_layer> layer )
+void w_layer_mgr::push( std::shared_ptr<w_layer> layer )
 {
 	w_layer* top = get_top();
 	if( top )

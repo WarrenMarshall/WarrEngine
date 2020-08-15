@@ -1,6 +1,6 @@
 #pragma once
 
-struct i_speaker
+struct GE_API i_speaker
 {
 	std::vector<i_listener*> listeners;
 

@@ -26,7 +26,7 @@ enum_begin( tile_layer )
 	items = 1
 enum_end
 
-struct g_custom_game : w_game
+struct endless_adventure_game : w_game
 {
 	e_player* player = nullptr;
 
@@ -38,7 +38,7 @@ struct g_custom_game : w_game
 
 	std::array<w_tile, static_cast<size_t>( 256 )> tile_masters;
 
-	g_custom_game();
+	endless_adventure_game();
 
 	void init() override;
 	void new_game() override;

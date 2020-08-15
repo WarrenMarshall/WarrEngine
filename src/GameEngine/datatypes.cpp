@@ -236,7 +236,7 @@ float w_vec2::get_size_squared( w_vec2 a )
 
 float w_vec2::get_size( w_vec2 a )
 {
-	return (a.x * a.x) + (a.y * a.y);
+	return ( a.x * a.x ) + ( a.y * a.y );
 }
 
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )

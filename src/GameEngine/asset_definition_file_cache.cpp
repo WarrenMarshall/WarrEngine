@@ -13,7 +13,7 @@ w_asset_definition_file* w_cache_asset_definition_files::add( const std::string_
 		return nullptr;
 	}
 
-	auto cfg = std::make_unique<w_asset_definition_file>();
+	auto cfg = std::make_shared<w_asset_definition_file>();
 
 	cfg->original_filename = filename;
 	if( cfg->create_internals( false ) )

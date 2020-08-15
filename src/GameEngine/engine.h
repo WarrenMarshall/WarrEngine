@@ -6,8 +6,12 @@
 	holds the game engine state
 */
 
-struct w_engine : i_listener
+struct GE_API w_engine : i_listener
 {
+	static bool init_game_engine( std::string_view game_name, int argc, char* argv [], w_game* custom_game );
+	static void deinit_game_engine();
+	static void exec_main_loop();
+
 	// these are only used if "+hot_reload" is passed into the command line
 	std::vector<i_reloadable*> hot_reloadables;
 	std::unique_ptr<w_timer> hot_reload_timer = nullptr;

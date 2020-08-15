@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_matrix
+struct GE_API w_matrix
 {
 	glm::mat4 m = glm::mat4(1);
 

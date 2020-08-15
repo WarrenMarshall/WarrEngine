@@ -6,7 +6,7 @@
 	the size is determined at construction and never changes.
 
 */
-struct w_particle_pool
+struct GE_API w_particle_pool
 {
 	// particle object pool
 	std::unique_ptr< std::vector<w_particle>> particles;

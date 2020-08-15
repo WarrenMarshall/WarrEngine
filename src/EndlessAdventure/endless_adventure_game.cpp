@@ -1,12 +1,11 @@
 
-#include "master_pch.h"
-#include "master_header.h"
+#include "app_header.h"
 
-g_custom_game::g_custom_game()
+endless_adventure_game::endless_adventure_game()
 {
 }
 
-void g_custom_game::init()
+void endless_adventure_game::init()
 {
 	auto file = engine->fs->load_text_file_into_memory( "game_specific\\tile_def.txt" );
 
@@ -34,22 +33,28 @@ void g_custom_game::init()
 		}
 		debug_tile_id++;
 	}
+
+	// initial layer set up
+
+	engine->layer_mgr->push( std::make_unique<layer_background>() );
+	engine->layer_mgr->push( std::make_unique<layer_worldviewport>() );
+	engine->layer_mgr->push( std::make_unique<layer_editor>() );
 }
 
-void g_custom_game::new_game()
+void endless_adventure_game::new_game()
 {
 	w_game::new_game();
 
 	//player = game->spawn_entity<e_player>( { 152, 188 }, 0.f );
 }
 
-void g_custom_game::update()
+void endless_adventure_game::update()
 {
 	w_game::update();
 
 }
 
-w_tile* g_custom_game::get_tile( int id )
+w_tile* endless_adventure_game::get_tile( int id )
 {
 	assert( id > -1 );
 	assert( id < 256 );
@@ -60,7 +65,7 @@ w_tile* g_custom_game::get_tile( int id )
 	return tile;
 }
 
-void g_custom_game::draw_viewport_caption( const std::string_view caption, float ypos)
+void endless_adventure_game::draw_viewport_caption( const std::string_view caption, float ypos)
 {
 	RENDER
 		->begin()

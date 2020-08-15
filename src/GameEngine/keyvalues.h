@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_keyvalues
+struct GE_API w_keyvalues
 {
 	bool does_key_exist( const std::string_view key ) const;
 	std::string_view find_value( const std::string_view key ) const;

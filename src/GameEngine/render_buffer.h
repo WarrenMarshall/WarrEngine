@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_render_vert
+struct GE_API w_render_vert
 {
 	w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& color );
 
@@ -33,7 +33,7 @@ struct w_render_vert
 
 // ----------------------------------------------------------------------------
 
-struct w_render_buffer
+struct GE_API w_render_buffer
 {
 	w_render_buffer() = delete;
 	w_render_buffer( unsigned int prim_type );

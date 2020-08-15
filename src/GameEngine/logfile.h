@@ -1,7 +1,7 @@
 
 #pragma once
 
-struct w_logfile
+struct GE_API w_logfile
 {
 	void init( const std::string_view name );
 	void deinit();

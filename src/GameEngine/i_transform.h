@@ -2,7 +2,7 @@
 
 #include "datatypes.h"
 
-struct i_transform
+struct GE_API i_transform
 {
 	// position
 	w_vec2 pos;

@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_render_stats
+struct GE_API w_render_stats
 {
 	w_render_stats();
 
@@ -22,7 +22,7 @@ struct w_render_stats
 
 // ----------------------------------------------------------------------------
 
-struct w_render
+struct GE_API w_render
 {
 	w_render_stats stats;
 

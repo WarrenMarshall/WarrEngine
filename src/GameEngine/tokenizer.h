@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_tokenizer
+struct GE_API w_tokenizer
 {
 	const std::string_view string_buffer;
 	char delim = 0;

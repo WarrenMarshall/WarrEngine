@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_file_system
+struct GE_API w_file_system
 {
 	std::unique_ptr<w_io_zip> zip_io;
 

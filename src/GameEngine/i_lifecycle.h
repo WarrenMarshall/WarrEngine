@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct i_lifecycle
+struct GE_API i_lifecycle
 {
 	e_lifecycle lifecycle = lifecycle::alive;
 

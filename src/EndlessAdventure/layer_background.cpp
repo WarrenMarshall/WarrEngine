@@ -1,6 +1,5 @@
 
-#include "master_pch.h"
-#include "master_header.h"
+#include "app_header.h"
 
 layer_background::layer_background()
 {

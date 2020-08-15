@@ -23,14 +23,14 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -38,7 +38,7 @@
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -85,7 +85,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions);GAMEENGINE_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -112,7 +112,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DRELEASE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DRELEASE;NDEBUG;%(PreprocessorDefinitions);GAMEENGINE_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -143,7 +143,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;FINALRELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;FINALRELEASE;%(PreprocessorDefinitions);GAMEENGINE_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -182,13 +182,12 @@
     <ClCompile Include="game_entities.cpp" />
     <ClCompile Include="impl_header_only.cpp" />
     <ClCompile Include="input_game_controller.cpp" />
-    <ClCompile Include="layer_browser.cpp" />
+    <ClCompile Include="master_header.cpp" />
     <ClCompile Include="master_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="g_custom_game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="io_zip.cpp" />
     <ClCompile Include="i_lifecycle.cpp" />
@@ -198,25 +197,17 @@
     <ClCompile Include="i_transform.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="layer_editor.cpp" />
-    <ClCompile Include="layer_worldviewport.cpp" />
     <ClCompile Include="mathutil.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
-    <ClCompile Include="time.cpp" />
+    <ClCompile Include="util_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="engine.cpp" />
-    <ClCompile Include="layer_background.cpp" />
     <ClCompile Include="logfile.cpp" />
-    <ClCompile Include="main.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="random.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="layer_mgr.cpp" />
@@ -240,15 +231,13 @@
     <ClInclude Include="entity_component.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="game_engine.h" />
     <ClInclude Include="input_game_controller.h" />
     <ClInclude Include="io_zip.h" />
     <ClInclude Include="i_transform.h" />
-    <ClInclude Include="layer_browser.h" />
-    <ClInclude Include="layer_worldviewport.h" />
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="game_entities.h" />
-    <ClInclude Include="g_custom_game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="i_lifecycle.h" />
     <ClInclude Include="i_speaker.h" />
@@ -257,7 +246,6 @@
     <ClInclude Include="layer.h" />
     <ClInclude Include="datatypes.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="layer_editor.h" />
     <ClInclude Include="master_enum.h" />
     <ClInclude Include="master_pch.h" />
     <ClInclude Include="matrix.h" />
@@ -265,11 +253,10 @@
     <ClInclude Include="parseutil.h" />
     <ClInclude Include="particle_pool.h" />
     <ClInclude Include="particle_spawner.h" />
-    <ClInclude Include="time.h" />
+    <ClInclude Include="util_time.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="engine.h" />
-    <ClInclude Include="layer_background.h" />
     <ClInclude Include="logfile.h" />
     <ClInclude Include="master_header.h" />
     <ClInclude Include="mathutil.h" />

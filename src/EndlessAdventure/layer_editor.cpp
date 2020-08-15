@@ -1,8 +1,5 @@
 
-#include "master_pch.h"
-#include "master_header.h"
-
-// ------------------------------------------------------------------------------
+#include "app_header.h"
 
 void layer_editor::push()
 {
@@ -34,9 +31,9 @@ void flood_fill_room_worker( int x, int y, int old_tile_id, int new_tile_id )
 
 	int idx = ( y * ROOM_SZ ) + x;
 
-	if( game->geometry_layer[ game->current_room_idx ].tiles[ idx ] == old_tile_id )
+	if( ( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ] == old_tile_id )
 	{
-		game->geometry_layer[ game->current_room_idx ].tiles[ idx ] = new_tile_id;
+		( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ] = new_tile_id;
 
 		flood_fill_room_worker( x + 1, y, old_tile_id, new_tile_id );
 		flood_fill_room_worker( x - 1, y, old_tile_id, new_tile_id );
@@ -98,13 +95,13 @@ void layer_editor::draw()
 		->push_align( align::centered )
 		->push_depth_nudge()
 		->push_rgb( w_color::teal )
-		->draw_string( UI->theme->large_font, fmt::format( "{}", game->current_room_idx ), w_rect( 102.0f, 218.0f ) )
+		->draw_string( UI->theme->large_font, fmt::format( "{}", ( (endless_adventure_game*) game )->current_room_idx ), w_rect( 102.0f, 218.0f ) )
 		->end();
 
 	// title bar
 
 	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_thin_panel.get() ) );
-	game->draw_viewport_caption( "Endless Adventure Editor", 18.0f);
+	( (endless_adventure_game*) game )->draw_viewport_caption( "Endless Adventure Editor", 18.0f);
 
 	// info bars
 
@@ -135,35 +132,35 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			style_tile->subtex_tile = game->get_tile( game->geometry_layer[ game->current_room_idx ].tiles[ idx ] )->subtex;
+			style_tile->subtex_tile = ( (endless_adventure_game*) game )->get_tile( ( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ] )->subtex;
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			if( ir & im_result::hot )
 			{
-				game->geometry_layer[ game->current_room_idx ].tiles[ idx ] = game->current_tile_idx;
+				( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ] = ( (endless_adventure_game*) game )->current_tile_idx;
 				is_painting = true;
 			}
 			else if( ir & im_result::hovered )
 			{
 				if( is_painting )
 				{
-					game->geometry_layer[ game->current_room_idx ].tiles[ idx ] = game->current_tile_idx;
+					( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ] = ( (endless_adventure_game*) game )->current_tile_idx;
 				}
 				else if( c_key_is_down )
 				{
 					// copy tile clicked to the current tile
-					game->current_tile_idx = game->geometry_layer[ game->current_room_idx ].tiles[ idx ];
+					( (endless_adventure_game*) game )->current_tile_idx = ( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ];
 				}
 				else if( f_key_is_down )
 				{
 					// take the current tile, and flood fill into the room starting with the clicked tile
-					flood_fill_room( idx, game->geometry_layer[ game->current_room_idx ].tiles[ idx ], game->current_tile_idx );
+					flood_fill_room( idx, ( (endless_adventure_game*) game )->geometry_layer[ ( (endless_adventure_game*) game )->current_room_idx ].tiles[ idx ], ( (endless_adventure_game*) game )->current_tile_idx );
 				}
 			}
 		}
 	}
 
-	style_browse->subtex = game->get_tile( game->current_tile_idx )->subtex;
+	style_browse->subtex = ( (endless_adventure_game*) game )->get_tile( ( (endless_adventure_game*) game )->current_tile_idx )->subtex;
 	if( UI->im_active( "", { 12, 188, 48, 48 }, *( style_browse.get() ) ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->push( std::make_unique<layer_browser>() );
@@ -172,35 +169,35 @@ void layer_editor::draw()
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );
 	if( UI->im_active( "", { 76.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
-		game->current_room_idx--;
-		game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
+		( (endless_adventure_game*) game )->current_room_idx--;
+		( (endless_adventure_game*) game )->current_room_idx = w_clamp( ( (endless_adventure_game*) game )->current_room_idx, 0, 9 );
 	}
 
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_right" );
 	if( UI->im_active( "", { 114.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
-		game->current_room_idx++;
-		game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
+		( (endless_adventure_game*) game )->current_room_idx++;
+		( (endless_adventure_game*) game )->current_room_idx = w_clamp( ( (endless_adventure_game*) game )->current_room_idx, 0, 9 );
 	}
 
 	w_ui_style* style = nullptr;
 
-	style = ( game->tile_layer == tile_layer::geometry ) ? style_radio_button_on.get() : style_radio_button_off.get();
+	style = ( ( (endless_adventure_game*) game )->tile_layer == tile_layer::geometry ) ? style_radio_button_on.get() : style_radio_button_off.get();
 	if( UI->im_active(
 		"Geometry",
 		{ 140.0f, 188.0f, 80, 24 },
 		*style) & im_result::left_clicked )
 	{
-		game->tile_layer = tile_layer::geometry;
+		( (endless_adventure_game*) game )->tile_layer = tile_layer::geometry;
 	}
 
-	style = ( game->tile_layer == tile_layer::items ) ? style_radio_button_on.get() : style_radio_button_off.get();
+	style = ( ( (endless_adventure_game*) game )->tile_layer == tile_layer::items ) ? style_radio_button_on.get() : style_radio_button_off.get();
 	if( UI->im_active(
 		"Items",
 		{ 140.0f, 212.0f, 80, 24 },
 		*style) & im_result::left_clicked )
 	{
-		game->tile_layer = tile_layer::items;
+		( (endless_adventure_game*) game )->tile_layer = tile_layer::items;
 	}
 	
 	RENDER
@@ -234,15 +231,15 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 			{
 				case input_id::key_right_bracket:
 				{
-					game->current_room_idx++;
-					game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
+					( (endless_adventure_game*) game )->current_room_idx++;
+					( (endless_adventure_game*) game )->current_room_idx = w_clamp( ( (endless_adventure_game*) game )->current_room_idx, 0, 9 );
 				}
 				break;
 
 				case input_id::key_left_bracket:
 				{
-					game->current_room_idx--;
-					game->current_room_idx = w_clamp( game->current_room_idx, 0, 9 );
+					( (endless_adventure_game*) game )->current_room_idx--;
+					( (endless_adventure_game*) game )->current_room_idx = w_clamp( ( (endless_adventure_game*) game )->current_room_idx, 0, 9 );
 				}
 				break;
 
@@ -257,7 +254,7 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 				case input_id::key_8:
 				case input_id::key_9:
 				{
-					game->current_room_idx = evt->input_id - input_id::key_0;
+					( (endless_adventure_game*) game )->current_room_idx = evt->input_id - input_id::key_0;
 					return true;
 				}
 				break;

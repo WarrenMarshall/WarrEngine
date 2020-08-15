@@ -2,9 +2,9 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_entity : i_lifecycle, i_transform
+struct GE_API w_entity : i_lifecycle, i_transform
 {
-	std::vector<std::unique_ptr<w_entity_component>> components;
+	std::vector<std::shared_ptr<w_entity_component>> components;
 
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	virtual bool can_be_deleted();
@@ -13,15 +13,13 @@ struct w_entity : i_lifecycle, i_transform
 	w_vec2 dir;
 	float speed = 1.0f;
 
-	virtual ~w_entity() = default;
-
 	virtual void update();
 	virtual void draw_components();
 	virtual void post_spawn();
 
 	template<typename T> T* add_component()
 	{
-		components.emplace_back( std::make_unique<T>() );
+		components.emplace_back( std::make_shared<T>() );
 		return static_cast<T*>( components.back().get() );
 	}
 };
@@ -33,7 +31,7 @@ struct w_entity : i_lifecycle, i_transform
 //
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
 
-struct w_entity_cozy : w_entity
+struct GE_API w_entity_cozy : w_entity
 {
 	float life_remaining = 0.0f;
 

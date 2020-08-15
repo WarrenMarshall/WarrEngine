@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_particle_emitter : i_listener, i_transform
+struct GE_API w_particle_emitter : i_listener, i_transform
 {
 	a_emitter_params* params = nullptr;
 	ec_emitter* parent_component = nullptr;

@@ -28,6 +28,228 @@ void tw_refresh_reloadables()
 
 // ----------------------------------------------------------------------------
 
+bool w_engine::init_game_engine( std::string_view game_name, int argc, char* argv [], w_game* custom_game )
+{
+	try
+	{
+#if defined(FINALRELEASE)
+		ShowWindow( GetConsoleWindow(), SW_HIDE );
+#endif
+
+		// get the log file running so we can immediately start writing into it
+		logfile = std::make_unique<w_logfile>();
+		logfile->init( game_name );
+
+		// create the game engine
+		engine = std::make_unique<w_engine>();
+
+		{	// starting
+			logfile->time_stamp( "Started" );
+		}
+
+		{	// engine
+			log_msg( "Initializing engine" );
+			engine->init();
+		}
+	
+		// #todo : write a proper command line parsing class
+		{	// command line parsing
+
+			g_allow_hot_reload = false;
+
+			for( int a = 1; a < argc; ++a )
+			{
+				std::string_view arg( argv[ a ] );
+
+				// +hot_reload - enable hot reloading of asset definition files (defaults to false)
+				if( arg == "+hot_reload" )
+				{
+					log_msg( "command line : +hot_reload : hot reloading enabled" );
+					g_allow_hot_reload = true;
+				}
+			}
+		}
+
+		{	// window
+			log_msg( "Creating window" );
+			if( !engine->window->init( fmt::format( "Game Engine [{}]", game_name ) ) )
+			{
+				return false;
+			}
+		}
+
+		{	// opengl
+			log_msg( "Initializing OpenGL" );
+			OPENGL->init();
+		}
+
+		{	// renderer
+			log_msg( "Initializing renderer" );
+			RENDER->init();
+		}
+
+		{	// audio
+			log_msg( "Initializing BASS audio" );
+			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
+				log_warning( "BASS Audio : init failed!" );
+		}
+
+		{
+			// read asset definitions and cache them
+			log_msg( "Caching asset definition files (*.asset_def)..." );
+			engine->cache_asset_definition_files();
+
+			// look through the cached asset definitions and load any assets required
+			// into the asset cache
+			log_msg( "Precaching resources from definition files..." );
+			engine->precache_asset_resources();
+		}
+
+		// game
+
+		log_msg( "Initializing game" );
+		game = custom_game;
+		game->init();
+		game->new_game();
+
+		// input initialization
+
+		log_msg( "Initializing input" );
+		engine->input->init();
+
+		engine->is_running = true;
+		engine->time->init();
+
+		// initialize random internals
+		{
+			// used for wireframe drawing
+			engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
+			engine->white_wire->tex->render_buffer->prim_type = GL_LINES;
+
+			// used for solid drawing
+			engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
+
+			engine->ui->init();
+			engine->ui->theme->init();
+
+			// using a custom mouse cursor, so hide the system mouse
+			engine->window->set_mouse_mode( mouse_mode::hidden );
+		}
+	}
+	catch( std::exception& e )
+	{
+		log_msg( "!! EXCEPTION CAUGHT !!" );
+		log_msg( fmt::format( "\t{}", e.what() ) );
+
+		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );
+	}
+
+	return true;
+}
+
+void w_engine::deinit_game_engine()
+{
+	// Clean up
+
+	log_msg( "Shutting down..." );
+
+	log_msg( "Shutting down window" );
+	engine->window->deinit();
+
+	log_msg( "Shutting down OpenGL" );
+	glDeleteProgram( engine->shader->id );
+
+	log_msg( "Shutting down GLFW" );
+	glfwTerminate();
+
+	log_msg( "Shutting down BASS Audio" );
+	BASS_Free();
+
+	log_msg( "Shutting down input" );
+	engine->input->deinit();
+
+	log_msg( "Shutting down engine" );
+	engine->deinit();
+
+	// Do this last so we can log right up until the last moment
+	logfile->time_stamp( "Ended" );
+	log_msg( "Finished!" );
+	logfile->deinit();
+}
+
+void w_engine::exec_main_loop()
+{
+	/*
+		main game loop
+	*/
+
+	while( engine->is_running )
+	{
+		/*
+			event processing
+		*/
+		glfwWaitEventsTimeout( 0.001 );
+
+		/*
+			update core engine stuff - time, timers, etc
+		*/
+
+		engine->time->update();
+		engine->hot_reload_timer->update();
+
+		/*
+			process user input
+		*/
+
+		engine->input->update();
+		UI->im_reset();
+
+		/*
+			if we have fixed time steps to perform, walk
+			through them one at a time
+		*/
+
+		while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
+		{
+			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
+
+			engine->update();
+			game->update();
+		}
+
+		/*
+			at regular intervals, check if any assets need to be reloaded
+		*/
+
+		if( engine->hot_reload_timer->get_elapsed_count() )
+		{
+			engine->update_hot_reload();
+		}
+
+		/*
+			draw everything
+		*/
+
+		RENDER->init_projection();
+
+		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
+		// to the render functions for interpolation/prediction
+		//
+		// it is passed a percentage for easier use : 0.0f-1.0f
+
+		RENDER->begin_frame( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
+		{
+			engine->layer_mgr->draw();
+
+			UI->draw_topmost();
+			engine->draw();
+		}
+		RENDER->end_frame();
+	}
+}
+
+// ----------------------------------------------------------------------------
+
 /*
 	checks if 'symbol' exists in the map
 */
@@ -134,6 +356,8 @@ void w_engine::init()
 {
 	// make sure we are only calling this function ONE time per instance
 	assert( time == nullptr );
+
+	stbi_set_flip_vertically_on_load( 1 );
 
 	time = std::make_unique<w_time>();
 	asset_definition_file_cache = std::make_unique<w_cache_asset_definition_files>();

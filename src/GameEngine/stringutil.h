@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_stringutil
+struct GE_API w_stringutil
 {
     static const std::string_view ltrim( const std::string_view str );
     static const std::string_view rtrim( const std::string_view str );
