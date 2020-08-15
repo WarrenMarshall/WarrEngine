@@ -573,8 +573,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	// top row
 
 	draw( p_00, w_rect( xpos, ypos, p_00->sz.w, p_00->sz.h ) );
+	
 	xpos += p_00->sz.w;
 	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->sz.h ) );
+	
 	xpos += inner_w;
 	draw( p_20, w_rect( xpos, ypos, p_20->sz.w, p_20->sz.h ) );
 
@@ -583,8 +585,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	xpos = dst.x;
 	ypos += p_00->sz.h;
 	draw( p_01, w_rect( xpos, ypos, p_01->sz.w, inner_h ) );
+	
 	xpos += p_01->sz.w;
 	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
+	
 	xpos += inner_w;
 	draw( p_21, w_rect( xpos, ypos, p_21->sz.w, inner_h ) );
 
@@ -593,8 +597,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	xpos = dst.x;
 	ypos += inner_h;
 	draw( p_02, w_rect( xpos, ypos, p_02->sz.w, p_02->sz.h ) );
+	
 	xpos += p_02->sz.w;
 	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->sz.h ) );
+	
 	xpos += inner_w;
 	draw( p_22, w_rect( xpos, ypos, p_22->sz.w, p_22->sz.h ) );
 
