@@ -210,7 +210,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 							asset_ptr->patches[ subtex_idx ] = static_cast<a_subtexture*>(
 								engine->asset_cache->add(
-									std::make_unique<a_subtexture>( tex_name, rc ), subtex_name, ""
+									std::make_shared<a_subtexture>( tex_name, rc ), subtex_name, ""
 								)
 							);
 						}
@@ -392,7 +392,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					{
 						asset_ptr = static_cast<a_anim_texture*>(
 							engine->asset_cache->add(
-								std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
+								std::make_shared<a_anim_texture>( tween_type, frames_per_sec ),
 								name, "" )
 							);
 					}

@@ -4,6 +4,7 @@
 
 w_particle_pool::w_particle_pool( int num_particles )
 {
+	// #todo - can't this just be a block of memory we allocate? why incur the overhead of the std::vector?
 	particles = std::make_unique<std::vector<w_particle>>( num_particles );
 
 	log_msg( fmt::format( "{} : creating a particle pool with {} particles", __FUNCTION__, num_particles ) );

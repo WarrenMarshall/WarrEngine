@@ -69,10 +69,6 @@ void layer_editor::draw()
 		style_panel = std::make_unique<w_ui_style_panel>();
 		style_panel->color = w_color::dark_grey;
 
-		style_thin_panel = std::make_unique<w_ui_style_panel>();
-		//style_thin_panel->color = w_color::dark_grey;
-		style_thin_panel->slice_def = engine->get_asset<a_9slice_def>( "ui_thin_panel" );
-
 		style_tile = std::make_unique<w_ui_style_tile>();
 
 		style_radio_button_on = std::make_unique<w_ui_style_button>();
@@ -100,7 +96,7 @@ void layer_editor::draw()
 
 	// title bar
 
-	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_thin_panel.get() ) );
+	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_panel.get() ) );
 	GAME->draw_viewport_caption( "Endless Adventure Editor", 18.0f);
 
 	// info bars
@@ -163,7 +159,7 @@ void layer_editor::draw()
 	style_browse->subtex = GAME->get_tile( GAME->current_tile_idx )->subtex;
 	if( UI->im_active( "", { 12, 188, 48, 48 }, *( style_browse.get() ) ) & im_result::left_clicked )
 	{
-		engine->layer_mgr->push( std::make_unique<layer_browser>() );
+		engine->layer_mgr->push( std::make_shared<layer_browser>() );
 	}
 	
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );

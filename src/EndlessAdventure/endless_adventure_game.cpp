@@ -38,9 +38,9 @@ void endless_adventure_game::init()
 
 	// initial layer set up
 
-	engine->layer_mgr->push( std::make_unique<layer_background>() );
-	engine->layer_mgr->push( std::make_unique<layer_worldviewport>() );
-	engine->layer_mgr->push( std::make_unique<layer_editor>() );
+	engine->layer_mgr->push( std::make_shared<layer_background>() );
+	engine->layer_mgr->push( std::make_shared<layer_worldviewport>() );
+	engine->layer_mgr->push( std::make_shared<layer_editor>() );
 }
 
 void endless_adventure_game::new_game()

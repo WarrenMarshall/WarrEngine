@@ -9,3 +9,7 @@ src/bin/GameEngine.ipdb
 .vs
 *.lastcodeanalysissucceeded
 src/bin/*_log.txt
+src/bin/*.exe
+*.iobj
+*.ipdb
+src/bin/GameEngine.dll
