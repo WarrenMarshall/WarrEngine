@@ -28,6 +28,8 @@ enum_end
 
 struct endless_adventure_game : w_game
 {
+	static endless_adventure_game* inst;
+
 	e_player* player = nullptr;
 
 	int current_tile_idx = 0;
@@ -47,3 +49,4 @@ struct endless_adventure_game : w_game
 	w_tile* get_tile( int id );
 	void draw_viewport_caption( const std::string_view caption, float ypos );
 };
+

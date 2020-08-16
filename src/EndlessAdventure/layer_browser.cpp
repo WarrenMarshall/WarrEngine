@@ -32,7 +32,7 @@ void layer_browser::draw()
 	w_layer::draw();
 
 	UI->im_passive( { 16.0f, 16.0f, v_window_w - 32.0f, v_window_h - 32.0f }, *( style_panel.get() ) );
-	( (endless_adventure_game*) game )->draw_viewport_caption( "Select A Tile", 34.0f );
+	GAME->draw_viewport_caption( "Select A Tile", 34.0f );
 
 	if( UI->im_active( "", { 24.0f, 24.0f, 16, 16 }, *( style_close_button.get() ) ) & im_result::left_clicked )
 	{
@@ -43,7 +43,7 @@ void layer_browser::draw()
 	int tile_draw_count = 0;
 	int tile_idx = 0;
 
-	for( auto& tile : ( (endless_adventure_game*) game )->tile_masters )
+	for( auto& tile : GAME->tile_masters )
 	{
 		if( tile.show_in_browser )
 		{
@@ -53,7 +53,7 @@ void layer_browser::draw()
 
 			if( ir == im_result::left_clicked )
 			{
-				( (endless_adventure_game*) game )->current_tile_idx = tile_idx;
+				GAME->current_tile_idx = tile_idx;
 				engine->layer_mgr->pop();
 			}
 

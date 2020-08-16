@@ -1,6 +1,8 @@
 
 #include "app_header.h"
 
+endless_adventure_game* endless_adventure_game::inst = nullptr;
+
 endless_adventure_game::endless_adventure_game()
 {
 }

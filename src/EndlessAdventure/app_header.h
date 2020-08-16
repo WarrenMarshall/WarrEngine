@@ -1,4 +1,7 @@
+
 #pragma once
+
+#define GAME endless_adventure_game::inst
 
 // ----------------------------------------------------------------------------
 

@@ -3,8 +3,8 @@
 
 int main( int argc, char* argv [] )
 {
-	endless_adventure_game custom_game;
-	if( !w_engine::init_game_engine( "endless_adventure", argc, argv, &custom_game ) )
+	GAME = &(endless_adventure_game());
+	if( !w_engine::init_game_engine( "endless_adventure", argc, argv, GAME ) )
 	{
 		return -1;
 	}
