@@ -47,7 +47,10 @@ struct GE_API w_render
 
 	w_render* begin();
 	w_render* push_rgb( const w_color& color );
+	w_render* pop_rgb();
 	w_render* push_rgba( const w_color& color );
+	w_render* push_rgba( const w_color& color, const float& alpha );
+	w_render* pop_rgba();
 	w_render* push_alpha( const float& alpha );
 	w_render* pop_alpha();
 	w_render* push_scale( const float& scale );

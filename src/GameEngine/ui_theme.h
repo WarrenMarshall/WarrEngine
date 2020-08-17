@@ -45,19 +45,6 @@ struct GE_API w_ui_style_panel : w_ui_style
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_ui_style_tile : w_ui_style
-{
-	a_subtexture* subtex_tile = nullptr;
-	a_subtexture* selector_bracket = nullptr;
-
-	w_ui_style_tile();
-
-	e_im_result update_im_state( int id, w_rect rc ) override;
-	void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) override;
-};
-
-// ----------------------------------------------------------------------------
-
 struct GE_API w_ui_theme
 {
 	a_cursor* mouse_cursor = nullptr;

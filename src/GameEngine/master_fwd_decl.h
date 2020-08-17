@@ -78,7 +78,6 @@ struct GE_API w_ui_mgr;
 struct GE_API w_ui_style;
 struct GE_API w_ui_style_button;
 struct GE_API w_ui_style_panel;
-struct GE_API w_ui_style_tile;
 struct GE_API w_ui_theme;
 struct GE_API w_vec2;
 struct GE_API w_vec3;

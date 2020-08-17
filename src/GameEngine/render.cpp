@@ -73,10 +73,33 @@ w_render* w_render::push_rgb( const w_color& color )
 	return this;
 }
 
+w_render* w_render::pop_rgb()
+{
+	rs_color_stack = rs_color_stack.erase( rs_color_stack.length() - 3 );
+
+	return this;
+}
+
 w_render* w_render::push_rgba( const w_color& color )
 {
 	push_rgb( color );
 	push_alpha( color.a );
+
+	return this;
+}
+
+w_render* w_render::push_rgba( const w_color& color, const float& alpha )
+{
+	push_rgb( color );
+	push_alpha( alpha );
+
+	return this;
+}
+
+w_render* w_render::pop_rgba()
+{
+	pop_rgb();
+	pop_alpha();
 
 	return this;
 }

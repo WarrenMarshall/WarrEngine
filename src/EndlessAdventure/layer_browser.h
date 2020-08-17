@@ -6,7 +6,7 @@ struct layer_browser : w_layer
 
 	std::unique_ptr<w_ui_style_button> style_close_button = nullptr;
 	std::unique_ptr<w_ui_style_panel> style_panel = nullptr;
-	std::unique_ptr<w_ui_style_tile> style_tile = nullptr;
+	std::unique_ptr<w_ui_style_browser_tile> style_tile = nullptr;
 
 	void push() override;
 	void pop() override;

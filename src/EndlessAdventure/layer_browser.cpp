@@ -26,7 +26,7 @@ void layer_browser::draw()
 		style_panel = std::make_unique<w_ui_style_panel>();
 		style_panel->color = w_color::dark_grey;
 
-		style_tile = std::make_unique<w_ui_style_tile>();
+		style_tile = std::make_unique<w_ui_style_browser_tile>();
 	}
 
 	w_layer::draw();
@@ -45,10 +45,18 @@ void layer_browser::draw()
 
 	for( auto& tile : GAME->tile_masters )
 	{
-		if( tile.show_in_browser )
+		if( tile.room_layer != room_layer::nobrowse )
 		{
 			w_rect rc( draw_pos.x, draw_pos.y, TILE_SZ, TILE_SZ );
+
 			style_tile->subtex_tile = tile.subtex;
+
+			style_tile->background_color = w_color::black;
+			if( tile.room_layer == room_layer::item )
+				style_tile->background_color = w_color::green;
+			else if( tile.room_layer == room_layer::enemy )
+				style_tile->background_color = w_color::red;
+			
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			if( ir == im_result::left_clicked )

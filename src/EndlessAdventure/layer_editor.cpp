@@ -20,6 +20,7 @@ void layer_editor::becoming_top_layer()
 
 void flood_fill_room_worker( int x, int y, int old_tile_id, int new_tile_id )
 {
+#if 0
 	// outside the bounds, stop filling
 	if( x >= ROOM_SZ
 		|| x < 0
@@ -31,19 +32,21 @@ void flood_fill_room_worker( int x, int y, int old_tile_id, int new_tile_id )
 
 	int idx = ( y * ROOM_SZ ) + x;
 
-	if( GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ] == old_tile_id )
+	if( GAME->rooms[ GAME->current_room_idx ].tiles[ idx ] == old_tile_id )
 	{
-		GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ] = new_tile_id;
+		GAME->rooms[ GAME->current_room_idx ].tiles[ idx ] = new_tile_id;
 
 		flood_fill_room_worker( x + 1, y, old_tile_id, new_tile_id );
 		flood_fill_room_worker( x - 1, y, old_tile_id, new_tile_id );
 		flood_fill_room_worker( x, y + 1, old_tile_id, new_tile_id );
 		flood_fill_room_worker( x, y - 1, old_tile_id, new_tile_id );
 	}
+#endif
 }
 
 void flood_fill_room( int idx_clicked, int old_tile_id, int new_tile_id )
 {
+#if 0
 	if( old_tile_id == new_tile_id )
 	{
 		return;
@@ -53,6 +56,7 @@ void flood_fill_room( int idx_clicked, int old_tile_id, int new_tile_id )
 	int x = idx_clicked - ( y * ROOM_SZ );
 
 	flood_fill_room_worker( x, y, old_tile_id, new_tile_id );
+#endif
 }
 
 void layer_editor::draw()
@@ -70,14 +74,6 @@ void layer_editor::draw()
 		style_panel->color = w_color::dark_grey;
 
 		style_tile = std::make_unique<w_ui_style_tile>();
-
-		style_radio_button_on = std::make_unique<w_ui_style_button>();
-		style_radio_button_on->slice_def = nullptr;
-		style_radio_button_on->subtex = engine->get_asset<a_subtexture>( "ui_radio_on" );
-
-		style_radio_button_off = std::make_unique<w_ui_style_button>();
-		style_radio_button_off->slice_def = nullptr;
-		style_radio_button_off->subtex = engine->get_asset<a_subtexture>( "ui_radio_off" );
 	}
 
 	w_layer::draw();
@@ -128,29 +124,29 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			style_tile->subtex_tile = GAME->get_tile( GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ] )->subtex;
+			style_tile->subtex_tile = GAME->get_tile( GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ] )->subtex;
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			if( ir & im_result::hot )
 			{
-				GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ] = GAME->current_tile_idx;
+				GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ] = GAME->current_tile_idx;
 				is_painting = true;
 			}
 			else if( ir & im_result::hovered )
 			{
 				if( is_painting )
 				{
-					GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ] = GAME->current_tile_idx;
+					GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ] = GAME->current_tile_idx;
 				}
 				else if( c_key_is_down )
 				{
 					// copy tile clicked to the current tile
-					GAME->current_tile_idx = GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ];
+					GAME->current_tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ];
 				}
 				else if( f_key_is_down )
 				{
 					// take the current tile, and flood fill into the room starting with the clicked tile
-					flood_fill_room( idx, GAME->geometry_layer[ GAME->current_room_idx ].tiles[ idx ], GAME->current_tile_idx );
+					flood_fill_room( idx, GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ], GAME->current_tile_idx );
 				}
 			}
 		}
@@ -176,26 +172,6 @@ void layer_editor::draw()
 		GAME->current_room_idx = w_clamp( GAME->current_room_idx, 0, 9 );
 	}
 
-	w_ui_style* style = nullptr;
-
-	style = ( GAME->tile_layer == tile_layer::geometry ) ? style_radio_button_on.get() : style_radio_button_off.get();
-	if( UI->im_active(
-		"Geometry",
-		{ 140.0f, 188.0f, 80, 24 },
-		*style) & im_result::left_clicked )
-	{
-		GAME->tile_layer = tile_layer::geometry;
-	}
-
-	style = ( GAME->tile_layer == tile_layer::items ) ? style_radio_button_on.get() : style_radio_button_off.get();
-	if( UI->im_active(
-		"Items",
-		{ 140.0f, 212.0f, 80, 24 },
-		*style) & im_result::left_clicked )
-	{
-		GAME->tile_layer = tile_layer::items;
-	}
-	
 	RENDER
 		->begin()
 		->push_depth_nudge( 100 );

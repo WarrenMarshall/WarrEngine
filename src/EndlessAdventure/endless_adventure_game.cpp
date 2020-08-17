@@ -1,39 +1,46 @@
 
 #include "app_header.h"
 
-endless_adventure_game* endless_adventure_game::inst = nullptr;
-
 endless_adventure_game::endless_adventure_game()
 {
 }
 
 void endless_adventure_game::init()
 {
-	auto file = engine->fs->load_text_file_into_memory( "game_specific\\tile_def.txt" );
+	auto file = engine->fs->load_text_file_into_memory( "endless_adventure\\tile_def.txt" );
 
 	for( const auto& line : *(file.get()->lines.get()) )
 	{
 		w_tokenizer line_tok( line, ',', "" );
 
-		int tile_id = w_parser::int_from_str( line_tok.get_next_token() );
+		int tile_master_idx = w_parser::int_from_str( line_tok.get_next_token() );
 		std::string_view tile_name = line_tok.get_next_token();
-		bool tile_show_in_browser = w_parser::bool_from_str( line_tok.get_next_token() );
 
-		tile_masters[ tile_id ].id = tile_id;
-		tile_masters[ tile_id ].show_in_browser = tile_show_in_browser;
-		tile_masters[ tile_id ].subtex = engine->get_asset<a_subtexture>( tile_name );
+		std::string_view str = line_tok.get_next_token();
+
+		e_room_layer room_layer = room_layer::nobrowse;
+		if( str == "geometry" )
+			room_layer = room_layer::geometry;
+		else if( str == "item" )
+			room_layer = room_layer::item;
+		else if( str == "enemy" )
+			room_layer = room_layer::enemy;
+
+		tile_masters[ tile_master_idx ].id = tile_master_idx;
+		tile_masters[ tile_master_idx ].room_layer = room_layer;
+		tile_masters[ tile_master_idx ].subtex = engine->get_asset<a_subtexture>( tile_name );
 	}
 
 	// populate the rooms with default tile values
 
-	int debug_tile_id = 0;
-	for( auto& iter : geometry_layer )
+	for( auto& iter : rooms )
 	{
 		for( int x = 0 ; x < ROOM_SZ * ROOM_SZ ; ++x )
 		{
-			iter.tiles[ x ] = debug_tile_id;
+			iter.tile_ids[ room_layer::geometry ][ x ] = 122;
+			iter.tile_ids[ room_layer::item ][ x ] = 122;
+			iter.tile_ids[ room_layer::enemy ][ x ] = 122;
 		}
-		debug_tile_id++;
 	}
 
 	// initial layer set up
@@ -46,14 +53,11 @@ void endless_adventure_game::init()
 void endless_adventure_game::new_game()
 {
 	w_game::new_game();
-
-	player = GAME->spawn_entity<e_player>( { 152, 188 }, 0.f );
 }
 
 void endless_adventure_game::update()
 {
 	w_game::update();
-
 }
 
 w_tile* endless_adventure_game::get_tile( int id )
