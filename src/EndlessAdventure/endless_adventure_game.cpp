@@ -37,9 +37,9 @@ void endless_adventure_game::init()
 	{
 		for( int x = 0 ; x < ROOM_SZ * ROOM_SZ ; ++x )
 		{
-			iter.tile_ids[ room_layer::geometry ][ x ] = 122;
-			iter.tile_ids[ room_layer::item ][ x ] = 122;
-			iter.tile_ids[ room_layer::enemy ][ x ] = 122;
+			iter.tile_ids[ room_layer::geometry ][ x ] = 4; // tile_grass
+			iter.tile_ids[ room_layer::item ][ x ] = 71; // tile_blank_03
+			iter.tile_ids[ room_layer::enemy ][ x ] = 71; // tile_blank_03
 		}
 	}
 

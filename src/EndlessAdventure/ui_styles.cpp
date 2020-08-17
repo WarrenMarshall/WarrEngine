@@ -25,11 +25,20 @@ void w_ui_style_tile::draw( std::string_view label, w_rect& rc, bool being_hover
 	}
 
 	RENDER
-		->begin()
-		->push_depth_nudge()
-		->draw( subtex_tile, rc )
+		->begin();
+
+	for( int rl = room_layer::geometry ; rl < room_layer::max ; ++rl )
+	{
+		//if( GAME->rooms[ GAME->current_room_idx ].tile_ids[ rl ][ idx ] != -1 )
+		//{
+			a_subtexture* subtex_tile = GAME->get_tile( GAME->rooms[ GAME->current_room_idx ].tile_ids[ rl ][ idx ] )->subtex;
+			RENDER->push_depth_nudge()
+				->draw( subtex_tile, rc );
+		//}
+	}
+		
+	RENDER->push_depth_nudge()
 		->push_rgba( bracket_color )
-		->push_depth_nudge()
 		->draw( selector_bracket, rc );
 
 	RENDER->end();
@@ -123,9 +132,9 @@ void w_ui_style_browser_tile::draw( std::string_view label, w_rect& rc, bool bei
 		
 		->push_depth_nudge()
 		->draw( subtex_tile, rc )
-		->push_rgba( bracket_color )
 		
 		->push_depth_nudge()
+		->push_rgba( bracket_color )
 		->draw( selector_bracket, rc );
 
 	RENDER->end();

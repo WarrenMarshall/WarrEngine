@@ -1,10 +1,12 @@
 #pragma once
 
 // ----------------------------------------------------------------------------
+// tiles for the main editing window
 
 struct w_ui_style_tile final : w_ui_style
 {
-	a_subtexture* subtex_tile = nullptr;
+	int idx = -1;
+	//a_subtexture* subtex_tile = nullptr;
 	a_subtexture* selector_bracket = nullptr;
 
 	w_ui_style_tile();
@@ -14,6 +16,7 @@ struct w_ui_style_tile final : w_ui_style
 };
 
 // ----------------------------------------------------------------------------
+// tiles for the tile browser
 
 struct w_ui_style_browser_tile final : w_ui_style
 {

@@ -124,29 +124,31 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			style_tile->subtex_tile = GAME->get_tile( GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ] )->subtex;
+			style_tile->idx = idx;
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
+
+			auto tile = GAME->get_tile( GAME->current_tile_idx );
 
 			if( ir & im_result::hot )
 			{
-				GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ] = GAME->current_tile_idx;
+				GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ] = GAME->current_tile_idx;
 				is_painting = true;
 			}
 			else if( ir & im_result::hovered )
 			{
 				if( is_painting )
 				{
-					GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ] = GAME->current_tile_idx;
+					GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ] = GAME->current_tile_idx;
 				}
 				else if( c_key_is_down )
 				{
 					// copy tile clicked to the current tile
-					GAME->current_tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ];
+					GAME->current_tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ];
 				}
 				else if( f_key_is_down )
 				{
 					// take the current tile, and flood fill into the room starting with the clicked tile
-					flood_fill_room( idx, GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer::geometry ][ idx ], GAME->current_tile_idx );
+					flood_fill_room( idx, GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ], GAME->current_tile_idx );
 				}
 			}
 		}
