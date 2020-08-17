@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_texture : i_asset
+struct a_texture : i_asset
 {
 	unsigned int id = 0;
 	float w = 0.0f;
@@ -40,7 +40,7 @@ struct GE_API a_texture : i_asset
 	a lightweight class that defines a renderable subsection of an a_texture
 */
 
-struct GE_API a_subtexture : i_asset
+struct a_subtexture : i_asset
 {
 	// the texture asset we draw from
 	a_texture* tex;
@@ -64,7 +64,7 @@ struct GE_API a_subtexture : i_asset
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_gradient : a_texture
+struct a_gradient : a_texture
 {
 	~a_gradient() override;
 
@@ -77,7 +77,7 @@ struct GE_API a_gradient : a_texture
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_anim_texture : a_texture
+struct a_anim_texture : a_texture
 {
 	std::vector<a_subtexture*> frames;
 	std::unique_ptr<w_tween> frame_tween = nullptr;
@@ -100,7 +100,7 @@ struct GE_API a_anim_texture : a_texture
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_emitter_params : i_asset, i_speaker
+struct a_emitter_params : i_asset, i_speaker
 {
 	// texture to draw for this particle
 	a_texture* tex = nullptr;
@@ -133,7 +133,7 @@ struct GE_API a_emitter_params : i_asset, i_speaker
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_font_char
+struct w_font_char
 {
 	float w = 0.0f;
 	float h = 0.0f;
@@ -147,7 +147,7 @@ struct GE_API w_font_char
 
 constexpr int max_font_chars = 128;
 
-struct GE_API a_font_def : i_asset
+struct a_font_def : i_asset
 {
 	// the font texture this font definition is pulling from
 	std::string texture_name;
@@ -165,7 +165,7 @@ struct GE_API a_font_def : i_asset
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_font : i_asset
+struct a_font : i_asset
 {
 	a_font_def* font_def = nullptr;
 
@@ -174,7 +174,7 @@ struct GE_API a_font : i_asset
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_cursor : i_asset
+struct a_cursor : i_asset
 {
 	w_vec2 hotspot_offset = w_vec2( 0, 0 );
 	a_subtexture* subtex = nullptr;
@@ -182,7 +182,7 @@ struct GE_API a_cursor : i_asset
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_9slice_def : i_asset
+struct a_9slice_def : i_asset
 {
 	std::array<a_subtexture*, 9> patches = {};
 	e_fill_mode fill_mode = fill_mode::scaled;
@@ -190,7 +190,7 @@ struct GE_API a_9slice_def : i_asset
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_sound : i_asset
+struct a_sound : i_asset
 {
 	int snd = -1;
 	int channel = -1;
@@ -204,7 +204,7 @@ struct GE_API a_sound : i_asset
 
 // ----------------------------------------------------------------------------
 
-struct GE_API a_music : i_asset
+struct a_music : i_asset
 {
 	int mus = -1;
 	int channel = -1;

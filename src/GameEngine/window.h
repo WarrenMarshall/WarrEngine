@@ -4,7 +4,7 @@
 	the actual OS window on the screen.
 */
 
-struct GE_API w_window
+struct w_window
 {
 	bool is_fullscreen = false;
 	w_rect save_window_rect = w_rect( 0, 0, 0, 0 );

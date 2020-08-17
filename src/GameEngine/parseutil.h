@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_parser
+struct w_parser
 {
 	static std::string_view key_from_str( const std::string_view src_string, const std::string_view key );
 	static bool bool_from_str( const std::string_view str );

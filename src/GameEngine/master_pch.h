@@ -3,12 +3,6 @@
 #pragma warning(disable : 26812)	// https://docs.microsoft.com/en-us/visualstudio/code-quality/c26812?view=vs-2019
 #pragma warning(disable : 4251)
 
-#ifdef GAMEENGINE_EXPORTS
-#define GE_API __declspec(dllexport)
-#else
-#define GE_API __declspec(dllimport)
-#endif
-
 #pragma warning(push, 0)	// turn off all warnings for external libraries
 
 	#include <glm\glm.hpp>

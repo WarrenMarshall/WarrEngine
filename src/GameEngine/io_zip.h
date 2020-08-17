@@ -10,7 +10,7 @@
 #pragma pack(push)  /* push current alignment to stack */
 #pragma pack(1)     /* set alignment to 1 byte boundary */
 
-struct GE_API zip_local_file_header
+struct zip_local_file_header
 {
 	int local_file_header_signature;
 	short version_needed_to_extract;
@@ -29,7 +29,7 @@ struct GE_API zip_local_file_header
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_zip_toc_entry
+struct w_zip_toc_entry
 {
 	w_zip_toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size );
 	std::string zip_filename = "";
@@ -40,7 +40,7 @@ struct GE_API w_zip_toc_entry
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_io_zip
+struct w_io_zip
 {
 	std::map<std::string, std::shared_ptr<w_zip_toc_entry>> table_of_contents;
 

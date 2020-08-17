@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_color
+struct w_color
 {
 	float r = 0.0f, g = 0.0f, b = 0.0f, a = 1.0f;
 
@@ -37,7 +37,7 @@ struct GE_API w_color
 	a single stop on a timeline
 */
 
-struct GE_API w_keyframe
+struct w_keyframe
 {
 	float pct_marker = 0.0f;
 	float float_value = 0.0f;
@@ -53,7 +53,7 @@ struct GE_API w_keyframe
 	represents successive steps through a 0-1 timeline
 */
 
-struct GE_API w_timeline
+struct w_timeline
 {
 	e_timeline_type type = timeline_type::invalid;
 	std::vector<w_keyframe> keyframes;
@@ -70,7 +70,7 @@ struct GE_API w_timeline
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_range
+struct w_range
 {
 	float min = 0.0f;
 	float max = 1.0f;
@@ -84,7 +84,7 @@ struct GE_API w_range
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_rect
+struct w_rect
 {
 	float x = 0.0f;
 	float y = 0.0f;
@@ -106,7 +106,7 @@ struct GE_API w_rect
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_vec2
+struct w_vec2
 {
 	union
 	{
@@ -154,7 +154,7 @@ struct GE_API w_vec2
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_vec3
+struct w_vec3
 {
 	float x = 0.0f;
 	float y = 0.0f;
@@ -181,7 +181,7 @@ struct GE_API w_vec3
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_bbox
+struct w_bbox
 {
 	w_vec2 min, max;
 

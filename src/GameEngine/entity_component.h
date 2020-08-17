@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_entity_component : i_lifecycle, i_transform
+struct w_entity_component : i_lifecycle, i_transform
 {
 	e_component_type type = component_type::invalid;
 	i_transform* parent_entity = nullptr;
@@ -19,7 +19,7 @@ struct GE_API w_entity_component : i_lifecycle, i_transform
 
 // ----------------------------------------------------------------------------
 
-struct GE_API ec_sprite : w_entity_component
+struct ec_sprite : w_entity_component
 {
 	a_subtexture* subtex = nullptr;
 	bool flip_x = false, flip_y = false;
@@ -32,7 +32,7 @@ struct GE_API ec_sprite : w_entity_component
 
 // ----------------------------------------------------------------------------
 
-struct GE_API ec_emitter : w_entity_component
+struct ec_emitter : w_entity_component
 {
 	std::unique_ptr<w_particle_emitter> emitter = nullptr;
 
@@ -48,7 +48,7 @@ struct GE_API ec_emitter : w_entity_component
 
 // ----------------------------------------------------------------------------
 
-struct GE_API ec_sound : w_entity_component
+struct ec_sound : w_entity_component
 {
 	a_sound* snd = nullptr;
 

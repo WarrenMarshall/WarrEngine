@@ -32,7 +32,7 @@ struct endless_adventure_game final : w_game
 	std::array<w_tile, static_cast<size_t>( 256 )> tile_masters;
 
 	// the contents of each room
-	w_world_room rooms[ 10 ];
+	w_world_room rooms[ 10 ] = {};
 
 	// ----------------------------------------------------------------------------
 	// Editor Mode

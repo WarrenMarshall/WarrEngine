@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_particle : i_transform
+struct w_particle : i_transform
 {
 	a_texture* tex = nullptr;
 

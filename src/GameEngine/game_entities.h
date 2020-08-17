@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API e_player : w_entity
+struct e_player : w_entity
 {
 	e_player();
 	virtual ~e_player() = default;

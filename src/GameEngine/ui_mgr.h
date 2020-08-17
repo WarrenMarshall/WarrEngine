@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_ui_mgr
+struct w_ui_mgr
 {
 	std::unique_ptr<w_ui_theme> theme = nullptr;
 

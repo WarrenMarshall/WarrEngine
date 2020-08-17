@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API i_asset : i_reloadable
+struct i_asset : i_reloadable
 {
 	virtual ~i_asset( ) = default;
 

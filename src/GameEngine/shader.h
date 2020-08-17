@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_shader
+struct w_shader
 {
     unsigned int id = 0;
 

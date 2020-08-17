@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_ui_style
+struct w_ui_style
 {
 	w_ui_style() = default;
 
@@ -17,7 +17,7 @@ struct GE_API w_ui_style
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_ui_style_button : w_ui_style
+struct w_ui_style_button : w_ui_style
 {
 	w_ui_style_button();
 
@@ -34,7 +34,7 @@ struct GE_API w_ui_style_button : w_ui_style
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_ui_style_panel : w_ui_style
+struct w_ui_style_panel : w_ui_style
 {
 	a_9slice_def* slice_def = nullptr;
 
@@ -45,7 +45,7 @@ struct GE_API w_ui_style_panel : w_ui_style
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_ui_theme
+struct w_ui_theme
 {
 	a_cursor* mouse_cursor = nullptr;
 	a_font* small_font = nullptr;

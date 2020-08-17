@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API i_reloadable
+struct i_reloadable
 {
 	// files loaded from ZIP files are not eligible for hot reloading
 	bool was_loaded_from_zip_file = false;

@@ -9,7 +9,7 @@
 
 */
 
-struct GE_API w_opengl
+struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
 

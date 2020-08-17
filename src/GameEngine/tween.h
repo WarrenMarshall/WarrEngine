@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_tween
+struct w_tween
 {
 	e_tween_type type = tween_type::linear;
 	float start = 0.0f, end = 0.0f, step_per_sec = 0.0f;

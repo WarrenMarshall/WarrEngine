@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_layer : i_lifecycle
+struct w_layer : i_lifecycle
 {
 	// indicates that this layer completely covers and
 	// obscures the layers below it in the stack.

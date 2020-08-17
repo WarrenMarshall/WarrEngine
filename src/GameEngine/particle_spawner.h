@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_particle_spawner
+struct w_particle_spawner
 {
 	virtual ~w_particle_spawner() = default;
 
@@ -8,7 +8,7 @@ struct GE_API w_particle_spawner
 	virtual void parse_from_config_string( std::string_view value ) {}
 };
 
-struct GE_API w_particle_spawner_box : w_particle_spawner
+struct w_particle_spawner_box : w_particle_spawner
 {
 	int w = 0, h = 0;
 
@@ -20,7 +20,7 @@ struct GE_API w_particle_spawner_box : w_particle_spawner
 	void parse_from_config_string( std::string_view value ) override;
 };
 
-struct GE_API w_particle_spawner_circle : w_particle_spawner
+struct w_particle_spawner_circle : w_particle_spawner
 {
 	float radius = 0;
 

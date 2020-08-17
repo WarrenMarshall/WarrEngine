@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_input_event
+struct w_input_event
 {
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = event_id::invalid;
@@ -17,7 +17,7 @@ struct GE_API w_input_event
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_input : i_speaker
+struct w_input : i_speaker
 {
 	// a way to map GLFW input codes to our internal codes
 	std::map<int, e_input_id> glfw_codes;

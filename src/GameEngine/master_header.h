@@ -53,8 +53,8 @@
 // ----------------------------------------------------------------------------
 // globals for all to enjoy - don't judge
 
-extern bool GE_API g_allow_hot_reload;
+extern bool g_allow_hot_reload;
 
-extern std::unique_ptr<w_logfile> GE_API logfile;
-extern std::unique_ptr<w_engine> GE_API engine;
-extern GE_API w_game* game;
+extern std::unique_ptr<w_logfile> logfile;
+extern std::unique_ptr<w_engine> engine;
+extern w_game* game;

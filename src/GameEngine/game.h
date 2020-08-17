@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_game
+struct w_game
 {
 	std::vector<std::shared_ptr<w_entity>> entities;
 

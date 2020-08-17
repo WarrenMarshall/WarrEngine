@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_random
+struct w_random
 {
     static void seed();
     static int get();

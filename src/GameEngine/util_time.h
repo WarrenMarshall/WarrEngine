@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_time
+struct w_time
 {
 	// set to however many times per second you want the logic updated
 	static const float FTS_desired_frames_per_second;

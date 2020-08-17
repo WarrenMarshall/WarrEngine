@@ -6,7 +6,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_fibonacci
+struct w_fibonacci
 {
     int v1 = 0;
     int v2 = 0;
@@ -21,7 +21,7 @@ struct GE_API w_fibonacci
 // a value that wants to accumulate over a period of time, and then report
 // an averaged value for that period.
 
-struct GE_API w_accum_value
+struct w_accum_value
 {
     float value;
 

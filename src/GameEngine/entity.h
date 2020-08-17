@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct GE_API w_entity : i_lifecycle, i_transform
+struct w_entity : i_lifecycle, i_transform
 {
 	std::vector<std::shared_ptr<w_entity_component>> components;
 
@@ -31,7 +31,7 @@ struct GE_API w_entity : i_lifecycle, i_transform
 //
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
 
-struct GE_API w_entity_cozy : w_entity
+struct w_entity_cozy : w_entity
 {
 	float life_remaining = 0.0f;
 

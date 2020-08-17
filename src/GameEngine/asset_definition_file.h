@@ -5,7 +5,7 @@
 // a chunk is a set of key/values that are grouped together to form
 // an asset definition, scoped between curly braces.
 
-struct GE_API w_asset_definition_file : i_reloadable
+struct w_asset_definition_file : i_reloadable
 {
 	std::vector<std::unique_ptr<w_keyvalues>> asset_definitions;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_layer_mgr : i_listener
+struct w_layer_mgr : i_listener
 {
 	/*
 		the layers are stored front-to-back

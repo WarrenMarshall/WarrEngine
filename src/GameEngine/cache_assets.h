@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_cache_assets
+struct w_cache_assets
 {
 	std::map<std::string, std::shared_ptr<i_asset>> cache;
 

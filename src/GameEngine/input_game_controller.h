@@ -1,6 +1,6 @@
 #pragma once
 
-struct GE_API w_game_controller
+struct w_game_controller
 {
 	// this can change if a controller gets unplugged during gameplay or after the game starts
 	bool is_connected = false;
