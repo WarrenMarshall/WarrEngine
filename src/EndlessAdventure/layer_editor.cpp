@@ -18,9 +18,8 @@ void layer_editor::becoming_top_layer()
 {
 }
 
-void flood_fill_room_worker( int x, int y, int old_tile_id, int new_tile_id )
+void flood_fill_room_worker( int x, int y, int room_layer, int old_tile_id, int new_tile_id )
 {
-#if 0
 	// outside the bounds, stop filling
 	if( x >= ROOM_SZ
 		|| x < 0
@@ -32,21 +31,19 @@ void flood_fill_room_worker( int x, int y, int old_tile_id, int new_tile_id )
 
 	int idx = ( y * ROOM_SZ ) + x;
 
-	if( GAME->rooms[ GAME->current_room_idx ].tiles[ idx ] == old_tile_id )
+	if( GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer ][ idx ] == old_tile_id )
 	{
-		GAME->rooms[ GAME->current_room_idx ].tiles[ idx ] = new_tile_id;
+		GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer ][ idx ] = new_tile_id;
 
-		flood_fill_room_worker( x + 1, y, old_tile_id, new_tile_id );
-		flood_fill_room_worker( x - 1, y, old_tile_id, new_tile_id );
-		flood_fill_room_worker( x, y + 1, old_tile_id, new_tile_id );
-		flood_fill_room_worker( x, y - 1, old_tile_id, new_tile_id );
+		flood_fill_room_worker( x + 1, y, room_layer, old_tile_id, new_tile_id );
+		flood_fill_room_worker( x - 1, y, room_layer, old_tile_id, new_tile_id );
+		flood_fill_room_worker( x, y + 1, room_layer, old_tile_id, new_tile_id );
+		flood_fill_room_worker( x, y - 1, room_layer, old_tile_id, new_tile_id );
 	}
-#endif
 }
 
-void flood_fill_room( int idx_clicked, int old_tile_id, int new_tile_id )
+void flood_fill_room( int idx_clicked, int room_layer, int old_tile_id, int new_tile_id )
 {
-#if 0
 	if( old_tile_id == new_tile_id )
 	{
 		return;
@@ -55,8 +52,7 @@ void flood_fill_room( int idx_clicked, int old_tile_id, int new_tile_id )
 	int y = idx_clicked / ROOM_SZ;
 	int x = idx_clicked - ( y * ROOM_SZ );
 
-	flood_fill_room_worker( x, y, old_tile_id, new_tile_id );
-#endif
+	flood_fill_room_worker( x, y, room_layer, old_tile_id, new_tile_id );
 }
 
 void layer_editor::draw()
@@ -128,18 +124,18 @@ void layer_editor::draw()
 			style_tile->idx = draw_tile_idx;
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
-			auto tile = GAME->get_tile( GAME->current_tile_idx );
+			auto tile_master = GAME->get_tile( GAME->current_tile_idx );
 
 			if( ir & im_result::hot )
 			{
-				GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
+				GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile_master->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
 				is_painting = true;
 			}
 			else if( ir & im_result::hovered )
 			{
 				if( is_painting )
 				{
-					GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
+					GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile_master->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
 				}
 				else if( c_key_is_down )
 				{
@@ -158,7 +154,7 @@ void layer_editor::draw()
 				else if( f_key_is_down )
 				{
 					// take the current tile, and flood fill into the room starting with the clicked tile
-					flood_fill_room( draw_tile_idx, GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ draw_tile_idx ], GAME->current_tile_idx );
+					flood_fill_room( draw_tile_idx, tile_master->room_layer, GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile_master->room_layer ][ draw_tile_idx ], GAME->current_tile_idx );
 				}
 				else if( del_key_is_down )
 				{
