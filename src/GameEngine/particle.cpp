@@ -35,10 +35,8 @@ void w_particle::init_to_new()
 	life_span_save = 0.0f;
 	a_dir = 0.0f;
 	velocity_per_sec = 0.0f;
-	t_color = nullptr;
-	t_alpha = nullptr;
+	params = nullptr;
 	pos = w_vec2::zero;
-	t_scale = nullptr;
 	base_scale = 0.0f;
 	spin = 0.0f;
 	spin_per_sec = 0.0f;
