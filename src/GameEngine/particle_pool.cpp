@@ -33,12 +33,12 @@ void w_particle_pool::draw()
 
 			// color + alpha
 			w_color color;
-			iter.t_color->get_value( pct_of_life, &color );
-			iter.t_alpha->get_value( pct_of_life, &color.a );
+			iter.params->t_color->get_value( pct_of_life, &color );
+			iter.params->t_alpha->get_value( pct_of_life, &color.a );
 
 			// scale
 			float scale;
-			iter.t_scale->get_value( pct_of_life, &scale );
+			iter.params->t_scale->get_value( pct_of_life, &scale );
 
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
 

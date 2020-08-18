@@ -14,11 +14,10 @@ struct w_particle : i_transform
 	// world units to move, per second
 	float velocity_per_sec = 0.0f;
 
+	a_emitter_params* params = nullptr;
+
 	// current particle state
-	w_timeline* t_scale = nullptr;
 	float base_scale = 0.0f;
-	w_timeline* t_alpha = nullptr;
-	w_timeline* t_color = nullptr;
 
 	float spin = 0.0f;
 	float spin_per_sec = 0.0f;
