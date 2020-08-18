@@ -142,6 +142,7 @@ void w_input::init()
 	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_CONTROL, input_id::key_control_right ) );
 	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_ALT, input_id::key_alt_left ) );
 	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_ALT, input_id::key_alt_right ) );
+	glfw_codes.insert( std::make_pair( GLFW_KEY_DELETE, input_id::key_delete ) );
 
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
@@ -245,6 +246,7 @@ void w_input::update()
 	update_button_state( input_id::key_comma, glfwGetKey( engine->window->window, GLFW_KEY_COMMA ) );
 	update_button_state( input_id::key_slash, glfwGetKey( engine->window->window, GLFW_KEY_SLASH ) );
 	update_button_state( input_id::key_tilde, glfwGetKey( engine->window->window, GLFW_KEY_GRAVE_ACCENT ) );
+	update_button_state( input_id::key_delete, glfwGetKey( engine->window->window, GLFW_KEY_DELETE ) );
 
 	// update game controller states
 

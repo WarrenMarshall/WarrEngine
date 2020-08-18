@@ -152,6 +152,7 @@ enum_begin( input_id )
 	key_backslash,
 	key_backquote,
 	key_pause,
+	key_delete,
 
 	key_shift_left,
 	key_shift_right,

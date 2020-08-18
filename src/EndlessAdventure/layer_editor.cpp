@@ -103,6 +103,7 @@ void layer_editor::draw()
 
 	bool c_key_is_down = engine->input->is_button_down( input_id::key_c );
 	bool f_key_is_down = engine->input->is_button_down( input_id::key_f );
+	bool del_key_is_down = engine->input->is_button_down( input_id::key_delete );
 
 	float xpos = (v_window_w - ( ROOM_SZ * TILE_SZ )) / 2.0f;
 	float ypos = TILE_SZ * 2;
@@ -117,38 +118,54 @@ void layer_editor::draw()
 	{
 		for( int x = 0 ; x < ROOM_SZ ; ++x )
 		{
-			int idx = ( y * ROOM_SZ ) + x;
+			int draw_tile_idx = ( y * ROOM_SZ ) + x;
 
 			w_rect rc = w_rect(
 				xpos + (x * (float)TILE_SZ), ypos + (y * (float) TILE_SZ),
 				TILE_SZ, TILE_SZ
 			);
 
-			style_tile->idx = idx;
+			style_tile->idx = draw_tile_idx;
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			auto tile = GAME->get_tile( GAME->current_tile_idx );
 
 			if( ir & im_result::hot )
 			{
-				GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ] = GAME->current_tile_idx;
+				GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
 				is_painting = true;
 			}
 			else if( ir & im_result::hovered )
 			{
 				if( is_painting )
 				{
-					GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ] = GAME->current_tile_idx;
+					GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
 				}
 				else if( c_key_is_down )
 				{
-					// copy tile clicked to the current tile - we drill down from the top room_layer, and take the first found
-					GAME->current_tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ];
+					// copy hovered tile to the current tile
+
+					for( int room_layer_idx = room_layer::enemy ; room_layer_idx > room_layer::nobrowse ; --room_layer_idx )
+					{
+						int tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer_idx ][ draw_tile_idx ];
+						if( tile_idx != empty_tile )
+						{
+							GAME->current_tile_idx = tile_idx;
+							break;
+						}
+					}
 				}
 				else if( f_key_is_down )
 				{
 					// take the current tile, and flood fill into the room starting with the clicked tile
-					flood_fill_room( idx, GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ], GAME->current_tile_idx );
+					flood_fill_room( draw_tile_idx, GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ draw_tile_idx ], GAME->current_tile_idx );
+				}
+				else if( del_key_is_down )
+				{
+					for( int room_layer_idx = room_layer::enemy ; room_layer_idx > room_layer::geometry ; --room_layer_idx )
+					{
+						GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer_idx ][ draw_tile_idx ] = empty_tile;
+					}
 				}
 			}
 		}
