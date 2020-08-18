@@ -9,9 +9,9 @@ struct w_layer_mgr : i_listener
 
 		so iterating forwards is drilling downwards into the screen.
 	*/
-	std::vector<std::shared_ptr<w_layer>> layer_stack;
+	std::vector<std::unique_ptr<w_layer>> layer_stack;
 
-	void push( std::shared_ptr<w_layer> layer );
+	void push( std::unique_ptr<w_layer> layer );
 	void pop();
 	w_layer* get_top();
 

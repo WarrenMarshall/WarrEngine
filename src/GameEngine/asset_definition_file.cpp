@@ -38,7 +38,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_texture*>(
-							engine->asset_cache->add( std::make_shared<a_texture>(), name, filename )
+							engine->asset_cache->add( std::make_unique<a_texture>(), name, filename )
 							);
 
 					// ------------------------------------------------------------------------
@@ -56,7 +56,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					if( iter_ad->does_key_exist( "subtexture" ) )
 					{
 						auto subtex = static_cast<a_subtexture*>(
-							engine->asset_cache->add( std::make_shared<a_subtexture>( name ),
+							engine->asset_cache->add( std::make_unique<a_subtexture>( name ),
 													  iter_ad->find_value( "subtexture" ), "" )
 							);
 
@@ -89,7 +89,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 							w_rect rc( x, y, w, h );
 
-							engine->asset_cache->add( std::make_shared<a_subtexture>( name, rc ), subtex_name, "" );
+							engine->asset_cache->add( std::make_unique<a_subtexture>( name, rc ), subtex_name, "" );
 						}
 					}
 				}
@@ -102,7 +102,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					if( !asset_ptr )
 					{
 						asset_ptr = static_cast<a_gradient*>(
-							engine->asset_cache->add( std::make_shared<a_gradient>(), name, "" )
+							engine->asset_cache->add( std::make_unique<a_gradient>(), name, "" )
 							);
 					}
 
@@ -143,7 +143,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					if( iter_ad->does_key_exist( "subtexture" ) )
 					{
 						auto subtex = static_cast<a_subtexture*>(
-							engine->asset_cache->add( std::make_shared<a_subtexture>( name ),
+							engine->asset_cache->add( std::make_unique<a_subtexture>( name ),
 													  iter_ad->find_value( "subtexture" ), "" )
 							);
 
@@ -165,7 +165,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_font_def*>(
-							engine->asset_cache->add( std::make_shared<a_font_def>(), name, filename )
+							engine->asset_cache->add( std::make_unique<a_font_def>(), name, filename )
 							);
 
 					// ------------------------------------------------------------------------
@@ -186,7 +186,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_9slice_def*>(
-							engine->asset_cache->add( std::make_shared<a_9slice_def>(), name, filename )
+							engine->asset_cache->add( std::make_unique<a_9slice_def>(), name, filename )
 							);
 
 					auto fill_mode = iter_ad->find_value_opt( "fill_mode" );
@@ -210,7 +210,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 							asset_ptr->patches[ subtex_idx ] = static_cast<a_subtexture*>(
 								engine->asset_cache->add(
-									std::make_shared<a_subtexture>( tex_name, rc ), subtex_name, ""
+									std::make_unique<a_subtexture>( tex_name, rc ), subtex_name, ""
 								)
 							);
 						}
@@ -231,7 +231,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_sound*>(
-							engine->asset_cache->add( std::make_shared<a_sound>(), name, filename )
+							engine->asset_cache->add( std::make_unique<a_sound>(), name, filename )
 							);
 
 					// ------------------------------------------------------------------------
@@ -253,7 +253,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_music*>(
-							engine->asset_cache->add( std::make_shared<a_music>(), name, filename )
+							engine->asset_cache->add( std::make_unique<a_music>(), name, filename )
 							);
 
 					// ------------------------------------------------------------------------
@@ -278,7 +278,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_emitter_params*>(
-							engine->asset_cache->add( std::make_shared<a_emitter_params>(), name, "" )
+							engine->asset_cache->add( std::make_unique<a_emitter_params>(), name, "" )
 							);
 
 					// ------------------------------------------------------------------------
@@ -350,7 +350,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_font*>(
-							engine->asset_cache->add( std::make_shared<a_font>(), name, "" )
+							engine->asset_cache->add( std::make_unique<a_font>(), name, "" )
 							);
 
 					// ------------------------------------------------------------------------
@@ -368,7 +368,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					if( !asset_ptr )
 						asset_ptr = static_cast<a_cursor*>(
-							engine->asset_cache->add( std::make_shared<a_cursor>(), name, "" )
+							engine->asset_cache->add( std::make_unique<a_cursor>(), name, "" )
 							);
 
 					// ------------------------------------------------------------------------
@@ -392,7 +392,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					{
 						asset_ptr = static_cast<a_anim_texture*>(
 							engine->asset_cache->add(
-								std::make_shared<a_anim_texture>( tween_type, frames_per_sec ),
+								std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
 								name, "" )
 							);
 					}
@@ -421,7 +421,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					{
 						w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect") );
 						asset_ptr = static_cast<a_subtexture*>(
-							engine->asset_cache->add( std::make_shared<a_subtexture>( iter_ad->find_value( "texture"), rc ), name, "" )
+							engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture"), rc ), name, "" )
 							);
 					}
 

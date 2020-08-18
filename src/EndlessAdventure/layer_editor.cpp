@@ -157,7 +157,7 @@ void layer_editor::draw()
 	style_browse->subtex = GAME->get_tile( GAME->current_tile_idx )->subtex;
 	if( UI->im_active( "", { 12, 188, 48, 48 }, *( style_browse.get() ) ) & im_result::left_clicked )
 	{
-		engine->layer_mgr->push( std::make_shared<layer_browser>() );
+		engine->layer_mgr->push( std::make_unique<layer_browser>() );
 	}
 	
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );

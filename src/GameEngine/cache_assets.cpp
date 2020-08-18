@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-i_asset* w_cache_assets::add( std::shared_ptr<i_asset> asset, const std::string_view name, const std::string_view filename )
+i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string_view name, const std::string_view filename )
 {
 	auto iter = cache.find( std::string( name ) );
 

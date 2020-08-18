@@ -4,7 +4,7 @@
 
 struct w_entity : i_lifecycle, i_transform
 {
-	std::vector<std::shared_ptr<w_entity_component>> components;
+	std::vector<std::unique_ptr<w_entity_component>> components;
 
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	virtual bool can_be_deleted();
@@ -19,7 +19,7 @@ struct w_entity : i_lifecycle, i_transform
 
 	template<typename T> T* add_component()
 	{
-		components.emplace_back( std::make_shared<T>() );
+		components.emplace_back( std::make_unique<T>() );
 		return static_cast<T*>( components.back().get() );
 	}
 };
