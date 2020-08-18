@@ -142,7 +142,7 @@ void layer_editor::draw()
 				}
 				else if( c_key_is_down )
 				{
-					// copy tile clicked to the current tile
+					// copy tile clicked to the current tile - we drill down from the top room_layer, and take the first found
 					GAME->current_tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile->room_layer ][ idx ];
 				}
 				else if( f_key_is_down )

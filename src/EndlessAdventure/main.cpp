@@ -3,8 +3,9 @@
 
 int main( int argc, char* argv [] )
 {
-	auto game = endless_adventure_game();
-	if( !w_engine::init_game_engine( "endless_adventure", argc, argv, &game ) )
+	auto game = std::make_unique<endless_adventure_game>();
+
+	if( !w_engine::init_game_engine( "endless_adventure", argc, argv, game.get() ) )
 	{
 		return -1;
 	}

@@ -3,6 +3,8 @@
 
 #define GAME ((endless_adventure_game*)game)
 
+constexpr int empty_tile = 71;	 // tile_blank_03
+
 // ----------------------------------------------------------------------------
 
 #include <game_engine.h>
