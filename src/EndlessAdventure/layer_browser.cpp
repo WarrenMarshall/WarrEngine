@@ -49,7 +49,7 @@ void layer_browser::draw()
 		{
 			w_rect rc( draw_pos.x, draw_pos.y, TILE_SZ, TILE_SZ );
 
-			style_tile->subtex_tile = tile.subtex;
+			style_tile->master_tile_idx = tile.id;
 
 			style_tile->background_color = w_color::black;
 			if( tile.room_layer == room_layer::item )

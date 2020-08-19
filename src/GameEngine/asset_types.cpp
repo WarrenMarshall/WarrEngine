@@ -297,7 +297,7 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 
 bool a_font_def::create_internals( bool is_hot_reloading )
 {
-	ZeroMemory( char_map.data(), sizeof( w_font_char ) * max_font_chars );
+	ZeroMemory( char_map, sizeof( w_font_char ) * max_font_chars );
 
 	auto file = engine->fs->load_text_file_into_memory( original_filename );
 	was_loaded_from_zip_file = file->was_loaded_from_zip_file;

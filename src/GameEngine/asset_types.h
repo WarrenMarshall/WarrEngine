@@ -123,8 +123,11 @@ struct a_emitter_params : i_asset, i_speaker
 	float s_max_spawn_per_sec = 0.0f;	// how many particles to spawn from this emitter, per second
 	float a_dir = 0.0f;					// the base direction that particles start moving in when they spawn
 	
-	bool b_needs_warm_up = true;		// should this emitter "warm up" when first created?	
-	bool b_one_shot = false;			// emitter releases "s_spawn_per_sec" particles and stops.
+	struct
+	{
+		bool b_needs_warm_up : 1 = true;		// should this emitter "warm up" when first created?	
+		bool b_one_shot : 1 = false;			// emitter releases "s_spawn_per_sec" particles and stops.
+	};
 
 	a_emitter_params();
 
@@ -150,15 +153,15 @@ constexpr int max_font_chars = 128;
 struct a_font_def : i_asset
 {
 	// the font texture this font definition is pulling from
-	std::string texture_name;
-	
+	std::string_view texture_name;
+
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.
 	int max_height = 0;
 
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.
-	std::array<w_font_char, max_font_chars> char_map;
+	w_font_char char_map[max_font_chars];
 
 	bool create_internals( bool is_hot_reloading ) override;
 };

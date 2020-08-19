@@ -5,7 +5,6 @@ void layer_editor::push()
 {
 	UI->set_mouse_visible( true );
 
-	tile_display_area = w_rect( 0, 32, v_window_w, TILE_SZ * ROOM_SZ );
 	gradient = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
@@ -121,7 +120,7 @@ void layer_editor::draw()
 				TILE_SZ, TILE_SZ
 			);
 
-			style_tile->idx = draw_tile_idx;
+			style_tile->master_tile_idx = draw_tile_idx;
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			auto tile_master = GAME->get_tile( GAME->current_tile_idx );

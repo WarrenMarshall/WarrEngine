@@ -2,8 +2,11 @@
 
 struct i_reloadable
 {
-	// files loaded from ZIP files are not eligible for hot reloading
-	bool was_loaded_from_zip_file = false;
+	struct  
+	{
+		// files loaded from ZIP files are not eligible for hot reloading
+		char was_loaded_from_zip_file : 1;
+	};
 
 	// the filename this resource was loaded from originally
 	std::string original_filename = "";
