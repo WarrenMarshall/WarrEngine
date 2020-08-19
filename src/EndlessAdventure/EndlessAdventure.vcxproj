@@ -165,11 +165,6 @@
     <ClCompile Include="ui_styles.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
-      <Project>{bf24bdda-a452-42ba-84d2-a6bbda169bf4}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="app_header.h" />
     <ClInclude Include="endless_adventure_game.h" />
     <ClInclude Include="layer_background.h" />
@@ -177,6 +172,11 @@
     <ClInclude Include="layer_editor.h" />
     <ClInclude Include="layer_worldviewport.h" />
     <ClInclude Include="ui_styles.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
+      <Project>{bf24bdda-a452-42ba-84d2-a6bbda169bf4}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
