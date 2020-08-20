@@ -4,6 +4,9 @@ struct layer_editor : w_layer
 {
 	a_gradient* gradient = nullptr;
 
+	w_area clipboard;
+
+	std::unique_ptr<w_ui_style_button> style_button = nullptr;
 	std::unique_ptr<w_ui_style_button> style_browse = nullptr;
 	std::unique_ptr<w_ui_style_button> style_arrow_button = nullptr;
 	std::unique_ptr<w_ui_style_panel> style_panel = nullptr;

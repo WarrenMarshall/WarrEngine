@@ -45,16 +45,16 @@ void layer_browser::draw()
 
 	for( auto& tile : GAME->tile_masters )
 	{
-		if( tile.room_layer != room_layer::nobrowse )
+		if( tile.area_layer != area_layer::nobrowse )
 		{
 			w_rect rc( draw_pos.x, draw_pos.y, TILE_SZ, TILE_SZ );
 
 			style_tile->master_tile_idx = tile.id;
 
 			style_tile->background_color = w_color::black;
-			if( tile.room_layer == room_layer::item )
+			if( tile.area_layer == area_layer::item )
 				style_tile->background_color = w_color::green;
-			else if( tile.room_layer == room_layer::enemy )
+			else if( tile.area_layer == area_layer::enemy )
 				style_tile->background_color = w_color::red;
 			
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );

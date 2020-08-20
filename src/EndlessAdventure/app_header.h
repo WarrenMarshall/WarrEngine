@@ -11,7 +11,7 @@ constexpr int empty_tile = 71;	 // tile_blank_03
 
 // ----------------------------------------------------------------------------
 
-enum_begin( room_layer )
+enum_begin( area_layer )
 	nobrowse = 0,
 	geometry = 1,
 	item = 2,

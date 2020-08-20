@@ -17,47 +17,49 @@ void layer_editor::becoming_top_layer()
 {
 }
 
-void flood_fill_room_worker( int x, int y, int room_layer, int old_tile_id, int new_tile_id )
+void flood_fill_area_worker( int x, int y, int area_layer, int old_tile_id, int new_tile_id )
 {
 	// outside the bounds, stop filling
-	if( x >= ROOM_SZ
+	if( x >= AREA_SZ
 		|| x < 0
-		|| y >= ROOM_SZ
+		|| y >= AREA_SZ
 		|| y < 0 )
 	{
 		return;
 	}
 
-	int idx = ( y * ROOM_SZ ) + x;
+	int idx = ( y * AREA_SZ ) + x;
 
-	if( GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer ][ idx ] == old_tile_id )
+	if( GAME->areas[ GAME->current_area_idx ].tile_ids[ area_layer ][ idx ] == old_tile_id )
 	{
-		GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer ][ idx ] = new_tile_id;
+		GAME->areas[ GAME->current_area_idx ].tile_ids[ area_layer ][ idx ] = new_tile_id;
 
-		flood_fill_room_worker( x + 1, y, room_layer, old_tile_id, new_tile_id );
-		flood_fill_room_worker( x - 1, y, room_layer, old_tile_id, new_tile_id );
-		flood_fill_room_worker( x, y + 1, room_layer, old_tile_id, new_tile_id );
-		flood_fill_room_worker( x, y - 1, room_layer, old_tile_id, new_tile_id );
+		flood_fill_area_worker( x + 1, y, area_layer, old_tile_id, new_tile_id );
+		flood_fill_area_worker( x - 1, y, area_layer, old_tile_id, new_tile_id );
+		flood_fill_area_worker( x, y + 1, area_layer, old_tile_id, new_tile_id );
+		flood_fill_area_worker( x, y - 1, area_layer, old_tile_id, new_tile_id );
 	}
 }
 
-void flood_fill_room( int idx_clicked, int room_layer, int old_tile_id, int new_tile_id )
+void flood_fill_area( int idx_clicked, int area_layer, int old_tile_id, int new_tile_id )
 {
 	if( old_tile_id == new_tile_id )
 	{
 		return;
 	}
 
-	int y = idx_clicked / ROOM_SZ;
-	int x = idx_clicked - ( y * ROOM_SZ );
+	int y = idx_clicked / AREA_SZ;
+	int x = idx_clicked - ( y * AREA_SZ );
 
-	flood_fill_room_worker( x, y, room_layer, old_tile_id, new_tile_id );
+	flood_fill_area_worker( x, y, area_layer, old_tile_id, new_tile_id );
 }
 
 void layer_editor::draw()
 {
 	if( !style_browse  )
 	{
+		style_button = std::make_unique<w_ui_style_button>();
+
 		style_browse = std::make_unique<w_ui_style_button>();
 		style_browse->subtex_sz = w_sz( 32, 32 );
 
@@ -73,16 +75,16 @@ void layer_editor::draw()
 
 	w_layer::draw();
 
-	// current room
+	// current area
 
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->draw_string( UI->theme->small_font, "Room", w_rect( 88.0f, 192.0f ) )
 		->push_align( align::centered )
+		->draw_string( UI->theme->small_font, "-Area-", w_rect( 104, 196 ) )
 		->push_depth_nudge()
 		->push_rgb( w_color::teal )
-		->draw_string( UI->theme->large_font, fmt::format( "{}", GAME->current_room_idx ), w_rect( 102.0f, 218.0f ) )
+		->draw_string( UI->theme->large_font, fmt::format( "{}", GAME->current_area_idx ), w_rect( 102.0f, 218.0f ) )
 		->end();
 
 	// title bar
@@ -100,20 +102,20 @@ void layer_editor::draw()
 	bool f_key_is_down = engine->input->is_button_down( input_id::key_f );
 	bool del_key_is_down = engine->input->is_button_down( input_id::key_delete );
 
-	float xpos = (v_window_w - ( ROOM_SZ * TILE_SZ )) / 2.0f;
+	float xpos = (v_window_w - ( AREA_SZ * TILE_SZ )) / 2.0f;
 	float ypos = TILE_SZ * 2;
 
 	RENDER
 		->begin()
 		->push_alpha( 0.25f )
-		->draw( gradient, w_rect( 0, ypos, v_window_w, ROOM_SZ * TILE_SZ ) )
+		->draw( gradient, w_rect( 0, ypos, v_window_w, AREA_SZ * TILE_SZ ) )
 		->end();
 
-	for( int y = 0 ; y < ROOM_SZ ; ++y )
+	for( int y = 0 ; y < AREA_SZ ; ++y )
 	{
-		for( int x = 0 ; x < ROOM_SZ ; ++x )
+		for( int x = 0 ; x < AREA_SZ ; ++x )
 		{
-			int draw_tile_idx = ( y * ROOM_SZ ) + x;
+			int draw_tile_idx = ( y * AREA_SZ ) + x;
 
 			w_rect rc = w_rect(
 				xpos + (x * (float)TILE_SZ), ypos + (y * (float) TILE_SZ),
@@ -127,22 +129,22 @@ void layer_editor::draw()
 
 			if( ir & im_result::hot )
 			{
-				GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile_master->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
+				GAME->areas[ GAME->current_area_idx ].tile_ids[ tile_master->area_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
 				is_painting = true;
 			}
 			else if( ir & im_result::hovered )
 			{
 				if( is_painting )
 				{
-					GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile_master->room_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
+					GAME->areas[ GAME->current_area_idx ].tile_ids[ tile_master->area_layer ][ draw_tile_idx ] = GAME->current_tile_idx;
 				}
 				else if( c_key_is_down )
 				{
 					// copy hovered tile to the current tile
 
-					for( int room_layer_idx = room_layer::enemy ; room_layer_idx > room_layer::nobrowse ; --room_layer_idx )
+					for( int area_layer_idx = area_layer::enemy ; area_layer_idx > area_layer::nobrowse ; --area_layer_idx )
 					{
-						int tile_idx = GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer_idx ][ draw_tile_idx ];
+						int tile_idx = GAME->areas[ GAME->current_area_idx ].tile_ids[ area_layer_idx ][ draw_tile_idx ];
 						if( tile_idx != empty_tile )
 						{
 							GAME->current_tile_idx = tile_idx;
@@ -152,14 +154,14 @@ void layer_editor::draw()
 				}
 				else if( f_key_is_down )
 				{
-					// take the current tile, and flood fill into the room starting with the clicked tile
-					flood_fill_room( draw_tile_idx, tile_master->room_layer, GAME->rooms[ GAME->current_room_idx ].tile_ids[ tile_master->room_layer ][ draw_tile_idx ], GAME->current_tile_idx );
+					// take the current tile, and flood fill into the area starting with the clicked tile
+					flood_fill_area( draw_tile_idx, tile_master->area_layer, GAME->areas[ GAME->current_area_idx ].tile_ids[ tile_master->area_layer ][ draw_tile_idx ], GAME->current_tile_idx );
 				}
 				else if( del_key_is_down )
 				{
-					for( int room_layer_idx = room_layer::enemy ; room_layer_idx > room_layer::geometry ; --room_layer_idx )
+					for( int area_layer_idx = area_layer::enemy ; area_layer_idx > area_layer::geometry ; --area_layer_idx )
 					{
-						GAME->rooms[ GAME->current_room_idx ].tile_ids[ room_layer_idx ][ draw_tile_idx ] = empty_tile;
+						GAME->areas[ GAME->current_area_idx ].tile_ids[ area_layer_idx ][ draw_tile_idx ] = empty_tile;
 					}
 				}
 			}
@@ -175,15 +177,25 @@ void layer_editor::draw()
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );
 	if( UI->im_active( "", { 76.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
-		GAME->current_room_idx--;
-		GAME->current_room_idx = w_clamp( GAME->current_room_idx, 0, 9 );
+		GAME->current_area_idx--;
+		GAME->current_area_idx = w_clamp( GAME->current_area_idx, 0, 9 );
 	}
 
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_right" );
 	if( UI->im_active( "", { 114.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
-		GAME->current_room_idx++;
-		GAME->current_room_idx = w_clamp( GAME->current_room_idx, 0, 9 );
+		GAME->current_area_idx++;
+		GAME->current_area_idx = w_clamp( GAME->current_area_idx, 0, 9 );
+	}
+
+	if( UI->im_active( "Copy Area", w_rect( 150, 190, 80, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
+	{
+		::memcpy( &clipboard.tile_ids, &GAME->areas[ GAME->current_area_idx ].tile_ids, sizeof( w_area ) );
+	}
+
+	if( UI->im_active( "Paste Area", w_rect( 150, 210, 80, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
+	{
+		::memcpy( &GAME->areas[ GAME->current_area_idx ].tile_ids, &clipboard.tile_ids, sizeof( w_area ) );
 	}
 
 	RENDER
@@ -217,15 +229,15 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 			{
 				case input_id::key_right_bracket:
 				{
-					GAME->current_room_idx++;
-					GAME->current_room_idx = w_clamp( GAME->current_room_idx, 0, 9 );
+					GAME->current_area_idx++;
+					GAME->current_area_idx = w_clamp( GAME->current_area_idx, 0, 9 );
 				}
 				break;
 
 				case input_id::key_left_bracket:
 				{
-					GAME->current_room_idx--;
-					GAME->current_room_idx = w_clamp( GAME->current_room_idx, 0, 9 );
+					GAME->current_area_idx--;
+					GAME->current_area_idx = w_clamp( GAME->current_area_idx, 0, 9 );
 				}
 				break;
 
@@ -240,7 +252,7 @@ bool layer_editor::handle_input_event( const w_input_event* evt )
 				case input_id::key_8:
 				case input_id::key_9:
 				{
-					GAME->current_room_idx = evt->input_id - input_id::key_0;
+					GAME->current_area_idx = evt->input_id - input_id::key_0;
 					return true;
 				}
 				break;

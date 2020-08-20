@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr int ROOM_SZ = 9;
+constexpr int AREA_SZ = 9;
 constexpr int TILE_SZ = 16;
 
 // ----------------------------------------------------------------------------
@@ -8,16 +8,16 @@ constexpr int TILE_SZ = 16;
 struct w_tile
 {
 	int id = 0;
-	e_room_layer room_layer = room_layer::nobrowse;
+	e_area_layer area_layer = area_layer::nobrowse;
 	a_subtexture* subtex = nullptr;
 };
 
 // ----------------------------------------------------------------------------
 
-struct w_world_room
+struct w_area
 {
-	// a set of ROOM_SZ*ROOM_SZ tile ids, one for each type of room_layer
-	int tile_ids[ room_layer::max ][ ROOM_SZ * ROOM_SZ ];
+	// a set of AREA_SZ*AREA_SZ tile ids, one for each type of room_layer
+	int tile_ids[ area_layer::max ][ AREA_SZ * AREA_SZ ];
 };
 
 // ----------------------------------------------------------------------------
@@ -31,8 +31,8 @@ struct endless_adventure_game final : w_game
 	// the tile templates, read from tile_def.txt
 	std::array<w_tile, static_cast<size_t>( 256 )> tile_masters;
 
-	// the contents of each room
-	w_world_room rooms[ 10 ] = {};
+	// the contents of each area
+	w_area areas[ 10 ] = {};
 
 	// ----------------------------------------------------------------------------
 	// Editor Mode
@@ -41,8 +41,8 @@ struct endless_adventure_game final : w_game
 	// the currently active tile that we are painting with
 	int current_tile_idx = 0;
 
-	// the room being edited
-	int current_room_idx = 0;
+	// the area being edited
+	int current_area_idx = 0;
 
 	// ----------------------------------------------------------------------------
 	// Game Mode

@@ -27,9 +27,9 @@ void w_ui_style_tile::draw( std::string_view label, w_rect& rc, bool being_hover
 	RENDER
 		->begin();
 
-	for( int rl = room_layer::geometry ; rl < room_layer::max ; ++rl )
+	for( int rl = area_layer::geometry ; rl < area_layer::max ; ++rl )
 	{
-		a_subtexture* subtex_tile = GAME->get_tile( GAME->rooms[ GAME->current_room_idx ].tile_ids[ rl ][ master_tile_idx ] )->subtex;
+		a_subtexture* subtex_tile = GAME->get_tile( GAME->areas[ GAME->current_area_idx ].tile_ids[ rl ][ master_tile_idx ] )->subtex;
 		RENDER
 			->push_depth_nudge()
 			->draw( subtex_tile, rc );
