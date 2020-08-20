@@ -188,14 +188,24 @@ void layer_editor::draw()
 		GAME->current_area_idx = w_clamp( GAME->current_area_idx, 0, 9 );
 	}
 
-	if( UI->im_active( "Copy Area", w_rect( 150, 190, 80, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
+	if( UI->im_active( "Copy", w_rect( 150, 190, 60, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
 	{
 		::memcpy( &clipboard.tile_ids, &GAME->areas[ GAME->current_area_idx ].tile_ids, sizeof( w_area ) );
 	}
 
-	if( UI->im_active( "Paste Area", w_rect( 150, 210, 80, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
+	if( UI->im_active( "Paste", w_rect( 150, 210, 60, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
 	{
 		::memcpy( &GAME->areas[ GAME->current_area_idx ].tile_ids, &clipboard.tile_ids, sizeof( w_area ) );
+	}
+
+	if( UI->im_active( "Load", w_rect( 220, 190, 60, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
+	{
+		GAME->load_area_data();
+	}
+
+	if( UI->im_active( "Save", w_rect( 220, 210, 60, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
+	{
+		GAME->save_area_data();
 	}
 
 	RENDER
