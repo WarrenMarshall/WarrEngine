@@ -151,23 +151,31 @@ void a_gradient::clean_up_internals()
 
 bool a_gradient::create_internals( bool is_hot_reloading )
 {
-	w = ( alignment == align::horizontal ) ? colors.size() : 1.0f;
-	h = ( alignment == align::vertical ) ? colors.size() : 1.0f;
+	w = ( alignment == align::horizontal ) ? colors.size() : 1;
+	h = ( alignment == align::vertical ) ? colors.size() : 1;
 
 	// create a buffer of color data, and fill it with the gradient colors
 
-	std::basic_string<float> color_data;
-	color_data.reserve( 4 * static_cast<int>( w * h ) );
+	float* color_data = new float[ static_cast<int>( 4 * w * h ) ];
+	float* color_data_wptr = color_data;
 	int color_idx = 0;
 
 	for( int y = 0; y < h; ++y )
 	{
 		for( int x = 0; x < w; ++x )
 		{
-			color_data += colors[ color_idx ].r;
-			color_data += colors[ color_idx ].g;
-			color_data += colors[ color_idx ].b;
-			color_data += colors[ color_idx ].a;
+			*color_data_wptr = colors[ color_idx ].r;
+			log_msg( fmt::format("r: {}", *color_data_wptr ) );
+			color_data_wptr++;
+			*color_data_wptr = colors[ color_idx ].g;
+			log_msg( fmt::format("g: {}", *color_data_wptr ) );
+			color_data_wptr++;
+			*color_data_wptr = colors[ color_idx ].b;
+			log_msg( fmt::format("b: {}", *color_data_wptr ) );
+			color_data_wptr++;
+			*color_data_wptr = colors[ color_idx ].a;
+			log_msg( fmt::format("a: {}", *color_data_wptr ) );
+			color_data_wptr++;
 
 			color_idx++;
 		}
@@ -186,8 +194,10 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, color_data.data() );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, color_data );
 	OPENGL->clear_texture_bind();
+
+	delete [] color_data;
 
 	return true;
 }

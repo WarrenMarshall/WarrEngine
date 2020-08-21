@@ -112,12 +112,12 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 
 					asset_ptr->colors.clear();
 
-					std::string_view color_list = iter_ad->find_value( "colors");
+					std::string color_list = std::string( iter_ad->find_value( "colors" ) );
 
 					w_tokenizer tok( color_list, '/', str_not_found );
 					std::string val;
 
-					std::vector<std::string_view> color_values;
+					std::vector<std::string> color_values;
 					while( true )
 					{
 						val = tok.get_next_token();
