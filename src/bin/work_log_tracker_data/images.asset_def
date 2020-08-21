@@ -7,24 +7,5 @@
 	"type" "texture"
 	"name" "tex_fire_particle"
 	"subtexture" "fire_particle"
-	"filename" "images/fire_particle.png"
-}
-
-{
-	"type" "texture"
-	"name" "tex_smoke_particle"
-	"subtexture" "smoke_particle"
-	"filename" "images/smoke_particle.png"
-}
-
-# ---------------------------------------------------------
-# gradients
-# ---------------------------------------------------------
-
-{
-	"type" "gradient"
-	"name" "background_gradient"
-	"subtexture" "s_background_gradient"
-	"alignment" "align.horizontal"
-	"colors" "color.dark_grey / color.black /  color.black /  color.black /  color.black /  color.black /  color.black /  color.dark_grey"
+	"filename" "work_log_tracker_data/images/fire_particle.png"
 }

@@ -1,0 +1,11 @@
+
+{
+	"type" "preproc"
+	"name" "preproc"
+
+	# -----------------------------------------------------
+	# virtual window
+
+	"v_window_w"		"160"
+	"v_window_h"		"240"
+}

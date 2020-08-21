@@ -5,7 +5,7 @@ int main( int argc, char* argv [] )
 {
 	auto game = std::make_unique<work_log_tracker_game>();
 
-	if( !w_engine::init_game_engine( "work_log_tracker", 320, 200, argc, argv, game.get() ) )
+	if( !w_engine::init_game_engine( "work_log_tracker", argc, argv, game.get() ) )
 	{
 		return -1;
 	}
