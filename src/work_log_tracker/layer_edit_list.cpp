@@ -1,11 +1,6 @@
 
 #include "app_header.h"
 
-layer_edit_list::layer_edit_list()
-{
-	draws_completely_solid = true;
-}
-
 void layer_edit_list::push()
 {
 	test_entity = GAME->spawn_entity<w_entity>( { v_window_hw, 0.0f } );

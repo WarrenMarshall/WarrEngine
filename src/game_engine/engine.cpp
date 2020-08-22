@@ -114,6 +114,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
 			glfwSetWindowSize( engine->window->window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
+			glfwSetWindowAspectRatio( engine->window->window,
+									  100,
+									  ( v_window_h / v_window_w ) * 100 );
 		}
 
 		// game
