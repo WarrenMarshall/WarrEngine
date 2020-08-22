@@ -14,3 +14,4 @@ src/bin/*.exe
 *.ipdb
 src/bin/GameEngine.dll
 src/bin/GameEngine.lib
+src/bin/game_engine.lib

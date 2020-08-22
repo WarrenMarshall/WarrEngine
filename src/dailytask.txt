@@ -1,0 +1,18 @@
+
+- Engine
+	- some way to tell game which mode we're in ("-editor")
+	- draw text on buttons again
+
+- Game
+	- run through all 10 rooms as a long sequence, start at 0, end in 9
+	- things have a random chance of spawning
+
+-------------------------------------------------------------
+ENGINE
+-------------------------------------------------------------
+
+- python script for counting lines of code is broken
+
+- the UI theme stuff needs sorting out
+	- right now it lives in engine, which is wrong
+	- should be pushed down into the projects

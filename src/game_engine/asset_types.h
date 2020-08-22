@@ -69,7 +69,7 @@ struct a_gradient : a_texture
 	~a_gradient() override;
 
 	e_align alignment = align::horizontal;
-	std::vector<w_color> colors;
+	std::vector<float> colors;
 
 	void clean_up_internals() override;
 	bool create_internals( bool is_hot_reloading ) override;
@@ -95,7 +95,7 @@ struct a_anim_texture : a_texture
 	void randomize();
 
 	void update() override;
-	a_subtexture* get_subtexture( float offset ) override;
+	a_subtexture* get_subtexture( float anim_offset ) override;
 };
 
 // ----------------------------------------------------------------------------

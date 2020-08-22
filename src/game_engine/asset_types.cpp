@@ -38,7 +38,6 @@ bool a_texture::create_internals( bool is_hot_reloading )
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, original_filename ) );
 	}
 
-	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
 	{
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
@@ -151,40 +150,13 @@ void a_gradient::clean_up_internals()
 
 bool a_gradient::create_internals( bool is_hot_reloading )
 {
-	w = ( alignment == align::horizontal ) ? colors.size() : 1;
-	h = ( alignment == align::vertical ) ? colors.size() : 1;
+	// the dimensions of a gradient are determined by the alignment specified in the asset_def file.
+	// they are a string of colors either running vertically or horizontally.
+	// that means the other dimension is 1 pixel in size.
+	w = static_cast<float>( ( alignment == align::horizontal ) ? (colors.size() / 4) : 1 );
+	h = static_cast<float>( ( alignment == align::vertical ) ? (colors.size() / 4 ) : 1 );
 
-	// create a buffer of color data, and fill it with the gradient colors
-
-	float* color_data = new float[ static_cast<int>( 4 * w * h ) ];
-	float* color_data_wptr = color_data;
-	int color_idx = 0;
-
-	for( int y = 0; y < h; ++y )
-	{
-		for( int x = 0; x < w; ++x )
-		{
-			*color_data_wptr = colors[ color_idx ].r;
-			log_msg( fmt::format("r: {}", *color_data_wptr ) );
-			color_data_wptr++;
-			*color_data_wptr = colors[ color_idx ].g;
-			log_msg( fmt::format("g: {}", *color_data_wptr ) );
-			color_data_wptr++;
-			*color_data_wptr = colors[ color_idx ].b;
-			log_msg( fmt::format("b: {}", *color_data_wptr ) );
-			color_data_wptr++;
-			*color_data_wptr = colors[ color_idx ].a;
-			log_msg( fmt::format("a: {}", *color_data_wptr ) );
-			color_data_wptr++;
-
-			color_idx++;
-		}
-	}
-
-	// create our render buffer
 	render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
-
-	// upload the texture to opengl
 
 	glGenTextures( 1, &id );
 	bind();
@@ -194,10 +166,8 @@ bool a_gradient::create_internals( bool is_hot_reloading )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, color_data );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei)w, (GLsizei)h, 0, GL_RGBA, GL_FLOAT, colors.data() );
 	OPENGL->clear_texture_bind();
-
-	delete [] color_data;
 
 	return true;
 }
@@ -249,17 +219,15 @@ void a_anim_texture::update()
 	frame_tween->update();
 }
 
-a_subtexture* a_anim_texture::get_subtexture( float offset )
+a_subtexture* a_anim_texture::get_subtexture( float anim_offset )
 {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
 
-	// apply random offset if needed
-
 	int idx = frame_tween->get_ival();
 
-	if( offset )
+	if( anim_offset )
 	{
-		idx += static_cast<int>( offset * frames.size() );
+		idx += static_cast<int>( anim_offset * frames.size() );
 	}
 
 	idx = idx % frames.size();
@@ -296,7 +264,6 @@ bool a_emitter_params::create_internals( bool is_hot_reloading )
 			send_event_to_listeners( event_id::emitter_params_hot_reload, this );
 		}
 
-		// save the last time modified for hot reloading
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
@@ -340,9 +307,10 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 		}
 	}
 
-	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
+	{
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
+	}
 
 	return true;
 }
@@ -364,9 +332,13 @@ w_vec2 a_font::get_string_extents( const std::string_view text )
 		pxch = &( font_def->char_map[ iter ] );
 
 		if( iter == '{' )
+		{
 			inside_color_code = true;
+		}
 		else if( iter == '}' )
+		{
 			inside_color_code = false;
+		}
 		else if( !inside_color_code )
 		{
 			bounds.x += pxch->xadvance;
@@ -415,7 +387,6 @@ bool a_sound::create_internals( bool is_hot_reloading )
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
 
-	// save the last time modified for hot reloading
 	if( g_allow_hot_reload )
 	{
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
@@ -475,7 +446,6 @@ bool a_music::create_internals( bool is_hot_reloading )
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
 
-	// save the last time modified for hot reloading
 	if( g_allow_hot_reload && is_hot_reloading )
 	{
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();

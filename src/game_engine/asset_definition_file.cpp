@@ -134,7 +134,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 						if( engine->is_symbol_in_map( val ) )
 							val = engine->find_val_from_symbol( val );
 
-						asset_ptr->colors.emplace_back( w_color( val ) );
+						auto clr = w_color( val );
+						asset_ptr->colors.push_back( clr.r );
+						asset_ptr->colors.push_back( clr.g );
+						asset_ptr->colors.push_back( clr.b );
+						asset_ptr->colors.push_back( clr.a );
 					}
 
 					// if the "subtexture" key exists, create a subtexture for this texture
@@ -485,7 +489,6 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 
 	if( g_allow_hot_reload )
 	{
-		// save the last time modified for hot reloading
 		std::scoped_lock lock( mutex_last_write_time );
 		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 
