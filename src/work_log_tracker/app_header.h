@@ -11,4 +11,3 @@
 #include "ui_styles.h"
 #include "layer_background.h"
 #include "layer_edit_list.h"
-

@@ -6,7 +6,8 @@ struct w_ui_style
 {
 	w_ui_style() = default;
 
-	w_color color = w_color::white;
+	w_color color_slice_def = w_color::dark_grey;
+	w_color color_label = w_color::light_grey;
 	w_offset clicked_offset = w_offset( 1, 1 );
 
 	virtual e_im_result update_im_state( int id, w_rect rc );

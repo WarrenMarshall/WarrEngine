@@ -43,3 +43,32 @@ void work_log_tracker_game::update()
 {
 	w_game::update();
 }
+
+void work_log_tracker_game::load_data()
+{
+	if( engine->fs->file_exists_on_disk( data_filename ) )
+	{
+		w_file_disk file;
+		file.open_for_read( data_filename );
+
+		for( auto& artist : artists )
+		{
+			file.read_glob( &( artist.approved ), sizeof( bool ) );
+		}
+
+		file.close();
+	}
+}
+
+void work_log_tracker_game::save_data()
+{
+	w_file_disk file;
+	file.open_for_write( data_filename );
+
+	for( auto& artist : artists )
+	{
+		file.write_glob( &( artist.approved ), sizeof( bool ) );
+	}
+
+	file.close();
+}

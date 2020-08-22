@@ -117,6 +117,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			glfwSetWindowAspectRatio( engine->window->window,
 									  100,
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
+
+			// 0 = v-sync off, 1 = v-sync on
+			glfwSwapInterval( engine->find_int_from_symbol( "v_sync", 0 ) );
 		}
 
 		// game

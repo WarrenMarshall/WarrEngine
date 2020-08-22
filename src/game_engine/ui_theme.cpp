@@ -110,7 +110,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 
 	if( slice_def )
 	{
-		RENDER->push_rgb( get_adjusted_color( w_color::dark_grey, being_hovered, being_clicked ) )
+		RENDER->push_rgb( get_adjusted_color( color_slice_def, being_hovered, being_clicked ) )
 			->draw_sliced( slice_def, rc_draw );
 	}
 
@@ -138,7 +138,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	if( label.length() )
 	{
 		RENDER
-			->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
+			->push_rgb( get_adjusted_color( color_label, being_hovered, being_clicked ) )
 			->push_align( label_align )
 			->push_depth_nudge()
 			->draw_string( engine->pixel_font, label, w_rect( label_pos.x, label_pos.y, -1, -1 ) );
@@ -160,7 +160,7 @@ void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hove
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->push_rgb( color )
+		->push_rgb( color_slice_def )
 		->draw_sliced( slice_def, rc )
 		->end();
 }

@@ -3,9 +3,12 @@
 	"type" "preproc"
 	"name" "preproc"
 
-	# -----------------------------------------------------
-	# virtual window
+	"app_title"			"Work Log Tracker"
 
-	"v_window_w"		"146"
+	# -----------------------------------------------------
+	# renderer
+
+	"v_window_w"		"164"
 	"v_window_h"		"260"
+	"v_sync"			"1"
 }
