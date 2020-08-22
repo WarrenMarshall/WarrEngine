@@ -5,7 +5,7 @@
 
 w_file_system::w_file_system()
 {
-	zip_io = std::make_unique<w_io_zip>();
+	zip_io = std::make_unique<w_file_zip>();
 }
 
 void w_file_system::init()
@@ -48,7 +48,7 @@ bool w_file_system::file_exists_on_disk_or_in_zip( const std::string_view filena
 // work on loose files during development and then ZIP everything up for
 // release.
 
-std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string_view filename )
+std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_view filename )
 {
 	if( file_exists_on_disk( filename ) )
 	{
@@ -56,7 +56,7 @@ std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string_vi
 		std::streamsize size = file.tellg();
 		file.seekg( 0, std::ios::beg );
 
-		std::unique_ptr<w_mem_file> mem_file = std::make_unique<w_mem_file>( static_cast<int>( size ) );
+		std::unique_ptr<w_file_mem> mem_file = std::make_unique<w_file_mem>( static_cast<int>( size ) );
 		file.read( &(*mem_file->buffer)[0], size );
 		return std::move( mem_file );
 	}
@@ -69,7 +69,7 @@ std::unique_ptr<w_mem_file> w_file_system::load_file_into_memory( std::string_vi
 		}
 		else
 		{
-			auto mem_file = std::make_unique<w_mem_file>( toc_entry->size );
+			auto mem_file = std::make_unique<w_file_mem>( toc_entry->size );
 			mem_file->buffer = zip_io->get_data_for_filename( filename );
 			mem_file->was_loaded_from_zip_file = true;
 			return std::move( mem_file );

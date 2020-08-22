@@ -62,32 +62,18 @@ void endless_adventure_game::update()
 
 void endless_adventure_game::load_area_data()
 {
-	FILE* file = nullptr;
-	fopen_s( &file, "area_data.dat", "rb" );
-	if( file == nullptr )
-	{
-		log_msg( fmt::format( "{} : failed", __FUNCTION__ ) );
-	}
-	else
-	{
-		std::fread( GAME->areas, sizeof( w_area ), 10, file );
-		std::fclose( file );
-	}
+	w_file_disk file;
+	file.open_for_read( "area_data.dat" );
+	file.read_glob( GAME->areas, sizeof( w_area ) * 10 );
+	file.close();
 }
 
 void endless_adventure_game::save_area_data()
 {
-	FILE* file = nullptr;
-	fopen_s( &file, "area_data.dat", "wb" );
-	if( file == nullptr )
-	{
-		log_msg( fmt::format( "{} : failed", __FUNCTION__ ) );
-	}
-	else
-	{
-		std::fwrite( GAME->areas, sizeof( w_area ), 10, file );
-		std::fclose( file );
-	}
+	w_file_disk file;
+	file.open_for_write( "area_data.dat" );
+	file.write_glob( GAME->areas, sizeof( w_area ) * 10 );
+	file.close();
 }
 
 w_tile* endless_adventure_game::get_tile( int id )

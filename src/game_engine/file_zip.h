@@ -40,7 +40,7 @@ struct w_zip_toc_entry
 
 // ----------------------------------------------------------------------------
 
-struct w_io_zip
+struct w_file_zip
 {
 	std::map<std::string, std::unique_ptr<w_zip_toc_entry>> table_of_contents;
 

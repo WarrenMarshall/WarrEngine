@@ -1,7 +1,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_mem_file::w_mem_file( int size )
+w_file_mem::w_file_mem( int size )
 {
 	buffer = std::make_unique<std::vector<char>>( size );
 }
@@ -9,7 +9,7 @@ w_mem_file::w_mem_file( int size )
 // ----------------------------------------------------------------------------
 
 w_mem_file_text::w_mem_file_text( int size )
-	: w_mem_file( size )
+	: w_file_mem( size )
 {
 	lines = std::make_unique<std::vector<std::string>>();
 }

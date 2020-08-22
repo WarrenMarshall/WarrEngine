@@ -8,7 +8,7 @@ w_zip_toc_entry::w_zip_toc_entry( std::string_view zip_filename, std::string_vie
 
 // ----------------------------------------------------------------------------
 
-void w_io_zip::scan_and_build_table_of_contents()
+void w_file_zip::scan_and_build_table_of_contents()
 {
 	table_of_contents.clear();
 
@@ -83,7 +83,7 @@ void w_io_zip::scan_and_build_table_of_contents()
 	}
 }
 
-bool w_io_zip::does_toc_contain_filename( std::string_view filename )
+bool w_file_zip::does_toc_contain_filename( std::string_view filename )
 {
 	if( table_of_contents.count( std::string( filename ) ) > 0 )
 	{
@@ -93,7 +93,7 @@ bool w_io_zip::does_toc_contain_filename( std::string_view filename )
 	return false;
 }
 
-w_zip_toc_entry* w_io_zip::get_toc_entry_for_filename( std::string_view filename )
+w_zip_toc_entry* w_file_zip::get_toc_entry_for_filename( std::string_view filename )
 {
 	if( !does_toc_contain_filename( filename ) )
 	{
@@ -103,7 +103,7 @@ w_zip_toc_entry* w_io_zip::get_toc_entry_for_filename( std::string_view filename
 	return table_of_contents[ std::string( filename ) ].get();
 }
 
-std::unique_ptr<std::vector<char>> w_io_zip::get_data_for_filename( std::string_view filename )
+std::unique_ptr<std::vector<char>> w_file_zip::get_data_for_filename( std::string_view filename )
 {
 	w_zip_toc_entry* toc_entry = get_toc_entry_for_filename( filename );
 

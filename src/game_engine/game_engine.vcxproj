@@ -177,6 +177,7 @@
     <ClCompile Include="entity_component.cpp" />
     <ClCompile Include="datatypes.cpp" />
     <ClCompile Include="filesystem.cpp" />
+    <ClCompile Include="file_disk.cpp" />
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="impl_header_only.cpp" />
@@ -188,7 +189,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="io_zip.cpp" />
+    <ClCompile Include="file_zip.cpp" />
     <ClCompile Include="i_lifecycle.cpp" />
     <ClCompile Include="i_speaker.cpp" />
     <ClCompile Include="i_listener.cpp" />
@@ -229,10 +230,11 @@
     <ClInclude Include="asset_definition_file_cache.h" />
     <ClInclude Include="entity_component.h" />
     <ClInclude Include="filesystem.h" />
+    <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
     <ClInclude Include="game_engine.h" />
     <ClInclude Include="input_game_controller.h" />
-    <ClInclude Include="io_zip.h" />
+    <ClInclude Include="file_zip.h" />
     <ClInclude Include="i_transform.h" />
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
