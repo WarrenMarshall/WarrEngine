@@ -6,39 +6,33 @@
 
 void w_entity::update()
 {
-	MATRIX
-		->push()
-		->translate( this->pos );
-	for( const auto& iter : components )
+	for( const auto& component : components )
 	{
 		MATRIX
 			->push()
-			->translate( iter->pos );
-		iter->update();
+			->translate( component->pos );
+
+		component->update();
+
 		MATRIX
 			->pop();
 	}
-	MATRIX
-		->pop();
 }
 
-void w_entity::draw_components()
+void w_entity::draw()
 {
-	MATRIX
-		->push()
-		->translate( this->pos );
-	for( const auto& iter : components )
+	for( const auto& component : components )
 	{
 		MATRIX
 			->push()
-			->translate( iter->pos );
+			->translate( component->pos );
+
 		RENDER->push_depth_nudge();
-		iter->draw();
+		component->draw();
+		
 		MATRIX
 			->pop();
 	}
-	MATRIX
-		->pop();
 }
 
 // let's components do anything that need to do after the entity

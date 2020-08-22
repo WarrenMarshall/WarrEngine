@@ -3,12 +3,15 @@
 struct w_entity_component : i_lifecycle, i_transform
 {
 	e_component_type type = component_type::invalid;
-	i_transform* parent_entity = nullptr;
 
-	// used for offsetting whatever the component needs to
-	float anim_offset = 0.0f;
+	// components have pointers to their entity parents for convenience
+	w_entity* parent_entity = nullptr;
 
-	w_entity_component();
+	// used for offsetting whatever the component needs to (0-1 range)
+	float generic_offset = 0.0f;
+
+	w_entity_component() = delete;
+	w_entity_component( w_entity* parent_entity );
 	virtual ~w_entity_component() = default;
 
 	virtual bool is_fully_dead();
@@ -24,9 +27,10 @@ struct ec_sprite : w_entity_component
 	a_subtexture* subtex = nullptr;
 	bool flip_x = false, flip_y = false;
 
-	ec_sprite();
+	ec_sprite() = delete;
+	ec_sprite( w_entity* parent_entity );
 
-	w_entity_component* init( i_transform* parent_entity, a_subtexture* subtex );
+	w_entity_component* init( const std::string_view subtex_name );
 	void draw() override;
 };
 
@@ -36,9 +40,10 @@ struct ec_emitter : w_entity_component
 {
 	std::unique_ptr<w_particle_emitter> emitter = nullptr;
 
-	ec_emitter();
+	ec_emitter() = delete;
+	ec_emitter( w_entity* parent_entity );
 
-	w_entity_component* init( i_transform* parent_entity, const std::string_view params_name );
+	w_entity_component* init( const std::string_view params_name );
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	bool is_fully_dead() override;
 	void draw() override;
@@ -52,7 +57,8 @@ struct ec_sound : w_entity_component
 {
 	a_sound* snd = nullptr;
 
-	ec_sound();
+	ec_sound() = delete;
+	ec_sound( w_entity* parent_entity );
 
 	w_entity_component* init( const std::string_view snd_name );
 	void draw() override;

@@ -8,15 +8,17 @@ layer_edit_list::layer_edit_list()
 
 void layer_edit_list::push()
 {
-	// warren - draws at 128, wtf?
-	auto entity = GAME->spawn_entity<w_entity>( { 64, 0 } );
+	test_entity = GAME->spawn_entity<w_entity>( { v_window_hw, 0.0f } );
 
-	ec_emitter* ec;
-	ec = entity->add_component<ec_emitter>();
-	ec->init( entity, "background_fire_down" );
-	ec = entity->add_component<ec_emitter>();
-	ec->init( entity, "background_fire_up" );
-	ec->set_transform( { 0, 200 }, 0.0f, 1.0f );
+	test_entity->add_component<ec_emitter>()
+		->init( "background_fire_down" );
+
+	test_entity->add_component<ec_sprite>()
+		->init( "selector_bracket" );
+
+	test_entity->add_component<ec_emitter>()
+		->init( "background_fire_up" )
+		->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
 }
 
 void layer_edit_list::draw()
@@ -41,6 +43,17 @@ void layer_edit_list::draw()
 		}
 		RENDER->end();
 
-		ypos += 19.0f;
+		ypos += 18.0f;
 	}
+}
+
+bool layer_edit_list::handle_input_event( const w_input_event* evt )
+{
+	//if( evt->event_id == event_id::input_pressed && evt->input_id == input_id::key_space )
+	//{
+	//	test_entity->pos = engine->input->mouse_vwindow_pos;
+	//	return true;
+	//}
+
+	return false;
 }

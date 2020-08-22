@@ -4,9 +4,10 @@
 
 // ----------------------------------------------------------------------------
 
-w_entity_component::w_entity_component() 
+w_entity_component::w_entity_component( w_entity* parent_entity )
+	: parent_entity( parent_entity )
 {
-	anim_offset = w_random::getf();
+	generic_offset = w_random::getf();
 }
 
 /*
@@ -43,16 +44,15 @@ void w_entity_component::update()
 
 // ----------------------------------------------------------------------------
 
-ec_sprite::ec_sprite()
-	: w_entity_component()
+ec_sprite::ec_sprite( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
 {
 	type = component_type::sprite;
 }
 
-w_entity_component* ec_sprite::init( i_transform* parent_entity, a_subtexture* subtex )
+w_entity_component* ec_sprite::init( const std::string_view subtex_name )
 {
-	this->parent_entity = parent_entity;
-	this->subtex = subtex;
+	this->subtex = engine->get_asset<a_subtexture>( subtex_name );
 	return this;
 }
 
@@ -63,26 +63,20 @@ void ec_sprite::draw()
 		return;
 	}
 
-	if( parent_entity )
-	{
-		RENDER->draw_sprite( subtex, w_rect( parent_entity->pos.x, parent_entity->pos.y ) );
-
-		RENDER->draw_circle( parent_entity->pos, 16.0f );
-	}
+	RENDER->draw_sprite( subtex, w_rect( 0, 0 ) );
+	//RENDER->draw_circle( w_rect( 0, 0 ), 16.0f );
 }
 
 // ----------------------------------------------------------------------------
 
-ec_emitter::ec_emitter()
-	: w_entity_component()
+ec_emitter::ec_emitter( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
 {
 	type = component_type::emitter;
 }
 
-w_entity_component* ec_emitter::init( i_transform* parent_entity, const std::string_view params_name )
+w_entity_component* ec_emitter::init( const std::string_view params_name )
 {
-	this->parent_entity = parent_entity;
-
 	emitter = std::make_unique<w_particle_emitter>();
 	emitter->set_params( engine->get_asset<a_emitter_params>( params_name ) );
 	emitter->parent_component = this;
@@ -110,7 +104,19 @@ void ec_emitter::draw()
 		return;
 	}
 
+	// particles live in world space, so remove any transforms before
+	// drawing the particle pool
+	// 
+	MATRIX
+		->push()
+		->translate( pos * -1.0f )
+		->translate( parent_entity->pos * -1.0f );
+
 	emitter->particle_pool->draw();
+
+	MATRIX
+		->pop();
+
 }
 
 void ec_emitter::update()
@@ -122,11 +128,6 @@ void ec_emitter::update()
 
 	emitter->update();
 	emitter->particle_pool->update();
-
-	if( parent_entity )
-	{
-		emitter->pos = parent_entity->pos;
-	}
 }
 
 void ec_emitter::set_life_cycle( e_lifecycle lifecycle )
@@ -146,8 +147,8 @@ void ec_emitter::post_spawn()
 
 // ----------------------------------------------------------------------------
 
-ec_sound::ec_sound()
-	: w_entity_component()
+ec_sound::ec_sound( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
 {
 	type = component_type::sound;
 }

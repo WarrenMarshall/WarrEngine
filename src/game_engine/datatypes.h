@@ -134,6 +134,7 @@ struct w_vec2
 	w_vec2 operator+( const w_vec2& v );
 	w_vec2 operator-( const w_vec2& v );
 	w_vec2 operator=( const w_vec2& v );
+	w_vec2 operator*( const float& f );
 
 	static w_vec2 scale( w_vec2 a, float scale );
 	static float get_size_squared( w_vec2 a );

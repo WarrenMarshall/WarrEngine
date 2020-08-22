@@ -62,7 +62,7 @@ void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* par
 	particle->pos.x *= radius * w_random::getf();
 	particle->pos.y *= radius * w_random::getf();
 
-	MATRIX->top()->transform_vec2( particle->pos );
+	//MATRIX->top()->transform_vec2( particle->pos );
 }
 
 void w_particle_spawner_circle::parse_from_config_string( std::string_view value )

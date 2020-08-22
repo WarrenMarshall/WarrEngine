@@ -224,6 +224,11 @@ w_vec2 w_vec2::operator=( const w_vec2& v )
 	return *this;
 }
 
+w_vec2 w_vec2::operator*( const float& f )
+{
+	return w_vec2( x * f, y * f );
+}
+
 w_vec2 w_vec2::scale( w_vec2 a, float scale )
 {
 	return w_vec2( a.x * scale, a.y * scale );

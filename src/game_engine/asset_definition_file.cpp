@@ -309,11 +309,17 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 								// the default spawner type, don't need to do anything for this
 							}
 							else if( type == "box" )
+							{
 								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
+							}
 							else if( type == "circle" )
+							{
 								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
+							}
 							else
+							{
 								log_error( fmt::format( "{} : unknown emitter spawn type : [{}]", __FUNCTION__, type ) );
+							}
 
 							asset_ptr->particle_spawner->parse_from_config_string( value );
 						}

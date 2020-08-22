@@ -10,7 +10,9 @@ struct w_game
 	virtual void init() {}
 	virtual void new_game();
 	virtual void update();
-	virtual void draw_entities();
+
+	void update_entities();
+	void draw_entities();
 
 	template<typename T>
 	T* spawn_entity( w_vec2 pos = w_vec2::zero, float angle = 0.0f, float scale = 1.0f )

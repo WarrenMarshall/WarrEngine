@@ -90,6 +90,7 @@ void w_particle_emitter::spawn_particle()
 	p->init_to_new();
 
 	params->particle_spawner->find_spawn_pos_for_new_particle( p );
+	MATRIX->top()->transform_vec2( p->pos );
 
 	p->tex = params->tex;
 

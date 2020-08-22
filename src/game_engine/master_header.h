@@ -53,7 +53,6 @@ extern float v_window_h;
 
 #include "entity_component.h"
 #include "entity.h"
-#include "game_entities.h"
 
 #include "layer.h"
 #include "layer_mgr.h"

@@ -14,12 +14,12 @@ struct w_entity : i_lifecycle, i_transform
 	float speed = 1.0f;
 
 	virtual void update();
-	virtual void draw_components();
+	virtual void draw();
 	virtual void post_spawn();
 
 	template<typename T> T* add_component()
 	{
-		components.emplace_back( std::make_unique<T>() );
+		components.emplace_back( std::make_unique<T>( this ) );
 		return static_cast<T*>( components.back().get() );
 	}
 };
@@ -27,7 +27,7 @@ struct w_entity : i_lifecycle, i_transform
 // ----------------------------------------------------------------------------
 
 // a cozy is an entity that lives for X ms and then marks itself as dying
-// so it'll get cleaned up.
+// so it'll get automatically cleaned up.
 //
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
 

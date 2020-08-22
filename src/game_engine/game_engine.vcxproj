@@ -179,7 +179,6 @@
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="game_entities.cpp" />
     <ClCompile Include="impl_header_only.cpp" />
     <ClCompile Include="input_game_controller.cpp" />
     <ClCompile Include="master_header.cpp" />
@@ -237,7 +236,6 @@
     <ClInclude Include="i_transform.h" />
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="game_entities.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="i_lifecycle.h" />
     <ClInclude Include="i_speaker.h" />
