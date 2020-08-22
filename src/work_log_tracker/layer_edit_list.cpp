@@ -13,9 +13,6 @@ void layer_edit_list::push()
 	test_entity->add_component<ec_emitter>()
 		->init( "background_fire_down" );
 
-	test_entity->add_component<ec_sprite>()
-		->init( "selector_bracket" );
-
 	test_entity->add_component<ec_emitter>()
 		->init( "background_fire_up" )
 		->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
@@ -36,7 +33,9 @@ void layer_edit_list::draw()
 
 	for( auto& iter : GAME->artists )
 	{
-		RENDER->begin()->push_depth_nudge( 100 );
+		RENDER
+			->begin()
+			->push_depth_nudge( 100 );
 		if( UI->im_active( iter.name, w_rect( 8, ypos, 130, 16 ), *( style_button.get() ) ) & im_result::left_clicked )
 		{
 			log_msg( fmt::format( "CLICKED : {}", iter.name ) );

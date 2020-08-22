@@ -104,7 +104,8 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	w_pos label_pos = { rc_draw.x + ( rc_draw.w / 2 ), rc_draw.y + ( rc_draw.h / 2 ) };
 	e_align label_align = align::centered;
 
-	RENDER->begin()
+	RENDER
+		->begin()
 		->push_depth_nudge();
 
 	if( slice_def )
@@ -139,10 +140,12 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		RENDER
 			->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_align( label_align )
+			->push_depth_nudge()
 			->draw_string( engine->pixel_font, label, w_rect( label_pos.x, label_pos.y, -1, -1 ) );
 	}
 
-	RENDER->end();
+	RENDER
+		->end();
 }
 
 // ----------------------------------------------------------------------------

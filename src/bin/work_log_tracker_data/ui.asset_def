@@ -29,7 +29,7 @@
 {
 	"type" "cursor"
 	"name" "ui_cursor"
-	"subtexture" "ui_sword_cursor"
+	"subtexture" "toon_hand_cursor"
 	"hotspot" "1, 1"
 }
 
