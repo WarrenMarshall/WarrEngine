@@ -142,11 +142,15 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 	{
 		w_tokenizer tok( filename, '/', "" );
 		std::string_view foldername = tok.get_next_token();
-		std::string_view filename = tok.get_next_token();
 
 		if( foldername == folder )
 		{
-			filenames.emplace_back( toc_entry->filename );
+			std::filesystem::path path = filename;
+
+			if( path.extension() == extension )
+			{
+				filenames.emplace_back( toc_entry->filename );
+			}
 		}
 	}
 }

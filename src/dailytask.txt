@@ -1,18 +1,16 @@
 
-- Engine
-	- some way to tell game which mode we're in ("-editor")
-	- draw text on buttons again
+- get window title from preproc file
+- don't show colored border when focus lost, just pause
+- clicking the "X" on the window should close it
+- ESC should NOT close the app, that's weird
 
-- Game
-	- run through all 10 rooms as a long sequence, start at 0, end in 9
-	- things have a random chance of spawning
+- text about brunch
+- small video about work_log_tracker
+	- use this time to test out mic settings
+- trash and recycling to curb
 
--------------------------------------------------------------
-ENGINE
--------------------------------------------------------------
 
-- python script for counting lines of code is broken
-
-- the UI theme stuff needs sorting out
-	- right now it lives in engine, which is wrong
-	- should be pushed down into the projects
+! baseline ZIP reading needs to work again
+- finding and loading assets from a ZIP instead of the hard drive
+- reading from multiple ZIP files (put game engine data in a ZIP)
+- ZIP reading should error out correctly if it finds that you've used compression

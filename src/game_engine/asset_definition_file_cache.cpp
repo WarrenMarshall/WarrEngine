@@ -13,18 +13,18 @@ void w_cache_asset_definition_files::add( const std::string_view filename )
 			return;
 		}
 	}
-	auto cfg = std::make_unique<w_asset_definition_file>();
+	auto asset_def_file = std::make_unique<w_asset_definition_file>();
 
-	cfg->original_filename = filename;
-	if( cfg->create_internals( b_is_hot_reloading( false ) ) )
+	asset_def_file->original_filename = filename;
+	if( asset_def_file->create_internals( b_is_hot_reloading( false ) ) )
 	{
 		// save it into the cache
 
 		if( g_allow_hot_reload )
 		{
-			engine->hot_reloadables.emplace_back( cfg.get() );
+			engine->hot_reloadables.emplace_back( asset_def_file.get() );
 		}
 
-		cache.emplace_back( std::move( cfg ) );
+		cache.emplace_back( std::move( asset_def_file ) );
 	}
 }

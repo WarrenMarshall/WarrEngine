@@ -15,8 +15,7 @@ std::string_view w_keyvalues::find_value( const std::string_view key ) const
 	}
 	catch( const std::out_of_range& oor )
 	{
-		log_error( fmt::format( "{} : {} : '{}'", __FUNCTION__, oor.what(), key ) );
-		assert( false );
+		log_error( fmt::format( "{} : '{}'", __FUNCTION__, oor.what(), key ) );
 		return nullptr;
 	}
 }

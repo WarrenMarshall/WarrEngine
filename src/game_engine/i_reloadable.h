@@ -2,11 +2,8 @@
 
 struct i_reloadable
 {
-	struct  
-	{
-		// files loaded from ZIP files are not eligible for hot reloading
-		char was_loaded_from_zip_file : 1;
-	};
+	// we need to know where resources came from for certain situations, like hot reloading
+	bool was_loaded_from_zip_file = false;
 
 	// the filename this resource was loaded from originally
 	std::string original_filename = "";

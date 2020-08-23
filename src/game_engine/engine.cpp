@@ -202,6 +202,11 @@ void w_engine::exec_main_loop()
 
 	while( engine->is_running )
 	{
+		if( glfwWindowShouldClose( engine->window->window ) )
+		{
+			engine->is_running = false;
+		}
+
 		/*
 			event processing
 		*/
@@ -420,6 +425,7 @@ void w_engine::draw()
 
 	if( is_paused )
 	{
+		/*
 		render
 			->begin()
 			->push_depth( zdepth_engine );
@@ -460,6 +466,7 @@ void w_engine::draw()
 		render->draw_line( v3, v0 );
 
 		render->end();
+		*/
 	}
 }
 
@@ -555,12 +562,6 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 		{
 			switch( evt->input_id )
 			{
-				case input_id::key_esc:
-				{
-					is_running = false;
-				}
-				break;
-
 				case input_id::key_pause:
 				{
 					toggle_pause();
