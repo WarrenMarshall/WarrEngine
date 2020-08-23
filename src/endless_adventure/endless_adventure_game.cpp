@@ -7,7 +7,7 @@ endless_adventure_game::endless_adventure_game()
 
 void endless_adventure_game::init()
 {
-	auto file = engine->fs->load_text_file_into_memory( "endless_adventure_data\\tiles\\tile_def.txt" );
+	auto file = engine->fs->load_text_file_into_memory( "endless_adventure_data/tiles/tile_def.txt" );
 
 	for( const auto& line : *(file.get()->lines.get()) )
 	{

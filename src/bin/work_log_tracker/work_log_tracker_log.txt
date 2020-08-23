@@ -1,2 +1,0 @@
-Started : Sun Aug 23 05:20:27 2020
-Initializing engine
