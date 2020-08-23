@@ -38,9 +38,16 @@ void w_file_zip::scan_and_build_table_of_contents()
 				while( true )
 				{
 					// local file header
-					if( *( (int*) rptr ) == 0x04034b50 )
+					auto hdr = (zip_local_file_header*) rptr;
+
+					// we don't support compression or encryption in any form
+					if( hdr->compression_method != 0 )
 					{
-						auto hdr = (zip_local_file_header*) rptr;
+						log_error( fmt::format( "{} : compression and/or encryption are NOT supported in ZIP files : [{}]", __FUNCTION__, zip_filename ) );
+					}
+
+					if( hdr->local_file_header_signature == 0x04034b50 )
+					{
 						rptr += sizeof( zip_local_file_header );
 
 						if( hdr->version_needed_to_extract == 10 )
