@@ -1,7 +1,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is_hot_reloading )
+void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 {
 	std::string type, name, filename;
 
@@ -37,9 +37,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					auto asset_ptr = engine->get_asset<a_texture>( name, b_silent(true) );
 
 					if( !asset_ptr )
+					{
 						asset_ptr = static_cast<a_texture*>(
 							engine->asset_cache->add( std::make_unique<a_texture>(), name, filename )
 							);
+					}
 
 					// ------------------------------------------------------------------------
 
@@ -48,7 +50,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 
 					// if the "subtexture" key exists, create a subtexture for this texture
 					// that represents it's entirety.
@@ -157,7 +159,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "font_def" )
 				{
@@ -180,7 +182,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "9slice_def" )
 				{
@@ -223,7 +225,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "sound" )
 				{
@@ -245,7 +247,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "music" )
 				{
@@ -267,7 +269,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 			}
 			break;
@@ -352,7 +354,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "font" )
 				{
@@ -370,7 +372,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "cursor" )
 				{
@@ -389,7 +391,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "anim_texture" )
 				{
@@ -421,7 +423,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 				else if( type == "subtexture" )
 				{
@@ -438,7 +440,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num, bool is
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals( is_hot_reloading );
+					asset_ptr->create_internals();
 				}
 			}
 			break;
@@ -450,7 +452,7 @@ void w_asset_definition_file::clean_up_internals()
 {
 }
 
-bool w_asset_definition_file::create_internals( bool is_hot_reloading )
+bool w_asset_definition_file::create_internals()
 {
 	asset_definitions.clear();
 
@@ -458,7 +460,6 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 	// into individual asset definitions
 
 	auto file = engine->fs->load_text_file_into_memory( original_filename );
-	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
 
@@ -491,16 +492,6 @@ bool w_asset_definition_file::create_internals( bool is_hot_reloading )
 				current_asset_definition->add( key, value );
 			}
 		}
-	}
-
-	if( g_allow_hot_reload )
-	{
-		std::scoped_lock lock( mutex_last_write_time );
-		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
-
-		if( is_hot_reloading )
-			for( size_t p = 0; p < w_engine::num_asset_def_passes; ++p )
-				precache_asset_resources( p, is_hot_reloading );
 	}
 
 	return true;

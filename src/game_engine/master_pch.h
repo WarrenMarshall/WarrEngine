@@ -164,7 +164,6 @@ using w_pos = w_vec2;
 
 // ----------------------------------------------------------------------------
 
-using b_is_hot_reloading = bool;
 using b_silent = bool;
 using b_draw_button = bool;
 

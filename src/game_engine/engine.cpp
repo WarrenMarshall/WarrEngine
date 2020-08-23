@@ -4,30 +4,6 @@
 
 // ----------------------------------------------------------------------------
 
-#if !defined( FINALRELEASE )
-void tw_refresh_reloadables()
-{
-	log_msg( fmt::format( "Worker thread starting : {}", __FUNCTION__ ) );
-
-	while( !engine->exit_tw_refresh_reloadables )
-	{
-		for( auto& iter : engine->hot_reloadables )
-		{
-			{
-				std::scoped_lock lock( iter->mutex_last_write_time );
-				iter->last_write_time_on_disk = iter->retrieve_last_write_time_from_disk();
-			}
-
-			std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
-		}
-	}
-
-	log_msg( fmt::format( "Worker thread exiting : {}", __FUNCTION__ ) );
-}
-#endif
-
-// ----------------------------------------------------------------------------
-
 bool w_engine::init_game_engine( std::string_view game_name, int argc, char* argv [], w_game* custom_game )
 {
 	try
@@ -55,20 +31,6 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 	
 		// #todo : write a proper command line parsing class
 		{	// command line parsing
-
-			g_allow_hot_reload = false;
-
-			for( int a = 1; a < argc; ++a )
-			{
-				std::string_view arg( argv[ a ] );
-
-				// +hot_reload - enable hot reloading of asset definition files (defaults to false)
-				if( arg == "+hot_reload" )
-				{
-					log_msg( "command line : +hot_reload : hot reloading enabled" );
-					g_allow_hot_reload = true;
-				}
-			}
 		}
 
 		{	// window
@@ -217,7 +179,6 @@ void w_engine::exec_main_loop()
 		*/
 
 		engine->time->update();
-		engine->hot_reload_timer->update();
 
 		/*
 			process user input
@@ -237,15 +198,6 @@ void w_engine::exec_main_loop()
 
 			engine->update();
 			game->update();
-		}
-
-		/*
-			at regular intervals, check if any assets need to be reloaded
-		*/
-
-		if( engine->hot_reload_timer->get_elapsed_count() )
-		{
-			engine->update_hot_reload();
 		}
 
 		/*
@@ -398,25 +350,12 @@ void w_engine::init()
 	
 	w_random::seed();
 	fs->init();
-
-	hot_reload_timer = std::make_unique<w_timer>( 1000 );
-
-	if( g_allow_hot_reload )
-	{
-		hot_reloadables.clear();
-	}
 }
 
 void w_engine::deinit()
 {
 	input->remove_listener( this );
 	input->remove_listener( layer_mgr.get() );
-
-	// wait for threads to finish
-#if !defined( FINALRELEASE )
-	exit_tw_refresh_reloadables = true;
-	t_refresh_reloadables.join();
-#endif
 }
 
 void w_engine::draw()
@@ -482,29 +421,6 @@ void w_engine::update()
 	render->show_stats = input->is_button_down( input_id::key_a);
 }
 
-// each time this is called, it checks the reload status for a single i_reloadable
-
-void w_engine::update_hot_reload()
-{
-	if( !g_allow_hot_reload )
-	{
-		return;
-	}
-
-	for( auto& iter : hot_reloadables )
-	{
-		if( iter->needs_reloading() )
-		{
-			std::scoped_lock lock( iter->mutex_last_write_time );
-
-			log_msg( fmt::format( "{} : Hot reloading [{}]", __FUNCTION__, iter->original_filename ) );
-			iter->clean_up_internals();
-			iter->create_internals( b_is_hot_reloading( true ) );
-			iter->last_write_time = iter->last_write_time_on_disk;
-		}
-	}
-}
-
 void w_engine::toggle_pause()
 {
 	is_paused = !is_paused;
@@ -540,16 +456,11 @@ void w_engine::precache_asset_resources()
 	{
 		for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
 		{
-			asset_definition_file->precache_asset_resources( p, b_is_hot_reloading(false) );
+			asset_definition_file->precache_asset_resources( p );
 		}
 	}
 
 	log_msg( fmt::format( "{} : {} assets precached", __FUNCTION__, s_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) ) );
-
-	// start the thread that monitors the reloadables for changes
-#if !defined( FINALRELEASE )
-	t_refresh_reloadables = std::thread( tw_refresh_reloadables );
-#endif
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )

@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_particle_emitter : i_listener, i_transform
+struct w_particle_emitter : i_transform
 {
 	ec_emitter* parent_component = nullptr;
 
@@ -19,7 +19,6 @@ struct w_particle_emitter : i_listener, i_transform
 
 	~w_particle_emitter();
 
-	void on_listener_event_received( e_event_id event, void* object ) override;
 	void set_params( a_emitter_params* params );
 	virtual void post_spawn();
 	void update();

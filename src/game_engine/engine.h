@@ -12,10 +12,6 @@ struct w_engine : i_listener
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
-	// these are only used if "+hot_reload" is passed into the command line
-	std::vector<i_reloadable*> hot_reloadables;
-	std::unique_ptr<w_timer> hot_reload_timer = nullptr;
-
 	a_subtexture* white_wire = nullptr;
 	a_subtexture* white_solid = nullptr;
 	a_font* pixel_font = nullptr;
@@ -31,7 +27,6 @@ struct w_engine : i_listener
 	void deinit();
 	void draw();
 	void update();
-	void update_hot_reload();
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
@@ -64,8 +59,5 @@ struct w_engine : i_listener
 	std::unique_ptr<w_shader> shader = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
 
-	std::thread t_refresh_reloadables;
-	std::atomic_bool exit_tw_refresh_reloadables = false;
-	
 	void on_listener_event_received( e_event_id event, void* object ) override;
 };

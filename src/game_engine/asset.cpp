@@ -3,7 +3,7 @@
 
 // ----------------------------------------------------------------------------
 
-bool i_asset::create_internals( bool is_hot_reloading )
+bool i_asset::create_internals()
 {
 	return false;
 }

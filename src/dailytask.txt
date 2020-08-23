@@ -1,16 +1,19 @@
 
+--C++--
+
 - get window title from preproc file
-- don't show colored border when focus lost, just pause
-- clicking the "X" on the window should close it
-- ESC should NOT close the app, that's weird
+
+* baseline ZIP reading needs to work again
+* finding and loading assets from a ZIP instead of the hard drive
+* reading from multiple ZIP files (put game engine data in a ZIP)
+! read all data from a single ZIP, engine and game
+- ZIP reading should error out correctly if it finds that you've used compression
+
+- should hot reloading be removed? think about it, it adds complexity.
+
+--LIFE--
 
 - text about brunch
 - small video about work_log_tracker
 	- use this time to test out mic settings
 - trash and recycling to curb
-
-
-! baseline ZIP reading needs to work again
-- finding and loading assets from a ZIP instead of the hard drive
-- reading from multiple ZIP files (put game engine data in a ZIP)
-- ZIP reading should error out correctly if it finds that you've used compression

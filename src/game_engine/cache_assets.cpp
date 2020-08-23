@@ -15,14 +15,6 @@ i_asset* w_cache_assets::add( std::unique_ptr<i_asset> asset, const std::string_
 	asset->name = name;
 	asset->original_filename = filename;
 
-	if( g_allow_hot_reload )
-	{
-		if( !asset->original_filename.empty() )
-		{
-			engine->hot_reloadables.emplace_back( static_cast<i_reloadable*>( asset.get() ) );
-		}
-	}
-
 	// save it into the cache
 	cache.insert( std::make_pair( name, std::move( asset ) ) );
 

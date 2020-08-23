@@ -189,8 +189,6 @@ enum_end
 enum_begin( event_id )
 	invalid = 0,
 	
-	emitter_params_hot_reload,
-
 	input_pressed,
 	input_released,
 	input_motion

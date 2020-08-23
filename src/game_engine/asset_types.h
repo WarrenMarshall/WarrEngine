@@ -25,7 +25,7 @@ struct a_texture : i_asset
 	~a_texture() override;
 
 	void clean_up_internals() override;
-	bool create_internals( bool is_hot_reloading ) override;
+	bool create_internals() override;
 
 	void bind();
 	void unbind();
@@ -72,7 +72,7 @@ struct a_gradient : a_texture
 	std::vector<float> colors;
 
 	void clean_up_internals() override;
-	bool create_internals( bool is_hot_reloading ) override;
+	bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ struct a_anim_texture : a_texture
 	~a_anim_texture() override;
 
 	void clean_up_internals() override;
-	bool create_internals( bool is_hot_reloading ) override;
+	bool create_internals() override;
 	void add_frame( a_subtexture* subtex );
 	void randomize();
 
@@ -123,15 +123,10 @@ struct a_emitter_params : i_asset, i_speaker
 	float s_max_spawn_per_sec = 0.0f;	// how many particles to spawn from this emitter, per second
 	float a_dir = 0.0f;					// the base direction that particles start moving in when they spawn
 	
-	struct
-	{
-		bool b_needs_warm_up : 1 = true;		// should this emitter "warm up" when first created?	
-		bool b_one_shot : 1 = false;			// emitter releases "s_spawn_per_sec" particles and stops.
-	};
+	bool b_needs_warm_up = true;		// should this emitter "warm up" when first created?	
+	bool b_one_shot = false;			// emitter releases "s_spawn_per_sec" particles and stops.
 
 	a_emitter_params();
-
-	bool create_internals( bool is_hot_reloading ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -163,7 +158,7 @@ struct a_font_def : i_asset
 	// become indices into this array.
 	w_font_char char_map[max_font_chars];
 
-	bool create_internals( bool is_hot_reloading ) override;
+	bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -202,7 +197,7 @@ struct a_sound : i_asset
 
 	void play();
 	void clean_up_internals() override;
-	bool create_internals( bool is_hot_reloading ) override;
+	bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -218,7 +213,7 @@ struct a_music : i_asset
 	void stop();
 
 	void clean_up_internals() override;
-	bool create_internals( bool is_hot_reloading ) override;
+	bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------

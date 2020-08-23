@@ -31,7 +31,6 @@ extern float v_window_h;
 #include "i_listener.h"
 #include "i_speaker.h"
 #include "datatypes.h"
-#include "i_reloadable.h"
 #include "asset.h"
 #include "asset_types.h"
 #include "input_game_controller.h"
@@ -66,8 +65,6 @@ extern float v_window_h;
 
 // ----------------------------------------------------------------------------
 // globals for all to enjoy - don't judge
-
-extern bool g_allow_hot_reload;
 
 extern std::unique_ptr<w_logfile> logfile;
 extern std::unique_ptr<w_engine> engine;

@@ -4,22 +4,11 @@
 
 w_particle_emitter::~w_particle_emitter()
 {
-	params->remove_listener( this );
-}
-
-void w_particle_emitter::on_listener_event_received( e_event_id event, void* object )
-{
-	if( event == event_id::emitter_params_hot_reload && params == object )
-	{
-		set_params( params );
-	}
 }
 
 void w_particle_emitter::set_params( a_emitter_params* params )
 {
 	this->params = params;
-
-	params->add_listener( this );
 
 	max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.max / 1000.f ) );
 	// warren

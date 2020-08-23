@@ -19,7 +19,7 @@ void a_texture::clean_up_internals()
 	}
 }
 
-bool a_texture::create_internals( bool is_hot_reloading )
+bool a_texture::create_internals()
 {
 	assert( !original_filename.empty() );
 	
@@ -31,16 +31,10 @@ bool a_texture::create_internals( bool is_hot_reloading )
 		&w, &h, &bpp, 4 );
 	this->w = static_cast<float>( w );
 	this->h = static_cast<float>( h );
-	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	if( !color_data )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, original_filename ) );
-	}
-
-	if( g_allow_hot_reload )
-	{
-		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	// create our render buffer
@@ -148,7 +142,7 @@ void a_gradient::clean_up_internals()
 	render_buffer = nullptr;
 }
 
-bool a_gradient::create_internals( bool is_hot_reloading )
+bool a_gradient::create_internals()
 {
 	// the dimensions of a gradient are determined by the alignment specified in the asset_def file.
 	// they are a string of colors either running vertically or horizontally.
@@ -190,7 +184,7 @@ void a_anim_texture::clean_up_internals()
 	frame_tween = nullptr;
 }
 
-bool a_anim_texture::create_internals( bool is_hot_reloading )
+bool a_anim_texture::create_internals()
 {
 	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() - 1 ), static_cast<float>( frames_per_second ) );
 
@@ -255,29 +249,13 @@ a_emitter_params::a_emitter_params()
 		->kf_add( w_keyframe( 1.0f, w_color::white ) );
 }
 
-bool a_emitter_params::create_internals( bool is_hot_reloading )
-{
-	if( g_allow_hot_reload )
-	{
-		if( is_hot_reloading )
-		{
-			send_event_to_listeners( event_id::emitter_params_hot_reload, this );
-		}
-
-		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
-	}
-
-	return true;
-}
-
 // ----------------------------------------------------------------------------
 
-bool a_font_def::create_internals( bool is_hot_reloading )
+bool a_font_def::create_internals()
 {
 	ZeroMemory( char_map, sizeof( w_font_char ) * max_font_chars );
 
 	auto file = engine->fs->load_text_file_into_memory( original_filename );
-	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	float x, y, w, h;
 
@@ -305,11 +283,6 @@ bool a_font_def::create_internals( bool is_hot_reloading )
 
 			max_height = w_max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
 		}
-	}
-
-	if( g_allow_hot_reload )
-	{
-		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	return true;
@@ -370,11 +343,10 @@ void a_sound::play()
 	BASS_ChannelPlay( channel, true );
 }
 
-bool a_sound::create_internals( bool is_hot_reloading )
+bool a_sound::create_internals()
 {
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	snd = BASS_SampleLoad( true, file->buffer->data(), 0, static_cast<int>( file->buffer->size() ), 1, 0 );
-	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	bool file_exists = engine->fs->file_exists_on_disk_or_in_zip( original_filename );
 
@@ -385,11 +357,6 @@ bool a_sound::create_internals( bool is_hot_reloading )
 	if( !snd && !file_exists )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
-	}
-
-	if( g_allow_hot_reload )
-	{
-		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	channel = BASS_SampleGetChannel( snd, false );
@@ -429,11 +396,10 @@ void a_music::clean_up_internals()
 	}
 }
 
-bool a_music::create_internals( bool is_hot_reloading )
+bool a_music::create_internals()
 {
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	mus = BASS_SampleLoad( true, file->buffer->data(), 0, static_cast<int>( file->buffer->size() ), 1, BASS_SAMPLE_LOOP );
-	was_loaded_from_zip_file = file->was_loaded_from_zip_file;
 
 	bool file_exists = engine->fs->file_exists_on_disk_or_in_zip( original_filename );
 
@@ -444,11 +410,6 @@ bool a_music::create_internals( bool is_hot_reloading )
 	if( !mus && !file_exists )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
-	}
-
-	if( g_allow_hot_reload && is_hot_reloading )
-	{
-		last_write_time = last_write_time_on_disk = retrieve_last_write_time_from_disk();
 	}
 
 	channel = BASS_SampleGetChannel( mus, false );

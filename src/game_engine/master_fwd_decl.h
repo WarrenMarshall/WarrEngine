@@ -23,7 +23,6 @@ struct ec_sprite;
 struct i_asset;
 struct i_lifecycle;
 struct i_listener;
-struct i_reloadable;
 struct i_speaker;
 struct i_transform;
 struct w_accum_value;

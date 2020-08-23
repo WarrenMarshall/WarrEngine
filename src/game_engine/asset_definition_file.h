@@ -5,14 +5,15 @@
 // a chunk is a set of key/values that are grouped together to form
 // an asset definition, scoped between curly braces.
 
-struct w_asset_definition_file : i_reloadable
+struct w_asset_definition_file
 {
+	std::string original_filename;
 	std::vector<std::unique_ptr<w_keyvalues>> asset_definitions;
 
 	virtual ~w_asset_definition_file() = default;
 
-	void precache_asset_resources( size_t pass_num, bool is_hot_reloading );
+	void precache_asset_resources( size_t pass_num );
 
-	void clean_up_internals() override;
-	bool create_internals( bool is_hot_reloading ) override;
+	void clean_up_internals();
+	bool create_internals();
 };

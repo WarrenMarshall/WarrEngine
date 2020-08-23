@@ -16,15 +16,8 @@ void w_cache_asset_definition_files::add( const std::string_view filename )
 	auto asset_def_file = std::make_unique<w_asset_definition_file>();
 
 	asset_def_file->original_filename = filename;
-	if( asset_def_file->create_internals( b_is_hot_reloading( false ) ) )
+	if( asset_def_file->create_internals() )
 	{
-		// save it into the cache
-
-		if( g_allow_hot_reload )
-		{
-			engine->hot_reloadables.emplace_back( asset_def_file.get() );
-		}
-
 		cache.emplace_back( std::move( asset_def_file ) );
 	}
 }

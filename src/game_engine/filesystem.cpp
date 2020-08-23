@@ -71,7 +71,6 @@ std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_vi
 		{
 			auto mem_file = std::make_unique<w_file_mem>( toc_entry->size );
 			mem_file->buffer = zip_io->get_data_for_filename( filename );
-			mem_file->was_loaded_from_zip_file = true;
 			return std::move( mem_file );
 		}
 	}
@@ -103,7 +102,6 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 		{
 			auto mem_file = std::make_unique<w_mem_file_text>( toc_entry->size );
 			mem_file->buffer = zip_io->get_data_for_filename( filename );
-			mem_file->was_loaded_from_zip_file = true;
 			mem_file->preprocess();
 			return std::move( mem_file );
 		}
@@ -145,11 +143,15 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 		if( foldername == folder )
 		{
-			std::filesystem::path path = filename;
+			std::string new_filename = w_stringutil::replace_char( filename, '/', '\\' );
+			std::filesystem::path path = new_filename;
 
 			if( path.extension() == extension )
 			{
-				filenames.emplace_back( toc_entry->filename );
+				if( std::find( filenames.begin(), filenames.end(), new_filename ) == filenames.end() )
+				{
+					filenames.emplace_back( new_filename );
+				}
 			}
 		}
 	}

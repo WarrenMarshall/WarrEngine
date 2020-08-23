@@ -5,8 +5,6 @@
 float v_window_w = 640;
 float v_window_h = 480;
 
-bool g_allow_hot_reload;
-
 std::unique_ptr<w_logfile> logfile;
 std::unique_ptr<w_engine> engine;
 w_game* game = nullptr;

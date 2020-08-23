@@ -7,10 +7,6 @@
 struct w_file_mem
 {
 	std::unique_ptr<std::vector<char>> buffer = nullptr;
-	struct
-	{
-		unsigned char was_loaded_from_zip_file : 1 = false;
-	};
 
 	w_file_mem() = default;
 	w_file_mem( int size );

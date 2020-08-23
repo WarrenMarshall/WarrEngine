@@ -53,3 +53,18 @@ const std::string w_stringutil::preprocess( std::string& string )
 
 	return stripped_string;
 }
+
+const std::string w_stringutil::replace_char( const std::string& string, char old_char, char new_char )
+{
+	std::string new_string = string;
+
+	for( auto& ch : new_string )
+	{
+		if( ch == old_char )
+		{
+			ch = new_char;
+		}
+	}
+
+	return new_string;
+}

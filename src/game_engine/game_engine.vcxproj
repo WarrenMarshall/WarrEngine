@@ -193,7 +193,6 @@
     <ClCompile Include="i_lifecycle.cpp" />
     <ClCompile Include="i_speaker.cpp" />
     <ClCompile Include="i_listener.cpp" />
-    <ClCompile Include="i_reloadable.cpp" />
     <ClCompile Include="i_transform.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
@@ -242,7 +241,6 @@
     <ClInclude Include="i_lifecycle.h" />
     <ClInclude Include="i_speaker.h" />
     <ClInclude Include="i_listener.h" />
-    <ClInclude Include="i_reloadable.h" />
     <ClInclude Include="layer.h" />
     <ClInclude Include="datatypes.h" />
     <ClInclude Include="entity.h" />
