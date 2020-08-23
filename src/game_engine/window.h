@@ -21,7 +21,7 @@ struct w_window
 	} save_windowed_state;
 
 	w_rect compute_max_window_size_for_desktop();
-	bool init( const std::string_view title );
+	bool init();
 	void deinit();
 	void toggle_fullscreen();
 	void set_title( const std::string_view title );

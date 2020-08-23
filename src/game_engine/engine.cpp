@@ -35,7 +35,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 		{	// window
 			log_msg( "Creating window" );
-			if( !engine->window->init( fmt::format( "Game Engine [{}]", game_name ) ) )
+			if( !engine->window->init() )
 			{
 				return false;
 			}
@@ -82,6 +82,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 			// 0 = v-sync off, 1 = v-sync on
 			glfwSwapInterval( engine->find_int_from_symbol( "v_sync", 0 ) );
+
+			std::string app_title = engine->find_val_from_symbol( "app_title" );
+			engine->window->set_title( app_title );
 		}
 
 		// game

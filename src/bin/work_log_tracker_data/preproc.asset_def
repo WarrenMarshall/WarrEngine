@@ -3,7 +3,7 @@
 	"type" "preproc"
 	"name" "preproc"
 
-	"app_title"			"Work Log Tracker"
+	"app_title"			"Work Log Tracker v1.0"
 
 	# -----------------------------------------------------
 	# renderer

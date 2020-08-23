@@ -65,7 +65,7 @@ w_rect w_window::compute_max_window_size_for_desktop()
 	return window_pos;
 }
 
-bool w_window::init( const std::string_view title )
+bool w_window::init()
 {
 	// Initialize GLFW
 	if( !glfwInit() )
@@ -83,7 +83,7 @@ bool w_window::init( const std::string_view title )
 
 	window = glfwCreateWindow(
 		static_cast<int>( window_pos.w ), static_cast<int>( window_pos.h ),
-		title.data(), nullptr, nullptr
+		"GAME ENGINE", nullptr, nullptr
 	);
 
 	if( !window )

@@ -3,12 +3,4 @@
 
 - get window title from preproc file
 
-* baseline ZIP reading needs to work again
-* finding and loading assets from a ZIP instead of the hard drive
-* reading from multiple ZIP files (put game engine data in a ZIP)
-! read all data from a single ZIP, engine and game
-- ZIP reading should error out correctly if it finds that you've used compression
-
-- should hot reloading be removed? think about it, it adds complexity.
-
 --LIFE--
