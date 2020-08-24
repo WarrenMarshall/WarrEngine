@@ -12,8 +12,7 @@ w_render_vert::w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& 
 
 // ----------------------------------------------------------------------------
 
-w_render_buffer::w_render_buffer( unsigned int prim_type )
-    : prim_type( prim_type )
+w_render_buffer::w_render_buffer()
 {
     glGenVertexArrays( 1, &VAO );
     glBindVertexArray( VAO );
@@ -51,35 +50,23 @@ w_render_buffer::~w_render_buffer()
 // #todo - change this so that it sorts verts into buckets based on the current blending mode, not the render pass
 void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
-    auto render_pass = static_cast<int>( render_pass::solid );
-    if( !fequals( v0.a + v1.a + v2.a + v3.a, 4.0f ) )
-    {
-        render_pass = static_cast<int>( render_pass::transparent );
-    }
-
     // this looks a little messy but since we know that vertices 0 and 2 are going to be shared
     // in the quad, we can skip the process of transforming them and searching the vertex
     // array by caching the index they are assigned the first time through and re-using it.
 
-    const int idx0 = add_render_vert( render_pass, v0 );
-    add_render_vert( render_pass, v1 );
-    const int idx2 = add_render_vert( render_pass, v2 );
+    const int idx0 = add_render_vert( v0 );
+    add_render_vert( v1 );
+    const int idx2 = add_render_vert( v2 );
 
-    indices[render_pass].emplace_back( idx0 );
-    indices[render_pass].emplace_back( idx2 );
-    add_render_vert( render_pass, v3 );
+    indices.emplace_back( idx0 );
+    indices.emplace_back( idx2 );
+    add_render_vert( v3 );
 }
 
 void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1 )
 {
-    auto render_pass = render_pass::solid;
-    if( !fequals( v0.a + v1.a, 2.0f ) )
-    {
-        render_pass = render_pass::transparent;
-    }
-
-    add_render_vert( render_pass, v0 );
-    add_render_vert( render_pass, v1 );
+    add_render_vert( v0 );
+    add_render_vert( v1 );
 }
 
 void w_render_buffer::bind()
@@ -96,20 +83,17 @@ void w_render_buffer::unbind()
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
-void w_render_buffer::draw( e_render_pass render_pass )
+void w_render_buffer::draw( a_texture* tex )
 {
-    auto rp = static_cast<int>( render_pass );
-
-    if( !indices[rp].empty() )
+    if( !indices.empty() )
     {
-        // bind the buffers
-        //bind();
+   		tex->bind();
 
         // send the data to the video card
-        glBufferData( GL_ARRAY_BUFFER, vertices[rp].size() * sizeof( w_render_vert ), vertices[rp].data(), usage );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices[rp].size() * sizeof( unsigned int ), indices[rp].data(), usage );
+        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_vert ), vertices.data(), usage );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), usage );
 
-        switch( prim_type )
+        switch( tex->gl_prim_type )
         {
             case GL_TRIANGLES:
             {
@@ -132,38 +116,33 @@ void w_render_buffer::draw( e_render_pass render_pass )
         }
 
         RENDER->stats.render_buffers.inc();
-        RENDER->stats.render_vertices.accum( static_cast<float>( vertices[rp].size() ) );
-        RENDER->stats.render_indices.accum( static_cast<float>( indices[rp].size() ) );
+        RENDER->stats.render_vertices.accum( static_cast<float>( vertices.size() ) );
+        RENDER->stats.render_indices.accum( static_cast<float>( indices.size() ) );
 
-        glDrawElements( prim_type, static_cast<int>( indices[ rp ].size() ), GL_UNSIGNED_INT, nullptr );
-
-        // clean up
-        //unbind();
+        glDrawElements( tex->gl_prim_type, static_cast<int>( indices.size() ), GL_UNSIGNED_INT, nullptr );
     }
 }
 
 void w_render_buffer::clear()
 {
-    for( int x = 0 ; x < render_pass::max ; ++x )
-    {
-		vertices[ x ].clear();
-		indices[ x ].clear();
-    }
+	vertices.clear();
+	indices.clear();
 }
 
 void w_render_buffer::log_stats( i_asset* asset )
 {
-    if( !(indices[0].empty()) || !(indices[1].empty()) )
+    if( !indices.empty() )
     {
         log_msg( fmt::format( "\t\t[{}]: [{} verts, {} indices]",
                               asset->name,
-                              s_commas( static_cast<float>( vertices[ 0 ].size() + vertices[ 1 ].size() ) ),
-                              s_commas( static_cast<float>( indices[ 0 ].size() + indices[ 1 ].size() ) ) )
+                              s_commas( static_cast<float>( vertices.size() ) ),
+                              s_commas( static_cast<float>( indices.size() ) )
+                            )
         );
     }
 }
 
-int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& render_vert )
+int w_render_buffer::add_render_vert( const w_render_vert& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.
     //
@@ -181,9 +160,9 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
 
     // add the render_vert to the vertex and index lists.
 
-    vertices[ render_pass ].emplace_back( rv );
-    int idx = static_cast<int>( vertices[ render_pass ].size() ) - 1;
-    indices[ render_pass ].emplace_back( idx );
+    vertices.emplace_back( rv );
+    int idx = static_cast<int>( vertices.size() ) - 1;
+    indices.emplace_back( idx );
 
     return idx;
 }

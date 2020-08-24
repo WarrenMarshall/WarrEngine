@@ -19,6 +19,6 @@
 	"name" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
-	#"colors" "color.dark_grey / color.black / color.black / color.dark_grey"
-	"colors" "color.teal / color.black / color.black / color.orange"
+	"colors" "color.dark_grey / color.black / color.black / color.dark_grey"
+	#"colors" "color.teal / color.black / color.black / color.orange"
 }

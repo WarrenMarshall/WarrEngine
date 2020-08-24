@@ -173,7 +173,7 @@ void layer_editor::draw()
 	{
 		engine->layer_mgr->push( std::make_unique<layer_browser>() );
 	}
-	
+
 	style_arrow_button->subtex = engine->get_asset<a_subtexture>( "ui_arrow_left" );
 	if( UI->im_active( "", { 76.0f, 208.0f, 16, 16 }, *( style_arrow_button.get() ) ) & im_result::left_clicked )
 	{
@@ -210,11 +210,11 @@ void layer_editor::draw()
 
 	RENDER
 		->begin()
-		->push_depth_nudge( 100 );
+		->push_depth_nudge();
 	game->draw_entities();
 	RENDER->end();
 }
-	
+
 bool layer_editor::handle_input_event( const w_input_event* evt )
 {
 	switch( evt->event_id )

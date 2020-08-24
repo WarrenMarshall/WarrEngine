@@ -37,9 +37,6 @@ bool a_texture::create_internals()
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, original_filename ) );
 	}
 
-	// create our render buffer
-	//render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
-
 	// upload texture to opengl
 
 	glGenTextures( 1, &id );
@@ -72,17 +69,6 @@ void a_texture::unbind()
 a_subtexture* a_texture::get_subtexture( float offset )
 {
 	return subtex;
-}
-
-void a_texture::draw( e_render_pass render_pass )
-{
-	DebugBreak();	/// why are you here?
-	//if( render_buffer )
-	//{
-	//	bind();
-	//	render_buffer->draw( render_pass );
-	//	unbind();
-	//}
 }
 
 // ----------------------------------------------------------------------------
@@ -150,8 +136,6 @@ bool a_gradient::create_internals()
 	// that means the other dimension is 1 pixel in size.
 	w = static_cast<float>( ( alignment == align::horizontal ) ? (colors.size() / 4) : 1 );
 	h = static_cast<float>( ( alignment == align::vertical ) ? (colors.size() / 4 ) : 1 );
-
-	//render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
 
 	glGenTextures( 1, &id );
 	bind();

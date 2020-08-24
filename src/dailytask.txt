@@ -1,9 +1,8 @@
 
 --C++--
 
-https://www.glfw.org/docs/latest/window_guide.html
-GLFW_FLOATING
-glfwSetWindowAttrib
-aka glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_FALSE);
+- translucent stuff (particles, rectangles, etc)
+- lines
+
 
 --LIFE--

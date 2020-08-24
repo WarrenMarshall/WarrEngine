@@ -33,7 +33,7 @@ void w_render_stats::update()
 
 void w_render::init()
 {
-	master_render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
+	master_render_buffer = std::make_unique<w_render_buffer>();
 	master_render_buffer->bind();
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
@@ -176,8 +176,7 @@ void w_render::end()
 
 void w_render::draw_master_buffer()
 {
-	current_texture->bind();
-	master_render_buffer->draw( render_pass::solid );
+	master_render_buffer->draw( current_texture );
 	master_render_buffer->clear();
 }
 
@@ -368,18 +367,6 @@ void w_render::end_frame()
 
 	maybe_draw_master_buffer( nullptr );
 
-	// draw all render buffers
-
-	//for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
-	//{
-	//	asset->draw( render_pass::solid );
-	//}
-
-	//for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
-	//{
-	//	asset->draw( render_pass::transparent );
-	//}
-
 	// update stats
 	stats.update();
 
@@ -400,12 +387,6 @@ void w_render::end_frame()
 	assert( rs_alpha_stack.length() == 1 );
 	assert( rs_scale_stack.length() == 1 );
 	assert( rs_align_stack.length() == 1 );
-
-#if 0
-	current_texture->bind();
-	master_render_buffer->draw( render_pass::solid );
-	current_texture = nullptr;
-#endif
 
 	// Swap buffers
 	glfwSwapBuffers( engine->window->window );
@@ -447,6 +428,8 @@ w_render* w_render::draw_world_axis()
 constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
+	maybe_draw_master_buffer( nullptr );
+
 	RENDER->begin()->push_depth( zdepth_stats );
 
 	if( show_stats )
@@ -513,6 +496,8 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
+	maybe_draw_master_buffer( engine->white_solid->tex );
+
 	size_t length = rs_color_stack.length();
 	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
 
@@ -548,6 +533,8 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_rectangle( const w_rect& dst )
 {
+	maybe_draw_master_buffer( engine->white_solid->tex );
+
 	w_bbox box;
 	box.add( w_vec2(
 		static_cast<float>( dst.x ),
@@ -570,6 +557,8 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
+	maybe_draw_master_buffer( engine->white_solid->tex );
+
 	size_t length = rs_color_stack.length();
 	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
 
@@ -596,6 +585,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
+	maybe_draw_master_buffer( engine->white_wire->tex );
+
 	size_t length = rs_color_stack.length();
 	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
 

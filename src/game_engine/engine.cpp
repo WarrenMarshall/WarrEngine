@@ -107,7 +107,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		{
 			// used for wireframe drawing
 			engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
-			//engine->white_wire->tex->render_buffer->prim_type = GL_LINES;
+			engine->white_wire->tex->gl_prim_type = GL_LINES;
 
 			// used for solid drawing
 			engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );

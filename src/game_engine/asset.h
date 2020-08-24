@@ -14,7 +14,6 @@ struct i_asset
 	virtual bool create_internals();
 
 	virtual void update() {};
-	virtual void draw( e_render_pass render_pass ) {};
 	virtual void clear_render_buffer();
 };
 

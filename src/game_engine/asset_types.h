@@ -6,6 +6,7 @@
 
 struct a_texture : i_asset
 {
+	unsigned int gl_prim_type = GL_TRIANGLES;
 	unsigned int id = 0;
 	float w = 0.0f;
 	float h = 0.0f;
@@ -31,8 +32,6 @@ struct a_texture : i_asset
 	void unbind();
 
 	virtual a_subtexture* get_subtexture( float offset = 0.0f );
-
-	void draw( e_render_pass render_pass ) override;
 };
 
 // ----------------------------------------------------------------------------

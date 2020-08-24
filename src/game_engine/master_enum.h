@@ -229,14 +229,6 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( render_pass )
-	solid = 0,
-	transparent,
-	max
-enum_end
-
-// ----------------------------------------------------------------------------
-
 enum_begin( component_type )
 	invalid = 0,
 	sprite,

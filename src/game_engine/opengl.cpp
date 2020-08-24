@@ -66,8 +66,8 @@ void w_opengl::init() const
 	//
 	// (meaning that only pixels with an alpha value higher than 0.1 (or ~25) will get
 	// through to the rest of the rendering pipeline)
-	//glEnable( GL_ALPHA_TEST );
-	//glAlphaFunc( GL_GREATER, 0.1f );
+	glEnable( GL_ALPHA_TEST );
+	glAlphaFunc( GL_GREATER, 0.1f );
 
 	// by default, set up blending so that alpha channels will work
 	glEnable( GL_BLEND );
@@ -117,7 +117,6 @@ void w_opengl::clear_texture_bind() const
 
 void w_opengl::set_blend( e_opengl_blend blend ) const
 {
-#if 0
 	switch( blend )
 	{
 		case opengl_blend::alpha:
@@ -138,7 +137,6 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 		}
 		break;
 	}
-#endif
 }
 
 // updates the size of opengl primitives based on the ratio
