@@ -188,7 +188,7 @@ enum_end
 
 enum_begin( event_id )
 	invalid = 0,
-	
+
 	input_pressed,
 	input_released,
 	input_motion
@@ -231,7 +231,8 @@ enum_end
 
 enum_begin( render_pass )
 	solid = 0,
-	transparent
+	transparent,
+	max
 enum_end
 
 // ----------------------------------------------------------------------------

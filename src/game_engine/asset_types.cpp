@@ -22,7 +22,7 @@ void a_texture::clean_up_internals()
 bool a_texture::create_internals()
 {
 	assert( !original_filename.empty() );
-	
+
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	int w, h, bpp;
 	unsigned char* color_data = stbi_load_from_memory(
@@ -300,7 +300,7 @@ w_vec2 a_font::get_string_extents( const std::string_view text )
 
 	bool inside_color_code = false;
 
-	for( const auto& iter : text )
+	for( unsigned char iter : text )
 	{
 		pxch = &( font_def->char_map[ iter ] );
 

@@ -41,9 +41,9 @@ struct w_render
 	std::basic_string<float> rs_scale_stack;
 	std::basic_string<float> rs_angle_stack;
 	std::basic_string<e_align> rs_align_stack;
-	
-	float zdepth;
-	float zdepth_nudge_accum;
+
+	float zdepth = 0.0f;
+	float zdepth_nudge_accum = 0.0f;;
 
 	w_render* begin();
 	w_render* push_rgb( const w_color& color );

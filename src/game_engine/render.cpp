@@ -285,9 +285,9 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 	float xpos = dst.x;
 	float ypos = dst.y;
 
-	for( const auto& iter : text )
+	for( const char iter : text )
 	{
-		fch = &( font->font_def->char_map[ iter ] );
+		fch = &( font->font_def->char_map[ static_cast<int>( iter ) ] );
 
 		// small optimization to skip drawing completely blank characters
 		if( fch->w > 0 )
@@ -337,17 +337,15 @@ void w_render::end_frame()
 
 	// draw all render buffers
 
-	for( const auto& [xxx, asset] : engine->asset_cache->cache )
+	for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
 	{
 		asset->draw( render_pass::solid );
 	}
 
-	for( const auto& [xxx, asset] : engine->asset_cache->cache )
-	{
-		glDepthMask( GL_FALSE );
-		asset->draw( render_pass::transparent );
-	}
-	glDepthMask( GL_TRUE );
+	//for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
+	//{
+	//	asset->draw( render_pass::transparent );
+	//}
 
 	// update stats
 	stats.update();
@@ -596,10 +594,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	// top row
 
 	draw( p_00, w_rect( xpos, ypos, p_00->sz.w, p_00->sz.h ) );
-	
+
 	xpos += p_00->sz.w;
 	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->sz.h ) );
-	
+
 	xpos += inner_w;
 	draw( p_20, w_rect( xpos, ypos, p_20->sz.w, p_20->sz.h ) );
 
@@ -608,10 +606,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	xpos = dst.x;
 	ypos += p_00->sz.h;
 	draw( p_01, w_rect( xpos, ypos, p_01->sz.w, inner_h ) );
-	
+
 	xpos += p_01->sz.w;
 	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
-	
+
 	xpos += inner_w;
 	draw( p_21, w_rect( xpos, ypos, p_21->sz.w, inner_h ) );
 
@@ -620,10 +618,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	xpos = dst.x;
 	ypos += inner_h;
 	draw( p_02, w_rect( xpos, ypos, p_02->sz.w, p_02->sz.h ) );
-	
+
 	xpos += p_02->sz.w;
 	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->sz.h ) );
-	
+
 	xpos += inner_w;
 	draw( p_22, w_rect( xpos, ypos, p_22->sz.w, p_22->sz.h ) );
 
@@ -643,7 +641,7 @@ void w_render::init_projection() const
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
 		0, v_window_w, v_window_h, 0,
-		-10000.0f, 10000.0f );
+		-20000.0f, 20000.0f );
 
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 

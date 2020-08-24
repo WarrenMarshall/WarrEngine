@@ -1,6 +1,9 @@
 
 --C++--
 
-- get window title from preproc file
+https://www.glfw.org/docs/latest/window_guide.html
+GLFW_FLOATING
+glfwSetWindowAttrib
+aka glfwSetWindowAttrib(window, GLFW_RESIZABLE, GLFW_FALSE);
 
 --LIFE--

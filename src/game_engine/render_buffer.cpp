@@ -1,4 +1,5 @@
 
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -143,11 +144,11 @@ void w_render_buffer::draw( e_render_pass render_pass )
 
 void w_render_buffer::clear()
 {
-    vertices[0].clear();
-    indices[0].clear();
-
-    vertices[1].clear();
-    indices[1].clear();
+    for( int x = 0 ; x < render_pass::max ; ++x )
+    {
+		vertices[ x ].clear();
+		indices[ x ].clear();
+    }
 }
 
 void w_render_buffer::log_stats( i_asset* asset )
@@ -178,31 +179,10 @@ int w_render_buffer::add_render_vert( int render_pass, const w_render_vert& rend
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
     );
 
-    int idx = 0;
-
-	// look through the existing list of vertices and see if we can find
-	// a matching vertex. if one is found, return the index of that vertex
-	// instead of putting the new one into the list.
-	//
-	// NOTE - this is slow, which is why we don't do this check right now.
-	//      - it's faster to just throw the duplicates at the video card.
-#if 0
-	for( auto& iter : vertices[ render_pass ] )
-	{
-		if( iter.is_same( rv ) )
-		{
-			indices[ render_pass ].emplace_back( idx );
-			return idx;
-		}
-
-		idx++;
-	}
-#endif
-
     // add the render_vert to the vertex and index lists.
 
     vertices[ render_pass ].emplace_back( rv );
-    idx = static_cast<int>( vertices[ render_pass ].size() ) - 1;
+    int idx = static_cast<int>( vertices[ render_pass ].size() ) - 1;
     indices[ render_pass ].emplace_back( idx );
 
     return idx;
