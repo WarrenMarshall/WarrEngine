@@ -15,3 +15,4 @@ src/bin/*.exe
 src/bin/GameEngine.dll
 src/bin/GameEngine.lib
 src/bin/game_engine.lib
+src/shipping
