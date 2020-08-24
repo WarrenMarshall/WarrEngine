@@ -24,7 +24,7 @@
 {
 	"type" "texture"
 	"name" "engine_pixel_font_tex"
-	"filename" "game_engine_data/fonts/font_pixel.png"
+	"filename" "game_engine_data/fonts/font_pixel.tga"
 }
 
 {

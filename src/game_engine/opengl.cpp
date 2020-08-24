@@ -55,21 +55,23 @@ void w_opengl::init() const
 	//		  disabling the depth buffer is a trap that will cost you time until you
 	//		  remember this. just walk away.
 
-	glEnable( GL_DEPTH_TEST );	// turn on z-buffer
+	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LEQUAL );
-	glDepthMask( GL_TRUE );		// enable depth writing (reading is always enabled)
 
-	// allows the alpha channel of the texture to be used for transparency - this has nothing
-	// to go with drawing things transparently or blending.
+	// allows the alpha channel of the texture to be used for masking  - this has nothing
+	// to go with drawing things with transparency or blending.
 	//
-	// this is strictly to let alpha channels in textures reject pixels for both drawing
-	// and writing to the depth buffer.
-	glEnable( GL_ALPHA_TEST );
-	glAlphaFunc( GL_GREATER, 0.10f );
+	// this is the first level of culling - getting rid of pixels entirely that are below
+	// a certain alpha threshold. this is NOT transparency blending.
+	//
+	// (meaning that only pixels with an alpha value higher than 0.1 (or ~25) will get
+	// through to the rest of the rendering pipeline)
+	//glEnable( GL_ALPHA_TEST );
+	//glAlphaFunc( GL_GREATER, 0.1f );
 
 	// by default, set up blending so that alpha channels will work
-	glEnable(GL_BLEND);
-	set_blend( opengl_blend::alpha );
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );
@@ -115,6 +117,7 @@ void w_opengl::clear_texture_bind() const
 
 void w_opengl::set_blend( e_opengl_blend blend ) const
 {
+#if 0
 	switch( blend )
 	{
 		case opengl_blend::alpha:
@@ -135,6 +138,7 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 		}
 		break;
 	}
+#endif
 }
 
 // updates the size of opengl primitives based on the ratio
