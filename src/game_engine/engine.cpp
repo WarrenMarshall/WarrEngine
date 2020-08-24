@@ -28,7 +28,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			log_msg( "Initializing engine" );
 			engine->init();
 		}
-	
+
 		// #todo : write a proper command line parsing class
 		{	// command line parsing
 		}
@@ -80,11 +80,12 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 									  100,
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
-			// 0 = v-sync off, 1 = v-sync on
-			glfwSwapInterval( engine->find_int_from_symbol( "v_sync", 0 ) );
+			glfwSwapInterval( bool( engine->find_val_from_symbol( "v_sync" ) == "true" ) );
 
 			std::string app_title = engine->find_val_from_symbol( "app_title" );
 			engine->window->set_title( app_title );
+
+			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, bool( engine->find_val_from_symbol( "always_on_top" ) == "true" ) );
 		}
 
 		// game
@@ -350,7 +351,7 @@ void w_engine::init()
 
 	input->add_listener( this );
 	input->add_listener( layer_mgr.get() );
-	
+
 	w_random::seed();
 	fs->init();
 }
