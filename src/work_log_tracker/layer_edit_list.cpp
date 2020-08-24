@@ -54,7 +54,7 @@ void layer_edit_list::draw()
 	{
 		RENDER
 			->begin()
-			->push_depth_nudge( 100 );
+			->push_depth_nudge( 10 );
 
 		w_ui_style* style = artist.approved ? style_approved_button.get() : style_button.get();
 		if( UI->im_active( artist.name, w_rect( 8, ypos, 130, 16 ), *( style ) ) & im_result::left_clicked )
