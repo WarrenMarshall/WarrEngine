@@ -70,6 +70,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			log_msg( "Precaching resources from definition files..." );
 			engine->precache_asset_resources();
 
+			// now that the preproc files are loaded, parse out the fields specific
+			// to the window and apply them as needed.
+
 			v_window_w = engine->find_float_from_symbol( "v_window_w", 100 );
 			v_window_h = engine->find_float_from_symbol( "v_window_h", 100 );
 
@@ -81,10 +84,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
 			glfwSwapInterval( bool( engine->find_val_from_symbol( "v_sync" ) == "true" ) );
-
-			std::string app_title = engine->find_val_from_symbol( "app_title" );
-			engine->window->set_title( app_title );
-
+			engine->window->set_title( engine->find_val_from_symbol( "app_title" ) );
 			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, bool( engine->find_val_from_symbol( "always_on_top" ) == "true" ) );
 		}
 
