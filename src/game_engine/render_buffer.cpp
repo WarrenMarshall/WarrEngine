@@ -103,7 +103,7 @@ void w_render_buffer::draw( e_render_pass render_pass )
     if( !indices[rp].empty() )
     {
         // bind the buffers
-        bind();
+        //bind();
 
         // send the data to the video card
         glBufferData( GL_ARRAY_BUFFER, vertices[rp].size() * sizeof( w_render_vert ), vertices[rp].data(), usage );
@@ -138,7 +138,7 @@ void w_render_buffer::draw( e_render_pass render_pass )
         glDrawElements( prim_type, static_cast<int>( indices[ rp ].size() ), GL_UNSIGNED_INT, nullptr );
 
         // clean up
-        unbind();
+        //unbind();
     }
 }
 

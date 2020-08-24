@@ -177,7 +177,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// ------------------------------------------------------------------------
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->texture_name = iter_ad->find_value( "texture");
+					asset_ptr->texture = engine->get_asset<a_texture>( iter_ad->find_value( "texture" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -463,7 +463,7 @@ bool w_asset_definition_file::create_internals()
 
 	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
 
-	// loop through every line of the asset_def fil and 
+	// loop through every line of the asset_def fil and
 	for( const auto& line : *( file.get()->lines.get() ) )
 	{
 		// a "{" marks the beginning of a new asset definition

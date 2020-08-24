@@ -33,6 +33,9 @@ void w_render_stats::update()
 
 void w_render::init()
 {
+	master_render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
+	master_render_buffer->bind();
+
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
 	// push an identity matrix onto the stack. this will always live
@@ -171,6 +174,26 @@ void w_render::end()
 	zdepth_nudge_accum = 0.0f;
 }
 
+void w_render::draw_master_buffer()
+{
+	current_texture->bind();
+	master_render_buffer->draw( render_pass::solid );
+	master_render_buffer->clear();
+}
+
+void w_render::maybe_draw_master_buffer( a_texture* texture )
+{
+	if( current_texture == nullptr )
+	{
+		current_texture = texture;
+	}
+	else if( current_texture != texture )
+	{
+		draw_master_buffer();
+		current_texture = texture;
+	}
+}
+
 /*
 	draws a texture as a sprite onto the screen.
 
@@ -184,6 +207,8 @@ w_render* w_render::draw_sprite( a_texture* tex, const w_rect& dst )
 
 w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 {
+	maybe_draw_master_buffer( subtex->tex );
+
 	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
 	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 
@@ -207,7 +232,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 	w_render_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
 	MATRIX->push()->translate( { dst.x, dst.y } )->rotate( rs_angle );
-	subtex->tex->render_buffer->add_quad( v0, v1, v2, v3 );
+	master_render_buffer->add_quad( v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -223,6 +248,8 @@ w_render* w_render::draw( a_texture* tex, const w_rect& dst )
 
 w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
+	maybe_draw_master_buffer( subtex->tex );
+
 	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
 	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
 
@@ -242,7 +269,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_render_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
-	subtex->tex->render_buffer->add_quad( v0, v1, v2, v3 );
+	master_render_buffer->add_quad( v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -253,6 +280,8 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 */
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
+	maybe_draw_master_buffer( font->font_def->texture );
+
 	e_align rs_align = rs_align_stack.back();
 
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
@@ -313,6 +342,8 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 */
 void w_render::begin_frame( float frame_interpolate_pct )
 {
+	current_texture = nullptr;
+
 	this->frame_interpolate_pct = frame_interpolate_pct;
 
 	glClearColor( .25f, .25f, .25f, 1.0f );
@@ -335,12 +366,14 @@ void w_render::end_frame()
 {
 	draw_stats();
 
+	maybe_draw_master_buffer( nullptr );
+
 	// draw all render buffers
 
-	for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
-	{
-		asset->draw( render_pass::solid );
-	}
+	//for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
+	//{
+	//	asset->draw( render_pass::solid );
+	//}
 
 	//for( const auto& [_dontcare_, asset] : engine->asset_cache->cache )
 	//{
@@ -367,6 +400,12 @@ void w_render::end_frame()
 	assert( rs_alpha_stack.length() == 1 );
 	assert( rs_scale_stack.length() == 1 );
 	assert( rs_align_stack.length() == 1 );
+
+#if 0
+	current_texture->bind();
+	master_render_buffer->draw( render_pass::solid );
+	current_texture = nullptr;
+#endif
 
 	// Swap buffers
 	glfwSwapBuffers( engine->window->window );
@@ -500,7 +539,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_color
 	);
 
-	engine->white_solid->tex->render_buffer->add_quad( v0, v1, v2, v3 );
+	master_render_buffer->add_quad( v0, v1, v2, v3 );
 
 	return this;
 }
@@ -547,7 +586,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		engine->white_wire->tex->render_buffer->add_line( v0, v1 );
+		master_render_buffer->add_line( v0, v1 );
 	}
 
 	return this;
@@ -565,7 +604,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( end, w_uv( 0, 0 ), rs_color );
 
-	engine->white_wire->tex->render_buffer->add_line( v0, v1 );
+	master_render_buffer->add_line( v0, v1 );
 
 	return this;
 }

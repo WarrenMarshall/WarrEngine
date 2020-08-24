@@ -107,7 +107,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		{
 			// used for wireframe drawing
 			engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
-			engine->white_wire->tex->render_buffer->prim_type = GL_LINES;
+			//engine->white_wire->tex->render_buffer->prim_type = GL_LINES;
 
 			// used for solid drawing
 			engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
@@ -518,15 +518,15 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 					log_msg( " " );
 					log_msg( "\tRender Buffers:" );
 
-					w_render_buffer* rb;
+					//w_render_buffer* rb;
 
 					for( const auto& [xxx, asset] : asset_cache->cache )
 					{
-						if( asset->render_buffer )
-						{
-							rb = asset->render_buffer.get();
-							rb->log_stats( asset.get() );
-						}
+						//if( asset->render_buffer )
+						//{
+						//	rb = asset->render_buffer.get();
+						//	rb->log_stats( asset.get() );
+						//}
 					}
 
 					log_msg( " " );

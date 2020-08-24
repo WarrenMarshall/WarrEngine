@@ -24,6 +24,11 @@ struct w_render_stats
 
 struct w_render
 {
+	a_texture* current_texture = nullptr;
+	std::unique_ptr<w_render_buffer> master_render_buffer = nullptr;
+	void draw_master_buffer();
+	void maybe_draw_master_buffer( a_texture* texture );
+
 	w_render_stats stats;
 
 	/*

@@ -8,7 +8,7 @@ struct i_asset
 
 	std::string name = "";
 	std::string original_filename;
-	std::unique_ptr<w_render_buffer> render_buffer = nullptr;
+	//std::unique_ptr<w_render_buffer> render_buffer = nullptr;
 
 	virtual void clean_up_internals() {};
 	virtual bool create_internals();

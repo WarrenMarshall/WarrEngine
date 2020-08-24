@@ -11,7 +11,7 @@ a_texture::~a_texture()
 
 void a_texture::clean_up_internals()
 {
-	render_buffer = nullptr;
+	//render_buffer = nullptr;
 
 	if( id )
 	{
@@ -38,7 +38,7 @@ bool a_texture::create_internals()
 	}
 
 	// create our render buffer
-	render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
+	//render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
 
 	// upload texture to opengl
 
@@ -76,12 +76,13 @@ a_subtexture* a_texture::get_subtexture( float offset )
 
 void a_texture::draw( e_render_pass render_pass )
 {
-	if( render_buffer )
-	{
-		bind();
-		render_buffer->draw( render_pass );
-		unbind();
-	}
+	DebugBreak();	/// why are you here?
+	//if( render_buffer )
+	//{
+	//	bind();
+	//	render_buffer->draw( render_pass );
+	//	unbind();
+	//}
 }
 
 // ----------------------------------------------------------------------------
@@ -139,7 +140,7 @@ a_gradient::~a_gradient()
 
 void a_gradient::clean_up_internals()
 {
-	render_buffer = nullptr;
+	//render_buffer = nullptr;
 }
 
 bool a_gradient::create_internals()
@@ -150,7 +151,7 @@ bool a_gradient::create_internals()
 	w = static_cast<float>( ( alignment == align::horizontal ) ? (colors.size() / 4) : 1 );
 	h = static_cast<float>( ( alignment == align::vertical ) ? (colors.size() / 4 ) : 1 );
 
-	render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
+	//render_buffer = std::make_unique<w_render_buffer>( GL_TRIANGLES );
 
 	glGenTextures( 1, &id );
 	bind();
@@ -279,7 +280,7 @@ bool a_font_def::create_internals()
 			fch->w = w;
 			fch->h = h;
 
-			fch->subtex = std::make_unique<a_subtexture>( texture_name, w_rect( x, y, w, h ) );
+			fch->subtex = std::make_unique<a_subtexture>( texture->name, w_rect( x, y, w, h ) );
 
 			max_height = w_max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
 		}

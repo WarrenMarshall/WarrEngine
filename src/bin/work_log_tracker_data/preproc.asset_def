@@ -10,6 +10,6 @@
 
 	"v_window_w"		"164"
 	"v_window_h"		"260"
-	"v_sync"			"true"
-	"always_on_top"		"true"
+	"v_sync"			"false"
+	"always_on_top"		"false"
 }

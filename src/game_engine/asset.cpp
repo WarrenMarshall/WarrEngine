@@ -10,8 +10,8 @@ bool i_asset::create_internals()
 
 void i_asset::clear_render_buffer()
 {
-	if( render_buffer )
-	{
-		render_buffer->clear();
-	}
+	//if( render_buffer )
+	//{
+	//	render_buffer->clear();
+	//}
 }
