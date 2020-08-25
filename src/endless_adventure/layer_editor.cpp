@@ -79,8 +79,8 @@ void layer_editor::draw()
 
 	RENDER
 		->begin()
-		->push_depth_nudge()
 		->push_align( align::centered )
+		->push_depth_nudge( 20 )
 		->draw_string( engine->pixel_font, "-Area-", w_rect( 104, 196 ) )
 		->push_depth_nudge()
 		->push_rgb( w_color::teal )
@@ -90,11 +90,18 @@ void layer_editor::draw()
 	// title bar
 
 	UI->im_passive( { 0.0f, 0.0f, v_window_w, static_cast<float>( TILE_SZ ) * 2.0f }, *( style_panel.get() ) );
-	GAME->draw_viewport_caption( "Endless Adventure Editor", 18.0f);
+
+	RENDER
+		->begin()
+		->push_depth_nudge( 20 )
+		->push_rgb( w_color::orange )
+		->push_align( align::centered )
+		->draw_string( UI->theme->large_font, "Endless Adventure Editor", w_rect( v_window_hw, 18.0f ) )
+		->end();
 
 	// info bars
 
-	UI->im_passive( { 0.0f, v_window_h - 68.0f, v_window_w, 68.0f }, *( style_panel.get() ) );
+	UI->im_passive( { 0.0f, v_window_h - 64.0f, v_window_w, 64.0f }, *( style_panel.get() ) );
 
 	// tiles
 

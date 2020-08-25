@@ -31,7 +31,14 @@ void layer_browser::draw()
 	w_layer::draw();
 
 	UI->im_passive( { 16.0f, 16.0f, v_window_w - 32.0f, v_window_h - 32.0f }, *( style_panel.get() ) );
-	GAME->draw_viewport_caption( "Select A Tile", 34.0f );
+
+	RENDER
+		->begin()
+		->push_depth_nudge( 20 )
+		->push_rgb( w_color::orange )
+		->push_align( align::centered )
+		->draw_string( UI->theme->large_font, "Tile Browser", w_rect( v_window_hw, 34.0f ) )
+		->end();
 
 	if( UI->im_active( "", { 24.0f, 24.0f, 16, 16 }, *( style_close_button.get() ) ) & im_result::left_clicked )
 	{

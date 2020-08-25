@@ -60,5 +60,4 @@ struct endless_adventure_game final : w_game
 	void save_area_data();
 
 	w_tile* get_tile( int id );
-	void draw_viewport_caption( const std::string_view caption, float ypos );
 };

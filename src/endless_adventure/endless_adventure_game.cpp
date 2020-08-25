@@ -83,17 +83,6 @@ w_tile* endless_adventure_game::get_tile( int id )
 
 	w_tile* tile = &( tile_masters[ id ] );
 	assert( tile->subtex != nullptr );	// there is no tile definition at the requested index - double check "tile_def.txt"
-	
-	return tile;
-}
 
-void endless_adventure_game::draw_viewport_caption( const std::string_view caption, float ypos)
-{
-	RENDER
-		->begin()
-		->push_depth_nudge( 20 )
-		->push_rgb( w_color::orange )
-		->push_align( align::centered )
-		->draw_string( UI->theme->large_font, caption, w_rect( v_window_hw, ypos ) )
-		->end();
+	return tile;
 }
