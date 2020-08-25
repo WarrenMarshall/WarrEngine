@@ -7,7 +7,7 @@
 	"type" "texture"
 	"name" "tex_ultima_atlas"
 	"subtexture" "ultima_atlas"
-	"filename" "endless_adventure_data/images/tileset.png"
+	"filename" "images/tileset.png"
 	"subtextures" "\
 		tile_deep_water, 0, 0, 16, 16,\
 		tile_shallow_water, 16, 0, 16, 16,\

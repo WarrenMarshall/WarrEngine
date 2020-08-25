@@ -237,7 +237,7 @@ bool w_engine::is_symbol_in_map( const std::string_view symbol )
 }
 
 /*
-	returns a void* to the value stored for 'symbol'
+	returns a string containing the value stored for 'symbol'
 */
 std::string w_engine::find_val_from_symbol( std::string_view symbol )
 {
@@ -456,11 +456,11 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 */
 void w_engine::precache_asset_resources()
 {
-	for( int p = 0; p < w_engine::num_asset_def_passes; ++p )
+	for( int pass = 0; pass < w_engine::num_asset_def_passes; ++pass )
 	{
 		for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
 		{
-			asset_definition_file->precache_asset_resources( p );
+			asset_definition_file->precache_asset_resources( pass );
 		}
 	}
 

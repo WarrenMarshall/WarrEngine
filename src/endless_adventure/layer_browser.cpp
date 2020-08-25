@@ -55,7 +55,7 @@ void layer_browser::draw()
 				style_tile->background_color = w_color::green;
 			else if( tile.area_layer == area_layer::enemy )
 				style_tile->background_color = w_color::red;
-			
+
 			e_im_result ir = UI->im_active( "", rc, *( style_tile.get() ) );
 
 			if( ir == im_result::left_clicked )

@@ -5,6 +5,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 {
 	std::string type, name, filename;
 
+	std::filesystem::path filename_path = original_filename;
+	std::string data_folder = filename_path.parent_path().generic_string();
+	data_folder += "/";
+
 	for( const auto& iter_ad : asset_definitions )
 	{
 		type = iter_ad->find_value( "type" );
@@ -30,7 +34,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "texture" )
 				{
-					filename = iter_ad->find_value( "filename");
+					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -163,7 +167,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "font_def" )
 				{
-					filename = iter_ad->find_value( "filename");
+					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -229,7 +233,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "sound" )
 				{
-					filename = iter_ad->find_value( "filename");
+					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -251,7 +255,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "music" )
 				{
-					filename = iter_ad->find_value( "filename");
+					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 

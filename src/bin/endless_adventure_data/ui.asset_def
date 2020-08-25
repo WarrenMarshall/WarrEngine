@@ -6,7 +6,7 @@
 {
 	"type" "texture"
 	"name" "tex_ui_master"
-	"filename" "endless_adventure_data/images/ui_master.png"
+	"filename" "images/ui_master.png"
 	"subtextures" "\
 		toon_hand_cursor, 0, 24, 16, 16,\
 		selector_bracket, 0, 40, 16, 16	"
@@ -16,7 +16,7 @@
 	"type" "texture"
 	"name" "tex_uipack_sheet"
 	"subtexture" "uipack_sheet"
-	"filename" "endless_adventure_data/images/uipack_rpg_sheet.png"
+	"filename" "images/uipack_rpg_sheet.png"
 	"subtextures" "\
 		ui_sword_cursor,168,76,16,18,\
 		ui_arrow_left,140,243,12,12,\
@@ -75,14 +75,14 @@
 {
 	"type" "texture"
 	"name" "tex_large_font"
-	"filename" "endless_adventure_data/fonts/font_larger.png"
+	"filename" "fonts/font_larger.png"
 }
 
 {
 	"type" "font_def"
 	"name" "larger_font_font_def"
 	"texture" "tex_large_font"
-	"filename" "endless_adventure_data/fonts/font_larger.fnt"
+	"filename" "fonts/font_larger.fnt"
 }
 
 {
