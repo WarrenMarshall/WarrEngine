@@ -9,5 +9,4 @@ struct layer_edit_list : w_layer
 
 	void push() final;
 	void draw() final;
-	virtual bool handle_input_event( const w_input_event* evt ) override;
 };

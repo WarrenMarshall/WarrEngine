@@ -1,8 +1,6 @@
 
 --C++--
 
-- translucent stuff (particles, rectangles, etc)
-- lines
 
 
 --LIFE--

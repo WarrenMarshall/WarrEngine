@@ -67,14 +67,3 @@ void layer_edit_list::draw()
 		ypos += 18.0f;
 	}
 }
-
-bool layer_edit_list::handle_input_event( const w_input_event* evt )
-{
-	//if( evt->event_id == event_id::input_pressed && evt->input_id == input_id::key_space )
-	//{
-	//	test_entity->pos = engine->input->mouse_vwindow_pos;
-	//	return true;
-	//}
-
-	return false;
-}
