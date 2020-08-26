@@ -1,0 +1,23 @@
+
+# ---------------------------------------------------------
+# textures
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_particle_star"
+	"subtexture" "star_particle"
+	"filename" "gfx/puzzlepack/particleStar.png"
+}
+
+# ---------------------------------------------------------
+# gradients
+# ---------------------------------------------------------
+
+{
+	"type" "gradient"
+	"name" "background_gradient"
+	"subtexture" "s_background_gradient"
+	"alignment" "align.vertical"
+	"colors" "color.dark_grey / color.black / color.black / color.black / color.black / color.black / color.black / color.black / color.black / color.black / color.dark_grey"
+}

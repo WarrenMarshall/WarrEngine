@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "endless_adventure", "endles
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "work_log_tracker", "work_log_tracker\work_log_tracker.vcxproj", "{B51D7FF4-A79B-4AA9-B82C-9A7508B6CB22}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "endless_breakout", "endless_breakout\endless_breakout.vcxproj", "{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -52,6 +54,18 @@ Global
 		{B51D7FF4-A79B-4AA9-B82C-9A7508B6CB22}.Release|x64.Build.0 = Release|x64
 		{B51D7FF4-A79B-4AA9-B82C-9A7508B6CB22}.Release|x86.ActiveCfg = Release|Win32
 		{B51D7FF4-A79B-4AA9-B82C-9A7508B6CB22}.Release|x86.Build.0 = Release|Win32
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Debug|x64.ActiveCfg = Debug|x64
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Debug|x64.Build.0 = Debug|x64
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Debug|x86.ActiveCfg = Debug|Win32
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Debug|x86.Build.0 = Debug|Win32
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.DRelease|x64.ActiveCfg = Release|x64
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.DRelease|x64.Build.0 = Release|x64
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.DRelease|x86.ActiveCfg = Release|Win32
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.DRelease|x86.Build.0 = Release|Win32
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Release|x64.ActiveCfg = Release|x64
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Release|x64.Build.0 = Release|x64
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Release|x86.ActiveCfg = Release|Win32
+		{43E48B83-E1DA-4B36-B85C-59DDF53E4B38}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
