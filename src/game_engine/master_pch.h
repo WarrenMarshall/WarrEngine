@@ -52,6 +52,8 @@
 	// cute headers
 	// (https://github.com/RandyGaul/cute_headers)
 	#include "cute_c2.h"
+	#include "cute_sound.h"
+	#include "cute_sound_pitch_plugin.h"
 
 	// sound and music library
 	#include <bass.h>

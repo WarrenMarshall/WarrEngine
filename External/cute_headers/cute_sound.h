@@ -783,6 +783,8 @@ const char* cs_error_reason;
 
 static void* cs_read_file_to_memory(const char* path, int* size, void* mem_ctx)
 {
+	// warren - this wasn't compiling but we load from memory anyway, so I just commented it out
+	/*
 	(void)mem_ctx;
 	void* data = 0;
 	FILE* fp = fopen(path, "rb");
@@ -800,6 +802,8 @@ static void* cs_read_file_to_memory(const char* path, int* size, void* mem_ctx)
 
 	if (size) *size = sizeNum;
 	return data;
+	*/
+	return nullptr;
 }
 
 static int cs_four_cc(const char* CC, void* memory)
