@@ -62,7 +62,7 @@ float w_parser::float_from_str( const std::string_view str )
 	// Otherwise, parse the string...
 	return static_cast<float>( strtof( str.data(), ( char** ) nullptr ) );
 }
-	
+
 w_color w_parser::color_from_str( const std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
@@ -161,16 +161,15 @@ w_vec3 w_parser::vec3_from_str( const std::string_view str )
 
 std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, const std::string_view str )
 {
-	w_tokenizer tok( str, ',' );
-
-	std::unique_ptr<w_timeline> timeline = std::make_unique<w_timeline>( type );
-
 	int comma_count = static_cast<int>( std::count( str.begin(), str.end(), ',' ) );
-
 	if( ( comma_count % 2 ) == 0 )
 		log_error( fmt::format( "{} : '{}' has an odd number of arguments - needs to be even", __FUNCTION__, str ) );
 
+	std::unique_ptr<w_timeline> timeline = std::make_unique<w_timeline>( type );
 	timeline->kf_clear();
+
+	w_tokenizer tok( str, ',' );
+
 	for( int x = 0 ; x < comma_count ; x += 2 )
 	{
 		w_keyframe kf;

@@ -19,8 +19,6 @@ struct w_engine : i_listener
 	bool is_running = false;
 	bool is_paused = false;
 
-	static constexpr int num_asset_def_passes = 3;
-
 	virtual ~w_engine() = default;
 
 	void init();
@@ -30,6 +28,7 @@ struct w_engine : i_listener
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
+	void cache_config_files( const std::string_view folder_name );
 	void precache_asset_resources();
 	template<typename T> [[nodiscard]] T* get_asset( const std::string_view name, bool silent = false )
 	{
@@ -38,7 +37,7 @@ struct w_engine : i_listener
 
 	std::map<std::string, std::string> _symbol_to_value;
 	bool is_symbol_in_map( const std::string_view str );
-	std::string find_val_from_symbol( const std::string_view str );
+	std::string find_string_from_symbol( const std::string_view str );
 	int find_int_from_symbol( const std::string_view str, int def_value = 0 );
 	float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
 	w_color find_color_from_symbol( const std::string_view str, w_color def_value = w_color::white );

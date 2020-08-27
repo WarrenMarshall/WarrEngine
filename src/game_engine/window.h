@@ -6,6 +6,8 @@
 
 struct w_window
 {
+	w_color clear_color = w_color::dark_grey;
+	w_color gutter_color = w_color::light_grey;
 	bool is_fullscreen = false;
 	w_rect save_window_rect = w_rect( 0, 0, 0, 0 );
 

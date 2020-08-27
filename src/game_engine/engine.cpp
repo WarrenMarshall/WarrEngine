@@ -10,30 +10,37 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 	{
 
 #if defined(FINALRELEASE)
+		// in final release, we don't want to bother the user with
+		// the visual clutter of the console window
 		ShowWindow( GetConsoleWindow(), SW_HIDE );
 #endif
 
-		// get the log file running so we can immediately start writing into it
-		logfile = std::make_unique<w_logfile>();
-		logfile->init( game_name );
+		{	// LOG FILE
 
-		// create the game engine
-		engine = std::make_unique<w_engine>();
-
-		{	// starting
-			logfile->time_stamp( "Started" );
+			// get the log file running so we can immediately start writing into it
+			logfile = std::make_unique<w_logfile>();
+			logfile->init( game_name );
 		}
 
-		{	// engine
+		{ // ENGINE
+
+			engine = std::make_unique<w_engine>();
+		}
+
+		logfile->time_stamp( "Started" );
+
+		{	// ENGINE
 			log_msg( "Initializing engine" );
 			engine->init();
 		}
 
 		// #todo : write a proper command line parsing class
-		{	// command line parsing
+		{	// COMMAND LINE
+
 		}
 
-		{	// window
+		{	// WINDOW
+
 			log_msg( "Creating window" );
 			if( !engine->window->init() )
 			{
@@ -41,17 +48,20 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			}
 		}
 
-		{	// opengl
+		{	// OPENGL
+
 			log_msg( "Initializing OpenGL" );
 			OPENGL->init();
 		}
 
-		{	// renderer
+		{	// RENDERER
+
 			log_msg( "Initializing renderer" );
 			RENDER->init();
 		}
 
-		{	// audio
+		{	// AUDIO
+
 			log_msg( "Initializing BASS audio" );
 			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
 			{
@@ -59,9 +69,10 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			}
 		}
 
-		{
+		{	// ASSET DEFINITION FILES AND PRECACHING
+
 			// read asset definitions and cache them
-			log_msg( "Caching asset definition files (*.asset_def)..." );
+			log_msg( "Caching asset definitions (*.asset_def)..." );
 			engine->cache_asset_definition_files( "game_engine_data" );
 			engine->cache_asset_definition_files( fmt::format( "{}_data", game_name ) );
 
@@ -69,10 +80,19 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			// into the asset cache
 			log_msg( "Precaching resources from definition files..." );
 			engine->precache_asset_resources();
+		}
 
-			// now that the preproc files are loaded, parse out the fields specific
-			// to the window and apply them as needed.
+		{	// CONFIG FILES
 
+			w_keyvalues kv;
+			kv.set( "monster", "ogre" );
+			kv.set( "health", "250" );
+			kv.set( "monster", "zombie" );
+
+			log_msg( "Caching configuration (*.ini)..." );
+			engine->cache_config_files( "game_engine_data" );
+#if 0
+			engine->cache_asset_definition_files( fmt::format( "{}_data", game_name ) );
 			v_window_w = engine->find_float_from_symbol( "v_window_w", 100 );
 			v_window_h = engine->find_float_from_symbol( "v_window_h", 100 );
 
@@ -83,41 +103,44 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 									  100,
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
-			glfwSwapInterval( bool( engine->find_val_from_symbol( "v_sync" ) == "true" ) );
-			engine->window->set_title( engine->find_val_from_symbol( "app_title" ) );
-			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, bool( engine->find_val_from_symbol( "always_on_top" ) == "true" ) );
+			glfwSwapInterval( bool( engine->find_string_from_symbol( "v_sync" ) == "true" ) );
+			engine->window->set_title( engine->find_string_from_symbol( "app_title" ) );
+			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, bool( engine->find_string_from_symbol( "always_on_top" ) == "true" ) );
+
+			engine->window->clear_color = w_parser::color_from_str( engine->find_string_from_symbol( "window_clear_color" ) );
+			engine->window->gutter_color = engine->find_color_from_symbol( "window_gutter_color", w_color::light_grey );
+#endif
 		}
 
-		// game
+		{ // GAME
 
-		log_msg( "Initializing game" );
-		game = custom_game;
-		game->init();
-		game->new_game();
+			log_msg( "Initializing game" );
+			game = custom_game;
+			game->init();
+			game->new_game();
+		}
 
-		// input initialization
+		{ // INPUT
 
-		log_msg( "Initializing input" );
-		engine->input->init();
+			log_msg( "Initializing input" );
+			engine->input->init();
+		}
 
-		engine->is_running = true;
+ 		engine->is_running = true;
 		engine->time->init();
 
-		// initialize random internals
-		{
-			// used for wireframe drawing
-			engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
-			engine->white_wire->tex->gl_prim_type = GL_LINES;
+		// used for wireframe drawing
+		engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
+		engine->white_wire->tex->gl_prim_type = GL_LINES;
 
-			// used for solid drawing
-			engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
+		// used for solid drawing
+		engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
 
-			engine->ui->init();
-			engine->ui->theme->init();
+		engine->ui->init();
+		engine->ui->theme->init();
 
-			// using a custom mouse cursor, so hide the system mouse
-			engine->window->set_mouse_mode( mouse_mode::hidden );
-		}
+		// using a custom mouse cursor, so hide the system mouse
+		engine->window->set_mouse_mode( mouse_mode::hidden );
 	}
 	catch( std::exception& e )
 	{
@@ -239,7 +262,7 @@ bool w_engine::is_symbol_in_map( const std::string_view symbol )
 /*
 	returns a string containing the value stored for 'symbol'
 */
-std::string w_engine::find_val_from_symbol( std::string_view symbol )
+std::string w_engine::find_string_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
@@ -256,7 +279,7 @@ std::string w_engine::find_val_from_symbol( std::string_view symbol )
 */
 int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string sval = find_string_from_symbol( symbol );
 
 	if( sval == str_not_found )
 	{
@@ -268,7 +291,7 @@ int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 
 float w_engine::find_float_from_symbol( std::string_view symbol, float def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string sval = find_string_from_symbol( symbol );
 
 	if( sval == str_not_found )
 	{
@@ -280,7 +303,7 @@ float w_engine::find_float_from_symbol( std::string_view symbol, float def_value
 
 w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string sval = find_string_from_symbol( symbol );
 
 	if( sval == str_not_found )
 	{
@@ -292,7 +315,7 @@ w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_v
 
 w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string sval = find_string_from_symbol( symbol );
 
 	if( sval == str_not_found )
 	{
@@ -304,7 +327,7 @@ w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_v
 
 w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string sval = find_string_from_symbol( symbol );
 
 	if( sval == str_not_found )
 	{
@@ -316,7 +339,7 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_valu
 
 w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_value )
 {
-	std::string sval = find_val_from_symbol( symbol );
+	std::string sval = find_string_from_symbol( symbol );
 
 	if( sval == str_not_found )
 	{
@@ -448,6 +471,17 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 	}
 }
 
+void w_engine::cache_config_files( const std::string_view folder_name )
+{
+	std::vector<std::string> filenames;
+	engine->fs->scan_folder_for_ext( filenames, fmt::format( "{}", folder_name ), ".ini" );
+
+	for( const auto& iter : filenames )
+	{
+		engine->asset_definition_file_cache->add( iter );
+	}
+}
+
 /*
 	iterate through all the cached asset_definition_files and look
 	for any asset_definitions that have assets we need to precache
@@ -456,7 +490,7 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 */
 void w_engine::precache_asset_resources()
 {
-	for( int pass = 0; pass < w_engine::num_asset_def_passes; ++pass )
+	for( int pass = 0; pass < num_asset_def_passes; ++pass )
 	{
 		for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
 		{

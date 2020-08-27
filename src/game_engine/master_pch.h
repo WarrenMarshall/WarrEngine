@@ -12,7 +12,7 @@
 	#include <cassert>
 	#include <cstdio>
 	#include <cstdlib>
-	#include <iostream> 
+	#include <iostream>
 	#include <ctime>
 	#include <typeinfo>
 	#include <cmath>
@@ -109,6 +109,7 @@
 
 // ----------------------------------------------------------------------------
 
+constexpr int num_asset_def_passes = 3;
 constexpr float W_PI = 3.14159265358979323846f;
 
 // ----------------------------------------------------------------------------
@@ -140,7 +141,7 @@ constexpr T w_clamp( T v, T min, T max )
 }
 
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
-//#define fequals(a,b) 
+//#define fequals(a,b)
 
 constexpr bool fequals( float a, float b )
 {

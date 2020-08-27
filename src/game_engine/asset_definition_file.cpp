@@ -128,7 +128,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					{
 						val = tok.get_next_token();
 						if( val == str_not_found )
+						{
 							break;
+						}
 
 						color_values.emplace_back( val );
 					}
@@ -138,7 +140,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						val = iter;
 
 						if( engine->is_symbol_in_map( val ) )
-							val = engine->find_val_from_symbol( val );
+						{
+							val = engine->find_string_from_symbol( val );
+						}
 
 						auto clr = w_color( val );
 						asset_ptr->colors.push_back( clr.r );
@@ -493,7 +497,7 @@ bool w_asset_definition_file::create_internals()
 
 			if( key.length() && value.length() )
 			{
-				current_asset_definition->add( key, value );
+				current_asset_definition->set( key, value );
 			}
 		}
 	}

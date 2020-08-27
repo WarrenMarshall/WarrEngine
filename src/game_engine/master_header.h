@@ -26,6 +26,7 @@ extern float v_window_h;
 #include "tween.h"
 #include "timer.h"
 #include "keyvalues.h"
+#include "config.h"
 
 #include "i_transform.h"
 #include "i_listener.h"
