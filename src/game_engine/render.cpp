@@ -345,7 +345,7 @@ void w_render::begin_frame( float frame_interpolate_pct )
 
 	this->frame_interpolate_pct = frame_interpolate_pct;
 
-	glClearColor( engine->window->clear_color.r, engine->window->clear_color.g, engine->window->clear_color.b, engine->window->clear_color.a );
+	glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	// reset all render buffers

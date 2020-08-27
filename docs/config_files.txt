@@ -13,3 +13,8 @@
 "always_on_top" "true/false"
 	- sets whether the game window remains on top of all other windows or not
 ---
+"v_window_clear_color" "color"
+	- color to clear the virtual viewport with
+---
+"window_clear_color" "color"
+	- color to clear the entire window with (this ends up being the client area outside the virtual window area)

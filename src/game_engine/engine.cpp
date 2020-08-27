@@ -84,17 +84,14 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 		{	// CONFIG FILES
 
-			w_keyvalues kv;
-			kv.set( "monster", "ogre" );
-			kv.set( "health", "250" );
-			kv.set( "monster", "zombie" );
-
 			log_msg( "Caching configuration (*.ini)..." );
-			engine->cache_config_files( "game_engine_data" );
-#if 0
-			engine->cache_asset_definition_files( fmt::format( "{}_data", game_name ) );
-			v_window_w = engine->find_float_from_symbol( "v_window_w", 100 );
-			v_window_h = engine->find_float_from_symbol( "v_window_h", 100 );
+			engine->parse_config_files( "game_engine_data" );
+			engine->parse_config_files( fmt::format( "{}_data", game_name ) );
+		}
+
+		{ // APPLY CONFIG SETTINGS
+			v_window_w = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_w", "100" ) );
+			v_window_h = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_h", "100" ) );
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
@@ -103,13 +100,11 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 									  100,
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
-			glfwSwapInterval( bool( engine->find_string_from_symbol( "v_sync" ) == "true" ) );
-			engine->window->set_title( engine->find_string_from_symbol( "app_title" ) );
-			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, bool( engine->find_string_from_symbol( "always_on_top" ) == "true" ) );
-
-			engine->window->clear_color = w_parser::color_from_str( engine->find_string_from_symbol( "window_clear_color" ) );
-			engine->window->gutter_color = engine->find_color_from_symbol( "window_gutter_color", w_color::light_grey );
-#endif
+			glfwSwapInterval( w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) ) );
+			engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
+			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
+			engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
+			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 		}
 
 		{ // GAME
@@ -371,6 +366,7 @@ void w_engine::init()
 	fs = std::make_unique<w_file_system>();
 	shader = std::make_unique<w_shader>();
 	opengl = std::make_unique<w_opengl>();
+	config_vars = std::make_unique<w_keyvalues>();
 
 	input->add_listener( this );
 	input->add_listener( layer_mgr.get() );
@@ -471,14 +467,37 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 	}
 }
 
-void w_engine::cache_config_files( const std::string_view folder_name )
+void w_engine::parse_config_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
 	engine->fs->scan_folder_for_ext( filenames, fmt::format( "{}", folder_name ), ".ini" );
 
 	for( const auto& iter : filenames )
 	{
-		engine->asset_definition_file_cache->add( iter );
+		engine->parse_config_file( iter );
+	}
+}
+
+void w_engine::parse_config_file( std::string_view filename )
+{
+	auto file = engine->fs->load_text_file_into_memory( filename );
+
+	for( const auto& line : *( file.get()->lines.get() ) )
+	{
+		if( line.starts_with( "\"" ) )
+		{
+			w_tokenizer tok_kv( line, '\"' );
+
+			tok_kv.get_next_token();
+			std::string_view key = tok_kv.get_next_token();
+			tok_kv.get_next_token();
+			std::string_view value = tok_kv.get_next_token();
+
+			if( key.length() && value.length() )
+			{
+				config_vars->set( key, value );
+			}
+		}
 	}
 }
 

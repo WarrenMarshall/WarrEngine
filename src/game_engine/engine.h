@@ -28,12 +28,13 @@ struct w_engine : i_listener
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
-	void cache_config_files( const std::string_view folder_name );
 	void precache_asset_resources();
 	template<typename T> [[nodiscard]] T* get_asset( const std::string_view name, bool silent = false )
 	{
 		return static_cast<T*>( asset_cache->find( name, silent ) );
 	}
+	void parse_config_files( const std::string_view folder_name );
+	void parse_config_file( std::string_view filename );
 
 	std::map<std::string, std::string> _symbol_to_value;
 	bool is_symbol_in_map( const std::string_view str );
@@ -57,6 +58,7 @@ struct w_engine : i_listener
 	std::unique_ptr<w_file_system> fs = nullptr;
 	std::unique_ptr<w_shader> shader = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
+	std::unique_ptr<w_keyvalues> config_vars = nullptr;
 
 	void on_listener_event_received( e_event_id event, void* object ) override;
 };

@@ -95,6 +95,10 @@ void w_layer_mgr::draw()
 
 	RENDER->begin()->push_depth( zdepth_layers );
 
+	RENDER
+		->push_rgb( engine->window->v_window_clear_color )
+		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
+
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{
 		// Only UI elements on the topmost layer respond to user input

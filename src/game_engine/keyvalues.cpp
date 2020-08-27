@@ -21,7 +21,7 @@ std::string_view w_keyvalues::find_value( const std::string_view key ) const
 }
 
 // same as "find_values", but it isn't fatal if the key doesn't exist
-std::string_view w_keyvalues::find_value_opt( const std::string_view key ) const
+std::string_view w_keyvalues::find_value_opt( const std::string_view key, const std::string_view default_value ) const
 {
 	try
 	{
@@ -30,16 +30,12 @@ std::string_view w_keyvalues::find_value_opt( const std::string_view key ) const
 	catch( const std::out_of_range& oor )
 	{
 		(void) oor;
-		return "";
+		return default_value;
 	}
 }
 
 void w_keyvalues::set( const std::string_view key, const std::string_view value )
 {
-	if( does_key_exist( key ) )
-	{
-		kv.erase( std::string( key ) );
-	}
-
+	kv.erase( std::string( key ) );
 	kv.insert( std::make_pair( key, value ) );
 }
