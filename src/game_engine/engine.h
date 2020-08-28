@@ -30,7 +30,7 @@ struct w_engine : i_listener
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
-	void precache_asset_resources( std::string_view game_name );
+	void precache_asset_resources( int pass, std::string_view game_name );
 	template<typename T> [[nodiscard]] T* get_asset( const std::string_view name, bool silent = false )
 	{
 		return static_cast<T*>( asset_cache->find( name, silent ) );

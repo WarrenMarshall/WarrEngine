@@ -85,10 +85,27 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			engine->cache_asset_definition_files( "game_engine_data" );
 			engine->cache_asset_definition_files( fmt::format( "{}_data", game_name ) );
 
-			// look through the cached asset definitions and load any assets required
-			// into the asset cache
+			// do the preprocess pass first so the symbols are in memory
 			log_msg( "Precaching resources from definition files..." );
-			engine->precache_asset_resources( game_name );
+			engine->precache_asset_resources( 0, game_name );
+
+			// parse INI files after the preprocess pass so they can
+			// use preprocessor symbols
+			log_msg( "Caching configuration (*.ini)..." );
+			engine->parse_config_files( "game_engine_data" );
+			engine->parse_config_files( fmt::format( "{}_data", game_name ) );
+
+			// some settings in the INI file need to be loaded into the symbols
+			// table so the remaining asset definitions can see them
+
+			engine->_symbol_to_value[ "v_window_w" ] = engine->config_vars->find_value_opt( "v_window_w", "100" );
+			engine->_symbol_to_value[ "v_window_h" ] = engine->config_vars->find_value_opt( "v_window_h", "100" );
+
+			// precache the rest of the assets in the remaining passes
+			for( int pass = 1; pass < num_asset_def_passes; ++pass )
+			{
+				engine->precache_asset_resources( pass, game_name );
+			}
 		}
 
 		{ // APPLY CONFIG SETTINGS
@@ -509,28 +526,14 @@ void w_engine::parse_config_file( std::string_view filename )
 
 	things like texture files, sound files, etc.
 */
-void w_engine::precache_asset_resources( std::string_view game_name )
+void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 {
-	for( int pass = 0; pass < num_asset_def_passes; ++pass )
+	for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
 	{
-		if( pass == 1 )
-		{
-			{	// CONFIG FILES
-
-				log_msg( "Caching configuration (*.ini)..." );
-				engine->parse_config_files( "game_engine_data" );
-				engine->parse_config_files( fmt::format( "{}_data", game_name ) );
-			}
-
-		}
-
-		for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
-		{
-			asset_definition_file->precache_asset_resources( pass );
-		}
+		asset_definition_file->precache_asset_resources( pass );
 	}
 
-	log_msg( fmt::format( "{} : {} assets precached", __FUNCTION__, s_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) ) );
+	log_msg( fmt::format( "{} : pass: {} / {} assets precached", __FUNCTION__, pass, s_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) ) );
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )
