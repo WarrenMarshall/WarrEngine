@@ -78,12 +78,24 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			}
 		}
 
-		{	// ASSET DEFINITION FILES AND PRECACHING
+		{	// "ASSET DEFINITION / INI" FILES AND PRECACHING
 
 			// read asset definitions and cache them
 			log_msg( "Caching asset definitions (*.asset_def)..." );
 			engine->cache_asset_definition_files( "game_engine_data" );
 			engine->cache_asset_definition_files( fmt::format( "{}_data", game_name ) );
+
+			// this feels like an odd dance, but the idea is that we:
+			//
+			// 1. parse the asset_def files looking for preprocessor symbols (pass 0)
+			// 2. parse the INI files
+			// 3. parse the asset_def files again, for the rest of the passes (pass 1+)
+			//
+			// this ordering is important because step 2 may want to use symbols
+			// like "true" or "false" in the INI files.
+			//
+			// by the time we get to step 3, we have all the symbols from the preproc
+			// and the INI files loaded, and the assets can use any symbols they please.
 
 			// do the preprocess pass first so the symbols are in memory
 			log_msg( "Precaching resources from definition files..." );
@@ -95,11 +107,13 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			engine->parse_config_files( "game_engine_data" );
 			engine->parse_config_files( fmt::format( "{}_data", game_name ) );
 
-			// some settings in the INI file need to be loaded into the symbols
-			// table so the remaining asset definitions can see them
+			// put the k/v pairs from the INI files into the global symbol
+			// table so they can be referenced by assets in the asset_def files
 
-			engine->_symbol_to_value[ "v_window_w" ] = engine->config_vars->find_value_opt( "v_window_w", "100" );
-			engine->_symbol_to_value[ "v_window_h" ] = engine->config_vars->find_value_opt( "v_window_h", "100" );
+			for( const auto& [key, value] : engine->config_vars->kv )
+			{
+				engine->_symbol_to_value[ key ] = value;
+			}
 
 			// precache the rest of the assets in the remaining passes
 			for( int pass = 1; pass < num_asset_def_passes; ++pass )
@@ -183,8 +197,8 @@ void w_engine::deinit_game_engine()
 	glfwTerminate();
 
 	log_msg( "Shutting down Audio" );
-	cs_stop_all_sounds( engine->audio_context );
-	cs_shutdown_context( engine->audio_context );
+	//cs_stop_all_sounds( engine->audio_context );
+	//cs_shutdown_context( engine->audio_context );
 	engine->audio_context = nullptr;
 
 	log_msg( "Shutting down input" );
