@@ -189,8 +189,7 @@ struct a_9slice_def : i_asset
 
 struct a_sound : i_asset
 {
-	int snd = -1;
-	int channel = -1;
+	cs_loaded_sound_t snd;
 
 	~a_sound() override;
 
@@ -203,8 +202,8 @@ struct a_sound : i_asset
 
 struct a_music : i_asset
 {
-	int mus = -1;
-	int channel = -1;
+	cs_loaded_sound_t mus;
+	cs_playing_sound_t* playing_sound;
 
 	~a_music() override;
 

@@ -61,11 +61,20 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		}
 
 		{	// AUDIO
+			log_msg( "Initializing audio" );
 
-			log_msg( "Initializing BASS audio" );
-			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
+			engine->audio_context = cs_make_context(
+				glfwGetWin32Window( engine->window->window ),
+				44000, 8192, 50, NULL );
+
+			if( !engine->audio_context )
 			{
-				log_warning( "BASS Audio : init failed!" );
+				log_warning( "Audio : init failed!" );
+			}
+			else
+			{
+				cs_spawn_mix_thread( engine->audio_context );
+				cs_thread_sleep_delay( engine->audio_context, 10 );
 			}
 		}
 
@@ -79,14 +88,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			// look through the cached asset definitions and load any assets required
 			// into the asset cache
 			log_msg( "Precaching resources from definition files..." );
-			engine->precache_asset_resources();
-		}
-
-		{	// CONFIG FILES
-
-			log_msg( "Caching configuration (*.ini)..." );
-			engine->parse_config_files( "game_engine_data" );
-			engine->parse_config_files( fmt::format( "{}_data", game_name ) );
+			engine->precache_asset_resources( game_name );
 		}
 
 		{ // APPLY CONFIG SETTINGS
@@ -163,8 +165,10 @@ void w_engine::deinit_game_engine()
 	log_msg( "Shutting down GLFW" );
 	glfwTerminate();
 
-	log_msg( "Shutting down BASS Audio" );
-	BASS_Free();
+	log_msg( "Shutting down Audio" );
+	cs_stop_all_sounds( engine->audio_context );
+	cs_shutdown_context( engine->audio_context );
+	engine->audio_context = nullptr;
 
 	log_msg( "Shutting down input" );
 	engine->input->deinit();
@@ -387,8 +391,7 @@ void w_engine::draw()
 
 	if( is_paused )
 	{
-		/*
-		render
+		RENDER
 			->begin()
 			->push_depth( zdepth_engine );
 
@@ -399,36 +402,35 @@ void w_engine::draw()
 		v2 = w_vec2( v_window_w - 1, v_window_h - 1 );
 		v3 = w_vec2( 0.0f, v_window_h - 1 );
 
-		render->push_rgb( w_color::yellow );
-		render->draw_line( v0, v1 );
-		render->draw_line( v1, v2 );
-		render->draw_line( v2, v3 );
-		render->draw_line( v3, v0 );
+		RENDER->push_rgb( w_color::black );
+		RENDER->draw_line( v0, v1 );
+		RENDER->draw_line( v1, v2 );
+		RENDER->draw_line( v2, v3 );
+		RENDER->draw_line( v3, v0 );
 
 		v0 = w_vec2( 1, 1 );
 		v1 = w_vec2( v_window_w - 2, 1.0f );
 		v2 = w_vec2( v_window_w - 2, v_window_h - 2 );
 		v3 = w_vec2( 1.0f, v_window_h - 2 );
 
-		render->push_rgb( w_color::orange );
-		render->draw_line( v0, v1 );
-		render->draw_line( v1, v2 );
-		render->draw_line( v2, v3 );
-		render->draw_line( v3, v0 );
+		RENDER->push_rgb( w_color::orange );
+		RENDER->draw_line( v0, v1 );
+		RENDER->draw_line( v1, v2 );
+		RENDER->draw_line( v2, v3 );
+		RENDER->draw_line( v3, v0 );
 
 		v0 = w_vec2( 2.0f, 2.0f );
 		v1 = w_vec2( v_window_w - 3, 2.0f );
 		v2 = w_vec2( v_window_w - 3, v_window_h - 3 );
 		v3 = w_vec2( 2.0f, v_window_h - 3 );
 
-		render->push_rgb( w_color::red );
-		render->draw_line( v0, v1 );
-		render->draw_line( v1, v2 );
-		render->draw_line( v2, v3 );
-		render->draw_line( v3, v0 );
+		RENDER->push_rgb( w_color::black );
+		RENDER->draw_line( v0, v1 );
+		RENDER->draw_line( v1, v2 );
+		RENDER->draw_line( v2, v3 );
+		RENDER->draw_line( v3, v0 );
 
-		render->end();
-		*/
+		RENDER->end();
 	}
 }
 
@@ -507,10 +509,21 @@ void w_engine::parse_config_file( std::string_view filename )
 
 	things like texture files, sound files, etc.
 */
-void w_engine::precache_asset_resources()
+void w_engine::precache_asset_resources( std::string_view game_name )
 {
 	for( int pass = 0; pass < num_asset_def_passes; ++pass )
 	{
+		if( pass == 1 )
+		{
+			{	// CONFIG FILES
+
+				log_msg( "Caching configuration (*.ini)..." );
+				engine->parse_config_files( "game_engine_data" );
+				engine->parse_config_files( fmt::format( "{}_data", game_name ) );
+			}
+
+		}
+
 		for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
 		{
 			asset_definition_file->precache_asset_resources( pass );

@@ -43,6 +43,8 @@
 
 	// GLFW makes getting OpenGL up and running a lot easier
 	#include <GLFW/glfw3.h>
+	#define GLFW_EXPOSE_NATIVE_WIN32
+	#include <GLFW/glfw3native.h>
 	#undef APIENTRY
 
 	// image loading
@@ -54,9 +56,6 @@
 	#include "cute_c2.h"
 	#include "cute_sound.h"
 	#include "cute_sound_pitch_plugin.h"
-
-	// sound and music library
-	#include <bass.h>
 
 	// {fmt}
 	#define FMT_HEADER_ONLY

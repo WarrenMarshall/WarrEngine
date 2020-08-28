@@ -12,6 +12,8 @@ struct w_engine : i_listener
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
+	cs_context_t* audio_context;
+
 	a_subtexture* white_wire = nullptr;
 	a_subtexture* white_solid = nullptr;
 	a_font* pixel_font = nullptr;
@@ -28,7 +30,7 @@ struct w_engine : i_listener
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
-	void precache_asset_resources();
+	void precache_asset_resources( std::string_view game_name );
 	template<typename T> [[nodiscard]] T* get_asset( const std::string_view name, bool silent = false )
 	{
 		return static_cast<T*>( asset_cache->find( name, silent ) );

@@ -55,10 +55,10 @@ typedef struct csp_filter_t csp_filter_t;
 #ifndef CUTE_SOUND_IMPLEMENTATION
 #	error Please make sure to place the implementation of cute sound pitch plugin just after the cute sound implementation.
 // Here is an example.
-// 
+//
 // #define CUTE_SOUND_IMPLEMENTATION
 // #include <cute_sound.h>
-// 
+//
 // #define CUTE_SOUND_PITCH_PLUGIN_IMPLEMENTATION
 // #include <cute_sound_pitch_plugin.h>
 #endif
