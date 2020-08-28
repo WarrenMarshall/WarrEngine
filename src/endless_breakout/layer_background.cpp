@@ -13,14 +13,14 @@ void layer_background::push()
 	snd2 = engine->get_asset<a_sound>( "spaceball" );
 	music = engine->get_asset<a_music>( "background_music" );
 
-	game->spawn_entity<e_background_stars>( { v_window_hw, v_window_hh } );
+	spawn_entity<e_background_stars>( { v_window_hw, v_window_hh } );
 
 	music->play();
 }
 
 void layer_background::draw()
 {
-	game->draw_entities();
+	w_layer::draw();
 }
 
 bool layer_background::handle_input_event( const w_input_event* evt )
