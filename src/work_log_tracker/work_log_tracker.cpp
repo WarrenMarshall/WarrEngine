@@ -28,7 +28,6 @@ work_log_tracker_game::work_log_tracker_game()
 
 void work_log_tracker_game::init()
 {
-	UI->set_mouse_visible( true );
 }
 
 void work_log_tracker_game::new_game()

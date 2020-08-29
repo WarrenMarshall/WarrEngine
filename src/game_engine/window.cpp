@@ -136,9 +136,15 @@ void w_window::set_title( const std::string_view title )
 	glfwSetWindowTitle( window, title.data() );
 }
 
-void w_window::set_mouse_mode( e_mouse_mode mode )
+void w_window::set_mouse_mode( e_mouse_mode mouse_mode )
 {
-	switch( mode )
+	this->mouse_mode = mouse_mode;
+	refresh_mouse_mode();
+}
+
+void w_window::refresh_mouse_mode()
+{
+	switch( mouse_mode )
 	{
 		case mouse_mode::normal:
 		{

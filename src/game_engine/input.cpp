@@ -44,6 +44,8 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 		engine->input->mouse_vwindow_pos.x = round( static_cast<float>( vx ) );
 		engine->input->mouse_vwindow_pos.y = round( static_cast<float>( vy ) );
 	}
+
+	//glfwSetCursorPos( engine->window->window, v_window_hw, v_window_hh );
 }
 
 // ----------------------------------------------------------------------------
@@ -54,7 +56,7 @@ void w_input::init()
 
 	XINPUT_STATE state;
 	ZeroMemory(&state, sizeof(XINPUT_STATE));
- 
+
 	if( XInputGetState( 0, &state ) == ERROR_SUCCESS )
 	{
 		// controller is connected on port 1

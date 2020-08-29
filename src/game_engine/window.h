@@ -10,6 +10,7 @@ struct w_window
 	w_color window_clear_color = w_color::light_grey;
 	bool is_fullscreen = false;
 	w_rect save_window_rect = w_rect( 0, 0, 0, 0 );
+	e_mouse_mode mouse_mode = mouse_mode::normal;
 
 	GLFWwindow* window = nullptr;
 	GLFWmonitor* primary_monitor = nullptr;
@@ -27,7 +28,8 @@ struct w_window
 	void deinit();
 	void toggle_fullscreen();
 	void set_title( const std::string_view title );
-	void set_mouse_mode( e_mouse_mode mode );
+	void set_mouse_mode( e_mouse_mode mouse_mode );
+	void refresh_mouse_mode();
 
 	w_rect viewport_pos_sz;
 };

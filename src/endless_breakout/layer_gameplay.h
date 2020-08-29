@@ -2,6 +2,8 @@
 
 struct layer_gameplay : w_layer
 {
+	w_entity* player = nullptr;
+
 	layer_gameplay();
 
 	virtual void push() override;

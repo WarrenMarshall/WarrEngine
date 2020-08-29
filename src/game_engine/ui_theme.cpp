@@ -181,7 +181,7 @@ void w_ui_theme::draw_topmost()
 {
 	// mouse cursor
 
-	if( engine->ui->mouse_is_visible && mouse_cursor != nullptr )
+	if( engine->window->mouse_mode == mouse_mode::hidden && mouse_cursor != nullptr )
 	{
 		RENDER
 			->begin()

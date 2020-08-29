@@ -4,8 +4,6 @@ struct w_ui_mgr
 {
 	std::unique_ptr<w_ui_theme> theme = nullptr;
 
-	bool mouse_is_visible = false;
-
 	// which UI control the mouse is hovering over
 	int hover_id = -1;
 
@@ -13,7 +11,6 @@ struct w_ui_mgr
 	int hot_id = -1;
 
 	void init();
-	void set_mouse_visible( bool visible );
 	void draw_topmost();
 
 	void im_reset();

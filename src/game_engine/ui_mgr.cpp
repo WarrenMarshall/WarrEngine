@@ -7,11 +7,6 @@ void w_ui_mgr::init()
 	theme = std::make_unique<w_ui_theme>();
 }
 
-void w_ui_mgr::set_mouse_visible( bool visible )
-{
-	this->mouse_is_visible = visible;
-}
-
 void w_ui_mgr::draw_topmost()
 {
 	theme->draw_topmost();
@@ -34,7 +29,7 @@ e_im_result w_ui_mgr::im_active( std::string_view label, w_rect rc, w_ui_style& 
 
 	e_im_result result = im_result::none;
 
-	if( mouse_is_visible && owning_layer_is_topmost )
+	if( owning_layer_is_topmost )
 	{
 		result = ui_style.update_im_state( im_automatic_id, rc );
 	}

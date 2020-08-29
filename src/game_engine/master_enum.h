@@ -1,3 +1,4 @@
+
 #pragma once
 
 // ----------------------------------------------------------------------------
@@ -244,6 +245,9 @@ enum_begin( particle_spawn_dir )
 enum_end
 
 // ----------------------------------------------------------------------------
+// normal = no custom cursor image, using OS mouse pointer
+// hidden = custom cursor image, OS mouse pointer is hidden
+// locked = no cursor showing at all, mouse is locked to game window
 
 enum_begin( mouse_mode )
 	normal = 0,

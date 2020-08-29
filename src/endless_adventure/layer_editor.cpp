@@ -3,14 +3,11 @@
 
 void layer_editor::push()
 {
-	UI->set_mouse_visible( true );
-
 	gradient = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
 void layer_editor::pop()
 {
-	UI->set_mouse_visible( false );
 }
 
 void layer_editor::becoming_top_layer()

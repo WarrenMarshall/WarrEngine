@@ -505,7 +505,7 @@ void w_engine::update()
 		asset->update();
 	}
 
-	render->show_stats = input->is_button_down( input_id::key_a);
+	render->show_stats = input->is_button_down( input_id::key_s);
 }
 
 void w_engine::toggle_pause()

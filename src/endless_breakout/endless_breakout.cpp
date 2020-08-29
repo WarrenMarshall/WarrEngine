@@ -7,7 +7,6 @@ endless_breakout_game::endless_breakout_game()
 
 void endless_breakout_game::init()
 {
-	UI->set_mouse_visible( true );
 }
 
 void endless_breakout_game::new_game()
