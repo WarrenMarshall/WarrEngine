@@ -5,7 +5,7 @@ struct e_background_stars : w_entity
 	e_background_stars();
 };
 
-struct e_player_paddle : w_entity
+struct e_player : w_entity
 {
-	e_player_paddle();
+	e_player();
 };

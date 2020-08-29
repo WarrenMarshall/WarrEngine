@@ -6,7 +6,7 @@
 {
 	"type" "texture"
 	"name" "tex_particle_star"
-	"filename" "gfx/puzzlepack/particleStar.png"
+	"filename" "gfx/puzzlepack/particleSmallStar.png"
 }
 
 {
@@ -30,5 +30,5 @@
 	"name" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
-	"colors" "color.black / color.dark_grey / color.dark_teal / color.teal /  color.teal /  color.teal /  color.teal /  color.teal /  color.teal"
+	"colors" "color.black / color.dark_grey / color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal"
 }

@@ -15,6 +15,7 @@ void endless_breakout_game::new_game()
 	w_game::new_game();
 
 	engine->layer_mgr->push( std::make_unique<layer_background>() );
+	engine->layer_mgr->push( std::make_unique<layer_gameplay>() );
 }
 
 void endless_breakout_game::update()

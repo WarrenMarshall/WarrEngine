@@ -11,19 +11,9 @@ struct a_texture : i_asset
 	float w = 0.0f;
 	float h = 0.0f;
 
-	/*
-		this is automatically created when the texture is precached. it's
-		a convenience so you don't have to declare a matching a_subtexture for
-		every a_texture in the asset_def files.
-
-		this is mainly used for things that generate subtextures for
-		themselves like gradients.
-
-		call "get_subtexture" access it.
-	*/
 	a_subtexture* subtex = nullptr;
 
-	~a_texture() override;
+	virtual ~a_texture() override;
 
 	void clean_up_internals() override;
 	bool create_internals() override;
@@ -65,7 +55,7 @@ struct a_subtexture : i_asset
 
 struct a_gradient : a_texture
 {
-	~a_gradient() override;
+	virtual ~a_gradient() override;
 
 	e_align alignment = align::horizontal;
 	std::vector<float> colors;
@@ -86,7 +76,7 @@ struct a_anim_texture : a_texture
 
 	a_anim_texture() = delete;
 	a_anim_texture( e_tween_type tween_type, int frames_per_second );
-	~a_anim_texture() override;
+	virtual ~a_anim_texture() override;
 
 	void clean_up_internals() override;
 	bool create_internals() override;
