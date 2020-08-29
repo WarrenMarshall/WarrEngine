@@ -1,4 +1,5 @@
 
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -27,7 +28,7 @@ void w_layer::update()
 	{
 		MATRIX
 			->push()
-			->translate( entity->pos );
+			->add_transform( entity->pos, entity->angle, entity->scale );
 
 		entity->update();
 
@@ -42,7 +43,7 @@ void w_layer::draw()
 	{
 		MATRIX
 			->push()
-			->translate( entity->pos );
+			->add_transform( entity->pos, entity->angle, entity->scale );
 
 		entity->draw();
 		RENDER->stats.num_entities.inc();

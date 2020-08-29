@@ -10,7 +10,7 @@ void w_entity::update()
 	{
 		MATRIX
 			->push()
-			->translate( component->pos );
+			->add_transform( component->pos, component->angle, component->scale );
 
 		component->update();
 
@@ -25,11 +25,11 @@ void w_entity::draw()
 	{
 		MATRIX
 			->push()
-			->translate( component->pos );
+			->add_transform( component->pos, component->angle, component->scale );
 
 		RENDER->push_depth_nudge();
 		component->draw();
-		
+
 		MATRIX
 			->pop();
 	}
