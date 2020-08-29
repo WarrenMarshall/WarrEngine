@@ -2,7 +2,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_opengl_framebuffer::w_opengl_framebuffer()
+w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float w, float h )
+	: w( w ), h( h )
 {
 	glGenFramebuffers( 1, &fb_id );
 
@@ -10,17 +11,17 @@ w_opengl_framebuffer::w_opengl_framebuffer()
 
 	// color buffer
 
-	std::string tex_name = "tex_frame_buffer";
+	std::string tex_name = "tex_" + base_name + "_frame_buffer";
 
 	tex = static_cast<a_texture*>( engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" ) );
 
-	tex->w = v_window_w;
-	tex->h = v_window_h;
+	tex->w = w;
+	tex->h = h;
 
 	glGenTextures( 1, &tex->id );
 	glBindTexture( GL_TEXTURE_2D, tex->id );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) v_window_w, (int) v_window_h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
@@ -32,7 +33,7 @@ w_opengl_framebuffer::w_opengl_framebuffer()
 
 	glGenRenderbuffers( 1, &rbo );
 	glBindRenderbuffer( GL_RENDERBUFFER, rbo );
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int) v_window_w, (int) v_window_h );
+	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int) w, (int) h );
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 
 	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo );

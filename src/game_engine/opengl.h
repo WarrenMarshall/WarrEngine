@@ -12,7 +12,8 @@
 struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
-	std::unique_ptr<w_opengl_framebuffer> vfb = nullptr;
+	std::unique_ptr<w_opengl_framebuffer> fb_game = nullptr;
+	std::unique_ptr<w_opengl_framebuffer> fb_ui = nullptr;
 
 	void init();
 
@@ -24,7 +25,6 @@ struct w_opengl
 	void clear_texture_bind() const;
 
 	void set_blend( e_opengl_blend blend ) const;
-	void refresh_primitive_sizes() const;
 
 	unsigned fbo;
 };

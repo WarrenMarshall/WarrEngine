@@ -21,13 +21,13 @@
 {
 	"type" "emitter_params"
 	"name" "background_fire_up"
-	"texture_name" "tex_particle_star"
-	"spawner_type" "box,150,4"
+	"texture_name" "tex_fire_particle"
+	"spawner_type" "box,v_window_w,4"
 
 	"s_max_spawn_per_sec" "50"
 	"b_needs_warm_up" "false"
 	"a_dir" "0"
-	"r_scale_spawn" "0.5, 1.25"
+	"r_scale_spawn" "1.5, 1.75"
 	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
 	"r_lifespan" "2000, 6000"
 	"r_velocity_spawn" "15,25"
@@ -40,13 +40,13 @@
 {
 	"type" "emitter_params"
 	"name" "background_fire_down"
-	"texture_name" "tex_particle_star"
-	"spawner_type" "box,150,4"
+	"texture_name" "tex_fire_particle"
+	"spawner_type" "box,v_window_w,4"
 
 	"s_max_spawn_per_sec" "50"
 	"b_needs_warm_up" "false"
 	"a_dir" "180"
-	"r_scale_spawn" "0.5, 1.25"
+	"r_scale_spawn" "1.5, 1.75"
 	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
 	"r_lifespan" "2000, 6000"
 	"r_velocity_spawn" "15,25"

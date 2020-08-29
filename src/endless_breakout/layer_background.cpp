@@ -39,5 +39,9 @@ bool layer_background::handle_input_event( const w_input_event* evt )
 
 void layer_background::draw()
 {
+	RENDER->draw( background_gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+	RENDER
+		->push_rgba( w_color::white )
+		->draw_line( { 0, 0 }, engine->input->mouse_vwindow_pos );
 	w_layer::draw();
 }

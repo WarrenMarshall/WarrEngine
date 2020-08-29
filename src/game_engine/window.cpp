@@ -30,13 +30,11 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 		engine->window->viewport_pos_sz.y = ( height - engine->window->viewport_pos_sz.h ) / 2.0f;
 	}
 
-	OPENGL->refresh_primitive_sizes();
-
 	glViewport(
 		static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
 		static_cast<int>( engine->window->viewport_pos_sz.w ), static_cast<int>( engine->window->viewport_pos_sz.h )
 	);
-}	
+}
 
 void focus_change_callback( GLFWwindow* window, int focused )
 {
@@ -78,7 +76,7 @@ bool w_window::init()
 
 	const char* monitor_name = glfwGetMonitorName( primary_monitor );
 	log_msg( fmt::format( "{} : Using monitor [{} - {}x{}]", __FUNCTION__, monitor_name, vidmode->width, vidmode->height ) );
-	
+
 	w_rect window_pos = compute_max_window_size_for_desktop();
 
 	window = glfwCreateWindow(
@@ -103,8 +101,6 @@ bool w_window::init()
 
 	glfwSetInputMode( window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE );
 	glfwSetInputMode( window, GLFW_STICKY_KEYS, GLFW_TRUE );
-
-	OPENGL->refresh_primitive_sizes();
 
 	return true;
 }

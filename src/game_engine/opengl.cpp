@@ -141,36 +141,3 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 		break;
 	}
 }
-
-// updates the size of opengl primitives based on the ratio
-// between the window size and the virutual screen size
-//
-// this makes it so lines and points look more like they
-// belong in the game world.
-
-void w_opengl::refresh_primitive_sizes() const
-{
-	int w, h;
-	glfwGetWindowSize( engine->window->window, &w, &h );
-
-	// this can happen if the user does something like WIN+D.
-	// this check prevents an opengl crash below when setting line size.
-	if( !w || !h )
-	{
-		return;
-	}
-
-	const float w_ratio = w / v_window_w;
-	const float h_ratio = h / v_window_h;
-
-	if( w_ratio > h_ratio )
-	{
-		glLineWidth( w_ratio );
-		glPointSize( w_ratio );
-	}
-	else
-	{
-		glLineWidth( h_ratio );
-		glPointSize( h_ratio );
-	}
-}

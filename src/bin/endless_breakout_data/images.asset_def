@@ -12,6 +12,13 @@
 
 {
 	"type" "texture"
+	"name" "tex_fire_particle"
+	"subtexture" "fire_particle"
+	"filename" "gfx/fire_particle.png"
+}
+
+{
+	"type" "texture"
 	"name" "tex_blue_diamond"
 	"subtexture" "subtex_blue_diamond"
 	"filename" "gfx/puzzlepack/element_blue_diamond.png"
@@ -26,5 +33,5 @@
 	"name" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
-	"colors" "color.dark_grey / color.black / color.black / color.black / color.black / color.black / color.black / color.black / color.black / color.black / color.dark_grey"
+	"colors" "color.black / color.dark_grey / color.dark_teal / color.teal /  color.teal /  color.teal /  color.teal /  color.teal /  color.teal /  color.dark_teal / color.dark_grey /color.black"
 }

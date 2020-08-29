@@ -123,8 +123,8 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		}
 
 		{ // APPLY CONFIG SETTINGS
-			v_window_w = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_w", "100" ) );
-			v_window_h = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_h", "100" ) );
+			v_window_w = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_w", "320" ) );
+			v_window_h = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_h", "240" ) );
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
@@ -140,8 +140,8 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 		}
 
-		// set up frame buffer
-		engine->opengl->vfb = std::make_unique<w_opengl_framebuffer>();
+		// set up frame buffers
+		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( "game", v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -200,8 +200,8 @@ void w_engine::deinit_game_engine()
 	glfwTerminate();
 
 	log_msg( "Shutting down Audio" );
-	//cs_stop_all_sounds( engine->audio_context );
-	//cs_shutdown_context( engine->audio_context );
+	cs_stop_all_sounds( engine->audio_context );
+	cs_shutdown_context( engine->audio_context );
 	engine->audio_context = nullptr;
 
 	log_msg( "Shutting down input" );
@@ -260,32 +260,33 @@ void w_engine::exec_main_loop()
 			game->update();
 		}
 
-		/*
-			draw everything to the offscreen buffer
-		*/
-
-		engine->opengl->vfb->bind();
-
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction
 		//
 		// it is passed a percentage for easier use : 0.0f-1.0f
+		//
+		float interp_pct = engine->time->fts_accum_ms / w_time::FTS_step_value_ms;
 
-		RENDER->begin_frame( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
+		// draw the scene to a framebuffer, sized to match the virtual viewport
+
+		engine->opengl->fb_game->bind();
+		RENDER->begin_frame( interp_pct );
 		{
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
-			glClearColor( 1.0f, 0.0f, 0.0f, 1.0f );
+			glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 			RENDER->init_projection();
 
 			engine->layer_mgr->draw();
-
 			UI->draw_topmost();
 			engine->draw();
 		}
 		RENDER->end_frame();
-		engine->opengl->vfb->unbind();
+		engine->opengl->fb_game->unbind();
+
+		// reset the viewport to the size of the actual window and draw the
+		// offscreen framebuffer to the actual framebuffer as a scaled quad
 
 		glViewport(
 			static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
@@ -295,7 +296,7 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-		static a_texture* tex = engine->get_asset<a_texture>( "tex_frame_buffer" );
+		static a_texture* tex = engine->get_asset<a_texture>( "tex_game_frame_buffer" );
 
 		RENDER
 			->begin()
@@ -303,7 +304,8 @@ void w_engine::exec_main_loop()
 			->end();
 		RENDER->maybe_draw_master_buffer( nullptr );
 
-		// Swap buffers
+		// we're done, swap the buffers!
+
 		glfwSwapBuffers( engine->window->window );
 	}
 }
