@@ -19,7 +19,7 @@ struct a_texture : i_asset
 		this is mainly used for things that generate subtextures for
 		themselves like gradients.
 
-		call "get_subtexture" on your a_texture to get to it.
+		call "get_subtexture" access it.
 	*/
 	a_subtexture* subtex = nullptr;
 

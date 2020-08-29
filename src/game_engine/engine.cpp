@@ -276,6 +276,14 @@ void w_engine::exec_main_loop()
 			engine->draw();
 		}
 		RENDER->end_frame();
+
+		/*
+			engine->opengl->vfb->bind();
+			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
+			glClearColor( 1.0f, 0.0f, 0.0f, 1.0f );
+			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+			engine->opengl->vfb->unbind();
+		*/
 	}
 }
 

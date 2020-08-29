@@ -200,6 +200,7 @@
     <ClCompile Include="mathutil.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
+    <ClCompile Include="opengl_framebuffer.cpp" />
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="master_pch.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="opengl.h" />
+    <ClInclude Include="opengl_framebuffer.h" />
     <ClInclude Include="parseutil.h" />
     <ClInclude Include="particle_pool.h" />
     <ClInclude Include="particle_spawner.h" />

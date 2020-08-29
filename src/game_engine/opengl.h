@@ -12,8 +12,9 @@
 struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
+	std::unique_ptr<w_opengl_framebuffer> vfb = nullptr;
 
-	void init() const;
+	void init();
 
 	w_matrix* push();
 	w_matrix* push_identity();
@@ -24,4 +25,6 @@ struct w_opengl
 
 	void set_blend( e_opengl_blend blend ) const;
 	void refresh_primitive_sizes() const;
+
+	unsigned fbo;
 };

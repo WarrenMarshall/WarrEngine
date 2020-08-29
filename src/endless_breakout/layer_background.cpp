@@ -18,11 +18,6 @@ void layer_background::push()
 	music->play();
 }
 
-void layer_background::draw()
-{
-	w_layer::draw();
-}
-
 bool layer_background::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_released )
@@ -40,4 +35,9 @@ bool layer_background::handle_input_event( const w_input_event* evt )
 	}
 
 	return false;
+}
+
+void layer_background::draw()
+{
+	w_layer::draw();
 }

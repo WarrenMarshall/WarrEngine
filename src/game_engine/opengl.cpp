@@ -14,7 +14,7 @@ void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, G
 
 // ----------------------------------------------------------------------------
 
-void w_opengl::init() const
+void w_opengl::init()
 {
 	// Init GLEW
 	GLenum err = glewInit();
@@ -76,6 +76,10 @@ void w_opengl::init() const
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );
 	glEnable( GL_POINT_SMOOTH );
+
+	// set up frame buffer
+
+	vfb = std::make_unique<w_opengl_framebuffer>();
 }
 
 // pushes a new matrix on top of the stack.
