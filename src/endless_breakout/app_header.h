@@ -11,3 +11,4 @@
 #include "endless_breakout.h"
 #include "ui_styles.h"
 #include "layer_background.h"
+#include "layer_gameplay.h"

@@ -56,18 +56,23 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 
-					// if the "subtexture" key exists, create a subtexture for this texture
-					// that represents it's entirety.
+					// every texture has to have a subtexture defined for it.
+					//
+					// you may specify the name of this subtexture by including the...
+					// "subtexture" "subtex_name"
+					// ...k/v pair in the texture definition.
+					//
+					// if that k/v pair isn't there, "sub_" will be prepended to
+					// the texture name.
 
-					if( iter_ad->does_key_exist( "subtexture" ) )
-					{
-						auto subtex = static_cast<a_subtexture*>(
-							engine->asset_cache->add( std::make_unique<a_subtexture>( name ),
-													  iter_ad->find_value( "subtexture" ), "" )
-							);
+					std::string subtex_name = std::string( iter_ad->find_value_opt( "subtexture", "sub_" + name ) );
 
-						asset_ptr->subtex = subtex;
-					}
+					auto subtex = static_cast<a_subtexture*>(
+						engine->asset_cache->add( std::make_unique<a_subtexture>( name ),
+												  subtex_name, "" )
+						);
+
+					asset_ptr->subtex = subtex;
 
 					// the "subtextures" k/v is a convenient way to specify a set
 					// of subtextures belonging to a texture. an easy way to break

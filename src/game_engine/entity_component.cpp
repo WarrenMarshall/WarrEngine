@@ -18,7 +18,7 @@ w_entity_component::w_entity_component( w_entity* parent_entity )
 	their owning entities can be safely deleted.
 
 	reasons to return false from here might include:
-	
+
 	- you are emitting particles and need to wait until they are all faded
 	  out before letting yourself get deleted.
 	- you are waiting for a sound effect to finish playing
@@ -106,7 +106,7 @@ void ec_emitter::draw()
 
 	// particles live in world space, so remove any transforms before
 	// drawing the particle pool
-	// 
+	//
 	MATRIX
 		->push()
 		->translate( pos * -1.0f )
