@@ -34,10 +34,13 @@ void w_opengl::init()
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
 	engine->shader->create_and_compile( "simple", "simple" );
+	engine->shader->bind();
 
 	// texture mapping
 	glEnable( GL_TEXTURE_2D );
 
+	// #todo - UPDATE NEEDED - this comment isn't entirely accurate anymore since we break on texture changes now
+	//
 	// depth buffer testing
 	//
 	// NOTE : we have to use a depth buffer because we are rendering in batches.
@@ -76,10 +79,6 @@ void w_opengl::init()
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );
 	glEnable( GL_POINT_SMOOTH );
-
-	// set up frame buffer
-
-	vfb = std::make_unique<w_opengl_framebuffer>();
 }
 
 // pushes a new matrix on top of the stack.

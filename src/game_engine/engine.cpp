@@ -140,6 +140,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 		}
 
+		// set up frame buffer
+		engine->opengl->vfb = std::make_unique<w_opengl_framebuffer>();
+
 		{ // GAME
 
 			log_msg( "Initializing game" );
@@ -258,10 +261,10 @@ void w_engine::exec_main_loop()
 		}
 
 		/*
-			draw everything
+			draw everything to the offscreen buffer
 		*/
 
-		RENDER->init_projection();
+		engine->opengl->vfb->bind();
 
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction
@@ -270,20 +273,38 @@ void w_engine::exec_main_loop()
 
 		RENDER->begin_frame( engine->time->fts_accum_ms / w_time::FTS_step_value_ms );
 		{
+			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
+			glClearColor( 1.0f, 0.0f, 0.0f, 1.0f );
+			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+			RENDER->init_projection();
+
 			engine->layer_mgr->draw();
 
 			UI->draw_topmost();
 			engine->draw();
 		}
 		RENDER->end_frame();
+		engine->opengl->vfb->unbind();
 
-		/*
-			engine->opengl->vfb->bind();
-			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
-			glClearColor( 1.0f, 0.0f, 0.0f, 1.0f );
-			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-			engine->opengl->vfb->unbind();
-		*/
+		glViewport(
+			static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
+			static_cast<int>( engine->window->viewport_pos_sz.w ), static_cast<int>( engine->window->viewport_pos_sz.h )
+		);
+
+		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+		static a_texture* tex = engine->get_asset<a_texture>( "tex_frame_buffer" );
+
+		RENDER
+			->begin()
+			->draw( tex, w_rect( 0, 0 ) )
+			->end();
+		RENDER->maybe_draw_master_buffer( nullptr );
+
+		// Swap buffers
+		glfwSwapBuffers( engine->window->window );
 	}
 }
 

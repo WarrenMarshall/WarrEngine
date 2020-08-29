@@ -10,14 +10,23 @@ w_opengl_framebuffer::w_opengl_framebuffer()
 
 	// color buffer
 
-	glGenTextures( 1, &tex_id );
-	glBindTexture( GL_TEXTURE_2D, tex_id );
+	std::string tex_name = "tex_frame_buffer";
+
+	tex = static_cast<a_texture*>( engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" ) );
+
+	tex->w = v_window_w;
+	tex->h = v_window_h;
+
+	glGenTextures( 1, &tex->id );
+	glBindTexture( GL_TEXTURE_2D, tex->id );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) v_window_w, (int) v_window_h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex_id, 0 );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex->id, 0 );
+
+	tex->subtex = static_cast<a_subtexture*>( engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" ) );
 
 	// depth/stencil buffer
 
@@ -42,9 +51,9 @@ w_opengl_framebuffer::~w_opengl_framebuffer()
 	{
 		glDeleteFramebuffers( 1, &fb_id );
 	}
-	if( tex_id )
+	if( tex->id )
 	{
-		glDeleteTextures( 1, &tex_id );
+		glDeleteTextures( 1, &tex->id );
 	}
 }
 

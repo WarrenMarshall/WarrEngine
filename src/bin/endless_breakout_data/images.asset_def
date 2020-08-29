@@ -10,6 +10,13 @@
 	"filename" "gfx/puzzlepack/particleStar.png"
 }
 
+{
+	"type" "texture"
+	"name" "tex_blue_diamond"
+	"subtexture" "subtex_blue_diamond"
+	"filename" "gfx/puzzlepack/element_blue_diamond.png"
+}
+
 # ---------------------------------------------------------
 # gradients
 # ---------------------------------------------------------

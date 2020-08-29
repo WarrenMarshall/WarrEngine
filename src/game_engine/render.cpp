@@ -345,22 +345,12 @@ void w_render::begin_frame( float frame_interpolate_pct )
 
 	this->frame_interpolate_pct = frame_interpolate_pct;
 
-	glViewport(
-		static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
-		static_cast<int>( engine->window->viewport_pos_sz.w ), static_cast<int>( engine->window->viewport_pos_sz.h )
-	);
-
-	glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
 	// reset all render buffers
 
 	for( const auto& [xxx, asset] : engine->asset_cache->cache )
 	{
 		asset->clear_render_buffer();
 	}
-
-	engine->shader->bind();
 }
 
 /*
@@ -370,6 +360,8 @@ void w_render::end_frame()
 {
 	draw_stats();
 
+	// #todo - is this needed?
+	// the last texture to draw might need to be flushed
 	maybe_draw_master_buffer( nullptr );
 
 	// update stats
@@ -392,9 +384,6 @@ void w_render::end_frame()
 	assert( rs_alpha_stack.length() == 1 );
 	assert( rs_scale_stack.length() == 1 );
 	assert( rs_align_stack.length() == 1 );
-
-	// Swap buffers
-	glfwSwapBuffers( engine->window->window );
 
 	OPENGL->clear_texture_bind();
 	stats.num_frames_rendered.inc();
@@ -669,8 +658,6 @@ void w_render::init_projection() const
 	//
 	// as we get fancier, parts of this may have to move to the start of each rendering frame.
 
-	engine->shader->bind();
-
 	// PROJECTION MATRIX (getting stuff into screen space from camera space)
 
 	glm::mat4 projection = glm::mat4( 1.0f );
@@ -685,8 +672,6 @@ void w_render::init_projection() const
 	glm::mat4 view = glm::mat4( 1.0f );
 	//view = glm::translate( view, glm::vec3( 0, 0, 0.0f ) );
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-
-	engine->shader->unbind();
 }
 
 // call this function to figure out a new value based on the frame interpolation percentage.

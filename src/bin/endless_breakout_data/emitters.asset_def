@@ -8,7 +8,7 @@
 	"s_max_spawn_per_sec" "3"
 	"b_needs_warm_up" "false"
 	"a_dir" "0"
-	"r_scale_spawn" "0.25, 0.75"
+	"r_scale_spawn" "0.75, 1.5"
 	"t_scale" "0.0,0.0, 0.2,1.0, 0.4,0.0, 1.0,0.0"
 	"r_lifespan" "6000, 12000"
 	"r_velocity_spawn" "2,-2"
