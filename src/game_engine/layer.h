@@ -53,4 +53,6 @@ struct w_layer : i_lifecycle
 
 		return new_entity;
 	}
+
+	bool is_topmost_layer();
 };

@@ -2,15 +2,35 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+w_force::w_force( w_vec2 dir, float strength )
+	: dir( dir ), strength( strength )
+{
+}
+
+void w_force::init_to_zero()
+{
+	dir = w_vec2::zero;
+	strength = 0.0f;
+}
+
 // ----------------------------------------------------------------------------
 
 void w_entity::update()
 {
+	cache.forces = w_vec2::zero;
+
+	for( const auto& force : forces )
+	{
+		cache.forces.add( w_vec2::multiply( force->dir, force->strength ) );
+	}
+
+	cache.forces.multiply( engine->time->FTS_step_value_s );
+
 	for( const auto& component : components )
 	{
 		MATRIX
 			->push()
-			->add_transform( component->pos, component->angle, component->scale );
+			->add_transform( component->pos, component->angle_facing, component->scale );
 
 		component->update();
 
@@ -25,7 +45,7 @@ void w_entity::draw()
 	{
 		MATRIX
 			->push()
-			->add_transform( component->pos, component->angle, component->scale );
+			->add_transform( component->pos, component->angle_facing, component->scale );
 
 		RENDER->push_depth_nudge();
 		component->draw();
@@ -39,6 +59,7 @@ void w_entity::draw()
 // is fully spawned.
 //
 // i.e. emitters might need to warm up
+// #todo - is this needed anymore or even the right solution? feels messy
 
 void w_entity::post_spawn()
 {

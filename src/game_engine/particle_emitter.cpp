@@ -90,7 +90,7 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			p->a_dir = parent_component->parent_entity->angle;
+			p->a_dir = parent_component->parent_entity->angle_facing;
 		}
 		break;
 
@@ -99,7 +99,7 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			p->a_dir = parent_component->parent_entity->angle + 180.0f;
+			p->a_dir = parent_component->parent_entity->angle_facing + 180.0f;
 		}
 		break;
 

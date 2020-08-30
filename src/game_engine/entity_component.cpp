@@ -1,4 +1,5 @@
 
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -40,6 +41,8 @@ void w_entity_component::update()
 	{
 		set_life_cycle( lifecycle::dead );
 	}
+
+	pos_interp = w_vec2::zero;
 }
 
 // ----------------------------------------------------------------------------
@@ -63,8 +66,11 @@ void ec_sprite::draw()
 		return;
 	}
 
-	RENDER->draw_sprite( subtex, w_rect( 0, 0 ) );
-	//RENDER->draw_circle( w_rect( 0, 0 ), 16.0f );
+	RENDER
+		->draw_circle( w_vec2( 0, 0 ), 16.0f );
+
+	w_vec2 pos_interp = w_vec2::multiply( parent_entity->cache.forces, RENDER->frame_interpolate_pct );
+	RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -109,8 +115,8 @@ void ec_emitter::draw()
 	//
 	MATRIX
 		->push()
-		->translate( pos * -1.0f )
-		->translate( parent_entity->pos * -1.0f );
+		->translate( w_vec2::multiply( pos, -1.0f ) )
+		->translate( w_vec2::multiply( parent_entity->pos, -1.0f ) );
 
 	emitter->particle_pool->draw();
 

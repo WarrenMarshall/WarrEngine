@@ -28,7 +28,7 @@ void w_layer::update()
 	{
 		MATRIX
 			->push()
-			->add_transform( entity->pos, entity->angle, entity->scale );
+			->add_transform( entity->pos, entity->angle_facing, entity->scale );
 
 		entity->update();
 
@@ -43,7 +43,7 @@ void w_layer::draw()
 	{
 		MATRIX
 			->push()
-			->add_transform( entity->pos, entity->angle, entity->scale );
+			->add_transform( entity->pos, entity->angle_facing, entity->scale );
 
 		entity->draw();
 		RENDER->stats.num_entities.inc();
@@ -51,4 +51,9 @@ void w_layer::draw()
 		MATRIX
 			->pop();
 	}
+}
+
+bool w_layer::is_topmost_layer()
+{
+	return ( engine->layer_mgr->get_top() == this );
 }

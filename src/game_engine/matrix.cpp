@@ -4,7 +4,7 @@
 w_matrix* w_matrix::add_transform( const i_transform& t )
 {
 	translate( t.pos );
-	rotate( t.angle );
+	rotate( t.angle_facing );
 	scale( t.scale );
 
 	return this;

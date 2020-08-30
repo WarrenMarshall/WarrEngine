@@ -3,6 +3,7 @@
 struct w_entity_component : i_lifecycle, i_transform
 {
 	e_component_type type = component_type::invalid;
+	w_vec2 pos_interp;
 
 	// components have pointers to their entity parents for convenience
 	w_entity* parent_entity = nullptr;

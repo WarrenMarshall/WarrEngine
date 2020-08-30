@@ -169,9 +169,6 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 		engine->ui->init();
 		engine->ui->theme->init();
-
-		// using a custom mouse cursor, so hide the system mouse
-		engine->window->set_mouse_mode( mouse_mode::hidden );
 	}
 	catch( std::exception& e )
 	{
@@ -622,30 +619,6 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 					{
 						window->toggle_fullscreen();
 					}
-				}
-				break;
-
-				case input_id::key_f10:
-				{
-					log_msg( " " );
-					log_msg( "-- RENDER STATS -----------------" );
-					log_msg( " " );
-					log_msg( "\tRender Buffers:" );
-
-					//w_render_buffer* rb;
-
-					for( const auto& [xxx, asset] : asset_cache->cache )
-					{
-						//if( asset->render_buffer )
-						//{
-						//	rb = asset->render_buffer.get();
-						//	rb->log_stats( asset.get() );
-						//}
-					}
-
-					log_msg( " " );
-
-					engine->toggle_pause();
 				}
 				break;
 			}

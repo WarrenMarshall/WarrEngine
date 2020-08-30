@@ -360,8 +360,7 @@ void w_render::end_frame()
 {
 	draw_stats();
 
-	// #todo - is this needed?
-	// the last texture to draw might need to be flushed
+	// the last draw needs to be flushed
 	maybe_draw_master_buffer( nullptr );
 
 	// update stats
@@ -551,7 +550,7 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	maybe_draw_master_buffer( engine->white_solid->tex );
+	maybe_draw_master_buffer( engine->white_wire->tex );
 
 	size_t length = rs_color_stack.length();
 	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );

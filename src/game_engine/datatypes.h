@@ -131,12 +131,12 @@ struct w_vec2
 	w_vec2( float x, float y );
 	w_vec2( std::string_view str );
 
-	w_vec2 operator+( const w_vec2& v );
-	w_vec2 operator-( const w_vec2& v );
-	w_vec2 operator=( const w_vec2& v );
-	w_vec2 operator*( const float& f );
+	w_vec2 add( const w_vec2& rhs );
+	w_vec2 multiply( const float rhs );
 
-	static w_vec2 scale( w_vec2 a, float scale );
+	static w_vec2 add( const w_vec2& lhs, const w_vec2& rhs );
+	static w_vec2 subtract( const w_vec2& lhs, const w_vec2& rhs );
+	static w_vec2 multiply( const w_vec2& lhs, const float rhs );
 	static float get_size_squared( w_vec2 a );
 	static float get_size( w_vec2 a );
 	static float get_distance_between( w_vec2 a, w_vec2 b );
@@ -169,11 +169,9 @@ struct w_vec3
 	w_vec3( int x, int y, int z );
 	w_vec3( std::string_view str );
 
-	w_vec3 operator+( const w_vec3& v );
-	w_vec3 operator-( const w_vec3& v );
-	w_vec3 operator=( const w_vec3& v );
-	w_vec3 operator*( const float& f);
-
+	static w_vec3 add( const w_vec3& lhs, const w_vec3& rhs );
+	static w_vec3 subtract( const w_vec3& lhs, const w_vec3& rhs );
+	static w_vec3 multiply( const w_vec3& lhs, const float rhs );
 	static float get_size_squared( w_vec3 a );
 	static float get_size( w_vec3 a );
 	static float get_distance_between( w_vec3 a, w_vec3 b );
