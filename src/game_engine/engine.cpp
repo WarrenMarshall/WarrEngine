@@ -197,8 +197,11 @@ void w_engine::deinit_game_engine()
 	glfwTerminate();
 
 	log_msg( "Shutting down Audio" );
-	cs_stop_all_sounds( engine->audio_context );
-	cs_shutdown_context( engine->audio_context );
+	if( engine->audio_context )
+	{
+		cs_stop_all_sounds( engine->audio_context );
+		cs_shutdown_context( engine->audio_context );
+	}
 	engine->audio_context = nullptr;
 
 	log_msg( "Shutting down input" );
