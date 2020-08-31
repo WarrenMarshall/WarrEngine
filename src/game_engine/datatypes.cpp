@@ -183,6 +183,12 @@ void w_color::scale( w_color& color, float s )
 
 const w_vec2 w_vec2::zero = w_vec2( 0, 0 );
 
+// generates a random point on a unit sphere.
+w_vec2 w_vec2::get_random_unit()
+{
+	return w_vec2( w_random::getf(), w_random::getf() ).normalize();
+}
+
 w_vec2::w_vec2()
 	: x( 0.0f ), y( 0.0f )
 {
@@ -216,6 +222,11 @@ w_vec2 w_vec2::multiply( const float rhs )
 {
 	*this = w_vec2::multiply( *this, rhs );
 	return *this;
+}
+
+w_vec2 w_vec2::normalize()
+{
+	return w_vec2::normalize( *this );
 }
 
 w_vec2 w_vec2::add( const w_vec2& lhs, const w_vec2& rhs )

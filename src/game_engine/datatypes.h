@@ -125,6 +125,7 @@ struct w_vec2
 	};
 
 	static const w_vec2 zero;
+	static w_vec2 get_random_unit();
 
 	w_vec2();
 	w_vec2( int x, int y );
@@ -133,6 +134,7 @@ struct w_vec2
 
 	w_vec2 add( const w_vec2& rhs );
 	w_vec2 multiply( const float rhs );
+	w_vec2 normalize();
 
 	static w_vec2 add( const w_vec2& lhs, const w_vec2& rhs );
 	static w_vec2 subtract( const w_vec2& lhs, const w_vec2& rhs );
