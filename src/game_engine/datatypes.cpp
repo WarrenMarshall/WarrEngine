@@ -137,6 +137,11 @@ w_rect::w_rect( float x, float y, float w, float h )
 {
 }
 
+w_rect::w_rect( w_vec2 top_left, w_vec2 bottom_right )
+	: x( top_left.x ), y( top_left.y ), w( bottom_right.x - top_left.x ), h( bottom_right.y - top_left.y )
+{
+}
+
 // ----------------------------------------------------------------------------
 
 const w_color w_color::white = w_color( 1.0f, 1.0f, 1.0f );

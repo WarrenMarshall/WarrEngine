@@ -13,7 +13,8 @@ void layer_background::push()
 	snd2 = engine->get_asset<a_sound>( "spaceball" );
 	music = engine->get_asset<a_music>( "background_music" );
 
-	spawn_entity<e_background_stars>( { v_window_hw, v_window_hh } );
+	auto e = spawn_entity<w_entity>( { v_window_hw, v_window_hh } );
+	e->add_component<ec_emitter>()->init( "background_stars" );
 
 	//music->play();
 }

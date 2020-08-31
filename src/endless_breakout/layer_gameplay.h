@@ -2,6 +2,7 @@
 
 struct layer_gameplay : w_layer
 {
+	w_entity* walls = nullptr;
 	w_entity* player = nullptr;
 	w_entity* ball = nullptr;
 	bool ball_attached_to_paddle = true;

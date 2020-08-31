@@ -156,12 +156,40 @@ ec_collider::ec_collider( w_entity* parent_entity )
 	type = component_type::collider;
 }
 
-w_entity_component* ec_collider::init()
+w_entity_component* ec_collider::init_as_circle( float radius )
 {
-	return this;
+	coll_type = collider_type::circle;
 
+	circle.radius = radius;
+
+	return this;
+}
+
+w_entity_component* ec_collider::init_as_box( w_vec2 min, w_vec2 max )
+{
+	coll_type = collider_type::box;
+
+	box.min = min;
+	box.max = max;
+
+
+	return this;
 }
 
 void ec_collider::draw()
 {
+	RENDER->push_rgb( w_color::green );
+
+	if( coll_type == collider_type::circle )
+	{
+		RENDER
+			->draw_circle( w_vec2::zero, circle.radius );
+	}
+	else if( coll_type == collider_type::box )
+	{
+		RENDER
+			->draw_rectangle( w_rect( box.min, box.max ) );
+	}
+
+	RENDER->pop_rgb();
 }

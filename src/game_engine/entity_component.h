@@ -69,10 +69,24 @@ struct ec_sound : w_entity_component
 
 struct ec_collider : w_entity_component
 {
+	e_collider_type coll_type = collider_type::invalid;
+
+	union
+	{
+		struct
+		{
+			float radius;
+		} circle;
+		struct
+		{
+			w_vec2 min, max;
+		} box;
+	};
 
 	ec_collider() = delete;
 	ec_collider( w_entity* parent_entity );
 
-	w_entity_component* init();
+	w_entity_component* init_as_circle( float radius );
+	w_entity_component* init_as_box( w_vec2 min, w_vec2 max );
 	void draw() override;
 };
