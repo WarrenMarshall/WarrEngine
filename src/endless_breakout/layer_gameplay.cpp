@@ -7,8 +7,8 @@ layer_gameplay::layer_gameplay()
 
 void layer_gameplay::push()
 {
-	player = spawn_entity<e_player>( { v_window_hw, v_window_h - 8 }, 0.0f, 0.5f );
-	ball = spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.5f );
+	player = spawn_entity<e_player>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
+	ball = spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.75f );
 	ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 200.0f ) );
 
 	engine->window->set_mouse_mode( mouse_mode::locked );

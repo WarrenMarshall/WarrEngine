@@ -1,9 +1,12 @@
 
 --C++--
 
-- window should remember where it last was and what size it had and restore that between sessions
-	- can it?  how?  store the data where?
+--GAME--
 
+- create a collision entity component
+- create collision shapes for entities and have them optionally draw
+	- press 'd' to toggle debug view
+- add collision rails to the sides of the gameplay screen and have the ball react accordingly
 
 --LIFE--
 

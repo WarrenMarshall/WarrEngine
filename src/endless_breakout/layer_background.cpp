@@ -15,7 +15,7 @@ void layer_background::push()
 
 	spawn_entity<e_background_stars>( { v_window_hw, v_window_hh } );
 
-	music->play();
+	//music->play();
 }
 
 bool layer_background::handle_input_event( const w_input_event* evt )
