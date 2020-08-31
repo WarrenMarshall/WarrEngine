@@ -66,9 +66,6 @@ void ec_sprite::draw()
 		return;
 	}
 
-	RENDER
-		->draw_circle( w_vec2( 0, 0 ), 16.0f );
-
 	w_vec2 pos_interp = w_vec2::multiply( parent_entity->cache.forces, RENDER->frame_interpolate_pct );
 	RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
 }
@@ -153,25 +150,18 @@ void ec_emitter::post_spawn()
 
 // ----------------------------------------------------------------------------
 
-ec_sound::ec_sound( w_entity* parent_entity )
+ec_collider::ec_collider( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::sound;
+	type = component_type::collider;
 }
 
-w_entity_component* ec_sound::init( const std::string_view snd_name )
+w_entity_component* ec_collider::init()
 {
-	snd = engine->get_asset<a_sound>( snd_name );
-
 	return this;
 
 }
 
-void ec_sound::draw()
+void ec_collider::draw()
 {
-	if( snd )
-	{
-		snd->play();
-		snd = nullptr;
-	}
 }

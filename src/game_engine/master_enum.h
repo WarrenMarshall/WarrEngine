@@ -234,7 +234,8 @@ enum_begin( component_type )
 	invalid = 0,
 	sprite,
 	emitter,
-	sound
+	sound,
+	collider
 enum_end
 
 // ----------------------------------------------------------------------------

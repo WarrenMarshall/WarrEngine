@@ -64,3 +64,15 @@ struct ec_sound : w_entity_component
 	w_entity_component* init( const std::string_view snd_name );
 	void draw() override;
 };
+
+// ----------------------------------------------------------------------------
+
+struct ec_collider : w_entity_component
+{
+
+	ec_collider() = delete;
+	ec_collider( w_entity* parent_entity );
+
+	w_entity_component* init();
+	void draw() override;
+};

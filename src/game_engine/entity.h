@@ -20,9 +20,10 @@ struct w_entity : i_lifecycle, i_transform
 
 	struct
 	{
-		std::vector<ec_sprite*> sprite;
-		std::vector<ec_emitter*> emitter;
-		std::vector<ec_sound*> sound;
+		std::vector<ec_sprite*> sprites;
+		std::vector<ec_emitter*> emitters;
+		std::vector<ec_sound*> sounds;
+		std::vector<ec_collider*> colliders;
 	} ec;
 
 	std::vector<std::unique_ptr<w_force>> forces;
@@ -42,18 +43,15 @@ struct w_entity : i_lifecycle, i_transform
 	{
 		components.emplace_back( std::make_unique<T>( this ) );
 		T* new_component = static_cast<T*>( components.back().get() );
-		switch( new_component->type )
-		{
-			case component_type::sprite:
-				ec.sprite.push_back( (ec_sprite*)new_component );
-				break;
-			case component_type::emitter:
-				ec.emitter.push_back( (ec_emitter*)new_component );
-				break;
-			case component_type::sound:
-				ec.sound.push_back( (ec_sound*)new_component );
-				break;
-		}
+
+		if( new_component->type == component_type::sprite )
+			ec.sprites.push_back( (ec_sprite*) new_component );
+		else if( new_component->type == component_type::emitter )
+			ec.emitters.push_back( (ec_emitter*) new_component );
+		else if( new_component->type == component_type::sound )
+			ec.sounds.push_back( (ec_sound*) new_component );
+		else if( new_component->type == component_type::collider )
+			ec.colliders.push_back( (ec_collider*) new_component );
 
 		return new_component;
 	}
