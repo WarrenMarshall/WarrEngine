@@ -75,13 +75,13 @@ struct ec_collider : w_entity_component
 	float radius = 0.0f;
 	w_rect box;
 
-	std::variant<c2Circle, c2AABB> collision_object = {};
+	variant_collider_types collision_object = {};
 
 	ec_collider() = delete;
 	ec_collider( w_entity* parent_entity );
 
 	w_entity_component* init_as_circle( float radius );
 	w_entity_component* init_as_box( w_rect box );
-	std::variant<c2Circle, c2AABB> get_collider();
+	variant_collider_types get_collider();
 	void draw() override;
 };

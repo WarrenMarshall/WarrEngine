@@ -176,7 +176,7 @@ w_entity_component* ec_collider::init_as_box( w_rect box )
 	return this;
 }
 
-std::variant<c2Circle,c2AABB> ec_collider::get_collider()
+variant_collider_types ec_collider::get_collider()
 {
 	w_vec2& ending_pos = parent_entity->physics_cache.ending_pos;
 
@@ -185,8 +185,11 @@ std::variant<c2Circle,c2AABB> ec_collider::get_collider()
 		case C2_TYPE_CIRCLE:
 			return c2Circle( { { ending_pos.x, ending_pos.y }, radius } );
 
+		case C2_TYPE_CAPSULE:
+			return c2Capsule( { {pos.x, pos.y }, { ending_pos.x, ending_pos.y }, radius } );
+
 		case C2_TYPE_AABB:
-			return (c2AABB) box;// w_rect( { ending_pos.x + box.x, ending_pos.y + box.y, box.w, box.h } );
+			return (c2AABB) w_rect( { ending_pos.x + box.x, ending_pos.y + box.y, box.w, box.h } );
 	}
 
 	assert( false );	// unknown collider type

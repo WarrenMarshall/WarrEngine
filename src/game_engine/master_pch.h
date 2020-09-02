@@ -170,4 +170,8 @@ using w_pos = w_vec2;
 using b_silent = bool;
 using b_draw_button = bool;
 
+// ----------------------------------------------------------------------------
+
+typedef std::variant<c2Circle, c2AABB, c2Capsule> variant_collider_types;
+
 #define str_not_found "n/a"

@@ -6,6 +6,8 @@
 		- so from "color.black / color.white / color.black"
 		  to "color.black:1 / color.white:6 / color.black:1"
 
+- convert code using "str_not_found" to std::optional
+
 - deleting entities is broken, i think
 	- make sure you can delete them cleanly
 	- test with balls hitting the death zone
