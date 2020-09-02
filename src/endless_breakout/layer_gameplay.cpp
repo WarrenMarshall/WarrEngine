@@ -46,7 +46,7 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 		{
 			auto ball = spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.75f );
 			balls.push_back( ball );
-			ball->add_component<ec_collider>()->init_as_circle( 12 );
+			ball->add_component<ec_collider>()->init_as_capsule( 12 );
 			ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 200.0f ) );
 		}
 	}
@@ -58,6 +58,7 @@ void layer_gameplay::update_collisions()
 {
 	w_layer::update_collisions();
 
+#if 1
 	for( auto& ball : balls )
 	{
 		for( auto& ball_collider : ball->ec.colliders )
@@ -78,4 +79,5 @@ void layer_gameplay::update_collisions()
 			}
 		}
 	}
+#endif
 }

@@ -48,7 +48,6 @@ void w_layer::update()
 			->add_transform( entity->pos, entity->angle_facing, entity->scale );
 
 		entity->update();
-		entity->post_update();
 
 		MATRIX
 			->pop();

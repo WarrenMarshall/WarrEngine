@@ -158,8 +158,16 @@ ec_collider::ec_collider( w_entity* parent_entity )
 
 w_entity_component* ec_collider::init_as_circle( float radius )
 {
-	coll_type = collider_type::circle;
 	c2type = C2_TYPE_CIRCLE;
+
+	this->radius = radius;
+
+	return this;
+}
+
+w_entity_component* ec_collider::init_as_capsule( float radius )
+{
+	c2type = C2_TYPE_CAPSULE;
 
 	this->radius = radius;
 
@@ -168,7 +176,6 @@ w_entity_component* ec_collider::init_as_circle( float radius )
 
 w_entity_component* ec_collider::init_as_box( w_rect box )
 {
-	coll_type = collider_type::box;
 	c2type = C2_TYPE_AABB;
 
 	this->box = box;
@@ -178,18 +185,30 @@ w_entity_component* ec_collider::init_as_box( w_rect box )
 
 variant_collider_types ec_collider::get_collider()
 {
-	w_vec2& ending_pos = parent_entity->physics_cache.ending_pos;
-
-	switch( c2type )
+	if( c2type == C2_TYPE_CIRCLE )
 	{
-		case C2_TYPE_CIRCLE:
-			return c2Circle( { { ending_pos.x, ending_pos.y }, radius } );
-
-		case C2_TYPE_CAPSULE:
-			return c2Capsule( { {pos.x, pos.y }, { ending_pos.x, ending_pos.y }, radius } );
-
-		case C2_TYPE_AABB:
-			return (c2AABB) w_rect( { ending_pos.x + box.x, ending_pos.y + box.y, box.w, box.h } );
+		return c2Circle(
+			{
+				{ parent_entity->physics_cache.ending_pos.x, parent_entity->physics_cache.ending_pos.y },
+				radius
+			}
+		);
+	}
+	else if( c2type == C2_TYPE_CAPSULE )
+	{
+		return c2Capsule(
+			{
+				{ pos.x, pos.y },
+				{ parent_entity->physics_cache.ending_pos.x, parent_entity->physics_cache.ending_pos.y },
+				radius
+			}
+		);
+	}
+	else if( c2type == C2_TYPE_AABB )
+	{
+		return (c2AABB) w_rect(
+			{ parent_entity->physics_cache.ending_pos.x + box.x, parent_entity->physics_cache.ending_pos.y + box.y, box.w, box.h }
+		);
 	}
 
 	assert( false );	// unknown collider type
@@ -201,12 +220,17 @@ void ec_collider::draw()
 #if 0
 	RENDER->push_rgb( w_color::green );
 
-	if( coll_type == collider_type::circle )
+	if( c2type == C2_TYPE_CIRCLE )
 	{
 		RENDER
 			->draw_circle( w_vec2::zero, radius );
 	}
-	else if( coll_type == collider_type::box )
+	else if( c2type == C2_TYPE_CAPSULE )
+	{
+		RENDER
+			->draw_circle( w_vec2::zero, radius );
+	}
+	else if( c2type == C2_TYPE_AABB )
 	{
 		RENDER
 			->draw_rectangle( box );

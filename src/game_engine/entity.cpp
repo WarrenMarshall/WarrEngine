@@ -36,11 +36,8 @@ void w_entity::pre_update()
 
 void w_entity::update()
 {
-}
-
-void w_entity::post_update()
-{
 	pos = physics_cache.ending_pos;
+	log_msg( fmt::format( "{},{}", pos.x, pos.y ) );
 
 	for( const auto& component : components )
 	{

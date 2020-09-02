@@ -43,7 +43,6 @@ struct w_entity : i_lifecycle, i_transform
 
 	virtual void pre_update();
 	virtual void update();
-	virtual void post_update();
 	virtual void draw();
 	virtual void post_spawn();
 	virtual void collided_with( w_entity* entity_hit, c2Manifold& manifold ) {}

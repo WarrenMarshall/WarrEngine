@@ -240,14 +240,6 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( collider_type )
-	invalid = 0,
-	circle,
-	box
-enum_end
-
-// ----------------------------------------------------------------------------
-
 enum_begin( particle_spawn_dir )
 	inherit_from_parent = -1,
 	away_from_parent = -2

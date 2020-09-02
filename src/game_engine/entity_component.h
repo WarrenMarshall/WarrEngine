@@ -69,8 +69,6 @@ struct ec_sound : w_entity_component
 
 struct ec_collider : w_entity_component
 {
-	e_collider_type coll_type = collider_type::invalid;
-
 	C2_TYPE c2type = C2_TYPE_NONE;
 	float radius = 0.0f;
 	w_rect box;
@@ -81,6 +79,7 @@ struct ec_collider : w_entity_component
 	ec_collider( w_entity* parent_entity );
 
 	w_entity_component* init_as_circle( float radius );
+	w_entity_component* init_as_capsule( float radius );
 	w_entity_component* init_as_box( w_rect box );
 	variant_collider_types get_collider();
 	void draw() override;
