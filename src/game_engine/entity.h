@@ -1,7 +1,6 @@
 #pragma once
-// ----------------------------------------------------------------------------
 
-// applies delta movements to an entity, stored as "per second" vectors
+// ----------------------------------------------------------------------------
 
 struct w_force
 {
@@ -16,6 +15,8 @@ struct w_force
 
 struct w_entity : i_lifecycle, i_transform
 {
+	// components
+
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
 	struct
@@ -26,18 +27,26 @@ struct w_entity : i_lifecycle, i_transform
 		std::vector<ec_collider*> colliders;
 	} ec;
 
+	// physics
+
+	// all the forces currently acting on the entity
 	std::vector<std::unique_ptr<w_force>> forces;
+
 	struct
 	{
 		w_vec2 forces;
-	} cache;
+		w_vec2 ending_pos = w_vec2::zero;
+	} physics_cache;
 
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	virtual bool can_be_deleted();
 
+	virtual void pre_update();
 	virtual void update();
+	virtual void post_update();
 	virtual void draw();
 	virtual void post_spawn();
+	virtual void collided_with( w_entity* entity_hit, c2Manifold& manifold ) {}
 
 	template<typename T> T* add_component()
 	{

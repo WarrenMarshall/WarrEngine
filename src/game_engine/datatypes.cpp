@@ -191,7 +191,7 @@ const w_vec2 w_vec2::zero = w_vec2( 0, 0 );
 // generates a random point on a unit sphere.
 w_vec2 w_vec2::get_random_unit()
 {
-	return w_vec2( w_random::getf(), w_random::getf() ).normalize();
+	return w_vec2( -1.0f + (w_random::getf() * 2.0f), -1.0f + (w_random::getf() * 2.0f) ).normalize();
 }
 
 w_vec2::w_vec2()

@@ -217,7 +217,7 @@ void w_input::update()
 	update_button_state( input_id::key_k, glfwGetKey( engine->window->window, GLFW_KEY_K ) );
 	update_button_state( input_id::key_l, glfwGetKey( engine->window->window, GLFW_KEY_L ) );
 	update_button_state( input_id::key_m, glfwGetKey( engine->window->window, GLFW_KEY_M ) );
-	update_button_state( input_id::key_n, glfwGetKey( engine->window->window, GLFW_KEY_M ) );
+	update_button_state( input_id::key_n, glfwGetKey( engine->window->window, GLFW_KEY_N ) );
 	update_button_state( input_id::key_o, glfwGetKey( engine->window->window, GLFW_KEY_O ) );
 	update_button_state( input_id::key_p, glfwGetKey( engine->window->window, GLFW_KEY_P ) );
 	update_button_state( input_id::key_q, glfwGetKey( engine->window->window, GLFW_KEY_Q ) );

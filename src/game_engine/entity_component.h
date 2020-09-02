@@ -71,22 +71,17 @@ struct ec_collider : w_entity_component
 {
 	e_collider_type coll_type = collider_type::invalid;
 
-	union
-	{
-		struct
-		{
-			float radius;
-		} circle;
-		struct
-		{
-			w_vec2 min, max;
-		} box;
-	};
+	C2_TYPE c2type = C2_TYPE_NONE;
+	float radius = 0.0f;
+	w_rect box;
+
+	std::variant<c2Circle, c2AABB> collision_object = {};
 
 	ec_collider() = delete;
 	ec_collider( w_entity* parent_entity );
 
 	w_entity_component* init_as_circle( float radius );
-	w_entity_component* init_as_box( w_vec2 min, w_vec2 max );
+	w_entity_component* init_as_box( w_rect box );
+	std::variant<c2Circle, c2AABB> get_collider();
 	void draw() override;
 };

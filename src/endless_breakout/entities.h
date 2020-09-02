@@ -14,4 +14,6 @@ struct e_ball : w_entity
 	e_ball();
 
 	virtual void update() override;
+
+	virtual void collided_with( w_entity* entity_hit, c2Manifold& manifold ) override;
 };

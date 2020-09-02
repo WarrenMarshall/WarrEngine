@@ -35,7 +35,8 @@
 	#include <sstream>
 	#include <iomanip>
 	#include <locale>
-	#include <type_traits>
+	#include <variant>
+	#include <memory>
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC

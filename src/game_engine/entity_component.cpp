@@ -66,7 +66,7 @@ void ec_sprite::draw()
 		return;
 	}
 
-	w_vec2 pos_interp = w_vec2::multiply( parent_entity->cache.forces, RENDER->frame_interpolate_pct );
+	w_vec2 pos_interp = w_vec2::multiply( parent_entity->physics_cache.forces, RENDER->frame_interpolate_pct );
 	RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
 }
 
@@ -159,37 +159,56 @@ ec_collider::ec_collider( w_entity* parent_entity )
 w_entity_component* ec_collider::init_as_circle( float radius )
 {
 	coll_type = collider_type::circle;
+	c2type = C2_TYPE_CIRCLE;
 
-	circle.radius = radius;
+	this->radius = radius;
 
 	return this;
 }
 
-w_entity_component* ec_collider::init_as_box( w_vec2 min, w_vec2 max )
+w_entity_component* ec_collider::init_as_box( w_rect box )
 {
 	coll_type = collider_type::box;
+	c2type = C2_TYPE_AABB;
 
-	box.min = min;
-	box.max = max;
-
+	this->box = box;
 
 	return this;
+}
+
+std::variant<c2Circle,c2AABB> ec_collider::get_collider()
+{
+	w_vec2& ending_pos = parent_entity->physics_cache.ending_pos;
+
+	switch( c2type )
+	{
+		case C2_TYPE_CIRCLE:
+			return c2Circle( { { ending_pos.x, ending_pos.y }, radius } );
+
+		case C2_TYPE_AABB:
+			return (c2AABB) box;// w_rect( { ending_pos.x + box.x, ending_pos.y + box.y, box.w, box.h } );
+	}
+
+	assert( false );	// unknown collider type
+	return {};
 }
 
 void ec_collider::draw()
 {
+#if 0
 	RENDER->push_rgb( w_color::green );
 
 	if( coll_type == collider_type::circle )
 	{
 		RENDER
-			->draw_circle( w_vec2::zero, circle.radius );
+			->draw_circle( w_vec2::zero, radius );
 	}
 	else if( coll_type == collider_type::box )
 	{
 		RENDER
-			->draw_rectangle( w_rect( box.min, box.max ) );
+			->draw_rectangle( box );
 	}
 
 	RENDER->pop_rgb();
+#endif
 }

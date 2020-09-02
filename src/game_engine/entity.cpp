@@ -15,16 +15,32 @@ void w_force::init_to_zero()
 
 // ----------------------------------------------------------------------------
 
-void w_entity::update()
+// precompute whatever physics values the entity will need when doing
+// collision detection.
+
+void w_entity::pre_update()
 {
-	cache.forces = w_vec2::zero;
+	physics_cache.forces = w_vec2::zero;
 
 	for( const auto& force : forces )
 	{
-		cache.forces.add( w_vec2::multiply( force->dir, force->strength ) );
+		physics_cache.forces.add( w_vec2::multiply( force->dir, force->strength ) );
 	}
 
-	cache.forces.multiply( engine->time->FTS_step_value_s );
+	physics_cache.forces.multiply( engine->time->FTS_step_value_s );
+
+	// the position the entity has computed that it WANTS to be in after this update cycle.
+	// this may change once collisions are evaluated.
+	physics_cache.ending_pos = w_vec2::add( pos, physics_cache.forces );
+}
+
+void w_entity::update()
+{
+}
+
+void w_entity::post_update()
+{
+	pos = physics_cache.ending_pos;
 
 	for( const auto& component : components )
 	{
