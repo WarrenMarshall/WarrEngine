@@ -93,11 +93,10 @@ void w_layer_mgr::draw()
 
 	// then draw that layer and every layer above it
 
-	RENDER->begin();
-
-	//RENDER
-		//->push_rgb( engine->window->v_window_clear_color )
-		//->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
+	RENDER
+		->begin()
+		->push_rgb( engine->window->v_window_clear_color )
+		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
 
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{

@@ -136,8 +136,8 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			glfwSwapInterval( w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) ) );
 			engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
 			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
-			engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
-			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
+			engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64/64/64" ) );
+			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32/32/32" ) );
 		}
 
 		// set up frame buffers
