@@ -20,6 +20,9 @@ void w_force::init_to_zero()
 
 void w_entity::pre_update()
 {
+	// accumulate all forces being applied to this entity and compute
+	// a single vector that represents that cumuluative effect.
+
 	physics_cache.forces = w_vec2::zero;
 
 	for( const auto& force : forces )
@@ -36,9 +39,18 @@ void w_entity::pre_update()
 
 void w_entity::update()
 {
-	pos = physics_cache.ending_pos;
-	log_msg( fmt::format( "{},{}", pos.x, pos.y ) );
+	//if( debug )
+	//{
+	//	log_msg( "-----" );
+	//	log_msg( fmt::format( "{}", __FUNCTION__ ) );
+	//	log_msg( fmt::format( "pos        : {:.2f} / {:.2f}", pos.x, pos.y ) );
+	//	log_msg( fmt::format( "ending_pos : {:.2f} / {:.2f}", physics_cache.ending_pos.x, physics_cache.ending_pos.y ) );
+	//}
 
+	// move to the physics based ending position
+	pos = physics_cache.ending_pos;
+
+	// update components
 	for( const auto& component : components )
 	{
 		MATRIX

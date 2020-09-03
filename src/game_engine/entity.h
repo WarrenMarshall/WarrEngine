@@ -15,6 +15,8 @@ struct w_force
 
 struct w_entity : i_lifecycle, i_transform
 {
+	bool debug = false;
+
 	// components
 
 	std::vector<std::unique_ptr<w_entity_component>> components;

@@ -18,12 +18,13 @@ void layer_gameplay::push()
 	//death_zone = spawn_entity<w_entity>();
 	//death_zone->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - 8, v_window_w, v_window_h + 8 ) );
 
-	player = spawn_entity<e_player>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
+	//player = spawn_entity<e_player>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
 
 	auto ball = spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.75f );
 	balls.push_back( ball );
 	ball->add_component<ec_collider>()->init_as_circle( 8 );
 	ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 150.0f ) );
+	ball->debug = true;
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 }
@@ -34,8 +35,8 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::mouse )
 		{
-			player->pos.x += evt->mouse.delta.x;
-			player->pos.x = w_clamp( player->pos.x, 0.0f, v_window_w );
+			//player->pos.x += evt->mouse.delta.x;
+			//player->pos.x = w_clamp( player->pos.x, 0.0f, v_window_w );
 			return true;
 		}
 	}
@@ -44,10 +45,6 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::key_n )
 		{
-			auto ball = spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.75f );
-			balls.push_back( ball );
-			ball->add_component<ec_collider>()->init_as_capsule( 12 );
-			ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 200.0f ) );
 		}
 	}
 

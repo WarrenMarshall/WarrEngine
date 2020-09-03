@@ -29,14 +29,14 @@ void w_layer::update()
 
 	for( const auto& entity : entities )
 	{
-		MATRIX
-			->push()
-			->add_transform( entity->pos, entity->angle_facing, entity->scale );
+		//MATRIX
+		//	->push()
+		//	->add_transform( entity->pos, entity->angle_facing, entity->scale );
 
 		entity->pre_update();
 
-		MATRIX
-			->pop();
+		//MATRIX
+		//	->pop();
 	}
 
 	update_collisions();

@@ -22,4 +22,3 @@
 - once "ending_pos" is computed, change collisions to use capsules
 - see if we can smooth out that bump that happens at slow update rates
 - start thinking about what's next - collision masks and what-not
-

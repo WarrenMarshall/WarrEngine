@@ -18,9 +18,6 @@ e_ball::e_ball()
 void e_ball::update()
 {
 	w_entity::update();
-
-	// movement
-	pos.add( physics_cache.forces );
 }
 
 void e_ball::collided_with( w_entity* entity_hit, c2Manifold& manifold )
@@ -28,9 +25,9 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& manifold )
 	assert( manifold.count > 0 );	// sanity check
 
 	// resolve the ball position so it's outside the collider
-	//w_vec2 n = w_vec2( manifold.n.x * -1.0f, manifold.n.y * -1.0f );
-	//pos.x += n.x * manifold.depths[ 0 ];
-	//pos.y += n.y * manifold.depths[ 0 ];
+	w_vec2 n = w_vec2( manifold.n.x * -1.0f, manifold.n.y * -1.0f );
+	pos.x += n.x * ( 1.0f - manifold.depths[ 0 ] );
+	pos.y += n.y * ( 1.0f - manifold.depths[ 0 ] );
 
 	// compute a reflection vector based on the travel direction and
 	// the normal of the collision
