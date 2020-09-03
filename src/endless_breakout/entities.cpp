@@ -20,20 +20,24 @@ void e_ball::update()
 	w_entity::update();
 }
 
-void e_ball::collided_with( w_entity* entity_hit, c2Manifold& manifold )
+void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 {
-	assert( manifold.count > 0 );	// sanity check
+	assert( hit.count > 0 );	// sanity check
+
+	// notes:
+	//
+	// manifold.n - matches the movement vector of the ball
 
 	// resolve the ball position so it's outside the collider
-	w_vec2 n = w_vec2( manifold.n.x * -1.0f, manifold.n.y * -1.0f );
-	pos.x += n.x * ( 1.0f - manifold.depths[ 0 ] );
-	pos.y += n.y * ( 1.0f - manifold.depths[ 0 ] );
+	//w_vec2 in = w_vec2( hit.n.x * -1.0f, hit.n.y * -1.0f );
+	//pos.x += n.x * ( 1.0f - manifold.depths[ 0 ] );
+	//pos.y += n.y * ( 1.0f - manifold.depths[ 0 ] );
 
 	// compute a reflection vector based on the travel direction and
 	// the normal of the collision
-	glm::vec3 dir = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
-	glm::vec3 normal( manifold.n.x, manifold.n.y, 0.0f );
-	glm::vec3 reflected_dir = glm::reflect( dir, normal );
+	glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
+	glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
+	glm::vec3 reflected_dir = glm::reflect( forces_vec, hit_normal );
 
 	// reset the force on the ball so it's using the new direction
 	w_force* force = forces.back().get();

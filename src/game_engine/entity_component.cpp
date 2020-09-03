@@ -190,7 +190,7 @@ variant_collider_types ec_collider::get_collider()
 		return c2Circle(
 			{
 				{ parent_entity->physics_cache.ending_pos.x, parent_entity->physics_cache.ending_pos.y },
-				radius
+				radius * parent_entity->scale
 			}
 		);
 	}
@@ -217,7 +217,7 @@ variant_collider_types ec_collider::get_collider()
 
 void ec_collider::draw()
 {
-#if 0
+#if 1
 	RENDER->push_rgb( w_color::green );
 
 	if( c2type == C2_TYPE_CIRCLE )
