@@ -72,9 +72,19 @@ w_color w_parser::color_from_str( const std::string_view str )
 		return engine->find_color_from_symbol( str );
 	}
 
-	// Otherwise, parse the string...
+	// colors in string can either be delimited by slashes or commas.
+	//
+	// if we find slashes, assume slashes. otherwise, commas.
 
-	w_tokenizer tok( str, '/', "1.0f" );
+	size_t slashes = std::count( str.begin(), str.end(), '/' );
+
+	char delimiter = ',';
+	if( slashes )
+	{
+		delimiter = '/';
+	}
+
+	w_tokenizer tok( str, delimiter, "1.0f" );
 
 	w_color color;
 	color.r = w_parser::float_from_str( tok.get_next_token() );
