@@ -1,6 +1,10 @@
 
 --ENGINE--
 
+- are colors not parsing if entered directly?
+	- i.e. "window_clear_color" "0.1,0.1,0.1,1.0"
+	- they ARE but there should be some sort of warning if it sees commas instead of slashes
+
 - "gradient"
 	- change the color list to take a repeat count after each color
 		- so from "color.black / color.white / color.black"

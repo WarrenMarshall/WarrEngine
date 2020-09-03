@@ -1,23 +1,5 @@
 
 # ---------------------------------------------------------
-# textures
-# ---------------------------------------------------------
-
-{
-	"type" "texture"
-	"name" "tex_engine_white_wire"
-	"subtexture" "engine_white_wire"
-	"filename" "textures/white_square.png"
-}
-
-{
-	"type" "texture"
-	"name" "tex_engine_white_solid"
-	"subtexture" "engine_white_solid"
-	"filename" "textures/white_square.png"
-}
-
-# ---------------------------------------------------------
 # pixel font
 # ---------------------------------------------------------
 

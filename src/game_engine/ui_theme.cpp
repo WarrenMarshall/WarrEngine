@@ -173,8 +173,8 @@ void w_ui_theme::init()
 	engine->pixel_font = engine->get_asset<a_font>( "engine_pixel_font" );
 	//large_font = engine->get_asset<a_font>( "larger_font" );
 
-	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
-	button_slice_def = engine->get_asset<a_9slice_def>( "ui_simple_panel" );
+	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
+	button_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
 }
 
 void w_ui_theme::draw_topmost()
