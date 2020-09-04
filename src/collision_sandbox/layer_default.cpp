@@ -16,15 +16,17 @@ void layer_default::push()
 	player_ec = static_cast<ec_collider*>( player->add_component<ec_collider>()->init_as_circle( 24 ) );
 #endif
 	player->set_transform( { v_window_hw, v_window_hh }, 0, 1.0f );
+	player->debug_draw_collision = true;
 
-	blocker_circle = spawn_entity<w_entity>();
+	blocker = spawn_entity<w_entity>();
 #if 0
 	blocker_ec = static_cast<ec_collider*>( blocker_circle->add_component<ec_collider>()->init_as_box( { 0,0, 200, 32 } ) );
 	blocker_circle->set_transform( { 64.0f, 64.0f }, 0, 1 );
 #else
-	blocker_ec = static_cast<ec_collider*>( blocker_circle->add_component<ec_collider>()->init_as_circle( { 32 } ) );
-	blocker_circle->set_transform( { v_window_hw, 64.0f }, 0, 1.0f );
+	blocker_ec = static_cast<ec_collider*>( blocker->add_component<ec_collider>()->init_as_circle( { 32 } ) );
+	blocker->set_transform( { v_window_hw, 64.0f }, 0, 1.0f );
 #endif
+	blocker->debug_draw_collision = true;
 }
 
 void layer_default::update()

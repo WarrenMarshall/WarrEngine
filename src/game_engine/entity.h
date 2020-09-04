@@ -31,6 +31,19 @@ struct w_entity : i_lifecycle, i_transform
 		std::vector<ec_collider*> colliders;
 	} ec;
 
+	// which collision layer this entity is a part of
+	//
+	// identifies what this entity IS to other colliders.
+	e_collision_layer collision_layer = 0;
+
+	// a bitmask of the collision_layer enum that identifies
+	// which collision layers this will collide WITH
+	//
+	// this is only set for dynamic entities which will
+	// instigate collisions. static entities can leave this
+	// as zero.
+	unsigned collides_with = 0;
+
 	// physics
 
 	// all the forces currently acting on the entity

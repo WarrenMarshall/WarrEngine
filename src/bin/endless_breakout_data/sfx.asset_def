@@ -1,0 +1,8 @@
+
+# SFX
+
+{
+	"type" "sound"
+	"name" "paddle_impact"
+	"filename" "sfx/8bit_hit_4.wav"
+}

@@ -5,7 +5,7 @@ struct layer_default : w_layer
 	w_entity* player = nullptr;
 	ec_collider* player_ec = nullptr;
 
-	w_entity* blocker_circle = nullptr;
+	w_entity* blocker = nullptr;
 	ec_collider* blocker_ec = nullptr;
 
 	std::string status;

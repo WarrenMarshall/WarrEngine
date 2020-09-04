@@ -4,7 +4,6 @@
 void spawn_ball( layer_gameplay* layer )
 {
 	auto ball = layer->spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.5f + (w_random::getf() * 1.0f) );
-	layer->balls.push_back( ball );
 	ball->add_component<ec_collider>()->init_as_circle( 12 );
 	ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 100.0f + ( w_random::getf() * 100.0f ) ) );
 }
@@ -15,22 +14,19 @@ layer_gameplay::layer_gameplay()
 
 void layer_gameplay::push()
 {
-	float thiccness = 1.0f;
-
 	walls = spawn_entity<w_entity>();
-	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, thiccness, v_window_h ) );
-	walls->add_component<ec_collider>()->init_as_box( w_rect( v_window_w - thiccness, 0.0f, v_window_w, v_window_h ) );
-	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, v_window_w, thiccness ) );
-	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - thiccness, v_window_w, v_window_h ) );
 
-	walls->add_component<ec_collider>()->init_as_box( w_rect( 64,64,128,24 ) );
-	walls->add_component<ec_collider>()->init_as_box( w_rect( 200, 164, 8, 128 ) );
-	walls->debug_draw_collision = true;
+	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, 1.0f, v_window_h ) );
+	walls->add_component<ec_collider>()->init_as_box( w_rect( v_window_w - 1.0f, 0.0f, v_window_w, v_window_h ) );
+	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, v_window_w, 1.0f ) );
+	//walls->debug_draw_collision = true;
+	walls->collision_layer = cl_wall;
 
-	//death_zone = spawn_entity<w_entity>();
-	//death_zone->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - 8, v_window_w, v_window_h + 8 ) );
+	death_zone = spawn_entity<w_entity>();
+	death_zone->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - 8, v_window_w, v_window_h + 8 ) );
+	death_zone->collision_layer = cl_wall;
 
-	player = spawn_entity<e_player>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
+	paddle = spawn_entity<e_paddle>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
 
 	for( int x = 0 ; x < 1 ; ++x )
 		spawn_ball( this );
@@ -44,10 +40,10 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::mouse )
 		{
-			if( player )
+			if( paddle )
 			{
-				player->pos.x += evt->mouse.delta.x;
-				player->pos.x = w_clamp( player->pos.x, 0.0f, v_window_w );
+				paddle->pos.x += evt->mouse.delta.x;
+				paddle->pos.x = w_clamp( paddle->pos.x, 0.0f, v_window_w );
 			}
 			return true;
 		}
@@ -69,51 +65,41 @@ void layer_gameplay::update_collisions()
 	w_layer::update_collisions();
 
 #if 1
-	for( auto& ball : balls )
+	for( auto& ent : entities )
 	{
-		for( auto& ball_collider : ball->ec.colliders )
+		if( ent->collides_with > 0 )
 		{
-			for( auto& wall_collider : walls->ec.colliders )
+			for( auto& ent2 : entities )
 			{
-				c2Manifold hit;
-				c2Collide( &ball_collider->get_collider(), NULL, ball_collider->c2type,
-						   &wall_collider->get_collider(), NULL, wall_collider->c2type,
-						   &hit );
-
-				if( hit.count )
+				if( ent != ent2 )
 				{
-					ball_collider->push_outside( hit );
-					ball->collided_with( wall_collider->parent_entity, hit );
-				}
-			}
-		}
-	}
-
-	for( auto& ball : balls )
-	{
-		for( auto& ball_collider : ball->ec.colliders )
-		{
-			for( auto& ball2 : balls )
-			{
-				if( ball != ball2 )
-				{
-					for( auto& ball2_collider : ball2->ec.colliders )
+					if( ent->collides_with & ent2->collision_layer )
 					{
-						c2Manifold hit;
-						c2Collide( &ball_collider->get_collider(), NULL, ball_collider->c2type,
-								   &ball2_collider->get_collider(), NULL, ball2_collider->c2type,
-								   &hit );
-
-						if( hit.count )
+						for( auto& collider : ent->ec.colliders )
 						{
-							ball_collider->push_outside( hit );
-							ball->collided_with( ball2, hit );
-							ball2->collided_with( ball, hit );
+							for( auto& collider2 : ent2->ec.colliders )
+							{
+								if( c2Collided( &collider->get_collider(), NULL, collider->c2type,
+												&collider2->get_collider(), NULL, collider2->c2type ) )
+								{
+									c2Manifold hit;
+									c2Collide( &collider->get_collider(), NULL, collider->c2type,
+											   &collider2->get_collider(), NULL, collider2->c2type,
+											   &hit );
+
+									if( hit.count )
+									{
+										collider->push_outside( hit );
+										ent->collided_with( collider2->parent_entity, hit );
+									}
+								}
+							}
 						}
 					}
 				}
 			}
 		}
+
 	}
 #endif
 }

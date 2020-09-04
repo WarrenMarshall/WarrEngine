@@ -4,8 +4,7 @@ struct layer_gameplay : w_layer
 {
 	w_entity* walls = nullptr;
 	w_entity* death_zone = nullptr;
-	w_entity* player = nullptr;
-	std::vector<w_entity*> balls;
+	w_entity* paddle = nullptr;
 	bool ball_attached_to_paddle = true;
 
 	layer_gameplay();

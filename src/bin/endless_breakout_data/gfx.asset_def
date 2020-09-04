@@ -1,0 +1,40 @@
+
+# ---------------------------------------------------------
+# textures
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_particle_star"
+	"filename" "gfx/puzzlepack/particleSmallStar.png"
+}
+
+{
+	"type" "texture"
+	"name" "tex_fire_particle"
+	"filename" "gfx/fire_particle.png"
+}
+
+{
+	"type" "texture"
+	"name" "tex_paddle_blue"
+	"filename" "gfx/puzzlepack/paddleblu.png"
+}
+
+{
+	"type" "texture"
+	"name" "tex_ball_blue"
+	"filename" "gfx/puzzlepack/ballBlue.png"
+}
+
+# ---------------------------------------------------------
+# gradients
+# ---------------------------------------------------------
+
+{
+	"type" "gradient"
+	"name" "background_gradient"
+	"subtexture" "s_background_gradient"
+	"alignment" "align.vertical"
+	"colors" "color.black / color.dark_grey / color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_grey"
+}
