@@ -156,18 +156,15 @@ ec_collider::ec_collider( w_entity* parent_entity )
 	type = component_type::collider;
 }
 
+void ec_collider::push_outside( const c2Manifold& hit )
+{
+	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.5f ) );
+	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
+}
+
 w_entity_component* ec_collider::init_as_circle( float radius )
 {
 	c2type = C2_TYPE_CIRCLE;
-
-	this->radius = radius;
-
-	return this;
-}
-
-w_entity_component* ec_collider::init_as_capsule( float radius )
-{
-	c2type = C2_TYPE_CAPSULE;
 
 	this->radius = radius;
 
@@ -194,16 +191,6 @@ variant_collider_types ec_collider::get_collider()
 			}
 		);
 	}
-	else if( c2type == C2_TYPE_CAPSULE )
-	{
-		return c2Capsule(
-			{
-				{ pos.x, pos.y },
-				{ parent_entity->physics_cache.ending_pos.x, parent_entity->physics_cache.ending_pos.y },
-				radius
-			}
-		);
-	}
 	else if( c2type == C2_TYPE_AABB )
 	{
 		return (c2AABB) w_rect(
@@ -218,24 +205,20 @@ variant_collider_types ec_collider::get_collider()
 void ec_collider::draw()
 {
 #if 1
-	RENDER->push_rgb( w_color::green );
+	if( parent_entity->debug_draw_collision )
+	{
+		RENDER->push_rgb( w_color::green );
 
-	if( c2type == C2_TYPE_CIRCLE )
-	{
-		RENDER
-			->draw_circle( w_vec2::zero, radius );
-	}
-	else if( c2type == C2_TYPE_CAPSULE )
-	{
-		RENDER
-			->draw_circle( w_vec2::zero, radius );
-	}
-	else if( c2type == C2_TYPE_AABB )
-	{
-		RENDER
-			->draw_rectangle( box );
-	}
+		if( c2type == C2_TYPE_CIRCLE )
+		{
+			RENDER->draw_circle( w_vec2::zero, radius );
+		}
+		else if( c2type == C2_TYPE_AABB )
+		{
+			RENDER->draw_rectangle( box );
+		}
 
-	RENDER->pop_rgb();
+		RENDER->pop_rgb();
+	}
 #endif
 }

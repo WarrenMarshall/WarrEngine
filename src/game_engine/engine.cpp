@@ -9,7 +9,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 	try
 	{
 
-#if defined(FINALRELEASE)
+#if defined(_FINALRELEASE)
 		// in final release, we don't want to bother the user with
 		// the visual clutter of the console window
 		ShowWindow( GetConsoleWindow(), SW_HIDE );

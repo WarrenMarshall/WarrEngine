@@ -24,15 +24,6 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 {
 	assert( hit.count > 0 );	// sanity check
 
-	// notes:
-	//
-	// manifold.n - matches the movement vector of the ball
-
-	// resolve the ball position so it's outside the collider
-	//w_vec2 in = w_vec2( hit.n.x * -1.0f, hit.n.y * -1.0f );
-	//pos.x += n.x * ( 1.0f - manifold.depths[ 0 ] );
-	//pos.y += n.y * ( 1.0f - manifold.depths[ 0 ] );
-
 	// compute a reflection vector based on the travel direction and
 	// the normal of the collision
 	glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );

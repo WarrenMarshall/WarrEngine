@@ -117,6 +117,7 @@ constexpr float W_PI = 3.14159265358979323846f;
 // ----------------------------------------------------------------------------
 // standard rendering start depths
 
+constexpr float zdepth_clear_window = -15000.0f;
 constexpr float zdepth_nudge = 10.0f;
 constexpr float zdepth_background = 0.0f;
 constexpr float zdepth_layers = 1000.0f;

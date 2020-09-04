@@ -421,6 +421,7 @@ w_render* w_render::draw_world_axis()
 constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
+#if !defined(_FINALRELEASE)
 	maybe_draw_master_buffer( nullptr );
 
 	RENDER->begin()->push_depth( zdepth_stats );
@@ -471,7 +472,6 @@ w_render* w_render::draw_stats()
 	}
 	else
 	{
-#if !defined(FINALRELEASE)
 		RENDER->begin()
 			->push_align( align::right )
 			->draw_string(
@@ -479,8 +479,8 @@ w_render* w_render::draw_stats()
 				fmt::format( "{} FPS", s_commas( stats.num_frames_rendered.value ) ),
 				w_rect( v_window_w, 0 ) )
 			->end();
-#endif
 	}
+#endif
 
 	RENDER->end();
 
@@ -589,6 +589,15 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	w_render_vert v1( end, w_uv( 0, 0 ), rs_color );
 
 	master_render_buffer->add_line( v0, v1 );
+
+	return this;
+}
+
+w_render* w_render::draw_point( const w_vec2& pos )
+{
+	maybe_draw_master_buffer( engine->white_wire->tex );
+
+	draw_rectangle( w_rect( pos.x - 1, pos.y - 1, 2, 2 ) );
 
 	return this;
 }

@@ -78,8 +78,8 @@ struct ec_collider : w_entity_component
 	ec_collider() = delete;
 	ec_collider( w_entity* parent_entity );
 
+	void push_outside( const c2Manifold& hit );
 	w_entity_component* init_as_circle( float radius );
-	w_entity_component* init_as_capsule( float radius );
 	w_entity_component* init_as_box( w_rect box );
 	variant_collider_types get_collider();
 	void draw() override;

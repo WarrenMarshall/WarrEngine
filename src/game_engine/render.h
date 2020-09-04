@@ -91,7 +91,8 @@ struct w_render
 	w_render* draw_rectangle( const w_rect& dst );
 	w_render* draw_filled_rectangle( const w_rect& dst );
 	w_render* draw_line( const w_vec2& start, const w_vec2& end );
-	w_render* draw_circle( const w_vec2& origin, float radius);
+	w_render* draw_point( const w_vec2& pos );
+	w_render* draw_circle( const w_vec2& origin, float radius );
 
 	void begin_frame( float frame_interpolate_pct );
 	void end_frame();

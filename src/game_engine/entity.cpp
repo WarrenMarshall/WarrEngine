@@ -39,14 +39,6 @@ void w_entity::pre_update()
 
 void w_entity::update()
 {
-	//if( debug )
-	//{
-	//	log_msg( "-----" );
-	//	log_msg( fmt::format( "{}", __FUNCTION__ ) );
-	//	log_msg( fmt::format( "pos        : {:.2f} / {:.2f}", pos.x, pos.y ) );
-	//	log_msg( fmt::format( "ending_pos : {:.2f} / {:.2f}", physics_cache.ending_pos.x, physics_cache.ending_pos.y ) );
-	//}
-
 	// move to the physics based ending position
 	pos = physics_cache.ending_pos;
 
@@ -118,6 +110,22 @@ bool w_entity::can_be_deleted()
 
 	// entity is fully dead, delete it
 	return true;
+}
+
+void w_entity::set_transform( const w_vec2& pos, const float& angle, const float& scale )
+{
+	i_transform::set_transform( pos, angle, scale );
+
+	// setting the transform directly means we need to sync up the physics cache to match
+
+	physics_cache.ending_pos = pos;
+}
+
+// set the position of the entity directly, bypassing any physics or forces.
+
+void w_entity::set_pos( const w_vec2& pos )
+{
+	this->pos = physics_cache.ending_pos = pos;
 }
 
 void w_entity::set_life_cycle( e_lifecycle lifecycle )

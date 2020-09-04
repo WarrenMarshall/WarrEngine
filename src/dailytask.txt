@@ -1,16 +1,12 @@
 
 --ENGINE--
 
-- are colors not parsing if entered directly?
-	- i.e. "window_clear_color" "0.1,0.1,0.1,1.0"
-	- they ARE but there should be some sort of warning if it sees commas instead of slashes
-
+- "log_msg( fmt::format("
+	- can this used std::forward or something to shorten to : "log_msg("
 - "gradient"
 	- change the color list to take a repeat count after each color
 		- so from "color.black / color.white / color.black"
 		  to "color.black:1 / color.white:6 / color.black:1"
-
-- convert code using "str_not_found" to std::optional
 
 - deleting entities is broken, i think
 	- make sure you can delete them cleanly

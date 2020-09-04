@@ -54,7 +54,7 @@ void w_game_controller::update()
 	if( rumble_time_remaining_ms <= 0 )
 	{
 		rumble_time_remaining_ms = 0;
-		
+
 		XINPUT_VIBRATION rumbler;
 		rumbler.wLeftMotorSpeed = 0;
 		rumbler.wRightMotorSpeed = 0;

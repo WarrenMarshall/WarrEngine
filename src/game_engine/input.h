@@ -4,11 +4,11 @@ struct w_input_event
 {
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = event_id::invalid;
-		
+
 	// the key, mouse button, or controller button generating the event
 	e_input_id input_id = input_id::invalid;
 
-	struct  
+	struct
 	{
 		w_vec2 pos = w_vec2( 0, 0 );
 		w_vec2 delta = w_vec2( 0, 0 );
@@ -33,11 +33,7 @@ struct w_input : i_speaker
 	// where the mouse currently sits in the virtual window
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
 
-	/*
-		there is one entry in this vector for each joystick currently
-		present. this list can change over the course of the game
-		running as joysticks are plugged in or unplugged.
-	*/
+	// #todo - should be expanded to handle multiple controllers flexibly
 	std::unique_ptr<w_game_controller> game_controller = nullptr;
 
 	/*

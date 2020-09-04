@@ -3,12 +3,10 @@
 
 void spawn_ball( layer_gameplay* layer )
 {
-	auto ball = layer->spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 1.0f );
+	auto ball = layer->spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.5f + (w_random::getf() * 1.0f) );
 	layer->balls.push_back( ball );
-	ball->add_component<ec_collider>()->init_as_circle( 8 );
-	ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 150.0f ) );
-	//ball->forces.emplace_back( std::make_unique<w_force>( w_vec2( 0.0f, -1.0f ), 150.0f ) );
-	ball->debug = true;
+	ball->add_component<ec_collider>()->init_as_circle( 12 );
+	ball->forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 100.0f + ( w_random::getf() * 100.0f ) ) );
 }
 
 layer_gameplay::layer_gameplay()
@@ -24,6 +22,10 @@ void layer_gameplay::push()
 	walls->add_component<ec_collider>()->init_as_box( w_rect( v_window_w - thiccness, 0.0f, v_window_w, v_window_h ) );
 	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, v_window_w, thiccness ) );
 	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - thiccness, v_window_w, v_window_h ) );
+
+	walls->add_component<ec_collider>()->init_as_box( w_rect( 64,64,128,24 ) );
+	walls->add_component<ec_collider>()->init_as_box( w_rect( 200, 164, 8, 128 ) );
+	walls->debug_draw_collision = true;
 
 	//death_zone = spawn_entity<w_entity>();
 	//death_zone->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - 8, v_window_w, v_window_h + 8 ) );
@@ -73,14 +75,15 @@ void layer_gameplay::update_collisions()
 		{
 			for( auto& wall_collider : walls->ec.colliders )
 			{
-				c2Manifold manifold;
+				c2Manifold hit;
 				c2Collide( &ball_collider->get_collider(), NULL, ball_collider->c2type,
 						   &wall_collider->get_collider(), NULL, wall_collider->c2type,
-						   &manifold );
+						   &hit );
 
-				if( manifold.count )
+				if( hit.count )
 				{
-					ball->collided_with( wall_collider->parent_entity, manifold );
+					ball_collider->push_outside( hit );
+					ball->collided_with( wall_collider->parent_entity, hit );
 				}
 			}
 		}
@@ -96,14 +99,16 @@ void layer_gameplay::update_collisions()
 				{
 					for( auto& ball2_collider : ball2->ec.colliders )
 					{
-						c2Manifold manifold;
+						c2Manifold hit;
 						c2Collide( &ball_collider->get_collider(), NULL, ball_collider->c2type,
 								   &ball2_collider->get_collider(), NULL, ball2_collider->c2type,
-								   &manifold );
+								   &hit );
 
-						if( manifold.count )
+						if( hit.count )
 						{
-							ball->collided_with( ball2, manifold );
+							ball_collider->push_outside( hit );
+							ball->collided_with( ball2, hit );
+							ball2->collided_with( ball, hit );
 						}
 					}
 				}

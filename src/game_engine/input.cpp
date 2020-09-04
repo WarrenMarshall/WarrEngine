@@ -387,7 +387,7 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 static float controller_dead_zone = 0.15f;
 w_vec2 w_input::axis_value_of( e_input_id input_id )
 {
-	if( !game_controller || !game_controller->is_being_used )
+	if( !game_controller )
 	{
 		return w_vec2::zero;
 	}
