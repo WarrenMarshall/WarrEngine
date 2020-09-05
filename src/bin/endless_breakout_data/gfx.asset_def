@@ -6,13 +6,7 @@
 {
 	"type" "texture"
 	"name" "tex_particle_star"
-	"filename" "gfx/puzzlepack/particleSmallStar.png"
-}
-
-{
-	"type" "texture"
-	"name" "tex_fire_particle"
-	"filename" "gfx/fire_particle.png"
+	"filename" "gfx/puzzlepack/particleCartoonStar.png"
 }
 
 {
@@ -27,6 +21,42 @@
 	"filename" "gfx/puzzlepack/ballBlue.png"
 }
 
+{
+	"type" "texture"
+	"name" "brick_blue"
+	"filename" "gfx/element_blue_rectangle.png"
+}
+
+{
+	"type" "texture"
+	"name" "brick_green"
+	"filename" "gfx/element_green_rectangle.png"
+}
+
+{
+	"type" "texture"
+	"name" "brick_grey"
+	"filename" "gfx/element_grey_rectangle.png"
+}
+
+{
+	"type" "texture"
+	"name" "brick_purple"
+	"filename" "gfx/element_purple_rectangle.png"
+}
+
+{
+	"type" "texture"
+	"name" "brick_red"
+	"filename" "gfx/element_red_rectangle.png"
+}
+
+{
+	"type" "texture"
+	"name" "brick_yellow"
+	"filename" "gfx/element_yellow_rectangle.png"
+}
+
 # ---------------------------------------------------------
 # gradients
 # ---------------------------------------------------------
@@ -36,5 +66,5 @@
 	"name" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
-	"colors" "color.black / color.dark_grey / color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_grey"
+	"colors" "color.black / color.dark_grey / color.teal /  color.teal /  color.teal /  color.teal /  color.teal /  color.dark_grey"
 }

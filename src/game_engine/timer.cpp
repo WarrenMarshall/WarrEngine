@@ -15,7 +15,7 @@ void w_timer::reset()
 
 void w_timer::update()
 {
-	time_remaining_ms -= engine->time->delta_ms;
+	time_remaining_ms -= engine->time->FTS_step_value_ms;
 }
 
 /*
@@ -32,7 +32,7 @@ bool w_timer::is_elapsed()
 
 	return false;
 }
-	
+
 /*
 	call repeatedly to see how many times the timer has elapsed since the last call
 

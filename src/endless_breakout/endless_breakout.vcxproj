@@ -160,16 +160,14 @@
     <ClCompile Include="layer_background.cpp" />
     <ClCompile Include="layer_gameplay.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ui_styles.cpp" />
-    <ClCompile Include="endless_breakout.cpp" />
+    <ClCompile Include="app_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="layer_background.h" />
     <ClInclude Include="layer_gameplay.h" />
-    <ClInclude Include="ui_styles.h" />
-    <ClInclude Include="endless_breakout.h" />
+    <ClInclude Include="app_main.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\game_engine\game_engine.vcxproj">

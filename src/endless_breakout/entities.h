@@ -13,7 +13,12 @@ struct e_ball : w_entity
 {
 	e_ball();
 
-	virtual void update() override;
+	virtual void collided_with( w_entity* entity_hit, c2Manifold& hit ) final;
+};
 
-	virtual void collided_with( w_entity* entity_hit, c2Manifold& hit ) override;
+// ----------------------------------------------------------------------------
+
+struct e_brick : w_entity
+{
+	e_brick();
 };
