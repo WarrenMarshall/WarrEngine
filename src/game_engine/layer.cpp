@@ -56,6 +56,46 @@ void w_layer::update()
 
 void w_layer::update_collisions()
 {
+	int num_entities = static_cast<int>( entities.size() );
+	for( int e1 = 0 ; e1 < num_entities ; ++e1 )
+	{
+		w_entity* ent = entities[ e1 ].get();
+
+		if( ent->collides_with > 0 )
+		{
+			for( int e2 = 0 ; e2 < num_entities ; ++e2 )
+			{
+				w_entity* ent2 = entities[ e2 ].get();
+				if( e1 != e2 )
+				{
+					if( ent->collides_with & ent2->collision_layer )
+					{
+						for( auto& collider : ent->ec.colliders )
+						{
+							for( auto& collider2 : ent2->ec.colliders )
+							{
+								if( c2Collided( &collider->get_collider(), NULL, collider->c2type,
+												&collider2->get_collider(), NULL, collider2->c2type ) )
+								{
+									c2Manifold hit;
+									c2Collide( &collider->get_collider(), NULL, collider->c2type,
+											   &collider2->get_collider(), NULL, collider2->c2type,
+											   &hit );
+
+									if( hit.count )
+									{
+										collider->push_outside( hit );
+										ent->collided_with( collider2->parent_entity, hit );
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
 }
 
 void w_layer::draw()

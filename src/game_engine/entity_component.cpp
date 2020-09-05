@@ -163,10 +163,12 @@ w_entity_component* ec_sound::init( const std::string_view snd_name )
 
 void ec_sound::draw()
 {
-	if( is_alive() )
+	if( snd )
 	{
 		snd->play();
 	}
+	snd = nullptr;
+
 	set_life_cycle( lifecycle::dying );
 }
 

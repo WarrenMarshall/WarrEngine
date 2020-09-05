@@ -63,18 +63,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		{	// AUDIO
 			log_msg( "Initializing audio" );
 
-			engine->audio_context = cs_make_context(
-				glfwGetWin32Window( engine->window->window ),
-				44000, 8192, 50, NULL );
-
-			if( !engine->audio_context )
+			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
 			{
 				log_warning( "Audio : init failed!" );
-			}
-			else
-			{
-				cs_spawn_mix_thread( engine->audio_context );
-				cs_thread_sleep_delay( engine->audio_context, 10 );
 			}
 		}
 
@@ -201,12 +192,7 @@ void w_engine::deinit_game_engine()
 	glfwTerminate();
 
 	log_msg( "Shutting down Audio" );
-	if( engine->audio_context )
-	{
-		cs_stop_all_sounds( engine->audio_context );
-		cs_shutdown_context( engine->audio_context );
-	}
-	engine->audio_context = nullptr;
+	BASS_Free();
 
 	log_msg( "Shutting down input" );
 	engine->input->deinit();

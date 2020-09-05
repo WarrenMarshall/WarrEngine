@@ -12,8 +12,6 @@ struct w_engine : i_listener
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
-	cs_context_t* audio_context;
-
 	a_subtexture* white_wire = nullptr;
 	a_subtexture* white_solid = nullptr;
 	a_font* pixel_font = nullptr;

@@ -10,7 +10,6 @@ struct layer_gameplay : w_layer
 
 	virtual void push() final;
 	virtual void update() final;
-	virtual void update_collisions() final;
 
 	virtual bool handle_input_event( const w_input_event* evt ) final;
 };

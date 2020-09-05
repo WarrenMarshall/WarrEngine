@@ -132,6 +132,12 @@ void w_entity::set_life_cycle( e_lifecycle lifecycle )
 {
 	i_lifecycle::set_life_cycle( lifecycle );
 
+	if( !is_alive() )
+	{
+		collision_layer = 0;
+		collides_with = 0;
+	}
+
 	for( const auto& iter : components )
 	{
 		iter->set_life_cycle( lifecycle );
@@ -144,13 +150,5 @@ void w_entity_cozy::update()
 {
 	w_entity::update();
 
-	if( is_alive() )
-	{
-		life_remaining_ms -= engine->time->FTS_step_value_ms;
-
-		if( life_remaining_ms <= 0.0f )
-		{
-			set_life_cycle( lifecycle::dying );
-		}
-	}
+	set_life_cycle( lifecycle::dying );
 }

@@ -27,21 +27,29 @@ void w_particle_emitter::post_spawn()
 
 void w_particle_emitter::update()
 {
+	if( !parent_component->is_alive() )
+	{
+		return;
+	}
+
 	// if we are below the max particle count, spawn more particles
 
 	if( particle_pool->num_particles_alive < max_particles_alive )
 	{
-		// accumulate the time step into our spawn count
-		particles_to_spawn_accum += params->s_max_spawn_per_sec * w_time::FTS_step_value_s;
+		int particles_to_spawn = 0;
 
-		// strip off the fractional part of the accum to get the number to spawn
-		int particles_to_spawn = static_cast<int>( particles_to_spawn_accum );
-
-		// a one-shot particle system spawns all of it's particles at once and then dies
 		if( params->b_one_shot )
 		{
 			particles_to_spawn_accum = 0.0f;
 			particles_to_spawn = static_cast<int>( params->s_max_spawn_per_sec );
+		}
+		else
+		{
+			// accumulate the time step into our spawn count
+			particles_to_spawn_accum += params->s_max_spawn_per_sec * w_time::FTS_step_value_s;
+
+			// strip off the fractional part of the accum to get the number to spawn
+			particles_to_spawn = static_cast<int>( particles_to_spawn_accum );
 		}
 
 		if( particles_to_spawn )
@@ -67,7 +75,7 @@ void w_particle_emitter::update()
 	}
 
 	// a one-shot particle system spawns all of it's particles at once and then dies
-	if( params->b_one_shot && parent_component )
+	if( params->b_one_shot )
 	{
 		parent_component->set_life_cycle( lifecycle::dying );
 	}

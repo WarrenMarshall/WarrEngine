@@ -45,11 +45,10 @@
 	"texture_name" "tex_smoke"
 	"spawner_type" "circle,5"
 
-	"s_max_spawn_per_sec" "50"
+	"s_max_spawn_per_sec" "15"
 	"a_dir" "0"
 	"b_one_shot" "true"
 	"r_scale_spawn" "1.50, 1.75"
-	"r_lifespan" "750, 1000"
 	"r_velocity_spawn" "20,50"
 	"t_color" "0,color.dark_grey, 1,color.black"
 	"b_needs_warm_up" "false"

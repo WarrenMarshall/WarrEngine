@@ -21,6 +21,12 @@
 		- so from "color.black / color.white / color.black"
 		  to "color.black:1 / color.white:6 / color.black:1"
 
+--------------------------------------
+bugs
+--------------------------------------
+
+- input seems to come in rapid fire
+-
 
 --------------------------------------
 

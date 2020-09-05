@@ -36,11 +36,6 @@ void spawn_new_brick_row( layer_gameplay* layer )
 	}
 }
 
-void spawn_ball( layer_gameplay* layer )
-{
-	auto ball = layer->spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
-}
-
 layer_gameplay::layer_gameplay()
 {
 }
@@ -64,7 +59,7 @@ void layer_gameplay::push()
 
 	paddle = spawn_entity<e_paddle>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
 
-	spawn_ball( this );
+	spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 }
@@ -84,11 +79,11 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 		}
 	}
 
-	if( evt->event_id == event_id::input_pressed )
+	if( evt->event_id == event_id::input_released )
 	{
 		if( evt->input_id == input_id::key_n )
 		{
-			spawn_ball( this );
+			spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
 		}
 	}
 
@@ -120,52 +115,4 @@ void layer_gameplay::update()
 			}
 		}
 	}
-}
-
-void layer_gameplay::update_collisions()
-{
-	w_layer::update_collisions();
-
-#if 1
-	int num_entities = static_cast<int>( entities.size() );
-	for( int e1 = 0 ; e1 < num_entities ; ++e1 )
-	{
-		w_entity* ent = entities[ e1 ].get();
-
-		if( ent->collides_with > 0 )
-		{
-			for( int e2 = 0 ; e2 < num_entities ; ++e2 )
-			{
-				w_entity* ent2 = entities[ e2 ].get();
-				if( e1 != e2 )
-				{
-					if( ent->collides_with & ent2->collision_layer )
-					{
-						for( auto& collider : ent->ec.colliders )
-						{
-							for( auto& collider2 : ent2->ec.colliders )
-							{
-								if( c2Collided( &collider->get_collider(), NULL, collider->c2type,
-												&collider2->get_collider(), NULL, collider2->c2type ) )
-								{
-									c2Manifold hit;
-									c2Collide( &collider->get_collider(), NULL, collider->c2type,
-											   &collider2->get_collider(), NULL, collider2->c2type,
-											   &hit );
-
-									if( hit.count )
-									{
-										collider->push_outside( hit );
-										ent->collided_with( collider2->parent_entity, hit );
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-	}
-#endif
 }

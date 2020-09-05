@@ -61,8 +61,6 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 	}
 	else if( entity_hit->collision_layer & cl_deathzone )
 	{
-		//GAME->sfx_deathzone_impact->play();
-
 		set_life_cycle( lifecycle::dying );
 
 		auto e = layer->spawn_entity<w_entity_cozy>();

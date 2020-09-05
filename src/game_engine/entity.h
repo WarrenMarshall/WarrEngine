@@ -94,7 +94,5 @@ struct w_entity : i_lifecycle, i_transform
 
 struct w_entity_cozy : w_entity
 {
-	float life_remaining_ms = 500.0f;
-
-	void update() override;
+	virtual void update() final;
 };

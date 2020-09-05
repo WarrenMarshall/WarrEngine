@@ -16,6 +16,8 @@ void layer_background::push()
 
 void layer_background::draw()
 {
+	OPENGL->set_blend( opengl_blend::alpha );
+
 	RENDER
 		->begin()
 		->draw( background_gradient, w_rect( 0, 0, v_window_w, v_window_h ) )

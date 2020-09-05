@@ -316,19 +316,16 @@ a_sound::~a_sound()
 
 void a_sound::clean_up_internals()
 {
-	if( engine->audio_context && snd.sample_rate )
+	if( snd > -1 )
 	{
-		cs_free_sound( &snd );
-		ZeroMemory( &snd, sizeof( snd ) );
+		BASS_SampleFree( snd );
+		snd = -1;
 	}
 }
 
 void a_sound::play()
 {
-	if( engine->audio_context && snd.sample_rate )
-	{
-		cs_play_sound( engine->audio_context, cs_make_def( &snd ) );
-	}
+	BASS_ChannelPlay( channel, true );
 }
 
 bool a_sound::create_internals()
@@ -341,17 +338,18 @@ bool a_sound::create_internals()
 	}
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
-	ZeroMemory( &snd, sizeof( snd ) );
-	cs_read_mem_wav( file->buffer->data(), (int) file->buffer->size(), &snd );
+	snd = BASS_SampleLoad( true, file->buffer->data(), 0, static_cast<int>( file->buffer->size() ), 1, 0 );
 
 	// if we failed to load the file BUT it does actually exist, it may simply be
 	// that the user doesn't have an audio device connected to their computer. This is not
 	// fatal to the engine and should not crash you out.
 
-	if( !engine->audio_context && !snd.sample_rate )
+	if( !snd )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
+
+	channel = BASS_SampleGetChannel( snd, false );
 
 	return true;
 }
@@ -367,18 +365,15 @@ void a_music::play()
 {
 	stop();
 
-	if( engine->audio_context && mus.sample_rate )
-	{
-		playing_sound = cs_play_sound( engine->audio_context, cs_make_def( &mus ) );
-		cs_loop_sound( playing_sound, 999 );
-	}
+	BASS_ChannelPlay( channel, false );
 }
 
 void a_music::stop()
 {
-	if( engine->audio_context && playing_sound )
+	if( channel > -1 )
 	{
-		cs_stop_sound( playing_sound );
+		BASS_ChannelStop( channel );
+		channel = -1;
 	}
 }
 
@@ -387,10 +382,9 @@ void a_music::clean_up_internals()
 	i_asset::clean_up_internals();
 
 	stop();
-	if( engine->audio_context && mus.sample_rate )
+	if( mus > -1 )
 	{
-		cs_free_sound( &mus );
-		ZeroMemory( &mus, sizeof( mus ) );
+		BASS_SampleFree( mus );
 	}
 }
 
@@ -404,17 +398,18 @@ bool a_music::create_internals()
 	}
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
-	ZeroMemory( &mus, sizeof( mus ) );
-	cs_read_mem_wav( file->buffer->data(), (int) file->buffer->size(), &mus );
+	mus = BASS_SampleLoad( true, file->buffer->data(), 0, static_cast<int>( file->buffer->size() ), 1, BASS_SAMPLE_LOOP );
 
 	// if we failed to load the file BUT it does actually exist, it may simply be
 	// that the user doesn't have an audio device connected to their computer. This is not
 	// fatal to the engine and should not crash you out.
 
-	if( !engine->audio_context && !mus.sample_rate )
+	if( !mus )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
+
+	channel = BASS_SampleGetChannel( mus, false );
 
 	return true;
 }
