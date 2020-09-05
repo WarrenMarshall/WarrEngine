@@ -6,7 +6,7 @@
 {
 	"type" "texture"
 	"name" "tex_particle_star"
-	"filename" "gfx/puzzlepack/particleCartoonStar.png"
+	"filename" "gfx/puzzlepack/particleSmallStar.png"
 }
 
 {

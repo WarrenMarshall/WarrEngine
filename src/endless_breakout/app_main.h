@@ -12,6 +12,8 @@ struct endless_breakout_game final : w_game
 	a_sound* sfx_wall_impact = nullptr;
 	a_sound* sfx_brick_impact = nullptr;
 
+	a_music* mus_game = nullptr;
+
 	std::vector<a_subtexture*> brick_textures;
 
 	void init() final;

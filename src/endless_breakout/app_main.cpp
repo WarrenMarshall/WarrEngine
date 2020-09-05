@@ -13,6 +13,8 @@ void endless_breakout_game::init()
 	sfx_wall_impact = engine->get_asset<a_sound>( "wall_impact" );
 	sfx_brick_impact = engine->get_asset<a_sound>( "brick_impact" );
 
+	mus_game = engine->get_asset<a_music>( "music_game" );
+
 	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_blue" ) );
 	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_green" ) );
 	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_grey" ) );

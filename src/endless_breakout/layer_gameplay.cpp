@@ -28,6 +28,8 @@ layer_gameplay::layer_gameplay()
 
 void layer_gameplay::push()
 {
+	GAME->mus_game->play();
+
 	timer_brick_move = std::make_unique<w_timer>( 250 );
 
 	auto walls = spawn_entity<w_entity>();
