@@ -251,7 +251,11 @@ enum_begin( collision_layer )
 	layer5 = 16,
 	layer6 = 32,
 	layer7 = 64,
-	layer8 = 128
+	layer8 = 128,
+	layer9 = 256,
+	layer10 = 512,
+	layer11 = 1024,
+	layer12 = 2048
 enum_end
 
 // ----------------------------------------------------------------------------

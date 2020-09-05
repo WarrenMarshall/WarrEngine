@@ -122,6 +122,8 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			}
 		}
 
+		w_random::seed();
+
 		{ // APPLY CONFIG SETTINGS
 			v_window_w = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_w", "320" ) );
 			v_window_h = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_h", "240" ) );
@@ -133,7 +135,9 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 									  100,
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
-			glfwSwapInterval( w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) ) );
+			bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
+			log_msg( fmt::format( "VSync: {}", vsync ? "true" : "false" ) );
+			glfwSwapInterval( vsync ? 1 : 0 );
 			engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
 			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
 			engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
@@ -437,7 +441,6 @@ void w_engine::init()
 	input->add_listener( this );
 	input->add_listener( layer_mgr.get() );
 
-	w_random::seed();
 	fs->init();
 }
 

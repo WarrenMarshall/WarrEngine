@@ -11,9 +11,70 @@
 	"r_scale_spawn" "0.5, 1.25"
 	"t_scale" "0.0,0.0, 0.2,1.0, 0.4,0.0, 1.0,0.0"
 	"r_lifespan" "6000, 12000"
-	"r_velocity_spawn" "-5,-10"
+	"r_velocity_spawn" "-5,-15"
 	"t_color" "0,color.white, 1.0,color.white"
-	"r_spin_spawn" "-180,180"
+	"r_spin_spawn" "0,0"
 	"r_spin_per_sec" "0,0"
 	"t_alpha" "0,0, 0.15,1, 1,0"
+}
+
+{
+	"type" "emitter_params"
+	"name" "powup_pickup"
+	"texture_name" "tex_particle_toon_star"
+	"spawner_type" "circle,16"
+
+	"s_max_spawn_per_sec" "20"
+	"b_needs_warm_up" "false"
+	"b_one_shot" "true"
+	"a_dir" "0"
+	"r_dir_var" "0,359"
+	"r_scale_spawn" "2.0, 3.0"
+	"t_scale" "0.0,0.0, 0.2,1.0, 0.4,0.0, 1.0,0.0"
+	"r_lifespan" "500, 1000"
+	"r_velocity_spawn" "100,100"
+	"t_color" "0,color.white, 1.0,color.blue"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "90,270"
+	"t_alpha" "0,0, 0.15,1, 1,0"
+}
+
+{
+	"type" "emitter_params"
+	"name" "ball_in_deathzone"
+	"texture_name" "tex_smoke"
+	"spawner_type" "circle,5"
+
+	"s_max_spawn_per_sec" "50"
+	"a_dir" "0"
+	"b_one_shot" "true"
+	"r_scale_spawn" "1.50, 1.75"
+	"r_lifespan" "750, 1000"
+	"r_velocity_spawn" "20,50"
+	"t_color" "0,color.dark_grey, 1,color.black"
+	"b_needs_warm_up" "false"
+	"t_scale" "0.0,1.0, 1.0,.15"
+	"r_lifespan" "1500, 2500"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.1,1, 1,0"
+}
+
+{
+	"type" "emitter_params"
+	"name" "fireball_trail"
+	"texture_name" "fire_particle"
+	"spawner_type" "circle,5"
+
+	"s_max_spawn_per_sec" "25"
+	"b_needs_warm_up" "false"
+	"a_dir" "0"
+	"r_scale_spawn" "1, 2"
+	"t_scale" "0.0,1.0, 1.0,.15"
+	"r_lifespan" "1000, 1500"
+	"r_velocity_spawn" "0,0"
+	"t_color" "0,color.yellow, 1,color.red"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,270"
+	"t_alpha" "0,0, 0.1,1, 1,0"
 }

@@ -21,7 +21,6 @@ void w_render_stats::update()
 		render_vertices.update_value( steps );
 		render_indices.update_value( steps );
 		num_entities.update_value( steps );
-		num_frames_rendered.update_value();
 	}
 	else
 	{
@@ -385,7 +384,6 @@ void w_render::end_frame()
 	assert( rs_align_stack.length() == 1 );
 
 	OPENGL->clear_texture_bind();
-	stats.num_frames_rendered.inc();
 }
 
 /*
@@ -432,7 +430,7 @@ w_render* w_render::draw_stats()
 		stat_lines.reserve( stats_draw_reserve );
 
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS / UPDATE : {} FPS",
-											  s_commas( stats.num_frames_rendered.value ),
+											  s_commas( stats.frame_count.value ),
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
 		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
 											  s_commas( stats.render_buffers.value ),
@@ -476,7 +474,7 @@ w_render* w_render::draw_stats()
 			->push_align( align::right )
 			->draw_string(
 				engine->pixel_font,
-				fmt::format( "{} FPS", s_commas( stats.num_frames_rendered.value ) ),
+				fmt::format( "{} FPS", s_commas( stats.frame_count.value ) ),
 				w_rect( v_window_w, 0 ) )
 			->end();
 	}

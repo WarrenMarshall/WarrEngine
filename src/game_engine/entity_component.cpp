@@ -55,7 +55,7 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 
 w_entity_component* ec_sprite::init( const std::string_view subtex_name )
 {
-	this->subtex = engine->get_asset<a_subtexture>( subtex_name );
+	subtex = engine->get_asset<a_subtexture>( subtex_name );
 	return this;
 }
 
@@ -107,13 +107,11 @@ void ec_emitter::draw()
 		return;
 	}
 
-	// particles live in world space, so remove any transforms before
-	// drawing the particle pool
-	//
+	// particles live in world space, so remove any entity and
+	// component level transforms before drawing the particle pool
+
 	MATRIX
-		->push()
-		->translate( w_vec2::multiply( pos, -1.0f ) )
-		->translate( w_vec2::multiply( parent_entity->pos, -1.0f ) );
+		->push_identity();
 
 	emitter->particle_pool->draw();
 
@@ -146,6 +144,30 @@ void ec_emitter::set_life_cycle( e_lifecycle lifecycle )
 void ec_emitter::post_spawn()
 {
 	emitter->post_spawn();
+}
+
+// ----------------------------------------------------------------------------
+
+ec_sound::ec_sound( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+	type = component_type::sound;
+}
+
+w_entity_component* ec_sound::init( const std::string_view snd_name )
+{
+	snd = engine->get_asset<a_sound>( snd_name );
+
+	return this;
+}
+
+void ec_sound::draw()
+{
+	if( is_alive() )
+	{
+		snd->play();
+	}
+	set_life_cycle( lifecycle::dying );
 }
 
 // ----------------------------------------------------------------------------

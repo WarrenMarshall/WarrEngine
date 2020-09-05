@@ -15,6 +15,8 @@ struct endless_breakout_game final : w_game
 	a_music* mus_game = nullptr;
 
 	std::vector<a_subtexture*> brick_textures;
+	a_subtexture* st_powerup_fireball = nullptr;
+	a_subtexture* st_powerup_multiball = nullptr;
 
 	void init() final;
 	void new_game() final;

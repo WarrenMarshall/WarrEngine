@@ -22,3 +22,16 @@ struct e_brick : w_entity
 {
 	e_brick();
 };
+
+// ----------------------------------------------------------------------------
+
+struct e_brick_multiball : w_entity
+{
+	e_brick_multiball();
+};
+// ----------------------------------------------------------------------------
+
+struct e_brick_fireball : w_entity
+{
+	e_brick_fireball();
+};

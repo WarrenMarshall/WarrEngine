@@ -140,21 +140,15 @@ void w_entity::set_life_cycle( e_lifecycle lifecycle )
 
 // ----------------------------------------------------------------------------
 
-w_entity_cozy::w_entity_cozy()
-	: w_entity()
-{
-	life_remaining = 500;
-}
-
 void w_entity_cozy::update()
 {
 	w_entity::update();
 
 	if( is_alive() )
 	{
-		life_remaining -= engine->time->FTS_step_value_ms;
+		life_remaining_ms -= engine->time->FTS_step_value_ms;
 
-		if( life_remaining <= 0.0f )
+		if( life_remaining_ms <= 0.0f )
 		{
 			set_life_cycle( lifecycle::dying );
 		}

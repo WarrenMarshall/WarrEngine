@@ -13,7 +13,6 @@ struct w_render_stats
 	w_accum_value render_indices;
 	w_accum_value frame_times_ms;
 	w_accum_value num_entities;
-	w_accum_value num_frames_rendered;
 
 	std::string stat_custom_string;
 

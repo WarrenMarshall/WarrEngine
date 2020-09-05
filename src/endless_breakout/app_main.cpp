@@ -15,12 +15,12 @@ void endless_breakout_game::init()
 
 	mus_game = engine->get_asset<a_music>( "music_game" );
 
+	st_powerup_fireball = engine->get_asset<a_subtexture>( "sub_brick_red" );
+	st_powerup_multiball = engine->get_asset<a_subtexture>( "sub_brick_yellow" );
+
+	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_grey" ) );
 	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_blue" ) );
 	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_green" ) );
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_grey" ) );
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_purple" ) );
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_red" ) );
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_yellow" ) );
 }
 
 void endless_breakout_game::new_game()

@@ -42,7 +42,7 @@ struct w_entity : i_lifecycle, i_transform
 	// this is only set for dynamic entities which will
 	// instigate collisions. static entities can leave this
 	// as zero.
-	unsigned collides_with = 0;
+	int collides_with = 0;
 
 	// physics
 
@@ -94,9 +94,7 @@ struct w_entity : i_lifecycle, i_transform
 
 struct w_entity_cozy : w_entity
 {
-	float life_remaining = 0.0f;
-
-	w_entity_cozy();
+	float life_remaining_ms = 500.0f;
 
 	void update() override;
 };

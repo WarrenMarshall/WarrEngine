@@ -1,24 +1,36 @@
 
---ENGINE--
+- EC_SPRITE creation with bad subtex name should crash immediately
 
 - "log_msg( fmt::format("
 	- can this used std::forward or something to shorten to : "log_msg("
+
+- emitter defs
+	- "texture_name" "tex_particle_star"
+		- this should become a "subtexture_name" for consistency
+
+- new emitters
+	- ball has fireball effect
+		- trailing fire particles
+	- power up grabbed
+		- spray of stars
+	- ball hit the death zone
+		- smoke fizzle
+
 - "gradient"
 	- change the color list to take a repeat count after each color
 		- so from "color.black / color.white / color.black"
 		  to "color.black:1 / color.white:6 / color.black:1"
 
-- deleting entities is broken, i think
-	- make sure you can delete them cleanly
-	- test with balls hitting the death zone
 
+--------------------------------------
 
---GAME--
+i like the idea of a vfx group of entity components that can wrangle a bunch of entity_components.
 
---LIFE--
+	ec_vfx_group
+		- w_timer to track how long to turn it on for
+		- children
+			- ec_emitter
+			- ec_sound
+			- ec_???
 
-
-- get pre/post update calls working
-- once "ending_pos" is computed, change collisions to use capsules
-- see if we can smooth out that bump that happens at slow update rates
-- start thinking about what's next - collision masks and what-not
+when you need the vfx group, set the timer to tell it how long to turn it's children on for. when the timer runs out, they all go to sleep.
