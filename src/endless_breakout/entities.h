@@ -47,6 +47,8 @@ struct e_ball : w_entity
 struct e_brick : w_entity
 {
 	e_brick();
+
+	void collided_with( w_entity* entity_hit, c2Manifold& hit );
 };
 
 // ----------------------------------------------------------------------------

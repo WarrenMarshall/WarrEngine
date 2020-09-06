@@ -18,7 +18,7 @@ void layer_background::draw()
 {
 	RENDER
 		->begin()
-		->push_rgb( w_color::white )
+		->push_rgb( w_color::light_grey )
 		->draw( background_gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
 		->end();
 

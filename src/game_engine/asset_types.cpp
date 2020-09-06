@@ -344,7 +344,7 @@ bool a_sound::create_internals()
 	// that the user doesn't have an audio device connected to their computer. This is not
 	// fatal to the engine and should not crash you out.
 
-	if( !snd )
+	if( !snd && file_exists )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}
@@ -370,10 +370,9 @@ void a_music::play()
 
 void a_music::stop()
 {
-	if( channel > -1 )
+	if( channel != -1 )
 	{
-		BASS_ChannelStop( channel );
-		channel = -1;
+		BASS_ChannelPause( channel );
 	}
 }
 
@@ -404,7 +403,7 @@ bool a_music::create_internals()
 	// that the user doesn't have an audio device connected to their computer. This is not
 	// fatal to the engine and should not crash you out.
 
-	if( !mus )
+	if( !mus && file_exists )
 	{
 		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
 	}

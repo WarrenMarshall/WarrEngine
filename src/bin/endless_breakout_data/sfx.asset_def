@@ -36,3 +36,9 @@
 	"name" "powup_impact"
 	"filename" "sfx/powup_hit.wav"
 }
+
+{
+	"type" "sound"
+	"name" "game_over"
+	"filename" "sfx/EvilFactory_Jingle_Loose.wav"
+}

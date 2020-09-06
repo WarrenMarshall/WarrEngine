@@ -7,11 +7,11 @@ bool w_keyvalues::does_key_exist( const std::string_view key ) const
 	return kv.count( key.data() ) > 0;
 }
 
-std::string_view w_keyvalues::find_value( const std::string_view key ) const
+std::string_view w_keyvalues::find_value( const std::string& key ) const
 {
 	try
 	{
-		return std::string_view( kv.at( key.data() ) );
+		return std::string_view( kv.at( key ) );
 	}
 	catch( const std::out_of_range& oor )
 	{
@@ -21,17 +21,14 @@ std::string_view w_keyvalues::find_value( const std::string_view key ) const
 }
 
 // same as "find_values", but it isn't fatal if the key doesn't exist
-std::string_view w_keyvalues::find_value_opt( const std::string_view key, const std::string_view default_value ) const
+std::string_view w_keyvalues::find_value_opt( const std::string& key, const std::string& default_value ) const
 {
-	try
+	if( !does_key_exist( key ) )
 	{
-		return std::string_view( kv.at( key.data() ) );
-	}
-	catch( const std::out_of_range& oor )
-	{
-		(void) oor;
 		return default_value;
 	}
+
+	return std::string_view( kv.at( key ) );
 }
 
 void w_keyvalues::set( const std::string_view key, const std::string_view value )

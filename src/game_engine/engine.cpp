@@ -576,7 +576,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 	switch( event )
 	{
-		case event_id::input_pressed:
+		case event_id::input_released:
 		{
 			switch( evt->input_id )
 			{
@@ -596,12 +596,22 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 				{
 					time->dilation -= 0.1f;
 					time->dilation = w_max( time->dilation, 0.1f );
+
+					if( engine->input->is_shift_down() )
+					{
+						time->dilation = 1.0f;
+					}
 				}
 				break;
 
 				case input_id::key_right_bracket:
 				{
 					time->dilation += 0.1f;
+
+					if( engine->input->is_shift_down() )
+					{
+						time->dilation = 5.0f;
+					}
 				}
 				break;
 

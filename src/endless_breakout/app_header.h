@@ -21,3 +21,4 @@
 #include "app_main.h"
 #include "layer_background.h"
 #include "layer_gameplay.h"
+#include "layer_firetoplay.h"

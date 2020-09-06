@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="layer_background.cpp" />
+    <ClCompile Include="layer_firetoplay.cpp" />
     <ClCompile Include="layer_gameplay.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="app_main.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="app_header.h" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="layer_background.h" />
+    <ClInclude Include="layer_firetoplay.h" />
     <ClInclude Include="layer_gameplay.h" />
     <ClInclude Include="app_main.h" />
   </ItemGroup>

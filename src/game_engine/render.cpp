@@ -280,25 +280,26 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 {
 	maybe_draw_master_buffer( font->font_def->texture );
 
+	float rs_scale = rs_scale_stack.back();
 	e_align rs_align = rs_align_stack.back();
 
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
 	if( rs_align & align::hcenter )
 	{
-		w_vec2 extents = font->get_string_extents( text );
+		w_vec2 extents = w_vec2::multiply( font->get_string_extents( text ), rs_scale );
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
 	if( rs_align & align::right )
 	{
-		w_vec2 extents = font->get_string_extents( text );
+		w_vec2 extents = w_vec2::multiply( font->get_string_extents( text ), rs_scale );
 		alignment_pos_adjustment.x -= extents.x;
 	}
 
 	if( rs_align & align::vcenter )
 	{
-		alignment_pos_adjustment.y -= font->font_def->max_height / 2.0f;
+		alignment_pos_adjustment.y -= (font->font_def->max_height * rs_scale ) / 2.0f;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -321,13 +322,13 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		{
 			draw(
 				fch->subtex.get(),
-				w_rect( xpos, ypos + fch->yoffset )
+				w_rect( xpos, ypos + ( fch->yoffset * rs_scale ) )
 			);
 
-			xpos += fch->xoffset;
+			xpos += fch->xoffset * rs_scale;
 		}
 
-		xpos += fch->xadvance;
+		xpos += fch->xadvance * rs_scale;
 	}
 
 	MATRIX->pop();

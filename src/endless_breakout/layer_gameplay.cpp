@@ -1,15 +1,16 @@
 
 #include "app_header.h"
 
-constexpr int multiball_spawn_interval = 4000;
-constexpr int fireball_spawn_interval = 3;
+constexpr int multiball_spawn_interval = 40;
+constexpr int fireball_spawn_interval = 65;
 
 void spawn_new_brick_row( layer_gameplay* layer )
 {
 	static int spawned_brick_counter = 0;
+	static int brick_color_idx = -1;
 
-	int color_idx = w_random::geti_range( 0, static_cast<int>( GAME->brick_textures.size() - 1 ) );
-	std::string subtex_name = GAME->brick_textures[ color_idx ]->name;
+	brick_color_idx = ( brick_color_idx + 1 ) % static_cast<int>( GAME->brick_textures.size() );
+	std::string subtex_name = GAME->brick_textures[ brick_color_idx ]->name;
 
 	int xpos = 24 + w_random::geti_range( 0, 64 );
 	for( int x = 0 ; x < 5 ; ++x )
@@ -20,15 +21,15 @@ void spawn_new_brick_row( layer_gameplay* layer )
 
 			if( !(spawned_brick_counter % multiball_spawn_interval) )
 			{
-				layer->add_entity<e_brick_multiball>( { xpos, -16 }, 0.0f, 0.75f );
+				layer->add_entity<e_brick_multiball>( { xpos, -16 }, w_random::getf_range( -2.0f, 2.0f ), 0.725f );
 			}
 			else if( !( spawned_brick_counter % fireball_spawn_interval ) )
 			{
-				layer->add_entity<e_brick_fireball>( { xpos, -16 }, 0.0f, 0.75f );
+				layer->add_entity<e_brick_fireball>( { xpos, -16 }, w_random::getf_range(-2.0f,2.0f), 0.725f );
 			}
 			else
 			{
-				auto brick = layer->add_entity<e_brick>( { xpos, -16 }, w_random::getf_range( -3.0f, 3.0f ), 0.75f );
+				auto brick = layer->add_entity<e_brick>( { xpos, -16 }, 0.0f, 0.75f );
 				brick->add_component<ec_sprite>()->init( subtex_name );
 			}
 		}
@@ -36,17 +37,9 @@ void spawn_new_brick_row( layer_gameplay* layer )
 	}
 }
 
-layer_gameplay::layer_gameplay()
-{
-}
-
 void layer_gameplay::push()
 {
-	GAME->mus_game->play();
-
-	timer_brick_move = std::make_unique<w_timer>( 250 );
-
-	ball = add_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
+	ball = add_entity<e_ball>( { v_window_hw, 32.0f }, 0.0f, 0.625f );
 
 	auto walls = add_entity<w_entity>();
 
@@ -62,6 +55,20 @@ void layer_gameplay::push()
 	paddle = add_entity<e_paddle>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
+}
+
+void layer_gameplay::becoming_top_layer()
+{
+	w_layer::becoming_top_layer();
+
+	GAME->mus_game->play();
+}
+
+void layer_gameplay::getting_covered()
+{
+	w_layer::getting_covered();
+
+	GAME->mus_game->stop();
 }
 
 bool layer_gameplay::handle_input_event( const w_input_event* evt )
@@ -83,8 +90,6 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::key_n )
 		{
-			//add_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
-			//ball->add_component<ec_emitter>()->init( "fireball_trail" )->set_life_timer( 1000 );
 		}
 	}
 
@@ -93,18 +98,21 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 
 void layer_gameplay::update()
 {
+	if( engine->layer_mgr->get_top() != this )
+	{
+		return;
+	}
+
 	w_layer::update();
 
-	timer_brick_move->update();
-
-	int elapsed_count = timer_brick_move->get_elapsed_count();
+	int elapsed_count = GAME->timer_brick_move->get_elapsed_count();
 
 	if( elapsed_count > 0 )
 	{
 		if( new_row_spawn_countdown == 0 )
 		{
 			spawn_new_brick_row( this );
-			new_row_spawn_countdown = 25;
+			new_row_spawn_countdown = 24;
 		}
 		new_row_spawn_countdown--;
 
@@ -116,4 +124,35 @@ void layer_gameplay::update()
 			}
 		}
 	}
+}
+
+void layer_gameplay::draw()
+{
+	w_layer::draw();
+
+	// score
+
+	RENDER
+		->begin()
+		->push_depth_nudge( 500 )
+		->push_align( align::centered )
+		->push_rgb( w_color::white )
+		->push_alpha( 0.15f )
+		->push_scale( 6.0f )
+		->draw_string( engine->pixel_font, s_commas( static_cast<float>( GAME->score ) ), w_rect( v_window_hw, v_window_h - 100 ) )
+		->end();
+
+	// death zone
+
+	RENDER
+		->begin()
+		->push_depth_nudge()
+		->push_rgba( w_color( 1.0, 0.5f, 0.0f, 0.5 ) )
+		->draw_filled_rectangle( w_rect( 0.0f, v_window_h - 5, v_window_w, v_window_h + 8 ) )
+		->push_depth_nudge()
+		->push_rgba( w_color( 1.0f, 0.0f, 0.0f, w_random::getf_range( 0.5f, 1.0f ) ) )
+		->draw_line( { 0.0f, v_window_h - 5 }, { v_window_w, v_window_h - 5 } )
+		->draw_line( { 0.0f, v_window_h - 4 }, { v_window_w, v_window_h - 4 } )
+		->end();
+
 }

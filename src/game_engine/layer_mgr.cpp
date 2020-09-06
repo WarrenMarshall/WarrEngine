@@ -27,7 +27,7 @@ void w_layer_mgr::pop()
 
 		if( layer->is_alive() )
 		{
-			layer->getting_covered();
+			layer->pop();
 			layer->set_life_cycle( lifecycle::dead );
 			break;
 		}

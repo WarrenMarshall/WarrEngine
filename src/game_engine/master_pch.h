@@ -145,7 +145,6 @@ constexpr T w_clamp( T v, T min, T max )
 }
 
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
-//#define fequals(a,b)
 
 constexpr bool fequals( float a, float b )
 {
@@ -158,6 +157,7 @@ constexpr bool fequals( float a, float b )
 #define OPENGL engine->opengl
 #define RENDER engine->render
 #define UI engine->ui
+#define INPUT engine->input
 
 // ----------------------------------------------------------------------------
 //	useful type definitions to increase code readability
@@ -170,13 +170,12 @@ using w_pos = w_vec2;
 // ----------------------------------------------------------------------------
 
 using b_silent = bool;
-using b_draw_button = bool;
 
 // ----------------------------------------------------------------------------
 
 typedef std::variant<c2Circle, c2AABB, c2Capsule> variant_collider_types;
 
-#define str_not_found "n/a"
+constexpr const char* str_not_found = "n/a";
 
 #define ADD_QUOTES_HELPER(s) #s
 #define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)
