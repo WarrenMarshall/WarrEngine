@@ -60,7 +60,8 @@ void w_entity::update_components()
 		}
 	}
 
-	// update components
+	// update remaining components
+
 	for( const auto& component : components )
 	{
 		MATRIX
@@ -102,6 +103,20 @@ void w_entity::post_spawn()
 	{
 		iter->post_spawn();
 	}
+}
+
+void w_entity::remove_component( w_entity_component* ec )
+{
+	for( int x = 0 ; x < components.size() ; ++x )
+	{
+		if( components[x].get() == ec )
+		{
+			components.erase( components.begin() + x );
+			return;
+		}
+	}
+
+	assert( false );	// the entity component wasn't found
 }
 
 bool w_entity::can_be_deleted()
@@ -164,9 +179,13 @@ void w_entity::set_life_cycle( e_lifecycle lifecycle )
 
 // ----------------------------------------------------------------------------
 
-void w_entity_cozy::update()
+void w_entity_fx::update()
 {
 	w_entity::update();
 
-	set_life_cycle( lifecycle::dying );
+	// once all of the components have died, the fx container entity can die.
+	if( components.size() == 0 )
+	{
+		set_life_cycle( lifecycle::dying );
+	}
 }

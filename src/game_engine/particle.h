@@ -10,6 +10,7 @@ struct w_particle : i_transform
 
 	// angle of movement
 	float a_dir = 0.0f;
+	w_vec2 v_dir = { 0,0 };
 
 	// world units to move, per second
 	float velocity_per_sec = 0.0f;

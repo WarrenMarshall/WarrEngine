@@ -27,7 +27,7 @@ w_entity_component::w_entity_component( w_entity* parent_entity )
 */
 bool w_entity_component::is_fully_dead()
 {
-	if( is_alive() || timer )
+	if( is_alive() || life_timer )
 	{
 		return false;
 	}
@@ -38,13 +38,13 @@ bool w_entity_component::is_fully_dead()
 void w_entity_component::update()
 {
 	// if a timer is being used, and it has elapsed, then this component is dead
-	if( timer )
+	if( life_timer )
 	{
-		timer->update();
+		life_timer->update();
 
-		if( timer->is_elapsed() )
+		if( life_timer->is_elapsed() )
 		{
-			timer = nullptr;
+			life_timer = nullptr;
 			set_life_cycle( lifecycle::dying );
 		}
 	}
@@ -60,15 +60,11 @@ void w_entity_component::update()
 	pos_interp = w_vec2::zero;
 }
 
-void w_entity_component::set_timer( int timer_in_ms )
+void w_entity_component::set_life_timer( int life_in_ms )
 {
-	assert( timer == nullptr );
+	assert( life_timer == nullptr );
 
-	timer = std::make_unique<w_timer>( timer_in_ms );
-
-	// as soon as a timer is added to a component, put it into dying mode
-	// so it will delete itself when the timer expires.
-	//set_life_cycle( lifecycle::dying );
+	life_timer = std::make_unique<w_timer>( life_in_ms );
 }
 
 // ----------------------------------------------------------------------------
@@ -165,6 +161,7 @@ void ec_emitter::set_life_cycle( e_lifecycle lifecycle )
 
 	if( is_dying() )
 	{
+		// setting the max to zero will cause the emitter to stop spawning new particles.
 		emitter->max_particles_alive = 0;
 	}
 }
@@ -256,7 +253,6 @@ variant_collider_types ec_collider::get_collider()
 
 void ec_collider::draw()
 {
-#if 1
 	if( parent_entity->debug_draw_collision )
 	{
 		RENDER->push_rgb( w_color::green );
@@ -272,5 +268,4 @@ void ec_collider::draw()
 
 		RENDER->pop_rgb();
 	}
-#endif
 }

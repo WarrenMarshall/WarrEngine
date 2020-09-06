@@ -10,9 +10,16 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 {
 	this->params = params;
 
-	max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.max / 1000.f ) );
-	// warren
-	//max_particles_alive = 1;
+	// "one shot" emitters don't get throttled like regular emitters.
+	// they spawn all of their particles, no matter what.
+	if( params->b_one_shot )
+	{
+		max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec );
+	}
+	else
+	{
+		max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.max / 1000.f ) );
+	}
 
 	particle_pool = std::make_unique<w_particle_pool>( max_particles_alive );
 }
@@ -63,6 +70,7 @@ void w_particle_emitter::update()
 
 			assert( particles_to_spawn > 0 );
 
+			log_msg( fmt::format( "spawning {} particles", particles_to_spawn ) );
 			while( particles_to_spawn )
 			{
 				spawn_particle();
@@ -99,26 +107,31 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component->parent_entity );
 
 			p->a_dir = parent_component->parent_entity->angle_facing;
+			p->a_dir += params->r_dir_var.get_value();
+			p->v_dir = w_vec2::from_angle( p->a_dir );
+			p->a_dir = -999;
 		}
 		break;
 
-		case particle_spawn_dir::away_from_parent:
+		case particle_spawn_dir::away_from_center:
 		{
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			p->a_dir = parent_component->parent_entity->angle_facing + 180.0f;
+			p->v_dir = w_vec2::subtract( p->pos, parent_component->parent_entity->pos ).normalize();
+			p->a_dir = -999;
 		}
 		break;
 
 		default:
 		{
 			p->a_dir = params->a_dir;
+			p->a_dir += params->r_dir_var.get_value();
+			p->v_dir = w_vec2::from_angle( p->a_dir );
+			p->a_dir = -999;
 		}
 		break;
 	}
-
-	p->a_dir += params->r_dir_var.get_value();
 
 	p->params = params;
 	p->life_span_save = p->life_span = params->r_lifespan.get_value();

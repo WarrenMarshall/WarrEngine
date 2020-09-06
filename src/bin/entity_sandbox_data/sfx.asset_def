@@ -1,0 +1,8 @@
+
+# SFX
+
+{
+	"type" "sound"
+	"name" "powup_hit"
+	"filename" "sfx/powup_hit.wav"
+}

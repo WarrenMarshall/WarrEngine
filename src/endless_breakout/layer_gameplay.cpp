@@ -2,7 +2,7 @@
 #include "app_header.h"
 
 constexpr int multiball_spawn_interval = 4000;
-constexpr int fireball_spawn_interval = 500;
+constexpr int fireball_spawn_interval = 3;
 
 void spawn_new_brick_row( layer_gameplay* layer )
 {
@@ -11,7 +11,7 @@ void spawn_new_brick_row( layer_gameplay* layer )
 	int color_idx = w_random::geti_range( 0, static_cast<int>( GAME->brick_textures.size() - 1 ) );
 	std::string subtex_name = GAME->brick_textures[ color_idx ]->name;
 
-	int xpos = 24 + ( w_random::geti_range( 0, 64 ) );
+	int xpos = 24 + w_random::geti_range( 0, 64 );
 	for( int x = 0 ; x < 5 ; ++x )
 	{
 		if( w_random::geti_range( 0, 3 ) != 0 )
@@ -20,15 +20,15 @@ void spawn_new_brick_row( layer_gameplay* layer )
 
 			if( !(spawned_brick_counter % multiball_spawn_interval) )
 			{
-				layer->spawn_entity<e_brick_multiball>( { xpos, -16 }, 0.0f, 0.75f );
+				layer->add_entity<e_brick_multiball>( { xpos, -16 }, 0.0f, 0.75f );
 			}
 			else if( !( spawned_brick_counter % fireball_spawn_interval ) )
 			{
-				layer->spawn_entity<e_brick_fireball>( { xpos, -16 }, 0.0f, 0.75f );
+				layer->add_entity<e_brick_fireball>( { xpos, -16 }, 0.0f, 0.75f );
 			}
 			else
 			{
-				auto brick = layer->spawn_entity<e_brick>( { xpos, -16 }, w_random::getf_range( -3.0f, 3.0f ), 0.75f );
+				auto brick = layer->add_entity<e_brick>( { xpos, -16 }, w_random::getf_range( -3.0f, 3.0f ), 0.75f );
 				brick->add_component<ec_sprite>()->init( subtex_name );
 			}
 		}
@@ -46,20 +46,20 @@ void layer_gameplay::push()
 
 	timer_brick_move = std::make_unique<w_timer>( 250 );
 
-	ball = spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
+	ball = add_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
 
-	auto walls = spawn_entity<w_entity>();
+	auto walls = add_entity<w_entity>();
 
 	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, 1.0f, v_window_h ) );
 	walls->add_component<ec_collider>()->init_as_box( w_rect( v_window_w - 1.0f, 0.0f, v_window_w, v_window_h ) );
 	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, v_window_w, 1.0f ) );
 	walls->collision_layer = cl_wall;
 
-	auto death_zone = spawn_entity<w_entity>();
+	auto death_zone = add_entity<w_entity>();
 	death_zone->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, v_window_h - 1, v_window_w, v_window_h + 8 ) );
 	death_zone->collision_layer = cl_deathzone;
 
-	paddle = spawn_entity<e_paddle>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
+	paddle = add_entity<e_paddle>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 }
@@ -83,8 +83,8 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::key_n )
 		{
-			//spawn_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
-			ball->add_component<ec_emitter>()->init( "fireball_trail" )->set_timer( 1000 );
+			//add_entity<e_ball>( { v_window_hw, v_window_hh }, 0.0f, 0.625f );
+			//ball->add_component<ec_emitter>()->init( "fireball_trail" )->set_life_timer( 1000 );
 		}
 	}
 

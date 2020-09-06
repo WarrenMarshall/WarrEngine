@@ -199,7 +199,7 @@ enum_end
 
 enum_begin( particle_spawn_dir )
 	inherit_from_parent = -1,
-	away_from_parent = -2
+	away_from_center = -2
 enum_end
 
 // ----------------------------------------------------------------------------

@@ -14,6 +14,65 @@ e_paddle::e_paddle()
 
 // ----------------------------------------------------------------------------
 
+powerup::powerup()
+{
+	timer = std::make_unique<w_timer>( 100 );
+}
+
+void powerup::activate( w_entity* owner )
+{
+	timer->interval_ms = 5000;
+	timer->reset();
+
+	is_active = true;
+}
+
+void powerup::deactivate( w_entity* owner )
+{
+	is_active = false;
+}
+
+void powerup::update()
+{
+	timer->update();
+}
+
+// ----------------------------------------------------------------------------
+
+void pu_fireball::activate( w_entity* owner )
+{
+	if( !is_active )
+	{
+		{
+			auto ec = owner->add_component<ec_emitter>();
+			ec->init( "fireball_trail" );
+			clean_up.push_back( ec );
+		}
+		{
+			auto ec = owner->add_component<ec_emitter>();
+			ec->init( "powup_pickup" );
+			clean_up.push_back( ec );
+		}
+	}
+
+	powerup::activate( owner );
+
+	timer->reset();
+}
+
+void pu_fireball::deactivate( w_entity* owner )
+{
+	powerup::deactivate( owner );
+
+	for( auto ec : clean_up )
+	{
+		owner->remove_component( ec );
+	}
+	clean_up.clear();
+}
+
+// ----------------------------------------------------------------------------
+
 e_ball::e_ball()
 {
 	add_component<ec_sprite>()->init( "sub_tex_ball" );
@@ -22,6 +81,17 @@ e_ball::e_ball()
 
 	collision_layer = cl_ball;
 	collides_with = cl_ball | cl_wall | cl_brick | cl_paddle | cl_deathzone | cl_powup_multiball | cl_powup_fireball;
+}
+
+void e_ball::update()
+{
+	w_entity::update();
+
+	fireball_powerup.update();
+	if( fireball_powerup.is_active && fireball_powerup.timer->is_elapsed() )
+	{
+		fireball_powerup.deactivate( this );
+	}
 }
 
 void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
@@ -36,27 +106,26 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 		entity_hit->set_life_cycle( lifecycle::dying );
 
 		// play the pickup vfx
-		auto e = layer->spawn_entity<w_entity_cozy>();
+		auto e = layer->add_entity<w_entity_fx>();
 		e->set_transform( entity_hit->pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "powup_impact" );
 		e->add_component<ec_emitter>()->init( "powup_pickup" );
 
 		// spawn an extra ball at the same location as the brick
-		auto ball = layer->spawn_entity<e_ball>( entity_hit->pos, 0.0f, scale );
+		auto ball = layer->add_entity<e_ball>( entity_hit->pos, 0.0f, scale );
 	}
 	else if( entity_hit->collision_layer & cl_powup_fireball )
 	{
 		// destroy the brick
 		entity_hit->set_life_cycle( lifecycle::dying );
 
-		// turn on the fire trail for the ball
-		//ec_fire_trail->active_time_remaining_ms += 5000;
+		fireball_powerup.activate( this );
 
 		// play the pickup vfx
-		auto e = layer->spawn_entity<w_entity_cozy>();
+		auto e = layer->add_entity<w_entity_fx>();
 		e->set_transform( entity_hit->pos, 0.0f, 1.0f );
-		e->add_component<ec_sound>()->init( "powup_impact" );
-		e->add_component<ec_emitter>()->init( "powup_pickup" );
+		e->add_component<ec_sound>()->init( "powup_impact" )->set_life_timer( 1000 );
+		//e->add_component<ec_emitter>()->init( "powup_pickup" )->set_life_timer( 1000 );
 	}
 	else if( entity_hit->collision_layer & cl_brick )
 	{
@@ -64,7 +133,7 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 
 		entity_hit->set_life_cycle( lifecycle::dying );
 
-		//if( !ec_fire_trail->is_active() )
+		if( !fireball_powerup.is_active )
 		{
 			// default ball collision behavior is to reflect off, maintaining speed
 
@@ -82,7 +151,7 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 	{
 		set_life_cycle( lifecycle::dying );
 
-		auto e = layer->spawn_entity<w_entity_cozy>();
+		auto e = layer->add_entity<w_entity_fx>();
 		e->set_transform( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "deathzone_impact" );
 		e->add_component<ec_emitter>()->init( "ball_in_deathzone" );
@@ -142,6 +211,7 @@ e_brick_fireball::e_brick_fireball()
 	add_component<ec_sprite>()->init( "sub_brick_red" );
 	add_component<ec_collider>()->init_as_box( w_rect( -24, -12, 48, 24 ) );
 }
+
 // ----------------------------------------------------------------------------
 
 e_brick_multiball::e_brick_multiball()
@@ -151,3 +221,5 @@ e_brick_multiball::e_brick_multiball()
 	add_component<ec_sprite>()->init( "sub_brick_yellow" );
 	add_component<ec_collider>()->init_as_box( w_rect( -24, -12, 48, 24 ) );
 }
+
+// ----------------------------------------------------------------------------

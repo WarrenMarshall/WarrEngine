@@ -1,0 +1,20 @@
+{
+	"type" "emitter_params"
+	"name" "powup_pickup"
+	"texture_name" "cartoon_star"
+	"spawner_type" "circle,16"
+
+	"s_max_spawn_per_sec" "50"
+	"b_needs_warm_up" "false"
+	"b_one_shot" "true"
+	"a_dir" "away_from_center"
+	#"r_dir_var" "0,359"
+	"r_scale_spawn" "1.0, 1.0"
+	"t_scale" "0.0,1.0, 1.0,1.0"
+	"r_lifespan" "1500, 1500"
+	"r_velocity_spawn" "100,100"
+	"t_color" "0,color.white, 0.5,color.yellow, 1.0,color.red"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "90,270"
+	"t_alpha" "0,1, 1,0"
+}

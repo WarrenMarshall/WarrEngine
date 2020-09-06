@@ -5,7 +5,7 @@ struct w_entity_component : i_lifecycle, i_transform
 	e_component_type type = component_type::invalid;
 	w_vec2 pos_interp;
 
-	std::unique_ptr<w_timer> timer = nullptr;
+	std::unique_ptr<w_timer> life_timer = nullptr;
 
 	// components have pointers to their entity parents for convenience
 	w_entity* parent_entity = nullptr;
@@ -22,7 +22,7 @@ struct w_entity_component : i_lifecycle, i_transform
 	virtual void update();
 	virtual void post_spawn() {}
 
-	virtual void set_timer( int timer_in_ms );
+	virtual void set_life_timer( int life_in_ms );
 };
 
 // ----------------------------------------------------------------------------

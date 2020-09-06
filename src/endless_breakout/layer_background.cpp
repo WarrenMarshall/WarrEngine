@@ -10,7 +10,7 @@ void layer_background::push()
 {
 	background_gradient = engine->get_asset<a_gradient>( "background_gradient" );
 
-	spawn_entity<w_entity>( { v_window_hw, v_window_hh } )
+	add_entity<w_entity>( { v_window_hw, v_window_hh } )
 		->add_component<ec_emitter>()->init( "background_stars" );
 }
 

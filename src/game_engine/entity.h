@@ -84,16 +84,22 @@ struct w_entity : i_lifecycle, i_transform
 
 		return new_component;
 	}
+	void remove_component( w_entity_component* ec );
 };
 
 // ----------------------------------------------------------------------------
 
-// a cozy is an entity that lives for X ms and then marks itself as dying
-// so it'll get automatically cleaned up.
-//
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
+//
+// an fx entity will live as long as it's components do.
+// therefore, you must make sure that all components added to it will
+// die out on their own.
+//
+// so adding an emitter that spits out particles
+// forever means that this entity will never be deleted. give that
+// emitter a "b_one_shot" flag or a lifetime timer.
 
-struct w_entity_cozy : w_entity
+struct w_entity_fx : w_entity
 {
 	virtual void update() final;
 };

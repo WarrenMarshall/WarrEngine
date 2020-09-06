@@ -42,7 +42,8 @@ void w_particle_pool::draw()
 
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
 
-			w_vec2 v = w_vec2::from_angle( iter.a_dir );
+			//w_vec2 v = w_vec2::from_angle( iter.a_dir );
+			w_vec2 v = iter.v_dir;
 			w_vec2 interp_pos(
 				RENDER->calc_interpolated_per_sec_value( iter.pos.x, ( v.x * iter.velocity_per_sec ) ),
 				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) )

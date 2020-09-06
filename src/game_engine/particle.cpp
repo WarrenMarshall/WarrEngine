@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_particle::w_particle() 
+w_particle::w_particle()
 {
 	init_to_new();
 }
@@ -16,7 +16,7 @@ void w_particle::update()
 		return;
 	}
 
-	w_vec2 v = w_vec2::from_angle( a_dir );
+	w_vec2 v = v_dir;
 	pos.x += v.x * ( velocity_per_sec * w_time::FTS_step_value_s );
 	pos.y += v.y * ( velocity_per_sec * w_time::FTS_step_value_s );
 

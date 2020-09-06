@@ -44,7 +44,7 @@ struct w_layer : i_lifecycle
 	virtual bool handle_input_event( const w_input_event* evt );
 
 	template<typename T>
-	T* spawn_entity( w_vec2 pos = w_vec2::zero, float angle = 0.0f, float scale = 1.0f )
+	T* add_entity( w_vec2 pos = w_vec2::zero, float angle = 0.0f, float scale = 1.0f )
 	{
 		entities.emplace_back( std::make_unique<T>() );
 
