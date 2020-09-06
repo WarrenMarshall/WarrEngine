@@ -5,6 +5,11 @@ struct w_entity_component : i_lifecycle, i_transform
 	e_component_type type = component_type::invalid;
 	w_vec2 pos_interp;
 
+	// if this boolean is true OR there is time remaining on
+	// the clock, this component is active.
+	bool active = true;
+	float active_time_remaining_ms = 0;
+
 	// components have pointers to their entity parents for convenience
 	w_entity* parent_entity = nullptr;
 
@@ -14,6 +19,8 @@ struct w_entity_component : i_lifecycle, i_transform
 	w_entity_component() = delete;
 	w_entity_component( w_entity* parent_entity );
 	virtual ~w_entity_component() = default;
+
+	bool is_active();
 
 	virtual bool is_fully_dead();
 	virtual void draw() {}

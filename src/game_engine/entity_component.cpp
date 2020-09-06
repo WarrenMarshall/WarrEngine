@@ -37,12 +37,21 @@ bool w_entity_component::is_fully_dead()
 
 void w_entity_component::update()
 {
+	// #todo - this reads weird, can it be simplified?
 	if( is_dying() && is_fully_dead() )
 	{
 		set_life_cycle( lifecycle::dead );
 	}
 
 	pos_interp = w_vec2::zero;
+
+	active_time_remaining_ms -= w_time::FTS_step_value_ms;
+	active_time_remaining_ms = w_max( active_time_remaining_ms, 0.0f );
+}
+
+bool w_entity_component::is_active()
+{
+	return active || ( active_time_remaining_ms > 0.0f );
 }
 
 // ----------------------------------------------------------------------------
@@ -102,7 +111,7 @@ bool ec_emitter::is_fully_dead()
 
 void ec_emitter::draw()
 {
-	if( is_dead() )
+	if( is_dead() || !is_active() )
 	{
 		return;
 	}
@@ -122,7 +131,9 @@ void ec_emitter::draw()
 
 void ec_emitter::update()
 {
-	if( is_dead() )
+	w_entity_component::update();
+
+	if( is_dead() || !is_active() )
 	{
 		return;
 	}

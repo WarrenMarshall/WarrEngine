@@ -2,7 +2,7 @@
 #include "app_header.h"
 
 constexpr int multiball_spawn_interval = 40;
-constexpr int fireball_spawn_interval = 65;
+constexpr int fireball_spawn_interval = 5;
 
 void spawn_new_brick_row( layer_gameplay* layer )
 {
@@ -28,7 +28,7 @@ void spawn_new_brick_row( layer_gameplay* layer )
 			}
 			else
 			{
-				auto brick = layer->spawn_entity<e_brick>( { xpos, -16 }, w_random::getf_range( -3.0f, 3.0f ), w_random::getf_range( 0.6f, 0.75f ) );
+				auto brick = layer->spawn_entity<e_brick>( { xpos, -16 }, w_random::getf_range( -3.0f, 3.0f ), 0.75f );
 				brick->add_component<ec_sprite>()->init( subtex_name );
 			}
 		}

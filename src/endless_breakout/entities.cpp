@@ -17,8 +17,9 @@ e_paddle::e_paddle()
 e_ball::e_ball()
 {
 	add_component<ec_sprite>()->init( "sub_tex_ball" );
-	add_component<ec_emitter>()->init( "fireball_trail" );
 	add_component<ec_collider>()->init_as_circle( 7 );
+	ec_fire_trail = add_component<ec_emitter>()->init( "fireball_trail" );
+	ec_fire_trail->active = false;
 	forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 150.0f ) );
 
 	collision_layer = cl_ball;
@@ -33,14 +34,31 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 
 	if( entity_hit->collision_layer & cl_powup_multiball )
 	{
+		// destroy the brick
 		entity_hit->set_life_cycle( lifecycle::dying );
 
+		// play the pickup vfx
 		auto e = layer->spawn_entity<w_entity_cozy>();
 		e->set_transform( entity_hit->pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "powup_impact" );
 		e->add_component<ec_emitter>()->init( "powup_pickup" );
 
+		// spawn an extra ball at the same location as the brick
 		auto ball = layer->spawn_entity<e_ball>( entity_hit->pos, 0.0f, scale );
+	}
+	else if( entity_hit->collision_layer & cl_powup_fireball )
+	{
+		// destroy the brick
+		entity_hit->set_life_cycle( lifecycle::dying );
+
+		// turn on the fire trail for the ball
+		ec_fire_trail->active_time_remaining_ms += 5000;
+
+		// play the pickup vfx
+		auto e = layer->spawn_entity<w_entity_cozy>();
+		e->set_transform( entity_hit->pos, 0.0f, 1.0f );
+		e->add_component<ec_sound>()->init( "powup_impact" );
+		e->add_component<ec_emitter>()->init( "powup_pickup" );
 	}
 	else if( entity_hit->collision_layer & cl_brick )
 	{
@@ -48,16 +66,19 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 
 		entity_hit->set_life_cycle( lifecycle::dying );
 
-		// default ball collision behavior is to reflect off, maintaining speed
+		if( !ec_fire_trail->is_active() )
+		{
+			// default ball collision behavior is to reflect off, maintaining speed
 
-		glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
-		glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
-		glm::vec3 reflected_dir = glm::reflect( forces_vec, hit_normal );
+			glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
+			glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
+			glm::vec3 reflected_dir = glm::reflect( forces_vec, hit_normal );
 
-		// reset the force on the ball so it's using the new direction
-		w_force* force = forces.back().get();
-		force->dir.x = reflected_dir.x;
-		force->dir.y = reflected_dir.y;
+			// reset the force on the ball so it's using the new direction
+			w_force* force = forces.back().get();
+			force->dir.x = reflected_dir.x;
+			force->dir.y = reflected_dir.y;
+		}
 	}
 	else if( entity_hit->collision_layer & cl_deathzone )
 	{
