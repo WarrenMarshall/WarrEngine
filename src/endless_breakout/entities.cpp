@@ -18,8 +18,6 @@ e_ball::e_ball()
 {
 	add_component<ec_sprite>()->init( "sub_tex_ball" );
 	add_component<ec_collider>()->init_as_circle( 7 );
-	ec_fire_trail = add_component<ec_emitter>()->init( "fireball_trail" );
-	ec_fire_trail->active = false;
 	forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 150.0f ) );
 
 	collision_layer = cl_ball;
@@ -52,7 +50,7 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 		entity_hit->set_life_cycle( lifecycle::dying );
 
 		// turn on the fire trail for the ball
-		ec_fire_trail->active_time_remaining_ms += 5000;
+		//ec_fire_trail->active_time_remaining_ms += 5000;
 
 		// play the pickup vfx
 		auto e = layer->spawn_entity<w_entity_cozy>();
@@ -66,7 +64,7 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 
 		entity_hit->set_life_cycle( lifecycle::dying );
 
-		if( !ec_fire_trail->is_active() )
+		//if( !ec_fire_trail->is_active() )
 		{
 			// default ball collision behavior is to reflect off, maintaining speed
 

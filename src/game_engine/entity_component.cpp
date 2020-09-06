@@ -27,7 +27,7 @@ w_entity_component::w_entity_component( w_entity* parent_entity )
 */
 bool w_entity_component::is_fully_dead()
 {
-	if( is_alive() )
+	if( is_alive() || timer )
 	{
 		return false;
 	}
@@ -37,21 +37,38 @@ bool w_entity_component::is_fully_dead()
 
 void w_entity_component::update()
 {
-	// #todo - this reads weird, can it be simplified?
+	// if a timer is being used, and it has elapsed, then this component is dead
+	if( timer )
+	{
+		timer->update();
+
+		if( timer->is_elapsed() )
+		{
+			timer = nullptr;
+			set_life_cycle( lifecycle::dying );
+		}
+	}
+
+	// if this component is trying to die AND it meets the requirements to
+	// be fully dead, then mark it dead
+
 	if( is_dying() && is_fully_dead() )
 	{
 		set_life_cycle( lifecycle::dead );
 	}
 
 	pos_interp = w_vec2::zero;
-
-	active_time_remaining_ms -= w_time::FTS_step_value_ms;
-	active_time_remaining_ms = w_max( active_time_remaining_ms, 0.0f );
 }
 
-bool w_entity_component::is_active()
+void w_entity_component::set_timer( int timer_in_ms )
 {
-	return active || ( active_time_remaining_ms > 0.0f );
+	assert( timer == nullptr );
+
+	timer = std::make_unique<w_timer>( timer_in_ms );
+
+	// as soon as a timer is added to a component, put it into dying mode
+	// so it will delete itself when the timer expires.
+	//set_life_cycle( lifecycle::dying );
 }
 
 // ----------------------------------------------------------------------------
@@ -111,7 +128,7 @@ bool ec_emitter::is_fully_dead()
 
 void ec_emitter::draw()
 {
-	if( is_dead() || !is_active() )
+	if( is_dead() )
 	{
 		return;
 	}
@@ -133,7 +150,7 @@ void ec_emitter::update()
 {
 	w_entity_component::update();
 
-	if( is_dead() || !is_active() )
+	if( is_dead() )
 	{
 		return;
 	}

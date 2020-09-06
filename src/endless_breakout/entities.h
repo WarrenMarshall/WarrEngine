@@ -14,8 +14,6 @@ struct e_ball : w_entity
 	e_ball();
 
 	virtual void collided_with( w_entity* entity_hit, c2Manifold& hit ) final;
-
-	w_entity_component* ec_fire_trail = nullptr;
 };
 
 // ----------------------------------------------------------------------------

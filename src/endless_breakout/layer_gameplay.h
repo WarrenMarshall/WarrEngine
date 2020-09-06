@@ -3,6 +3,7 @@
 struct layer_gameplay : w_layer
 {
 	w_entity* paddle = nullptr;
+	w_entity* ball = nullptr;
 	std::unique_ptr<w_timer> timer_brick_move;
 	unsigned new_row_spawn_countdown = 0;
 

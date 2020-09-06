@@ -18,7 +18,7 @@ void w_force::init_to_zero()
 // precompute whatever physics values the entity will need when doing
 // collision detection.
 
-void w_entity::pre_update()
+void w_entity::update_physics()
 {
 	// accumulate all forces being applied to this entity and compute
 	// a single vector that represents that cumuluative effect.
@@ -41,6 +41,24 @@ void w_entity::update()
 {
 	// move to the physics based ending position
 	pos = physics_cache.ending_pos;
+}
+
+void w_entity::update_components()
+{
+	// clear out dead components
+	//
+	// NOTE : uses standard 'for' loop because it manipulates the vector as it runs.
+
+	for( int x = 0; x < components.size(); ++x )
+	{
+		w_entity_component* ec = components[ x ].get();
+
+		if( ec->is_fully_dead() )
+		{
+			components.erase( components.begin() + x );
+			x--;
+		}
+	}
 
 	// update components
 	for( const auto& component : components )
@@ -112,7 +130,7 @@ bool w_entity::can_be_deleted()
 	return true;
 }
 
-void w_entity::set_transform( const w_vec2& pos, const float& angle, const float& scale )
+void w_entity::set_transform( const w_vec2& pos, const float angle, const float scale )
 {
 	i_transform::set_transform( pos, angle, scale );
 

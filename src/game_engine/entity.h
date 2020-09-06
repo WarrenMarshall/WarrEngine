@@ -55,14 +55,15 @@ struct w_entity : i_lifecycle, i_transform
 		w_vec2 ending_pos = w_vec2::zero;
 	} physics_cache;
 
-	virtual void set_transform( const w_vec2& pos, const float& angle, const float& scale ) override;
+	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;
 	void set_pos( const w_vec2& pos );
 
 	void set_life_cycle( e_lifecycle lifecycle ) override;
 	virtual bool can_be_deleted();
 
-	virtual void pre_update();
+	virtual void update_physics();
 	virtual void update();
+	virtual void update_components();
 	virtual void draw();
 	virtual void post_spawn();
 	virtual void collided_with( w_entity* entity_hit, c2Manifold& manifold ) {}

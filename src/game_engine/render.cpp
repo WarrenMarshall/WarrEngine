@@ -90,7 +90,7 @@ w_render* w_render::push_rgba( const w_color& color )
 	return this;
 }
 
-w_render* w_render::push_rgba( const w_color& color, const float& alpha )
+w_render* w_render::push_rgba( const w_color& color, const float alpha )
 {
 	push_rgb( color );
 	push_alpha( alpha );
@@ -106,7 +106,7 @@ w_render* w_render::pop_rgba()
 	return this;
 }
 
-w_render* w_render::push_alpha( const float& alpha )
+w_render* w_render::push_alpha( const float alpha )
 {
 	rs_alpha_stack += alpha;
 
@@ -120,14 +120,14 @@ w_render* w_render::pop_alpha()
 	return this;
 }
 
-w_render* w_render::push_scale( const float& scale )
+w_render* w_render::push_scale( const float scale )
 {
 	rs_scale_stack += scale;
 
 	return this;
 }
 
-w_render* w_render::push_angle( const float& angle )
+w_render* w_render::push_angle( const float angle )
 {
 	rs_angle_stack += angle;
 
@@ -141,7 +141,7 @@ w_render* w_render::push_align( const e_align& align )
 	return this;
 }
 
-w_render* w_render::push_depth( const float& depth )
+w_render* w_render::push_depth( const float depth )
 {
 	zdepth = depth;
 	zdepth_nudge_accum = 0.0f;
@@ -153,7 +153,7 @@ w_render* w_render::push_depth( const float& depth )
 // to, for example, nudge something in front of something else without
 // having to know the current depth
 
-w_render* w_render::push_depth_nudge( const float& nudge )
+w_render* w_render::push_depth_nudge( const float nudge )
 {
 	zdepth += nudge;
 	zdepth_nudge_accum += nudge;

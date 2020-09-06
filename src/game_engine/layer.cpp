@@ -25,18 +25,9 @@ void w_layer::update()
 		}
 	}
 
-	// update the remaining entities
-
 	for( const auto& entity : entities )
 	{
-		//MATRIX
-		//	->push()
-		//	->add_transform( entity->pos, entity->angle_facing, entity->scale );
-
-		entity->pre_update();
-
-		//MATRIX
-		//	->pop();
+		entity->update_physics();
 	}
 
 	update_collisions();
@@ -48,6 +39,7 @@ void w_layer::update()
 			->add_transform( entity->pos, entity->angle_facing, entity->scale );
 
 		entity->update();
+		entity->update_components();
 
 		MATRIX
 			->pop();
@@ -94,7 +86,6 @@ void w_layer::update_collisions()
 				}
 			}
 		}
-
 	}
 }
 

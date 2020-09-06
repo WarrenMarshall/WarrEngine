@@ -53,16 +53,16 @@ struct w_render
 	w_render* push_rgb( const w_color& color );
 	w_render* pop_rgb();
 	w_render* push_rgba( const w_color& color );
-	w_render* push_rgba( const w_color& color, const float& alpha );
+	w_render* push_rgba( const w_color& color, const float alpha );
 	w_render* pop_rgba();
-	w_render* push_alpha( const float& alpha );
+	w_render* push_alpha( const float alpha );
 	w_render* pop_alpha();
-	w_render* push_scale( const float& scale );
-	w_render* push_angle( const float& angle );
+	w_render* push_scale( const float scale );
+	w_render* push_angle( const float angle );
 	w_render* push_align( const e_align& align );
 
-	w_render* push_depth( const float& depth );
-	w_render* push_depth_nudge( const float& nudge = zdepth_nudge );
+	w_render* push_depth( const float depth );
+	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
 
 	void end();
 
