@@ -73,7 +73,8 @@ void pu_fireball::deactivate( w_entity* owner )
 
 	for( auto ec : clean_up )
 	{
-		owner->remove_component( ec );
+		ec->set_life_cycle( lifecycle::dying );
+		//owner->remove_component( ec );
 	}
 	clean_up.clear();
 }
@@ -216,6 +217,8 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 		w_force* force2 = entity_hit->forces.back().get();
 
 		std::swap( force1->dir, force2->dir );
+
+		GAME->add_score( 10 );
 
 		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "ball_impact" );

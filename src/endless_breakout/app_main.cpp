@@ -46,8 +46,8 @@ void endless_breakout_game::add_score( int points )
 
 	if( ( score % 100 ) == 0 )
 	{
-		brick_move_speed -= 10;
-		brick_move_speed = w_max( brick_move_speed, 10 );
+		brick_move_speed -= 5;
+		brick_move_speed = w_max( brick_move_speed, 50 );
 
 		timer_brick_move->interval_ms = static_cast<float>( brick_move_speed );
 		timer_brick_move->reset();

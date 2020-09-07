@@ -2,7 +2,7 @@
 #include "app_header.h"
 
 constexpr int multiball_spawn_interval = 50;
-constexpr int fireball_spawn_interval = 85;
+constexpr int fireball_spawn_interval = 35;
 
 void spawn_new_brick_row( layer_gameplay* layer )
 {

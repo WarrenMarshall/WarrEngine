@@ -122,7 +122,7 @@ constexpr float zdepth_clear_window = -15000.0f;
 constexpr float zdepth_nudge = 10.0f;
 constexpr float zdepth_background = 0.0f;
 constexpr float zdepth_layers = 1000.0f;
-constexpr float zdepth_layer_step = 500.0f;
+constexpr float zdepth_layer_step = 1000.0f;
 constexpr float zdepth_stats = 9000.0f;
 constexpr float zdepth_engine = 9500.0f;
 
