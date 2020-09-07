@@ -117,6 +117,12 @@ void w_layer_mgr::draw()
 
 void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 {
+	// ignore user input when engine is paused
+	if( engine->is_paused )
+	{
+		return;
+	}
+
 	const w_input_event* evt = static_cast<w_input_event*>( object );
 
 	for( const auto& iter : layer_stack )

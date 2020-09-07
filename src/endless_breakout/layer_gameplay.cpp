@@ -21,11 +21,11 @@ void spawn_new_brick_row( layer_gameplay* layer )
 
 			if( !(spawned_brick_counter % multiball_spawn_interval) )
 			{
-				layer->add_entity<e_brick_multiball>( { xpos, -16 }, w_random::getf_range( -2.0f, 2.0f ), 0.725f );
+				layer->add_entity<e_brick_multiball>( { xpos, -16 }, 0.0f, 0.725f );
 			}
 			else if( !( spawned_brick_counter % fireball_spawn_interval ) )
 			{
-				layer->add_entity<e_brick_fireball>( { xpos, -16 }, w_random::getf_range(-2.0f,2.0f), 0.725f );
+				layer->add_entity<e_brick_fireball>( { xpos, -16 }, 0.0f, 0.725f );
 			}
 			else
 			{
@@ -39,13 +39,17 @@ void spawn_new_brick_row( layer_gameplay* layer )
 
 void layer_gameplay::push()
 {
-	ball = add_entity<e_ball>( { v_window_hw, 32.0f }, 0.0f, 0.625f );
+	ball = add_entity<e_ball>( { v_window_hw, 32.0f }, 0.0f, 0.75f );
 
 	auto walls = add_entity<w_entity>();
 
+	// left
 	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, 1.0f, v_window_h ) );
+	// right
 	walls->add_component<ec_collider>()->init_as_box( w_rect( v_window_w - 1.0f, 0.0f, v_window_w, v_window_h ) );
-	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, 0.0f, v_window_w, 1.0f ) );
+	// top (extra thicc to prevent multiballs from spawning outside the world)
+	walls->add_component<ec_collider>()->init_as_box( w_rect( 0.0f, -64.0f, v_window_w, 66.0f ) );
+
 	walls->collision_layer = cl_wall;
 
 	auto death_zone = add_entity<w_entity>();
@@ -130,7 +134,7 @@ void layer_gameplay::draw()
 {
 	w_layer::draw();
 
-	// score
+	// score / high_score
 
 	RENDER
 		->begin()

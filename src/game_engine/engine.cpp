@@ -107,6 +107,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			}
 
 			// precache the rest of the assets in the remaining passes
+			constexpr int num_asset_def_passes = 3;
 			for( int pass = 1; pass < num_asset_def_passes; ++pass )
 			{
 				engine->precache_asset_resources( pass, game_name );

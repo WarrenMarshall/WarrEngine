@@ -12,12 +12,12 @@ void endless_breakout_game::init()
 
 	timer_display_score_update = std::make_unique<w_timer>( 20 );
 
-	st_powerup_fireball = engine->get_asset<a_subtexture>( "sub_brick_red" );
-	st_powerup_multiball = engine->get_asset<a_subtexture>( "sub_brick_yellow" );
+	st_powerup_fireball = engine->get_asset<a_subtexture>( "brick_red" );
+	st_powerup_multiball = engine->get_asset<a_subtexture>( "brick_yellow" );
 
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_grey" ) );
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_blue" ) );
-	brick_textures.push_back( engine->get_asset<a_subtexture>( "sub_brick_green" ) );
+	brick_textures.push_back( engine->get_asset<a_subtexture>( "brick_blue_01" ) );
+	brick_textures.push_back( engine->get_asset<a_subtexture>( "brick_blue_02" ) );
+	brick_textures.push_back( engine->get_asset<a_subtexture>( "brick_blue_03" ) );
 }
 
 void endless_breakout_game::new_game()

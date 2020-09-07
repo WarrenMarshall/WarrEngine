@@ -24,6 +24,10 @@ struct powerup
 struct pu_fireball : powerup
 {
 	std::vector<w_entity_component*> clean_up;
+	a_sound* snd_fire_on = nullptr;
+	a_sound* snd_fire_off = nullptr;
+
+	pu_fireball();
 
 	virtual void activate( w_entity* owner ) final;
 	virtual void deactivate( w_entity* owner ) final;

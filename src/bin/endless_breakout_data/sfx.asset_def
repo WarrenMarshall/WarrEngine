@@ -42,3 +42,15 @@
 	"name" "game_over"
 	"filename" "sfx/EvilFactory_Jingle_Loose.wav"
 }
+
+{
+	"type" "sound"
+	"name" "fire_on"
+	"filename" "sfx/Fire_8_Bit_Fireball_1.wav"
+}
+
+{
+	"type" "sound"
+	"name" "fire_off"
+	"filename" "sfx/fuse_stop_burn_out_bomb_dynamite_01.wav"
+}

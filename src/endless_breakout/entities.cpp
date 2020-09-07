@@ -51,8 +51,17 @@ void powerup::update()
 
 // ----------------------------------------------------------------------------
 
+pu_fireball::pu_fireball()
+	: powerup()
+{
+	snd_fire_on = engine->get_asset<a_sound>( "fire_on" );
+	snd_fire_off = engine->get_asset<a_sound>( "fire_off" );
+}
+
 void pu_fireball::activate( w_entity* owner )
 {
+	snd_fire_on->play();
+
 	if( !is_active )
 	{
 		{
@@ -69,6 +78,8 @@ void pu_fireball::activate( w_entity* owner )
 
 void pu_fireball::deactivate( w_entity* owner )
 {
+	snd_fire_off->play();
+
 	powerup::deactivate( owner );
 
 	for( auto ec : clean_up )
@@ -275,7 +286,7 @@ e_brick_fireball::e_brick_fireball()
 {
 	collision_layer = cl_brick | cl_powup_fireball;
 
-	add_component<ec_sprite>()->init( "sub_brick_red" );
+	add_component<ec_sprite>()->init( "brick_red" );
 	add_component<ec_collider>()->init_as_box( w_rect( -24, -12, 48, 24 ) );
 }
 
@@ -285,7 +296,7 @@ e_brick_multiball::e_brick_multiball()
 {
 	collision_layer = cl_brick | cl_powup_multiball;
 
-	add_component<ec_sprite>()->init( "sub_brick_yellow" );
+	add_component<ec_sprite>()->init( "brick_yellow" );
 	add_component<ec_collider>()->init_as_box( w_rect( -24, -12, 48, 24 ) );
 }
 
