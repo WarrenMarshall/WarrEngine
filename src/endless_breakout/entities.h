@@ -39,7 +39,7 @@ struct e_ball : w_entity
 
 	pu_fireball fireball_powerup;
 
-	virtual void collided_with( w_entity* entity_hit, c2Manifold& hit ) final;
+	virtual void collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& hit ) final;
 };
 
 // ----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ struct e_brick : w_entity
 {
 	e_brick();
 
-	void collided_with( w_entity* entity_hit, c2Manifold& hit );
+	void collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& hit );
 };
 
 // ----------------------------------------------------------------------------

@@ -66,7 +66,7 @@ struct w_entity : i_lifecycle, i_transform
 	virtual void update_components();
 	virtual void draw();
 	virtual void post_spawn();
-	virtual void collided_with( w_entity* entity_hit, c2Manifold& manifold ) {}
+	virtual void collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& manifold ) {}
 
 	template<typename T> T* add_component()
 	{

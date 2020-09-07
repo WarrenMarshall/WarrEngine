@@ -1,8 +1,8 @@
 
 #include "app_header.h"
 
-constexpr int multiball_spawn_interval = 40;
-constexpr int fireball_spawn_interval = 65;
+constexpr int multiball_spawn_interval = 50;
+constexpr int fireball_spawn_interval = 85;
 
 void spawn_new_brick_row( layer_gameplay* layer )
 {
@@ -139,7 +139,18 @@ void layer_gameplay::draw()
 		->push_rgb( w_color::white )
 		->push_alpha( 0.15f )
 		->push_scale( 6.0f )
-		->draw_string( engine->pixel_font, s_commas( static_cast<float>( GAME->score ) ), w_rect( v_window_hw, v_window_h - 100 ) )
+		->draw_string( engine->pixel_font, s_commas( static_cast<float>( GAME->display_score ) ), w_rect( v_window_hw, v_window_h - 100 ) );
+
+	if( GAME->high_score > 0 )
+	{
+		RENDER
+			->push_rgb( w_color::grey )
+			->push_alpha( 0.15f )
+			->push_scale( 2.0f )
+			->draw_string( engine->pixel_font, s_commas( static_cast<float>( GAME->high_score ) ), w_rect( v_window_hw, v_window_h - 60 ) );
+	}
+
+	RENDER
 		->end();
 
 	// death zone

@@ -10,6 +10,9 @@ struct endless_breakout_game : w_game
 	a_sound* snd_game_over = nullptr;
 
 	int score = 0;
+	int high_score = 0;
+	int display_score = 0;
+	std::unique_ptr<w_timer> timer_display_score_update = nullptr;
 
 	std::unique_ptr<w_timer> timer_brick_move;
 	int brick_move_speed = 250;

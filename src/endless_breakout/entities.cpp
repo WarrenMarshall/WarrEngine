@@ -101,7 +101,7 @@ void e_ball::update()
 	}
 }
 
-void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
+void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& hit )
 {
 	assert( hit.count > 0 );	// sanity check
 
@@ -144,6 +144,8 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 
 		if( !fireball_powerup.is_active )
 		{
+			collider->push_outside( hit );
+
 			// default ball collision behavior is to reflect off, maintaining speed
 
 			glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
@@ -158,8 +160,8 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 		}
 		else
 		{
-			// 5 extra points for burning bricks
-			GAME->add_score( 5 );
+			// 10 extra points for burning bricks
+			GAME->add_score( 10 );
 		}
 
 		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
@@ -194,6 +196,8 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 	}
 	else if( entity_hit->collision_layer & cl_paddle )
 	{
+		collider->push_outside( hit );
+
 		w_force* force = forces.back().get();
 		w_vec2 new_dir = w_vec2::subtract( pos, entity_hit->pos );
 		force->dir = new_dir.normalize();
@@ -204,6 +208,8 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 	}
 	else if( entity_hit->collision_layer & cl_ball )
 	{
+		collider->push_outside( hit );
+
 		// 2 balls colliding should richochet away from each other
 
 		w_force* force1 = forces.back().get();
@@ -217,6 +223,8 @@ void e_ball::collided_with( w_entity* entity_hit, c2Manifold& hit )
 	}
 	else
 	{
+		collider->push_outside( hit );
+
 		// default ball collision behavior is to reflect off, maintaining speed
 
 		glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
@@ -244,7 +252,7 @@ e_brick::e_brick()
 	collides_with = cl_deathzone;
 }
 
-void e_brick::collided_with( w_entity* entity_hit, c2Manifold& hit )
+void e_brick::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& hit )
 {
 	assert( hit.count > 0 );	// sanity check
 

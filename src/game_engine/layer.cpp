@@ -76,8 +76,7 @@ void w_layer::update_collisions()
 
 									if( hit.count )
 									{
-										collider->push_outside( hit );
-										ent->collided_with( collider2->parent_entity, hit );
+										ent->collided_with( collider, collider2->parent_entity, hit );
 									}
 								}
 							}
