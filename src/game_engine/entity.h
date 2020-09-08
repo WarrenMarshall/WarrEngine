@@ -50,6 +50,7 @@ struct w_entity : i_lifecycle, i_transform
 	{
 		w_vec2 forces;
 		w_vec2 ending_pos = w_vec2::zero;
+		float falling_speed = 0.0f;
 	} physics_cache;
 
 	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;

@@ -66,9 +66,18 @@ bool is_entity_on_ground( w_layer* layer, w_entity* e )
 
 void layer_default::update_physics()
 {
+	// if player is not on the ground, apply gravity.
+
 	if( !is_entity_on_ground( this, player ) )
 	{
-		player->physics_cache.ending_pos.y += 98.0f * engine->time->FTS_step_value_s;
+		player->physics_cache.falling_speed += 9.8f * engine->time->FTS_step_value_s;
+		player->physics_cache.falling_speed = w_min( player->physics_cache.falling_speed, 100.0f );
+
+		player->physics_cache.ending_pos.y += player->physics_cache.falling_speed;
+	}
+	else
+	{
+		player->physics_cache.falling_speed = 0.0f;
 	}
 }
 
