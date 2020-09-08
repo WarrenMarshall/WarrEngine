@@ -85,7 +85,7 @@ void w_particle_emitter::update()
 	// a one-shot particle system spawns all of it's particles at once and then dies
 	if( params->b_one_shot )
 	{
-		parent_component->set_life_cycle( lifecycle::dying );
+		parent_component->set_life_cycle( life_cycle::dying );
 	}
 }
 

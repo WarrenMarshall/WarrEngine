@@ -46,9 +46,6 @@ struct w_entity : i_lifecycle, i_transform
 
 	// physics
 
-	// all the forces currently acting on the entity
-	std::vector<std::unique_ptr<w_force>> forces;
-
 	struct
 	{
 		w_vec2 forces;
@@ -58,7 +55,7 @@ struct w_entity : i_lifecycle, i_transform
 	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;
 	void set_pos( const w_vec2& pos );
 
-	void set_life_cycle( e_lifecycle lifecycle ) override;
+	void set_life_cycle( e_life_cycle life_cycle ) override;
 	virtual bool can_be_deleted();
 
 	virtual void update_physics();

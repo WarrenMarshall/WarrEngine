@@ -8,6 +8,10 @@ bool w_layer::handle_input_event( const w_input_event* evt )
 	return false;
 }
 
+void w_layer::update_physics()
+{
+}
+
 void w_layer::update()
 {
 	// clear out dead entities
@@ -29,6 +33,7 @@ void w_layer::update()
 	{
 		entity->update_physics();
 	}
+	update_physics();
 
 	update_collisions();
 

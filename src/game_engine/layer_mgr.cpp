@@ -28,7 +28,7 @@ void w_layer_mgr::pop()
 		if( layer->is_alive() )
 		{
 			layer->pop();
-			layer->set_life_cycle( lifecycle::dead );
+			layer->set_life_cycle( life_cycle::dead );
 			break;
 		}
 	}
@@ -91,14 +91,18 @@ void w_layer_mgr::draw()
 		starting_layer_idx++;
 	}
 
-	// then draw that layer and every layer above it
-
-	RENDER->begin();
+	// clear the virtual viewport with a full size rectangle
 
 	RENDER
+		->begin()
 		->push_depth( zdepth_clear_window )
 		->push_rgb( engine->window->v_window_clear_color )
-		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
+		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) )
+		->end();
+
+	// draw starting from the starting_layer_idx and every layer above it
+
+	RENDER->begin();
 
 	for( int x = starting_layer_idx; x >= 0; --x )
 	{

@@ -25,9 +25,22 @@ void w_entity::update_physics()
 
 	physics_cache.forces = w_vec2::zero;
 
-	for( const auto& force : forces )
+	for( auto& ec : components )
 	{
-		physics_cache.forces.add( w_vec2::multiply( force->dir, force->strength ) );
+		if( ec->type == component_type::force_constant )
+		{
+			ec_force_constant* fec = static_cast<ec_force_constant*>( ec.get() );
+
+			w_vec2 dir = w_vec2::from_angle( fec->angle );
+			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
+		}
+		if( ec->type == component_type::force_decaying )
+		{
+			ec_force_decaying* fec = static_cast<ec_force_decaying*>( ec.get() );
+
+			w_vec2 dir = w_vec2::from_angle( fec->angle );
+			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
+		}
 	}
 
 	physics_cache.forces.multiply( engine->time->FTS_step_value_s );
@@ -161,9 +174,9 @@ void w_entity::set_pos( const w_vec2& pos )
 	this->pos = physics_cache.ending_pos = pos;
 }
 
-void w_entity::set_life_cycle( e_lifecycle lifecycle )
+void w_entity::set_life_cycle( e_life_cycle life_cycle )
 {
-	i_lifecycle::set_life_cycle( lifecycle );
+	i_lifecycle::set_life_cycle( life_cycle );
 
 	if( !is_alive() )
 	{
@@ -173,7 +186,7 @@ void w_entity::set_life_cycle( e_lifecycle lifecycle )
 
 	for( const auto& iter : components )
 	{
-		iter->set_life_cycle( lifecycle );
+		iter->set_life_cycle( life_cycle );
 	}
 }
 
@@ -186,6 +199,6 @@ void w_entity_fx::update()
 	// once all of the components have died, the fx container entity can die.
 	if( components.size() == 0 )
 	{
-		set_life_cycle( lifecycle::dying );
+		set_life_cycle( life_cycle::dying );
 	}
 }

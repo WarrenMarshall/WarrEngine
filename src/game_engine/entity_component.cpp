@@ -45,7 +45,7 @@ void w_entity_component::update()
 		if( life_timer->is_elapsed() )
 		{
 			life_timer = nullptr;
-			set_life_cycle( lifecycle::dying );
+			set_life_cycle( life_cycle::dying );
 		}
 	}
 
@@ -54,7 +54,7 @@ void w_entity_component::update()
 
 	if( is_dying() && is_fully_dead() )
 	{
-		set_life_cycle( lifecycle::dead );
+		set_life_cycle( life_cycle::dead );
 	}
 
 	pos_interp = w_vec2::zero;
@@ -155,9 +155,9 @@ void ec_emitter::update()
 	emitter->particle_pool->update();
 }
 
-void ec_emitter::set_life_cycle( e_lifecycle lifecycle )
+void ec_emitter::set_life_cycle( e_life_cycle life_cycle )
 {
-	i_lifecycle::set_life_cycle( lifecycle );
+	i_lifecycle::set_life_cycle( life_cycle );
 
 	if( is_dying() )
 	{
@@ -194,7 +194,7 @@ void ec_sound::draw()
 	}
 	snd = nullptr;
 
-	set_life_cycle( lifecycle::dying );
+	set_life_cycle( life_cycle::dying );
 }
 
 // ----------------------------------------------------------------------------
@@ -207,7 +207,8 @@ ec_collider::ec_collider( w_entity* parent_entity )
 
 void ec_collider::push_outside( const c2Manifold& hit )
 {
-	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.5f ) );
+	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.00001f ) );
+	//w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.0f ) );
 	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
 }
 
@@ -267,5 +268,57 @@ void ec_collider::draw()
 		}
 
 		RENDER->pop_rgb();
+	}
+}
+
+// ----------------------------------------------------------------------------
+
+ec_force_constant::ec_force_constant( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+	type = component_type::force_constant;
+}
+
+w_entity_component* ec_force_constant::init( float angle, float strength )
+{
+	this->angle = angle;
+	this->strength = strength;
+
+	return this;
+}
+
+// ----------------------------------------------------------------------------
+
+ec_force_decaying::ec_force_decaying( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+	type = component_type::force_decaying;
+}
+
+w_entity_component* ec_force_decaying::init( float angle, float strength, float lifetime_in_ms )
+{
+	this->angle = angle;
+	this->_strength = this->strength = strength;
+	this->_lifetime_in_ms = this->lifetime_in_ms = lifetime_in_ms;
+
+	return this;
+}
+
+void ec_force_decaying::update()
+{
+	w_entity_component::update();
+
+	lifetime_in_ms -= w_time::FTS_step_value_ms;
+	lifetime_in_ms = w_max( lifetime_in_ms, 0.0f );
+	float pct = lifetime_in_ms / _lifetime_in_ms;
+
+	if( fequals( pct, 0.0f ) )
+	{
+		strength = 0.0f;
+		set_life_cycle( life_cycle::dying );
+	}
+	else
+	{
+		strength = _strength * pct;
 	}
 }

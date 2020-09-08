@@ -9,7 +9,7 @@ layer_default::layer_default()
 
 void layer_default::push()
 {
-	player = spawn_entity<w_entity>();
+	player = add_entity<w_entity>();
 #if 0
 	player_ec = static_cast<ec_collider*>( player->add_component<ec_collider>()->init_as_box( { -12,-12,24,24 } ) );
 #else
@@ -18,7 +18,7 @@ void layer_default::push()
 	player->set_transform( { v_window_hw, v_window_hh }, 0, 1.0f );
 	player->debug_draw_collision = true;
 
-	blocker = spawn_entity<w_entity>();
+	blocker = add_entity<w_entity>();
 #if 0
 	blocker_ec = static_cast<ec_collider*>( blocker_circle->add_component<ec_collider>()->init_as_box( { 0,0, 200, 32 } ) );
 	blocker_circle->set_transform( { 64.0f, 64.0f }, 0, 1 );

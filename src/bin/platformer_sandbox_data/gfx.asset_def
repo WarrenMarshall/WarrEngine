@@ -3,8 +3,11 @@
 # textures
 # ---------------------------------------------------------
 
-# {
-# 	"type" "texture"
-# 	"name" "tex_name"
-# 	"filename" "gfx/filename.png"
-# }
+{
+	"type" "texture"
+	"name" "tex_sprites"
+	"filename" "gfx/sprites.png"
+	"subtextures" "\
+		subtex_player,0,0,16,16\
+	"
+}

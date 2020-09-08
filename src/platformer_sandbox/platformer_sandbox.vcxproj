@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5FFBB72F-0FC2-48D2-912D-AAC9E142F3BE}</ProjectGuid>
+    <ProjectGuid>{6B3DB88B-9886-41FD-830A-71202B72908B}</ProjectGuid>
     <RootNamespace>platformer_sandbox</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>platformer_sandbox</ProjectName>
@@ -156,12 +156,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entities.cpp" />
     <ClCompile Include="layer_default.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_app.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
+    <ClInclude Include="entities.h" />
     <ClInclude Include="layer_default.h" />
     <ClInclude Include="main_app.h" />
   </ItemGroup>

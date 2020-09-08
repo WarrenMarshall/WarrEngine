@@ -49,7 +49,7 @@ struct ec_emitter : w_entity_component
 	ec_emitter( w_entity* parent_entity );
 
 	w_entity_component* init( const std::string_view params_name );
-	void set_life_cycle( e_lifecycle lifecycle ) override;
+	void set_life_cycle( e_life_cycle life_cycle ) override;
 	bool is_fully_dead() override;
 	void draw() override;
 	void update() override;
@@ -87,4 +87,38 @@ struct ec_collider : w_entity_component
 	w_entity_component* init_as_box( w_rect box );
 	variant_collider_types get_collider();
 	void draw() override;
+};
+
+// ----------------------------------------------------------------------------
+// a force that pushes on the entity and never decays
+
+struct ec_force_constant : w_entity_component
+{
+	float angle = 0.0f;
+	float strength = 0.0f;
+
+	ec_force_constant() = delete;
+	ec_force_constant( w_entity* parent_entity );
+
+	w_entity_component* init( float angle, float strength );
+};
+
+// ----------------------------------------------------------------------------
+// a force that pushes on the entity and and edecays to zero over a
+// specific number of milliseconds
+
+struct ec_force_decaying : w_entity_component
+{
+	float angle = 0.0f;
+	float _strength = 0.0f;
+	float strength = 0.0f;
+	float _lifetime_in_ms = 0.0f;
+	float lifetime_in_ms = 0.0f;
+
+	ec_force_decaying() = delete;
+	ec_force_decaying( w_entity* parent_entity );
+
+	w_entity_component* init( float angle, float strength, float lifetime_in_ms );
+
+	virtual void update() final;
 };

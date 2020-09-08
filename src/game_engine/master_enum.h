@@ -135,7 +135,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( lifecycle )
+enum_begin( life_cycle )
 	invalid = 0,
 	alive,
 	dying,			// pending delete whenever the object is finished doing everything (components are finished, etc)
@@ -192,7 +192,9 @@ enum_begin( component_type )
 	sprite,
 	emitter,
 	sound,
-	collider
+	collider,
+	force_constant,
+	force_decaying
 enum_end
 
 // ----------------------------------------------------------------------------
