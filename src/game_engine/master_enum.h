@@ -194,7 +194,8 @@ enum_begin( component_type )
 	sound,
 	collider,
 	force_constant,
-	force_decaying
+	force_decay,
+	force_dir_accum
 enum_end
 
 // ----------------------------------------------------------------------------

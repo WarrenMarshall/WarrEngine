@@ -6,6 +6,8 @@ struct layer_default : w_layer
 	w_entity* world_geo = nullptr;
 
 	ec_force_constant* efc_player_input = nullptr;
+	ec_force_dir_accum* player_force_right = nullptr;
+	ec_force_dir_accum* player_force_left = nullptr;
 
 	layer_default();
 

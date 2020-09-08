@@ -34,9 +34,16 @@ void w_entity::update_physics()
 			w_vec2 dir = w_vec2::from_angle( fec->angle );
 			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
 		}
-		if( ec->type == component_type::force_decaying )
+		if( ec->type == component_type::force_decay )
 		{
-			ec_force_decaying* fec = static_cast<ec_force_decaying*>( ec.get() );
+			ec_force_decay* fec = static_cast<ec_force_decay*>( ec.get() );
+
+			w_vec2 dir = w_vec2::from_angle( fec->angle );
+			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
+		}
+		if( ec->type == component_type::force_dir_accum )
+		{
+			ec_force_dir_accum* fec = static_cast<ec_force_dir_accum*>( ec.get() );
 
 			w_vec2 dir = w_vec2::from_angle( fec->angle );
 			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
@@ -115,6 +122,34 @@ void w_entity::post_spawn()
 	for( const auto& iter : components )
 	{
 		iter->post_spawn();
+	}
+}
+
+// returns the first component it finds of the specified type.
+w_entity_component* w_entity::get_component( e_component_type type )
+{
+	for( auto& ec : components )
+	{
+		if( ec->type == type )
+		{
+			return ec.get();
+		}
+	}
+
+	return nullptr;
+}
+
+// fills a vector with all the components it finds of the specified type.
+void w_entity::get_components( e_component_type type, std::vector<w_entity_component*>& components )
+{
+	components.clear();
+
+	for( auto& ec : this->components )
+	{
+		if( ec->type == type )
+		{
+			components.push_back( ec.get() );
+		}
 	}
 }
 

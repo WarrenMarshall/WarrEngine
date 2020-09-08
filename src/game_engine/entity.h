@@ -82,6 +82,10 @@ struct w_entity : i_lifecycle, i_transform
 
 		return new_component;
 	}
+
+	w_entity_component* get_component( e_component_type type );
+	void get_components( e_component_type type, std::vector<w_entity_component*>& components );
+
 	void remove_component( w_entity_component* ec );
 };
 

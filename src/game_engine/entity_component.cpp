@@ -207,7 +207,7 @@ ec_collider::ec_collider( w_entity* parent_entity )
 
 void ec_collider::push_outside( const c2Manifold& hit )
 {
-	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.00001f ) );
+	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.5f ) );
 	//w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.0f ) );
 	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
 }
@@ -279,7 +279,7 @@ ec_force_constant::ec_force_constant( w_entity* parent_entity )
 	type = component_type::force_constant;
 }
 
-w_entity_component* ec_force_constant::init( float angle, float strength )
+ec_force_constant* ec_force_constant::init( float angle, float strength )
 {
 	this->angle = angle;
 	this->strength = strength;
@@ -289,13 +289,13 @@ w_entity_component* ec_force_constant::init( float angle, float strength )
 
 // ----------------------------------------------------------------------------
 
-ec_force_decaying::ec_force_decaying( w_entity* parent_entity )
+ec_force_decay::ec_force_decay( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::force_decaying;
+	type = component_type::force_decay;
 }
 
-w_entity_component* ec_force_decaying::init( float angle, float strength, float lifetime_in_ms )
+ec_force_decay* ec_force_decay::init( float angle, float strength, float lifetime_in_ms )
 {
 	this->angle = angle;
 	this->_strength = this->strength = strength;
@@ -304,7 +304,7 @@ w_entity_component* ec_force_decaying::init( float angle, float strength, float 
 	return this;
 }
 
-void ec_force_decaying::update()
+void ec_force_decay::update()
 {
 	w_entity_component::update();
 
@@ -321,4 +321,33 @@ void ec_force_decaying::update()
 	{
 		strength = _strength * pct;
 	}
+}
+
+// ----------------------------------------------------------------------------
+
+ec_force_dir_accum::ec_force_dir_accum( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+	type = component_type::force_dir_accum;
+}
+
+ec_force_dir_accum* ec_force_dir_accum::init( float angle, float strength_per_sec, float strength_max )
+{
+	this->angle = angle;
+	this->strength_per_sec = this->strength = strength_per_sec;
+	this->strength_max = strength_max;
+
+	return this;
+}
+
+void ec_force_dir_accum::active()
+{
+	strength += (strength_per_sec * 2.0f) * engine->time->FTS_step_value_s;
+	strength = w_min( strength, strength_max );
+}
+
+void ec_force_dir_accum::inactive()
+{
+	strength -= strength_per_sec * engine->time->FTS_step_value_s;
+	strength = w_max( strength, 0.0f );
 }

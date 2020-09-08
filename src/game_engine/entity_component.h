@@ -90,7 +90,9 @@ struct ec_collider : w_entity_component
 };
 
 // ----------------------------------------------------------------------------
-// a force that pushes on the entity and never decays
+// a force that pushes on the entity, and never decays
+//
+// good for things that need to be constantly moving, like the ball in pong.
 
 struct ec_force_constant : w_entity_component
 {
@@ -100,14 +102,16 @@ struct ec_force_constant : w_entity_component
 	ec_force_constant() = delete;
 	ec_force_constant( w_entity* parent_entity );
 
-	w_entity_component* init( float angle, float strength );
+	ec_force_constant* init( float angle, float strength );
 };
 
 // ----------------------------------------------------------------------------
-// a force that pushes on the entity and and edecays to zero over a
+// a force that pushes on the entity, and decays to zero over a
 // specific number of milliseconds
+//
+// good for temporary forces like jumps or getting knocked back.
 
-struct ec_force_decaying : w_entity_component
+struct ec_force_decay : w_entity_component
 {
 	float angle = 0.0f;
 	float _strength = 0.0f;
@@ -115,10 +119,35 @@ struct ec_force_decaying : w_entity_component
 	float _lifetime_in_ms = 0.0f;
 	float lifetime_in_ms = 0.0f;
 
-	ec_force_decaying() = delete;
-	ec_force_decaying( w_entity* parent_entity );
+	ec_force_decay() = delete;
+	ec_force_decay( w_entity* parent_entity );
 
-	w_entity_component* init( float angle, float strength, float lifetime_in_ms );
+	ec_force_decay* init( float angle, float strength, float lifetime_in_ms );
 
 	virtual void update() final;
+};
+
+// ----------------------------------------------------------------------------
+// a force that pushes on the entity, getting stronger every second until
+// a maximum is reached.
+//
+// good for movement where the entity speeds up and slows down smoothly.
+
+struct ec_force_dir_accum : w_entity_component
+{
+	// current direction
+	float angle = 0.0f;
+	// current strength
+	float strength = 0.0f;
+	// how much we accumulate per second
+	float strength_per_sec = 0.0f;
+	// strength maximum
+	float strength_max = 0.0f;
+
+	ec_force_dir_accum() = delete;
+	ec_force_dir_accum( w_entity* parent_entity );
+
+	ec_force_dir_accum* init( float angle, float strength_per_sec, float strength_max );
+	void active();
+	void inactive();
 };
