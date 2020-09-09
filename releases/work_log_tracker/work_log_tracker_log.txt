@@ -1,4 +1,4 @@
-Started : Sat Sep  5 11:06:43 2020
+Started : Tue Sep  8 15:33:30 2020
 Initializing engine
 Creating window
 w_window::init : Using monitor [BenQ LCD - 2560x1440]
@@ -8,6 +8,7 @@ GLEW Version : [2.1.0]
 Renderer: [GeForce GTX 1080/PCIe/SSE2]
 Initializing renderer
 Initializing BASS audio
+WARNING : BASS Audio : init failed!
 Caching asset definition files (*.asset_def)...
 Precaching resources from definition files...
 w_engine::precache_asset_resources : 50 assets precached
@@ -22,5 +23,5 @@ Shutting down GLFW
 Shutting down BASS Audio
 Shutting down input
 Shutting down engine
-Ended : Sat Sep  5 11:06:46 2020
+Ended : Tue Sep  8 17:26:39 2020
 Finished!

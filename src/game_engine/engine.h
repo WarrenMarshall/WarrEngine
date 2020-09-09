@@ -31,7 +31,7 @@ struct w_engine : i_listener
 	void precache_asset_resources( int pass, std::string_view game_name );
 	template<typename T> [[nodiscard]] T* get_asset( const std::string_view name, bool silent = false )
 	{
-		return static_cast<T*>( asset_cache->find( name, silent ) );
+		return static_cast<T*>( asset_cache->find<T>( name, silent ) );
 	}
 	void parse_config_files( const std::string_view folder_name );
 	void parse_config_file( std::string_view filename );

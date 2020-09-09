@@ -29,11 +29,12 @@ void w_layer::update()
 		}
 	}
 
+	update_physics();
+
 	for( const auto& entity : entities )
 	{
 		entity->update_physics();
 	}
-	update_physics();
 
 	update_collisions();
 

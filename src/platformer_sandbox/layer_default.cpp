@@ -11,58 +11,46 @@ void layer_default::push()
 	engine->window->set_mouse_mode( mouse_mode::hidden );
 
 	player = add_entity<e_player>( { 32, 64 }, 0, 1 );
-	player->add_component<ec_sprite>()->init( "subtex_player" );
-	player->add_component<ec_collider>()->init_as_box( { -8,-8,16,16 } );
-	//player->add_component<ec_collider>()->init_as_circle( 12 );
-	player_force_right = player->add_component<ec_force_dir_accum>()->init( 90, 300, 100 );
-	player_force_left = player->add_component<ec_force_dir_accum>()->init( 270, 300, 100 );
-	//efc_player_input = player->add_component<ec_force_constant>()->init( 0, 0 );
 	player->debug_draw_collision = true;
-
 	player->collision_layer = cl_player;
 	player->collides_with = cl_world;
+	player->add_component<ec_sprite>()->init( "subtex_player" );
+	player->add_component<ec_collider>()->init_as_box( { -8,-8,16,16 } );
+	player_force_right = player->add_component<ec_force_dir_accum>()->init( 90, 300, 100 );
+	player_force_left = player->add_component<ec_force_dir_accum>()->init( 270, 300, 100 );
 
-	world_geo = add_entity<w_entity>();
-	auto ec = world_geo->add_component<ec_collider>()->init_as_box( { 0, v_window_h - 32, v_window_w, 32 } );
-	world_geo->add_component<ec_collider>()->init_as_box( { 32, 150, 128, 16 } );
-	world_geo->add_component<ec_collider>()->init_as_box( { 150, 200, 64, 40 } );
-	world_geo->add_component<ec_collider>()->init_as_box( { 240, 190, 128, 16 } );
-	world_geo->add_component<ec_collider>()->init_as_box( { 240, 70, 16, 64 } );
+	// ground plane
+	auto ent = add_entity<w_entity>();
+	ent->debug_draw_collision = true;
+	ent->collision_layer = cl_world;
+	ent->add_component<ec_collider>()->init_as_box( { 0, v_window_h - 32, v_window_w, 32 } );
 
-	world_geo->debug_draw_collision = true;
-
-	world_geo->collision_layer = cl_world;
+	// test wall a
+	ent = add_entity<w_entity>();
+	ent->debug_draw_collision = true;
+	ent->collision_layer = cl_world;
+	colliders.push_back( (ec_collider*) ( ent->add_component<ec_collider>()->init_as_box( { 200, 50, 16, 64 } ) ) );
 }
-
-constexpr float gravity_per_sec = 9.81f;
 
 void layer_default::update_physics()
 {
 	w_layer::update_physics();
 
-	//static float player_speed = 50.0f;
-
 	w_vec2 delta = engine->input->axis_value_of( input_id::controller_left_stick );
 
-	player_force_right->inactive();
-	player_force_left->inactive();
+	player_force_right->decay();
+	player_force_left->decay();
 
-	if( delta.x != 0.0f || delta.y != 0.0f )
+	if( delta.x != 0.0f )
 	{
 		if( delta.x < 0.0f )
 		{
-			player_force_left->active();
+			player_force_left->add_impulse();
 		}
 		else
 		{
-			player_force_right->active();
+			player_force_right->add_impulse();
 		}
-		//player->set_pos(
-		//	{
-		//		player->pos.x + ( ( delta.x * player_speed ) * engine->time->FTS_step_value_s ),
-		//		player->pos.y + ( ( delta.y * player_speed ) * engine->time->FTS_step_value_s )
-		//	}
-		//);
 	}
 }
 

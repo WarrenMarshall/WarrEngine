@@ -208,7 +208,6 @@ ec_collider::ec_collider( w_entity* parent_entity )
 void ec_collider::push_outside( const c2Manifold& hit )
 {
 	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.5f ) );
-	//w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.0f ) );
 	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
 }
 
@@ -340,13 +339,13 @@ ec_force_dir_accum* ec_force_dir_accum::init( float angle, float strength_per_se
 	return this;
 }
 
-void ec_force_dir_accum::active()
+void ec_force_dir_accum::add_impulse()
 {
 	strength += (strength_per_sec * 2.0f) * engine->time->FTS_step_value_s;
 	strength = w_min( strength, strength_max );
 }
 
-void ec_force_dir_accum::inactive()
+void ec_force_dir_accum::decay()
 {
 	strength -= strength_per_sec * engine->time->FTS_step_value_s;
 	strength = w_max( strength, 0.0f );

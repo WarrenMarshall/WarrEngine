@@ -148,6 +148,6 @@ struct ec_force_dir_accum : w_entity_component
 	ec_force_dir_accum( w_entity* parent_entity );
 
 	ec_force_dir_accum* init( float angle, float strength_per_sec, float strength_max );
-	void active();
-	void inactive();
+	void add_impulse();
+	void decay();
 };

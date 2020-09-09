@@ -139,20 +139,6 @@ w_entity_component* w_entity::get_component( e_component_type type )
 	return nullptr;
 }
 
-// fills a vector with all the components it finds of the specified type.
-void w_entity::get_components( e_component_type type, std::vector<w_entity_component*>& components )
-{
-	components.clear();
-
-	for( auto& ec : this->components )
-	{
-		if( ec->type == type )
-		{
-			components.push_back( ec.get() );
-		}
-	}
-}
-
 void w_entity::remove_component( w_entity_component* ec )
 {
 	for( int x = 0 ; x < components.size() ; ++x )

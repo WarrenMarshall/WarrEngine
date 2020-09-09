@@ -13,7 +13,7 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float 
 
 	std::string tex_name = "tex_" + base_name + "_frame_buffer";
 
-	tex = static_cast<a_texture*>( engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" ) );
+	tex = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
 
 	tex->w = w;
 	tex->h = h;
@@ -27,7 +27,7 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float 
 
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex->id, 0 );
 
-	tex->subtex = static_cast<a_subtexture*>( engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" ) );
+	tex->subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" );
 
 	// depth/stencil buffer
 

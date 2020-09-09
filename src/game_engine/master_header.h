@@ -1,6 +1,8 @@
 
 #pragma once
 
+extern std::unique_ptr<w_logfile> logfile;
+
 // ----------------------------------------------------------------------------
 /*
 	the size of the virtual screen. all rendering is done on the assumption
@@ -68,6 +70,5 @@ extern float v_window_h;
 // ----------------------------------------------------------------------------
 // globals for all to enjoy - don't judge
 
-extern std::unique_ptr<w_logfile> logfile;
 extern std::unique_ptr<w_engine> engine;
 extern w_game* game;

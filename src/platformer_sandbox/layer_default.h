@@ -3,11 +3,12 @@
 struct layer_default : w_layer
 {
 	e_player* player = nullptr;
-	w_entity* world_geo = nullptr;
 
 	ec_force_constant* efc_player_input = nullptr;
 	ec_force_dir_accum* player_force_right = nullptr;
 	ec_force_dir_accum* player_force_left = nullptr;
+
+	std::vector<ec_collider*> colliders;
 
 	layer_default();
 

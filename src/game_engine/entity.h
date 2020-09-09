@@ -84,7 +84,23 @@ struct w_entity : i_lifecycle, i_transform
 	}
 
 	w_entity_component* get_component( e_component_type type );
-	void get_components( e_component_type type, std::vector<w_entity_component*>& components );
+
+	// fills a vector with all the components it finds of the specified type.
+	template<typename T>
+	std::vector<T*> get_components()
+	{
+		std::vector<T*> ecs;
+
+		for( auto& ec : this->components )
+		{
+			if( typeid(*ec.get()) == typeid(T) )
+			{
+				ecs.emplace_back( (T*) ( ec.get() ) );
+			}
+		}
+
+		return ecs;
+	}
 
 	void remove_component( w_entity_component* ec );
 };
