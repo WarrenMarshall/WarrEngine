@@ -10,6 +10,8 @@ void layer_default::push()
 {
 	engine->window->set_mouse_mode( mouse_mode::hidden );
 
+	background_gradient = engine->get_asset<a_gradient>( "background_gradient" );
+
 	player = add_entity<e_player>( { 32, 64 }, 0, 1 );
 	player->debug_draw_collision = true;
 	player->collision_layer = cl_player;
@@ -57,6 +59,16 @@ void layer_default::update_physics()
 void layer_default::update()
 {
 	w_layer::update();
+}
+
+void layer_default::draw()
+{
+	w_layer::draw();
+
+	RENDER
+		->begin()
+		->draw( background_gradient, { 0, 0, v_window_w, v_window_h } )
+		->end();
 }
 
 bool layer_default::handle_input_event( const w_input_event* evt )

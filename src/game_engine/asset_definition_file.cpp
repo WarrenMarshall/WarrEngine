@@ -142,11 +142,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 							val = engine->find_string_from_symbol( val );
 						}
 
-						auto clr = w_color( val );
-						asset_ptr->colors.push_back( clr.r );
-						asset_ptr->colors.push_back( clr.g );
-						asset_ptr->colors.push_back( clr.b );
-						asset_ptr->colors.push_back( clr.a );
+						auto color = w_color( val );
+						asset_ptr->colors.push_back( color.r );
+						asset_ptr->colors.push_back( color.g );
+						asset_ptr->colors.push_back( color.b );
+						asset_ptr->colors.push_back( color.a );
 					}
 
 					// if the "subtexture" key exists, create a subtexture for this texture
