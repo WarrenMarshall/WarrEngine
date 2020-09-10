@@ -21,7 +21,7 @@
 	"name" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
-	"colors" "color.black / color.dark_grey:2 / color.teal:5 / color.red / color.black"
-	#"colors" "color.black, color.dark_grey:2, color.teal:5, color.red, color.black"
-	#"colors" "0,0,0, 32,32,64:2, color.teal:5, 255,0,0, color.black"
+	#"colors" "color.black / color.dark_grey:2 / color.teal:5 / color.red / color.dark_grey"
+	#"colors" "color.black, color.dark_grey:2, color.teal:5, color.red, color.dark_grey"
+	"colors" "color.black, .1,.15,.2:2, color.teal:5, color.red, color.dark_grey"
 }

@@ -118,20 +118,59 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					std::string color_list = std::string( iter_ad->find_value( "colors" ) );
 
-					w_tokenizer tok( color_list, '/', str_not_found );
+					w_tokenizer tok( color_list, ',', str_not_found );
 					std::string val;
 
-					std::vector<std::string> color_values;
+					std::vector<std::string> wk_values;
 					while( true )
 					{
 						val = tok.get_next_token();
+
 						if( val == str_not_found )
 						{
 							break;
 						}
 
-						color_values.emplace_back( val );
+						if( (val[0] >= '0' && val[0] <= '9') || val[ 0 ] == '.' )
+						{
+							std::string composited_color = val;
+							composited_color += ",";
+							composited_color += tok.get_next_token();
+							composited_color += ",";
+							composited_color += tok.get_next_token();
+
+							wk_values.push_back( composited_color );
+						}
+						else
+						{
+							wk_values.push_back( val );
+						}
 					}
+
+					std::vector<std::string> color_values;
+					int repeat_count;
+					for( auto& color_value : wk_values )
+					{
+						repeat_count = 1;
+
+						size_t pos = color_value.find_last_of( ':' );
+						if( pos != std::string::npos )
+						{
+							pos++;
+							repeat_count = strtol( color_value.substr( pos, color_value.length() - pos ).data(), ( char** ) nullptr, 10 );
+							color_value = color_value.substr( 0, pos - 1 );
+						}
+
+						while( repeat_count > 0 )
+						{
+							color_values.emplace_back( color_value );
+							repeat_count--;
+						}
+					}
+
+					// must reverse the order or else the gradient texture
+					// ends up backwards on the screen
+					std::reverse( color_values.begin(), color_values.end() );
 
 					for( const auto& iter : color_values )
 					{
@@ -146,7 +185,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						asset_ptr->colors.push_back( color.r );
 						asset_ptr->colors.push_back( color.g );
 						asset_ptr->colors.push_back( color.b );
-						asset_ptr->colors.push_back( color.a );
+						asset_ptr->colors.push_back( 1.0f );
 					}
 
 					// if the "subtexture" key exists, create a subtexture for this texture
