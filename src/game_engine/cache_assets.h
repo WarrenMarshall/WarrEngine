@@ -44,7 +44,7 @@ struct w_cache_assets
 
 #ifdef _DEBUG
 		// if we found an asset but it's the wrong type, that's also fatal - name things uniquely!
-		if( typeid( T ).hash_code() != typeid( *asset_ptr ).hash_code() )
+		if( typeid( T ) != typeid( *asset_ptr ) )
 		{
 			log_error( fmt::format( "{} : asset WAS found but the type doesn't match the requested type", __FUNCTION__ ) );
 			log_error( fmt::format( "	[{}]", name ) );

@@ -23,14 +23,6 @@ struct w_entity : i_lifecycle, i_transform
 
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
-	struct
-	{
-		std::vector<ec_sprite*> sprites;
-		std::vector<ec_emitter*> emitters;
-		std::vector<ec_sound*> sounds;
-		std::vector<ec_collider*> colliders;
-	} ec;
-
 	// which collision layer this entity is a part of
 	//
 	// identifies what this entity IS to other colliders.
@@ -71,31 +63,35 @@ struct w_entity : i_lifecycle, i_transform
 		components.emplace_back( std::make_unique<T>( this ) );
 		T* new_component = static_cast<T*>( components.back().get() );
 
-		if( new_component->type == component_type::sprite )
-			ec.sprites.push_back( (ec_sprite*) new_component );
-		else if( new_component->type == component_type::emitter )
-			ec.emitters.push_back( (ec_emitter*) new_component );
-		else if( new_component->type == component_type::sound )
-			ec.sounds.push_back( (ec_sound*) new_component );
-		else if( new_component->type == component_type::collider )
-			ec.colliders.push_back( (ec_collider*) new_component );
-
 		return new_component;
 	}
 
-	w_entity_component* get_component( e_component_type type );
+	// returns the first component it finds of the specified type.
+	template<typename T>
+	T* get_component()
+	{
+		for( auto& ec : components )
+		{
+			if( typeid( *ec->get() ) == typeid(T) )
+			{
+				return static_cast<T*>( ec.get() );
+			}
+		}
+
+		return nullptr;
+	}
 
 	// fills a vector with all the components it finds of the specified type.
 	template<typename T>
-	std::vector<T*> get_components()
+	std::basic_string<T*> get_components()
 	{
-		std::vector<T*> ecs;
+		std::basic_string<T*> ecs;
 
 		for( auto& ec : this->components )
 		{
 			if( typeid(*ec.get()) == typeid(T) )
 			{
-				ecs.emplace_back( (T*) ( ec.get() ) );
+				ecs += static_cast<T*>( ec.get() );
 			}
 		}
 

@@ -72,7 +72,6 @@ void w_entity_component::set_life_timer( int life_in_ms )
 ec_sprite::ec_sprite( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::sprite;
 }
 
 w_entity_component* ec_sprite::init( const std::string_view subtex_name )
@@ -97,7 +96,6 @@ void ec_sprite::draw()
 ec_emitter::ec_emitter( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::emitter;
 }
 
 w_entity_component* ec_emitter::init( const std::string_view params_name )
@@ -176,7 +174,6 @@ void ec_emitter::post_spawn()
 ec_sound::ec_sound( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::sound;
 }
 
 w_entity_component* ec_sound::init( const std::string_view snd_name )
@@ -202,12 +199,11 @@ void ec_sound::draw()
 ec_collider::ec_collider( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::collider;
 }
 
-void ec_collider::push_outside( const c2Manifold& hit )
+void ec_collider::push_outside( const c2Manifold& hit, float extra_distance )
 {
-	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + 0.5f ) );
+	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + extra_distance ) );
 	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
 }
 
@@ -275,7 +271,6 @@ void ec_collider::draw()
 ec_force_constant::ec_force_constant( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::force_constant;
 }
 
 ec_force_constant* ec_force_constant::init( float angle, float strength )
@@ -291,7 +286,6 @@ ec_force_constant* ec_force_constant::init( float angle, float strength )
 ec_force_decay::ec_force_decay( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::force_decay;
 }
 
 ec_force_decay* ec_force_decay::init( float angle, float strength, float lifetime_in_ms )
@@ -327,7 +321,6 @@ void ec_force_decay::update()
 ec_force_dir_accum::ec_force_dir_accum( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type = component_type::force_dir_accum;
 }
 
 ec_force_dir_accum* ec_force_dir_accum::init( float angle, float strength_per_sec, float strength_max )

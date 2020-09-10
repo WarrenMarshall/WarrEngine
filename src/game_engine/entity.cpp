@@ -27,21 +27,21 @@ void w_entity::update_physics()
 
 	for( auto& ec : components )
 	{
-		if( ec->type == component_type::force_constant )
+		if( typeid(*ec.get()) == typeid(ec_force_constant) )
 		{
 			ec_force_constant* fec = static_cast<ec_force_constant*>( ec.get() );
 
 			w_vec2 dir = w_vec2::from_angle( fec->angle );
 			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
 		}
-		if( ec->type == component_type::force_decay )
+		if( typeid( *ec.get() ) == typeid( ec_force_decay ) )
 		{
 			ec_force_decay* fec = static_cast<ec_force_decay*>( ec.get() );
 
 			w_vec2 dir = w_vec2::from_angle( fec->angle );
 			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
 		}
-		if( ec->type == component_type::force_dir_accum )
+		if( typeid( *ec.get() ) == typeid( ec_force_dir_accum ) )
 		{
 			ec_force_dir_accum* fec = static_cast<ec_force_dir_accum*>( ec.get() );
 
@@ -123,20 +123,6 @@ void w_entity::post_spawn()
 	{
 		iter->post_spawn();
 	}
-}
-
-// returns the first component it finds of the specified type.
-w_entity_component* w_entity::get_component( e_component_type type )
-{
-	for( auto& ec : components )
-	{
-		if( ec->type == type )
-		{
-			return ec.get();
-		}
-	}
-
-	return nullptr;
 }
 
 void w_entity::remove_component( w_entity_component* ec )

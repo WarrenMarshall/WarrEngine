@@ -16,3 +16,5 @@ src/bin/GameEngine.dll
 src/bin/GameEngine.lib
 src/bin/game_engine.lib
 src/shipping
+releases/work_log_tracker/work_log_tracker.data
+releases/work_log_tracker/work_log_tracker_log.txt

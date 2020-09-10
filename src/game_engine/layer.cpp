@@ -68,9 +68,11 @@ void w_layer::update_collisions()
 				{
 					if( ent->collides_with & ent2->collision_layer )
 					{
-						for( auto& collider : ent->ec.colliders )
+						auto colliders = ent->get_components<ec_collider>();
+						for( auto& collider : colliders )
 						{
-							for( auto& collider2 : ent2->ec.colliders )
+							auto colliders2 = ent2->get_components<ec_collider>();
+							for( auto& collider2 : colliders2 )
 							{
 								if( c2Collided( &collider->get_collider(), NULL, collider->c2type,
 												&collider2->get_collider(), NULL, collider2->c2type ) )

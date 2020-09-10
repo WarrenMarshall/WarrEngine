@@ -156,7 +156,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 		if( !fireball_powerup.is_active )
 		{
-			collider->push_outside( hit );
+			collider->push_outside( hit, 0.5f );
 
 			// default ball collision behavior is to reflect off, maintaining speed
 
@@ -208,7 +208,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else if( entity_hit->collision_layer & cl_paddle )
 	{
-		collider->push_outside( hit );
+		collider->push_outside( hit, 0.5f );
 
 		w_force* force = forces.back().get();
 		w_vec2 new_dir = w_vec2::subtract( pos, entity_hit->pos );
@@ -220,7 +220,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else if( entity_hit->collision_layer & cl_ball )
 	{
-		collider->push_outside( hit );
+		collider->push_outside( hit, 0.5f );
 
 		// 2 balls colliding should richochet away from each other
 
@@ -237,7 +237,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else
 	{
-		collider->push_outside( hit );
+		collider->push_outside( hit, 0.5f );
 
 		// default ball collision behavior is to reflect off, maintaining speed
 

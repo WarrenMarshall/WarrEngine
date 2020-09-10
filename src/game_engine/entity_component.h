@@ -2,7 +2,7 @@
 
 struct w_entity_component : i_lifecycle, i_transform
 {
-	e_component_type type = component_type::invalid;
+	//e_component_type type = component_type::invalid;
 	w_vec2 pos_interp;
 
 	std::unique_ptr<w_timer> life_timer = nullptr;
@@ -82,7 +82,7 @@ struct ec_collider : w_entity_component
 	ec_collider() = delete;
 	ec_collider( w_entity* parent_entity );
 
-	void push_outside( const c2Manifold& hit );
+	void push_outside( const c2Manifold& hit, float extra_distance );
 	w_entity_component* init_as_circle( float radius );
 	w_entity_component* init_as_box( w_rect box );
 	variant_collider_types get_collider();

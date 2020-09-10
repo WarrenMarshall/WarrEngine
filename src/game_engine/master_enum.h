@@ -187,19 +187,6 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( component_type )
-	invalid = 0,
-	sprite,
-	emitter,
-	sound,
-	collider,
-	force_constant,
-	force_decay,
-	force_dir_accum
-enum_end
-
-// ----------------------------------------------------------------------------
-
 enum_begin( particle_spawn_dir )
 	inherit_from_parent = -1,
 	away_from_center = -2
