@@ -11,7 +11,7 @@ void w_file_disk::open_for_read( std::string_view filename )
 
 	if( file_handle == nullptr )
 	{
-		log_error( fmt::format( "{} : unable to open file '{}'", __FUNCTION__, filename ) );
+		log_error( "Unable to open file '{}'", filename );
 	}
 }
 
@@ -21,7 +21,7 @@ void w_file_disk::read_glob( void* write_ptr, int size )
 
 	if( elements_read == 0 || elements_read != size )
 	{
-		log_error( fmt::format( "{} : read error on glob (expected to read {} elements, got {})", __FUNCTION__, size, elements_read ) );
+		log_error( "Read error on glob (expected to read {} elements, got {})", size, elements_read );
 	}
 }
 
@@ -31,7 +31,7 @@ void w_file_disk::open_for_write( std::string_view filename )
 
 	if( file_handle == nullptr )
 	{
-		log_error( fmt::format( "{} : unable to open file '{}'", __FUNCTION__, filename ) );
+		log_error( "Unable to open file '{}'", filename );
 	}
 }
 
@@ -41,7 +41,7 @@ void w_file_disk::write_glob( void* read_ptr, int size )
 
 	if( elements_written == 0 || elements_written != size )
 	{
-		log_error( fmt::format( "{} : write error on glob (expected to write {} elements, wrote {})", __FUNCTION__, size, elements_written ) );
+		log_error( "Write error on glob (expected to write {} elements, wrote {})", size, elements_written );
 	}
 }
 

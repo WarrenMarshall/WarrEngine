@@ -80,7 +80,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
 
 						if( ( comma_count % 5 ) != 4 )
-							log_error( fmt::format( "{} : '{}' has bad formatting - too many or too few commas", __FUNCTION__, subtex_list ) );
+							log_error( "'{}' has bad formatting - too many or too few commas", subtex_list );
 
 						w_tokenizer tok( subtex_list, ',' );
 
@@ -359,7 +359,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 							}
 							else
 							{
-								log_error( fmt::format( "{} : unknown emitter spawn type : [{}]", __FUNCTION__, type ) );
+								log_error( "Unknown emitter spawn type : [{}]", type );
 							}
 
 							asset_ptr->particle_spawner->parse_from_config_string( value );
@@ -387,7 +387,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						else if( key == "t_alpha" )
 							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
 						else
-							log_msg( fmt::format( "{} : unknown key read from config block : [{} -> \"{}\"]", __FUNCTION__, name, key ) );
+							log_msg( "Unknown key read from config block : [{} -> \"{}\"]", name, key );
 					}
 
 					// ------------------------------------------------------------------------

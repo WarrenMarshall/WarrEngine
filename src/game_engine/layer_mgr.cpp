@@ -42,7 +42,7 @@ void w_layer_mgr::pop()
 	}
 	else
 	{
-		log_msg( "layer_mgr::pop : no layers on stack - pop failed!" );
+		log_warning( "No layers on stack - pop failed!" );
 	}
 }
 

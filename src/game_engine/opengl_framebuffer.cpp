@@ -40,7 +40,7 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float 
 
 	if( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
 	{
-		log_error( fmt::format( "{} : failed to create frame buffer", __FUNCTION__ ) );
+		log_error( "Failed to create frame buffer" );
 	}
 
 	unbind();

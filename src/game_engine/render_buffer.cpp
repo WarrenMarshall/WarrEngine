@@ -109,7 +109,7 @@ void w_render_buffer::draw( a_texture* tex )
 
             default:
             {
-                log_error( fmt::format( "{} : unsupported primitive type", __FUNCTION__ ) );
+                log_error( "Unsupported primitive type" );
             }
             break;
         }
@@ -132,11 +132,10 @@ void w_render_buffer::log_stats( i_asset* asset )
 {
     if( !indices.empty() )
     {
-        log_msg( fmt::format( "\t\t[{}]: [{} verts, {} indices]",
+        log_msg( "\t\t[{}]: [{} verts, {} indices]",
                               asset->name,
-                              s_commas( static_cast<float>( vertices.size() ) ),
-                              s_commas( static_cast<float>( indices.size() ) )
-                            )
+                              f_commas( static_cast<float>( vertices.size() ) ),
+                              f_commas( static_cast<float>( indices.size() ) )
         );
     }
 }

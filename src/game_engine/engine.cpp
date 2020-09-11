@@ -65,7 +65,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
 			{
-				log_warning( "Audio : init failed!" );
+				log_warning( "Audio init failed!" );
 			}
 		}
 
@@ -128,7 +128,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
 			bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
-			log_msg( fmt::format( "VSync: {}", vsync ? "true" : "false" ) );
+			log_msg( "VSync: {}", vsync ? "true" : "false" );
 			glfwSwapInterval( vsync ? 1 : 0 );
 			engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
 			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
@@ -169,7 +169,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 	catch( std::exception& e )
 	{
 		log_msg( "!! EXCEPTION CAUGHT !!" );
-		log_msg( fmt::format( "\t{}", e.what() ) );
+		log_msg( "\t{}", e.what() );
 
 		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );
 	}
@@ -568,7 +568,7 @@ void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 		asset_definition_file->precache_asset_resources( pass );
 	}
 
-	log_msg( fmt::format( "{} : pass: {} / {} assets precached", __FUNCTION__, pass, s_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) ) );
+	log_msg( "Pass: {} / {} assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )

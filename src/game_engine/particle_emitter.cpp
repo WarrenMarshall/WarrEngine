@@ -70,7 +70,7 @@ void w_particle_emitter::update()
 
 			assert( particles_to_spawn > 0 );
 
-			//log_msg( fmt::format( "spawning {} particles", particles_to_spawn ) );
+			//log_msg( "Spawning {} particles", particles_to_spawn );
 			while( particles_to_spawn )
 			{
 				spawn_particle();

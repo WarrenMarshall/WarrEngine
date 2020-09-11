@@ -11,7 +11,7 @@ struct w_cache_assets
 
 		if( iter != cache.end() )
 		{
-			logfile->msg( fmt::format( "{} : asset '{}' already cached", __FUNCTION__, name ) );
+			log_msg( "Asset '{}' already cached", name );
 			return nullptr;
 		}
 
@@ -35,7 +35,7 @@ struct w_cache_assets
 		if( iter == cache.end() )
 		{
 			if( !silent )
-				log_error( fmt::format( "{} : not found : [{}]", __FUNCTION__, name ) );
+				log_error( "not found : [{}]", name );
 
 			return nullptr;
 		}
@@ -46,10 +46,10 @@ struct w_cache_assets
 		// if we found an asset but it's the wrong type, that's also fatal - name things uniquely!
 		if( dynamic_cast<T*>( asset_ptr ) == nullptr )
 		{
-			log_msg( fmt::format( "{} : asset WAS found but the type doesn't match the requested type", __FUNCTION__ ) );
-			log_msg( fmt::format( "	[{}]", name ) );
-			log_msg( fmt::format( "	Requested type : \"{}\"", typeid( T ).name() ) );
-			log_msg( fmt::format( "	Type in cache  : \"{}\"", typeid( *asset_ptr ).name() ) );
+			log_msg( "Asset WAS found but the type doesn't match the requested type" );
+			log_msg( "	[{}]", name );
+			log_msg( "	Requested type : \"{}\"", typeid( T ).name() );
+			log_msg( "	Type in cache  : \"{}\"", typeid( *asset_ptr ).name() );
 			assert( false );
 		}
 #endif

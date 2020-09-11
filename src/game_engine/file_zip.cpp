@@ -43,7 +43,7 @@ void w_file_zip::scan_and_build_table_of_contents()
 					// we don't support compression or encryption in any form
 					if( hdr->compression_method != 0 )
 					{
-						log_error( fmt::format( "{} : compression and/or encryption are NOT supported in ZIP files : [{}]", __FUNCTION__, zip_filename ) );
+						log_error( "Compression and/or encryption are NOT supported in ZIP files : [{}]", zip_filename );
 					}
 
 					if( hdr->local_file_header_signature == 0x04034b50 )
@@ -59,7 +59,7 @@ void w_file_zip::scan_and_build_table_of_contents()
 
 							std::string new_filename = filename;
 							new_filename = w_stringutil::replace_char( new_filename, '\\', '/' );
-							
+
 							table_of_contents.insert(
 								std::make_pair(
 									new_filename,
@@ -77,7 +77,7 @@ void w_file_zip::scan_and_build_table_of_contents()
 						{
 							// Anything else means the entry is compressed and/or
 							// encrypted, which we don't support
-							log_error( fmt::format( "{} : compression and/or encryption are NOT supported in ZIP files : [{}]", __FUNCTION__, zip_filename ) );
+							log_error( "Compression and/or encryption are NOT supported in ZIP files : [{}]", zip_filename );
 						}
 					}
 					// central directory file header

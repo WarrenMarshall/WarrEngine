@@ -34,7 +34,7 @@ bool a_texture::create_internals()
 
 	if( !color_data )
 	{
-		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, original_filename ) );
+		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
 
 	// upload texture to opengl
@@ -334,7 +334,7 @@ bool a_sound::create_internals()
 
 	if( !file_exists )
 	{
-		log_error( fmt::format( "{} : couldn't find the file : [{}]", __FUNCTION__, name ) );
+		log_error( "Couldn't find the file : [{}]", name );
 	}
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
@@ -346,7 +346,7 @@ bool a_sound::create_internals()
 
 	if( !snd && file_exists )
 	{
-		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
+		log_error( "Couldn't load the file : [{}]", name );
 	}
 
 	channel = BASS_SampleGetChannel( snd, false );
@@ -393,7 +393,7 @@ bool a_music::create_internals()
 
 	if( !file_exists )
 	{
-		log_error( fmt::format( "{} : couldn't find the file : [{}]", __FUNCTION__, name ) );
+		log_error( "Couldn't find the file : [{}]", name );
 	}
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
@@ -405,7 +405,7 @@ bool a_music::create_internals()
 
 	if( !mus && file_exists )
 	{
-		log_error( fmt::format( "{} : couldn't load the file : [{}]", __FUNCTION__, name ) );
+		log_error( "Couldn't load the file : [{}]", name );
 	}
 
 	channel = BASS_SampleGetChannel( mus, false );

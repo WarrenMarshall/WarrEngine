@@ -65,7 +65,7 @@ std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_vi
 		w_zip_toc_entry* toc_entry = zip_io->get_toc_entry_for_filename( filename );
 		if( toc_entry == nullptr )
 		{
-			log_error( fmt::format( "{} : file not found on disk OR in a zip file : [{}]", __FUNCTION__, filename ) );
+			log_error( "File not found on disk OR in a zip file : [{}]", filename );
 		}
 		else
 		{
@@ -96,7 +96,7 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 		w_zip_toc_entry* toc_entry = zip_io->get_toc_entry_for_filename( filename );
 		if( toc_entry == nullptr )
 		{
-			log_error( fmt::format( "{} : file not found on disk OR in a zip file : [{}]", __FUNCTION__, filename ) );
+			log_error( "File not found on disk OR in a zip file : [{}]", filename );
 		}
 		else
 		{

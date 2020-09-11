@@ -21,7 +21,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
     if( !success )
     {
         glGetShaderInfoLog( vertex_id, 512, nullptr, infoLog );
-        log_error( fmt::format( "{} : Vertex Shader : {}", __FUNCTION__, infoLog ) );
+        log_error( "Vertex Shader : {}", infoLog );
     }
 
     // fragment shader
@@ -37,7 +37,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
     if( !success )
     {
         glGetShaderInfoLog( fragment_id, 512, nullptr, infoLog );
-        log_error( fmt::format( "{} : Fragment Shader : {}", __FUNCTION__, infoLog ) );
+        log_error( "Fragment Shader : {}", infoLog );
     }
 
     // shader program
@@ -52,7 +52,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
     if( !success )
     {
         glGetProgramInfoLog( id, 512, nullptr, infoLog );
-        log_error( fmt::format( "{} : Shader Program : {}", __FUNCTION__, infoLog ) );
+        log_error( "Shader Program : {}", infoLog );
     }
 
     glValidateProgram( id );

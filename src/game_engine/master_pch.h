@@ -104,11 +104,10 @@
 // ----------------------------------------------------------------------------
 // handy macros
 
-//#define s_format fmt::format
-#define s_commas w_stringutil::format_with_commas
-#define log_msg logfile->msg
-#define log_warning logfile->warning
-#define log_error logfile->error
+#define f_commas w_stringutil::format_with_commas
+#define log_msg(string_format, ...) logfile->msg( fmt::format("[{}:{}] " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
+#define log_warning(string_format, ...) logfile->msg( fmt::format("[{}:{}] WARNING : " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
+#define log_error(string_format, ...) logfile->error( fmt::format("[{}:{}] ERROR! : " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
 
 // ----------------------------------------------------------------------------
 

@@ -431,15 +431,15 @@ w_render* w_render::draw_stats()
 		stat_lines.reserve( stats_draw_reserve );
 
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS / UPDATE : {} FPS",
-											  s_commas( stats.frame_count.value ),
+											  f_commas( stats.frame_count.value ),
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
 		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
-											  s_commas( stats.render_buffers.value ),
-											  s_commas( stats.render_vertices.value ),
-											  s_commas( stats.render_indices.value ) )
+											  f_commas( stats.render_buffers.value ),
+											  f_commas( stats.render_vertices.value ),
+											  f_commas( stats.render_indices.value ) )
 		);
 		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
-		stat_lines.emplace_back( fmt::format( "Entities : {}", s_commas( stats.num_entities.value ) ) );
+		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.num_entities.value ) ) );
 		stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
 		stat_lines.emplace_back( fmt::format( "Mouse VPos: {:.0f}, {:.0f}", engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
 
@@ -475,7 +475,7 @@ w_render* w_render::draw_stats()
 			->push_align( align::right )
 			->draw_string(
 				engine->pixel_font,
-				fmt::format( "{} FPS", s_commas( stats.frame_count.value ) ),
+				fmt::format( "{} FPS", f_commas( stats.frame_count.value ) ),
 				w_rect( v_window_w, 0 ) )
 			->end();
 	}

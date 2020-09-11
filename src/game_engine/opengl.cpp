@@ -9,7 +9,7 @@
 void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
     if( type == GL_DEBUG_TYPE_ERROR )
-        log_error( fmt::format( "OpenGL Error: [{}]", message ) );
+        log_error( "OpenGL Error: [{}]", message );
 }
 
 // ----------------------------------------------------------------------------
@@ -20,16 +20,16 @@ void w_opengl::init()
 	GLenum err = glewInit();
 
 	if( GLEW_OK != err )
-		log_error( fmt::format( "{} : GLEW failed to init : [{}]", __FUNCTION__, glewGetErrorString( err ) ) );
+		log_error( "GLEW failed to init : [{}]", glewGetErrorString( err ) );
 
 	// sets a callback function so opengl can report errors and warnings to us
 	glEnable( GL_DEBUG_OUTPUT );
 	glDebugMessageCallback( OpenGL_MessageCallback, 0 );
 
 	// opengl info
-	log_msg( fmt::format( "OpenGL Version : [{}]", glGetString( GL_VERSION ) ) );
-	log_msg( fmt::format( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) ) );
-	log_msg( fmt::format( "Renderer: [{}]", glGetString( GL_RENDERER ) ) );
+	log_msg( "OpenGL Version : [{}]", glGetString( GL_VERSION ) );
+	log_msg( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) );
+	log_msg( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );

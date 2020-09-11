@@ -60,7 +60,7 @@ void w_input::init()
 	if( XInputGetState( 0, &state ) == ERROR_SUCCESS )
 	{
 		// controller is connected on port 1
-		log_msg( fmt::format( "{} : using controller : {}", __FUNCTION__, 0 ) );
+		log_msg( "Using controller : {}", 0 );
 		game_controller = std::make_unique<w_game_controller>( 0 );
 	}
 
@@ -443,7 +443,7 @@ w_vec2 w_input::axis_value_of( e_input_id input_id )
 
 		default:
 		{
-			log_error( fmt::format( "{} : unknown axis", __FUNCTION__ ) );
+			log_error( "Unknown axis" );
 		}
 		break;
 	}

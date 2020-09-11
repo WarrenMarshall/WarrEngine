@@ -9,7 +9,7 @@ void w_cache_asset_definition_files::add( const std::string_view filename )
 	{
 		if( iter->original_filename == filename )
 		{
-			log_warning( fmt::format( "{} : asset definition file already cached : [{}]", __FUNCTION__, filename ) );
+			log_warning( "Asset definition file already cached : [{}]", filename );
 			return;
 		}
 	}

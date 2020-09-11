@@ -22,7 +22,7 @@ void i_speaker::remove_listener( i_listener* listener )
 {
 	auto find_iter = std::find( listeners.begin(), listeners.end(), listener );
 	if( find_iter == listeners.end() )
-		log_error( fmt::format( "{} : listener not found!", __FUNCTION__ ) );
+		log_error( "Listener not found!" );
 
 	listeners.erase( find_iter );
 }
