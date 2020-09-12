@@ -1,0 +1,15 @@
+
+{
+	"type" "preproc"
+	"name" "preproc"
+
+	`"app_title"			"Work Log Tracker v1.0"
+
+	# -----------------------------------------------------
+	# renderer
+
+	"v_window_w"		"164"
+	"v_window_h"		"260"
+	"v_sync"			"false"
+	"always_on_top"		"false"
+}

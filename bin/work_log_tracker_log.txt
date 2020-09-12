@@ -1,0 +1,26 @@
+Started : Mon Aug 24 20:09:09 2020
+Initializing engine
+Creating window
+w_window::init : Using monitor [BenQ LCD - 2560x1440]
+Initializing OpenGL
+OpenGL Version : [4.6.0 NVIDIA 446.14]
+GLEW Version : [2.1.0]
+Renderer: [GeForce GTX 1080/PCIe/SSE2]
+Initializing renderer
+Initializing BASS audio
+Caching asset definition files (*.asset_def)...
+Precaching resources from definition files...
+w_engine::precache_asset_resources : 50 assets precached
+Initializing game
+w_particle_pool::w_particle_pool : creating a particle pool with 300 particles
+w_particle_pool::w_particle_pool : creating a particle pool with 300 particles
+Initializing input
+Shutting down...
+Shutting down window
+Shutting down OpenGL
+Shutting down GLFW
+Shutting down BASS Audio
+Shutting down input
+Shutting down engine
+Ended : Mon Aug 24 20:09:49 2020
+Finished!
