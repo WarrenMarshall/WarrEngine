@@ -122,7 +122,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
-			glfwSetWindowSize( engine->window->window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
+			glfwSetWindowSize( engine->window->window, static_cast<int>( *rc.w ), static_cast<int>( *rc.h ) );
 			glfwSetWindowAspectRatio( engine->window->window,
 									  100,
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
@@ -285,7 +285,7 @@ void w_engine::exec_main_loop()
 
 		glViewport(
 			static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
-			static_cast<int>( engine->window->viewport_pos_sz.w ), static_cast<int>( engine->window->viewport_pos_sz.h )
+			static_cast<int>( *engine->window->viewport_pos_sz.w ), static_cast<int>( *engine->window->viewport_pos_sz.h )
 		);
 
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );

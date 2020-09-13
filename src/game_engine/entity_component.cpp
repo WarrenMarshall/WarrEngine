@@ -239,7 +239,7 @@ variant_collider_types ec_collider::get_collider()
 	else if( c2type == C2_TYPE_AABB )
 	{
 		return (c2AABB) w_rect(
-			{ parent_entity->physics_cache.ending_pos.x + box.x, parent_entity->physics_cache.ending_pos.y + box.y, box.w, box.h }
+			{ parent_entity->physics_cache.ending_pos.x + box.x, parent_entity->physics_cache.ending_pos.y + box.y, *box.w, *box.h }
 		);
 	}
 

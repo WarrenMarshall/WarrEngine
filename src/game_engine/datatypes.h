@@ -88,20 +88,21 @@ struct w_rect
 {
 	float x = 0.0f;
 	float y = 0.0f;
-	float w = 0.0f;
-	float h = 0.0f;
+	std::optional<float> w;
+	std::optional<float> h;
 
 	static const w_rect zero;
 
 	w_rect() = default;
-	w_rect( float x, float y, float w = -1.0f, float h = -1.0f );
+	w_rect( float x, float y );
+	w_rect( float x, float y, float w, float h );
 	w_rect( w_vec2 top_left, w_vec2 bottom_right );
 
 	operator c2AABB()
 	{
 		c2AABB bb;
 		bb.min = { x, y };
-		bb.max = { x + w, y + h };
+		bb.max = { x + w.value_or( 0.0f ), y + h.value_or( 0.0f ) };
 
 		return bb;
 	}

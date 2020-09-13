@@ -207,8 +207,8 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
-	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
+	float w = dst.w.value_or( subtex->sz.w );
+	float h = dst.h.value_or( subtex->sz.h );
 
 	float rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -248,8 +248,8 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = ( dst.w == -1 ) ? subtex->sz.w : dst.w;
-	float h = ( dst.h == -1 ) ? subtex->sz.h : dst.h;
+	float w = dst.w.value_or( subtex->sz.w );
+	float h = dst.h.value_or( subtex->sz.h );
 
 	float rs_scale = rs_scale_stack.back();
 
@@ -501,17 +501,17 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_color
 	);
 	w_render_vert v1(
-		w_vec2( dst.x + dst.w, dst.y ),
+		w_vec2( dst.x + *dst.w, dst.y ),
 		w_uv( 1, 0 ),
 		rs_color
 	);
 	w_render_vert v2(
-		w_vec2( dst.x + dst.w, dst.y + dst.h ),
+		w_vec2( dst.x + *dst.w, dst.y + *dst.h ),
 		w_uv( 1, 1 ),
 		rs_color
 	);
 	w_render_vert v3(
-		w_vec2( dst.x, dst.y + dst.h ),
+		w_vec2( dst.x, dst.y + *dst.h ),
 		w_uv( 0, 1 ),
 		rs_color
 	);
@@ -533,8 +533,8 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 		static_cast<float>( dst.y ) )
 	);
 	box.add( w_vec2(
-		static_cast<float>( dst.x + dst.w ),
-		static_cast<float>( dst.y + dst.h ) )
+		static_cast<float>( dst.x + dst.w.value() ),
+		static_cast<float>( dst.y + dst.h.value() ) )
 	);
 
 	draw_line( w_vec2( box.min.x, box.min.y ), w_vec2( box.max.x, box.min.y ) );
@@ -619,8 +619,8 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	float xpos = dst.x;
 	float ypos = dst.y;
 
-	float inner_w = dst.w - p_00->sz.w - p_20->sz.w;
-	float inner_h = dst.h - p_00->sz.h - p_02->sz.h;
+	float inner_w = *dst.w - p_00->sz.w - p_20->sz.w;
+	float inner_h = *dst.h - p_00->sz.h - p_02->sz.h;
 
 	// top row
 
