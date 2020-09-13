@@ -18,3 +18,7 @@ src/bin/game_engine.lib
 src/shipping
 releases/work_log_tracker/work_log_tracker.data
 releases/work_log_tracker/work_log_tracker_log.txt
+bin
+bin/game_engine.lib
+bin/ui_sandbox_log.txt
+bin/ui_sandbox.exe

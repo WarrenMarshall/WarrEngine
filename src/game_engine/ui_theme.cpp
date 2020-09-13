@@ -110,7 +110,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 
 	if( slice_def.has_value() )
 	{
-		RENDER->push_rgb( get_adjusted_color( base_twk.color, being_hovered, being_clicked ) )
+		RENDER->push_rgb( get_adjusted_color( base_attrib.color, being_hovered, being_clicked ) )
 			->draw_sliced( slice_def.value(), rc_draw );
 	}
 
@@ -125,15 +125,15 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		rc_client.y += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz.h : 0;
 
 		// if there are additional position tweaks, apply them
-		rc_client.x += subtex_twk.pos.value_or( w_vec2::zero ).x;
-		rc_client.y += subtex_twk.pos.value_or( w_vec2::zero ).y;
+		rc_client.x += subtex_attrib.pos.value_or( w_vec2::zero ).x;
+		rc_client.y += subtex_attrib.pos.value_or( w_vec2::zero ).y;
 
 		// if there are size tweaks, apply them
 		// #uitodo - this w_vec2 construction is ugly
-		rc_client.w = subtex_twk.sz.value_or( w_vec2( subtex.value()->rc_src.w, subtex.value()->rc_src.h ) ).w;
-		rc_client.h = subtex_twk.sz.value_or( w_vec2( subtex.value()->rc_src.w, subtex.value()->rc_src.h ) ).h;
+		rc_client.w = subtex_attrib.sz.value_or( w_vec2( subtex.value()->rc_src.w, subtex.value()->rc_src.h ) ).w;
+		rc_client.h = subtex_attrib.sz.value_or( w_vec2( subtex.value()->rc_src.w, subtex.value()->rc_src.h ) ).h;
 
-		RENDER->push_rgb( get_adjusted_color( subtex_twk.color, being_hovered, being_clicked ) )
+		RENDER->push_rgb( get_adjusted_color( subtex_attrib.color, being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( subtex.value(), rc_client );
 
@@ -145,13 +145,13 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	if( label.length() )
 	{
 		RENDER
-			->push_rgb( get_adjusted_color( label_twk.color, being_hovered, being_clicked ) )
+			->push_rgb( get_adjusted_color( label_attrib.color, being_hovered, being_clicked ) )
 			->push_align( label_align )
 			->push_depth_nudge()
 			->draw_string( engine->pixel_font, label,
 						   w_rect(
-							   label_pos.x + label_twk.pos.value_or( w_vec2::zero ).x,
-							   label_pos.y + label_twk.pos.value_or( w_vec2::zero ).y,
+							   label_pos.x + label_attrib.pos.value_or( w_vec2::zero ).x,
+							   label_pos.y + label_attrib.pos.value_or( w_vec2::zero ).y,
 							   -1, -1 )
 			);
 	}
@@ -172,7 +172,7 @@ void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hove
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->push_rgb( base_twk.color )
+		->push_rgb( base_attrib.color )
 		->draw_sliced( slice_def, rc )
 		->end();
 }

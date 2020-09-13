@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_ui_style_tweak
+struct w_ui_style_attrib
 {
 	w_color color = w_color::white;
 	std::optional<w_vec2> pos;
@@ -16,10 +16,10 @@ struct w_ui_style
 	w_ui_style() = default;
 
 	// base
-	w_ui_style_tweak base_twk;
+	w_ui_style_attrib base_attrib;
 
 	// label
-	w_ui_style_tweak label_twk;
+	w_ui_style_attrib label_attrib;
 
 	// clicking
 	w_offset clicked_offset = w_offset( 1, 1 );
@@ -29,7 +29,7 @@ struct w_ui_style
 
 	// image
 	std::optional<a_subtexture*> subtex;
-	w_ui_style_tweak subtex_twk;
+	w_ui_style_attrib subtex_attrib;
 
 	virtual e_im_result update_im_state( int id, w_rect rc );
 	virtual void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) = 0;
