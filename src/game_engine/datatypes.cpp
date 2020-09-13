@@ -302,6 +302,14 @@ float w_vec2::to_angle( w_vec2 a )
 	return angle;
 }
 
+// computes the reflection angle of "v" across the normal "n"
+
+w_vec2 w_vec2::reflect( w_vec2 v, w_vec2 n )
+{
+	glm::vec3 rdir = glm::reflect( static_cast<glm::vec3>( v ), static_cast<glm::vec3>( n ) );
+	return w_vec2( rdir.x, rdir.y );
+}
+
 // ----------------------------------------------------------------------------
 
 const w_vec3 w_vec3::zero = w_vec3( 0, 0, 0 );

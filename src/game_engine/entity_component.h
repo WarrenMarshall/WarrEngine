@@ -82,7 +82,7 @@ struct ec_collider : w_entity_component
 	ec_collider() = delete;
 	ec_collider( w_entity* parent_entity );
 
-	void push_outside( const c2Manifold& hit, float extra_distance );
+	void push_outside( const c2Manifold& hit );
 	w_entity_component* init_as_circle( float radius );
 	w_entity_component* init_as_box( w_rect box );
 	variant_collider_types get_collider();
@@ -111,18 +111,17 @@ struct ec_force_constant : w_entity_component
 //
 // good for temporary forces like jumps or getting knocked back.
 
-struct ec_force_decay : w_entity_component
+struct ec_force_multiplier : w_entity_component
 {
-	float angle = 0.0f;
 	float _strength = 0.0f;
 	float strength = 0.0f;
 	float _lifetime_in_ms = 0.0f;
 	float lifetime_in_ms = 0.0f;
 
-	ec_force_decay() = delete;
-	ec_force_decay( w_entity* parent_entity );
+	ec_force_multiplier() = delete;
+	ec_force_multiplier( w_entity* parent_entity );
 
-	ec_force_decay* init( float angle, float strength, float lifetime_in_ms );
+	ec_force_multiplier* init( float strength, float lifetime_in_ms );
 
 	virtual void update() final;
 };

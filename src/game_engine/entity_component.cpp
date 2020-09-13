@@ -201,9 +201,9 @@ ec_collider::ec_collider( w_entity* parent_entity )
 {
 }
 
-void ec_collider::push_outside( const c2Manifold& hit, float extra_distance )
+void ec_collider::push_outside( const c2Manifold& hit )
 {
-	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * ( hit.depths[ 0 ] + extra_distance ) );
+	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * hit.depths[ 0 ] );
 	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
 }
 
@@ -283,21 +283,20 @@ ec_force_constant* ec_force_constant::init( float angle, float strength )
 
 // ----------------------------------------------------------------------------
 
-ec_force_decay::ec_force_decay( w_entity* parent_entity )
+ec_force_multiplier::ec_force_multiplier( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
 }
 
-ec_force_decay* ec_force_decay::init( float angle, float strength, float lifetime_in_ms )
+ec_force_multiplier* ec_force_multiplier::init( float strength, float lifetime_in_ms )
 {
-	this->angle = angle;
 	this->_strength = this->strength = strength;
 	this->_lifetime_in_ms = this->lifetime_in_ms = lifetime_in_ms;
 
 	return this;
 }
 
-void ec_force_decay::update()
+void ec_force_multiplier::update()
 {
 	w_entity_component::update();
 

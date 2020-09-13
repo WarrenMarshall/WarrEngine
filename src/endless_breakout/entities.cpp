@@ -94,7 +94,7 @@ void pu_fireball::deactivate( w_entity* owner )
 e_ball::e_ball()
 {
 	add_component<ec_sprite>()->init( "sub_tex_ball" );
-	add_component<ec_collider>()->init_as_circle( 7 );
+	add_component<ec_collider>()->init_as_circle( 4 );
 	add_component<ec_force_constant>()->init( w_random::getf_range( 0, 359 ), 150.0f );
 
 	collision_layer = cl_ball;
@@ -155,14 +155,12 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 		if( !fireball_powerup.is_active )
 		{
-			collider->push_outside( hit, 0.5f );
+			collider->push_outside( hit );
 
 			// default ball collision behavior is to reflect off, maintaining speed
 
-			glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
-			glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
-			glm::vec3 rdir = glm::reflect( forces_vec, hit_normal );
-			w_vec2 reflected_dir( rdir.x, rdir.y );
+			w_vec2 forces_vec = w_vec2::normalize( physics_cache.forces );
+			w_vec2 reflected_dir = w_vec2::reflect( forces_vec, w_vec2( hit.n.x, hit.n.y ) );
 
 			// reset the force on the ball so it's using the new direction
 
@@ -209,11 +207,13 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else if( entity_hit->collision_layer & cl_paddle )
 	{
-		collider->push_outside( hit, 0.5f );
+		collider->push_outside( hit );
 
 		auto force = get_component<ec_force_constant>();
 		w_vec2 new_dir = w_vec2::subtract( pos, entity_hit->pos ).normalize();
 		force->angle = w_vec2::to_angle( new_dir );
+
+		add_component<ec_force_multiplier>()->init( 0.5f, 2000 );
 
 		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "paddle_impact" );
@@ -221,7 +221,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else if( entity_hit->collision_layer & cl_ball )
 	{
-		collider->push_outside( hit, 0.5f );
+		collider->push_outside( hit );
 
 		// 2 balls colliding should richochet away from each other
 
@@ -238,14 +238,12 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else
 	{
-		collider->push_outside( hit, 0.5f );
+		collider->push_outside( hit );
 
 		// default ball collision behavior is to reflect off, maintaining speed
 
-		glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
-		glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
-		glm::vec3 rdir = glm::reflect( forces_vec, hit_normal );
-		w_vec2 reflected_dir = w_vec2( rdir.x, rdir.y );
+		w_vec2 forces_vec = w_vec2::normalize( physics_cache.forces );
+		w_vec2 reflected_dir = w_vec2::reflect( forces_vec, w_vec2( hit.n.x, hit.n.y ) );
 
 		// reset the force on the ball so it's using the new direction
 		auto force = get_component<ec_force_constant>();

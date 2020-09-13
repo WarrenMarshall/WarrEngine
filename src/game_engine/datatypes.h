@@ -157,6 +157,7 @@ struct w_vec2
 	static w_vec2 normalize( w_vec2 a );
 	static w_vec2 from_angle( float angle );
 	static float to_angle( w_vec2 a );
+	static w_vec2 reflect( w_vec2 v, w_vec2 n );
 
 	operator c2v()
 	{

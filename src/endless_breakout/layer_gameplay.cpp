@@ -39,7 +39,8 @@ void spawn_new_brick_row( layer_gameplay* layer )
 
 void layer_gameplay::push()
 {
-	ball = add_entity<e_ball>( { v_window_hw, 32.0f }, 0.0f, 0.75f );
+	ball = add_entity<e_ball>( { v_window_hw, 32.0f }, 0.0f, 1.0f );
+	//ball->debug_draw_collision = true;
 
 	auto walls = add_entity<w_entity>();
 
@@ -57,6 +58,7 @@ void layer_gameplay::push()
 	death_zone->collision_layer = cl_deathzone;
 
 	paddle = add_entity<e_paddle>( { v_window_hw, v_window_h - 12 }, 0.0f, 0.75f );
+	//paddle->debug_draw_collision = true;
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 }

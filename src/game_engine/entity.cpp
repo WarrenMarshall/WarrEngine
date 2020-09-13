@@ -20,6 +20,17 @@ void w_force::init_to_zero()
 
 void w_entity::update_physics()
 {
+	float force_multiplier = 1.0f;
+
+	for( auto& ec : components )
+	{
+		if( typeid( *ec.get() ) == typeid( ec_force_multiplier ) )
+		{
+			ec_force_multiplier* fec = static_cast<ec_force_multiplier*>( ec.get() );
+			force_multiplier += fec->strength;
+		}
+	}
+
 	// accumulate all forces being applied to this entity and compute
 	// a single vector that represents that cumuluative effect.
 
@@ -32,21 +43,14 @@ void w_entity::update_physics()
 			ec_force_constant* fec = static_cast<ec_force_constant*>( ec.get() );
 
 			w_vec2 dir = w_vec2::from_angle( fec->angle );
-			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
-		}
-		if( typeid( *ec.get() ) == typeid( ec_force_decay ) )
-		{
-			ec_force_decay* fec = static_cast<ec_force_decay*>( ec.get() );
-
-			w_vec2 dir = w_vec2::from_angle( fec->angle );
-			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
+			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength * force_multiplier ) );
 		}
 		if( typeid( *ec.get() ) == typeid( ec_force_dir_accum ) )
 		{
 			ec_force_dir_accum* fec = static_cast<ec_force_dir_accum*>( ec.get() );
 
 			w_vec2 dir = w_vec2::from_angle( fec->angle );
-			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength ) );
+			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength * force_multiplier ) );
 		}
 	}
 

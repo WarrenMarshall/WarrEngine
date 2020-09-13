@@ -4,15 +4,6 @@
 layer_background::layer_background()
 {
 	draws_completely_solid = true;
-
-	//float angle;
-
-	//angle = w_vec2::to_angle( w_vec2( 0, -1 ) );
-	//angle = w_vec2::to_angle( w_vec2( 1, 0 ) );
-	//angle = w_vec2::to_angle( w_vec2( 0, 1 ) );
-	//angle = w_vec2::to_angle( w_vec2( -1, 0 ) );
-
-	//int warren = 5;
 }
 
 void layer_background::push()
