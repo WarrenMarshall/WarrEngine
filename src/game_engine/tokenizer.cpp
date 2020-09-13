@@ -3,16 +3,16 @@
 
 // ----------------------------------------------------------------------------
 
-w_tokenizer::w_tokenizer( const std::string_view string_buffer, char delim, const std::string& def_value )
-	: string_buffer( string_buffer ), delim( delim ), def_value( def_value )
+w_tokenizer::w_tokenizer( const std::string_view string_buffer, char delim, std::optional<std::string> def_value )
+	: string_buffer( string_buffer ), delim( delim ), def_value( def_value.value_or( "" ) )
 {
 }
 
-std::string_view w_tokenizer::get_next_token()
+std::optional<std::string_view> w_tokenizer::get_next_token()
 {
 	if( is_eos() )
 	{
-		return w_stringutil::trim( def_value );
+		return std::nullopt;
 	}
 
 	size_t start = idx;
@@ -28,7 +28,7 @@ std::string_view w_tokenizer::get_next_token()
 	else if( start == end )
 	{
 		idx++;
-		return std::string_view("");
+		return std::nullopt;
 	}
 
 	// extract the token

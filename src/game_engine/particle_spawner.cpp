@@ -34,8 +34,8 @@ void w_particle_spawner_box::parse_from_config_string( std::string_view value )
 {
 	w_tokenizer tok( value, ',' );
 	tok.get_next_token();	// throw away the type
-	w = w_parser::int_from_str( tok.get_next_token() );
-	h = w_parser::int_from_str( tok.get_next_token() );
+	w = w_parser::int_from_str( *tok.get_next_token() );
+	h = w_parser::int_from_str( *tok.get_next_token() );
 }
 
 // ----------------------------------------------------------------------------
@@ -69,6 +69,6 @@ void w_particle_spawner_circle::parse_from_config_string( std::string_view value
 {
 	w_tokenizer tok( value, ',' );
 	tok.get_next_token();	// throw away the type
-	radius = w_parser::float_from_str( tok.get_next_token() );
+	radius = w_parser::float_from_str( *tok.get_next_token() );
 }
 

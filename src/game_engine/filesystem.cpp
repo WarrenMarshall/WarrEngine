@@ -112,20 +112,14 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 
 void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, std::string_view folder, std::string_view extension )
 {
-	// I haven't had luck in converting these variables to string_view.
-	// the ".string()" calls below return bad values to a string_view for some reason.
-	//
-	// however, this function is called at start up and never again, so don't worry about it.
-	std::string filename, ext;
-
 	// look on disk
 
 	if( std::filesystem::exists( folder ) )
 	{
 		for( auto& iter : std::filesystem::directory_iterator( folder ) )
 		{
-			filename = iter.path().string();
-			ext = iter.path().filename().extension().string();
+			std::string filename = iter.path().string();
+			std::string ext = iter.path().filename().extension().string();
 
 			if( ext == extension )
 			{
@@ -138,8 +132,8 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 	for( auto& [filename, toc_entry] : zip_io->table_of_contents )
 	{
-		w_tokenizer tok( filename, '/', "" );
-		std::string_view foldername = tok.get_next_token();
+		w_tokenizer tok( filename, '/' );
+		auto foldername = *tok.get_next_token();
 
 		if( foldername == folder )
 		{

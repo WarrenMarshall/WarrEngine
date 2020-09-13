@@ -1,4 +1,4 @@
-[w_logfile::time_stamp:35] Started : Sat Sep 12 04:46:24 2020
+[w_logfile::time_stamp:35] Started : Sun Sep 13 14:50:49 2020
 [w_engine::init_game_engine:33] Initializing engine
 [w_engine::init_game_engine:44] Creating window
 [w_window::init:80] Using monitor [BenQ LCD - 2560x1440]
@@ -10,19 +10,20 @@
 [w_engine::init_game_engine:64] Initializing audio
 [w_engine::init_game_engine:75] Caching asset definitions (*.asset_def)...
 [w_engine::init_game_engine:92] Precaching resources from definition files...
-[w_engine::precache_asset_resources:571] Pass: 0 / 0 assets precached
+[w_engine::precache_asset_resources:575] Pass: 0 / 0 assets precached
 [w_engine::init_game_engine:97] Caching configuration (*.ini)...
-[w_engine::precache_asset_resources:571] Pass: 1 / 25 assets precached
-[w_engine::precache_asset_resources:571] Pass: 2 / 27 assets precached
+[w_engine::precache_asset_resources:575] Pass: 1 / 73 assets precached
+[w_engine::precache_asset_resources:575] Pass: 2 / 74 assets precached
 [w_engine::init_game_engine:131] VSync: false
 [w_engine::init_game_engine:144] Initializing game
 [w_engine::init_game_engine:152] Initializing input
-[w_engine::deinit_game_engine:184] Shutting down...
-[w_engine::deinit_game_engine:186] Shutting down window
-[w_engine::deinit_game_engine:189] Shutting down OpenGL
-[w_engine::deinit_game_engine:192] Shutting down GLFW
-[w_engine::deinit_game_engine:195] Shutting down Audio
-[w_engine::deinit_game_engine:198] Shutting down input
-[w_engine::deinit_game_engine:201] Shutting down engine
-[w_logfile::time_stamp:35] Ended : Sat Sep 12 04:46:32 2020
-[w_engine::deinit_game_engine:206] Finished!
+[w_input::init:61] Using controller : 0
+[w_engine::deinit_game_engine:188] Shutting down...
+[w_engine::deinit_game_engine:190] Shutting down window
+[w_engine::deinit_game_engine:193] Shutting down OpenGL
+[w_engine::deinit_game_engine:196] Shutting down GLFW
+[w_engine::deinit_game_engine:199] Shutting down Audio
+[w_engine::deinit_game_engine:202] Shutting down input
+[w_engine::deinit_game_engine:205] Shutting down engine
+[w_logfile::time_stamp:35] Ended : Sun Sep 13 14:50:57 2020
+[w_engine::deinit_game_engine:210] Finished!

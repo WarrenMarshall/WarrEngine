@@ -86,12 +86,12 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 						while( !tok.is_eos() )
 						{
-							std::string_view subtex_name = tok.get_next_token();
+							std::string_view subtex_name = *tok.get_next_token();
 
-							float x = w_parser::float_from_str( tok.get_next_token() );
-							float y = w_parser::float_from_str( tok.get_next_token() );
-							float w = w_parser::float_from_str( tok.get_next_token() );
-							float h = w_parser::float_from_str( tok.get_next_token() );
+							float x = w_parser::float_from_str( *tok.get_next_token() );
+							float y = w_parser::float_from_str( *tok.get_next_token() );
+							float w = w_parser::float_from_str( *tok.get_next_token() );
+							float h = w_parser::float_from_str( *tok.get_next_token() );
 
 							w_rect rc( x, y, w, h );
 
@@ -118,32 +118,32 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					std::string color_list = std::string( iter_ad->find_value( "colors" ) );
 
-					w_tokenizer tok( color_list, ',', str_not_found );
-					std::string val;
+					w_tokenizer tok( color_list, ',' );
 
 					std::vector<std::string> wk_values;
 					while( true )
 					{
-						val = tok.get_next_token();
+						auto val = tok.get_next_token();
 
-						if( val == str_not_found )
+						if( !val.has_value() )
 						{
 							break;
 						}
 
-						if( (val[0] >= '0' && val[0] <= '9') || val[ 0 ] == '.' )
+						char ch = ( *val )[ 0 ];
+						if( (ch >= '0' && ch <= '9') || ch == '.' )
 						{
-							std::string composited_color = val;
+							std::string composited_color = std::string( *val );
 							composited_color += ",";
-							composited_color += tok.get_next_token();
+							composited_color += *tok.get_next_token();
 							composited_color += ",";
-							composited_color += tok.get_next_token();
+							composited_color += *tok.get_next_token();
 
 							wk_values.push_back( composited_color );
 						}
 						else
 						{
-							wk_values.push_back( val );
+							wk_values.push_back( std::string( *val ) );
 						}
 					}
 
@@ -174,11 +174,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					for( const auto& iter : color_values )
 					{
-						val = iter;
+						auto val = iter;
 
 						if( engine->is_symbol_in_map( val ) )
 						{
-							val = engine->find_string_from_symbol( val );
+							val = *engine->find_string_from_symbol( val );
 						}
 
 						auto color = w_color( val );
@@ -434,7 +434,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						else if( key == "spawner_type" )
 						{
 							w_tokenizer tok( value, ',' );
-							std::string_view type = tok.get_next_token();
+							std::string_view type = *tok.get_next_token();
 
 							if( type == "point" )
 							{
@@ -543,7 +543,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
 					{
-						auto tex = engine->get_asset<a_subtexture>( tok.get_next_token() );
+						auto tex = engine->get_asset<a_subtexture>( *tok.get_next_token() );
 						asset_ptr->frames.emplace_back( tex );
 					}
 
@@ -609,13 +609,13 @@ bool w_asset_definition_file::create_internals()
 			w_tokenizer tok_kv( line, '\"' );
 
 			tok_kv.get_next_token();
-			std::string_view key = tok_kv.get_next_token();
+			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token();
-			std::string_view value = tok_kv.get_next_token();
+			auto value = tok_kv.get_next_token();
 
-			if( key.length() && value.length() )
+			if( key.has_value() && value.has_value() )
 			{
-				current_asset_definition->set( key, value );
+				current_asset_definition->set( *key, *value );
 			}
 		}
 	}

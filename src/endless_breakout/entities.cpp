@@ -84,8 +84,7 @@ void pu_fireball::deactivate( w_entity* owner )
 
 	for( auto ec : clean_up )
 	{
-		ec->set_life_cycle( lifecycle::dying );
-		//owner->remove_component( ec );
+		ec->set_life_cycle( life_cycle::dying );
 	}
 	clean_up.clear();
 }
@@ -96,7 +95,7 @@ e_ball::e_ball()
 {
 	add_component<ec_sprite>()->init( "sub_tex_ball" );
 	add_component<ec_collider>()->init_as_circle( 7 );
-	forces.emplace_back( std::make_unique<w_force>( w_vec2::get_random_unit(), 150.0f ) );
+	add_component<ec_force_constant>()->init( w_random::getf_range( 0, 359 ), 150.0f );
 
 	collision_layer = cl_ball;
 	collides_with = cl_ball | cl_wall | cl_brick | cl_paddle | cl_deathzone | cl_powup_multiball | cl_powup_fireball;
@@ -124,7 +123,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 		GAME->add_score( 100 );
 
 		// destroy the brick
-		entity_hit->set_life_cycle( lifecycle::dying );
+		entity_hit->set_life_cycle( life_cycle::dying );
 
 		// play the pickup vfx
 		auto efx = layer->add_entity<w_entity_fx>( entity_hit->pos, 0, 1 );
@@ -139,7 +138,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 		GAME->add_score( 100 );
 
 		// destroy the brick
-		entity_hit->set_life_cycle( lifecycle::dying );
+		entity_hit->set_life_cycle( life_cycle::dying );
 
 		fireball_powerup.activate( this );
 
@@ -152,7 +151,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	{
 		GAME->add_score( 10 );
 
-		entity_hit->set_life_cycle( lifecycle::dying );
+		entity_hit->set_life_cycle( life_cycle::dying );
 
 		if( !fireball_powerup.is_active )
 		{
@@ -162,13 +161,15 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 			glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
 			glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
-			glm::vec3 reflected_dir = glm::reflect( forces_vec, hit_normal );
+			glm::vec3 rdir = glm::reflect( forces_vec, hit_normal );
+			w_vec2 reflected_dir( rdir.x, rdir.y );
 
 			// reset the force on the ball so it's using the new direction
-			w_force* force = forces.back().get();
-			force->dir.x = reflected_dir.x;
-			force->dir.y = reflected_dir.y;
-			fudge_movement_dir( force->dir );
+
+			fudge_movement_dir( reflected_dir );
+
+			auto force = get_component<ec_force_constant>();
+			force->angle = w_vec2::to_angle( reflected_dir );
 		}
 		else
 		{
@@ -182,7 +183,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	}
 	else if( entity_hit->collision_layer & cl_deathzone )
 	{
-		set_life_cycle( lifecycle::dying );
+		set_life_cycle( life_cycle::dying );
 
 		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "deathzone_impact" );
@@ -210,9 +211,9 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	{
 		collider->push_outside( hit, 0.5f );
 
-		w_force* force = forces.back().get();
-		w_vec2 new_dir = w_vec2::subtract( pos, entity_hit->pos );
-		force->dir = new_dir.normalize();
+		auto force = get_component<ec_force_constant>();
+		w_vec2 new_dir = w_vec2::subtract( pos, entity_hit->pos ).normalize();
+		force->angle = w_vec2::to_angle( new_dir );
 
 		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "paddle_impact" );
@@ -224,10 +225,10 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 		// 2 balls colliding should richochet away from each other
 
-		w_force* force1 = forces.back().get();
-		w_force* force2 = entity_hit->forces.back().get();
+		auto force1 = get_component<ec_force_constant>();
+		auto force2 = entity_hit->get_component<ec_force_constant>();
 
-		std::swap( force1->dir, force2->dir );
+		std::swap( force1->angle, force2->angle );
 
 		GAME->add_score( 10 );
 
@@ -243,13 +244,13 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 		glm::vec3 forces_vec = ( glm::vec3 )w_vec2::normalize( physics_cache.forces );
 		glm::vec3 hit_normal( hit.n.x, hit.n.y, 0.0f );
-		glm::vec3 reflected_dir = glm::reflect( forces_vec, hit_normal );
+		glm::vec3 rdir = glm::reflect( forces_vec, hit_normal );
+		w_vec2 reflected_dir = w_vec2( rdir.x, rdir.y );
 
 		// reset the force on the ball so it's using the new direction
-		w_force* force = forces.back().get();
-		force->dir.x = reflected_dir.x;
-		force->dir.y = reflected_dir.y;
-		fudge_movement_dir( force->dir );
+		auto force = get_component<ec_force_constant>();
+		fudge_movement_dir( reflected_dir );
+		force->angle = w_vec2::to_angle( reflected_dir );
 
 		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "wall_impact" );

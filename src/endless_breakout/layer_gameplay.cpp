@@ -143,7 +143,7 @@ void layer_gameplay::draw()
 		->push_rgb( w_color::white )
 		->push_alpha( 0.15f )
 		->push_scale( 6.0f )
-		->draw_string( engine->pixel_font, s_commas( static_cast<float>( GAME->display_score ) ), w_rect( v_window_hw, v_window_h - 100 ) );
+		->draw_string( engine->pixel_font, f_commas( static_cast<float>( GAME->display_score ) ), w_rect( v_window_hw, v_window_h - 100 ) );
 
 	if( GAME->high_score > 0 )
 	{
@@ -151,7 +151,7 @@ void layer_gameplay::draw()
 			->push_rgb( w_color::grey )
 			->push_alpha( 0.15f )
 			->push_scale( 2.0f )
-			->draw_string( engine->pixel_font, s_commas( static_cast<float>( GAME->high_score ) ), w_rect( v_window_hw, v_window_h - 60 ) );
+			->draw_string( engine->pixel_font, f_commas( static_cast<float>( GAME->high_score ) ), w_rect( v_window_hw, v_window_h - 60 ) );
 	}
 
 	RENDER

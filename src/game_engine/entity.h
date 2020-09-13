@@ -72,7 +72,7 @@ struct w_entity : i_lifecycle, i_transform
 	{
 		for( auto& ec : components )
 		{
-			if( typeid( *ec->get() ) == typeid(T) )
+			if( typeid( *ec.get() ) == typeid( T ) )
 			{
 				return static_cast<T*>( ec.get() );
 			}
@@ -89,7 +89,7 @@ struct w_entity : i_lifecycle, i_transform
 
 		for( auto& ec : this->components )
 		{
-			if( typeid(*ec.get()) == typeid(T) )
+			if( typeid( *ec.get() ) == typeid( T ) )
 			{
 				ecs += static_cast<T*>( ec.get() );
 			}

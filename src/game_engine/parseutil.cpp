@@ -84,13 +84,13 @@ w_color w_parser::color_from_str( const std::string_view str )
 		delimiter = '/';
 	}
 
-	w_tokenizer tok( str, delimiter, "1.0f" );
+	w_tokenizer tok( str, delimiter );
 
 	w_color color;
-	color.r = w_parser::float_from_str( tok.get_next_token() );
-	color.g = w_parser::float_from_str( tok.get_next_token() );
-	color.b = w_parser::float_from_str( tok.get_next_token() );
-	color.a = w_parser::float_from_str( tok.get_next_token() );
+	color.r = w_parser::float_from_str( *tok.get_next_token() );
+	color.g = w_parser::float_from_str( *tok.get_next_token() );
+	color.b = w_parser::float_from_str( *tok.get_next_token() );
+	color.a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f") );
 
 	return color;
 }
@@ -109,8 +109,8 @@ w_range w_parser::range_from_str( const std::string_view str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_range range;
-	range.min = w_parser::float_from_str( tok.get_next_token() );
-	range.max = w_parser::float_from_str( tok.get_next_token() );
+	range.min = w_parser::float_from_str( *tok.get_next_token() );
+	range.max = w_parser::float_from_str( *tok.get_next_token() );
 
 	return range;
 }
@@ -120,10 +120,10 @@ w_rect w_parser::rect_from_str( const std::string_view str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_rect rect;
-	rect.x = w_parser::float_from_str( tok.get_next_token() );
-	rect.y = w_parser::float_from_str( tok.get_next_token() );
-	rect.w = w_parser::float_from_str( tok.get_next_token() );
-	rect.h = w_parser::float_from_str( tok.get_next_token() );
+	rect.x = w_parser::float_from_str( *tok.get_next_token() );
+	rect.y = w_parser::float_from_str( *tok.get_next_token() );
+	rect.w = w_parser::float_from_str( *tok.get_next_token() );
+	rect.h = w_parser::float_from_str( *tok.get_next_token() );
 
 	return rect;
 }
@@ -142,8 +142,8 @@ w_vec2 w_parser::vec2_from_str( const std::string_view str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_vec2 vec2;
-	vec2.x = w_parser::float_from_str( tok.get_next_token() );
-	vec2.y = w_parser::float_from_str( tok.get_next_token() );
+	vec2.x = w_parser::float_from_str( *tok.get_next_token() );
+	vec2.y = w_parser::float_from_str( *tok.get_next_token() );
 
 	return vec2;
 }
@@ -162,9 +162,9 @@ w_vec3 w_parser::vec3_from_str( const std::string_view str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_vec3 vec3;
-	vec3.x = w_parser::float_from_str( tok.get_next_token() );
-	vec3.y = w_parser::float_from_str( tok.get_next_token() );
-	vec3.z = w_parser::float_from_str( tok.get_next_token() );
+	vec3.x = w_parser::float_from_str( *tok.get_next_token() );
+	vec3.y = w_parser::float_from_str( *tok.get_next_token() );
+	vec3.z = w_parser::float_from_str( *tok.get_next_token() );
 
 	return vec3;
 }
@@ -184,19 +184,19 @@ std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, c
 	{
 		w_keyframe kf;
 
-		kf.pct_marker = w_parser::float_from_str( tok.get_next_token() );
+		kf.pct_marker = w_parser::float_from_str( *tok.get_next_token() );
 
 		switch( type )
 		{
 			case timeline_type::float_type:
 			{
-				kf.float_value = w_parser::float_from_str( tok.get_next_token() );
+				kf.float_value = w_parser::float_from_str( *tok.get_next_token() );
 			}
 			break;
 
 			case timeline_type::color_type:
 			{
-				kf.color_value = w_parser::color_from_str( tok.get_next_token() );
+				kf.color_value = w_parser::color_from_str( *tok.get_next_token() );
 			}
 			break;
 

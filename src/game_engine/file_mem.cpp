@@ -29,7 +29,7 @@ void w_mem_file_text::preprocess()
 
 	while( !tok.is_eos() )
 	{
-		auto line = tok.get_next_token();
+		auto line = *tok.get_next_token();
 
 		// skip blank lines
 		if( line.length() == 0 )
@@ -53,7 +53,7 @@ void w_mem_file_text::preprocess()
 
 		// handle lines that use continuation characters
 		// for ease of reading ('\')
-		
+
 		if( currently_splicing )
 		{
 			if( line.back() == '\\' )

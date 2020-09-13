@@ -121,8 +121,8 @@ w_range::w_range( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 
-	min = w_parser::float_from_str( tok.get_next_token() );
-	max = w_parser::float_from_str( tok.get_next_token() );
+	min = w_parser::float_from_str( *tok.get_next_token() );
+	max = w_parser::float_from_str( *tok.get_next_token() );
 }
 
 float w_range::get_value()
@@ -176,12 +176,13 @@ w_color::w_color( float r, float g, float b, float a )
 
 w_color::w_color( std::string_view str )
 {
-	w_tokenizer tok( str, ',', "1.0f" );
+	w_tokenizer tok( str, ',' );
 
-	r = w_parser::float_from_str( tok.get_next_token() );
-	g = w_parser::float_from_str( tok.get_next_token() );
-	b = w_parser::float_from_str( tok.get_next_token() );
-	a = w_parser::float_from_str( tok.get_next_token() );
+	r = w_parser::float_from_str( *tok.get_next_token() );
+	g = w_parser::float_from_str( *tok.get_next_token() );
+	b = w_parser::float_from_str( *tok.get_next_token() );
+	auto alpha = tok.get_next_token();
+	a = alpha.has_value() ? w_parser::float_from_str( *alpha ) : 1.0f;
 }
 
 void w_color::scale( w_color& color, float s )
@@ -220,8 +221,8 @@ w_vec2::w_vec2( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 
-	x = w_parser::float_from_str( tok.get_next_token() );
-	y = w_parser::float_from_str( tok.get_next_token() );
+	x = w_parser::float_from_str( *tok.get_next_token() );
+	y = w_parser::float_from_str( *tok.get_next_token() );
 }
 
 w_vec2 w_vec2::add( const w_vec2& rhs )
@@ -290,6 +291,17 @@ w_vec2 w_vec2::from_angle( float angle )
 	return v;
 }
 
+float w_vec2::to_angle( w_vec2 a )
+{
+	float angle = atan2( a.y, a.x ) * 180.0f / W_PI;
+
+	// massage the resulting angle into a range that this engine likes.
+	angle += 90.0f;
+	if( angle < 0.0f ) angle += 360.0f;
+
+	return angle;
+}
+
 // ----------------------------------------------------------------------------
 
 const w_vec3 w_vec3::zero = w_vec3( 0, 0, 0 );
@@ -315,9 +327,9 @@ w_vec3::w_vec3( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 
-	x = w_parser::float_from_str( tok.get_next_token() );
-	y = w_parser::float_from_str( tok.get_next_token() );
-	z = w_parser::float_from_str( tok.get_next_token() );
+	x = w_parser::float_from_str( *tok.get_next_token() );
+	y = w_parser::float_from_str( *tok.get_next_token() );
+	z = w_parser::float_from_str( *tok.get_next_token() );
 }
 
 w_vec3 w_vec3::add( const w_vec3& lhs, const w_vec3& rhs )

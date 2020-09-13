@@ -39,7 +39,7 @@ struct w_engine : i_listener
 
 	std::map<std::string, std::string> _symbol_to_value;
 	bool is_symbol_in_map( const std::string_view str );
-	std::string find_string_from_symbol( const std::string_view str );
+	std::optional<std::string> find_string_from_symbol( const std::string_view str );
 	int find_int_from_symbol( const std::string_view str, int def_value = 0 );
 	float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
 	w_color find_color_from_symbol( const std::string_view str, w_color def_value = w_color::white );

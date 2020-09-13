@@ -318,11 +318,11 @@ bool w_engine::is_symbol_in_map( const std::string_view symbol )
 /*
 	returns a string containing the value stored for 'symbol'
 */
-std::string w_engine::find_string_from_symbol( std::string_view symbol )
+std::optional<std::string> w_engine::find_string_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
-		return str_not_found;
+		return std::nullopt;
 	}
 
 	return _symbol_to_value[ std::string( symbol ) ];
@@ -335,74 +335,74 @@ std::string w_engine::find_string_from_symbol( std::string_view symbol )
 */
 int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {
-	std::string sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol( symbol );
 
-	if( sval == str_not_found )
+	if( !sval.has_value() )
 	{
 		sval = fmt::format( "{}", def_value );
 	}
 
-	return static_cast<int>( strtol( sval.data(), ( char** ) nullptr, 10 ) );
+	return static_cast<int>( strtol( std::string(*sval).data(), ( char** ) nullptr, 10 ) );
 }
 
 float w_engine::find_float_from_symbol( std::string_view symbol, float def_value )
 {
-	std::string sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol( symbol );
 
-	if( sval == str_not_found )
+	if( !sval.has_value() )
 	{
 		sval = fmt::format( "{}", def_value );
 	}
 
-	return static_cast<float>( strtof( sval.data(), ( char** ) nullptr ) );
+	return static_cast<float>( strtof( std::string(*sval).data(), ( char** ) nullptr ) );
 }
 
 w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_value )
 {
-	std::string sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol( symbol );
 
-	if( sval == str_not_found )
+	if( !sval.has_value() )
 	{
 		sval = fmt::format( "{},{},{},{}", def_value.r, def_value.g, def_value.b, def_value.a );
 	}
 
-	return w_color( sval );
+	return w_color( *sval );
 }
 
 w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_value )
 {
-	std::string sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol( symbol );
 
-	if( sval == str_not_found )
+	if( !sval.has_value() )
 	{
 		sval = fmt::format( "{},{}", def_value.min, def_value.max );
 	}
 
-	return w_range( sval );
+	return w_range( *sval );
 }
 
 w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_value )
 {
-	std::string sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol( symbol );
 
-	if( sval == str_not_found )
+	if( !sval.has_value() )
 	{
 		sval = fmt::format( "{},{}", def_value.x, def_value.y );
 	}
 
-	return w_vec2( sval );
+	return w_vec2( *sval );
 }
 
 w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_value )
 {
-	std::string sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol( symbol );
 
-	if( sval == str_not_found )
+	if( !sval.has_value() )
 	{
 		sval = fmt::format( "{},{},{}", def_value.x, def_value.y, def_value.z );
 	}
 
-	return w_vec3( sval );
+	return w_vec3( *sval );
 }
 
 /*
@@ -547,13 +547,13 @@ void w_engine::parse_config_file( std::string_view filename )
 			w_tokenizer tok_kv( line, '\"' );
 
 			tok_kv.get_next_token();
-			std::string_view key = tok_kv.get_next_token();
+			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token();
-			std::string_view value = tok_kv.get_next_token();
+			auto value = tok_kv.get_next_token();
 
-			if( key.length() && value.length() )
+			if( key.has_value() && value.has_value() )
 			{
-				config_vars->set( key, value );
+				config_vars->set( *key, *value );
 			}
 		}
 	}

@@ -174,7 +174,5 @@ using b_silent = bool;
 
 typedef std::variant<c2Circle, c2AABB, c2Capsule> variant_collider_types;
 
-constexpr const char* str_not_found = "n/a";
-
 #define ADD_QUOTES_HELPER(s) #s
 #define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)
