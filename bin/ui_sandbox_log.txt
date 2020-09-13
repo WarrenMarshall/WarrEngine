@@ -1,4 +1,4 @@
-[w_logfile::time_stamp:35] Started : Sun Sep 13 09:35:26 2020
+[w_logfile::time_stamp:35] Started : Sun Sep 13 11:53:59 2020
 [w_engine::init_game_engine:33] Initializing engine
 [w_engine::init_game_engine:44] Creating window
 [w_window::init:80] Using monitor [BenQ LCD - 2560x1440]
@@ -8,7 +8,6 @@
 [w_opengl::init:32] Renderer: [GeForce GTX 1080/PCIe/SSE2]
 [w_engine::init_game_engine:59] Initializing renderer
 [w_engine::init_game_engine:64] Initializing audio
-[w_engine::init_game_engine:68] WARNING : Audio init failed!
 [w_engine::init_game_engine:75] Caching asset definitions (*.asset_def)...
 [w_engine::init_game_engine:92] Precaching resources from definition files...
 [w_engine::precache_asset_resources:575] Pass: 0 / 0 assets precached
@@ -25,5 +24,5 @@
 [w_engine::deinit_game_engine:199] Shutting down Audio
 [w_engine::deinit_game_engine:202] Shutting down input
 [w_engine::deinit_game_engine:205] Shutting down engine
-[w_logfile::time_stamp:35] Ended : Sun Sep 13 09:35:38 2020
+[w_logfile::time_stamp:35] Ended : Sun Sep 13 11:54:08 2020
 [w_engine::deinit_game_engine:210] Finished!

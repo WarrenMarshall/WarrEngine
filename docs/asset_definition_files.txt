@@ -84,3 +84,30 @@ EMITTER FIELDS
 		- particles spawn randomly within a circle at emitter position
 	- "box,width,height"
 		- particles spawn randomly within a box centered at emitter position
+
+------------------------------------------------------------------
+SLICE DEFs
+------------------------------------------------------------------
+
+"rect" "x, y, w, h"
+	- the complete position and size of the area we wish to slice def
+
+"x_slices" "left, right"
+	- the widths of the left and right slices. these are both positive
+	  numbers measured from the left and right edges of the "rect" above.
+
+"y_slices" "top, bottom"
+	- the widths of the topt and bottom slices. these are both positive
+	  numbers measured from the top and bottom edges of the "rect" above.
+
+Example:
+
+	{
+		"type" "slice_def"
+		"name" "ui_default_panel"
+		"texture" "tex_ui_default"
+
+		"rect" "190, 98, 100, 100"
+		"x_slices" "7, 7"
+		"y_slices" "7, 7"
+	}

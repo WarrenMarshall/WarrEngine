@@ -91,6 +91,8 @@ struct w_rect
 	float w = 0.0f;
 	float h = 0.0f;
 
+	static const w_rect zero;
+
 	w_rect() = default;
 	w_rect( float x, float y, float w = -1.0f, float h = -1.0f );
 	w_rect( w_vec2 top_left, w_vec2 bottom_right );
@@ -113,15 +115,23 @@ struct w_vec2
 	{
 		struct
 		{
-			float x, y;
+			float x, y;		// xy position
 		};
 		struct
 		{
-			float u, v;
+			float u, v;		// uv coord
 		};
 		struct
 		{
-			float w, h;
+			float w, h;		// width/height
+		};
+		struct
+		{
+			float left, right;
+		};
+		struct
+		{
+			float top, bottom;
 		};
 	};
 

@@ -226,7 +226,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-				else if( type == "9slice_def" )
+				else if( type == "slice_def" )
 				{
 					// ------------------------------------------------------------------------
 
@@ -244,22 +244,113 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					std::string_view tex_name = iter_ad->find_value( "texture");
 
+					std::optional<w_rect> rect;
+					std::optional<w_vec2> x_slices;
+					std::optional<w_vec2> y_slices;
+
 					for( const auto& [key, value] : iter_ad->kv )
 					{
 						int subtex_idx = 0;
 						w_rect rc = {};
 
-						if( key.substr( 0, 2 ) == "p_" )
+						if( key == "rect" )
 						{
-							subtex_idx = w_parser::int_from_str( key );
-							rc = w_parser::rect_from_str( value );
-
-							std::string subtex_name = name + "_" + key;
-
-							asset_ptr->patches[ subtex_idx ] =
-								engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name, rc ), subtex_name, "" );
+							rect = w_parser::rect_from_str( value );
+						}
+						else if( key == "x_slices" )
+						{
+							x_slices = w_parser::vec2_from_str( value );
+						}
+						else if( key == "y_slices" )
+						{
+							y_slices = w_parser::vec2_from_str( value );
 						}
 					}
+
+					if( !rect || !x_slices || !y_slices )
+					{
+						log_error( "Malformed slice definition : {}", name );
+					}
+
+					float x, y, w, h;
+
+					// top row
+
+					x = rect->x;
+					y = rect->y;
+					w = x_slices->left;
+					h = y_slices->top;
+
+					asset_ptr->patches[ slicedef_patch::P_00 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", name ), ""
+						);
+
+					x = rect->x + x_slices->left;
+					w = rect->w - x_slices->left - x_slices->right;
+					asset_ptr->patches[ slicedef_patch::P_10 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", name ), ""
+						);
+
+					x = rect->x + rect->w - x_slices->right;
+					w = x_slices->right;
+					asset_ptr->patches[ slicedef_patch::P_20 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", name ), ""
+						);
+
+					// middle row
+
+					x = rect->x;
+					y = rect->y + y_slices->top;
+					w = x_slices->left;
+					h = rect->h - y_slices->top - y_slices->bottom;
+
+					asset_ptr->patches[ slicedef_patch::P_01 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", name ), ""
+						);
+
+					x = rect->x + x_slices->left;
+					w = rect->w - x_slices->left - x_slices->right;
+					asset_ptr->patches[ slicedef_patch::P_11 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", name ), ""
+						);
+
+					x = rect->x + rect->w - x_slices->right;
+					w = x_slices->right;
+					asset_ptr->patches[ slicedef_patch::P_21 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", name ), ""
+						);
+
+					// bottom row
+
+					x = rect->x;
+					y = rect->y + rect->h - y_slices->bottom;
+					w = x_slices->left;
+					h = y_slices->bottom;
+
+					asset_ptr->patches[ slicedef_patch::P_02 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", name ), ""
+						);
+
+					x = rect->x + x_slices->left;
+					w = rect->w - x_slices->left - x_slices->right;
+					asset_ptr->patches[ slicedef_patch::P_12 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", name ), ""
+						);
+
+					x = rect->x + rect->w - x_slices->right;
+					w = x_slices->right;
+					asset_ptr->patches[ slicedef_patch::P_22 ] =
+						engine->asset_cache->add(
+							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", name ), ""
+						);
 
 					// ------------------------------------------------------------------------
 

@@ -7,6 +7,10 @@
 	"type" "texture"
 	"name" "tex_ui_default"
 	"filename" "ui/ui_default.png"
+	# "slice_defs" "\
+	# 	ui_default_panel, 109, 98, 100, 100, 7, -7, 7, -7,\
+	# 	ui_default_panel, 109, 98, 100, 100, 7, -7, 7, -7,\
+	# 	"
 	"subtextures" "\
 		ui_arrow_down_grey, 78, 498, 15, 10,\
 		ui_arrow_down_white, 123, 496, 15, 10,\
@@ -55,38 +59,22 @@
 
 # panel
 {
-	"type" "9slice_def"
+	"type" "slice_def"
 	"name" "ui_default_panel"
 	"texture" "tex_ui_default"
 
-	"p_00" "190, 98, 7, 7"
-	"p_10" "197, 98 , 86, 7"
-	"p_20" "283, 98, 7, 7"
-
-	"p_01" "190, 105, 7, 88"
-	"p_11" "197, 105, 86, 86"
-	"p_21" "283, 105, 7, 88"
-
-	"p_02" "190, 191, 7, 7"
-	"p_12" "197, 191, 86, 7"
-	"p_22" "283, 191, 7, 7"
+	"rect" "190, 98, 100, 100"
+	"x_slices" "7, 7"
+	"y_slices" "7, 7"
 }
 
 # button_up
 {
-	"type" "9slice_def"
+	"type" "slice_def"
 	"name" "ui_default_button_up"
 	"texture" "tex_ui_default"
 
-	"p_00" "240, 49, 6, 6"
-	"p_10" "246, 49 , 37, 6"
-	"p_20" "283, 49, 6, 6"
-
-	"p_01" "240, 55, 6, 35"
-	"p_11" "246, 55, 37, 35"
-	"p_21" "283, 55, 6, 35"
-
-	"p_02" "240, 90, 6, 8"
-	"p_12" "246, 90, 37, 8"
-	"p_22" "283, 90, 6, 8"
+	"rect" "240, 49, 49, 49"
+	"x_slices" "6, 6"
+	"y_slices" "6, 8"
 }

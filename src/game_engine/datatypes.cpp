@@ -132,6 +132,8 @@ float w_range::get_value()
 
 // ----------------------------------------------------------------------------
 
+const w_rect w_rect::zero = w_rect( 0, 0, 0, 0 );
+
 w_rect::w_rect( float x, float y, float w, float h )
 	: x( x ), y( y ), w( w ), h( h )
 {
