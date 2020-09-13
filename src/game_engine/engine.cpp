@@ -163,6 +163,10 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		// used for solid drawing
 		engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
 
+		// there's a simple pixel font that always lives inside of engine so
+		// there is always a font available, regardless of ui theme settings.
+		engine->pixel_font = engine->get_asset<a_font>( "engine_pixel_font" );
+
 		engine->ui->init();
 		engine->ui->theme->init();
 	}
@@ -445,7 +449,7 @@ void w_engine::draw()
 	{
 		RENDER
 			->begin()
-			->push_depth( zdepth_engine );
+			->push_depth( zdepth_topmost );
 
 		w_vec2 v0, v1, v2, v3;
 

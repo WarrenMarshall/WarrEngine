@@ -93,7 +93,7 @@ w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
 
 w_ui_style_button::w_ui_style_button()
 {
-	slice_def = UI->theme->button_slice_def;
+	slice_def = UI->theme->button_up_slice_def;
 }
 
 void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
@@ -108,29 +108,36 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		->begin()
 		->push_depth_nudge();
 
-	if( slice_def )
+	if( slice_def.has_value() )
 	{
-		RENDER->push_rgb( get_adjusted_color( color_slice_def, being_hovered, being_clicked ) )
-			->draw_sliced( slice_def, rc_draw );
+		RENDER->push_rgb( get_adjusted_color( base_twk.color, being_hovered, being_clicked ) )
+			->draw_sliced( slice_def.value(), rc_draw );
 	}
 
-	if( subtex )
+	if( subtex.has_value() )
 	{
 		w_rect rc_client = rc_draw;
 
-		rc_client.x += slice_def ? slice_def->patches[ slicedef_patch::P_00 ]->sz.w : 0;
-		rc_client.y += slice_def ? slice_def->patches[ slicedef_patch::P_00 ]->sz.h : 0;
+		// if there is a slice_def defined for this control, the image will default
+		// to drawing inside the body of the control. meaning - offset from the top_left
+		// corner by the size of the top_left corner graphic.
+		rc_client.x += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz.w : 0;
+		rc_client.y += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz.h : 0;
 
-		rc_client.x += subtex_pos_offset.x * ( subtex_pos_offset.x != -1 );
-		rc_client.y += subtex_pos_offset.y * ( subtex_pos_offset.y != -1 );
+		// if there are additional position tweaks, apply them
+		rc_client.x += subtex_twk.pos.value_or( w_vec2::zero ).x;
+		rc_client.y += subtex_twk.pos.value_or( w_vec2::zero ).y;
 
-		rc_client.w = subtex_sz.w == -1 ? subtex->rc_src.w : subtex_sz.w;
-		rc_client.h = subtex_sz.h == -1 ? subtex->rc_src.h : subtex_sz.h;
+		// if there are size tweaks, apply them
+		// #uitodo - this w_vec2 construction is ugly
+		rc_client.w = subtex_twk.sz.value_or( w_vec2( subtex.value()->rc_src.w, subtex.value()->rc_src.h ) ).w;
+		rc_client.h = subtex_twk.sz.value_or( w_vec2( subtex.value()->rc_src.w, subtex.value()->rc_src.h ) ).h;
 
-		RENDER->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
+		RENDER->push_rgb( get_adjusted_color( subtex_twk.color, being_hovered, being_clicked ) )
 			->push_depth_nudge()
-			->draw( subtex, rc_client );
+			->draw( subtex.value(), rc_client );
 
+		// #uitodo - why is this here?
 		label_pos = { rc_draw.x + rc_client.w + UI->theme->control_padding, rc_draw.y + ( rc_client.h / 2 ) };
 		label_align = align::left | align::vcenter;
 	}
@@ -138,10 +145,15 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	if( label.length() )
 	{
 		RENDER
-			->push_rgb( get_adjusted_color( color_label, being_hovered, being_clicked ) )
+			->push_rgb( get_adjusted_color( label_twk.color, being_hovered, being_clicked ) )
 			->push_align( label_align )
 			->push_depth_nudge()
-			->draw_string( engine->pixel_font, label, w_rect( label_pos.x, label_pos.y, -1, -1 ) );
+			->draw_string( engine->pixel_font, label,
+						   w_rect(
+							   label_pos.x + label_twk.pos.value_or( w_vec2::zero ).x,
+							   label_pos.y + label_twk.pos.value_or( w_vec2::zero ).y,
+							   -1, -1 )
+			);
 	}
 
 	RENDER
@@ -160,7 +172,7 @@ void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hove
 	RENDER
 		->begin()
 		->push_depth_nudge()
-		->push_rgb( color_slice_def )
+		->push_rgb( base_twk.color )
 		->draw_sliced( slice_def, rc )
 		->end();
 }
@@ -169,23 +181,24 @@ void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hove
 
 void w_ui_theme::init()
 {
-	mouse_cursor = engine->get_asset<a_cursor>( "ui_cursor", b_silent( true ) );
-	engine->pixel_font = engine->get_asset<a_font>( "engine_pixel_font" );
-	//large_font = engine->get_asset<a_font>( "larger_font" );
+	mouse_cursor = nullptr;// engine->get_asset<a_cursor>( "ui_cursor", b_silent( true ) );
 
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
-	button_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
+	button_up_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_up" );
 }
+
+// called at the end of each frame, this is for drawing anything that
+// needs to appear on top of everything else. like the mouse cursor.
 
 void w_ui_theme::draw_topmost()
 {
 	// mouse cursor
 
-	if( engine->window->mouse_mode == mouse_mode::hidden && mouse_cursor != nullptr )
+	if( mouse_cursor && engine->window->mouse_mode == mouse_mode::hidden )
 	{
 		RENDER
 			->begin()
-			->push_depth( zdepth_engine )
+			->push_depth( zdepth_topmost )
 			->draw( mouse_cursor->subtex,
 					w_rect(
 						engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,

@@ -37,6 +37,7 @@
 	#include <locale>
 	#include <variant>
 	#include <memory>
+	#include <optional>
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC
@@ -122,7 +123,7 @@ constexpr float zdepth_background = 0.0f;
 constexpr float zdepth_layers = 1000.0f;
 constexpr float zdepth_layer_step = 1000.0f;
 constexpr float zdepth_stats = 14500.0f;
-constexpr float zdepth_engine = 14750.0f;
+constexpr float zdepth_topmost = 14750.0f;
 
 // ----------------------------------------------------------------------------
 
