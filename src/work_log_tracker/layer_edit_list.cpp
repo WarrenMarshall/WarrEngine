@@ -3,36 +3,29 @@
 
 void layer_edit_list::push()
 {
-	test_entity = GAME->spawn_entity<w_entity>( { v_window_hw, 0.0f } );
-
-	test_entity->add_component<ec_emitter>()
-		->init( "background_fire_down" );
-
-	test_entity->add_component<ec_emitter>()
-		->init( "background_fire_up" )
-		->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
-
 	GAME->load_data();
 }
 
 void layer_edit_list::draw()
 {
-	RENDER->begin();
-	GAME->draw_entities();
-	RENDER->end();
+	w_layer::draw();
 
 	if( !style_button )
 	{
 		style_button = std::make_unique<w_ui_style_button>();
 
 		style_approved_button = std::make_unique<w_ui_style_button>();
-		style_approved_button->color_slice_def = w_color::dark_green;
-		style_approved_button->color_label = w_color::yellow;
+		style_approved_button->base_attrib.color = w_color::dark_green;
+		style_approved_button->label_attrib.color = w_color::yellow;
+
+		style_waiting_button = std::make_unique<w_ui_style_button>();
+		style_waiting_button->base_attrib.color = w_color::dark_grey;
+		style_waiting_button->label_attrib.color = w_color::white;
 
 		style_clear_button = std::make_unique<w_ui_style_button>();
-		style_clear_button->slice_def = nullptr;
 		style_clear_button->subtex = engine->get_asset<a_subtexture>("gear_icon");
-		style_clear_button->subtex_sz = w_sz( 24, 24 );
+		style_clear_button->subtex_attrib.sz = w_sz( 24, 24 );
+		style_clear_button->slice_def = std::nullopt;
 	}
 
 	RENDER
@@ -56,7 +49,7 @@ void layer_edit_list::draw()
 			->begin()
 			->push_depth_nudge( 10 );
 
-		w_ui_style* style = artist.approved ? style_approved_button.get() : style_button.get();
+		w_ui_style* style = artist.approved ? style_approved_button.get() : style_waiting_button.get();
 		if( UI->im_active( artist.name, w_rect( 8, ypos, 130, 16 ), *( style ) ) & im_result::left_clicked )
 		{
 			artist.approved = !artist.approved;
