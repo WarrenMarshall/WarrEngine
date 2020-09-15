@@ -74,12 +74,18 @@ void w_layer::update_collisions()
 							auto colliders2 = ent2->get_components<ec_collider>();
 							for( auto& collider2 : colliders2 )
 							{
-								if( c2Collided( &collider->get_collider(), NULL, collider->c2type,
-												&collider2->get_collider(), NULL, collider2->c2type ) )
+								variant_collider_types coll = collider->get_collider();
+								variant_collider_types coll2 = collider2->get_collider();
+
+								if( c2Collided( &coll, NULL, collider->c2type,
+												&coll2, NULL, collider2->c2type ) )
 								{
 									c2Manifold hit;
-									c2Collide( &collider->get_collider(), NULL, collider->c2type,
-											   &collider2->get_collider(), NULL, collider2->c2type,
+
+									coll = collider->get_collider();
+									coll2 = collider2->get_collider();
+									c2Collide( &coll, NULL, collider->c2type,
+											   &coll2, NULL, collider2->c2type,
 											   &hit );
 
 									if( hit.count )

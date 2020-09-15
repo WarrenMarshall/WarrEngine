@@ -71,4 +71,4 @@ extern float v_window_h;
 // globals for all to enjoy - don't judge
 
 extern std::unique_ptr<w_engine> engine;
-extern w_game* game;
+extern std::unique_ptr<w_game> game;

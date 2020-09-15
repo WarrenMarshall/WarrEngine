@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-bool w_engine::init_game_engine( std::string_view game_name, int argc, char* argv [], w_game* custom_game )
+bool w_engine::init_game_engine( int argc, char* argv [] )
 {
 	try
 	{
@@ -19,7 +19,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 
 			// get the log file running so we can immediately start writing into it
 			logfile = std::make_unique<w_logfile>();
-			logfile->init( game_name );
+			logfile->init( game->name );
 		}
 
 		{ // ENGINE
@@ -69,12 +69,12 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			}
 		}
 
-		{	// "ASSET DEFINITION / INI" FILES AND PRECACHING
+		{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
 
 			// read asset definitions and cache them
 			log_msg( "Caching asset definitions (*.asset_def)..." );
 			engine->cache_asset_definition_files( "game_engine_data" );
-			engine->cache_asset_definition_files( fmt::format( "{}_data", game_name ) );
+			engine->cache_asset_definition_files( engine->fs->prepend_data_path( "" ) );
 
 			// this feels like an odd dance, but the idea is that we:
 			//
@@ -83,20 +83,20 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			// 3. parse the asset_def files again, for the rest of the passes (pass 1+)
 			//
 			// this ordering is important because step 2 may want to use symbols
-			// like "true" or "false" in the INI files.
+			// like "true" or "false" or "v_window_h" in the INI files.
 			//
 			// by the time we get to step 3, we have all the symbols from the preproc
-			// and the INI files loaded, and the assets can use any symbols they please.
+			// and the INI files loaded, and the asset_def files can use any symbols they please.
 
 			// do the preprocess pass first so the symbols are in memory
 			log_msg( "Precaching resources from definition files..." );
-			engine->precache_asset_resources( 0, game_name );
+			engine->precache_asset_resources( 0, game->name );
 
 			// parse INI files after the preprocess pass so they can
 			// use preprocessor symbols
 			log_msg( "Caching configuration (*.ini)..." );
 			engine->parse_config_files( "game_engine_data" );
-			engine->parse_config_files( fmt::format( "{}_data", game_name ) );
+			engine->parse_config_files( engine->fs->prepend_data_path( "" ) );
 
 			// put the k/v pairs from the INI files into the global symbol
 			// table so they can be referenced by assets in the asset_def files
@@ -110,7 +110,7 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 			constexpr int num_asset_def_passes = 3;
 			for( int pass = 1; pass < num_asset_def_passes; ++pass )
 			{
-				engine->precache_asset_resources( pass, game_name );
+				engine->precache_asset_resources( pass, game->name );
 			}
 		}
 
@@ -142,8 +142,6 @@ bool w_engine::init_game_engine( std::string_view game_name, int argc, char* arg
 		{ // GAME
 
 			log_msg( "Initializing game" );
-			game = custom_game;
-			game->init();
 			game->new_game();
 		}
 
@@ -620,12 +618,20 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 				}
 				break;
 
-				case input_id::key_enter:
+ 				case input_id::key_enter:
 				{
 					if( engine->input->is_alt_down() )
 					{
 						window->toggle_fullscreen();
 					}
+				}
+				break;
+
+				case input_id::key_esc:
+				{
+					// #todo - implement the standard ESC menu (just a layer that pauses the engine
+					// and has 2 buttons - "resume" and "exit")
+					assert( false );
 				}
 				break;
 			}

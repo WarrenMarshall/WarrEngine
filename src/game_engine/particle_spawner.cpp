@@ -9,6 +9,10 @@ void w_particle_spawner::find_spawn_pos_for_new_particle( w_particle* particle )
 	particle->pos = w_vec2::zero;
 }
 
+void w_particle_spawner::parse_from_config_string( std::string_view value )
+{
+}
+
 // ----------------------------------------------------------------------------
 
 w_particle_spawner_box::w_particle_spawner_box( const w_particle_spawner_box& other )

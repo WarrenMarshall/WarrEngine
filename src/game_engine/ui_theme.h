@@ -43,7 +43,7 @@ struct w_ui_style_button : w_ui_style
 {
 	w_ui_style_button();
 
-	void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) override;
+	virtual void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ struct w_ui_style_panel : w_ui_style
 
 	w_ui_style_panel();
 
-	void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) override;
+	virtual void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) override;
 };
 
 // ----------------------------------------------------------------------------

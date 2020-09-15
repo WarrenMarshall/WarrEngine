@@ -48,7 +48,7 @@ struct w_entity : i_lifecycle, i_transform
 	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;
 	void set_pos( const w_vec2& pos );
 
-	void set_life_cycle( e_life_cycle life_cycle ) override;
+	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	virtual bool can_be_deleted();
 
 	virtual void update_physics();

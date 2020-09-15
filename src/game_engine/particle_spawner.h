@@ -5,7 +5,7 @@ struct w_particle_spawner
 	virtual ~w_particle_spawner() = default;
 
 	virtual void find_spawn_pos_for_new_particle( w_particle* particle );
-	virtual void parse_from_config_string( std::string_view value ) {}
+	virtual void parse_from_config_string( std::string_view value );
 };
 
 struct w_particle_spawner_box : w_particle_spawner
@@ -16,8 +16,8 @@ struct w_particle_spawner_box : w_particle_spawner
 	w_particle_spawner_box( const w_particle_spawner_box& other );
 	w_particle_spawner_box( int w, int h );
 
-	void find_spawn_pos_for_new_particle( w_particle* particle ) override;
-	void parse_from_config_string( std::string_view value ) override;
+	virtual void find_spawn_pos_for_new_particle( w_particle* particle ) override;
+	virtual void parse_from_config_string( std::string_view value ) override;
 };
 
 struct w_particle_spawner_circle : w_particle_spawner
@@ -28,6 +28,6 @@ struct w_particle_spawner_circle : w_particle_spawner
 	w_particle_spawner_circle( const w_particle_spawner_circle& other );
 	w_particle_spawner_circle( float radius );
 
-	void find_spawn_pos_for_new_particle( w_particle* particle ) override;
-	void parse_from_config_string( std::string_view value ) override;
+	virtual void find_spawn_pos_for_new_particle( w_particle* particle ) override;
+	virtual void parse_from_config_string( std::string_view value ) override;
 };

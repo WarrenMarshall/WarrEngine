@@ -161,21 +161,23 @@ struct w_vec2
 
 	operator c2v()
 	{
-		c2v v;
-		v.x = x;
-		v.y = y;
+		c2v cv;
 
-		return v;
+		cv.x = x;
+		cv.y = y;
+
+		return cv;
 	}
 
 	operator glm::vec3()
 	{
-		glm::vec3 v;
-		v.x = x;
-		v.y = y;
-		v.z = 0.0f;
+		glm::vec3 gv;
 
-		return v;
+		gv.x = x;
+		gv.y = y;
+		gv.z = 0.0f;
+
+		return gv;
 	}
 };
 

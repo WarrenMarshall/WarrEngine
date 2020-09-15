@@ -86,7 +86,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 						while( !tok.is_eos() )
 						{
-							std::string_view subtex_name = *tok.get_next_token();
+							subtex_name = std::string( *tok.get_next_token() );
 
 							float x = w_parser::float_from_str( *tok.get_next_token() );
 							float y = w_parser::float_from_str( *tok.get_next_token() );
@@ -247,9 +247,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					for( const auto& [key, value] : iter_ad->kv )
 					{
-						int subtex_idx = 0;
-						w_rect rc = {};
-
 						if( key == "rect" )
 						{
 							rect = w_parser::rect_from_str( value );
@@ -431,23 +428,23 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						else if( key == "spawner_type" )
 						{
 							w_tokenizer tok( value, ',' );
-							std::string_view type = *tok.get_next_token();
+							std::string spawner_type = std::string( *tok.get_next_token() );
 
-							if( type == "point" )
+							if( spawner_type == "point" )
 							{
 								// the default spawner type, don't need to do anything for this
 							}
-							else if( type == "box" )
+							else if( spawner_type == "box" )
 							{
 								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
 							}
-							else if( type == "circle" )
+							else if( spawner_type == "circle" )
 							{
 								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
 							}
 							else
 							{
-								log_error( "Unknown emitter spawn type : [{}]", type );
+								log_error( "Unknown emitter spawn type : [{}]", spawner_type );
 							}
 
 							asset_ptr->particle_spawner->parse_from_config_string( value );

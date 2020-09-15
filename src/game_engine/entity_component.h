@@ -36,7 +36,7 @@ struct ec_sprite : w_entity_component
 	ec_sprite( w_entity* parent_entity );
 
 	w_entity_component* init( const std::string_view subtex_name );
-	void draw() override;
+	virtual void draw() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -49,11 +49,11 @@ struct ec_emitter : w_entity_component
 	ec_emitter( w_entity* parent_entity );
 
 	w_entity_component* init( const std::string_view params_name );
-	void set_life_cycle( e_life_cycle life_cycle ) override;
-	bool is_fully_dead() override;
-	void draw() override;
-	void update() override;
-	void post_spawn() override;
+	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
+	virtual bool is_fully_dead() override;
+	virtual void draw() override;
+	virtual void update() override;
+	virtual void post_spawn() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ struct ec_sound : w_entity_component
 	ec_sound( w_entity* parent_entity );
 
 	w_entity_component* init( const std::string_view snd_name );
-	void draw() override;
+	virtual void draw() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -86,7 +86,7 @@ struct ec_collider : w_entity_component
 	w_entity_component* init_as_circle( float radius );
 	w_entity_component* init_as_box( w_rect box );
 	variant_collider_types get_collider();
-	void draw() override;
+	virtual void draw() override;
 };
 
 // ----------------------------------------------------------------------------

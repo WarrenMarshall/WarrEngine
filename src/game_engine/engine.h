@@ -8,7 +8,7 @@
 
 struct w_engine : i_listener
 {
-	static bool init_game_engine( std::string_view game_name, int argc, char* argv [], w_game* custom_game );
+	static bool init_game_engine( int argc, char* argv [] );
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
@@ -48,7 +48,6 @@ struct w_engine : i_listener
 	w_vec3 find_vec3_from_symbol( const std::string_view str, w_vec3 def_value = w_vec3( 0, 0, 0 ) );
 
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
-
 	std::unique_ptr<w_time> time = nullptr;
 	std::unique_ptr<w_cache_assets> asset_cache = nullptr;
 	std::unique_ptr<w_layer_mgr> layer_mgr = nullptr;
@@ -61,5 +60,5 @@ struct w_engine : i_listener
 	std::unique_ptr<w_opengl> opengl = nullptr;
 	std::unique_ptr<w_keyvalues> config_vars = nullptr;
 
-	void on_listener_event_received( e_event_id event, void* object ) override;
+	virtual void on_listener_event_received( e_event_id event, void* object ) override;
 };

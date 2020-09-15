@@ -118,8 +118,8 @@ void w_game_controller::play_rumble( e_rumble_effect effect )
 void w_game_controller::play_rumble( int intensity, int ms )
 {
 	XINPUT_VIBRATION rumbler;
-	rumbler.wLeftMotorSpeed = intensity;
-	rumbler.wRightMotorSpeed = intensity;
+	rumbler.wLeftMotorSpeed = static_cast<WORD>( intensity );
+	rumbler.wRightMotorSpeed = static_cast<WORD>( intensity );
 	XInputSetState( idx, &rumbler );
 
 	rumble_time_remaining_ms = static_cast<float>( ms );

@@ -18,5 +18,5 @@ struct w_layer_mgr : i_listener
 	void update();
 	void draw();
 
-	void on_listener_event_received( e_event_id event, void* object ) override;
+	virtual void on_listener_event_received( e_event_id event, void* object ) override;
 };

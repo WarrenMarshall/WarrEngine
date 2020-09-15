@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define GAME ((work_log_tracker_game*)game)
+#define GAME ((work_log_tracker_game*)game.get())
 
 // ----------------------------------------------------------------------------
 

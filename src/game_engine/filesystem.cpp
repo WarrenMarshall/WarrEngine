@@ -133,9 +133,9 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 	for( auto& [filename, toc_entry] : zip_io->table_of_contents )
 	{
 		w_tokenizer tok( filename, '/' );
-		auto foldername = *tok.get_next_token();
+		auto foldername = tok.get_next_token();
 
-		if( foldername == folder )
+		if( foldername.has_value() && foldername == folder )
 		{
 			std::string new_filename = w_stringutil::replace_char( filename, '\\', '/' );
 			std::filesystem::path path = new_filename;
@@ -149,4 +149,11 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 			}
 		}
 	}
+}
+
+std::string w_file_system::prepend_data_path( std::string_view filename )
+{
+	// #todo - if the data folder doesn't exist, create it
+
+	return fmt::format( "{}_data/{}", game->name, filename );
 }

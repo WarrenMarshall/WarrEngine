@@ -119,7 +119,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>APP_NAME=endless_breakout;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;$(SolutionDir)..\external\bass24\c;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -139,7 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+      <PreprocessorDefinitions>APP_NAME=endless_breakout;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;$(SolutionDir)..\external\bass24\c;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

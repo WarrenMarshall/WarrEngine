@@ -15,8 +15,8 @@ struct a_texture : i_asset
 
 	virtual ~a_texture() override;
 
-	void clean_up_internals() override;
-	bool create_internals() override;
+	virtual void clean_up_internals() override;
+	virtual bool create_internals() override;
 
 	void bind();
 	void unbind();
@@ -60,8 +60,8 @@ struct a_gradient : a_texture
 	e_align alignment = align::horizontal;
 	std::vector<float> colors;
 
-	void clean_up_internals() override;
-	bool create_internals() override;
+	virtual void clean_up_internals() override;
+	virtual bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -78,13 +78,13 @@ struct a_anim_texture : a_texture
 	a_anim_texture( e_tween_type tween_type, int frames_per_second );
 	virtual ~a_anim_texture() override;
 
-	void clean_up_internals() override;
-	bool create_internals() override;
+	virtual void clean_up_internals() override;
+	virtual bool create_internals() override;
 	void add_frame( a_subtexture* subtex );
 	void randomize();
 
-	void update() override;
-	a_subtexture* get_subtexture( float anim_offset ) override;
+	virtual void update() override;
+	virtual a_subtexture* get_subtexture( float anim_offset ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -147,7 +147,7 @@ struct a_font_def : i_asset
 	// become indices into this array.
 	w_font_char char_map[max_font_chars];
 
-	bool create_internals() override;
+	virtual bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -181,11 +181,11 @@ struct a_sound : i_asset
 	int snd = -1;
 	int channel = -1;
 
-	~a_sound() override;
+	virtual ~a_sound() override;
 
 	void play();
-	void clean_up_internals() override;
-	bool create_internals() override;
+	virtual void clean_up_internals() override;
+	virtual bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -195,13 +195,13 @@ struct a_music : i_asset
 	int mus = -1;
 	int channel = -1;
 
-	~a_music() override;
+	virtual ~a_music() override;
 
 	void play();
 	void stop();
 
-	void clean_up_internals() override;
-	bool create_internals() override;
+	virtual void clean_up_internals() override;
+	virtual bool create_internals() override;
 };
 
 // ----------------------------------------------------------------------------

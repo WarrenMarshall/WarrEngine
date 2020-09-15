@@ -61,7 +61,7 @@
 			{
 				handle collision here...
 			}
-	
+
 		For more code examples and tests please see:
 		https://github.com/RandyGaul/cute_header/tree/master/examples_cute_gl_and_c2
 
@@ -87,7 +87,7 @@
 
 
 	Revision History
-	
+
 		1.0  (02/13/2017) initial release
 		1.01 (02/13/2017) const crusade, minor optimizations, capsule degen
 		1.02 (03/21/2017) compile fixes for c on more compilers
@@ -953,7 +953,7 @@ float c2GJK(const void* A, C2_TYPE typeA, const c2x* ax_ptr, const void* B, C2_T
 			saveA[i] = verts[i].iA;
 			saveB[i] = verts[i].iB;
 		}
-		
+
 		switch (s.count)
 		{
 		case 1: break;
@@ -1373,19 +1373,19 @@ int c2RaytoAABB(c2Ray A, c2AABB B, c2Raycast* out)
 			out->t = t0 * A.t;
 			out->n = c2V(-1, 0);
 		}
-		
+
 		else if (t1 >= t0 && t1 >= t2 && t1 >= t3)
 		{
 			out->t = t1 * A.t;
 			out->n = c2V(1, 0);
 		}
-		
+
 		else if (t2 >= t0 && t2 >= t1 && t2 >= t3)
 		{
 			out->t = t2 * A.t;
 			out->n = c2V(0, -1);
 		}
-		
+
 		else
 		{
 			out->t = t3 * A.t;
@@ -1828,6 +1828,7 @@ static C2_INLINE c2v c2CapsuleSupport(c2Capsule A, c2v dir)
 	else return c2Add(A.b, c2Mulvs(dir, A.r));
 }
 
+/*
 static void c2AntinormalFace(c2Capsule cap, const c2Poly* p, c2x x, int* face_out, c2v* n_out)
 {
 	float sep = -FLT_MAX;
@@ -1849,6 +1850,7 @@ static void c2AntinormalFace(c2Capsule cap, const c2Poly* p, c2x x, int* face_ou
 	*face_out = index;
 	*n_out = n;
 }
+}*/
 
 static void c2Incident(c2v* incident, const c2Poly* ip, c2x ix, c2v rn_in_incident_space)
 {
@@ -1904,12 +1906,12 @@ void c2CapsuletoPolyManifold(c2Capsule A, const c2Poly* B, const c2x* bx_ptr, c2
 			c2h h = c2PlaneAt(B, i);
 			float da = c2Dot(A_in_B.a, c2Neg(h.n));
 			float db = c2Dot(A_in_B.b, c2Neg(h.n));
-			float d;
-			if (da > db) d = c2Dist(h, A_in_B.a);
-			else d = c2Dist(h, A_in_B.b);
-			if (d > sep)
+			float dc;
+			if (da > db) dc = c2Dist(h, A_in_B.a);
+			else dc = c2Dist(h, A_in_B.b);
+			if (dc > sep)
 			{
-				sep = d;
+				sep = dc;
 				index = i;
 			}
 		}
@@ -2073,20 +2075,20 @@ void c2PolytoPolyManifold(const c2Poly* A, const c2x* ax_ptr, const c2Poly* B, c
 	------------------------------------------------------------------------------
 	ALTERNATIVE B - Public Domain (www.unlicense.org)
 	This is free and unencumbered software released into the public domain.
-	Anyone is free to copy, modify, publish, use, compile, sell, or distribute this 
-	software, either in source code form or as a compiled binary, for any purpose, 
+	Anyone is free to copy, modify, publish, use, compile, sell, or distribute this
+	software, either in source code form or as a compiled binary, for any purpose,
 	commercial or non-commercial, and by any means.
-	In jurisdictions that recognize copyright laws, the author or authors of this 
-	software dedicate any and all copyright interest in the software to the public 
-	domain. We make this dedication for the benefit of the public at large and to 
-	the detriment of our heirs and successors. We intend this dedication to be an 
-	overt act of relinquishment in perpetuity of all present and future rights to 
+	In jurisdictions that recognize copyright laws, the author or authors of this
+	software dedicate any and all copyright interest in the software to the public
+	domain. We make this dedication for the benefit of the public at large and to
+	the detriment of our heirs and successors. We intend this dedication to be an
+	overt act of relinquishment in perpetuity of all present and future rights to
 	this software under copyright law.
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-	AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN 
-	ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+	ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	------------------------------------------------------------------------------
 */

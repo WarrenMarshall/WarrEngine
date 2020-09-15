@@ -5,7 +5,7 @@ int main( int argc, char* argv [] )
 {
 	auto game = std::make_unique<endless_breakout_game>();
 
-	if( !w_engine::init_game_engine( "endless_breakout", argc, argv, game.get() ) )
+	if( !w_engine::init_game_engine( std::string( ADD_QUOTES( APP_NAME ) ), argc, argv, game.get() ) )
 	{
 		return -1;
 	}

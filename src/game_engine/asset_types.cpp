@@ -24,13 +24,13 @@ bool a_texture::create_internals()
 	assert( !original_filename.empty() );
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
-	int w, h, bpp;
+	int width, height, bpp;
 	unsigned char* color_data = stbi_load_from_memory(
 		(const stbi_uc*) ( file->buffer->data() ),
 		static_cast<int>( file->buffer->size() ),
-		&w, &h, &bpp, 4 );
-	this->w = static_cast<float>( w );
-	this->h = static_cast<float>( h );
+		&width, &height, &bpp, 4 );
+	w = static_cast<float>( width );
+	h = static_cast<float>( height );
 
 	if( !color_data )
 	{
@@ -47,7 +47,7 @@ bool a_texture::create_internals()
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
 	OPENGL->clear_texture_bind();
 
 	stbi_image_free( color_data );
