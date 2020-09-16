@@ -1,4 +1,4 @@
-[w_logfile::time_stamp:35] Started : Wed Sep 16 06:14:45 2020
+[w_logfile::time_stamp:35] Started : Wed Sep 16 06:22:46 2020
 [w_engine::init_game_engine:33] Initializing engine
 [w_engine::init_game_engine:44] Creating window
 [w_window::init:80] Using monitor [BenQ LCD - 2560x1440]
@@ -24,5 +24,5 @@
 [w_engine::deinit_game_engine:197] Shutting down Audio
 [w_engine::deinit_game_engine:200] Shutting down input
 [w_engine::deinit_game_engine:203] Shutting down engine
-[w_logfile::time_stamp:35] Ended : Wed Sep 16 06:14:57 2020
+[w_logfile::time_stamp:35] Ended : Wed Sep 16 06:23:01 2020
 [w_engine::deinit_game_engine:208] Finished!

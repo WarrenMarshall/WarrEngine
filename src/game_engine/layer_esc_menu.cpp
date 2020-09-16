@@ -6,14 +6,14 @@ void layer_esc_menu::push()
 {
 	w_layer::push();
 
-	//engine->set_pause( true );
+	engine->set_pause( true );
 }
 
 void layer_esc_menu::pop()
 {
 	w_layer::pop();
 
-	//engine->set_pause( false );
+	engine->set_pause( false );
 }
 
 void layer_esc_menu::draw()
@@ -27,9 +27,9 @@ void layer_esc_menu::draw()
 		->end();
 
 	static w_ui_style_panel style_panel;
-	style_panel.base_attrib.color = w_color::dark_grey;
+	style_panel.base_attrib.color = w_color::dark_teal;
 
-	static w_ui_style_panel style_button;
+	static w_ui_style_button style_button;
 	style_button.base_attrib.color = w_color::teal;
 	style_button.label_attrib.color = w_color::white;
 

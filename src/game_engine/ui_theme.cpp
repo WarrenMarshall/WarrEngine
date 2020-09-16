@@ -143,12 +143,12 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		RENDER
 			->push_rgb( get_adjusted_color( label_attrib.color, being_hovered, being_clicked ) )
 			->push_align( label_align )
-			->push_depth_nudge()
-			->draw_string( engine->pixel_font, label,
+			->push_depth_nudge();
+
+		RENDER->draw_string( engine->pixel_font, label,
 						   w_rect(
 							   label_pos.x + label_attrib.pos.value_or( w_vec2::zero ).x,
-							   label_pos.y + label_attrib.pos.value_or( w_vec2::zero ).y,
-							   -1, -1 )
+							   label_pos.y + label_attrib.pos.value_or( w_vec2::zero ).y )
 			);
 	}
 
