@@ -33,14 +33,15 @@ void layer_esc_menu::draw()
 	style_button.base_attrib.color = w_color::teal;
 	style_button.label_attrib.color = w_color::white;
 
-	constexpr float panel_w = 100.0f;
-	constexpr float panel_h = 76.0f;
+	static float panel_w = 100.0f;
+	static float panel_h = 76.0f;
+
 	w_rect rc_panel = { v_window_hw - ( panel_w / 2.0f ) , v_window_hh - ( panel_h / 2.0f ) , panel_w , panel_h };
 
 	UI->im_passive( rc_panel, style_panel );
 
-	constexpr float button_w = 64.0f;
-	constexpr float button_h = 20.0f;
+	static float button_w = 64.0f;
+	static float button_h = 20.0f;
 
 	w_rect rc_button = { v_window_hw - ( button_w / 2.0f ), rc_panel.y + 16, button_w, button_h };
 

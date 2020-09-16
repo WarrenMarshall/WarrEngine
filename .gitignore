@@ -22,3 +22,4 @@ bin
 bin/game_engine.lib
 bin/ui_sandbox_log.txt
 bin/ui_sandbox.exe
+bin/work_log_tracker.exe
