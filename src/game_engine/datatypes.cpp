@@ -174,6 +174,11 @@ w_color::w_color( float r, float g, float b, float a )
 {
 }
 
+w_color::w_color( int r, int g, int b, int a )
+	: w_color( r / 255.f, g / 255.f, b / 255.f, a / 255.f )
+{
+}
+
 w_color::w_color( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );

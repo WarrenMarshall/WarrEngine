@@ -4,6 +4,9 @@
 
 e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 {
+	assert( rc.w );
+	assert( rc.h );
+
 	e_im_result imresult = im_result::none;
 
 	/*
@@ -11,9 +14,6 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 		 when mousing over tightly packed UI elements and stops the user
 		 from being able to highlight/click more than one at a time.
 	*/
-
-	assert( rc.w );
-	assert( rc.h );
 
 	*rc.w -= 1.0f;
 	*rc.h -= 1.0f;
@@ -36,8 +36,6 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 			if( UI->hot_id == id && UI->hover_id == id )
 			{
 				imresult |= im_result::left_clicked;
-				//static a_sound* snd_click = engine->get_asset<a_sound>( "ui_click_01" );
-				//snd_click->play();
 			}
 			UI->hover_id = UI->hot_id = -1;
 		}
@@ -96,7 +94,7 @@ w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
 
 w_ui_style_button::w_ui_style_button()
 {
-	slice_def = UI->theme->button_up_slice_def;
+	slice_def = UI->theme->button_down_slice_def;
 }
 
 void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
@@ -138,10 +136,6 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		RENDER->push_rgb( get_adjusted_color( subtex_attrib.color, being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( subtex.value(), rc_client );
-
-		// #uitodo - why is this here?
-		label_pos = { rc_draw.x + *rc_client.w + UI->theme->control_padding, rc_draw.y + ( *rc_client.h / 2 ) };
-		label_align = align::left | align::vcenter;
 	}
 
 	if( label.length() )
@@ -187,6 +181,7 @@ void w_ui_theme::init()
 
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
 	button_up_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_up" );
+	button_down_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_down" );
 }
 
 // called at the end of each frame, this is for drawing anything that

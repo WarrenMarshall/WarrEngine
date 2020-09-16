@@ -427,6 +427,7 @@ w_render* w_render::draw_stats()
 
 	if( show_stats )
 	{
+		// #todo - why does the FPS always show "61"?
 		std::vector<std::string> stat_lines;
 		stat_lines.reserve( stats_draw_reserve );
 

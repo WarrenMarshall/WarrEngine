@@ -1,14 +1,5 @@
 #pragma once
 
-/*
-	blending func cheat sheet:
-
-	Alpha Blend:	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-	Add:			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
-	Multiply:		glBlendFunc( GL_DST_COLOR, GL_ZERO );
-
-*/
-
 struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;

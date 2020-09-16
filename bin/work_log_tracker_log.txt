@@ -1,0 +1,28 @@
+[w_logfile::time_stamp:35] Started : Wed Sep 16 06:14:45 2020
+[w_engine::init_game_engine:33] Initializing engine
+[w_engine::init_game_engine:44] Creating window
+[w_window::init:80] Using monitor [BenQ LCD - 2560x1440]
+[w_engine::init_game_engine:53] Initializing OpenGL
+[w_opengl::init:30] OpenGL Version : [4.6.0 NVIDIA 452.06]
+[w_opengl::init:31] GLEW Version : [2.1.0]
+[w_opengl::init:32] Renderer: [GeForce GTX 1080/PCIe/SSE2]
+[w_engine::init_game_engine:59] Initializing renderer
+[w_engine::init_game_engine:64] Initializing audio
+[w_engine::init_game_engine:75] Caching asset definitions (*.asset_def)...
+[w_engine::init_game_engine:92] Precaching resources from definition files...
+[w_engine::precache_asset_resources:573] Pass: 0 / 0 assets precached
+[w_engine::init_game_engine:97] Caching configuration (*.ini)...
+[w_engine::precache_asset_resources:573] Pass: 1 / 88 assets precached
+[w_engine::precache_asset_resources:573] Pass: 2 / 92 assets precached
+[w_engine::init_game_engine:131] VSync: false
+[w_engine::init_game_engine:144] Initializing game
+[w_engine::init_game_engine:150] Initializing input
+[w_engine::deinit_game_engine:186] Shutting down...
+[w_engine::deinit_game_engine:188] Shutting down window
+[w_engine::deinit_game_engine:191] Shutting down OpenGL
+[w_engine::deinit_game_engine:194] Shutting down GLFW
+[w_engine::deinit_game_engine:197] Shutting down Audio
+[w_engine::deinit_game_engine:200] Shutting down input
+[w_engine::deinit_game_engine:203] Shutting down engine
+[w_logfile::time_stamp:35] Ended : Wed Sep 16 06:14:57 2020
+[w_engine::deinit_game_engine:208] Finished!

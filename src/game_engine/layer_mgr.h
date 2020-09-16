@@ -11,7 +11,29 @@ struct w_layer_mgr : i_listener
 	*/
 	std::vector<std::unique_ptr<w_layer>> layer_stack;
 
-	void push( std::unique_ptr<w_layer> layer );
+	template<typename T>
+	void push()
+	{
+		auto new_layer = std::make_unique<T>();
+
+		w_layer* top_layer = get_top();
+		if( top_layer )
+		{
+			if( typeid( *top_layer ) == typeid( *new_layer ) )
+			{
+				log_error( "Duplicate layer types at top of stack : {}", typeid( *top_layer ).name() );
+				assert( false );
+			}
+
+			top_layer->getting_covered();
+		}
+
+		new_layer->push();
+		new_layer->becoming_top_layer();
+
+		layer_stack.insert( layer_stack.begin(), std::move( new_layer ) );
+	}
+
 	void pop();
 	w_layer* get_top();
 

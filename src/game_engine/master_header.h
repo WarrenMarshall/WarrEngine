@@ -60,6 +60,8 @@ extern float v_window_h;
 #include "layer.h"
 #include "layer_mgr.h"
 
+#include "layer_esc_menu.h"
+
 #include "filesystem.h"
 #include "file_mem.h"
 #include "file_zip.h"

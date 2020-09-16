@@ -50,6 +50,8 @@ struct w_ui_style_button : w_ui_style
 
 struct w_ui_style_panel : w_ui_style
 {
+	// #uitodo	- expand this to have "inactive / hover / clicked" slice def options
+	//			- if hover or clicked are nullopt, then use the inactive for everything
 	a_9slice_def* slice_def = nullptr;
 
 	w_ui_style_panel();
@@ -65,6 +67,7 @@ struct w_ui_theme
 
 	a_9slice_def* panel_slice_def = nullptr;
 	a_9slice_def* button_up_slice_def = nullptr;
+	a_9slice_def* button_down_slice_def = nullptr;
 	float control_padding = 4.0f;
 
 	void init();

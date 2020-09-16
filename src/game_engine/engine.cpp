@@ -629,9 +629,14 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 
 				case input_id::key_esc:
 				{
-					// #todo - implement the standard ESC menu (just a layer that pauses the engine
-					// and has 2 buttons - "resume" and "exit")
-					assert( false );
+					if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
+					{
+						layer_mgr->pop();
+					}
+					else
+					{
+						layer_mgr->push<layer_esc_menu>();
+					}
 				}
 				break;
 			}

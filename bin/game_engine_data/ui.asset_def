@@ -68,13 +68,24 @@
 	"y_slices" "7, 7"
 }
 
+# button_down
+{
+	"type" "slice_def"
+	"name" "ui_default_button_down"
+	"texture" "tex_ui_default"
+
+	"rect" "0, 286, 190, 45"
+	"x_slices" "6, 6"
+	"y_slices" "6, 8"
+}
+
 # button_up
 {
 	"type" "slice_def"
 	"name" "ui_default_button_up"
 	"texture" "tex_ui_default"
 
-	"rect" "240, 49, 49, 49"
+	"rect" "0, 331, 190, 49"
 	"x_slices" "6, 6"
 	"y_slices" "6, 8"
 }

@@ -2,20 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_layer_mgr::push( std::unique_ptr<w_layer> layer )
-{
-	w_layer* top = get_top();
-	if( top )
-	{
-		top->getting_covered();
-	}
-
-	layer->push();
-	layer->becoming_top_layer();
-
-	layer_stack.insert( layer_stack.begin(), std::move( layer ) );
-}
-
 void w_layer_mgr::pop()
 {
 	w_layer* layer = nullptr;

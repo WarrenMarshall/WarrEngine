@@ -31,12 +31,13 @@ void w_opengl::init()
 	log_msg( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) );
 	log_msg( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
-	glFrontFace( GL_CCW );
-	glDisable( GL_CULL_FACE );
+	// front facing triangles are wound counter clockwise
+	//glFrontFace( GL_CCW );
+	//glDisable( GL_CULL_FACE );
+
 	engine->shader->create_and_compile( "simple", "simple" );
 	engine->shader->bind();
 
-	// texture mapping
 	glEnable( GL_TEXTURE_2D );
 
 	// #todo - UPDATE NEEDED - this comment isn't entirely accurate anymore since we break on texture changes now
@@ -62,19 +63,18 @@ void w_opengl::init()
 	glDepthFunc( GL_LEQUAL );
 
 	// allows the alpha channel of the texture to be used for masking  - this has nothing
-	// to go with drawing things with transparency or blending.
+	// to do with drawing things with transparency or blending.
 	//
-	// this is the first level of culling - getting rid of pixels entirely that are below
-	// a certain alpha threshold. this is NOT transparency blending.
+	// this is quick rejection only.
 	//
 	// (meaning that only pixels with an alpha value higher than 0.1 (or ~25) will get
 	// through to the rest of the rendering pipeline)
 	glEnable( GL_ALPHA_TEST );
 	glAlphaFunc( GL_GREATER, 0.1f );
 
-	// by default, set up blending so that alpha channels will work
+	// default blending is transparency using the alpha channel
 	glEnable( GL_BLEND );
-	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	set_blend( opengl_blend::alpha );
 
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );

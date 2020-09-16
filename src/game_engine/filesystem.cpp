@@ -153,7 +153,17 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 std::string w_file_system::prepend_data_path( std::string_view filename )
 {
-	// #todo - if the data folder doesn't exist, create it
+	// if the data folder doesn't exist (which is possible if the data
+	// has been zipped up for distribution), then create it before
+	// returning a path to it.
 
-	return fmt::format( "{}_data/{}", game->name, filename );
+	// #test
+	std::string folder_path = fmt::format( "{}_data", game->name );
+
+	if( !std::filesystem::exists( folder_path ) )
+	{
+		std::filesystem::create_directory( folder_path );
+	}
+
+	return fmt::format( "{}/{}", folder_path, filename );
 }

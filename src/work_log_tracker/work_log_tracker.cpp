@@ -28,8 +28,8 @@ void work_log_tracker_game::new_game()
 		artists.push_back( w_artist( artist ) );
 	}
 
-	engine->layer_mgr->push( std::make_unique<layer_background>() );
-	engine->layer_mgr->push( std::make_unique<layer_edit_list>() );
+	engine->layer_mgr->push<layer_background>();
+	engine->layer_mgr->push<layer_edit_list>();
 }
 
 void work_log_tracker_game::update()
