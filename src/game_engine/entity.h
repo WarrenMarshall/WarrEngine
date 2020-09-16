@@ -115,5 +115,5 @@ struct w_entity : i_lifecycle, i_transform
 
 struct w_entity_fx : w_entity
 {
-	virtual void update() final;
+	virtual void update() override;
 };

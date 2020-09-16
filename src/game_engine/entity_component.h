@@ -123,7 +123,7 @@ struct ec_force_multiplier : w_entity_component
 
 	ec_force_multiplier* init( float strength, float lifetime_in_ms );
 
-	virtual void update() final;
+	virtual void update() override;
 };
 
 // ----------------------------------------------------------------------------

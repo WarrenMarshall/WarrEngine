@@ -12,19 +12,19 @@ struct w_artist
 
 // ----------------------------------------------------------------------------
 
-struct work_log_tracker_game final : w_game
+struct work_log_tracker_game : w_game
 {
 	work_log_tracker_game( std::string_view name );
 
 	// #todo - can this be static const char* ?
-	std::string data_filename = "work_log_tracker.data";
-	// "artist_list.txt" as well
+	inline static std::string_view data_filename = "work_log_tracker.data";
+	inline static std::string_view artist_filename = "artist_list.txt";
 	std::vector<w_artist> artists;
 
-	virtual void init() final;
-	virtual void new_game() final;
-	virtual void update() final;
+	virtual void init() override;
+	virtual void new_game() override;
+	virtual void update() override;
 
-	void load_data() noexcept;
+	void load_data();
 	void save_data();
 };

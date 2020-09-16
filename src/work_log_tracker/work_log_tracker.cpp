@@ -21,7 +21,7 @@ void work_log_tracker_game::new_game()
 {
 	w_game::new_game();
 
-	auto file = engine->fs->load_text_file_into_memory( engine->fs->prepend_data_path( "artist_list.txt" ) );
+	auto file = engine->fs->load_text_file_into_memory( engine->fs->prepend_data_path( work_log_tracker_game::artist_filename ) );
 
 	for( const auto& artist : *( file.get()->lines.get() ) )
 	{
@@ -37,12 +37,12 @@ void work_log_tracker_game::update()
 	w_game::update();
 }
 
-void work_log_tracker_game::load_data() noexcept
+void work_log_tracker_game::load_data()
 {
-	if( engine->fs->file_exists_on_disk( data_filename ) )
+	if( engine->fs->file_exists_on_disk( work_log_tracker_game::data_filename ) )
 	{
 		w_file_disk file;
-		file.open_for_read( data_filename );
+		file.open_for_read( work_log_tracker_game::data_filename );
 
 		bool success = false;
 		for( auto& artist : artists )
@@ -70,7 +70,7 @@ void work_log_tracker_game::load_data() noexcept
 void work_log_tracker_game::save_data()
 {
 	w_file_disk file;
-	file.open_for_write( data_filename );
+	file.open_for_write( work_log_tracker_game::data_filename );
 
 	for( auto& artist : artists )
 	{
