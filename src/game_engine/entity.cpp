@@ -23,18 +23,18 @@ void w_entity::update_physics()
 	// entities with dynamic rigid bodies need their transforms
 	// updated as per what the physics engine is reporting.
 
-	//for( auto& ec : components )
-	//{
-	//	if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) )
-	//	{
-	//		ec_b2d_dynamic* edb = static_cast<ec_b2d_dynamic*>( ec.get() );
+	for( auto& ec : components )
+	{
+		if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) )
+		{
+			ec_b2d_dynamic* edb = static_cast<ec_b2d_dynamic*>( ec.get() );
 
-	//		b2Vec2 position = edb->body->GetPosition();
-	//		float angle = edb->body->GetAngle();
+			b2Vec2 position = edb->body->GetPosition();
+			float angle = edb->body->GetAngle();
 
-	//		set_transform( { position.x, position.y }, angle, scale );
-	//	}
-	//}
+			set_transform( { position.x, position.y }, rad2deg( angle ), scale );
+		}
+	}
 
 	/*
 	float force_multiplier = 1.0f;

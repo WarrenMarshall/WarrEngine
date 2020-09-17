@@ -8,3 +8,10 @@
 # 	"name" "tex_name"
 # 	"filename" "gfx/filename.png"
 # }
+
+{
+	"type" "texture"
+	"name" "mario"
+	"subtexture" "sprite_mario"
+	"filename" "gfx/mario.png"
+}

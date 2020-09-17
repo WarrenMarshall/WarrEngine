@@ -4,8 +4,8 @@
 w_matrix* w_matrix::add_transform( const i_transform& t )
 {
 	translate( t.pos );
-	rotate( t.angle_facing );
 	scale( t.scale );
+	rotate( t.angle_facing );
 
 	return this;
 }
@@ -13,8 +13,8 @@ w_matrix* w_matrix::add_transform( const i_transform& t )
 w_matrix* w_matrix::add_transform( const w_vec2& pos, const float angle, const float _scale )
 {
 	translate( pos );
-	rotate( angle );
 	scale( _scale );
+	rotate( angle );
 
 	return this;
 }

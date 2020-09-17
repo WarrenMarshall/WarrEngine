@@ -79,11 +79,12 @@ struct ec_b2d_static : w_entity_component
 	ec_b2d_static() = delete;
 	ec_b2d_static( w_entity* parent_entity );
 
+	ec_b2d_static* init_as_box( const w_vec2& pos, float width, float height );
 	ec_b2d_static* init_as_box( float width, float height );
+	ec_b2d_static* init_as_circle( const w_vec2& pos, float radius );
 	ec_b2d_static* init_as_circle( float radius );
 
 	virtual void draw() override;
-	virtual void update() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -92,10 +93,15 @@ struct ec_b2d_static : w_entity_component
 // NOTE :	entities can have a SINGLE dynamic RB attached to them. this RB
 //			drives the entity position and rotation through Box2D.
 
-struct ec_b2d_dynamic : w_entity_component
+struct ec_b2d_dynamic : ec_b2d_static
 {
 	ec_b2d_dynamic() = delete;
 	ec_b2d_dynamic( w_entity* parent_entity );
+
+	ec_b2d_dynamic* init_as_box( const w_vec2& pos, float width, float height );
+	ec_b2d_dynamic* init_as_box( float width, float height );
+	ec_b2d_dynamic* init_as_circle( const w_vec2& pos, float radius );
+	ec_b2d_dynamic* init_as_circle( float radius );
 };
 
 // ----------------------------------------------------------------------------
