@@ -167,6 +167,10 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		engine->ui->init();
 		engine->ui->theme->init();
+
+		engine->gravity = b2Vec2( 0.0f, -10.0f );
+		engine->world = std::make_unique<b2World>( engine->gravity );
+
 	}
 	catch( std::exception& e )
 	{

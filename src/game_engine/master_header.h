@@ -17,6 +17,8 @@ extern float v_window_h;
 #define v_window_hw (v_window_w / 2.0f)
 #define v_window_hh (v_window_h / 2.0f)
 
+#include "box2d/box2d.h"
+
 #include "matrix.h"
 #include "opengl_framebuffer.h"
 #include "opengl.h"

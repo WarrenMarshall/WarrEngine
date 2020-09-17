@@ -2,9 +2,9 @@
 
 // ----------------------------------------------------------------------------
 
-struct main_app final : w_game
+struct hello_world_app final : w_game
 {
-	main_app();
+	hello_world_app( std::string_view name );
 
 	void init() final;
 	void new_game() final;

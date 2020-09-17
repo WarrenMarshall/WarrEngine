@@ -1,11 +1,11 @@
 
 #pragma once
 
-#define GAME ((main_app*)game)
+#define GAME ((hello_world_app*)game)
 
 // ----------------------------------------------------------------------------
 
 #include <game_engine.h>
 
-#include "main_app.h"
+#include "hello_world_app.h"
 #include "layer_default.h"

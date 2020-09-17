@@ -3,15 +3,14 @@
 
 int main( int argc, char* argv [] )
 {
-	auto game = std::make_unique<main_app>();
+	game = std::make_unique<hello_world_app>( std::string( ADD_QUOTES( APP_NAME ) ) );
 
-	if( !w_engine::init_game_engine( std::string( ADD_QUOTES( APP_NAME ) ), argc, argv, game.get() ) )
+	if( !w_engine::init_game_engine( argc, argv ) )
 	{
 		return -1;
 	}
 
 	w_engine::exec_main_loop();
-
 	w_engine::deinit_game_engine();
 
 	return 0;
