@@ -70,7 +70,38 @@ struct ec_sound : w_entity_component
 };
 
 // ----------------------------------------------------------------------------
+// common base class for Box2D colliders
 
+struct ec_b2d_static : w_entity_component
+{
+	b2Body* body = nullptr;
+
+	ec_b2d_static() = delete;
+	ec_b2d_static( w_entity* parent_entity );
+
+	ec_b2d_static* init_as_box( float width, float height );
+	ec_b2d_static* init_as_circle( float radius );
+
+	virtual void draw() override;
+	virtual void update() override;
+};
+
+// ----------------------------------------------------------------------------
+// dynamic rigid bodies
+//
+// NOTE :	entities can have a SINGLE dynamic RB attached to them. this RB
+//			drives the entity position and rotation through Box2D.
+
+struct ec_b2d_dynamic : w_entity_component
+{
+	ec_b2d_dynamic() = delete;
+	ec_b2d_dynamic( w_entity* parent_entity );
+};
+
+// ----------------------------------------------------------------------------
+
+// #box2d - this might be useful later as a "simple" collision checker
+/*
 struct ec_collider : w_entity_component
 {
 	C2_TYPE c2type = C2_TYPE_NONE;
@@ -88,6 +119,7 @@ struct ec_collider : w_entity_component
 	variant_collider_types get_collider();
 	virtual void draw() override;
 };
+*/
 
 // ----------------------------------------------------------------------------
 // a force that pushes on the entity, and never decays

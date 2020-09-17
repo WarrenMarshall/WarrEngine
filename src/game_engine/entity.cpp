@@ -20,6 +20,23 @@ void w_force::init_to_zero()
 
 void w_entity::update_physics()
 {
+	// entities with dynamic rigid bodies need their transforms
+	// updated as per what the physics engine is reporting.
+
+	//for( auto& ec : components )
+	//{
+	//	if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) )
+	//	{
+	//		ec_b2d_dynamic* edb = static_cast<ec_b2d_dynamic*>( ec.get() );
+
+	//		b2Vec2 position = edb->body->GetPosition();
+	//		float angle = edb->body->GetAngle();
+
+	//		set_transform( { position.x, position.y }, angle, scale );
+	//	}
+	//}
+
+	/*
 	float force_multiplier = 1.0f;
 
 	for( auto& ec : components )
@@ -59,12 +76,11 @@ void w_entity::update_physics()
 	// the position the entity has computed that it WANTS to be in after this update cycle.
 	// this may change once collisions are evaluated.
 	physics_cache.ending_pos = w_vec2::add( pos, physics_cache.forces );
+	*/
 }
 
 void w_entity::update()
 {
-	// move to the physics based ending position
-	pos = physics_cache.ending_pos;
 }
 
 void w_entity::update_components()
@@ -173,16 +189,20 @@ void w_entity::set_transform( const w_vec2& pos, const float angle, const float 
 {
 	i_transform::set_transform( pos, angle, scale );
 
-	// setting the transform directly means we need to sync up the physics cache to match
+	//auto rigid_bodies = get_components<ec_b2d_static>();
 
-	physics_cache.ending_pos = pos;
+	//for( auto& iter : rigid_bodies )
+	//{
+	//}
 }
 
 // set the position of the entity directly, bypassing any physics or forces.
 
 void w_entity::set_pos( const w_vec2& pos )
 {
-	this->pos = physics_cache.ending_pos = pos;
+	assert( false );
+	// #box2d
+	//this->pos = physics_cache.ending_pos = pos;
 }
 
 void w_entity::set_life_cycle( e_life_cycle life_cycle )

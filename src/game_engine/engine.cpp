@@ -140,7 +140,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			log_msg( "Initializing Box2D" );
 
-			engine->box2d_gravity = b2Vec2( 0.0f, 10.0f );
+			engine->box2d_gravity = b2Vec2( 0.0f, 10.0f ) ;// 98.1f );
 			engine->box2d_world = std::make_unique<b2World>( engine->box2d_gravity );
 		}
 

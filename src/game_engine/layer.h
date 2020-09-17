@@ -37,9 +37,8 @@ struct w_layer : i_lifecycle
 	*/
 	virtual void getting_covered() {}
 
-	virtual void update_physics();
 	virtual void update();
-	virtual void update_collisions();
+	//virtual void update_collisions();
 	virtual void draw();
 
 	virtual bool handle_input_event( const w_input_event* evt );

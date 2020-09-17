@@ -8,10 +8,6 @@ bool w_layer::handle_input_event( const w_input_event* evt )
 	return false;
 }
 
-void w_layer::update_physics()
-{
-}
-
 void w_layer::update()
 {
 	// clear out dead entities
@@ -29,14 +25,18 @@ void w_layer::update()
 		}
 	}
 
-	update_physics();
+	// update all entities as per physics
 
 	for( const auto& entity : entities )
 	{
 		entity->update_physics();
 	}
 
-	update_collisions();
+	// handle collisions
+
+	//update_collisions();
+
+	// update entities and components
 
 	for( const auto& entity : entities )
 	{
@@ -52,6 +52,7 @@ void w_layer::update()
 	}
 }
 
+#if 0
 void w_layer::update_collisions()
 {
 	int num_entities = static_cast<int>( entities.size() );
@@ -101,6 +102,7 @@ void w_layer::update_collisions()
 		}
 	}
 }
+#endif
 
 void w_layer::draw()
 {

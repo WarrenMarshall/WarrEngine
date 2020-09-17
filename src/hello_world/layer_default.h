@@ -4,13 +4,10 @@ struct layer_default : w_layer
 {
 	layer_default();
 
-	w_entity* dynamic_body;
+	//w_entity* player;
+	w_entity* world_geo;
 
-	b2BodyDef groundBodyDef;
-	b2PolygonShape groundBox;
-
-	b2BodyDef bodyDef;
-	b2Body* body;
+	b2Body* dynamic_body;
 
 	virtual void push() override;
 	virtual void update() override;

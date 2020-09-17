@@ -36,15 +36,6 @@ struct w_entity : i_lifecycle, i_transform
 	// as zero.
 	int collides_with = 0;
 
-	// physics
-
-	struct
-	{
-		w_vec2 forces;
-		w_vec2 ending_pos = w_vec2::zero;
-		float falling_speed = 0.0f;
-	} physics_cache;
-
 	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;
 	void set_pos( const w_vec2& pos );
 
@@ -56,7 +47,7 @@ struct w_entity : i_lifecycle, i_transform
 	virtual void update_components();
 	virtual void draw();
 	virtual void post_spawn();
-	virtual void collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& manifold ) {}
+	//virtual void collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& manifold ) {}
 
 	template<typename T> T* add_component()
 	{

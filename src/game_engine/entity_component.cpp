@@ -86,9 +86,10 @@ void ec_sprite::draw()
 	{
 		return;
 	}
-
-	w_vec2 pos_interp = w_vec2::multiply( parent_entity->physics_cache.forces, RENDER->frame_interpolate_pct );
-	RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
+	// #box2d
+	//w_vec2 pos_interp = w_vec2::multiply( parent_entity->physics_cache.forces, RENDER->frame_interpolate_pct );
+	//RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
+	RENDER->draw_sprite( subtex, w_rect( pos.x, pos.y ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -196,6 +197,113 @@ void ec_sound::draw()
 
 // ----------------------------------------------------------------------------
 
+ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+}
+
+void ec_b2d_static::draw()
+{
+	w_entity_component::draw();
+
+	MATRIX->push_identity();
+
+	RENDER->push_rgb( w_color::green );
+
+	for( b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		b2Shape::Type shapeType = fixture->GetType();
+
+		if( shapeType == b2Shape::e_circle )
+		{
+			//b2CircleShape* shape = (b2CircleShape*) fixture->GetShape();
+			//b2Vec2 pos = body->GetWorldPoint( shape->m_p );
+
+			//RENDER->draw_circle( w_vec2( pos.x, pos.y ), shape->m_radius );
+		}
+		else if( shapeType == b2Shape::e_polygon )
+		{
+			b2Vec2 position = body->GetPosition();
+			//float angle = body->GetAngle();
+
+			MATRIX->push()->translate( { position.x, position.y } );
+
+			b2PolygonShape* shape = (b2PolygonShape*) fixture->GetShape();
+
+			for( int v = 0 ; v < shape->m_count ; ++v )
+			{
+				b2Vec2& v0 = shape->m_vertices[ v ];
+				b2Vec2& v1 = shape->m_vertices[ ( v + 1 ) % shape->m_count ];
+
+				//v0 = body->GetWorldPoint( v0 );
+				//v1 = body->GetWorldPoint( v1 );
+
+				RENDER->draw_line( w_vec2( v0.x, v0.y ), w_vec2( v1.x, v1.y ) );
+			}
+
+			MATRIX->pop();
+		}
+		else
+		{
+			log_error( "Unknown Box2D shape type" );
+		}
+	}
+
+	RENDER->pop_rgb();
+
+	MATRIX->pop();
+}
+
+void ec_b2d_static::update()
+{
+	//b2Vec2 position = body->GetPosition();
+	//float angle = body->GetAngle();
+
+	//log_msg( "Pos : {}, {} / Angle: {}", position.x, position.y, angle );
+}
+
+ec_b2d_static* ec_b2d_static::init_as_box( float width, float height )
+{
+	b2BodyDef body_definition;
+
+	// move the origin of the body definition to match the entities position
+	body_definition.position.Set( parent_entity->pos.x, parent_entity->pos.y );
+
+	body = engine->box2d_world->CreateBody( &body_definition );
+
+	b2PolygonShape shape;
+	shape.SetAsBox( width, height );
+	body->CreateFixture( &shape, 0.0f );
+
+	return this;
+}
+
+ec_b2d_static* ec_b2d_static::init_as_circle( float radius )
+{
+	b2BodyDef body_definition;
+
+	// move the origin of the body definition to match the entities position
+	body_definition.position.Set( parent_entity->pos.x, parent_entity->pos.y );
+
+	body = engine->box2d_world->CreateBody( &body_definition );
+
+	b2CircleShape shape;
+	shape.m_radius = radius;
+	body->CreateFixture( &shape, 0.0f );
+
+	return this;
+}
+
+// ----------------------------------------------------------------------------
+
+ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+}
+
+// ----------------------------------------------------------------------------
+
+#if 0
 ec_collider::ec_collider( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
@@ -227,22 +335,6 @@ w_entity_component* ec_collider::init_as_box( w_rect box )
 
 variant_collider_types ec_collider::get_collider()
 {
-	if( c2type == C2_TYPE_CIRCLE )
-	{
-		return c2Circle(
-			{
-				{ parent_entity->physics_cache.ending_pos.x, parent_entity->physics_cache.ending_pos.y },
-				radius * parent_entity->scale
-			}
-		);
-	}
-	else if( c2type == C2_TYPE_AABB )
-	{
-		return (c2AABB) w_rect(
-			{ parent_entity->physics_cache.ending_pos.x + box.x, parent_entity->physics_cache.ending_pos.y + box.y, *box.w, *box.h }
-		);
-	}
-
 	assert( false );	// unknown collider type
 	return {};
 }
@@ -265,6 +357,7 @@ void ec_collider::draw()
 		RENDER->pop_rgb();
 	}
 }
+#endif
 
 // ----------------------------------------------------------------------------
 
