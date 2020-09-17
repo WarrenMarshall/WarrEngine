@@ -136,6 +136,14 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 		}
 
+		{ // Box2D
+
+			log_msg( "Initializing Box2D" );
+
+			engine->box2d_gravity = b2Vec2( 0.0f, 10.0f );
+			engine->box2d_world = std::make_unique<b2World>( engine->box2d_gravity );
+		}
+
 		// set up frame buffers
 		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( "game", v_window_w, v_window_h );
 
@@ -167,10 +175,6 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		engine->ui->init();
 		engine->ui->theme->init();
-
-		engine->gravity = b2Vec2( 0.0f, -10.0f );
-		engine->world = std::make_unique<b2World>( engine->gravity );
-
 	}
 	catch( std::exception& e )
 	{
@@ -212,6 +216,9 @@ void w_engine::deinit_game_engine()
 	log_msg( "Finished!" );
 	logfile->deinit();
 }
+
+constexpr int32 box2d_velocityIterations = 6;
+constexpr int32 box2d_positionIterations = 2;
 
 void w_engine::exec_main_loop()
 {
@@ -255,6 +262,8 @@ void w_engine::exec_main_loop()
 
 			engine->update();
 			game->update();
+
+			engine->box2d_world->Step( w_time::FTS_step_value_s, box2d_velocityIterations, box2d_positionIterations );
 		}
 
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed

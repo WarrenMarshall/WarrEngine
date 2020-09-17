@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 
-struct hello_world_app final : w_game
+struct hello_world_app : w_game
 {
 	hello_world_app( std::string_view name );
 
-	void init() final;
-	void new_game() final;
-	void update() final;
+	void init() override;
+	void new_game() override;
+	void update() override;
 };

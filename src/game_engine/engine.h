@@ -19,8 +19,8 @@ struct w_engine : i_listener
 	bool is_running = false;
 	bool is_paused = false;
 
-	b2Vec2 gravity;
-	std::unique_ptr<b2World> world = nullptr;
+	b2Vec2 box2d_gravity;
+	std::unique_ptr<b2World> box2d_world = nullptr;
 
 	virtual ~w_engine() = default;
 
