@@ -276,15 +276,19 @@ ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
 ec_b2d_body* ec_b2d_static::init_as_box( const w_vec2& pos, float width, float height )
 {
 	b2BodyDef body_definition;
-	body_definition.type = b2_staticBody;
-
-	// move the origin of the body definition to match the entities position
-	body_definition.position.Set( pos.x, pos.y );
+	{
+		body_definition.type = b2_staticBody;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
 
 	b2PolygonShape shape;
-	shape.SetAsBox( width, height );
+	{
+		shape.SetAsBox( width, height );
+	}
+
 	body->CreateFixture( &shape, 0.0f );
 
 	return this;
@@ -293,14 +297,19 @@ ec_b2d_body* ec_b2d_static::init_as_box( const w_vec2& pos, float width, float h
 ec_b2d_body* ec_b2d_static::init_as_circle( const w_vec2& pos, float radius )
 {
 	b2BodyDef body_definition;
-
-	// move the origin of the body definition to match the entities position
-	body_definition.position.Set( pos.x, pos.y );
+	{
+		body_definition.type = b2_staticBody;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
 
 	b2CircleShape shape;
-	shape.m_radius = radius;
+	{
+		shape.m_radius = radius;
+	}
+
 	body->CreateFixture( &shape, 0.0f );
 
 	return this;
@@ -316,18 +325,26 @@ ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
 ec_b2d_body* ec_b2d_dynamic::init_as_box( const w_vec2& pos, float width, float height )
 {
 	b2BodyDef body_definition;
-	body_definition.type = b2_dynamicBody;
-	body_definition.position.Set( pos.x, pos.y );
+	{
+		body_definition.type = b2_dynamicBody;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+		//body_definition.fixedRotation = true;
+	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
 
 	b2PolygonShape shape;
-	shape.SetAsBox( width, height );
+	{
+		shape.SetAsBox( width, height );
+	}
 
 	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	fixture.density = 1.0f;
-	fixture.friction = 0.3f;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+	}
 
 	body->CreateFixture( &fixture );
 
@@ -337,18 +354,91 @@ ec_b2d_body* ec_b2d_dynamic::init_as_box( const w_vec2& pos, float width, float 
 ec_b2d_body* ec_b2d_dynamic::init_as_circle( const w_vec2& pos, float radius )
 {
 	b2BodyDef body_definition;
-	body_definition.type = b2_dynamicBody;
-	body_definition.position.Set( pos.x, pos.y );
+	{
+		body_definition.type = b2_dynamicBody;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+		//body_definition.fixedRotation = true;
+	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
 
 	b2CircleShape shape;
-	shape.m_radius = radius;
+	{
+		shape.m_radius = radius;
+	}
 
 	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	fixture.density = 1.0f;
-	fixture.friction = 10.0f;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+	}
+
+	body->CreateFixture( &fixture );
+
+	return this;
+}
+
+// ----------------------------------------------------------------------------
+
+ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
+	: ec_b2d_body( parent_entity )
+{
+}
+
+ec_b2d_body* ec_b2d_kinematic::init_as_box( const w_vec2& pos, float width, float height )
+{
+	b2BodyDef body_definition;
+	{
+		body_definition.type = b2_kinematicBody;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+		//body_definition.fixedRotation = true;
+	}
+
+	body = engine->box2d_world->CreateBody( &body_definition );
+
+	b2PolygonShape shape;
+	{
+		shape.SetAsBox( width, height );
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+	}
+
+	body->CreateFixture( &fixture );
+
+	return this;
+}
+
+ec_b2d_body* ec_b2d_kinematic::init_as_circle( const w_vec2& pos, float radius )
+{
+	b2BodyDef body_definition;
+	{
+		body_definition.type = b2_kinematicBody;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+		//body_definition.fixedRotation = true;
+	}
+
+	body = engine->box2d_world->CreateBody( &body_definition );
+
+	b2CircleShape shape;
+	{
+		shape.m_radius = radius;
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+	}
 
 	body->CreateFixture( &fixture );
 

@@ -109,13 +109,33 @@ struct ec_b2d_static : ec_b2d_body
 // ----------------------------------------------------------------------------
 // dynamic rigid bodies
 //
-// NOTE :	entities can have a SINGLE dynamic RB attached to them. this RB
-//			drives the entity position and rotation through Box2D.
+// NOTE :	entities can have a SINGLE dynamic body attached to them.
 
 struct ec_b2d_dynamic : ec_b2d_body
 {
 	ec_b2d_dynamic() = delete;
 	ec_b2d_dynamic( w_entity* parent_entity );
+
+	virtual ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height ) override;
+	virtual ec_b2d_body* init_as_circle( const w_vec2& pos, float radius ) override;
+
+	virtual ec_b2d_body* init_as_box( float width, float height ) override
+	{
+		return ec_b2d_body::init_as_box( width, height );
+	}
+	virtual ec_b2d_body* init_as_circle( float radius ) override
+	{
+		return ec_b2d_body::init_as_circle( radius );
+	}
+};
+
+// ----------------------------------------------------------------------------
+// kinematic bodies
+
+struct ec_b2d_kinematic : ec_b2d_body
+{
+	ec_b2d_kinematic() = delete;
+	ec_b2d_kinematic( w_entity* parent_entity );
 
 	virtual ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height ) override;
 	virtual ec_b2d_body* init_as_circle( const w_vec2& pos, float radius ) override;

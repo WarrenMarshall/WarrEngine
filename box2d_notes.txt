@@ -1,0 +1,24 @@
+
+Bodies
+	- contains properties defining the characteristics, but nothing visual:
+		- mass - how heavy it is
+		- velocity - how fast and which direction it's moving
+		- rotational inertia - how much effort it takes to start or stop spinning
+		- angular velocity - how fast and which way it's rotating
+		- location - where it is
+		- angle - which way it is facing
+
+	- 3 kinds of bodies : static, dynamic and kinematic
+		- kinematic
+			- always "wins" when hitting a dynamic object
+				- like a static body
+			- the difference is that it can be moved, where as a static can't
+
+	- "For most games, dynamic bodies are used for the player and other actors in the scene, and static bodies are used for walls, floors and so on. Kinematic bodies came about to fill the need for a body which can move and rotate but doesn't get bumped around by the dynamic bodies. A perfect example is a moving platform in a platform game - it should always stay on its track no matter how it is jumped on or collided with."
+
+Fixtures
+	- contains the size, shape, and other tangigle characteristics
+
+- body definitions and fixtures are disposable
+	- meaning Box2D copies them internally when you create a body with them so you don't need to hold onto them after the fact - they are only for creation
+

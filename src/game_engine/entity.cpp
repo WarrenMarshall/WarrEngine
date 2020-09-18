@@ -25,9 +25,9 @@ void w_entity::update_physics()
 
 	for( auto& ec : components )
 	{
-		if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) )
+		if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) || typeid( *ec.get() ) == typeid( ec_b2d_kinematic ) )
 		{
-			ec_b2d_dynamic* edb = static_cast<ec_b2d_dynamic*>( ec.get() );
+			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
 
 			b2Vec2 position = edb->body->GetPosition();
 			float angle = edb->body->GetAngle();

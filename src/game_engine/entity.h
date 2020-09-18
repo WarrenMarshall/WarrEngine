@@ -51,6 +51,16 @@ struct w_entity : i_lifecycle, i_transform
 
 	template<typename T> T* add_component()
 	{
+#ifdef _DEBUG
+		if( typeid( T ) == typeid( ec_b2d_dynamic ) )
+		{
+			if( get_component<ec_b2d_dynamic>() )
+			{
+				log_error( "entities can only have a single \"ec_b2d_dynamic\" component" );
+			}
+		}
+#endif
+
 		components.emplace_back( std::make_unique<T>( this ) );
 		T* new_component = static_cast<T*>( components.back().get() );
 
