@@ -10,7 +10,7 @@ void layer_default::push()
 {
 	world_geo = add_entity<w_entity>();
 
-	for( int x = 0 ; x < 35 ; ++x )
+	for( int x = 0 ; x < 0 ; ++x )
 	{
 		float xpos = w_random::getf_range( 0.0f, v_window_w );
 		float ypos = w_random::getf_range( 64.0f, v_window_h );
@@ -28,12 +28,14 @@ void layer_default::push()
 		}
 	}
 
+	world_geo->add_component<ec_b2d_static>()->init_as_line( { 0.0f, v_window_hh }, { v_window_w, v_window_hh } );
+
 	player = add_entity<w_entity>();
 	float xpos = w_random::getf_range( 0.0f, v_window_w );
 	player->set_transform( { xpos, 0.0f }, 0, 1 );
 	player->add_component<ec_sprite>()->init( "sprite_mario" );
-	//player->add_component<ec_b2d_dynamic>()->init_as_box( 8, 10 );
-	player->add_component<ec_b2d_dynamic>()->init_as_circle( 10 );
+	player->add_component<ec_b2d_dynamic>()->init_as_box( 8, 10 );
+	//player->add_component<ec_b2d_dynamic>()->init_as_circle( 10 );
 
 	player2 = add_entity<w_entity>();
 	xpos = w_random::getf_range( 0.0f, v_window_w );
@@ -65,6 +67,18 @@ bool layer_default::handle_input_event( const w_input_event* evt )
 			ec->body->SetAngularVelocity( 0 );
 			ec->body->SetAwake( true );
 		}
+
+		if( evt->input_id == input_id::controller_button_dpad_right )
+		{
+			auto ec = player->get_component<ec_b2d_dynamic>();
+			ec->body->ApplyForceToCenter( b2Vec2( 50000, 0 ), true );
+		}
+
+		if( evt->input_id == input_id::controller_button_dpad_left )
+		{
+			auto ec = player->get_component<ec_b2d_dynamic>();
+			ec->body->ApplyForceToCenter( b2Vec2( -50000, 0 ), true );
+		}
 	}
 
 	if( evt->event_id == event_id::input_released )
@@ -72,9 +86,7 @@ bool layer_default::handle_input_event( const w_input_event* evt )
 		if( evt->input_id == input_id::controller_button_a )
 		{
 			auto ec = player->get_component<ec_b2d_dynamic>();
-
-			//ec->body->SetLinearVelocity( b2Vec2( 0, -75 ) );
-			ec->body->ApplyLinearImpulseToCenter( b2Vec2( 0, -30000 ), true );
+			ec->body->ApplyLinearImpulseToCenter( b2Vec2( 0, -50000 ), true );
 		}
 
 		if( evt->input_id == input_id::key_1 )

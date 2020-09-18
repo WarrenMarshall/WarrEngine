@@ -18,7 +18,24 @@ Bodies
 
 Fixtures
 	- contains the size, shape, and other tangigle characteristics
+		- shape - a polygon or circle
+			- note : max of 8 verts per polygon
+			- polygons are wound counter-clockwise
+		- restitution - how bouncy the fixture is
+		- friction - how slippery it is
+		- density - how heavy it is in relation to its area
+
+	- bodies can have multiple fixtures attached
+
+-----------------------------------------------------
 
 - body definitions and fixtures are disposable
 	- meaning Box2D copies them internally when you create a body with them so you don't need to hold onto them after the fact - they are only for creation
 
+-----------------------------------------------------
+
+"Forces act gradually over time to change the velocity of a body while impulses can change a body's velocity immediately."
+
+
+
+-----------------------------------------------------

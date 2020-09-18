@@ -210,7 +210,7 @@ void ec_b2d_body::draw()
 
 	MATRIX->push_identity();
 
-	RENDER->push_rgb( w_color::green );
+	RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
 
 	for( b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -244,6 +244,14 @@ void ec_b2d_body::draw()
 			}
 
 			MATRIX->pop();
+		}
+		else if( shapeType == b2Shape::e_edge )
+		{
+			b2EdgeShape* shape = (b2EdgeShape*) fixture->GetShape();
+			b2Vec2 v1 = body->GetWorldPoint( shape->m_vertex1 );
+			b2Vec2 v2 = body->GetWorldPoint( shape->m_vertex2 );
+
+			RENDER->draw_line( { v1.x, v1.y }, { v2.x, v2.y } );
 		}
 		else
 		{
@@ -283,11 +291,17 @@ ec_b2d_body* ec_b2d_body::init_as_box( const w_vec2& pos, float width, float hei
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
+		//fixture.restitution = 0.3f;
 	}
 
 	body->CreateFixture( &fixture );
 
 	return this;
+}
+
+ec_b2d_body* ec_b2d_body::init_as_circle( float radius )
+{
+	return init_as_circle( { parent_entity->pos.x, parent_entity->pos.y }, radius );
 }
 
 ec_b2d_body* ec_b2d_body::init_as_circle( const w_vec2& pos, float radius )
@@ -319,9 +333,38 @@ ec_b2d_body* ec_b2d_body::init_as_circle( const w_vec2& pos, float radius )
 	return this;
 }
 
-ec_b2d_body* ec_b2d_body::init_as_circle( float radius )
+ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& start, const w_vec2& end )
 {
-	return init_as_circle( { parent_entity->pos.x, parent_entity->pos.y }, radius );
+	return init_as_line( { parent_entity->pos.x, parent_entity->pos.y }, start, end );
+}
+
+ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end )
+{
+	b2BodyDef body_definition;
+	{
+		body_definition.type = body_type;
+		body_definition.position.Set( pos.x, pos.y );
+		body_definition.angle = 0.0f;
+		//body_definition.fixedRotation = true;
+	}
+
+	body = engine->box2d_world->CreateBody( &body_definition );
+
+	b2EdgeShape shape;
+	{
+		shape.SetOneSided( { start.x, start.y }, { start.x, start.y }, { end.x, end.y }, { end.x, end.y } );
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+	}
+
+	body->CreateFixture( &fixture );
+
+	return this;
 }
 
 // ----------------------------------------------------------------------------

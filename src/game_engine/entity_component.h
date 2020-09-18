@@ -71,7 +71,7 @@ struct ec_sound : w_entity_component
 
 // ----------------------------------------------------------------------------
 // Box2D bodies
-//
+
 struct ec_b2d_body : w_entity_component
 {
 	b2BodyType body_type = b2_staticBody;
@@ -80,14 +80,19 @@ struct ec_b2d_body : w_entity_component
 	ec_b2d_body() = delete;
 	ec_b2d_body( w_entity* parent_entity );
 
+	ec_b2d_body* init_as_circle( float radius );
 	ec_b2d_body* init_as_circle( const w_vec2& pos, float radius );
+
+	ec_b2d_body* init_as_box( float width, float height );
 	ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height );
 
-	ec_b2d_body* init_as_circle( float radius );
-	ec_b2d_body* init_as_box( float width, float height );
+	ec_b2d_body* init_as_line( const w_vec2& start, const w_vec2& end );
+	ec_b2d_body* init_as_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end );
 
 	virtual void draw() override;
 };
+
+// ----------------------------------------------------------------------------
 
 struct ec_b2d_static : ec_b2d_body
 {
