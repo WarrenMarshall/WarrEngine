@@ -199,12 +199,12 @@ void ec_sound::draw()
 
 // ----------------------------------------------------------------------------
 
-ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
+ec_b2d_body::ec_b2d_body( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
 }
 
-void ec_b2d_static::draw()
+void ec_b2d_body::draw()
 {
 	w_entity_component::draw();
 
@@ -229,7 +229,7 @@ void ec_b2d_static::draw()
 			float angle = body->GetAngle();
 
 			MATRIX
-				->push_identity()
+				->push()
 				->translate( { position.x, position.y } )
 				->rotate( rad2deg( angle ) );
 
@@ -256,7 +256,24 @@ void ec_b2d_static::draw()
 	MATRIX->pop();
 }
 
-ec_b2d_static* ec_b2d_static::init_as_box( const w_vec2& pos, float width, float height )
+ec_b2d_body* ec_b2d_body::init_as_box( float width, float height )
+{
+	return init_as_box( { parent_entity->pos.x, parent_entity->pos.y }, width, height );
+}
+
+ec_b2d_body* ec_b2d_body::init_as_circle( float radius )
+{
+	return init_as_circle( { parent_entity->pos.x, parent_entity->pos.y }, radius );
+}
+
+// ----------------------------------------------------------------------------
+
+ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
+	: ec_b2d_body( parent_entity )
+{
+}
+
+ec_b2d_body* ec_b2d_static::init_as_box( const w_vec2& pos, float width, float height )
 {
 	b2BodyDef body_definition;
 	body_definition.type = b2_staticBody;
@@ -273,12 +290,7 @@ ec_b2d_static* ec_b2d_static::init_as_box( const w_vec2& pos, float width, float
 	return this;
 }
 
-ec_b2d_static* ec_b2d_static::init_as_box( float width, float height )
-{
-	return init_as_box( { parent_entity->pos.x, parent_entity->pos.y }, width, height );
-}
-
-ec_b2d_static* ec_b2d_static::init_as_circle( const w_vec2& pos, float radius )
+ec_b2d_body* ec_b2d_static::init_as_circle( const w_vec2& pos, float radius )
 {
 	b2BodyDef body_definition;
 
@@ -294,19 +306,14 @@ ec_b2d_static* ec_b2d_static::init_as_circle( const w_vec2& pos, float radius )
 	return this;
 }
 
-ec_b2d_static* ec_b2d_static::init_as_circle( float radius )
-{
-	return init_as_circle( { parent_entity->pos.x, parent_entity->pos.y }, radius );
-}
-
 // ----------------------------------------------------------------------------
 
 ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
-	: ec_b2d_static( parent_entity )
+	: ec_b2d_body( parent_entity )
 {
 }
 
-ec_b2d_dynamic* ec_b2d_dynamic::init_as_box( const w_vec2& pos, float width, float height )
+ec_b2d_body* ec_b2d_dynamic::init_as_box( const w_vec2& pos, float width, float height )
 {
 	b2BodyDef body_definition;
 	body_definition.type = b2_dynamicBody;
@@ -327,12 +334,7 @@ ec_b2d_dynamic* ec_b2d_dynamic::init_as_box( const w_vec2& pos, float width, flo
 	return this;
 }
 
-ec_b2d_dynamic* ec_b2d_dynamic::init_as_box( float width, float height )
-{
-	return init_as_box( { parent_entity->pos.x, parent_entity->pos.y }, width, height );
-}
-
-ec_b2d_dynamic* ec_b2d_dynamic::init_as_circle( const w_vec2& pos, float radius )
+ec_b2d_body* ec_b2d_dynamic::init_as_circle( const w_vec2& pos, float radius )
 {
 	b2BodyDef body_definition;
 	body_definition.type = b2_dynamicBody;
@@ -346,16 +348,11 @@ ec_b2d_dynamic* ec_b2d_dynamic::init_as_circle( const w_vec2& pos, float radius 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
-	fixture.friction = 0.3f;
+	fixture.friction = 10.0f;
 
 	body->CreateFixture( &fixture );
 
 	return this;
-}
-
-ec_b2d_dynamic* ec_b2d_dynamic::init_as_circle( float radius )
-{
-	return init_as_circle( { parent_entity->pos.x, parent_entity->pos.y }, radius );
 }
 
 // ----------------------------------------------------------------------------

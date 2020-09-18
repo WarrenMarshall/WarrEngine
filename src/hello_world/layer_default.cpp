@@ -9,17 +9,17 @@ layer_default::layer_default()
 void layer_default::push()
 {
 	world_geo = add_entity<w_entity>();
-	world_geo->add_component<ec_sprite>()->init( "engine_white_solid" )->scale = 0.25f;
 	world_geo->add_component<ec_b2d_static>()->init_as_box( { 100, 150 }, 128, 3 );
-	//world_geo->add_component<ec_b2d_static>()->init_as_circle( { 95, 120 }, 12 );
-	//world_geo->add_component<ec_b2d_static>()->init_as_box( { 116, 85}, 12, 12 );
-	//world_geo->add_component<ec_b2d_static>()->init_as_circle( { 50, 130 }, 12 );
+	world_geo->add_component<ec_b2d_static>()->init_as_circle( { 90, 100 }, 12 );
+	world_geo->add_component<ec_b2d_static>()->init_as_box( { 114, 65}, 12, 12 );
+	world_geo->add_component<ec_b2d_static>()->init_as_circle( { 50, 120 }, 12 );
+	world_geo->add_component<ec_b2d_static>()->init_as_circle( { 150, 150 }, 32 );
 
 	player = add_entity<w_entity>();
-	player->set_transform( { 100, 50 }, 0, 1 );
+	player->set_transform( { 100, 0 }, 0, 1 );
 	player->add_component<ec_sprite>()->init( "sprite_mario" );
-	player->add_component<ec_b2d_dynamic>()->init_as_box( 8, 8 );
-	//player->add_component<ec_b2d_dynamic>()->init_as_circle( 8 );
+	//player->add_component<ec_b2d_dynamic>()->init_as_box( 8, 10 );
+	player->add_component<ec_b2d_dynamic>()->init_as_circle( 10 );
 }
 
 void layer_default::update()

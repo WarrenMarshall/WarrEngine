@@ -71,20 +71,39 @@ struct ec_sound : w_entity_component
 
 // ----------------------------------------------------------------------------
 // common base class for Box2D colliders
-
-struct ec_b2d_static : w_entity_component
+//
+struct ec_b2d_body : w_entity_component
 {
 	b2Body* body = nullptr;
 
+	ec_b2d_body() = delete;
+	ec_b2d_body( w_entity* parent_entity );
+
+	virtual ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height ) = 0;
+	virtual ec_b2d_body* init_as_circle( const w_vec2& pos, float radius ) = 0;
+
+	virtual ec_b2d_body* init_as_box( float width, float height );
+	virtual ec_b2d_body* init_as_circle( float radius );
+
+	virtual void draw() override;
+};
+
+struct ec_b2d_static : ec_b2d_body
+{
 	ec_b2d_static() = delete;
 	ec_b2d_static( w_entity* parent_entity );
 
-	ec_b2d_static* init_as_box( const w_vec2& pos, float width, float height );
-	ec_b2d_static* init_as_box( float width, float height );
-	ec_b2d_static* init_as_circle( const w_vec2& pos, float radius );
-	ec_b2d_static* init_as_circle( float radius );
+	virtual ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height ) override;
+	virtual ec_b2d_body* init_as_circle( const w_vec2& pos, float radius ) override;
 
-	virtual void draw() override;
+	virtual ec_b2d_body* init_as_box( float width, float height ) override
+	{
+		return ec_b2d_body::init_as_box( width, height );
+	}
+	virtual ec_b2d_body* init_as_circle( float radius ) override
+	{
+		return ec_b2d_body::init_as_circle( radius );
+	}
 };
 
 // ----------------------------------------------------------------------------
@@ -93,15 +112,22 @@ struct ec_b2d_static : w_entity_component
 // NOTE :	entities can have a SINGLE dynamic RB attached to them. this RB
 //			drives the entity position and rotation through Box2D.
 
-struct ec_b2d_dynamic : ec_b2d_static
+struct ec_b2d_dynamic : ec_b2d_body
 {
 	ec_b2d_dynamic() = delete;
 	ec_b2d_dynamic( w_entity* parent_entity );
 
-	ec_b2d_dynamic* init_as_box( const w_vec2& pos, float width, float height );
-	ec_b2d_dynamic* init_as_box( float width, float height );
-	ec_b2d_dynamic* init_as_circle( const w_vec2& pos, float radius );
-	ec_b2d_dynamic* init_as_circle( float radius );
+	virtual ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height ) override;
+	virtual ec_b2d_body* init_as_circle( const w_vec2& pos, float radius ) override;
+
+	virtual ec_b2d_body* init_as_box( float width, float height ) override
+	{
+		return ec_b2d_body::init_as_box( width, height );
+	}
+	virtual ec_b2d_body* init_as_circle( float radius ) override
+	{
+		return ec_b2d_body::init_as_circle( radius );
+	}
 };
 
 // ----------------------------------------------------------------------------
