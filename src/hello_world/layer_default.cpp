@@ -1,8 +1,8 @@
 
 #include "app_header.h"
 
-constexpr float player_move_force = 50.0f;
-constexpr float player_jump_force = -10.0f;
+constexpr float player_move_force = 1.0f;
+constexpr float player_jump_force = 2.0f;
 
 layer_default::layer_default()
 {
@@ -23,7 +23,7 @@ void layer_default::push()
 		}
 	);
 
-	for( int x = 0 ; x < 20 ; ++x )
+	for( int x = 0 ; x < 25 ; ++x )
 	{
 		float xpos = w_random::getf_range( 0.0f, v_window_w );
 		float ypos = w_random::getf_range( 64.0f, v_window_h );
@@ -43,6 +43,7 @@ void layer_default::push()
 
 	player = add_entity<w_entity>();
 	float xpos = w_random::getf_range( 0.0f, v_window_w );
+	xpos = 16.0f;
 	player->set_transform( { xpos, 0.0f }, 0, 1 );
 	player->add_component<ec_sprite>()->init( "sprite_mario" );
 	//auto ecd = player->add_component<ec_b2d_dynamic>()->init_as_box( 8, 10 );
@@ -50,8 +51,7 @@ void layer_default::push()
 	ecd->body->SetFixedRotation( true );
 
 	player2 = add_entity<w_entity>();
-	xpos = w_random::getf_range( 0.0f, v_window_w );
-	player2->set_transform( { xpos, 0.0f }, 0, 1 );
+	player2->set_transform( { v_window_hw, v_window_hh }, 0, 1 );
 	player2->add_component<ec_sprite>()->init( "sprite_mario" );
 	player2->add_component<ec_b2d_kinematic>()->init_as_circle( 10 );
 }
@@ -65,7 +65,11 @@ void layer_default::update()
 	if( !fequals( left_stick.x, 0.0f ) )
 	{
 		auto ec = player->get_component<ec_b2d_dynamic>();
-		ec->body->ApplyForceToCenter( b2Vec2( to_b2d( player_move_force * left_stick.x ), 0 ), true );
+
+		b2Vec2 current = ec->body->GetLinearVelocity();
+		float desired = w_clamp( current.x + (player_move_force * left_stick.x), -player_move_force, player_move_force );
+
+		ec->body->SetLinearVelocity( { desired, current.y } );
 	}
 }
 
@@ -90,13 +94,21 @@ bool layer_default::handle_input_event( const w_input_event* evt )
 		if( evt->input_id == input_id::key_right )
 		{
 			auto ec = player->get_component<ec_b2d_dynamic>();
-			ec->body->ApplyForceToCenter( b2Vec2( to_b2d( player_move_force ), 0 ), true );
+
+			b2Vec2 current = ec->body->GetLinearVelocity();
+			float desired = w_min( current.x + 0.2f, 1.0f );
+
+			ec->body->SetLinearVelocity( { desired, current.y } );
 		}
 
 		if( evt->input_id == input_id::key_left )
 		{
 			auto ec = player->get_component<ec_b2d_dynamic>();
-			ec->body->ApplyForceToCenter( b2Vec2( to_b2d( -player_move_force ), 0 ), true );
+
+			b2Vec2 current = ec->body->GetLinearVelocity();
+			float desired = w_max( current.x - 0.2f, -1.0f );
+
+			ec->body->SetLinearVelocity( { desired, current.y } );
 		}
 
 		if( evt->input_id == input_id::key_up )
@@ -112,12 +124,16 @@ bool layer_default::handle_input_event( const w_input_event* evt )
 		}
 	}
 
-	if( evt->event_id == event_id::input_released )
+	if( evt->event_id == event_id::input_pressed )
 	{
 		if( evt->input_id == input_id::key_space || evt->input_id == input_id::controller_button_a )
 		{
 			auto ec = player->get_component<ec_b2d_dynamic>();
-			ec->body->ApplyLinearImpulseToCenter( b2Vec2( 0, to_b2d( player_jump_force ) ), true );
+
+			b2Vec2 current = ec->body->GetLinearVelocity();
+			//float desired = w_clamp( current.y + player_jump_force, -player_jump_force, player_jump_force );
+
+			ec->body->SetLinearVelocity( { current.x, -player_jump_force } );
 		}
 
 		if( evt->input_id == input_id::key_1 )

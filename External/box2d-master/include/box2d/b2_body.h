@@ -387,6 +387,8 @@ public:
 	/// Dump this body to a file
 	void Dump();
 
+	b2BodyUserData m_userData;
+
 private:
 
 	friend class b2World;
@@ -394,7 +396,7 @@ private:
 	friend class b2ContactManager;
 	friend class b2ContactSolver;
 	friend class b2Contact;
-	
+
 	friend class b2DistanceJoint;
 	friend class b2FrictionJoint;
 	friend class b2GearJoint;
@@ -467,7 +469,7 @@ private:
 
 	float m_sleepTime;
 
-	b2BodyUserData m_userData;
+	//b2BodyUserData m_userData;
 };
 
 inline b2BodyType b2Body::GetType() const
@@ -733,6 +735,16 @@ inline const b2Body* b2Body::GetNext() const
 inline b2BodyUserData& b2Body::GetUserData()
 {
 	return m_userData;
+}
+
+// #warren
+//
+// So I had to add this function body because it seems to be missing
+// from the Box2D source. I assume what I wrote here is correct - I hope.
+
+inline void b2Body::SetUserData( void* ptr )
+{
+	m_userData.pointer = ( uintptr_t)ptr;
 }
 
 inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake)

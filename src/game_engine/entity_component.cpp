@@ -384,6 +384,7 @@ ec_b2d_body* ec_b2d_body::init_as_circle( const w_vec2& pos, float radius )
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
+	body->SetUserData( this );
 
 	b2CircleShape shape;
 	{
@@ -418,6 +419,7 @@ ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& pos, const w_vec2& start, 
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
+	body->SetUserData( this );
 
 	b2EdgeShape shape;
 	{
@@ -465,6 +467,7 @@ ec_b2d_body* ec_b2d_body::init_as_chain( const w_vec2& pos, const std::vector<w_
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
+	body->SetUserData( this );
 
 	b2ChainShape shape;
 	{

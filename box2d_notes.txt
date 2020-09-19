@@ -38,6 +38,4 @@ Fixtures
 
 "Forces act gradually over time to change the velocity of a body while impulses can change a body's velocity immediately."
 
-
-
 -----------------------------------------------------
