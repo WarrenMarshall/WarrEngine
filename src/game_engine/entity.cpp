@@ -30,6 +30,9 @@ void w_entity::update_physics()
 			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
 
 			b2Vec2 position = edb->body->GetPosition();
+			position.x = from_b2d( position.x );
+			position.y = from_b2d( position.y );
+
 			float angle = edb->body->GetAngle();
 
 			set_transform( { position.x, position.y }, rad2deg( angle ), scale );

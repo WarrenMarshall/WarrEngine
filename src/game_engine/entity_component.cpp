@@ -219,13 +219,18 @@ void ec_b2d_body::draw()
 		if( shapeType == b2Shape::e_circle )
 		{
 			b2CircleShape* shape = (b2CircleShape*) fixture->GetShape();
-			b2Vec2 pos = body->GetWorldPoint( shape->m_p );
+			b2Vec2 position = body->GetWorldPoint( shape->m_p );
+			position.x = from_b2d( position.x );
+			position.y = from_b2d( position.y );
 
-			RENDER->draw_circle( w_vec2( pos.x, pos.y ), shape->m_radius );
+			RENDER->draw_circle( { position.x, position.y }, from_b2d( shape->m_radius ) );
 		}
 		else if( shapeType == b2Shape::e_polygon )
 		{
 			b2Vec2 position = body->GetPosition();
+			position.x = from_b2d( position.x );
+			position.y = from_b2d( position.y );
+
 			float angle = body->GetAngle();
 
 			MATRIX
@@ -237,8 +242,13 @@ void ec_b2d_body::draw()
 
 			for( int v = 0 ; v < shape->m_count ; ++v )
 			{
-				b2Vec2& v0 = shape->m_vertices[ v ];
-				b2Vec2& v1 = shape->m_vertices[ ( v + 1 ) % shape->m_count ];
+				b2Vec2 v0 = shape->m_vertices[ v ];
+				v0.x = from_b2d( v0.x );
+				v0.y = from_b2d( v0.y );
+
+				b2Vec2 v1 = shape->m_vertices[ ( v + 1 ) % shape->m_count ];
+				v1.x = from_b2d( v1.x );
+				v1.y = from_b2d( v1.y );
 
 				RENDER->draw_line( w_vec2( v0.x, v0.y ), w_vec2( v1.x, v1.y ) );
 			}
@@ -248,8 +258,14 @@ void ec_b2d_body::draw()
 		else if( shapeType == b2Shape::e_edge )
 		{
 			b2EdgeShape* shape = (b2EdgeShape*) fixture->GetShape();
+
 			b2Vec2 v1 = body->GetWorldPoint( shape->m_vertex1 );
+			v1.x = from_b2d( v1.x );
+			v1.y = from_b2d( v1.y );
+
 			b2Vec2 v2 = body->GetWorldPoint( shape->m_vertex2 );
+			v2.x = from_b2d( v2.x );
+			v2.y = from_b2d( v2.y );
 
 			RENDER->draw_line( { v1.x, v1.y }, { v2.x, v2.y } );
 		}
@@ -274,7 +290,7 @@ ec_b2d_body* ec_b2d_body::init_as_box( const w_vec2& pos, float width, float hei
 	b2BodyDef body_definition;
 	{
 		body_definition.type = body_type;
-		body_definition.position.Set( pos.x, pos.y );
+		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
 		//body_definition.fixedRotation = true;
 	}
@@ -283,7 +299,7 @@ ec_b2d_body* ec_b2d_body::init_as_box( const w_vec2& pos, float width, float hei
 
 	b2PolygonShape shape;
 	{
-		shape.SetAsBox( width, height );
+		shape.SetAsBox( to_b2d( width ), to_b2d( height ) );
 	}
 
 	b2FixtureDef fixture;
@@ -309,7 +325,7 @@ ec_b2d_body* ec_b2d_body::init_as_circle( const w_vec2& pos, float radius )
 	b2BodyDef body_definition;
 	{
 		body_definition.type = body_type;
-		body_definition.position.Set( pos.x, pos.y );
+		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
 		//body_definition.fixedRotation = true;
 	}
@@ -318,7 +334,7 @@ ec_b2d_body* ec_b2d_body::init_as_circle( const w_vec2& pos, float radius )
 
 	b2CircleShape shape;
 	{
-		shape.m_radius = radius;
+		shape.m_radius = to_b2d( radius );
 	}
 
 	b2FixtureDef fixture;
@@ -343,7 +359,7 @@ ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& pos, const w_vec2& start, 
 	b2BodyDef body_definition;
 	{
 		body_definition.type = body_type;
-		body_definition.position.Set( pos.x, pos.y );
+		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
 		//body_definition.fixedRotation = true;
 	}
@@ -352,7 +368,12 @@ ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& pos, const w_vec2& start, 
 
 	b2EdgeShape shape;
 	{
-		shape.SetOneSided( { start.x, start.y }, { start.x, start.y }, { end.x, end.y }, { end.x, end.y } );
+		shape.SetOneSided(
+			{ to_b2d( start.x ), to_b2d( start.y ) },
+			{ to_b2d( start.x ), to_b2d( start.y ) },
+			{ to_b2d( end.x ), to_b2d( end.y ) },
+			{ to_b2d( end.x ), to_b2d( end.y ) }
+		);
 	}
 
 	b2FixtureDef fixture;
