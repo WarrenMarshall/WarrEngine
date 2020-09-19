@@ -69,6 +69,9 @@
 	// XBox controller + haptics support
 	#include <Xinput.h>
 
+	// Box2D physics
+	#include "box2d/box2d.h"
+
 #pragma warning(pop)	// turn warnings back on
 
 // ----------------------------------------------------------------------------
@@ -148,6 +151,21 @@ constexpr T w_clamp( T v, T min, T max )
 constexpr bool fequals( float a, float b )
 {
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
+}
+
+// ----------------------------------------------------------------------------
+
+constexpr float b2d_gravity_default = 9.81f;
+constexpr float b2d_world_scale_factor = 100.0f;
+
+constexpr float to_b2d( float v )
+{
+	return ( v / b2d_world_scale_factor );
+}
+
+constexpr float from_b2d( float v )
+{
+	return ( v * b2d_world_scale_factor );
 }
 
 // ----------------------------------------------------------------------------

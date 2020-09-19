@@ -219,11 +219,21 @@ void ec_b2d_body::draw()
 		if( shapeType == b2Shape::e_circle )
 		{
 			b2CircleShape* shape = (b2CircleShape*) fixture->GetShape();
-			b2Vec2 position = body->GetWorldPoint( shape->m_p );
+
+			b2Vec2 position = body->GetPosition();
 			position.x = from_b2d( position.x );
 			position.y = from_b2d( position.y );
 
-			RENDER->draw_circle( { position.x, position.y }, from_b2d( shape->m_radius ) );
+			float angle = body->GetAngle();
+
+			MATRIX
+				->push()
+				->translate( { position.x, position.y } )
+				->rotate( rad2deg( angle ) );
+
+			RENDER->draw_circle( { 0.0f, 0.0f }, from_b2d( shape->m_radius ) );
+
+			MATRIX->pop();
 		}
 		else if( shapeType == b2Shape::e_polygon )
 		{
@@ -259,6 +269,17 @@ void ec_b2d_body::draw()
 		{
 			b2EdgeShape* shape = (b2EdgeShape*) fixture->GetShape();
 
+			b2Vec2 position = body->GetPosition();
+			position.x = from_b2d( position.x );
+			position.y = from_b2d( position.y );
+
+			float angle = body->GetAngle();
+
+			MATRIX
+				->push()
+				->translate( { position.x, position.y } )
+				->rotate( rad2deg( angle ) );
+
 			b2Vec2 v1 = body->GetWorldPoint( shape->m_vertex1 );
 			v1.x = from_b2d( v1.x );
 			v1.y = from_b2d( v1.y );
@@ -268,6 +289,38 @@ void ec_b2d_body::draw()
 			v2.y = from_b2d( v2.y );
 
 			RENDER->draw_line( { v1.x, v1.y }, { v2.x, v2.y } );
+
+			MATRIX->pop();
+		}
+		else if( shapeType == b2Shape::e_chain )
+		{
+			b2Vec2 position = body->GetPosition();
+			position.x = from_b2d( position.x );
+			position.y = from_b2d( position.y );
+
+			float angle = body->GetAngle();
+
+			MATRIX
+				->push()
+				->translate( { position.x, position.y } )
+				->rotate( rad2deg( angle ) );
+
+			b2ChainShape* shape = (b2ChainShape*) fixture->GetShape();
+
+			for( int v = 0 ; v < shape->m_count ; ++v )
+			{
+				b2Vec2 v0 = shape->m_vertices[ v ];
+				v0.x = from_b2d( v0.x );
+				v0.y = from_b2d( v0.y );
+
+				b2Vec2 v1 = shape->m_vertices[ ( v + 1 ) % shape->m_count ];
+				v1.x = from_b2d( v1.x );
+				v1.y = from_b2d( v1.y );
+
+				RENDER->draw_line( w_vec2( v0.x, v0.y ), w_vec2( v1.x, v1.y ) );
+			}
+
+			MATRIX->pop();
 		}
 		else
 		{
@@ -374,6 +427,48 @@ ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& pos, const w_vec2& start, 
 			{ to_b2d( end.x ), to_b2d( end.y ) },
 			{ to_b2d( end.x ), to_b2d( end.y ) }
 		);
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+	}
+
+	body->CreateFixture( &fixture );
+
+	return this;
+}
+
+ec_b2d_body* ec_b2d_body::init_as_chain( const std::vector<w_vec2>& verts )
+{
+	return init_as_chain( { parent_entity->pos.x, parent_entity->pos.y }, verts );
+}
+
+ec_b2d_body* ec_b2d_body::init_as_chain( const w_vec2& pos, const std::vector<w_vec2>& verts )
+{
+	std::vector<b2Vec2> b2verts;
+
+	for( size_t x = 0 ; x < verts.size() ; ++x )
+	{
+		w_vec2 v0 = verts[ x ];
+		b2verts.push_back( { to_b2d( v0.x ), to_b2d( v0.y ) } );
+	}
+
+	b2BodyDef body_definition;
+	{
+		body_definition.type = body_type;
+		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
+		body_definition.angle = 0.0f;
+		//body_definition.fixedRotation = true;
+	}
+
+	body = engine->box2d_world->CreateBody( &body_definition );
+
+	b2ChainShape shape;
+	{
+		shape.CreateLoop( b2verts.data(), static_cast<int>( b2verts.size() ) );
 	}
 
 	b2FixtureDef fixture;

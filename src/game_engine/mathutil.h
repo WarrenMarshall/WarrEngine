@@ -5,10 +5,6 @@
 
 #define sin_from_angle(a) ( std::sinf( deg2rad( a ) ) )
 
-constexpr float b2d_scale_factor = 100.0f;
-#define to_b2d(value) ((value) / b2d_scale_factor)
-#define from_b2d(value) ((value) * b2d_scale_factor)
-
 // ----------------------------------------------------------------------------
 // a value that wants to accumulate over a period of time, and then report
 // an averaged value for that period.

@@ -89,6 +89,9 @@ struct ec_b2d_body : w_entity_component
 	ec_b2d_body* init_as_line( const w_vec2& start, const w_vec2& end );
 	ec_b2d_body* init_as_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end );
 
+	ec_b2d_body* init_as_chain( const std::vector<w_vec2>& verts );
+	ec_b2d_body* init_as_chain( const w_vec2& pos, const std::vector<w_vec2>& verts );
+
 	virtual void draw() override;
 };
 

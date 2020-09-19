@@ -8,16 +8,12 @@ extern std::unique_ptr<w_logfile> logfile;
 	the size of the virtual screen. all rendering is done on the assumption
 	of these dimensions. the renderer handles scaling this up to the actual
 	game window the player sees. this makes a lot of things simpler.
-
-	make sure the values in preproc.asset_def match these values.
 */
 extern float v_window_w;
 extern float v_window_h;
 
 #define v_window_hw (v_window_w / 2.0f)
 #define v_window_hh (v_window_h / 2.0f)
-
-#include "box2d/box2d.h"
 
 #include "matrix.h"
 #include "opengl_framebuffer.h"
