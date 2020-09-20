@@ -737,8 +737,6 @@ inline b2BodyUserData& b2Body::GetUserData()
 	return m_userData;
 }
 
-// #warren
-//
 // So I had to add this function body because it seems to be missing
 // from the Box2D source. I assume what I wrote here is correct - I hope.
 

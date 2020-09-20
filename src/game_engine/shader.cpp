@@ -10,7 +10,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
 
     // vertex shader
 
-    auto vertex_shader_src = engine->fs->load_file_into_memory( fmt::format( "game_engine_data/shaders/{}.vert" , vert_filename ) );
+    auto vertex_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/game_engine/shaders/{}.vert" , vert_filename ) );
     unsigned int vertex_id = glCreateShader( GL_VERTEX_SHADER );
     wk = std::string( vertex_shader_src->buffer->begin(), vertex_shader_src->buffer->end() );
     cptr = wk.c_str();
@@ -26,7 +26,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
 
     // fragment shader
 
-    auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "game_engine_data/shaders/{}.frag", frag_filename ) );
+    auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/game_engine/shaders/{}.frag", frag_filename ) );
     unsigned int fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
     wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
     cptr = wk.c_str();

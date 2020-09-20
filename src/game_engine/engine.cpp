@@ -32,9 +32,13 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		{	// ENGINE
 			log_msg( "Initializing engine" );
 			engine->init();
+
+			engine->fs->create_path_if_not_exist( "data/game_engine" );
+			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", game->name ) );
 		}
 
 		// #todo : write a proper command line parsing class
+		//		 : NOTE : wait until we have a need for a command line arg first
 		{	// COMMAND LINE
 
 		}
@@ -73,8 +77,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			// read asset definitions and cache them
 			log_msg( "Caching asset definitions (*.asset_def)..." );
-			engine->cache_asset_definition_files( "game_engine_data" );
-			engine->cache_asset_definition_files( engine->fs->prepend_data_path( "" ) );
+			engine->cache_asset_definition_files( "data/game_engine" );
+			engine->cache_asset_definition_files( fmt::format( "data/{}", game->name ) );
 
 			// this feels like an odd dance, but the idea is that we:
 			//
@@ -95,8 +99,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			// parse INI files after the preprocess pass so they can
 			// use preprocessor symbols
 			log_msg( "Caching configuration (*.ini)..." );
-			engine->parse_config_files( "game_engine_data" );
-			engine->parse_config_files( engine->fs->prepend_data_path( "" ) );
+			engine->parse_config_files( "data/game_engine" );
+			engine->parse_config_files( fmt::format( "data/{}", game->name ) );
 
 			// put the k/v pairs from the INI files into the global symbol
 			// table so they can be referenced by assets in the asset_def files
@@ -526,7 +530,7 @@ void w_engine::set_pause( bool paused )
 void w_engine::cache_asset_definition_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	engine->fs->scan_folder_for_ext( filenames, fmt::format( "{}", folder_name ), ".asset_def" );
+	engine->fs->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".asset_def" );
 
 	for( const auto& iter : filenames )
 	{
@@ -537,7 +541,7 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 void w_engine::parse_config_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	engine->fs->scan_folder_for_ext( filenames, fmt::format( "{}", folder_name ), ".ini" );
+	engine->fs->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".ini" );
 
 	for( const auto& iter : filenames )
 	{

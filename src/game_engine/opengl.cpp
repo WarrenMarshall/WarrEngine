@@ -40,21 +40,9 @@ void w_opengl::init()
 
 	glEnable( GL_TEXTURE_2D );
 
-	// #todo - UPDATE NEEDED - this comment isn't entirely accurate anymore since we break on texture changes now
-	//
-	// depth buffer testing
-	//
 	// NOTE : we have to use a depth buffer because we are rendering in batches.
 	//		  it's tempting to try and remove this and think of the renderer as a
 	//		  back-to-front series of quad draws, but that's not how it works.
-	//
-	//		  1. all triangles for a given texture batch draw at once, regardless of
-	//		  which layer sent the commands.
-	//
-	//		  2. the texture batches draw in arbitrary order, based on the texture
-	//		  list in the asset cache.
-	//
-	//		  3. you have little to no control here, other than the depth value.
 	//
 	//		  disabling the depth buffer is a trap that will cost you time until you
 	//		  remember this. just walk away.

@@ -50,6 +50,8 @@ bool w_file_system::file_exists_on_disk_or_in_zip( const std::string_view filena
 
 std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_view filename )
 {
+	create_path_if_not_exist( filename );
+
 	if( file_exists_on_disk( filename ) )
 	{
 		std::ifstream file( filename.data(), std::ios::binary | std::ios::ate );
@@ -80,6 +82,8 @@ std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_vi
 
 std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std::string_view filename )
 {
+	create_path_if_not_exist( filename );
+
 	if( file_exists_on_disk( filename ) )
 	{
 		std::ifstream file( filename.data(), std::ios::binary | std::ios::ate );
@@ -110,21 +114,20 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 	return nullptr;
 }
 
-void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, std::string_view folder, std::string_view extension )
+void w_file_system::scan_folder_for_ext( std::vector<std::string>* filenames, std::string_view folder, std::string_view extension )
 {
+	create_path_if_not_exist( folder );
+
 	// look on disk
 
-	if( std::filesystem::exists( folder ) )
+	for( auto& iter : std::filesystem::directory_iterator( folder ) )
 	{
-		for( auto& iter : std::filesystem::directory_iterator( folder ) )
-		{
-			std::string filename = iter.path().string();
-			std::string ext = iter.path().filename().extension().string();
+		std::string filename = iter.path().string();
+		std::string ext = iter.path().filename().extension().string();
 
-			if( ext == extension )
-			{
-				filenames.emplace_back( filename );
-			}
+		if( ext == extension )
+		{
+			filenames->emplace_back( filename );
 		}
 	}
 
@@ -142,28 +145,31 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>& filenames, st
 
 			if( path.extension() == extension )
 			{
-				if( std::find( filenames.begin(), filenames.end(), new_filename ) == filenames.end() )
+				if( std::find( filenames->begin(), filenames->end(), new_filename ) == filenames->end() )
 				{
-					filenames.emplace_back( new_filename );
+					filenames->emplace_back( new_filename );
 				}
 			}
 		}
 	}
 }
 
-std::string w_file_system::prepend_data_path( std::string_view filename )
+// a safety mechanism that will create a folder path on disk
+// if it doesn't exist. this helps ensure that things like save
+// files will always find a place to write themselves even if
+// all the other data files are stored in ZIPs, for example.
+
+void w_file_system::create_path_if_not_exist( std::string_view path )
 {
-	// if the data folder doesn't exist (which is possible if the data
-	// has been zipped up for distribution), then create it before
-	// returning a path to it.
-
-	// #test
-	std::string folder_path = fmt::format( "{}_data", game->name );
-
-	if( !std::filesystem::exists( folder_path ) )
+	if( !std::filesystem::exists( path ) )
 	{
-		std::filesystem::create_directory( folder_path );
-	}
+		std::filesystem::path wk_path = path;
 
-	return fmt::format( "{}/{}", folder_path, filename );
+		if( wk_path.has_extension() )
+		{
+			wk_path = wk_path.remove_filename();
+		}
+
+		std::filesystem::create_directories( wk_path );
+	}
 }

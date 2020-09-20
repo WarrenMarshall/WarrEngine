@@ -3,9 +3,9 @@
 
 // ----------------------------------------------------------------------------
 
-constexpr float player_move_force_s = 1.0f;
-constexpr float player_move_force_max = 1.25f;
-constexpr float player_jump_force = 3.0f;
+constexpr float player_move_force_s = 10.0f;
+constexpr float player_move_force_max = 1.5f;
+constexpr float player_jump_force = 3.5f;
 
 // ----------------------------------------------------------------------------
 
@@ -20,8 +20,8 @@ void w_contact_listener::BeginContact( b2Contact* contact )
 	w_entity_component* ec_a = (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer );
 	w_entity_component* ec_b = (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer );
 
-	log_msg( "ECA : {}", (void*) ec_a );
-	log_msg( "ECB : {}", (void*) ec_b );
+	//log_msg( "ECA : {}", (void*) ec_a );
+	//log_msg( "ECB : {}", (void*) ec_b );
 
 	assert( ec_a );
 	assert( ec_b );
@@ -47,8 +47,8 @@ void w_contact_listener::BeginContact( b2Contact* contact )
 		normal = { manifold->localNormal.x, manifold->localNormal.y };
 	}
 
-	log_msg( "A : {}", ec_a->parent_entity->collision_layer );
-	log_msg( "B : {}", ec_b->parent_entity->collision_layer );
+	//log_msg( "A : {}", ec_a->parent_entity->collision_layer );
+	//log_msg( "B : {}", ec_b->parent_entity->collision_layer );
 }
 
 void w_contact_listener::EndContact( b2Contact* contact )
@@ -143,6 +143,11 @@ void layer_default::update()
 
 	if( !fequals( left_stick.x, 0.0f ) )
 	{
+		if( !player_on_ground )
+		{
+		//	left_stick.x *= 0.25f;
+		}
+
 		auto ec = player->get_component<ec_b2d_dynamic>();
 		b2Vec2 current = ec->body->GetLinearVelocity();
 		current.x += ( player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
