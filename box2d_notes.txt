@@ -31,6 +31,12 @@ Fixtures
 
 -----------------------------------------------------
 
+- setting bodies as bullets is useful for anything that is fast moving and may move through something else in a single update tick
+	- like, say, bullets
+	- these are expensive and should be used only when necessary
+
+-----------------------------------------------------
+
 - body definitions and fixtures are disposable
 	- meaning Box2D copies them internally when you create a body with them so you don't need to hold onto them after the fact - they are only for creation
 

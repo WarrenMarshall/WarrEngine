@@ -1,23 +1,8 @@
 #pragma once
 
-// ----------------------------------------------------------------------------
-
-struct w_force
-{
-	w_force() = delete;
-	w_force( w_vec2 dir, float strength );
-
-	void init_to_zero();
-
-	w_vec2 dir;			// normalized
-	float strength;
-};
-
 struct w_entity : i_lifecycle, i_transform
 {
-#ifndef _FINAL_RELEASE
-	bool debug_draw_collision = false;
-#endif
+	w_layer* parent_layer = nullptr;
 
 	// components
 
@@ -36,18 +21,23 @@ struct w_entity : i_lifecycle, i_transform
 	// as zero.
 	int collides_with = 0;
 
+	// generic flag to indicate that the component should draw
+	// stuff to indicate it's internal state.
+	bool draw_debug_info = false;
+
 	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;
 	void set_pos( const w_vec2& pos );
 
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	virtual bool can_be_deleted();
 
+	bool trace_to_closest_point( w_vec2 normal, float dist, e_collision_layer layer_mask, w_vec2* hit_point );
+
 	virtual void update_physics();
 	virtual void update();
 	virtual void update_components();
 	virtual void draw();
 	virtual void post_spawn();
-	//virtual void collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& manifold ) {}
 
 	template<typename T> T* add_component()
 	{

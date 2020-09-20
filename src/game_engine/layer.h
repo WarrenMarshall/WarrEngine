@@ -49,6 +49,7 @@ struct w_layer : i_lifecycle
 		entities.emplace_back( std::make_unique<T>() );
 
 		T* new_entity = static_cast<T*>( entities.back().get() );
+		new_entity->parent_layer = this;
 		new_entity->set_transform( pos, angle, scale );
 		new_entity->post_spawn();
 

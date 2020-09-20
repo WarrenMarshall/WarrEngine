@@ -149,6 +149,7 @@ enum_begin( event_id )
 
 	input_pressed,
 	input_released,
+	input_held,
 	input_motion
 enum_end
 

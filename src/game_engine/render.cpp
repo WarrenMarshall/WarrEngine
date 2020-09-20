@@ -287,13 +287,13 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 	if( rs_align & align::hcenter )
 	{
-		w_vec2 extents = w_vec2::multiply( font->get_string_extents( text ), rs_scale );
+		w_vec2 extents = font->get_string_extents( text ) * rs_scale;
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
 	if( rs_align & align::right )
 	{
-		w_vec2 extents = w_vec2::multiply( font->get_string_extents( text ), rs_scale );
+		w_vec2 extents = font->get_string_extents( text ) * rs_scale;
 		alignment_pos_adjustment.x -= extents.x;
 	}
 

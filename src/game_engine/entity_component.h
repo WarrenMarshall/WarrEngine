@@ -1,5 +1,15 @@
 #pragma once
 
+struct w_raycast_callback_closest : b2RayCastCallback
+{
+	std::optional<b2Vec2> hit_point = std::nullopt;
+
+	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
+								 const b2Vec2& normal, float fraction ) override;
+};
+
+// ----------------------------------------------------------------------------
+
 struct w_entity_component : i_lifecycle, i_transform
 {
 	//e_component_type type = component_type::invalid;
@@ -71,6 +81,7 @@ struct ec_sound : w_entity_component
 
 // ----------------------------------------------------------------------------
 // Box2D bodies
+//
 
 struct ec_b2d_body : w_entity_component
 {
@@ -119,89 +130,4 @@ struct ec_b2d_kinematic : ec_b2d_body
 {
 	ec_b2d_kinematic() = delete;
 	ec_b2d_kinematic( w_entity* parent_entity );
-};
-
-// ----------------------------------------------------------------------------
-
-// #box2d - this might be useful later as a "simple" collision checker
-/*
-struct ec_collider : w_entity_component
-{
-	C2_TYPE c2type = C2_TYPE_NONE;
-	float radius = 0.0f;
-	w_rect box;
-
-	variant_collider_types collision_object = {};
-
-	ec_collider() = delete;
-	ec_collider( w_entity* parent_entity );
-
-	void push_outside( const c2Manifold& hit );
-	w_entity_component* init_as_circle( float radius );
-	w_entity_component* init_as_box( w_rect box );
-	variant_collider_types get_collider();
-	virtual void draw() override;
-};
-*/
-
-// ----------------------------------------------------------------------------
-// a force that pushes on the entity, and never decays
-//
-// good for things that need to be constantly moving, like the ball in pong.
-
-struct ec_force_constant : w_entity_component
-{
-	float angle = 0.0f;
-	float strength = 0.0f;
-
-	ec_force_constant() = delete;
-	ec_force_constant( w_entity* parent_entity );
-
-	ec_force_constant* init( float angle, float strength );
-};
-
-// ----------------------------------------------------------------------------
-// a force that pushes on the entity, and decays to zero over a
-// specific number of milliseconds
-//
-// good for temporary forces like jumps or getting knocked back.
-
-struct ec_force_multiplier : w_entity_component
-{
-	float _strength = 0.0f;
-	float strength = 0.0f;
-	float _lifetime_in_ms = 0.0f;
-	float lifetime_in_ms = 0.0f;
-
-	ec_force_multiplier() = delete;
-	ec_force_multiplier( w_entity* parent_entity );
-
-	ec_force_multiplier* init( float strength, float lifetime_in_ms );
-
-	virtual void update() override;
-};
-
-// ----------------------------------------------------------------------------
-// a force that pushes on the entity, getting stronger every second until
-// a maximum is reached.
-//
-// good for movement where the entity speeds up and slows down smoothly.
-
-struct ec_force_dir_accum : w_entity_component
-{
-	// current direction
-	float angle = 0.0f;
-	// current strength
-	float strength = 0.0f;
-	// how much we accumulate per second
-	float strength_per_sec = 0.0f;
-	// strength maximum
-	float strength_max = 0.0f;
-
-	ec_force_dir_accum() = delete;
-	ec_force_dir_accum( w_entity* parent_entity );
-
-	ec_force_dir_accum* init( float angle, float strength_per_sec, float strength_max );
-	void add_impulse();
-	void decay();
 };

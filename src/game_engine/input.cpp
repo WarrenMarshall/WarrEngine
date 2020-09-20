@@ -281,7 +281,6 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
 
-			//is_being_used = true;
 			timer_repeat->reset();
 		}
 		break;
@@ -299,11 +298,10 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 		case button_state::held:
 		{
 			timer_repeat->update();
-
 			if( timer_repeat->get_elapsed_count() )
 			{
 				w_input_event evt;
-				evt.event_id = event_id::input_pressed;
+				evt.event_id = event_id::input_held;
 				evt.input_id = input_id;
 
 				engine->input->event_queue.emplace_back( std::move( evt ) );
@@ -334,7 +332,12 @@ bool w_input::is_shift_down()
 	e_button_state bs_left = get_button_state( input_id::key_shift_left );
 	e_button_state bs_right = get_button_state( input_id::key_shift_right );
 
-	return ( bs_left == button_state::pressed || bs_left == button_state::held || bs_right == button_state::pressed || bs_right == button_state::held );
+	return (
+		bs_left == button_state::pressed
+		|| bs_left == button_state::held
+		|| bs_right == button_state::pressed
+		|| bs_right == button_state::held
+	);
 }
 
 bool w_input::is_control_down()
@@ -342,7 +345,12 @@ bool w_input::is_control_down()
 	e_button_state bs_left = get_button_state( input_id::key_control_left );
 	e_button_state bs_right = get_button_state( input_id::key_control_right );
 
-	return ( bs_left == button_state::pressed || bs_left == button_state::held || bs_right == button_state::pressed || bs_right == button_state::held );
+	return (
+		bs_left == button_state::pressed
+		|| bs_left == button_state::held
+		|| bs_right == button_state::pressed
+		|| bs_right == button_state::held
+	);
 }
 
 bool w_input::is_alt_down()
@@ -350,7 +358,12 @@ bool w_input::is_alt_down()
 	e_button_state bs_left = get_button_state( input_id::key_alt_left );
 	e_button_state bs_right = get_button_state( input_id::key_alt_right );
 
-	return ( bs_left == button_state::pressed || bs_left == button_state::held || bs_right == button_state::pressed || bs_right == button_state::held );
+	return (
+		bs_left == button_state::pressed
+		|| bs_left == button_state::held
+		|| bs_right == button_state::pressed
+		|| bs_right == button_state::held
+	);
 }
 
 e_button_state w_input::get_button_state( e_input_id input_id )

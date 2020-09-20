@@ -1,7 +1,13 @@
 
-
 #include "master_pch.h"
 #include "master_header.h"
+
+float w_raycast_callback_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+{
+	hit_point = point;
+
+	return fraction;
+}
 
 // ----------------------------------------------------------------------------
 
@@ -208,6 +214,11 @@ void ec_b2d_body::draw()
 {
 	w_entity_component::draw();
 
+	if( !parent_entity->draw_debug_info )
+	{
+		return;
+	}
+
 	MATRIX->push_identity();
 
 	RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
@@ -345,10 +356,10 @@ ec_b2d_body* ec_b2d_body::init_as_box( const w_vec2& pos, float width, float hei
 		body_definition.type = body_type;
 		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
-		//body_definition.fixedRotation = true;
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
+	body->SetUserData( this );
 
 	b2PolygonShape shape;
 	{
@@ -360,7 +371,6 @@ ec_b2d_body* ec_b2d_body::init_as_box( const w_vec2& pos, float width, float hei
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
-		//fixture.restitution = 0.3f;
 	}
 
 	body->CreateFixture( &fixture );
@@ -380,7 +390,6 @@ ec_b2d_body* ec_b2d_body::init_as_circle( const w_vec2& pos, float radius )
 		body_definition.type = body_type;
 		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
-		//body_definition.fixedRotation = true;
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
@@ -415,7 +424,6 @@ ec_b2d_body* ec_b2d_body::init_as_line( const w_vec2& pos, const w_vec2& start, 
 		body_definition.type = body_type;
 		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
-		//body_definition.fixedRotation = true;
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
@@ -463,7 +471,6 @@ ec_b2d_body* ec_b2d_body::init_as_chain( const w_vec2& pos, const std::vector<w_
 		body_definition.type = body_type;
 		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
 		body_definition.angle = 0.0f;
-		//body_definition.fixedRotation = true;
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
@@ -508,139 +515,4 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
 	body_type = b2_kinematicBody;
-}
-
-// ----------------------------------------------------------------------------
-
-#if 0
-ec_collider::ec_collider( w_entity* parent_entity )
-	: w_entity_component( parent_entity )
-{
-}
-
-void ec_collider::push_outside( const c2Manifold& hit )
-{
-	w_vec2 push_delta = w_vec2::multiply( w_vec2( hit.n.x, hit.n.y ), -1.0f * hit.depths[ 0 ] );
-	parent_entity->set_pos( parent_entity->pos.add( push_delta ) );
-}
-
-w_entity_component* ec_collider::init_as_circle( float radius )
-{
-	c2type = C2_TYPE_CIRCLE;
-
-	this->radius = radius;
-
-	return this;
-}
-
-w_entity_component* ec_collider::init_as_box( w_rect box )
-{
-	c2type = C2_TYPE_AABB;
-
-	this->box = box;
-
-	return this;
-}
-
-variant_collider_types ec_collider::get_collider()
-{
-	assert( false );	// unknown collider type
-	return {};
-}
-
-void ec_collider::draw()
-{
-	if( parent_entity->debug_draw_collision )
-	{
-		RENDER->push_rgb( w_color::green );
-
-		if( c2type == C2_TYPE_CIRCLE )
-		{
-			RENDER->draw_circle( w_vec2::zero, radius );
-		}
-		else if( c2type == C2_TYPE_AABB )
-		{
-			RENDER->draw_rectangle( box );
-		}
-
-		RENDER->pop_rgb();
-	}
-}
-#endif
-
-// ----------------------------------------------------------------------------
-
-ec_force_constant::ec_force_constant( w_entity* parent_entity )
-	: w_entity_component( parent_entity )
-{
-}
-
-ec_force_constant* ec_force_constant::init( float angle, float strength )
-{
-	this->angle = angle;
-	this->strength = strength;
-
-	return this;
-}
-
-// ----------------------------------------------------------------------------
-
-ec_force_multiplier::ec_force_multiplier( w_entity* parent_entity )
-	: w_entity_component( parent_entity )
-{
-}
-
-ec_force_multiplier* ec_force_multiplier::init( float strength, float lifetime_in_ms )
-{
-	this->_strength = this->strength = strength;
-	this->_lifetime_in_ms = this->lifetime_in_ms = lifetime_in_ms;
-
-	return this;
-}
-
-void ec_force_multiplier::update()
-{
-	w_entity_component::update();
-
-	lifetime_in_ms -= w_time::FTS_step_value_ms;
-	lifetime_in_ms = w_max( lifetime_in_ms, 0.0f );
-	float pct = lifetime_in_ms / _lifetime_in_ms;
-
-	if( fequals( pct, 0.0f ) )
-	{
-		strength = 0.0f;
-		set_life_cycle( life_cycle::dying );
-	}
-	else
-	{
-		strength = _strength * pct;
-	}
-}
-
-// ----------------------------------------------------------------------------
-
-ec_force_dir_accum::ec_force_dir_accum( w_entity* parent_entity )
-	: w_entity_component( parent_entity )
-{
-}
-
-ec_force_dir_accum* ec_force_dir_accum::init( float angle, float strength_per_sec, float strength_max )
-{
-	this->angle = angle;
-	this->strength_per_sec = this->strength = strength_per_sec;
-	this->strength_max = strength_max;
-
-	return this;
-}
-
-void ec_force_dir_accum::add_impulse()
-{
-	strength += (strength_per_sec * 2.0f) * engine->time->FTS_step_value_s;
-	strength = w_min( strength, strength_max );
-}
-
-void ec_force_dir_accum::decay()
-{
-	strength -= strength_per_sec * engine->time->FTS_step_value_s;
-	strength = w_max( strength, 0.0f );
 }

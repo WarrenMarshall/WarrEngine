@@ -118,7 +118,7 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			p->v_dir = w_vec2::subtract( p->pos, parent_component->parent_entity->pos ).normalize();
+			p->v_dir = ( p->pos - parent_component->parent_entity->pos ).normalize();
 			p->a_dir = -999;
 		}
 		break;

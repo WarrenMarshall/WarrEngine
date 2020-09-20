@@ -2,21 +2,23 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_force::w_force( w_vec2 dir, float strength )
-	: dir( dir ), strength( strength )
+bool w_entity::trace_to_closest_point( w_vec2 normal, float dist, e_collision_layer layer_mask, w_vec2* hit_point )
 {
+	// cast ray into the world
+	w_raycast_callback_closest callback;
+	engine->box2d_world->RayCast( &callback, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
+
+	// if we hit something, update the hit_point
+	if( callback.hit_point.has_value() )
+	{
+		*hit_point = { from_b2d( ( *callback.hit_point ).x ), from_b2d( ( *callback.hit_point ).y ) };
+		return true;
+	}
+
+	// if we're here, the trace didn't connect
+	*hit_point = w_vec2::zero;
+	return false;
 }
-
-void w_force::init_to_zero()
-{
-	dir = w_vec2::zero;
-	strength = 0.0f;
-}
-
-// ----------------------------------------------------------------------------
-
-// precompute whatever physics values the entity will need when doing
-// collision detection.
 
 void w_entity::update_physics()
 {

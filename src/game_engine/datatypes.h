@@ -145,13 +145,13 @@ struct w_vec2
 	w_vec2( float x, float y );
 	w_vec2( std::string_view str );
 
-	w_vec2 add( const w_vec2& rhs );
-	w_vec2 multiply( const float rhs );
 	w_vec2 normalize();
+	w_vec2 to_b2d();
 
-	static w_vec2 add( const w_vec2& lhs, const w_vec2& rhs );
-	static w_vec2 subtract( const w_vec2& lhs, const w_vec2& rhs );
-	static w_vec2 multiply( const w_vec2& lhs, const float rhs );
+	w_vec2 operator+( w_vec2 v );
+	w_vec2 operator-( w_vec2 v );
+	w_vec2 operator*( float v );
+
 	static float get_size_squared( w_vec2 a );
 	static float get_size( w_vec2 a );
 	static float get_distance_between( w_vec2 a, w_vec2 b );
@@ -159,6 +159,16 @@ struct w_vec2
 	static w_vec2 from_angle( float angle );
 	static float to_angle( w_vec2 a );
 	static w_vec2 reflect( w_vec2 v, w_vec2 n );
+
+	operator b2Vec2()
+	{
+		b2Vec2 v;
+
+		v.x = x;
+		v.y = y;
+
+		return v;
+	}
 
 	operator c2v()
 	{
@@ -198,9 +208,10 @@ struct w_vec3
 	w_vec3( int x, int y, int z );
 	w_vec3( std::string_view str );
 
-	static w_vec3 add( const w_vec3& lhs, const w_vec3& rhs );
-	static w_vec3 subtract( const w_vec3& lhs, const w_vec3& rhs );
-	static w_vec3 multiply( const w_vec3& lhs, const float rhs );
+	w_vec3 operator+( w_vec3 v );
+	w_vec3 operator-( w_vec3 v );
+	w_vec3 operator*( float v );
+
 	static float get_size_squared( w_vec3 a );
 	static float get_size( w_vec3 a );
 	static float get_distance_between( w_vec3 a, w_vec3 b );

@@ -232,36 +232,29 @@ w_vec2::w_vec2( std::string_view str )
 	y = w_parser::float_from_str( *tok.get_next_token() );
 }
 
-w_vec2 w_vec2::add( const w_vec2& rhs )
-{
-	*this = w_vec2::add( *this, rhs );
-	return *this;
-}
-
-w_vec2 w_vec2::multiply( const float rhs )
-{
-	*this = w_vec2::multiply( *this, rhs );
-	return *this;
-}
-
 w_vec2 w_vec2::normalize()
 {
 	return w_vec2::normalize( *this );
 }
 
-w_vec2 w_vec2::add( const w_vec2& lhs, const w_vec2& rhs )
+w_vec2 w_vec2::to_b2d()
 {
-	return w_vec2( lhs.x + rhs.x, lhs.y + rhs.y );
+	return w_vec2( ::to_b2d( x ), ::to_b2d( y ) );
 }
 
-w_vec2 w_vec2::subtract( const w_vec2& lhs, const w_vec2& rhs )
+w_vec2 w_vec2::operator+( w_vec2 v )
 {
-	return w_vec2( lhs.x - rhs.x, lhs.y - rhs.y );
+	return w_vec2( this->x + v.x, this->y + v.y );
 }
 
-w_vec2 w_vec2::multiply( const w_vec2& lhs, const float rhs )
+w_vec2 w_vec2::operator-( w_vec2 v )
 {
-	return w_vec2( lhs.x * rhs, lhs.y * rhs );
+	return w_vec2( this->x - v.x, this->y - v.y );
+}
+
+w_vec2 w_vec2::operator*( float v )
+{
+	return w_vec2( this->x * v, this->y * v );
 }
 
 float w_vec2::get_size_squared( w_vec2 a )
@@ -276,7 +269,7 @@ float w_vec2::get_size( w_vec2 a )
 
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
 {
-	return w_vec2::get_size_squared( w_vec2::subtract( a, b ) );
+	return w_vec2::get_size_squared( a - b );
 }
 
 w_vec2 w_vec2::normalize( w_vec2 a )
@@ -347,21 +340,6 @@ w_vec3::w_vec3( std::string_view str )
 	z = w_parser::float_from_str( *tok.get_next_token() );
 }
 
-w_vec3 w_vec3::add( const w_vec3& lhs, const w_vec3& rhs )
-{
-	return w_vec3( lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z );
-}
-
-w_vec3 w_vec3::subtract( const w_vec3& lhs, const w_vec3& rhs )
-{
-	return w_vec3( lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z );
-}
-
-w_vec3 w_vec3::multiply( const w_vec3& lhs, const float rhs )
-{
-	return w_vec3( lhs.x * rhs, lhs.y * rhs, lhs.z * rhs );
-}
-
 float w_vec3::get_size_squared( w_vec3 a )
 {
 	return sqrt( w_vec3::get_size( a ) );
@@ -374,7 +352,22 @@ float w_vec3::get_size( w_vec3 a )
 
 float w_vec3::get_distance_between( w_vec3 a, w_vec3 b )
 {
-	return w_vec3::get_size_squared( w_vec3::subtract( a, b ) );
+	return w_vec3::get_size_squared( a - b );
+}
+
+w_vec3 w_vec3::operator+( w_vec3 v )
+{
+	return w_vec3( this->x + v.x, this->y + v.y, this->z + v.z );
+}
+
+w_vec3 w_vec3::operator-( w_vec3 v )
+{
+	return w_vec3( this->x - v.x, this->y - v.y, this->z - v.z );
+}
+
+w_vec3 w_vec3::operator*( float v )
+{
+	return w_vec3( this->x * v, this->y * v, this->z * v );
 }
 
 w_vec3 w_vec3::normalize( w_vec3 a )
