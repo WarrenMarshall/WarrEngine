@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_entity : i_lifecycle, i_transform
+struct w_entity : i_life_cycle, i_transform
 {
 	w_layer* parent_layer = nullptr;
 

@@ -212,7 +212,7 @@ void w_entity::set_pos( const w_vec2& pos )
 
 void w_entity::set_life_cycle( e_life_cycle life_cycle )
 {
-	i_lifecycle::set_life_cycle( life_cycle );
+	i_life_cycle::set_life_cycle( life_cycle );
 
 	if( !is_alive() )
 	{
