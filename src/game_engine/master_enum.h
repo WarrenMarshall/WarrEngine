@@ -146,7 +146,6 @@ enum_end
 
 enum_begin( event_id )
 	invalid = 0,
-
 	input_pressed,
 	input_released,
 	input_held,
@@ -173,9 +172,9 @@ enum_end
 // 02 12 22
 
 enum_begin( slicedef_patch )
-	P_00 = 0,	P_10,	P_20,
-	P_01,		P_11,	P_21,
-	P_02,		P_12,	P_22
+	P_00 = 0, P_10, P_20,
+	P_01, P_11, P_21,
+	P_02, P_12, P_22
 enum_end
 
 // ----------------------------------------------------------------------------
@@ -240,6 +239,19 @@ enum_begin( collision_layer )
 	layer10 = 512,
 	layer11 = 1024,
 	layer12 = 2048
+enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( component_type )
+	invalid = 0,
+	sprite = 1,
+	emitter = 2,
+	sound = 4,
+	b2d_body = 8,
+	b2d_static = 16,
+	b2d_dynamic = 32,
+	b2d_kinematic = 64
 enum_end
 
 // ----------------------------------------------------------------------------

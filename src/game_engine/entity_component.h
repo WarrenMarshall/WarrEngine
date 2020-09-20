@@ -17,7 +17,7 @@ struct w_entity_component : i_life_cycle, i_transform
 
 	w_entity_component() = delete;
 	w_entity_component( w_entity* parent_entity );
-	virtual ~w_entity_component() = default;
+	virtual ~w_entity_component() {};
 
 	virtual bool is_fully_dead();
 	virtual void draw() {}
@@ -82,6 +82,7 @@ struct ec_b2d_body : w_entity_component
 
 	ec_b2d_body() = delete;
 	ec_b2d_body( w_entity* parent_entity );
+	virtual ~ec_b2d_body() override;
 
 	ec_b2d_body* init_as_circle( float radius );
 	ec_b2d_body* init_as_circle( const w_vec2& pos, float radius );

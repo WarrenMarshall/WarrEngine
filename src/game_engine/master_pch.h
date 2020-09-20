@@ -168,6 +168,16 @@ constexpr float from_b2d( float v )
 	return ( v * b2d_world_scale_factor );
 }
 
+constexpr bool im_left_clicked( e_im_result result )
+{
+	return ( result & im_result::left_clicked );
+}
+
+constexpr bool im_right_clicked( e_im_result result )
+{
+	return ( result & im_result::right_clicked );
+}
+
 // ----------------------------------------------------------------------------
 
 #define MATRIX engine->opengl

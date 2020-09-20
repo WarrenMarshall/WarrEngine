@@ -195,7 +195,7 @@
     </ClCompile>
     <ClCompile Include="input.cpp" />
     <ClCompile Include="file_zip.cpp" />
-    <ClCompile Include="i_lifecycle.cpp" />
+    <ClCompile Include="i_life_cycle.cpp" />
     <ClCompile Include="i_speaker.cpp" />
     <ClCompile Include="i_listener.cpp" />
     <ClCompile Include="i_transform.cpp" />
@@ -208,6 +208,7 @@
     <ClCompile Include="parseutil.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
+    <ClCompile Include="physics.cpp" />
     <ClCompile Include="util_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />
@@ -246,7 +247,7 @@
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="i_lifecycle.h" />
+    <ClInclude Include="i_life_cycle.h" />
     <ClInclude Include="i_speaker.h" />
     <ClInclude Include="i_listener.h" />
     <ClInclude Include="layer.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="parseutil.h" />
     <ClInclude Include="particle_pool.h" />
     <ClInclude Include="particle_spawner.h" />
+    <ClInclude Include="physics.h" />
     <ClInclude Include="util_time.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="timer.h" />

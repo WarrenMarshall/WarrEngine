@@ -71,6 +71,7 @@ void w_entity_component::set_life_timer( int life_in_ms )
 ec_sprite::ec_sprite( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
+	type |= component_type::sprite;
 }
 
 w_entity_component* ec_sprite::init( const std::string_view subtex_name )
@@ -98,6 +99,7 @@ void ec_sprite::draw()
 ec_emitter::ec_emitter( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
+	type |= component_type::emitter;
 }
 
 w_entity_component* ec_emitter::init( const std::string_view params_name )
@@ -157,7 +159,7 @@ void ec_emitter::update()
 
 void ec_emitter::set_life_cycle( e_life_cycle life_cycle )
 {
-	i_lifecycle::set_life_cycle( life_cycle );
+	i_life_cycle::set_life_cycle( life_cycle );
 
 	if( is_dying() )
 	{
@@ -176,6 +178,7 @@ void ec_emitter::post_spawn()
 ec_sound::ec_sound( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
+	type |= component_type::sound;
 }
 
 w_entity_component* ec_sound::init( const std::string_view snd_name )
@@ -201,6 +204,12 @@ void ec_sound::draw()
 ec_b2d_body::ec_b2d_body( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
+	type |= component_type::b2d_body;
+}
+
+ec_b2d_body::~ec_b2d_body()
+{
+	engine->box2d_world->DestroyBody( body );
 }
 
 void ec_b2d_body::draw()
@@ -491,6 +500,7 @@ ec_b2d_body* ec_b2d_body::init_as_chain( const w_vec2& pos, const std::vector<w_
 ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
+	type |= component_type::b2d_static;
 	body_type = b2_staticBody;
 }
 
@@ -499,6 +509,7 @@ ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
 ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
+	type |= component_type::b2d_dynamic;
 	body_type = b2_dynamicBody;
 }
 
@@ -507,5 +518,6 @@ ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
 ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
+	type |= component_type::b2d_kinematic;
 	body_type = b2_kinematicBody;
 }

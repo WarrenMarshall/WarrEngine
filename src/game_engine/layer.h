@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_layer : i_lifecycle
+struct w_layer : i_life_cycle
 {
 	std::vector<std::unique_ptr<w_entity>> entities;
 

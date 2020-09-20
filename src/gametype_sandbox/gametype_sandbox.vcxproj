@@ -158,14 +158,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="layer_default.cpp" />
+    <ClCompile Include="layer_platformer.cpp" />
+    <ClCompile Include="layer_main_menu.cpp" />
+    <ClCompile Include="layer_pong.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="gametype_sandbox_app.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
-    <ClInclude Include="layer_default.h" />
+    <ClInclude Include="layer_platformer.h" />
     <ClInclude Include="gametype_sandbox_app.h" />
+    <ClInclude Include="layer_main_menu.h" />
+    <ClInclude Include="layer_pong.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\game_engine\game_engine.vcxproj">

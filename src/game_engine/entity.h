@@ -41,16 +41,6 @@ struct w_entity : i_life_cycle, i_transform
 
 	template<typename T> T* add_component()
 	{
-#ifdef _DEBUG
-		if( typeid( T ) == typeid( ec_b2d_dynamic ) )
-		{
-			if( get_component<ec_b2d_dynamic>() )
-			{
-				log_error( "entities can only have a single \"ec_b2d_dynamic\" component" );
-			}
-		}
-#endif
-
 		components.emplace_back( std::make_unique<T>( this ) );
 		T* new_component = static_cast<T*>( components.back().get() );
 
@@ -59,11 +49,11 @@ struct w_entity : i_life_cycle, i_transform
 
 	// returns the first component it finds of the specified type.
 	template<typename T>
-	T* get_component()
+	T* get_component( e_component_type type_mask )
 	{
 		for( auto& ec : components )
 		{
-			if( typeid( *ec.get() ) == typeid( T ) )
+			if( ec->type & type_mask )
 			{
 				return static_cast<T*>( ec.get() );
 			}
@@ -74,13 +64,13 @@ struct w_entity : i_life_cycle, i_transform
 
 	// fills a vector with all the components it finds of the specified type.
 	template<typename T>
-	std::basic_string<T*> get_components()
+	std::basic_string<T*> get_components( e_component_type type_mask )
 	{
 		std::basic_string<T*> ecs;
 
 		for( auto& ec : this->components )
 		{
-			if( typeid( *ec.get() ) == typeid( T ) )
+			if( ec->type & type_mask )
 			{
 				ecs += static_cast<T*>( ec.get() );
 			}

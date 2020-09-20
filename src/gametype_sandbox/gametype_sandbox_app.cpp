@@ -14,7 +14,7 @@ void gametype_sandbox_app::new_game()
 {
 	w_game::new_game();
 
-	engine->layer_mgr->push<layer_default>();
+	engine->layer_mgr->push<layer_main_menu>();
 }
 
 void gametype_sandbox_app::update()

@@ -182,6 +182,9 @@ void w_ui_theme::init()
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
 	button_up_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_up" );
 	button_down_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_down" );
+
+	default_button_style = std::make_unique<w_ui_style_button>();
+	default_button_style->base_attrib.color = w_color::dark_grey;
 }
 
 // called at the end of each frame, this is for drawing anything that

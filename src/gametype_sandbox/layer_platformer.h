@@ -15,13 +15,13 @@ struct w_contact_listener : b2ContactListener
 	virtual void PostSolve( b2Contact* contact, const b2ContactImpulse* impulse ) override;
 };
 
-struct layer_default : w_layer
+struct layer_platformer : w_layer
 {
 	w_contact_listener contact_listener;
 	w_vec2 player_trace_hit;
 	bool player_on_ground = true;
 
-	layer_default();
+	layer_platformer();
 
 	w_entity* player = nullptr;
 	w_entity* player2 = nullptr;

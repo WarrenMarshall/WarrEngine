@@ -68,7 +68,10 @@ struct w_ui_theme
 	a_9slice_def* panel_slice_def = nullptr;
 	a_9slice_def* button_up_slice_def = nullptr;
 	a_9slice_def* button_down_slice_def = nullptr;
+
 	float control_padding = 4.0f;
+
+	std::unique_ptr<w_ui_style_button> default_button_style = nullptr;
 
 	void init();
 	void draw_topmost();
