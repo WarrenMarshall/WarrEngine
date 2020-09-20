@@ -1,18 +1,10 @@
 #pragma once
 
-struct w_raycast_callback_closest : b2RayCastCallback
-{
-	std::optional<b2Vec2> hit_point = std::nullopt;
-
-	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
-								 const b2Vec2& normal, float fraction ) override;
-};
-
 // ----------------------------------------------------------------------------
 
-struct w_entity_component : i_lifecycle, i_transform
+struct w_entity_component : i_life_cycle, i_transform
 {
-	//e_component_type type = component_type::invalid;
+	e_component_type type = component_type::invalid;
 	w_vec2 pos_interp;
 
 	std::unique_ptr<w_timer> life_timer = nullptr;

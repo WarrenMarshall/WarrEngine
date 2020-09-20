@@ -2,13 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-float w_raycast_callback_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
-{
-	hit_point = point;
-
-	return fraction;
-}
-
 // ----------------------------------------------------------------------------
 
 w_entity_component::w_entity_component( w_entity* parent_entity )
