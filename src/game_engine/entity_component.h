@@ -86,17 +86,12 @@ struct ec_b2d_body : w_entity_component
 
 	void init_body();
 
-	b2Fixture* add_fixture_circle( float radius, w_vec2 offset );
-	b2Fixture* add_fixture_circle( const w_vec2& pos, float radius, w_vec2 offset );
-
-	b2Fixture* add_fixture_box( float width, float height, w_vec2 offset );
-	b2Fixture* add_fixture_box( const w_vec2& pos, float width, float height, w_vec2 offset );
-
-	b2Fixture* add_fixture_line( const w_vec2& start, const w_vec2& end, w_vec2 offset );
-	b2Fixture* add_fixture_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end, w_vec2 offset );
-
-	b2Fixture* add_fixture_chain( const std::vector<w_vec2>& verts, w_vec2 offset );
-	b2Fixture* add_fixture_chain( const w_vec2& pos, const std::vector<w_vec2>& verts, w_vec2 offset );
+	// offset - an offset from the position of the entity. this allows for things
+	//			like sensors that need to be at a character's feet.
+	b2Fixture* add_fixture_box( w_vec2 offset, float width, float height );
+	b2Fixture* add_fixture_circle( w_vec2 offset, float radius );
+	b2Fixture* add_fixture_line( w_vec2 offset, float width, float height );
+	b2Fixture* add_fixture_chain( w_vec2 offset, const std::vector<w_vec2>& verts );
 
 	virtual void draw() override;
 };

@@ -236,19 +236,26 @@ void ec_b2d_body::draw()
 
 	MATRIX->push_identity();
 
-	RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
-
 	for( b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
+		if( fixture->IsSensor() )
+		{
+			RENDER->push_rgb( body->IsAwake() ? w_color::teal : w_color::dark_teal );
+		}
+		else
+		{
+			RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
+		}
+
 		b2Shape::Type shapeType = fixture->GetType();
 
 		if( shapeType == b2Shape::e_circle )
 		{
-			b2CircleShape* shape = (b2CircleShape*) fixture->GetShape();
+			auto* shape = (b2CircleShape*) fixture->GetShape();
 
 			b2Vec2 position = body->GetPosition();
-			position.x = from_b2d( position.x );
-			position.y = from_b2d( position.y );
+			position.x = from_b2d( position.x + shape->m_p.x );
+			position.y = from_b2d( position.y + shape->m_p.y );
 
 			float angle = body->GetAngle();
 
@@ -274,7 +281,7 @@ void ec_b2d_body::draw()
 				->translate( { position.x, position.y } )
 				->rotate( rad2deg( angle ) );
 
-			b2PolygonShape* shape = (b2PolygonShape*) fixture->GetShape();
+			auto* shape = (b2PolygonShape*) fixture->GetShape();
 
 			for( int v = 0 ; v < shape->m_count ; ++v )
 			{
@@ -293,7 +300,7 @@ void ec_b2d_body::draw()
 		}
 		else if( shapeType == b2Shape::e_edge )
 		{
-			b2EdgeShape* shape = (b2EdgeShape*) fixture->GetShape();
+			auto* shape = (b2EdgeShape*) fixture->GetShape();
 
 			b2Vec2 position = body->GetPosition();
 			position.x = from_b2d( position.x );
@@ -331,7 +338,7 @@ void ec_b2d_body::draw()
 				->translate( { position.x, position.y } )
 				->rotate( rad2deg( angle ) );
 
-			b2ChainShape* shape = (b2ChainShape*) fixture->GetShape();
+			auto* shape = (b2ChainShape*) fixture->GetShape();
 
 			for( int v = 0 ; v < shape->m_count ; ++v )
 			{
@@ -352,21 +359,16 @@ void ec_b2d_body::draw()
 		{
 			log_error( "Unknown Box2D shape type" );
 		}
-	}
 
-	RENDER->pop_rgb();
+		RENDER->pop_rgb();
+	}
 
 	MATRIX->pop();
 }
 
-b2Fixture* ec_b2d_body::add_fixture_box( float width, float height, w_vec2 offset )
+b2Fixture* ec_b2d_body::add_fixture_box( w_vec2 offset, float width, float height )
 {
-	return add_fixture_box( { parent_entity->pos.x, parent_entity->pos.y }, width, height, offset );
-}
-
-b2Fixture* ec_b2d_body::add_fixture_box( const w_vec2& pos, float width, float height, w_vec2 offset )
-{
-	body->SetTransform( { to_b2d( pos.x ), to_b2d( pos.y ) }, 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
 	b2PolygonShape shape;
 	{
@@ -385,19 +387,14 @@ b2Fixture* ec_b2d_body::add_fixture_box( const w_vec2& pos, float width, float h
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_circle( float radius, w_vec2 offset )
+b2Fixture* ec_b2d_body::add_fixture_circle( w_vec2 offset, float radius )
 {
-	return add_fixture_circle( { parent_entity->pos.x, parent_entity->pos.y }, radius, offset );
-}
-
-b2Fixture* ec_b2d_body::add_fixture_circle( const w_vec2& pos, float radius, w_vec2 offset )
-{
-	body->SetTransform( { to_b2d( pos.x ), to_b2d( pos.y ) }, 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
 	b2CircleShape shape;
 	{
 		shape.m_radius = to_b2d( radius );
-		shape.m_p = offset.to_b2d();
+		shape.m_p.Set( to_b2d( offset.x ), to_b2d( offset.y ) );
 	}
 
 	b2FixtureDef fixture;
@@ -412,22 +409,17 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const w_vec2& pos, float radius, w_v
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_line( const w_vec2& start, const w_vec2& end, w_vec2 offset )
+b2Fixture* ec_b2d_body::add_fixture_line( w_vec2 offset, float width, float height )
 {
-	return add_fixture_line( { parent_entity->pos.x, parent_entity->pos.y }, start, end, offset );
-}
-
-b2Fixture* ec_b2d_body::add_fixture_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end, w_vec2 offset )
-{
-	body->SetTransform( { to_b2d( pos.x ), to_b2d( pos.y ) }, 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
 	b2EdgeShape shape;
 	{
 		shape.SetOneSided(
-			{ to_b2d( start.x + offset.x ), to_b2d( start.y + offset.y ) },
-			{ to_b2d( start.x + offset.x ), to_b2d( start.y + offset.y ) },
-			{ to_b2d( end.x + offset.x ), to_b2d( end.y + offset.y ) },
-			{ to_b2d( end.x + offset.x ), to_b2d( end.y + offset.y ) }
+			offset.to_b2d(),
+			offset.to_b2d(),
+			( offset + w_vec2( width, height )).to_b2d(),
+			( offset + w_vec2( width, height )).to_b2d()
 		);
 	}
 
@@ -443,23 +435,21 @@ b2Fixture* ec_b2d_body::add_fixture_line( const w_vec2& pos, const w_vec2& start
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_chain( const std::vector<w_vec2>& verts, w_vec2 offset )
+b2Fixture* ec_b2d_body::add_fixture_chain( w_vec2 offset, const std::vector<w_vec2>& verts )
 {
-	return add_fixture_chain( { parent_entity->pos.x, parent_entity->pos.y }, verts, offset );
-}
-
-b2Fixture* ec_b2d_body::add_fixture_chain( const w_vec2& pos, const std::vector<w_vec2>& verts, w_vec2 offset )
-{
-	body->SetTransform( { to_b2d( pos.x ), to_b2d( pos.y ) }, 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
 
-	for( size_t x = 0 ; x < verts.size() ; ++x )
+	for(w_vec2 v : verts)
 	{
-		w_vec2 v = verts[ x ];
-		b2verts.push_back( { to_b2d( v.x + offset.x ), to_b2d( v.y + offset.y ) } );
+		b2verts.push_back( v.to_b2d() );
 	}
+
+	// we pass in the verts in a clockwise winding for compatibility with the
+	// rest of the engine. box2d wants them wound counter-clockwise.
+	std::reverse( b2verts.begin(), b2verts.end() );
 
 	b2ChainShape shape;
 	{

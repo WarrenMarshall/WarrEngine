@@ -25,6 +25,12 @@ void w_entity::update_physics()
 	// entities with dynamic rigid bodies need their transforms
 	// updated as per what the physics engine is reporting.
 
+	// #box2d	- this needs attention. we need to iterate all fixtures on all bodies attached
+	//			to this entity to get it's position.
+	//
+	//			additionally, we need some way to specify one fixture as the primary fixture that
+	//			can be taken to represent the location where we want things like ec_sprites drawn
+	//			or ec_emitters spewing from (in other words, represents the entity location)
 	for( auto& ec : components )
 	{
 		if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) || typeid( *ec.get() ) == typeid( ec_b2d_kinematic ) )
@@ -32,6 +38,7 @@ void w_entity::update_physics()
 			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
 
 			b2Vec2 position = edb->body->GetPosition();
+
 			position.x = from_b2d( position.x );
 			position.y = from_b2d( position.y );
 
@@ -193,12 +200,6 @@ bool w_entity::can_be_deleted()
 void w_entity::set_transform( const w_vec2& pos, const float angle, const float scale )
 {
 	i_transform::set_transform( pos, angle, scale );
-
-	//auto rigid_bodies = get_components<ec_b2d_static>();
-
-	//for( auto& iter : rigid_bodies )
-	//{
-	//}
 }
 
 // set the position of the entity directly, bypassing any physics or forces.

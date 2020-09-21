@@ -20,11 +20,23 @@ void w_contact_listener::BeginContact( b2Contact* contact )
 	w_entity_component* ec_a = (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer );
 	w_entity_component* ec_b = (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer );
 
-
+	if( ec_a->type & component_type::b2d_dynamic || ec_b->type & component_type::b2d_dynamic )
+	{
+		//layer_platformer* layer = ( layer_platformer * )engine->layer_mgr->get_top();
+		//layer->player_on_ground = true;
+	}
 }
 
 void w_contact_listener::EndContact( b2Contact* contact )
 {
+	w_entity_component* ec_a = (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer );
+	w_entity_component* ec_b = (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer );
+
+	if( ec_a->type & component_type::b2d_dynamic || ec_b->type & component_type::b2d_dynamic )
+	{
+		//layer_platformer* layer = (layer_platformer*) engine->layer_mgr->get_top();
+		//layer->player_on_ground = false;
+	}
 }
 
 void w_contact_listener::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
@@ -57,19 +69,19 @@ void layer_platformer::push()
 	ec = world_geo->add_component<ec_b2d_static>();
 	{
 		auto fixture = ec->add_fixture_chain(
+			w_vec2::zero,
 			{
-				{ v_window_w - 8.0f, 4.0f },
 				{ 4.0f, 4.0f },
-				{ 4.0f, v_window_hh + 100 - 8.0f },
-				{ v_window_w - 8.0f, v_window_hh + 100 - 8.0f }
-			},
-			w_vec2::zero
+				{ v_window_w - 8.0f, 4.0f },
+				{ v_window_w - 8.0f, v_window_h - 8.0f },
+				{ 4.0f, v_window_h - 8.0f }
+			}
 		);
 
-		ec->add_fixture_line( { 4.0f + 64, v_window_hh + 55 }, { 4.0f + 64 + 150, v_window_hh + 55 }, w_vec2::zero );
-		ec->add_fixture_line( { 4.0f + 32, v_window_hh + 20 }, { 4.0f + 32 + 50, v_window_hh + 20 }, w_vec2::zero );
-		ec->add_fixture_line( { 4.0f + 32 + 150, v_window_hh }, { 4.0f + 32 + 200, v_window_hh }, w_vec2::zero );
-		ec->add_fixture_line( { 100.0f, v_window_hh - 20 }, { 200.f, v_window_hh - 20 }, w_vec2::zero );
+		ec->add_fixture_line( { 68.0f, v_window_h - 40.0f }, 150.0f, 8.0f );
+		ec->add_fixture_line( { 0.0f, v_window_h - 80.0f }, 64.0f, -8.0f );
+		ec->add_fixture_line( { 100.0f, v_window_h - 120.0f }, 128.0f, 0.0f );
+		ec->add_fixture_line( { 250.0f, v_window_h - 120.0f }, 64.0f, 0.0f );
 	}
 
 	for( int x = 0 ; x < 12 ; ++x )
@@ -77,16 +89,16 @@ void layer_platformer::push()
 		float xpos = w_random::getf_range( 0.0f, v_window_w );
 		float ypos = w_random::getf_range( 64.0f, v_window_h );
 
-		if( w_random::geti_range(0,4) == 0 )
+		if( w_random::geti_range( 0, 4 ) == 0 )
 		{
 			float sz = w_random::getf_range( 4, 16 );
-			ec->add_fixture_circle( sz, { xpos, ypos } );
+			ec->add_fixture_circle( { xpos, ypos }, sz );
 		}
 		else
 		{
 			float sz = w_random::getf_range( 4, 32 );
 			float sz2 = w_random::getf_range( 4, 32 );
-			ec->add_fixture_box( sz, sz2, { xpos, ypos } );
+			ec->add_fixture_box( { xpos, ypos }, sz, sz2 );
 		}
 	}
 
@@ -102,8 +114,10 @@ void layer_platformer::push()
 
 	ec = player->add_component<ec_b2d_dynamic>();
 	ec->body->SetFixedRotation( true );
-	ec->add_fixture_circle( 8, w_vec2::zero );
-	b2Fixture* f = ec->add_fixture_box( 4, 2, w_vec2( 0, 8 ) );
+
+	b2Fixture* f = ec->add_fixture_circle( w_vec2::zero, 8 );
+
+	f = ec->add_fixture_box( { 0, 8 }, 4, 2 );
 	f->SetSensor( true );
 
 	// ----------------------------------------------------------------------------
@@ -122,7 +136,7 @@ void layer_platformer::update()
 {
 	w_layer::update();
 
-	player_on_ground = player->trace_to_closest_point( { 0.0f, 1.0f }, 10.0f, clayer_world, &player_trace_hit );
+	//player_on_ground = player->trace_to_closest_point( { 0.0f, 1.0f }, 10.0f, clayer_world, &player_trace_hit );
 
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
@@ -163,9 +177,9 @@ void layer_platformer::draw()
 		);
 	}
 
-	RENDER
-		->push_rgb( { 0.5f, 0.5f, 1.0f } )
-		->draw_point( player_trace_hit );
+	//RENDER
+		//->push_rgb( { 0.5f, 0.5f, 1.0f } )
+		//->draw_point( player_trace_hit );
 
 	RENDER->end();
 }

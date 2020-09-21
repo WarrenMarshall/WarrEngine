@@ -20,7 +20,7 @@ struct layer_platformer : w_layer
 	w_contact_listener contact_listener;
 
 	// #todo - replace with use of a sensor
-	w_vec2 player_trace_hit;
+	//w_vec2 player_trace_hit;
 	bool player_on_ground = true;
 
 	layer_platformer();
