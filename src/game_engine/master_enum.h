@@ -227,19 +227,23 @@ enum_end
 // ----------------------------------------------------------------------------
 
 enum_begin( collision_layer )
-	layer1 = 1,
-	layer2 = 2,
-	layer3 = 4,
-	layer4 = 8,
-	layer5 = 16,
-	layer6 = 32,
-	layer7 = 64,
-	layer8 = 128,
-	layer9 = 256,
-	layer10 = 512,
-	layer11 = 1024,
-	layer12 = 2048
-enum_end
+	//bit1 = 1,		// don't use this, as everything IS this by default in Box2D
+	bit2 = 2,
+	bit3 = 4,
+	bit4 = 8,
+	bit5 = 16,
+	bit6 = 32,
+	bit7 = 64,
+	bit8 = 128,
+	bit9 = 256,
+	bit10 = 512,
+	bit11 = 1024,
+	bit12 = 2048,
+	bit13 = 4096,
+	bit14 = 8192,
+	bit15 = 16384,
+	bit16 = 32768
+	enum_end
 
 // ----------------------------------------------------------------------------
 

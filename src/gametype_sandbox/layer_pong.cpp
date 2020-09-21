@@ -1,9 +1,9 @@
 
 #include "app_header.h"
 
-constexpr e_collision_layer layer_geo = collision_layer::layer1;
-constexpr e_collision_layer layer_ball = collision_layer::layer2;
-constexpr e_collision_layer layer_paddle = collision_layer::layer3;
+constexpr e_collision_layer clayer_world = collision_layer::bit2;
+constexpr e_collision_layer clayer_ball = collision_layer::bit3;
+constexpr e_collision_layer clayer_paddle = collision_layer::bit4;
 
 // ----------------------------------------------------------------------------
 
@@ -14,12 +14,14 @@ layer_pong::layer_pong()
 
 void layer_pong::push()
 {
+#if 0
 	engine->box2d_world->SetContactListener( &contact_listener );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
 
 	world_geo = add_entity<w_entity>();
-	world_geo->collision_layer = layer_geo;
+	world_geo->collision_layer = clayer_world;
+	world_geo->collides_with = clayer_ball;
 	world_geo->draw_debug_info = true;
 
 	float sz = 16;
@@ -36,7 +38,6 @@ void layer_pong::push()
 	ec->body->GetFixtureList()->SetFriction( 0.0f );
 	ec->body->SetLinearDamping( 0.0f );
 
-#if 0
 	for( int x = 0 ; x < 5 ; ++x )
 	{
 		float xpos = w_random::getf_range( 0.0f, v_window_w );
@@ -54,12 +55,12 @@ void layer_pong::push()
 			world_geo->add_component<ec_b2d_static>()->init_as_box( { xpos, ypos }, sz, sz2 );
 		}
 	}
-#endif
 
 	{
 		ball = add_entity<w_entity>();
 		ball->draw_debug_info = true;
-		ball->collision_layer = layer_ball;
+		ball->collision_layer = clayer_ball;
+		ball->collides_with = clayer_world;
 		ball->set_transform( { v_window_hw, v_window_hh }, 0, 1 );
 		auto ecd = ball->add_component<ec_b2d_dynamic>()->init_as_circle( 6 );
 		ecd->body->GetFixtureList()->SetRestitution( 1.0f );
@@ -68,6 +69,7 @@ void layer_pong::push()
 		ecd->body->SetLinearVelocity( w_vec2::get_random_unit() * 2.f );
 		ecd->body->SetLinearDamping( 0.0f );
 	}
+#endif
 }
 
 void layer_pong::update()

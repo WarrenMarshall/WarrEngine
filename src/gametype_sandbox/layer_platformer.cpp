@@ -3,15 +3,15 @@
 
 // ----------------------------------------------------------------------------
 
-constexpr float player_move_force_s = 10.0f;
+constexpr float player_move_force_s = 7.5f;
 constexpr float player_move_force_max = 1.5f;
-constexpr float player_jump_force = 3.5f;
+constexpr float player_jump_force = 3.0f;
 
 // ----------------------------------------------------------------------------
 
-constexpr e_collision_layer layer_geo = collision_layer::layer1;
-constexpr e_collision_layer layer_player = collision_layer::layer2;
-constexpr e_collision_layer layer_player2 = collision_layer::layer3;
+constexpr e_collision_layer clayer_world = collision_layer::bit2;
+constexpr e_collision_layer clayer_player = collision_layer::bit3;
+constexpr e_collision_layer clayer_player2 = collision_layer::bit4;
 
 // ----------------------------------------------------------------------------
 
@@ -48,68 +48,81 @@ void layer_platformer::push()
 {
 	engine->box2d_world->SetContactListener( &contact_listener );
 
+	ec_b2d_body* ec = nullptr;
+
 	world_geo = add_entity<w_entity>();
-	world_geo->collision_layer = layer_geo;
+	world_geo->collision_layer = clayer_world;
+	world_geo->collides_with = clayer_player;
 	world_geo->draw_debug_info = true;
+	ec = world_geo->add_component<ec_b2d_static>();
+	{
+		auto fixture = ec->add_fixture_chain(
+			{
+				{ v_window_w - 8.0f, 4.0f },
+				{ 4.0f, 4.0f },
+				{ 4.0f, v_window_hh + 100 - 8.0f },
+				{ v_window_w - 8.0f, v_window_hh + 100 - 8.0f }
+			},
+			w_vec2::zero
+		);
 
-	float sz = 4.0f;
-	world_geo->add_component<ec_b2d_static>()->init_as_chain(
-		{
-			{ v_window_w - sz * 2, sz },
-			{ sz, sz },
-			{ sz, v_window_hh + 100 - sz * 2 },
-			{ v_window_w - sz * 2, v_window_hh + 100 - sz * 2 }
-		}
-	);
-
-	world_geo->add_component<ec_b2d_static>()->init_as_line( { sz + 64, v_window_hh + 50 }, { sz + 64 + 150, v_window_hh + 50 } );
-	world_geo->add_component<ec_b2d_static>()->init_as_line( { sz + 32, v_window_hh }, { sz + 32 + 50, v_window_hh } );
-	world_geo->add_component<ec_b2d_static>()->init_as_line( { sz + 32 + 150, v_window_hh - 25 }, { sz + 32 + 200, v_window_hh - 25 } );
-	world_geo->add_component<ec_b2d_static>()->init_as_line( { sz + 100, v_window_hh - 50 }, { sz + 100 + 100, v_window_hh - 50 } );
+		ec->add_fixture_line( { 4.0f + 64, v_window_hh + 55 }, { 4.0f + 64 + 150, v_window_hh + 55 }, w_vec2::zero );
+		ec->add_fixture_line( { 4.0f + 32, v_window_hh + 20 }, { 4.0f + 32 + 50, v_window_hh + 20 }, w_vec2::zero );
+		ec->add_fixture_line( { 4.0f + 32 + 150, v_window_hh }, { 4.0f + 32 + 200, v_window_hh }, w_vec2::zero );
+		ec->add_fixture_line( { 100.0f, v_window_hh - 20 }, { 200.f, v_window_hh - 20 }, w_vec2::zero );
+	}
 
 	for( int x = 0 ; x < 12 ; ++x )
 	{
 		float xpos = w_random::getf_range( 0.0f, v_window_w );
 		float ypos = w_random::getf_range( 64.0f, v_window_h );
 
-		if( w_random::geti_range(0,4) == 45 )
+		if( w_random::geti_range(0,4) == 0 )
 		{
 			float sz = w_random::getf_range( 4, 16 );
-			world_geo->add_component<ec_b2d_static>()->init_as_circle( { xpos, ypos }, sz );
+			ec->add_fixture_circle( sz, { xpos, ypos } );
 		}
 		else
 		{
 			float sz = w_random::getf_range( 4, 32 );
 			float sz2 = w_random::getf_range( 4, 32 );
-			world_geo->add_component<ec_b2d_static>()->init_as_box( { xpos, ypos }, sz, sz2 );
+			ec->add_fixture_box( sz, sz2, { xpos, ypos } );
 		}
 	}
 
-	player = add_entity<w_entity>();
-	player->collision_layer = layer_player;
-	float xpos = w_random::getf_range( 0.0f, v_window_w );
-	xpos = 16.0f;
-	player->set_transform( { xpos, 0.0f }, 0, 1 );
-	player->add_component<ec_sprite>()->init( "sprite_mario" );
-	//auto ecd = player->add_component<ec_b2d_dynamic>()->init_as_box( 8, 8 );
-	auto ecd = player->add_component<ec_b2d_dynamic>()->init_as_circle( 8 );
-	ecd->body->SetFixedRotation( true );
-	ecd->body->GetFixtureList()->SetFriction( 1.0f );
-	//ecd->body->GetFixtureList()->SetRestitution( 0.3f );
-	//ecd->body->SetGravityScale( 1.5f );
+	// ----------------------------------------------------------------------------
 
+	player = add_entity<w_entity>();
+	player->collision_layer = clayer_player;
+	player->collides_with = clayer_world;
+	player->draw_debug_info = true;
+	player->set_transform( { 32.0f, 0.0f }, 0, 1 );
+
+	//player->add_component<ec_sprite>()->init( "sprite_mario" );
+
+	ec = player->add_component<ec_b2d_dynamic>();
+	ec->body->SetFixedRotation( true );
+	ec->add_fixture_circle( 8, w_vec2::zero );
+	b2Fixture* f = ec->add_fixture_box( 4, 2, w_vec2( 0, 8 ) );
+	f->SetSensor( true );
+
+	// ----------------------------------------------------------------------------
+
+	/*
 	player2 = add_entity<w_entity>();
-	player2->collision_layer = layer_player2;
+	player2->collision_layer = clayer_player2;
+	player2->collides_with = clayer_player;
 	player2->set_transform( { v_window_hw, v_window_hh }, 0, 1 );
 	player2->add_component<ec_sprite>()->init( "sprite_mario" );
 	player2->add_component<ec_b2d_kinematic>()->init_as_circle( 10 );
+	*/
 }
 
 void layer_platformer::update()
 {
 	w_layer::update();
 
-	player_on_ground = player->trace_to_closest_point( { 0.0f, 1.0f }, 10.0f, layer_geo, &player_trace_hit );
+	player_on_ground = player->trace_to_closest_point( { 0.0f, 1.0f }, 10.0f, clayer_world, &player_trace_hit );
 
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
@@ -117,7 +130,7 @@ void layer_platformer::update()
 	{
 		if( !player_on_ground )
 		{
-		//	left_stick.x *= 0.25f;
+			// remove air control
 		}
 
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
@@ -218,11 +231,15 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 
 		if( evt->input_id == input_id::key_1 )
 		{
-			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
-			ec->body->SetTransform( { to_b2d( engine->input->mouse_vwindow_pos.x ), to_b2d( engine->input->mouse_vwindow_pos.y ) }, 0 );
-			ec->body->SetLinearVelocity( { 0, 0 } );
-			ec->body->SetAngularVelocity( 0 );
-			ec->body->SetAwake( true );
+			auto ecs = player->get_components<ec_b2d_body>( component_type::b2d_dynamic );
+
+			for( auto ec : ecs )
+			{
+				ec->body->SetTransform( { to_b2d( engine->input->mouse_vwindow_pos.x ), to_b2d( engine->input->mouse_vwindow_pos.y ) }, 0 );
+				ec->body->SetLinearVelocity( { 0, 0 } );
+				ec->body->SetAngularVelocity( 0 );
+				ec->body->SetAwake( true );
+			}
 		}
 	}
 	return true;

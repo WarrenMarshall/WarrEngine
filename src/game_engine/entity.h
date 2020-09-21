@@ -9,17 +9,11 @@ struct w_entity : i_life_cycle, i_transform
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
 	// which collision layer this entity is a part of
-	//
-	// identifies what this entity IS to other colliders.
 	e_collision_layer collision_layer = 0;
 
 	// a bitmask of the collision_layer enum that identifies
 	// which collision layers this will collide WITH
-	//
-	// this is only set for dynamic entities which will
-	// instigate collisions. static entities can leave this
-	// as zero.
-	int collides_with = 0;
+	e_collision_layer collides_with = 0;
 
 	// generic flag to indicate that the component should draw
 	// stuff to indicate it's internal state.
@@ -47,7 +41,7 @@ struct w_entity : i_life_cycle, i_transform
 		return new_component;
 	}
 
-	// returns the first component it finds of the specified type.
+	// returns the first component it finds that matches the type bit mask.
 	template<typename T>
 	T* get_component( e_component_type type_mask )
 	{
@@ -62,7 +56,7 @@ struct w_entity : i_life_cycle, i_transform
 		return nullptr;
 	}
 
-	// fills a vector with all the components it finds of the specified type.
+	// fills a vector with all the components it finds that match the type bit mask.
 	template<typename T>
 	std::basic_string<T*> get_components( e_component_type type_mask )
 	{

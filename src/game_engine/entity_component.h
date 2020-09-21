@@ -84,17 +84,19 @@ struct ec_b2d_body : w_entity_component
 	ec_b2d_body( w_entity* parent_entity );
 	virtual ~ec_b2d_body() override;
 
-	ec_b2d_body* init_as_circle( float radius );
-	ec_b2d_body* init_as_circle( const w_vec2& pos, float radius );
+	void init_body();
 
-	ec_b2d_body* init_as_box( float width, float height );
-	ec_b2d_body* init_as_box( const w_vec2& pos, float width, float height );
+	b2Fixture* add_fixture_circle( float radius, w_vec2 offset );
+	b2Fixture* add_fixture_circle( const w_vec2& pos, float radius, w_vec2 offset );
 
-	ec_b2d_body* init_as_line( const w_vec2& start, const w_vec2& end );
-	ec_b2d_body* init_as_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end );
+	b2Fixture* add_fixture_box( float width, float height, w_vec2 offset );
+	b2Fixture* add_fixture_box( const w_vec2& pos, float width, float height, w_vec2 offset );
 
-	ec_b2d_body* init_as_chain( const std::vector<w_vec2>& verts );
-	ec_b2d_body* init_as_chain( const w_vec2& pos, const std::vector<w_vec2>& verts );
+	b2Fixture* add_fixture_line( const w_vec2& start, const w_vec2& end, w_vec2 offset );
+	b2Fixture* add_fixture_line( const w_vec2& pos, const w_vec2& start, const w_vec2& end, w_vec2 offset );
+
+	b2Fixture* add_fixture_chain( const std::vector<w_vec2>& verts, w_vec2 offset );
+	b2Fixture* add_fixture_chain( const w_vec2& pos, const std::vector<w_vec2>& verts, w_vec2 offset );
 
 	virtual void draw() override;
 };
