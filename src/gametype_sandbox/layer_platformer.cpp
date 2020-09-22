@@ -4,8 +4,15 @@
 // ----------------------------------------------------------------------------
 
 constexpr float player_move_force_s = 7.5f;
-constexpr float player_move_force_max = 1.5f;
+constexpr float player_move_force_max = 1.25f;
 constexpr float player_jump_force = 3.0f;
+constexpr float player_radius = 8.0f;
+
+// ----------------------------------------------------------------------------
+
+constexpr unsigned IDF_None = 0;
+constexpr unsigned IDF_PlayerFootSensor = 1;
+constexpr unsigned IDF_World = 2;
 
 // ----------------------------------------------------------------------------
 
@@ -15,27 +22,32 @@ constexpr e_collision_layer clayer_player2 = collision_layer::bit4;
 
 // ----------------------------------------------------------------------------
 
+constexpr bool ids_match( unsigned a_id, unsigned b_id, unsigned id_1, unsigned id_2 )
+{
+	return( ( a_id == id_1 && b_id == id_2 ) || ( a_id == id_2 && b_id == id_1 ) );
+}
+
 void w_contact_listener::BeginContact( b2Contact* contact )
 {
-	w_entity_component* ec_a = (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer );
-	w_entity_component* ec_b = (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer );
+	unsigned a_id = (unsigned) contact->GetFixtureA()->GetUserData().pointer;
+	unsigned b_id = (unsigned) contact->GetFixtureB()->GetUserData().pointer;
 
-	if( ec_a->type & component_type::b2d_dynamic || ec_b->type & component_type::b2d_dynamic )
+	if( ids_match( a_id, b_id, IDF_PlayerFootSensor, IDF_World ) )
 	{
-		//layer_platformer* layer = ( layer_platformer * )engine->layer_mgr->get_top();
-		//layer->player_on_ground = true;
+		layer_platformer* layer = ( layer_platformer * )engine->layer_mgr->get_top();
+		layer->player_on_ground++;
 	}
 }
 
 void w_contact_listener::EndContact( b2Contact* contact )
 {
-	w_entity_component* ec_a = (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer );
-	w_entity_component* ec_b = (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer );
+	unsigned a_id = (unsigned) contact->GetFixtureA()->GetUserData().pointer;
+	unsigned b_id = (unsigned) contact->GetFixtureB()->GetUserData().pointer;
 
-	if( ec_a->type & component_type::b2d_dynamic || ec_b->type & component_type::b2d_dynamic )
+	if( ids_match( a_id, b_id, IDF_PlayerFootSensor, IDF_World ) )
 	{
-		//layer_platformer* layer = (layer_platformer*) engine->layer_mgr->get_top();
-		//layer->player_on_ground = false;
+		layer_platformer* layer = (layer_platformer*) engine->layer_mgr->get_top();
+		layer->player_on_ground--;
 	}
 }
 
@@ -68,7 +80,10 @@ void layer_platformer::push()
 	world_geo->draw_debug_info = true;
 	ec = world_geo->add_component<ec_b2d_static>();
 	{
-		auto fixture = ec->add_fixture_chain(
+		// bounding box for world
+
+		ec->add_fixture_chain(
+			IDF_World,
 			w_vec2::zero,
 			{
 				{ 4.0f, 4.0f },
@@ -78,27 +93,14 @@ void layer_platformer::push()
 			}
 		);
 
-		ec->add_fixture_line( { 68.0f, v_window_h - 40.0f }, 150.0f, 8.0f );
-		ec->add_fixture_line( { 0.0f, v_window_h - 80.0f }, 64.0f, -8.0f );
-		ec->add_fixture_line( { 100.0f, v_window_h - 120.0f }, 128.0f, 0.0f );
-		ec->add_fixture_line( { 250.0f, v_window_h - 120.0f }, 64.0f, 0.0f );
-	}
+		// rando lines running vertically
 
-	for( int x = 0 ; x < 12 ; ++x )
-	{
-		float xpos = w_random::getf_range( 0.0f, v_window_w );
-		float ypos = w_random::getf_range( 64.0f, v_window_h );
-
-		if( w_random::geti_range( 0, 4 ) == 0 )
+		for( int y = 16 ; y < v_window_h ; y += 30 )
 		{
-			float sz = w_random::getf_range( 4, 16 );
-			ec->add_fixture_circle( { xpos, ypos }, sz );
-		}
-		else
-		{
-			float sz = w_random::getf_range( 4, 32 );
-			float sz2 = w_random::getf_range( 4, 32 );
-			ec->add_fixture_box( { xpos, ypos }, sz, sz2 );
+			float xpos = w_random::getf_range( 0, v_window_w );
+			float ypos = (float) y;
+			float w = w_random::getf_range( 50, 200 );
+			ec->add_fixture_line( IDF_World, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 		}
 	}
 
@@ -107,17 +109,17 @@ void layer_platformer::push()
 	player = add_entity<w_entity>();
 	player->collision_layer = clayer_player;
 	player->collides_with = clayer_world;
-	player->draw_debug_info = true;
+	//player->draw_debug_info = true;
 	player->set_transform( { 32.0f, 0.0f }, 0, 1 );
 
-	//player->add_component<ec_sprite>()->init( "sprite_mario" );
+	player->add_component<ec_sprite>()->init( "sprite_mario" );
 
 	ec = player->add_component<ec_b2d_dynamic>();
 	ec->body->SetFixedRotation( true );
 
-	b2Fixture* f = ec->add_fixture_circle( w_vec2::zero, 8 );
+	b2Fixture* f = ec->add_fixture_circle( IDF_None, w_vec2::zero, player_radius );
 
-	f = ec->add_fixture_box( { 0, 8 }, 4, 2 );
+	f = ec->add_fixture_box( IDF_PlayerFootSensor, { 0.0f, player_radius }, 10.0f, 4.0f );
 	f->SetSensor( true );
 
 	// ----------------------------------------------------------------------------
@@ -144,7 +146,7 @@ void layer_platformer::update()
 	{
 		if( !player_on_ground )
 		{
-			// remove air control
+			left_stick.x *= 0.5f;
 		}
 
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
@@ -176,10 +178,6 @@ void layer_platformer::draw()
 			contact_listener.points[ 0 ] + ( contact_listener.normal * 16.0f )
 		);
 	}
-
-	//RENDER
-		//->push_rgb( { 0.5f, 0.5f, 1.0f } )
-		//->draw_point( player_trace_hit );
 
 	RENDER->end();
 }
@@ -236,10 +234,19 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 		{
 			if( player_on_ground )
 			{
+				w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
+
 				auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
 				b2Vec2 current = ec->body->GetLinearVelocity();
 
-				ec->body->SetLinearVelocity( { current.x, -player_jump_force } );
+				float dir_modifier = 1.0f;
+				if( !fequals( left_stick.y, 0.0f ) && left_stick.y > 0.0f )
+				{
+					dir_modifier = -0.5f;
+					auto pos = ec->body->GetPosition();
+					ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_radius + 1.0f ) }, 0.0f );
+				}
+				ec->body->SetLinearVelocity( { current.x, (-player_jump_force) * dir_modifier } );
 			}
 		}
 

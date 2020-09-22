@@ -366,60 +366,27 @@ void ec_b2d_body::draw()
 	MATRIX->pop();
 }
 
-b2Fixture* ec_b2d_body::add_fixture_box( w_vec2 offset, float width, float height )
+// rc - the top left of the box (relative to body) and the w/h
+b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_rect rc )
+{
+	w_vec2 pos = { rc.x + ( *rc.w / 2.0f ), rc.y + ( *rc.h / 2.0f ) };
+
+	return add_fixture_box( id, pos, *rc.w, *rc.h );
+}
+
+// pos - middle of box, relative to body
+// w/h - size of box
+b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_vec2 pos, float w, float h )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
 	b2PolygonShape shape;
 	{
-		shape.SetAsBox( to_b2d( width ), to_b2d( height ), offset.to_b2d(), 0.0f );
-	}
-
-	b2FixtureDef fixture;
-	{
-		fixture.shape = &shape;
-		fixture.density = 1.0f;
-		fixture.friction = 0.3f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-	}
-
-	return body->CreateFixture( &fixture );
-}
-
-b2Fixture* ec_b2d_body::add_fixture_circle( w_vec2 offset, float radius )
-{
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
-
-	b2CircleShape shape;
-	{
-		shape.m_radius = to_b2d( radius );
-		shape.m_p.Set( to_b2d( offset.x ), to_b2d( offset.y ) );
-	}
-
-	b2FixtureDef fixture;
-	{
-		fixture.shape = &shape;
-		fixture.density = 1.0f;
-		fixture.friction = 0.3f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-	}
-
-	return body->CreateFixture( &fixture );
-}
-
-b2Fixture* ec_b2d_body::add_fixture_line( w_vec2 offset, float width, float height )
-{
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
-
-	b2EdgeShape shape;
-	{
-		shape.SetOneSided(
-			offset.to_b2d(),
-			offset.to_b2d(),
-			( offset + w_vec2( width, height )).to_b2d(),
-			( offset + w_vec2( width, height )).to_b2d()
+		shape.SetAsBox(
+			to_b2d( w / 2 ),
+			to_b2d( h / 2 ),
+			w_vec2( pos.x, pos.y ).to_b2d(),
+			0.0f
 		);
 	}
 
@@ -430,12 +397,63 @@ b2Fixture* ec_b2d_body::add_fixture_line( w_vec2 offset, float width, float heig
 		fixture.friction = 0.3f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.userData.pointer = id;
 	}
 
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_chain( w_vec2 offset, const std::vector<w_vec2>& verts )
+b2Fixture* ec_b2d_body::add_fixture_circle( unsigned id, w_vec2 pos, float radius )
+{
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+
+	b2CircleShape shape;
+	{
+		shape.m_radius = to_b2d( radius );
+		shape.m_p.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.userData.pointer = id;
+	}
+
+	return body->CreateFixture( &fixture );
+}
+
+b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start, w_vec2 end )
+{
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+
+	b2EdgeShape shape;
+	{
+		shape.SetOneSided(
+			( pos + start ).to_b2d(),
+			( pos + start ).to_b2d(),
+			( pos + end ).to_b2d(),
+			( pos + end ).to_b2d()
+		);
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.userData.pointer = id;
+	}
+
+	return body->CreateFixture( &fixture );
+}
+
+b2Fixture* ec_b2d_body::add_fixture_chain( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
@@ -444,7 +462,7 @@ b2Fixture* ec_b2d_body::add_fixture_chain( w_vec2 offset, const std::vector<w_ve
 
 	for(w_vec2 v : verts)
 	{
-		b2verts.push_back( v.to_b2d() );
+		b2verts.push_back( (v + pos ).to_b2d() );
 	}
 
 	// we pass in the verts in a clockwise winding for compatibility with the
@@ -463,6 +481,7 @@ b2Fixture* ec_b2d_body::add_fixture_chain( w_vec2 offset, const std::vector<w_ve
 		fixture.friction = 0.3f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.userData.pointer = id;
 	}
 
 	return body->CreateFixture( &fixture );

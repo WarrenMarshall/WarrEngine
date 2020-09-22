@@ -6,6 +6,7 @@ struct w_entity_component : i_life_cycle, i_transform
 {
 	e_component_type type = component_type::invalid;
 	w_vec2 pos_interp;
+	unsigned id = 0;
 
 	std::unique_ptr<w_timer> life_timer = nullptr;
 
@@ -86,12 +87,16 @@ struct ec_b2d_body : w_entity_component
 
 	void init_body();
 
-	// offset - an offset from the position of the entity. this allows for things
-	//			like sensors that need to be at a character's feet.
-	b2Fixture* add_fixture_box( w_vec2 offset, float width, float height );
-	b2Fixture* add_fixture_circle( w_vec2 offset, float radius );
-	b2Fixture* add_fixture_line( w_vec2 offset, float width, float height );
-	b2Fixture* add_fixture_chain( w_vec2 offset, const std::vector<w_vec2>& verts );
+	// all vec2 args below are relative to the position of the body
+	//
+	// i.e. if the body is at the world origin, all vec2 args are
+	// effectively world positions
+
+	b2Fixture* add_fixture_box( unsigned id, w_vec2 pos, float w, float h );
+	b2Fixture* add_fixture_box( unsigned id, w_rect rc );
+	b2Fixture* add_fixture_circle( unsigned id, w_vec2 pos, float radius );
+	b2Fixture* add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start, w_vec2 end );
+	b2Fixture* add_fixture_chain( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts );
 
 	virtual void draw() override;
 };
