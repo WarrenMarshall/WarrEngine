@@ -2,22 +2,31 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-bool w_entity::trace_to_closest_point( w_vec2 normal, float dist, e_collision_layer layer_mask, w_vec2* hit_point )
+bool w_entity::trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask )
 {
-	// cast ray into the world
-	w_raycast_callback_closest callback;
+	w_raycast_simple callback;
 	engine->box2d_world->RayCast( &callback, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
 
-	// if we hit something, update the hit_point
-	if( callback.hit_point.has_value() )
-	{
-		*hit_point = { from_b2d( ( *callback.hit_point ).x ), from_b2d( ( *callback.hit_point ).y ) };
-		return true;
-	}
+	return callback.hit_something;
+}
 
-	// if we're here, the trace didn't connect
-	*hit_point = w_vec2::zero;
-	return false;
+bool w_entity::trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result )
+{
+	engine->box2d_world->RayCast( hit_result, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
+
+	return hit_result->hit_something;
+}
+
+bool w_entity::trace_closest( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result )
+{
+	engine->box2d_world->RayCast( hit_result, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
+	return hit_result->hit_something;
+}
+
+bool w_entity::trace_all( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result )
+{
+	engine->box2d_world->RayCast( hit_result, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
+	return hit_result->hit_something;
 }
 
 void w_entity::update_physics()
@@ -195,6 +204,12 @@ bool w_entity::can_be_deleted()
 
 	// entity is fully dead, delete it
 	return true;
+}
+
+void w_entity::set_collision( e_collision_layer layer, e_collision_layer collides_with )
+{
+	this->collision_layer = layer;
+	this->collides_with = collides_with;
 }
 
 void w_entity::set_transform( const w_vec2& pos, const float angle, const float scale )

@@ -1,24 +1,29 @@
 
 #include "app_header.h"
 
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+// JUMP TIMER SO JUMP HEIGHT IS ALWAYS CONSISTENT
+
+
 // ----------------------------------------------------------------------------
 
 constexpr float player_move_force_s = 7.5f;
 constexpr float player_move_force_max = 1.25f;
 constexpr float player_jump_force = 3.0f;
-constexpr float player_radius = 8.0f;
-
-// ----------------------------------------------------------------------------
-
-constexpr unsigned IDF_None = 0;
-constexpr unsigned IDF_PlayerFootSensor = 1;
-constexpr unsigned IDF_World = 2;
-
-// ----------------------------------------------------------------------------
-
-constexpr e_collision_layer clayer_world = collision_layer::bit2;
-constexpr e_collision_layer clayer_player = collision_layer::bit3;
-constexpr e_collision_layer clayer_player2 = collision_layer::bit4;
 
 // ----------------------------------------------------------------------------
 
@@ -102,25 +107,29 @@ void layer_platformer::push()
 			float w = w_random::getf_range( 50, 200 );
 			ec->add_fixture_line( IDF_World, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 		}
+
+		for( int x = 0 ; x < 20 ; ++x )
+		{
+			float xpos = w_random::getf_range( 0.0f, v_window_w );
+			float ypos = w_random::getf_range( 64.0f, v_window_h );
+
+			if( w_random::geti_range( 0, 4 ) == 5 )
+			{
+				float sz = w_random::getf_range( 4, 16 );
+				ec->add_fixture_circle( IDF_World, { xpos, ypos }, sz );
+			}
+			else
+			{
+				float sz = w_random::getf_range( 4, 32 );
+				float sz2 = w_random::getf_range( 4, 32 );
+				ec->add_fixture_box( IDF_World, w_rect( xpos, ypos, sz, sz2 ) );
+			}
+		}
 	}
 
 	// ----------------------------------------------------------------------------
 
-	player = add_entity<w_entity>();
-	player->collision_layer = clayer_player;
-	player->collides_with = clayer_world;
-	//player->draw_debug_info = true;
-	player->set_transform( { 32.0f, 0.0f }, 0, 1 );
-
-	player->add_component<ec_sprite>()->init( "sprite_mario" );
-
-	ec = player->add_component<ec_b2d_dynamic>();
-	ec->body->SetFixedRotation( true );
-
-	b2Fixture* f = ec->add_fixture_circle( IDF_None, w_vec2::zero, player_radius );
-
-	f = ec->add_fixture_box( IDF_PlayerFootSensor, { 0.0f, player_radius }, 10.0f, 4.0f );
-	f->SetSensor( true );
+	player = add_entity<e_platformer_player>();
 
 	// ----------------------------------------------------------------------------
 
@@ -137,8 +146,6 @@ void layer_platformer::push()
 void layer_platformer::update()
 {
 	w_layer::update();
-
-	//player_on_ground = player->trace_to_closest_point( { 0.0f, 1.0f }, 10.0f, clayer_world, &player_trace_hit );
 
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
@@ -164,20 +171,9 @@ void layer_platformer::draw()
 
 	RENDER
 		->begin()
-		->push_rgb( { 1.0f, 0.0f, 0.0f } );
+		->push_rgb( w_color::teal );
 
-	for( auto& v : contact_listener.points )
-	{
-		RENDER->draw_point( v );
-	}
-
-	if( contact_listener.points.size() )
-	{
-		RENDER->draw_line(
-			contact_listener.points[ 0 ],
-			contact_listener.points[ 0 ] + ( contact_listener.normal * 16.0f )
-		);
-	}
+	RENDER->draw_string( engine->pixel_font, fmt::format( "{}", player_on_ground ), w_rect( 16, 16 ) );
 
 	RENDER->end();
 }
@@ -244,7 +240,7 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 				{
 					dir_modifier = -0.5f;
 					auto pos = ec->body->GetPosition();
-					ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_radius + 1.0f ) }, 0.0f );
+					ec->body->SetTransform( { pos.x, pos.y + to_b2d( 8.0f + 1.0f ) }, 0.0f );
 				}
 				ec->body->SetLinearVelocity( { current.x, (-player_jump_force) * dir_modifier } );
 			}

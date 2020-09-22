@@ -19,14 +19,47 @@
 //		- if you get a callback, something was hit( but it may not be the closest )
 //		- return 0 from the callback for efficiency
 //
-// if hit_point == std::nullopt, then the ray didn't hit anything at all.
+// returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-float w_raycast_callback_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float w_raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
-	hit_point = point;
+	hit_something = true;
+
+	hit.fraction = fraction;
+	hit.normal = w_vec2( normal.x, normal.y );
+	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
 
 	return fraction;
+}
+
+// ----------------------------------------------------------------------------
+
+float w_raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+{
+	hit_something = true;
+
+	hit.fraction = fraction;
+	hit.normal = w_vec2( normal.x, normal.y );
+	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
+
+	return 0.0f;
+}
+
+// ----------------------------------------------------------------------------
+
+float w_raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+{
+	hit_something = true;
+
+	w_raycast_hit hit;
+	hit.fraction = fraction;
+	hit.normal = w_vec2( normal.x, normal.y );
+	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
+
+	hits.push_back( std::move( hit ) );
+
+	return 1.0f;
 }
 
 // ----------------------------------------------------------------------------

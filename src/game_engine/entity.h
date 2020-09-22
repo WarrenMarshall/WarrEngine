@@ -2,11 +2,11 @@
 
 struct w_entity : i_life_cycle, i_transform
 {
-	w_layer* parent_layer = nullptr;
-
-	// components
-
+	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
+
+	// the layer that this entity lives on
+	w_layer* parent_layer = nullptr;
 
 	// which collision layer this entity is a part of
 	e_collision_layer collision_layer = 0;
@@ -14,6 +14,8 @@ struct w_entity : i_life_cycle, i_transform
 	// a bitmask of the collision_layer enum that identifies
 	// which collision layers this will collide WITH
 	e_collision_layer collides_with = 0;
+
+	void set_collision( e_collision_layer layer, e_collision_layer collides_with );
 
 	// generic flag to indicate that the component should draw
 	// stuff to indicate it's internal state.
@@ -25,7 +27,10 @@ struct w_entity : i_life_cycle, i_transform
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	virtual bool can_be_deleted();
 
-	bool trace_to_closest_point( w_vec2 normal, float dist, e_collision_layer layer_mask, w_vec2* hit_point );
+	bool trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask );
+	bool trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result );
+	bool trace_closest( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result );
+	bool trace_all( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result );
 
 	virtual void update_physics();
 	virtual void update();

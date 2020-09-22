@@ -2,9 +2,6 @@
 
 struct w_contact_listener : b2ContactListener
 {
-	std::vector<w_vec2> points;
-	w_vec2 normal;
-
 	// Called when two fixtures begin to touch
 	virtual void BeginContact( b2Contact* contact ) override;
 

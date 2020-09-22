@@ -222,7 +222,7 @@ void ec_b2d_body::init_body()
 	}
 
 	body = engine->box2d_world->CreateBody( &body_definition );
-	body->SetUserData( this );
+	body->m_userData.pointer = (uintptr_t) this;
 }
 
 void ec_b2d_body::draw()
