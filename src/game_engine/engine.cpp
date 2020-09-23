@@ -152,6 +152,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		{ // GAME
 
 			log_msg( "Initializing game" );
+			game->init();
 			game->new_game();
 		}
 

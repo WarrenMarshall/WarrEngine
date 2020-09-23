@@ -3,62 +3,6 @@
 
 // ----------------------------------------------------------------------------
 
-constexpr float player_move_force_s = 7.5f;
-constexpr float player_move_force_max = 1.25f;
-constexpr float player_jump_force = 3.0f;
-
-// ----------------------------------------------------------------------------
-
-bool ids_match( b2Contact* contact, unsigned id_1, unsigned id_2 )
-{
-	auto a_id = (unsigned) contact->GetFixtureA()->GetUserData().pointer;
-	auto b_id = (unsigned) contact->GetFixtureB()->GetUserData().pointer;
-
-	return( ( a_id == id_1 && b_id == id_2 ) || ( a_id == id_2 && b_id == id_1 ) );
-}
-
-void w_contact_listener::BeginContact( b2Contact* contact )
-{
-	if( ids_match( contact, IDF_PlayerFootSensor, IDF_World ) )
-	{
-		auto* layer = ( layer_platformer * )engine->layer_mgr->get_top();
-		layer->player_on_ground++;
-	}
-
-	if( ids_match( contact, IDF_PlayerDropSensor, IDF_World ) )
-	{
-		auto* layer = (layer_platformer*) engine->layer_mgr->get_top();
-		layer->player_drop_down_blocked++;
-	}
-}
-
-void w_contact_listener::EndContact( b2Contact* contact )
-{
-	if( ids_match( contact, IDF_PlayerFootSensor, IDF_World ) )
-	{
-		auto* layer = (layer_platformer*) engine->layer_mgr->get_top();
-		layer->player_on_ground--;
-	}
-
-	if( ids_match( contact, IDF_PlayerDropSensor, IDF_World ) )
-	{
-		auto* layer = (layer_platformer*) engine->layer_mgr->get_top();
-		layer->player_drop_down_blocked--;
-	}
-}
-
-void w_contact_listener::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
-{
-
-}
-
-void w_contact_listener::PostSolve( b2Contact* contact, const b2ContactImpulse* impulse )
-{
-
-}
-
-// ----------------------------------------------------------------------------
-
 layer_platformer::layer_platformer()
 {
 	draws_completely_solid = true;
@@ -66,8 +10,7 @@ layer_platformer::layer_platformer()
 
 void layer_platformer::push()
 {
-	timer_jump_limiter = std::make_unique<w_timer>( 100 );
-	engine->box2d_world->SetContactListener( &contact_listener );
+	engine->box2d_world->SetContactListener( my_game->plat_physics.get() );
 
 	ec_b2d_body* ec = nullptr;
 
@@ -80,7 +23,7 @@ void layer_platformer::push()
 		// bounding box for world
 
 		ec->add_fixture_chain(
-			IDF_World,
+			sensor_id::world,
 			w_vec2::zero,
 			{
 				{ 4.0f, 4.0f },
@@ -97,7 +40,7 @@ void layer_platformer::push()
 			float xpos = w_random::getf_range( 0, v_window_w );
 			auto ypos = (float) y;
 			float w = w_random::getf_range( 50, 200 );
-			ec->add_fixture_line( IDF_World, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
+			ec->add_fixture_line( sensor_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 		}
 
 		for( int x = 0 ; x < 40 ; ++x )
@@ -108,13 +51,13 @@ void layer_platformer::push()
 			if( w_random::geti_range( 0, 4 ) == 2 )
 			{
 				float sz = w_random::getf_range( 4, 16 );
-				ec->add_fixture_circle( IDF_World, { xpos, ypos }, sz );
+				ec->add_fixture_circle( sensor_id::world, { xpos, ypos }, sz );
 			}
 			else
 			{
 				float sz = w_random::getf_range( 4, 32 );
 				float sz2 = w_random::getf_range( 4, 32 );
-				ec->add_fixture_box( IDF_World, w_rect( xpos, ypos, sz, sz2 ) );
+				ec->add_fixture_box( sensor_id::world, w_rect( xpos, ypos, sz, sz2 ) );
 			}
 		}
 	}
@@ -122,47 +65,28 @@ void layer_platformer::push()
 	// ----------------------------------------------------------------------------
 
 	player = add_entity<e_platformer_player>();
-
-	// ----------------------------------------------------------------------------
-
-	/*
-	player2 = add_entity<w_entity>();
-	player2->collision_layer = clayer_player2;
-	player2->collides_with = clayer_player;
-	player2->set_transform( { v_window_hw, v_window_hh }, 0, 1 );
-	player2->add_component<ec_sprite>()->init( "sprite_mario" );
-	player2->add_component<ec_b2d_kinematic>()->init_as_circle( 10 );
-	*/
 }
 
 void layer_platformer::update()
 {
 	w_layer::update();
 
-	timer_jump_limiter->update();
-
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
 	if( !fequals( left_stick.x, 0.0f ) )
 	{
-		if( !player_on_ground )
+		if( my_game->plat_physics->in_air() )
 		{
 			left_stick.x *= 0.5f;
 		}
 
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
 		b2Vec2 current = ec->body->GetLinearVelocity();
-		current.x += ( player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
-		float desired = w_clamp( current.x, -player_move_force_max, player_move_force_max );
+		current.x += ( platformer_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
+		float desired = w_clamp( current.x, -platformer_physics::player_move_force_max, platformer_physics::player_move_force_max );
 
 		ec->body->SetLinearVelocity( { desired, current.y } );
 	}
-
-	// query debugging
-
-	//w_query_all q;
-	//w_physics::point_check_all( player->pos + w_vec2( 0.0f, 12.0f ), clayer_world, &q );
-	//fixtures_found_on_query = (int)q.fixtures.size();
 }
 
 void layer_platformer::draw()
@@ -173,8 +97,8 @@ void layer_platformer::draw()
 		->begin()
 		->push_rgb( w_color::teal );
 
-	RENDER->draw_string( engine->pixel_font, fmt::format( "on ground   : {}", player_on_ground ), w_rect( 16, 16 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "drop blocked: {}", player_drop_down_blocked ), w_rect( 16, 24 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "on ground   : {}", !my_game->plat_physics->in_air() ), w_rect( 16, 16 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "drop blocked: {}", !my_game->plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
 
 	//RENDER->draw_point( player->pos + w_vec2( 0.0f, 12.0f ) );
 
@@ -193,47 +117,14 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 			ec->body->SetAngularVelocity( 0 );
 			ec->body->SetAwake( true );
 		}
-
-		if( evt->input_id == input_id::key_right )
-		{
-			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
-
-			b2Vec2 current = ec->body->GetLinearVelocity();
-			float desired = w_min( current.x + 0.2f, 1.0f );
-
-			ec->body->SetLinearVelocity( { desired, current.y } );
-		}
-
-		if( evt->input_id == input_id::key_left )
-		{
-			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
-
-			b2Vec2 current = ec->body->GetLinearVelocity();
-			float desired = w_max( current.x - 0.2f, -1.0f );
-
-			ec->body->SetLinearVelocity( { desired, current.y } );
-		}
-
-		if( evt->input_id == input_id::key_up )
-		{
-			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
-			ec->body->ApplyTorque( to_b2d(20.f), true );
-		}
-
-		if( evt->input_id == input_id::key_down )
-		{
-			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
-			ec->body->ApplyAngularImpulse( to_b2d( 1.f ), true );
-		}
 	}
 
 	if( evt->event_id == event_id::input_pressed )
 	{
 		if( evt->input_id == input_id::key_space || evt->input_id == input_id::controller_button_a )
 		{
-			if( player_on_ground && timer_jump_limiter->get_elapsed_count() )
+			if( my_game->plat_physics->can_jump() )
 			{
-				timer_jump_limiter->reset();
 				w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
 				auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
@@ -242,7 +133,7 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 				float dir_modifier = 1.0f;
 				if( !fequals( left_stick.y, 0.0f ) && left_stick.y > 0.0f )
 				{
-					if( !player_drop_down_blocked )
+					if( my_game->plat_physics->can_drop_down() )
 					{
 						dir_modifier = -0.5f;
 						auto pos = ec->body->GetPosition();
@@ -254,7 +145,8 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 					}
 				}
 
-				ec->body->SetLinearVelocity( { current.x, (-player_jump_force) * dir_modifier } );
+				my_game->plat_physics->timer_jump_limiter->reset();
+				ec->body->SetLinearVelocity( { current.x, (-platformer_physics::player_jump_force) * dir_modifier } );
 			}
 		}
 

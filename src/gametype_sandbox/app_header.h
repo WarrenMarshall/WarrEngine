@@ -1,16 +1,9 @@
 
 #pragma once
 
-#define GAME ((gametype_sandbox_app*)game)
+#define my_game ((gametype_sandbox_app*)game.get())
 
 #include <game_engine.h>
-
-// ----------------------------------------------------------------------------
-
-constexpr unsigned IDF_None = 0;
-constexpr unsigned IDF_PlayerFootSensor = 1;
-constexpr unsigned IDF_PlayerDropSensor = 2;
-constexpr unsigned IDF_World = 3;
 
 // ----------------------------------------------------------------------------
 
@@ -21,6 +14,7 @@ constexpr e_collision_layer clayer_player2 = collision_layer::bit4;
 // ----------------------------------------------------------------------------
 
 #include "layer_main_menu.h"
+#include "game_physics.h"
 #include "gametype_sandbox_app.h"
 
 #include "platformer_entities.h"

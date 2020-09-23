@@ -127,7 +127,7 @@ enum_end
 #undef small	// fixes dumb compile problem
 
 enum_begin( rumble_effect )
-	tiny,
+	tiny = 0,
 	small,
 	medium,
 	large
@@ -207,11 +207,11 @@ enum_end
 
 enum_begin( button_state )
 	invalid = 0,
-	pressed = 1,
-	held = 2,
-	released = 3,
-	up = 4,
-	max = 5
+	pressed,
+	held,
+	released,
+	up,
+	max
 enum_end
 
 // ----------------------------------------------------------------------------
@@ -259,3 +259,10 @@ enum_begin( component_type )
 enum_end
 
 // ----------------------------------------------------------------------------
+
+enum_begin( sensor_id )
+	none = 0,
+	world,
+	ground,
+	area,
+enum_end

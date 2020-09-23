@@ -209,7 +209,8 @@ ec_b2d_body::ec_b2d_body( w_entity* parent_entity )
 
 ec_b2d_body::~ec_b2d_body()
 {
-	engine->box2d_world->DestroyBody( body );
+	// #box2d - this should be happening so we don't get leaks when deleting entities - why does it crash?
+	//engine->box2d_world->DestroyBody( body );
 }
 
 void ec_b2d_body::init_body()
