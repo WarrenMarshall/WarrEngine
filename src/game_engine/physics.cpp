@@ -3,63 +3,74 @@
 #include "master_header.h"
 
 // ----------------------------------------------------------------------------
-// these raycast_callback functions filter hit results from a Box2D raycast.
-//
-// details on how this works : http://www.iforce2d.net/b2dtut/world-querying
-//
-// in short, it depends on what you want to do:
-//
-// To find only the closest intersection :
-//		- return the fraction value from the callback
-//		- use the most recent intersection as the result
-// To find all intersections along the ray :
-//		- return 1 from the callback
-//		- store the intersections in a list
-// To simply find if the ray hits anything :
-//		- if you get a callback, something was hit( but it may not be the closest )
-//		- return 0 from the callback for efficiency
-//
-// returning -1 from any ReportFixture function means you want to ignore that fixture
-// ----------------------------------------------------------------------------
 
-float w_raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask )
 {
-	hit_something = true;
+	w_raycast_simple callback;
+	engine->box2d_world->RayCast( &callback, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
 
-	hit.fraction = fraction;
-	hit.normal = w_vec2( normal.x, normal.y );
-	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
-
-	return fraction;
+	return callback.hit_something;
 }
 
-// ----------------------------------------------------------------------------
-
-float w_raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result )
 {
-	hit_something = true;
+	engine->box2d_world->RayCast( hit_result, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
 
-	hit.fraction = fraction;
-	hit.normal = w_vec2( normal.x, normal.y );
-	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
-
-	return 0.0f;
+	return hit_result->hit_something;
 }
 
-// ----------------------------------------------------------------------------
-
-float w_raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+bool w_physics::trace_closest( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result )
 {
-	hit_something = true;
-
-	w_raycast_hit hit;
-	hit.fraction = fraction;
-	hit.normal = w_vec2( normal.x, normal.y );
-	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
-
-	hits.push_back( std::move( hit ) );
-
-	return 1.0f;
+	engine->box2d_world->RayCast( hit_result, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
+	return hit_result->hit_something;
 }
 
-// ----------------------------------------------------------------------------
+bool w_physics::trace_all( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result )
+{
+	engine->box2d_world->RayCast( hit_result, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
+	return hit_result->hit_something;
+}
+
+bool w_physics::point_check_simple( w_vec2 pos, e_collision_layer layer_mask, w_query_first* hit_result )
+{
+	b2Vec2 bpos = pos.to_b2d();
+
+	b2AABB aabb;
+	aabb.lowerBound = bpos;
+	aabb.upperBound = bpos;
+
+	engine->box2d_world->QueryAABB( hit_result, aabb );
+
+	if( !hit_result->fixture->TestPoint( bpos ) )
+	{
+		hit_result->fixture = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+bool w_physics::point_check_all( w_vec2 pos, e_collision_layer layer_mask, w_query_all* hit_result )
+{
+	b2Vec2 bpos = pos.to_b2d();
+
+	b2AABB aabb;
+	aabb.lowerBound = bpos;
+	aabb.upperBound = bpos;
+
+	engine->box2d_world->QueryAABB( hit_result, aabb );
+
+	std::vector<b2Fixture*> fixtures_hit;
+
+	for( auto f : hit_result->fixtures )
+	{
+		if( f->TestPoint( bpos ) )
+		{
+			fixtures_hit.push_back( f );
+		}
+	}
+
+	hit_result->fixtures = fixtures_hit;
+
+	return ( hit_result->fixtures.size() > 0);
+}

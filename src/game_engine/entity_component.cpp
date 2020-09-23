@@ -426,6 +426,8 @@ b2Fixture* ec_b2d_body::add_fixture_circle( unsigned id, w_vec2 pos, float radiu
 	return body->CreateFixture( &fixture );
 }
 
+// #box2d - does this even work?  seems broken when I try to use it.
+// line appears in a weird place and moves out of sync with entity it's attached to.
 b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );

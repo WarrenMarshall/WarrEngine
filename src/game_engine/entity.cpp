@@ -2,33 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-bool w_entity::trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask )
-{
-	w_raycast_simple callback;
-	engine->box2d_world->RayCast( &callback, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
-
-	return callback.hit_something;
-}
-
-bool w_entity::trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result )
-{
-	engine->box2d_world->RayCast( hit_result, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
-
-	return hit_result->hit_something;
-}
-
-bool w_entity::trace_closest( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result )
-{
-	engine->box2d_world->RayCast( hit_result, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
-	return hit_result->hit_something;
-}
-
-bool w_entity::trace_all( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result )
-{
-	engine->box2d_world->RayCast( hit_result, pos.to_b2d(), ( pos + ( normal * dist ) ).to_b2d() );
-	return hit_result->hit_something;
-}
-
 void w_entity::update_physics()
 {
 	// entities with dynamic rigid bodies need their transforms

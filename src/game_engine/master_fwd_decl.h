@@ -25,3 +25,4 @@ struct w_vec2;
 struct w_vec3;
 struct w_window;
 struct w_layer;
+struct w_physics;

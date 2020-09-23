@@ -16,9 +16,9 @@ struct layer_platformer : w_layer
 {
 	w_contact_listener contact_listener;
 
-	// #todo - replace with use of a sensor
-	//bool player_on_ground = true;
+	std::unique_ptr<w_timer> timer_jump_limiter = nullptr;
 	int player_on_ground = 0;
+	int player_drop_down_blocked = 0;
 
 	layer_platformer();
 

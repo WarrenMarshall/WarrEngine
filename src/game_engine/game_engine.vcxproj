@@ -209,6 +209,7 @@
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
     <ClCompile Include="physics.cpp" />
+    <ClCompile Include="physics_callbacks.cpp" />
     <ClCompile Include="util_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="particle_pool.h" />
     <ClInclude Include="particle_spawner.h" />
     <ClInclude Include="physics.h" />
+    <ClInclude Include="physics_callbacks.h" />
     <ClInclude Include="util_time.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="timer.h" />

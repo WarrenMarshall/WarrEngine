@@ -52,6 +52,7 @@ extern float v_window_h;
 #include "window.h"
 #include "cache_assets.h"
 
+#include "physics_callbacks.h"
 #include "physics.h"
 
 #include "entity_component.h"

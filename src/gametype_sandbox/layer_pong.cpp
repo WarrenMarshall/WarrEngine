@@ -1,12 +1,6 @@
 
 #include "app_header.h"
 
-constexpr e_collision_layer clayer_world = collision_layer::bit2;
-constexpr e_collision_layer clayer_ball = collision_layer::bit3;
-constexpr e_collision_layer clayer_paddle = collision_layer::bit4;
-
-// ----------------------------------------------------------------------------
-
 layer_pong::layer_pong()
 {
 	draws_completely_solid = true;
