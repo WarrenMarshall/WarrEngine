@@ -22,7 +22,7 @@ void layer_platformer::push()
 	{
 		// bounding box for world
 
-		ec->add_fixture_chain(
+		ec->add_fixture_line_loop(
 			sensor_id::world,
 			w_vec2::zero,
 			{
@@ -43,7 +43,7 @@ void layer_platformer::push()
 			ec->add_fixture_line( sensor_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 		}
 
-		for( int x = 0 ; x < 40 ; ++x )
+		for( int x = 0 ; x < 25 ; ++x )
 		{
 			float xpos = w_random::getf_range( 0.0f, v_window_w );
 			float ypos = w_random::getf_range( 64.0f, v_window_h );

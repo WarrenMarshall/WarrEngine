@@ -456,8 +456,11 @@ b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start,
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_chain( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts )
+b2Fixture* ec_b2d_body::add_fixture_line_loop( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
+	// Box2D requirement
+	assert( verts.size() >= 3 );
+
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
@@ -470,11 +473,47 @@ b2Fixture* ec_b2d_body::add_fixture_chain( unsigned id, w_vec2 pos, const std::v
 
 	// we pass in the verts in a clockwise winding for compatibility with the
 	// rest of the engine. box2d wants them wound counter-clockwise.
+
 	std::reverse( b2verts.begin(), b2verts.end() );
 
 	b2ChainShape shape;
 	{
 		shape.CreateLoop( b2verts.data(), static_cast<int>( b2verts.size() ) );
+	}
+
+	b2FixtureDef fixture;
+	{
+		fixture.shape = &shape;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.userData.pointer = id;
+	}
+
+	return body->CreateFixture( &fixture );
+}
+
+b2Fixture* ec_b2d_body::add_fixture_polygon( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts )
+{
+	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+
+	// convert the vertex list into a box2d friendly format
+	std::vector<b2Vec2> b2verts;
+
+	for( w_vec2 v : verts )
+	{
+		b2verts.push_back( ( v + pos ).to_b2d() );
+	}
+
+	// we pass in the verts in a clockwise winding for compatibility with the
+	// rest of the engine. box2d wants them wound counter-clockwise.
+
+	//std::reverse( b2verts.begin(), b2verts.end() );
+
+	b2PolygonShape shape;
+	{
+		shape.Set( b2verts.data(), static_cast<int>( b2verts.size() ) );
 	}
 
 	b2FixtureDef fixture;
