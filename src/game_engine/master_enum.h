@@ -264,5 +264,5 @@ enum_begin( sensor_id )
 	none = 0,
 	world,
 	ground,
-	area,
+	area_01,
 enum_end

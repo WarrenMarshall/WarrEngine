@@ -37,9 +37,9 @@ void layer_platformer::push()
 
 		for( int y = 16 ; y < v_window_h ; y += 30 )
 		{
-			float xpos = w_random::getf_range( 0, v_window_w );
+			float xpos = w_random::getf_range( 0, v_window_hw );
 			auto ypos = (float) y;
-			float w = w_random::getf_range( 50, 200 );
+			float w = w_random::getf_range( 64, v_window_hw );
 			ec->add_fixture_line( sensor_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 		}
 

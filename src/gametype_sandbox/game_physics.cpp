@@ -24,7 +24,7 @@ void platformer_physics::BeginContact( b2Contact* contact )
 		player_on_ground++;
 	}
 
-	if( sensor_ids_match( { sensor_id::area, sensor_id::world } ) )
+	if( sensor_ids_match( { sensor_id::area_01, sensor_id::world } ) )
 	{
 		player_drop_down_blocked++;
 	}
@@ -39,7 +39,7 @@ void platformer_physics::EndContact( b2Contact* contact )
 		player_on_ground--;
 	}
 
-	if( sensor_ids_match( { sensor_id::area, sensor_id::world } ) )
+	if( sensor_ids_match( { sensor_id::area_01, sensor_id::world } ) )
 	{
 		player_drop_down_blocked--;
 	}
