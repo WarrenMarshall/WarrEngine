@@ -21,8 +21,7 @@ w_particle* w_particle_pool::get_next_particle()
 void w_particle_pool::draw()
 {
 	RENDER
-		->begin()
-		->push_depth_nudge( 20 );	// nudge the particles above whatever is rendering at the moment
+		->begin();
 
 	w_particle* particle = particles.get();
 	for( int p = 0 ; p < pool_sz ; ++p )

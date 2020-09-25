@@ -30,4 +30,5 @@ e_platformer_player::e_platformer_player()
 	}
 
 	add_component<ec_sprite>()->init( "sub_plat_player" );
+	add_component<ec_emitter>()->init( "fireball_effect" );
 }

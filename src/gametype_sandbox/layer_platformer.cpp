@@ -109,7 +109,7 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 
 		if( evt->input_id == input_id::key_1 )
 		{
-			player->teleport( engine->input->mouse_vwindow_pos, b_reset_velocity( true ) );
+			player->teleport( engine->input->mouse_vwindow_pos, true );
 		}
 	}
 	return true;
