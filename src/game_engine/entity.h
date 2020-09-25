@@ -2,17 +2,18 @@
 
 struct w_entity : i_life_cycle, i_transform
 {
+	float air_control_damping = 0.25f;
+
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
 	// the layer that this entity lives on
 	w_layer* parent_layer = nullptr;
 
-	// which collision layer this entity is a part of
+	// which collision layer(s) this entity is a part of
 	e_collision_layer collision_layer = 0;
 
-	// a bitmask of the collision_layer enum that identifies
-	// which collision layers this will collide WITH
+	// which collision layer(s) this entity will collide WITH
 	e_collision_layer collides_with = 0;
 
 	void set_collision( e_collision_layer layer, e_collision_layer collides_with );
@@ -21,22 +22,16 @@ struct w_entity : i_life_cycle, i_transform
 	// stuff to indicate it's internal state.
 	bool draw_debug_info = false;
 
-	virtual void set_transform( const w_vec2& pos, const float angle, const float scale ) override;
-	void set_pos( const w_vec2& pos );
-
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	virtual bool can_be_deleted();
-
-	bool trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask );
-	bool trace_simple( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result );
-	bool trace_closest( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result );
-	bool trace_all( w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result );
 
 	virtual void update_physics();
 	virtual void update();
 	virtual void update_components();
 	virtual void draw();
 	virtual void post_spawn();
+
+	void teleport( w_vec2 pos, bool reset_velocity );
 
 	template<typename T> T* add_component()
 	{
@@ -85,13 +80,13 @@ struct w_entity : i_life_cycle, i_transform
 
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
 //
-// an fx entity will live as long as it's components do.
+// NOTE : an fx entity will only live as long as it's components do.
 // therefore, you must make sure that all components added to it will
 // die out on their own.
 //
-// so adding an emitter that spits out particles
-// forever means that this entity will never be deleted. give that
-// emitter a "b_one_shot" flag or a lifetime timer.
+// so adding an emitter that spits out particles forever means that\
+// this entity will never be deleted. give that emitter a "b_one_shot"
+// flag or a lifetime timer.
 
 struct w_entity_fx : w_entity
 {

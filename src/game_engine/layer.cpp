@@ -32,10 +32,6 @@ void w_layer::update()
 		entity->update_physics();
 	}
 
-	// handle collisions
-
-	//update_collisions();
-
 	// update entities and components
 
 	for( const auto& entity : entities )

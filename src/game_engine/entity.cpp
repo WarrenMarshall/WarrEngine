@@ -4,73 +4,38 @@
 
 void w_entity::update_physics()
 {
-	// entities with dynamic rigid bodies need their transforms
+	// entities with box2d components need their transforms
 	// updated as per what the physics engine is reporting.
-
-	// #box2d	- this needs attention. we need to iterate all fixtures on all bodies attached
-	//			to this entity to get it's position.
 	//
-	//			additionally, we need some way to specify one fixture as the primary fixture that
-	//			can be taken to represent the location where we want things like ec_sprites drawn
-	//			or ec_emitters spewing from (in other words, represents the entity location)
+	// NOTE : there should be only one "primary body" attached
+	// to an entity so it is assumed that once we find and
+	// process that one, we're done.
+	//
+	// NOTE : this ignores the fact that you may have multiple
+	// fixtures attached to a body and assumes that the body
+	// position/rotation is representative of where the
+	// entity is in the world.
+
 	for( auto& ec : components )
 	{
-		if( typeid( *ec.get() ) == typeid( ec_b2d_dynamic ) || typeid( *ec.get() ) == typeid( ec_b2d_kinematic ) )
+		if( ec->type & component_type::b2d_dynamic | component_type::b2d_kinematic )
 		{
 			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
+			if( edb->is_primary_body )
+			{
+				b2Vec2 position = edb->body->GetPosition();
 
-			b2Vec2 position = edb->body->GetPosition();
+				position.x = from_b2d( position.x );
+				position.y = from_b2d( position.y );
 
-			position.x = from_b2d( position.x );
-			position.y = from_b2d( position.y );
+				float angle = edb->body->GetAngle();
 
-			float angle = edb->body->GetAngle();
+				set_transform( { position.x, position.y }, rad2deg( angle ), scale );
 
-			set_transform( { position.x, position.y }, rad2deg( angle ), scale );
+				break;
+			}
 		}
 	}
-
-	/*
-	float force_multiplier = 1.0f;
-
-	for( auto& ec : components )
-	{
-		if( typeid( *ec.get() ) == typeid( ec_force_multiplier ) )
-		{
-			ec_force_multiplier* fec = static_cast<ec_force_multiplier*>( ec.get() );
-			force_multiplier += fec->strength;
-		}
-	}
-
-	// accumulate all forces being applied to this entity and compute
-	// a single vector that represents that cumuluative effect.
-
-	physics_cache.forces = w_vec2::zero;
-
-	for( auto& ec : components )
-	{
-		if( typeid(*ec.get()) == typeid(ec_force_constant) )
-		{
-			ec_force_constant* fec = static_cast<ec_force_constant*>( ec.get() );
-
-			w_vec2 dir = w_vec2::from_angle( fec->angle );
-			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength * force_multiplier ) );
-		}
-		if( typeid( *ec.get() ) == typeid( ec_force_dir_accum ) )
-		{
-			ec_force_dir_accum* fec = static_cast<ec_force_dir_accum*>( ec.get() );
-
-			w_vec2 dir = w_vec2::from_angle( fec->angle );
-			physics_cache.forces.add( w_vec2::multiply( dir, fec->strength * force_multiplier ) );
-		}
-	}
-
-	physics_cache.forces.multiply( engine->time->FTS_step_value_s );
-
-	// the position the entity has computed that it WANTS to be in after this update cycle.
-	// this may change once collisions are evaluated.
-	physics_cache.ending_pos = w_vec2::add( pos, physics_cache.forces );
-	*/
 }
 
 void w_entity::update()
@@ -139,6 +104,26 @@ void w_entity::post_spawn()
 	}
 }
 
+// immediately moves the entity and it's dynamic/kinematic bodies to a new position.
+
+void w_entity::teleport( w_vec2 pos, bool reset_velocity )
+{
+	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+
+	for( auto ec : ecs )
+	{
+		ec->body->SetTransform( pos.to_b2d(), 0 );
+
+		if( reset_velocity )
+		{
+			ec->body->SetLinearVelocity( { 0, 0 } );
+			ec->body->SetAngularVelocity( 0 );
+		}
+
+		ec->body->SetAwake( true );
+	}
+}
+
 void w_entity::remove_component( w_entity_component* ec )
 {
 	for( int x = 0 ; x < components.size() ; ++x )
@@ -183,20 +168,6 @@ void w_entity::set_collision( e_collision_layer layer, e_collision_layer collide
 {
 	this->collision_layer = layer;
 	this->collides_with = collides_with;
-}
-
-void w_entity::set_transform( const w_vec2& pos, const float angle, const float scale )
-{
-	i_transform::set_transform( pos, angle, scale );
-}
-
-// set the position of the entity directly, bypassing any physics or forces.
-
-void w_entity::set_pos( const w_vec2& pos )
-{
-	assert( false );
-	// #box2d
-	//this->pos = physics_cache.ending_pos = pos;
 }
 
 void w_entity::set_life_cycle( e_life_cycle life_cycle )

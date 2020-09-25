@@ -5,11 +5,12 @@ e_platformer_player::e_platformer_player()
 {
 	set_collision( clayer_player, clayer_world );
 	set_transform( { 32.0f, 0.0f }, 0, 1 );
-	draw_debug_info = true;
+	//draw_debug_info = true;
 
 	auto ec = add_component<ec_b2d_dynamic>();
 	{
 		ec->body->SetFixedRotation( true );
+		ec->is_primary_body = true;
 
 		ec->add_fixture_polygon(
 			sensor_id::none,
@@ -17,9 +18,9 @@ e_platformer_player::e_platformer_player()
 			{
 				{ -8, -8 },
 				{ 8, -8 },
-				{ 8, 2 },
-				{ 5, 8 },
-				{ -5, 8 },
+				{ 8, 4 },
+				{ 4, 8 },
+				{ -2, 8 },
 				{ -8, 2 }
 			}
 		);
@@ -28,5 +29,5 @@ e_platformer_player::e_platformer_player()
 		ec->add_fixture_box( sensor_id::area_01, { 0.0f, 20.0f }, 12.0f, 16.0f )->SetSensor( true );
 	}
 
-	add_component<ec_sprite>()->init( "sprite_mario" );
+	add_component<ec_sprite>()->init( "sub_plat_player" );
 }

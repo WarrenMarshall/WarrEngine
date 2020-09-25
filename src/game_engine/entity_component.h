@@ -81,6 +81,10 @@ struct ec_b2d_body : w_entity_component
 	b2BodyType body_type = b2_staticBody;
 	b2Body* body = nullptr;
 
+	// the primary body is the one that parent_entity will align
+	// it's transform to each update.
+	bool is_primary_body = false;
+
 	ec_b2d_body() = delete;
 	ec_b2d_body( w_entity* parent_entity );
 	virtual ~ec_b2d_body() override;

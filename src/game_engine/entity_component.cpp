@@ -87,8 +87,8 @@ void ec_sprite::draw()
 		return;
 	}
 
-	// #box2d
-	//w_vec2 pos_interp = w_vec2::multiply( parent_entity->physics_cache.forces, RENDER->frame_interpolate_pct );
+	// NOTE : this was how we used to do moving with interpolation
+	//w_vec2 pos_interp = parent_entity->physics_cache.forces * RENDER->frame_interpolate_pct;
 	//RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
 
 	RENDER->draw_sprite( subtex, w_rect( pos.x, pos.y ) );
@@ -209,8 +209,28 @@ ec_b2d_body::ec_b2d_body( w_entity* parent_entity )
 
 ec_b2d_body::~ec_b2d_body()
 {
-	// #box2d - this should be happening so we don't get leaks when deleting entities - why does it crash?
-	//engine->box2d_world->DestroyBody( body );
+	if( body )
+	{
+		// save a list of fixtures attached to this body to a seperate list and destroy them.
+		// this is the only safe way to destroy fixtures.
+
+		std::basic_string<b2Fixture*> fixtures_to_delete;
+
+		for( b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+		{
+			fixtures_to_delete += fixture;
+		}
+
+		for( auto f : fixtures_to_delete )
+		{
+			body->DestroyFixture( f );
+		}
+
+		// destroy the body itself
+
+		engine->box2d_world->DestroyBody( body );
+		body = nullptr;
+	}
 }
 
 void ec_b2d_body::init_body()
@@ -396,6 +416,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_vec2 pos, float w, float
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
+		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
 		fixture.userData.pointer = id;
@@ -419,6 +440,7 @@ b2Fixture* ec_b2d_body::add_fixture_circle( unsigned id, w_vec2 pos, float radiu
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
+		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
 		fixture.userData.pointer = id;
@@ -427,8 +449,6 @@ b2Fixture* ec_b2d_body::add_fixture_circle( unsigned id, w_vec2 pos, float radiu
 	return body->CreateFixture( &fixture );
 }
 
-// #box2d - does this even work?  seems broken when I try to use it.
-// line appears in a weird place and moves out of sync with entity it's attached to.
 b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
@@ -448,6 +468,7 @@ b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start,
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
+		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
 		fixture.userData.pointer = id;
@@ -486,6 +507,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( unsigned id, w_vec2 pos, const st
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
+		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
 		fixture.userData.pointer = id;
@@ -506,11 +528,6 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( unsigned id, w_vec2 pos, const std:
 		b2verts.push_back( ( v + pos ).to_b2d() );
 	}
 
-	// we pass in the verts in a clockwise winding for compatibility with the
-	// rest of the engine. box2d wants them wound counter-clockwise.
-
-	//std::reverse( b2verts.begin(), b2verts.end() );
-
 	b2PolygonShape shape;
 	{
 		shape.Set( b2verts.data(), static_cast<int>( b2verts.size() ) );
@@ -521,6 +538,7 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( unsigned id, w_vec2 pos, const std:
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
+		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
 		fixture.userData.pointer = id;

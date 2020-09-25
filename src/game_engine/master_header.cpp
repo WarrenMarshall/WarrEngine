@@ -7,4 +7,4 @@ float v_window_h = 240;
 
 std::unique_ptr<w_logfile> logfile;
 std::unique_ptr<w_engine> engine;
-std::unique_ptr<w_game> game = nullptr;
+std::unique_ptr<w_game> base_game = nullptr;

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define GAME ((hello_world_app*)game)
+#define game static_cast<hello_world_app*>(base_game.get())
 
 // ----------------------------------------------------------------------------
 

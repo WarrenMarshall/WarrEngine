@@ -19,7 +19,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			// get the log file running so we can immediately start writing into it
 			logfile = std::make_unique<w_logfile>();
-			logfile->init( game->name );
+			logfile->init( base_game->name );
 		}
 
 		{ // ENGINE
@@ -34,7 +34,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			engine->init();
 
 			engine->fs->create_path_if_not_exist( "data/game_engine" );
-			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", game->name ) );
+			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", base_game->name ) );
 		}
 
 		// #todo : write a proper command line parsing class
@@ -78,7 +78,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			// read asset definitions and cache them
 			log_msg( "Caching asset definitions (*.asset_def)..." );
 			engine->cache_asset_definition_files( "data/game_engine" );
-			engine->cache_asset_definition_files( fmt::format( "data/{}", game->name ) );
+			engine->cache_asset_definition_files( fmt::format( "data/{}", base_game->name ) );
 
 			// this feels like an odd dance, but the idea is that we:
 			//
@@ -94,13 +94,13 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			// do the preprocess pass first so the symbols are in memory
 			log_msg( "Precaching resources from definition files..." );
-			engine->precache_asset_resources( 0, game->name );
+			engine->precache_asset_resources( 0, base_game->name );
 
 			// parse INI files after the preprocess pass so they can
 			// use preprocessor symbols
 			log_msg( "Caching configuration (*.ini)..." );
 			engine->parse_config_files( "data/game_engine" );
-			engine->parse_config_files( fmt::format( "data/{}", game->name ) );
+			engine->parse_config_files( fmt::format( "data/{}", base_game->name ) );
 
 			// put the k/v pairs from the INI files into the global symbol
 			// table so they can be referenced by assets in the asset_def files
@@ -114,7 +114,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			constexpr int num_asset_def_passes = 3;
 			for( int pass = 1; pass < num_asset_def_passes; ++pass )
 			{
-				engine->precache_asset_resources( pass, game->name );
+				engine->precache_asset_resources( pass, base_game->name );
 			}
 		}
 
@@ -152,8 +152,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		{ // GAME
 
 			log_msg( "Initializing game" );
-			game->init();
-			game->new_game();
+			base_game->init();
+			base_game->new_game();
 		}
 
 		{ // INPUT
@@ -263,10 +263,9 @@ void w_engine::exec_main_loop()
 		{
 			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
 
-			engine->update();
-			game->update();
-
 			engine->box2d_world->Step( w_time::FTS_step_value_s, box2d_velocityIterations, box2d_positionIterations );
+			engine->update();
+			base_game->update();
 		}
 
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed

@@ -2,6 +2,8 @@
 
 struct w_layer_mgr : i_listener
 {
+	~w_layer_mgr();
+
 	/*
 		the layers are stored front-to-back
 

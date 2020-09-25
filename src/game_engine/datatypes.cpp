@@ -151,8 +151,6 @@ w_rect::w_rect( w_vec2 top_left, w_vec2 bottom_right )
 
 // ----------------------------------------------------------------------------
 
-// #todo - https://www.rapidtables.com/web/color/RGB_Color.html#color-table
-
 const w_color w_color::white = w_color( 1.0f, 1.0f, 1.0f );
 const w_color w_color::black = w_color( 0.0f, 0.0f, 0.0f );
 const w_color w_color::red = w_color( 1.0f, 0.0f, 0.0f );

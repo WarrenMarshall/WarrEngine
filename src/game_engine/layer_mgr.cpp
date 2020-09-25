@@ -2,6 +2,19 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+w_layer_mgr::~w_layer_mgr()
+{
+	// Give each layer a chance to clean up before the manager shuts down.
+
+	for( size_t x = 0 ; x < layer_stack.size() ; ++x )
+	{
+		w_layer* layer = layer_stack[ x ].get();
+		layer->pop();
+	}
+
+	layer_stack.clear();
+}
+
 void w_layer_mgr::pop()
 {
 	w_layer* layer = nullptr;

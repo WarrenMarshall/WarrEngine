@@ -198,6 +198,8 @@ using w_pos = w_vec2;
 
 using b_silent = bool;
 using b_sensor = bool;
+using b_reset_velocity = bool;
+using b_reset_rotation = bool;
 
 // ----------------------------------------------------------------------------
 
