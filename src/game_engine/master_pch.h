@@ -117,6 +117,11 @@
 
 constexpr float W_PI = 3.14159265358979323846f;
 
+// used to convert color values in the range 0-255 to 0-1
+// i.e. color.r = 168.0f * byte_color_to_float;
+//
+constexpr float byte_color_to_float = 1.0f / 255.0f;
+
 // ----------------------------------------------------------------------------
 // standard rendering start depths
 
@@ -198,8 +203,6 @@ using w_pos = w_vec2;
 
 using b_silent = bool;
 using b_sensor = bool;
-using b_reset_velocity = bool;
-using b_reset_rotation = bool;
 
 // ----------------------------------------------------------------------------
 

@@ -26,6 +26,6 @@ struct w_particle : i_transform
 	w_particle();
 
 	void update();
-	bool is_alive();
-	void init_to_new();
+	constexpr bool is_alive();
+	constexpr void init_to_new();
 };

@@ -115,7 +115,7 @@ bool ec_emitter::is_fully_dead()
 {
 	if( w_entity_component::is_fully_dead() )
 	{
-		if( is_dying() && emitter->particle_pool->num_particles_alive == 0 )
+		if( is_dying() && emitter->particle_pool->num_alive == 0 )
 		{
 			return true;
 		}

@@ -3,17 +3,16 @@
 #include "master_header.h"
 
 w_particle_pool::w_particle_pool( int num_particles )
+	: pool_sz( num_particles )
 {
-	particles = std::make_unique<w_particle[]>( num_particles );
-	this->num_particles = num_particles;
-
+	particles = std::make_unique<w_particle[]>( pool_sz );
 	//log_msg( "Creating a particle pool with {} particles", num_particles );
 }
 
 w_particle* w_particle_pool::get_next_particle()
 {
 	// move the idx ahead by 1, wrapping around from the end to the start
-	idx = ( idx + 1 ) % num_particles;
+	idx = ( idx + 1 ) % pool_sz;
 
 	// return a pointer to the particle at that index.
 	return particles.get() + idx;
@@ -26,7 +25,7 @@ void w_particle_pool::draw()
 		->push_depth_nudge( 20 );	// nudge the particles above whatever is rendering at the moment
 
 	w_particle* particle = particles.get();
-	for( int p = 0 ; p < num_particles ; ++p )
+	for( int p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
 		{
@@ -76,13 +75,14 @@ void w_particle_pool::draw()
 
 void w_particle_pool::update()
 {
-	num_particles_alive = 0;
+	num_alive = 0;
+
 	w_particle* particle = particles.get();
-	for( int p = 0 ; p < num_particles ; ++p )
+	for( int p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
 		{
-			num_particles_alive++;
+			num_alive++;
 			particle->update();
 		}
 

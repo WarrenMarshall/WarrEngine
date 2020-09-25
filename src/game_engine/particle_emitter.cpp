@@ -41,7 +41,7 @@ void w_particle_emitter::update()
 
 	// if we are below the max particle count, spawn more particles
 
-	if( particle_pool->num_particles_alive < max_particles_alive )
+	if( particle_pool->num_alive < max_particles_alive )
 	{
 		int particles_to_spawn = 0;
 
@@ -63,9 +63,9 @@ void w_particle_emitter::update()
 		{
 			// if 'particles_to_spawn' would go over the max limit, drop it down so
 			// we will hit the max exactly.
-			if( particle_pool->num_particles_alive + particles_to_spawn > max_particles_alive )
+			if( particle_pool->num_alive + particles_to_spawn > max_particles_alive )
 			{
-				particles_to_spawn = max_particles_alive - particle_pool->num_particles_alive;
+				particles_to_spawn = max_particles_alive - particle_pool->num_alive;
 			}
 
 			assert( particles_to_spawn > 0 );

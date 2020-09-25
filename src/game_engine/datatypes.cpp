@@ -175,7 +175,7 @@ w_color::w_color( float r, float g, float b, float a )
 }
 
 w_color::w_color( int r, int g, int b, int a )
-	: w_color( r / 255.f, g / 255.f, b / 255.f, a / 255.f )
+	: w_color( r * byte_color_to_float, g * byte_color_to_float, b * byte_color_to_float, a * byte_color_to_float )
 {
 }
 

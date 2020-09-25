@@ -24,12 +24,12 @@ void w_particle::update()
 	spin = fmod( spin, 360.f );
 }
 
-bool w_particle::is_alive()
+constexpr bool w_particle::is_alive()
 {
 	return life_span > 0;
 }
 
-void w_particle::init_to_new()
+constexpr void w_particle::init_to_new()
 {
 	life_span = 0.0f;
 	life_span_save = 0.0f;

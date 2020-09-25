@@ -9,16 +9,15 @@
 struct w_particle_pool
 {
 	// particle object pool
-	//std::unique_ptr< std::vector<w_particle>> particles;
 	std::unique_ptr<w_particle[]> particles = nullptr;
-	int num_particles = -1;
+	int pool_sz = -1;
 
 	// which particle we're going to use next. this wraps around the vector
 	// above, endlessly, re-using particles.
 	int idx = 0;
 
 	// the number of particles in the pool that are currently alive.
-	int num_particles_alive = 0;
+	int num_alive = 0;
 
 	w_particle_pool( int num_particles );
 
