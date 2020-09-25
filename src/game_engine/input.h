@@ -50,7 +50,6 @@ struct w_input : i_speaker
 	bool is_control_down();
 	bool is_alt_down();
 
-	// #todo : these functions should be unified into a single call somehow. make it easy.
 	e_button_state get_button_state( e_input_id input_id );
 	w_vec2 get_axis_state( e_input_id input_id );
 

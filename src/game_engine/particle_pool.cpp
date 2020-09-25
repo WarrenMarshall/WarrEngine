@@ -4,8 +4,8 @@
 
 w_particle_pool::w_particle_pool( int num_particles )
 {
-	// #todo - can't this just be a block of memory we allocate? why incur the overhead of the std::vector?
-	particles = std::make_unique<std::vector<w_particle>>( num_particles );
+	particles = std::make_unique<w_particle[]>( num_particles );
+	this->num_particles = num_particles;
 
 	//log_msg( "Creating a particle pool with {} particles", num_particles );
 }
@@ -13,65 +13,79 @@ w_particle_pool::w_particle_pool( int num_particles )
 w_particle* w_particle_pool::get_next_particle()
 {
 	// move the idx ahead by 1, wrapping around from the end to the start
-	idx++;
-	idx %= particles->size();
+	idx = ( idx + 1 ) % num_particles;
 
 	// return a pointer to the particle at that index.
-	return &( *particles )[idx];
+	return particles.get() + idx;
 }
 
 void w_particle_pool::draw()
 {
-	for( auto& iter : *particles )
-	{
-		if( iter.is_alive() )
-		{
-			float interp_life_span = RENDER->calc_interpolated_per_sec_value( iter.life_span, -engine->time->FTS_step_value_ms );
+	RENDER
+		->begin()
+		->push_depth_nudge( 20 );	// nudge the particles above whatever is rendering at the moment
 
-			float pct_of_life = fabs( 1.0f - ( interp_life_span / iter.life_span_save ) );
+	w_particle* particle = particles.get();
+	for( int p = 0 ; p < num_particles ; ++p )
+	{
+		if( particle->is_alive() )
+		{
+			float interp_life_span = RENDER->calc_interpolated_per_sec_value( particle->life_span, -engine->time->FTS_step_value_ms );
+
+			float pct_of_life = fabs( 1.0f - ( interp_life_span / particle->life_span_save ) );
 			pct_of_life = w_clamp( pct_of_life, 0.0f, 1.0f );
 
 			// color + alpha
 			w_color color;
-			iter.params->t_color->get_value( pct_of_life, &color );
-			iter.params->t_alpha->get_value( pct_of_life, &color.a );
+			particle->params->t_color->get_value( pct_of_life, &color );
+			particle->params->t_alpha->get_value( pct_of_life, &color.a );
 
 			// scale
 			float scale;
-			iter.params->t_scale->get_value( pct_of_life, &scale );
+			particle->params->t_scale->get_value( pct_of_life, &scale );
 
-			float interp_angle = RENDER->calc_interpolated_per_sec_value( iter.spin, iter.spin_per_sec );
+			float interp_angle = RENDER->calc_interpolated_per_sec_value( particle->spin, particle->spin_per_sec );
 
-			//w_vec2 v = w_vec2::from_angle( iter.a_dir );
-			w_vec2 v = iter.v_dir;
+			w_vec2 v = particle->v_dir;
 			w_vec2 interp_pos(
-				RENDER->calc_interpolated_per_sec_value( iter.pos.x, ( v.x * iter.velocity_per_sec ) ),
-				RENDER->calc_interpolated_per_sec_value( iter.pos.y, ( v.y * iter.velocity_per_sec ) )
+				RENDER->calc_interpolated_per_sec_value( particle->pos.x, ( v.x * particle->velocity_per_sec ) ),
+				RENDER->calc_interpolated_per_sec_value( particle->pos.y, ( v.y * particle->velocity_per_sec ) )
 			);
 
-			// #optimization	- bypassing the render state stacks would make this more performant
-			//					- just set the color/alpha directly, and skip the push/pop for every particle
-			RENDER
-				->begin()
-				->push_rgba( color )
-				->push_scale( iter.base_scale * scale )
-				->push_angle( interp_angle )
-				->push_depth_nudge( 250 )	// kind of nudge the particles above whatever is rendering at the moment
-				->draw_sprite( iter.tex->get_subtexture(), interp_pos )
-				->end();
+			// the particle system issues a LOT of draw calls and these values are changing for every
+			// particle. it doesn't make sense to go through the render_state stack calls to set these
+			// so we just set the directly here.
+			//
+			// the call to RENDER->end() at the end of the function resets the render_state stacks so
+			// there's no harm done here. it's just a faster way of telling the renderer what each
+			// particle wants.
+
+			RENDER->rs_color_stack = { color.r, color.g, color.b };
+			RENDER->rs_alpha_stack = color.a;
+			RENDER->rs_scale_stack = particle->base_scale * scale;
+			RENDER->rs_angle_stack = interp_angle;
+
+			RENDER->draw_sprite( particle->tex->get_subtexture(), interp_pos );
 		}
+
+		particle++;
 	}
+
+	RENDER->end();
 }
 
 void w_particle_pool::update()
 {
 	num_particles_alive = 0;
-	for( auto& iter : *particles )
+	w_particle* particle = particles.get();
+	for( int p = 0 ; p < num_particles ; ++p )
 	{
-		if( iter.is_alive() )
+		if( particle->is_alive() )
 		{
 			num_particles_alive++;
-			iter.update();
+			particle->update();
 		}
+
+		particle++;
 	}
 }

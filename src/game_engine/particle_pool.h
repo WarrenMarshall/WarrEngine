@@ -9,8 +9,10 @@
 struct w_particle_pool
 {
 	// particle object pool
-	std::unique_ptr< std::vector<w_particle>> particles;
-	
+	//std::unique_ptr< std::vector<w_particle>> particles;
+	std::unique_ptr<w_particle[]> particles = nullptr;
+	int num_particles = -1;
+
 	// which particle we're going to use next. this wraps around the vector
 	// above, endlessly, re-using particles.
 	int idx = 0;

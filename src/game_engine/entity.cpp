@@ -18,7 +18,7 @@ void w_entity::update_physics()
 
 	for( auto& ec : components )
 	{
-		if( ec->type & component_type::b2d_dynamic | component_type::b2d_kinematic )
+		if( ec->type & (component_type::b2d_dynamic | component_type::b2d_kinematic) )
 		{
 			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )

@@ -10,6 +10,8 @@ void layer_default::push()
 {
 	test_entity = add_entity<w_entity>();
 	test_entity->set_transform( { v_window_hw, v_window_hh }, 0, 1 );
+	test_entity->add_component<ec_sprite>()->init( "sub_cartoon_star" );
+	test_entity->add_component<ec_emitter>()->init( "background_fire_up" );
 }
 
 void layer_default::draw()

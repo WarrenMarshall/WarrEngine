@@ -37,8 +37,6 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", base_game->name ) );
 		}
 
-		// #todo : write a proper command line parsing class
-		//		 : NOTE : wait until we have a need for a command line arg first
 		{	// COMMAND LINE
 
 		}
