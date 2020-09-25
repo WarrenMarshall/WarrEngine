@@ -432,7 +432,7 @@ w_render* w_render::draw_stats()
 		stat_lines.reserve( stats_draw_reserve );
 
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS / UPDATE : {} FPS",
-											  f_commas( stats.frame_count.value ),
+											  f_commas( 1000.f / stats.frame_times_ms.value ),
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
 		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
 											  f_commas( stats.render_buffers.value ),
@@ -476,7 +476,8 @@ w_render* w_render::draw_stats()
 			->push_align( align::right )
 			->draw_string(
 				engine->pixel_font,
-				fmt::format( "{} FPS", f_commas( stats.frame_count.value ) ),
+				fmt::format( "{} FPS", f_commas( 1000.f / stats.frame_times_ms.value ) ),
+				//fmt::format( "{} FPS ({:.2f} ms)", f_commas( 1000.f / stats.frame_times_ms.value ), stats.frame_times_ms.value ),
 				w_rect( v_window_w, 0 ) )
 			->end();
 	}
