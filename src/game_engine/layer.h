@@ -50,8 +50,6 @@ struct w_layer : i_life_cycle
 
 		T* new_entity = static_cast<T*>( entities.back().get() );
 		new_entity->parent_layer = this;
-		//new_entity->set_transform( pos, angle, scale );
-		new_entity->post_spawn();
 
 		return new_entity;
 	}

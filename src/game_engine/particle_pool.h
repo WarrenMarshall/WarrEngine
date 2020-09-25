@@ -8,6 +8,8 @@
 */
 struct w_particle_pool
 {
+	w_particle_emitter* parent_emitter = nullptr;
+
 	// particle object pool
 	std::unique_ptr<w_particle[]> particles = nullptr;
 	int pool_sz = -1;

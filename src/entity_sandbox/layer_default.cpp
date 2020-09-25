@@ -21,14 +21,43 @@ void layer_default::draw()
 
 bool layer_default::handle_input_event( const w_input_event* evt )
 {
+	if( evt->event_id == event_id::input_motion )
+	{
+		if( evt->input_id == input_id::mouse )
+		{
+			test_entity->set_position( engine->input->mouse_vwindow_pos );
+		}
+	}
+
 	if( evt->event_id == event_id::input_released )
 	{
+		if( evt->input_id == input_id::key_left_bracket )
+		{
+			test_entity->set_scale( test_entity->scale - 0.25f );
+		}
+
+		if( evt->input_id == input_id::key_right_bracket )
+		{
+			test_entity->set_scale( test_entity->scale + 0.25f );
+		}
+
+		if( evt->input_id == input_id::key_c )
+		{
+			for( auto& e : entities )
+			{
+				if( e.get() != test_entity )
+				{
+					e->set_life_cycle( life_cycle::dying );
+				}
+			}
+		}
+
 		if( evt->input_id == input_id::key_space )
 		{
-			//auto efx = add_entity<w_entity_fx>();
-			//efx->set_transform( test_entity->pos, 0, 1 );
-			//efx->add_component<ec_emitter>()->init( "powup_pickup" );
-			//efx->add_component<ec_sound>()->init( "powup_hit" );
+			auto e = add_entity<w_entity>();
+			e->set_transform( engine->input->mouse_vwindow_pos, 0, 1 );
+			//e->add_component<ec_sprite>()->init( "sub_cartoon_star" );
+			e->add_component<ec_emitter>()->init( "background_fire_up" );
 		}
 	}
 

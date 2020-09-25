@@ -22,9 +22,10 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 	}
 
 	particle_pool = std::make_unique<w_particle_pool>( max_particles_alive );
+	particle_pool->parent_emitter = this;
 }
 
-void w_particle_emitter::post_spawn()
+void w_particle_emitter::post_init()
 {
 	if( params->b_needs_warm_up )
 	{
@@ -109,7 +110,6 @@ void w_particle_emitter::spawn_particle()
 			p->a_dir = parent_component->parent_entity->angle_facing;
 			p->a_dir += params->r_dir_var.get_value();
 			p->v_dir = w_vec2::from_angle( p->a_dir );
-			p->a_dir = -999;
 		}
 		break;
 
@@ -119,7 +119,6 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component->parent_entity );
 
 			p->v_dir = ( p->pos - parent_component->parent_entity->pos ).normalize();
-			p->a_dir = -999;
 		}
 		break;
 
@@ -128,7 +127,6 @@ void w_particle_emitter::spawn_particle()
 			p->a_dir = params->a_dir;
 			p->a_dir += params->r_dir_var.get_value();
 			p->v_dir = w_vec2::from_angle( p->a_dir );
-			p->a_dir = -999;
 		}
 		break;
 	}
@@ -136,7 +134,7 @@ void w_particle_emitter::spawn_particle()
 	p->params = params;
 	p->life_span_save = p->life_span = params->r_lifespan.get_value();
 	p->velocity_per_sec = params->r_velocity_spawn.get_value();
-	p->base_scale = params->r_scale_spawn.get_value();
+	p->base_scale = params->r_scale_spawn.get_value() * parent_component->parent_entity->scale;
 	p->spin_per_sec = params->r_spin_per_sec.get_value();
 	p->spin = params->r_spin_spawn.get_value();
 }
@@ -150,29 +148,13 @@ void w_particle_emitter::spawn_particle()
 */
 void w_particle_emitter::warm_up()
 {
-	// #todo - this needs to be change to warm up in fixed time steps
-	/*
 	float max_life_span = params->r_lifespan.max;
-
-	engine->time->delta_ms = 1000;
-	engine->time->delta_s = engine->time->delta_ms / 1000.f;
-	engine->time->fts_accum_ms = 0;
 
 	while( max_life_span > 0 )
 	{
-		engine->time->fts_accum_ms += engine->time->delta_ms;
-
-		while( engine->time->fts_accum_ms >= w_time::FTS_step_value_ms )
-		{
-			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
-			update();
-		}
-
+		update();
 		particle_pool->update();
 
-		max_life_span -= engine->time->delta_ms;
+		max_life_span -= engine->time->FTS_step_value_ms;
 	}
-
-	engine->time->prev_frame_ms = engine->time->get_ticks();
-	*/
 }

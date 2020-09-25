@@ -30,8 +30,6 @@ void w_particle_spawner_box::find_spawn_pos_for_new_particle( w_particle* partic
 {
 	particle->pos.x = w_range( -( w / 2.0f ), ( w / 2.0f ) ).get_value();
 	particle->pos.y = w_range( -( h / 2.0f ), ( h / 2.0f ) ).get_value();
-
-	//MATRIX->top()->transform_vec2( particle->pos );
 }
 
 void w_particle_spawner_box::parse_from_config_string( std::string_view value )
@@ -65,8 +63,6 @@ void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* par
 	// the particle somewhere within the spawn zone
 	particle->pos.x *= radius * w_random::getf();
 	particle->pos.y *= radius * w_random::getf();
-
-	//MATRIX->top()->transform_vec2( particle->pos );
 }
 
 void w_particle_spawner_circle::parse_from_config_string( std::string_view value )

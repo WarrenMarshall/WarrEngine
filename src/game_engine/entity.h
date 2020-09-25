@@ -29,7 +29,6 @@ struct w_entity : i_life_cycle, i_transform
 	virtual void update();
 	virtual void update_components();
 	virtual void draw();
-	virtual void post_spawn();
 
 	void teleport( w_vec2 pos, bool reset_velocity );
 

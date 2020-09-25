@@ -17,7 +17,7 @@ void w_particle::update()
 	}
 
 	w_vec2 v = v_dir;
-	pos.x += v.x * ( velocity_per_sec * w_time::FTS_step_value_s );
+ 	pos.x += v.x * ( velocity_per_sec * w_time::FTS_step_value_s );
 	pos.y += v.y * ( velocity_per_sec * w_time::FTS_step_value_s );
 
 	spin += spin_per_sec * w_time::FTS_step_value_s;

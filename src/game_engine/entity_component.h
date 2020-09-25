@@ -23,7 +23,7 @@ struct w_entity_component : i_life_cycle, i_transform
 	virtual bool is_fully_dead();
 	virtual void draw() {}
 	virtual void update();
-	virtual void post_spawn() {}
+	virtual void post_init() {}
 
 	virtual void set_life_timer( int life_in_ms );
 };
@@ -56,7 +56,7 @@ struct ec_emitter : w_entity_component
 	virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
-	virtual void post_spawn() override;
+	virtual void post_init() override;
 };
 
 // ----------------------------------------------------------------------------

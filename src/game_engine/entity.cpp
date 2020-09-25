@@ -90,20 +90,6 @@ void w_entity::draw()
 	}
 }
 
-// let's components do anything that need to do after the entity
-// is fully spawned.
-//
-// i.e. emitters might need to warm up
-// #todo - is this needed anymore or even the right solution? feels messy
-
-void w_entity::post_spawn()
-{
-	for( const auto& iter : components )
-	{
-		iter->post_spawn();
-	}
-}
-
 // immediately moves the entity and it's dynamic/kinematic bodies to a new position.
 
 void w_entity::teleport( w_vec2 pos, bool reset_velocity )

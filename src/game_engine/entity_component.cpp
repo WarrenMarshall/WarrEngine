@@ -108,6 +108,8 @@ w_entity_component* ec_emitter::init( const std::string_view params_name )
 	emitter->set_params( engine->get_asset<a_emitter_params>( params_name ) );
 	emitter->parent_component = this;
 
+	post_init();
+
 	return this;
 }
 
@@ -168,9 +170,19 @@ void ec_emitter::set_life_cycle( e_life_cycle life_cycle )
 	}
 }
 
-void ec_emitter::post_spawn()
+void ec_emitter::post_init()
 {
-	emitter->post_spawn();
+	// particle warm ups require the parent and component transforms to be applied
+	// so the warmed up particles spawn at the right position in the world.
+
+	MATRIX
+		->push()
+		->add_transform( parent_entity->pos, parent_entity->angle_facing, parent_entity->scale )
+		->add_transform( pos, angle_facing, scale );
+
+	emitter->post_init();
+
+	MATRIX->pop();
 }
 
 // ----------------------------------------------------------------------------
