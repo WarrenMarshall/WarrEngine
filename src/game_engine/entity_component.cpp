@@ -91,7 +91,7 @@ void ec_sprite::draw()
 	//w_vec2 pos_interp = parent_entity->physics_cache.forces * RENDER->frame_interpolate_pct;
 	//RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
 
-	RENDER->draw_sprite( subtex, w_rect( pos.x, pos.y ) );
+	RENDER->draw_sprite( subtex, pos );
 }
 
 // ----------------------------------------------------------------------------
@@ -390,9 +390,9 @@ void ec_b2d_body::draw()
 // rc - the top left of the box (relative to body) and the w/h
 b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_rect rc )
 {
-	w_vec2 pos = { rc.x + ( *rc.w / 2.0f ), rc.y + ( *rc.h / 2.0f ) };
+	w_vec2 pos = { rc.x + ( rc.w / 2.0f ), rc.y + ( rc.h / 2.0f ) };
 
-	return add_fixture_box( id, pos, *rc.w, *rc.h );
+	return add_fixture_box( id, pos, rc.w, rc.h );
 }
 
 // pos - middle of box, relative to body

@@ -91,18 +91,18 @@ a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& r
 	if( rc.w == -1 ) { rc_src.w = tex->w; }
 	if( rc.h == -1 ) { rc_src.h = tex->h; }
 
-	rc_src.y = tex->h - rc.y - *rc_src.h;
+	rc_src.y = tex->h - rc.y - rc_src.h;
 
-	sz.w = *rc_src.w;
-	sz.h = *rc_src.h;
+	sz.w = rc_src.w;
+	sz.h = rc_src.h;
 
 	uv00 = w_uv(
 		rc_src.x / tex->w,
 		rc_src.y / tex->h
 	);
 	uv11 = w_uv(
-		( rc_src.x + *rc_src.w ) / tex->w,
-		( rc_src.y + *rc_src.h ) / tex->h
+		( rc_src.x + rc_src.w ) / tex->w,
+		( rc_src.y + rc_src.h ) / tex->h
 	);
 }
 

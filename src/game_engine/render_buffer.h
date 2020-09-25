@@ -9,26 +9,6 @@ struct w_render_vert
 	float x, y, z;
 	float u, v;
 	float r, g, b, a;
-
-    bool is_same( const w_render_vert& other )
-    {
-		assert( false );	// this shouldn't be getting called from anywhere - why are you here?
-
-		if( !fequals( x, other.x )
-            || !fequals( y, other.y )
-            || !fequals( z, other.z )
-            || !fequals( u, other.u )
-            || !fequals( v, other.v )
-            || !fequals( r, other.r )
-            || !fequals( g, other.g )
-            || !fequals( b, other.b )
-            || !fequals( a, other.a ) )
-        {
-            return false;
-        }
-
-        return true;
-    }
 };
 
 // ----------------------------------------------------------------------------
@@ -38,11 +18,11 @@ struct w_render_buffer
 	w_render_buffer();
 	~w_render_buffer();
 
-	unsigned int usage = GL_DYNAMIC_DRAW;
+	static unsigned int buffer_usage;
 
 	std::vector<w_render_vert> vertices;
 
-	// indexes, in groups of 3 (aka triangles), into vertices array
+	// indexes, in groups of 3 (aka triangles), indexing into the vertices array
 	std::vector<unsigned int> indices;
 
 	void add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 );

@@ -11,6 +11,8 @@ w_render_vert::w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& 
 
 // ----------------------------------------------------------------------------
 
+unsigned int w_render_buffer::buffer_usage = GL_DYNAMIC_DRAW;
+
 w_render_buffer::w_render_buffer()
 {
     glGenVertexArrays( 1, &VAO );
@@ -46,7 +48,6 @@ w_render_buffer::~w_render_buffer()
     glDeleteVertexArrays( 1, &VAO );
 }
 
-// #todo - change this so that it sorts verts into buckets based on the current blending mode, not the render pass
 void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
 {
     // this looks a little messy but since we know that vertices 0 and 2 are going to be shared
@@ -89,8 +90,8 @@ void w_render_buffer::draw( a_texture* tex )
    		tex->bind();
 
         // send the data to the video card
-        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_vert ), vertices.data(), usage );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), usage );
+        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_vert ), vertices.data(), w_render_buffer::buffer_usage );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), w_render_buffer::buffer_usage );
 
         switch( tex->gl_prim_type )
         {

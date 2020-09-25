@@ -76,8 +76,8 @@ struct w_render
 
 	void init();
 
-	w_render* draw_sprite( a_texture* tex, const w_rect& dst );
-	w_render* draw_sprite( const a_subtexture* subtex, const w_rect& dst );
+	w_render* draw_sprite( a_texture* tex, const w_vec2& dst );
+	w_render* draw_sprite( const a_subtexture* subtex, const w_vec2& dst );
 
 	w_render* draw( a_texture* tex, const w_rect& dst );
 	w_render* draw( const a_subtexture* subtex, const w_rect& dst );

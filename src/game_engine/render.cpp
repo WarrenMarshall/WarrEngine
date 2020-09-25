@@ -198,17 +198,17 @@ void w_render::maybe_draw_master_buffer( a_texture* texture )
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-w_render* w_render::draw_sprite( a_texture* tex, const w_rect& dst )
+w_render* w_render::draw_sprite( a_texture* tex, const w_vec2& dst )
 {
 	return draw_sprite( tex->get_subtexture(), dst );
 }
 
-w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_rect& dst )
+w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = dst.w.value_or( subtex->sz.w );
-	float h = dst.h.value_or( subtex->sz.h );
+	float w = subtex->sz.w;
+	float h = subtex->sz.h;
 
 	float rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -248,8 +248,8 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = dst.w.value_or( subtex->sz.w );
-	float h = dst.h.value_or( subtex->sz.h );
+	float w = dst.w ? dst.w : subtex->sz.w;
+	float h = dst.h ? dst.h : subtex->sz.h;
 
 	float rs_scale = rs_scale_stack.back();
 
@@ -363,11 +363,8 @@ void w_render::end_frame()
 	// the last draw needs to be flushed
 	maybe_draw_master_buffer( nullptr );
 
-	// update stats
-	stats.update();
-
 	// accum stats
-	stats.frame_times_ms.accum( static_cast<float>( engine->time->delta_ms ) );
+	stats.frame_times_ms.accum( engine->time->delta_ms );
 	stats.frame_count.inc();
 
 	// when the frame ends, there should be
@@ -427,12 +424,12 @@ w_render* w_render::draw_stats()
 
 	if( show_stats )
 	{
-		// #todo - why does the FPS always show "61"?
 		std::vector<std::string> stat_lines;
 		stat_lines.reserve( stats_draw_reserve );
 
-		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS / UPDATE : {} FPS",
-											  f_commas( 1000.f / stats.frame_times_ms.value ),
+		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / UPDATE : {} FPS",
+											  stats.frame_count.value,
+											  stats.frame_times_ms.value,
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
 		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
 											  f_commas( stats.render_buffers.value ),
@@ -476,8 +473,8 @@ w_render* w_render::draw_stats()
 			->push_align( align::right )
 			->draw_string(
 				engine->pixel_font,
-				fmt::format( "{} FPS", f_commas( 1000.f / stats.frame_times_ms.value ) ),
-				//fmt::format( "{} FPS ({:.2f} ms)", f_commas( 1000.f / stats.frame_times_ms.value ), stats.frame_times_ms.value ),
+				//fmt::format( "{} FPS", f_commas( 1000.f / stats.frame_times_ms.value ) ),
+				fmt::format( "{} FPS ({:.2f} ms)", stats.frame_count.value, stats.frame_times_ms.value ),
 				w_rect( v_window_w, 0 ) )
 			->end();
 	}
@@ -503,17 +500,17 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_color
 	);
 	w_render_vert v1(
-		w_vec2( dst.x + *dst.w, dst.y ),
+		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
 		rs_color
 	);
 	w_render_vert v2(
-		w_vec2( dst.x + *dst.w, dst.y + *dst.h ),
+		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
 		rs_color
 	);
 	w_render_vert v3(
-		w_vec2( dst.x, dst.y + *dst.h ),
+		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
 		rs_color
 	);
@@ -535,8 +532,8 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 		static_cast<float>( dst.y ) )
 	);
 	box.add( w_vec2(
-		static_cast<float>( dst.x + dst.w.value() ),
-		static_cast<float>( dst.y + dst.h.value() ) )
+		static_cast<float>( dst.x + dst.w ),
+		static_cast<float>( dst.y + dst.h ) )
 	);
 
 	draw_line( w_vec2( box.min.x, box.min.y ), w_vec2( box.max.x, box.min.y ) );
@@ -621,8 +618,8 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	float xpos = dst.x;
 	float ypos = dst.y;
 
-	float inner_w = *dst.w - p_00->sz.w - p_20->sz.w;
-	float inner_h = *dst.h - p_00->sz.h - p_02->sz.h;
+	float inner_w = dst.w - p_00->sz.w - p_20->sz.w;
+	float inner_h = dst.h - p_00->sz.h - p_02->sz.h;
 
 	// top row
 

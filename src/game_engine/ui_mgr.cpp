@@ -14,7 +14,6 @@ void w_ui_mgr::draw_topmost()
 
 bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 {
-	// #uitodo - optional support for circles here would be nice for round UI elements
 	return c2AABBtoPoint( rc, engine->input->mouse_vwindow_pos );
 }
 

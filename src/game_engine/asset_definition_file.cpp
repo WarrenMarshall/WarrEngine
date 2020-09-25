@@ -281,13 +281,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						);
 
 					x = rect->x + x_slices->left;
-					w = *rect->w - x_slices->left - x_slices->right;
+					w = rect->w - x_slices->left - x_slices->right;
 					asset_ptr->patches[ slicedef_patch::P_10 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", name ), ""
 						);
 
-					x = rect->x + *rect->w - x_slices->right;
+					x = rect->x + rect->w - x_slices->right;
 					w = x_slices->right;
 					asset_ptr->patches[ slicedef_patch::P_20 ] =
 						engine->asset_cache->add(
@@ -299,7 +299,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					x = rect->x;
 					y = rect->y + y_slices->top;
 					w = x_slices->left;
-					h = *rect->h - y_slices->top - y_slices->bottom;
+					h = rect->h - y_slices->top - y_slices->bottom;
 
 					asset_ptr->patches[ slicedef_patch::P_01 ] =
 						engine->asset_cache->add(
@@ -307,13 +307,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						);
 
 					x = rect->x + x_slices->left;
-					w = *rect->w - x_slices->left - x_slices->right;
+					w = rect->w - x_slices->left - x_slices->right;
 					asset_ptr->patches[ slicedef_patch::P_11 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", name ), ""
 						);
 
-					x = rect->x + *rect->w - x_slices->right;
+					x = rect->x + rect->w - x_slices->right;
 					w = x_slices->right;
 					asset_ptr->patches[ slicedef_patch::P_21 ] =
 						engine->asset_cache->add(
@@ -323,7 +323,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// bottom row
 
 					x = rect->x;
-					y = rect->y + *rect->h - y_slices->bottom;
+					y = rect->y + rect->h - y_slices->bottom;
 					w = x_slices->left;
 					h = y_slices->bottom;
 
@@ -333,13 +333,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						);
 
 					x = rect->x + x_slices->left;
-					w = *rect->w - x_slices->left - x_slices->right;
+					w = rect->w - x_slices->left - x_slices->right;
 					asset_ptr->patches[ slicedef_patch::P_12 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", name ), ""
 						);
 
-					x = rect->x + *rect->w - x_slices->right;
+					x = rect->x + rect->w - x_slices->right;
 					w = x_slices->right;
 					asset_ptr->patches[ slicedef_patch::P_22 ] =
 						engine->asset_cache->add(

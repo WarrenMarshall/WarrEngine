@@ -19,6 +19,6 @@ struct w_accum_value
     void accum( float value );
     void inc();
 
-private:
+//private:
     float _accumulator;
 };

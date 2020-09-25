@@ -15,8 +15,8 @@ e_im_result w_ui_style::update_im_state( int id, w_rect rc )
 		 from being able to highlight/click more than one at a time.
 	*/
 
-	*rc.w -= 1.0f;
-	*rc.h -= 1.0f;
+	rc.w -= 1.0f;
+	rc.h -= 1.0f;
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
 	bool mouse_is_inside = UI->is_mouse_inside( rc );
@@ -100,9 +100,9 @@ w_ui_style_button::w_ui_style_button()
 void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
 {
 	w_offset offset = get_click_offset( being_hovered, being_clicked );
-	w_rect rc_draw = { rc.x + offset.x, rc.y + offset.y, *rc.w, *rc.h };
+	w_rect rc_draw = { rc.x + offset.x, rc.y + offset.y, rc.w, rc.h };
 
-	w_pos label_pos = { rc_draw.x + ( *rc_draw.w / 2 ), rc_draw.y + ( *rc_draw.h / 2 ) };
+	w_pos label_pos = { rc_draw.x + ( rc_draw.w / 2 ), rc_draw.y + ( rc_draw.h / 2 ) };
 	e_align label_align = align::centered;
 
 	RENDER
@@ -130,8 +130,17 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		rc_client.y += subtex_attrib.pos.value_or( w_vec2::zero ).y;
 
 		// if there are size tweaks, apply them
-		rc_client.w = subtex_attrib.sz.value_or( w_vec2( *( subtex.value()->rc_src.w ), 0.0f ) ).w;
-		rc_client.h = subtex_attrib.sz.value_or( w_vec2( 0.0f, *( subtex.value()->rc_src.h ) ) ).h;
+		rc_client.w = subtex.value()->rc_src.w;
+		if( subtex_attrib.sz.has_value() )
+		{
+			rc_client.w = ( *subtex_attrib.sz ).w;
+		}
+
+		rc_client.h = subtex.value()->rc_src.h;
+		if( subtex_attrib.sz.has_value() )
+		{
+			rc_client.h = ( *subtex_attrib.sz ).h;
+		}
 
 		RENDER->push_rgb( get_adjusted_color( subtex_attrib.color, being_hovered, being_clicked ) )
 			->push_depth_nudge()

@@ -22,17 +22,17 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 	if( w_ratio > h_ratio )
 	{
 		engine->window->viewport_pos_sz.w = v_window_w * h_ratio;
-		engine->window->viewport_pos_sz.x = ( width - *engine->window->viewport_pos_sz.w ) / 2.0f;
+		engine->window->viewport_pos_sz.x = ( width - engine->window->viewport_pos_sz.w ) / 2.0f;
 	}
 	else
 	{
 		engine->window->viewport_pos_sz.h = v_window_h * w_ratio;
-		engine->window->viewport_pos_sz.y = ( height - *engine->window->viewport_pos_sz.h ) / 2.0f;
+		engine->window->viewport_pos_sz.y = ( height - engine->window->viewport_pos_sz.h ) / 2.0f;
 	}
 
 	glViewport(
 		static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
-		static_cast<int>( *engine->window->viewport_pos_sz.w ), static_cast<int>( *engine->window->viewport_pos_sz.h )
+		static_cast<int>( engine->window->viewport_pos_sz.w ), static_cast<int>( engine->window->viewport_pos_sz.h )
 	);
 }
 
@@ -55,10 +55,10 @@ w_rect w_window::compute_max_window_size_for_desktop()
 	int div = w_min( wdiv, hdiv );
 
 	w_rect window_pos( 0.0f, 0.0f, v_window_w * div, v_window_h * div );
-	window_pos.x = ( vidmode->width - *window_pos.w ) / 2;
-	window_pos.y = ( vidmode->height - *window_pos.h ) / 2;
+	window_pos.x = ( vidmode->width - window_pos.w ) / 2;
+	window_pos.y = ( vidmode->height - window_pos.h ) / 2;
 
-	viewport_pos_sz = w_rect( 0, 0, *window_pos.w, *window_pos.h );
+	viewport_pos_sz = w_rect( 0, 0, window_pos.w, window_pos.h );
 
 	return window_pos;
 }
@@ -82,7 +82,7 @@ bool w_window::init()
 	w_rect window_pos = compute_max_window_size_for_desktop();
 
 	window = glfwCreateWindow(
-		static_cast<int>( *window_pos.w ), static_cast<int>( *window_pos.h ),
+		static_cast<int>( window_pos.w ), static_cast<int>( window_pos.h ),
 		"GAME ENGINE", nullptr, nullptr
 	);
 

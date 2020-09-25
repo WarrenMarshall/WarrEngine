@@ -33,7 +33,6 @@ struct w_input : i_speaker
 	// where the mouse currently sits in the virtual window
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
 
-	// #todo - should be expanded to handle multiple controllers flexibly
 	std::unique_ptr<w_game_controller> game_controller = nullptr;
 
 	/*

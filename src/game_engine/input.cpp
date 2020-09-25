@@ -32,7 +32,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	last_mouse_pos = w_vec2( static_cast<float>( xpos ), static_cast<float>( ypos ) );
 
 	// convert the window space window mouse position into a position on the virtual screen.
-	auto ratio = ( v_window_w / *engine->window->viewport_pos_sz.w );
+	auto ratio = ( v_window_w / engine->window->viewport_pos_sz.w );
 	auto vx = ( xpos - engine->window->viewport_pos_sz.x ) * ratio;
 	auto vy = ( ypos - engine->window->viewport_pos_sz.y ) * ratio;
 

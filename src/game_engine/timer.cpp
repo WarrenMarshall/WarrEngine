@@ -10,7 +10,7 @@ w_timer::w_timer( int interval_ms )
 
 void w_timer::reset()
 {
-	time_remaining_ms = interval_ms;
+	time_remaining_ms += interval_ms;
 }
 
 void w_timer::update()

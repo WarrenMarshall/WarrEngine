@@ -89,8 +89,8 @@ struct w_rect
 {
 	float x = 0.0f;
 	float y = 0.0f;
-	std::optional<float> w;
-	std::optional<float> h;
+	float w = 0.0f;
+	float h = 0.0f;
 
 	static const w_rect zero;
 
@@ -103,7 +103,7 @@ struct w_rect
 	{
 		c2AABB bb;
 		bb.min = { x, y };
-		bb.max = { x + w.value_or( 0.0f ), y + h.value_or( 0.0f ) };
+		bb.max = { x + w, y + h };
 
 		return bb;
 	}
