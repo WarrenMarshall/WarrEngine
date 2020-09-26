@@ -12,7 +12,8 @@ void layer_platformer::push()
 {
 	w_layer::push();
 
-	engine->box2d_world->SetContactListener( game->plat_physics.get() );
+	plat_physics = std::make_unique<w_platformer_physics>();
+	engine->box2d_world->SetContactListener( plat_physics.get() );
 
 	ec_b2d_body* ec = nullptr;
 
@@ -81,7 +82,7 @@ void layer_platformer::pop()
 void layer_platformer::update()
 {
 	w_layer::update();
-	game->plat_physics->move_player( player );
+	plat_physics->move_player( player );
 }
 
 void layer_platformer::draw()
@@ -92,8 +93,8 @@ void layer_platformer::draw()
 		->begin()
 		->push_rgb( w_color::teal );
 
-	RENDER->draw_string( engine->pixel_font, fmt::format( "on ground   : {}", !game->plat_physics->in_air() ), w_rect( 16, 16 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "drop blocked: {}", !game->plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "on ground   : {}", !plat_physics->in_air() ), w_rect( 16, 16 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "drop blocked: {}", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
 
 	RENDER->end();
 }
@@ -104,7 +105,7 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::controller_button_a )
 		{
-			game->plat_physics->jump_player( player );
+			plat_physics->jump_player( player );
 		}
 
 		if( evt->input_id == input_id::key_1 )

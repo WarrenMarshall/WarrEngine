@@ -2,7 +2,7 @@
 
 struct layer_platformer : w_layer
 {
-	//platformer_physics contact_listener;
+	std::unique_ptr<w_platformer_physics> plat_physics = nullptr;
 
 	layer_platformer();
 

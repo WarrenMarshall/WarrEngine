@@ -8,46 +8,33 @@ layer_pong::layer_pong()
 
 void layer_pong::push()
 {
-#if 0
-	engine->box2d_world->SetContactListener( &contact_listener );
+	pong_physics = std::make_unique<w_pong_physics>();
+	engine->box2d_world->SetContactListener( pong_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
+	ec_b2d_body* ec = nullptr;
+
+	// world geo
 
 	world_geo = add_entity<w_entity>();
 	world_geo->collision_layer = clayer_world;
 	world_geo->collides_with = clayer_ball;
 	world_geo->draw_debug_info = true;
 
-	float sz = 16;
-	auto ec = world_geo->add_component<ec_b2d_static>()->init_as_chain(
-		{
-			{ sz, sz },
-			{ sz, v_window_h - sz },
-			{ v_window_w - sz, v_window_h - sz },
-			{ v_window_w - sz, sz }
-		}
-	);
-
-	ec->body->GetFixtureList()->SetRestitution( 1.0f );
-	ec->body->GetFixtureList()->SetFriction( 0.0f );
-	ec->body->SetLinearDamping( 0.0f );
-
-	for( int x = 0 ; x < 5 ; ++x )
+	ec = world_geo->add_component<ec_b2d_static>();
 	{
-		float xpos = w_random::getf_range( 0.0f, v_window_w );
-		float ypos = w_random::getf_range( 64.0f, v_window_h );
+		// bounding box for world
 
-		if( w_random::geti_range( 0, 4 ) == 45 )
-		{
-			float sz = w_random::getf_range( 4, 16 );
-			world_geo->add_component<ec_b2d_static>()->init_as_circle( { xpos, ypos }, sz );
-		}
-		else
-		{
-			float sz = w_random::getf_range( 4, 32 );
-			float sz2 = w_random::getf_range( 4, 32 );
-			world_geo->add_component<ec_b2d_static>()->init_as_box( { xpos, ypos }, sz, sz2 );
-		}
+		ec->add_fixture_line_loop(
+			sensor_id::world,
+			w_vec2::zero,
+			{
+				{ 4.0f, 4.0f },
+				{ v_window_w - 8.0f, 4.0f },
+				{ v_window_w - 8.0f, v_window_h - 8.0f },
+				{ 4.0f, v_window_h - 8.0f }
+			}
+		);
 	}
 
 	{
@@ -55,15 +42,17 @@ void layer_pong::push()
 		ball->draw_debug_info = true;
 		ball->collision_layer = clayer_ball;
 		ball->collides_with = clayer_world;
+
 		ball->set_transform( { v_window_hw, v_window_hh }, 0, 1 );
-		auto ecd = ball->add_component<ec_b2d_dynamic>()->init_as_circle( 6 );
-		ecd->body->GetFixtureList()->SetRestitution( 1.0f );
-		ecd->body->GetFixtureList()->SetFriction( 0.0f );
+
+		auto ecd = ball->add_component<ec_b2d_dynamic>();
+		auto f = ecd->add_fixture_circle( sensor_id::ball, w_vec2::zero, 6 );
+		//f->SetRestitution( 1.0f );
+		//f->SetFriction( 0.0f );
 
 		ecd->body->SetLinearVelocity( w_vec2::get_random_unit() * 2.f );
-		ecd->body->SetLinearDamping( 0.0f );
+		//ecd->body->SetLinearDamping( 0.0f );
 	}
-#endif
 }
 
 void layer_pong::update()

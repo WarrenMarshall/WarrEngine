@@ -2,9 +2,7 @@
 
 struct layer_pong : w_layer
 {
-	w_contact_listener contact_listener;
-	w_vec2 player_trace_hit;
-	bool player_on_ground = true;
+	std::unique_ptr<w_pong_physics> pong_physics = nullptr;
 
 	layer_pong();
 

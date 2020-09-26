@@ -9,7 +9,6 @@ gametype_sandbox_app::gametype_sandbox_app( std::string_view name )
 void gametype_sandbox_app::init()
 {
 	w_game::init();
-	plat_physics = std::make_unique<platformer_physics>();
 }
 
 void gametype_sandbox_app::new_game()

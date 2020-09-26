@@ -38,6 +38,12 @@ void layer_main_menu::draw()
 		engine->layer_mgr->push<layer_platformer>();
 	}
 
+	ypos += 28;
+	if( im_left_clicked( UI->im_active( "Time Pilot", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
+	{
+		engine->layer_mgr->push<layer_platformer>();
+	}
+
 	ypos += 48;
 	if( im_left_clicked( UI->im_active( "Exit", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{

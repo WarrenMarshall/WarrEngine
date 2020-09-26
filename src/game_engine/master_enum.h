@@ -262,6 +262,7 @@ enum_end
 
 enum_begin( sensor_id )
 	none = 0,
+	ball,
 	world,
 	ground,
 	area_01,

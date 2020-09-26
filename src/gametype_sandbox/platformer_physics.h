@@ -2,13 +2,13 @@
 
 // ----------------------------------------------------------------------------
 
-struct platformer_physics : w_contact_listener, w_physics
+struct w_platformer_physics : w_contact_listener, w_physics
 {
 	const static float player_move_force_s;
 	const static float player_move_force_max;
 	const static float player_jump_force;
 
-	platformer_physics();
+	w_platformer_physics();
 
 	virtual void BeginContact( b2Contact* contact ) override;
 	virtual void EndContact( b2Contact* contact ) override;
