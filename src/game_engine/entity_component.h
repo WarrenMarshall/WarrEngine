@@ -32,13 +32,14 @@ struct w_entity_component : i_life_cycle, i_transform
 
 struct ec_sprite : w_entity_component
 {
-	a_subtexture* subtex = nullptr;
-	bool flip_x = false, flip_y = false;
+	//a_subtexture* subtex = nullptr;
+	a_texture* tex = nullptr;
+	float anim_offset = 0.0f;
 
 	ec_sprite() = delete;
 	ec_sprite( w_entity* parent_entity );
 
-	w_entity_component* init( const std::string_view subtex_name );
+	w_entity_component* init( const std::string_view tex_name );
 	virtual void draw() override;
 };
 

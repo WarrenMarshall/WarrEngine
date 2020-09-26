@@ -24,7 +24,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					for( auto& [key,value] : iter_ad->kv )
 					{
 						if( key != "name" && key != "type" )
+						{
 							engine->_symbol_to_value[ key ] = value;
+						}
 					}
 				}
 			}
@@ -143,7 +145,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else
 						{
-							wk_values.push_back( std::string( *val ) );
+							wk_values.emplace_back( std::string( *val ) );
 						}
 					}
 
@@ -521,12 +523,12 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				{
 					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
 
-					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec") );
+					int steps_per_sec = w_parser::int_from_str( iter_ad->find_value( "steps_per_sec") );
 					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween") ) );
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_anim_texture>( tween_type, steps_per_sec ),
 															  name, "" );
 					}
 
@@ -537,8 +539,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
 					{
-						auto tex = engine->get_asset<a_subtexture>( *tok.get_next_token() );
-						asset_ptr->frames.emplace_back( tex );
+						auto subtex = engine->get_asset<a_subtexture>( *tok.get_next_token() );
+						asset_ptr->add_frame( subtex );
 					}
 
 					// ------------------------------------------------------------------------
@@ -584,7 +586,7 @@ bool w_asset_definition_file::create_internals()
 	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
 
 	// loop through every line of the asset_def fil and
-	for( const auto& line : *( file.get()->lines.get() ) )
+	for( const auto& line : *( file->lines.get() ) )
 	{
 		// a "{" marks the beginning of a new asset definition
 		if( line[ 0 ] == '{' )

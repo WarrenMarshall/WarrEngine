@@ -72,11 +72,12 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
 	type |= component_type::sprite;
+	anim_offset = w_random::getf();
 }
 
-w_entity_component* ec_sprite::init( const std::string_view subtex_name )
+w_entity_component* ec_sprite::init( const std::string_view tex_name )
 {
-	subtex = engine->get_asset<a_subtexture>( subtex_name );
+	tex = engine->get_asset<a_texture>( tex_name );
 	return this;
 }
 
@@ -91,7 +92,7 @@ void ec_sprite::draw()
 	//w_vec2 pos_interp = parent_entity->physics_cache.forces * RENDER->frame_interpolate_pct;
 	//RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
 
-	RENDER->draw_sprite( subtex, pos );
+	RENDER->draw_sprite( tex->get_subtexture( anim_offset ), pos );
 }
 
 // ----------------------------------------------------------------------------

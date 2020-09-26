@@ -4,7 +4,8 @@
 struct w_contact_listener : b2ContactListener
 {
 	b2Contact* contact = nullptr;
-	std::array< e_sensor_id, 2> sensor_ids;
+	b2Manifold* manifold = nullptr;
+	std::array<e_contact_id, 2> contact_ids;
 
 	// Called when two fixtures begin to touch
 	virtual void BeginContact( b2Contact* contact ) override;
@@ -15,7 +16,13 @@ struct w_contact_listener : b2ContactListener
 	virtual void PreSolve( b2Contact* contact, const b2Manifold* oldManifold ) override;
 	virtual void PostSolve( b2Contact* contact, const b2ContactImpulse* impulse ) override;
 
-	bool sensor_ids_match( const std::array<e_sensor_id, 2>& ids_to_check );
+	bool contact_ids_match( const std::array<e_contact_id, 2>& ids_to_check );
+	b2Fixture* find_fixture_from_contact_id( e_contact_id id );
+	b2Body* find_body_from_contact_id( e_contact_id id );
+	w_entity_component* find_component_from_contact_id( e_contact_id id );
+	w_entity* find_entity_from_contact_id( e_contact_id id );
+
+	w_vec2 calc_hit_normal( b2Body* body_colliding );
 };
 
 // ----------------------------------------------------------------------------
@@ -30,4 +37,6 @@ struct w_physics
 	virtual bool point_check_simple( w_vec2 pos, e_collision_layer layer_mask );
 	virtual bool point_check_simple( w_vec2 pos, e_collision_layer layer_mask, w_query_first* hit_result );
 	virtual bool point_check_all( w_vec2 pos, e_collision_layer layer_mask, w_query_all* hit_result );
+
+	virtual void update();
 };

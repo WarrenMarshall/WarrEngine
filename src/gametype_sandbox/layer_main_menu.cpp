@@ -23,24 +23,28 @@ void layer_main_menu::draw()
 
 	if( im_left_clicked( UI->im_active( "Platformer", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
+		game->new_game();
 		engine->layer_mgr->push<layer_platformer>();
 	}
 
 	ypos += 28;
 	if( im_left_clicked( UI->im_active( "Pong", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
+		game->new_game();
 		engine->layer_mgr->push<layer_pong>();
 	}
 
 	ypos += 28;
 	if( im_left_clicked( UI->im_active( "Twin Stick Shooter", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
+		game->new_game();
 		engine->layer_mgr->push<layer_platformer>();
 	}
 
 	ypos += 28;
 	if( im_left_clicked( UI->im_active( "Time Pilot", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
+		game->new_game();
 		engine->layer_mgr->push<layer_platformer>();
 	}
 

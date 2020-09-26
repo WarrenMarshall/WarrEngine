@@ -21,14 +21,14 @@ void layer_platformer::push()
 
 	world_geo = add_entity<w_entity>();
 	world_geo->collision_layer = clayer_world;
-	world_geo->collides_with = clayer_player;
+	world_geo->collides_with = clayer_player | clayer_coin;
 	world_geo->draw_debug_info = true;
 	ec = world_geo->add_component<ec_b2d_static>();
 	{
 		// bounding box for world
 
 		ec->add_fixture_line_loop(
-			sensor_id::world,
+			contact_id::world,
 			w_vec2::zero,
 			{
 				{ 4.0f, 4.0f },
@@ -45,9 +45,10 @@ void layer_platformer::push()
 			float xpos = w_random::getf_range( 0, v_window_hw );
 			auto ypos = (float) y;
 			float w = w_random::getf_range( 64, v_window_hw );
-			ec->add_fixture_line( sensor_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
+			ec->add_fixture_line( contact_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 		}
 
+#if 0
 		for( int x = 0 ; x < 10 ; ++x )
 		{
 			float xpos = w_random::getf_range( 0.0f, v_window_w );
@@ -56,20 +57,30 @@ void layer_platformer::push()
 			if( w_random::geti_range( 0, 4 ) == 2 )
 			{
 				float sz = w_random::getf_range( 4, 16 );
-				ec->add_fixture_circle( sensor_id::world, { xpos, ypos }, sz );
+				ec->add_fixture_circle( contact_id::world, { xpos, ypos }, sz );
 			}
 			else
 			{
 				float sz = w_random::getf_range( 4, 32 );
 				float sz2 = w_random::getf_range( 4, 32 );
-				ec->add_fixture_box( sensor_id::world, w_rect( xpos, ypos, sz, sz2 ) );
+				ec->add_fixture_box( contact_id::world, w_rect( xpos, ypos, sz, sz2 ) );
 			}
 		}
+#endif
 	}
 
 	// ----------------------------------------------------------------------------
 
 	player = add_entity<e_platformer_player>();
+	player->set_position( { 32.0f, 0.0f } );
+
+	// ----------------------------------------------------------------------------
+
+	for( int c = 0 ; c < 8 ; ++c )
+	{
+		auto coin = add_entity<e_platformer_coin>();
+		coin->set_position( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) } );
+	}
 }
 
 void layer_platformer::pop()
@@ -82,6 +93,8 @@ void layer_platformer::pop()
 void layer_platformer::update()
 {
 	w_layer::update();
+
+	plat_physics->update();
 	plat_physics->move_player( player );
 }
 

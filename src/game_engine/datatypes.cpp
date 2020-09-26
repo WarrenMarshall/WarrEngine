@@ -230,14 +230,25 @@ w_vec2::w_vec2( std::string_view str )
 	y = w_parser::float_from_str( *tok.get_next_token() );
 }
 
+w_vec2::w_vec2( b2Vec2 b2v2 )
+	: x( b2v2.x ), y( b2v2.y )
+{
+}
+
 w_vec2 w_vec2::normalize()
 {
-	return w_vec2::normalize( *this );
+	*this = w_vec2::normalize( *this );
+	return *this;
 }
 
 w_vec2 w_vec2::to_b2d()
 {
 	return w_vec2( ::to_b2d( x ), ::to_b2d( y ) );
+}
+
+w_vec2 w_vec2::from_b2d()
+{
+	return w_vec2( ::from_b2d( x ), ::from_b2d( y ) );
 }
 
 w_vec2 w_vec2::operator+( w_vec2 v )
@@ -255,24 +266,30 @@ w_vec2 w_vec2::operator*( float v )
 	return w_vec2( this->x * v, this->y * v );
 }
 
-float w_vec2::get_size_squared( w_vec2 a )
+w_vec2 w_vec2::operator*=( float v )
 {
-	return sqrt( w_vec2::get_size( a ) );
+	*this = *this * v;
+	return *this;
 }
 
-float w_vec2::get_size( w_vec2 a )
+float w_vec2::get_size_squared()
 {
-	return ( a.x * a.x ) + ( a.y * a.y );
+	return sqrt( w_vec2::get_size() );
+}
+
+float w_vec2::get_size()
+{
+	return ( x * x ) + ( y * y );
 }
 
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
 {
-	return w_vec2::get_size_squared( a - b );
+	return ( a - b ).get_size_squared();
 }
 
 w_vec2 w_vec2::normalize( w_vec2 a )
 {
-	float sz = w_vec2::get_size_squared( a );
+	float sz = a.get_size_squared();
 	return w_vec2( a.x / sz, a.y / sz );
 }
 

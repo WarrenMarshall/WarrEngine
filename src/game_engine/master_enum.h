@@ -260,8 +260,11 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( sensor_id )
+enum_begin( contact_id )
 	none = 0,
+	paddle,
+	player,
+	coin,
 	ball,
 	world,
 	ground,

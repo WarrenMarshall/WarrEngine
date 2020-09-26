@@ -90,6 +90,17 @@ void w_entity::draw()
 	}
 }
 
+void w_entity::set_position( w_vec2 pos )
+{
+	i_transform::set_position( pos );
+
+	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+	for( auto& ec : ecs )
+	{
+		ec->body->SetTransform( pos.to_b2d(), ec->body->GetAngle() );
+	}
+}
+
 // immediately moves the entity and it's dynamic/kinematic bodies to a new position.
 
 void w_entity::teleport( w_vec2 pos, bool reset_velocity )

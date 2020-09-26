@@ -7,15 +7,17 @@
 void w_contact_listener::BeginContact( b2Contact* contact )
 {
 	this->contact = contact;
-	sensor_ids[ 0 ] = (e_sensor_id) contact->GetFixtureA()->GetUserData().pointer;
-	sensor_ids[ 1 ] = (e_sensor_id) contact->GetFixtureB()->GetUserData().pointer;
+	manifold = contact->GetManifold();
+	contact_ids[ 0 ] = (e_contact_id) contact->GetFixtureA()->GetUserData().pointer;
+	contact_ids[ 1 ] = (e_contact_id) contact->GetFixtureB()->GetUserData().pointer;
 }
 
 void w_contact_listener::EndContact( b2Contact* contact )
 {
 	this->contact = contact;
-	sensor_ids[ 0 ] = (e_sensor_id) contact->GetFixtureA()->GetUserData().pointer;
-	sensor_ids[ 1 ] = (e_sensor_id) contact->GetFixtureB()->GetUserData().pointer;
+	manifold = contact->GetManifold();
+	contact_ids[ 0 ] = (e_contact_id) contact->GetFixtureA()->GetUserData().pointer;
+	contact_ids[ 1 ] = (e_contact_id) contact->GetFixtureB()->GetUserData().pointer;
 }
 
 void w_contact_listener::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
@@ -26,14 +28,62 @@ void w_contact_listener::PostSolve( b2Contact* contact, const b2ContactImpulse* 
 {
 }
 
-bool w_contact_listener::sensor_ids_match( const std::array<e_sensor_id, 2>& ids_to_check )
+bool w_contact_listener::contact_ids_match( const std::array<e_contact_id, 2>& ids_to_check )
 {
 	return(
-		( sensor_ids[ 0 ] == ids_to_check[ 0 ] && sensor_ids[ 1 ] == ids_to_check[ 1 ] )
-		|| ( sensor_ids[ 0 ] == ids_to_check[ 1 ] && sensor_ids[ 1 ] == ids_to_check[ 0 ] )
+		( contact_ids[ 0 ] == ids_to_check[ 0 ] && contact_ids[ 1 ] == ids_to_check[ 1 ] )
+		|| ( contact_ids[ 0 ] == ids_to_check[ 1 ] && contact_ids[ 1 ] == ids_to_check[ 0 ] )
 		);
 }
 
+// looks at the 2 fixtures involved in this contact and returns the requested one.
+b2Fixture* w_contact_listener::find_fixture_from_contact_id( e_contact_id id )
+{
+	if( contact_ids[ 0 ] == id )
+	{
+		return contact->GetFixtureA();
+	}
+	if( contact_ids[ 1 ] == id )
+	{
+		return contact->GetFixtureB();
+	}
+
+	// contact id not found
+	assert( false );
+
+	return nullptr;
+}
+
+b2Body* w_contact_listener::find_body_from_contact_id( e_contact_id id )
+{
+	return find_fixture_from_contact_id( id )->GetBody();
+}
+
+w_entity_component* w_contact_listener::find_component_from_contact_id( e_contact_id id )
+{
+	return (w_entity_component*) ( find_body_from_contact_id( id )->GetUserData().pointer );
+}
+
+w_entity* w_contact_listener::find_entity_from_contact_id( e_contact_id id )
+{
+	return find_component_from_contact_id( id )->parent_entity;
+}
+
+w_vec2 w_contact_listener::calc_hit_normal( b2Body* body_colliding )
+{
+	w_vec2 hit_normal = w_vec2::zero;
+
+	if( manifold->type == 0 )	// circle
+	{
+		hit_normal = w_vec2( body_colliding->GetWorldCenter() ) - w_vec2( manifold->localPoint );
+	}
+	else
+	{
+		hit_normal = w_vec2( manifold->localNormal.x, manifold->localNormal.y );
+	}
+
+	return hit_normal.normalize();
+}
 
 // ----------------------------------------------------------------------------
 
@@ -125,4 +175,9 @@ bool w_physics::point_check_all( w_vec2 pos, e_collision_layer layer_mask, w_que
 	hit_result->fixtures = fixtures_hit;
 
 	return ( hit_result->fixtures.size() > 0);
+}
+
+void w_physics::update()
+{
+
 }

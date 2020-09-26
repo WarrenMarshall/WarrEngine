@@ -30,6 +30,8 @@ struct w_entity : i_life_cycle, i_transform
 	virtual void update_components();
 	virtual void draw();
 
+	virtual void set_position( w_vec2 pos ) override;
+
 	void teleport( w_vec2 pos, bool reset_velocity );
 
 	template<typename T> T* add_component()

@@ -22,4 +22,6 @@ struct w_platformer_physics : w_contact_listener, w_physics
 	bool can_drop_down();
 	void move_player( w_entity* player );
 	void jump_player( w_entity* player );
+
+	virtual void update() override;
 };

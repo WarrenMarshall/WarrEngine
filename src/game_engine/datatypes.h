@@ -144,16 +144,19 @@ struct w_vec2
 	w_vec2( int x, int y );
 	w_vec2( float x, float y );
 	w_vec2( std::string_view str );
+	w_vec2( b2Vec2 b2v2 );
 
 	w_vec2 normalize();
 	w_vec2 to_b2d();
+	w_vec2 from_b2d();
+	float get_size_squared();
+	float get_size();
 
 	w_vec2 operator+( w_vec2 v );
 	w_vec2 operator-( w_vec2 v );
 	w_vec2 operator*( float v );
+	w_vec2 operator*=( float v );
 
-	static float get_size_squared( w_vec2 a );
-	static float get_size( w_vec2 a );
 	static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );
 	static w_vec2 from_angle( float angle );

@@ -2,8 +2,6 @@
 
 struct w_layer_mgr : i_listener
 {
-	~w_layer_mgr();
-
 	/*
 		the layers are stored front-to-back
 
@@ -12,6 +10,8 @@ struct w_layer_mgr : i_listener
 		so iterating forwards is drilling downwards into the screen.
 	*/
 	std::vector<std::unique_ptr<w_layer>> layer_stack;
+
+	~w_layer_mgr();
 
 	template<typename T>
 	void push()
@@ -36,6 +36,8 @@ struct w_layer_mgr : i_listener
 		layer_stack.insert( layer_stack.begin(), std::move( new_layer ) );
 	}
 
+
+	void clear_stack();
 	void pop();
 	w_layer* get_top();
 

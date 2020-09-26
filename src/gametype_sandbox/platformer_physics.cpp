@@ -12,23 +12,29 @@ const float w_platformer_physics::player_jump_force = 3.0f;
 w_platformer_physics::w_platformer_physics()
 	: w_contact_listener()
 {
-	timer_jump_limiter = std::make_unique<w_timer>( 100 );
+	timer_jump_limiter = std::make_unique<w_timer>( 250 );
 }
 
 void w_platformer_physics::BeginContact( b2Contact* contact )
 {
 	w_contact_listener::BeginContact( contact );
 
-	timer_jump_limiter->update();
-
-	if( sensor_ids_match( { sensor_id::ground, sensor_id::world } ) )
+	if( contact_ids_match( { contact_id::ground, contact_id::world } ) )
 	{
 		player_on_ground++;
 	}
 
-	if( sensor_ids_match( { sensor_id::area_01, sensor_id::world } ) )
+	if( contact_ids_match( { contact_id::area_01, contact_id::world } ) )
 	{
 		player_drop_down_blocked++;
+	}
+
+	if( contact_ids_match( { contact_id::player, contact_id::coin} ) )
+	{
+		auto coin = find_entity_from_contact_id( contact_id::coin );
+
+		game->snd_plat_coin->play();
+		coin->set_life_cycle( life_cycle::dying );
 	}
 }
 
@@ -36,12 +42,12 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 {
 	w_contact_listener::EndContact( contact );
 
-	if( sensor_ids_match( { sensor_id::ground, sensor_id::world } ) )
+	if( contact_ids_match( { contact_id::ground, contact_id::world } ) )
 	{
 		player_on_ground--;
 	}
 
-	if( sensor_ids_match( { sensor_id::area_01, sensor_id::world } ) )
+	if( contact_ids_match( { contact_id::area_01, contact_id::world } ) )
 	{
 		player_drop_down_blocked--;
 	}
@@ -106,7 +112,22 @@ void w_platformer_physics::jump_player( w_entity* player )
 			}
 		}
 
+		if( dir_modifier > 0.0f )
+		{
+			game->snd_plat_jump->play();
+		}
+
+		if( dir_modifier < 0.0f )
+		{
+			game->snd_plat_drop_down->play();
+		}
+
 		timer_jump_limiter->reset();
 		ec->body->SetLinearVelocity( { current.x, ( -w_platformer_physics::player_jump_force ) * dir_modifier } );
 	}
+}
+
+void w_platformer_physics::update()
+{
+	timer_jump_limiter->update();
 }

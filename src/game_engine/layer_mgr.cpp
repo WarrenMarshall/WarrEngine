@@ -4,6 +4,11 @@
 
 w_layer_mgr::~w_layer_mgr()
 {
+	clear_stack();
+}
+
+void w_layer_mgr::clear_stack()
+{
 	// Give each layer a chance to clean up before the manager shuts down.
 
 	for( size_t x = 0 ; x < layer_stack.size() ; ++x )

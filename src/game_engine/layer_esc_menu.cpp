@@ -33,25 +33,31 @@ void layer_esc_menu::draw()
 	style_button.base_attrib.color = w_color::teal;
 	style_button.label_attrib.color = w_color::white;
 
-	static float panel_w = 100.0f;
-	static float panel_h = 76.0f;
+	static float button_w = 112.0f;
+	static float button_h = 20.0f;
 
-	w_rect rc_panel = { v_window_hw - ( panel_w / 2.0f ) , v_window_hh - ( panel_h / 2.0f ) , panel_w , panel_h };
+	static float panel_w = button_w + ( UI->theme->control_padding * 4 );
+	static float panel_h = ( button_h * 3 ) + ( UI->theme->control_padding * 6 );
+
+	w_rect rc_panel = { v_window_hw - ( panel_w / 2.0f ), v_window_hh - ( panel_h / 2.0f ), panel_w, panel_h };
 
 	UI->im_passive( rc_panel, style_panel );
 
-	static float button_w = 64.0f;
-	static float button_h = 20.0f;
+	w_rect rc_button = { v_window_hw - ( button_w / 2.0f ), rc_panel.y + (UI->theme->control_padding * 2), button_w, button_h };
 
-	w_rect rc_button = { v_window_hw - ( button_w / 2.0f ), rc_panel.y + 16, button_w, button_h };
+	if( UI->im_active( "Main Menu", rc_button, style_button ) & im_result::left_clicked )
+	{
+		base_game->return_to_main_menu();
+	}
+	rc_button.y += button_h + UI->theme->control_padding;
 
 	if( UI->im_active( "Resume", rc_button, style_button ) & im_result::left_clicked )
 	{
 		engine->layer_mgr->pop();
 	}
-
 	rc_button.y += button_h + UI->theme->control_padding;
-	if( UI->im_active( "Exit", rc_button, style_button ) & im_result::left_clicked )
+
+	if( UI->im_active( "Exit To Windows", rc_button, style_button ) & im_result::left_clicked )
 	{
 		engine->is_running = false;
 	}

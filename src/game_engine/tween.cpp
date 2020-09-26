@@ -6,12 +6,11 @@ w_tween::w_tween( e_tween_type type, float start, float end, float step_per_sec 
 {
 	this->type = type;
 	this->start = start;
-	this->end = end;
+	this->end = end + 1.0f;
 	this->step_per_sec = step_per_sec;
 	_dir = 1.0;
 
 	_fval = start;
-	_ival = static_cast<int>( round( _fval ) );
 }
 
 void w_tween::refresh_limits()
@@ -68,22 +67,19 @@ void w_tween::refresh_limits()
 
 void w_tween::update()
 {
-	_fval += ( step_per_sec / w_time::FTS_desired_frames_per_second ) * _dir;
+	_fval += (( step_per_sec * w_time::FTS_step_value_s ) * _dir);
 
 	refresh_limits();
-
-	_ival = static_cast<int>( round( _fval ) );
 }
 
 void w_tween::reset_to_start()
 {
 	_fval = start;
-	_ival = static_cast<int>( round( _fval ) );
 }
 
 int w_tween::get_ival()
 {
-	return _ival;
+	return static_cast<int>( _fval );
 }
 
 float w_tween::get_fval()
@@ -107,5 +103,4 @@ float w_tween::get_fval()
 void w_tween::randomize()
 {
 	_fval = start + ( ( end - start ) * w_random::getf() );
-	_ival = static_cast<int>( round( _fval ) );
 }
