@@ -15,8 +15,14 @@ void layer_main_menu::draw()
 	w_layer::draw();
 
 	RENDER
+		->begin()
 		->push_rgb( w_color::light_blue )
-		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
+		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) )
+		->push_scale( 2.0f )
+		->push_align( align::hcenter )
+		->push_rgb( w_color::white )
+		->draw_string( engine->pixel_font, "gametype sandbox", w_rect( v_window_hw, 32 ) )
+		->end();
 
 	float xpos = 64;
 	float ypos = 75;
@@ -24,28 +30,28 @@ void layer_main_menu::draw()
 	if( im_left_clicked( UI->im_active( "Platformer", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
 		game->new_game();
-		engine->layer_mgr->push<layer_platformer>();
+		engine->layer_mgr->push<platformer_layer>();
 	}
 
 	ypos += 28;
-	if( im_left_clicked( UI->im_active( "Pong", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
+	if( im_left_clicked( UI->im_active( "Break Out", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
 		game->new_game();
-		engine->layer_mgr->push<layer_pong>();
+		engine->layer_mgr->push<breakout_layer>();
 	}
 
 	ypos += 28;
 	if( im_left_clicked( UI->im_active( "Twin Stick Shooter", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
 		game->new_game();
-		engine->layer_mgr->push<layer_platformer>();
+		engine->layer_mgr->push<platformer_layer>();
 	}
 
 	ypos += 28;
 	if( im_left_clicked( UI->im_active( "Time Pilot", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
 		game->new_game();
-		engine->layer_mgr->push<layer_platformer>();
+		engine->layer_mgr->push<platformer_layer>();
 	}
 
 	ypos += 48;

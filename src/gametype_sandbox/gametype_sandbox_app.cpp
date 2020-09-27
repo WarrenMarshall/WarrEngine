@@ -16,6 +16,7 @@ void gametype_sandbox_app::init()
 
 	snd_pong_ball_hit_world = engine->get_asset<a_sound>( "snd_pong_ball_hit_world" );
 	snd_pong_ball_hit_ball = engine->get_asset<a_sound>( "snd_pong_ball_hit_ball" );
+	snd_pong_ball_hit_paddle = engine->get_asset<a_sound>( "snd_pong_ball_hit_paddle" );
 }
 
 void gametype_sandbox_app::new_game()

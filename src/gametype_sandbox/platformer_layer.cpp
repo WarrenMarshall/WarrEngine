@@ -3,14 +3,16 @@
 
 // ----------------------------------------------------------------------------
 
-layer_platformer::layer_platformer()
+platformer_layer::platformer_layer()
 {
 	draws_completely_solid = true;
 }
 
-void layer_platformer::push()
+void platformer_layer::push()
 {
 	w_layer::push();
+
+	engine->window->set_mouse_mode( mouse_mode::normal );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );
@@ -76,21 +78,17 @@ void layer_platformer::push()
 
 	// ----------------------------------------------------------------------------
 
-	for( int c = 0 ; c < 8 ; ++c )
-	{
-		auto coin = add_entity<e_platformer_coin>();
-		coin->set_position( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) } );
-	}
+	spawn_coins();
 }
 
-void layer_platformer::pop()
+void platformer_layer::pop()
 {
 	w_layer::pop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 }
 
-void layer_platformer::update()
+void platformer_layer::update()
 {
 	w_layer::update();
 
@@ -98,21 +96,21 @@ void layer_platformer::update()
 	plat_physics->move_player( player );
 }
 
-void layer_platformer::draw()
+void platformer_layer::draw()
 {
 	w_layer::draw();
 
 	RENDER
 		->begin()
-		->push_rgb( w_color::teal );
+		->push_rgba( w_color::teal, 0.5f );
 
-	RENDER->draw_string( engine->pixel_font, fmt::format( "on ground   : {}", !plat_physics->in_air() ), w_rect( 16, 16 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "drop blocked: {}", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - teleport player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
 
 	RENDER->end();
 }
 
-bool layer_platformer::handle_input_event( const w_input_event* evt )
+bool platformer_layer::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_pressed )
 	{
@@ -125,6 +123,21 @@ bool layer_platformer::handle_input_event( const w_input_event* evt )
 		{
 			player->teleport( engine->input->mouse_vwindow_pos, true );
 		}
+
+		if( evt->input_id == input_id::key_n )
+		{
+			spawn_coins();
+		}
 	}
 	return true;
 }
+
+void platformer_layer::spawn_coins()
+{
+	for( int c = 0 ; c < 8 ; ++c )
+	{
+		auto coin = add_entity<e_platformer_coin>();
+		coin->set_position( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) } );
+	}
+}
+

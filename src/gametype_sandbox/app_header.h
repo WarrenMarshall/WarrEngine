@@ -21,8 +21,8 @@ constexpr e_collision_layer clayer_coin = collision_layer::bit5;
 
 #include "platformer_entities.h"
 #include "platformer_physics.h"
-#include "layer_platformer.h"
+#include "platformer_layer.h"
 
-#include "pong_entities.h"
-#include "pong_physics.h"
-#include "layer_pong.h"
+#include "breakout_entities.h"
+#include "breakout_physics.h"
+#include "breakout_layer.h"

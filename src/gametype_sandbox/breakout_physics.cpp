@@ -27,32 +27,40 @@ void fudge_movement_dir( w_vec2& dir )
 // ----------------------------------------------------------------------------
 
 
-w_pong_physics::w_pong_physics()
+w_breakout_physics::w_breakout_physics()
 	: w_contact_listener()
 {
 }
 
-void w_pong_physics::BeginContact( b2Contact* contact )
+void w_breakout_physics::BeginContact( b2Contact* contact )
 {
 	w_contact_listener::BeginContact( contact );
 
 	if( contact_ids_match( { contact_id::paddle, contact_id::ball } ) )
 	{
-		e_pong_paddle* paddle = (e_pong_paddle*) find_entity_from_contact_id( contact_id::paddle );
-		e_pong_ball* ball = (e_pong_ball*) find_entity_from_contact_id( contact_id::ball );
+		e_breakout_paddle* paddle = (e_breakout_paddle*) find_entity_from_contact_id( contact_id::paddle );
+		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( contact_id::ball );
 
 		ball->dir = ( ball->pos - paddle->pos ).normalize();
 		ball->reset_velocity();
+
+		game->snd_pong_ball_hit_paddle->play();
 	}
 
 	if( contact_ids_match( { contact_id::ball, contact_id::ball } ) )
 	{
-		e_pong_ball* ball_a = (e_pong_ball*) ( (w_entity_component*) contact->GetFixtureA()->GetBody()->GetUserData().pointer )->parent_entity;
-		e_pong_ball* ball_b = (e_pong_ball*) ( (w_entity_component*) contact->GetFixtureB()->GetBody()->GetUserData().pointer )->parent_entity;
+		e_breakout_ball* ball_a = (e_breakout_ball*) ( (w_entity_component*) contact->GetFixtureA()->GetBody()->GetUserData().pointer )->parent_entity;
+		e_breakout_ball* ball_b = (e_breakout_ball*) ( (w_entity_component*) contact->GetFixtureB()->GetBody()->GetUserData().pointer )->parent_entity;
 
-		w_vec2 save = ball_a->dir;
-		ball_a->dir = ball_b->dir * -1.0f;
-		ball_b->dir = save * -1.0f;
+		b2Vec2 world_point = find_body_from_contact_id( contact_id::ball )->GetWorldPoint( manifold->localPoint );
+
+		w_vec2 world_point_a = w_vec2( contact->GetFixtureA()->GetBody()->GetWorldPoint( manifold->localPoint ) ).from_b2d();
+		w_vec2 world_point_b = w_vec2( contact->GetFixtureB()->GetBody()->GetWorldPoint( manifold->localPoint ) ).from_b2d();
+
+		w_vec2 mid_point = world_point_a + ((world_point_b - world_point_a) * 0.5f);
+
+		ball_a->dir = ( ball_a->pos - mid_point ).normalize();
+		ball_b->dir = ( ball_b->pos - mid_point ).normalize();
 
 		ball_a->reset_velocity();
 		ball_b->reset_velocity();
@@ -70,7 +78,7 @@ void w_pong_physics::BeginContact( b2Contact* contact )
 		fudge_movement_dir( new_dir );
 		new_dir.normalize();
 
-		e_pong_ball* ball = (e_pong_ball*) find_entity_from_contact_id( contact_id::ball );
+		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( contact_id::ball );
 
 		ball->dir = new_dir;
 		ball->reset_velocity();

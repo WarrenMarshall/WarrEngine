@@ -12,6 +12,7 @@ struct gametype_sandbox_app : w_game
 
 	a_sound* snd_pong_ball_hit_world = nullptr;
 	a_sound* snd_pong_ball_hit_ball = nullptr;
+	a_sound* snd_pong_ball_hit_paddle = nullptr;
 
 	virtual void init() override;
 	virtual void new_game() override;

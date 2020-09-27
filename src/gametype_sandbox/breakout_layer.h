@@ -1,12 +1,12 @@
 #pragma once
 
-struct layer_pong : w_layer
+struct breakout_layer : w_layer
 {
-	std::unique_ptr<w_pong_physics> pong_physics = nullptr;
+	std::unique_ptr<w_breakout_physics> pong_physics = nullptr;
 
-	e_pong_paddle* player = nullptr;
+	e_breakout_paddle* player = nullptr;
 
-	layer_pong();
+	breakout_layer();
 
 	virtual void push() override;
 	virtual void pop() override;

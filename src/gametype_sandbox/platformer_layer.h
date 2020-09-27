@@ -1,10 +1,10 @@
 #pragma once
 
-struct layer_platformer : w_layer
+struct platformer_layer : w_layer
 {
 	std::unique_ptr<w_platformer_physics> plat_physics = nullptr;
 
-	layer_platformer();
+	platformer_layer();
 
 	w_entity* player = nullptr;
 	w_entity* world_geo = nullptr;
@@ -14,4 +14,5 @@ struct layer_platformer : w_layer
 	virtual void update() override;
 	virtual void draw() override;
 	virtual bool handle_input_event( const w_input_event* evt );
+	void spawn_coins();
 };

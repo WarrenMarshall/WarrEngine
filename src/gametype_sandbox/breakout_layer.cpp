@@ -1,14 +1,18 @@
 
 #include "app_header.h"
 
-layer_pong::layer_pong()
+breakout_layer::breakout_layer()
 {
 	draws_completely_solid = true;
 }
 
-void layer_pong::push()
+void breakout_layer::push()
 {
-	pong_physics = std::make_unique<w_pong_physics>();
+	w_layer::push();
+
+	engine->window->set_mouse_mode( mouse_mode::hidden );
+
+	pong_physics = std::make_unique<w_breakout_physics>();
 	engine->box2d_world->SetContactListener( pong_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
@@ -39,7 +43,7 @@ void layer_pong::push()
 #if 1
 		//  random shapes
 
-		for( int x = 0 ; x < 15 ; ++x )
+		for( int x = 0 ; x < 10 ; ++x )
 		{
 			float xpos = w_random::getf_range( 0.0f, v_window_w );
 			float ypos = w_random::getf_range( 0.0f, v_window_h - 64 );
@@ -64,43 +68,45 @@ void layer_pong::push()
 	}
 
 	{
-		player = add_entity<e_pong_paddle>();
+		player = add_entity<e_breakout_paddle>();
 		player->set_position( { v_window_hw, v_window_h - 24.0f } );
 	}
 }
 
-void layer_pong::pop()
+void breakout_layer::pop()
 {
 	w_layer::pop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 }
 
-void layer_pong::update()
+void breakout_layer::update()
 {
 	w_layer::update();
 
 	pong_physics->update();
 }
 
-void layer_pong::draw()
+void breakout_layer::draw()
 {
 	w_layer::draw();
 
+	float ypos = 0.0f;
 	RENDER
 		->begin()
 		->push_rgba( w_color::teal, 0.5f )
-		->draw_string( engine->pixel_font, "'N' - spawn new ball", w_rect( 12, 12 ) )
+		->draw_string( engine->pixel_font, "'N' - spawn new ball", w_rect( 12, ypos += 12 ) )
+		->draw_string( engine->pixel_font, "'mouse' - move paddle", w_rect( 12, ypos += 12 ) )
 		->end();
 }
 
-void layer_pong::spawn_ball()
+void breakout_layer::spawn_ball()
 {
-	auto e = add_entity<e_pong_ball>();
+	auto e = add_entity<e_breakout_ball>();
 	e->set_position( { v_window_hw, v_window_hh } );
 }
 
-bool layer_pong::handle_input_event( const w_input_event* evt )
+bool breakout_layer::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_motion )
 	{

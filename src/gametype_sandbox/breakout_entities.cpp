@@ -1,9 +1,9 @@
 
 #include "app_header.h"
 
-e_pong_ball::e_pong_ball()
+e_breakout_ball::e_breakout_ball()
 {
-	draw_debug_info = true;
+	//draw_debug_info = true;
 
 	set_collision( clayer_ball, clayer_world | clayer_ball | clayer_paddle );
 
@@ -11,14 +11,14 @@ e_pong_ball::e_pong_ball()
 
 	auto ecd = add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;
+	ecd->body->SetAngularDamping( 0.5f );
 	auto f = ecd->add_fixture_circle( contact_id::ball, w_vec2::zero, 8 );
-	f->SetRestitution( 0.5f );
 
 	dir = w_vec2::get_random_unit();
 	reset_velocity();
 }
 
-void e_pong_ball::reset_velocity()
+void e_breakout_ball::reset_velocity()
 {
 	ec_b2d_body* ecb = get_component< ec_b2d_body>( component_type::b2d_body );
 
@@ -28,7 +28,7 @@ void e_pong_ball::reset_velocity()
 
 // ----------------------------------------------------------------------------
 
-e_pong_paddle::e_pong_paddle()
+e_breakout_paddle::e_breakout_paddle()
 {
 	draw_debug_info = true;
 
