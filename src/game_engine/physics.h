@@ -16,7 +16,7 @@ struct w_contact_listener : b2ContactListener
 	virtual void PreSolve( b2Contact* contact, const b2Manifold* oldManifold ) override;
 	virtual void PostSolve( b2Contact* contact, const b2ContactImpulse* impulse ) override;
 
-	bool contact_ids_match( const std::array<e_contact_id, 2>& ids_to_check );
+	bool contact_ids_match( e_contact_id id_0, e_contact_id id_1 );
 	b2Fixture* find_fixture_from_contact_id( e_contact_id id );
 	b2Body* find_body_from_contact_id( e_contact_id id );
 	w_entity_component* find_component_from_contact_id( e_contact_id id );

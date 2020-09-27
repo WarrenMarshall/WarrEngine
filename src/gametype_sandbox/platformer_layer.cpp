@@ -21,11 +21,11 @@ void platformer_layer::push()
 
 	// world geometry
 
-	world_geo = add_entity<w_entity>();
-	world_geo->collision_layer = clayer_world;
-	world_geo->collides_with = clayer_player | clayer_coin;
-	world_geo->draw_debug_info = true;
-	ec = world_geo->add_component<ec_b2d_static>();
+	auto ent = add_entity<w_entity>();
+	ent->collision_layer = clayer_world;
+	ent->collides_with = clayer_player | clayer_coin;
+	ent->draw_debug_info = true;
+	ec = ent->add_component<ec_b2d_static>();
 	{
 		// bounding box for world
 
@@ -39,8 +39,15 @@ void platformer_layer::push()
 				{ 4.0f, v_window_h - 8.0f }
 			}
 		);
+	}
 
-		// rando lines running vertically
+	ent = add_entity<w_entity>();
+	ent->collision_layer = clayer_world;
+	ent->collides_with = clayer_player | clayer_coin;
+	ent->draw_debug_info = true;
+	ec = ent->add_component<ec_b2d_static>();
+	{
+		// rando platform lines running vertically
 
 		for( int y = 32 ; y < v_window_h ; y += 30 )
 		{
@@ -78,7 +85,7 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	spawn_coins();
+	//spawn_coins();
 }
 
 void platformer_layer::pop()

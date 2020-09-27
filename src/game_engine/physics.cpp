@@ -22,17 +22,20 @@ void w_contact_listener::EndContact( b2Contact* contact )
 
 void w_contact_listener::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
 {
+	this->contact = contact;
+	manifold = contact->GetManifold();
 }
 
 void w_contact_listener::PostSolve( b2Contact* contact, const b2ContactImpulse* impulse )
 {
+	this->contact = contact;
 }
 
-bool w_contact_listener::contact_ids_match( const std::array<e_contact_id, 2>& ids_to_check )
+bool w_contact_listener::contact_ids_match( e_contact_id id_0, e_contact_id id_1 )
 {
 	return(
-		( contact_ids[ 0 ] == ids_to_check[ 0 ] && contact_ids[ 1 ] == ids_to_check[ 1 ] )
-		|| ( contact_ids[ 0 ] == ids_to_check[ 1 ] && contact_ids[ 1 ] == ids_to_check[ 0 ] )
+		( contact_ids[ 0 ] == id_0 && contact_ids[ 1 ] == id_1 )
+		|| ( contact_ids[ 0 ] == id_1 && contact_ids[ 1 ] == id_0 )
 		);
 }
 

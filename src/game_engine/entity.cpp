@@ -30,7 +30,7 @@ void w_entity::update_physics()
 
 				float angle = edb->body->GetAngle();
 
-				set_transform( { position.x, position.y }, rad2deg( angle ), scale );
+				set_transform( { position.x, position.y }, glm::degrees( angle ), scale );
 
 				break;
 			}

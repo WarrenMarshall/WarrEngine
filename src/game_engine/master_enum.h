@@ -267,6 +267,6 @@ enum_begin( contact_id )
 	coin,
 	ball,
 	world,
-	ground,
-	area_01,
+	on_ground_sensor,
+	can_drop_down_sensor,
 enum_end

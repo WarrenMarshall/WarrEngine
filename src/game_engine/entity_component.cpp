@@ -296,7 +296,7 @@ void ec_b2d_body::draw()
 			MATRIX
 				->push()
 				->translate( { position.x, position.y } )
-				->rotate( rad2deg( angle ) );
+				->rotate( glm::degrees( angle ) );
 
 			RENDER->draw_circle( { 0.0f, 0.0f }, from_b2d( shape->m_radius ) );
 
@@ -313,7 +313,7 @@ void ec_b2d_body::draw()
 			MATRIX
 				->push()
 				->translate( { position.x, position.y } )
-				->rotate( rad2deg( angle ) );
+				->rotate( glm::degrees( angle ) );
 
 			auto* shape = (b2PolygonShape*) fixture->GetShape();
 
@@ -345,7 +345,7 @@ void ec_b2d_body::draw()
 			MATRIX
 				->push()
 				->translate( { position.x, position.y } )
-				->rotate( rad2deg( angle ) );
+				->rotate( glm::degrees( angle ) );
 
 			b2Vec2 v1 = body->GetWorldPoint( shape->m_vertex1 );
 			v1.x = from_b2d( v1.x );
@@ -370,7 +370,7 @@ void ec_b2d_body::draw()
 			MATRIX
 				->push()
 				->translate( { position.x, position.y } )
-				->rotate( rad2deg( angle ) );
+				->rotate( glm::degrees( angle ) );
 
 			auto* shape = (b2ChainShape*) fixture->GetShape();
 
@@ -469,10 +469,10 @@ b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start,
 	b2EdgeShape shape;
 	{
 		shape.SetOneSided(
-			( pos + start ).to_b2d(),
+			( pos + start - w_vec2( 1, 0 ) ).to_b2d(),
 			( pos + start ).to_b2d(),
 			( pos + end ).to_b2d(),
-			( pos + end ).to_b2d()
+			( pos + end + w_vec2( 1, 0 ) ).to_b2d()
 		);
 	}
 

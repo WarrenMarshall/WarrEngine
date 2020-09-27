@@ -7,7 +7,6 @@ struct platformer_layer : w_layer
 	platformer_layer();
 
 	w_entity* player = nullptr;
-	w_entity* world_geo = nullptr;
 
 	virtual void push() override;
 	virtual void pop() override;

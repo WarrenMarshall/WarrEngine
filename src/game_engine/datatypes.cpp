@@ -299,7 +299,7 @@ w_vec2 w_vec2::from_angle( float angle )
 {
 	w_vec2 v;
 
-	float rad = deg2rad( angle );
+	float rad = glm::radians( angle );
 	v.x = std::sinf( rad );
 	v.y = -std::cosf( rad );
 

@@ -14,6 +14,9 @@ void fudge_movement_dir( w_vec2& dir )
 		dir.y = w_max( 0.3f, dir.y );
 	}
 
+#if 0
+	// this was added when I did the new code but I THINK it causes problems sometimes
+	// ... so delete it eventually if you never use it
 	if( dir.x < 0.0f )
 	{
 		dir.x = w_min( -0.3f, dir.x );
@@ -22,6 +25,7 @@ void fudge_movement_dir( w_vec2& dir )
 	{
 		dir.x = w_max( 0.3f, dir.x );
 	}
+#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -36,7 +40,7 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 {
 	w_contact_listener::BeginContact( contact );
 
-	if( contact_ids_match( { contact_id::paddle, contact_id::ball } ) )
+	if( contact_ids_match( contact_id::paddle, contact_id::ball ) )
 	{
 		e_breakout_paddle* paddle = (e_breakout_paddle*) find_entity_from_contact_id( contact_id::paddle );
 		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( contact_id::ball );
@@ -47,7 +51,7 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		game->snd_pong_ball_hit_paddle->play();
 	}
 
-	if( contact_ids_match( { contact_id::ball, contact_id::ball } ) )
+	if( contact_ids_match( contact_id::ball, contact_id::ball ) )
 	{
 		e_breakout_ball* ball_a = (e_breakout_ball*) ( (w_entity_component*) contact->GetFixtureA()->GetBody()->GetUserData().pointer )->parent_entity;
 		e_breakout_ball* ball_b = (e_breakout_ball*) ( (w_entity_component*) contact->GetFixtureB()->GetBody()->GetUserData().pointer )->parent_entity;
@@ -68,7 +72,7 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		game->snd_pong_ball_hit_ball->play();
 	}
 
-	if( contact_ids_match( { contact_id::ball, contact_id::world } ) )
+	if( contact_ids_match( contact_id::ball, contact_id::world ) )
 	{
 		auto ball_body = find_body_from_contact_id( contact_id::ball );
 		w_vec2 ball_dir = w_vec2( ball_body->GetLinearVelocity() );
