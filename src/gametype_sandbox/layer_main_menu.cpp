@@ -48,7 +48,7 @@ void layer_main_menu::draw()
 	}
 
 	ypos += 28;
-	if( im_left_clicked( UI->im_active( "Time Pilot", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
+	if( im_left_clicked( UI->im_active( "Tile Based RPG", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
 		game->new_game();
 		engine->layer_mgr->push<platformer_layer>();
@@ -61,3 +61,9 @@ void layer_main_menu::draw()
 	}
 }
 
+void layer_main_menu::becoming_top_layer()
+{
+	w_layer::becoming_top_layer();
+
+	engine->window->set_mouse_mode( mouse_mode::normal );
+}

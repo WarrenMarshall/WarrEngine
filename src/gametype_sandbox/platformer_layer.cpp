@@ -85,7 +85,7 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	//spawn_coins();
+	spawn_coins();
 }
 
 void platformer_layer::pop()
@@ -141,7 +141,7 @@ bool platformer_layer::handle_input_event( const w_input_event* evt )
 
 void platformer_layer::spawn_coins()
 {
-	for( int c = 0 ; c < 8 ; ++c )
+	for( int c = 0 ; c < 12 ; ++c )
 	{
 		auto coin = add_entity<e_platformer_coin>();
 		coin->set_position( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) } );

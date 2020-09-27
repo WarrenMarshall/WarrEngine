@@ -2,8 +2,6 @@
 
 struct w_entity : i_life_cycle, i_transform
 {
-	float air_control_damping = 0.25f;
-
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
 

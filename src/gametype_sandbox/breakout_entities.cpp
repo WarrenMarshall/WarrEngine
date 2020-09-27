@@ -3,7 +3,7 @@
 
 e_breakout_ball::e_breakout_ball()
 {
-	//draw_debug_info = true;
+	draw_debug_info = true;
 
 	set_collision( clayer_ball, clayer_world | clayer_ball | clayer_paddle );
 

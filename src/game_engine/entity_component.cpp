@@ -278,7 +278,24 @@ void ec_b2d_body::draw()
 		}
 		else
 		{
-			RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
+			switch( fixture->GetBody()->GetType() )
+			{
+				case b2BodyType::b2_staticBody:
+				{
+					RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
+				}
+				break;
+				case b2BodyType::b2_dynamicBody:
+				{
+					RENDER->push_rgb( body->IsAwake() ? w_color::yellow : w_color::orange );
+				}
+				break;
+				case b2BodyType::b2_kinematicBody:
+				{
+					RENDER->push_rgb( body->IsAwake() ? w_color::light_blue : w_color::blue );
+				}
+				break;
+			}
 		}
 
 		b2Shape::Type shapeType = fixture->GetType();

@@ -3,16 +3,20 @@
 
 // ----------------------------------------------------------------------------
 
-const float w_platformer_physics::player_move_force_s = 7.5f;
-const float w_platformer_physics::player_move_force_max = 1.25f;
-const float w_platformer_physics::player_jump_force = 3.0f;
+float w_platformer_physics::player_move_force_s = 7.5f;
+float w_platformer_physics::player_base_radius = 8.0f;
+float w_platformer_physics::player_move_force_max = 1.25f;
+float w_platformer_physics::player_jump_force = 3.0f;
+float w_platformer_physics::player_drop_down_normal_tolerance = 0.8f;
+int w_platformer_physics::player_jump_interval_timer = 250;
+float w_platformer_physics::player_air_control_damping = 0.35f;
 
 // ----------------------------------------------------------------------------
 
 w_platformer_physics::w_platformer_physics()
 	: w_contact_listener()
 {
-	timer_jump_limiter = std::make_unique<w_timer>( 250 );
+	timer_jump_limiter = std::make_unique<w_timer>( w_platformer_physics::player_jump_interval_timer );
 }
 
 void w_platformer_physics::BeginContact( b2Contact* contact )
@@ -76,10 +80,10 @@ void w_platformer_physics::move_player( w_entity* player )
 	{
 		if( in_air() )
 		{
-			left_stick.x *= player->air_control_damping;
+			left_stick.x *= w_platformer_physics::player_air_control_damping;
 		}
 
-		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
+		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 		b2Vec2 current = ec->body->GetLinearVelocity();
 		current.x += ( w_platformer_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
 		float desired = w_clamp( current.x, -w_platformer_physics::player_move_force_max, w_platformer_physics::player_move_force_max );
@@ -94,17 +98,17 @@ void w_platformer_physics::jump_player( w_entity* player )
 	{
 		w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
-		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic );
+		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 		b2Vec2 current = ec->body->GetLinearVelocity();
 
 		float dir_modifier = 1.0f;
-		if( !fequals( left_stick.y, 0.0f ) && left_stick.y > 0.0f )
+		if( left_stick.y > w_platformer_physics::player_drop_down_normal_tolerance )
 		{
 			if( can_drop_down() )
 			{
 				dir_modifier = -0.25f;
 				auto pos = ec->body->GetPosition();
-				ec->body->SetTransform( { pos.x, pos.y + to_b2d( 12.0f ) }, 0.0f );
+				ec->body->SetTransform( { pos.x, pos.y + to_b2d( w_platformer_physics::player_base_radius * 1.5f ) }, 0.0f );
 			}
 			else
 			{

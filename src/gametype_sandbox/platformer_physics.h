@@ -4,9 +4,13 @@
 
 struct w_platformer_physics : w_contact_listener, w_physics
 {
-	const static float player_move_force_s;
-	const static float player_move_force_max;
-	const static float player_jump_force;
+	static float player_move_force_s;
+	static float player_base_radius;
+	static float player_move_force_max;
+	static float player_jump_force;
+	static float player_drop_down_normal_tolerance;
+	static int player_jump_interval_timer;
+	static float player_air_control_damping;
 
 	w_platformer_physics();
 
