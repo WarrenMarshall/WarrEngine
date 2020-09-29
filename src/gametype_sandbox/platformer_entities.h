@@ -11,3 +11,10 @@ struct e_platformer_coin : w_entity
 {
 	e_platformer_coin();
 };
+
+// ----------------------------------------------------------------------------
+
+struct e_platformer_mover : w_entity
+{
+	e_platformer_mover();
+};

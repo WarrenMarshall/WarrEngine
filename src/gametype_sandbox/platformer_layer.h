@@ -7,11 +7,14 @@ struct platformer_layer : w_layer
 	platformer_layer();
 
 	w_entity* player = nullptr;
+	w_entity* mover = nullptr;
+	std::unique_ptr<w_tween> tween_mover = nullptr;
 
 	virtual void push() override;
 	virtual void pop() override;
 	virtual void update() override;
 	virtual void draw() override;
 	virtual bool handle_input_event( const w_input_event* evt );
+
 	void spawn_coins();
 };

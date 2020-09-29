@@ -353,9 +353,7 @@ void ec_b2d_body::draw()
 		{
 			auto* shape = (b2EdgeShape*) fixture->GetShape();
 
-			b2Vec2 position = body->GetPosition();
-			position.x = from_b2d( position.x );
-			position.y = from_b2d( position.y );
+			w_vec2 position = w_vec2( body->GetPosition() ).from_b2d();
 
 			float angle = body->GetAngle();
 
@@ -364,13 +362,8 @@ void ec_b2d_body::draw()
 				->translate( { position.x, position.y } )
 				->rotate( glm::degrees( angle ) );
 
-			b2Vec2 v1 = body->GetWorldPoint( shape->m_vertex1 );
-			v1.x = from_b2d( v1.x );
-			v1.y = from_b2d( v1.y );
-
-			b2Vec2 v2 = body->GetWorldPoint( shape->m_vertex2 );
-			v2.x = from_b2d( v2.x );
-			v2.y = from_b2d( v2.y );
+			w_vec2 v1 = w_vec2( shape->m_vertex1 ).from_b2d();
+			w_vec2 v2 = w_vec2( shape->m_vertex2 ).from_b2d();
 
 			RENDER->draw_line( { v1.x, v1.y }, { v2.x, v2.y } );
 
@@ -485,11 +478,14 @@ b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start,
 
 	b2EdgeShape shape;
 	{
+		start += pos;
+		end += pos;
+
 		shape.SetOneSided(
-			( pos + start - w_vec2( 1, 0 ) ).to_b2d(),
-			( pos + start ).to_b2d(),
-			( pos + end ).to_b2d(),
-			( pos + end + w_vec2( 1, 0 ) ).to_b2d()
+			( start + w_vec2( -8, 16 ) ).to_b2d(),
+			start.to_b2d(),
+			end.to_b2d(),
+			( end + w_vec2( 8, -16 ) ).to_b2d()
 		);
 	}
 

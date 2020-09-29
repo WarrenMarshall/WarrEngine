@@ -49,43 +49,34 @@ void platformer_layer::push()
 	{
 		// rando platform lines running vertically
 
-		for( int y = 32 ; y < v_window_h ; y += 30 )
+		for( int y = 0 ; y < v_window_h ; y += 40 )
 		{
-			float xpos = w_random::getf_range( 0, v_window_hw );
+			float xpos = 8.0f;
 			auto ypos = (float) y;
-			float w = w_random::getf_range( 64, v_window_hw );
+
+			float w = w_random::getf_range( 32, 120 );
 			ec->add_fixture_line( contact_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
-		}
 
-#if 0
-		for( int x = 0 ; x < 10 ; ++x )
-		{
-			float xpos = w_random::getf_range( 0.0f, v_window_w );
-			float ypos = w_random::getf_range( 64.0f, v_window_h );
-
-			if( w_random::geti_range( 0, 4 ) == 2 )
-			{
-				float sz = w_random::getf_range( 4, 16 );
-				ec->add_fixture_circle( contact_id::world, { xpos, ypos }, sz );
-			}
-			else
-			{
-				float sz = w_random::getf_range( 4, 32 );
-				float sz2 = w_random::getf_range( 4, 32 );
-				ec->add_fixture_box( contact_id::world, w_rect( xpos, ypos, sz, sz2 ) );
-			}
+			xpos = v_window_w - 8.0f;
+			w = w_random::getf_range( 32, 120 );
+			ec->add_fixture_line( contact_id::world, w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
 		}
-#endif
 	}
 
 	// ----------------------------------------------------------------------------
 
 	player = add_entity<e_platformer_player>();
-	player->set_position( { 32.0f, 0.0f } );
+	player->teleport( { v_window_hw, 16.0f }, true );
 
 	// ----------------------------------------------------------------------------
 
 	spawn_coins();
+
+	// ----------------------------------------------------------------------------
+
+	tween_mover = std::make_unique<w_tween>( tween_type::pingpong, 24.0f, v_window_h - 24.0f, 80.0f );
+
+	mover = add_entity<e_platformer_mover>();
 }
 
 void platformer_layer::pop()
@@ -99,8 +90,11 @@ void platformer_layer::update()
 {
 	w_layer::update();
 
-	plat_physics->update();
 	plat_physics->move_player( player );
+	plat_physics->update();
+
+	tween_mover->update();
+	mover->teleport( { v_window_hw, tween_mover->get_fval() }, true );
 }
 
 void platformer_layer::draw()
@@ -144,7 +138,7 @@ void platformer_layer::spawn_coins()
 	for( int c = 0 ; c < 12 ; ++c )
 	{
 		auto coin = add_entity<e_platformer_coin>();
-		coin->set_position( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) } );
+		coin->teleport( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) }, true );
 	}
 }
 

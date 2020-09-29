@@ -25,11 +25,11 @@ void w_layer::update()
 		}
 	}
 
-	// update all entities as per physics
+	// update all entities as per the physics engine
 
 	for( const auto& entity : entities )
 	{
-		entity->update_physics();
+		entity->update_from_physics();
 	}
 
 	// update entities and components

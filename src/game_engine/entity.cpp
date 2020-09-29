@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_entity::update_physics()
+void w_entity::update_from_physics()
 {
 	// entities with box2d components need their transforms
 	// updated as per what the physics engine is reporting.
@@ -10,23 +10,16 @@ void w_entity::update_physics()
 	// NOTE : there should be only one "primary body" attached
 	// to an entity so it is assumed that once we find and
 	// process that one, we're done.
-	//
-	// NOTE : this ignores the fact that you may have multiple
-	// fixtures attached to a body and assumes that the body
-	// position/rotation is representative of where the
-	// entity is in the world.
 
 	for( auto& ec : components )
 	{
-		if( ec->type & (component_type::b2d_dynamic | component_type::b2d_kinematic) )
+		if( ec->type & (component_type::b2d_dynamic | component_type::b2d_kinematic ) )
 		{
 			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
-				b2Vec2 position = edb->body->GetPosition();
-
-				position.x = from_b2d( position.x );
-				position.y = from_b2d( position.y );
+				//w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
+				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
 
 				float angle = edb->body->GetAngle();
 
@@ -87,17 +80,6 @@ void w_entity::draw()
 
 		MATRIX
 			->pop();
-	}
-}
-
-void w_entity::set_position( w_vec2 pos )
-{
-	i_transform::set_position( pos );
-
-	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
-	for( auto& ec : ecs )
-	{
-		ec->body->SetTransform( pos.to_b2d(), ec->body->GetAngle() );
 	}
 }
 

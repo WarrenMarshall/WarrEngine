@@ -23,12 +23,10 @@ struct w_entity : i_life_cycle, i_transform
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	virtual bool can_be_deleted();
 
-	virtual void update_physics();
+	virtual void update_from_physics();
 	virtual void update();
 	virtual void update_components();
 	virtual void draw();
-
-	virtual void set_position( w_vec2 pos ) override;
 
 	void teleport( w_vec2 pos, bool reset_velocity );
 

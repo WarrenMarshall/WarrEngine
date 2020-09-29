@@ -73,6 +73,7 @@ void w_layer_mgr::update()
 	}
 
 	// update the living layers
+
 	for( auto& iter : layer_stack )
 	{
 		iter->update();

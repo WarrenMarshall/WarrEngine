@@ -256,9 +256,21 @@ w_vec2 w_vec2::operator+( w_vec2 v )
 	return w_vec2( this->x + v.x, this->y + v.y );
 }
 
+w_vec2 w_vec2::operator+=( w_vec2 v )
+{
+	*this = *this + v;
+	return *this;
+}
+
 w_vec2 w_vec2::operator-( w_vec2 v )
 {
 	return w_vec2( this->x - v.x, this->y - v.y );
+}
+
+w_vec2 w_vec2::operator-=( w_vec2 v )
+{
+	*this = *this - v;
+	return *this;
 }
 
 w_vec2 w_vec2::operator*( float v )

@@ -13,6 +13,7 @@ constexpr e_collision_layer clayer_ball = clayer_player;
 constexpr e_collision_layer clayer_paddle = clayer_player;
 constexpr e_collision_layer clayer_player2 = collision_layer::bit4;
 constexpr e_collision_layer clayer_coin = collision_layer::bit5;
+constexpr e_collision_layer clayer_mover = collision_layer::bit6;
 
 // ----------------------------------------------------------------------------
 

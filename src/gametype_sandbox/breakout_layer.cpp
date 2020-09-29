@@ -10,7 +10,7 @@ void breakout_layer::push()
 {
 	w_layer::push();
 
-	engine->window->set_mouse_mode( mouse_mode::hidden );
+	engine->window->set_mouse_mode( mouse_mode::locked );
 
 	pong_physics = std::make_unique<w_breakout_physics>();
 	engine->box2d_world->SetContactListener( pong_physics.get() );
@@ -69,7 +69,7 @@ void breakout_layer::push()
 
 	{
 		player = add_entity<e_breakout_paddle>();
-		player->set_position( { v_window_hw, v_window_h - 24.0f } );
+		player->teleport( { v_window_hw, v_window_h - 24.0f }, true );
 	}
 }
 
@@ -103,7 +103,7 @@ void breakout_layer::draw()
 void breakout_layer::spawn_ball()
 {
 	auto e = add_entity<e_breakout_ball>();
-	e->set_position( { v_window_hw, v_window_hh } );
+	e->teleport( { v_window_hw, v_window_hh }, false );
 }
 
 bool breakout_layer::handle_input_event( const w_input_event* evt )
@@ -112,7 +112,9 @@ bool breakout_layer::handle_input_event( const w_input_event* evt )
 	{
 		if( evt->input_id == input_id::mouse )
 		{
-			player->set_position( { player->pos.x + evt->mouse.delta.x, player->pos.y } );
+			w_vec2 new_pos = { player->pos.x + evt->mouse.delta.x, v_window_h - 24.0f };
+			new_pos.x = w_clamp( new_pos.x, 32.0f, v_window_w - 32.0f );
+			player->teleport( new_pos, false );
 		}
 	}
 

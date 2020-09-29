@@ -153,7 +153,9 @@ struct w_vec2
 	float get_size();
 
 	w_vec2 operator+( w_vec2 v );
+	w_vec2 operator+=( w_vec2 v );
 	w_vec2 operator-( w_vec2 v );
+	w_vec2 operator-=( w_vec2 v );
 	w_vec2 operator*( float v );
 	w_vec2 operator*=( float v );
 
