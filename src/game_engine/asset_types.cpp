@@ -344,7 +344,7 @@ bool a_sound::create_internals()
 	// that the user doesn't have an audio device connected to their computer. This is not
 	// fatal to the engine and should not crash you out.
 
-	if( !snd && file_exists )
+	if( !snd && BASS_IsStarted() )
 	{
 		log_error( "Couldn't load the file : [{}]", name );
 	}
@@ -403,7 +403,7 @@ bool a_music::create_internals()
 	// that the user doesn't have an audio device connected to their computer. This is not
 	// fatal to the engine and should not crash you out.
 
-	if( !mus && file_exists )
+	if( !mus && BASS_IsStarted() )
 	{
 		log_error( "Couldn't load the file : [{}]", name );
 	}
