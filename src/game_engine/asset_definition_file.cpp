@@ -523,12 +523,12 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				{
 					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
 
-					int steps_per_sec = w_parser::int_from_str( iter_ad->find_value( "steps_per_sec") );
-					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween") ) );
+					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec" ) );
+					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween" ) ) );
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_anim_texture>( tween_type, steps_per_sec ),
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
 															  name, "" );
 					}
 

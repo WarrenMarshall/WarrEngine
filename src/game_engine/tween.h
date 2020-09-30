@@ -12,6 +12,7 @@ struct w_tween
 	void update();
 	int get_ival();
 	float get_fval();
+	bool is_negative();
 
 	void reset_to_start();
 	void randomize();

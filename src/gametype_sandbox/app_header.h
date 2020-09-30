@@ -27,3 +27,7 @@ constexpr e_collision_layer clayer_mover = collision_layer::bit6;
 #include "breakout_entities.h"
 #include "breakout_physics.h"
 #include "breakout_layer.h"
+
+#include "twinstick_entities.h"
+#include "twinstick_physics.h"
+#include "twinstick_layer.h"

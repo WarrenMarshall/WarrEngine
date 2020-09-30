@@ -167,6 +167,9 @@
     <ClCompile Include="platformer_entities.cpp" />
     <ClCompile Include="breakout_entities.cpp" />
     <ClCompile Include="breakout_physics.cpp" />
+    <ClCompile Include="twinstick_entities.cpp" />
+    <ClCompile Include="twinstick_layer.cpp" />
+    <ClCompile Include="twinstick_physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
@@ -178,6 +181,9 @@
     <ClInclude Include="platformer_entities.h" />
     <ClInclude Include="breakout_entities.h" />
     <ClInclude Include="breakout_physics.h" />
+    <ClInclude Include="twinstick_entities.h" />
+    <ClInclude Include="twinstick_layer.h" />
+    <ClInclude Include="twinstick_physics.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\game_engine\game_engine.vcxproj">

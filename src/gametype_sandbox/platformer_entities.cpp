@@ -23,7 +23,6 @@ e_platformer_player::e_platformer_player()
 				{ -8, 4 }
 			}
 		);
-		//f->SetDensity( 100.0f );
 
 		ec->add_fixture_box( contact_id::on_ground_sensor, { 0.0f, 8.0f }, 12.0f, 4.0f )->SetSensor( true );
 		ec->add_fixture_box( contact_id::can_drop_down_sensor, { 0.0f, 20.0f }, 12.0f, 16.0f )->SetSensor( true );
@@ -69,8 +68,6 @@ e_platformer_mover::e_platformer_mover()
 		ec->is_primary_body = true;
 
 		set_collision( clayer_mover, clayer_player | clayer_coin );
-		//ec->add_fixture_box( contact_id::world, w_vec2::zero, 64, 8 );
 		auto f = ec->add_fixture_line( contact_id::world, w_vec2::zero, w_vec2( -32, 0 ), w_vec2( 32, 0 ) );
-		//f->SetDensity( 0.0f );
 	}
 }

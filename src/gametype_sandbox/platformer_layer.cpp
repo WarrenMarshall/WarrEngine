@@ -39,14 +39,8 @@ void platformer_layer::push()
 				{ 4.0f, v_window_h - 8.0f }
 			}
 		);
-	}
 
-	ent = add_entity<w_entity>();
-	ent->collision_layer = clayer_world;
-	ent->collides_with = clayer_player | clayer_coin;
-	ent->draw_debug_info = true;
-	ec = ent->add_component<ec_b2d_static>();
-	{
+#if 1
 		// rando platform lines running vertically
 
 		for( int y = 0 ; y < v_window_h ; y += 40 )
@@ -61,12 +55,13 @@ void platformer_layer::push()
 			w = w_random::getf_range( 32, 120 );
 			ec->add_fixture_line( contact_id::world, w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
 		}
+#endif
 	}
 
 	// ----------------------------------------------------------------------------
 
 	player = add_entity<e_platformer_player>();
-	player->teleport( { v_window_hw, 16.0f }, true );
+	player->set_position_deep( { v_window_hw, 16.0f }, true );
 
 	// ----------------------------------------------------------------------------
 
@@ -74,9 +69,10 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	tween_mover = std::make_unique<w_tween>( tween_type::pingpong, 24.0f, v_window_h - 24.0f, 80.0f );
+	tween_mover = std::make_unique<w_tween>( tween_type::pingpong, -1.0f, 1.0f, 1.0f );
 
 	mover = add_entity<e_platformer_mover>();
+	mover->set_position_deep( { v_window_hw, v_window_hh }, true );
 }
 
 void platformer_layer::pop()
@@ -88,25 +84,34 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	w_layer::update();
-
 	plat_physics->move_player( player );
 	plat_physics->update();
 
 	tween_mover->update();
-	mover->teleport( { v_window_hw, tween_mover->get_fval() }, true );
+
+	auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
+	ekb->body->SetLinearVelocity( w_vec2( 0.0f, tween_mover->get_fval() * 1.5f ) );
+
+	w_layer::update();
 }
 
 void platformer_layer::draw()
 {
 	w_layer::draw();
 
+	auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+
 	RENDER
 		->begin()
 		->push_rgba( w_color::teal, 0.5f );
 
-	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - teleport player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - set_position_forced player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
+
+	RENDER->draw_string( engine->pixel_font, fmt::format( "f tween: {:.2f}", tween_mover->get_fval() ), w_rect( 16, 32 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "i tween: {}", tween_mover->get_ival() ), w_rect( 16, 40 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "- tween: {}", tween_mover->is_negative() ), w_rect( 16, 48 ) );
+	//log_msg( "{}", tween_mover->get_fval() );
 
 	RENDER->end();
 }
@@ -122,7 +127,7 @@ bool platformer_layer::handle_input_event( const w_input_event* evt )
 
 		if( evt->input_id == input_id::key_1 )
 		{
-			player->teleport( engine->input->mouse_vwindow_pos, true );
+			player->set_position_deep( engine->input->mouse_vwindow_pos, true );
 		}
 
 		if( evt->input_id == input_id::key_n )
@@ -138,7 +143,7 @@ void platformer_layer::spawn_coins()
 	for( int c = 0 ; c < 12 ; ++c )
 	{
 		auto coin = add_entity<e_platformer_coin>();
-		coin->teleport( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) }, true );
+		coin->set_position_deep( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, v_window_h - 32 ) }, true );
 	}
 }
 

@@ -6,7 +6,7 @@ w_tween::w_tween( e_tween_type type, float start, float end, float step_per_sec 
 {
 	this->type = type;
 	this->start = start;
-	this->end = end + 1.0f;
+	this->end = end;
 	this->step_per_sec = step_per_sec;
 	_dir = 1.0;
 
@@ -94,6 +94,11 @@ float w_tween::get_fval()
 	}
 
 	return _fval;
+}
+
+bool w_tween::is_negative()
+{
+	return std::signbit( get_fval() );
 }
 
 /*

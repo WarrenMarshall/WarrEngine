@@ -1,18 +1,17 @@
 #pragma once
 
-struct breakout_layer : w_layer
+struct twinstick_layer : w_layer
 {
-	std::unique_ptr<w_breakout_physics> breakout_physics = nullptr;
+	std::unique_ptr<w_twinstick_physics> twinstick_physics = nullptr;
 
-	e_breakout_paddle* player = nullptr;
+	e_twinstick_player* player = nullptr;
 
-	breakout_layer();
+	twinstick_layer();
 
 	virtual void push() override;
 	virtual void pop() override;
 	virtual void update() override;
 	virtual void draw() override;
 
-	void spawn_ball();
 	virtual bool handle_input_event( const w_input_event* evt ) override;
 };

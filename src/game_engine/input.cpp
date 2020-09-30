@@ -395,7 +395,7 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 	these values are updated once per frame.
 */
 
-static float controller_dead_zone = 0.15f;
+static float controller_dead_zone = 0.20f;
 w_vec2 w_input::get_axis_state( e_input_id input_id )
 {
 	if( !game_controller )

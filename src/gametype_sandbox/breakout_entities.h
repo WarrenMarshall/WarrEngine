@@ -7,6 +7,7 @@ struct e_breakout_ball : w_entity
 
 	e_breakout_ball();
 	void reset_velocity();
+	virtual void update() override;
 };
 
 // ----------------------------------------------------------------------------

@@ -18,13 +18,10 @@ void w_entity::update_from_physics()
 			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
-				//w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
 				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
-
 				float angle = edb->body->GetAngle();
 
 				set_transform( { position.x, position.y }, glm::degrees( angle ), scale );
-
 				break;
 			}
 		}
@@ -85,8 +82,12 @@ void w_entity::draw()
 
 // immediately moves the entity and it's dynamic/kinematic bodies to a new position.
 
-void w_entity::teleport( w_vec2 pos, bool reset_velocity )
+void w_entity::set_position_deep( w_vec2 pos, bool reset_velocity )
 {
+	// entity
+	set_position( pos );
+
+	// physics components
 	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 
 	for( auto ec : ecs )
@@ -99,6 +100,21 @@ void w_entity::teleport( w_vec2 pos, bool reset_velocity )
 			ec->body->SetAngularVelocity( 0 );
 		}
 
+		ec->body->SetAwake( true );
+	}
+}
+
+void w_entity::set_angle_deep( float angle )
+{
+	// entity
+	set_angle( angle );
+
+	// physics components
+	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+
+	for( auto ec : ecs )
+	{
+		ec->body->SetTransform( ec->body->GetTransform().p, glm::radians( angle ) );
 		ec->body->SetAwake( true );
 	}
 }

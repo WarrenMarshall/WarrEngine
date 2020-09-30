@@ -171,7 +171,7 @@ void a_anim_texture::clean_up_internals()
 
 bool a_anim_texture::create_internals()
 {
-	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() - 1 ), static_cast<float>( frames_per_second ) );
+	frame_tween = std::make_unique<w_tween>( tween_type, 0.0f, static_cast<float>( frames.size() ), static_cast<float>( frames_per_second ) );
 
 	return true;
 }

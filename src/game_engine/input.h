@@ -10,7 +10,7 @@ struct w_input_event
 
 	struct
 	{
-		w_vec2 pos = w_vec2( 0, 0 );
+		//w_vec2 pos = w_vec2( 0, 0 );
 		w_vec2 delta = w_vec2( 0, 0 );
 	} mouse;
 };

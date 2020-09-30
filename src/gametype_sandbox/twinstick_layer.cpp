@@ -1,19 +1,19 @@
 
 #include "app_header.h"
 
-breakout_layer::breakout_layer()
+twinstick_layer::twinstick_layer()
 {
 	draws_completely_solid = true;
 }
 
-void breakout_layer::push()
+void twinstick_layer::push()
 {
 	w_layer::push();
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
-	breakout_physics = std::make_unique<w_breakout_physics>();
-	engine->box2d_world->SetContactListener( breakout_physics.get() );
+	twinstick_physics = std::make_unique<w_twinstick_physics>();
+	engine->box2d_world->SetContactListener( twinstick_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
 	ec_b2d_body* ec = nullptr;
@@ -22,7 +22,7 @@ void breakout_layer::push()
 
 	auto world_geo = add_entity<w_entity>();
 	world_geo->collision_layer = clayer_world;
-	world_geo->collides_with = clayer_ball;
+	world_geo->collides_with = clayer_player;
 	world_geo->draw_debug_info = true;
 
 	ec = world_geo->add_component<ec_b2d_static>();
@@ -40,7 +40,7 @@ void breakout_layer::push()
 			}
 		);
 
-#if 1
+#if 0
 		//  random shapes
 
 		for( int x = 0 ; x < 10 ; ++x )
@@ -63,31 +63,29 @@ void breakout_layer::push()
 #endif
 	}
 
+	// player
 	{
-		spawn_ball();
-	}
-
-	{
-		player = add_entity<e_breakout_paddle>();
-		player->set_position_deep( { v_window_hw, v_window_h - 24.0f }, true );
+		player = add_entity<e_twinstick_player>();
+		player->set_position_deep( { v_window_hw, v_window_hh }, true );
 	}
 }
 
-void breakout_layer::pop()
+void twinstick_layer::pop()
 {
 	w_layer::pop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 }
 
-void breakout_layer::update()
+void twinstick_layer::update()
 {
 	w_layer::update();
 
-	breakout_physics->update();
+	twinstick_physics->move_player( player );
+	twinstick_physics->update();
 }
 
-void breakout_layer::draw()
+void twinstick_layer::draw()
 {
 	w_layer::draw();
 
@@ -95,35 +93,17 @@ void breakout_layer::draw()
 	RENDER
 		->begin()
 		->push_rgba( w_color::teal, 0.5f )
-		->draw_string( engine->pixel_font, "'N' - spawn new ball", w_rect( 12, ypos += 12 ) )
-		->draw_string( engine->pixel_font, "'mouse' - move paddle", w_rect( 12, ypos += 12 ) )
+		->draw_string( engine->pixel_font, "TwinStick Shooter!", w_rect( 12, ypos += 12 ) )
 		->end();
 }
 
-void breakout_layer::spawn_ball()
-{
-	auto e = add_entity<e_breakout_ball>();
-
-	e->set_position_deep( { v_window_hw, v_window_hh }, false );
-}
-
-bool breakout_layer::handle_input_event( const w_input_event* evt )
+bool twinstick_layer::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_motion )
 	{
-		if( evt->input_id == input_id::mouse )
+		if( evt->input_id == input_id::controller_left_stick )
 		{
-			w_vec2 new_pos = { player->pos.x + evt->mouse.delta.x, v_window_h - 24.0f };
-			new_pos.x = w_clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
-			player->set_position_deep( new_pos, false );
-		}
-	}
-
-	if( evt->event_id == event_id::input_pressed )
-	{
-		if( evt->input_id == input_id::key_n )
-		{
-			spawn_ball();
+			//log_msg("left stick : {},{}", evt->mouse->)
 		}
 	}
 
