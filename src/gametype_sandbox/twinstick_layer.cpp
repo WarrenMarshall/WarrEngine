@@ -40,7 +40,7 @@ void twinstick_layer::push()
 			}
 		);
 
-#if 0
+#if 1
 		//  random shapes
 
 		for( int x = 0 ; x < 10 ; ++x )
@@ -81,7 +81,7 @@ void twinstick_layer::update()
 {
 	w_layer::update();
 
-	twinstick_physics->move_player( player );
+	twinstick_physics->handle_user_input( player );
 	twinstick_physics->update();
 }
 

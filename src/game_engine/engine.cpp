@@ -285,13 +285,22 @@ void w_engine::exec_main_loop()
 
 			RENDER->init_projection();
 
+			// render the frame
+
+			// layers and entities
 			engine->layer_mgr->draw();
-			UI->draw_topmost();
-			engine->draw();
+
+			// optionally draw debug physics shapes
 			if( RENDER->show_physics_debug )
 			{
 				engine->box2d_world->DebugDraw();
 			}
+
+			// top most UI elements, like the mouse cursor
+			UI->draw_topmost();
+
+			// engine specific things, like pause borders
+			engine->draw();
 		}
 		RENDER->end_frame();
 		engine->opengl->fb_game->unbind();

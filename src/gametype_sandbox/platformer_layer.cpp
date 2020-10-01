@@ -84,7 +84,7 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	plat_physics->move_player( player );
+	plat_physics->handle_user_input( player );
 	plat_physics->update();
 
 	tween_mover->update();
@@ -115,10 +115,10 @@ bool platformer_layer::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_pressed )
 	{
-		if( evt->input_id == input_id::controller_button_a )
-		{
-			plat_physics->jump_player( player );
-		}
+		//if( evt->input_id == input_id::controller_button_a )
+		//{
+		//	plat_physics->jump_player( player );
+		//}
 
 		if( evt->input_id == input_id::key_1 )
 		{

@@ -59,7 +59,7 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 
 bool w_platformer_physics::can_jump()
 {
-	return (player_on_ground > 0);
+	return ( player_on_ground > 0 && timer_jump_limiter->get_elapsed_count() );
 }
 
 bool w_platformer_physics::in_air()
@@ -72,7 +72,7 @@ bool w_platformer_physics::can_drop_down()
 	return ( player_drop_down_blocked == 0 );
 }
 
-void w_platformer_physics::move_player( w_entity* player )
+void w_platformer_physics::handle_user_input( w_entity* player )
 {
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
@@ -90,44 +90,45 @@ void w_platformer_physics::move_player( w_entity* player )
 
 		ec->body->SetLinearVelocity( { desired, current.y } );
 	}
-}
 
-void w_platformer_physics::jump_player( w_entity* player )
-{
-	if( can_jump() )
+	if( engine->input->get_button_state( input_id::controller_button_a ) == button_state::held )
 	{
-		w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
-
-		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
-		b2Vec2 current = ec->body->GetLinearVelocity();
-
-		float dir_modifier = 1.0f;
-		if( left_stick.y > w_platformer_physics::player_drop_down_normal_tolerance )
+		if( can_jump() )
 		{
-			if( can_drop_down() )
+			timer_jump_limiter->reset();
+
+			w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
+
+			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+
+			float dir_modifier = 1.0f;
+			if( left_stick.y > w_platformer_physics::player_drop_down_normal_tolerance )
 			{
-				dir_modifier = -0.25f;
-				auto pos = ec->body->GetPosition();
-				ec->body->SetTransform( { pos.x, pos.y + to_b2d( w_platformer_physics::player_base_radius * 1.5f ) }, 0.0f );
+				if( can_drop_down() )
+				{
+					dir_modifier = -0.25f;
+					auto pos = ec->body->GetPosition();
+					ec->body->SetTransform( { pos.x, pos.y + to_b2d( w_platformer_physics::player_base_radius * 1.5f ) }, 0.0f );
+				}
+				else
+				{
+					dir_modifier = 0.0f;
+				}
 			}
-			else
+
+			if( dir_modifier > 0.0f )
 			{
-				dir_modifier = 0.0f;
+				game->snd_plat_jump->play();
 			}
-		}
 
-		if( dir_modifier > 0.0f )
-		{
-			game->snd_plat_jump->play();
-		}
+			if( dir_modifier < 0.0f )
+			{
+				game->snd_plat_drop_down->play();
+			}
 
-		if( dir_modifier < 0.0f )
-		{
-			game->snd_plat_drop_down->play();
+			b2Vec2 current = ec->body->GetLinearVelocity();
+			ec->body->SetLinearVelocity( { current.x, ( -w_platformer_physics::player_jump_force ) * dir_modifier } );
 		}
-
-		timer_jump_limiter->reset();
-		ec->body->SetLinearVelocity( { current.x, ( -w_platformer_physics::player_jump_force ) * dir_modifier } );
 	}
 }
 

@@ -4,7 +4,8 @@
 // ----------------------------------------------------------------------------
 
 float w_twinstick_physics::player_move_force_s = 7.5f;
-float w_twinstick_physics::player_max_speed = 0.75f;
+float w_twinstick_physics::player_base_radius = 8.0f;
+float w_twinstick_physics::player_move_force_max = 0.75f;
 
 // ----------------------------------------------------------------------------
 
@@ -70,27 +71,22 @@ void w_twinstick_physics::BeginContact( b2Contact* contact )
 #endif
 }
 
-void w_twinstick_physics::move_player( w_entity* player )
+void w_twinstick_physics::handle_user_input( w_entity* player )
 {
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
 	if( !fequals( left_stick.x + left_stick.y, 0.0f ) )
 	{
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
-		w_vec2 impulse = left_stick * 0.25f;
-		//log_msg( "{}, {}", impulse.x, impulse.y );
-		ec->body->ApplyForceToCenter( impulse, true );
-
 		b2Vec2 current = ec->body->GetLinearVelocity();
-		current.x = w_clamp( current.x, -w_twinstick_physics::player_max_speed, w_twinstick_physics::player_max_speed );
-		current.y = w_clamp( current.y, -w_twinstick_physics::player_max_speed, w_twinstick_physics::player_max_speed );
-		ec->body->SetLinearVelocity( current );
+		current.x += ( w_twinstick_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
+		current.y += ( w_twinstick_physics::player_move_force_s * left_stick.y ) * w_time::FTS_step_value_s;
+		w_vec2 desired = {
+			w_clamp( current.x, -w_twinstick_physics::player_move_force_max, w_twinstick_physics::player_move_force_max ),
+			w_clamp( current.y, -w_twinstick_physics::player_move_force_max, w_twinstick_physics::player_move_force_max )
+		};
 
-
-		//b2Vec2 current = ec->body->GetLinearVelocity();
-		//current.x += ( w_twinstick_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
-		//current.x += ( w_twinstick_physics::player_move_force_s * left_stick.y ) * w_time::FTS_step_value_s;
-		//float desired = w_clamp( current.x, -w_platformer_physics::player_move_force_max, w_platformer_physics::player_move_force_max );
+		ec->body->SetLinearVelocity( { desired.x, desired.y } );
 	}
 
 	w_vec2 right_stick = engine->input->get_axis_state( input_id::controller_right_stick );
