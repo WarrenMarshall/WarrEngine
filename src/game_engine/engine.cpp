@@ -141,7 +141,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		{ // Box2D
 
 			log_msg( "Initializing Box2D" );
-			engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.0f, b2d_gravity_default ) );
+			engine->new_physics_world();
 		}
 
 		// set up frame buffers
@@ -288,6 +288,10 @@ void w_engine::exec_main_loop()
 			engine->layer_mgr->draw();
 			UI->draw_topmost();
 			engine->draw();
+			if( RENDER->show_physics_debug )
+			{
+				engine->box2d_world->DebugDraw();
+			}
 		}
 		RENDER->end_frame();
 		engine->opengl->fb_game->unbind();
@@ -415,6 +419,21 @@ w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_valu
 	}
 
 	return w_vec3( *sval );
+}
+
+void w_engine::new_physics_world()
+{
+	engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.0f, b2d_gravity_default ) );
+
+	engine->physics_debug_draw = std::make_unique<w_physics_debug_draw>();
+	engine->box2d_world->SetDebugDraw( engine->physics_debug_draw.get() );
+	engine->physics_debug_draw->SetFlags( b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit );
+
+#ifdef _DEBUG
+	RENDER->show_physics_debug = true;
+#else
+	RENDER->show_physics_debug = false;
+#endif
 }
 
 /*
@@ -651,6 +670,12 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 					{
 						layer_mgr->push<layer_esc_menu>();
 					}
+				}
+				break;
+
+				case input_id::key_f5:
+				{
+					RENDER->show_physics_debug = !RENDER->show_physics_debug;
 				}
 				break;
 			}

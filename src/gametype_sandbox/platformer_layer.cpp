@@ -108,11 +108,6 @@ void platformer_layer::draw()
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - set_position_forced player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
 
-	RENDER->draw_string( engine->pixel_font, fmt::format( "f tween: {:.2f}", tween_mover->get_fval() ), w_rect( 16, 32 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "i tween: {}", tween_mover->get_ival() ), w_rect( 16, 40 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "- tween: {}", tween_mover->is_negative() ), w_rect( 16, 48 ) );
-	//log_msg( "{}", tween_mover->get_fval() );
-
 	RENDER->end();
 }
 

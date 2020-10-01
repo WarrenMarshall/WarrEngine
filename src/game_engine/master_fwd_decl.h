@@ -29,3 +29,4 @@ struct w_physics;
 struct w_contact_listener;
 struct w_entity_component;
 struct w_entity;
+struct w_physics_debug_draw;

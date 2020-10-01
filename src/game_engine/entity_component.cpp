@@ -259,157 +259,6 @@ void ec_b2d_body::init_body()
 	body->m_userData.pointer = (uintptr_t) this;
 }
 
-void ec_b2d_body::draw()
-{
-	w_entity_component::draw();
-
-	if( !parent_entity->draw_debug_info )
-	{
-		return;
-	}
-
-	MATRIX->push_identity();
-
-	for( b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
-	{
-		if( fixture->IsSensor() )
-		{
-			RENDER->push_rgb( body->IsAwake() ? w_color::teal : w_color::dark_teal );
-		}
-		else
-		{
-			switch( fixture->GetBody()->GetType() )
-			{
-				case b2BodyType::b2_staticBody:
-				{
-					RENDER->push_rgb( body->IsAwake() ? w_color::green : w_color::dark_green );
-				}
-				break;
-				case b2BodyType::b2_dynamicBody:
-				{
-					RENDER->push_rgb( body->IsAwake() ? w_color::yellow : w_color::orange );
-				}
-				break;
-				case b2BodyType::b2_kinematicBody:
-				{
-					RENDER->push_rgb( body->IsAwake() ? w_color::light_blue : w_color::blue );
-				}
-				break;
-			}
-		}
-
-		b2Shape::Type shapeType = fixture->GetType();
-
-		if( shapeType == b2Shape::e_circle )
-		{
-			auto* shape = (b2CircleShape*) fixture->GetShape();
-
-			b2Vec2 position = body->GetPosition();
-			position.x = from_b2d( position.x + shape->m_p.x );
-			position.y = from_b2d( position.y + shape->m_p.y );
-
-			float angle = body->GetAngle();
-
-			MATRIX
-				->push()
-				->translate( { position.x, position.y } )
-				->rotate( glm::degrees( angle ) );
-
-			RENDER->draw_circle( { 0.0f, 0.0f }, from_b2d( shape->m_radius ) );
-
-			MATRIX->pop();
-		}
-		else if( shapeType == b2Shape::e_polygon )
-		{
-			b2Vec2 position = body->GetPosition();
-			position.x = from_b2d( position.x );
-			position.y = from_b2d( position.y );
-
-			float angle = body->GetAngle();
-
-			MATRIX
-				->push()
-				->translate( { position.x, position.y } )
-				->rotate( glm::degrees( angle ) );
-
-			auto* shape = (b2PolygonShape*) fixture->GetShape();
-
-			for( int v = 0 ; v < shape->m_count ; ++v )
-			{
-				b2Vec2 v0 = shape->m_vertices[ v ];
-				v0.x = from_b2d( v0.x );
-				v0.y = from_b2d( v0.y );
-
-				b2Vec2 v1 = shape->m_vertices[ ( v + 1 ) % shape->m_count ];
-				v1.x = from_b2d( v1.x );
-				v1.y = from_b2d( v1.y );
-
-				RENDER->draw_line( w_vec2( v0.x, v0.y ), w_vec2( v1.x, v1.y ) );
-			}
-
-			MATRIX->pop();
-		}
-		else if( shapeType == b2Shape::e_edge )
-		{
-			auto* shape = (b2EdgeShape*) fixture->GetShape();
-
-			w_vec2 position = w_vec2( body->GetPosition() ).from_b2d();
-
-			float angle = body->GetAngle();
-
-			MATRIX
-				->push()
-				->translate( { position.x, position.y } )
-				->rotate( glm::degrees( angle ) );
-
-			w_vec2 v1 = w_vec2( shape->m_vertex1 ).from_b2d();
-			w_vec2 v2 = w_vec2( shape->m_vertex2 ).from_b2d();
-
-			RENDER->draw_line( { v1.x, v1.y }, { v2.x, v2.y } );
-
-			MATRIX->pop();
-		}
-		else if( shapeType == b2Shape::e_chain )
-		{
-			b2Vec2 position = body->GetPosition();
-			position.x = from_b2d( position.x );
-			position.y = from_b2d( position.y );
-
-			float angle = body->GetAngle();
-
-			MATRIX
-				->push()
-				->translate( { position.x, position.y } )
-				->rotate( glm::degrees( angle ) );
-
-			auto* shape = (b2ChainShape*) fixture->GetShape();
-
-			for( int v = 0 ; v < shape->m_count ; ++v )
-			{
-				b2Vec2 v0 = shape->m_vertices[ v ];
-				v0.x = from_b2d( v0.x );
-				v0.y = from_b2d( v0.y );
-
-				b2Vec2 v1 = shape->m_vertices[ ( v + 1 ) % shape->m_count ];
-				v1.x = from_b2d( v1.x );
-				v1.y = from_b2d( v1.y );
-
-				RENDER->draw_line( w_vec2( v0.x, v0.y ), w_vec2( v1.x, v1.y ) );
-			}
-
-			MATRIX->pop();
-		}
-		else
-		{
-			log_error( "Unknown Box2D shape type" );
-		}
-
-		RENDER->pop_rgb();
-	}
-
-	MATRIX->pop();
-}
-
 // rc - the top left of the box (relative to body) and the w/h
 b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_rect rc )
 {
@@ -481,11 +330,13 @@ b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start,
 		start += pos;
 		end += pos;
 
+		float length = ( end - start ).get_size_squared() / 10.0f;
+
 		shape.SetOneSided(
-			( start + w_vec2( -8, 16 ) ).to_b2d(),
+			( start + w_vec2( -length, length ) ).to_b2d(),
 			start.to_b2d(),
 			end.to_b2d(),
-			( end + w_vec2( 8, -16 ) ).to_b2d()
+			( end + w_vec2( length, length ) ).to_b2d()
 		);
 	}
 

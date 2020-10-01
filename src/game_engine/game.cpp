@@ -13,9 +13,7 @@ void w_game::init()
 
 void w_game::new_game()
 {
-	// Create a new world for Box2D at the start of each game. This just seems
-	// to help keep everything stable and removes confusion.
-	engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.0f, b2d_gravity_default ) );
+	engine->new_physics_world();
 }
 
 void w_game::update()

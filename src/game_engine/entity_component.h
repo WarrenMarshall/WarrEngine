@@ -103,8 +103,6 @@ struct ec_b2d_body : w_entity_component
 	b2Fixture* add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start, w_vec2 end );
 	b2Fixture* add_fixture_line_loop( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts );
 	b2Fixture* add_fixture_polygon( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts );
-
-	virtual void draw() override;
 };
 
 // ----------------------------------------------------------------------------

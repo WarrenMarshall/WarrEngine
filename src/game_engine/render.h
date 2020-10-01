@@ -69,6 +69,7 @@ struct w_render
 	// ----------------------------------------------------------------------------
 
 	bool show_stats = false;
+	bool show_physics_debug = true;
 
 	// circle sample points are stored in a unit circle
 	static constexpr int circle_sample_points_max = 16;

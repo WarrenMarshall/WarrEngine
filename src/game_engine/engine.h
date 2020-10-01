@@ -19,7 +19,10 @@ struct w_engine : i_listener
 	bool is_running = false;
 	bool is_paused = false;
 
+	std::unique_ptr<w_physics_debug_draw> physics_debug_draw = nullptr;
 	std::unique_ptr<b2World> box2d_world = nullptr;
+
+	void new_physics_world();
 
 	virtual ~w_engine() = default;
 
