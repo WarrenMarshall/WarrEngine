@@ -1,4 +1,4 @@
-
+\
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -260,7 +260,7 @@ void ec_b2d_body::init_body()
 }
 
 // rc - the top left of the box (relative to body) and the w/h
-b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_rect rc )
+b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_rect rc )
 {
 	w_vec2 pos = { rc.x + ( rc.w / 2.0f ), rc.y + ( rc.h / 2.0f ) };
 
@@ -269,7 +269,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_rect rc )
 
 // pos - middle of box, relative to body
 // w/h - size of box
-b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_vec2 pos, float w, float h )
+b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, float h )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
@@ -291,13 +291,13 @@ b2Fixture* ec_b2d_body::add_fixture_box( unsigned id, w_vec2 pos, float w, float
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-		fixture.userData.pointer = id;
+		fixture.userData.pointer = (uintptr_t) id;
 	}
 
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_circle( unsigned id, w_vec2 pos, float radius )
+b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float radius )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
@@ -315,13 +315,13 @@ b2Fixture* ec_b2d_body::add_fixture_circle( unsigned id, w_vec2 pos, float radiu
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-		fixture.userData.pointer = id;
+		fixture.userData.pointer = (uintptr_t) id;
 	}
 
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start, w_vec2 end )
+b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
@@ -348,13 +348,13 @@ b2Fixture* ec_b2d_body::add_fixture_line( unsigned id, w_vec2 pos, w_vec2 start,
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-		fixture.userData.pointer = id;
+		fixture.userData.pointer = (uintptr_t) id;
 	}
 
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_line_loop( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts )
+b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
 	// Box2D requirement
 	assert( verts.size() >= 3 );
@@ -364,9 +364,9 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( unsigned id, w_vec2 pos, const st
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
 
-	for(w_vec2 v : verts)
+	for( w_vec2 v : verts )
 	{
-		b2verts.push_back( (v + pos ).to_b2d() );
+		b2verts.push_back( ( v + pos ).to_b2d() );
 	}
 
 	// we pass in the verts in a clockwise winding for compatibility with the
@@ -387,13 +387,13 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( unsigned id, w_vec2 pos, const st
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-		fixture.userData.pointer = id;
+		fixture.userData.pointer = (uintptr_t) id;
 	}
 
 	return body->CreateFixture( &fixture );
 }
 
-b2Fixture* ec_b2d_body::add_fixture_polygon( unsigned id, w_vec2 pos, const std::vector<w_vec2>& verts )
+b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
 	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
 
@@ -418,7 +418,7 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( unsigned id, w_vec2 pos, const std:
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
-		fixture.userData.pointer = id;
+		fixture.userData.pointer = (uintptr_t) id;
 	}
 
 	return body->CreateFixture( &fixture );

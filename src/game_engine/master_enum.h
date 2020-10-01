@@ -257,16 +257,3 @@ enum_begin( component_type )
 	b2d_dynamic = 32,
 	b2d_kinematic = 64
 enum_end
-
-// ----------------------------------------------------------------------------
-
-enum_begin( contact_id )
-	none = 0,
-	paddle,
-	player,
-	coin,
-	ball,
-	world,
-	on_ground_sensor,
-	can_drop_down_sensor,
-enum_end

@@ -23,19 +23,19 @@ void w_platformer_physics::BeginContact( b2Contact* contact )
 {
 	w_contact_listener::BeginContact( contact );
 
-	if( contact_ids_match( contact_id::on_ground_sensor, contact_id::world ) )
+	if( contact_ids_match( "s_on_ground", "world" ) )
 	{
 		player_on_ground++;
 	}
 
-	if( contact_ids_match( contact_id::can_drop_down_sensor, contact_id::world ) )
+	if( contact_ids_match( "s_can_drop_down", "world" ) )
 	{
 		player_drop_down_blocked++;
 	}
 
-	if( contact_ids_match( contact_id::player, contact_id::coin ) )
+	if( contact_ids_match( "player", "coin" ) )
 	{
-		auto coin = find_entity_from_contact_id( contact_id::coin );
+		auto coin = find_entity_from_contact_id( "coin" );
 
 		game->snd_plat_coin->play();
 		coin->set_life_cycle( life_cycle::dying );
@@ -46,12 +46,12 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 {
 	w_contact_listener::EndContact( contact );
 
-	if( contact_ids_match( contact_id::on_ground_sensor, contact_id::world ) )
+	if( contact_ids_match( "s_on_ground", "world" ) )
 	{
 		player_on_ground--;
 	}
 
-	if( contact_ids_match( contact_id::can_drop_down_sensor, contact_id::world ) )
+	if( contact_ids_match( "s_can_drop_down", "world" ) )
 	{
 		player_drop_down_blocked--;
 	}

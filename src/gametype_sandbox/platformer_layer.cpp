@@ -30,7 +30,7 @@ void platformer_layer::push()
 		// bounding box for world
 
 		ec->add_fixture_line_loop(
-			contact_id::world,
+			"world",
 			w_vec2::zero,
 			{
 				{ 4.0f, 4.0f },
@@ -49,11 +49,11 @@ void platformer_layer::push()
 			auto ypos = (float) y;
 
 			float w = w_random::getf_range( 32, 120 );
-			ec->add_fixture_line( contact_id::world, w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
+			ec->add_fixture_line( "world", w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 
 			xpos = v_window_w - 8.0f;
 			w = w_random::getf_range( 32, 120 );
-			ec->add_fixture_line( contact_id::world, w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
+			ec->add_fixture_line( "world", w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
 		}
 #endif
 	}

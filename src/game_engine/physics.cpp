@@ -118,16 +118,16 @@ void w_contact_listener::BeginContact( b2Contact* contact )
 {
 	this->contact = contact;
 	manifold = contact->GetManifold();
-	contact_ids[ 0 ] = (e_contact_id) contact->GetFixtureA()->GetUserData().pointer;
-	contact_ids[ 1 ] = (e_contact_id) contact->GetFixtureB()->GetUserData().pointer;
+	contact_ids[ 0 ] = (const char*) contact->GetFixtureA()->GetUserData().pointer;
+	contact_ids[ 1 ] = (const char*) contact->GetFixtureB()->GetUserData().pointer;
 }
 
 void w_contact_listener::EndContact( b2Contact* contact )
 {
 	this->contact = contact;
 	manifold = contact->GetManifold();
-	contact_ids[ 0 ] = (e_contact_id) contact->GetFixtureA()->GetUserData().pointer;
-	contact_ids[ 1 ] = (e_contact_id) contact->GetFixtureB()->GetUserData().pointer;
+	contact_ids[ 0 ] = (const char*) contact->GetFixtureA()->GetUserData().pointer;
+	contact_ids[ 1 ] = (const char*) contact->GetFixtureB()->GetUserData().pointer;
 }
 
 void w_contact_listener::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
@@ -141,7 +141,7 @@ void w_contact_listener::PostSolve( b2Contact* contact, const b2ContactImpulse* 
 	this->contact = contact;
 }
 
-bool w_contact_listener::contact_ids_match( e_contact_id id_0, e_contact_id id_1 )
+bool w_contact_listener::contact_ids_match( const char* id_0, const char* id_1 )
 {
 	return(
 		( contact_ids[ 0 ] == id_0 && contact_ids[ 1 ] == id_1 )
@@ -150,7 +150,7 @@ bool w_contact_listener::contact_ids_match( e_contact_id id_0, e_contact_id id_1
 }
 
 // looks at the 2 fixtures involved in this contact and returns the requested one.
-b2Fixture* w_contact_listener::find_fixture_from_contact_id( e_contact_id id )
+b2Fixture* w_contact_listener::find_fixture_from_contact_id( const char* id )
 {
 	if( contact_ids[ 0 ] == id )
 	{
@@ -167,17 +167,17 @@ b2Fixture* w_contact_listener::find_fixture_from_contact_id( e_contact_id id )
 	return nullptr;
 }
 
-b2Body* w_contact_listener::find_body_from_contact_id( e_contact_id id )
+b2Body* w_contact_listener::find_body_from_contact_id( const char* id )
 {
 	return find_fixture_from_contact_id( id )->GetBody();
 }
 
-w_entity_component* w_contact_listener::find_component_from_contact_id( e_contact_id id )
+w_entity_component* w_contact_listener::find_component_from_contact_id( const char* id )
 {
 	return (w_entity_component*) ( find_body_from_contact_id( id )->GetUserData().pointer );
 }
 
-w_entity* w_contact_listener::find_entity_from_contact_id( e_contact_id id )
+w_entity* w_contact_listener::find_entity_from_contact_id( const char* id )
 {
 	return find_component_from_contact_id( id )->parent_entity;
 }

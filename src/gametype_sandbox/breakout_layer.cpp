@@ -30,7 +30,7 @@ void breakout_layer::push()
 		// bounding box for world
 
 		ec->add_fixture_line_loop(
-			contact_id::world,
+			"world",
 			w_vec2::zero,
 			{
 				{ 4.0f, 4.0f },
@@ -51,13 +51,13 @@ void breakout_layer::push()
 			if( w_random::geti_range( 0, 3 ) == 1 )
 			{
 				float sz = w_random::getf_range( 4, 16 );
-				ec->add_fixture_circle( contact_id::world, { xpos, ypos }, sz );
+				ec->add_fixture_circle( "world", { xpos, ypos }, sz );
 			}
 			else
 			{
 				float sz = w_random::getf_range( 4, 32 );
 				float sz2 = w_random::getf_range( 4, 32 );
-				ec->add_fixture_box( contact_id::world, w_rect( xpos, ypos, sz, sz2 ) );
+				ec->add_fixture_box( "world", w_rect( xpos, ypos, sz, sz2 ) );
 			}
 		}
 #endif

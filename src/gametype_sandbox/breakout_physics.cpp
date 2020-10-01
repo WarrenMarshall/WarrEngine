@@ -40,10 +40,10 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 {
 	w_contact_listener::BeginContact( contact );
 
-	if( contact_ids_match( contact_id::paddle, contact_id::ball ) )
+	if( contact_ids_match( "paddle", "ball" ) )
 	{
-		e_breakout_paddle* paddle = (e_breakout_paddle*) find_entity_from_contact_id( contact_id::paddle );
-		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( contact_id::ball );
+		e_breakout_paddle* paddle = (e_breakout_paddle*) find_entity_from_contact_id( "paddle" );
+		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( "ball" );
 
 		ball->dir = ( ball->pos - paddle->pos ).normalize();
 		ball->reset_velocity();
@@ -51,12 +51,12 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		game->snd_pong_ball_hit_paddle->play();
 	}
 
-	if( contact_ids_match( contact_id::ball, contact_id::ball ) )
+	if( contact_ids_match( "ball", "ball" ) )
 	{
 		e_breakout_ball* ball_a = (e_breakout_ball*) ( (w_entity_component*) contact->GetFixtureA()->GetBody()->GetUserData().pointer )->parent_entity;
 		e_breakout_ball* ball_b = (e_breakout_ball*) ( (w_entity_component*) contact->GetFixtureB()->GetBody()->GetUserData().pointer )->parent_entity;
 
-		b2Vec2 world_point = find_body_from_contact_id( contact_id::ball )->GetWorldPoint( manifold->localPoint );
+		b2Vec2 world_point = find_body_from_contact_id( "ball" )->GetWorldPoint( manifold->localPoint );
 
 		w_vec2 world_point_a = w_vec2( contact->GetFixtureA()->GetBody()->GetWorldPoint( manifold->localPoint ) ).from_b2d();
 		w_vec2 world_point_b = w_vec2( contact->GetFixtureB()->GetBody()->GetWorldPoint( manifold->localPoint ) ).from_b2d();
@@ -72,9 +72,9 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		game->snd_pong_ball_hit_ball->play();
 	}
 
-	if( contact_ids_match( contact_id::ball, contact_id::world ) )
+	if( contact_ids_match( "ball", "world" ) )
 	{
-		auto ball_body = find_body_from_contact_id( contact_id::ball );
+		auto ball_body = find_body_from_contact_id( "ball" );
 		w_vec2 ball_dir = w_vec2( ball_body->GetLinearVelocity() );
 
 		w_vec2 hit_normal = calc_hit_normal( ball_body );
@@ -82,7 +82,7 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		fudge_movement_dir( new_dir );
 		new_dir.normalize();
 
-		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( contact_id::ball );
+		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( "ball" );
 
 		ball->dir = new_dir;
 		ball->reset_velocity();

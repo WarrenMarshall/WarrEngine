@@ -9,7 +9,7 @@ e_twinstick_player::e_twinstick_player()
 
 	auto ecd = add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;
-	auto f = ecd->add_fixture_circle( contact_id::player, w_vec2::zero, 12 );
+	auto f = ecd->add_fixture_circle( "player", w_vec2::zero, 12 );
 
 	ecd->body->SetFixedRotation( true );
 
@@ -21,6 +21,3 @@ e_twinstick_player::e_twinstick_player()
 
 	add_component<ec_sprite>()->init( "twinstick_player" );
 }
-
-// optional aiming laser sight from gun hot spot
-// firing from gun hot spot

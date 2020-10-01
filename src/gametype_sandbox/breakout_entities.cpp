@@ -11,7 +11,7 @@ e_breakout_ball::e_breakout_ball()
 
 	auto ecd = add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;
-	auto f = ecd->add_fixture_circle( contact_id::ball, w_vec2::zero, 8 );
+	auto f = ecd->add_fixture_circle( "ball", w_vec2::zero, 8 );
 
 	dir = w_vec2::get_random_unit();
 	reset_velocity();
@@ -44,5 +44,5 @@ e_breakout_paddle::e_breakout_paddle()
 
 	auto ecd = add_component<ec_b2d_kinematic>();
 	ecd->is_primary_body = true;
-	auto f = ecd->add_fixture_box( contact_id::paddle, w_vec2::zero, 80, 12 );
+	auto f = ecd->add_fixture_box( "paddle", w_vec2::zero, 80, 12 );
 }

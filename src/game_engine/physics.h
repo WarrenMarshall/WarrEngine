@@ -32,7 +32,7 @@ struct w_contact_listener : b2ContactListener
 {
 	b2Contact* contact = nullptr;
 	b2Manifold* manifold = nullptr;
-	std::array<e_contact_id, 2> contact_ids;
+	const char* contact_ids[ 2 ];
 
 	// Called when two fixtures begin to touch
 	virtual void BeginContact( b2Contact* contact ) override;
@@ -43,11 +43,11 @@ struct w_contact_listener : b2ContactListener
 	virtual void PreSolve( b2Contact* contact, const b2Manifold* oldManifold ) override;
 	virtual void PostSolve( b2Contact* contact, const b2ContactImpulse* impulse ) override;
 
-	bool contact_ids_match( e_contact_id id_0, e_contact_id id_1 );
-	b2Fixture* find_fixture_from_contact_id( e_contact_id id );
-	b2Body* find_body_from_contact_id( e_contact_id id );
-	w_entity_component* find_component_from_contact_id( e_contact_id id );
-	w_entity* find_entity_from_contact_id( e_contact_id id );
+	bool contact_ids_match( const char* id_0, const char* id_1 );
+	b2Fixture* find_fixture_from_contact_id( const char* id );
+	b2Body* find_body_from_contact_id( const char* id );
+	w_entity_component* find_component_from_contact_id( const char* id );
+	w_entity* find_entity_from_contact_id( const char* id );
 
 	w_vec2 calc_hit_normal( b2Body* body_colliding );
 };
