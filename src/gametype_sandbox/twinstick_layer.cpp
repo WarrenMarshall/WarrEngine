@@ -93,7 +93,17 @@ void twinstick_layer::draw()
 	RENDER
 		->begin()
 		->push_rgba( w_color::teal, 0.5f )
-		->draw_string( engine->pixel_font, "TwinStick Shooter!", w_rect( 12, ypos += 12 ) )
+		->draw_string( engine->pixel_font, "TwinStick Shooter!", w_rect( 12, ypos += 12 ) );
+
+	if( twinstick_physics->trace_hit_location != w_vec2::zero )
+	{
+		RENDER
+			->push_rgb( w_color::red )
+			->push_alpha( 0.15f )
+			->draw_line( player->pos, twinstick_physics->trace_hit_location );
+	}
+
+	RENDER
 		->end();
 }
 

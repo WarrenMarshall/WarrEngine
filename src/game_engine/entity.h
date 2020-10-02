@@ -2,6 +2,8 @@
 
 struct w_entity : i_life_cycle, i_transform
 {
+	const char* tag = nullptr;
+
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
 

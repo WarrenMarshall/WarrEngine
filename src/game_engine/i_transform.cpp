@@ -16,7 +16,7 @@ void i_transform::set_position( w_vec2 pos )
 
 void i_transform::set_angle( float angle )
 {
-	this->angle_facing = angle;
+	this->angle = angle;
 }
 
 void i_transform::set_scale( float scale )

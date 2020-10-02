@@ -51,7 +51,7 @@ struct w_input : i_speaker
 	bool is_alt_down();
 
 	e_button_state get_button_state( e_input_id input_id );
-	w_vec2 get_axis_state( e_input_id input_id );
+	w_vec2 get_axis_state( e_input_id input_id, bool ignore_dead_zone = false );
 
 	void init();
 	void deinit();

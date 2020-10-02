@@ -8,7 +8,7 @@ float w_platformer_physics::player_base_radius = 8.0f;
 float w_platformer_physics::player_move_force_max = 1.25f;
 float w_platformer_physics::player_jump_force = 3.0f;
 float w_platformer_physics::player_drop_down_normal_tolerance = 0.8f;
-int w_platformer_physics::player_jump_interval_timer = 250;
+int w_platformer_physics::player_jump_interval = 250;
 float w_platformer_physics::player_air_control_damping = 0.35f;
 
 // ----------------------------------------------------------------------------
@@ -16,7 +16,7 @@ float w_platformer_physics::player_air_control_damping = 0.35f;
 w_platformer_physics::w_platformer_physics()
 	: w_contact_listener()
 {
-	timer_jump_limiter = std::make_unique<w_timer>( w_platformer_physics::player_jump_interval_timer );
+	timer_jump_limiter = std::make_unique<w_timer>( w_platformer_physics::player_jump_interval );
 }
 
 void w_platformer_physics::BeginContact( b2Contact* contact )

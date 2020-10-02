@@ -251,6 +251,16 @@ w_vec2 w_vec2::from_b2d()
 	return w_vec2( ::from_b2d( x ), ::from_b2d( y ) );
 }
 
+bool w_vec2::operator==( w_vec2 v )
+{
+	return ( fequals( this->x, v.x ) && fequals( this->y, v.y ) );
+}
+
+bool w_vec2::operator!=( w_vec2 v )
+{
+	return !( fequals( this->x, v.x ) && fequals( this->y, v.y ) );
+}
+
 w_vec2 w_vec2::operator+( w_vec2 v )
 {
 	return w_vec2( this->x + v.x, this->y + v.y );

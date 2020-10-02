@@ -178,8 +178,8 @@ void ec_emitter::post_init()
 
 	MATRIX
 		->push()
-		->add_transform( parent_entity->pos, parent_entity->angle_facing, parent_entity->scale )
-		->add_transform( pos, angle_facing, scale );
+		->add_transform( parent_entity->pos, parent_entity->angle, parent_entity->scale )
+		->add_transform( pos, angle, scale );
 
 	emitter->post_init();
 

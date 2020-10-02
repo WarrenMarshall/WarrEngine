@@ -152,6 +152,8 @@ struct w_vec2
 	float get_size_squared();
 	float get_size();
 
+	bool operator==( w_vec2 v );
+	bool operator!=( w_vec2 v );
 	w_vec2 operator+( w_vec2 v );
 	w_vec2 operator+=( w_vec2 v );
 	w_vec2 operator-( w_vec2 v );

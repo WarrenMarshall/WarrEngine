@@ -11,6 +11,7 @@ e_breakout_ball::e_breakout_ball()
 
 	auto ecd = add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;
+	ecd->body->SetFixedRotation( true );
 	auto f = ecd->add_fixture_circle( "ball", w_vec2::zero, 8 );
 
 	dir = w_vec2::get_random_unit();

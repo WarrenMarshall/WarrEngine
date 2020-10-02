@@ -396,8 +396,11 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 */
 
 static float controller_dead_zone = 0.20f;
-w_vec2 w_input::get_axis_state( e_input_id input_id )
+static float controller_dead_zone_small = 0.10f;
+w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 {
+	float dead_zone = ignore_dead_zone ? controller_dead_zone_small : controller_dead_zone;
+
 	if( !game_controller )
 	{
 		return w_vec2::zero;
@@ -413,11 +416,11 @@ w_vec2 w_input::get_axis_state( e_input_id input_id )
 			value.x = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLX / 32767.0f );
 			value.y = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLY / 32767.0f ) * -1.0f;
 
-			if( fabs( value.x ) < controller_dead_zone )
+			if( fabs( value.x ) < dead_zone )
 			{
 				value.x = 0.f;
 			}
-			if( fabs( value.y ) < controller_dead_zone )
+			if( fabs( value.y ) < dead_zone )
 			{
 				value.y = 0.f;
 			}
@@ -429,12 +432,9 @@ w_vec2 w_input::get_axis_state( e_input_id input_id )
 			value.x = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRX / 32767.0f );
 			value.y = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRY / 32767.0f ) * -1.0f;
 
-			if( fabs( value.x ) < controller_dead_zone )
+			if( fabs( value.x ) < dead_zone || fabs( value.y ) < dead_zone )
 			{
 				value.x = 0.f;
-			}
-			if( fabs( value.y ) < controller_dead_zone )
-			{
 				value.y = 0.f;
 			}
 		}

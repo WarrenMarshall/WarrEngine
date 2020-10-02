@@ -8,7 +8,7 @@ struct i_transform
 	w_vec2 pos;
 
 	// rotation (around z axis)
-	float angle_facing = 0.0f;
+	float angle = 0.0f;
 
 	// scale
 	float scale = 1.0f;

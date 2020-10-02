@@ -55,7 +55,7 @@ void w_entity::update_components()
 	{
 		MATRIX
 			->push()
-			->add_transform( component->pos, component->angle_facing, component->scale );
+			->add_transform( component->pos, component->angle, component->scale );
 
 		component->update();
 
@@ -70,7 +70,7 @@ void w_entity::draw()
 	{
 		MATRIX
 			->push()
-			->add_transform( component->pos, component->angle_facing, component->scale );
+			->add_transform( component->pos, component->angle, component->scale );
 
 		RENDER->push_depth_nudge();
 		component->draw();

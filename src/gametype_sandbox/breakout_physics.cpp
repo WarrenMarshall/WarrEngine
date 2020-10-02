@@ -14,7 +14,7 @@ void fudge_movement_dir( w_vec2& dir )
 		dir.y = w_max( 0.3f, dir.y );
 	}
 
-#if 0
+#if 1
 	// this was added when I did the new code but I THINK it causes problems sometimes
 	// ... so delete it eventually if you never use it
 	if( dir.x < 0.0f )
@@ -87,6 +87,6 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		ball->dir = new_dir;
 		ball->reset_velocity();
 
-		game->snd_pong_ball_hit_world->play();
+		//game->snd_pong_ball_hit_world->play();
 	}
 }

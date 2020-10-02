@@ -54,4 +54,6 @@ struct w_layer : i_life_cycle
 	}
 
 	bool is_topmost_layer();
+
+	w_entity* find_entity_from_tag( const char* tag );
 };

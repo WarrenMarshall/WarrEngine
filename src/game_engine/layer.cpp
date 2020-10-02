@@ -38,7 +38,7 @@ void w_layer::update()
 	{
 		MATRIX
 			->push()
-			->add_transform( entity->pos, entity->angle_facing, entity->scale );
+			->add_transform( entity->pos, entity->angle, entity->scale );
 
 		entity->update();
 		entity->update_components();
@@ -56,7 +56,7 @@ void w_layer::draw()
 
 		MATRIX
 			->push()
-			->add_transform( entity->pos, entity->angle_facing, entity->scale );
+			->add_transform( entity->pos, entity->angle, entity->scale );
 
 		entity->draw();
 
@@ -68,4 +68,17 @@ void w_layer::draw()
 bool w_layer::is_topmost_layer()
 {
 	return ( engine->layer_mgr->get_top() == this );
+}
+
+w_entity* w_layer::find_entity_from_tag( const char* tag )
+{
+	for( auto& iter : entities )
+	{
+		if( iter->tag && iter->tag == tag )
+		{
+			return iter.get();
+		}
+	}
+
+	return nullptr;
 }

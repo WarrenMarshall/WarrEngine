@@ -3,6 +3,8 @@
 
 e_twinstick_player::e_twinstick_player()
 {
+	tag = "player";
+
 	draw_debug_info = true;
 
 	set_collision( clayer_player, clayer_world );
@@ -14,8 +16,6 @@ e_twinstick_player::e_twinstick_player()
 	ecd->body->SetFixedRotation( true );
 
 	f->SetDensity( 1.0f );
-	f->SetFriction( 1.0f );
-	f->SetRestitution( 0.75f );
 
 	ecd->body->SetLinearDamping( 10.0f );
 
