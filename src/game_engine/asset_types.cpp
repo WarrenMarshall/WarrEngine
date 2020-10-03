@@ -131,9 +131,12 @@ void a_gradient::clean_up_internals()
 
 bool a_gradient::create_internals()
 {
-	// the dimensions of a gradient are determined by the alignment specified in the asset_def file.
-	// they are a list of colors either running vertically or horizontally, which means
-	// the other dimension is 1 pixel in size.
+	// gradients are 1x? or ?x1 textures
+	//
+	// the length of a gradient is determined by the alignment specified in the asset_def
+	// file. they are a list of colors either running vertically or horizontally, which
+	// implies the other dimension is 1 pixel in size.
+
 	w = static_cast<float>( ( alignment == align::horizontal ) ? (colors.size() / 4) : 1 );
 	h = static_cast<float>( ( alignment == align::vertical ) ? (colors.size() / 4 ) : 1 );
 

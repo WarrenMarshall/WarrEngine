@@ -12,6 +12,8 @@ void platformer_layer::push()
 {
 	w_layer::push();
 
+	test_tween = tweeny::from( 0.0f ).to( 1.0f ).during( 2000 ).via( tweeny::easing::linear );
+
 	engine->window->set_mouse_mode( mouse_mode::normal );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
@@ -69,7 +71,7 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	tween_mover = std::make_unique<w_tween>( tween_type::pingpong, -1.0f, 1.0f, 1.0f );
+	tween_mover = tweeny::from(-1.0f ).to( 1.0f ).during( 1000 );
 
 	mover = add_entity<e_platformer_mover>();
 	mover->set_position_deep( { v_window_hw, v_window_hh }, true );
@@ -84,13 +86,15 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
+	test_tween.step( (int) w_time::FTS_step_value_ms );
+
 	plat_physics->handle_user_input( player );
 	plat_physics->update();
 
-	tween_mover->update();
+	tween_mover.step( (int) w_time::FTS_step_value_ms );
 
 	auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
-	ekb->body->SetLinearVelocity( w_vec2( 0.0f, tween_mover->get_fval() * 1.5f ) );
+	ekb->body->SetLinearVelocity( w_vec2( 0.0f, tween_mover.peek() * 1.5f ) );
 
 	w_layer::update();
 }
@@ -107,6 +111,7 @@ void platformer_layer::draw()
 
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - set_position_forced player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
+	RENDER->draw_string( engine->pixel_font, fmt::format( "Tween : {:.2f}", test_tween.peek() ), w_rect( 16, 32 ) );
 
 	RENDER->end();
 }

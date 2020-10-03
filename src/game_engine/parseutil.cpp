@@ -109,8 +109,8 @@ w_range w_parser::range_from_str( const std::string_view str )
 	w_tokenizer tok( str, ',', "0" );
 
 	w_range range;
-	range.min = w_parser::float_from_str( *tok.get_next_token() );
-	range.max = w_parser::float_from_str( *tok.get_next_token() );
+	range.start = w_parser::float_from_str( *tok.get_next_token() );
+	range.end = w_parser::float_from_str( *tok.get_next_token() );
 
 	return range;
 }

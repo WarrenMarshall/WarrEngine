@@ -18,7 +18,7 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 	}
 	else
 	{
-		max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.max / 1000.f ) );
+		max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec * ( params->r_lifespan.end / 1000.f ) );
 	}
 
 	particle_pool = std::make_unique<w_particle_pool>( max_particles_alive );
@@ -148,7 +148,7 @@ void w_particle_emitter::spawn_particle()
 */
 void w_particle_emitter::warm_up()
 {
-	float max_life_span = params->r_lifespan.max;
+	float max_life_span = params->r_lifespan.end;
 
 	while( max_life_span > 0 )
 	{

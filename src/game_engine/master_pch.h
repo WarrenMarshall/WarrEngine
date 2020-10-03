@@ -5,9 +5,9 @@
 
 #pragma warning(push, 0)	// turn off all warnings for external libraries
 
-	#include <glm\glm.hpp>
-	#include <glm\gtc\matrix_transform.hpp>
-	#include <glm\gtc\type_ptr.hpp>
+	#include <glm/glm/glm.hpp>
+	#include <glm/glm/gtc/matrix_transform.hpp>
+	#include <glm/glm/gtc/type_ptr.hpp>
 
 	#include <cassert>
 	#include <cstdio>
@@ -39,38 +39,41 @@
 	#include <memory>
 	#include <optional>
 
+	// Tweeny
+	#include "tweeny-master/include/tweeny.h"
+
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC
-	#include <GL/glew.h>
+	#include <glew-2.1.0/include/GL/glew.h>
 
 	// GLFW makes getting OpenGL up and running a lot easier
-	#include <GLFW/glfw3.h>
+	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3.h>
 	#define GLFW_EXPOSE_NATIVE_WIN32
-	#include <GLFW/glfw3native.h>
+	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3native.h>
 	#undef APIENTRY
 
 	// image loading
 	// (https://github.com/nothings/stb)
-	#include "stb_image.h"
+	#include "stb_image/stb_image.h"
 
 	// cute headers
 	// (https://github.com/RandyGaul/cute_headers)
-	#include "cute_c2.h"
+	#include "cute_headers/cute_c2.h"
 
 	// sound and music library
-	#include "bass.h"
+	#include "bass24/c/bass.h"
 
 	// {fmt}
 	#define FMT_HEADER_ONLY
-	#include "fmt/core.h"
-	#include "fmt/format.h"
-	#include "fmt/format-inl.h"
+	#include "fmt/include/fmt/core.h"
+	#include "fmt/include/fmt/format.h"
+	#include "fmt/include/fmt/format-inl.h"
 
 	// XBox controller + haptics support
 	#include <Xinput.h>
 
 	// Box2D physics
-	#include "box2d/box2d.h"
+	#include "box2d-master/include/box2d/box2d.h"
 
 #pragma warning(pop)	// turn warnings back on
 

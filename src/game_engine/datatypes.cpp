@@ -109,11 +109,8 @@ void w_timeline::get_value( float pct_on_timeline, w_color* value )
 
 // ----------------------------------------------------------------------------
 
-#undef min
-#undef max
-
-w_range::w_range( float min, float max )
-	: min( min ), max( max )
+w_range::w_range( float start, float end )
+	: start( start ), end( end )
 {
 }
 
@@ -121,13 +118,13 @@ w_range::w_range( std::string_view str )
 {
 	w_tokenizer tok( str, ',' );
 
-	min = w_parser::float_from_str( *tok.get_next_token() );
-	max = w_parser::float_from_str( *tok.get_next_token() );
+	start = w_parser::float_from_str( *tok.get_next_token() );
+	end = w_parser::float_from_str( *tok.get_next_token() );
 }
 
 float w_range::get_value()
 {
-	return min + ( ( max - min ) * w_random::getf() );
+	return start + ( ( end - start ) * w_random::getf() );
 }
 
 // ----------------------------------------------------------------------------

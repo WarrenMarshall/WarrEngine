@@ -32,6 +32,8 @@ extern float v_window_h;
 #include "i_transform.h"
 #include "i_listener.h"
 #include "i_speaker.h"
+#undef min	// fixes dumb compile problem
+#undef max	// fixes dumb compile problem
 #include "datatypes.h"
 #include "asset.h"
 #include "asset_types.h"

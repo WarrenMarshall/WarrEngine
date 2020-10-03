@@ -1,5 +1,6 @@
 #pragma once
 
+//template <typename T>
 struct w_tween
 {
 	e_tween_type type = tween_type::linear;

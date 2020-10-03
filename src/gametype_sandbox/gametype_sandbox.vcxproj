@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;APP_NAME=gametype_sandbox;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;$(SolutionDir)..\external\box2d-master\include;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;APP_NAME=gametype_sandbox;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external\glew-2.1.0\include;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64/include;$(SolutionDir)..\external\glm;$(SolutionDir)..\external\bass24\c;$(SolutionDir)..\external\cute_headers;$(SolutionDir)..\external\stb_image;$(SolutionDir)..\external\fmt\include;$(SolutionDir)..\external\box2d-master\include;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>

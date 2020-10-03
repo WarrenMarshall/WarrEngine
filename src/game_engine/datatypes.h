@@ -73,11 +73,11 @@ struct w_timeline
 
 struct w_range
 {
-	float min = 0.0f;
-	float max = 1.0f;
+	float start = 0.0f;
+	float end = 1.0f;
 
 	w_range() = default;
-	w_range( float min, float max );
+	w_range( float start, float end );
 	w_range( std::string_view str );
 
 	float get_value();

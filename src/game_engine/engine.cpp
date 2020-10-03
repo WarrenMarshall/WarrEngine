@@ -400,7 +400,7 @@ w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_v
 
 	if( !sval.has_value() )
 	{
-		sval = fmt::format( "{},{}", def_value.min, def_value.max );
+		sval = fmt::format( "{},{}", def_value.start, def_value.end );
 	}
 
 	return w_range( *sval );
