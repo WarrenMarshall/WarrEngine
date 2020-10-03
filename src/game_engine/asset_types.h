@@ -178,8 +178,14 @@ struct a_9slice_def : i_asset
 
 struct a_sound : i_asset
 {
+#ifdef USE_BASS_SOUND_LIBRARY
 	int snd = -1;
 	int channel = -1;
+#else
+	cs_loaded_sound_t snd = {};
+	//cs_playing_sound_t playing_sound = {};
+#endif
+
 
 	virtual ~a_sound() override;
 

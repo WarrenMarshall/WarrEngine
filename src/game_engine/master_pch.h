@@ -60,8 +60,15 @@
 	// (https://github.com/RandyGaul/cute_headers)
 	#include "cute_headers/cute_c2.h"
 
+#define USE_BASS_SOUND_LIBRARY
+
 	// sound and music library
+#ifdef USE_BASS_SOUND_LIBRARY
 	#include "bass24/c/bass.h"
+#else
+	// sound and music library
+	#include "cute_headers/cute_sound.h"
+#endif
 
 	// {fmt}
 	#define FMT_HEADER_ONLY

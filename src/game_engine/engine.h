@@ -12,6 +12,10 @@ struct w_engine : i_listener
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
+#ifndef USE_BASS_SOUND_LIBRARY
+	cs_context_t* c2_sound_context = nullptr;
+#endif
+
 	a_subtexture* white_wire = nullptr;
 	a_subtexture* white_solid = nullptr;
 	a_font* pixel_font = nullptr;
