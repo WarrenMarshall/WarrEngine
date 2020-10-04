@@ -54,11 +54,10 @@
 
 	// image loading
 	// (https://github.com/nothings/stb)
-	#include "stb_image/stb_image.h"
+	#include "stb-master/stb_image.h"
 
-	// cute headers
-	// (https://github.com/RandyGaul/cute_headers)
-	#include "cute_headers/cute_c2.h"
+	// Box2D physics
+	#include "box2d-master/include/box2d/box2d.h"
 
 	// sound and music library
 	//
@@ -77,6 +76,10 @@
 		#include "cute_headers/cute_sound.h"
 	#endif
 
+	// cute headers
+	// (https://github.com/RandyGaul/cute_headers)
+	#include "cute_headers/cute_c2.h"
+
 	// {fmt}
 	#define FMT_HEADER_ONLY
 	#include "fmt/include/fmt/core.h"
@@ -85,9 +88,6 @@
 
 	// XBox controller + haptics support
 	#include <Xinput.h>
-
-	// Box2D physics
-	#include "box2d-master/include/box2d/box2d.h"
 
 #pragma warning(pop)	// turn warnings back on
 
