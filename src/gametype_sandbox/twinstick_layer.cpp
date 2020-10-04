@@ -4,11 +4,14 @@
 twinstick_layer::twinstick_layer()
 {
 	draws_completely_solid = true;
+	music = engine->get_asset<a_sound>( "twinstick_music_track" );
 }
 
 void twinstick_layer::push()
 {
 	w_layer::push();
+
+	music->play();
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
@@ -73,6 +76,8 @@ void twinstick_layer::push()
 void twinstick_layer::pop()
 {
 	w_layer::pop();
+
+	music->stop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 }

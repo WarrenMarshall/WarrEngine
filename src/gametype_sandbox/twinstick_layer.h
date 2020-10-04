@@ -5,6 +5,7 @@ struct twinstick_layer : w_layer
 	std::unique_ptr<w_twinstick_physics> twinstick_physics = nullptr;
 
 	e_twinstick_player* player = nullptr;
+	a_sound* music = nullptr;
 
 	twinstick_layer();
 

@@ -174,7 +174,15 @@
   <ItemGroup>
     <ClCompile Include="asset.cpp" />
     <ClCompile Include="asset_definition_file.cpp" />
-    <ClCompile Include="asset_types.cpp" />
+    <ClCompile Include="a_9slice_def.cpp" />
+    <ClCompile Include="a_anim_texture.cpp" />
+    <ClCompile Include="a_cursor.cpp" />
+    <ClCompile Include="a_emitter_params.cpp" />
+    <ClCompile Include="a_font.cpp" />
+    <ClCompile Include="a_gradient.cpp" />
+    <ClCompile Include="a_sound.cpp" />
+    <ClCompile Include="a_subtexture.cpp" />
+    <ClCompile Include="a_texture.cpp" />
     <ClCompile Include="cache_assets.cpp" />
     <ClCompile Include="asset_definition_file_cache.cpp" />
     <ClCompile Include="config.cpp" />
@@ -232,7 +240,15 @@
   <ItemGroup>
     <ClInclude Include="asset.h" />
     <ClInclude Include="asset_definition_file.h" />
-    <ClInclude Include="asset_types.h" />
+    <ClInclude Include="a_9slice_def.h" />
+    <ClInclude Include="a_anim_texture.h" />
+    <ClInclude Include="a_cursor.h" />
+    <ClInclude Include="a_emitter_params.h" />
+    <ClInclude Include="a_font.h" />
+    <ClInclude Include="a_gradient.h" />
+    <ClInclude Include="a_sound.h" />
+    <ClInclude Include="a_subtexture.h" />
+    <ClInclude Include="a_texture.h" />
     <ClInclude Include="cache_assets.h" />
     <ClInclude Include="asset_definition_file_cache.h" />
     <ClInclude Include="config.h" />

@@ -370,27 +370,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->original_filename = filename;
 
-					// ------------------------------------------------------------------------
-
-					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals();
-				}
-				else if( type == "music" )
-				{
-					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
-
-					// ------------------------------------------------------------------------
-
-					auto asset_ptr = engine->get_asset<a_music>( name, b_silent( true ) );
-
-					if( !asset_ptr )
+					for( auto& [key, value] : iter_ad->kv )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_music>(), name, filename );
+						if( key == "looped" )
+						{
+							asset_ptr->looped = bool( value == "true" );
+						}
 					}
-
-					// ------------------------------------------------------------------------
-
-					asset_ptr->original_filename = filename;
 
 					// ------------------------------------------------------------------------
 

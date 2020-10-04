@@ -4,7 +4,7 @@
 // memory pool. this should allow for more of them fitting into the
 // cache and faster updating/rendering when there are thousands of them.
 
-#pragma pack(push)
+//#pragma pack(push)
 //#pragma pack(1)
 
 struct w_particle final
@@ -39,7 +39,7 @@ struct w_particle final
 	constexpr bool is_alive();
 };
 
-#pragma pack(pop)
+//#pragma pack(pop)
 
 // make sure the particle struct doesn't get above 64 bytes
 // for cache efficiency

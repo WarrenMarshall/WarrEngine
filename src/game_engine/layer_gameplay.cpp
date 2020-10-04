@@ -11,7 +11,7 @@ void layer_gameplay::push()
 	background_gradient = engine->get_asset<a_gradient>( "background_gradient" );
 	click_snd = engine->get_asset<a_sound>( "ui_click_01" );
 	snd2 = engine->get_asset<a_sound>( "spaceball" );
-	music = engine->get_asset<a_music>( "background_music" );
+	music = engine->get_asset<a_sound>( "background_music" );
 
 	spawn_entity<e_background_stars>( { v_window_hw, v_window_hh } );
 
