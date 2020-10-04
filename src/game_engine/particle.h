@@ -1,8 +1,20 @@
 #pragma once
 
-struct w_particle : i_transform
+// this is an attempt to keep the particles as small as possible in the
+// memory pool. this should allow for more of them fitting into the
+// cache and faster updating/rendering when there are thousands of them.
+
+#pragma pack(push)
+//#pragma pack(1)
+
+struct w_particle final
 {
 	a_texture* tex = nullptr;
+	a_emitter_params* params = nullptr;
+
+	// storing this directly instead of deriving from i_transform
+	// saves the size overhead of the virtual functions and extra floats
+	w_vec2 pos;
 
 	// how long this particle should live, in ticks
 	float life_span = 0.0f;
@@ -15,8 +27,6 @@ struct w_particle : i_transform
 	// world units to move, per second
 	float velocity_per_sec = 0.0f;
 
-	a_emitter_params* params = nullptr;
-
 	// current particle state
 	float base_scale = 0.0f;
 
@@ -27,5 +37,10 @@ struct w_particle : i_transform
 
 	void update();
 	constexpr bool is_alive();
-	constexpr void init_to_new();
 };
+
+#pragma pack(pop)
+
+// make sure the particle struct doesn't get above 64 bytes
+// for cache efficiency
+static_assert( sizeof( w_particle ) <= 64 );

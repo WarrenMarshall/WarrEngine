@@ -93,7 +93,7 @@ void w_particle_emitter::update()
 void w_particle_emitter::spawn_particle()
 {
 	w_particle* p = particle_pool->get_next_particle();
-	p->init_to_new();
+	p = new( p ) w_particle();
 
 	params->particle_spawner->find_spawn_pos_for_new_particle( p );
 	MATRIX->top()->transform_vec2( p->pos );

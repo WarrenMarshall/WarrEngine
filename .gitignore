@@ -27,3 +27,5 @@ bin/hello_world.exe
 bin/hello_world_log.txt
 bin/entity_sandbox.exe
 bin/entity_sandbox_log.txt
+bin/collision_sandbox_log.txt
+bin/endless_breakout_log.txt

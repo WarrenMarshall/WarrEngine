@@ -7,8 +7,8 @@
 // pads and aligns variables in memory whch makes the struct not match
 // the file layout and we get invalid data in the struct.
 
-#pragma pack(push)  /* push current alignment to stack */
-#pragma pack(1)     /* set alignment to 1 byte boundary */
+#pragma pack(push)
+#pragma pack(1)
 
 struct zip_local_file_header
 {
@@ -25,7 +25,7 @@ struct zip_local_file_header
 	short extra_field_length;
 };
 
-#pragma pack(pop)   /* restore original alignment from stack */
+#pragma pack(pop)
 
 // ----------------------------------------------------------------------------
 

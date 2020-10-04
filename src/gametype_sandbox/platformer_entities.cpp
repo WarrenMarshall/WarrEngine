@@ -53,7 +53,7 @@ e_platformer_coin::e_platformer_coin()
 	}
 
 	add_component<ec_sprite>()->init( "anim_coin_pickup" );
-	//add_component<ec_emitter>()->init( "coin_idle_effect" );
+	add_component<ec_emitter>()->init( "coin_idle_effect" );
 }
 
 // ----------------------------------------------------------------------------

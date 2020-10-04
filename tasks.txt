@@ -2,13 +2,8 @@
 - tweens
 	- need to figure out a consistent usage for these so they are super easy to use
 
-- finish thinking about
-
 - move_player
 	- this all needs to be abstracted in some nice way - or does it?
 
 - sticky camera
 	- camera moves with the player
-
-- play with cute_sound again
-	- it would be REALLY nice to ship with a single EXE and ZIP file, like Godot

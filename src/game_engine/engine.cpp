@@ -73,7 +73,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			log_msg( "Initializing Cute_Sound audio" );
 			engine->c2_sound_context = cs_make_context(
 				glfwGetWin32Window( engine->window->window ),
-				44100, 8192, 50, NULL );
+				44100, 8192, 150, NULL );
 
 			if( !engine->c2_sound_context )
 			{

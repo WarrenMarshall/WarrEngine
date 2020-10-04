@@ -28,6 +28,7 @@ void w_particle_pool::draw()
 	{
 		if( particle->is_alive() )
 		{
+			// lifetime
 			float interp_life_span = RENDER->calc_interpolated_per_sec_value( particle->life_span, -engine->time->FTS_step_value_ms );
 
 			float pct_of_life = fabs( 1.0f - ( interp_life_span / particle->life_span_save ) );
@@ -42,8 +43,10 @@ void w_particle_pool::draw()
 			float scale;
 			particle->params->t_scale->get_value( pct_of_life, &scale );
 
+			// angle
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( particle->spin, particle->spin_per_sec );
 
+			// position
 			w_vec2 v = particle->v_dir;
 			w_vec2 interp_pos(
 				RENDER->calc_interpolated_per_sec_value( particle->pos.x, ( v.x * particle->velocity_per_sec ) ),
@@ -52,7 +55,7 @@ void w_particle_pool::draw()
 
 			// the particle system issues a LOT of draw calls and these values are changing for every
 			// particle. it doesn't make sense to go through the render_state stack calls to set these
-			// so we just set the directly here.
+			// so we just set them here directly.
 			//
 			// the call to RENDER->end() at the end of the function resets the render_state stacks so
 			// there's no harm done here. it's just a faster way of telling the renderer what each
