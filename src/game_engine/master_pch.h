@@ -60,15 +60,22 @@
 	// (https://github.com/RandyGaul/cute_headers)
 	#include "cute_headers/cute_c2.h"
 
-#define USE_BASS_SOUND_LIBRARY
+	// sound and music library
+	//
+	// setting this #define means we are using the BASS library
+	// and must include "bass.dll" in the game distribution.
+	//
+	// otherwise, we use cute_sound which uses DirectSound and
+	// requires no external files.
 
-	// sound and music library
-#ifdef USE_BASS_SOUND_LIBRARY
-	#include "bass24/c/bass.h"
-#else
-	// sound and music library
-	#include "cute_headers/cute_sound.h"
-#endif
+	//#define USE_BASS_SOUND_LIBRARY
+
+	#ifdef USE_BASS_SOUND_LIBRARY
+		#include "bass24/c/bass.h"
+	#else
+		// sound and music library
+		#include "cute_headers/cute_sound.h"
+	#endif
 
 	// {fmt}
 	#define FMT_HEADER_ONLY

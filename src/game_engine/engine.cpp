@@ -82,7 +82,6 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			else
 			{
 				cs_spawn_mix_thread( engine->c2_sound_context );
-				cs_thread_sleep_delay( engine->c2_sound_context, 1 );
 			}
 		#endif
 		}

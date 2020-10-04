@@ -87,6 +87,6 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		ball->dir = new_dir;
 		ball->reset_velocity();
 
-		//game->snd_pong_ball_hit_world->play();
+		game->snd_pong_ball_hit_world->play();
 	}
 }
