@@ -222,9 +222,12 @@ void w_engine::deinit_game_engine()
 #ifdef USE_BASS_SOUND_LIBRARY
 	BASS_Free();
 #else
-	cs_stop_all_sounds( engine->c2_sound_context );
-	cs_shutdown_context( engine->c2_sound_context );
-	engine->c2_sound_context = nullptr;
+	if( engine->c2_sound_context )
+	{
+		cs_stop_all_sounds( engine->c2_sound_context );
+		cs_shutdown_context( engine->c2_sound_context );
+		engine->c2_sound_context = nullptr;
+	}
 #endif
 
 	log_msg( "Shutting down input" );

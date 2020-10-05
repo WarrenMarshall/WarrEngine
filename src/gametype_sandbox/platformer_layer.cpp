@@ -12,8 +12,6 @@ void platformer_layer::push()
 {
 	w_layer::push();
 
-	test_tween = tweeny::from( 0.0f ).to( 1.0f ).during( 2000 ).via( tweeny::easing::linear );
-
 	engine->window->set_mouse_mode( mouse_mode::normal );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
@@ -86,8 +84,6 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	test_tween.step( (int) w_time::FTS_step_value_ms );
-
 	plat_physics->handle_user_input( player );
 	plat_physics->update();
 
@@ -111,7 +107,6 @@ void platformer_layer::draw()
 
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - set_position_forced player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "Tween : {:.2f}", test_tween.peek() ), w_rect( 16, 32 ) );
 
 	RENDER->end();
 }
@@ -120,11 +115,6 @@ bool platformer_layer::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_pressed )
 	{
-		//if( evt->input_id == input_id::controller_button_a )
-		//{
-		//	plat_physics->jump_player( player );
-		//}
-
 		if( evt->input_id == input_id::key_1 )
 		{
 			player->set_position_deep( engine->input->mouse_vwindow_pos, true );

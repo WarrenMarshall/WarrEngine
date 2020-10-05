@@ -6,8 +6,6 @@ struct platformer_layer : w_layer
 
 	platformer_layer();
 
-	tweeny::tween<float> test_tween;
-
 	w_entity* player = nullptr;
 	w_entity* mover = nullptr;
 	tweeny::tween<float> tween_mover;
