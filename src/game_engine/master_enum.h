@@ -157,9 +157,7 @@ enum_end
 enum_begin( tween_type )
 	linear = 1,		// value iterates from start to end, once
 	loop,			// value iterates from start to end and resets to start, looping
-	pingpong,		// value iterates from start to end and back again, looping
-	half_sine,		// uses half a sin wave to bounce
-	sine			// a full sin wave
+	pingpong		// value iterates from start to end and back again, looping
 enum_end
 
 // ----------------------------------------------------------------------------

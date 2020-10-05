@@ -41,6 +41,7 @@
 
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"
+	using tweeny::easing;
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC

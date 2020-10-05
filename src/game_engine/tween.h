@@ -1,18 +1,16 @@
 #pragma once
 
-//template <typename T>
 struct w_tween
 {
+	tweeny::tween<float> tween = {};
 	e_tween_type type = tween_type::linear;
-	float start = 0.0f, end = 0.0f, step_per_sec = 0.0f;
-	float _fval = 0.0f;
-	float _dir = 1.0f;
+	float current_val = 0.0f;
 
-	w_tween( e_tween_type type, float start, float end, float step_per_sec );
-	void refresh_limits();
+	w_tween( e_tween_type type, float start, float end, float duration_ms );
+
 	void update();
-	int get_ival();
 	float get_fval();
+	int get_ival();
 	bool is_negative();
 
 	void reset_to_start();

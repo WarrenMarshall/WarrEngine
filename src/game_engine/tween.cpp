@@ -2,64 +2,56 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_tween::w_tween( e_tween_type type, float start, float end, float step_per_sec )
-{
-	this->type = type;
-	this->start = start;
-	this->end = end;
-	this->step_per_sec = step_per_sec;
-	_dir = 1.0;
+// loop
+//
+// - when the end is reached, reset to the start
 
-	_fval = start;
+bool on_step_loop( tweeny::tween<float>& tween )
+{
+	if( tween.progress() >= 1.0f )
+	{
+		tween.seek( 0.0f, false );
+	}
+
+	return false;
 }
 
-void w_tween::refresh_limits()
+// pingpong
+//
+// - when end is reached, start moving backwards
+// - when start is reached, start moving forwards
+
+bool on_step_pingpong( tweeny::tween<float>& tween )
 {
+	if( tween.progress() >= 1.0f )
+	{
+		tween.backward();
+	}
+
+	if( tween.progress() <= 0.001f )
+	{
+		tween.forward();
+	}
+
+	return false;
+}
+
+w_tween::w_tween( e_tween_type type, float start, float end, float duration_ms )
+{
+	tween = tweeny::from( start ).to( end ).during( duration_ms );
+	//tween.via( tweeny::easing::circularInOut );
+
 	switch( type )
 	{
-		case tween_type::linear:
-		{
-			if( _fval >= end )
-			{
-				_fval = end;
-			}
-
-			if( _fval <= start )
-			{
-				_fval = start;
-			}
-		}
-		break;
-
 		case tween_type::loop:
-		case tween_type::sine:
-		case tween_type::half_sine:
 		{
-			if( _fval >= end )
-			{
-				_fval -= ( end - start );
-			}
-
-			if( _fval <= start )
-			{
-				_fval += ( end - start );
-			}
+			tween.onStep( on_step_loop );
 		}
 		break;
 
 		case tween_type::pingpong:
 		{
-			if( _fval >= end )
-			{
-				_dir = -1.0;
-				_fval = end - (_fval - end);
-			}
-
-			if( _fval <= start )
-			{
-				_dir = 1.0;
-				_fval = start + (start - _fval);
-			}
+			tween.onStep( on_step_pingpong );
 		}
 		break;
 	}
@@ -67,33 +59,17 @@ void w_tween::refresh_limits()
 
 void w_tween::update()
 {
-	_fval += (( step_per_sec * w_time::FTS_step_value_s ) * _dir);
-
-	refresh_limits();
-}
-
-void w_tween::reset_to_start()
-{
-	_fval = start;
-}
-
-int w_tween::get_ival()
-{
-	return static_cast<int>( _fval );
+	current_val = tween.step( static_cast<int>( w_time::FTS_step_value_ms ) );
 }
 
 float w_tween::get_fval()
 {
-	switch( type )
-	{
-		case tween_type::sine:
-			return sin_from_angle( _fval );
+	return current_val;
+}
 
-		case tween_type::half_sine:
-			return fabs( sin_from_angle( _fval ) );
-	}
-
-	return _fval;
+int w_tween::get_ival()
+{
+	return static_cast<int>( get_fval() );
 }
 
 bool w_tween::is_negative()
@@ -101,11 +77,13 @@ bool w_tween::is_negative()
 	return std::signbit( get_fval() );
 }
 
-/*
-	randomizes the current position of this tween somewhere
-	between the start and end values.
-*/
+void w_tween::reset_to_start()
+{
+	tween.seek( 0.0f, true );
+}
+
 void w_tween::randomize()
 {
-	_fval = start + ( ( end - start ) * w_random::getf() );
+
+	tween.seek( w_random::getf(), true );
 }
