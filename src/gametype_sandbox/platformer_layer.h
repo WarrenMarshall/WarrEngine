@@ -8,7 +8,7 @@ struct platformer_layer : w_layer
 
 	w_entity* player = nullptr;
 	w_entity* mover = nullptr;
-	tweeny::tween<float> tween_mover;
+	std::unique_ptr<w_tween> tween_mover = nullptr;
 
 	virtual void push() override;
 	virtual void pop() override;

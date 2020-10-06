@@ -18,7 +18,6 @@ void layer_default::draw()
 {
 	w_layer::draw();
 
-
 	if( test_tween )
 	{
 		RENDER->draw_string( engine->pixel_font, fmt::format( "{}", test_tween->get_ival() ), w_rect( 8, 8 ) );

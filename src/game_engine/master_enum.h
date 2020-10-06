@@ -255,3 +255,20 @@ enum_begin( component_type )
 	b2d_dynamic = 32,
 	b2d_kinematic = 64
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( easing_type )
+	invalid = 0,
+	linear,
+	quadratic,
+	cubic,
+	quartic,
+	quintic,
+	sinuisodal,
+	exponential,
+	circular,
+	back,
+	elastic,
+	bounce
+enum_end

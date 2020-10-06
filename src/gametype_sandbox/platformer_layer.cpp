@@ -13,6 +13,9 @@ void platformer_layer::push()
 	w_layer::push();
 
 	engine->window->set_mouse_mode( mouse_mode::normal );
+	tween_mover = std::make_unique<w_tween>( tween_type::pingpong, -1.0f, 1.0f, 1500.0f );
+	//tween_mover->tween.via( tweeny::easing::sinusoidalInOut );
+	tween_mover->tween.via( tweeny::easing::quadraticInOut );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );
@@ -43,17 +46,17 @@ void platformer_layer::push()
 #if 1
 		// rando platform lines running vertically
 
-		for( int y = 0 ; y < v_window_h ; y += 40 )
+		for( int y = 0 ; y < v_window_h ; y += 8 )
 		{
-			float xpos = 8.0f;
+			float xpos = 60.0f;
 			auto ypos = (float) y;
 
-			float w = w_random::getf_range( 32, 120 );
+			float w = 60;// w_random::getf_range( 32, 120 );
 			ec->add_fixture_line( "world", w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 
-			xpos = v_window_w - 8.0f;
-			w = w_random::getf_range( 32, 120 );
-			ec->add_fixture_line( "world", w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
+			//xpos = v_window_w - 8.0f;
+			//w = w_random::getf_range( 32, 120 );
+			//ec->add_fixture_line( "world", w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
 		}
 #endif
 	}
@@ -65,11 +68,9 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	spawn_coins();
+	//spawn_coins();
 
 	// ----------------------------------------------------------------------------
-
-	tween_mover = tweeny::from(-1.0f ).to( 1.0f ).during( 1000 );
 
 	mover = add_entity<e_platformer_mover>();
 	mover->set_position_deep( { v_window_hw, v_window_hh }, true );
@@ -87,10 +88,11 @@ void platformer_layer::update()
 	plat_physics->handle_user_input( player );
 	plat_physics->update();
 
-	tween_mover.step( (int) w_time::FTS_step_value_ms );
+	tween_mover->update();
 
 	auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
-	ekb->body->SetLinearVelocity( w_vec2( 0.0f, tween_mover.peek() * 1.5f ) );
+	float speed = 144.0f * tween_mover->current_val;
+	ekb->body->SetLinearVelocity( w_vec2( 0.0f, speed * (w_time::FTS_step_value_s / 2.0f) ) );
 
 	w_layer::update();
 }
