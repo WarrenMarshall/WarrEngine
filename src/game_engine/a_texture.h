@@ -17,6 +17,6 @@ struct a_texture : i_asset
 	void bind();
 	void unbind();
 
-	virtual a_subtexture* get_subtexture( float offset = 0.0f );
+	[[nodiscard]] virtual a_subtexture* get_subtexture( float offset = 0.0f );
 };
 

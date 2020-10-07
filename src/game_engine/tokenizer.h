@@ -14,6 +14,5 @@ struct w_tokenizer
 	w_tokenizer( const std::string_view string_buffer, char delim, std::optional<std::string> def_value = std::nullopt );
 
 	std::optional<std::string_view> get_next_token();
-
-	bool is_eos() { return end_of_string; }
+	[[nodiscard]] bool is_eos();
 };

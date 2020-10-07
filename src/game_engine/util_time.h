@@ -26,9 +26,9 @@ struct w_time
 		2.0 = 200% of normal
 	*/
 	float dilation = 1.0f;
-	
+
 	w_time();
 	void init();
 	void update();
-	uint64_t get_ticks();
+	[[nodiscard]] uint64_t get_ticks();
 };

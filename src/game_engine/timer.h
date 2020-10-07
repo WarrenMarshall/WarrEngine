@@ -9,6 +9,6 @@ struct w_timer
 
 	void reset();
 	void update();
-	bool is_elapsed();
-	int get_elapsed_count();
+	[[nodiscard]] bool is_elapsed();
+	[[nodiscard]] int get_elapsed_count();
 };

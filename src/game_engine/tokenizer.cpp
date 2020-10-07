@@ -40,3 +40,8 @@ std::optional<std::string_view> w_tokenizer::get_next_token()
 	// trim the token before sending it back
 	return w_stringutil::trim( ret );
 }
+
+bool w_tokenizer::is_eos()
+{
+	return end_of_string;
+}

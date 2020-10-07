@@ -80,7 +80,7 @@ struct w_range
 	w_range( float start, float end );
 	w_range( std::string_view str );
 
-	float get_value();
+	[[nodiscard]] float get_value();
 };
 
 // ----------------------------------------------------------------------------
@@ -161,11 +161,11 @@ struct w_vec2
 	w_vec2 operator*( float v );
 	w_vec2 operator*=( float v );
 
-	static float get_distance_between( w_vec2 a, w_vec2 b );
+	[[nodiscard]] static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );
-	static w_vec2 from_angle( float angle );
-	static float to_angle( w_vec2 a );
-	static w_vec2 reflect( w_vec2 v, w_vec2 n );
+	[[nodiscard]] static w_vec2 from_angle( float angle );
+	[[nodiscard]] static float to_angle( w_vec2 a );
+	[[nodiscard]] static w_vec2 reflect( w_vec2 v, w_vec2 n );
 
 	operator b2Vec2()
 	{
@@ -219,9 +219,9 @@ struct w_vec3
 	w_vec3 operator-( w_vec3 v );
 	w_vec3 operator*( float v );
 
-	static float get_size_squared( w_vec3 a );
-	static float get_size( w_vec3 a );
-	static float get_distance_between( w_vec3 a, w_vec3 b );
+	[[nodiscard]] static float get_size_squared( w_vec3 a );
+	[[nodiscard]] static float get_size( w_vec3 a );
+	[[nodiscard]] static float get_distance_between( w_vec3 a, w_vec3 b );
 	static w_vec3 normalize( w_vec3 a );
 };
 

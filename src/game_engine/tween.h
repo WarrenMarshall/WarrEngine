@@ -9,9 +9,9 @@ struct w_tween
 	w_tween( e_tween_type type, float start, float end, float duration_ms );
 
 	void update();
-	float get_fval();
-	int get_ival();
-	bool is_negative();
+	[[nodiscard]] float get_fval();
+	[[nodiscard]] int get_ival();
+	[[nodiscard]] bool is_negative();
 
 	void reset_to_start();
 	void randomize();

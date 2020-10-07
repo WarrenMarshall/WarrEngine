@@ -16,6 +16,4 @@ struct w_opengl
 	void clear_texture_bind() const;
 
 	void set_blend( e_opengl_blend blend ) const;
-
-	unsigned fbo;
 };
