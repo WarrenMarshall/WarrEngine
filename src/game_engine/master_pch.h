@@ -41,7 +41,7 @@
 
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"
-	using tweeny::easing;
+	//using tweeny::easing;
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC
@@ -216,6 +216,7 @@ using w_uv = w_vec2;
 using w_sz = w_vec2;
 using w_offset = w_vec2;
 using w_pos = w_vec2;
+using bitflags = unsigned;
 
 // ----------------------------------------------------------------------------
 

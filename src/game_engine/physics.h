@@ -56,14 +56,14 @@ struct w_contact_listener : b2ContactListener
 
 struct w_physics
 {
-	virtual bool trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask );
-	virtual bool trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result );
-	virtual bool trace_closest( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result );
-	virtual bool trace_all( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result );
+	virtual bool trace_simple( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask );
+	virtual bool trace_simple( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_simple* hit_result );
+	virtual bool trace_closest( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_closest* hit_result );
+	virtual bool trace_all( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_all* hit_result );
 
-	virtual bool point_check_simple( w_vec2 pos, e_collision_layer layer_mask );
-	virtual bool point_check_simple( w_vec2 pos, e_collision_layer layer_mask, w_query_first* hit_result );
-	virtual bool point_check_all( w_vec2 pos, e_collision_layer layer_mask, w_query_all* hit_result );
+	virtual bool point_check_simple( w_vec2 pos, bitflags layer_mask );
+	virtual bool point_check_simple( w_vec2 pos, bitflags layer_mask, w_query_first* hit_result );
+	virtual bool point_check_all( w_vec2 pos, bitflags layer_mask, w_query_all* hit_result );
 
 	virtual void update();
 };

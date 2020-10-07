@@ -7,13 +7,15 @@
 
 // ----------------------------------------------------------------------------
 
-constexpr e_collision_layer clayer_world = collision_layer::bit2;
-constexpr e_collision_layer clayer_player = collision_layer::bit3;
-constexpr e_collision_layer clayer_ball = clayer_player;
-constexpr e_collision_layer clayer_paddle = clayer_player;
-constexpr e_collision_layer clayer_player2 = collision_layer::bit4;
-constexpr e_collision_layer clayer_coin = collision_layer::bit5;
-constexpr e_collision_layer clayer_mover = collision_layer::bit6;
+static w_bit_flag_generator clayer_bits(2);
+
+static unsigned clayer_world = clayer_bits.next();
+static unsigned clayer_player = clayer_bits.next();
+static unsigned clayer_ball = clayer_player;
+static unsigned clayer_paddle = clayer_player;
+static unsigned clayer_player2 = clayer_bits.next();
+static unsigned clayer_coin = clayer_bits.next();
+static unsigned clayer_mover = clayer_bits.next();
 
 // ----------------------------------------------------------------------------
 

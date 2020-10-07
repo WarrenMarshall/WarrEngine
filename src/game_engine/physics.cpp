@@ -200,7 +200,7 @@ w_vec2 w_contact_listener::calc_hit_normal( b2Body* body_colliding )
 
 // ----------------------------------------------------------------------------
 
-bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask )
+bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask )
 {
 	w_raycast_simple callback;
 	engine->box2d_world->RayCast( &callback, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
@@ -208,26 +208,26 @@ bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collisi
 	return callback.hit_something;
 }
 
-bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_simple* hit_result )
+bool w_physics::trace_simple( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_simple* hit_result )
 {
 	engine->box2d_world->RayCast( hit_result, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
 
 	return hit_result->hit_something;
 }
 
-bool w_physics::trace_closest( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_closest* hit_result )
+bool w_physics::trace_closest( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_closest* hit_result )
 {
 	engine->box2d_world->RayCast( hit_result, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
 	return hit_result->hit_something;
 }
 
-bool w_physics::trace_all( w_vec2 start, w_vec2 normal, float dist, e_collision_layer layer_mask, w_raycast_all* hit_result )
+bool w_physics::trace_all( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_all* hit_result )
 {
 	engine->box2d_world->RayCast( hit_result, start.to_b2d(), ( start + ( normal * dist ) ).to_b2d() );
 	return hit_result->hit_something;
 }
 
-bool w_physics::point_check_simple( w_vec2 pos, e_collision_layer layer_mask )
+bool w_physics::point_check_simple( w_vec2 pos, bitflags layer_mask )
 {
 	w_query_first hit_result;
 	b2Vec2 bpos = pos.to_b2d();
@@ -246,7 +246,7 @@ bool w_physics::point_check_simple( w_vec2 pos, e_collision_layer layer_mask )
 	return true;
 }
 
-bool w_physics::point_check_simple( w_vec2 pos, e_collision_layer layer_mask, w_query_first* hit_result )
+bool w_physics::point_check_simple( w_vec2 pos, bitflags layer_mask, w_query_first* hit_result )
 {
 	b2Vec2 bpos = pos.to_b2d();
 
@@ -265,7 +265,7 @@ bool w_physics::point_check_simple( w_vec2 pos, e_collision_layer layer_mask, w_
 	return true;
 }
 
-bool w_physics::point_check_all( w_vec2 pos, e_collision_layer layer_mask, w_query_all* hit_result )
+bool w_physics::point_check_all( w_vec2 pos, bitflags layer_mask, w_query_all* hit_result )
 {
 	b2Vec2 bpos = pos.to_b2d();
 

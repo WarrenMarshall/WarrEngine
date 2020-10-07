@@ -13,9 +13,7 @@ void platformer_layer::push()
 	w_layer::push();
 
 	engine->window->set_mouse_mode( mouse_mode::normal );
-	tween_mover = std::make_unique<w_tween>( tween_type::pingpong, -1.0f, 1.0f, 1500.0f );
-	//tween_mover->tween.via( tweeny::easing::sinusoidalInOut );
-	tween_mover->tween.via( tweeny::easing::quadraticInOut );
+	mover_controller = std::make_unique<w_mover_controller>( -1.0f, 1.0f, 1500.0f );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );
@@ -88,10 +86,10 @@ void platformer_layer::update()
 	plat_physics->handle_user_input( player );
 	plat_physics->update();
 
-	tween_mover->update();
+	mover_controller->update();
 
 	auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
-	float speed = 144.0f * tween_mover->current_val;
+	float speed = 100.0f * mover_controller->tween->current_val;
 	ekb->body->SetLinearVelocity( w_vec2( 0.0f, speed * (w_time::FTS_step_value_s / 2.0f) ) );
 
 	w_layer::update();

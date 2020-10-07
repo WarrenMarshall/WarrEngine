@@ -11,12 +11,12 @@ struct w_entity : i_life_cycle, i_transform
 	w_layer* parent_layer = nullptr;
 
 	// which collision layer(s) this entity is a part of
-	e_collision_layer collision_layer = 0;
+	bitflags collision_layer = 0;
 
 	// which collision layer(s) this entity will collide WITH
-	e_collision_layer collides_with = 0;
+	bitflags collides_with = 0;
 
-	void set_collision( e_collision_layer layer, e_collision_layer collides_with );
+	void set_collision( bitflags layer, bitflags collides_with );
 
 	// generic flag to indicate that the component should draw
 	// stuff to indicate it's internal state.

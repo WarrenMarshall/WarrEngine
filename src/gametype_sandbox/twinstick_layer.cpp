@@ -75,11 +75,11 @@ void twinstick_layer::push()
 
 void twinstick_layer::pop()
 {
-	w_layer::pop();
-
 	music->stop();
 
 	engine->box2d_world->SetContactListener( nullptr );
+
+	w_layer::pop();
 }
 
 void twinstick_layer::update()

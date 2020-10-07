@@ -159,7 +159,7 @@ bool w_entity::can_be_deleted()
 	return true;
 }
 
-void w_entity::set_collision( e_collision_layer layer, e_collision_layer collides_with )
+void w_entity::set_collision( bitflags layer, bitflags collides_with )
 {
 	this->collision_layer = layer;
 	this->collides_with = collides_with;
