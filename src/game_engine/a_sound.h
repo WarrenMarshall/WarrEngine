@@ -8,8 +8,8 @@ struct a_sound : i_asset
 #else
 	cs_loaded_sound_t snd = {};
 	cs_playing_sound_t* snd_playing = nullptr;
-	bool looped = false;
 #endif
+	bool looped = false;
 
 	virtual ~a_sound() override;
 

@@ -26,7 +26,19 @@ void a_sound::clean_up_internals()
 void a_sound::play()
 {
 #ifdef USE_BASS_SOUND_LIBRARY
-	BASS_ChannelPlay( channel, true );
+
+	if( looped )
+	{
+		channel = BASS_SampleGetChannel( snd, false );
+	}
+
+	BASS_ChannelPlay( channel, false );
+
+	if( looped )
+	{
+		BASS_ChannelFlags( channel, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP );
+	}
+
 #else
 	if( engine->c2_sound_context && snd.sample_rate )
 	{
@@ -44,7 +56,11 @@ void a_sound::play()
 
 void a_sound::stop()
 {
+#ifdef USE_BASS_SOUND_LIBRARY
+	BASS_ChannelStop( channel );
+#else
 	cs_stop_sound( snd_playing );
+#endif
 }
 
 bool a_sound::create_internals()
@@ -70,7 +86,10 @@ bool a_sound::create_internals()
 		log_error( "Couldn't load the file : [{}]", name );
 	}
 
-	channel = BASS_SampleGetChannel( snd, false );
+	if( !looped )
+	{
+		channel = BASS_SampleGetChannel( snd, false );
+	}
 #else
 	cs_read_mem_wav( file->buffer->data(), static_cast<int>( file->buffer->size() ), &snd );
 

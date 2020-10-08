@@ -2,10 +2,6 @@
 
 #include "cache_assets.h"
 
-/*
-	holds the game engine state
-*/
-
 struct w_engine : i_listener
 {
 	static bool init_game_engine( int argc, char* argv [] );

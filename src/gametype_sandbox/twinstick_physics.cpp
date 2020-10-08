@@ -49,11 +49,9 @@ void w_twinstick_physics::handle_user_input( w_entity* player )
 
 void w_twinstick_physics::update()
 {
-	auto player = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
-	assert( player );
-
 	trace_hit_location = w_vec2::zero;
 
+	auto player = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
 	if( player )
 	{
 		w_raycast_closest hit;

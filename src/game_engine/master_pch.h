@@ -68,7 +68,7 @@
 	// otherwise, we use cute_sound which uses DirectSound and
 	// requires no external files.
 
-	//#define USE_BASS_SOUND_LIBRARY
+	#define USE_BASS_SOUND_LIBRARY
 
 	#ifdef USE_BASS_SOUND_LIBRARY
 		#include "bass24/c/bass.h"
