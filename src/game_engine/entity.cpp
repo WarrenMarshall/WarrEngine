@@ -208,5 +208,6 @@ void w_camera::update()
 	if( attach_target )
 	{
 		set_position_deep( attach_target->pos, false );
+		set_angle_deep( attach_target->angle );
 	}
 }

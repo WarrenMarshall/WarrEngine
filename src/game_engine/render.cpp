@@ -43,13 +43,13 @@ void w_render::init()
 	MATRIX->push_identity();
 
 	// initialize render state stacks
-	rs_color_stack = { 1.0f, 1.0f, 1.0f };
-	rs_alpha_stack = 1.0f;
-	rs_scale_stack = 1.0f;
-	rs_angle_stack = 0.0f;
+	rs_color_stack.clear();		rs_color_stack += w_color::white;
+	rs_alpha_stack.clear();		rs_alpha_stack += 1.0f;
+	rs_scale_stack.clear();		rs_scale_stack += 1.0f;
+	rs_angle_stack.clear();		rs_angle_stack += 0.0f;
+	rs_align_stack.clear();		rs_align_stack = align::left;
 	zdepth = zdepth_background;
 	zdepth_nudge_accum = 0.0f;
-	rs_align_stack = align::left;
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requesed for
@@ -70,14 +70,14 @@ w_render* w_render::begin()
 
 w_render* w_render::push_rgb( const w_color& color )
 {
-	rs_color_stack += { color.r, color.g, color.b };
+	rs_color_stack += color;
 
 	return this;
 }
 
 w_render* w_render::pop_rgb()
 {
-	rs_color_stack = rs_color_stack.erase( rs_color_stack.length() - 3 );
+	rs_color_stack.pop_back();
 
 	return this;
 }
@@ -115,7 +115,7 @@ w_render* w_render::push_alpha( const float alpha )
 
 w_render* w_render::pop_alpha()
 {
-	rs_alpha_stack = rs_alpha_stack.erase( rs_alpha_stack.length() - 1 );
+	rs_alpha_stack.pop_back();
 
 	return this;
 }
@@ -163,11 +163,11 @@ w_render* w_render::push_depth_nudge( const float nudge )
 
 void w_render::end()
 {
-	rs_color_stack = { 1.0f, 1.0f, 1.0f };
-	rs_alpha_stack = 1.0f;
-	rs_scale_stack = 1.0f;
-	rs_angle_stack = 0.0f;
-	rs_align_stack = align::left;
+	rs_color_stack.clear();		rs_color_stack += w_color::white;
+	rs_alpha_stack.clear();		rs_alpha_stack += 1.0f;
+	rs_scale_stack.clear();		rs_scale_stack += 1.0f;
+	rs_angle_stack.clear();		rs_angle_stack += 0.0f;
+	rs_align_stack.clear();		rs_align_stack += align::left;
 
 	zdepth -= zdepth_nudge_accum;
 	zdepth_nudge_accum = 0.0f;
@@ -219,9 +219,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	size_t length = rs_color_stack.length();
-	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
-
+	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
@@ -256,9 +254,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w *= rs_scale;
 	h *= rs_scale;
 
-	size_t length = rs_color_stack.length();
-	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
-
+	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
@@ -376,7 +372,7 @@ void w_render::end_frame()
 
 	// verify that state stacks are back where they started. if not,
 	// it means there's a push/pop mismatch somewhere in the code.
-	assert( rs_color_stack.size() == 3 );
+	assert( rs_color_stack.size() == 1 );
 	assert( rs_alpha_stack.length() == 1 );
 	assert( rs_scale_stack.length() == 1 );
 	assert( rs_align_stack.length() == 1 );
@@ -489,9 +485,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
 	maybe_draw_master_buffer( engine->white_solid->tex );
 
-	size_t length = rs_color_stack.length();
-	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
-
+	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0(
@@ -550,9 +544,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
 	maybe_draw_master_buffer( engine->white_wire->tex );
 
-	size_t length = rs_color_stack.length();
-	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
-
+	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
@@ -578,9 +570,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
 	maybe_draw_master_buffer( engine->white_wire->tex );
 
-	size_t length = rs_color_stack.length();
-	w_color rs_color = w_color( rs_color_stack[ length - 3 ], rs_color_stack[ length - 2 ], rs_color_stack[ length - 1 ] );
-
+	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
 	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
@@ -658,10 +648,10 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	return this;
 }
 
+// PROJECTION MATRIX - getting stuff into screen space from camera space
+
 void w_render::init_projection_matrix() const
 {
-	// PROJECTION MATRIX (getting stuff into screen space from camera space)
-
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
 		0, v_window_w, v_window_h, 0,
@@ -670,11 +660,14 @@ void w_render::init_projection_matrix() const
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 }
 
+// VIEW MATRIX - getting stuff into camera space from worldspace
+//
+// if there is an active camera, use it's transform.
+
 void w_render::init_view_matrix() const
 {
 	RENDER->draw_master_buffer();
 
-	// VIEW MATRIX (getting stuff into camera space from worldspace)
 
 	glm::mat4 view = glm::mat4( 1.0f );
 	if( current_camera )
@@ -686,6 +679,10 @@ void w_render::init_view_matrix() const
 	}
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 }
+
+// VIEW MATRIX - getting stuff into camera space from worldspace
+//
+// This sets the view matrix as identity for things like UI and mouse cursors.
 
 void w_render::init_view_matrix_identity() const
 {
