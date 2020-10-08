@@ -7,5 +7,5 @@ struct w_keyvalues
 	[[nodiscard]] std::string_view find_value_opt( const std::string& key, const std::string& default_value = "" ) const;
 	void set( const std::string_view key, const std::string_view value );
 
-	std::map<std::string, std::string> kv;
+	std::unordered_map<std::string, std::string> kv;
 };

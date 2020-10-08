@@ -46,7 +46,7 @@ struct w_engine : i_listener
 	void parse_config_files( const std::string_view folder_name );
 	void parse_config_file( std::string_view filename );
 
-	std::map<std::string, std::string> _symbol_to_value;
+	std::unordered_map<std::string, std::string> _symbol_to_value;
 	[[nodiscard]] bool is_symbol_in_map( const std::string_view str );
 	[[nodiscard]] std::optional<std::string> find_string_from_symbol( const std::string_view str );
 	[[nodiscard]] int find_int_from_symbol( const std::string_view str, int def_value = 0 );

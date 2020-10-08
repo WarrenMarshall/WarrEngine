@@ -262,7 +262,7 @@ void w_input::update()
 		send_event_to_listeners( evt.event_id, &evt );
 	}
 
-	event_queue.clear();
+	event_queue = {};
 }
 
 void w_input::update_button_state( e_input_id input_id, int glfw_state )

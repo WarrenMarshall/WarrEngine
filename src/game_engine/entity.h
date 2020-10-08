@@ -98,8 +98,8 @@ struct w_entity_fx : w_entity
 
 struct w_camera : w_entity
 {
-	w_entity* attach_target = nullptr;
+	w_entity* follow_target = nullptr;
 
-	void attach_to( w_entity* entity_to_attach_to );
+	void follow( w_entity* entity_to_follow );
 	virtual void update() override;
 };

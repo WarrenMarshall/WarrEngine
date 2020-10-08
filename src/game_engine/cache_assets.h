@@ -2,7 +2,7 @@
 
 struct w_cache_assets
 {
-	std::map<std::string, std::unique_ptr<i_asset>> cache;
+	std::unordered_map<std::string, std::unique_ptr<i_asset>> cache;
 
 	template<typename T>
 	T* add( std::unique_ptr<T> asset, const std::string_view name, const std::string_view filename )

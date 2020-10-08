@@ -24,7 +24,7 @@ w_keyframe::w_keyframe( float pct_marker, w_color value )
 w_timeline::w_timeline( e_timeline_type type )
 	: type( type )
 {
-	keyframes.clear();
+	keyframes = {};
 }
 
 w_timeline::w_timeline( const w_timeline& other )
@@ -34,7 +34,7 @@ w_timeline::w_timeline( const w_timeline& other )
 
 w_timeline* w_timeline::kf_clear()
 {
-	keyframes.clear();
+	keyframes = {};
 	return this;
 }
 

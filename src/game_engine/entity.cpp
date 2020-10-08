@@ -196,18 +196,18 @@ void w_entity_fx::update()
 
 // ----------------------------------------------------------------------------
 
-void w_camera::attach_to( w_entity* entity_to_attach_to )
+void w_camera::follow( w_entity* entity_to_follow )
 {
-	attach_target = entity_to_attach_to;
+	follow_target = entity_to_follow;
 }
 
 void w_camera::update()
 {
 	w_entity::update();
 
-	if( attach_target )
+	if( follow_target )
 	{
-		set_position_deep( attach_target->pos, false );
-		set_angle_deep( attach_target->angle );
+		set_position_deep( follow_target->pos, false );
+		set_angle_deep( follow_target->angle );
 	}
 }

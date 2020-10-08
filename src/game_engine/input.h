@@ -20,7 +20,7 @@ struct w_input_event
 struct w_input : i_speaker
 {
 	// a way to map GLFW input codes to our internal codes
-	std::map<int, e_input_id> glfw_codes;
+	std::unordered_map<int, e_input_id> glfw_codes;
 
 	// holds onto generated input events until the update
 	// function can send them to anyone listening

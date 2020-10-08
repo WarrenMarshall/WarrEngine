@@ -125,8 +125,8 @@ void w_render_buffer::draw( a_texture* tex )
 
 void w_render_buffer::clear()
 {
-	vertices.clear();
-	indices.clear();
+    vertices = {};
+    indices = {};
 }
 
 void w_render_buffer::log_stats( i_asset* asset )

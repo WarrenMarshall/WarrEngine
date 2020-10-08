@@ -44,17 +44,17 @@ void platformer_layer::push()
 #if 1
 		// rando platform lines running vertically
 
-		for( int y = 0 ; y < v_window_h ; y += 8 )
+		for( int y = 0 ; y < v_window_h ; y += 40 )
 		{
 			float xpos = 60.0f;
 			auto ypos = (float) y;
 
-			float w = 60;// w_random::getf_range( 32, 120 );
+			float w = w_random::getf_range( 32, 120 );
 			ec->add_fixture_line( "world", w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
 
-			//xpos = v_window_w - 8.0f;
-			//w = w_random::getf_range( 32, 120 );
-			//ec->add_fixture_line( "world", w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
+			xpos = v_window_w - 8.0f;
+			w = w_random::getf_range( 32, 120 );
+			ec->add_fixture_line( "world", w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
 		}
 #endif
 	}
@@ -66,7 +66,7 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	//spawn_coins();
+	spawn_coins();
 
 	// ----------------------------------------------------------------------------
 

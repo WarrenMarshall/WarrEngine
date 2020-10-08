@@ -36,20 +36,20 @@ void twinstick_layer::push()
 			"world",
 			w_vec2::zero,
 			{
-				{ 4.0f, 4.0f },
-				{ v_window_w - 8.0f, 4.0f },
-				{ v_window_w - 8.0f, v_window_h - 8.0f },
-				{ 4.0f, v_window_h - 8.0f }
+				{ -v_window_w, -v_window_h },
+				{ v_window_w, -v_window_h },
+				{ v_window_w, v_window_h },
+				{ -v_window_w, v_window_h }
 			}
 		);
 
 #if 1
 		//  random shapes
 
-		for( int x = 0 ; x < 10 ; ++x )
+		for( int x = 0 ; x < 20 ; ++x )
 		{
-			float xpos = w_random::getf_range( 0.0f, v_window_w );
-			float ypos = w_random::getf_range( 0.0f, v_window_h - 64 );
+			float xpos = w_random::getf_range( -v_window_w, v_window_w );
+			float ypos = w_random::getf_range( -v_window_h, v_window_h );
 
 			if( w_random::geti_range( 0, 3 ) == 1 )
 			{
@@ -69,13 +69,14 @@ void twinstick_layer::push()
 	// player
 	{
 		player = add_entity<e_twinstick_player>();
+		// #camera - set player to 0,0 in the world to start - does this work?
 		player->set_position_deep( { v_window_hw, v_window_hh }, true );
 	}
 
 	// camera
 
 	auto player_camera = add_entity<w_camera>();
-	player_camera->attach_to( player );
+	player_camera->follow( player );
 	RENDER->current_camera = player_camera;
 }
 
@@ -121,13 +122,12 @@ void twinstick_layer::draw()
 
 bool twinstick_layer::handle_input_event( const w_input_event* evt )
 {
-	if( evt->event_id == event_id::input_motion )
-	{
-		if( evt->input_id == input_id::controller_left_stick )
-		{
-			//log_msg("left stick : {},{}", evt->mouse->)
-		}
-	}
+	//if( evt->event_id == event_id::input_motion )
+	//{
+	//	if( evt->input_id == input_id::controller_left_stick )
+	//	{
+	//	}
+	//}
 
 	return true;
 }
