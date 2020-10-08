@@ -54,9 +54,12 @@ void w_twinstick_physics::update()
 
 	trace_hit_location = w_vec2::zero;
 
-	w_raycast_closest hit;
-	if( w_physics::trace_closest( player->pos, w_vec2::from_angle( player->angle ), 500, clayer_world, &hit ) )
+	if( player )
 	{
-		trace_hit_location = hit.hit.point;
+		w_raycast_closest hit;
+		if( w_physics::trace_closest( player->pos, w_vec2::from_angle( player->angle ), 500, clayer_world, &hit ) )
+		{
+			trace_hit_location = hit.hit.point;
+		}
 	}
 }

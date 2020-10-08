@@ -658,12 +658,8 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	return this;
 }
 
-void w_render::init_projection() const
+void w_render::init_projection_matrix() const
 {
-	// setting this stuff up one time as we only use a single shader and the camera never moves.
-	//
-	// as we get fancier, parts of this may have to move to the start of each rendering frame.
-
 	// PROJECTION MATRIX (getting stuff into screen space from camera space)
 
 	glm::mat4 projection = glm::mat4( 1.0f );
@@ -672,11 +668,30 @@ void w_render::init_projection() const
 		-20000.0f, 20000.0f );
 
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+}
+
+void w_render::init_view_matrix() const
+{
+	RENDER->draw_master_buffer();
 
 	// VIEW MATRIX (getting stuff into camera space from worldspace)
 
 	glm::mat4 view = glm::mat4( 1.0f );
-	//view = glm::translate( view, glm::vec3( 0, 0, 0.0f ) );
+	if( current_camera )
+	{
+		view = glm::translate( view, glm::vec3(
+			-( current_camera->pos.x - v_window_hw ) / 2.0f,
+			-( current_camera->pos.y - v_window_hh ) / 2.0f,
+			0.0f ) );
+	}
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+}
+
+void w_render::init_view_matrix_identity() const
+{
+	RENDER->draw_master_buffer();
+
+	glm::mat4 view = glm::mat4( 1.0f );
 	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 }
 

@@ -93,3 +93,13 @@ struct w_entity_fx : w_entity
 {
 	virtual void update() override;
 };
+
+// ----------------------------------------------------------------------------
+
+struct w_camera : w_entity
+{
+	w_entity* attach_target = nullptr;
+
+	void attach_to( w_entity* entity_to_attach_to );
+	virtual void update() override;
+};

@@ -193,3 +193,20 @@ void w_entity_fx::update()
 		set_life_cycle( life_cycle::dying );
 	}
 }
+
+// ----------------------------------------------------------------------------
+
+void w_camera::attach_to( w_entity* entity_to_attach_to )
+{
+	attach_target = entity_to_attach_to;
+}
+
+void w_camera::update()
+{
+	w_entity::update();
+
+	if( attach_target )
+	{
+		set_position_deep( attach_target->pos, false );
+	}
+}

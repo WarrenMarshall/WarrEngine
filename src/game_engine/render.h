@@ -23,6 +23,8 @@ struct w_render_stats
 
 struct w_render
 {
+	w_camera* current_camera = nullptr;
+
 	a_texture* current_texture = nullptr;
 	std::unique_ptr<w_render_buffer> master_render_buffer = nullptr;
 	void draw_master_buffer();
@@ -87,7 +89,9 @@ struct w_render
 
 	w_render* draw_string( a_font* font, const std::string_view text, const w_rect& dst );
 
-	void init_projection() const;
+	void init_projection_matrix() const;
+	void init_view_matrix() const;
+	void init_view_matrix_identity() const;
 	w_render* draw_rectangle( const w_rect& dst );
 	w_render* draw_filled_rectangle( const w_rect& dst );
 	w_render* draw_line( const w_vec2& start, const w_vec2& end );

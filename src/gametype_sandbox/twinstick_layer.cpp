@@ -11,7 +11,7 @@ void twinstick_layer::push()
 {
 	w_layer::push();
 
-	music->play();
+	//music->play();
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
@@ -71,11 +71,18 @@ void twinstick_layer::push()
 		player = add_entity<e_twinstick_player>();
 		player->set_position_deep( { v_window_hw, v_window_hh }, true );
 	}
+
+	// camera
+
+	auto player_camera = add_entity<w_camera>();
+	player_camera->attach_to( player );
+	RENDER->current_camera = player_camera;
 }
 
 void twinstick_layer::pop()
 {
-	music->stop();
+	RENDER->current_camera = nullptr;
+	//music->stop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 

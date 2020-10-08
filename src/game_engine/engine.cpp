@@ -307,7 +307,8 @@ void w_engine::exec_main_loop()
 			glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-			RENDER->init_projection();
+			RENDER->init_projection_matrix();
+			RENDER->init_view_matrix();
 
 			// render the frame
 
@@ -319,6 +320,8 @@ void w_engine::exec_main_loop()
 			{
 				engine->box2d_world->DebugDraw();
 			}
+
+			RENDER->init_view_matrix_identity();
 
 			// top most UI elements, like the mouse cursor
 			UI->draw_topmost();
