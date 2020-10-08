@@ -43,13 +43,7 @@ void w_render::init()
 	MATRIX->push_identity();
 
 	// initialize render state stacks
-	rs_color_stack.clear();		rs_color_stack += w_color::white;
-	rs_alpha_stack.clear();		rs_alpha_stack += 1.0f;
-	rs_scale_stack.clear();		rs_scale_stack += 1.0f;
-	rs_angle_stack.clear();		rs_angle_stack += 0.0f;
-	rs_align_stack.clear();		rs_align_stack = align::left;
-	zdepth = zdepth_background;
-	zdepth_nudge_accum = 0.0f;
+	clear_render_states();
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requesed for
@@ -163,11 +157,16 @@ w_render* w_render::push_depth_nudge( const float nudge )
 
 void w_render::end()
 {
-	rs_color_stack.clear();		rs_color_stack += w_color::white;
-	rs_alpha_stack.clear();		rs_alpha_stack += 1.0f;
-	rs_scale_stack.clear();		rs_scale_stack += 1.0f;
-	rs_angle_stack.clear();		rs_angle_stack += 0.0f;
-	rs_align_stack.clear();		rs_align_stack += align::left;
+	clear_render_states();
+}
+
+void w_render::clear_render_states()
+{
+	rs_color_stack = { w_color::white };
+	rs_alpha_stack = { 1.0f };
+	rs_scale_stack = { 1.0f };
+	rs_angle_stack = { 0.0f };
+	rs_align_stack = { align::left };
 
 	zdepth -= zdepth_nudge_accum;
 	zdepth_nudge_accum = 0.0f;

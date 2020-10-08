@@ -55,6 +55,7 @@ struct w_render
 
 	w_render* begin();
 	void end();
+	void clear_render_states();
 
 	w_render* push_rgb( const w_color& color );
 	w_render* pop_rgb();
