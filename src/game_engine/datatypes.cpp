@@ -232,7 +232,7 @@ w_vec2::w_vec2( b2Vec2 b2v2 )
 {
 }
 
-w_vec2 w_vec2::normalize()
+w_vec2& w_vec2::normalize()
 {
 	*this = w_vec2::normalize( *this );
 	return *this;
@@ -303,8 +303,8 @@ float w_vec2::get_size()
 
 w_vec2& w_vec2::snap_to_pixel()
 {
-	x = std::roundf( x );
-	y = std::roundf( y );
+	x = ::snap_to_pixel( x );
+	y = ::snap_to_pixel( y );
 
 	return *this;
 }

@@ -164,10 +164,12 @@ constexpr float zdepth_topmost = 14750.0f;
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
 // ----------------------------------------------------------------------------
 
-constexpr bool fequals( float a, float b )
+_NODISCARD constexpr bool fequals( float a, float b )
 {
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
 }
+
+_NODISCARD float snap_to_pixel( float f );
 
 // ----------------------------------------------------------------------------
 // box2d constants and helpers

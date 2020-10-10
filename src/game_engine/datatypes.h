@@ -146,7 +146,7 @@ struct w_vec2
 	w_vec2( std::string_view str );
 	w_vec2( b2Vec2 b2v2 );
 
-	w_vec2 normalize();
+	w_vec2& normalize();
 	w_vec2 to_b2d();
 	w_vec2 from_b2d();
 	float get_size_squared();

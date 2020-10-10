@@ -16,7 +16,7 @@ void i_transform::set_position( w_vec2 pos )
 
 void i_transform::set_angle( float angle )
 {
-	this->angle = std::roundf( angle );
+	this->angle = ::snap_to_pixel( angle );
 }
 
 void i_transform::set_scale( float scale )
