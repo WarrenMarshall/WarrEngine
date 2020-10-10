@@ -23,7 +23,7 @@ void layer_esc_menu::pop()
 
 void layer_esc_menu::draw()
 {
-	RENDER->init_view_matrix_identity();
+	OPENGL->init_view_matrix_identity();
 
 	w_layer::draw();
 
@@ -76,5 +76,5 @@ void layer_esc_menu::draw()
 		engine->is_running = false;
 	}
 
-	RENDER->init_view_matrix();
+	OPENGL->init_view_matrix();
 }

@@ -46,7 +46,7 @@ void platformer_layer::push()
 
 		for( int y = 0 ; y < v_window_h ; y += 40 )
 		{
-			float xpos = 60.0f;
+			float xpos = 4.0f;
 			auto ypos = (float) y;
 
 			float w = w_random::getf_range( 32, 120 );
@@ -66,7 +66,7 @@ void platformer_layer::push()
 
 	// ----------------------------------------------------------------------------
 
-	//spawn_coins();
+	spawn_coins();
 
 	// ----------------------------------------------------------------------------
 

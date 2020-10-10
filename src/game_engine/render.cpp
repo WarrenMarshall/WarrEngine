@@ -647,67 +647,6 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	return this;
 }
 
-// PROJECTION MATRIX - getting stuff into screen space from camera space
-
-void w_render::init_projection_matrix() const
-{
-	glm::mat4 projection = glm::mat4( 1.0f );
-	projection = glm::ortho<float>(
-		0, v_window_w, v_window_h, 0,
-		-20000.0f, 20000.0f );
-
-	engine->shader_ui->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_ui->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-	engine->shader_crt->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_crt->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-	engine->shader_to_screen->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_to_screen->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-}
-
-// VIEW MATRIX - getting stuff into camera space from worldspace
-//
-// if there is an active camera, use it's transform.
-
-void w_render::init_view_matrix() const
-{
-	RENDER->draw_master_buffer();
-
-
-	glm::mat4 view = glm::mat4( 1.0f );
-	if( current_camera )
-	{
-		view = glm::translate( view, glm::vec3(
-			-( current_camera->pos.x - v_window_hw ) / 2.0f,
-			-( current_camera->pos.y - v_window_hh ) / 2.0f,
-			0.0f ) );
-	}
-
-	engine->shader_ui->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_ui->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	engine->shader_crt->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_crt->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	engine->shader_to_screen->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_to_screen->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-}
-
-// VIEW MATRIX - getting stuff into camera space from worldspace
-//
-// This sets the view matrix as identity for things like UI and mouse cursors.
-
-void w_render::init_view_matrix_identity() const
-{
-	RENDER->draw_master_buffer();
-
-	glm::mat4 view = glm::mat4( 1.0f );
-
-	engine->shader_ui->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_ui->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	engine->shader_crt->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_crt->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	engine->shader_to_screen->bind();
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader_to_screen->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
-}
-
 // call this function to figure out a new value based on the frame interpolation percentage.
 
 float w_render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const

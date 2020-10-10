@@ -81,10 +81,6 @@ struct w_render
 
 	void init();
 
-	void init_projection_matrix() const;
-	void init_view_matrix() const;
-	void init_view_matrix_identity() const;
-
 	w_render* draw_sprite( a_texture* tex, const w_vec2& dst );
 	w_render* draw_sprite( const a_subtexture* subtex, const w_vec2& dst );
 	w_render* draw( a_texture* tex, const w_rect& dst );

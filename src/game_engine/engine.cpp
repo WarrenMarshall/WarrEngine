@@ -213,9 +213,10 @@ void w_engine::deinit_game_engine()
 	engine->window->deinit();
 
 	log_msg( "Shutting down OpenGL" );
-	glDeleteProgram( engine->shader_ui->id );
-	glDeleteProgram( engine->shader_crt->id );
-	glDeleteProgram( engine->shader_to_screen->id );
+	for( auto& shader : engine->opengl->shader_pool )
+	{
+		glDeleteProgram( shader.second->id );
+	}
 
 	log_msg( "Shutting down GLFW" );
 	glfwTerminate();
@@ -306,9 +307,9 @@ void w_engine::exec_main_loop()
 			glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-			RENDER->init_projection_matrix();
-			RENDER->init_view_matrix();
-			engine->shader_crt->bind();
+			OPENGL->init_projection_matrix();
+			OPENGL->init_view_matrix();
+			OPENGL->find_shader( "crt_fx" )->bind();
 
 			// render the frame
 
@@ -321,7 +322,7 @@ void w_engine::exec_main_loop()
 				engine->box2d_world->DebugDraw();
 			}
 
-			RENDER->init_view_matrix_identity();
+			OPENGL->init_view_matrix_identity();
 
 			// top most UI elements, like the mouse cursor
 			UI->draw_topmost();
@@ -330,7 +331,7 @@ void w_engine::exec_main_loop()
 			engine->draw();
 		}
 
-		engine->shader_ui->bind();
+		OPENGL->find_shader( "simple" )->bind();
 		RENDER->end_frame();
 
 		engine->opengl->fb_game->unbind();
@@ -348,7 +349,8 @@ void w_engine::exec_main_loop()
 
 		static a_texture* tex = engine->get_asset<a_texture>( "tex_game_frame_buffer" );
 
-		engine->shader_to_screen->bind();
+		OPENGL->find_shader( "to_screen" )->bind();
+
 		RENDER
 			->begin()
 			->draw( tex, w_rect( 0, 0 ) )

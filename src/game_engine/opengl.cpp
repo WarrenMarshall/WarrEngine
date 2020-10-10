@@ -8,8 +8,10 @@
 */
 void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
-    if( type == GL_DEBUG_TYPE_ERROR )
-        log_error( "OpenGL Error: [{}]", message );
+	if( type == GL_DEBUG_TYPE_ERROR )
+	{
+		log_error( "OpenGL Error: \"{}\"", message );
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -35,9 +37,20 @@ void w_opengl::init()
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
 
-	engine->shader_ui->create_and_compile( "simple", "simple" );
-	engine->shader_crt->create_and_compile( "simple", "crt" );
-	engine->shader_to_screen->create_and_compile( "simple", "simple" );
+	// #todo : this should be read in from some sort of config file
+	std::unique_ptr<w_shader> shader_wk;
+
+	shader_wk = std::make_unique<w_shader>();
+	shader_wk->create_and_compile( "simple", "simple" );
+	shader_pool.insert( std::make_pair( "simple", std::move( shader_wk ) ) );
+
+	shader_wk = std::make_unique<w_shader>();
+	shader_wk->create_and_compile( "simple", "crt" );
+	shader_pool.insert( std::make_pair( "crt_fx", std::move( shader_wk ) ) );
+
+	shader_wk = std::make_unique<w_shader>();
+	shader_wk->create_and_compile( "simple", "simple" );
+	shader_pool.insert( std::make_pair( "to_screen", std::move( shader_wk ) ) );
 
 	glEnable( GL_TEXTURE_2D );
 
@@ -130,3 +143,74 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 		break;
 	}
 }
+
+w_shader* w_opengl::find_shader( const char* name )
+{
+	auto iter = shader_pool.find( std::string( name ) );
+
+	if( iter == shader_pool.end() )
+	{
+		log_error( "shader not found : \"{}\"", name );
+	}
+
+	return iter->second.get();
+}
+
+// PROJECTION MATRIX - getting stuff into screen space from camera space
+
+void w_opengl::init_projection_matrix() const
+{
+	glm::mat4 projection = glm::mat4( 1.0f );
+	projection = glm::ortho<float>(
+		0, v_window_w, v_window_h, 0,
+		-20000.0f, 20000.0f );
+
+	for( auto& iter : shader_pool )
+	{
+		iter.second.get()->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second.get()->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+	}
+}
+
+// VIEW MATRIX - getting stuff into camera space from worldspace
+//
+// if there is an active camera, use it's transform.
+
+void w_opengl::init_view_matrix() const
+{
+	RENDER->draw_master_buffer();
+
+
+	glm::mat4 view = glm::mat4( 1.0f );
+	if( RENDER->current_camera )
+	{
+		view = glm::translate( view, glm::vec3(
+			-( RENDER->current_camera->pos.x - v_window_hw ) / 2.0f,
+			-( RENDER->current_camera->pos.y - v_window_hh ) / 2.0f,
+			0.0f ) );
+	}
+
+	for( auto& iter : shader_pool )
+	{
+		iter.second.get()->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second.get()->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	}
+}
+
+// VIEW MATRIX - getting stuff into camera space from worldspace
+//
+// This sets the view matrix as identity for things like UI and mouse cursors.
+
+void w_opengl::init_view_matrix_identity() const
+{
+	RENDER->draw_master_buffer();
+
+	glm::mat4 view = glm::mat4( 1.0f );
+
+	for( auto& iter : shader_pool )
+	{
+		iter.second.get()->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second.get()->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	}
+}
+

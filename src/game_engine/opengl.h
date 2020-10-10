@@ -4,7 +4,8 @@ struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
 	std::unique_ptr<w_opengl_framebuffer> fb_game = nullptr;
-	std::unique_ptr<w_opengl_framebuffer> fb_ui = nullptr;
+
+	std::map<std::string, std::unique_ptr<w_shader>> shader_pool;
 
 	void init();
 
@@ -16,4 +17,9 @@ struct w_opengl
 	void clear_texture_bind() const;
 
 	void set_blend( e_opengl_blend blend ) const;
+	w_shader* find_shader( const char* name );
+
+	void init_projection_matrix() const;
+	void init_view_matrix() const;
+	void init_view_matrix_identity() const;
 };
