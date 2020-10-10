@@ -1,0 +1,54 @@
+
+{
+	"type" "texture"
+	"name" "main_sprite_sheet"
+	"filename" "gfx/main_sheet.png"
+	"subtextures" "\
+		player_spr_run_1, 0, 0, 16, 16,\
+		player_spr_run_2, 16, 0, 16, 16,\
+		player_spr_run_3, 32, 0, 16, 16,\
+		player_spr_run_4, 48, 0, 16, 16,\
+		player_spr_jump_1, 0, 16, 16, 16,\
+		coin_spr_1, 0, 32, 16, 16,\
+		coin_spr_2, 16, 32, 16, 16,\
+		coin_spr_3, 32, 32, 16, 16,\
+		coin_spr_4, 48, 32, 16, 16"
+}
+
+{
+	"type" "anim_texture"
+	"name" "anim_player_run"
+	"frames_per_sec" "8"
+	"tween" "tween.loop"
+	"frames" "player_spr_run_1,player_spr_run_2,player_spr_run_3,player_spr_run_4"
+}
+
+{
+	"type" "anim_texture"
+	"name" "anim_player_jump"
+	"frames_per_sec" "1"
+	"tween" "tween.loop"
+	"frames" "player_spr_jump_1"
+}
+
+{
+	"type" "anim_texture"
+	"name" "anim_player_idle"
+	"frames_per_sec" "1"
+	"tween" "tween.loop"
+	"frames" "player_spr_run_1"
+}
+
+{
+	"type" "anim_texture"
+	"name" "anim_coin"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frames" "coin_spr_1,coin_spr_2,coin_spr_3,coin_spr_4"
+}
+
+{
+	"type" "texture"
+	"name" "cartoon_star"
+	"filename" "gfx/cartoon_star.png"
+}

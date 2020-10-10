@@ -1,0 +1,24 @@
+
+# SFX
+
+# -----------------------------------------------
+# platformer
+# -----------------------------------------------
+
+{
+	"type" "sound"
+	"name" "snd_plat_jump"
+	"filename" "sfx/plat_jump.wav"
+}
+
+{
+	"type" "sound"
+	"name" "snd_plat_coin"
+	"filename" "sfx/plat_coin.wav"
+}
+
+{
+	"type" "sound"
+	"name" "snd_plat_drop_down"
+	"filename" "sfx/plat_drop_down.wav"
+}

@@ -1,0 +1,47 @@
+
+# SFX
+
+# -----------------------------------------------
+# platformer
+# -----------------------------------------------
+
+{
+	"type" "sound"
+	"name" "snd_plat_jump"
+	"filename" "sfx/plat_jump.wav"
+}
+
+{
+	"type" "sound"
+	"name" "snd_plat_coin"
+	"filename" "sfx/plat_coin.wav"
+}
+
+{
+	"type" "sound"
+	"name" "snd_plat_drop_down"
+	"filename" "sfx/plat_drop_down.wav"
+}
+
+# -----------------------------------------------
+# pong
+# -----------------------------------------------
+
+{
+	"type" "sound"
+	"name" "snd_pong_ball_hit_world"
+	"filename" "sfx/pong_ball_hit_world.wav"
+}
+
+{
+	"type" "sound"
+	"name" "snd_pong_ball_hit_ball"
+	"filename" "sfx/pong_ball_hit_ball.wav"
+}
+
+{
+	"type" "sound"
+	"name" "snd_pong_ball_hit_paddle"
+	"filename" "sfx/pong_ball_hit_paddle.wav"
+}
+

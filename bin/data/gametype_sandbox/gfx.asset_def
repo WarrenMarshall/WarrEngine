@@ -1,0 +1,50 @@
+
+# ---------------------------------------------------------
+# platformer
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "plat_player"
+	"filename" "gfx/plat_player.png"
+}
+
+{
+	"type" "texture"
+	"name" "tex_coin_pickup"
+	"filename" "gfx/plat_coin.png"
+	"subtextures" "\
+		sub_coin_frame_1, 0, 0, 16, 16,\
+		sub_coin_frame_2, 16, 0, 16, 16,\
+		sub_coin_frame_3, 32, 0, 16, 16,\
+		sub_coin_frame_4, 48, 0, 16, 16"
+}
+
+{
+	"type" "anim_texture"
+	"name" "anim_coin_pickup"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frames" "sub_coin_frame_1, sub_coin_frame_2, sub_coin_frame_3, sub_coin_frame_4"
+}
+
+# -----------------------------------------------
+# pong
+# -----------------------------------------------
+
+{
+	"type" "texture"
+	"name" "pong_ball"
+	"filename" "gfx/pong_ball.png"
+}
+
+# -----------------------------------------------
+# twinstick
+# -----------------------------------------------
+
+{
+	"type" "texture"
+	"name" "twinstick_player"
+	"filename" "gfx/twinstick_player.png"
+}
+

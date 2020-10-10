@@ -1,0 +1,91 @@
+
+# ---------------------------------------------------------
+# Default UI
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_ui_default"
+	"filename" "ui/ui_default.png"
+	# "slice_defs" "\
+	# 	ui_default_panel, 109, 98, 100, 100, 7, -7, 7, -7,\
+	# 	ui_default_panel, 109, 98, 100, 100, 7, -7, 7, -7,\
+	# 	"
+	"subtextures" "\
+		ui_arrow_down_grey, 78, 498, 15, 10,\
+		ui_arrow_down_white, 123, 496, 15, 10,\
+		ui_arrow_up_grey, 108, 498, 15, 10,\
+		ui_arrow_up_white, 93, 498, 15, 10,\
+		ui_box, 147, 433, 38, 36,\
+		ui_box_checkmark, 147, 469, 38, 36,\
+		ui_box_cross, 185, 433, 38, 36,\
+		ui_box_tick, 190, 198, 36, 36,\
+		ui_button_00, 0, 143, 190, 45,\
+		ui_button_01, 0, 188, 190, 49,\
+		ui_button_02, 0, 98, 190, 45,\
+		ui_button_03, 0, 331, 190, 49,\
+		ui_button_04, 0, 286, 190, 45,\
+		ui_button_05, 0, 0, 195, 49,\
+		ui_button_06, 0, 49, 191, 49,\
+		ui_button_07, 195, 0, 49, 49,\
+		ui_button_08, 240, 49, 49, 49,\
+		ui_button_09, 98, 433, 49, 45,\
+		ui_button_10, 191, 49, 49, 49,\
+		ui_button_11, 0, 433, 49, 45,\
+		ui_button_12, 244, 0, 49, 49,\
+		ui_button_13, 49, 433, 49, 45,\
+		ui_button_14, 0, 384, 190, 49,\
+		ui_button_15, 0, 237, 190, 49,\
+		ui_checkmark_grey, 99, 478, 21, 20,\
+		ui_checkmark_white, 78, 478, 21, 20,\
+		ui_circle, 185, 469, 36, 36,\
+		ui_cross_grey, 120, 478, 18, 18,\
+		ui_cross_white, 190, 318, 18, 18,\
+		ui_panel, 190, 98, 100, 100,\
+		ui_slider_down, 190, 234, 28, 42,\
+		ui_slider_end, 138, 478, 8, 10,\
+		ui_slider_horizontal, 0, 380, 190, 4,\
+		ui_slider_left, 0, 478, 39, 31,\
+		ui_slider_right, 39, 478, 39, 31,\
+		ui_slider_up, 190, 276, 28, 42,\
+		ui_slider_vertical, 208, 318, 4, 100,\
+		ui_tick_grey, 190, 336, 17, 17,\
+		ui_tick_white, 190, 353, 17, 17\
+		"
+}
+
+# ---------------------------------------------------------
+# 9 slice definitions
+
+# panel
+{
+	"type" "slice_def"
+	"name" "ui_default_panel"
+	"texture" "tex_ui_default"
+
+	"rect" "190, 98, 100, 100"
+	"x_slices" "7, 7"
+	"y_slices" "7, 7"
+}
+
+# button_down
+{
+	"type" "slice_def"
+	"name" "ui_default_button_down"
+	"texture" "tex_ui_default"
+
+	"rect" "0, 286, 190, 45"
+	"x_slices" "6, 6"
+	"y_slices" "6, 8"
+}
+
+# button_up
+{
+	"type" "slice_def"
+	"name" "ui_default_button_up"
+	"texture" "tex_ui_default"
+
+	"rect" "0, 331, 190, 49"
+	"x_slices" "6, 6"
+	"y_slices" "6, 8"
+}

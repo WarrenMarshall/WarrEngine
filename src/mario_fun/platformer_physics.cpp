@@ -141,4 +141,10 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 void w_platformer_physics::update()
 {
 	timer_jump_limiter->update();
+
+	//auto ec = player->get_component<ec_sprite>( component_type::sprite );
+	//if( in_air)
+	//{
+	//	ec->
+	//}
 }

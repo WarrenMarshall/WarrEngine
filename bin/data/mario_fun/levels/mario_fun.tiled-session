@@ -1,0 +1,73 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level_1.tmx",
+    "expandedProjectPaths": [
+        "X:/WarrenDev/bin/data",
+        ".",
+        "X:/WarrenDev/bin/data/mario_fun",
+        "X:/WarrenDev/bin/data/mario_fun/tilemap"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "C:/Users/PC/Downloads/untitled.tmx": {
+            "scale": 0.35921875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1391.909525880818,
+                "y": 496.91170073945204
+            }
+        },
+        "X:/WarrenDev/bin/data/mario_fun/mario_fun.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 254.3333333333333,
+                "y": 90.16666666666666
+            }
+        },
+        "X:/WarrenDev/bin/data/mario_fun/tilemap/mario_tileset.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 8
+        },
+        "level_1.tmx": {
+            "scale": 4,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 405.375,
+                "y": 223.125
+            }
+        },
+        "mario_tileset.tsx": {
+            "scaleInDock": 5.5,
+            "scaleInEditor": 16
+        }
+    },
+    "map.height": 10,
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedFormat": "tmx",
+    "map.renderOrder": null,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 32,
+    "openFiles": [
+        "level_1.tmx"
+    ],
+    "project": "mario_fun.tiled-project",
+    "property.type": "string",
+    "recentFiles": [
+        "level_1.tmx",
+        "mario_tileset.tsx",
+        "X:/WarrenDev/bin/data/mario_fun/mario_fun.tmx",
+        "X:/WarrenDev/bin/data/mario_fun/tilemap/mario_tileset.tsx",
+        "X:/WarrenDev/bin/data/mario_fun/tilemap/level_1.tmx",
+        "C:/Users/PC/Downloads/untitled.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

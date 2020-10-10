@@ -1,0 +1,15 @@
+
+# ---------------------------------------------------------
+# textures
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_fire_particle"
+	"filename" "gfx/fire_particle.png"
+}
+{
+	"type" "texture"
+	"name" "cartoon_star"
+	"filename" "gfx/particleCartoonStar.png"
+}
