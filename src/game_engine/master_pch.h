@@ -41,7 +41,6 @@
 
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"
-	//using tweeny::easing;
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC
@@ -68,7 +67,7 @@
 	// otherwise, we use cute_sound which uses DirectSound and
 	// requires no external files.
 
-	#define USE_BASS_SOUND_LIBRARY
+	//#define USE_BASS_SOUND_LIBRARY
 
 	#ifdef USE_BASS_SOUND_LIBRARY
 		#include "bass24/c/bass.h"
@@ -129,6 +128,7 @@
 
 // ----------------------------------------------------------------------------
 // handy macros
+// ----------------------------------------------------------------------------
 
 #define f_commas w_stringutil::format_with_commas
 #define log_msg(string_format, ...) logfile->msg( fmt::format("[{}:{}] " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
@@ -136,16 +136,21 @@
 #define log_error(string_format, ...) logfile->error( fmt::format("[{}:{}] ERROR! : " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
 
 // ----------------------------------------------------------------------------
+// constants
+// ----------------------------------------------------------------------------
 
 constexpr float W_PI = 3.14159265358979323846f;
 
+// ----------------------------------------------------------------------------
 // used to convert color values in the range 0-255 to 0-1
 // i.e. color.r = 168.0f * byte_color_to_float;
-//
+// ----------------------------------------------------------------------------
+
 constexpr float byte_color_to_float = 1.0f / 255.0f;
 
 // ----------------------------------------------------------------------------
 // standard rendering start depths
+// ----------------------------------------------------------------------------
 
 constexpr float zdepth_clear_window = -15000.0f;
 constexpr float zdepth_nudge = 10.0f;
@@ -157,12 +162,15 @@ constexpr float zdepth_topmost = 14750.0f;
 
 // ----------------------------------------------------------------------------
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
+// ----------------------------------------------------------------------------
 
 constexpr bool fequals( float a, float b )
 {
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
 }
 
+// ----------------------------------------------------------------------------
+// box2d constants and helpers
 // ----------------------------------------------------------------------------
 
 constexpr float b2d_gravity_default = 9.81f;
@@ -178,6 +186,10 @@ constexpr float from_b2d( float v )
 	return ( v * b2d_world_scale_factor );
 }
 
+// ----------------------------------------------------------------------------
+// immediate mode ui
+// ----------------------------------------------------------------------------
+
 constexpr bool im_left_clicked( e_im_result result )
 {
 	return ( result & im_result::left_clicked );
@@ -188,6 +200,8 @@ constexpr bool im_right_clicked( e_im_result result )
 	return ( result & im_result::right_clicked );
 }
 
+// ----------------------------------------------------------------------------
+// handy definitions
 // ----------------------------------------------------------------------------
 
 #define MATRIX engine->opengl

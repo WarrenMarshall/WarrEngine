@@ -130,13 +130,13 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		rc_client.y += subtex_attrib.pos.value_or( w_vec2::zero ).y;
 
 		// if there are size tweaks, apply them
-		rc_client.w = subtex.value()->rc_src.w;
+		rc_client.w = subtex.value()->sz.w;
 		if( subtex_attrib.sz.has_value() )
 		{
 			rc_client.w = ( *subtex_attrib.sz ).w;
 		}
 
-		rc_client.h = subtex.value()->rc_src.h;
+		rc_client.h = subtex.value()->sz.h;
 		if( subtex_attrib.sz.has_value() )
 		{
 			rc_client.h = ( *subtex_attrib.sz ).h;

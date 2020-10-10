@@ -7,10 +7,7 @@ struct a_subtexture : i_asset
 	// the texture asset we draw from
 	a_texture* tex;
 
-	// the rectangle of the area we want to extract from the source texture
-	w_rect rc_src = w_rect( 0, 0, -1, -1 );
-
-	// the width/height of this image, as per the dimensions passed to the ctor
+	// the width/height of this subtexture
 	w_sz sz;
 
 	// the uv coordinates that define this image within the texture
