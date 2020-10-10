@@ -7,9 +7,7 @@ src/.vs/GameEngine/v16
 *.lastcodeanalysissucceeded
 *.iobj
 *.ipdb
-src/bin/GameEngine.dll
-src/bin/GameEngine.lib
-src/bin/game_engine.lib
+src/bin/*.lib
 src/shipping
 releases/work_log_tracker/work_log_tracker.data
 bin/game_engine.lib
