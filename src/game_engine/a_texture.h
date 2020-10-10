@@ -19,4 +19,3 @@ struct a_texture : i_asset
 
 	[[nodiscard]] virtual a_subtexture* get_subtexture( float offset = 0.0f );
 };
-

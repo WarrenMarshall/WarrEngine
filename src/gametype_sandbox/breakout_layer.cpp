@@ -114,7 +114,7 @@ bool breakout_layer::handle_input_event( const w_input_event* evt )
 		if( evt->input_id == input_id::mouse )
 		{
 			w_vec2 new_pos = { player->pos.x + evt->mouse.delta.x, v_window_h - 24.0f };
-			new_pos.x = w_clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
+			new_pos.x = std::clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
 			player->set_position_deep( new_pos, false );
 		}
 	}

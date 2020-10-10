@@ -14,12 +14,12 @@ a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& r
 	// find the texture being referenced
 	tex = engine->get_asset<a_texture>( texture_name );
 
-	// - if W or H are -1, they are defaulted to the textures W/H
+	// if W or H are -1, they are defaulted to the textures W/H
 
 	sz.w = ( rc.w == -1 ) ? tex->w : rc.w;
 	sz.h = ( rc.h == -1 ) ? tex->h : rc.h;
 
-	// - images are upside down, the Y coordinates get flipped
+	// note : images are upside down, so the Y coordinate gets flipped across the V axis
 
 	w_rect rc_src(
 		rc.x,
@@ -27,6 +27,9 @@ a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& r
 		sz.w,
 		sz.h
 	);
+
+	// compute uv coordinates for the top left and bottom right corners. these corners
+	// provide enough information to reconstruct UV01 and UV10 when needed.
 
 	uv00 = w_uv(
 		rc_src.x / tex->w,

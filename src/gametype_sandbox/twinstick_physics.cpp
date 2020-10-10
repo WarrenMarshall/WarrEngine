@@ -31,8 +31,8 @@ void w_twinstick_physics::handle_user_input( w_entity* player )
 		current.x += ( w_twinstick_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
 		current.y += ( w_twinstick_physics::player_move_force_s * left_stick.y ) * w_time::FTS_step_value_s;
 		w_vec2 desired = {
-			w_clamp( current.x, -w_twinstick_physics::player_move_force_max, w_twinstick_physics::player_move_force_max ),
-			w_clamp( current.y, -w_twinstick_physics::player_move_force_max, w_twinstick_physics::player_move_force_max )
+			std::clamp( current.x, -w_twinstick_physics::player_move_force_max, w_twinstick_physics::player_move_force_max ),
+			std::clamp( current.y, -w_twinstick_physics::player_move_force_max, w_twinstick_physics::player_move_force_max )
 		};
 
 		ec->body->SetLinearVelocity( { desired.x, desired.y } );

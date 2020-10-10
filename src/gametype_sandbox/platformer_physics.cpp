@@ -86,7 +86,7 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 		b2Vec2 current = ec->body->GetLinearVelocity();
 		current.x += ( w_platformer_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
-		float desired = w_clamp( current.x, -w_platformer_physics::player_move_force_max, w_platformer_physics::player_move_force_max );
+		float desired = std::clamp ( current.x, -w_platformer_physics::player_move_force_max, w_platformer_physics::player_move_force_max );
 
 		ec->body->SetLinearVelocity( { desired, current.y } );
 	}

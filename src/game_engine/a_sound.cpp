@@ -59,7 +59,10 @@ void a_sound::stop()
 #ifdef USE_BASS_SOUND_LIBRARY
 	BASS_ChannelStop( channel );
 #else
-	cs_stop_sound( snd_playing );
+	if( engine->c2_sound_context )
+	{
+		cs_stop_sound( snd_playing );
+	}
 #endif
 }
 

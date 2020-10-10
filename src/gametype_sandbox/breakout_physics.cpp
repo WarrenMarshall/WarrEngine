@@ -7,11 +7,11 @@ void fudge_movement_dir( w_vec2& dir )
 {
 	if( dir.y < 0.0f )
 	{
-		dir.y = w_min( -0.3f, dir.y );
+		dir.y = std::min( -0.3f, dir.y );
 	}
 	else
 	{
-		dir.y = w_max( 0.3f, dir.y );
+		dir.y = std::max( 0.3f, dir.y );
 	}
 
 #if 1
@@ -19,11 +19,11 @@ void fudge_movement_dir( w_vec2& dir )
 	// ... so delete it eventually if you never use it
 	if( dir.x < 0.0f )
 	{
-		dir.x = w_min( -0.3f, dir.x );
+		dir.x = std::min( -0.3f, dir.x );
 	}
 	else
 	{
-		dir.x = w_max( 0.3f, dir.x );
+		dir.x = std::max( 0.3f, dir.x );
 	}
 #endif
 }

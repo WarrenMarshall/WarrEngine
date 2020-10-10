@@ -5,10 +5,10 @@
 struct a_subtexture : i_asset
 {
 	// the texture asset we draw from
-	a_texture* tex;
+	a_texture* tex = nullptr;
 
 	// the width/height of this subtexture
-	w_sz sz;
+	w_sz sz = w_sz( 0, 0 );
 
 	// the uv coordinates that define this image within the texture
 	w_uv uv00 = w_uv( 0, 0 );

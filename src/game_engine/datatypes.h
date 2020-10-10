@@ -151,6 +151,7 @@ struct w_vec2
 	w_vec2 from_b2d();
 	float get_size_squared();
 	float get_size();
+	w_vec2& snap_to_pixel();
 
 	bool operator==( w_vec2 v );
 	bool operator!=( w_vec2 v );
