@@ -419,11 +419,11 @@ w_bbox::w_bbox()
 
 void w_bbox::add( w_vec2 vtx )
 {
-	min.x = w_min( min.x, vtx.x );
-	min.y = w_min( min.y, vtx.y );
+	min.x = std::min( min.x, vtx.x );
+	min.y = std::min( min.y, vtx.y );
 
-	max.x = w_max( max.x, vtx.x );
-	max.y = w_max( max.y, vtx.y );
+	max.x = std::max( max.x, vtx.x );
+	max.y = std::max( max.y, vtx.y );
 }
 
 void w_bbox::reset()

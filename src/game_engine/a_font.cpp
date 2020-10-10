@@ -31,7 +31,7 @@ bool a_font_def::create_internals()
 
 			fch->subtex = std::make_unique<a_subtexture>( texture->name, w_rect( x, y, w, h ) );
 
-			max_height = w_max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
+			max_height = std::max( max_height, static_cast<int>( fch->h + fch->yoffset ) );
 		}
 	}
 
@@ -65,7 +65,7 @@ w_vec2 a_font::get_string_extents( const std::string_view text )
 		else if( !inside_color_code )
 		{
 			bounds.x += pxch->xadvance;
-			bounds.y = w_max( bounds.y, pxch->h + pxch->yoffset );
+			bounds.y = std::max( bounds.y, pxch->h + pxch->yoffset );
 		}
 	}
 

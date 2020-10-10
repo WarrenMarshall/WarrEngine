@@ -51,7 +51,7 @@ a_subtexture* a_anim_texture::get_subtexture( float anim_offset )
 
 	int idx = frame_tween->get_ival( 0, static_cast<int>( frames.size() ) - 1 );
 
-	log_msg( "{}", idx );
+	//log_msg( "{}", idx );
 
 	if( anim_offset )
 	{

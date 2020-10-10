@@ -413,8 +413,8 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 	{
 		case input_id::controller_left_stick:
 		{
-			value.x = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLX / 32767.0f );
-			value.y = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLY / 32767.0f ) * -1.0f;
+			value.x = std::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLX / 32767.0f );
+			value.y = std::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLY / 32767.0f ) * -1.0f;
 
 			if( fabs( value.x ) < dead_zone )
 			{
@@ -429,8 +429,8 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 
 		case input_id::controller_right_stick:
 		{
-			value.x = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRX / 32767.0f );
-			value.y = w_max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRY / 32767.0f ) * -1.0f;
+			value.x = std::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRX / 32767.0f );
+			value.y = std::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRY / 32767.0f ) * -1.0f;
 
 			if( fabs( value.x ) < dead_zone || fabs( value.y ) < dead_zone )
 			{

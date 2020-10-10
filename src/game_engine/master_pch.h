@@ -156,23 +156,6 @@ constexpr float zdepth_stats = 14500.0f;
 constexpr float zdepth_topmost = 14750.0f;
 
 // ----------------------------------------------------------------------------
-
-template<typename T>
-constexpr T w_min( T a, T b )
-{
-	return ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) );
-}
-template<typename T>
-constexpr T w_max( T a, T b )
-{
-	return ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) );
-}
-//template<typename T>
-//constexpr T w_clamp( T v, T min, T max )
-//{
-//	return ( w_max( min, w_min( max, v ) ) );
-//}
-
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
 
 constexpr bool fequals( float a, float b )

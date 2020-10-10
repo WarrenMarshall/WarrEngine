@@ -8,7 +8,7 @@ float w_platformer_physics::player_base_radius = 8.0f;
 float w_platformer_physics::player_move_force_max = 1.25f;
 float w_platformer_physics::player_jump_force = 3.0f;
 float w_platformer_physics::player_drop_down_normal_tolerance = 0.8f;
-int w_platformer_physics::player_jump_interval = 250;
+int w_platformer_physics::player_jump_interval = 150;
 float w_platformer_physics::player_air_control_damping = 0.35f;
 
 // ----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 	{
 		if( can_jump() )
 		{
-			//timer_jump_limiter->reset();
+			timer_jump_limiter->reset();
 
 			w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
