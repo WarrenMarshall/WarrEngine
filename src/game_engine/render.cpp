@@ -656,7 +656,12 @@ void w_render::init_projection_matrix() const
 		0, v_window_w, v_window_h, 0,
 		-20000.0f, 20000.0f );
 
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+	engine->shader_ui->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_ui->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+	engine->shader_crt->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_crt->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+	engine->shader_to_screen->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_to_screen->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 }
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
@@ -676,7 +681,13 @@ void w_render::init_view_matrix() const
 			-( current_camera->pos.y - v_window_hh ) / 2.0f,
 			0.0f ) );
 	}
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+
+	engine->shader_ui->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_ui->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	engine->shader_crt->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_crt->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	engine->shader_to_screen->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_to_screen->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 }
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
@@ -688,7 +699,13 @@ void w_render::init_view_matrix_identity() const
 	RENDER->draw_master_buffer();
 
 	glm::mat4 view = glm::mat4( 1.0f );
-	glUniformMatrix4fv( glGetUniformLocation( engine->shader->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+
+	engine->shader_ui->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_ui->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	engine->shader_crt->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_crt->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	engine->shader_to_screen->bind();
+	glUniformMatrix4fv( glGetUniformLocation( engine->shader_to_screen->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 }
 
 // call this function to figure out a new value based on the frame interpolation percentage.

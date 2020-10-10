@@ -8,6 +8,7 @@ uniform mat4 V; // camera matrix
 
 out vec2 TexCoord;
 out vec4 Color;
+out vec3 Pos;
 
 void main()
 {
@@ -19,6 +20,8 @@ void main()
     snapped_pos.x = round( inPos.x );
     snapped_pos.y = round( inPos.y );
     snapped_pos.z = round( inPos.z );
+
+    Pos = snapped_pos;
 
     // apply matrix transforms to get the vertex to screen space.
     //

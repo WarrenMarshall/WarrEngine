@@ -32,11 +32,12 @@ void w_opengl::init()
 	log_msg( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
 	// front facing triangles are wound counter clockwise
-	//glFrontFace( GL_CCW );
-	//glDisable( GL_CULL_FACE );
+	glFrontFace( GL_CCW );
+	glDisable( GL_CULL_FACE );
 
-	engine->shader->create_and_compile( "simple", "simple" );
-	engine->shader->bind();
+	engine->shader_ui->create_and_compile( "simple", "simple" );
+	engine->shader_crt->create_and_compile( "simple", "crt" );
+	engine->shader_to_screen->create_and_compile( "simple", "simple" );
 
 	glEnable( GL_TEXTURE_2D );
 

@@ -177,6 +177,8 @@ _NODISCARD float snap_to_pixel( float f );
 
 constexpr float b2d_gravity_default = 9.81f;
 constexpr float b2d_world_scale_factor = 100.0f;
+constexpr int32 b2d_velocity_iterations = 6;
+constexpr int32 b2d_position_iterations = 2;
 
 constexpr float to_b2d( float v )
 {

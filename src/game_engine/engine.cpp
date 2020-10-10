@@ -213,7 +213,9 @@ void w_engine::deinit_game_engine()
 	engine->window->deinit();
 
 	log_msg( "Shutting down OpenGL" );
-	glDeleteProgram( engine->shader->id );
+	glDeleteProgram( engine->shader_ui->id );
+	glDeleteProgram( engine->shader_crt->id );
+	glDeleteProgram( engine->shader_to_screen->id );
 
 	log_msg( "Shutting down GLFW" );
 	glfwTerminate();
@@ -241,9 +243,6 @@ void w_engine::deinit_game_engine()
 	log_msg( "Finished!" );
 	logfile->deinit();
 }
-
-constexpr int32 box2d_velocityIterations = 6;
-constexpr int32 box2d_positionIterations = 2;
 
 void w_engine::exec_main_loop()
 {
@@ -285,7 +284,7 @@ void w_engine::exec_main_loop()
 		{
 			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
 
-			engine->box2d_world->Step( w_time::FTS_step_value_s, box2d_velocityIterations, box2d_positionIterations );
+			engine->box2d_world->Step( w_time::FTS_step_value_s, b2d_velocity_iterations, b2d_position_iterations );
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
@@ -309,6 +308,7 @@ void w_engine::exec_main_loop()
 
 			RENDER->init_projection_matrix();
 			RENDER->init_view_matrix();
+			engine->shader_crt->bind();
 
 			// render the frame
 
@@ -329,7 +329,10 @@ void w_engine::exec_main_loop()
 			// engine specific things, like pause borders
 			engine->draw();
 		}
+
+		engine->shader_ui->bind();
 		RENDER->end_frame();
+
 		engine->opengl->fb_game->unbind();
 
 		// reset the viewport to the size of the actual window and draw the
@@ -345,6 +348,7 @@ void w_engine::exec_main_loop()
 
 		static a_texture* tex = engine->get_asset<a_texture>( "tex_game_frame_buffer" );
 
+		engine->shader_to_screen->bind();
 		RENDER
 			->begin()
 			->draw( tex, w_rect( 0, 0 ) )
@@ -492,7 +496,9 @@ void w_engine::init()
 	input = std::make_unique<w_input>();
 	ui = std::make_unique<w_ui_mgr>();
 	fs = std::make_unique<w_file_system>();
-	shader = std::make_unique<w_shader>();
+	shader_ui = std::make_unique<w_shader>();
+	shader_crt = std::make_unique<w_shader>();
+	shader_to_screen = std::make_unique<w_shader>();
 	opengl = std::make_unique<w_opengl>();
 	config_vars = std::make_unique<w_keyvalues>();
 

@@ -34,7 +34,7 @@
 {
 	"type" "anim_texture"
 	"name" "anim_player_idle"
-	"frames_per_sec" "1"
+c	"frames_per_sec" "1"
 	"tween" "tween.loop"
 	"frames" "player_spr_run_1"
 }
