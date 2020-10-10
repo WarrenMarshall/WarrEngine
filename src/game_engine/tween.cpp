@@ -39,7 +39,6 @@ bool on_step_pingpong( tweeny::tween<float>& tween )
 w_tween::w_tween( e_tween_type type, float start, float end, float duration_ms )
 {
 	tween = tweeny::from( start ).to( end ).during( duration_ms );
-	//tween.via( tweeny::easing::circularInOut );
 
 	switch( type )
 	{
@@ -70,6 +69,14 @@ float w_tween::get_fval()
 int w_tween::get_ival()
 {
 	return static_cast<int>( get_fval() );
+}
+
+int w_tween::get_ival( int low, int high )
+{
+	// tweeny can sometimes go beyond the limits of the range you've given it,
+	// especially if you're using certain easings. if that will cause trouble,
+	// use this clamped version of get_ival instead.
+	return std::clamp<int>( static_cast<int>( get_fval() ), low, high );
 }
 
 bool w_tween::is_negative()

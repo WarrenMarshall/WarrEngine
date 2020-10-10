@@ -32,9 +32,10 @@ struct w_entity_component : i_life_cycle, i_transform
 
 struct ec_sprite : w_entity_component
 {
-	//a_subtexture* subtex = nullptr;
 	a_texture* tex = nullptr;
 	float anim_offset = 0.0f;
+	bool flip_x = false;
+	bool flip_y = false;
 
 	ec_sprite() = delete;
 	ec_sprite( w_entity* parent_entity );

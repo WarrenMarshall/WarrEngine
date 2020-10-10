@@ -79,10 +79,6 @@ bool a_sound::create_internals()
 
 	if( !snd && BASS_IsStarted() )
 	{
-		// if we failed to load the file BUT it does actually exist, it may simply be
-		// that the user doesn't have an audio device connected to their computer. This is not
-		// fatal to the engine and should not crash you out.
-
 		log_error( "Couldn't load the file : [{}]", name );
 	}
 

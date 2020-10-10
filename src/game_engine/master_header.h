@@ -46,6 +46,7 @@ extern float v_window_h;
 #include "a_cursor.h"
 #include "a_9slice_def.h"
 #include "a_sound.h"
+#include "a_tilemap_def.h"
 #include "input_game_controller.h"
 #include "input.h"
 #include "asset_definition_file.h"

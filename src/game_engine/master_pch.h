@@ -90,6 +90,10 @@
 	// XBox controller + haptics support
 	#include <Xinput.h>
 
+	// PugiXML
+	#define PUGIXML_HEADER_ONLY
+	#include "pugixml-1.10/src/pugixml.hpp"
+
 #pragma warning(pop)	// turn warnings back on
 
 // ----------------------------------------------------------------------------
@@ -163,11 +167,11 @@ constexpr T w_max( T a, T b )
 {
 	return ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) );
 }
-template<typename T>
-constexpr T w_clamp( T v, T min, T max )
-{
-	return ( w_max( min, w_min( max, v ) ) );
-}
+//template<typename T>
+//constexpr T w_clamp( T v, T min, T max )
+//{
+//	return ( w_max( min, w_min( max, v ) ) );
+//}
 
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
 

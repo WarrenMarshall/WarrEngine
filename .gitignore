@@ -29,3 +29,5 @@ bin/entity_sandbox.exe
 bin/entity_sandbox_log.txt
 bin/collision_sandbox_log.txt
 bin/endless_breakout_log.txt
+External/pugixml-1.10/docs
+External/pugixml-1.10/scripts

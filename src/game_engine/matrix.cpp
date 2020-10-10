@@ -29,7 +29,17 @@ w_matrix* w_matrix::scale( float v )
 {
 	if( !fequals( v, 1.0f ) )
 	{
-		m = glm::scale( m, glm::vec3( v, v, v ) );
+		m = glm::scale( m, glm::vec3( v, v, 1.0f ) );
+	}
+
+	return this;
+}
+
+w_matrix* w_matrix::scale( float x, float y )
+{
+	if( !fequals( x, 1.0f ) || !fequals( y, 1.0f ) )
+	{
+		m = glm::scale( m, glm::vec3( x, y, 1.0f ) );
 	}
 
 	return this;

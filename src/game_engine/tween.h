@@ -11,6 +11,7 @@ struct w_tween
 	void update();
 	[[nodiscard]] float get_fval();
 	[[nodiscard]] int get_ival();
+	[[nodiscard]] int get_ival( int low, int high );
 	[[nodiscard]] bool is_negative();
 
 	void reset_to_start();

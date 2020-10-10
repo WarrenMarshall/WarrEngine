@@ -88,9 +88,9 @@ void ec_sprite::draw()
 		return;
 	}
 
-	// NOTE : this was how we used to do moving with interpolation
-	//w_vec2 pos_interp = parent_entity->physics_cache.forces * RENDER->frame_interpolate_pct;
-	//RENDER->draw_sprite( subtex, w_rect( pos_interp.x, pos_interp.y ) );
+	MATRIX
+		->top()
+		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
 	RENDER->draw_sprite( tex->get_subtexture( anim_offset ), pos );
 }

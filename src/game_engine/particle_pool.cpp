@@ -32,7 +32,7 @@ void w_particle_pool::draw()
 			float interp_life_span = RENDER->calc_interpolated_per_sec_value( particle->life_span, -engine->time->FTS_step_value_ms );
 
 			float pct_of_life = fabs( 1.0f - ( interp_life_span / particle->life_span_save ) );
-			pct_of_life = w_clamp( pct_of_life, 0.0f, 1.0f );
+			pct_of_life = std::clamp( pct_of_life, 0.0f, 1.0f );
 
 			// color + alpha
 			w_color color;
