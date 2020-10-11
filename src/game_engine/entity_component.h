@@ -140,7 +140,12 @@ struct ec_tilemap : w_entity_component
 	ec_tilemap() = delete;
 	ec_tilemap( w_entity* parent_entity );
 
-	w_entity_component* init( const std::string_view level_name );
+	int width = 0;
+	int height = 0;
+	int tilewidth = 0;
+	int tileheight = 0;
+
+	w_entity_component* init();
 	virtual void draw() override;
-	void load_from_disk( std::string_view level_filename );
+	void load_from_disk( const char* tag, std::string_view level_filename );
 };

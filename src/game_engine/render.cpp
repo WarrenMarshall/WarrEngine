@@ -305,8 +305,8 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		->push()
 		->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
 
-	float xpos = dst.x;
-	float ypos = dst.y;
+	float xpos = snap_to_pixel( dst.x );
+	float ypos = snap_to_pixel( dst.y );
 
 	for( const char iter : text )
 	{

@@ -462,9 +462,10 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 ec_tilemap::ec_tilemap( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
+	type |= component_type::tilemap;
 }
 
-w_entity_component* ec_tilemap::init( const std::string_view level_name )
+w_entity_component* ec_tilemap::init()
 {
 	return this;
 }
@@ -473,24 +474,59 @@ void ec_tilemap::draw()
 {
 }
 
-void ec_tilemap::load_from_disk( std::string_view level_filename )
+void ec_tilemap::load_from_disk( const char* tag, std::string_view level_filename )
 {
+	auto b2d_static = parent_entity->get_component<ec_b2d_static>( component_type::b2d_body );
+
 	auto file = engine->fs->load_file_into_memory( level_filename );
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer.get() ) );
 
 	if( result )
 	{
-		for( pugi::xml_node tool = doc.first_child(); tool; tool = tool.next_sibling() )
+		std::string key;
+
+		// tilemap files only have one child - the map object
+		pugi::xml_node map_node = doc.first_child();
+
+		width = map_node.attribute( "width" ).as_int();
+		height = map_node.attribute( "height" ).as_int();
+		tilewidth = map_node.attribute( "tilewidth" ).as_int();
+		tileheight = map_node.attribute( "tileheight" ).as_int();
+
+		for( pugi::xml_node child : map_node.children() )
 		{
-			std::cout << "Tool:";
+			std::string type = child.name();
 
-			for( pugi::xml_attribute attr = tool.first_attribute(); attr; attr = attr.next_attribute() )
+			// collision geometry
+			if( type == "objectgroup" )
 			{
-				std::cout << " " << attr.name() << "=" << attr.value();
-			}
+				for( pugi::xml_node object : child.children() )
+				{
+					float x = snap_to_pixel( object.attribute( "x" ).as_float() );
+					float y = snap_to_pixel( object.attribute( "y" ).as_float() );
+					float w = snap_to_pixel( object.attribute( "width" ).as_float() );
+					float h = snap_to_pixel( object.attribute( "height" ).as_float() );
 
-			std::cout << std::endl;
+					if( h == 0 )
+					{
+						// a height of zero indicates an edge segment
+						b2d_static->add_fixture_line( tag, w_vec2::zero, { x, y }, { x + w, y + h } );
+					}
+					else
+					{
+						// anything with a positive height, we assume it's a box
+						b2d_static->add_fixture_polygon( tag, w_vec2::zero,
+														 {
+														 { x, y },
+														 { x + w, y },
+														 { x + w, y + h },
+														 { x, y + h }
+														 }
+						);
+					}
+				}
+			}
 		}
 	}
 }

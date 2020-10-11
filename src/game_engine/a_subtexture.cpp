@@ -7,6 +7,9 @@ a_subtexture::a_subtexture( const std::string_view tex_name )
 
 	sz.w = tex->w;
 	sz.h = tex->h;
+
+	uv00 = w_uv( 0, 0 );
+	uv11 = w_uv( 1, 1 );
 }
 
 a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& rc )

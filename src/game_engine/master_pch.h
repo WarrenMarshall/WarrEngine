@@ -106,10 +106,18 @@
 // putting things in here will speed up partial compiles
 // ----------------------------------------------------------------------------
 
+#include "master_fwd_decl.h"
+
+// ----------------------------------------------------------------------------
+//	useful type definitions to increase code readability
+
+using w_uv = w_vec2;
+using w_sz = w_vec2;
+using w_offset = w_vec2;
+using w_pos = w_vec2;
+using bitflags = unsigned;
 using sbyte = char;				// shortcut for "signed 8-byte value"
 using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
-
-#include "master_fwd_decl.h"
 
 // ----------------------------------------------------------------------------
 // macros to make enum definitions easier to read
@@ -178,6 +186,7 @@ _NODISCARD constexpr bool fequals( float a, float b )
 }
 
 _NODISCARD float snap_to_pixel( float f );
+_NODISCARD int str_to_int( const char* str );
 
 // ----------------------------------------------------------------------------
 // box2d constants and helpers
@@ -221,15 +230,6 @@ constexpr bool im_right_clicked( e_im_result result )
 #define RENDER engine->render
 #define UI engine->ui
 #define INPUT engine->input
-
-// ----------------------------------------------------------------------------
-//	useful type definitions to increase code readability
-
-using w_uv = w_vec2;
-using w_sz = w_vec2;
-using w_offset = w_vec2;
-using w_pos = w_vec2;
-using bitflags = unsigned;
 
 // ----------------------------------------------------------------------------
 

@@ -13,65 +13,36 @@ void platformer_layer::push()
 	w_layer::push();
 
 	engine->window->set_mouse_mode( mouse_mode::normal );
-	mover_controller = std::make_unique<w_mover_controller>( -1.0f, 1.0f, 1500.0f );
+	//mover_controller = std::make_unique<w_mover_controller>( -1.0f, 1.0f, 1500.0f );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );
 
 	ec_b2d_body* ec = nullptr;
 
+	// ----------------------------------------------------------------------------
 	// world geometry
 
-	auto ent = add_entity<w_entity>();
-	ent->collision_layer = clayer_world;
-	ent->collides_with = clayer_player | clayer_coin;
-	ent->draw_debug_info = true;
-	ec = ent->add_component<ec_b2d_static>();
-	{
-		// bounding box for world
-
-		ec->add_fixture_line_loop(
-			"world",
-			w_vec2::zero,
-			{
-				{ 4.0f, 4.0f },
-				{ v_window_w - 8.0f, 4.0f },
-				{ v_window_w - 8.0f, v_window_h - 8.0f },
-				{ 4.0f, v_window_h - 8.0f }
-			}
-		);
-
-#if 1
-		// rando platform lines running vertically
-
-		for( int y = 0 ; y < v_window_h ; y += 40 )
-		{
-			float xpos = 4.0f;
-			auto ypos = (float) y;
-
-			float w = w_random::getf_range( 32, 120 );
-			ec->add_fixture_line( "world", w_vec2::zero, { xpos, ypos }, { xpos + w, ypos } );
-
-			xpos = v_window_w - 8.0f;
-			w = w_random::getf_range( 32, 120 );
-			ec->add_fixture_line( "world", w_vec2::zero, { xpos - w, ypos }, { xpos, ypos } );
-		}
-#endif
-	}
+	auto world = add_entity<e_platformer_level>();
+	auto ec_tm = world->get_component<ec_tilemap>( component_type::tilemap );
+	ec_tm->load_from_disk( "world", "data/mario_fun/levels/level_0.tmx" );
 
 	// ----------------------------------------------------------------------------
+	// player
 
 	player = add_entity<e_platformer_player>();
 	player->set_position_deep( { v_window_hw, 16.0f }, true );
 
 	// ----------------------------------------------------------------------------
+	// some random coins
 
-	spawn_coins();
+	//spawn_coins();
 
 	// ----------------------------------------------------------------------------
+	// moving platform
 
-	mover = add_entity<e_platformer_mover>();
-	mover->set_position_deep( { v_window_hw, v_window_hh }, true );
+	//mover = add_entity<e_platformer_mover>();
+	//mover->set_position_deep( { v_window_hw, v_window_hh }, true );
 }
 
 void platformer_layer::pop()
@@ -86,11 +57,11 @@ void platformer_layer::update()
 	plat_physics->handle_user_input( player );
 	plat_physics->update();
 
-	mover_controller->update();
+	//mover_controller->update();
 
-	auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
-	float speed = 100.0f * mover_controller->tween->current_val;
-	ekb->body->SetLinearVelocity( w_vec2( 0.0f, speed * (w_time::FTS_step_value_s / 2.0f) ) );
+	//auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
+	//float speed = 100.0f * mover_controller->tween->current_val;
+	//ekb->body->SetLinearVelocity( w_vec2( 0.0f, speed * (w_time::FTS_step_value_s / 2.0f) ) );
 
 	w_layer::update();
 }

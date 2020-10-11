@@ -253,7 +253,8 @@ enum_begin( component_type, ubyte )
 	b2d_body = 8,
 	b2d_static = 16,
 	b2d_dynamic = 32,
-	b2d_kinematic = 64
+	b2d_kinematic = 64,
+	tilemap = 128
 enum_end
 
 // ----------------------------------------------------------------------------
