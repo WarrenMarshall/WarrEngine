@@ -66,7 +66,6 @@ struct w_engine : i_listener
 	std::unique_ptr<w_shader> shader_to_screen = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
 	std::unique_ptr<w_keyvalues> config_vars = nullptr;
-	w_bit_flag_generator bfg_collision_layer;
 
 	virtual void on_listener_event_received( e_event_id event, void* object ) override;
 };
