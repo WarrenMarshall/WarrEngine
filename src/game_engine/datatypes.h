@@ -164,9 +164,9 @@ struct w_vec2
 
 	[[nodiscard]] static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );
-	[[nodiscard]] static w_vec2 from_angle( float angle );
-	[[nodiscard]] static float to_angle( w_vec2 a );
-	[[nodiscard]] static w_vec2 reflect( w_vec2 v, w_vec2 n );
+	[[nodiscard]] static w_vec2 dir_from_angle( float angle );
+	[[nodiscard]] static float angle_from_dir( w_vec2 dir );
+	[[nodiscard]] static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
 
 	operator b2Vec2()
 	{

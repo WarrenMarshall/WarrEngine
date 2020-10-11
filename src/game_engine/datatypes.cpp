@@ -322,7 +322,7 @@ w_vec2 w_vec2::normalize( w_vec2 a )
 
 // takes an angle, in degrees, and returns a unit vector for it
 
-w_vec2 w_vec2::from_angle( float angle )
+w_vec2 w_vec2::dir_from_angle( float angle )
 {
 	w_vec2 v;
 
@@ -333,9 +333,9 @@ w_vec2 w_vec2::from_angle( float angle )
 	return v;
 }
 
-float w_vec2::to_angle( w_vec2 a )
+float w_vec2::angle_from_dir( w_vec2 dir )
 {
-	float angle = atan2( a.y, a.x ) * 180.0f / W_PI;
+	float angle = atan2( dir.y, dir.x ) * 180.0f / W_PI;
 
 	// massage the resulting angle into a range that this engine likes.
 	angle += 90.0f;
@@ -346,7 +346,7 @@ float w_vec2::to_angle( w_vec2 a )
 
 // computes the reflection angle of "v" across the normal "n"
 
-w_vec2 w_vec2::reflect( w_vec2 v, w_vec2 n )
+w_vec2 w_vec2::reflect_across_normal( w_vec2 v, w_vec2 n )
 {
 	glm::vec3 rdir = glm::reflect( static_cast<glm::vec3>( v ), static_cast<glm::vec3>( n ) );
 	return w_vec2( rdir.x, rdir.y );

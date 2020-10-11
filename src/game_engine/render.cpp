@@ -52,7 +52,7 @@ void w_render::init()
 	float angle_step = 360.0f / static_cast<float>( circle_sample_points_max );
 	for( auto& circle_sample_point : circle_sample_points )
 	{
-		circle_sample_point = w_vec2::from_angle( angle );
+		circle_sample_point = w_vec2::dir_from_angle( angle );
 		angle += angle_step;
 	}
 }
