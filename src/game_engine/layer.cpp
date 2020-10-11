@@ -14,7 +14,7 @@ void w_layer::update()
 	//
 	// NOTE : uses standard 'for' loop because it manipulates the vector as it runs.
 
-	for( int x = 0; x < entities.size(); ++x )
+	for( auto x = 0; x < entities.size(); ++x )
 	{
 		w_entity* e = entities[ x ].get();
 

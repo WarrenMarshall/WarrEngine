@@ -14,6 +14,7 @@ struct w_ui_style_attrib
 struct w_ui_style
 {
 	w_ui_style() = default;
+	virtual ~w_ui_style() = default;
 
 	// base
 	w_ui_style_attrib base_attrib;

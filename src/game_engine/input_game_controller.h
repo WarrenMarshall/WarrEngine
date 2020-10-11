@@ -2,12 +2,14 @@
 
 struct w_game_controller
 {
-	// this can change if a controller gets unplugged during gameplay or after the game starts
-	bool is_connected = false;
-
+	std::unique_ptr<w_timer> timer_repeat = nullptr;
 	int idx = -1;
 	float rumble_time_remaining_ms = 0;
-	std::unique_ptr<w_timer> timer_repeat = nullptr;
+
+	XINPUT_STATE xinput_state = { 0 };
+
+	// this can change if a controller gets unplugged during gameplay or after the game starts
+	bool is_connected = false;
 
 	/*
 		 set to true the first time a button is pressed on the controller
@@ -15,8 +17,6 @@ struct w_game_controller
 		 this is how the engine knows to play rumble effects on that controller or not
 	*/
 	bool is_being_used = false;
-
-	XINPUT_STATE xinput_state = { 0 };
 
 	w_game_controller( int idx );
 

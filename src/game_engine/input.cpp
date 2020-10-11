@@ -65,7 +65,7 @@ void w_input::init()
 	// callbacks so we can collect user input
 	glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
 
-	for( int x = 0; x < input_id::max; ++x )
+	for( auto x = 0; x < input_id::max; ++x )
 	{
 		button_states[ x ] = false;
 		button_states_last_frame[ x ] = false;

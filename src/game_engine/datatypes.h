@@ -56,8 +56,8 @@ struct w_keyframe
 
 struct w_timeline
 {
-	e_timeline_type type = timeline_type::invalid;
 	std::vector<w_keyframe> keyframes;
+	e_timeline_type type = timeline_type::invalid;
 
 	w_timeline( e_timeline_type type );
 	w_timeline( const w_timeline& other );

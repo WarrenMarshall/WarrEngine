@@ -91,7 +91,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
@@ -120,11 +120,12 @@
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,11 +153,12 @@
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <DebugInformationFormat>None</DebugInformationFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

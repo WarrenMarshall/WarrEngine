@@ -12,7 +12,7 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 
 	// "one shot" emitters don't get throttled like regular emitters.
 	// they spawn all of their particles, no matter what.
-	if( params->b_one_shot )
+	if( params->is_one_shot )
 	{
 		max_particles_alive = static_cast<int>( params->s_max_spawn_per_sec );
 	}
@@ -27,7 +27,7 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 
 void w_particle_emitter::post_init()
 {
-	if( params->b_needs_warm_up )
+	if( params->needs_warm_up )
 	{
 		warm_up();
 	}
@@ -46,7 +46,7 @@ void w_particle_emitter::update()
 	{
 		int particles_to_spawn = 0;
 
-		if( params->b_one_shot )
+		if( params->is_one_shot )
 		{
 			particles_to_spawn_accum = 0.0f;
 			particles_to_spawn = static_cast<int>( params->s_max_spawn_per_sec );
@@ -84,7 +84,7 @@ void w_particle_emitter::update()
 	}
 
 	// a one-shot particle system spawns all of it's particles at once and then dies
-	if( params->b_one_shot )
+	if( params->is_one_shot )
 	{
 		parent_component->set_life_cycle( life_cycle::dying );
 	}

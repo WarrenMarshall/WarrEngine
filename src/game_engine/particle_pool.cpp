@@ -24,7 +24,7 @@ void w_particle_pool::draw()
 		->begin();
 
 	w_particle* particle = particles.get();
-	for( int p = 0 ; p < pool_sz ; ++p )
+	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
 		{
@@ -80,7 +80,7 @@ void w_particle_pool::update()
 	num_alive = 0;
 
 	w_particle* particle = particles.get();
-	for( int p = 0 ; p < pool_sz ; ++p )
+	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
 		{

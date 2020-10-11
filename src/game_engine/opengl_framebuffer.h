@@ -2,9 +2,9 @@
 
 struct w_opengl_framebuffer
 {
+	a_texture* tex = nullptr;
 	float w, h;
 	unsigned fb_id = 0;
-	a_texture* tex = nullptr;
 	unsigned rbo = 0;
 
 	w_opengl_framebuffer() = delete;

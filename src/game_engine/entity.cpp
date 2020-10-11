@@ -38,7 +38,7 @@ void w_entity::update_components()
 	//
 	// NOTE : uses standard 'for' loop because it manipulates the vector as it runs.
 
-	for( int x = 0; x < components.size(); ++x )
+	for( auto x = 0; x < components.size(); ++x )
 	{
 		w_entity_component* ec = components[ x ].get();
 
@@ -121,7 +121,7 @@ void w_entity::set_angle_deep( float angle )
 
 void w_entity::remove_component( w_entity_component* ec )
 {
-	for( int x = 0 ; x < components.size() ; ++x )
+	for( auto x = 0 ; x < components.size() ; ++x )
 	{
 		if( components[x].get() == ec )
 		{

@@ -11,8 +11,6 @@ w_render_vert::w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& 
 
 // ----------------------------------------------------------------------------
 
-unsigned int w_render_buffer::buffer_usage = GL_DYNAMIC_DRAW;
-
 w_render_buffer::w_render_buffer()
 {
     glGenVertexArrays( 1, &VAO );
@@ -90,8 +88,8 @@ void w_render_buffer::draw( a_texture* tex )
    		tex->bind();
 
         // send the data to the video card
-        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_vert ), vertices.data(), w_render_buffer::buffer_usage );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), w_render_buffer::buffer_usage );
+        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_vert ), vertices.data(), GL_DYNAMIC_DRAW );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), GL_DYNAMIC_DRAW );
 
         switch( tex->gl_prim_type )
         {

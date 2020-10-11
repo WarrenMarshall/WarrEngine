@@ -1,9 +1,14 @@
 #pragma once
 
-#pragma warning(disable : 26812)	// https://docs.microsoft.com/en-us/visualstudio/code-quality/c26812?view=vs-2019
-#pragma warning(disable : 4251)
+#pragma warning(disable : 26812 4514 4711 4625 4626 )
 
-#pragma warning(push, 0)	// turn off all warnings for external libraries
+// data padding added warnings - can be useful for optimizing memory packing of structs
+// NOTE : have to turn on ALL warnings to see these
+//#pragma warning(disable : 4820)
+
+#pragma warning( push, 0 )	// turn off all warnings for external libraries
+#pragma warning(disable : 4365)
+#pragma warning(disable : 4244)
 
 	#include <glm/glm/glm.hpp>
 	#include <glm/glm/gtc/matrix_transform.hpp>
@@ -106,8 +111,8 @@
 // ----------------------------------------------------------------------------
 // macros to make enum definitions easier to read
 
-#define enum_begin( name )\
-	using e_##name = int;\
+#define enum_begin( name, type )\
+	using e_##name = type;\
 	namespace name\
 	{\
 		enum\

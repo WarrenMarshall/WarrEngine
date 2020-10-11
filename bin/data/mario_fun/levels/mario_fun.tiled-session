@@ -34,17 +34,17 @@
         },
         "level_0.tmx": {
             "scale": 5.5,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 173.27272727272725,
-                "y": 144.72727272727272
+                "x": 134.36363636363637,
+                "y": 79.81818181818183
             }
         },
         "level_1.tmx": {
             "scale": 4,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 279,
+                "x": 279.125,
                 "y": 180.25
             }
         },
@@ -68,8 +68,8 @@
     "project": "mario_fun.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "level_1.tmx",
         "mario_tileset.tsx",
+        "level_1.tmx",
         "level_0.tmx",
         "X:/WarrenDev/bin/data/mario_fun/mario_fun.tmx",
         "X:/WarrenDev/bin/data/mario_fun/tilemap/mario_tileset.tsx",

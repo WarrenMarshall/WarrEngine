@@ -4,6 +4,8 @@
 
 struct i_transform
 {
+	virtual ~i_transform() = default;
+
 	// position
 	w_vec2 pos;
 

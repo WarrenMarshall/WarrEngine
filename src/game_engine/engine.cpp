@@ -125,7 +125,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			// precache the rest of the assets in the remaining passes
 			constexpr int num_asset_def_passes = 3;
-			for( int pass = 1; pass < num_asset_def_passes; ++pass )
+			for( auto pass = 1; pass < num_asset_def_passes; ++pass )
 			{
 				engine->precache_asset_resources( pass, base_game->name );
 			}
@@ -617,7 +617,7 @@ void w_engine::parse_config_file( std::string_view filename )
 
 	for( const auto& line : *( file.get()->lines.get() ) )
 	{
-		if( line.starts_with( "\"" ) )
+		if( line.substr( 0, 1 ) == "\"" )
 		{
 			w_tokenizer tok_kv( line, '\"' );
 

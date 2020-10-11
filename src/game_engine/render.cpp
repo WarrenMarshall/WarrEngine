@@ -549,7 +549,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 
-	for( int x = 0; x < circle_sample_points_max; ++x )
+	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
 		v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
 		v0.y = origin.y + ( circle_sample_points[ x ].y * radius );

@@ -109,7 +109,7 @@ void w_layer_mgr::draw()
 
 	RENDER->begin();
 
-	for( int x = starting_layer_idx; x >= 0; --x )
+	for( auto x = starting_layer_idx; x >= 0; --x )
 	{
 		// Only UI elements on the topmost layer respond to user input
 		UI->owning_layer_is_topmost = !x;

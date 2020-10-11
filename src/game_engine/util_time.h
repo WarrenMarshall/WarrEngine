@@ -10,7 +10,6 @@ struct w_time
 	static const float FTS_step_value_s;
 
 	float delta_ms = 0.0f;
-	uint64_t prev_frame_ms = 0;
 
 	// fixed time step accumulator. this accrues each frame
 	// until it exceeds FTS_step_value_ms - then we call
@@ -26,6 +25,8 @@ struct w_time
 		2.0 = 200% of normal
 	*/
 	float dilation = 1.0f;
+
+	uint64_t prev_frame_ms = 0;
 
 	w_time();
 	void init();

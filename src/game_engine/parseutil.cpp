@@ -106,7 +106,7 @@ w_range w_parser::range_from_str( const std::string_view str )
 
 	// Otherwise, parse the string...
 
-	w_tokenizer tok( str, ',', "0" );
+	w_tokenizer tok( str, ',' );
 
 	w_range range;
 	range.start = w_parser::float_from_str( *tok.get_next_token() );
@@ -117,7 +117,7 @@ w_range w_parser::range_from_str( const std::string_view str )
 
 w_rect w_parser::rect_from_str( const std::string_view str )
 {
-	w_tokenizer tok( str, ',', "0" );
+	w_tokenizer tok( str, ',' );
 
 	w_rect rect;
 	rect.x = w_parser::float_from_str( *tok.get_next_token() );
@@ -139,7 +139,7 @@ w_vec2 w_parser::vec2_from_str( const std::string_view str )
 
 	// Otherwise, parse the string...
 
-	w_tokenizer tok( str, ',', "0" );
+	w_tokenizer tok( str, ',' );
 
 	w_vec2 vec2;
 	vec2.x = w_parser::float_from_str( *tok.get_next_token() );
@@ -159,7 +159,7 @@ w_vec3 w_parser::vec3_from_str( const std::string_view str )
 
 	// Otherwise, parse the string...
 
-	w_tokenizer tok( str, ',', "0" );
+	w_tokenizer tok( str, ',' );
 
 	w_vec3 vec3;
 	vec3.x = w_parser::float_from_str( *tok.get_next_token() );
@@ -180,7 +180,7 @@ std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, c
 
 	w_tokenizer tok( str, ',' );
 
-	for( int x = 0 ; x < comma_count ; x += 2 )
+	for( auto x = 0 ; x < comma_count ; x += 2 )
 	{
 		w_keyframe kf;
 

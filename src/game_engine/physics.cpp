@@ -9,7 +9,7 @@ void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCoun
 		->begin()
 		->push_rgba( { color.r, color.g, color.b, color.a } );
 
-	for( int v = 0 ; v < vertexCount ; ++v )
+	for( auto v = 0 ; v < vertexCount ; ++v )
 	{
 		w_vec2 v0 = w_vec2( vertices[ v ] ).from_b2d();
 		w_vec2 v1 = w_vec2( vertices[ ( v + 1 ) % vertexCount ] ).from_b2d();
@@ -27,7 +27,7 @@ void w_physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 verte
 		->begin()
 		->push_rgba( { color.r, color.g, color.b, color.a } );
 
-	for( int v = 0 ; v < vertexCount ; ++v )
+	for( auto v = 0 ; v < vertexCount ; ++v )
 	{
 		w_vec2 v0 = w_vec2( vertices[ v ] ).from_b2d();
 		w_vec2 v1 = w_vec2( vertices[ ( v + 1 ) % vertexCount ] ).from_b2d();

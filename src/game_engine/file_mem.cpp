@@ -18,7 +18,7 @@ void w_mem_file_text::preprocess()
 {
 	buffer->push_back( '\n' );
 	buffer->push_back( '\0' );
-	w_tokenizer tok( buffer->data(), '\n', "" );
+	w_tokenizer tok( buffer->data(), '\n' );
 
 	size_t count = std::count( buffer->begin(), buffer->end(), '\n' );
 	lines = std::make_unique<std::vector<std::string>>();

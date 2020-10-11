@@ -408,9 +408,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 							// these are valid, we just don't need them here
 						}
 						else if( key == "b_needs_warm_up" )
-							asset_ptr->b_needs_warm_up = bool( value == "true" );
+							asset_ptr->needs_warm_up = bool( value == "true" );
 						else if( key == "b_one_shot" )
-							asset_ptr->b_one_shot = bool( value == "true" );
+							asset_ptr->is_one_shot = bool( value == "true" );
 						else if( key == "texture_name" )
 							asset_ptr->tex = engine->get_asset<a_texture>( value );
 						else if( key == "spawner_type" )

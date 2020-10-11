@@ -3,8 +3,8 @@
 
 // ----------------------------------------------------------------------------
 
-w_tokenizer::w_tokenizer( const std::string_view string_buffer, char delim, std::optional<std::string> def_value )
-	: string_buffer( string_buffer ), delim( delim ), def_value( def_value.value_or( "" ) )
+w_tokenizer::w_tokenizer( std::string_view string_buffer, char delim )
+	: string_buffer( string_buffer ), delim( delim )
 {
 }
 
