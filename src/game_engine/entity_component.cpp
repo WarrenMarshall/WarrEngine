@@ -456,3 +456,41 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 
 	init_body();
 }
+
+// ----------------------------------------------------------------------------
+
+ec_tilemap::ec_tilemap( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+}
+
+w_entity_component* ec_tilemap::init( const std::string_view level_name )
+{
+	return this;
+}
+
+void ec_tilemap::draw()
+{
+}
+
+void ec_tilemap::load_from_disk( std::string_view level_filename )
+{
+	auto file = engine->fs->load_file_into_memory( level_filename );
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer.get() ) );
+
+	if( result )
+	{
+		for( pugi::xml_node tool = doc.first_child(); tool; tool = tool.next_sibling() )
+		{
+			std::cout << "Tool:";
+
+			for( pugi::xml_attribute attr = tool.first_attribute(); attr; attr = attr.next_attribute() )
+			{
+				std::cout << " " << attr.name() << "=" << attr.value();
+			}
+
+			std::cout << std::endl;
+		}
+	}
+}

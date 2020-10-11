@@ -131,3 +131,16 @@ struct ec_b2d_kinematic : ec_b2d_body
 	ec_b2d_kinematic() = delete;
 	ec_b2d_kinematic( w_entity* parent_entity );
 };
+
+// ----------------------------------------------------------------------------
+// tile map
+
+struct ec_tilemap : w_entity_component
+{
+	ec_tilemap() = delete;
+	ec_tilemap( w_entity* parent_entity );
+
+	w_entity_component* init( const std::string_view level_name );
+	virtual void draw() override;
+	void load_from_disk( std::string_view level_filename );
+};

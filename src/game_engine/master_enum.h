@@ -3,7 +3,7 @@
 
 // ----------------------------------------------------------------------------
 
-enum_begin( align, char )
+enum_begin( align, ubyte )
 	invalid = 0,
 	left = 1,
 	right = 2,
@@ -16,7 +16,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( color, char )
+enum_begin( color, ubyte )
 	white = 1,
 	black,
 	red,
@@ -34,7 +34,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( timeline_type, char )
+enum_begin( timeline_type, ubyte )
 	invalid = 0,
 	float_type,
 	color_type
@@ -42,7 +42,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( input_id, char )
+enum_begin( input_id, ubyte )
 	invalid = 0,
 	controller_button_dpad_up,
 	controller_button_dpad_down,
@@ -126,7 +126,7 @@ enum_end
 
 #undef small	// fixes dumb compile problem
 
-enum_begin( rumble_effect, char )
+enum_begin( rumble_effect, ubyte )
 	tiny = 0,
 	small,
 	medium,
@@ -135,7 +135,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( life_cycle, char )
+enum_begin( life_cycle, ubyte )
 	invalid = 0,
 	alive,
 	dying,			// pending delete whenever the object is finished doing everything (components are finished, etc)
@@ -144,7 +144,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( event_id, char )
+enum_begin( event_id, ubyte )
 	invalid = 0,
 	input_pressed,
 	input_released,
@@ -154,7 +154,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( tween_type, char )
+enum_begin( tween_type, ubyte )
 	linear = 1,		// value iterates from start to end, once
 	loop,			// value iterates from start to end and resets to start, looping
 	pingpong		// value iterates from start to end and back again, looping
@@ -169,7 +169,7 @@ enum_end
 // 01 11 21
 // 02 12 22
 
-enum_begin( slicedef_patch, char )
+enum_begin( slicedef_patch, ubyte )
 	P_00 = 0, P_10, P_20,
 	P_01, P_11, P_21,
 	P_02, P_12, P_22
@@ -177,7 +177,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( opengl_blend, char )
+enum_begin( opengl_blend, ubyte )
 	alpha = 0,
 	add,
 	multiply
@@ -185,7 +185,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( particle_spawn_dir, char )
+enum_begin( particle_spawn_dir, sbyte )
 	inherit_from_parent = -1,
 	away_from_center = -2
 enum_end
@@ -195,7 +195,7 @@ enum_end
 // hidden = custom cursor image, OS mouse pointer is hidden
 // locked = no cursor showing at all, mouse is locked to game window
 
-enum_begin( mouse_mode, char )
+enum_begin( mouse_mode, ubyte )
 	normal = 0,
 	hidden,
 	locked
@@ -203,7 +203,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( button_state, char )
+enum_begin( button_state, ubyte )
 	invalid = 0,
 	pressed,
 	held,
@@ -214,7 +214,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( im_result, char )
+enum_begin( im_result, ubyte )
 	none = 0,
 	hovered = 1,
 	hot = 2,
@@ -241,11 +241,11 @@ enum_begin( collision_layer, short )
 	bit14 = 8192,
 	bit15 = 16384,
 	bit16 = 32768
-	enum_end
+enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( component_type, char )
+enum_begin( component_type, ubyte )
 	invalid = 0,
 	sprite = 1,
 	emitter = 2,
@@ -258,7 +258,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( easing_type, char )
+enum_begin( easing_type, ubyte )
 	invalid = 0,
 	linear,
 	quadratic,

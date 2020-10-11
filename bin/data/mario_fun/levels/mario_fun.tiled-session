@@ -5,10 +5,10 @@
     },
     "activeFile": "level_0.tmx",
     "expandedProjectPaths": [
+        "X:/WarrenDev/bin/data/mario_fun",
         "X:/WarrenDev/bin/data",
-        "X:/WarrenDev/bin/data/mario_fun/tilemap",
         ".",
-        "X:/WarrenDev/bin/data/mario_fun"
+        "X:/WarrenDev/bin/data/mario_fun/tilemap"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -36,8 +36,8 @@
             "scale": 5.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 134.36363636363637,
-                "y": 79.81818181818183
+                "x": 132.9090909090909,
+                "y": 128.36363636363637
             }
         },
         "level_1.tmx": {
@@ -61,16 +61,14 @@
     "map.tileWidth": 16,
     "map.width": 32,
     "openFiles": [
-        "level_0.tmx",
-        "mario_tileset.tsx",
-        "level_1.tmx"
+        "level_0.tmx"
     ],
     "project": "mario_fun.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "level_0.tmx",
         "mario_tileset.tsx",
         "level_1.tmx",
-        "level_0.tmx",
         "X:/WarrenDev/bin/data/mario_fun/mario_fun.tmx",
         "X:/WarrenDev/bin/data/mario_fun/tilemap/mario_tileset.tsx",
         "X:/WarrenDev/bin/data/mario_fun/tilemap/level_1.tmx",

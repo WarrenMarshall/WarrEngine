@@ -106,6 +106,9 @@
 // putting things in here will speed up partial compiles
 // ----------------------------------------------------------------------------
 
+using sbyte = char;				// shortcut for "signed 8-byte value"
+using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
+
 #include "master_fwd_decl.h"
 
 // ----------------------------------------------------------------------------

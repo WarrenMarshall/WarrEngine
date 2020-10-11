@@ -1,6 +1,19 @@
 
 #include "app_header.h"
 
+e_platformer_level::e_platformer_level()
+{
+	tag = "world";
+	set_collision( clayer_world, clayer_player | clayer_coin );
+
+	auto ec = add_component<ec_b2d_static>();
+	{
+
+	}
+}
+
+// ----------------------------------------------------------------------------
+
 e_platformer_player::e_platformer_player()
 {
 	tag = "player";
