@@ -17,8 +17,16 @@
 
 {
 	"type" "anim_texture"
+	"name" "anim_player_idle"
+	"frames_per_sec" "1"
+	"tween" "tween.loop"
+	"frames" "player_spr_run_1"
+}
+
+{
+	"type" "anim_texture"
 	"name" "anim_player_run"
-	"frames_per_sec" "8"
+	"frames_per_sec" "6"
 	"tween" "tween.loop"
 	"frames" "player_spr_run_1,player_spr_run_2,player_spr_run_3,player_spr_run_4"
 }
@@ -29,14 +37,6 @@
 	"frames_per_sec" "1"
 	"tween" "tween.loop"
 	"frames" "player_spr_jump_1"
-}
-
-{
-	"type" "anim_texture"
-	"name" "anim_player_idle"
-c	"frames_per_sec" "1"
-	"tween" "tween.loop"
-	"frames" "player_spr_run_1"
 }
 
 {

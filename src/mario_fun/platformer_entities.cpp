@@ -3,6 +3,7 @@
 
 e_platformer_player::e_platformer_player()
 {
+	tag = "player";
 	set_collision( clayer_player, clayer_world | clayer_coin | clayer_mover );
 	//draw_debug_info = true;
 
@@ -28,8 +29,7 @@ e_platformer_player::e_platformer_player()
 		ec->add_fixture_box( "s_can_drop_down", { 0.0f, 20.0f }, 12.0f, 16.0f )->SetSensor( true );
 	}
 
-	add_component<ec_sprite>()->init( "anim_player_run" );
-	//add_component<ec_sprite>()->init( "anim_player_jump" );
+	add_component<ec_sprite>()->init( "anim_player_idle" );
 }
 
 // ----------------------------------------------------------------------------

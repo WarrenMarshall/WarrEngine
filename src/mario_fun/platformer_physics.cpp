@@ -142,9 +142,22 @@ void w_platformer_physics::update()
 {
 	timer_jump_limiter->update();
 
-	//auto ec = player->get_component<ec_sprite>( component_type::sprite );
-	//if( in_air)
-	//{
-	//	ec->
-	//}
+	auto e = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
+
+	auto ec = e->get_component<ec_sprite>( component_type::sprite );
+	ec->tex = engine->get_asset<a_anim_texture>( "anim_player_idle" );
+
+	if( in_air() )
+	{
+		ec->tex = engine->get_asset<a_anim_texture>( "anim_player_jump" );
+	}
+	else
+	{
+		auto ec_b2d = e->get_component<ec_b2d_body>( component_type::b2d_body );
+		b2Vec2 vel = ec_b2d->body->GetLinearVelocity();
+		if( !fequals( vel.x, 0.0f ) )
+		{
+			ec->tex = engine->get_asset<a_anim_texture>( "anim_player_run" );
+		}
+	}
 }

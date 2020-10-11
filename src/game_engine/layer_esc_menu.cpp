@@ -37,7 +37,7 @@ void layer_esc_menu::draw()
 	style_panel.base_attrib.color = w_color::dark_grey;
 
 	static w_ui_style_button style_button;
-	style_button.base_attrib.color = w_color::grey;
+	style_button.base_attrib.color = w_color::dark_teal;
 	style_button.label_attrib.color = w_color::white;
 
 	static float num_buttons = 4;
