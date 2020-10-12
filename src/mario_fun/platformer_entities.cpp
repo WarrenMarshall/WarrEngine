@@ -25,7 +25,8 @@ e_platformer_player::e_platformer_player()
 #if 1
 		auto f = ec->add_fixture_circle(
 			"player",
-			w_vec2::zero, 6.0f );
+			w_vec2::zero, 6.5f );
+
 #else
 		auto f = ec->add_fixture_polygon(
 			"player",
@@ -70,7 +71,6 @@ e_platformer_coin::e_platformer_coin()
 	}
 
 	add_component<ec_sprite>()->init( "anim_coin" );
-	//add_component<ec_emitter>()->init( "coin_idle_effect" );
 }
 
 // ----------------------------------------------------------------------------

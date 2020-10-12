@@ -12,3 +12,8 @@ int str_to_int( const char* str )
 {
 	return static_cast<int>( strtol( str, ( char** ) nullptr, 10 ) );
 }
+
+int str_to_int( const std::string& str )
+{
+	return static_cast<int>( strtol( str.c_str(), ( char** ) nullptr, 10 ) );
+}

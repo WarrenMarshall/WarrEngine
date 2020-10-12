@@ -114,7 +114,7 @@ w_render* w_render::pop_alpha()
 	return this;
 }
 
-w_render* w_render::push_scale( const float scale )
+w_render* w_render::push_scale( const w_vec2& scale )
 {
 	rs_scale_stack += scale;
 
@@ -164,7 +164,7 @@ void w_render::clear_render_states()
 {
 	rs_color_stack = { w_color::white };
 	rs_alpha_stack = { 1.0f };
-	rs_scale_stack = { 1.0f };
+	rs_scale_stack = { w_vec2( 1.0f, 1.0f ) };
 	rs_angle_stack = { 0.0f };
 	rs_align_stack = { align::left };
 
@@ -209,11 +209,11 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 	float w = subtex->sz.w;
 	float h = subtex->sz.h;
 
-	float rs_scale = rs_scale_stack.back();
+	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
 
-	w *= rs_scale;
-	h *= rs_scale;
+	w *= rs_scale.x;
+	h *= rs_scale.y;
 
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
@@ -248,10 +248,10 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	float w = dst.w ? dst.w : subtex->sz.w;
 	float h = dst.h ? dst.h : subtex->sz.h;
 
-	float rs_scale = rs_scale_stack.back();
+	w_vec2 rs_scale = rs_scale_stack.back();
 
-	w *= rs_scale;
-	h *= rs_scale;
+	w *= rs_scale.x;
+	h *= rs_scale.y;
 
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
@@ -275,26 +275,26 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 {
 	maybe_draw_master_buffer( font->font_def->texture );
 
-	float rs_scale = rs_scale_stack.back();
+	w_vec2 rs_scale = rs_scale_stack.back();
 	e_align rs_align = rs_align_stack.back();
 
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
 	if( rs_align & align::hcenter )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs_scale;
+		w_vec2 extents = font->get_string_extents( text ) * rs_scale.x;
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
 	if( rs_align & align::right )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs_scale;
+		w_vec2 extents = font->get_string_extents( text ) * rs_scale.x;
 		alignment_pos_adjustment.x -= extents.x;
 	}
 
 	if( rs_align & align::vcenter )
 	{
-		alignment_pos_adjustment.y -= (font->font_def->max_height * rs_scale ) / 2.0f;
+		alignment_pos_adjustment.y -= (font->font_def->max_height * rs_scale.y ) / 2.0f;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -317,13 +317,13 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		{
 			draw(
 				fch->subtex.get(),
-				w_rect( xpos, ypos + ( fch->yoffset * rs_scale ) )
+				w_rect( xpos, ypos + ( fch->yoffset * rs_scale.y ) )
 			);
 
-			xpos += fch->xoffset * rs_scale;
+			xpos += fch->xoffset * rs_scale.x;
 		}
 
-		xpos += fch->xadvance * rs_scale;
+		xpos += fch->xadvance * rs_scale.y;
 	}
 
 	MATRIX->pop();

@@ -135,17 +135,40 @@ struct ec_b2d_kinematic : ec_b2d_body
 // ----------------------------------------------------------------------------
 // tile map
 
+struct ec_tilemap_tile
+{
+	ec_tilemap_tile( w_pos pos, a_subtexture* subtex );
+
+	w_pos pos = w_pos::zero;
+	a_subtexture* subtex = nullptr;
+
+	struct
+	{
+		bool flipped_horizontally : 1;
+		bool flipped_vertically : 1;
+		bool flipped_diagonally : 1;
+	};
+};
+
+struct ec_tilemap_layer
+{
+	std::vector<ec_tilemap_tile> tiles;
+};
+
 struct ec_tilemap : w_entity_component
 {
 	ec_tilemap() = delete;
 	ec_tilemap( w_entity* parent_entity );
 
+	std::vector<std::unique_ptr<ec_tilemap_layer>> tile_layers;
+
+	// info about the tile map
 	int width = 0;
 	int height = 0;
-	int tilewidth = 0;
-	int tileheight = 0;
+	int tile_width = 0;
+	int tile_height = 0;
 
 	w_entity_component* init();
 	virtual void draw() override;
-	void load_from_disk( const char* tag, std::string_view level_filename );
+	void load_from_disk( const char* tag, const std::vector<a_subtexture*>& subtex_tiles, std::string_view level_filename );
 };

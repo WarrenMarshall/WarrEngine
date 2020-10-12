@@ -1,6 +1,11 @@
-\
+
 #include "master_pch.h"
 #include "master_header.h"
+
+ec_tilemap_tile::ec_tilemap_tile( w_pos pos, a_subtexture* subtex )
+	: pos( pos ), subtex( subtex )
+{
+}
 
 // ----------------------------------------------------------------------------
 
@@ -472,15 +477,40 @@ w_entity_component* ec_tilemap::init()
 
 void ec_tilemap::draw()
 {
+	for( auto& tmlayer : tile_layers )
+	{
+		RENDER->push_depth_nudge();
+		for( auto& tile : tmlayer->tiles )
+		{
+			if( tile.flipped_horizontally || tile.flipped_vertically )
+			{
+				RENDER->push_scale( { tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f } );
+			}
+
+			RENDER->draw_sprite( tile.subtex, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
+
+			if( tile.flipped_horizontally || tile.flipped_vertically )
+			{
+				RENDER->push_scale( { tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f } );
+			}
+		}
+	}
 }
 
-void ec_tilemap::load_from_disk( const char* tag, std::string_view level_filename )
+const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+const unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
+const unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+const unsigned SPECIAL_FLAGS = 0xE0000000;
+
+void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture*>& subtex_tiles, std::string_view level_filename )
 {
 	auto b2d_static = parent_entity->get_component<ec_b2d_static>( component_type::b2d_body );
 
 	auto file = engine->fs->load_file_into_memory( level_filename );
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer.get() ) );
+
+	std::unique_ptr<ec_tilemap_layer> tm_layer = nullptr;
 
 	if( result )
 	{
@@ -491,8 +521,8 @@ void ec_tilemap::load_from_disk( const char* tag, std::string_view level_filenam
 
 		width = map_node.attribute( "width" ).as_int();
 		height = map_node.attribute( "height" ).as_int();
-		tilewidth = map_node.attribute( "tilewidth" ).as_int();
-		tileheight = map_node.attribute( "tileheight" ).as_int();
+		tile_width = map_node.attribute( "tilewidth" ).as_int();
+		tile_height = map_node.attribute( "tileheight" ).as_int();
 
 		for( pugi::xml_node child : map_node.children() )
 		{
@@ -527,6 +557,64 @@ void ec_tilemap::load_from_disk( const char* tag, std::string_view level_filenam
 					}
 				}
 			}
+			else if( type == "layer" )
+			{
+				if( child.attribute( "name" ).as_string() != std::string("pickups") )
+				{
+					for( pugi::xml_node object : child.children() )
+					{
+						if( object.name() == std::string("data") )
+						{
+							std::string data = object.first_child().value();
+							auto data_str = w_stringutil::replace_char( data, '\n', ' ' );
+
+							if( tm_layer )
+							{
+								tile_layers.emplace_back( std::move( tm_layer ) );
+								tm_layer = nullptr;
+							}
+
+							tm_layer = std::make_unique<ec_tilemap_layer>();
+
+							w_tokenizer tok( data_str, ',' );
+							int xy_idx = 0;
+
+							while( !tok.is_eos() )
+							{
+								auto str_idx = std::string( *tok.get_next_token() );
+								unsigned idx = std::strtoul( str_idx.c_str(), ( char** ) nullptr, 10 );
+
+								bool flipped_horizontally = ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0;
+								bool flipped_vertically = ( idx & FLIPPED_VERTICALLY_FLAG ) > 0;
+								bool flipped_diagonally = ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0;
+
+								idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
+
+								if( idx > 0 )
+								{
+									int y = xy_idx / width;
+									int x = xy_idx - (y * width);
+
+									auto tile = ec_tilemap_tile( w_pos( x * tile_width, y * tile_height ), subtex_tiles[ idx - 1 ] );
+									tile.flipped_horizontally = flipped_horizontally;
+									tile.flipped_vertically = flipped_vertically;
+									tile.flipped_diagonally = flipped_diagonally;
+									tm_layer->tiles.emplace_back( std::move( tile ) );
+								}
+
+								xy_idx++;
+							}
+						}
+					}
+				}
+			}
 		}
+
+		if( tm_layer )
+		{
+			tile_layers.emplace_back( std::move( tm_layer ) );
+			tm_layer = nullptr;
+		}
+
 	}
 }

@@ -133,6 +133,24 @@ void w_entity::remove_component( w_entity_component* ec )
 	assert( false );	// the entity component wasn't found
 }
 
+ec_b2d_body* w_entity::get_primary_body()
+{
+	for( auto& ec : components )
+	{
+		if( ec->type & ( component_type::b2d_dynamic | component_type::b2d_kinematic ) )
+		{
+			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
+			if( edb->is_primary_body )
+			{
+				return edb;
+			}
+		}
+	}
+
+	assert( false );	// no primary body found!
+	return nullptr;
+}
+
 bool w_entity::can_be_deleted()
 {
 	// still alive, can't delete

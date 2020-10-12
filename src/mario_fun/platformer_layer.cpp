@@ -25,7 +25,24 @@ void platformer_layer::push()
 
 	auto world = add_entity<e_platformer_level>();
 	auto ec_tm = world->get_component<ec_tilemap>( component_type::tilemap );
-	ec_tm->load_from_disk( "world", "data/mario_fun/levels/level_0.tmx" );
+
+	std::vector<a_subtexture*> tile_set_subtex =
+	{
+		engine->get_asset<a_subtexture>( "tile_01" ),
+		engine->get_asset<a_subtexture>( "tile_02" ),
+		engine->get_asset<a_subtexture>( "tile_03" ),
+		engine->get_asset<a_subtexture>( "tile_04" ),
+		engine->get_asset<a_subtexture>( "tile_05" ),
+		engine->get_asset<a_subtexture>( "tile_06" ),
+		engine->get_asset<a_subtexture>( "tile_07" ),
+		engine->get_asset<a_subtexture>( "tile_08" ),
+		engine->get_asset<a_subtexture>( "tile_09" ),
+		engine->get_asset<a_subtexture>( "tile_10" ),
+		engine->get_asset<a_subtexture>( "tile_11" ),
+		engine->get_asset<a_subtexture>( "tile_12" )
+	};
+
+	ec_tm->load_from_disk( "world", tile_set_subtex, "data/mario_fun/levels/level_0.tmx" );
 
 	// ----------------------------------------------------------------------------
 	// player
@@ -72,6 +89,7 @@ void platformer_layer::draw()
 
 	auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 
+#if 0
 	RENDER
 		->begin()
 		->push_rgba( w_color::teal, 0.5f );
@@ -80,6 +98,7 @@ void platformer_layer::draw()
 	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
 
 	RENDER->end();
+#endif
 }
 
 bool platformer_layer::handle_input_event( const w_input_event* evt )

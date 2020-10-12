@@ -75,6 +75,8 @@ struct w_entity : i_life_cycle, i_transform
 	}
 
 	void remove_component( w_entity_component* ec );
+
+	[[nodiscard]] ec_b2d_body* get_primary_body();
 };
 
 // ----------------------------------------------------------------------------

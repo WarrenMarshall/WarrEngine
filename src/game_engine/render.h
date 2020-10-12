@@ -46,7 +46,7 @@ struct w_render
 
 	std::basic_string<w_color> rs_color_stack;	// 3 floats per color
 	std::basic_string<float> rs_alpha_stack;
-	std::basic_string<float> rs_scale_stack;
+	std::basic_string<w_vec2> rs_scale_stack;
 	std::basic_string<float> rs_angle_stack;
 	std::basic_string<e_align> rs_align_stack;
 
@@ -64,7 +64,7 @@ struct w_render
 	w_render* pop_rgba();
 	w_render* push_alpha( const float alpha );
 	w_render* pop_alpha();
-	w_render* push_scale( const float scale );
+	w_render* push_scale( const w_vec2& scale );
 	w_render* push_angle( const float angle );
 	w_render* push_align( const e_align& align );
 	w_render* push_depth( const float depth );

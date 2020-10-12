@@ -63,7 +63,7 @@ void w_particle_pool::draw()
 
 			RENDER->rs_color_stack = { color.r, color.g, color.b };
 			RENDER->rs_alpha_stack = color.a;
-			RENDER->rs_scale_stack = particle->base_scale * scale;
+			RENDER->rs_scale_stack = { particle->base_scale * scale, particle->base_scale * scale };
 			RENDER->rs_angle_stack = interp_angle;
 
 			RENDER->draw_sprite( particle->tex->get_subtexture(), interp_pos );

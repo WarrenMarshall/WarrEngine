@@ -52,3 +52,22 @@
 	"name" "cartoon_star"
 	"filename" "gfx/cartoon_star.png"
 }
+
+{
+	"type" "texture"
+	"name" "main_tile_sheet"
+	"filename" "gfx/tileset.png"
+	"subtextures" "\
+		tile_01, 0, 0, 16, 16,\
+		tile_02, 16, 0, 16, 16,\
+		tile_03, 32, 0, 16, 16,\
+		tile_04, 48, 0, 16, 16,\
+		tile_05, 64, 0, 16, 16,\
+		tile_06, 80, 0, 16, 16,\
+		tile_07, 0, 16, 16, 16,\
+		tile_08, 16, 16, 16, 16,\
+		tile_09, 32, 16, 16, 16,\
+		tile_10, 48, 16, 16, 16,\
+		tile_11, 64, 16, 16, 16,\
+		tile_12, 80, 16, 16, 16"
+}

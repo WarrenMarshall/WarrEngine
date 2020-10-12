@@ -5,10 +5,10 @@
     },
     "activeFile": "level_0.tmx",
     "expandedProjectPaths": [
+        "X:/WarrenDev/bin/data/mario_fun/tilemap",
         "X:/WarrenDev/bin/data/mario_fun",
-        "X:/WarrenDev/bin/data",
         ".",
-        "X:/WarrenDev/bin/data/mario_fun/tilemap"
+        "X:/WarrenDev/bin/data"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -33,11 +33,11 @@
             "scaleInEditor": 8
         },
         "level_0.tmx": {
-            "scale": 5.5,
+            "scale": 11,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 132.9090909090909,
-                "y": 128.36363636363637
+                "x": 215.3181818181818,
+                "y": 205.1818181818182
             }
         },
         "level_1.tmx": {
@@ -54,7 +54,7 @@
         }
     },
     "map.height": 10,
-    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedExportFilter": "JSON map files (*.json)",
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": null,
     "map.tileHeight": 16,

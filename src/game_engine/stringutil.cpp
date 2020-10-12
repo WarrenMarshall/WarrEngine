@@ -40,20 +40,6 @@ const std::string w_stringutil::format_with_commas( float value )
 	return numWithCommas;
 }
 
-// takes a string and:
-//
-// 1. removes all unnecessary whitespace
-// 2. removes blank lines
-// 3. removes all comments (both entire lines and trailing comments)
-// 4. removes line continuation markers so they are joined into a single line
-
-const std::string w_stringutil::preprocess( std::string& string )
-{
-	std::string stripped_string;
-
-	return stripped_string;
-}
-
 const std::string w_stringutil::replace_char( const std::string& string, char old_char, char new_char )
 {
 	std::string new_string = string;

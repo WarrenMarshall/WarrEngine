@@ -187,6 +187,7 @@ _NODISCARD constexpr bool fequals( float a, float b )
 
 _NODISCARD float snap_to_pixel( float f );
 _NODISCARD int str_to_int( const char* str );
+_NODISCARD int str_to_int( const std::string& str );
 
 // ----------------------------------------------------------------------------
 // box2d constants and helpers
