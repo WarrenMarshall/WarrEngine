@@ -185,6 +185,13 @@ w_color::w_color( std::string_view str )
 	b = w_parser::float_from_str( *tok.get_next_token() );
 	auto alpha = tok.get_next_token();
 	a = alpha.has_value() ? w_parser::float_from_str( *alpha ) : 1.0f;
+
+	// if the colors values are greater than 1.0, they are assumed to be
+	// in 0-255 space and are converted back down to 0-1.
+	r = ( r > 1.0f ) ? r * byte_color_to_float : r;
+	g = ( g > 1.0f ) ? g * byte_color_to_float : g;
+	b = ( b > 1.0f ) ? b * byte_color_to_float : b;
+	a = ( a > 1.0f ) ? a * byte_color_to_float : a;
 }
 
 void w_color::scale( w_color& color, float s )

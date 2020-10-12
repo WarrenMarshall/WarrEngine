@@ -87,10 +87,18 @@ w_color w_parser::color_from_str( const std::string_view str )
 	w_tokenizer tok( str, delimiter );
 
 	w_color color;
+
 	color.r = w_parser::float_from_str( *tok.get_next_token() );
 	color.g = w_parser::float_from_str( *tok.get_next_token() );
 	color.b = w_parser::float_from_str( *tok.get_next_token() );
 	color.a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f") );
+
+	// if the colors values are greater than 1.0, they are assumed to be
+	// in 0-255 space and are converted back down to 0-1.
+	color.r = ( color.r > 1.0f ) ? color.r * byte_color_to_float : color.r;
+	color.g = ( color.g > 1.0f ) ? color.g * byte_color_to_float : color.g;
+	color.b = ( color.b > 1.0f ) ? color.b * byte_color_to_float : color.b;
+	color.a = ( color.a > 1.0f ) ? color.a * byte_color_to_float : color.a;
 
 	return color;
 }
