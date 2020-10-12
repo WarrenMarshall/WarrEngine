@@ -11,6 +11,7 @@ enum_begin( align, ubyte )
 	vcenter = 8,
 	horizontal = 16,
 	vertical = 32,
+
 	centered = hcenter | vcenter
 enum_end
 
@@ -272,4 +273,15 @@ enum_begin( easing_type, ubyte )
 	back,
 	elastic,
 	bounce
+enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( follow_flags, ubyte )	// bitfield
+	none = 0,
+	x_axis = 1,
+	y_axis = 2,
+	angle = 4,
+
+	xy_axis = x_axis | y_axis,
 enum_end

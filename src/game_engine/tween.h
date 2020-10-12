@@ -6,7 +6,7 @@ struct w_tween
 	e_tween_type type = tween_type::linear;
 	float current_val = 0.0f;
 
-	w_tween( e_tween_type type, float start, float end, float duration_ms );
+	w_tween( e_tween_type type, float start, float end, int duration_ms );
 
 	void update();
 	[[nodiscard]] float get_fval();

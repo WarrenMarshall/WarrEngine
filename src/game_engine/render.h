@@ -51,7 +51,7 @@ struct w_render
 	std::basic_string<e_align> rs_align_stack;
 
 	float zdepth = 0.0f;
-	float zdepth_nudge_accum = 0.0f;;
+	float zdepth_nudge_accum = 0.0f;
 
 	w_render* begin();
 	void end();
@@ -65,6 +65,7 @@ struct w_render
 	w_render* push_alpha( const float alpha );
 	w_render* pop_alpha();
 	w_render* push_scale( const w_vec2& scale );
+	w_render* push_scale( const float scale );
 	w_render* push_angle( const float angle );
 	w_render* push_align( const e_align& align );
 	w_render* push_depth( const float depth );

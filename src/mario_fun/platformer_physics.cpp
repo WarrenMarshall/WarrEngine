@@ -151,7 +151,7 @@ void w_platformer_physics::update()
 	auto ec_b2d = e->get_primary_body();
 	b2Vec2 vel = ec_b2d->body->GetLinearVelocity();
 
-	if( in_air() || vel.y < 0.0f )
+	if( in_air() )
 	{
 		ec->tex = engine->get_asset<a_anim_texture>( "anim_player_jump" );
 	}

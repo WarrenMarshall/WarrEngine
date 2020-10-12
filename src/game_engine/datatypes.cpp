@@ -178,13 +178,24 @@ w_color::w_color( int r, int g, int b, int a )
 
 w_color::w_color( std::string_view str )
 {
-	w_tokenizer tok( str, ',' );
+	// colors in string can either be delimited by slashes or commas.
+	//
+	// if we find slashes, assume slashes. otherwise, commas.
+
+	auto slashes = std::count( str.begin(), str.end(), '/' );
+
+	char delimiter = ',';
+	if( slashes )
+	{
+		delimiter = '/';
+	}
+
+	w_tokenizer tok( str, delimiter );
 
 	r = w_parser::float_from_str( *tok.get_next_token() );
 	g = w_parser::float_from_str( *tok.get_next_token() );
 	b = w_parser::float_from_str( *tok.get_next_token() );
-	auto alpha = tok.get_next_token();
-	a = alpha.has_value() ? w_parser::float_from_str( *alpha ) : 1.0f;
+	a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f" ) );
 
 	// if the colors values are greater than 1.0, they are assumed to be
 	// in 0-255 space and are converted back down to 0-1.

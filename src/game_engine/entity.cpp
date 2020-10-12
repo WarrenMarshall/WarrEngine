@@ -214,18 +214,55 @@ void w_entity_fx::update()
 
 // ----------------------------------------------------------------------------
 
-void w_camera::follow( w_entity* entity_to_follow )
+void w_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength )
 {
-	follow_target = entity_to_follow;
+	follow.target = entity_to_follow;
+	follow.flags = flags;
+	follow.strength = strength;
+
+	set_position_deep( follow.target->pos, false );
 }
 
 void w_camera::update()
 {
 	w_entity::update();
 
-	if( follow_target )
+	if( follow.target )
 	{
-		set_position_deep( follow_target->pos, false );
-		set_angle_deep( follow_target->angle );
+		// position
+
+		w_vec2 target_pos = pos;
+		w_vec2 delta_pos = follow.target->pos - pos;
+
+#if 1
+		if( follow.flags & follow_flags::x_axis )
+		{
+			target_pos.x = pos.x + ( delta_pos.x * follow.strength );
+		}
+
+		if( follow.flags & follow_flags::y_axis )
+		{
+			target_pos.y = pos.y + ( delta_pos.y * follow.strength );
+		}
+#else
+		if( follow.flags & follow_flags::x_axis )
+		{
+			target_pos.x = follow.target->pos.x;
+		}
+
+		if( follow.flags & follow_flags::y_axis )
+		{
+			target_pos.y = follow.target->pos.y;
+		}
+#endif
+
+		set_position_deep( target_pos, false );
+
+		// angle
+
+		if( follow.flags & follow_flags::angle )
+		{
+			set_angle_deep( follow.target->angle );
+		}
 	}
 }

@@ -121,6 +121,13 @@ w_render* w_render::push_scale( const w_vec2& scale )
 	return this;
 }
 
+w_render* w_render::push_scale( const float scale )
+{
+	rs_scale_stack += w_vec2( scale, scale );
+
+	return this;
+}
+
 w_render* w_render::push_angle( const float angle )
 {
 	rs_angle_stack += angle;

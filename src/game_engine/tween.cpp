@@ -36,7 +36,7 @@ bool on_step_pingpong( tweeny::tween<float>& tween )
 	return false;
 }
 
-w_tween::w_tween( e_tween_type type, float start, float end, float duration_ms )
+w_tween::w_tween( e_tween_type type, float start, float end, int duration_ms )
 {
 	tween = tweeny::from( start ).to( end ).during( duration_ms );
 

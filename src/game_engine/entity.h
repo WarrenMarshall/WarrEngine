@@ -87,8 +87,8 @@ struct w_entity : i_life_cycle, i_transform
 // therefore, you must make sure that all components added to it will
 // die out on their own.
 //
-// so adding an emitter that spits out particles forever means that\
-// this entity will never be deleted. give that emitter a "b_one_shot"
+// so adding an emitter that spits out particles forever means that
+// this entity will never be deleted. give that emitter a "one shot"
 // flag or a lifetime timer.
 
 struct w_entity_fx : w_entity
@@ -100,8 +100,13 @@ struct w_entity_fx : w_entity
 
 struct w_camera : w_entity
 {
-	w_entity* follow_target = nullptr;
+	struct
+	{
+		w_entity* target = nullptr;
+		e_follow_flags flags = follow_flags::xy_axis;
+		float strength = 1.0f;
+	} follow;
 
-	void follow( w_entity* entity_to_follow );
+	void set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength );
 	virtual void update() override;
 };

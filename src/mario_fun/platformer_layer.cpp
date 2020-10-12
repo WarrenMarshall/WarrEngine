@@ -12,7 +12,7 @@ void platformer_layer::push()
 {
 	w_layer::push();
 
-	engine->window->set_mouse_mode( mouse_mode::normal );
+	engine->window->set_mouse_mode( mouse_mode::hidden );
 	//mover_controller = std::make_unique<w_mover_controller>( -1.0f, 1.0f, 1500.0f );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
@@ -49,6 +49,14 @@ void platformer_layer::push()
 
 	player = add_entity<e_platformer_player>();
 	player->set_position_deep( { v_window_hw, 16.0f }, true );
+
+	// ----------------------------------------------------------------------------
+	// camera
+
+	auto player_camera = add_entity<w_camera>();
+	player_camera->pos = player->pos;
+	player_camera->set_follow_target( player, follow_flags::y_axis, 0.05f );
+	RENDER->current_camera = player_camera;
 
 	// ----------------------------------------------------------------------------
 	// some random coins

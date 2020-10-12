@@ -42,7 +42,7 @@ void w_twinstick_physics::handle_user_input( w_entity* player )
 
 	if( !fequals( right_stick.x + right_stick.y, 0.0f ) )
 	{
-		float angle = w_vec2::to_angle( w_vec2( right_stick.normalize() ) );
+		float angle = w_vec2::angle_from_dir( w_vec2( right_stick.normalize() ) );
 		player->set_angle_deep( angle );
 	}
 }
@@ -55,7 +55,7 @@ void w_twinstick_physics::update()
 	if( player )
 	{
 		w_raycast_closest hit;
-		if( w_physics::trace_closest( player->pos, w_vec2::from_angle( player->angle ), 500, clayer_world, &hit ) )
+		if( w_physics::trace_closest( player->pos, w_vec2::dir_from_angle( player->angle ), 500, clayer_world, &hit ) )
 		{
 			trace_hit_location = hit.hit.point;
 		}

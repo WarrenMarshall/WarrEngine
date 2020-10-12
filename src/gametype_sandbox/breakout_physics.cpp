@@ -78,7 +78,7 @@ void w_breakout_physics::BeginContact( b2Contact* contact )
 		w_vec2 ball_dir = w_vec2( ball_body->GetLinearVelocity() );
 
 		w_vec2 hit_normal = calc_hit_normal( ball_body );
-		w_vec2 new_dir = w_vec2::reflect( ball_dir, hit_normal );
+		w_vec2 new_dir = w_vec2::reflect_across_normal( ball_dir, hit_normal );
 		fudge_movement_dir( new_dir );
 		new_dir.normalize();
 
