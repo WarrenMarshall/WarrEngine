@@ -55,7 +55,7 @@ void layer_esc_menu::draw()
 
 	if( UI->im_active( "Main Menu", rc_button, style_button ) & im_result::left_clicked )
 	{
-		base_game->return_to_main_menu();
+		base_game->reset_layer_stack_to_main_menu();
 	}
 	rc_button.y += button_h + UI->theme->control_padding;
 

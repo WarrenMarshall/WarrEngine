@@ -120,7 +120,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					std::string color_list = std::string( iter_ad->find_value( "colors" ) );
 
-					w_tokenizer tok( color_list, ',' );
+					w_tokenizer tok( color_list, '/' );
 
 					std::vector<std::string> wk_values;
 					while( true )

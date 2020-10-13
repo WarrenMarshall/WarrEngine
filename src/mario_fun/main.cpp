@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	base_game = std::make_unique<mario_fun_app>( std::string( ADD_QUOTES( APP_NAME ) ) );
+	base_game = std::make_unique<mario_fun_game>( std::string( ADD_QUOTES( APP_NAME ) ) );
 
 	if( !w_engine::init_game_engine( argc, argv ) )
 	{

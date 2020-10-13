@@ -137,8 +137,9 @@ struct ec_b2d_kinematic : ec_b2d_body
 
 struct ec_tilemap_tile
 {
-	ec_tilemap_tile( w_pos pos, a_subtexture* subtex );
+	ec_tilemap_tile( int tileset_idx, w_pos pos, a_subtexture* subtex );
 
+	int tileset_idx;
 	w_pos pos = w_pos::zero;
 	a_subtexture* subtex = nullptr;
 

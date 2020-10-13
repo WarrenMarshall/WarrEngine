@@ -22,11 +22,9 @@ void gametype_sandbox_app::init()
 void gametype_sandbox_app::new_game()
 {
 	w_game::new_game();
-
-	return_to_main_menu();
 }
 
-void gametype_sandbox_app::return_to_main_menu()
+void gametype_sandbox_app::reset_layer_stack_to_main_menu()
 {
 	engine->layer_mgr->clear_stack();
 	engine->layer_mgr->push<layer_main_menu>();

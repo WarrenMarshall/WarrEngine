@@ -6,7 +6,7 @@
 constexpr float player_move_force_s = 7.5f;
 constexpr float player_base_radius = 6.0f;
 constexpr float player_move_force_max = 1.0f;
-constexpr float player_jump_force = 2.75f;
+constexpr float player_jump_force = 6.5f;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
 constexpr int player_jump_interval = 200;
 constexpr float player_air_control_damping = 0.35f;
@@ -134,7 +134,7 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 
 			b2Vec2 current = ec->body->GetLinearVelocity();
 			//ec->body->SetLinearVelocity( { current.x, ( -player_jump_force ) * dir_modifier } );
-			ec->body->ApplyLinearImpulseToCenter( { 0.0f, -0.075f * dir_modifier }, true );
+			ec->body->ApplyLinearImpulseToCenter( w_vec2( 0.0f, -player_jump_force * dir_modifier ).to_b2d(), true );
 		}
 	}
 }
@@ -144,6 +144,11 @@ void w_platformer_physics::update()
 	timer_jump_limiter->update();
 
 	auto e = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
+
+	if( !e )
+	{
+		return;
+	}
 
 	auto ec = e->get_component<ec_sprite>( component_type::sprite );
 	ec->tex = engine->get_asset<a_anim_texture>( "anim_player_idle" );

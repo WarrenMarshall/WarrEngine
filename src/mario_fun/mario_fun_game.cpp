@@ -1,12 +1,12 @@
 
 #include "app_header.h"
 
-mario_fun_app::mario_fun_app( std::string_view name )
+mario_fun_game::mario_fun_game( std::string_view name )
 	: w_game( name )
 {
 }
 
-void mario_fun_app::init()
+void mario_fun_game::init()
 {
 	w_game::init();
 
@@ -27,29 +27,28 @@ void mario_fun_app::init()
 		engine->get_asset<a_subtexture>( "tile_09" ),
 		engine->get_asset<a_subtexture>( "tile_10" ),
 		engine->get_asset<a_subtexture>( "tile_11" ),
-		engine->get_asset<a_subtexture>( "tile_12" )
+		engine->get_asset<a_subtexture>( "tile_12" ),
+		engine->get_asset<a_subtexture>( "tile_13" )
 	};
 }
 
-void mario_fun_app::new_game()
+void mario_fun_game::new_game()
 {
 	w_game::new_game();
-
-	return_to_main_menu();
 }
 
-void mario_fun_app::return_to_main_menu()
+void mario_fun_game::reset_layer_stack_to_main_menu()
 {
 	engine->layer_mgr->clear_stack();
 	engine->layer_mgr->push<layer_main_menu>();
 }
 
-std::string mario_fun_app::get_game_name()
+std::string mario_fun_game::get_game_name()
 {
 	return fmt::format( "{}", ADD_QUOTES( APP_NAME ) );
 }
 
-void mario_fun_app::load_level( std::string_view level_filename )
+void mario_fun_game::load_level( std::string_view level_filename )
 {
 	w_layer* layer = engine->layer_mgr->get_top();
 
@@ -62,18 +61,49 @@ void mario_fun_app::load_level( std::string_view level_filename )
 	auto ec_tm = world->get_component<ec_tilemap>( component_type::tilemap );
 	ec_tm->load_from_disk( "world", tile_set_subtex, level_filename );
 
+	// replace all tiles that are pickups with actual entities
+
+	for( auto& tm_layer : ec_tm->tile_layers )
+	{
+		for( auto x = 0 ; x < tm_layer->tiles.size() ; ++x )
+		{
+			ec_tilemap_tile& tile = tm_layer->tiles[ x ];
+
+			if( tile.tileset_idx == 0 )
+			{
+				// coin pickup
+				auto coin = layer->add_entity<e_platformer_coin>();
+				coin->set_position_deep( { tile.pos.x + 8.0f, tile.pos.y + 8.0f }, true );
+
+				// remove tile from map
+				tm_layer->tiles.erase( tm_layer->tiles.begin() + x );
+				x--;
+			}
+			else if( tile.tileset_idx == 12 )
+			{
+				// player start
+				player = layer->add_entity<e_platformer_player>();
+				player->set_position_deep( { tile.pos.x + 8.0f, tile.pos.y + 8.0f }, true );
+				player->set_position( { v_window_hw, tile.pos.y + 8.0f } );
+
+				// remove tile from map
+				tm_layer->tiles.erase( tm_layer->tiles.begin() + x );
+				x--;
+			}
+		}
+	}
+
 	// ----------------------------------------------------------------------------
 	// player
 
-	player = layer->add_entity<e_platformer_player>();
-	player->set_position_deep( { v_window_hw, 16.0f }, true );
+	assert( player );	// should have been spawned above. did you forget to add a player start?
 
 	// ----------------------------------------------------------------------------
 	// camera
 
 	auto player_camera = layer->add_entity<w_camera>();
 	player_camera->pos = player->pos;
-	player_camera->set_follow_target( player, follow_flags::y_axis, 0.05f );
+	player_camera->set_follow_target( player, follow_flags::y_axis, 0.10f );
 	RENDER->current_camera = player_camera;
 
 	// ----------------------------------------------------------------------------
@@ -82,7 +112,7 @@ void mario_fun_app::load_level( std::string_view level_filename )
 	//spawn_coins();
 }
 
-void mario_fun_app::spawn_coins()
+void mario_fun_game::spawn_coins()
 {
 	auto layer = engine->layer_mgr->get_top();
 

@@ -22,7 +22,7 @@ void w_game::update()
 
 // removes all existing layers and sets up the game to be at the main menu
 
-void w_game::return_to_main_menu()
+void w_game::reset_layer_stack_to_main_menu()
 {
 }
 

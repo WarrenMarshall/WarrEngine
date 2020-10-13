@@ -21,7 +21,7 @@ void layer_main_menu::draw()
 		->push_scale( { 2.0f, 2.0f } )
 		->push_align( align::hcenter )
 		->push_rgb( w_color::white )
-		->draw_string( engine->pixel_font, "Mario Fun", w_rect( v_window_hw, 32 ) )
+		->draw_string( engine->pixel_font, "Mario Platformer Test", w_rect( v_window_hw, 32 ) )
 		->end();
 
 	float xpos = 64;
@@ -34,7 +34,7 @@ void layer_main_menu::draw()
 		game->load_level( engine->fs->prepend_data_path( "levels/level_0.tmx" ) );
 	}
 
-	ypos += 48;
+	ypos += 32;
 	if( im_left_clicked( UI->im_active( "Exit", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
 	{
 		engine->is_running = false;

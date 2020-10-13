@@ -162,14 +162,14 @@
     <ClCompile Include="platformer_layer.cpp" />
     <ClCompile Include="layer_main_menu.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mario_fun_app.cpp" />
+    <ClCompile Include="mario_fun_game.cpp" />
     <ClCompile Include="platformer_entities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
     <ClInclude Include="platformer_physics.h" />
     <ClInclude Include="platformer_layer.h" />
-    <ClInclude Include="mario_fun_app.h" />
+    <ClInclude Include="mario_fun_game.h" />
     <ClInclude Include="layer_main_menu.h" />
     <ClInclude Include="platformer_entities.h" />
   </ItemGroup>

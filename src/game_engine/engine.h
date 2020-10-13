@@ -61,9 +61,6 @@ struct w_engine : i_listener
 	std::unique_ptr<w_input> input = nullptr;
 	std::unique_ptr<w_ui_mgr> ui = nullptr;
 	std::unique_ptr<w_file_system> fs = nullptr;
-	std::unique_ptr<w_shader> shader_ui = nullptr;
-	std::unique_ptr<w_shader> shader_crt = nullptr;
-	std::unique_ptr<w_shader> shader_to_screen = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
 	std::unique_ptr<w_keyvalues> config_vars = nullptr;
 

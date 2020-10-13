@@ -25,7 +25,7 @@ e_platformer_player::e_platformer_player()
 #if 1
 		auto f = ec->add_fixture_circle(
 			"player",
-			w_vec2::zero, 6.5f );
+			w_vec2(0.0f,2.0f), 5.5f );
 
 #else
 		auto f = ec->add_fixture_polygon(

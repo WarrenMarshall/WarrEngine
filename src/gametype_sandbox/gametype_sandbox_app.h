@@ -16,5 +16,5 @@ struct gametype_sandbox_app : w_game
 
 	virtual void init() override;
 	virtual void new_game() override;
-	virtual void return_to_main_menu() override;
+	virtual void reset_layer_stack_to_main_menu() override;
 };

@@ -3,6 +3,7 @@
 struct platformer_layer : w_layer
 {
 	std::unique_ptr<w_platformer_physics> plat_physics = nullptr;
+	a_gradient* sky_gradient = nullptr;
 
 	platformer_layer();
 

@@ -12,6 +12,8 @@ void platformer_layer::push()
 {
 	w_layer::push();
 
+	sky_gradient = engine->get_asset<a_gradient>( "sky_gradient" );
+
 	engine->window->set_mouse_mode( mouse_mode::hidden );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
@@ -37,6 +39,7 @@ void platformer_layer::update()
 
 void platformer_layer::draw()
 {
+	RENDER->draw( sky_gradient, w_rect( 0, 0, v_window_w, v_window_h * 2 ) );
 	w_layer::draw();
 
 #if 0

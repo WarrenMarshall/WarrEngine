@@ -2,11 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-ec_tilemap_tile::ec_tilemap_tile( w_pos pos, a_subtexture* subtex )
-	: pos( pos ), subtex( subtex )
-{
-}
-
 // ----------------------------------------------------------------------------
 
 w_entity_component::w_entity_component( w_entity* parent_entity )
@@ -464,6 +459,14 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 
 // ----------------------------------------------------------------------------
 
+ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_subtexture* subtex )
+	: tileset_idx( tileset_idx ), pos( pos ), subtex( subtex )
+{
+
+}
+
+// ----------------------------------------------------------------------------
+
 ec_tilemap::ec_tilemap( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
@@ -559,54 +562,47 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 			}
 			else if( type == "layer" )
 			{
-				if( child.attribute( "name" ).as_string() != std::string("pickups") )
+				for( pugi::xml_node object : child.children() )
 				{
-					for( pugi::xml_node object : child.children() )
+					if( object.name() == std::string( "data" ) )
 					{
-						if( object.name() == std::string( "pickups" ) )
-						{
+						std::string data = object.first_child().value();
+						auto data_str = w_stringutil::replace_char( data, '\n', ' ' );
 
+						if( tm_layer )
+						{
+							tile_layers.emplace_back( std::move( tm_layer ) );
+							tm_layer = nullptr;
 						}
-						else if( object.name() == std::string( "data" ) )
+
+						tm_layer = std::make_unique<ec_tilemap_layer>();
+
+						w_tokenizer tok( data_str, ',' );
+						int xy_idx = 0;
+
+						while( !tok.is_eos() )
 						{
-							std::string data = object.first_child().value();
-							auto data_str = w_stringutil::replace_char( data, '\n', ' ' );
+							unsigned idx = str_to_uint( std::string( *tok.get_next_token() ) );
 
-							if( tm_layer )
+							bool flipped_horizontally = ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0;
+							bool flipped_vertically = ( idx & FLIPPED_VERTICALLY_FLAG ) > 0;
+							bool flipped_diagonally = ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0;
+
+							idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
+
+							if( idx > 0 )
 							{
-								tile_layers.emplace_back( std::move( tm_layer ) );
-								tm_layer = nullptr;
+								int y = xy_idx / width;
+								int x = xy_idx - (y * width);
+
+								auto tile = ec_tilemap_tile( idx - 1, w_pos( x * tile_width, y * tile_height ), subtex_tiles[ idx - 1 ] );
+								tile.flipped_horizontally = flipped_horizontally;
+								tile.flipped_vertically = flipped_vertically;
+								tile.flipped_diagonally = flipped_diagonally;
+								tm_layer->tiles.emplace_back( std::move( tile ) );
 							}
 
-							tm_layer = std::make_unique<ec_tilemap_layer>();
-
-							w_tokenizer tok( data_str, ',' );
-							int xy_idx = 0;
-
-							while( !tok.is_eos() )
-							{
-								unsigned idx = str_to_uint( std::string( *tok.get_next_token() ) );
-
-								bool flipped_horizontally = ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0;
-								bool flipped_vertically = ( idx & FLIPPED_VERTICALLY_FLAG ) > 0;
-								bool flipped_diagonally = ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0;
-
-								idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
-
-								if( idx > 0 )
-								{
-									int y = xy_idx / width;
-									int x = xy_idx - (y * width);
-
-									auto tile = ec_tilemap_tile( w_pos( x * tile_width, y * tile_height ), subtex_tiles[ idx - 1 ] );
-									tile.flipped_horizontally = flipped_horizontally;
-									tile.flipped_vertically = flipped_vertically;
-									tile.flipped_diagonally = flipped_diagonally;
-									tm_layer->tiles.emplace_back( std::move( tile ) );
-								}
-
-								xy_idx++;
-							}
+							xy_idx++;
 						}
 					}
 				}

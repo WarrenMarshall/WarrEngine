@@ -166,7 +166,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			log_msg( "Initializing game" );
 			base_game->init();
-			base_game->new_game();
+			base_game->reset_layer_stack_to_main_menu();
 		}
 
 		{ // INPUT
@@ -331,7 +331,6 @@ void w_engine::exec_main_loop()
 			engine->draw();
 		}
 
-		OPENGL->find_shader( "simple" )->bind();
 		RENDER->end_frame();
 
 		engine->opengl->fb_game->unbind();
@@ -498,9 +497,6 @@ void w_engine::init()
 	input = std::make_unique<w_input>();
 	ui = std::make_unique<w_ui_mgr>();
 	fs = std::make_unique<w_file_system>();
-	shader_ui = std::make_unique<w_shader>();
-	shader_crt = std::make_unique<w_shader>();
-	shader_to_screen = std::make_unique<w_shader>();
 	opengl = std::make_unique<w_opengl>();
 	config_vars = std::make_unique<w_keyvalues>();
 

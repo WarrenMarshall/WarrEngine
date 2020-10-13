@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define game static_cast<mario_fun_app*>(base_game.get())
+#define game (static_cast<mario_fun_game*>(base_game.get()))
 
 #include <game_engine.h>
 
@@ -20,7 +20,7 @@ static unsigned clayer_mover = clayer_bits.next();
 // ----------------------------------------------------------------------------
 
 #include "layer_main_menu.h"
-#include "mario_fun_app.h"
+#include "mario_fun_game.h"
 
 #include "platformer_entities.h"
 #include "platformer_physics.h"

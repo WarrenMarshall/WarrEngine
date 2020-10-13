@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define game static_cast<gametype_sandbox_app*>(base_game.get())
+#define game (static_cast<gametype_sandbox_app*>(base_game.get()))
 
 #include <game_engine.h>
 

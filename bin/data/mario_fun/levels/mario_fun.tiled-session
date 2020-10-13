@@ -5,9 +5,9 @@
     },
     "activeFile": "level_0.tmx",
     "expandedProjectPaths": [
+        "X:/WarrenDev/bin/data/mario_fun",
         "X:/WarrenDev/bin/data/mario_fun/tilemap",
         ".",
-        "X:/WarrenDev/bin/data/mario_fun",
         "X:/WarrenDev/bin/data"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -33,11 +33,11 @@
             "scaleInEditor": 8
         },
         "level_0.tmx": {
-            "scale": 5.5,
-            "selectedLayer": 3,
+            "scale": 11,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 268.54545454545456,
-                "y": 259.4545454545455
+                "x": 233.36363636363637,
+                "y": 264.27272727272725
             }
         },
         "level_1.tmx": {
