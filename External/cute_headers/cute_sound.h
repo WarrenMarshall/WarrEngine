@@ -2295,7 +2295,26 @@ static void cs_position(cs_context_t* ctx, int* byte_to_lock, int* bytes_to_writ
 #else
 	HRESULT hr = ctx->buffer->lpVtbl->GetCurrentPosition(ctx->buffer, &play_cursor, &write_cursor);
 #endif
+
+#if 0
 	CUTE_SOUND_ASSERT(hr == DS_OK);
+#else
+	// warren - I added this code path to handle the case where you turn
+	// off your headphones in the middle of a game. this would previously
+	// just crash the game with the original assert.
+	//
+	// now the game throws some exceptions but continues running. when the
+	// headphones are turned back on, the sound resumes.
+	//
+	// this probably isn't bulletproof but it works for now.
+
+	if( hr != DS_OK )
+	{
+		*byte_to_lock = 0;
+		*bytes_to_write = 0;
+		return;
+	}
+#endif
 
 	DWORD lock = (ctx->running_index * ctx->bps) % ctx->buffer_size;
 	DWORD target_cursor = (write_cursor + ctx->latency_samples * ctx->bps);
