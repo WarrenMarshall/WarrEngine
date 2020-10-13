@@ -15,11 +15,11 @@ void main()
 	// snap the vertex to the pixel grid. this gives the game
 	// a sharp pixel perfect look.
 
-	vec3 snapped_pos;
+    vec3 snapped_pos;
 
-    snapped_pos.x = round( inPos.x );
-    snapped_pos.y = round( inPos.y );
-    snapped_pos.z = round( inPos.z );
+    snapped_pos.x = floor( inPos.x );
+    snapped_pos.y = floor( inPos.y );
+    snapped_pos.z = floor( inPos.z );
 
     Pos = snapped_pos;
 
