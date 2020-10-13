@@ -17,3 +17,14 @@ int str_to_int( const std::string& str )
 {
 	return static_cast<int>( strtol( str.c_str(), ( char** ) nullptr, 10 ) );
 }
+
+unsigned str_to_uint( const char* str )
+{
+	return static_cast<int>( strtoul( str, ( char** ) nullptr, 10 ) );
+}
+
+unsigned str_to_uint( const std::string& str )
+{
+	return static_cast<int>( strtoul( str.c_str(), ( char** ) nullptr, 10 ) );
+}
+

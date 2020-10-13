@@ -69,8 +69,7 @@ void twinstick_layer::push()
 	// player
 	{
 		player = add_entity<e_twinstick_player>();
-		// #camera - set player to 0,0 in the world to start - does this work?
-		player->set_position_deep( { v_window_hw, v_window_hh }, true );
+		player->set_position_deep( { 0, 0 }, true );
 	}
 
 	// camera

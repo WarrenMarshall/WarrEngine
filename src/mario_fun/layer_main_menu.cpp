@@ -31,6 +31,7 @@ void layer_main_menu::draw()
 	{
 		game->new_game();
 		engine->layer_mgr->push<platformer_layer>();
+		game->load_level( engine->fs->prepend_data_path( "levels/level_0.tmx" ) );
 	}
 
 	ypos += 48;

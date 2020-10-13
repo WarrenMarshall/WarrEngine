@@ -30,7 +30,7 @@ int w_parser::int_from_str( std::string_view str )
 	}
 
 	// Otherwise, parse the string...
-	return static_cast<int>( strtol( str.data(), ( char** ) nullptr, 10 ) );
+	return str_to_int( str.data() );
 }
 
 bool w_parser::bool_from_str( const std::string_view str )

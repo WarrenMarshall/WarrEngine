@@ -309,7 +309,7 @@ void w_engine::exec_main_loop()
 
 			OPENGL->init_projection_matrix();
 			OPENGL->init_view_matrix();
-			OPENGL->find_shader( "crt_fx" )->bind();
+			OPENGL->find_shader( "simple" )->bind();
 
 			// render the frame
 
@@ -349,7 +349,7 @@ void w_engine::exec_main_loop()
 
 		static a_texture* tex = engine->get_asset<a_texture>( "tex_game_frame_buffer" );
 
-		OPENGL->find_shader( "to_screen" )->bind();
+		OPENGL->find_shader( "crt_fx" )->bind();
 
 		RENDER
 			->begin()
@@ -400,7 +400,7 @@ int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 		sval = fmt::format( "{}", def_value );
 	}
 
-	return static_cast<int>( strtol( std::string(*sval).data(), ( char** ) nullptr, 10 ) );
+	return str_to_int( std::string( *sval ) );
 }
 
 float w_engine::find_float_from_symbol( std::string_view symbol, float def_value )

@@ -159,7 +159,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						if( pos != std::string::npos )
 						{
 							pos++;
-							repeat_count = strtol( color_value.substr( pos, color_value.length() - pos ).data(), ( char** ) nullptr, 10 );
+							repeat_count = str_to_int( color_value.substr( pos, color_value.length() - pos ) );
 							color_value = color_value.substr( 0, pos - 1 );
 						}
 

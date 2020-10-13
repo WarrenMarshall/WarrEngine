@@ -9,6 +9,7 @@ struct w_game
 	virtual void new_game();
 	virtual void update();
 	virtual void return_to_main_menu();
+	virtual std::string get_game_name();
 
 	std::string name = "";
 };

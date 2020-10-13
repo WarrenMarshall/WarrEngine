@@ -25,3 +25,8 @@ void w_game::update()
 void w_game::return_to_main_menu()
 {
 }
+
+std::string w_game::get_game_name()
+{
+	return "";
+}

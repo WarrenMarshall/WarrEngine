@@ -563,7 +563,11 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 				{
 					for( pugi::xml_node object : child.children() )
 					{
-						if( object.name() == std::string("data") )
+						if( object.name() == std::string( "pickups" ) )
+						{
+
+						}
+						else if( object.name() == std::string( "data" ) )
 						{
 							std::string data = object.first_child().value();
 							auto data_str = w_stringutil::replace_char( data, '\n', ' ' );
@@ -581,8 +585,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 
 							while( !tok.is_eos() )
 							{
-								auto str_idx = std::string( *tok.get_next_token() );
-								unsigned idx = std::strtoul( str_idx.c_str(), ( char** ) nullptr, 10 );
+								unsigned idx = str_to_uint( std::string( *tok.get_next_token() ) );
 
 								bool flipped_horizontally = ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0;
 								bool flipped_vertically = ( idx & FLIPPED_VERTICALLY_FLAG ) > 0;
