@@ -26,9 +26,9 @@ float w_raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 {
 	hit_something = true;
 
-	hit.fraction = fraction;
-	hit.normal = w_vec2( normal.x, normal.y );
-	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
+	result.fraction = fraction;
+	result.normal = w_vec2( normal.x, normal.y );
+	result.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
 
 	return fraction;
 }
@@ -39,9 +39,9 @@ float w_raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, 
 {
 	hit_something = true;
 
-	hit.fraction = fraction;
-	hit.normal = w_vec2( normal.x, normal.y );
-	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
+	result.fraction = fraction;
+	result.normal = w_vec2( normal.x, normal.y );
+	result.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
 
 	return 0.0f;
 }
@@ -57,7 +57,7 @@ float w_raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, con
 	hit.normal = w_vec2( normal.x, normal.y );
 	hit.point = w_vec2( from_b2d( point.x ), from_b2d( point.y ) );
 
-	hits.push_back( std::move( hit ) );
+	results.push_back( std::move( hit ) );
 
 	return 1.0f;
 }

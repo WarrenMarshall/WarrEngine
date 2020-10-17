@@ -15,8 +15,10 @@ struct w_platformer_physics : w_contact_listener, w_physics
 
 	bool can_jump();
 	bool in_air();
+	bool on_ground();
 	bool can_drop_down();
-	void handle_user_input( w_entity* player );
+	void hit_ground();
+	void handle_user_input();
 
 	virtual void update() override;
 };

@@ -27,7 +27,7 @@ struct w_color
 	w_color( const w_color& other );
 	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( int r, int g, int b, int a = 255 );
-	w_color( std::string_view str );
+	w_color( std::string& str );
 
 	static void scale( w_color& color, float s );
 };
@@ -80,7 +80,7 @@ struct w_range
 	w_range( float start, float end );
 	w_range( std::string_view str );
 
-	[[nodiscard]] float get_value();
+	_NODISCARD float get_value();
 };
 
 // ----------------------------------------------------------------------------
@@ -129,15 +129,20 @@ struct w_vec2
 		};
 		struct
 		{
-			float left, right;
+			float l, r;
 		};
 		struct
 		{
-			float top, bottom;
+			float t, b;
 		};
 	};
 
 	static const w_vec2 zero;
+	static const w_vec2 left;
+	static const w_vec2 right;
+	static const w_vec2 up;
+	static const w_vec2 down;
+
 	static w_vec2 get_random_unit();
 
 	w_vec2();
@@ -162,11 +167,11 @@ struct w_vec2
 	w_vec2 operator*( float v );
 	w_vec2 operator*=( float v );
 
-	[[nodiscard]] static float get_distance_between( w_vec2 a, w_vec2 b );
+	_NODISCARD static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );
-	[[nodiscard]] static w_vec2 dir_from_angle( float angle );
-	[[nodiscard]] static float angle_from_dir( w_vec2 dir );
-	[[nodiscard]] static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
+	_NODISCARD static w_vec2 dir_from_angle( float angle );
+	_NODISCARD static float angle_from_dir( w_vec2 dir );
+	_NODISCARD static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
 
 	operator b2Vec2()
 	{
@@ -220,9 +225,9 @@ struct w_vec3
 	w_vec3 operator-( w_vec3 v );
 	w_vec3 operator*( float v );
 
-	[[nodiscard]] static float get_size_squared( w_vec3 a );
-	[[nodiscard]] static float get_size( w_vec3 a );
-	[[nodiscard]] static float get_distance_between( w_vec3 a, w_vec3 b );
+	_NODISCARD static float get_size_squared( w_vec3 a );
+	_NODISCARD static float get_size( w_vec3 a );
+	_NODISCARD static float get_distance_between( w_vec3 a, w_vec3 b );
 	static w_vec3 normalize( w_vec3 a );
 };
 

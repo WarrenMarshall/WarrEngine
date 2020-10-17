@@ -23,7 +23,7 @@ struct w_entity : i_life_cycle, i_transform
 	bool draw_debug_info = false;
 
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
-	[[nodiscard]] virtual bool can_be_deleted();
+	_NODISCARD virtual bool can_be_deleted();
 
 	virtual void update_from_physics();
 	virtual void update();
@@ -44,7 +44,7 @@ struct w_entity : i_life_cycle, i_transform
 
 	// returns the first component it finds that matches the type bit mask.
 	template<typename T>
-	[[nodiscard]] T* get_component( e_component_type type_mask )
+	_NODISCARD T* get_component( e_component_type type_mask )
 	{
 		for( auto& ec : components )
 		{
@@ -59,7 +59,7 @@ struct w_entity : i_life_cycle, i_transform
 
 	// fills a vector with all the components it finds that match the type bit mask.
 	template<typename T>
-	[[nodiscard]] std::basic_string<T*> get_components( e_component_type type_mask )
+	_NODISCARD std::basic_string<T*> get_components( e_component_type type_mask )
 	{
 		std::basic_string<T*> ecs;
 
@@ -76,7 +76,7 @@ struct w_entity : i_life_cycle, i_transform
 
 	void remove_component( w_entity_component* ec );
 
-	[[nodiscard]] ec_b2d_body* get_primary_body();
+	_NODISCARD ec_b2d_body* get_primary_body();
 };
 
 // ----------------------------------------------------------------------------

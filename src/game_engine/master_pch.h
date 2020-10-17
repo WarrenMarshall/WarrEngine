@@ -146,10 +146,17 @@ using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
 // handy macros
 // ----------------------------------------------------------------------------
 
-#define f_commas w_stringutil::format_with_commas
-#define log_msg(string_format, ...) logfile->msg( fmt::format("[{}:{}] " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
-#define log_warning(string_format, ...) logfile->msg( fmt::format("[{}:{}] WARNING : " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
-#define log_error(string_format, ...) logfile->error( fmt::format("[{}:{}] ERROR! : " ## string_format ## "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__ ) )
+#define f_commas w_string_util::format_with_commas
+
+template<typename ...Params>
+void _log_( Params&&... params )
+{
+	::logfile->msg( fmt::format( std::forward<Params>( params )... ) );
+}
+
+#define log_msg( fmt, ... ) _log_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
+#define log_warning( fmt, ... ) _log_( "[{}:{}] WARNING : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
+#define log_error( fmt, ... ) _log_( "[{}:{}] !ERROR! : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 
 // ----------------------------------------------------------------------------
 // constants
@@ -190,6 +197,8 @@ _NODISCARD int str_to_int( const char* str );
 _NODISCARD int str_to_int( const std::string& str );
 _NODISCARD unsigned str_to_uint( const char* str );
 _NODISCARD unsigned str_to_uint( const std::string& str );
+
+_NODISCARD float sin_from_angle( float angle_in_degrees );
 
 // ----------------------------------------------------------------------------
 // box2d constants and helpers
@@ -239,6 +248,7 @@ constexpr bool im_right_clicked( e_im_result result )
 using b_silent = bool;
 using b_sensor = bool;
 using b_ignore_dead_zone = bool;
+using b_parse_bracket_sets = bool;
 
 // ----------------------------------------------------------------------------
 

@@ -99,7 +99,7 @@ struct w_render
 	void begin_frame( float frame_interpolate_pct );
 	void end_frame();
 
-	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
+	_NODISCARD float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 
 	w_render_stats stats;
 };

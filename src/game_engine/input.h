@@ -45,13 +45,13 @@ struct w_input : i_speaker
 	std::array<bool, input_id::max> button_states = {};
 	std::array<bool, input_id::max> button_states_last_frame = {};
 
-	[[nodiscard]] bool is_button_down( e_input_id input_id );
-	[[nodiscard]] bool is_shift_down();
-	[[nodiscard]] bool is_control_down();
-	[[nodiscard]] bool is_alt_down();
+	_NODISCARD bool is_button_down( e_input_id input_id );
+	_NODISCARD bool is_shift_down();
+	_NODISCARD bool is_control_down();
+	_NODISCARD bool is_alt_down();
 
-	[[nodiscard]] e_button_state get_button_state( e_input_id input_id );
-	[[nodiscard]] w_vec2 get_axis_state( e_input_id input_id, bool ignore_dead_zone = false );
+	_NODISCARD e_button_state get_button_state( e_input_id input_id );
+	_NODISCARD w_vec2 get_axis_state( e_input_id input_id, bool ignore_dead_zone = false );
 
 	void init();
 	void deinit();

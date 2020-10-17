@@ -120,7 +120,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					std::string color_list = std::string( iter_ad->find_value( "colors" ) );
 
-					w_tokenizer tok( color_list, '/' );
+					w_tokenizer tok( color_list, ',' );
 
 					std::vector<std::string> wk_values;
 					while( true )
@@ -274,23 +274,23 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					x = rect->x;
 					y = rect->y;
-					w = x_slices->left;
-					h = y_slices->top;
+					w = x_slices->l;
+					h = y_slices->t;
 
 					asset_ptr->patches[ slicedef_patch::P_00 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", name ), ""
 						);
 
-					x = rect->x + x_slices->left;
-					w = rect->w - x_slices->left - x_slices->right;
+					x = rect->x + x_slices->l;
+					w = rect->w - x_slices->l - x_slices->r;
 					asset_ptr->patches[ slicedef_patch::P_10 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", name ), ""
 						);
 
-					x = rect->x + rect->w - x_slices->right;
-					w = x_slices->right;
+					x = rect->x + rect->w - x_slices->r;
+					w = x_slices->r;
 					asset_ptr->patches[ slicedef_patch::P_20 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", name ), ""
@@ -299,24 +299,24 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// middle row
 
 					x = rect->x;
-					y = rect->y + y_slices->top;
-					w = x_slices->left;
-					h = rect->h - y_slices->top - y_slices->bottom;
+					y = rect->y + y_slices->t;
+					w = x_slices->l;
+					h = rect->h - y_slices->t - y_slices->b;
 
 					asset_ptr->patches[ slicedef_patch::P_01 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", name ), ""
 						);
 
-					x = rect->x + x_slices->left;
-					w = rect->w - x_slices->left - x_slices->right;
+					x = rect->x + x_slices->l;
+					w = rect->w - x_slices->l - x_slices->r;
 					asset_ptr->patches[ slicedef_patch::P_11 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", name ), ""
 						);
 
-					x = rect->x + rect->w - x_slices->right;
-					w = x_slices->right;
+					x = rect->x + rect->w - x_slices->r;
+					w = x_slices->r;
 					asset_ptr->patches[ slicedef_patch::P_21 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", name ), ""
@@ -325,24 +325,24 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// bottom row
 
 					x = rect->x;
-					y = rect->y + rect->h - y_slices->bottom;
-					w = x_slices->left;
-					h = y_slices->bottom;
+					y = rect->y + rect->h - y_slices->b;
+					w = x_slices->l;
+					h = y_slices->b;
 
 					asset_ptr->patches[ slicedef_patch::P_02 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", name ), ""
 						);
 
-					x = rect->x + x_slices->left;
-					w = rect->w - x_slices->left - x_slices->right;
+					x = rect->x + x_slices->l;
+					w = rect->w - x_slices->l - x_slices->r;
 					asset_ptr->patches[ slicedef_patch::P_12 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", name ), ""
 						);
 
-					x = rect->x + rect->w - x_slices->right;
-					w = x_slices->right;
+					x = rect->x + rect->w - x_slices->r;
+					w = x_slices->r;
 					asset_ptr->patches[ slicedef_patch::P_22 ] =
 						engine->asset_cache->add(
 							std::make_unique<a_subtexture>( tex_name, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", name ), ""
@@ -588,9 +588,10 @@ bool w_asset_definition_file::create_internals()
 		// parse each line into a key/value pair for the current asset definition
 		else
 		{
+			//w_tokenizer tok_kv( line, '\"', b_parse_bracket_sets( false ) );
 			w_tokenizer tok_kv( line, '\"' );
 
-			tok_kv.get_next_token();
+			//tok_kv.get_next_token();
 			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token();
 			auto value = tok_kv.get_next_token();

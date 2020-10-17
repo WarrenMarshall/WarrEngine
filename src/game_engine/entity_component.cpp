@@ -567,7 +567,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 					if( object.name() == std::string( "data" ) )
 					{
 						std::string data = object.first_child().value();
-						auto data_str = w_stringutil::replace_char( data, '\n', ' ' );
+						auto data_str = w_string_util::replace_char( data, '\n', ' ' );
 
 						if( tm_layer )
 						{

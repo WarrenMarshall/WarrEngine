@@ -1,1 +1,21 @@
 
+{
+	"type" "emitter_params"
+	"name" "small_smoke_puff"
+	"texture_name" "tex_smoke"
+	"spawner_type" "circle,2"
+
+	"s_max_spawn_per_sec" "5"
+	"a_dir" "0"
+	"r_dir_var" "-120,120"
+	"b_one_shot" "true"
+	"r_scale_spawn" "0.75, 1"
+	"r_velocity_spawn" "20,40"
+	"t_color" "0,[217,160,102], 1,color.black"
+	"b_needs_warm_up" "false"
+	"t_scale" "0.0,1.0, 1.0,.15"
+	"r_lifespan" "250, 500"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.1,0.75, 1,0"
+}

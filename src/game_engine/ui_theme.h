@@ -32,10 +32,10 @@ struct w_ui_style
 	std::optional<a_subtexture*> subtex;
 	w_ui_style_attrib subtex_attrib;
 
-	[[nodiscard]] virtual e_im_result update_im_state( int id, w_rect rc );
+	_NODISCARD virtual e_im_result update_im_state( int id, w_rect rc );
 	virtual void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) = 0;
-	[[nodiscard]] w_offset get_click_offset( bool being_hovered, bool being_clicked );
-	[[nodiscard]] w_color get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked );
+	_NODISCARD w_offset get_click_offset( bool being_hovered, bool being_clicked );
+	_NODISCARD w_color get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked );
 };
 
 // ----------------------------------------------------------------------------

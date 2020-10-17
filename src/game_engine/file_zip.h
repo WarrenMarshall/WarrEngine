@@ -45,7 +45,7 @@ struct w_file_zip
 	std::unordered_map<std::string, std::unique_ptr<w_zip_toc_entry>> table_of_contents;
 
 	void scan_and_build_table_of_contents();
-	[[nodiscard]] bool does_toc_contain_filename( std::string_view filename );
-	[[nodiscard]] w_zip_toc_entry* get_toc_entry_for_filename( std::string_view filename );
-	[[nodiscard]] std::unique_ptr<std::vector<char>> get_data_for_filename( std::string_view filename );
+	_NODISCARD bool does_toc_contain_filename( std::string_view filename );
+	_NODISCARD w_zip_toc_entry* get_toc_entry_for_filename( std::string_view filename );
+	_NODISCARD std::unique_ptr<std::vector<char>> get_data_for_filename( std::string_view filename );
 };

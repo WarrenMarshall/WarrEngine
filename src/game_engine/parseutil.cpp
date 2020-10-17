@@ -72,7 +72,8 @@ w_color w_parser::color_from_str( const std::string_view str )
 		return engine->find_color_from_symbol( str );
 	}
 
-	return w_color( str );
+	auto color_str = std::string( str );
+	return w_color( color_str );
 }
 
 w_range w_parser::range_from_str( const std::string_view str )
@@ -151,16 +152,15 @@ w_vec3 w_parser::vec3_from_str( const std::string_view str )
 
 std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, const std::string_view str )
 {
-	int comma_count = static_cast<int>( std::count( str.begin(), str.end(), ',' ) );
-	if( ( comma_count % 2 ) == 0 )
-		log_error( "'{}' has an odd number of arguments - needs to be even", str );
-
 	std::unique_ptr<w_timeline> timeline = std::make_unique<w_timeline>( type );
 	timeline->kf_clear();
 
 	w_tokenizer tok( str, ',' );
 
-	for( auto x = 0 ; x < comma_count ; x += 2 )
+	// Make sure there are an even number of tokens
+	assert( (tok.tokens.size() % 2) == 0 );
+
+	while( !tok.is_eos() )
 	{
 		w_keyframe kf;
 

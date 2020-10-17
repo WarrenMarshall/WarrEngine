@@ -72,3 +72,9 @@
 		tile_12, 80, 16, 16, 16,\
 		tile_13, 0, 32, 16, 16"
 }
+
+{
+	"type" "texture"
+	"name" "tex_smoke"
+	"filename" "gfx/smoke_particle.png"
+}

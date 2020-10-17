@@ -14,10 +14,10 @@ struct w_ui_mgr
 	void draw_topmost();
 
 	void im_reset();
-	[[nodiscard]] e_im_result im_active( std::string_view label, w_rect rc, w_ui_style& ui_style );
+	_NODISCARD e_im_result im_active( std::string_view label, w_rect rc, w_ui_style& ui_style );
 	e_im_result im_passive( w_rect rc, w_ui_style& ui_style );
 
-	[[nodiscard]] bool is_mouse_inside( w_rect& rc ) const;
+	_NODISCARD bool is_mouse_inside( w_rect& rc ) const;
 
 	bool owning_layer_is_topmost = false;
 	int im_automatic_id = 0;

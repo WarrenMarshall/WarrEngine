@@ -10,24 +10,24 @@
 
 const std::string WHITESPACE = " \n\r\t\f\v";
 
-const std::string_view w_stringutil::ltrim( const std::string_view s )
+const std::string_view w_string_util::ltrim( const std::string_view s )
 {
     const size_t start = s.find_first_not_of( WHITESPACE );
     return ( start == std::string_view::npos ) ? "" : s.substr( start );
 }
 
-const std::string_view w_stringutil::rtrim( const std::string_view s )
+const std::string_view w_string_util::rtrim( const std::string_view s )
 {
     const size_t end = s.find_last_not_of( WHITESPACE );
     return ( end == std::string_view::npos ) ? "" : s.substr( 0, end + 1 );
 }
 
-const std::string_view w_stringutil::trim( const std::string_view s )
+const std::string_view w_string_util::trim( const std::string_view s )
 {
-    return w_stringutil::rtrim( w_stringutil::ltrim( s ) );
+    return w_string_util::rtrim( w_string_util::ltrim( s ) );
 }
 
-const std::string w_stringutil::format_with_commas( float value )
+const std::string w_string_util::format_with_commas( float value )
 {
 	std::string numWithCommas = fmt::format( "{:.0f}", value );
 	int insertPosition = static_cast<int>( numWithCommas.length() ) - 3;
@@ -40,7 +40,9 @@ const std::string w_stringutil::format_with_commas( float value )
 	return numWithCommas;
 }
 
-const std::string w_stringutil::replace_char( const std::string& string, char old_char, char new_char )
+// replaces all occurrences of 'old_char' with 'new_char' in a string, and returns the new string
+
+const std::string w_string_util::replace_char( const std::string& string, char old_char, char new_char )
 {
 	std::string new_string = string;
 
@@ -51,6 +53,17 @@ const std::string w_stringutil::replace_char( const std::string& string, char ol
 			ch = new_char;
 		}
 	}
+
+	return new_string;
+}
+
+// removes all occurrences of 'char_to_remove' from a string, and returns the new string
+
+const std::string w_string_util::remove_char( const std::string& string, char char_to_remove )
+{
+	std::string new_string = string;
+
+	new_string.erase( std::remove( new_string.begin(), new_string.end(), char_to_remove ), new_string.end() );
 
 	return new_string;
 }

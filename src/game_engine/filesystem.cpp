@@ -140,7 +140,7 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>* filenames, st
 
 		if( foldername.has_value() && foldername == folder )
 		{
-			std::string new_filename = w_stringutil::replace_char( filename, '\\', '/' );
+			std::string new_filename = w_string_util::replace_char( filename, '\\', '/' );
 			std::filesystem::path path = new_filename;
 
 			if( path.extension() == extension )

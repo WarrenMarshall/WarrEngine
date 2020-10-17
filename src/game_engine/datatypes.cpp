@@ -176,21 +176,12 @@ w_color::w_color( int r, int g, int b, int a )
 {
 }
 
-w_color::w_color( std::string_view str )
+w_color::w_color( std::string& str )
 {
-	// colors in string can either be delimited by slashes or commas.
-	//
-	// if we find slashes, assume slashes. otherwise, commas.
+	str = w_string_util::remove_char( str, '[' );
+	str = w_string_util::remove_char( str, ']' );
 
-	auto slashes = std::count( str.begin(), str.end(), '/' );
-
-	char delimiter = ',';
-	if( slashes )
-	{
-		delimiter = '/';
-	}
-
-	w_tokenizer tok( str, delimiter );
+	w_tokenizer tok( str, ',' );
 
 	r = w_parser::float_from_str( *tok.get_next_token() );
 	g = w_parser::float_from_str( *tok.get_next_token() );
@@ -215,6 +206,10 @@ void w_color::scale( w_color& color, float s )
 // ----------------------------------------------------------------------------
 
 const w_vec2 w_vec2::zero = w_vec2( 0, 0 );
+const w_vec2 w_vec2::left = w_vec2( -1, 0 );
+const w_vec2 w_vec2::right = w_vec2( 1, 0 );
+const w_vec2 w_vec2::up = w_vec2( 0, -1 );
+const w_vec2 w_vec2::down = w_vec2( 0, 1 );
 
 // generates a random point on a unit sphere.
 w_vec2 w_vec2::get_random_unit()

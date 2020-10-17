@@ -17,7 +17,7 @@ struct w_raycast_hit
 struct w_raycast_closest : b2RayCastCallback
 {
 	bool hit_something = false;
-	w_raycast_hit hit;
+	w_raycast_hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 								 const b2Vec2& normal, float fraction ) override;
@@ -32,7 +32,7 @@ struct w_raycast_closest : b2RayCastCallback
 struct w_raycast_simple : b2RayCastCallback
 {
 	bool hit_something = false;
-	w_raycast_hit hit;
+	w_raycast_hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 								 const b2Vec2& normal, float fraction ) override;
@@ -46,7 +46,7 @@ struct w_raycast_simple : b2RayCastCallback
 struct w_raycast_all : b2RayCastCallback
 {
 	bool hit_something = false;
-	std::vector<w_raycast_hit> hits;
+	std::vector<w_raycast_hit> results;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 								 const b2Vec2& normal, float fraction ) override;

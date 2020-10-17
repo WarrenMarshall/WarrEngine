@@ -58,7 +58,7 @@ void w_file_zip::scan_and_build_table_of_contents()
 							rptr += hdr->file_name_length;
 
 							std::string new_filename = filename;
-							new_filename = w_stringutil::replace_char( new_filename, '\\', '/' );
+							new_filename = w_string_util::replace_char( new_filename, '\\', '/' );
 
 							table_of_contents.insert(
 								std::make_pair(

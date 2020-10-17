@@ -556,13 +556,16 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 	w_render_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 
-	for( auto x = 0; x < circle_sample_points_max; ++x )
+	int step = 1;
+	if( radius < circle_sample_points_max ) step = 2;
+
+	for( auto x = 0; x < circle_sample_points_max; x += step )
 	{
 		v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
 		v0.y = origin.y + ( circle_sample_points[ x ].y * radius );
 
-		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+		v1.x = origin.x + ( circle_sample_points[ ( x + step ) % circle_sample_points_max ].x * radius );
+		v1.y = origin.y + ( circle_sample_points[ ( x + step ) % circle_sample_points_max ].y * radius );
 
 		master_render_buffer->add_line( v0, v1 );
 	}

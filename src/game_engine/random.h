@@ -3,9 +3,9 @@
 struct w_random
 {
     static void seed();
-    [[nodiscard]] static int get();
-    [[nodiscard]] static float getf();
-    [[nodiscard]] static bool getb();
-    [[nodiscard]] static float getf_range( float min, float max );
-    [[nodiscard]] static int geti_range( int min, int max );
+    _NODISCARD static int get();
+    _NODISCARD static float getf();
+    _NODISCARD static bool getb();
+    _NODISCARD static float getf_range( float min, float max );
+    _NODISCARD static int geti_range( int min, int max );
 };

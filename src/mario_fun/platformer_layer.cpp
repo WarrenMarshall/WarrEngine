@@ -31,7 +31,7 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	plat_physics->handle_user_input( game->player );
+	plat_physics->handle_user_input();
 	plat_physics->update();
 
 	w_layer::update();

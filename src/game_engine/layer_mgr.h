@@ -39,7 +39,7 @@ struct w_layer_mgr : i_listener
 
 	void clear_stack();
 	void pop();
-	[[nodiscard]] w_layer* get_top();
+	_NODISCARD w_layer* get_top();
 
 	void update();
 	void draw();

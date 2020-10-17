@@ -28,3 +28,7 @@ unsigned str_to_uint( const std::string& str )
 	return static_cast<int>( strtoul( str.c_str(), ( char** ) nullptr, 10 ) );
 }
 
+float sin_from_angle( float angle_in_degrees )
+{
+	return std::sinf( glm::radians( angle_in_degrees ) );
+}

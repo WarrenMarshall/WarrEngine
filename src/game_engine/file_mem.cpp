@@ -16,8 +16,7 @@ w_mem_file_text::w_mem_file_text( int size )
 
 void w_mem_file_text::preprocess()
 {
-	buffer->push_back( '\n' );
-	buffer->push_back( '\0' );
+	//w_tokenizer tok( buffer->data(), '\n', b_parse_bracket_sets( false ) );
 	w_tokenizer tok( buffer->data(), '\n' );
 
 	size_t count = std::count( buffer->begin(), buffer->end(), '\n' );
@@ -49,7 +48,7 @@ void w_mem_file_text::preprocess()
 
 		if( pos != std::string::npos )
 		{
-			line = w_stringutil::trim( line.substr( 0, pos ) );
+			line = w_string_util::trim( line.substr( 0, pos ) );
 		}
 
 		// handle lines that use continuation characters

@@ -38,5 +38,5 @@ struct a_font : i_asset
 {
 	a_font_def* font_def = nullptr;
 
-	[[nodiscard]] w_vec2 get_string_extents( const std::string_view text );
+	_NODISCARD w_vec2 get_string_extents( const std::string_view text );
 };

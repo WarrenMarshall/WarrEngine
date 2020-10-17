@@ -36,7 +36,7 @@ struct w_particle final
 	w_particle();
 
 	void update();
-	[[nodiscard]] constexpr bool is_alive();
+	_NODISCARD constexpr bool is_alive();
 };
 
 //#pragma pack(pop)

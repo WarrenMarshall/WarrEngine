@@ -7,5 +7,5 @@ struct w_bit_flag_generator
 	w_bit_flag_generator() = default;
 	w_bit_flag_generator( unsigned start_bit );
 	void reset();
-	[[nodiscard]] unsigned next();
+	_NODISCARD unsigned next();
 };

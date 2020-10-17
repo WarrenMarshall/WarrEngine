@@ -6,6 +6,7 @@
 constexpr float player_move_force_s = 7.5f;
 constexpr float player_base_radius = 6.0f;
 constexpr float player_move_force_max = 1.0f;
+
 constexpr float player_jump_force = 6.5f;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
 constexpr int player_jump_interval = 200;
@@ -28,7 +29,7 @@ void w_platformer_physics::BeginContact( b2Contact* contact )
 		player_on_ground++;
 		if( !in_air() )
 		{
-			timer_jump_limiter->reset();
+			hit_ground();
 		}
 	}
 
@@ -71,13 +72,37 @@ bool w_platformer_physics::in_air()
 	return ( player_on_ground == 0 );
 }
 
+bool w_platformer_physics::on_ground()
+{
+	return ( player_on_ground > 0 );
+}
+
 bool w_platformer_physics::can_drop_down()
 {
 	return ( player_drop_down_blocked == 0 );
 }
 
-void w_platformer_physics::handle_user_input( w_entity* player )
+void w_platformer_physics::hit_ground()
 {
+	auto player = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
+	if( player->get_primary_body()->body->GetLinearVelocity().y > 0.0f )
+	{
+		timer_jump_limiter->reset();
+
+		w_raycast_closest hit;
+		if( trace_closest( player->pos, w_vec2::down, 16.0f, clayer_world, &hit ) )
+		{
+			auto layer = engine->layer_mgr->get_top();
+			auto fx = layer->add_entity<w_entity_fx>();
+			fx->set_position( hit.result.point + w_vec2(0,2) );
+			fx->add_component<ec_emitter>()->init( "small_smoke_puff" );
+		}
+	}
+}
+
+void w_platformer_physics::handle_user_input()
+{
+	auto player = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
 	if( !fequals( left_stick.x, 0.0f ) )
@@ -132,8 +157,6 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 				game->snd_plat_drop_down->play();
 			}
 
-			b2Vec2 current = ec->body->GetLinearVelocity();
-			//ec->body->SetLinearVelocity( { current.x, ( -player_jump_force ) * dir_modifier } );
 			ec->body->ApplyLinearImpulseToCenter( w_vec2( 0.0f, -player_jump_force * dir_modifier ).to_b2d(), true );
 		}
 	}
@@ -156,12 +179,13 @@ void w_platformer_physics::update()
 	auto ec_b2d = e->get_primary_body();
 	b2Vec2 vel = ec_b2d->body->GetLinearVelocity();
 
-	if( in_air() )
+	if( !on_ground() )
 	{
 		ec->tex = engine->get_asset<a_anim_texture>( "anim_player_jump" );
 	}
 	else
 	{
+		// #todo - vary animation speed based on running speed
 		if( !fequals( vel.x, 0.0f ) )
 		{
 			ec->tex = engine->get_asset<a_anim_texture>( "anim_player_run" );
