@@ -289,9 +289,12 @@ void w_engine::exec_main_loop()
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
-
-			//OPENGL->set_uniform( "u_delta_time", w_time::FTS_step_value_ms );
 		}
+
+		static float time_val = 0.0f;
+		time_val += engine->time->delta_ms / 2000.f;
+		OPENGL->set_uniform( "in_time", time_val );
+		OPENGL->set_uniform( "in_use_vignette", 1.0f );
 
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction

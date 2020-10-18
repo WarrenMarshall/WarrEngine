@@ -5,10 +5,14 @@ layout (location = 2) in vec4 inColor;
 
 uniform mat4 P; // projection matrix
 uniform mat4 V; // camera matrix
+uniform float in_time;
+uniform float in_use_vignette;
 
 out vec2 TexCoord;
 out vec4 Color;
 out vec3 Pos;
+out float _time;
+out float _use_vignette;
 
 void main()
 {
@@ -31,4 +35,6 @@ void main()
 
     TexCoord = inTexCoord;
     Color = inColor;
+    _time = in_time;
+    _use_vignette = in_use_vignette;
 }

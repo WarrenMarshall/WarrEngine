@@ -4,6 +4,8 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec4 Color;
 in vec3 Pos;
+in float _time;
+in float _use_vignette;
 
 uniform sampler2D ourTexture;
 
@@ -24,6 +26,11 @@ vec2 crt_coords( vec2 uv, float bend )
 
 float vignette( vec2 uv, float size, float smoothness, float edgeRounding )
 {
+	if( _use_vignette < 0.5f )
+	{
+		return 1.0f;
+	}
+
 	uv -= 0.5f;
 	uv *= size;
 
@@ -36,16 +43,18 @@ float vignette( vec2 uv, float size, float smoothness, float edgeRounding )
 
 float scanline( vec2 uv, float lines, float speed )
 {
-	return sin( uv.y * lines /*+ iTime*/ * speed );
+	return sin( uv.y * lines + _time * speed );
 }
 
 void main()
 {
 	float crt_tint = 1.0f;
+	float crt_tint_inv = 0.0f;
 
 	if( (int( Pos.y ) % 2) > 0 )
 	{
-		crt_tint = 0.95f;
+		crt_tint = 0.975f;
+		crt_tint_inv = 0.01f;
 	}
 
 	vec4 final_color = Color;
@@ -55,12 +64,11 @@ void main()
 	if( crt_uv.x < 0.0f || crt_uv.x > 1.0f ) final_color = vec4(0,0,0,0);
 	if( crt_uv.y < 0.0f || crt_uv.y > 1.0f ) final_color = vec4(0,0,0,0);
 
-	float s1 = scanline( uv, 100.0f, -10.0f );
-	float s2 = scanline( uv, 10.0f, -3.0f );
+	float s1 = scanline( uv, 20.0f, -10.0f );
+	float s2 = scanline( uv, 2.0f, -3.0f );
 
-   	//FragColor = texture( ourTexture, crt_uv );
-	FragColor = mix( texture( ourTexture, crt_uv ), vec4( s1 + s2 ), 0.0075f );
-   	FragColor *= final_color;
+	FragColor = mix( texture( ourTexture, crt_uv ), vec4( s1 + s2 ), 0.01f );
+   	FragColor *= final_color * crt_tint;
   	FragColor *= vignette( uv, 1.9f, 0.6f, 16.0f );
-   	FragColor *= crt_tint;
+  	//FragColor *= crt_tint;
 }
