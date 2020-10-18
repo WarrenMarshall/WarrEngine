@@ -8,6 +8,7 @@ struct w_particle_spawner
 	virtual void parse_from_config_string( std::string_view value );
 };
 
+// a box, centered on the position
 struct w_particle_spawner_box : w_particle_spawner
 {
 	int w = 0, h = 0;

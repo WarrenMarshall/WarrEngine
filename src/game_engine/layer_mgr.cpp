@@ -52,10 +52,7 @@ void w_layer_mgr::pop()
 
 w_layer* w_layer_mgr::get_top()
 {
-	if( layer_stack.empty() )
-	{
-		return nullptr;
-	}
+	assert( !layer_stack.empty() );
 
 	return layer_stack.front().get();
 }

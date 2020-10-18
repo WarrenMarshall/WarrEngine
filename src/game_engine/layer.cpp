@@ -65,9 +65,9 @@ void w_layer::draw()
 	}
 }
 
-bool w_layer::is_topmost_layer()
+bool w_layer::is_topmost_layer() const
 {
-	return ( engine->layer_mgr->get_top() == this );
+	return ( LAYER == this );
 }
 
 w_entity* w_layer::find_entity_from_tag( const char* tag )

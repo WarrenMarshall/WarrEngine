@@ -45,9 +45,6 @@ void w_tokenizer::preprocess()
 		end++;
 	}
 
-	// mismatched [] bracket set in string buffer
-	//assert( bracket_depth == 0 );
-
 	if( end > start )
 	{
 		tokens.emplace_back( string_buffer.substr( start, end - start ) );

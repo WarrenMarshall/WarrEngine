@@ -242,6 +242,8 @@ constexpr bool im_right_clicked( e_im_result result )
 #define RENDER engine->render
 #define UI engine->ui
 #define INPUT engine->input
+#define LAYER engine->layer_mgr->get_top()
+#define LAYER_MGR engine->layer_mgr
 
 // ----------------------------------------------------------------------------
 

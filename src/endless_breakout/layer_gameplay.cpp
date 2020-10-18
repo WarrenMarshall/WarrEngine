@@ -104,7 +104,7 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 
 void layer_gameplay::update()
 {
-	if( engine->layer_mgr->get_top() != this )
+	if( LAYER != this )
 	{
 		return;
 	}

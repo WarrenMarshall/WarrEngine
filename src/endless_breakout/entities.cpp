@@ -116,8 +116,6 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 {
 	assert( hit.count > 0 );	// sanity check
 
-	auto layer = engine->layer_mgr->get_top();
-
 	if( entity_hit->collision_layer & cl_powup_multiball )
 	{
 		GAME->add_score( 100 );
@@ -126,12 +124,12 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 		entity_hit->set_life_cycle( life_cycle::dying );
 
 		// play the pickup vfx
-		auto efx = layer->add_entity<w_entity_fx>( entity_hit->pos, 0, 1 );
+		auto efx = LAYER->add_entity<w_entity_fx>( entity_hit->pos, 0, 1 );
 		efx->add_component<ec_emitter>()->init( "multiball_pickup" );
 		efx->add_component<ec_sound>()->init( "powup_impact" );
 
 		// spawn an extra ball at the same location as the brick
-		auto ball = layer->add_entity<e_ball>( entity_hit->pos, 0.0f, scale );
+		auto ball = LAYER->add_entity<e_ball>( entity_hit->pos, 0.0f, scale );
 	}
 	else if( entity_hit->collision_layer & cl_powup_fireball )
 	{
@@ -143,7 +141,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 		fireball_powerup.activate( this );
 
 		// play the pickup vfx
-		auto efx = layer->add_entity<w_entity_fx>( entity_hit->pos, 0, 1 );
+		auto efx = LAYER->add_entity<w_entity_fx>( entity_hit->pos, 0, 1 );
 		efx->add_component<ec_emitter>()->init( "fireball_pickup" );
 		efx->add_component<ec_sound>()->init( "powup_impact" );
 	}
@@ -175,7 +173,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 			GAME->add_score( 10 );
 		}
 
-		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
+		auto e = LAYER->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "brick_impact" );
 		e->add_component<ec_emitter>()->init( "brick_hit" );
 	}
@@ -183,14 +181,14 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 	{
 		set_life_cycle( life_cycle::dying );
 
-		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
+		auto e = LAYER->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "deathzone_impact" );
 		e->add_component<ec_emitter>()->init( "ball_in_deathzone" );
 
 		// count up remaining balls.  if zero, game is over.
 		bool balls_remaining = false;
 
-		for( auto& ent : layer->entities )
+		for( auto& ent : LAYER->entities )
 		{
 			if( ent->collision_layer == cl_ball )
 			{
@@ -215,7 +213,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 		add_component<ec_force_multiplier>()->init( 0.5f, 2000 );
 
-		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
+		auto e = LAYER->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "paddle_impact" );
 		e->add_component<ec_emitter>()->init( "brick_hit" );
 	}
@@ -232,7 +230,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 
 		GAME->add_score( 10 );
 
-		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
+		auto e = LAYER->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "ball_impact" );
 		e->add_component<ec_emitter>()->init( "balls_collide" );
 	}
@@ -250,7 +248,7 @@ void e_ball::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manif
 		fudge_movement_dir( reflected_dir );
 		force->angle = w_vec2::to_angle( reflected_dir );
 
-		auto e = layer->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
+		auto e = LAYER->add_entity<w_entity_fx>( pos, 0.0f, 1.0f );
 		e->add_component<ec_sound>()->init( "wall_impact" );
 	}
  }
@@ -268,8 +266,6 @@ e_brick::e_brick()
 void e_brick::collided_with( ec_collider* collider, w_entity* entity_hit, c2Manifold& hit )
 {
 	assert( hit.count > 0 );	// sanity check
-
-	auto layer = engine->layer_mgr->get_top();
 
 	if( entity_hit->collision_layer & cl_deathzone )
 	{

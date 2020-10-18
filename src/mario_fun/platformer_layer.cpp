@@ -19,6 +19,10 @@ void platformer_layer::push()
 	plat_physics = std::make_unique<w_platformer_physics>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );
 
+	auto e = add_entity<w_entity>();
+	e->add_component<ec_emitter>()->init( "background_stars" );
+	e->set_position( { v_window_hw, 256.0f } );
+
 	//game->load_level( "data/mario_fun/levels/level_0.tmx" );
 }
 
@@ -63,12 +67,16 @@ bool platformer_layer::handle_input_event( const w_input_event* evt )
 		if( evt->input_id == input_id::key_1 )
 		{
 			game->player->set_position_deep( engine->input->mouse_vwindow_pos, true );
+			return true;
 		}
 
 		if( evt->input_id == input_id::key_n )
 		{
 			game->spawn_coins();
+			return true;
 		}
+
+		plat_physics->handle_input_event( evt );
 	}
 	return true;
 }

@@ -39,4 +39,5 @@ struct w_physics
 	_NODISCARD virtual bool point_check_all( w_vec2 pos, bitflags layer_mask, w_query_all* hit_result );
 
 	virtual void update();
+	virtual bool handle_input_event( const w_input_event* evt );
 };

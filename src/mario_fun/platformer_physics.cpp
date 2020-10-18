@@ -62,29 +62,29 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 	}
 }
 
-bool w_platformer_physics::can_jump()
+bool w_platformer_physics::can_jump() const
 {
 	return ( player_on_ground > 0 && timer_jump_limiter->get_elapsed_count() );
 }
 
-bool w_platformer_physics::in_air()
+bool w_platformer_physics::in_air() const
 {
 	return ( player_on_ground == 0 );
 }
 
-bool w_platformer_physics::on_ground()
+bool w_platformer_physics::on_ground() const
 {
 	return ( player_on_ground > 0 );
 }
 
-bool w_platformer_physics::can_drop_down()
+bool w_platformer_physics::can_drop_down() const
 {
 	return ( player_drop_down_blocked == 0 );
 }
 
 void w_platformer_physics::hit_ground()
 {
-	auto player = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
+	auto player = LAYER->find_entity_from_tag( "player" );
 	if( player->get_primary_body()->body->GetLinearVelocity().y > 0.0f )
 	{
 		timer_jump_limiter->reset();
@@ -92,8 +92,7 @@ void w_platformer_physics::hit_ground()
 		w_raycast_closest hit;
 		if( trace_closest( player->pos, w_vec2::down, 16.0f, clayer_world, &hit ) )
 		{
-			auto layer = engine->layer_mgr->get_top();
-			auto fx = layer->add_entity<w_entity_fx>();
+			auto fx = LAYER->add_entity<w_entity_fx>();
 			fx->set_position( hit.result.point + w_vec2(0,2) );
 			fx->add_component<ec_emitter>()->init( "small_smoke_puff" );
 		}
@@ -102,7 +101,7 @@ void w_platformer_physics::hit_ground()
 
 void w_platformer_physics::handle_user_input()
 {
-	auto player = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
+	auto player = LAYER->find_entity_from_tag( "player" );
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
 	if( !fequals( left_stick.x, 0.0f ) )
@@ -121,52 +120,64 @@ void w_platformer_physics::handle_user_input()
 
 		ec->body->SetLinearVelocity( { desired, current.y } );
 	}
+}
 
-	if( engine->input->get_button_state( input_id::controller_button_a ) == button_state::held )
+bool w_platformer_physics::handle_input_event( const w_input_event* evt )
+{
+	auto player = LAYER->find_entity_from_tag( "player" );
+
+	if( evt->event_id == event_id::input_pressed )
 	{
-		if( can_jump() )
+		if( evt->input_id == input_id::controller_button_a )
 		{
-			timer_jump_limiter->reset();
-
-			w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
-
-			auto ec = player->get_primary_body();
-
-			float dir_modifier = 1.0f;
-			if( left_stick.y > player_drop_down_normal_tolerance )
+			if( can_jump() )
 			{
-				if( can_drop_down() )
+				timer_jump_limiter->reset();
+
+				w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
+
+				auto ec = player->get_primary_body();
+
+				float dir_modifier = 1.0f;
+				if( left_stick.y > player_drop_down_normal_tolerance )
 				{
-					dir_modifier = -0.25f;
-					auto pos = ec->body->GetPosition();
-					ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_base_radius * 1.5f ) }, 0.0f );
+					if( can_drop_down() )
+					{
+						dir_modifier = -0.25f;
+						auto pos = ec->body->GetPosition();
+						ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_base_radius * 1.5f ) }, 0.0f );
+					}
+					else
+					{
+						dir_modifier = 0.0f;
+					}
 				}
-				else
+
+				if( dir_modifier > 0.0f )
 				{
-					dir_modifier = 0.0f;
+					game->snd_plat_jump->play();
 				}
-			}
 
-			if( dir_modifier > 0.0f )
-			{
-				game->snd_plat_jump->play();
-			}
+				if( dir_modifier < 0.0f )
+				{
+					game->snd_plat_drop_down->play();
+				}
 
-			if( dir_modifier < 0.0f )
-			{
-				game->snd_plat_drop_down->play();
-			}
+				ec->body->ApplyLinearImpulseToCenter( w_vec2( 0.0f, -player_jump_force * dir_modifier ).to_b2d(), true );
 
-			ec->body->ApplyLinearImpulseToCenter( w_vec2( 0.0f, -player_jump_force * dir_modifier ).to_b2d(), true );
+				return true;
+			}
 		}
 	}
+
+	return false;
 }
 
 void w_platformer_physics::update()
 {
 	timer_jump_limiter->update();
 
-	auto e = engine->layer_mgr->get_top()->find_entity_from_tag( "player" );
+	auto e = LAYER->find_entity_from_tag( "player" );
 
 	if( !e )
 	{

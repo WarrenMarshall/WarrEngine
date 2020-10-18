@@ -42,7 +42,7 @@
 {
 	"type" "anim_texture"
 	"name" "anim_coin"
-	"frames_per_sec" "4"
+	"frames_per_sec" "6"
 	"tween" "tween.loop"
 	"frames" "coin_spr_1,coin_spr_2,coin_spr_3,coin_spr_4"
 }

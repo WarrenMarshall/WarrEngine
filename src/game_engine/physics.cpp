@@ -182,3 +182,8 @@ void w_physics::update()
 {
 
 }
+
+bool w_physics::handle_input_event( const w_input_event* evt )
+{
+	return false;
+}

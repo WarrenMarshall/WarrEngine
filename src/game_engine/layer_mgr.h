@@ -18,9 +18,10 @@ struct w_layer_mgr : i_listener
 	{
 		auto new_layer = std::make_unique<T>();
 
-		w_layer* top_layer = get_top();
-		if( top_layer )
+		if( layer_stack.size() )
 		{
+			w_layer* top_layer = get_top();
+
 			if( typeid( *top_layer ) == typeid( *new_layer ) )
 			{
 				log_error( "Duplicate layer types at top of stack : {}", typeid( *top_layer ).name() );

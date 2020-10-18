@@ -1,4 +1,6 @@
 
+# landing on ground
+
 {
 	"type" "emitter_params"
 	"name" "small_smoke_puff"
@@ -19,3 +21,43 @@
 	"r_spin_per_sec" "0,0"
 	"t_alpha" "0,0, 0.1,0.75, 1,0"
 }
+
+# background
+
+{
+	"type" "emitter_params"
+	"name" "background_stars"
+	"texture_name" "cartoon_star"
+	"spawner_type" "box,v_window_w,512"
+
+	"s_max_spawn_per_sec" "2"
+	"b_needs_warm_up" "false"
+	"a_dir" "0"
+	"r_scale_spawn" "0.5, 1.25"
+	"t_scale" "0.0,0.0, 0.2,1.0, 0.4,0.0, 1.0,0.0"
+	"r_lifespan" "12000, 12000"
+	"r_velocity_spawn" "0,0"
+	"t_color" "0,color.white, 1.0,color.white"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.15,1, 1,0"
+}
+
+# emitter_params
+# {
+# 	name = "background_stars"
+# 	texture_name = "cartoon_star"
+# 	spawner_type = "box,v_window_2,512"
+
+# 	s_max_spawn_per_sec = "2"
+# 	b_needs_warm_up = "false"
+# 	a_dir = "270"
+# 	r_scale_spawn = "0.5, 1.25"
+# 	t_scale = "0.0,0.0, 0.2,1.0, 0.4,0.0, 1.0,0.0"
+# 	r_lifespan = "6000, 12000"
+# 	r_velocity_spawn = "-5,-15"
+# 	t_color = "0,color.white, 1.0,color.white"
+# 	r_spin_spawn = "0,0"
+# 	r_spin_per_sec = "0,0"
+# 	t_alpha = "0,0, 0.15,1, 1,0"
+# }

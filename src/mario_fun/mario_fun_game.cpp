@@ -50,14 +50,12 @@ std::string mario_fun_game::get_game_name()
 
 void mario_fun_game::load_level( std::string_view level_filename )
 {
-	w_layer* layer = engine->layer_mgr->get_top();
-
 	ec_b2d_body* ec = nullptr;
 
 	// ----------------------------------------------------------------------------
 	// world geometry
 
-	auto world = layer->add_entity<e_platformer_level>();
+	auto world = LAYER->add_entity<e_platformer_level>();
 	auto ec_tm = world->get_component<ec_tilemap>( component_type::tilemap );
 	ec_tm->load_from_disk( "world", tile_set_subtex, level_filename );
 
@@ -72,7 +70,7 @@ void mario_fun_game::load_level( std::string_view level_filename )
 			if( tile.tileset_idx == 0 )
 			{
 				// coin pickup
-				auto coin = layer->add_entity<e_platformer_coin>();
+				auto coin = LAYER->add_entity<e_platformer_coin>();
 				coin->set_position_deep( { tile.pos.x + 8.0f, tile.pos.y + 8.0f }, true );
 
 				// remove tile from map
@@ -82,7 +80,7 @@ void mario_fun_game::load_level( std::string_view level_filename )
 			else if( tile.tileset_idx == 12 )
 			{
 				// player start
-				player = layer->add_entity<e_platformer_player>();
+				player = LAYER->add_entity<e_platformer_player>();
 				player->set_position_deep( { tile.pos.x + 8.0f, tile.pos.y + 8.0f }, true );
 				player->set_position( { v_window_hw, tile.pos.y + 8.0f } );
 
@@ -101,7 +99,7 @@ void mario_fun_game::load_level( std::string_view level_filename )
 	// ----------------------------------------------------------------------------
 	// camera
 
-	auto player_camera = layer->add_entity<w_camera>();
+	auto player_camera = LAYER->add_entity<w_camera>();
 	player_camera->pos = player->pos;
 	player_camera->set_follow_target( player, follow_flags::y_axis, 0.10f );
 	RENDER->current_camera = player_camera;
@@ -114,11 +112,9 @@ void mario_fun_game::load_level( std::string_view level_filename )
 
 void mario_fun_game::spawn_coins()
 {
-	auto layer = engine->layer_mgr->get_top();
-
 	for( int c = 0 ; c < 12 ; ++c )
 	{
-		auto coin = layer->add_entity<e_platformer_coin>();
+		auto coin = LAYER->add_entity<e_platformer_coin>();
 		coin->set_position_deep( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, 32.0f ) }, true );
 	}
 }
