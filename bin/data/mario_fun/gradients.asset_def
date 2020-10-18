@@ -8,5 +8,5 @@
 	"name" "sky_gradient"
 	"subtexture" "s_sky_gradient"
 	"alignment" "align.vertical"
-	"colors" "color.dark_teal, color.light_blue, color.teal:3, color.dark_grey"
+	"colors" "color.black, color.dark_teal, color.light_blue, color.teal:3, color.dark_grey"
 }
