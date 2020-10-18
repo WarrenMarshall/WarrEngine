@@ -289,6 +289,8 @@ void w_engine::exec_main_loop()
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
+
+			//OPENGL->set_uniform( "u_delta_time", w_time::FTS_step_value_ms );
 		}
 
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
@@ -617,9 +619,8 @@ void w_engine::parse_config_file( std::string_view filename )
 		{
 			w_tokenizer tok_kv( line, '\"' );
 
-			tok_kv.get_next_token();
 			auto key = tok_kv.get_next_token();
-			tok_kv.get_next_token();
+			tok_kv.get_next_token(); // skip blank
 			auto value = tok_kv.get_next_token();
 
 			if( key.has_value() && value.has_value() )

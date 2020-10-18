@@ -4,9 +4,14 @@
 
 struct w_raycast_hit
 {
+	// how far along the ray did the hit occur?
 	float fraction = 0.0f;
+
+	// the normal direction resulting from the hit.
 	w_vec2 normal = w_vec2::zero;
-	w_vec2 point = w_vec2::zero;
+
+	// the world space position of the hit.
+	w_vec2 pos = w_vec2::zero;
 };
 
 // ----------------------------------------------------------------------------

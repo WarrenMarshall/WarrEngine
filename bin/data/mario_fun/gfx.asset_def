@@ -55,6 +55,12 @@
 
 {
 	"type" "texture"
+	"name" "particle_small_star"
+	"filename" "gfx/particlesmallstar.png"
+}
+
+{
+	"type" "texture"
 	"name" "main_tile_sheet"
 	"filename" "gfx/tileset.png"
 	"subtextures" "\

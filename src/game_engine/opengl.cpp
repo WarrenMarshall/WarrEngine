@@ -225,3 +225,11 @@ void w_opengl::init_view_matrix_identity() const
 	}
 }
 
+void w_opengl::set_uniform( std::string_view name, float value )
+{
+	for( auto& iter : shader_pool )
+	{
+		//iter.second.get()->bind();
+		//glUniform1f( glGetUniformLocation( iter.second.get()->id, name.data() ), value );
+	}
+}

@@ -22,4 +22,5 @@ struct w_opengl
 	void init_projection_matrix() const;
 	void init_view_matrix() const;
 	void init_view_matrix_identity() const;
+	void set_uniform( std::string_view name, float value );
 };

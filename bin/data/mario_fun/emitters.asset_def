@@ -27,7 +27,7 @@
 {
 	"type" "emitter_params"
 	"name" "background_stars"
-	"texture_name" "cartoon_star"
+	"texture_name" "particle_small_star"
 	"spawner_type" "box,v_window_w,512"
 
 	"s_max_spawn_per_sec" "2"

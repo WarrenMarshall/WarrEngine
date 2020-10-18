@@ -53,7 +53,6 @@ void w_tokenizer::preprocess()
 
 std::optional<std::string_view> w_tokenizer::get_next_token()
 {
-#if 1
 	if( is_eos() )
 	{
 		return std::nullopt;
@@ -76,39 +75,6 @@ std::optional<std::string_view> w_tokenizer::get_next_token()
 
 	// trim the token before sending it back
 	return w_string_util::trim( *ret );
-#else
-	if( is_eos() )
-	{
-		return std::nullopt;
-	}
-
-	size_t start = idx;
-	size_t end = string_buffer.find( delim, start );
-
-	if( end == std::string_view::npos )
-	{
-		// delimiter was not found so set 'end' to consume the rest of the string
-		end = string_buffer.length();
-		idx = static_cast<int>( end );
-		end_of_string = true;
-	}
-	else if( start == end )
-	{
-		idx++;
-		return std::nullopt;
-	}
-
-	std::optional<std::string_view> ret = std::nullopt;
-
-	// extract the token
-	ret = string_buffer.substr( start, end - start );
-
-	// move the index to beyond the returning token
-	idx += ret->length() + 1;
-
-	// trim the token before sending it back
-	return w_string_util::trim( *ret );
-#endif
 }
 
 bool w_tokenizer::is_eos()

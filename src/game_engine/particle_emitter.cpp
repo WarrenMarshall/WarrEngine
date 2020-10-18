@@ -95,7 +95,16 @@ void w_particle_emitter::spawn_particle()
 	w_particle* p = particle_pool->get_next_particle();
 	p = new( p ) w_particle();
 
+	// particle spawn locations are determined in stages. particles are different
+	// from most things in that they are spawned and updated in world space, independent
+	// of whatever is spawning them.
+
+	// 1. find a spawn location based on the particle spawner we are using
+	//    relative to the world origin
 	params->particle_spawner->find_spawn_pos_for_new_particle( p );
+
+	// 2. apply the current transform (entity+component) to move the
+	//    particle position into world space
 	MATRIX->top()->transform_vec2( p->pos );
 
 	p->tex = params->tex;

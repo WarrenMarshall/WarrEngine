@@ -93,7 +93,7 @@ void w_platformer_physics::hit_ground()
 		if( trace_closest( player->pos, w_vec2::down, 16.0f, clayer_world, &hit ) )
 		{
 			auto fx = LAYER->add_entity<w_entity_fx>();
-			fx->set_position( hit.result.point + w_vec2(0,2) );
+			fx->set_position( hit.result.pos + w_vec2(0,2) );
 			fx->add_component<ec_emitter>()->init( "small_smoke_puff" );
 		}
 	}
