@@ -60,7 +60,20 @@ void w_layer::draw()
 	}
 }
 
+void w_layer::draw_debug()
+{
+	// optionally draw debug physics shapes
+	if( RENDER->show_physics_debug && is_topmost_layer() )
+	{
+		engine->box2d_world->DebugDraw();
+	}
+}
+
 void w_layer::draw_ui()
+{
+}
+
+void w_layer::draw_ui_debug()
 {
 }
 

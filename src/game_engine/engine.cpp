@@ -324,12 +324,6 @@ void w_engine::exec_main_loop()
 			// ----------------------------------------------------------------------------
 			// render the frame
 
-			// optionally draw debug physics shapes
-			if( RENDER->show_physics_debug )
-			{
-				engine->box2d_world->DebugDraw();
-			}
-
 			// layers and entities
 			engine->layer_mgr->draw();
 

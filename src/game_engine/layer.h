@@ -38,8 +38,12 @@ struct w_layer : i_life_cycle
 	virtual void getting_covered() {}
 
 	virtual void update();
+
 	virtual void draw();
+	virtual void draw_debug();
+
 	virtual void draw_ui();
+	virtual void draw_ui_debug();
 
 	virtual bool handle_input_event( const w_input_event* evt );
 

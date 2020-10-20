@@ -113,13 +113,32 @@ void w_layer_mgr::draw()
 
 		if( layer_stack[x]->is_alive() )
 		{
+			// primary draw call for the layer. uses an optional custom camera.
 			OPENGL->init_view_matrix( layer_stack[ x ]->get_camera() );
 			RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
 			layer_stack[ x ]->draw();
 
+#ifdef _DEBUG
+			// let the layer draw optional debug info. note that this is
+			// using the optional custom camera from above, so this is
+			// only for debug drawing in world space, not screen space.
+			RENDER->push_depth_nudge();
+			layer_stack[ x ]->draw_debug();
+#endif
+
+			// draw any screen space items, like UI. these are
+			// drawn with an identity matrix so the top left of
+			// the screen is always 0,0.
 			OPENGL->init_view_matrix_identity();
 			RENDER->push_depth_nudge();
 			layer_stack[ x ]->draw_ui();
+
+#ifdef _DEBUG
+			// same as the other debug draw call, but this is for
+			// info in screen space
+			RENDER->push_depth_nudge();
+			layer_stack[ x ]->draw_ui_debug();
+#endif
 		}
 	}
 
