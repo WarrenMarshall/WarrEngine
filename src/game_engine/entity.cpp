@@ -223,6 +223,16 @@ void w_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags fla
 	set_position_deep( follow.target->pos, false );
 }
 
+void w_camera::set_follow_limits_x( w_vec2 limits )
+{
+	follow.limits_x = limits;
+}
+
+void w_camera::set_follow_limits_y( w_vec2 limits )
+{
+	follow.limits_y = limits;
+}
+
 void w_camera::update()
 {
 	w_entity::update();
@@ -234,27 +244,24 @@ void w_camera::update()
 		w_vec2 target_pos = pos;
 		w_vec2 delta_pos = follow.target->pos - pos;
 
-#if 1
 		if( follow.flags & follow_flags::x_axis )
 		{
 			target_pos.x = pos.x + ( delta_pos.x * follow.strength );
+
+			if( follow.limits_x.has_value() )
+			{
+				target_pos.x = std::clamp( target_pos.x, follow.limits_x->_left, follow.limits_x->_right );
+			}
 		}
 
 		if( follow.flags & follow_flags::y_axis )
 		{
 			target_pos.y = pos.y + ( delta_pos.y * follow.strength );
-		}
-#else
-		if( follow.flags & follow_flags::x_axis )
-		{
-			target_pos.x = follow.target->pos.x;
-		}
 
-		if( follow.flags & follow_flags::y_axis )
-		{
-			target_pos.y = follow.target->pos.y;
+			if( follow.limits_y.has_value() )
+			{
+				target_pos.y = std::clamp( target_pos.y, follow.limits_y->_top, follow.limits_y->_bottom );			}
 		}
-#endif
 
 		set_position_deep( target_pos, false );
 

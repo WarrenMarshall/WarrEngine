@@ -213,8 +213,8 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = subtex->sz.w;
-	float h = subtex->sz.h;
+	float w = subtex->sz._width;
+	float h = subtex->sz._height;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -252,8 +252,8 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = dst.w ? dst.w : subtex->sz.w;
-	float h = dst.h ? dst.h : subtex->sz.h;
+	float w = dst.w ? dst.w : subtex->sz._width;
+	float h = dst.h ? dst.h : subtex->sz._height;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 
@@ -411,16 +411,13 @@ w_render* w_render::draw_world_axis()
 
 /*
 	draws useful stats at the top of the screen
-
-	it does this at the world origin, so make sure the camera
-	transform is reset before calling this
 */
 
 constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
-	maybe_draw_master_buffer( nullptr );
+	maybe_draw_master_buffer( current_texture );
 
 	RENDER->begin()->push_depth( zdepth_stats );
 
@@ -475,7 +472,6 @@ w_render* w_render::draw_stats()
 			->push_align( align::right )
 			->draw_string(
 				engine->pixel_font,
-				//fmt::format( "{} FPS", f_commas( 1000.f / stats.frame_times_ms.value ) ),
 				fmt::format( "{} FPS ({:.2f} ms)", stats.frame_count.value, stats.frame_times_ms.value ),
 				w_rect( v_window_w, 0 ) )
 			->end();
@@ -594,7 +590,10 @@ w_render* w_render::draw_point( const w_vec2& pos )
 {
 	maybe_draw_master_buffer( engine->white_wire->tex );
 
-	draw_rectangle( w_rect( pos.x - 1, pos.y - 1, 2, 2 ) );
+	auto start = pos;
+	auto end = start + w_vec2( 1.0f, 0.0f );
+
+	draw_line( start, end );
 
 	return this;
 }
@@ -617,42 +616,42 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	float xpos = dst.x;
 	float ypos = dst.y;
 
-	float inner_w = dst.w - p_00->sz.w - p_20->sz.w;
-	float inner_h = dst.h - p_00->sz.h - p_02->sz.h;
+	float inner_w = dst.w - p_00->sz._width - p_20->sz._width;
+	float inner_h = dst.h - p_00->sz._height - p_02->sz._height;
 
 	// top row
 
-	draw( p_00, w_rect( xpos, ypos, p_00->sz.w, p_00->sz.h ) );
+	draw( p_00, w_rect( xpos, ypos, p_00->sz._width, p_00->sz._height ) );
 
-	xpos += p_00->sz.w;
-	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->sz.h ) );
+	xpos += p_00->sz._width;
+	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->sz._height ) );
 
 	xpos += inner_w;
-	draw( p_20, w_rect( xpos, ypos, p_20->sz.w, p_20->sz.h ) );
+	draw( p_20, w_rect( xpos, ypos, p_20->sz._width, p_20->sz._height ) );
 
 	// middle row
 
 	xpos = dst.x;
-	ypos += p_00->sz.h;
-	draw( p_01, w_rect( xpos, ypos, p_01->sz.w, inner_h ) );
+	ypos += p_00->sz._height;
+	draw( p_01, w_rect( xpos, ypos, p_01->sz._width, inner_h ) );
 
-	xpos += p_01->sz.w;
+	xpos += p_01->sz._width;
 	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
 
 	xpos += inner_w;
-	draw( p_21, w_rect( xpos, ypos, p_21->sz.w, inner_h ) );
+	draw( p_21, w_rect( xpos, ypos, p_21->sz._width, inner_h ) );
 
 	// bottom row
 
 	xpos = dst.x;
 	ypos += inner_h;
-	draw( p_02, w_rect( xpos, ypos, p_02->sz.w, p_02->sz.h ) );
+	draw( p_02, w_rect( xpos, ypos, p_02->sz._width, p_02->sz._height ) );
 
-	xpos += p_02->sz.w;
-	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->sz.h ) );
+	xpos += p_02->sz._width;
+	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->sz._height ) );
 
 	xpos += inner_w;
-	draw( p_22, w_rect( xpos, ypos, p_22->sz.w, p_22->sz.h ) );
+	draw( p_22, w_rect( xpos, ypos, p_22->sz._width, p_22->sz._height ) );
 
 	return this;
 }

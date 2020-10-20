@@ -174,31 +174,26 @@ void w_opengl::init_projection_matrix() const
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
 //
-// if there is an active camera, use it's transform.
+// if there is a custom camera, apply it's transform.
 
-void w_opengl::init_view_matrix() const
+void w_opengl::init_view_matrix( w_camera* camera ) const
 {
 	RENDER->draw_master_buffer();
 
+	// default to identity matrix
 	glm::mat4 view = glm::mat4( 1.0f );
-	if( RENDER->current_camera )
+
+	if( camera )
 	{
-#if 0
-		view = glm::translate( view, glm::vec3(
-			-( RENDER->current_camera->pos.x - v_window_hw ),
-			-( RENDER->current_camera->pos.y - v_window_hh ),
-			0.0f ) );
-#else
 		view = glm::translate( view, glm::vec3(
 			v_window_hw,
 			v_window_hh,
 			0.0f ) );
 
 		view = glm::translate( view, glm::vec3(
-			-( RENDER->current_camera->pos.x ),
-			-( RENDER->current_camera->pos.y ),
+			-( camera->pos.x ),
+			-( camera->pos.y ),
 			0.0f ) );
-#endif
 	}
 
 	for( auto& iter : shader_pool )

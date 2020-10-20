@@ -14,5 +14,5 @@ int main( int argc, char* argv [] )
 
 	w_engine::deinit_game_engine();
 
-	return 0;
+	return 1;
 }

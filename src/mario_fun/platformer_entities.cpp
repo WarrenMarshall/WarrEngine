@@ -22,28 +22,13 @@ e_platformer_player::e_platformer_player()
 		ec->body->SetFixedRotation( true );
 		ec->is_primary_body = true;
 
-#if 1
 		auto f = ec->add_fixture_circle(
 			"player",
 			w_vec2(0.0f,2.0f), 5.5f );
 
-#else
-		auto f = ec->add_fixture_polygon(
-			"player",
-			w_vec2( 0.0f, 0.0f ),
-			{
-				{ -6, -6 },
-				{ 6, -6 },
-				{ 6, 3 },
-				{ 3, 6 },
-				{ -3, 6 },
-				{ -6, 3 }
-			}
-		);
-#endif
+		ec->add_fixture_box( "s_on_ground", { 0.0f, 8.0f }, 6.0f, 4.0f )->SetSensor( true );
 
-		ec->add_fixture_box( "s_on_ground", { 0.0f, 8.0f }, 10.0f, 4.0f )->SetSensor( true );
-		ec->add_fixture_box( "s_can_drop_down", { 0.0f, 14.0f }, 12.0f, 7.0f )->SetSensor( true );
+		ec->add_fixture_box( "s_can_drop_down", { 0.0f, 14.0f }, 6.0f, 7.0f )->SetSensor( true );
 	}
 
 	add_component<ec_sprite>()->init( "anim_player_idle" );

@@ -209,6 +209,11 @@ void w_engine::deinit_game_engine()
 
 	log_msg( "Shutting down..." );
 
+	// this needs to be done before the audio or windowing systems, to give
+	// the layers a chance to clean up first.
+	log_msg( "Shutting down layer manager" );
+	engine->layer_mgr->clear_stack();
+
 	log_msg( "Shutting down window" );
 	engine->window->deinit();
 
@@ -313,19 +318,20 @@ void w_engine::exec_main_loop()
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 			OPENGL->init_projection_matrix();
-			OPENGL->init_view_matrix();
+			OPENGL->init_view_matrix_identity();
 			OPENGL->find_shader( "simple" )->bind();
 
+			// ----------------------------------------------------------------------------
 			// render the frame
-
-			// layers and entities
-			engine->layer_mgr->draw();
 
 			// optionally draw debug physics shapes
 			if( RENDER->show_physics_debug )
 			{
 				engine->box2d_world->DebugDraw();
 			}
+
+			// layers and entities
+			engine->layer_mgr->draw();
 
 			OPENGL->init_view_matrix_identity();
 

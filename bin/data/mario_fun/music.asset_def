@@ -7,3 +7,17 @@
 # 	"filename" "music/realtime.wav"
 # 	"looped" "true"
 # }
+
+{
+	"type" "sound"
+	"name" "music_main_menu"
+	"filename" "sfx/music_main_menu.wav"
+	"looped" "true"
+}
+
+{
+	"type" "sound"
+	"name" "music_gameplay"
+	"filename" "sfx/music_gameplay.wav"
+	"looped" "true"
+}

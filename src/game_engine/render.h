@@ -30,9 +30,6 @@ struct w_render
 	*/
 	float frame_interpolate_pct = 0.0f;
 
-	// if this is set, we use it for things like setting up the view matrix.
-	w_camera* current_camera = nullptr;
-
 	/*
 		batch rendering
 	*/

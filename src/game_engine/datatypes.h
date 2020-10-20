@@ -87,10 +87,7 @@ struct w_range
 
 struct w_rect
 {
-	float x = 0.0f;
-	float y = 0.0f;
-	float w = 0.0f;
-	float h = 0.0f;
+	float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
 
 	static const w_rect zero;
 
@@ -119,21 +116,26 @@ struct w_vec2
 		{
 			float x, y;		// xy position
 		};
+
+		// these are designed to make code easier to read. so if the w_vec2's values
+		// are being used in a specific way, these unioned names can make the
+		// intention clearer.
+
 		struct
 		{
 			float u, v;		// uv coord
 		};
 		struct
 		{
-			float w, h;		// width/height
+			float _width, _height;
 		};
 		struct
 		{
-			float l, r;
+			float _left, _right;
 		};
 		struct
 		{
-			float t, b;
+			float _top, _bottom;
 		};
 	};
 
@@ -160,7 +162,7 @@ struct w_vec2
 
 	bool operator==( w_vec2 v );
 	bool operator!=( w_vec2 v );
-	w_vec2 operator+( w_vec2 v );
+	w_vec2 operator+( const w_vec2 v );
 	w_vec2 operator+=( w_vec2 v );
 	w_vec2 operator-( w_vec2 v );
 	w_vec2 operator-=( w_vec2 v );

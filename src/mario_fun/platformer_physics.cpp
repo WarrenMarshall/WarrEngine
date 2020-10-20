@@ -7,9 +7,9 @@ constexpr float player_move_force_s = 7.5f;
 constexpr float player_base_radius = 6.0f;
 constexpr float player_move_force_max = 1.0f;
 
-constexpr float player_jump_force = 6.5f;
+constexpr float player_jump_force = 5.0f;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
-constexpr int player_jump_interval = 200;
+constexpr int player_jump_interval = 50;
 constexpr float player_air_control_damping = 0.35f;
 
 // ----------------------------------------------------------------------------
@@ -32,13 +32,11 @@ void w_platformer_physics::BeginContact( b2Contact* contact )
 			hit_ground();
 		}
 	}
-
-	if( contact_ids_match( "s_can_drop_down", "world" ) )
+	else if( contact_ids_match( "s_can_drop_down", "world" ) )
 	{
 		player_drop_down_blocked++;
 	}
-
-	if( contact_ids_match( "player", "coin" ) )
+	else if( contact_ids_match( "player", "coin" ) )
 	{
 		auto coin = find_entity_from_contact_id( "coin" );
 
@@ -55,11 +53,22 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 	{
 		player_on_ground--;
 	}
-
-	if( contact_ids_match( "s_can_drop_down", "world" ) )
+	else if( contact_ids_match( "s_can_drop_down", "world" ) )
 	{
 		player_drop_down_blocked--;
 	}
+}
+
+void w_platformer_physics::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
+{
+	w_contact_listener::PreSolve( contact, oldManifold );
+
+	//if( contact_ids_match( "player", "world" ) )
+	//{
+	//	auto player = LAYER->find_entity_from_tag( "player" );
+	//	player->get_primary_body()->body->GetFixtureList()->SetRestitution( 1.0f );
+	//	log_msg( "player / world" );
+	//}
 }
 
 bool w_platformer_physics::can_jump() const

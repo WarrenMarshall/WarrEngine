@@ -10,9 +10,12 @@ struct mario_fun_game : w_game
 	a_sound* snd_plat_coin = nullptr;
 	a_sound* snd_plat_drop_down = nullptr;
 
+	a_sound* music_main_menu = nullptr;
+
 	std::vector<a_subtexture*> tile_set_subtex;
 
 	w_entity* player = nullptr;
+	w_camera* player_camera = nullptr;
 
 	virtual void init() override;
 	virtual void new_game() override;

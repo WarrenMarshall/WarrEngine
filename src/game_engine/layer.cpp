@@ -3,11 +3,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-bool w_layer::handle_input_event( const w_input_event* evt )
-{
-	return false;
-}
-
 void w_layer::update()
 {
 	// clear out dead entities
@@ -63,6 +58,20 @@ void w_layer::draw()
 		MATRIX
 			->pop();
 	}
+}
+
+void w_layer::draw_ui()
+{
+}
+
+bool w_layer::handle_input_event( const w_input_event* evt )
+{
+	return false;
+}
+
+w_camera* w_layer::get_camera()
+{
+	return nullptr;
 }
 
 bool w_layer::is_topmost_layer() const

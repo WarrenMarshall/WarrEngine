@@ -330,7 +330,7 @@ b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 sta
 		start += pos;
 		end += pos;
 
-		float length = ( end - start ).get_size_squared() / 10.0f;
+		float length = ( end - start ).get_size_squared() / 2.0f;
 
 		shape.SetOneSided(
 			( start + w_vec2( -length, length ) ).to_b2d(),
@@ -549,12 +549,12 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 					else
 					{
 						// anything with a positive height, we assume it's a box
-						b2d_static->add_fixture_polygon( tag, w_vec2::zero,
+						b2d_static->add_fixture_line_loop( tag, w_vec2::zero,
 														 {
 														 { x, y },
-														 { x + w, y },
+														 { x, y + h },
 														 { x + w, y + h },
-														 { x, y + h }
+														 { x + w, y }
 														 }
 						);
 					}

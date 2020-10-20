@@ -146,8 +146,7 @@ int w_render_buffer::add_render_vert( const w_render_vert& render_vert )
     // until this point, the vertex has been in model coordinate space. this
     // moves it into world space.
 
-    w_vec3 vtx( render_vert.x, render_vert.y, render_vert.z );
-    MATRIX->top()->transform_vec3( vtx );
+    w_vec2 vtx = MATRIX->top()->transform_vec2( w_vec2( render_vert.x, render_vert.y ) );
 
     const w_render_vert rv(
         w_vec2( vtx.x, vtx.y ),

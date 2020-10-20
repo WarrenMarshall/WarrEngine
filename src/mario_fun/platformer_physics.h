@@ -8,6 +8,7 @@ struct w_platformer_physics : w_contact_listener, w_physics
 
 	virtual void BeginContact( b2Contact* contact ) override;
 	virtual void EndContact( b2Contact* contact ) override;
+	virtual void PreSolve( b2Contact* contact, const b2Manifold* oldManifold ) override;
 
 	std::unique_ptr<w_timer> timer_jump_limiter = nullptr;
 	byte player_on_ground = 0;

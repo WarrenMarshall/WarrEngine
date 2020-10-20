@@ -74,14 +74,12 @@ void twinstick_layer::push()
 
 	// camera
 
-	auto player_camera = add_entity<w_camera>();
+	player_camera = add_entity<w_camera>();
 	player_camera->set_follow_target( player, follow_flags::xy_axis, 0.1f );
-	RENDER->current_camera = player_camera;
 }
 
 void twinstick_layer::pop()
 {
-	RENDER->current_camera = nullptr;
 	//music->stop();
 
 	engine->box2d_world->SetContactListener( nullptr );
@@ -119,14 +117,7 @@ void twinstick_layer::draw()
 		->end();
 }
 
-bool twinstick_layer::handle_input_event( const w_input_event* evt )
+w_camera* twinstick_layer::get_camera()
 {
-	//if( evt->event_id == event_id::input_motion )
-	//{
-	//	if( evt->input_id == input_id::controller_left_stick )
-	//	{
-	//	}
-	//}
-
-	return true;
+	return player_camera;
 }

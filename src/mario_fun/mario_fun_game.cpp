@@ -14,6 +14,8 @@ void mario_fun_game::init()
 	snd_plat_coin = engine->get_asset<a_sound>( "snd_plat_coin" );
 	snd_plat_drop_down = engine->get_asset<a_sound>( "snd_plat_drop_down" );
 
+	music_main_menu = engine->get_asset<a_sound>( "music_main_menu" );
+
 	tile_set_subtex =
 	{
 		engine->get_asset<a_subtexture>( "tile_01" ),
@@ -41,6 +43,9 @@ void mario_fun_game::reset_layer_stack_to_main_menu()
 {
 	engine->layer_mgr->clear_stack();
 	engine->layer_mgr->push<layer_main_menu>();
+
+	player = nullptr;
+	player_camera = nullptr;
 }
 
 std::string mario_fun_game::get_game_name()
@@ -99,10 +104,11 @@ void mario_fun_game::load_level( std::string_view level_filename )
 	// ----------------------------------------------------------------------------
 	// camera
 
-	auto player_camera = LAYER->add_entity<w_camera>();
+	player_camera = LAYER->add_entity<w_camera>();
 	player_camera->pos = player->pos;
-	player_camera->set_follow_target( player, follow_flags::y_axis, 0.10f );
-	RENDER->current_camera = player_camera;
+	player_camera->set_follow_target( player, follow_flags::xy_axis, 0.10f );
+	player_camera->set_follow_limits_x( { 160.0f, 288.0f } );
+	player_camera->set_follow_limits_y( { 0.0f, 316.0f } );
 
 	// ----------------------------------------------------------------------------
 	// some random coins

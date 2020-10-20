@@ -21,11 +21,9 @@ void layer_esc_menu::pop()
 	engine->set_pause( false );
 }
 
-void layer_esc_menu::draw()
+void layer_esc_menu::draw_ui()
 {
-	OPENGL->init_view_matrix_identity();
-
-	w_layer::draw();
+	w_layer::draw_ui();
 
 	RENDER
 		->begin()
@@ -75,6 +73,4 @@ void layer_esc_menu::draw()
 	{
 		engine->is_running = false;
 	}
-
-	OPENGL->init_view_matrix();
 }

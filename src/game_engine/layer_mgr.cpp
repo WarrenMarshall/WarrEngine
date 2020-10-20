@@ -113,8 +113,13 @@ void w_layer_mgr::draw()
 
 		if( layer_stack[x]->is_alive() )
 		{
+			OPENGL->init_view_matrix( layer_stack[ x ]->get_camera() );
 			RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
 			layer_stack[ x ]->draw();
+
+			OPENGL->init_view_matrix_identity();
+			RENDER->push_depth_nudge();
+			layer_stack[ x ]->draw_ui();
 		}
 	}
 

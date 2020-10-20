@@ -20,7 +20,7 @@ struct w_opengl
 	w_shader* find_shader( const char* name );
 
 	void init_projection_matrix() const;
-	void init_view_matrix() const;
+	void init_view_matrix( w_camera* camera ) const;
 	void init_view_matrix_identity() const;
 	void set_uniform( std::string_view name, float value );
 };

@@ -39,8 +39,11 @@ struct w_layer : i_life_cycle
 
 	virtual void update();
 	virtual void draw();
+	virtual void draw_ui();
 
 	virtual bool handle_input_event( const w_input_event* evt );
+
+	virtual w_camera* get_camera();
 
 	template<typename T>
 	T* add_entity()

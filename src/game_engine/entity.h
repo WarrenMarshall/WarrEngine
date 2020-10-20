@@ -105,8 +105,12 @@ struct w_camera : w_entity
 		w_entity* target = nullptr;
 		e_follow_flags flags = follow_flags::xy_axis;
 		float strength = 1.0f;
+		std::optional<w_vec2> limits_x = std::nullopt;
+		std::optional<w_vec2> limits_y = std::nullopt;
 	} follow;
 
 	void set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength );
+	void set_follow_limits_x( w_vec2 limits );
+	void set_follow_limits_y( w_vec2 limits );
 	virtual void update() override;
 };

@@ -122,24 +122,24 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 		// if there is a slice_def defined for this control, the image will default
 		// to drawing inside the body of the control. meaning - offset from the top_left
 		// corner by the size of the top_left corner graphic.
-		rc_client.x += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz.w : 0;
-		rc_client.y += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz.h : 0;
+		rc_client.x += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz._width : 0;
+		rc_client.y += slice_def.has_value() ? slice_def.value()->patches[ slicedef_patch::P_00 ]->sz._height : 0;
 
 		// if there are additional position tweaks, apply them
 		rc_client.x += subtex_attrib.pos.value_or( w_vec2::zero ).x;
 		rc_client.y += subtex_attrib.pos.value_or( w_vec2::zero ).y;
 
 		// if there are size tweaks, apply them
-		rc_client.w = subtex.value()->sz.w;
+		rc_client.w = subtex.value()->sz._width;
 		if( subtex_attrib.sz.has_value() )
 		{
-			rc_client.w = ( *subtex_attrib.sz ).w;
+			rc_client.w = ( *subtex_attrib.sz )._width;
 		}
 
-		rc_client.h = subtex.value()->sz.h;
+		rc_client.h = subtex.value()->sz._height;
 		if( subtex_attrib.sz.has_value() )
 		{
-			rc_client.h = ( *subtex_attrib.sz ).h;
+			rc_client.h = ( *subtex_attrib.sz )._height;
 		}
 
 		RENDER->push_rgb( get_adjusted_color( subtex_attrib.color, being_hovered, being_clicked ) )

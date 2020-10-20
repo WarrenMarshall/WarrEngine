@@ -6,6 +6,8 @@
 platformer_layer::platformer_layer()
 {
 	draws_completely_solid = true;
+
+	music_gameplay = engine->get_asset<a_sound>( "music_gameplay" );
 }
 
 void platformer_layer::push()
@@ -23,12 +25,14 @@ void platformer_layer::push()
 	e->add_component<ec_emitter>()->init( "background_stars" );
 	e->set_position( { v_window_hw, 256.0f } );
 
-	//game->load_level( "data/mario_fun/levels/level_0.tmx" );
+	//music_gameplay->play();
 }
 
 void platformer_layer::pop()
 {
 	w_layer::pop();
+
+	//music_gameplay->stop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 }
@@ -43,21 +47,10 @@ void platformer_layer::update()
 
 void platformer_layer::draw()
 {
-	RENDER->draw( sky_gradient, w_rect( 0, 0, v_window_w, v_window_h * 2 ) );
+	// draw the background gradient at the camera position
+	RENDER->draw( sky_gradient, w_rect( game->player_camera->pos.x - v_window_hw, 0, v_window_w, v_window_h * 2 ) );
+
 	w_layer::draw();
-
-#if 0
-	auto ec = game->player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
-
-	RENDER
-		->begin()
-		->push_rgba( w_color::teal, 0.5f );
-
-	RENDER->draw_string( engine->pixel_font, fmt::format( "'1' - set_position_forced player", !plat_physics->in_air() ), w_rect( 16, 16 ) );
-	RENDER->draw_string( engine->pixel_font, fmt::format( "'N' - drop more coins", !plat_physics->can_drop_down() ), w_rect( 16, 24 ) );
-
-	RENDER->end();
-#endif
 }
 
 bool platformer_layer::handle_input_event( const w_input_event* evt )
@@ -79,4 +72,9 @@ bool platformer_layer::handle_input_event( const w_input_event* evt )
 		plat_physics->handle_input_event( evt );
 	}
 	return true;
+}
+
+w_camera* platformer_layer::get_camera()
+{
+	return game->player_camera;
 }

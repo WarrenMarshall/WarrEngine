@@ -55,21 +55,10 @@ w_matrix* w_matrix::rotate( float v )
 	return this;
 }
 
-void w_matrix::transform_vec2( w_vec2& vtx )
+w_vec2 w_matrix::transform_vec2( const w_vec2& vtx )
 {
 	glm::vec4 v4( vtx.x, vtx.y, 0.0f, 1.0f );
 	v4 = m * v4;
 
-	vtx.x = v4.x;
-	vtx.y = v4.y;
-}
-
-void w_matrix::transform_vec3( w_vec3& vtx )
-{
-	glm::vec4 v4( vtx.x, vtx.y, vtx.z, 1.0f );
-	v4 = m * v4;
-
-	vtx.x = v4.x;
-	vtx.y = v4.y;
-	vtx.z = v4.z;
+	return w_vec2( v4.x, v4.y );
 }
