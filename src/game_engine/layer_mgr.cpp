@@ -22,6 +22,11 @@ void w_layer_mgr::clear_stack()
 
 void w_layer_mgr::pop()
 {
+	if( !layer_stack.size() )
+	{
+		log_warning( "No layers on stack - pop failed!" );
+	}
+
 	w_layer* layer = nullptr;
 	int idx = 0;
 
@@ -43,10 +48,6 @@ void w_layer_mgr::pop()
 	{
 		layer = layer_stack[(size_t)idx + 1].get();
 		layer->becoming_top_layer();
-	}
-	else
-	{
-		log_warning( "No layers on stack - pop failed!" );
 	}
 }
 
