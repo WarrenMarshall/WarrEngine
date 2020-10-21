@@ -12,6 +12,7 @@ struct platformer_layer : w_layer
 	virtual void pop() override;
 	virtual void update() override;
 	virtual void draw() override;
+	virtual void draw_ui_debug() override;
 	virtual bool handle_input_event( const w_input_event* evt ) override;
 	virtual w_camera* get_camera() override;
 };

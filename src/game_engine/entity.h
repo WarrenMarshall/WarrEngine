@@ -76,7 +76,10 @@ struct w_entity : i_life_cycle, i_transform
 
 	void remove_component( w_entity_component* ec );
 
-	_NODISCARD ec_b2d_body* get_primary_body();
+	_NODISCARD ec_b2d_body* phys_get_primary_body();
+	void phys_set_friction( float friction );
+	void phys_set_restitution( float restitution );
+	void phys_set_density( float density );
 };
 
 // ----------------------------------------------------------------------------

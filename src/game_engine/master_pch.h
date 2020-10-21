@@ -192,6 +192,11 @@ _NODISCARD constexpr bool fequals( float a, float b )
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
 }
 
+_NODISCARD constexpr bool fequals( float a, float b, float tolerance )
+{
+	return ( ( (a) -( b ) ) < tolerance && ( (a) -( b ) ) > -tolerance );
+}
+
 _NODISCARD float snap_to_pixel( float f );
 _NODISCARD int str_to_int( const char* str );
 _NODISCARD int str_to_int( const std::string& str );

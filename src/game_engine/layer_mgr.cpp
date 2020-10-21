@@ -137,7 +137,7 @@ void w_layer_mgr::draw()
 #ifdef _DEBUG
 			// same as the other debug draw call, but this is for
 			// info in screen space
-			RENDER->push_depth_nudge();
+			RENDER->push_depth_nudge(100);
 			layer_stack[ x ]->draw_ui_debug();
 #endif
 		}

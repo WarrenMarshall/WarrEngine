@@ -3,11 +3,11 @@
 
 // ----------------------------------------------------------------------------
 
-constexpr float player_move_force_s = 7.5f;
-constexpr float player_base_radius = 6.0f;
-constexpr float player_move_force_max = 1.0f;
+constexpr float player_move_force = 25.0f;
+constexpr float player_move_force_max = 80.0f;
+constexpr float player_jump_force = 300.0f;
 
-constexpr float player_jump_force = 5.0f;
+constexpr float player_base_radius = 6.0f;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
 constexpr int player_jump_interval = 50;
 constexpr float player_air_control_damping = 0.35f;
@@ -27,6 +27,7 @@ void w_platformer_physics::BeginContact( b2Contact* contact )
 	if( contact_ids_match( "s_on_ground", "world" ) )
 	{
 		player_on_ground++;
+
 		if( !in_air() )
 		{
 			hit_ground();
@@ -59,18 +60,6 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 	}
 }
 
-void w_platformer_physics::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )
-{
-	w_contact_listener::PreSolve( contact, oldManifold );
-
-	//if( contact_ids_match( "player", "world" ) )
-	//{
-	//	auto player = LAYER->find_entity_from_tag( "player" );
-	//	player->get_primary_body()->body->GetFixtureList()->SetRestitution( 1.0f );
-	//	log_msg( "player / world" );
-	//}
-}
-
 bool w_platformer_physics::can_jump() const
 {
 	return ( player_on_ground > 0 && timer_jump_limiter->get_elapsed_count() );
@@ -94,7 +83,8 @@ bool w_platformer_physics::can_drop_down() const
 void w_platformer_physics::hit_ground()
 {
 	auto player = LAYER->find_entity_from_tag( "player" );
-	if( player->get_primary_body()->body->GetLinearVelocity().y > 0.0f )
+
+	if( player->phys_get_primary_body()->body->GetLinearVelocity().y > 0.0f )
 	{
 		timer_jump_limiter->reset();
 
@@ -123,11 +113,17 @@ void w_platformer_physics::handle_user_input()
 		}
 
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
-		b2Vec2 current = ec->body->GetLinearVelocity();
-		current.x += ( player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
-		float desired = std::clamp( current.x, -player_move_force_max, player_move_force_max );
 
-		ec->body->SetLinearVelocity( { desired, current.y } );
+		w_vec2 current_velocity = w_vec2( ec->body->GetLinearVelocity() ).from_b2d();
+		float force_to_be_applied = 0.0f;
+
+		if( !fequals( left_stick.x, 0.0f ) && std::fabs( current_velocity.x ) < player_move_force_max )
+		{
+			force_to_be_applied = player_move_force * left_stick.x;
+
+			float force_final = ec->body->GetMass() * force_to_be_applied / (1.0f / w_time::FTS_desired_frames_per_second);
+			ec->body->ApplyForceToCenter( w_vec2( to_b2d( force_final ), 0.0f ), true );
+		}
 	}
 }
 
@@ -145,7 +141,7 @@ bool w_platformer_physics::handle_input_event( const w_input_event* evt )
 
 				w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
-				auto ec = player->get_primary_body();
+				auto ec = player->phys_get_primary_body();
 
 				float dir_modifier = 1.0f;
 				if( left_stick.y > player_drop_down_normal_tolerance )
@@ -172,7 +168,8 @@ bool w_platformer_physics::handle_input_event( const w_input_event* evt )
 					game->snd_plat_drop_down->play();
 				}
 
-				ec->body->ApplyLinearImpulseToCenter( w_vec2( 0.0f, -player_jump_force * dir_modifier ).to_b2d(), true );
+				float force_final = ec->body->GetMass() * (-player_jump_force * dir_modifier) / ( 1.0f / w_time::FTS_desired_frames_per_second );
+				ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ), true );
 
 				return true;
 			}
@@ -186,18 +183,18 @@ void w_platformer_physics::update()
 {
 	timer_jump_limiter->update();
 
-	auto e = LAYER->find_entity_from_tag( "player" );
+	auto player = LAYER->find_entity_from_tag( "player" );
 
-	if( !e )
+	if( !player )
 	{
 		return;
 	}
 
-	auto ec = e->get_component<ec_sprite>( component_type::sprite );
+	auto ec = player->get_component<ec_sprite>( component_type::sprite );
 	ec->tex = engine->get_asset<a_anim_texture>( "anim_player_idle" );
 
-	auto ec_b2d = e->get_primary_body();
-	b2Vec2 vel = ec_b2d->body->GetLinearVelocity();
+	auto ec_b2d = player->phys_get_primary_body();
+	w_vec2 vel = w_vec2( ec_b2d->body->GetLinearVelocity() ).from_b2d();
 
 	if( !on_ground() )
 	{
@@ -211,4 +208,15 @@ void w_platformer_physics::update()
 			ec->tex = engine->get_asset<a_anim_texture>( "anim_player_run" );
 		}
 	}
+
+	//float friction = 0.0f;
+
+	//vel_x = vel.x;
+	//vel_y = vel.y;
+	//if( fequals( vel.y, 0.0f ) )
+	//{
+	//	friction = 1.0f;
+	//}
+
+	//player->phys_set_friction( friction );
 }

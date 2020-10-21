@@ -133,7 +133,7 @@ void w_entity::remove_component( w_entity_component* ec )
 	assert( false );	// the entity component wasn't found
 }
 
-ec_b2d_body* w_entity::get_primary_body()
+ec_b2d_body* w_entity::phys_get_primary_body()
 {
 	for( auto& ec : components )
 	{
@@ -149,6 +149,33 @@ ec_b2d_body* w_entity::get_primary_body()
 
 	assert( false );	// no primary body found!
 	return nullptr;
+}
+
+// friction : 0 - slide, 1 - stick
+void w_entity::phys_set_friction( float friction )
+{
+	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		fixture->SetFriction( friction );
+	}
+}
+
+// restitution : 0 = no bounce, 1 = full bounce
+void w_entity::phys_set_restitution( float restitution )
+{
+	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		fixture->SetRestitution( restitution );
+	}
+}
+
+// density : 0 = no density, 1 = full density
+void w_entity::phys_set_density( float density )
+{
+	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		fixture->SetDensity( density );
+	}
 }
 
 bool w_entity::can_be_deleted()

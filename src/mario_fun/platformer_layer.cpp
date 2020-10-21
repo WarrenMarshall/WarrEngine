@@ -53,6 +53,16 @@ void platformer_layer::draw()
 	w_layer::draw();
 }
 
+void platformer_layer::draw_ui_debug()
+{
+	RENDER
+		->begin()
+		->draw_string( engine->pixel_font, fmt::format( "on_ground : {}", plat_physics->player_on_ground ), w_rect( 8, 8 ) )
+		->draw_string( engine->pixel_font, fmt::format( "drop_down_blocked : {}", plat_physics->player_drop_down_blocked ), w_rect( 8, 16 ) )
+		->draw_string( engine->pixel_font, fmt::format( "vel : {:.1f}, {:.1f}", plat_physics->vel_x, plat_physics->vel_y ), w_rect( 8, 24 ) )
+		->end();
+}
+
 bool platformer_layer::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_pressed )
