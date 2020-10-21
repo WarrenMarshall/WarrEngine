@@ -149,7 +149,7 @@ using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
 #define f_commas w_string_util::format_with_commas
 
 template<typename ...Params>
-void _log_( Params&&... params )
+constexpr void _log_( Params&&... params )
 {
 	::logfile->msg( fmt::format( std::forward<Params>( params )... ) );
 }
