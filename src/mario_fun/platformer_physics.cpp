@@ -208,15 +208,4 @@ void w_platformer_physics::update()
 			ec->tex = engine->get_asset<a_anim_texture>( "anim_player_run" );
 		}
 	}
-
-	//float friction = 0.0f;
-
-	//vel_x = vel.x;
-	//vel_y = vel.y;
-	//if( fequals( vel.y, 0.0f ) )
-	//{
-	//	friction = 1.0f;
-	//}
-
-	//player->phys_set_friction( friction );
 }

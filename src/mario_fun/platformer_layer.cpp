@@ -25,14 +25,14 @@ void platformer_layer::push()
 	e->add_component<ec_emitter>()->init( "background_stars" );
 	e->set_position( { v_window_hw, 256.0f } );
 
-	//music_gameplay->play();
+	music_gameplay->play();
 }
 
 void platformer_layer::pop()
 {
 	w_layer::pop();
 
-	//music_gameplay->stop();
+	music_gameplay->stop();
 
 	engine->box2d_world->SetContactListener( nullptr );
 }

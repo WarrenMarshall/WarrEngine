@@ -549,14 +549,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 					else
 					{
 						// anything with a positive height, we assume it's a box
-						b2d_static->add_fixture_line_loop( tag, w_vec2::zero,
-														 {
-														 { x, y },
-														 { x, y + h },
-														 { x + w, y + h },
-														 { x + w, y }
-														 }
-						);
+						b2d_static->add_fixture_box( tag, w_rect( x, y, w, h ) );
 					}
 				}
 			}
