@@ -3,18 +3,23 @@
 
 w_matrix* w_matrix::add_transform( const i_transform& t )
 {
-	translate( t.pos );
-	scale( t.scale );
-	rotate( t.angle );
-
-	return this;
+	return add_transform( t.pos, t.angle, t.scale );
 }
 
 w_matrix* w_matrix::add_transform( const w_vec2& pos, const float angle, const float _scale )
 {
+	// save current matrix and reset internal to identity
+	glm::mat4 save_m = m;
+	m = glm::mat4( 1 );
+
+	// apply requested transforms to the new matrix
 	translate( pos );
-	scale( _scale );
 	rotate( angle );
+	scale( _scale );
+
+	// multiply the new and old matrices together and make
+	// the result current
+	m = m * save_m;
 
 	return this;
 }
