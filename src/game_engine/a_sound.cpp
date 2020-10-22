@@ -32,7 +32,7 @@ void a_sound::play()
 		channel = BASS_SampleGetChannel( snd, false );
 	}
 
-	BASS_ChannelPlay( channel, false );
+	BASS_ChannelPlay( channel, !looped );
 
 	if( looped )
 	{
