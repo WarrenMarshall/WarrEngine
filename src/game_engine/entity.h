@@ -18,10 +18,6 @@ struct w_entity : i_life_cycle, i_transform
 
 	void set_collision( bitflags layer, bitflags collides_with );
 
-	// generic flag to indicate that the component should draw
-	// stuff to indicate it's internal state.
-	bool draw_debug_info = false;
-
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	_NODISCARD virtual bool can_be_deleted();
 

@@ -25,7 +25,6 @@ void platformer_layer::push()
 	auto ent = add_entity<w_entity>();
 	ent->collision_layer = clayer_world;
 	ent->collides_with = clayer_player | clayer_coin;
-	ent->draw_debug_info = true;
 	ec = ent->add_component<ec_b2d_static>();
 	{
 		// bounding box for world

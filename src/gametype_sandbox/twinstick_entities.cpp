@@ -5,8 +5,6 @@ e_twinstick_player::e_twinstick_player()
 {
 	tag = "player";
 
-	draw_debug_info = true;
-
 	set_collision( clayer_player, clayer_world );
 
 	auto ecd = add_component<ec_b2d_dynamic>();

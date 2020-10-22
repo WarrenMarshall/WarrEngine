@@ -4,7 +4,6 @@
 e_platformer_player::e_platformer_player()
 {
 	set_collision( clayer_player, clayer_world | clayer_coin | clayer_mover );
-	//draw_debug_info = true;
 
 	auto ec = add_component<ec_b2d_dynamic>();
 	{
@@ -35,8 +34,6 @@ e_platformer_player::e_platformer_player()
 
 e_platformer_coin::e_platformer_coin()
 {
-	//draw_debug_info = true;
-
 	auto ec = add_component<ec_b2d_dynamic>();
 	{
 		ec->body->SetFixedRotation( true );
@@ -60,8 +57,6 @@ e_platformer_coin::e_platformer_coin()
 
 e_platformer_mover::e_platformer_mover()
 {
-	draw_debug_info = true;
-
 	auto ec = add_component<ec_b2d_kinematic>();
 	{
 		ec->body->SetFixedRotation( true );

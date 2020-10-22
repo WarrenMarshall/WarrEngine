@@ -23,7 +23,6 @@ void breakout_layer::push()
 	auto world_geo = add_entity<w_entity>();
 	world_geo->collision_layer = clayer_world;
 	world_geo->collides_with = clayer_ball;
-	world_geo->draw_debug_info = true;
 
 	ec = world_geo->add_component<ec_b2d_static>();
 	{

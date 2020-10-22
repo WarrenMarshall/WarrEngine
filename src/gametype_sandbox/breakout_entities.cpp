@@ -3,8 +3,6 @@
 
 e_breakout_ball::e_breakout_ball()
 {
-	//draw_debug_info = true;
-
 	set_collision( clayer_ball, clayer_world | clayer_ball | clayer_paddle );
 
 	add_component<ec_sprite>()->init( "pong_ball" );
@@ -39,8 +37,6 @@ void e_breakout_ball::update()
 
 e_breakout_paddle::e_breakout_paddle()
 {
-	draw_debug_info = true;
-
 	set_collision( clayer_paddle, clayer_ball );
 
 	auto ecd = add_component<ec_b2d_kinematic>();

@@ -15,18 +15,17 @@ e_platformer_player::e_platformer_player()
 {
 	tag = "player";
 	set_collision( clayer_player, clayer_world | clayer_coin | clayer_mover );
-	//draw_debug_info = true;
 
 	auto ec = add_component<ec_b2d_dynamic>();
 	{
-		const float radius = 5.5f;
+		const float radius = 6.5f;
 
 		ec->body->SetFixedRotation( true );
 		ec->is_primary_body = true;
 
 		auto f = ec->add_fixture_circle(
 			"player",
-			w_vec2(0.0f,2.0f), radius );
+			w_vec2(0.0f,0.0f), radius );
 
 		ec->add_fixture_box( "s_on_ground", { 0.0f, 8.0f }, 6.0f, 4.0f )->SetSensor( true );
 
@@ -41,8 +40,6 @@ e_platformer_player::e_platformer_player()
 
 e_platformer_coin::e_platformer_coin()
 {
-	//draw_debug_info = true;
-
 	auto ec = add_component<ec_b2d_dynamic>();
 	{
 		ec->body->SetFixedRotation( true );
@@ -65,8 +62,6 @@ e_platformer_coin::e_platformer_coin()
 
 e_platformer_mover::e_platformer_mover()
 {
-	draw_debug_info = true;
-
 	auto ec = add_component<ec_b2d_kinematic>();
 	{
 		ec->body->SetFixedRotation( true );
