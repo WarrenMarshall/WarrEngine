@@ -205,6 +205,16 @@ struct w_vec2
 
 		return gv;
 	}
+
+	operator glm::vec2()
+	{
+		glm::vec2 gv;
+
+		gv.x = x;
+		gv.y = y;
+
+		return gv;
+	}
 };
 
 // ----------------------------------------------------------------------------
