@@ -2,13 +2,13 @@
 
 // ----------------------------------------------------------------------------
 
-struct mario_fun_game : w_game
+struct template_platformer : w_game
 {
-	mario_fun_game( std::string_view name );
+	template_platformer( std::string_view name );
 
-	a_sound* snd_plat_jump = nullptr;
-	a_sound* snd_plat_coin = nullptr;
-	a_sound* snd_plat_drop_down = nullptr;
+	a_sound* snd_jump = nullptr;
+	a_sound* snd_coin = nullptr;
+	a_sound* snd_drop_down = nullptr;
 
 	a_sound* music_main_menu = nullptr;
 
@@ -18,7 +18,6 @@ struct mario_fun_game : w_game
 	w_camera* player_camera = nullptr;
 
 	virtual void init() override;
-	virtual void new_game() override;
 	virtual void reset_layer_stack_to_main_menu() override;
 	virtual std::string get_game_name() override;
 

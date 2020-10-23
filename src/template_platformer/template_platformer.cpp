@@ -1,18 +1,18 @@
 
 #include "app_header.h"
 
-mario_fun_game::mario_fun_game( std::string_view name )
+template_platformer::template_platformer( std::string_view name )
 	: w_game( name )
 {
 }
 
-void mario_fun_game::init()
+void template_platformer::init()
 {
 	w_game::init();
 
-	snd_plat_jump = engine->get_asset<a_sound>( "snd_plat_jump" );
-	snd_plat_coin = engine->get_asset<a_sound>( "snd_plat_coin" );
-	snd_plat_drop_down = engine->get_asset<a_sound>( "snd_plat_drop_down" );
+	snd_jump = engine->get_asset<a_sound>( "snd_jump" );
+	snd_coin = engine->get_asset<a_sound>( "snd_coin" );
+	snd_drop_down = engine->get_asset<a_sound>( "snd_drop_down" );
 
 	music_main_menu = engine->get_asset<a_sound>( "music_main_menu" );
 
@@ -34,12 +34,7 @@ void mario_fun_game::init()
 	};
 }
 
-void mario_fun_game::new_game()
-{
-	w_game::new_game();
-}
-
-void mario_fun_game::reset_layer_stack_to_main_menu()
+void template_platformer::reset_layer_stack_to_main_menu()
 {
 	engine->layer_mgr->clear_stack();
 	engine->layer_mgr->push<layer_main_menu>();
@@ -48,12 +43,12 @@ void mario_fun_game::reset_layer_stack_to_main_menu()
 	player_camera = nullptr;
 }
 
-std::string mario_fun_game::get_game_name()
+std::string template_platformer::get_game_name()
 {
 	return fmt::format( "{}", ADD_QUOTES( APP_NAME ) );
 }
 
-void mario_fun_game::load_level( std::string_view level_filename )
+void template_platformer::load_level( std::string_view level_filename )
 {
 	ec_b2d_body* ec = nullptr;
 
@@ -116,7 +111,7 @@ void mario_fun_game::load_level( std::string_view level_filename )
 	//spawn_coins();
 }
 
-void mario_fun_game::spawn_coins()
+void template_platformer::spawn_coins()
 {
 	for( int c = 0 ; c < 12 ; ++c )
 	{

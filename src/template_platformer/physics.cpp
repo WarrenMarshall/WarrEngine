@@ -41,7 +41,7 @@ void w_platformer_physics::BeginContact( b2Contact* contact )
 	{
 		auto coin = find_entity_from_contact_id( "coin" );
 
-		game->snd_plat_coin->play();
+		game->snd_coin->play();
 		coin->set_life_cycle( life_cycle::dying );
 	}
 }
@@ -160,12 +160,12 @@ bool w_platformer_physics::handle_input_event( const w_input_event* evt )
 
 				if( dir_modifier > 0.0f )
 				{
-					game->snd_plat_jump->play();
+					game->snd_jump->play();
 				}
 
 				if( dir_modifier < 0.0f )
 				{
-					game->snd_plat_drop_down->play();
+					game->snd_drop_down->play();
 				}
 
 				float force_final = ec->body->GetMass() * (-player_jump_force * dir_modifier) / ( 1.0f / w_time::FTS_desired_frames_per_second );

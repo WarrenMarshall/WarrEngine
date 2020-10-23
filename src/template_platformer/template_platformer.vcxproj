@@ -22,9 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{646D6A65-8629-42CF-A853-29A6536DC308}</ProjectGuid>
-    <RootNamespace>mario_fun</RootNamespace>
+    <RootNamespace>template_platformer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>mario_fun</ProjectName>
+    <ProjectName>template_platformer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -119,7 +119,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;APP_NAME=mario_fun;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;APP_NAME=template_platformer;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -140,7 +140,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;APP_NAME=mario_fun;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;APP_NAME=template_platformer;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -158,20 +158,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="platformer_physics.cpp" />
-    <ClCompile Include="platformer_layer.cpp" />
+    <ClCompile Include="physics.cpp" />
+    <ClCompile Include="layer_game.cpp" />
     <ClCompile Include="layer_main_menu.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mario_fun_game.cpp" />
-    <ClCompile Include="platformer_entities.cpp" />
+    <ClCompile Include="template_platformer.cpp" />
+    <ClCompile Include="entities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
-    <ClInclude Include="platformer_physics.h" />
-    <ClInclude Include="platformer_layer.h" />
-    <ClInclude Include="mario_fun_game.h" />
+    <ClInclude Include="physics.h" />
+    <ClInclude Include="layer_game.h" />
+    <ClInclude Include="template_platformer.h" />
     <ClInclude Include="layer_main_menu.h" />
-    <ClInclude Include="platformer_entities.h" />
+    <ClInclude Include="entities.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\game_engine\game_engine.vcxproj">

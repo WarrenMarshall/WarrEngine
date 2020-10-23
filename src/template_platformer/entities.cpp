@@ -14,7 +14,7 @@ e_platformer_level::e_platformer_level()
 e_platformer_player::e_platformer_player()
 {
 	tag = "player";
-	set_collision( clayer_player, clayer_world | clayer_coin | clayer_mover );
+	set_collision( clayer_player, clayer_world | clayer_coin );
 
 	auto ec = add_component<ec_b2d_dynamic>();
 	{
@@ -28,8 +28,6 @@ e_platformer_player::e_platformer_player()
 			w_vec2(0.0f,0.0f), radius );
 
 		ec->add_fixture_box( "s_on_ground", { 0.0f, 8.0f }, 6.0f, 4.0f )->SetSensor( true );
-
-		//ec->add_fixture_box( "s_can_drop_down", { 0.0f, 14.0f }, 8.0f, 10.0f )->SetSensor( true );
 		ec->add_fixture_circle( "s_can_drop_down", { 0.0f, radius * 3.0f }, radius )->SetSensor( true );
 	}
 
@@ -46,7 +44,7 @@ e_platformer_coin::e_platformer_coin()
 		ec->is_primary_body = true;
 
 		// world collisions
-		set_collision( clayer_coin, clayer_world | clayer_coin | clayer_mover );
+		set_collision( clayer_coin, clayer_world | clayer_coin );
 		auto f = ec->add_fixture_circle( "", w_vec2::zero, 8 );
 		f->SetRestitution( 0.5f );
 
@@ -56,18 +54,4 @@ e_platformer_coin::e_platformer_coin()
 	}
 
 	add_component<ec_sprite>()->init( "anim_coin" );
-}
-
-// ----------------------------------------------------------------------------
-
-e_platformer_mover::e_platformer_mover()
-{
-	auto ec = add_component<ec_b2d_kinematic>();
-	{
-		ec->body->SetFixedRotation( true );
-		ec->is_primary_body = true;
-
-		set_collision( clayer_mover, clayer_player | clayer_coin );
-		auto f = ec->add_fixture_line( "world", w_vec2::zero, w_vec2( -32, 0 ), w_vec2( 32, 0 ) );
-	}
 }

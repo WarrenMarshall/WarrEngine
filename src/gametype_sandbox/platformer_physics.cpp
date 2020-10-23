@@ -3,13 +3,14 @@
 
 // ----------------------------------------------------------------------------
 
-float w_platformer_physics::player_move_force_s = 7.5f;
-float w_platformer_physics::player_base_radius = 8.0f;
-float w_platformer_physics::player_move_force_max = 1.25f;
-float w_platformer_physics::player_jump_force = 3.0f;
-float w_platformer_physics::player_drop_down_normal_tolerance = 0.8f;
-int w_platformer_physics::player_jump_interval = 250;
-float w_platformer_physics::player_air_control_damping = 0.35f;
+constexpr float player_move_force = 25.0f;
+constexpr float player_move_force_max = 80.0f;
+constexpr float player_jump_force = 300.0f;
+
+constexpr float player_base_radius = 6.0f;
+constexpr float player_drop_down_normal_tolerance = 0.8f;
+constexpr int player_jump_interval = 50;
+constexpr float player_air_control_damping = 0.35f;
 
 // ----------------------------------------------------------------------------
 
