@@ -186,7 +186,7 @@ constexpr float byte_color_to_float = 1.0f / 255.0f;
 // ----------------------------------------------------------------------------
 
 constexpr float zdepth_clear_window = -15000.0f;
-constexpr float zdepth_nudge = 10.0f;
+constexpr float zdepth_nudge = 1.0f;
 constexpr float zdepth_background = 0.0f;
 constexpr float zdepth_layers = 1000.0f;
 constexpr float zdepth_layer_step = 1000.0f;
@@ -235,20 +235,6 @@ constexpr float from_b2d( float v )
 }
 
 // ----------------------------------------------------------------------------
-// immediate mode ui
-// ----------------------------------------------------------------------------
-
-constexpr bool im_left_clicked( e_im_result result )
-{
-	return ( result & im_result::left_clicked );
-}
-
-constexpr bool im_right_clicked( e_im_result result )
-{
-	return ( result & im_result::right_clicked );
-}
-
-// ----------------------------------------------------------------------------
 // handy definitions
 // ----------------------------------------------------------------------------
 
@@ -256,6 +242,7 @@ constexpr bool im_right_clicked( e_im_result result )
 #define OPENGL engine->opengl
 #define RENDER engine->render
 #define UI engine->ui
+#define IMGUI (&(engine->ui->imgui))
 #define INPUT engine->input
 #define LAYER engine->layer_mgr->get_top()
 #define LAYER_MGR engine->layer_mgr

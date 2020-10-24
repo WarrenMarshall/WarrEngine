@@ -175,8 +175,8 @@ void w_render::clear_render_states()
 	rs_angle_stack = { 0.0f };
 	rs_align_stack = { align::left };
 
-	zdepth -= zdepth_nudge_accum;
-	zdepth_nudge_accum = 0.0f;
+	//zdepth -= zdepth_nudge_accum;
+	//zdepth_nudge_accum = 0.0f;
 }
 
 void w_render::draw_master_buffer()
@@ -382,6 +382,9 @@ void w_render::end_frame()
 	assert( rs_align_stack.length() == 1 );
 
 	OPENGL->clear_texture_bind();
+
+	zdepth -= zdepth_nudge_accum;
+	zdepth_nudge_accum = 0.0f;
 }
 
 /*

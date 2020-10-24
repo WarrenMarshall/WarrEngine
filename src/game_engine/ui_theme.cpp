@@ -23,41 +23,41 @@ e_im_result w_ui_style::get_im_state( int id, w_rect rc )
 
 	if( mouse_is_inside )
 	{
-		if( bs_left == button_state::up || ( bs_left == button_state::held && UI->hot_id == id ) )
+		if( bs_left == button_state::up || ( bs_left == button_state::held && IMGUI->hot_id == id ) )
 		{
-			UI->hover_id = id;
+			IMGUI->hover_id = id;
 		}
 		else if( bs_left == button_state::pressed )
 		{
-			UI->hot_id = id;
+			IMGUI->hot_id = id;
 		}
 		else if( bs_left == button_state::released )
 		{
-			if( UI->hot_id == id && UI->hover_id == id )
+			if( IMGUI->hot_id == id && IMGUI->hover_id == id )
 			{
 				imresult |= im_result::left_clicked;
 			}
-			UI->hover_id = UI->hot_id = -1;
+			IMGUI->hover_id = IMGUI->hot_id = -1;
 		}
 	}
 	else
 	{
-		if( UI->hover_id == id )
+		if( IMGUI->hover_id == id )
 		{
-			UI->hover_id = -1;
+			IMGUI->hover_id = -1;
 		}
 
-		if( bs_left == button_state::released && UI->hot_id == id )
+		if( bs_left == button_state::released && IMGUI->hot_id == id )
 		{
-			UI->hot_id = -1;
+			IMGUI->hot_id = -1;
 		}
 	}
 
-	if( UI->hover_id == id )
+	if( IMGUI->hover_id == id )
 	{
 		imresult |= im_result::hovered;
 	}
-	if( UI->hot_id == id )
+	if( IMGUI->hot_id == id )
 	{
 		imresult |= im_result::hot;
 	}
@@ -108,12 +108,13 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	w_pos label_pos = { rc_draw.x + ( rc_draw.w / 2 ), rc_draw.y + ( rc_draw.h / 2 ) };
 
 	RENDER
-		->begin()
-		->push_depth_nudge();
+		->begin();
 
 	if( slice_def.has_value() )
 	{
-		RENDER->push_rgb( get_adjusted_color( base_attrib.color, being_hovered, being_clicked ) )
+		RENDER
+			->push_depth_nudge()
+			->push_rgb( get_adjusted_color( base_attrib.color, being_hovered, being_clicked ) )
 			->draw_sliced( slice_def.value(), rc_draw );
 	}
 
@@ -154,9 +155,9 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	if( label.length() )
 	{
 		RENDER
+			->push_depth_nudge()
 			->push_rgb( get_adjusted_color( label_attrib.color, being_hovered, being_clicked ) )
-			->push_align( label_attrib.alignment )
-			->push_depth_nudge();
+			->push_align( label_attrib.alignment );
 
 		RENDER->draw_string( engine->pixel_font, label,
 						   w_rect(

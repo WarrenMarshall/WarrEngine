@@ -279,7 +279,7 @@ void w_engine::exec_main_loop()
 		*/
 
 		engine->input->update();
-		UI->im_reset();
+		IMGUI->reset();
 
 		/*
 			if we have fixed time steps to perform, walk
