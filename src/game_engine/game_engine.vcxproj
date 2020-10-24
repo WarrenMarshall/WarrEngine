@@ -222,6 +222,7 @@
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="physics_callbacks.cpp" />
     <ClCompile Include="physics_debug_draw.cpp" />
+    <ClCompile Include="ui_imgui.cpp" />
     <ClCompile Include="util_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="physics.h" />
     <ClInclude Include="physics_callbacks.h" />
     <ClInclude Include="physics_debug_draw.h" />
+    <ClInclude Include="ui_imgui.h" />
     <ClInclude Include="util_time.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="timer.h" />

@@ -29,14 +29,17 @@ void layer_default::draw()
 	// ----------------------------------------------------------------------------
 	// panel
 
-	IMGUI->panel( w_rect( 32, 32, 300, 200 ) );
-
-	// ----------------------------------------------------------------------------
-	// push button
-
-	if( IMGUI->push_button( "Lorem ipsum", w_rect( 8, 8, 200, 32 ) ).was_left_clicked() )
+	IMGUI->panel( w_rect( 8, 8, 200, 150 ) );
+	IMGUI->set_origin( { 8, 8 } );
 	{
-		log_msg( "button clicked" );
+		// ----------------------------------------------------------------------------
+		// push button
+
+		if( IMGUI->push_button( "Lorem Ipsum", w_rect( 8, 8, 100, 24 ) ).was_left_clicked() )
+		{
+			log_msg( "button clicked" );
+		}
 	}
+	IMGUI->clear_origin();
 
 }

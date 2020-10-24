@@ -4,9 +4,6 @@
 // memory pool. this should allow for more of them fitting into the
 // cache and faster updating/rendering when there are thousands of them.
 
-//#pragma pack(push)
-//#pragma pack(1)
-
 struct w_particle final
 {
 	a_texture* tex = nullptr;
@@ -21,7 +18,7 @@ struct w_particle final
 	float life_span_save = 0.0f;	// saves the original life span for reference
 
 	// angle of movement
-	float a_dir = 0.0f;
+	float a_dir = 0.0f;	// #todo : I think this is only used for spawning the particle - can we factor it away?
 	w_vec2 v_dir = { 0,0 };
 
 	// world units to move, per second
@@ -38,8 +35,6 @@ struct w_particle final
 	void update();
 	_NODISCARD constexpr bool is_alive();
 };
-
-//#pragma pack(pop)
 
 // make sure the particle struct doesn't get above 64 bytes
 // for cache efficiency
