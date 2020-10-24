@@ -7,8 +7,8 @@ struct a_subtexture : i_asset
 	// the texture asset we draw from
 	a_texture* tex = nullptr;
 
-	// the width/height of this subtexture
-	w_sz sz = w_sz( 0, 0 );
+	// the source rectangle on tex that defines this subtexture.
+	w_rect rc_tex = { 0,0,0,0 };
 
 	// the uv coordinates that define this image within the texture
 	w_uv uv00 = w_uv( 0, 0 );
@@ -19,4 +19,6 @@ struct a_subtexture : i_asset
 
 	void bind();
 	void unbind();
+	w_rect get_bounding_rect();
+
 };

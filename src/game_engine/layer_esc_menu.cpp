@@ -51,25 +51,25 @@ void layer_esc_menu::draw_ui()
 
 	w_rect rc_button = { v_window_hw - ( button_w / 2.0f ), rc_panel.y + (UI->theme->control_padding * 2), button_w, button_h };
 
-	if( UI->im_active( "Main Menu", rc_button, style_button ) & im_result::left_clicked )
+	if( UI->im_active( "Main Menu", rc_button, style_button ).was_left_clicked() )
 	{
 		base_game->reset_layer_stack_to_main_menu();
 	}
 	rc_button.y += button_h + UI->theme->control_padding;
 
-	if( UI->im_active( "Resume", rc_button, style_button ) & im_result::left_clicked )
+	if( UI->im_active( "Resume", rc_button, style_button ).was_left_clicked() )
 	{
 		engine->layer_mgr->pop();
 	}
 	rc_button.y += button_h + UI->theme->control_padding;
 
-	if( UI->im_active( "Toggle Fullscreen", rc_button, style_button ) & im_result::left_clicked )
+	if( UI->im_active( "Toggle Fullscreen", rc_button, style_button ).was_left_clicked() )
 	{
 		engine->window->toggle_fullscreen();
 	}
 	rc_button.y += button_h + UI->theme->control_padding;
 
-	if( UI->im_active( "Exit To Windows", rc_button, style_button ) & im_result::left_clicked )
+	if( UI->im_active( "Exit To Windows", rc_button, style_button ).was_left_clicked() )
 	{
 		engine->is_running = false;
 	}

@@ -353,7 +353,7 @@ void w_engine::exec_main_loop()
 
 		static a_texture* tex = engine->get_asset<a_texture>( "tex_game_frame_buffer" );
 
-		OPENGL->find_shader( "crt_fx" )->bind();
+		//OPENGL->find_shader( "crt_fx" )->bind();
 
 		RENDER
 			->begin()

@@ -213,8 +213,8 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = subtex->sz._width;
-	float h = subtex->sz._height;
+	float w = subtex->rc_tex.w;
+	float h = subtex->rc_tex.h;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -252,8 +252,8 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
 	maybe_draw_master_buffer( subtex->tex );
 
-	float w = dst.w ? dst.w : subtex->sz._width;
-	float h = dst.h ? dst.h : subtex->sz._height;
+	float w = dst.w ? dst.w : subtex->rc_tex.w;
+	float h = dst.h ? dst.h : subtex->rc_tex.h;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 
@@ -324,13 +324,11 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		{
 			draw(
 				fch->subtex.get(),
-				w_rect( xpos, ypos + ( fch->yoffset * rs_scale.y ) )
+				w_rect( xpos + ( fch->xoffset * rs_scale.x ), ypos + ( fch->yoffset * rs_scale.y ) )
 			);
-
-			xpos += fch->xoffset * rs_scale.x;
 		}
 
-		xpos += fch->xadvance * rs_scale.y;
+		xpos += (fch->xadvance * rs_scale.x);
 	}
 
 	MATRIX->pop();
@@ -616,42 +614,42 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	float xpos = dst.x;
 	float ypos = dst.y;
 
-	float inner_w = dst.w - p_00->sz._width - p_20->sz._width;
-	float inner_h = dst.h - p_00->sz._height - p_02->sz._height;
+	float inner_w = dst.w - p_00->rc_tex.w - p_20->rc_tex.w;
+	float inner_h = dst.h - p_00->rc_tex.h - p_02->rc_tex.h;
 
 	// top row
 
-	draw( p_00, w_rect( xpos, ypos, p_00->sz._width, p_00->sz._height ) );
+	draw( p_00, w_rect( xpos, ypos, p_00->rc_tex.w, p_00->rc_tex.h ) );
 
-	xpos += p_00->sz._width;
-	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->sz._height ) );
+	xpos += p_00->rc_tex.w;
+	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->rc_tex.h ) );
 
 	xpos += inner_w;
-	draw( p_20, w_rect( xpos, ypos, p_20->sz._width, p_20->sz._height ) );
+	draw( p_20, w_rect( xpos, ypos, p_20->rc_tex.w, p_20->rc_tex.h ) );
 
 	// middle row
 
 	xpos = dst.x;
-	ypos += p_00->sz._height;
-	draw( p_01, w_rect( xpos, ypos, p_01->sz._width, inner_h ) );
+	ypos += p_00->rc_tex.h;
+	draw( p_01, w_rect( xpos, ypos, p_01->rc_tex.w, inner_h ) );
 
-	xpos += p_01->sz._width;
+	xpos += p_01->rc_tex.w;
 	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
 
 	xpos += inner_w;
-	draw( p_21, w_rect( xpos, ypos, p_21->sz._width, inner_h ) );
+	draw( p_21, w_rect( xpos, ypos, p_21->rc_tex.w, inner_h ) );
 
 	// bottom row
 
 	xpos = dst.x;
 	ypos += inner_h;
-	draw( p_02, w_rect( xpos, ypos, p_02->sz._width, p_02->sz._height ) );
+	draw( p_02, w_rect( xpos, ypos, p_02->rc_tex.w, p_02->rc_tex.h ) );
 
-	xpos += p_02->sz._width;
-	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->sz._height ) );
+	xpos += p_02->rc_tex.w;
+	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->rc_tex.h ) );
 
 	xpos += inner_w;
-	draw( p_22, w_rect( xpos, ypos, p_22->sz._width, p_22->sz._height ) );
+	draw( p_22, w_rect( xpos, ypos, p_22->rc_tex.w, p_22->rc_tex.h ) );
 
 	return this;
 }

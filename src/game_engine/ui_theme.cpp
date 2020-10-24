@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-e_im_result w_ui_style::update_im_state( int id, w_rect rc )
+e_im_result w_ui_style::get_im_state( int id, w_rect rc )
 {
 	assert( rc.w );
 	assert( rc.h );
@@ -95,6 +95,9 @@ w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
 w_ui_style_button::w_ui_style_button()
 {
 	slice_def = UI->theme->button_down_slice_def;
+
+
+	label_attrib.alignment = align::centered;
 }
 
 void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
@@ -103,7 +106,6 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 	w_rect rc_draw = { rc.x + offset.x, rc.y + offset.y, rc.w, rc.h };
 
 	w_pos label_pos = { rc_draw.x + ( rc_draw.w / 2 ), rc_draw.y + ( rc_draw.h / 2 ) };
-	e_align label_align = align::centered;
 
 	RENDER
 		->begin()
@@ -115,6 +117,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 			->draw_sliced( slice_def.value(), rc_draw );
 	}
 
+	/*
 	if( subtex.has_value() )
 	{
 		w_rect rc_client = rc_draw;
@@ -146,12 +149,13 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 			->push_depth_nudge()
 			->draw( subtex.value(), rc_client );
 	}
+	*/
 
 	if( label.length() )
 	{
 		RENDER
 			->push_rgb( get_adjusted_color( label_attrib.color, being_hovered, being_clicked ) )
-			->push_align( label_align )
+			->push_align( label_attrib.alignment )
 			->push_depth_nudge();
 
 		RENDER->draw_string( engine->pixel_font, label,
@@ -189,7 +193,6 @@ void w_ui_theme::init()
 	mouse_cursor = nullptr;// engine->get_asset<a_cursor>( "ui_cursor", b_silent( true ) );
 
 	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
-	button_up_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_up" );
 	button_down_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_down" );
 
 	default_button_style = std::make_unique<w_ui_style_button>();

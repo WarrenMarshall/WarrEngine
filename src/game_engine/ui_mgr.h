@@ -1,5 +1,17 @@
 #pragma once
 
+struct w_im_result
+{
+	e_im_result result = im_result::none;
+
+	void operator=( e_im_result res );
+
+	_NODISCARD bool was_left_clicked();
+	_NODISCARD bool was_right_clicked();
+};
+
+// ----------------------------------------------------------------------------
+
 struct w_ui_mgr
 {
 	std::unique_ptr<w_ui_theme> theme = nullptr;
@@ -14,8 +26,11 @@ struct w_ui_mgr
 	void draw_topmost();
 
 	void im_reset();
-	_NODISCARD e_im_result im_active( std::string_view label, w_rect rc, w_ui_style& ui_style );
-	e_im_result im_passive( w_rect rc, w_ui_style& ui_style );
+
+	_NODISCARD w_im_result im_push_button( std::string_view label, w_rect rc );
+
+	_NODISCARD w_im_result im_active( std::string_view label, w_rect rc, w_ui_style& ui_style );
+	w_im_result im_passive( w_rect rc, w_ui_style& ui_style );
 
 	_NODISCARD bool is_mouse_inside( w_rect& rc ) const;
 
