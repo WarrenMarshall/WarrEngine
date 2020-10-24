@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 constexpr float player_move_force = 25.0f;
-constexpr float player_move_force_max = 80.0f;
+constexpr float player_move_force_max = 100.0f;
 constexpr float player_jump_force = 300.0f;
 
 constexpr float player_base_radius = 6.0f;
@@ -117,7 +117,7 @@ void w_platformer_physics::handle_user_input()
 		w_vec2 current_velocity = w_vec2( ec->body->GetLinearVelocity() ).from_b2d();
 		float force_to_be_applied = 0.0f;
 
-		if( !fequals( left_stick.x, 0.0f ) && std::fabs( current_velocity.x ) < player_move_force_max )
+		if( std::fabs( current_velocity.x ) < player_move_force_max )
 		{
 			force_to_be_applied = player_move_force * left_stick.x;
 

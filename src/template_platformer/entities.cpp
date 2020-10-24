@@ -13,22 +13,22 @@ e_platformer_level::e_platformer_level()
 
 e_platformer_player::e_platformer_player()
 {
-	tag = "player";
+	set_tag( "player" );
 	set_collision( clayer_player, clayer_world | clayer_coin );
 
-	auto ec = add_component<ec_b2d_dynamic>();
+	auto b2dd = add_component<ec_b2d_dynamic>();
 	{
 		const float radius = 6.5f;
 
-		ec->body->SetFixedRotation( true );
-		ec->is_primary_body = true;
+		b2dd->body->SetFixedRotation( true );
+		b2dd->is_primary_body = true;
 
-		auto f = ec->add_fixture_circle(
+		b2dd->add_fixture_circle(
 			"player",
 			w_vec2(0.0f,0.0f), radius );
 
-		ec->add_fixture_box( "s_on_ground", { 0.0f, 8.0f }, 6.0f, 4.0f )->SetSensor( true );
-		ec->add_fixture_circle( "s_can_drop_down", { 0.0f, radius * 3.0f }, radius )->SetSensor( true );
+		b2dd->add_fixture_box( "s_on_ground", { 0.0f, 8.0f }, 6.0f, 4.0f )->SetSensor( true );
+		b2dd->add_fixture_circle( "s_can_drop_down", { 0.0f, radius * 3.0f }, radius )->SetSensor( true );
 	}
 
 	add_component<ec_sprite>()->init( "anim_player_idle" );

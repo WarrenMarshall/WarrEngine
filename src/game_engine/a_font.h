@@ -14,7 +14,7 @@ struct w_font_char
 
 // ----------------------------------------------------------------------------
 
-constexpr int max_font_chars = 128;
+constexpr int max_font_chars = 256;
 
 struct a_font_def : i_asset
 {

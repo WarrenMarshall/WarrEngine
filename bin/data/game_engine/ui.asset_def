@@ -7,10 +7,6 @@
 	"type" "texture"
 	"name" "tex_ui_default"
 	"filename" "ui/ui_default.png"
-	# "slice_defs" "\
-	# 	ui_default_panel, 109, 98, 100, 100, 7, -7, 7, -7,\
-	# 	ui_default_panel, 109, 98, 100, 100, 7, -7, 7, -7,\
-	# 	"
 	"subtextures" "\
 		ui_arrow_down_grey, 78, 498, 15, 10,\
 		ui_arrow_down_white, 123, 496, 15, 10,\

@@ -16,6 +16,7 @@ struct w_entity : i_life_cycle, i_transform
 	// which collision layer(s) this entity will collide WITH
 	bitflags collides_with = 0;
 
+	void set_tag( const char* tag );
 	void set_collision( bitflags layer, bitflags collides_with );
 
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;

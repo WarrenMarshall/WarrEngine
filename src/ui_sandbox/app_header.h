@@ -1,11 +1,11 @@
 
 #pragma once
 
-#define GAME ((main_app*)game)
+#define game (static_cast<ui_sandbox*>(base_game.get()))
 
 // ----------------------------------------------------------------------------
 
 #include <game_engine.h>
 
-#include "main_app.h"
+#include "ui_sandbox.h"
 #include "layer_default.h"

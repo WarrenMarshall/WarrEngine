@@ -3,10 +3,10 @@
 # gradients
 # ---------------------------------------------------------
 
-# {
-# 	"type" "gradient"
-# 	"name" "background_gradient"
-# 	"subtexture" "s_background_gradient"
-# 	"alignment" "align.vertical"
-# 	"colors" "color.black / color.dark_grey / color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_teal /  color.dark_grey"
-# }
+{
+	"type" "gradient"
+	"name" "background_gradient"
+	"subtexture" "s_background_gradient"
+	"alignment" "align.vertical"
+	"colors" "color.black, color.dark_grey, color.grey:4, color.dark_grey, color.black"
+}

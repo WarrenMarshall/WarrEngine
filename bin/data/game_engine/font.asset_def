@@ -21,3 +21,49 @@
 	"name" "engine_pixel_font"
 	"font_def" "engine_pixel_font_def"
 }
+
+# ---------------------------------------------------------
+# pixel font 02
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "engine_pixel_font_tex_02"
+	"filename" "fonts/font_pixel_02.png"
+}
+
+{
+	"type" "font_def"
+	"name" "engine_pixel_font_def_02"
+	"texture" "engine_pixel_font_tex_02"
+	"filename" "fonts/font_pixel_02.fnt"
+}
+
+{
+	"type" "font"
+	"name" "engine_pixel_font_02"
+	"font_def" "engine_pixel_font_def_02"
+}
+
+# ---------------------------------------------------------
+# font UI
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"name" "tex_engine_font_ui"
+	"filename" "fonts/font_ui.png"
+}
+
+{
+	"type" "font_def"
+	"name" "def_engine_font_ui"
+	"texture" "tex_engine_font_ui"
+	"filename" "fonts/font_ui.fnt"
+}
+
+{
+	"type" "font"
+	"name" "font_ui"
+	"font_def" "def_engine_font_ui"
+}

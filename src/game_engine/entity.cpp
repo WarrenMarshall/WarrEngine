@@ -203,6 +203,11 @@ bool w_entity::can_be_deleted()
 	return true;
 }
 
+void w_entity::set_tag( const char* tag )
+{
+	this->tag = tag;
+}
+
 void w_entity::set_collision( bitflags layer, bitflags collides_with )
 {
 	this->collision_layer = layer;

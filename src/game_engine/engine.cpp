@@ -187,7 +187,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.
-		engine->pixel_font = engine->get_asset<a_font>( "engine_pixel_font" );
+		engine->pixel_font = engine->get_asset<a_font>( "font_ui" );
 
 		engine->ui->init();
 		engine->ui->theme->init();

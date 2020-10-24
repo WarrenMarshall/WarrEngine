@@ -1,6 +1,8 @@
 
 #include "app_header.h"
 
+// ----------------------------------------------------------------------------
+
 layer_default::layer_default()
 {
 	draws_completely_solid = true;
@@ -8,21 +10,18 @@ layer_default::layer_default()
 
 void layer_default::push()
 {
+	gradient = engine->get_asset<a_gradient>( "background_gradient" );
 }
 
 void layer_default::draw()
 {
 	w_layer::draw();
 
-	e_im_result res;
-	w_ui_style_panel panel_style;
-	panel_style.base_attrib.color = w_color::teal;
-
-	w_ui_style_button button_style;
-	button_style.base_attrib.color = w_color::orange;
-	button_style.label_attrib.pos = w_vec2( 0, -2 );
-	button_style.label_attrib.color = w_color::dark_grey;
-
-	UI->im_passive( { 64, 64, 150, 80 }, panel_style );
-	res = UI->im_active( "Options", { 80, 80, 64, 32 }, button_style );
+	RENDER
+		->begin()
+		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
+		->push_rgb( { 1.0f, 0.5f, 0.0f } )
+		->push_align( align::centered )
+		->draw_string( engine->pixel_font, "Hello, World!", w_rect( v_window_hw, v_window_hh ) )
+		->end();
 }
