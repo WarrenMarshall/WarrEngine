@@ -44,7 +44,7 @@ void layer_main_menu::draw_ui()
 	float xpos = 64;
 	float ypos = 75;
 
-	if( im_left_clicked( UI->im_active( "PLAY", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
+	if( IMGUI->push_button( "PLAY", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ) ).was_left_clicked() )
 	{
 		game->new_game();
 		engine->layer_mgr->pop();
@@ -53,7 +53,7 @@ void layer_main_menu::draw_ui()
 	}
 
 	ypos += 32;
-	if( im_left_clicked( UI->im_active( "Exit", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ), *UI->theme->default_button_style ) ) )
+	if( IMGUI->push_button( "Exit", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ) ).was_left_clicked() )
 	{
 		engine->is_running = false;
 	}
