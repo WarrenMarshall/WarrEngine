@@ -14,16 +14,14 @@ struct w_artist
 
 struct work_log_tracker_game : w_game
 {
-	work_log_tracker_game( std::string_view name );
+	work_log_tracker_game( const char* name );
 
-	// #todo - can this be static const char* ?
-	inline static std::string_view data_filename = "work_log_tracker.data";
-	inline static std::string_view artist_filename = "artist_list.txt";
+	static const char* data_filename;
+	static const char* artist_filename;
+
 	std::vector<w_artist> artists;
 
 	virtual void init() override;
-	virtual void new_game() override;
-	virtual void update() override;
 
 	void load_data();
 	void save_data();

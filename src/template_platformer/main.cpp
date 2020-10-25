@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	base_game = std::make_unique<template_platformer>( std::string( ADD_QUOTES( APP_NAME ) ) );
+	base_game = std::make_unique<template_platformer>( ADD_QUOTES( APP_NAME ) );
 
 	if( !w_engine::init_game_engine( argc, argv ) )
 	{

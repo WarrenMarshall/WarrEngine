@@ -4,7 +4,7 @@
 
 struct template_platformer : w_game
 {
-	template_platformer( std::string_view name );
+	template_platformer( const char* name );
 
 	a_sound* snd_jump = nullptr;
 	a_sound* snd_coin = nullptr;
@@ -19,7 +19,6 @@ struct template_platformer : w_game
 
 	virtual void init() override;
 	virtual void reset_layer_stack_to_main_menu() override;
-	virtual std::string get_game_name() override;
 
 	void load_level( std::string_view level_filename );
 	void spawn_coins();

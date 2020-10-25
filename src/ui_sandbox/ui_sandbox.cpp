@@ -1,7 +1,7 @@
 
 #include "app_header.h"
 
-ui_sandbox::ui_sandbox( std::string_view name )
+ui_sandbox::ui_sandbox( const char* name )
 	: w_game( name )
 {
 }

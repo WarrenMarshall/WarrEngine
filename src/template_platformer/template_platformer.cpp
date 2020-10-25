@@ -1,7 +1,7 @@
 
 #include "app_header.h"
 
-template_platformer::template_platformer( std::string_view name )
+template_platformer::template_platformer( const char* name )
 	: w_game( name )
 {
 }
@@ -41,11 +41,6 @@ void template_platformer::reset_layer_stack_to_main_menu()
 
 	player = nullptr;
 	player_camera = nullptr;
-}
-
-std::string template_platformer::get_game_name()
-{
-	return fmt::format( "{}", ADD_QUOTES( APP_NAME ) );
 }
 
 void template_platformer::load_level( std::string_view level_filename )

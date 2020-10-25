@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define GAME ((work_log_tracker_game*)game.get())
+#define game (static_cast<work_log_tracker_game*>(base_game.get()))
 
 // ----------------------------------------------------------------------------
 

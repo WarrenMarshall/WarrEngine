@@ -3,13 +3,14 @@
 
 void layer_edit_list::push()
 {
-	GAME->load_data();
+	game->load_data();
 }
 
 void layer_edit_list::draw()
 {
 	w_layer::draw();
 
+	/*
 	if( !style_button )
 	{
 		style_button = std::make_unique<w_ui_style_button>();
@@ -23,7 +24,7 @@ void layer_edit_list::draw()
 		style_waiting_button->label_attrib.color = w_color::white;
 
 		style_clear_button = std::make_unique<w_ui_style_button>();
-		style_clear_button->subtex = engine->get_asset<a_subtexture>("gear_icon");
+		style_clear_button->subtex = a_subtexture::find("gear_icon");
 		style_clear_button->subtex_attrib.sz = w_sz( 24, 24 );
 		style_clear_button->slice_def = std::nullopt;
 	}
@@ -59,4 +60,5 @@ void layer_edit_list::draw()
 
 		ypos += 18.0f;
 	}
+	*/
 }

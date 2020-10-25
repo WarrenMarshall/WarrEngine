@@ -103,47 +103,50 @@ void w_layer_mgr::draw()
 		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) )
 		->end();
 
-	// draw starting from the starting_layer_idx and every layer above it
-
-	RENDER->begin();
-
-	for( auto x = starting_layer_idx; x >= 0; --x )
+	if( layer_stack.size() )
 	{
-		// Only UI elements on the topmost layer respond to user input
-		IMGUI->owning_layer_is_topmost = !x;
+		// draw starting from the starting_layer_idx and every layer above it
 
-		if( layer_stack[x]->is_alive() )
+		RENDER->begin();
+
+		for( auto x = starting_layer_idx; x >= 0; --x )
 		{
-			// primary draw call for the layer. uses an optional custom camera.
-			OPENGL->init_view_matrix( layer_stack[ x ]->get_camera() );
-			RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
-			layer_stack[ x ]->draw();
+			// Only UI elements on the topmost layer respond to user input
+			IMGUI->owning_layer_is_topmost = !x;
+
+			if( layer_stack[ x ]->is_alive() )
+			{
+				// primary draw call for the layer. uses an optional custom camera.
+				OPENGL->init_view_matrix( layer_stack[ x ]->get_camera() );
+				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+				layer_stack[ x ]->draw();
 
 #ifdef _DEBUG
-			// let the layer draw optional debug info. note that this is
-			// using the optional custom camera from above, so this is
-			// only for debug drawing in world space, not screen space.
-			RENDER->push_depth_nudge();
-			layer_stack[ x ]->draw_debug();
+				// let the layer draw optional debug info. note that this is
+				// using the optional custom camera from above, so this is
+				// only for debug drawing in world space, not screen space.
+				RENDER->push_depth_nudge();
+				layer_stack[ x ]->draw_debug();
 #endif
 
-			// draw any screen space items, like UI. these are
-			// drawn with an identity matrix so the top left of
-			// the screen is always 0,0.
-			OPENGL->init_view_matrix_identity();
-			RENDER->push_depth_nudge();
-			layer_stack[ x ]->draw_ui();
+				// draw any screen space items, like UI. these are
+				// drawn with an identity matrix so the top left of
+				// the screen is always 0,0.
+				OPENGL->init_view_matrix_identity();
+				RENDER->push_depth_nudge();
+				layer_stack[ x ]->draw_ui();
 
 #ifdef _DEBUG
-			// same as the other debug draw call, but this is for
-			// info in screen space
-			RENDER->push_depth_nudge(100);
-			layer_stack[ x ]->draw_ui_debug();
+				// same as the other debug draw call, but this is for
+				// info in screen space
+				RENDER->push_depth_nudge( 100 );
+				layer_stack[ x ]->draw_ui_debug();
 #endif
+			}
 		}
-	}
 
-	RENDER->end();
+		RENDER->end();
+	}
 }
 
 void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )

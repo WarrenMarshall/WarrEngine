@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	base_game = std::make_unique<ui_sandbox>( std::string( ADD_QUOTES( APP_NAME ) ) );
+	base_game = std::make_unique<ui_sandbox>( ADD_QUOTES( APP_NAME ) );
 
 	if( !w_engine::init_game_engine( argc, argv ) )
 	{

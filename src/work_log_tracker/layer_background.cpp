@@ -5,7 +5,8 @@ layer_background::layer_background()
 {
 	draws_completely_solid = true;
 
-	auto e = add_entity<w_entity>( { v_window_hw, 0.0f } );
+	auto e = add_entity<w_entity>();
+	e->set_position( { v_window_hw, 0.0f } );
 	e->add_component<ec_emitter>()->init( "background_fire_down" );
 	e->add_component<ec_emitter>()->init( "background_fire_up" )
 		->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
@@ -13,7 +14,7 @@ layer_background::layer_background()
 
 void layer_background::push()
 {
-	background_gradient = engine->get_asset<a_gradient>( "background_gradient" );
+	background_gradient = a_gradient::find( "background_gradient" );
 }
 
 void layer_background::draw()

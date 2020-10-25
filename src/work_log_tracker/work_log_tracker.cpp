@@ -8,19 +8,16 @@ w_artist::w_artist( const std::string& name )
 
 // ----------------------------------------------------------------------------
 
-work_log_tracker_game::work_log_tracker_game( std::string_view name )
+const char* work_log_tracker_game::data_filename = "work_log_tracker.data";
+const char* work_log_tracker_game::artist_filename = "artist_list.txt";
+
+work_log_tracker_game::work_log_tracker_game( const char* name )
 	: w_game( name )
 {
 }
 
 void work_log_tracker_game::init()
 {
-}
-
-void work_log_tracker_game::new_game()
-{
-	w_game::new_game();
-
 	auto file = engine->fs->load_text_file_into_memory( engine->fs->prepend_data_path( work_log_tracker_game::artist_filename ) );
 
 	for( const auto& artist : *( file.get()->lines.get() ) )
@@ -30,11 +27,6 @@ void work_log_tracker_game::new_game()
 
 	engine->layer_mgr->push<layer_background>();
 	engine->layer_mgr->push<layer_edit_list>();
-}
-
-void work_log_tracker_game::update()
-{
-	w_game::update();
 }
 
 void work_log_tracker_game::load_data()

@@ -2,9 +2,9 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_game::w_game( std::string_view name )
+w_game::w_game( const char* name )
 {
-	this->name = std::string( name );
+	this->name = name;
 }
 
 void w_game::init()
@@ -26,7 +26,7 @@ void w_game::reset_layer_stack_to_main_menu()
 {
 }
 
-std::string w_game::get_game_name()
+const char* w_game::get_game_name()
 {
-	return "";
+	return name;
 }
