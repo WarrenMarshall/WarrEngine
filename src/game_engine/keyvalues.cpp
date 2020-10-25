@@ -33,6 +33,5 @@ std::string_view w_keyvalues::find_value_opt( const std::string& key, const std:
 
 void w_keyvalues::set( const std::string_view key, const std::string_view value )
 {
-	kv.erase( std::string( key ) );
-	kv.insert( std::make_pair( key, value ) );
+	kv.insert_or_assign( std::string( key ), std::string( value ) );
 }
