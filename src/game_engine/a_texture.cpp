@@ -10,9 +10,9 @@ a_texture::~a_texture()
 
 void a_texture::clean_up_internals()
 {
-	if( id )
+	if( gl_id )
 	{
-		glDeleteTextures( 1, &id );
+		glDeleteTextures( 1, &gl_id );
 	}
 }
 
@@ -36,7 +36,7 @@ bool a_texture::create_internals()
 
 	// upload texture to opengl
 
-	glGenTextures( 1, &id );
+	glGenTextures( 1, &gl_id );
 	bind();
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
@@ -55,7 +55,7 @@ bool a_texture::create_internals()
 
 void a_texture::bind()
 {
-	glBindTexture( GL_TEXTURE_2D, id );
+	glBindTexture( GL_TEXTURE_2D, gl_id );
 }
 
 void a_texture::unbind()

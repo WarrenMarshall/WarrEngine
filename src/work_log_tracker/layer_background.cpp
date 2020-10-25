@@ -8,19 +8,20 @@ layer_background::layer_background()
 	auto e = add_entity<w_entity>();
 	e->set_position( { v_window_hw, 0.0f } );
 	e->add_component<ec_emitter>()->init( "background_fire_down" );
-	e->add_component<ec_emitter>()->init( "background_fire_up" )
-		->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
+	//e->add_component<ec_emitter>()->init( "background_fire_up" )
+	//	->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
 }
 
 void layer_background::push()
 {
-	background_gradient = a_gradient::find( "background_gradient" );
+	background = a_gradient::find( "background_gradient" );
 }
 
 void layer_background::draw()
 {
 	RENDER
-		->draw( background_gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+		->push_alpha( 0.25f )
+		->draw( background, w_rect( 0, 0, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 }

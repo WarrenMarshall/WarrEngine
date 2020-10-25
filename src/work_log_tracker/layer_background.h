@@ -2,7 +2,7 @@
 
 struct layer_background : w_layer
 {
-	a_gradient* background_gradient = nullptr;
+	a_gradient* background = nullptr;
 
 	layer_background();
 

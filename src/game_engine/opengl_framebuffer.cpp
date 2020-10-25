@@ -9,23 +9,22 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float 
 
 	bind();
 
+	std::string tex_name = fmt::format( "tex_{}_frame_buffer", base_name );
+
 	// color buffer
 
-	std::string tex_name = "tex_" + base_name + "_frame_buffer";
-
 	tex = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
-
 	tex->w = w;
 	tex->h = h;
 
-	glGenTextures( 1, &tex->id );
-	glBindTexture( GL_TEXTURE_2D, tex->id );
+	glGenTextures( 1, &tex->gl_id );
+	glBindTexture( GL_TEXTURE_2D, tex->gl_id );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex->id, 0 );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex->gl_id, 0 );
 
 	tex->subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" );
 
@@ -52,9 +51,9 @@ w_opengl_framebuffer::~w_opengl_framebuffer()
 	{
 		glDeleteFramebuffers( 1, &fb_id );
 	}
-	if( tex->id )
+	if( tex->gl_id )
 	{
-		glDeleteTextures( 1, &tex->id );
+		glDeleteTextures( 1, &tex->gl_id );
 	}
 }
 

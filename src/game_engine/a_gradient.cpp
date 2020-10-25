@@ -25,7 +25,7 @@ bool a_gradient::create_internals()
 	w = static_cast<float>( ( alignment == align::horizontal ) ? ( colors.size() / 4 ) : 1 );
 	h = static_cast<float>( ( alignment == align::vertical ) ? ( colors.size() / 4 ) : 1 );
 
-	glGenTextures( 1, &id );
+	glGenTextures( 1, &gl_id );
 	bind();
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
