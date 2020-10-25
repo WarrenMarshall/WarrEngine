@@ -304,6 +304,17 @@ w_vec2 w_vec2::operator*=( float v )
 	return *this;
 }
 
+w_vec2 w_vec2::operator/( float v )
+{
+	return w_vec2( this->x / v, this->y / v );
+}
+
+w_vec2 w_vec2::operator/=( float v )
+{
+	*this = *this / v;
+	return *this;
+}
+
 float w_vec2::get_size_squared()
 {
 	return sqrt( w_vec2::get_size() );

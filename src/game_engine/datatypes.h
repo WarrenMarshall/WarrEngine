@@ -168,6 +168,8 @@ struct w_vec2
 	w_vec2 operator-=( w_vec2 v );
 	w_vec2 operator*( float v );
 	w_vec2 operator*=( float v );
+	w_vec2 operator/( float v );
+	w_vec2 operator/=( float v );
 
 	_NODISCARD static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );

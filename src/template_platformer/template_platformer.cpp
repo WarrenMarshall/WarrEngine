@@ -96,7 +96,7 @@ void template_platformer::load_level( std::string_view level_filename )
 
 	player_camera = LAYER->add_entity<w_camera>();
 	player_camera->pos = player->pos;
-	player_camera->set_follow_target( player, follow_flags::xy_axis, 0.10f );
+	player_camera->set_follow_target( player, follow_flags::xy_axis, 3.0f );
 	player_camera->set_follow_limits_x( { 160.0f, 288.0f } );
 	player_camera->set_follow_limits_y( { 0.0f, 316.0f } );
 

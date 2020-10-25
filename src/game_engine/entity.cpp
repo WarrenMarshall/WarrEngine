@@ -250,6 +250,7 @@ void w_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags fla
 	follow.target = entity_to_follow;
 	follow.flags = flags;
 	follow.strength = strength;
+	follow.pos = entity_to_follow->pos;
 
 	set_position_deep( follow.target->pos, false );
 }
@@ -272,29 +273,35 @@ void w_camera::update()
 	{
 		// position
 
-		w_vec2 target_pos = pos;
 		w_vec2 delta_pos = follow.target->pos - pos;
 
-		if( follow.flags & follow_flags::x_axis )
+		if( follow.flags & follow_flags::xy_axis )
 		{
-			target_pos.x = pos.x + ( delta_pos.x * follow.strength );
+			// interpolate towards follow target position
+			follow.pos += (( follow.target->pos - follow.pos ) * follow.strength ) * w_time::FTS_step_value_s;
 
+			// apply limits if we need to
 			if( follow.limits_x.has_value() )
 			{
-				target_pos.x = std::clamp( target_pos.x, follow.limits_x->_left, follow.limits_x->_right );
+				follow.pos.x = std::clamp( follow.pos.x, follow.limits_x->_left, follow.limits_x->_right );
+			}
+			if( follow.limits_y.has_value() )
+			{
+				follow.pos.y = std::clamp( follow.pos.y, follow.limits_y->_top, follow.limits_y->_bottom );
+			}
+
+			// if only following on a specific axis, remove the follow influence from the other
+			if( !(follow.flags & follow_flags::x_axis) )
+			{
+				follow.pos.x = pos.x;
+			}
+			if( !( follow.flags & follow_flags::y_axis ) )
+			{
+				follow.pos.y = pos.y;
 			}
 		}
 
-		if( follow.flags & follow_flags::y_axis )
-		{
-			target_pos.y = pos.y + ( delta_pos.y * follow.strength );
-
-			if( follow.limits_y.has_value() )
-			{
-				target_pos.y = std::clamp( target_pos.y, follow.limits_y->_top, follow.limits_y->_bottom );			}
-		}
-
-		set_position_deep( target_pos, false );
+		set_position_deep( follow.pos, false );
 
 		// angle
 

@@ -104,7 +104,18 @@ struct w_camera : w_entity
 	{
 		w_entity* target = nullptr;
 		e_follow_flags flags = follow_flags::xy_axis;
+
+		// this is a multiplier against the default speed.
+		// So 2.0 is twice as fast, 0.5f is twice as slow.
 		float strength = 1.0f;
+
+		// positions are snapped to the grid when set_position is called on an entity,
+		// so this is a scratch pad where we can keep the position of the following
+		// entity in floating point form - aka not snapped to the grid. this means we
+		// can smoothly interpolate towards the target each frame while still snapping
+		// the entity itself to the grid for accurate rendering.
+		w_vec2 pos = w_vec2::zero;
+
 		std::optional<w_vec2> limits_x = std::nullopt;
 		std::optional<w_vec2> limits_y = std::nullopt;
 	} follow;
