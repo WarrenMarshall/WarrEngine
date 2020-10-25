@@ -16,8 +16,8 @@ struct a_subtexture : i_asset
 	w_uv uv00 = w_uv( 0, 0 );
 	w_uv uv11 = w_uv( 1, 1 );
 
-	a_subtexture( const std::string_view tex_name );
-	a_subtexture( const std::string_view tex_name, const w_rect& rc );
+	a_subtexture( const std::string_view texture_tag );
+	a_subtexture( const std::string_view texture_tag, const w_rect& rc );
 
 	void bind();
 	void unbind();

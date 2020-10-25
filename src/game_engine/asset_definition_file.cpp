@@ -438,7 +438,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 							asset_ptr->needs_warm_up = bool( value == "true" );
 						else if( key == "b_one_shot" )
 							asset_ptr->is_one_shot = bool( value == "true" );
-						else if( key == "texture_name" )
+						else if( key == "texture_tag" )
 							asset_ptr->tex = a_texture::find( value );
 						else if( key == "spawner_type" )
 						{

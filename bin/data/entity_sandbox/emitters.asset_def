@@ -2,7 +2,7 @@
 {
 	"type" "emitter_params"
 	"tag" "background_fire_up"
-	"texture_name" "tex_fire_particle"
+	"texture_tag" "tex_fire_particle"
 	"spawner_type" "circle,16"
 
 	"s_max_spawn_per_sec" "25"

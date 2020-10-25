@@ -13,10 +13,10 @@ a_subtexture::a_subtexture( const std::string_view tex_name )
 	uv11 = w_uv( 1, 1 );
 }
 
-a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& rc )
+a_subtexture::a_subtexture( const std::string_view texture_tag, const w_rect& rc )
 {
 	// find the texture being referenced
-	tex = a_texture::find( texture_name );
+	tex = a_texture::find( texture_tag );
 
 	// if W or H are -1, they are defaulted to the textures W/H
 

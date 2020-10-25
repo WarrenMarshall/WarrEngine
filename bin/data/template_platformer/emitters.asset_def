@@ -4,7 +4,7 @@
 {
 	"type" "emitter_params"
 	"tag" "small_smoke_puff"
-	"texture_name" "tex_smoke"
+	"texture_tag" "tex_smoke"
 	"spawner_type" "circle,2"
 
 	"s_max_spawn_per_sec" "5"
@@ -27,7 +27,7 @@
 {
 	"type" "emitter_params"
 	"tag" "background_stars"
-	"texture_name" "particle_small_star"
+	"texture_tag" "particle_small_star"
 	"spawner_type" "box,v_window_w,512"
 
 	"s_max_spawn_per_sec" "2"
