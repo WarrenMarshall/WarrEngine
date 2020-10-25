@@ -7,7 +7,7 @@
 	"type" "texture"
 	"tag" "tex_ui_master"
 	"filename" "images/ui_master.png"
-	"subtextures" "\
+	"subtexture_list" "\
 		toon_hand_cursor, 0, 24, 16, 16,\
 		selector_bracket, 16, 24, 16, 16,\
 		gear_icon, 24, 0, 24, 24,\
@@ -17,6 +17,6 @@
 {
 	"type" "cursor"
 	"tag" "ui_cursor"
-	"subtexture" "toon_hand_cursor"
+	"subtexture_tag" "toon_hand_cursor"
 	"hotspot" "1, 1"
 }

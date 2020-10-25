@@ -7,7 +7,7 @@
 	"type" "texture"
 	"tag" "tex_ui_default"
 	"filename" "ui/ui_default.png"
-	"subtextures" "\
+	"subtexture_list" "\
 		ui_arrow_down_grey, 78, 498, 15, 10,\
 		ui_arrow_down_white, 123, 496, 15, 10,\
 		ui_arrow_up_grey, 108, 498, 15, 10,\
@@ -57,7 +57,7 @@
 {
 	"type" "slice_def"
 	"tag" "sd_ui_panel"
-	"subtexture" "ui_panel"
+	"subtexture_tag" "ui_panel"
 	"x_slices" "7, 7"
 	"y_slices" "7, 7"
 }
@@ -66,7 +66,7 @@
 {
 	"type" "slice_def"
 	"tag" "sd_push_button"
-	"subtexture" "ui_button_09"
+	"subtexture_tag" "ui_button_09"
 	"x_slices" "6, 6"
 	"y_slices" "6, 8"
 }

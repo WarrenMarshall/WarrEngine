@@ -5,6 +5,6 @@
 
 # {
 # 	"type" "texture"
-# 	"tag" "tex_name"
+# 	"tag" "name_tag"
 # 	"filename" "gfx/filename.png"
 # }

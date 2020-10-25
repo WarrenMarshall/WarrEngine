@@ -64,25 +64,25 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// every texture has to have a subtexture defined for it.
 					//
 					// you may specify the name of this subtexture by including the...
-					// "subtexture" "subtex_name"
+					// "subtexture_tag" "subtex_name"
 					// ...k/v pair in the texture definition.
 					//
 					// if that k/v pair isn't there, "sub_" will be prepended to
 					// the texture name.
 
-					std::string subtex_name = std::string( iter_ad->find_value_opt( "subtexture", "sub_" + tag ) );
+					std::string subtex_name = std::string( iter_ad->find_value_opt( "subtexture_tag", "sub_" + tag ) );
 
 					auto subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tag ), subtex_name, "" );
 
 					asset_ptr->subtex = subtex;
 
-					// the "subtextures" k/v is a convenient way to specify a set
+					// the "subtexture_list" k/v is a convenient way to specify a set
 					// of subtextures belonging to a texture. an easy way to break
 					// down atlas textures or sprite sheets into subtextures.
 
-					if( iter_ad->does_key_exist( "subtextures" ) )
+					if( iter_ad->does_key_exist( "subtexture_list" ) )
 					{
-						std::string_view subtex_list = iter_ad->find_value( "subtextures" );
+						std::string_view subtex_list = iter_ad->find_value( "subtexture_list" );
 
 						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
 
@@ -195,13 +195,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						asset_ptr->colors.push_back( 1.0f );
 					}
 
-					// if the "subtexture" key exists, create a subtexture for this texture
+					// if the "subtexture_tag" key exists, create a subtexture for this texture
 					// that represents it's entirety.
 
-					if( iter_ad->does_key_exist( "subtexture" ) )
+					if( iter_ad->does_key_exist( "subtexture_tag" ) )
 					{
 						auto subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tag ),
-																iter_ad->find_value( "subtexture" ), "" );
+																iter_ad->find_value( "subtexture_tag" ), "" );
 						asset_ptr->subtex = subtex;
 					}
 
@@ -256,9 +256,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					}
 
 					std::optional<std::string_view> sub_tex_tag = std::nullopt;
-					if( iter_ad->does_key_exist( "subtexture" ) )
+					if( iter_ad->does_key_exist( "subtexture_tag" ) )
 					{
-						sub_tex_tag = iter_ad->find_value( "subtexture" );
+						sub_tex_tag = iter_ad->find_value( "subtexture_tag" );
 						subtexture = a_subtexture::find( *sub_tex_tag );
 						tex_tag = subtexture->tex->tag;
 					}
@@ -524,7 +524,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture") );
+					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture_tag") );
 					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot") );
 
 					// ------------------------------------------------------------------------
@@ -561,7 +561,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-				else if( type == "subtexture" )
+				else if( type == "subtexture_tag" )
 				{
 					auto asset_ptr = a_subtexture::find( tag, b_silent( true ) );
 

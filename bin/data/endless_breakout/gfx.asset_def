@@ -31,7 +31,7 @@
 	"type" "texture"
 	"tag" "brick_sheet"
 	"filename" "gfx/brick_sheet.png"
-	"subtextures" "\
+	"subtexture_list" "\
 		brick_yellow, 0, 0, 64, 32,\
 		brick_red, 0, 32, 64, 32,\
 		brick_blue_01, 0, 64, 64, 32,\
@@ -49,7 +49,7 @@
 {
 	"type" "gradient"
 	"tag" "background_gradient"
-	"subtexture" "s_background_gradient"
+	"subtexture_tag" "s_background_gradient"
 	"alignment" "align.vertical"
 	"colors" "color.black, color.dark_grey, color.dark_teal, color.teal:5, color.dark_teal"
 	#"colors" "color.white"
