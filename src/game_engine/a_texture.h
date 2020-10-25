@@ -8,7 +8,6 @@ struct a_texture : i_asset
 	unsigned int gl_id = 0;
 	float w = 0.0f;
 	float h = 0.0f;
-
 	a_subtexture* subtex = nullptr;
 
 	virtual ~a_texture() override;

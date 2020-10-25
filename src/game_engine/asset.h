@@ -13,7 +13,6 @@ struct i_asset
 	virtual bool create_internals();
 
 	virtual void update() {};
-	virtual void clear_render_buffer();
 };
 
 // ----------------------------------------------------------------------------

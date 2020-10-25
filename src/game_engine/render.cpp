@@ -174,9 +174,6 @@ void w_render::clear_render_states()
 	rs_scale_stack = { w_vec2( 1.0f, 1.0f ) };
 	rs_angle_stack = { 0.0f };
 	rs_align_stack = { align::left };
-
-	//zdepth -= zdepth_nudge_accum;
-	//zdepth_nudge_accum = 0.0f;
 }
 
 void w_render::draw_master_buffer()
@@ -228,10 +225,10 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
-	w_render_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
-	w_render_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
-	w_render_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
-	w_render_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
+	w_render_buffer_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_buffer_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
+	w_render_buffer_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
+	w_render_buffer_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
 	MATRIX->push()->translate( { dst.x, dst.y } )->rotate( rs_angle );
 	master_render_buffer->add_quad( v0, v1, v2, v3 );
@@ -263,10 +260,10 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
-	w_render_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
-	w_render_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
-	w_render_vert v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
-	w_render_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
+	w_render_buffer_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color );
+	w_render_buffer_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color );
+	w_render_buffer_vert v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
+	w_render_buffer_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
 	master_render_buffer->add_quad( v0, v1, v2, v3 );
@@ -349,13 +346,6 @@ void w_render::begin_frame( float frame_interpolate_pct )
 {
 	this->frame_interpolate_pct = frame_interpolate_pct;
 	current_texture = nullptr;
-
-	// reset all render buffers
-
-	for( const auto& [xxx, asset] : engine->asset_cache->cache )
-	{
-		asset->clear_render_buffer();
-	}
 
 	zdepth = 0.0f;
 	zdepth_nudge_accum = 0.0f;
@@ -496,22 +486,22 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
-	w_render_vert v0(
+	w_render_buffer_vert v0(
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
 		rs_color
 	);
-	w_render_vert v1(
+	w_render_buffer_vert v1(
 		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
 		rs_color
 	);
-	w_render_vert v2(
+	w_render_buffer_vert v2(
 		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
 		rs_color
 	);
-	w_render_vert v3(
+	w_render_buffer_vert v3(
 		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
 		rs_color
@@ -555,8 +545,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
-	w_render_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
-	w_render_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
+	w_render_buffer_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
+	w_render_buffer_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 
 	int step = 1;
 	if( radius < circle_sample_points_max ) step = 2;
@@ -584,8 +574,8 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 
-	w_render_vert v0( start, w_uv( 0, 0 ), rs_color );
-	w_render_vert v1( end, w_uv( 0, 0 ), rs_color );
+	w_render_buffer_vert v0( start, w_uv( 0, 0 ), rs_color );
+	w_render_buffer_vert v1( end, w_uv( 0, 0 ), rs_color );
 
 	master_render_buffer->add_line( v0, v1 );
 

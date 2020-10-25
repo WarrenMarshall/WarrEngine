@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_render_vert::w_render_vert( const w_vec2& pos, const w_uv& uv, const w_color& color )
+w_render_buffer_vert::w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color )
     :   x( pos.x ), y( pos.y ), z( RENDER->zdepth ),
         u( uv.u ), v( uv.v ),
         r( color.r ), g( color.g ), b( color.b ), a( color.a )
@@ -21,11 +21,11 @@ w_render_buffer::w_render_buffer()
     // data buffers
 
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_vert ), (void*) nullptr );
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) nullptr );
     glEnableVertexAttribArray( 0 );
-	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_vert ), (void*) ( sizeof( float ) * 3 ) );
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) ( sizeof( float ) * 3 ) );
     glEnableVertexAttribArray( 1 );
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_vert ), (void*) ( sizeof( float ) * 5 ) );
+	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) ( sizeof( float ) * 5 ) );
     glEnableVertexAttribArray( 2 );
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
@@ -46,7 +46,7 @@ w_render_buffer::~w_render_buffer()
     glDeleteVertexArrays( 1, &VAO );
 }
 
-void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1, const w_render_vert& v2, const w_render_vert& v3 )
+void w_render_buffer::add_quad( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1, const w_render_buffer_vert& v2, const w_render_buffer_vert& v3 )
 {
     // this looks a little messy but since we know that vertices 0 and 2 are going to be shared
     // in the quad, we can skip the process of transforming them and searching the vertex
@@ -61,7 +61,7 @@ void w_render_buffer::add_quad( const w_render_vert& v0, const w_render_vert& v1
     add_render_vert( v3 );
 }
 
-void w_render_buffer::add_line( const w_render_vert& v0, const w_render_vert& v1 )
+void w_render_buffer::add_line( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1 )
 {
     add_render_vert( v0 );
     add_render_vert( v1 );
@@ -88,7 +88,7 @@ void w_render_buffer::draw( a_texture* tex )
    		tex->bind();
 
         // send the data to the video card
-        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_vert ), vertices.data(), GL_DYNAMIC_DRAW );
+        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_buffer_vert ), vertices.data(), GL_DYNAMIC_DRAW );
         glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), GL_DYNAMIC_DRAW );
 
         switch( tex->gl_prim_type )
@@ -123,8 +123,9 @@ void w_render_buffer::draw( a_texture* tex )
 
 void w_render_buffer::clear()
 {
-    vertices = {};
-    indices = {};
+    // retain capacity so we don't have to reallocate the vectors constantly
+    vertices.clear();
+    indices.clear();
 }
 
 void w_render_buffer::log_stats( i_asset* asset )
@@ -139,7 +140,7 @@ void w_render_buffer::log_stats( i_asset* asset )
     }
 }
 
-int w_render_buffer::add_render_vert( const w_render_vert& render_vert )
+int w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.
     //
@@ -148,7 +149,7 @@ int w_render_buffer::add_render_vert( const w_render_vert& render_vert )
 
     w_vec2 vtx = MATRIX->top()->transform_vec2( w_vec2( render_vert.x, render_vert.y ) );
 
-    const w_render_vert rv(
+    const w_render_buffer_vert rv(
         w_vec2( vtx.x, vtx.y ),
         w_uv( render_vert.u, render_vert.v ),
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )

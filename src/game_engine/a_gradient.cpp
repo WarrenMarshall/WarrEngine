@@ -11,7 +11,6 @@ a_gradient::~a_gradient()
 
 void a_gradient::clean_up_internals()
 {
-	//render_buffer = nullptr;
 }
 
 bool a_gradient::create_internals()

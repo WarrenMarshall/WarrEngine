@@ -33,8 +33,12 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			log_msg( "Initializing engine" );
 			engine->init();
 
+			// if the paths we expect to be on the disk are not there, create them. this mitigates
+			// problems later on if the app wants to, say, save a file and would have problems
+			// if the data folder wasn't there.
+
 			engine->fs->create_path_if_not_exist( "data/game_engine" );
-			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", base_game->name ) );
+			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
 		}
 
 		{	// COMMAND LINE

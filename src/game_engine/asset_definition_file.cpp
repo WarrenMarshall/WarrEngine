@@ -11,6 +11,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 	for( const auto& iter_ad : asset_definitions )
 	{
+		if( !iter_ad->kv.size() )
+		{
+			continue;
+		}
+
 		type = iter_ad->find_value( "type" );
 		name = iter_ad->find_value( "name" );
 		filename = "";
