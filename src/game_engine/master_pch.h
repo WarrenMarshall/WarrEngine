@@ -108,6 +108,15 @@
 
 #include "master_fwd_decl.h"
 
+#define declare_find_func( struct_type )\
+static struct_type* find( const std::string_view name, bool silent = false );
+
+#define implement_find_func( struct_type )\
+struct_type* struct_type::find( const std::string_view name, bool silent )\
+{\
+	return engine->find_asset<struct_type>( name, silent );\
+}
+
 // ----------------------------------------------------------------------------
 //	useful type definitions to increase code readability
 

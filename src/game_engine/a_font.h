@@ -18,6 +18,8 @@ constexpr int max_font_chars = 256;
 
 struct a_font_def : i_asset
 {
+	declare_find_func( a_font_def )
+
 	// the font texture this font definition is pulling from
 	a_texture* texture = nullptr;
 
@@ -36,6 +38,8 @@ struct a_font_def : i_asset
 
 struct a_font : i_asset
 {
+	declare_find_func( a_font )
+
 	a_font_def* font_def = nullptr;
 
 	_NODISCARD w_vec2 get_string_extents( const std::string_view text );

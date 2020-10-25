@@ -4,6 +4,8 @@
 
 struct a_subtexture : i_asset
 {
+	declare_find_func( a_subtexture )
+
 	// the texture asset we draw from
 	a_texture* tex = nullptr;
 

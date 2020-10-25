@@ -2,6 +2,8 @@
 
 struct a_gradient : a_texture
 {
+	declare_find_func( a_gradient )
+
 	virtual ~a_gradient() override;
 
 	std::vector<float> colors;

@@ -10,27 +10,27 @@ void template_platformer::init()
 {
 	w_game::init();
 
-	snd_jump = engine->get_asset<a_sound>( "snd_jump" );
-	snd_coin = engine->get_asset<a_sound>( "snd_coin" );
-	snd_drop_down = engine->get_asset<a_sound>( "snd_drop_down" );
+	snd_jump = a_sound::find( "snd_jump" );
+	snd_coin = a_sound::find( "snd_coin" );
+	snd_drop_down = a_sound::find( "snd_drop_down" );
 
-	music_main_menu = engine->get_asset<a_sound>( "music_main_menu" );
+	music_main_menu = a_sound::find( "music_main_menu" );
 
 	tile_set_subtex =
 	{
-		engine->get_asset<a_subtexture>( "tile_01" ),
-		engine->get_asset<a_subtexture>( "tile_02" ),
-		engine->get_asset<a_subtexture>( "tile_03" ),
-		engine->get_asset<a_subtexture>( "tile_04" ),
-		engine->get_asset<a_subtexture>( "tile_05" ),
-		engine->get_asset<a_subtexture>( "tile_06" ),
-		engine->get_asset<a_subtexture>( "tile_07" ),
-		engine->get_asset<a_subtexture>( "tile_08" ),
-		engine->get_asset<a_subtexture>( "tile_09" ),
-		engine->get_asset<a_subtexture>( "tile_10" ),
-		engine->get_asset<a_subtexture>( "tile_11" ),
-		engine->get_asset<a_subtexture>( "tile_12" ),
-		engine->get_asset<a_subtexture>( "tile_13" )
+		a_subtexture::find( "tile_01" ),
+		a_subtexture::find( "tile_02" ),
+		a_subtexture::find( "tile_03" ),
+		a_subtexture::find( "tile_04" ),
+		a_subtexture::find( "tile_05" ),
+		a_subtexture::find( "tile_06" ),
+		a_subtexture::find( "tile_07" ),
+		a_subtexture::find( "tile_08" ),
+		a_subtexture::find( "tile_09" ),
+		a_subtexture::find( "tile_10" ),
+		a_subtexture::find( "tile_11" ),
+		a_subtexture::find( "tile_12" ),
+		a_subtexture::find( "tile_13" )
 	};
 }
 

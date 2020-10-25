@@ -10,7 +10,7 @@ layer_default::layer_default()
 
 void layer_default::push()
 {
-	gradient = engine->get_asset<a_gradient>( "background_gradient" );
+	gradient = a_gradient::find( "background_gradient" );
 }
 
 void layer_default::draw()
@@ -22,8 +22,7 @@ void layer_default::draw()
 		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
 		->push_rgb( w_color::white )
 		->push_align( align::centered )
-		//->draw_string( engine->pixel_font, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", w_rect( v_window_hw, v_window_hh ) )
-		->draw_string( engine->pixel_font, "Ut enim ad minim veniam.", w_rect( v_window_hw, v_window_hh ) )
+		->draw_string( "Ut enim ad minim veniam.", w_rect( v_window_hw, v_window_hh ) )
 		->end();
 
 	// ----------------------------------------------------------------------------

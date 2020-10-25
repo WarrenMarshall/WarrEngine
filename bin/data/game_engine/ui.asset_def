@@ -56,16 +56,16 @@
 # panel
 {
 	"type" "slice_def"
-	"name" "ui_default_panel"
+	"name" "sd_ui_panel"
 	"subtexture" "ui_panel"
 	"x_slices" "7, 7"
 	"y_slices" "7, 7"
 }
 
-# button_down
+# push button
 {
 	"type" "slice_def"
-	"name" "ui_default_button_down"
+	"name" "sd_push_button"
 	"subtexture" "ui_button_09"
 	"x_slices" "6, 6"
 	"y_slices" "6, 8"

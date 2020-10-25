@@ -7,14 +7,14 @@ platformer_layer::platformer_layer()
 {
 	draws_completely_solid = true;
 
-	music_gameplay = engine->get_asset<a_sound>( "music_gameplay" );
+	music_gameplay = a_sound::find( "music_gameplay" );
 }
 
 void platformer_layer::push()
 {
 	w_layer::push();
 
-	sky_gradient = engine->get_asset<a_gradient>( "sky_gradient" );
+	sky_gradient = a_gradient::find( "sky_gradient" );
 
 	engine->window->set_mouse_mode( mouse_mode::hidden );
 

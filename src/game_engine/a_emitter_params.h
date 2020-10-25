@@ -2,6 +2,8 @@
 
 struct a_emitter_params : i_asset, i_speaker
 {
+	declare_find_func( a_emitter_params )
+
 	// texture to draw for this particle
 	a_texture* tex = nullptr;
 

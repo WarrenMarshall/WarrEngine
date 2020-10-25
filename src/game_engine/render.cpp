@@ -278,12 +278,20 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 /*
 	draws a string from a bitmap font, char by char
 */
+w_render* w_render::draw_string( const std::string_view text, const w_rect& dst )
+{
+	// not specifying a font means you want to use the default font
+	return draw_string( engine->pixel_font, text, dst );
+}
+
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
 	maybe_draw_master_buffer( font->font_def->texture );
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	e_align rs_align = rs_align_stack.back();
+
+	// ----------------------------------------------------------------------------
 
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
@@ -306,8 +314,6 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 	// ----------------------------------------------------------------------------
 
-	w_font_char* fch;
-
 	MATRIX
 		->push()
 		->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
@@ -317,7 +323,7 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 	for( const char iter : text )
 	{
-		fch = &( font->font_def->char_map[ static_cast<int>( iter ) ] );
+		w_font_char* fch = &( font->font_def->char_map[ static_cast<int>( iter ) ] );
 
 		// small optimization to skip drawing completely blank characters
 		if( fch->w > 0 )
@@ -341,9 +347,8 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 */
 void w_render::begin_frame( float frame_interpolate_pct )
 {
-	current_texture = nullptr;
-
 	this->frame_interpolate_pct = frame_interpolate_pct;
+	current_texture = nullptr;
 
 	// reset all render buffers
 
@@ -351,6 +356,9 @@ void w_render::begin_frame( float frame_interpolate_pct )
 	{
 		asset->clear_render_buffer();
 	}
+
+	zdepth = 0.0f;
+	zdepth_nudge_accum = 0.0f;
 }
 
 /*
@@ -382,9 +390,6 @@ void w_render::end_frame()
 	assert( rs_align_stack.length() == 1 );
 
 	OPENGL->clear_texture_bind();
-
-	zdepth -= zdepth_nudge_accum;
-	zdepth_nudge_accum = 0.0f;
 }
 
 /*

@@ -2,6 +2,8 @@
 
 struct a_sound : i_asset
 {
+	declare_find_func( a_sound )
+
 #ifdef USE_BASS_SOUND_LIBRARY
 	int snd = -1;
 	int channel = -1;

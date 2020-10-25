@@ -77,7 +77,7 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 
 w_entity_component* ec_sprite::init( const std::string_view tex_name )
 {
-	tex = engine->get_asset<a_texture>( tex_name );
+	tex = a_texture::find( tex_name );
 	return this;
 }
 
@@ -106,7 +106,7 @@ ec_emitter::ec_emitter( w_entity* parent_entity )
 w_entity_component* ec_emitter::init( const std::string_view params_name )
 {
 	emitter = std::make_unique<w_particle_emitter>();
-	emitter->set_params( engine->get_asset<a_emitter_params>( params_name ) );
+	emitter->set_params( a_emitter_params::find( params_name ) );
 	emitter->parent_component = this;
 
 	post_init();
@@ -196,7 +196,7 @@ ec_sound::ec_sound( w_entity* parent_entity )
 
 w_entity_component* ec_sound::init( const std::string_view snd_name )
 {
-	snd = engine->get_asset<a_sound>( snd_name );
+	snd = a_sound::find( snd_name );
 
 	return this;
 }

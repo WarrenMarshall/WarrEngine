@@ -2,6 +2,8 @@
 
 struct a_anim_texture : a_texture
 {
+	declare_find_func( a_anim_texture )
+
 	std::vector<a_subtexture*> frames;
 	std::unique_ptr<w_tween> frame_tween = nullptr;
 

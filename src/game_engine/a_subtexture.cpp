@@ -1,9 +1,11 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+implement_find_func( a_subtexture )
+
 a_subtexture::a_subtexture( const std::string_view tex_name )
 {
-	tex = engine->get_asset<a_texture>( tex_name );
+	tex = a_texture::find( tex_name );
 
 	rc_tex = { 0, 0, tex->w, tex->h };
 
@@ -14,7 +16,7 @@ a_subtexture::a_subtexture( const std::string_view tex_name )
 a_subtexture::a_subtexture( const std::string_view texture_name, const w_rect& rc )
 {
 	// find the texture being referenced
-	tex = engine->get_asset<a_texture>( texture_name );
+	tex = a_texture::find( texture_name );
 
 	// if W or H are -1, they are defaulted to the textures W/H
 

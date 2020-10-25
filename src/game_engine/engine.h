@@ -34,11 +34,22 @@ struct w_engine : i_listener
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
 	void precache_asset_resources( int pass, std::string_view game_name );
+
+	a_texture* find_texture( const std::string_view name, bool silent = false )
+	{
+		return find_asset<a_texture>( name, silent );
+	}
+	a_subtexture* find_subtexture( const std::string_view name, bool silent = false )
+	{
+		return find_asset<a_subtexture>( name, silent );
+	}
+
 	template<typename T>
-	_NODISCARD T* get_asset( const std::string_view name, bool silent = false )
+	T* find_asset( const std::string_view name, bool silent = false )
 	{
 		return asset_cache->find<T>( name, silent );
 	}
+
 	void parse_config_files( const std::string_view folder_name );
 	void parse_config_file( std::string_view filename );
 

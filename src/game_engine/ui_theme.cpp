@@ -94,7 +94,7 @@ w_offset w_ui_style::get_click_offset( bool being_hovered, bool being_clicked )
 
 w_ui_style_button::w_ui_style_button()
 {
-	slice_def = UI->theme->button_down_slice_def;
+	slice_def = UI->theme->sd_push_button;
 
 
 	label_attrib.alignment = align::centered;
@@ -174,7 +174,7 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 
 w_ui_style_panel::w_ui_style_panel()
 {
-	slice_def = UI->theme->panel_slice_def;
+	slice_def = UI->theme->sd_panel;
 }
 
 void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )
@@ -193,8 +193,10 @@ void w_ui_theme::init()
 {
 	mouse_cursor = nullptr;// engine->get_asset<a_cursor>( "ui_cursor", b_silent( true ) );
 
-	panel_slice_def = engine->get_asset<a_9slice_def>( "ui_default_panel" );
-	button_down_slice_def = engine->get_asset<a_9slice_def>( "ui_default_button_down" );
+	sd_panel = a_9slice_def::find( "sd_ui_panel" );
+	sd_push_button = a_9slice_def::find( "sd_push_button" );
+	st_checkbox_clear = a_subtexture::find( "ui_box" );
+	st_checkbox_checked = a_subtexture::find( "ui_box_checkmark" );
 
 	default_button_style = std::make_unique<w_ui_style_button>();
 	default_button_style->base_attrib.color = w_color::dark_grey;

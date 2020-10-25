@@ -179,15 +179,15 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		engine->time->init();
 
 		// used for wireframe drawing
-		engine->white_wire = engine->get_asset<a_subtexture>( "engine_white_wire" );
+		engine->white_wire = a_subtexture::find( "engine_white_wire" );
 		engine->white_wire->tex->gl_prim_type = GL_LINES;
 
 		// used for solid drawing
-		engine->white_solid = engine->get_asset<a_subtexture>( "engine_white_solid" );
+		engine->white_solid = a_subtexture::find( "engine_white_solid" );
 
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.
-		engine->pixel_font = engine->get_asset<a_font>( "font_ui" );
+		engine->pixel_font = a_font::find( "font_ui" );
 
 		engine->ui->init();
 		engine->ui->theme->init();
@@ -351,7 +351,7 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-		static a_texture* tex = engine->get_asset<a_texture>( "tex_game_frame_buffer" );
+		static a_texture* tex = a_texture::find( "tex_game_frame_buffer" );
 
 		//OPENGL->find_shader( "crt_fx" )->bind();
 

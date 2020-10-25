@@ -1,6 +1,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+implement_find_func( a_sound )
+
 a_sound::~a_sound()
 {
 	a_sound::clean_up_internals();

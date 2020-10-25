@@ -1,6 +1,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+implement_find_func( a_texture )
+
 a_texture::~a_texture()
 {
 	a_texture::clean_up_internals();
@@ -8,8 +10,6 @@ a_texture::~a_texture()
 
 void a_texture::clean_up_internals()
 {
-	//render_buffer = nullptr;
-
 	if( id )
 	{
 		glDeleteTextures( 1, &id );

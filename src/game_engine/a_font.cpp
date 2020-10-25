@@ -1,6 +1,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+implement_find_func( a_font_def )
+
 bool a_font_def::create_internals()
 {
 	ZeroMemory( char_map, sizeof( w_font_char ) * max_font_chars );
@@ -39,6 +41,8 @@ bool a_font_def::create_internals()
 }
 
 // ----------------------------------------------------------------------------
+
+implement_find_func( a_font )
 
 /*
 	computes how wide and how tall a string is using this font.

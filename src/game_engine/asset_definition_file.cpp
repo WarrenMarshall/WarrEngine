@@ -40,7 +40,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_texture>( name, b_silent(true) );
+					auto asset_ptr = a_texture::find( name, b_silent(true) );
 
 					if( !asset_ptr )
 					{
@@ -105,7 +105,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				{
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_gradient>( name, b_silent( true ) );
+					auto asset_ptr = a_gradient::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -211,7 +211,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_font_def>( name, b_silent( true ) );
+					auto asset_ptr = a_font_def::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -221,7 +221,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// ------------------------------------------------------------------------
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->texture = engine->get_asset<a_texture>( iter_ad->find_value( "texture" ) );
+					asset_ptr->texture = a_texture::find( iter_ad->find_value( "texture" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -232,7 +232,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				{
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_9slice_def>( name, b_silent( true ) );
+					auto asset_ptr = a_9slice_def::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -247,14 +247,14 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					if( iter_ad->does_key_exist("texture") )
 					{
 						tex_name = iter_ad->find_value( "texture" );
-						subtexture = engine->get_asset<a_texture>( *tex_name )->get_subtexture();
+						subtexture = a_texture::find( *tex_name )->get_subtexture();
 					}
 
 					std::optional<std::string_view> sub_tex_name = std::nullopt;
 					if( iter_ad->does_key_exist( "subtexture" ) )
 					{
 						sub_tex_name = iter_ad->find_value( "subtexture" );
-						subtexture = engine->get_asset<a_subtexture>( *sub_tex_name );
+						subtexture = a_subtexture::find( *sub_tex_name );
 						tex_name = subtexture->tex->name;
 					}
 
@@ -381,7 +381,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_sound>( name, b_silent( true ) );
+					auto asset_ptr = a_sound::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -414,7 +414,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				{
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = engine->get_asset<a_emitter_params>( name, b_silent( true ) );
+					auto asset_ptr = a_emitter_params::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -434,7 +434,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						else if( key == "b_one_shot" )
 							asset_ptr->is_one_shot = bool( value == "true" );
 						else if( key == "texture_name" )
-							asset_ptr->tex = engine->get_asset<a_texture>( value );
+							asset_ptr->tex = a_texture::find( value );
 						else if( key == "spawner_type" )
 						{
 							w_tokenizer tok( value, ',' );
@@ -492,7 +492,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "font" )
 				{
-					auto asset_ptr = engine->get_asset<a_font>( name, b_silent( true ) );
+					auto asset_ptr = a_font::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -501,7 +501,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->font_def = engine->get_asset<a_font_def>( iter_ad->find_value( "font_def") );
+					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def") );
 
 					// ------------------------------------------------------------------------
 
@@ -510,7 +510,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "cursor" )
 				{
-					auto asset_ptr = engine->get_asset<a_cursor>( name, b_silent( true ) );
+					auto asset_ptr = a_cursor::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -519,7 +519,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->subtex = engine->get_asset<a_subtexture>( iter_ad->find_value( "subtexture") );
+					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture") );
 					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot") );
 
 					// ------------------------------------------------------------------------
@@ -529,7 +529,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "anim_texture" )
 				{
-					auto asset_ptr = engine->get_asset<a_anim_texture>( name, b_silent( true ) );
+					auto asset_ptr = a_anim_texture::find( name, b_silent( true ) );
 
 					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec" ) );
 					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween" ) ) );
@@ -547,7 +547,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
 					{
-						auto subtex = engine->get_asset<a_subtexture>( *tok.get_next_token() );
+						auto subtex = a_subtexture::find( *tok.get_next_token() );
 						asset_ptr->add_frame( subtex );
 					}
 
@@ -558,7 +558,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "subtexture" )
 				{
-					auto asset_ptr = engine->get_asset<a_subtexture>( name, b_silent( true ) );
+					auto asset_ptr = a_subtexture::find( name, b_silent( true ) );
 
 					if( !asset_ptr )
 					{

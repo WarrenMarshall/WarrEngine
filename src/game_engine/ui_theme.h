@@ -67,8 +67,10 @@ struct w_ui_theme
 {
 	a_cursor* mouse_cursor = nullptr;
 
-	a_9slice_def* panel_slice_def = nullptr;
-	a_9slice_def* button_down_slice_def = nullptr;
+	a_9slice_def* sd_panel = nullptr;
+	a_9slice_def* sd_push_button = nullptr;
+	a_subtexture* st_checkbox_clear = nullptr;
+	a_subtexture* st_checkbox_checked = nullptr;
 
 	float control_padding = 4.0f;
 

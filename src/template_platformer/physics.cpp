@@ -191,21 +191,21 @@ void w_platformer_physics::update()
 	}
 
 	auto ec = player->get_component<ec_sprite>( component_type::sprite );
-	ec->tex = engine->get_asset<a_anim_texture>( "anim_player_idle" );
+	ec->tex = a_anim_texture::find( "anim_player_idle" );
 
 	auto ec_b2d = player->phys_get_primary_body();
 	w_vec2 vel = w_vec2( ec_b2d->body->GetLinearVelocity() ).from_b2d();
 
 	if( !on_ground() )
 	{
-		ec->tex = engine->get_asset<a_anim_texture>( "anim_player_jump" );
+		ec->tex = a_anim_texture::find( "anim_player_jump" );
 	}
 	else
 	{
 		// #todo - vary animation speed based on running speed
 		if( !fequals( vel.x, 0.0f ) )
 		{
-			ec->tex = engine->get_asset<a_anim_texture>( "anim_player_run" );
+			ec->tex = a_anim_texture::find( "anim_player_run" );
 		}
 	}
 }
