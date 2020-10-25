@@ -105,7 +105,7 @@ void w_particle_emitter::spawn_particle()
 
 	// 2. apply the current transform (entity+component) to move the
 	//    particle position into world space
-	MATRIX->top()->transform_vec2( p->pos );
+	p->pos = MATRIX->top()->transform_vec2( p->pos );
 
 	p->tex = params->tex;
 

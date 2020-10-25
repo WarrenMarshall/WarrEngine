@@ -62,8 +62,6 @@ w_matrix* w_matrix::rotate( float v )
 
 w_vec2 w_matrix::transform_vec2( const w_vec2& vtx )
 {
-	glm::vec4 v4( vtx.x, vtx.y, 0.0f, 1.0f );
-	v4 = m * v4;
-
-	return w_vec2( v4.x, v4.y );
+	auto v = m * glm::vec4( vtx.x, vtx.y, 0.0f, 1.0f );
+	return w_vec2( v.x, v.y );
 }
