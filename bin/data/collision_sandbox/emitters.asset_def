@@ -1,7 +1,7 @@
 
 # {
 # 	"type" "emitter_params"
-# 	"name" "background_stars"
+# 	"tag" "background_stars"
 # 	"texture_name" "tex_particle_star"
 # 	"spawner_type" "box,v_window_w,v_window_h"
 

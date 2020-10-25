@@ -6,7 +6,7 @@ struct i_asset
 {
 	virtual ~i_asset( ) = default;
 
-	std::string name = "";
+	std::string tag = "";
 	std::string original_filename;
 
 	virtual void clean_up_internals() {};

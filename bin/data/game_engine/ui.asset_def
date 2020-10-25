@@ -5,7 +5,7 @@
 
 {
 	"type" "texture"
-	"name" "tex_ui_default"
+	"tag" "tex_ui_default"
 	"filename" "ui/ui_default.png"
 	"subtextures" "\
 		ui_arrow_down_grey, 78, 498, 15, 10,\
@@ -56,7 +56,7 @@
 # panel
 {
 	"type" "slice_def"
-	"name" "sd_ui_panel"
+	"tag" "sd_ui_panel"
 	"subtexture" "ui_panel"
 	"x_slices" "7, 7"
 	"y_slices" "7, 7"
@@ -65,7 +65,7 @@
 # push button
 {
 	"type" "slice_def"
-	"name" "sd_push_button"
+	"tag" "sd_push_button"
 	"subtexture" "ui_button_09"
 	"x_slices" "6, 6"
 	"y_slices" "6, 8"

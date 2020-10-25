@@ -1,18 +1,18 @@
 
 {
 	"type" "texture"
-	"name" "tex_fire_particle"
+	"tag" "tex_fire_particle"
 	"filename" "gfx/fire_particle.png"
 }
 {
 	"type" "texture"
-	"name" "cartoon_star"
+	"tag" "cartoon_star"
 	"filename" "gfx/particleCartoonStar.png"
 }
 
 {
 	"type" "emitter_params"
-	"name" "fireball_effect"
+	"tag" "fireball_effect"
 	"texture_name" "tex_fire_particle"
 	"spawner_type" "circle,8"
 
@@ -31,7 +31,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "coin_idle_effect"
+	"tag" "coin_idle_effect"
 	"texture_name" "cartoon_star"
 	"spawner_type" "circle,10"
 

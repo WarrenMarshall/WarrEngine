@@ -3,54 +3,54 @@
 
 {
 	"type" "sound"
-	"name" "paddle_impact"
+	"tag" "paddle_impact"
 	"filename" "sfx/8bit_hit_4.wav"
 }
 
 {
 	"type" "sound"
-	"name" "deathzone_impact"
+	"tag" "deathzone_impact"
 	"filename" "sfx/8bit_death_3.wav"
 }
 
 {
 	"type" "sound"
-	"name" "ball_impact"
+	"tag" "ball_impact"
 	"filename" "sfx/ball_hit.wav"
 }
 
 {
 	"type" "sound"
-	"name" "wall_impact"
+	"tag" "wall_impact"
 	"filename" "sfx/wall_hit.wav"
 }
 
 {
 	"type" "sound"
-	"name" "brick_impact"
+	"tag" "brick_impact"
 	"filename" "sfx/brick_hit.wav"
 }
 
 {
 	"type" "sound"
-	"name" "powup_impact"
+	"tag" "powup_impact"
 	"filename" "sfx/powup_hit.wav"
 }
 
 {
 	"type" "sound"
-	"name" "game_over"
+	"tag" "game_over"
 	"filename" "sfx/EvilFactory_Jingle_Loose.wav"
 }
 
 {
 	"type" "sound"
-	"name" "fire_on"
+	"tag" "fire_on"
 	"filename" "sfx/Fire_8_Bit_Fireball_1.wav"
 }
 
 {
 	"type" "sound"
-	"name" "fire_off"
+	"tag" "fire_off"
 	"filename" "sfx/fuse_stop_burn_out_bomb_dynamite_01.wav"
 }

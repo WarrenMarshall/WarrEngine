@@ -74,7 +74,7 @@ bool a_sound::create_internals()
 
 	if( !file_exists )
 	{
-		log_error( "Couldn't find the file : [{}]", name );
+		log_error( "Couldn't find the file : [{}]", tag );
 	}
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
@@ -84,7 +84,7 @@ bool a_sound::create_internals()
 
 	if( !snd && BASS_IsStarted() )
 	{
-		log_error( "Couldn't load the file : [{}]", name );
+		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
 
 	if( !looped )
@@ -96,7 +96,7 @@ bool a_sound::create_internals()
 
 	if( !engine->c2_sound_context && !snd.sample_rate )
 	{
-		log_error( "Couldn't load the file : [{}]", name );
+		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
 #endif
 

@@ -5,13 +5,13 @@
 
 {
 	"type" "texture"
-	"name" "plat_player"
+	"tag" "plat_player"
 	"filename" "gfx/plat_player.png"
 }
 
 {
 	"type" "texture"
-	"name" "tex_coin_pickup"
+	"tag" "tex_coin_pickup"
 	"filename" "gfx/plat_coin.png"
 	"subtextures" "\
 		sub_coin_frame_1, 0, 0, 16, 16,\
@@ -22,7 +22,7 @@
 
 {
 	"type" "anim_texture"
-	"name" "anim_coin_pickup"
+	"tag" "anim_coin_pickup"
 	"frames_per_sec" "4"
 	"tween" "tween.loop"
 	"frames" "sub_coin_frame_1, sub_coin_frame_2, sub_coin_frame_3, sub_coin_frame_4"
@@ -34,7 +34,7 @@
 
 {
 	"type" "texture"
-	"name" "pong_ball"
+	"tag" "pong_ball"
 	"filename" "gfx/pong_ball.png"
 }
 
@@ -44,7 +44,7 @@
 
 {
 	"type" "texture"
-	"name" "twinstick_player"
+	"tag" "twinstick_player"
 	"filename" "gfx/twinstick_player.png"
 }
 

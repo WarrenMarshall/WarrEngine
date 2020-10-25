@@ -5,31 +5,31 @@
 
 {
 	"type" "texture"
-	"name" "tex_particle_star"
+	"tag" "tex_particle_star"
 	"filename" "gfx/particleSmallStar.png"
 }
 
 {
 	"type" "texture"
-	"name" "tex_smoke"
+	"tag" "tex_smoke"
 	"filename" "gfx/smoke_particle.png"
 }
 
 {
 	"type" "texture"
-	"name" "tex_particle_toon_star"
+	"tag" "tex_particle_toon_star"
 	"filename" "gfx/particleCartoonStar.png"
 }
 
 {
 	"type" "texture"
-	"name" "fire_particle"
+	"tag" "fire_particle"
 	"filename" "gfx/fire_particle.png"
 }
 
 {
 	"type" "texture"
-	"name" "brick_sheet"
+	"tag" "brick_sheet"
 	"filename" "gfx/brick_sheet.png"
 	"subtextures" "\
 		brick_yellow, 0, 0, 64, 32,\
@@ -48,7 +48,7 @@
 
 {
 	"type" "gradient"
-	"name" "background_gradient"
+	"tag" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
 	"colors" "color.black, color.dark_grey, color.dark_teal, color.teal:5, color.dark_teal"

@@ -3,6 +3,6 @@
 
 # {
 # 	"type" "sound"
-# 	"name" "name_of_asset"
+# 	"tag" "name_of_asset"
 # 	"filename" "audio/filename.wav"
 # }

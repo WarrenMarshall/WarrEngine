@@ -1,7 +1,7 @@
 
 {
 	"type" "texture"
-	"name" "main_sprite_sheet"
+	"tag" "main_sprite_sheet"
 	"filename" "gfx/main_sheet.png"
 	"subtextures" "\
 		player_spr_run_1, 0, 0, 16, 16,\
@@ -17,7 +17,7 @@
 
 {
 	"type" "anim_texture"
-	"name" "anim_player_idle"
+	"tag" "anim_player_idle"
 	"frames_per_sec" "1"
 	"tween" "tween.loop"
 	"frames" "player_spr_run_1"
@@ -25,7 +25,7 @@
 
 {
 	"type" "anim_texture"
-	"name" "anim_player_run"
+	"tag" "anim_player_run"
 	"frames_per_sec" "10"
 	"tween" "tween.loop"
 	"frames" "player_spr_run_1,player_spr_run_2,player_spr_run_3,player_spr_run_4"
@@ -33,7 +33,7 @@
 
 {
 	"type" "anim_texture"
-	"name" "anim_player_jump"
+	"tag" "anim_player_jump"
 	"frames_per_sec" "1"
 	"tween" "tween.loop"
 	"frames" "player_spr_jump_1"
@@ -41,7 +41,7 @@
 
 {
 	"type" "anim_texture"
-	"name" "anim_coin"
+	"tag" "anim_coin"
 	"frames_per_sec" "6"
 	"tween" "tween.loop"
 	"frames" "coin_spr_1,coin_spr_2,coin_spr_3,coin_spr_4"
@@ -49,19 +49,19 @@
 
 {
 	"type" "texture"
-	"name" "cartoon_star"
+	"tag" "cartoon_star"
 	"filename" "gfx/cartoon_star.png"
 }
 
 {
 	"type" "texture"
-	"name" "particle_small_star"
+	"tag" "particle_small_star"
 	"filename" "gfx/particlesmallstar.png"
 }
 
 {
 	"type" "texture"
-	"name" "main_tile_sheet"
+	"tag" "main_tile_sheet"
 	"filename" "gfx/tileset.png"
 	"subtextures" "\
 		tile_01, 0, 0, 16, 16,\
@@ -81,6 +81,6 @@
 
 {
 	"type" "texture"
-	"name" "tex_smoke"
+	"tag" "tex_smoke"
 	"filename" "gfx/smoke_particle.png"
 }

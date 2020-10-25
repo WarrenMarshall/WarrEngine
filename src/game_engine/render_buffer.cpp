@@ -133,7 +133,7 @@ void w_render_buffer::log_stats( i_asset* asset )
     if( !indices.empty() )
     {
         log_msg( "\t\t[{}]: [{} verts, {} indices]",
-                              asset->name,
+                              asset->tag,
                               f_commas( static_cast<float>( vertices.size() ) ),
                               f_commas( static_cast<float>( indices.size() ) )
         );

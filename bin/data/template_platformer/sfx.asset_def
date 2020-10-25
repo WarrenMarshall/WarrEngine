@@ -7,18 +7,18 @@
 
 {
 	"type" "sound"
-	"name" "snd_jump"
+	"tag" "snd_jump"
 	"filename" "sfx/plat_jump.wav"
 }
 
 {
 	"type" "sound"
-	"name" "snd_coin"
+	"tag" "snd_coin"
 	"filename" "sfx/plat_coin.wav"
 }
 
 {
 	"type" "sound"
-	"name" "snd_drop_down"
+	"tag" "snd_drop_down"
 	"filename" "sfx/plat_drop_down.wav"
 }

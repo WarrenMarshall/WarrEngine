@@ -5,7 +5,7 @@
 
 {
 	"type" "texture"
-	"name" "tex_fire_particle"
+	"tag" "tex_fire_particle"
 	"subtexture" "fire_particle"
 	"filename" "images/fire_particle.png"
 }
@@ -16,7 +16,7 @@
 
 {
 	"type" "gradient"
-	"name" "background_gradient"
+	"tag" "background_gradient"
 	"subtexture" "s_background_gradient"
 	"alignment" "align.vertical"
 	"colors" "color.dark_grey, color.black:2, color.dark_grey"

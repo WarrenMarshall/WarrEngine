@@ -1,7 +1,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "background_fire_up"
+	"tag" "background_fire_up"
 	"texture_name" "tex_fire_particle"
 	"spawner_type" "circle,16"
 

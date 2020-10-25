@@ -3,7 +3,7 @@
 
 {
 	"type" "sound"
-	"name" "twinstick_music_track"
+	"tag" "twinstick_music_track"
 	"filename" "music/realtime.wav"
 	"looped" "true"
 }

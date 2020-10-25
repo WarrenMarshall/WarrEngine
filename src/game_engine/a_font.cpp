@@ -31,7 +31,7 @@ bool a_font_def::create_internals()
 			fch->w = w;
 			fch->h = h;
 
-			fch->subtex = std::make_unique<a_subtexture>( texture->name, w_rect( x, y, w, h ) );
+			fch->subtex = std::make_unique<a_subtexture>( texture->tag, w_rect( x, y, w, h ) );
 
 			max_height = std::max( max_height, static_cast<int>( fch->h ) );
 		}

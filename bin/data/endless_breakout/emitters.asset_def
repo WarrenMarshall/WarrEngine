@@ -1,7 +1,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "background_stars"
+	"tag" "background_stars"
 	"texture_name" "tex_particle_star"
 	"spawner_type" "box,v_window_w,v_window_h"
 
@@ -20,7 +20,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "fireball_pickup"
+	"tag" "fireball_pickup"
 	"texture_name" "tex_particle_toon_star"
 	"spawner_type" "box,24,8"
 
@@ -40,7 +40,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "multiball_pickup"
+	"tag" "multiball_pickup"
 	"texture_name" "tex_particle_toon_star"
 	"spawner_type" "box,24,8"
 
@@ -60,7 +60,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "ball_in_deathzone"
+	"tag" "ball_in_deathzone"
 	"texture_name" "tex_smoke"
 	"spawner_type" "circle,5"
 
@@ -80,7 +80,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "fireball_trail"
+	"tag" "fireball_trail"
 	"texture_name" "fire_particle"
 	"spawner_type" "circle,5"
 
@@ -99,7 +99,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "brick_hit"
+	"tag" "brick_hit"
 	"texture_name" "tex_smoke"
 	"spawner_type" "circle,2"
 
@@ -119,7 +119,7 @@
 
 {
 	"type" "emitter_params"
-	"name" "balls_collide"
+	"tag" "balls_collide"
 	"texture_name" "tex_particle_toon_star"
 	"spawner_type" "circle,1"
 
