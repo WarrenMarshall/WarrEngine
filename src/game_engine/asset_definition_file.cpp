@@ -210,7 +210,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-				else if( type == "font_def" )
+				else if( type == "font_def_tag" )
 				{
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
@@ -226,7 +226,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// ------------------------------------------------------------------------
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->texture = a_texture::find( iter_ad->find_value( "texture" ) );
+					asset_ptr->texture = a_texture::find( iter_ad->find_value( "texture_tag" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -249,9 +249,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					a_subtexture* subtexture = nullptr;
 
 					std::optional<std::string_view> tex_tag = std::nullopt;
-					if( iter_ad->does_key_exist("texture") )
+					if( iter_ad->does_key_exist("texture_tag") )
 					{
-						tex_tag = iter_ad->find_value( "texture" );
+						tex_tag = iter_ad->find_value( "texture_tag" );
 						subtexture = a_texture::find( *tex_tag )->get_subtexture();
 					}
 
@@ -506,7 +506,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def") );
+					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def_tag") );
 
 					// ------------------------------------------------------------------------
 
@@ -547,7 +547,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					const std::string_view frames = iter_ad->find_value( "frames");
+					const std::string_view frames = iter_ad->find_value( "frame_subtexture_tags");
 
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
@@ -561,14 +561,14 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-				else if( type == "subtexture_tag" )
+				else if( type == "subtexture" )
 				{
 					auto asset_ptr = a_subtexture::find( tag, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
 						w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect") );
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture" ), rc ),
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture_tag" ), rc ),
 															  tag, "" );
 					}
 

@@ -25,7 +25,7 @@
 	"tag" "anim_coin_pickup"
 	"frames_per_sec" "4"
 	"tween" "tween.loop"
-	"frames" "sub_coin_frame_1, sub_coin_frame_2, sub_coin_frame_3, sub_coin_frame_4"
+	"frame_subtexture_tags" "sub_coin_frame_1, sub_coin_frame_2, sub_coin_frame_3, sub_coin_frame_4"
 }
 
 # -----------------------------------------------

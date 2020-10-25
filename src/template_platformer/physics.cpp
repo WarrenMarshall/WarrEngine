@@ -5,12 +5,12 @@
 
 constexpr float player_move_force = 25.0f;
 constexpr float player_move_force_max = 100.0f;
-constexpr float player_jump_force = 300.0f;
+constexpr float player_jump_force = 325.0f;
 
 constexpr float player_base_radius = 6.0f;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
 constexpr int player_jump_interval = 50;
-constexpr float player_air_control_damping = 0.35f;
+constexpr float player_air_control_damping = 0.5f;
 
 // ----------------------------------------------------------------------------
 
