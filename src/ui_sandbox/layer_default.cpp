@@ -13,8 +13,25 @@ void layer_default::push()
 	gradient = a_gradient::find( "background_gradient" );
 }
 
+void leftclick_callback()
+{
+	log_msg( "callback called" );
+}
+
 void layer_default::draw()
 {
+	static bool init_done = false;
+	static w_ui_style_button style_img_push_button;
+
+	if( !init_done )
+	{
+		init_done = true;
+
+		//style_img_push_button.slice_def = std::nullopt;
+
+		//my_button_style.cb_was_left_clicked = leftclick_callback;
+	}
+
 	w_layer::draw();
 
 	RENDER
@@ -38,7 +55,14 @@ void layer_default::draw()
 		{
 			log_msg( "button clicked" );
 		}
+
+		// ----------------------------------------------------------------------------
+		// push button / warning icon
+
+		if( IMGUI->push_button( "", w_rect( IMGUI->last_rect.right(), IMGUI->last_rect.bottom(), 24, 24 ), &style_img_push_button ).was_left_clicked() )
+		{
+			log_msg( "img button clicked" );
+		}
 	}
 	IMGUI->clear_origin();
-
 }

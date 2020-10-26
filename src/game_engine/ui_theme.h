@@ -17,6 +17,8 @@ struct w_ui_style
 	w_ui_style() = default;
 	virtual ~w_ui_style() = default;
 
+	std::function<void( void )> cb_was_left_clicked;
+
 	// base
 	w_ui_style_attrib base_attrib;
 

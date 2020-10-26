@@ -63,6 +63,8 @@ w_imgui_result w_imgui::panel( w_rect rc, w_ui_style_panel* style )
 
 w_imgui_result w_imgui::active( std::string_view label, w_rect rc, w_ui_style* ui_style )
 {
+	last_rect = rc;
+
 	im_automatic_id++;
 
 	rc.x += origin.x;
@@ -77,19 +79,17 @@ w_imgui_result w_imgui::active( std::string_view label, w_rect rc, w_ui_style* u
 
 	ui_style->draw( label, rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
-	last_rect = rc;
-
 	return result;
 }
 
 w_imgui_result w_imgui::passive( std::string_view label, w_rect rc, w_ui_style* ui_style )
 {
+	last_rect = rc;
+
 	rc.x += origin.x;
 	rc.y += origin.y;
 
 	ui_style->draw( label, rc, false, false );
-
-	last_rect = rc;
 
 	return w_imgui_result();
 }

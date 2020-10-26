@@ -8,3 +8,9 @@
 # 	"tag" "tex_name"
 # 	"filename" "gfx/filename.png"
 # }
+
+{
+	"type" "texture"
+	"tag" "warning_icon"
+	"filename" "gfx/warning_icon.png"
+}

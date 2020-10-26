@@ -96,6 +96,23 @@ struct w_rect
 	w_rect( float x, float y, float w, float h );
 	w_rect( w_vec2 top_left, w_vec2 bottom_right );
 
+	float left()
+	{
+		return x;
+	}
+	float top()
+	{
+		return y;
+	}
+	float bottom()
+	{
+		return y + h;
+	}
+	float right()
+	{
+		return x + w;
+	}
+
 	operator c2AABB()
 	{
 		c2AABB bb;
