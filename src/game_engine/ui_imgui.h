@@ -37,12 +37,12 @@ struct w_imgui
 
 	void reset();
 
-	w_imgui_result push_button( std::string_view label, w_rect rc );
-	w_imgui_result panel( w_rect rc );
+	w_imgui_result push_button( std::string_view label, w_rect rc, w_ui_style_button* style = nullptr );
+	w_imgui_result panel( w_rect rc, w_ui_style_panel* style = nullptr );
 
 private:
-	w_imgui_result active( std::string_view label, w_rect rc, w_ui_style& ui_style );
-	w_imgui_result passive( std::string_view label, w_rect rc, w_ui_style& ui_style );
+	w_imgui_result active( std::string_view label, w_rect rc, w_ui_style* ui_style );
+	w_imgui_result passive( std::string_view label, w_rect rc, w_ui_style* ui_style );
 
 	int im_automatic_id = 0;
 };

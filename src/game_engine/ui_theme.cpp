@@ -96,7 +96,10 @@ w_ui_style_button::w_ui_style_button()
 {
 	slice_def = UI->theme->sd_push_button;
 
+	base_attrib.color = w_color::dark_grey;
 
+	label_attrib.color = w_color::grey;
+	label_attrib.pos = { 0, -2 };
 	label_attrib.alignment = align::centered;
 }
 
@@ -175,6 +178,8 @@ void w_ui_style_button::draw( std::string_view label, w_rect& rc, bool being_hov
 w_ui_style_panel::w_ui_style_panel()
 {
 	slice_def = UI->theme->sd_panel;
+
+	base_attrib.color = w_color::grey;
 }
 
 void w_ui_style_panel::draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked )

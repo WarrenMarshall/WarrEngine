@@ -10,28 +10,14 @@ void layer_edit_list::draw()
 {
 	w_layer::draw();
 
+	w_ui_style_button bitmap_button_style;
+	bitmap_button_style.slice_def = nullptr;
+	bitmap_button_style.subtex_list[ 0 ] = a_subtexture::find( "gear_icon" );
+	//bitmap_button_style.subtex_list[ 1 ] = a_subtexture::find( "ui_box_checkmark" );
+
 	/*
-	if( !style_button )
-	{
-		style_button = std::make_unique<w_ui_style_button>();
+	if( IMGUI->push_button( ))
 
-		style_approved_button = std::make_unique<w_ui_style_button>();
-		style_approved_button->base_attrib.color = w_color::dark_green;
-		style_approved_button->label_attrib.color = w_color::yellow;
-
-		style_waiting_button = std::make_unique<w_ui_style_button>();
-		style_waiting_button->base_attrib.color = w_color::dark_grey;
-		style_waiting_button->label_attrib.color = w_color::white;
-
-		style_clear_button = std::make_unique<w_ui_style_button>();
-		style_clear_button->subtex = a_subtexture::find("gear_icon");
-		style_clear_button->subtex_attrib.sz = w_sz( 24, 24 );
-		style_clear_button->slice_def = std::nullopt;
-	}
-
-	RENDER
-		->begin()
-		->push_depth_nudge( 100 );
 	if( UI->im_active( "", w_rect( v_window_w - 24, 6, 24, 24) , *( style_clear_button.get() ) ) & im_result::left_clicked )
 	{
 		for( auto& artist : GAME->artists )
@@ -40,8 +26,9 @@ void layer_edit_list::draw()
 		}
 		GAME->save_data();
 	}
-	RENDER->end();
+	*/
 
+	/*
 	float ypos = 6.0f;
 
 	for( auto& artist : GAME->artists )

@@ -30,7 +30,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					{
 						if( key != "tag" && key != "type" )
 						{
-							engine->_symbol_to_value[ key ] = value;
+							engine->_symbol_to_value.insert_or_assign( key, value );
+							//engine->_symbol_to_value[ key ] = value;
 						}
 					}
 				}
@@ -41,6 +42,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "texture" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "filename" ) );
+
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
@@ -108,7 +111,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "gradient" )
 				{
-					// ------------------------------------------------------------------------
+					assert_key_required( iter_ad->does_key_exist( "alignment" ) );
+					assert_key_required( iter_ad->does_key_exist( "colors" ) );
 
 					auto asset_ptr = a_gradient::find( tag, b_silent( true ) );
 
@@ -212,6 +216,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "font_def_tag" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "filename" ) );
+					assert_key_required( iter_ad->does_key_exist( "texture_tag" ) );
+
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
@@ -382,6 +389,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "sound" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "filename" ) );
+
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
@@ -497,6 +506,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "font" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "font_def_tag" ) );
+
 					auto asset_ptr = a_font::find( tag, b_silent( true ) );
 
 					if( !asset_ptr )
@@ -515,6 +526,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "cursor" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "subtexture_tag" ) );
+
 					auto asset_ptr = a_cursor::find( tag, b_silent( true ) );
 
 					if( !asset_ptr )
@@ -534,6 +547,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "anim_texture" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "frame_subtexture_tags" ) );
+					assert_key_required( iter_ad->does_key_exist( "frames_per_sec" ) );
+					assert_key_required( iter_ad->does_key_exist( "tween" ) );
+
 					auto asset_ptr = a_anim_texture::find( tag, b_silent( true ) );
 
 					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec" ) );
@@ -563,6 +580,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "subtexture" )
 				{
+					assert_key_required( iter_ad->does_key_exist( "rect" ) );
+					assert_key_required( iter_ad->does_key_exist( "texture_tag" ) );
+
 					auto asset_ptr = a_subtexture::find( tag, b_silent( true ) );
 
 					if( !asset_ptr )

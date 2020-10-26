@@ -87,9 +87,9 @@ void template_platformer::load_level( std::string_view level_filename )
 	}
 
 	// ----------------------------------------------------------------------------
-	// player
-
-	assert( player );	// should have been spawned above. did you forget to add a player start?
+	// player should have been spawned above.
+	// did you forget to add a player start to your level?
+	assert( player );
 
 	// ----------------------------------------------------------------------------
 	// camera

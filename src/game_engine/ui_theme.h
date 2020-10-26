@@ -6,8 +6,8 @@ struct w_ui_style_attrib
 {
 	w_color color = w_color::white;
 	e_align alignment = align::invalid;
-	std::optional<w_vec2> pos;
-	std::optional<w_vec2> sz;
+	std::optional<w_vec2> pos = std::nullopt;
+	std::optional<w_vec2> sz = std::nullopt;
 };
 
 // ----------------------------------------------------------------------------
@@ -30,8 +30,7 @@ struct w_ui_style
 	std::optional<a_9slice_def*> slice_def;
 
 	// image
-	//std::optional<a_subtexture*> subtex;
-	//w_ui_style_attrib subtex_attrib;
+	w_ui_style_attrib subtex_attrib;
 
 	_NODISCARD virtual e_im_result get_im_state( int id, w_rect rc );
 	virtual void draw( std::string_view label, w_rect& rc, bool being_hovered, bool being_clicked ) = 0;

@@ -156,6 +156,7 @@ using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
 // ----------------------------------------------------------------------------
 
 #define f_commas w_string_util::format_with_commas
+#define assert_key_required assert
 
 // ----------------------------------------------------------------------------
 // attempts to make logging things easier

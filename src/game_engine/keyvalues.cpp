@@ -9,15 +9,12 @@ bool w_keyvalues::does_key_exist( const std::string_view key ) const
 
 std::string_view w_keyvalues::find_value( const std::string& key ) const
 {
-	try
+	if( !does_key_exist( key ) )
 	{
-		return std::string_view( kv.at( key ) );
-	}
-	catch( const std::out_of_range& oor )
-	{
-		log_error( "Out of range : '{}'", oor.what(), key );
 		return nullptr;
 	}
+
+	return kv.at( key );
 }
 
 // same as "find_values", but it isn't fatal if the key doesn't exist

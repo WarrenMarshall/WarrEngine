@@ -37,25 +37,31 @@ void w_imgui::reset()
 	owning_layer_is_topmost = false;
 }
 
-w_imgui_result w_imgui::push_button( std::string_view label, w_rect rc )
+w_imgui_result w_imgui::push_button( std::string_view label, w_rect rc, w_ui_style_button* style )
 {
-	w_ui_style_button style;
-	style.base_attrib.color = w_color::dark_grey;
-	style.label_attrib.color = w_color::grey;
-	style.label_attrib.pos = { 0, -2 };
+	w_ui_style_button default_style;
+
+	if( !style )
+	{
+		style = &default_style;
+	}
 
 	return active( label, rc, style );
 }
 
-w_imgui_result w_imgui::panel( w_rect rc )
+w_imgui_result w_imgui::panel( w_rect rc, w_ui_style_panel* style )
 {
-	w_ui_style_panel style;
-	style.base_attrib.color = w_color::grey;
+	w_ui_style_panel default_style;
+
+	if( !style )
+	{
+		style = &default_style;
+	}
 
 	return passive( "", rc, style );
 }
 
-w_imgui_result w_imgui::active( std::string_view label, w_rect rc, w_ui_style& ui_style )
+w_imgui_result w_imgui::active( std::string_view label, w_rect rc, w_ui_style* ui_style )
 {
 	im_automatic_id++;
 
@@ -66,22 +72,22 @@ w_imgui_result w_imgui::active( std::string_view label, w_rect rc, w_ui_style& u
 
 	if( owning_layer_is_topmost )
 	{
-		result = ui_style.get_im_state( im_automatic_id, rc );
+		result = ui_style->get_im_state( im_automatic_id, rc );
 	}
 
-	ui_style.draw( label, rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
+	ui_style->draw( label, rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
 	last_rect = rc;
 
 	return result;
 }
 
-w_imgui_result w_imgui::passive( std::string_view label, w_rect rc, w_ui_style& ui_style )
+w_imgui_result w_imgui::passive( std::string_view label, w_rect rc, w_ui_style* ui_style )
 {
 	rc.x += origin.x;
 	rc.y += origin.y;
 
-	ui_style.draw( label, rc, false, false );
+	ui_style->draw( label, rc, false, false );
 
 	last_rect = rc;
 
