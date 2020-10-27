@@ -194,7 +194,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		engine->pixel_font = a_font::find( "font_ui" );
 
 		engine->ui->init();
-		engine->ui->theme->init();
+		//engine->ui->theme->init();
 	}
 	catch( std::exception& e )
 	{

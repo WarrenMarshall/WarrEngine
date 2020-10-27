@@ -14,9 +14,19 @@ struct w_imgui_result
 
 // ----------------------------------------------------------------------------
 
+struct w_imgui_control
+{
+	bool is_active = true;
+	std::string label;
+	w_ui_style style;
+	w_rect rc = { 0,0,0,0 };
+
+	w_imgui_result result = {};
+};
+
 struct w_imgui
 {
-	bool owning_layer_is_topmost = false;
+	bool containing_layer_is_topmost = false;
 
 	// which UI control the mouse is hovering over
 	int hover_id = -1;
@@ -32,17 +42,26 @@ struct w_imgui
 	// for positioning other controls on the screen.
 	w_rect last_rect = { 0,0,0,0 };
 
+	w_imgui_control control;
+
 	void set_origin( const w_vec2& origin );
 	void clear_origin();
 
 	void reset();
 
-	w_imgui_result push_button( std::string_view label, w_rect rc, w_ui_style_button* style = nullptr );
-	w_imgui_result panel( w_rect rc, w_ui_style_panel* style = nullptr );
+	w_imgui* begin_push_button();
+	w_imgui* begin_panel();
+
+	w_imgui* set_label( const std::string& label );
+	w_imgui* set_slice_def( a_9slice_def* slice_def );
+	w_imgui* set_subtexture( a_subtexture* subtexture );
+	w_imgui* set_rect( w_rect rc );
+
+	w_imgui_result* end();
 
 private:
-	w_imgui_result active( std::string_view label, w_rect rc, w_ui_style* ui_style );
-	w_imgui_result passive( std::string_view label, w_rect rc, w_ui_style* ui_style );
+	w_imgui_result* active();
+	w_imgui_result* passive();
 
 	int im_automatic_id = 0;
 };

@@ -25,6 +25,7 @@ void layer_esc_menu::draw_ui()
 {
 	w_layer::draw_ui();
 
+	/*
 	RENDER
 		->push_rgba( w_color( 0.2f, 0.2f, 0.2f, 0.9f ) )
 		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
@@ -62,4 +63,5 @@ void layer_esc_menu::draw_ui()
 	{
 		engine->is_running = false;
 	}
+	*/
 }

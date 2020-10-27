@@ -34,62 +34,102 @@ void w_imgui::clear_origin()
 void w_imgui::reset()
 {
 	im_automatic_id = 0;
-	owning_layer_is_topmost = false;
+	containing_layer_is_topmost = false;
 }
 
-w_imgui_result w_imgui::push_button( std::string_view label, w_rect rc, w_ui_style_button* style )
+w_imgui* w_imgui::begin_push_button()
 {
-	w_ui_style_button default_style;
+	control.~w_imgui_control();
+	new( &control ) w_imgui_control();
 
-	if( !style )
+	control.is_active = true;
+
+	return this;
+}
+
+w_imgui* w_imgui::begin_panel()
+{
+	control.~w_imgui_control();
+	new( &control ) w_imgui_control();
+
+	control.is_active = false;
+
+	return this;
+}
+
+w_imgui* w_imgui::set_label( const std::string& label )
+{
+	control.label = label;
+	return this;
+}
+
+w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
+{
+	control.style.slice_def = slice_def;
+	return this;
+}
+
+w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture )
+{
+	control.style.subtexture = subtexture;
+	return this;
+}
+
+w_imgui* w_imgui::set_rect( w_rect rc )
+{
+	control.rc = rc;
+	return this;
+}
+
+w_imgui_result* w_imgui::end()
+{
+	if( control.is_active )
 	{
-		style = &default_style;
+		return active();
 	}
 
-	return active( label, rc, style );
+	return passive();
 }
 
-w_imgui_result w_imgui::panel( w_rect rc, w_ui_style_panel* style )
+//w_imgui_result w_imgui::panel( w_rect rc, w_ui_style_panel* style )
+//{
+//	w_ui_style_panel default_style;
+//
+//	if( !style )
+//	{
+//		style = &default_style;
+//	}
+//
+//	return passive( "", rc, style );
+//}
+
+w_imgui_result* w_imgui::active()
 {
-	w_ui_style_panel default_style;
-
-	if( !style )
-	{
-		style = &default_style;
-	}
-
-	return passive( "", rc, style );
-}
-
-w_imgui_result w_imgui::active( std::string_view label, w_rect rc, w_ui_style* ui_style )
-{
-	last_rect = rc;
+	last_rect = control.rc;
 
 	im_automatic_id++;
 
-	rc.x += origin.x;
-	rc.y += origin.y;
+	control.rc.x += origin.x;
+	control.rc.y += origin.y;
 
-	w_imgui_result result;
-
-	if( owning_layer_is_topmost )
+	if( containing_layer_is_topmost )
 	{
-		result = ui_style->get_im_state( im_automatic_id, rc );
+		control.result = control.style.get_im_state( im_automatic_id, control.rc );
 	}
 
-	ui_style->draw( label, rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
+	control.style.draw( control.label, control.rc, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
-	return result;
+	return &control.result;
 }
 
-w_imgui_result w_imgui::passive( std::string_view label, w_rect rc, w_ui_style* ui_style )
+w_imgui_result* w_imgui::passive()
 {
-	last_rect = rc;
+	last_rect = control.rc;
 
-	rc.x += origin.x;
-	rc.y += origin.y;
+	control.rc.x += origin.x;
+	control.rc.y += origin.y;
 
-	ui_style->draw( label, rc, false, false );
+	control.style.draw( control.label, control.rc, false, false );
 
-	return w_imgui_result();
+	return &control.result;
 }

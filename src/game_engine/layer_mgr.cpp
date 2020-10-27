@@ -112,7 +112,7 @@ void w_layer_mgr::draw()
 		for( auto x = starting_layer_idx; x >= 0; --x )
 		{
 			// Only UI elements on the topmost layer respond to user input
-			IMGUI->owning_layer_is_topmost = !x;
+			IMGUI->containing_layer_is_topmost = !x;
 
 			if( layer_stack[ x ]->is_alive() )
 			{

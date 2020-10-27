@@ -146,6 +146,11 @@ w_rect::w_rect( w_vec2 top_left, w_vec2 bottom_right )
 {
 }
 
+w_vec2 w_rect::midpoint()
+{
+	return w_vec2( x + ( w / 2.0f ), y + ( h / 2.0f ) );
+}
+
 // ----------------------------------------------------------------------------
 
 const w_color w_color::white = w_color( 1.0f, 1.0f, 1.0f );
@@ -190,10 +195,13 @@ w_color::w_color( std::string& str )
 
 	// if the colors values are greater than 1.0, they are assumed to be
 	// in 0-255 space and are converted back down to 0-1.
-	r = ( r > 1.0f ) ? r * byte_color_to_float : r;
-	g = ( g > 1.0f ) ? g * byte_color_to_float : g;
-	b = ( b > 1.0f ) ? b * byte_color_to_float : b;
-	a = ( a > 1.0f ) ? a * byte_color_to_float : a;
+	if( r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f )
+	{
+		r *= byte_color_to_float;
+		g *= byte_color_to_float;
+		b *= byte_color_to_float;
+		a *= byte_color_to_float;
+	}
 }
 
 void w_color::scale( w_color& color, float s )
