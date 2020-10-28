@@ -2,7 +2,7 @@
 
 struct w_ui_mgr
 {
-	//std::unique_ptr<w_ui_theme> theme = nullptr;
+	std::unique_ptr<w_ui_theme> theme = nullptr;
 
 	w_imgui imgui;
 

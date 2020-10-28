@@ -7,7 +7,7 @@ void layer_esc_menu::push()
 	w_layer::push();
 
 	save_mouse_mode = engine->window->mouse_mode;
-	engine->window->set_mouse_mode( mouse_mode::normal );
+	engine->window->set_mouse_mode( mouse_mode::os );
 
 	engine->set_pause( true );
 }

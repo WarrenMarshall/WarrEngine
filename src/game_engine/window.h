@@ -10,7 +10,7 @@ struct w_window
 	w_color window_clear_color = w_color::light_grey;
 	bool is_fullscreen = false;
 	w_rect save_window_rect = w_rect( 0, 0, 0, 0 );
-	e_mouse_mode mouse_mode = mouse_mode::normal;
+	e_mouse_mode mouse_mode = mouse_mode::os;
 
 	GLFWwindow* window = nullptr;
 	GLFWmonitor* primary_monitor = nullptr;

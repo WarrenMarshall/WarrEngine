@@ -148,13 +148,13 @@ void w_window::refresh_mouse_mode()
 {
 	switch( mouse_mode )
 	{
-		case mouse_mode::normal:
+		case mouse_mode::os:
 		{
 			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
 		}
 		break;
 
-		case mouse_mode::hidden:
+		case mouse_mode::custom:
 		{
 			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
 		}

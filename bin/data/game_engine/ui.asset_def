@@ -46,12 +46,21 @@
 		ui_slider_up, 190, 276, 28, 42,\
 		ui_slider_vertical, 208, 318, 4, 100,\
 		ui_tick_grey, 190, 336, 17, 17,\
-		ui_tick_white, 190, 353, 17, 17\
+		ui_tick_white, 190, 353, 17, 17,\
+		ui_cursor, 232, 200, 16, 16\
 		"
 }
 
 # ---------------------------------------------------------
-# 9 slice definitions
+
+{
+	"type" "cursor"
+	"tag" "mouse_cursor_default"
+	"subtexture_tag" "ui_cursor"
+	"hotspot" "1, 1"
+}
+
+# ---------------------------------------------------------
 
 # panel
 {

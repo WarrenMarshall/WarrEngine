@@ -11,6 +11,7 @@ layer_default::layer_default()
 void layer_default::push()
 {
 	gradient = a_gradient::find( "background_gradient" );
+	engine->window->set_mouse_mode( mouse_mode::custom);
 }
 
 void leftclick_callback()
@@ -50,7 +51,7 @@ void layer_default::draw()
 		->set_rect( { 8,8,200,150 } )
 		->end();
 
-	IMGUI->set_origin( { 8, 8 } );
+	IMGUI->set_last_as_origin();
 	{
 		// ----------------------------------------------------------------------------
 		// push button
@@ -73,7 +74,7 @@ void layer_default::draw()
 			IMGUI->begin_push_button()
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_subtexture( a_subtexture::find( "sub_warning_icon" ) )
-			->set_rect( { IMGUI->last_rect.right(), IMGUI->last_rect.bottom(), 40, 40 } )
+			->set_rect( { 0, 32, 40, 40 } )
 			->end()
 			->was_left_clicked() )
 		{
