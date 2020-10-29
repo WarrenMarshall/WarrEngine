@@ -20,7 +20,8 @@ struct w_imgui_control
 	std::string label;
 	a_9slice_def* slice_def = nullptr;
 	a_subtexture* subtexture = nullptr;
-	w_rect rc = { 0,0,0,0 };
+	w_rect rc = { 0,0,0,0 };	// full rectangle
+	w_rect crc = { 0,0,0,0 };	// client rectangle
 
 	w_imgui_result result = {};
 };
@@ -38,24 +39,25 @@ struct w_imgui
 	int hot_id = -1;
 
 	// the current control being set up or drawn
-	w_imgui_control control;
+	w_imgui_control control = {};
 
-	// an optional control that can be used to easily position other controls
-	std::optional<w_imgui_control> origin_control = std::nullopt;
+	// parent control stacka and accessors
+	std::vector<w_imgui_control> parent_stack = {};
+	void push_parent();
+	void pop_parent();
+	std::optional<w_imgui_control*> get_parent_control();
 
-	void clear_origin();
 	void reset();
 
-	w_imgui* begin_push_button();
-	w_imgui* begin_panel();
+	w_imgui* init_push_button();
+	w_imgui* init_panel();
 
 	w_imgui* set_label( const std::string& label );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
 	w_imgui* set_subtexture( a_subtexture* subtexture );
 	w_imgui* set_rect( w_rect rc );
-	w_imgui* set_last_as_origin();
 
-	w_imgui_result* end();
+	w_imgui_result* go();
 
 private:
 	w_imgui_result* active();

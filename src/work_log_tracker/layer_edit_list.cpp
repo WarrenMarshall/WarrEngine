@@ -10,9 +10,9 @@ void layer_edit_list::draw()
 {
 	w_layer::draw();
 
-	w_ui_style_button bitmap_button_style;
-	bitmap_button_style.slice_def = nullptr;
-	bitmap_button_style.subtex_list[ 0 ] = a_subtexture::find( "gear_icon" );
+	//w_ui_style_button bitmap_button_style;
+	//bitmap_button_style.slice_def = nullptr;
+	//bitmap_button_style.subtex_list[ 0 ] = a_subtexture::find( "gear_icon" );
 	//bitmap_button_style.subtex_list[ 1 ] = a_subtexture::find( "ui_box_checkmark" );
 
 	/*

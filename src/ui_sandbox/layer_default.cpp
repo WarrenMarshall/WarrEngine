@@ -21,18 +21,6 @@ void leftclick_callback()
 
 void layer_default::draw()
 {
-	static bool init_done = false;
-	//static w_ui_style_button style_img_push_button;
-
-	if( !init_done )
-	{
-		init_done = true;
-
-		//style_img_push_button.slice_def = std::nullopt;
-
-		//my_button_style.cb_was_left_clicked = leftclick_callback;
-	}
-
 	w_layer::draw();
 
 	RENDER
@@ -46,22 +34,22 @@ void layer_default::draw()
 	// ----------------------------------------------------------------------------
 	// panel
 
-	IMGUI->begin_panel()
+	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
 		->set_rect( { 8,8,200,150 } )
-		->end();
+		->go();
 
-	IMGUI->set_last_as_origin();
+	IMGUI->push_parent();
 	{
 		// ----------------------------------------------------------------------------
 		// push button
 
 		if(
-			IMGUI->begin_push_button()
+			IMGUI->init_push_button()
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_label( "Lorem Ipsum" )
-			->set_rect( { 8, 8, 100, 24 } )
-			->end()
+			->set_rect( { 0, 0, 100, 24 } )
+			->go()
 			->was_left_clicked() )
 		{
 			log_msg( "button clicked" );
@@ -71,15 +59,15 @@ void layer_default::draw()
 		// push button / warning icon
 
 		if(
-			IMGUI->begin_push_button()
+			IMGUI->init_push_button()
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_subtexture( a_subtexture::find( "sub_warning_icon" ) )
-			->set_rect( { 0, 32, 40, 40 } )
-			->end()
+			->set_rect( { 0, 0, 40, 40 } )
+			->go()
 			->was_left_clicked() )
 		{
 			log_msg( "img button clicked" );
 		}
 	}
-	IMGUI->clear_origin();
+	IMGUI->pop_parent();
 }

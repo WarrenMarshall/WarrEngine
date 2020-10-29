@@ -2,10 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_particle::w_particle()
-{
-}
-
 void w_particle::update()
 {
 	life_span -= engine->time->FTS_step_value_ms;

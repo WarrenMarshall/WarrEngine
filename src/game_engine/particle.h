@@ -30,8 +30,6 @@ struct w_particle final
 	float spin = 0.0f;
 	float spin_per_sec = 0.0f;
 
-	w_particle();
-
 	void update();
 	_NODISCARD constexpr bool is_alive();
 };

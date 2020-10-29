@@ -19,9 +19,16 @@ bool w_imgui_result::was_right_clicked()
 	return ( result == im_result::right_clicked );
 }
 
-void w_imgui::clear_origin()
+void w_imgui::push_parent()
 {
-	origin_control = std::nullopt;
+	parent_stack.push_back( control );
+}
+
+void w_imgui::pop_parent()
+{
+	assert( parent_stack.size() > 0 );
+
+	parent_stack.pop_back();
 }
 
 // ----------------------------------------------------------------------------
@@ -30,23 +37,20 @@ void w_imgui::reset()
 {
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
+	parent_stack.clear();
 }
 
-w_imgui* w_imgui::begin_push_button()
+w_imgui* w_imgui::init_push_button()
 {
-	control.~w_imgui_control();
-	new( &control ) w_imgui_control();
-
+	control = {};
 	control.is_active = true;
 
 	return this;
 }
 
-w_imgui* w_imgui::begin_panel()
+w_imgui* w_imgui::init_panel()
 {
-	control.~w_imgui_control();
-	new( &control ) w_imgui_control();
-
+	control = {};
 	control.is_active = false;
 
 	return this;
@@ -73,23 +77,21 @@ w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture )
 w_imgui* w_imgui::set_rect( w_rect rc )
 {
 	control.rc = rc;
+	control.crc = control.rc;
 
+	if( control.slice_def )
+	{
+		control.crc.x += control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w;
+		control.crc.y += control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h;
 
-	return this;
-}
-
-// takes the current control settings and saves them into the origin
-// control so any controls afterwards will use them as a reference
-// for positioning.
-
-w_imgui* w_imgui::set_last_as_origin()
-{
-	origin_control = control;
+		control.crc.w -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.w;
+		control.crc.h -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.h;
+	}
 
 	return this;
 }
 
-w_imgui_result* w_imgui::end()
+w_imgui_result* w_imgui::go()
 {
 	if( control.is_active )
 	{
@@ -103,8 +105,10 @@ w_imgui_result* w_imgui::active()
 {
 	im_automatic_id++;
 
-	control.rc.x += origin_control ? origin_control->rc.x : 0.0f;
-	control.rc.y += origin_control ? origin_control->rc.x : 0.0f;
+	auto parent_control = get_parent_control();
+
+	control.rc.x += parent_control ? (*parent_control)->rc.x : 0.0f;
+	control.rc.y += parent_control ? (*parent_control)->rc.x : 0.0f;
 
 	if( containing_layer_is_topmost )
 	{
@@ -118,8 +122,10 @@ w_imgui_result* w_imgui::active()
 
 w_imgui_result* w_imgui::passive()
 {
-	control.rc.x += origin_control ? origin_control->rc.x : 0.0f;
-	control.rc.y += origin_control ? origin_control->rc.y : 0.0f;
+	auto parent_control = get_parent_control();
+
+	control.rc.x += parent_control ? (*parent_control)->rc.x : 0.0f;
+	control.rc.y += parent_control ? (*parent_control)->rc.y : 0.0f;
 
 	draw( control, false, false );
 
@@ -212,24 +218,10 @@ void w_imgui::draw( const w_imgui_control& control, bool being_hovered, bool bei
 
 	if( control.subtexture )
 	{
-		w_rect rc_img = rc_draw;
-
-		// if there is a slice_def defined for this control, the image will default
-		// to drawing inside the body of the control. meaning - offset from the top_left
-		// corner by the size of the top_left corner graphic.
-		if( control.slice_def )
-		{
-			rc_img.x += control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w;
-			rc_img.y += control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h;
-
-			rc_img.w -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.w;
-			rc_img.h -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.h;
-		}
-
 		RENDER
 			->push_rgb( get_adjusted_color( w_color::white, being_hovered, being_clicked ) )
 			->push_depth_nudge()
-			->draw( control.subtexture, rc_img );
+			->draw( control.subtexture, control.crc );
 	}
 
 	if( control.label.length() )
@@ -262,6 +254,16 @@ w_color w_imgui::get_adjusted_color( w_color base_color, bool being_hovered, boo
 	}
 
 	return color;
+}
+
+std::optional<w_imgui_control*> w_imgui::get_parent_control()
+{
+	if( parent_stack.size() == 0 )
+	{
+		return std::nullopt;
+	}
+
+	return &( parent_stack.back() );
 }
 
 // a control with the mouse button held down on it will offset slightly
