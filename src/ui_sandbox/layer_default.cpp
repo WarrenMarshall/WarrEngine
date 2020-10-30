@@ -39,7 +39,7 @@ void layer_default::draw()
 		->set_rect( { 8,8,200,150 } )
 		->go();
 
-	IMGUI->push_parent();
+	//IMGUI->push_parent();
 	{
 		// ----------------------------------------------------------------------------
 		// push button
@@ -55,10 +55,22 @@ void layer_default::draw()
 			log_msg( "button clicked" );
 		}
 
+		if(
+			IMGUI->init_push_button()
+			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+			->set_label( "Lorem Ipsum #2" )
+			->set_rect( imgui_flow::down )
+			->go()
+			->was_left_clicked() )
+		{
+			log_msg( "button #2 clicked" );
+		}
+
+
+#if 0
 		// ----------------------------------------------------------------------------
 		// push button / warning icon
 
-#if 0
 		if(
 			IMGUI->init_push_button()
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
@@ -71,5 +83,5 @@ void layer_default::draw()
 		}
 #endif
 	}
-	IMGUI->pop_parent();
+	//IMGUI->pop_parent();
 }

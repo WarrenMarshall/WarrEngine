@@ -1,5 +1,7 @@
 #pragma once
 
+#define UI_PADDING 2.0f
+
 // ----------------------------------------------------------------------------
 
 struct w_imgui_result
@@ -37,6 +39,8 @@ struct w_imgui
 	int hot_id = -1;
 
 	// the current control being set up or drawn
+	w_pos flow_right, flow_down;
+	std::optional<w_imgui_control> last_control = std::nullopt;
 	w_imgui_control control = {};
 
 	// the results from the last control processed
@@ -56,13 +60,17 @@ struct w_imgui
 	w_imgui* set_label( const std::string& label );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
 	w_imgui* set_subtexture( a_subtexture* subtexture );
-	w_imgui* set_rect( w_rect rc );
 
+	w_imgui* set_rect( w_rect rc );
+	w_imgui* set_rect( e_imgui_flow flow );
+	w_imgui* set_rect( e_imgui_flow flow, w_sz sz );
+
+	void calc_client_rect();
 	w_imgui_result* go();
 
 private:
-	w_imgui_result* active();
-	w_imgui_result* passive();
+	void active();
+	void passive();
 
 	_NODISCARD virtual e_im_result update_im_state( int id, w_rect rc );
 	void draw( const w_imgui_control& control, bool being_hovered, bool being_clicked );

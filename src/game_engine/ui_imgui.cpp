@@ -38,6 +38,7 @@ void w_imgui::reset()
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
 	parent_stack.clear();
+	last_control = std::nullopt;
 }
 
 w_imgui* w_imgui::init_push_button()
@@ -77,6 +78,47 @@ w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture )
 w_imgui* w_imgui::set_rect( w_rect rc )
 {
 	control.rc = rc;
+	calc_client_rect();
+
+	return this;
+}
+
+w_imgui* w_imgui::set_rect( e_imgui_flow flow )
+{
+	return set_rect( flow, { last_control->rc.w, last_control->rc.h } );
+}
+
+w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
+{
+	switch( flow )
+	{
+		case imgui_flow::right:
+		{
+			control.rc = { flow_right.x, flow_right.y, sz._width, sz._height };
+		}
+		break;
+
+		case imgui_flow::down:
+		{
+			control.rc = { flow_down.x, flow_down.y, sz._width, sz._height };
+		}
+		break;
+
+		default:
+			assert( false );
+			break;
+	}
+
+	calc_client_rect();
+
+	return this;
+}
+
+// copies the overall control rect to the client rect, and then makes adjustments
+// to compensate for graphical frames and whatever else would affect the client area.
+
+void w_imgui::calc_client_rect()
+{
 	control.crc = control.rc;
 
 	if( control.slice_def )
@@ -87,21 +129,28 @@ w_imgui* w_imgui::set_rect( w_rect rc )
 		control.crc.w -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.w;
 		control.crc.h -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.h;
 	}
-
-	return this;
 }
 
 w_imgui_result* w_imgui::go()
 {
 	if( control.is_active )
 	{
-		return active();
+		active();
+	}
+	else
+	{
+		passive();
 	}
 
-	return passive();
+	last_control = control;
+
+	flow_right = { last_control->rc.x + last_control->rc.w + UI_PADDING, last_control->rc.y };
+	flow_down = { last_control->rc.x, last_control->rc.y + last_control->rc.h + UI_PADDING };
+
+	return &result;
 }
 
-w_imgui_result* w_imgui::active()
+void w_imgui::active()
 {
 	result = {};
 	im_automatic_id++;
@@ -116,11 +165,9 @@ w_imgui_result* w_imgui::active()
 	}
 
 	draw( control, hover_id == im_automatic_id, hot_id == im_automatic_id );
-
-	return &result;
 }
 
-w_imgui_result* w_imgui::passive()
+void w_imgui::passive()
 {
 	result = {};
 
@@ -129,8 +176,6 @@ w_imgui_result* w_imgui::passive()
 	control.rc.y += parent_control ? (*parent_control)->crc.y : 0.0f;
 
 	draw( control, false, false );
-
-	return &result;
 }
 
 e_im_result w_imgui::update_im_state( int id, w_rect rc )

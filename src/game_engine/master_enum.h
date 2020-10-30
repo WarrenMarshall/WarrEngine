@@ -285,3 +285,10 @@ enum_begin( follow_flags, ubyte )	// bitfield
 
 	xy_axis = x_axis | y_axis,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( imgui_flow, sbyte )
+	right = -1,
+	down = -2
+enum_end
