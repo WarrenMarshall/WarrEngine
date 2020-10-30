@@ -422,7 +422,7 @@ w_render* w_render::draw_stats()
 		std::vector<std::string> stat_lines;
 		stat_lines.reserve( stats_draw_reserve );
 
-		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / UPDATE : {} FPS",
+		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / TICK : {} FPS",
 											  stats.frame_count.value,
 											  stats.frame_times_ms.value,
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
