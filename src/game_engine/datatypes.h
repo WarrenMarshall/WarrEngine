@@ -115,14 +115,10 @@ struct w_rect
 
 	w_vec2 midpoint();
 
-	operator c2AABB()
-	{
-		c2AABB bb;
-		bb.min = { x, y };
-		bb.max = { x + w, y + h };
+	w_rect operator+( const w_vec2 v );
+	w_rect operator+=( const w_vec2 v );
 
-		return bb;
-	}
+	c2AABB as_c2AABB();
 };
 
 // ----------------------------------------------------------------------------
@@ -173,6 +169,8 @@ struct w_vec2
 	w_vec2( b2Vec2 b2v2 );
 
 	w_vec2& normalize();
+	b2Vec2 as_b2Vec2();
+	c2v as_c2v();
 	w_vec2 to_b2d();
 	w_vec2 from_b2d();
 	float get_size_squared();
@@ -195,73 +193,6 @@ struct w_vec2
 	_NODISCARD static w_vec2 dir_from_angle( float angle );
 	_NODISCARD static float angle_from_dir( w_vec2 dir );
 	_NODISCARD static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
-
-	operator b2Vec2()
-	{
-		b2Vec2 v;
-
-		v.x = x;
-		v.y = y;
-
-		return v;
-	}
-
-	operator c2v()
-	{
-		c2v cv;
-
-		cv.x = x;
-		cv.y = y;
-
-		return cv;
-	}
-
-	operator glm::vec3()
-	{
-		glm::vec3 gv;
-
-		gv.x = x;
-		gv.y = y;
-		gv.z = 0.0f;
-
-		return gv;
-	}
-
-	operator glm::vec2()
-	{
-		glm::vec2 gv;
-
-		gv.x = x;
-		gv.y = y;
-
-		return gv;
-	}
-};
-
-// ----------------------------------------------------------------------------
-
-struct w_vec3
-{
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
-
-	static const w_vec3 zero;
-
-	w_vec3();
-	w_vec3( const w_vec3& v );
-	w_vec3( float x, float y, float z );
-	w_vec3( int x, int y, int z );
-	w_vec3( std::string_view str );
-
-	w_vec3 operator+( w_vec3 v );
-	w_vec3 operator-( w_vec3 v );
-	w_vec3 operator*( float v );
-
-	_NODISCARD static float get_size_squared( w_vec3 a );
-	_NODISCARD static float get_size( w_vec3 a );
-	_NODISCARD static float get_distance_between( w_vec3 a, w_vec3 b );
-	static w_vec3 normalize( w_vec3 a );
 };
 
 // ----------------------------------------------------------------------------

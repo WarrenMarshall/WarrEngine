@@ -61,7 +61,6 @@ struct w_engine : i_listener
 	_NODISCARD w_color find_color_from_symbol( const std::string_view str, w_color def_value = w_color::white );
 	_NODISCARD w_range find_range_from_symbol( const std::string_view str, w_range def_value = w_range( 0, 1 ) );
 	_NODISCARD w_vec2 find_vec2_from_symbol( const std::string_view str, w_vec2 def_value = w_vec2( 0, 0 ) );
-	_NODISCARD w_vec3 find_vec3_from_symbol( const std::string_view str, w_vec3 def_value = w_vec3( 0, 0, 0 ) );
 
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
 	std::unique_ptr<w_time> time = nullptr;

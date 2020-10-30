@@ -290,5 +290,5 @@ enum_end
 
 enum_begin( imgui_flow, sbyte )
 	right = -1,
-	down = -2
+	down = -2,
 enum_end

@@ -73,7 +73,7 @@ private:
 	void passive();
 
 	_NODISCARD virtual e_im_result update_im_state( int id, w_rect rc );
-	void draw( const w_imgui_control& control, bool being_hovered, bool being_clicked );
+	void draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
 	_NODISCARD w_offset get_click_offset( bool being_hovered, bool being_clicked );
 	_NODISCARD w_color get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked );
 

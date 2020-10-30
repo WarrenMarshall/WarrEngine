@@ -129,27 +129,6 @@ w_vec2 w_parser::vec2_from_str( const std::string_view str )
 	return vec2;
 }
 
-w_vec3 w_parser::vec3_from_str( const std::string_view str )
-{
-	// If this str is a known symbol, return the value from the lookup table
-
-	if( engine->is_symbol_in_map( str ) )
-	{
-		return engine->find_vec3_from_symbol( str );
-	}
-
-	// Otherwise, parse the string...
-
-	w_tokenizer tok( str, ',' );
-
-	w_vec3 vec3;
-	vec3.x = w_parser::float_from_str( *tok.get_next_token() );
-	vec3.y = w_parser::float_from_str( *tok.get_next_token() );
-	vec3.z = w_parser::float_from_str( *tok.get_next_token() );
-
-	return vec3;
-}
-
 std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, const std::string_view str )
 {
 	std::unique_ptr<w_timeline> timeline = std::make_unique<w_timeline>( type );

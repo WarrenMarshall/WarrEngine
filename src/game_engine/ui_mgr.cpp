@@ -14,6 +14,6 @@ void w_ui_mgr::draw_topmost()
 
 bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
 {
-	return c2AABBtoPoint( rc, engine->input->mouse_vwindow_pos );
+	return c2AABBtoPoint( rc.as_c2AABB(), engine->input->mouse_vwindow_pos.as_c2v() );
 }
 

@@ -91,7 +91,7 @@ void w_entity::set_position_deep( w_vec2 pos, bool reset_velocity )
 
 	for( auto ec : ecs )
 	{
-		ec->body->SetTransform( pos.to_b2d(), 0 );
+		ec->body->SetTransform( pos.to_b2d().as_b2Vec2(), 0 );
 
 		if( reset_velocity )
 		{

@@ -12,7 +12,6 @@ struct w_parser
 	_NODISCARD static w_range range_from_str( const std::string_view str );
 	_NODISCARD static w_rect rect_from_str( const std::string_view str );
 	_NODISCARD static w_vec2 vec2_from_str( const std::string_view str );
-	_NODISCARD static w_vec3 vec3_from_str( const std::string_view str );
 	_NODISCARD static std::unique_ptr<w_timeline> timeline_from_str( e_timeline_type type, const std::string_view str );
 };
 

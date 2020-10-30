@@ -151,6 +151,26 @@ w_vec2 w_rect::midpoint()
 	return w_vec2( x + ( w / 2.0f ), y + ( h / 2.0f ) );
 }
 
+w_rect w_rect::operator+( const w_vec2 v )
+{
+	return w_rect( this->x + v.x, this->y + v.y, this->w, this->h );
+}
+
+w_rect w_rect::operator+=( const w_vec2 v )
+{
+	*this = *this + v;
+	return *this;
+}
+
+c2AABB w_rect::as_c2AABB()
+{
+	c2AABB bb;
+	bb.min = { x, y };
+	bb.max = { x + w, y + h };
+
+	return bb;
+}
+
 // ----------------------------------------------------------------------------
 
 const w_color w_color::white = w_color( 1.0f, 1.0f, 1.0f );
@@ -257,6 +277,17 @@ w_vec2& w_vec2::normalize()
 {
 	*this = w_vec2::normalize( *this );
 	return *this;
+}
+
+b2Vec2 w_vec2::as_b2Vec2()
+{
+	return b2Vec2( x, y );
+}
+
+c2v w_vec2::as_c2v()
+{
+	c2v v = { x, y };
+	return v;
 }
 
 w_vec2 w_vec2::to_b2d()
@@ -380,74 +411,8 @@ float w_vec2::angle_from_dir( w_vec2 dir )
 
 w_vec2 w_vec2::reflect_across_normal( w_vec2 v, w_vec2 n )
 {
-	glm::vec3 rdir = glm::reflect( static_cast<glm::vec3>( v ), static_cast<glm::vec3>( n ) );
+	glm::vec3 rdir = glm::reflect( glm::vec3( v.x, v.y, 0.0f ), glm::vec3( n.x, n.y, 0.0f ) );
 	return w_vec2( rdir.x, rdir.y );
-}
-
-// ----------------------------------------------------------------------------
-
-const w_vec3 w_vec3::zero = w_vec3( 0, 0, 0 );
-
-w_vec3::w_vec3()
-	: x( 0.0f ), y( 0.0f ), z( 0.0f )
-{
-}
-
-w_vec3::w_vec3( const w_vec3& v ) = default;
-
-w_vec3::w_vec3( float x, float y, float z )
-	: x( x ), y( y ), z( z )
-{
-}
-
-w_vec3::w_vec3( int x, int y, int z )
-	: x( (float)x ), y( (float) y ), z( (float) z )
-{
-}
-
-w_vec3::w_vec3( std::string_view str )
-{
-	w_tokenizer tok( str, ',' );
-
-	x = w_parser::float_from_str( *tok.get_next_token() );
-	y = w_parser::float_from_str( *tok.get_next_token() );
-	z = w_parser::float_from_str( *tok.get_next_token() );
-}
-
-float w_vec3::get_size_squared( w_vec3 a )
-{
-	return sqrt( w_vec3::get_size( a ) );
-}
-
-float w_vec3::get_size( w_vec3 a )
-{
-	return ( a.x * a.x ) + ( a.y * a.y ) + ( a.z * a.z );
-}
-
-float w_vec3::get_distance_between( w_vec3 a, w_vec3 b )
-{
-	return w_vec3::get_size_squared( a - b );
-}
-
-w_vec3 w_vec3::operator+( w_vec3 v )
-{
-	return w_vec3( this->x + v.x, this->y + v.y, this->z + v.z );
-}
-
-w_vec3 w_vec3::operator-( w_vec3 v )
-{
-	return w_vec3( this->x - v.x, this->y - v.y, this->z - v.z );
-}
-
-w_vec3 w_vec3::operator*( float v )
-{
-	return w_vec3( this->x * v, this->y * v, this->z * v );
-}
-
-w_vec3 w_vec3::normalize( w_vec3 a )
-{
-	float sz = w_vec3::get_size_squared( a );
-	return w_vec3( a.x / sz, a.y / sz, a.z / sz );
 }
 
 // ----------------------------------------------------------------------------

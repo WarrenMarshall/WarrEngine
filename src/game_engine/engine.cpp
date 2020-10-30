@@ -459,18 +459,6 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_valu
 	return w_vec2( *sval );
 }
 
-w_vec3 w_engine::find_vec3_from_symbol( std::string_view symbol, w_vec3 def_value )
-{
-	auto sval = find_string_from_symbol( symbol );
-
-	if( !sval.has_value() )
-	{
-		sval = fmt::format( "{},{},{}", def_value.x, def_value.y, def_value.z );
-	}
-
-	return w_vec3( *sval );
-}
-
 void w_engine::new_physics_world()
 {
 	engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.0f, b2d_gravity_default ) );

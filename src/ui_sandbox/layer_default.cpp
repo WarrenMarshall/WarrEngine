@@ -46,8 +46,8 @@ void layer_default::draw()
 
 		if(
 			IMGUI->init_push_button()
-			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_label( "Lorem Ipsum" )
+			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_rect( { 0, 0, 100, 24 } )
 			->go()
 			->was_left_clicked() )
@@ -57,8 +57,8 @@ void layer_default::draw()
 
 		if(
 			IMGUI->init_push_button()
-			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_label( "Lorem Ipsum #2" )
+			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_rect( imgui_flow::down )
 			->go()
 			->was_left_clicked() )
@@ -66,8 +66,6 @@ void layer_default::draw()
 			log_msg( "button #2 clicked" );
 		}
 
-
-#if 0
 		// ----------------------------------------------------------------------------
 		// push button / warning icon
 
@@ -75,13 +73,12 @@ void layer_default::draw()
 			IMGUI->init_push_button()
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_subtexture( a_subtexture::find( "sub_warning_icon" ) )
-			->set_rect( { 0, 0, 40, 40 } )
+			->set_rect( imgui_flow::right, { 24, 24 } )
 			->go()
 			->was_left_clicked() )
 		{
 			log_msg( "img button clicked" );
 		}
-#endif
 	}
 	//IMGUI->pop_parent();
 }

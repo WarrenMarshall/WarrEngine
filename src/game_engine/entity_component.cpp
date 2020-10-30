@@ -271,14 +271,14 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_rect rc )
 // w/h - size of box
 b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, float h )
 {
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2PolygonShape shape;
 	{
 		shape.SetAsBox(
 			to_b2d( w / 2 ),
 			to_b2d( h / 2 ),
-			w_vec2( pos.x, pos.y ).to_b2d(),
+			w_vec2( pos.x, pos.y ).to_b2d().as_b2Vec2(),
 			0.0f
 		);
 	}
@@ -299,7 +299,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, fl
 
 b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float radius )
 {
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2CircleShape shape;
 	{
@@ -323,7 +323,7 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float ra
 
 b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2EdgeShape shape;
 	{
@@ -333,10 +333,10 @@ b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 sta
 		float length = ( end - start ).get_size_squared() / 2.0f;
 
 		shape.SetOneSided(
-			( start + w_vec2( -length, length ) ).to_b2d(),
-			start.to_b2d(),
-			end.to_b2d(),
-			( end + w_vec2( length, length ) ).to_b2d()
+			( start + w_vec2( -length, length ) ).to_b2d().as_b2Vec2(),
+			start.to_b2d().as_b2Vec2(),
+			end.to_b2d().as_b2Vec2(),
+			( end + w_vec2( length, length ) ).to_b2d().as_b2Vec2()
 		);
 	}
 
@@ -359,14 +359,14 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 	// Box2D requirement
 	assert( verts.size() >= 3 );
 
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
 
 	for( w_vec2 v : verts )
 	{
-		b2verts.push_back( ( v + pos ).to_b2d() );
+		b2verts.push_back( ( v + pos ).to_b2d().as_b2Vec2() );
 	}
 
 	// we pass in the verts in a clockwise winding for compatibility with the
@@ -395,14 +395,14 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 
 b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
-	body->SetTransform( parent_entity->pos.to_b2d(), 0.0f );
+	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
 
 	for( w_vec2 v : verts )
 	{
-		b2verts.push_back( ( v + pos ).to_b2d() );
+		b2verts.push_back( ( v + pos ).to_b2d().as_b2Vec2() );
 	}
 
 	b2PolygonShape shape;

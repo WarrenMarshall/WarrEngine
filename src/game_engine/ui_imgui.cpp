@@ -241,9 +241,9 @@ e_im_result w_imgui::update_im_state( int id, w_rect rc )
 	return imresult;
 }
 
-void w_imgui::draw( const w_imgui_control& control, bool being_hovered, bool being_clicked )
+void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
-	w_offset clicked_offset = get_click_offset( being_hovered, being_clicked );
+	w_vec2 clicked_offset = get_click_offset( being_hovered, being_clicked );
 
 	w_rect rc_draw = control.rc;
 	rc_draw.x += clicked_offset.x;
@@ -267,7 +267,7 @@ void w_imgui::draw( const w_imgui_control& control, bool being_hovered, bool bei
 		RENDER
 			->push_rgb( get_adjusted_color( w_color::white, being_hovered, being_clicked ) )
 			->push_depth_nudge()
-			->draw( control.subtexture, control.crc );
+			->draw( control.subtexture, control.crc + clicked_offset );
 	}
 
 	if( control.label.length() )
