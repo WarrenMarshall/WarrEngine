@@ -22,8 +22,6 @@ struct w_imgui_control
 	a_subtexture* subtexture = nullptr;
 	w_rect rc = { 0,0,0,0 };	// full rectangle
 	w_rect crc = { 0,0,0,0 };	// client rectangle
-
-	w_imgui_result result = {};
 };
 
 // ----------------------------------------------------------------------------
@@ -40,6 +38,9 @@ struct w_imgui
 
 	// the current control being set up or drawn
 	w_imgui_control control = {};
+
+	// the results from the last control processed
+	w_imgui_result result = {};
 
 	// parent control stacka and accessors
 	std::vector<w_imgui_control> parent_stack = {};

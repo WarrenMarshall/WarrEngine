@@ -103,6 +103,7 @@ w_imgui_result* w_imgui::go()
 
 w_imgui_result* w_imgui::active()
 {
+	result = {};
 	im_automatic_id++;
 
 	auto parent_control = get_parent_control();
@@ -112,16 +113,17 @@ w_imgui_result* w_imgui::active()
 
 	if( containing_layer_is_topmost )
 	{
-		control.result = update_im_state( im_automatic_id, control.rc );
+		result = update_im_state( im_automatic_id, control.rc );
 	}
 
 	draw( control, hover_id == im_automatic_id, hot_id == im_automatic_id );
 
-	return &control.result;
+	return &result;
 }
 
 w_imgui_result* w_imgui::passive()
 {
+	result = {};
 	auto parent_control = get_parent_control();
 
 	control.rc.x += parent_control ? (*parent_control)->rc.x : 0.0f;
@@ -129,7 +131,7 @@ w_imgui_result* w_imgui::passive()
 
 	draw( control, false, false );
 
-	return &control.result;
+	return &result;
 }
 
 e_im_result w_imgui::update_im_state( int id, w_rect rc )
