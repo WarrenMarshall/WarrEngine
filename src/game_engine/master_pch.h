@@ -159,26 +159,6 @@ using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
 #define assert_key_required assert
 
 // ----------------------------------------------------------------------------
-// attempts to make logging things easier
-// ----------------------------------------------------------------------------
-
-template<typename ...Params>
-constexpr void _log_( Params&&... params )
-{
-	::logfile->msg( fmt::format( std::forward<Params>( params )... ) );
-}
-
-template<typename ...Params>
-constexpr void _log_error_( Params&&... params )
-{
-	::logfile->error( fmt::format( std::forward<Params>( params )... ) );
-}
-
-#define log_msg( fmt, ... ) _log_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
-#define log_warning( fmt, ... ) _log_( "[{}:{}] WARNING : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
-#define log_error( fmt, ... ) _log_error_( "[{}:{}] !ERROR! : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
-
-// ----------------------------------------------------------------------------
 // constants
 // ----------------------------------------------------------------------------
 

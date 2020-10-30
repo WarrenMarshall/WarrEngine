@@ -4,6 +4,26 @@
 extern std::unique_ptr<w_logfile> logfile;
 
 // ----------------------------------------------------------------------------
+// attempts to make logging things easier
+// ----------------------------------------------------------------------------
+
+template<typename ...Params>
+constexpr void _log_( Params&&... params )
+{
+	logfile->msg( fmt::format( std::forward<Params>( params )... ) );
+}
+
+template<typename ...Params>
+constexpr void _log_error_( Params&&... params )
+{
+	logfile->error( fmt::format( std::forward<Params>( params )... ) );
+}
+
+#define log_msg( fmt, ... ) _log_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
+#define log_warning( fmt, ... ) _log_( "[{}:{}] WARNING : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
+#define log_error( fmt, ... ) _log_error_( "[{}:{}] !ERROR! : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
+
+// ----------------------------------------------------------------------------
 /*
 	the size of the virtual screen. all rendering is done on the assumption
 	of these dimensions. the renderer handles scaling this up to the actual
