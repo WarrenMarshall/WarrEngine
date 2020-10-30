@@ -58,6 +58,7 @@ void layer_default::draw()
 		// ----------------------------------------------------------------------------
 		// push button / warning icon
 
+#if 0
 		if(
 			IMGUI->init_push_button()
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
@@ -68,6 +69,7 @@ void layer_default::draw()
 		{
 			log_msg( "img button clicked" );
 		}
+#endif
 	}
 	IMGUI->pop_parent();
 }

@@ -107,9 +107,8 @@ w_imgui_result* w_imgui::active()
 	im_automatic_id++;
 
 	auto parent_control = get_parent_control();
-
-	control.rc.x += parent_control ? (*parent_control)->rc.x : 0.0f;
-	control.rc.y += parent_control ? (*parent_control)->rc.x : 0.0f;
+	control.rc.x += parent_control ? (*parent_control)->crc.x : 0.0f;
+	control.rc.y += parent_control ? (*parent_control)->crc.x : 0.0f;
 
 	if( containing_layer_is_topmost )
 	{
@@ -124,10 +123,10 @@ w_imgui_result* w_imgui::active()
 w_imgui_result* w_imgui::passive()
 {
 	result = {};
-	auto parent_control = get_parent_control();
 
-	control.rc.x += parent_control ? (*parent_control)->rc.x : 0.0f;
-	control.rc.y += parent_control ? (*parent_control)->rc.y : 0.0f;
+	auto parent_control = get_parent_control();
+	control.rc.x += parent_control ? (*parent_control)->crc.x : 0.0f;
+	control.rc.y += parent_control ? (*parent_control)->crc.y : 0.0f;
 
 	draw( control, false, false );
 
