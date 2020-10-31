@@ -128,18 +128,6 @@ void w_render_buffer::clear()
     indices.clear();
 }
 
-void w_render_buffer::log_stats( i_asset* asset )
-{
-    if( !indices.empty() )
-    {
-        log_msg( "\t\t[{}]: [{} verts, {} indices]",
-                              asset->tag,
-                              f_commas( static_cast<float>( vertices.size() ) ),
-                              f_commas( static_cast<float>( indices.size() ) )
-        );
-    }
-}
-
 int w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.

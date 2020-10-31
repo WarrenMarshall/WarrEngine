@@ -364,14 +364,6 @@ float w_vec2::get_size()
 	return ( x * x ) + ( y * y );
 }
 
-w_vec2& w_vec2::snap_to_pixel()
-{
-	x = ::snap_to_pixel( x );
-	y = ::snap_to_pixel( y );
-
-	return *this;
-}
-
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
 {
 	return ( a - b ).get_size_squared();

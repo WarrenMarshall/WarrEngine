@@ -46,8 +46,8 @@ void w_render::init()
 	clear_render_states();
 
 	// generate the sample points for drawing a circle. these verts sit
-	// on a unit circle and are scaled to match the radius requesed for
-	// each circle draw.
+	// on a unit circle and are scaled to match the radius requested for
+	// each circle we draw.
 	float angle = 0;
 	float angle_step = 360.0f / static_cast<float>( circle_sample_points_max );
 	for( auto& circle_sample_point : circle_sample_points )
@@ -548,16 +548,13 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_render_buffer_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 	w_render_buffer_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 
-	int step = 1;
-	if( radius < circle_sample_points_max ) step = 2;
-
-	for( auto x = 0; x < circle_sample_points_max; x += step )
+	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
 		v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
 		v0.y = origin.y + ( circle_sample_points[ x ].y * radius );
 
-		v1.x = origin.x + ( circle_sample_points[ ( x + step ) % circle_sample_points_max ].x * radius );
-		v1.y = origin.y + ( circle_sample_points[ ( x + step ) % circle_sample_points_max ].y * radius );
+		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
 		master_render_buffer->add_line( v0, v1 );
 	}

@@ -160,7 +160,7 @@ struct w_vec2
 	static const w_vec2 up;
 	static const w_vec2 down;
 
-	static w_vec2 get_random_unit();
+	_NODISCARD static w_vec2 get_random_unit();
 
 	w_vec2();
 	w_vec2( int x, int y );
@@ -168,17 +168,16 @@ struct w_vec2
 	w_vec2( std::string_view str );
 	w_vec2( b2Vec2 b2v2 );
 
-	w_vec2& normalize();
-	b2Vec2 as_b2Vec2();
-	c2v as_c2v();
-	w_vec2 to_b2d();
-	w_vec2 from_b2d();
-	float get_size_squared();
-	float get_size();
-	w_vec2& snap_to_pixel();
+	_NODISCARD w_vec2& normalize();
+	_NODISCARD b2Vec2 as_b2Vec2();
+	_NODISCARD c2v as_c2v();
+	_NODISCARD w_vec2 to_b2d();
+	_NODISCARD w_vec2 from_b2d();
+	_NODISCARD float get_size_squared();
+	_NODISCARD float get_size();
 
-	bool operator==( w_vec2 v );
-	bool operator!=( w_vec2 v );
+	_NODISCARD bool operator==( w_vec2 v );
+	_NODISCARD bool operator!=( w_vec2 v );
 	w_vec2 operator+( const w_vec2 v );
 	w_vec2 operator+=( w_vec2 v );
 	w_vec2 operator-( w_vec2 v );

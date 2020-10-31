@@ -11,9 +11,8 @@ void w_layer_mgr::clear_stack()
 {
 	// Give each layer a chance to clean up before the manager shuts down.
 
-	for( size_t x = 0 ; x < layer_stack.size() ; ++x )
+	for( const auto& layer : layer_stack )
 	{
-		w_layer* layer = layer_stack[ x ].get();
 		layer->pop();
 	}
 
@@ -22,7 +21,7 @@ void w_layer_mgr::clear_stack()
 
 void w_layer_mgr::pop()
 {
-	if( !layer_stack.size() )
+	if( layer_stack.empty() )
 	{
 		log_warning( "No layers on stack - pop failed!" );
 	}
@@ -103,7 +102,7 @@ void w_layer_mgr::draw()
 		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) )
 		->end();
 
-	if( layer_stack.size() )
+	if( !layer_stack.empty() )
 	{
 		// draw starting from the starting_layer_idx and every layer above it
 

@@ -104,6 +104,12 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 		}
 		break;
 
+		case imgui_flow::last_crc_topleft:
+		{
+			control.rc = { last_control->crc.x, last_control->crc.y, sz._width, sz._height };
+		}
+		break;
+
 		default:
 			assert( false );
 			break;

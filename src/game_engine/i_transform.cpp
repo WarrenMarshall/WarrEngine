@@ -11,7 +11,8 @@ void i_transform::set_transform( w_vec2 pos, float angle, float scale )
 
 void i_transform::set_position( w_vec2 pos )
 {
-	this->pos = pos.snap_to_pixel();
+	this->pos.x = snap_to_pixel( pos.x );
+	this->pos.y = snap_to_pixel( pos.y );
 }
 
 void i_transform::set_angle( float angle )

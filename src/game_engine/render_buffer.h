@@ -30,7 +30,6 @@ struct w_render_buffer
 	void unbind();
 	void draw( a_texture* tex );
 	void clear();
-	void log_stats( i_asset* asset );
 
 	int add_render_vert( const w_render_buffer_vert& render_vert );
 };
