@@ -1,0 +1,69 @@
+
+# ---------------------------------------------------------
+# pixel font
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"tag" "engine_pixel_font_tex"
+	"filename" "fonts/font_pixel.png"
+}
+
+{
+	"type" "font_def_tag"
+	"tag" "engine_pixel_font_def"
+	"texture_tag" "engine_pixel_font_tex"
+	"filename" "fonts/font_pixel.fnt"
+}
+
+{
+	"type" "font"
+	"tag" "engine_pixel_font"
+	"font_def_tag" "engine_pixel_font_def"
+}
+
+# ---------------------------------------------------------
+# pixel font 02
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"tag" "engine_pixel_font_tex_02"
+	"filename" "fonts/font_pixel_02.png"
+}
+
+{
+	"type" "font_def_tag"
+	"tag" "engine_pixel_font_def_02"
+	"texture_tag" "engine_pixel_font_tex_02"
+	"filename" "fonts/font_pixel_02.fnt"
+}
+
+{
+	"type" "font"
+	"tag" "engine_pixel_font_02"
+	"font_def_tag" "engine_pixel_font_def_02"
+}
+
+# ---------------------------------------------------------
+# font UI
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"tag" "tex_engine_font_ui"
+	"filename" "fonts/font_ui.png"
+}
+
+{
+	"type" "font_def_tag"
+	"tag" "def_engine_font_ui"
+	"texture_tag" "tex_engine_font_ui"
+	"filename" "fonts/font_ui.fnt"
+}
+
+{
+	"type" "font"
+	"tag" "font_ui"
+	"font_def_tag" "def_engine_font_ui"
+}

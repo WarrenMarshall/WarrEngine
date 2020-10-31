@@ -23,7 +23,7 @@ void layer_edit_list::draw()
 		game->save_data();
 	}
 
-	float ypos = 6.0f;
+	float ypos = 3.0f;
 
 	for( auto& artist : game->artists )
 	{
@@ -31,12 +31,17 @@ void layer_edit_list::draw()
 			->begin()
 			->push_depth_nudge( 10 );
 
+		if( !artist.approved )
+		{
+			RENDER->push_alpha( 0.25f );
+		}
+
 		IMGUI->clear_last_control();
 
 		if(
 			IMGUI->init_push_button()
 			->set_label( artist.name )
-			//->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_rect( { 8, ypos, 130, 18 } )
 			->finalize()
 			->was_left_clicked() )

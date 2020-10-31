@@ -1,0 +1,16 @@
+
+# ---------------------------------------------------------
+# meshes
+# ---------------------------------------------------------
+
+# {
+# 	"type" "mesh"
+# 	"tag" "mesh_tag"
+# 	"filename" "meshes/filename.obj"
+# }
+
+{
+	"type" "mesh"
+	"tag" "mesh_5sided"
+	"filename" "meshes/5sided.obj"
+}

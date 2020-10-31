@@ -1,0 +1,15 @@
+
+# ---------------------------------------------------------
+# UI Master
+# ---------------------------------------------------------
+
+{
+	"type" "texture"
+	"tag" "tex_ui_master"
+	"filename" "images/ui_master.png"
+	"subtexture_tags" "\
+		toon_hand_cursor, 0, 24, 16, 16,\
+		selector_bracket, 16, 24, 16, 16,\
+		gear_icon, 24, 0, 24, 24,\
+		close_icon, 34, 26, 12, 12"
+}
