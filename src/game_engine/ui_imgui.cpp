@@ -90,29 +90,29 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow )
 
 w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 {
-	switch( flow )
+	control.rc = last_control->rc;
+
+	control.rc.w = sz.w;
+	control.rc.h = sz.h;
+
+	if( flow & imgui_flow::right )
 	{
-		case imgui_flow::right:
-		{
-			control.rc = { flow_right.x, flow_right.y, sz._width, sz._height };
-		}
-		break;
+		control.rc = { flow_right.x, flow_right.y, sz.w, sz.h };
+	}
 
-		case imgui_flow::down:
-		{
-			control.rc = { flow_down.x, flow_down.y, sz._width, sz._height };
-		}
-		break;
+	if( flow & imgui_flow::down )
+	{
+		control.rc = { flow_down.x, flow_down.y, sz.w, sz.h };
+	}
 
-		case imgui_flow::last_crc_topleft:
-		{
-			control.rc = { last_control->crc.x, last_control->crc.y, sz._width, sz._height };
-		}
-		break;
+	if( flow & imgui_flow::last_crc_topleft )
+	{
+		control.rc = { last_control->crc.x, last_control->crc.y, sz.w, sz.h };
+	}
 
-		default:
-			assert( false );
-			break;
+	if( flow & imgui_flow::vcenter )
+	{
+		control.rc.y = ( last_control->rc.y + ( last_control->rc.h / 2.0f ) ) - ( sz.h / 2.0f );
 	}
 
 	calc_client_rect();
@@ -137,7 +137,7 @@ void w_imgui::calc_client_rect()
 	}
 }
 
-w_imgui_result* w_imgui::go()
+w_imgui_result* w_imgui::draw()
 {
 	if( control.is_active )
 	{

@@ -45,7 +45,6 @@ struct w_keyframe
 	w_color color_value = w_color::white;
 
 	w_keyframe() = default;
-	w_keyframe( const w_keyframe& other );
 	w_keyframe( float pct_marker, float value );
 	w_keyframe( float pct_marker, w_color value );
 };
@@ -60,7 +59,6 @@ struct w_timeline
 	e_timeline_type type = timeline_type::invalid;
 
 	w_timeline( e_timeline_type type );
-	w_timeline( const w_timeline& other );
 
 	w_timeline* kf_clear();
 	w_timeline* kf_add( w_keyframe keyframe );
@@ -142,15 +140,15 @@ struct w_vec2
 		};
 		struct
 		{
-			float _width, _height;
+			float w, h;		// width/height
 		};
 		struct
 		{
-			float _left, _right;
+			float l, r;		// left/right
 		};
 		struct
 		{
-			float _top, _bottom;
+			float t, b;		// top/bottom
 		};
 	};
 

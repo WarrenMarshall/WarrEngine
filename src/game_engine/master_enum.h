@@ -288,8 +288,9 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( imgui_flow, sbyte )
-	right = -1,
-	down = -2,
-	last_crc_topleft = -3,
+enum_begin( imgui_flow, ubyte )		// bitfield
+	right = 1,
+	down = 2,
+	last_crc_topleft = 4,
+	vcenter = 8,
 enum_end

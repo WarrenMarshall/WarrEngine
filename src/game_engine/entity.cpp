@@ -15,7 +15,7 @@ void w_entity::update_from_physics()
 	{
 		if( ec->type & (component_type::b2d_dynamic | component_type::b2d_kinematic ) )
 		{
-			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
+			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
 				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
@@ -138,7 +138,7 @@ ec_b2d_body* w_entity::phys_get_primary_body()
 	{
 		if( ec->type & ( component_type::b2d_dynamic | component_type::b2d_kinematic ) )
 		{
-			ec_b2d_body* edb = static_cast<ec_b2d_body*>( ec.get() );
+			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
 				return edb;
@@ -237,7 +237,7 @@ void w_entity_fx::update()
 	w_entity::update();
 
 	// once all of the components have died, the fx container entity can die.
-	if( components.size() == 0 )
+	if( components.empty() )
 	{
 		set_life_cycle( life_cycle::dying );
 	}
@@ -283,11 +283,11 @@ void w_camera::update()
 			// apply limits if we need to
 			if( follow.limits_x.has_value() )
 			{
-				follow.pos.x = std::clamp( follow.pos.x, follow.limits_x->_left, follow.limits_x->_right );
+				follow.pos.x = std::clamp( follow.pos.x, follow.limits_x->l, follow.limits_x->r );
 			}
 			if( follow.limits_y.has_value() )
 			{
-				follow.pos.y = std::clamp( follow.pos.y, follow.limits_y->_top, follow.limits_y->_bottom );
+				follow.pos.y = std::clamp( follow.pos.y, follow.limits_y->t, follow.limits_y->b );
 			}
 
 			// if only following on a specific axis, remove the follow influence from the other

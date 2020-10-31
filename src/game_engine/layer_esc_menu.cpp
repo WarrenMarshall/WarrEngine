@@ -35,14 +35,14 @@ void layer_esc_menu::draw_ui()
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
 		->set_rect( { v_window_hw - ( panel_w / 2.0f ), v_window_hh - ( panel_h / 2.0f ), panel_w, panel_h } )
-		->go();
+		->draw();
 
 	//IMGUI->push_parent();
 	{
 		if( IMGUI->set_label( "Main Menu" )
 			->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 			->set_rect( { v_window_hw - ( button_w / 2.0f ), UI_PADDING * 2, button_w, button_h } )
-			->go()
+			->draw()
 			->was_left_clicked() )
 		{
 			base_game->reset_layer_stack_to_main_menu();

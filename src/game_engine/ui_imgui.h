@@ -66,7 +66,7 @@ struct w_imgui
 	w_imgui* set_rect( e_imgui_flow flow, w_sz sz );
 
 	void calc_client_rect();
-	w_imgui_result* go();
+	w_imgui_result* draw();
 
 private:
 	void active();

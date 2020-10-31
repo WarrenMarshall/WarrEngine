@@ -4,11 +4,6 @@
 
 // ----------------------------------------------------------------------------
 
-w_keyframe::w_keyframe( const w_keyframe& other )
-	: pct_marker( other.pct_marker ), float_value( other.float_value ), color_value( other.color_value )
-{
-}
-
 w_keyframe::w_keyframe( float pct_marker, float value )
 	: pct_marker( pct_marker ), float_value( value )
 {
@@ -25,11 +20,6 @@ w_timeline::w_timeline( e_timeline_type type )
 	: type( type )
 {
 	keyframes = {};
-}
-
-w_timeline::w_timeline( const w_timeline& other )
-	: type( other.type ), keyframes( other.keyframes )
-{
 }
 
 w_timeline* w_timeline::kf_clear()
