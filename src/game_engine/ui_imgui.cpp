@@ -250,7 +250,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 	if( control.subtexture )
 	{
 		RENDER
-			->push_rgb( get_adjusted_color( w_color::white, being_hovered, being_clicked ) )
+			->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( control.subtexture, control.crc + clicked_offset );
 	}
@@ -298,4 +298,3 @@ w_offset w_imgui::get_click_offset( bool being_hovered, bool being_clicked )
 
 	return w_offset( 0, 0 );
 }
-

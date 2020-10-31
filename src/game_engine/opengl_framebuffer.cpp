@@ -20,7 +20,7 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float 
 	glGenTextures( 1, &tex->gl_id );
 	glBindTexture( GL_TEXTURE_2D, tex->gl_id );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
