@@ -21,9 +21,9 @@ void main()
 
     vec3 snapped_pos;
 
-    snapped_pos.x = floor( inPos.x );
-    snapped_pos.y = floor( inPos.y );
-    snapped_pos.z = floor( inPos.z );
+    snapped_pos.x = floor( inPos.x + 0.5f );
+    snapped_pos.y = floor( inPos.y + 0.5f );
+    snapped_pos.z = floor( inPos.z + 0.5f );
 
     Pos = snapped_pos;
 

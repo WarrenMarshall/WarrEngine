@@ -223,11 +223,11 @@ void w_color::scale( w_color& color, float s )
 
 // ----------------------------------------------------------------------------
 
-const w_vec2 w_vec2::zero = w_vec2( 0, 0 );
-const w_vec2 w_vec2::left = w_vec2( -1, 0 );
-const w_vec2 w_vec2::right = w_vec2( 1, 0 );
-const w_vec2 w_vec2::up = w_vec2( 0, -1 );
-const w_vec2 w_vec2::down = w_vec2( 0, 1 );
+const w_vec2 w_vec2::zero = w_vec2( 0.0f, 0.0f );
+const w_vec2 w_vec2::left = w_vec2( -1.0f, 0.0f );
+const w_vec2 w_vec2::right = w_vec2( 1.0f, 0.0f );
+const w_vec2 w_vec2::up = w_vec2( 0.0f, -1.0f );
+const w_vec2 w_vec2::down = w_vec2( 0.0f, 1.0f );
 
 // generates a random point on a unit sphere.
 w_vec2 w_vec2::get_random_unit()
@@ -395,6 +395,34 @@ w_vec2 w_vec2::reflect_across_normal( w_vec2 v, w_vec2 n )
 {
 	glm::vec3 rdir = glm::reflect( glm::vec3( v.x, v.y, 0.0f ), glm::vec3( n.x, n.y, 0.0f ) );
 	return w_vec2( rdir.x, rdir.y );
+}
+
+// ----------------------------------------------------------------------------
+
+const w_vec3 w_vec3::zero = w_vec3( 0.0f, 0.0f, 0.0f );
+
+w_vec3::w_vec3()
+	: x( 0.0f ), y( 0.0f ), z( 0.0f )
+{
+}
+
+w_vec3::w_vec3( int x, int y, int z )
+	: x( static_cast<float>( x ) ), y( static_cast<float>( y ) ), z( static_cast<float>( z ) )
+{
+}
+
+w_vec3::w_vec3( float x, float y, float z )
+	: x( x ), y( y ), z( z )
+{
+}
+
+w_vec3::w_vec3( std::string_view str )
+{
+	w_tokenizer tok( str, ',' );
+
+	x = w_parser::float_from_str( *tok.get_next_token() );
+	y = w_parser::float_from_str( *tok.get_next_token() );
+	z = w_parser::float_from_str( *tok.get_next_token() );
 }
 
 // ----------------------------------------------------------------------------

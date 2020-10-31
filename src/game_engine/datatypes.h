@@ -192,6 +192,25 @@ struct w_vec2
 	_NODISCARD static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
 };
 
+struct w_vec3
+{
+	union
+	{
+		struct
+		{
+			float x, y, z;		// xyz position
+		};
+
+	};
+
+	static const w_vec3 zero;
+
+	w_vec3();
+	w_vec3( int x, int y, int z );
+	w_vec3( float x, float y, float z );
+	w_vec3( std::string_view str );
+};
+
 // ----------------------------------------------------------------------------
 
 struct w_bbox
