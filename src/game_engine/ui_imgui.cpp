@@ -26,19 +26,42 @@ void w_imgui::reset()
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
 	last_control = std::nullopt;
+	tagged_controls.clear();
 }
 
-w_imgui* w_imgui::init_push_button()
+w_imgui* w_imgui::set_last_control_from_tag( const char* tag )
+{
+	auto iter = tagged_controls.find( tag );
+
+	if( iter == tagged_controls.end() )
+	{
+		log_error( "{} : tagged control not found", tag );
+	}
+
+	_set_last_control( iter->second );
+
+	return this;
+}
+
+w_imgui* w_imgui::clear_last_control()
+{
+	last_control = std::nullopt;
+	return this;
+}
+
+w_imgui* w_imgui::init_push_button( const char* tag )
 {
 	control = {};
+	control.tag = tag;
 	control.is_active = true;
 
 	return this;
 }
 
-w_imgui* w_imgui::init_panel()
+w_imgui* w_imgui::init_panel( const char* tag )
 {
 	control = {};
+	control.tag = tag;
 	control.is_active = false;
 
 	return this;
@@ -124,46 +147,48 @@ void w_imgui::calc_client_rect()
 	}
 }
 
-w_imgui_result* w_imgui::draw()
+w_imgui_result* w_imgui::finalize()
 {
 	if( control.is_active )
 	{
-		active();
+		_active();
 	}
 	else
 	{
-		passive();
+		_passive();
 	}
 
-	last_control = control;
+	if( control.tag != nullptr )
+	{
+		tagged_controls.insert( std::pair( control.tag, control ) );
+	}
 
-	flow_right = { last_control->rc.x + last_control->rc.w + UI_PADDING, last_control->rc.y };
-	flow_down = { last_control->rc.x, last_control->rc.y + last_control->rc.h + UI_PADDING };
+	_set_last_control( control );
 
 	return &result;
 }
 
-void w_imgui::active()
+void w_imgui::_active()
 {
 	result = {};
 	im_automatic_id++;
 
 	if( containing_layer_is_topmost )
 	{
-		result = update_im_state( im_automatic_id, control.rc );
+		result = _update_im_state( im_automatic_id, control.rc );
 	}
 
-	draw( control, hover_id == im_automatic_id, hot_id == im_automatic_id );
+	_draw( control, hover_id == im_automatic_id, hot_id == im_automatic_id );
 }
 
-void w_imgui::passive()
+void w_imgui::_passive()
 {
 	result = {};
 
-	draw( control, false, false );
+	_draw( control, false, false );
 }
 
-e_im_result w_imgui::update_im_state( int id, w_rect rc )
+e_im_result w_imgui::_update_im_state( int id, w_rect rc )
 {
 	assert( rc.w );
 	assert( rc.h );
@@ -226,9 +251,9 @@ e_im_result w_imgui::update_im_state( int id, w_rect rc )
 	return imresult;
 }
 
-void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
+void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
-	w_vec2 clicked_offset = get_click_offset( being_hovered, being_clicked );
+	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
 
 	w_rect rc_draw = control.rc;
 	rc_draw.x += clicked_offset.x;
@@ -243,14 +268,14 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 	{
 		RENDER
 			->push_depth_nudge()
-			->push_rgb( get_adjusted_color( w_color::dark_grey, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::dark_grey, being_hovered, being_clicked ) )
 			->draw_sliced( control.slice_def, rc_draw );
 	}
 
 	if( control.subtexture )
 	{
 		RENDER
-			->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( control.subtexture, control.crc + clicked_offset );
 	}
@@ -259,7 +284,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 	{
 		RENDER
 			->push_depth_nudge()
-			->push_rgb( get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_align( align::centered );
 
 		RENDER->draw_string( engine->pixel_font, control.label, w_rect( label_pos.x, label_pos.y ) );
@@ -271,7 +296,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 
 // takes a base color and modifies it based on the state of the UI
 
-w_color w_imgui::get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked )
+w_color w_imgui::_get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked )
 {
 	w_color color = base_color;
 
@@ -287,9 +312,17 @@ w_color w_imgui::get_adjusted_color( w_color base_color, bool being_hovered, boo
 	return color;
 }
 
+void w_imgui::_set_last_control( w_imgui_control control )
+{
+	last_control = control;
+
+	flow_right = { last_control->rc.x + last_control->rc.w + UI_PADDING, last_control->rc.y };
+	flow_down = { last_control->rc.x, last_control->rc.y + last_control->rc.h + UI_PADDING };
+}
+
 // a control with the mouse button held down on it will offset slightly
 
-w_offset w_imgui::get_click_offset( bool being_hovered, bool being_clicked )
+w_offset w_imgui::_get_click_offset( bool being_hovered, bool being_clicked )
 {
 	if( being_hovered && being_clicked )
 	{

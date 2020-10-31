@@ -20,13 +20,15 @@ void work_log_tracker_game::init()
 {
 	auto file = engine->fs->load_text_file_into_memory( engine->fs->prepend_data_path( work_log_tracker_game::artist_filename ) );
 
-	for( const auto& artist : *( file.get()->lines.get() ) )
+	for( const auto& artist : *( file->lines.get() ) )
 	{
-		artists.push_back( w_artist( artist ) );
+		artists.emplace_back( artist );
 	}
 
 	engine->layer_mgr->push<layer_background>();
 	engine->layer_mgr->push<layer_edit_list>();
+
+	engine->window->set_mouse_mode( mouse_mode::custom );
 }
 
 void work_log_tracker_game::load_data()

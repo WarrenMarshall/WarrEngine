@@ -77,13 +77,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->subtex = subtex;
 
-					// the "subtexture_list" k/v is a convenient way to specify a set
+					// the subtexture_tags" k/v is a convenient way to specify a set
 					// of subtextures belonging to a texture. an easy way to break
 					// down atlas textures or sprite sheets into subtextures.
 
-					if( iter_ad->does_key_exist( "subtexture_list" ) )
+					if( iter_ad->does_key_exist( "subtexture_tags" ) )
 					{
-						std::string_view subtex_list = iter_ad->find_value( "subtexture_list" );
+						std::string_view subtex_list = iter_ad->find_value( "subtexture_tags" );
 
 						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
 

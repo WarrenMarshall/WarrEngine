@@ -7,7 +7,7 @@
 	"type" "texture"
 	"tag" "tex_ui_default"
 	"filename" "ui/ui_default.png"
-	"subtexture_list" "\
+	"subtexture_tags" "\
 		ui_arrow_down_grey, 78, 498, 15, 10,\
 		ui_arrow_down_white, 123, 496, 15, 10,\
 		ui_arrow_up_grey, 108, 498, 15, 10,\

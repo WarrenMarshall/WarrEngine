@@ -86,7 +86,7 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 
 	if( file_exists_on_disk( filename ) )
 	{
-		std::ifstream file( filename.data(), std::ios::binary | std::ios::ate );
+		std::ifstream file( filename.data(), std::ios::in | std::ios::ate );
 		std::streamsize size = file.tellg();
 		file.seekg( 0, std::ios::beg );
 

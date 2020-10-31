@@ -39,13 +39,13 @@ void layer_esc_menu::draw_ui()
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
 		->set_rect( { v_window_hw - ( panel_w / 2.0f ), v_window_hh - ( panel_h / 2.0f ), panel_w, panel_h } )
-		->draw();
+		->finalize();
 
 	if( IMGUI->init_push_button()
 		->set_label( "Resume" )
 		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_rect( imgui_flow::last_crc_topleft, { IMGUI->last_control->crc.w, button_h } )
-		->draw()
+		->finalize()
 		->was_left_clicked() )
 	{
 		engine->layer_mgr->pop();
@@ -55,7 +55,7 @@ void layer_esc_menu::draw_ui()
 		->set_label( "Main Menu" )
 		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_rect( imgui_flow::down )
-		->draw()
+		->finalize()
 		->was_left_clicked() )
 	{
 		base_game->reset_layer_stack_to_main_menu();
@@ -65,7 +65,7 @@ void layer_esc_menu::draw_ui()
 		->set_label( "Toggle Fullscreen" )
 		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_rect( imgui_flow::down )
-		->draw()
+		->finalize()
 		->was_left_clicked() )
 	{
 		engine->window->toggle_fullscreen();
@@ -75,7 +75,7 @@ void layer_esc_menu::draw_ui()
 		->set_label( "Exit To Windows" )
 		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_rect( imgui_flow::down )
-		->draw()
+		->finalize()
 		->was_left_clicked() )
 	{
 		engine->is_running = false;

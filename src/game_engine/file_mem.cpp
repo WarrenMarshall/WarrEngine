@@ -16,7 +16,6 @@ w_mem_file_text::w_mem_file_text( int size )
 
 void w_mem_file_text::preprocess()
 {
-	//w_tokenizer tok( buffer->data(), '\n', b_parse_bracket_sets( false ) );
 	w_tokenizer tok( buffer->data(), '\n' );
 
 	size_t count = std::count( buffer->begin(), buffer->end(), '\n' );
