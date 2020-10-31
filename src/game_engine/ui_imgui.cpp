@@ -19,25 +19,12 @@ bool w_imgui_result::was_right_clicked()
 	return ( result == im_result::right_clicked );
 }
 
-void w_imgui::push_parent()
-{
-	parent_stack.push_back( control );
-}
-
-void w_imgui::pop_parent()
-{
-	assert( parent_stack.size() > 0 );
-
-	parent_stack.pop_back();
-}
-
 // ----------------------------------------------------------------------------
 
 void w_imgui::reset()
 {
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
-	parent_stack.clear();
 	last_control = std::nullopt;
 }
 
@@ -161,10 +148,6 @@ void w_imgui::active()
 	result = {};
 	im_automatic_id++;
 
-	auto parent_control = get_parent_control();
-	control.rc.x += parent_control ? (*parent_control)->crc.x : 0.0f;
-	control.rc.y += parent_control ? (*parent_control)->crc.x : 0.0f;
-
 	if( containing_layer_is_topmost )
 	{
 		result = update_im_state( im_automatic_id, control.rc );
@@ -176,10 +159,6 @@ void w_imgui::active()
 void w_imgui::passive()
 {
 	result = {};
-
-	auto parent_control = get_parent_control();
-	control.rc.x += parent_control ? (*parent_control)->crc.x : 0.0f;
-	control.rc.y += parent_control ? (*parent_control)->crc.y : 0.0f;
 
 	draw( control, false, false );
 }
@@ -306,16 +285,6 @@ w_color w_imgui::get_adjusted_color( w_color base_color, bool being_hovered, boo
 	}
 
 	return color;
-}
-
-std::optional<w_imgui_control*> w_imgui::get_parent_control()
-{
-	if( parent_stack.size() == 0 )
-	{
-		return std::nullopt;
-	}
-
-	return &( parent_stack.back() );
 }
 
 // a control with the mouse button held down on it will offset slightly

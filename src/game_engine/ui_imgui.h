@@ -46,12 +46,6 @@ struct w_imgui
 	// the results from the last control processed
 	w_imgui_result result = {};
 
-	// parent control stacka and accessors
-	std::vector<w_imgui_control> parent_stack = {};
-	void push_parent();
-	void pop_parent();
-	std::optional<w_imgui_control*> get_parent_control();
-
 	void reset();
 
 	w_imgui* init_push_button();
