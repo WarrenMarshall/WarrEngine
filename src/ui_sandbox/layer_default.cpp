@@ -16,9 +16,6 @@ void layer_default::push()
 
 void layer_default::draw()
 {
-	w_layer::draw();
-
-	/*
 	RENDER
 		->begin()
 		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
@@ -26,7 +23,8 @@ void layer_default::draw()
 		->push_align( align::centered )
 		->draw_string( "Ut enim ad minim veniam.", w_rect( v_window_hw, v_window_hh ) )
 		->end();
-	*/
+
+	w_layer::draw();
 
 	// ----------------------------------------------------------------------------
 	// panel
@@ -86,4 +84,13 @@ void layer_default::draw()
 		log_msg( "button #3 clicked" );
 	}
 
+}
+
+void layer_default::update()
+{
+	w_layer::update();
+
+	angle += 30.0f * w_time::FTS_step_value_s;
+	auto e = find_entity_from_tag( "arrow_mesh" );
+	e->set_angle( angle );
 }

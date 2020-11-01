@@ -10,8 +10,14 @@
 # }
 
 {
+	"type" "texture"
+	"tag" "tex_mesh_test"
+	"filename" "gfx/t_mesh_test.png"
+}
+
+{
 	"type" "mesh"
 	"tag" "mesh_5sided"
-	"texture_tag" "tex_engine_white_solid"
+	"texture_tag" "tex_mesh_test"
 	"filename" "meshes/5sided.obj"
 }

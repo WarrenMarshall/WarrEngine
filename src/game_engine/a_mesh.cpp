@@ -24,6 +24,7 @@ bool a_mesh::create_internals()
 
 	std::vector<w_vec3> vertex_list;
 	std::vector<w_uv> uv_list;
+	std::vector<w_vec3> normal_list;
 
 	for( auto& line : ( *file->lines ) )
 	{
@@ -53,6 +54,20 @@ bool a_mesh::create_internals()
 
 			uv_list.emplace_back( std::move( v ) );
 		}
+
+		if( line.substr( 0, 3 ) == "vn " )
+		{
+			w_tokenizer tok( line, ' ' );
+
+			w_vec3 v;
+
+			tok.get_next_token();	// eat "vn "
+			v.x = w_parser::float_from_str( *( tok.get_next_token() ) );
+			v.y = w_parser::float_from_str( *( tok.get_next_token() ) );
+			v.z = w_parser::float_from_str( *( tok.get_next_token() ) );
+
+			vertex_list.emplace_back( std::move( v ) );
+	}
 
 #if 0
 		if( line.substr( 0, 7 ) == "usemtl " )
