@@ -420,7 +420,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				else if( type == "mesh" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "filename" ) );
-					assert_key_required( iter_ad->does_key_exist( "subtexture_tag" ) );
+					assert_key_required( iter_ad->does_key_exist( "texture_tag" ) );
 
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
@@ -435,7 +435,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture_tag" ) );
+					asset_ptr->tex = a_texture::find( iter_ad->find_value( "texture_tag" ) );
 					asset_ptr->original_filename = filename;
 
 					// ------------------------------------------------------------------------

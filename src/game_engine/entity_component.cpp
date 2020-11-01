@@ -75,9 +75,9 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 	anim_offset = w_random::getf();
 }
 
-w_entity_component* ec_sprite::init( const std::string_view tex_name )
+w_entity_component* ec_sprite::init( const std::string_view tex_tag )
 {
-	tex = a_texture::find( tex_name );
+	tex = a_texture::find( tex_tag );
 	return this;
 }
 
@@ -103,10 +103,10 @@ ec_emitter::ec_emitter( w_entity* parent_entity )
 	type |= component_type::emitter;
 }
 
-w_entity_component* ec_emitter::init( const std::string_view params_name )
+w_entity_component* ec_emitter::init( const std::string_view params_tag )
 {
 	emitter = std::make_unique<w_particle_emitter>();
-	emitter->set_params( a_emitter_params::find( params_name ) );
+	emitter->set_params( a_emitter_params::find( params_tag ) );
 	emitter->parent_component = this;
 
 	post_init();
@@ -194,9 +194,9 @@ ec_sound::ec_sound( w_entity* parent_entity )
 	type |= component_type::sound;
 }
 
-w_entity_component* ec_sound::init( const std::string_view snd_name )
+w_entity_component* ec_sound::init( const std::string_view snd_tag )
 {
-	snd = a_sound::find( snd_name );
+	snd = a_sound::find( snd_tag );
 
 	return this;
 }
@@ -609,4 +609,28 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 		}
 
 	}
+}
+
+// ----------------------------------------------------------------------------
+
+ec_mesh::ec_mesh( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+	type |= component_type::sprite;
+}
+
+w_entity_component* ec_mesh::init( const std::string_view mesh_tag )
+{
+	mesh = a_mesh::find( mesh_tag );
+	return this;
+}
+
+void ec_mesh::draw()
+{
+	if( is_dead() )
+	{
+		return;
+	}
+
+	RENDER->draw_mesh( mesh, pos );
 }

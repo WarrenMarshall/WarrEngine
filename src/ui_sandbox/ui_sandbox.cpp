@@ -15,7 +15,9 @@ void ui_sandbox::new_game()
 {
 	w_game::new_game();
 
-	engine->layer_mgr->push<layer_default>();
+	auto e = engine->layer_mgr->get_top()->add_entity<w_entity>();
+	e->set_position( { v_window_hw, v_window_hh } );
+	e->add_component<ec_mesh>()->init( "mesh_5sided" );
 }
 
 void ui_sandbox::update()

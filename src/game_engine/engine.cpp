@@ -195,6 +195,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		engine->ui->init();
 		engine->ui->theme->init();
+
+		base_game->new_game();
 	}
 	catch( std::exception& e )
 	{

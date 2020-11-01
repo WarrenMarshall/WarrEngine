@@ -18,6 +18,7 @@ void layer_default::draw()
 {
 	w_layer::draw();
 
+	/*
 	RENDER
 		->begin()
 		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
@@ -25,12 +26,13 @@ void layer_default::draw()
 		->push_align( align::centered )
 		->draw_string( "Ut enim ad minim veniam.", w_rect( v_window_hw, v_window_hh ) )
 		->end();
+	*/
 
 	// ----------------------------------------------------------------------------
 	// panel
 
 	IMGUI->init_panel()
-		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
+		//->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
 		->set_rect( { 8,8,200,150 } )
 		->finalize();
 

@@ -40,7 +40,7 @@ struct ec_sprite : w_entity_component
 	ec_sprite() = delete;
 	ec_sprite( w_entity* parent_entity );
 
-	w_entity_component* init( const std::string_view tex_name );
+	w_entity_component* init( const std::string_view tex_tag );
 	virtual void draw() override;
 };
 
@@ -53,7 +53,7 @@ struct ec_emitter : w_entity_component
 	ec_emitter() = delete;
 	ec_emitter( w_entity* parent_entity );
 
-	w_entity_component* init( const std::string_view params_name );
+	w_entity_component* init( const std::string_view params_tag );
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
 	_NODISCARD virtual bool is_fully_dead() override;
 	virtual void draw() override;
@@ -70,7 +70,7 @@ struct ec_sound : w_entity_component
 	ec_sound() = delete;
 	ec_sound( w_entity* parent_entity );
 
-	w_entity_component* init( const std::string_view snd_name );
+	w_entity_component* init( const std::string_view snd_tag );
 	virtual void draw() override;
 };
 
@@ -173,3 +173,17 @@ struct ec_tilemap : w_entity_component
 	virtual void draw() override;
 	void load_from_disk( const char* tag, const std::vector<a_subtexture*>& subtex_tiles, std::string_view level_filename );
 };
+
+// ----------------------------------------------------------------------------
+
+struct ec_mesh : w_entity_component
+{
+	a_mesh* mesh = nullptr;
+
+	ec_mesh() = delete;
+	ec_mesh( w_entity* parent_entity );
+
+	w_entity_component* init( const std::string_view mesh_tag );
+	virtual void draw() override;
+};
+

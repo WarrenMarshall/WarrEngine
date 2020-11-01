@@ -4,7 +4,7 @@ struct a_mesh : i_asset
 {
 	declare_find_func( a_mesh )
 
-	a_subtexture* subtex = nullptr;
+	a_texture* tex = nullptr;
 	std::vector<w_render_buffer_vert> render_verts;		// triangles, so in groups of 3
 
 	virtual ~a_mesh() override;

@@ -246,7 +246,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( component_type, ubyte )
+enum_begin( component_type, unsigned )	// bitfield
 	invalid = 0,
 	sprite = 1,
 	emitter = 2,
@@ -255,7 +255,8 @@ enum_begin( component_type, ubyte )
 	b2d_static = 16,
 	b2d_dynamic = 32,
 	b2d_kinematic = 64,
-	tilemap = 128
+	tilemap = 128,
+	mesh = 256,
 enum_end
 
 // ----------------------------------------------------------------------------

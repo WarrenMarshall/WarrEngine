@@ -69,7 +69,7 @@ bool a_mesh::create_internals()
 
 			tok.get_next_token();	// eat "f "
 
-			for( int i = 0 ; i < 2 ; ++i )
+			for( int i = 0 ; i < 3 ; ++i )
 			{
 				w_tokenizer tok2( *( tok.get_next_token() ), '/' );
 
@@ -81,6 +81,9 @@ bool a_mesh::create_internals()
 			}
 		}
 	}
+
+	// make sure we have triplets of vertices so it's all triangles
+	assert( ( render_verts.size() % 3 ) == 0 );
 
 	return true;
 }

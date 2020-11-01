@@ -195,6 +195,32 @@ void w_render::maybe_draw_master_buffer( a_texture* texture )
 	}
 }
 
+w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
+{
+	maybe_draw_master_buffer( mesh->tex );
+
+	w_vec2 rs_scale = rs_scale_stack.back();
+	float rs_angle = rs_angle_stack.back();
+
+	MATRIX
+		->push()
+		->rotate( rs_angle )
+		->scale( rs_scale.x, rs_scale.y );
+
+	for( int x = 0 ; x < mesh->render_verts.size() ; x +=3 )
+	{
+		master_render_buffer->add_triangle(
+			mesh->render_verts[ x ],
+			mesh->render_verts[ x + 1 ],
+			mesh->render_verts[ x + 2 ]
+		);
+	}
+
+	MATRIX->pop();
+
+	return this;
+}
+
 /*
 	draws a texture as a sprite onto the screen.
 
@@ -230,8 +256,13 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 	w_render_buffer_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color );
 	w_render_buffer_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color );
 
-	MATRIX->push()->translate( { dst.x, dst.y } )->rotate( rs_angle );
+	MATRIX
+		->push()
+		->translate( { dst.x, dst.y } )
+		->rotate( rs_angle );
+
 	master_render_buffer->add_quad( v0, v1, v2, v3 );
+
 	MATRIX->pop();
 
 	return this;
