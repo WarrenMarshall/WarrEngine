@@ -12,5 +12,6 @@
 {
 	"type" "mesh"
 	"tag" "mesh_5sided"
+	"subtexture_tag" "engine_white_solid"
 	"filename" "meshes/5sided.obj"
 }

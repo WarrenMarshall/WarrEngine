@@ -8,6 +8,11 @@ float snap_to_pixel( float f )
 	return std::roundf( f );
 }
 
+float str_to_float( const char* str )
+{
+	return static_cast<float>( strtof( str, ( char** ) nullptr ) );
+}
+
 int str_to_int( const char* str )
 {
 	return static_cast<int>( strtol( str, ( char** ) nullptr, 10 ) );

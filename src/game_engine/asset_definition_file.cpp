@@ -417,6 +417,32 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+				else if( type == "mesh" )
+				{
+					assert_key_required( iter_ad->does_key_exist( "filename" ) );
+					assert_key_required( iter_ad->does_key_exist( "subtexture_tag" ) );
+
+					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = a_mesh::find( tag, b_silent( true ) );
+
+					if( !asset_ptr )
+					{
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture_tag" ) );
+					asset_ptr->original_filename = filename;
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals();
+				}
 			}
 			break;
 

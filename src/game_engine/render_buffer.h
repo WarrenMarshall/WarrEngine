@@ -5,6 +5,7 @@
 struct w_render_buffer_vert
 {
 	w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color );
+	w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color );
 
 	float x, y, z;
 	float u, v;
@@ -25,6 +26,7 @@ struct w_render_buffer
 	GLuint EBO = 0;					// index buffer
 
 	void add_quad( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1, const w_render_buffer_vert& v2, const w_render_buffer_vert& v3 );
+	void add_triangle( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1, const w_render_buffer_vert& v2 );
 	void add_line( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1 );
 	void bind();
 	void unbind();

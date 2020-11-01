@@ -9,6 +9,13 @@ w_render_buffer_vert::w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, c
 {
 }
 
+w_render_buffer_vert::w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color )
+	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->zdepth ),
+	u( uv.u ), v( uv.v ),
+	r( color.r ), g( color.g ), b( color.b ), a( color.a )
+{
+}
+
 // ----------------------------------------------------------------------------
 
 w_render_buffer::w_render_buffer()
@@ -59,6 +66,13 @@ void w_render_buffer::add_quad( const w_render_buffer_vert& v0, const w_render_b
     indices.emplace_back( idx0 );
     indices.emplace_back( idx2 );
     add_render_vert( v3 );
+}
+
+void w_render_buffer::add_triangle( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1, const w_render_buffer_vert& v2 )
+{
+	add_render_vert( v0 );
+	add_render_vert( v1 );
+	add_render_vert( v2 );
 }
 
 void w_render_buffer::add_line( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1 )

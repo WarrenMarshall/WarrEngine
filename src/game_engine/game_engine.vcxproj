@@ -182,6 +182,7 @@
     <ClCompile Include="a_emitter_params.cpp" />
     <ClCompile Include="a_font.cpp" />
     <ClCompile Include="a_gradient.cpp" />
+    <ClCompile Include="a_mesh.cpp" />
     <ClCompile Include="a_sound.cpp" />
     <ClCompile Include="a_subtexture.cpp" />
     <ClCompile Include="a_texture.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="a_emitter_params.h" />
     <ClInclude Include="a_font.h" />
     <ClInclude Include="a_gradient.h" />
+    <ClInclude Include="a_mesh.h" />
     <ClInclude Include="a_sound.h" />
     <ClInclude Include="a_subtexture.h" />
     <ClInclude Include="a_texture.h" />
