@@ -9,5 +9,6 @@ struct layer_default : w_layer
 
 	virtual void push() override;
 	virtual void draw() override;
+	virtual void draw_ui() override;
 	virtual void update() override;
 };

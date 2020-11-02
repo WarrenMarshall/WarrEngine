@@ -25,7 +25,10 @@ void layer_default::draw()
 		->end();
 
 	w_layer::draw();
+}
 
+void layer_default::draw_ui()
+{
 	// ----------------------------------------------------------------------------
 	// panel
 
@@ -83,7 +86,6 @@ void layer_default::draw()
 	{
 		log_msg( "button #3 clicked" );
 	}
-
 }
 
 void layer_default::update()
