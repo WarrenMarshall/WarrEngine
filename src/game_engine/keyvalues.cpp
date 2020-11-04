@@ -11,7 +11,7 @@ std::string_view w_keyvalues::find_value( const std::string& key ) const
 {
 	if( !does_key_exist( key ) )
 	{
-		return nullptr;
+		return "";
 	}
 
 	return kv.at( key );
@@ -28,7 +28,7 @@ std::string_view w_keyvalues::find_value_opt( const std::string& key, const std:
 	return std::string_view( kv.at( key ) );
 }
 
-void w_keyvalues::set( const std::string_view key, const std::string_view value )
+void w_keyvalues::insert_or_assign( const std::string_view key, const std::string_view value )
 {
 	kv.insert_or_assign( std::string( key ), std::string( value ) );
 }

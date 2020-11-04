@@ -40,7 +40,7 @@ struct w_cache_assets
 			return nullptr;
 		}
 
-		T* asset_ptr = static_cast<T*>( iter->second.get() );
+		auto asset_ptr = static_cast<T*>( iter->second.get() );
 
 #ifdef _DEBUG
 		// if we found an asset but it's the wrong type, that's also fatal - name things uniquely!

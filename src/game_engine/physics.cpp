@@ -175,7 +175,7 @@ bool w_physics::point_check_all( w_vec2 pos, bitflags layer_mask, w_query_all* h
 
 	hit_result->fixtures = fixtures_hit;
 
-	return ( hit_result->fixtures.size() > 0);
+	return !hit_result->fixtures.empty();
 }
 
 void w_physics::update()

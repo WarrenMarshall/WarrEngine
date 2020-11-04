@@ -610,7 +610,7 @@ void w_engine::parse_config_file( std::string_view filename )
 {
 	auto file = engine->fs->load_text_file_into_memory( filename );
 
-	for( const auto& line : *( file.get()->lines.get() ) )
+	for( const auto& line : *( file->lines.get() ) )
 	{
 		if( line.substr( 0, 1 ) == "\"" )
 		{
@@ -622,7 +622,7 @@ void w_engine::parse_config_file( std::string_view filename )
 
 			if( key.has_value() && value.has_value() )
 			{
-				config_vars->set( *key, *value );
+				config_vars->insert_or_assign( *key, *value );
 			}
 		}
 	}

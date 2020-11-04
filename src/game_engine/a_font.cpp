@@ -11,7 +11,7 @@ bool a_font_def::create_internals()
 
 	float x, y, w, h;
 
-	for( const auto& line : *( file.get()->lines.get() ) )
+	for( const auto& line : *( file->lines.get() ) )
 	{
 		if( line.substr( 0, 5 ) == "char " )
 		{

@@ -18,7 +18,7 @@ struct w_layer_mgr : i_listener
 	{
 		auto new_layer = std::make_unique<T>();
 
-		if( layer_stack.size() )
+		if( !layer_stack.empty() )
 		{
 			w_layer* top_layer = get_top();
 

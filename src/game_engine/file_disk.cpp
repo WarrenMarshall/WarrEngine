@@ -1,10 +1,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_file_disk::w_file_disk()
-{
-}
-
 void w_file_disk::open_for_read( std::string_view filename )
 {
 	engine->fs->create_path_if_not_exist( filename );

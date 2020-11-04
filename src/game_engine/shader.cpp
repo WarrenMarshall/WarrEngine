@@ -9,54 +9,60 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
     std::string wk;
 
     // vertex shader
-
-    auto vertex_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/game_engine/shaders/{}.vert" , vert_filename ) );
-    unsigned int vertex_id = glCreateShader( GL_VERTEX_SHADER );
-    wk = std::string( vertex_shader_src->buffer->begin(), vertex_shader_src->buffer->end() );
-    cptr = wk.c_str();
-    glShaderSource( vertex_id, 1, &cptr, nullptr );
-    glCompileShader( vertex_id );
-
-    glGetShaderiv( vertex_id, GL_COMPILE_STATUS, &success );
-    if( !success )
+    unsigned int vertex_id;
     {
-        glGetShaderInfoLog( vertex_id, 512, nullptr, infoLog );
-        log_error( "Vertex Shader : {}", infoLog );
+        auto vertex_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/game_engine/shaders/{}.vert", vert_filename ) );
+        vertex_id = glCreateShader( GL_VERTEX_SHADER );
+        wk = std::string( vertex_shader_src->buffer->begin(), vertex_shader_src->buffer->end() );
+        cptr = wk.c_str();
+        glShaderSource( vertex_id, 1, &cptr, nullptr );
+        glCompileShader( vertex_id );
+
+        glGetShaderiv( vertex_id, GL_COMPILE_STATUS, &success );
+        if( !success )
+        {
+            glGetShaderInfoLog( vertex_id, 512, nullptr, infoLog );
+            log_error( "Vertex Shader : {}", infoLog );
+        }
     }
 
     // fragment shader
-
-    auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/game_engine/shaders/{}.frag", frag_filename ) );
-    unsigned int fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
-    wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
-    cptr = wk.c_str();
-    glShaderSource( fragment_id, 1, &cptr, nullptr );
-    glCompileShader( fragment_id );
-
-    glGetShaderiv( fragment_id, GL_COMPILE_STATUS, &success );
-    if( !success )
+    unsigned int fragment_id;
     {
-        glGetShaderInfoLog( fragment_id, 512, nullptr, infoLog );
-        log_error( "Fragment Shader : {}", infoLog );
-    }
+        auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/game_engine/shaders/{}.frag", frag_filename ) );
+        fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
+        wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
+        cptr = wk.c_str();
+        glShaderSource( fragment_id, 1, &cptr, nullptr );
+        glCompileShader( fragment_id );
+
+        glGetShaderiv( fragment_id, GL_COMPILE_STATUS, &success );
+        if( !success )
+        {
+            glGetShaderInfoLog( fragment_id, 512, nullptr, infoLog );
+            log_error( "Fragment Shader : {}", infoLog );
+        }
+	}
 
     // shader program
-
-    id = glCreateProgram();
-
-    glAttachShader( id, vertex_id );
-    glAttachShader( id, fragment_id );
-    glLinkProgram( id );
-
-    glGetProgramiv( id, GL_LINK_STATUS, &success );
-    if( !success )
     {
-        glGetProgramInfoLog( id, 512, nullptr, infoLog );
-        log_error( "Shader Program : {}", infoLog );
-    }
+        id = glCreateProgram();
 
-    glValidateProgram( id );
+        glAttachShader( id, vertex_id );
+        glAttachShader( id, fragment_id );
+        glLinkProgram( id );
 
+        glGetProgramiv( id, GL_LINK_STATUS, &success );
+        if( !success )
+        {
+            glGetProgramInfoLog( id, 512, nullptr, infoLog );
+            log_error( "Shader Program : {}", infoLog );
+        }
+
+        glValidateProgram( id );
+	}
+
+    // clean up
     glDeleteShader( vertex_id );
     glDeleteShader( fragment_id );
 }

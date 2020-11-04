@@ -246,7 +246,5 @@ using b_parse_bracket_sets = bool;
 
 // ----------------------------------------------------------------------------
 
-typedef std::variant<c2Circle, c2AABB, c2Capsule> variant_collider_types;
-
 #define ADD_QUOTES_HELPER(s) #s
 #define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)

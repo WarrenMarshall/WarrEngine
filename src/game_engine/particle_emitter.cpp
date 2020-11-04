@@ -2,10 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_particle_emitter::~w_particle_emitter()
-{
-}
-
 void w_particle_emitter::set_params( a_emitter_params* params )
 {
 	this->params = params;

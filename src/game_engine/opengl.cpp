@@ -26,7 +26,7 @@ void w_opengl::init()
 
 	// sets a callback function so opengl can report errors and warnings to us
 	glEnable( GL_DEBUG_OUTPUT );
-	glDebugMessageCallback( OpenGL_MessageCallback, 0 );
+	glDebugMessageCallback( OpenGL_MessageCallback, nullptr );
 
 	// opengl info
 	log_msg( "OpenGL Version : [{}]", glGetString( GL_VERSION ) );
@@ -90,7 +90,7 @@ void w_opengl::init()
 
 w_matrix* w_opengl::push_identity()
 {
-	modelview_stack.push_back( w_matrix() );
+	modelview_stack.emplace_back();
 	return top();
 }
 
@@ -167,8 +167,8 @@ void w_opengl::init_projection_matrix() const
 
 	for( auto& iter : shader_pool )
 	{
-		iter.second.get()->bind();
-		glUniformMatrix4fv( glGetUniformLocation( iter.second.get()->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		iter.second->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second->id, "P" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 	}
 }
 
@@ -198,8 +198,8 @@ void w_opengl::init_view_matrix( w_camera* camera ) const
 
 	for( auto& iter : shader_pool )
 	{
-		iter.second.get()->bind();
-		glUniformMatrix4fv( glGetUniformLocation( iter.second.get()->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+		iter.second->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 	}
 }
 
@@ -215,8 +215,8 @@ void w_opengl::init_view_matrix_identity() const
 
 	for( auto& iter : shader_pool )
 	{
-		iter.second.get()->bind();
-		glUniformMatrix4fv( glGetUniformLocation( iter.second.get()->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+		iter.second->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
 	}
 }
 
@@ -224,7 +224,7 @@ void w_opengl::set_uniform( std::string_view name, float value )
 {
 	for( auto& iter : shader_pool )
 	{
-		iter.second.get()->bind();
-		glUniform1f( glGetUniformLocation( iter.second.get()->id, name.data() ), value );
+		iter.second->bind();
+		glUniform1f( glGetUniformLocation( iter.second->id, name.data() ), value );
 	}
 }

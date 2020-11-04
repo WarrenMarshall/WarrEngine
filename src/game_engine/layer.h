@@ -54,7 +54,7 @@ struct w_layer : i_life_cycle
 	{
 		entities.emplace_back( std::make_unique<T>() );
 
-		T* new_entity = static_cast<T*>( entities.back().get() );
+		auto new_entity = static_cast<T*>( entities.back().get() );
 		new_entity->parent_layer = this;
 
 		return new_entity;

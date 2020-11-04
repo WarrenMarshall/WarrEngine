@@ -65,7 +65,7 @@ class w_query_all : public b2QueryCallback
 public:
 	std::vector<b2Fixture*> fixtures;
 
-	bool ReportFixture( b2Fixture* fixture );
+	virtual bool ReportFixture( b2Fixture* fixture ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -76,5 +76,5 @@ class w_query_first : public b2QueryCallback
 public:
 	b2Fixture* fixture;
 
-	bool ReportFixture( b2Fixture* fixture );
+	virtual bool ReportFixture( b2Fixture* fixture ) override;
 };

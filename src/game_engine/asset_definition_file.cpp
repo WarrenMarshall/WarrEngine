@@ -669,7 +669,7 @@ bool w_asset_definition_file::create_internals()
 
 			if( key.has_value() && value.has_value() )
 			{
-				current_asset_definition->set( *key, *value );
+				current_asset_definition->insert_or_assign( *key, *value );
 			}
 		}
 	}

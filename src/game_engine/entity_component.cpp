@@ -511,7 +511,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 
 	auto file = engine->fs->load_file_into_memory( level_filename );
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer.get() ) );
+	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer ) );
 
 	std::unique_ptr<ec_tilemap_layer> tm_layer = nullptr;
 

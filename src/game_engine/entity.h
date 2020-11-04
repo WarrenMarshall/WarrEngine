@@ -34,7 +34,7 @@ struct w_entity : i_life_cycle, i_transform
 	template<typename T> T* add_component()
 	{
 		components.emplace_back( std::make_unique<T>( this ) );
-		T* new_component = static_cast<T*>( components.back().get() );
+		auto new_component = static_cast<T*>( components.back().get() );
 
 		return new_component;
 	}
