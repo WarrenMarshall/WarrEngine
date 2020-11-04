@@ -16,7 +16,7 @@ void platformer_layer::push()
 
 	sky_gradient = a_gradient::find( "sky_gradient" );
 
-	engine->window->set_mouse_mode( mouse_mode::hidden );
+	engine->window->set_mouse_mode( mouse_mode::locked );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );

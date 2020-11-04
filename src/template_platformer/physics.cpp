@@ -122,7 +122,7 @@ void w_platformer_physics::handle_user_input()
 			force_to_be_applied = player_move_force * left_stick.x;
 
 			float force_final = ec->body->GetMass() * force_to_be_applied / (1.0f / w_time::FTS_desired_frames_per_second);
-			ec->body->ApplyForceToCenter( w_vec2( to_b2d( force_final ), 0.0f ), true );
+			ec->body->ApplyForceToCenter( w_vec2( to_b2d( force_final ), 0.0f ).as_b2Vec2(), true );
 		}
 	}
 }
@@ -169,7 +169,7 @@ bool w_platformer_physics::handle_input_event( const w_input_event* evt )
 				}
 
 				float force_final = ec->body->GetMass() * (-player_jump_force * dir_modifier) / ( 1.0f / w_time::FTS_desired_frames_per_second );
-				ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ), true );
+				ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
 
 				return true;
 			}

@@ -44,7 +44,12 @@ void layer_main_menu::draw_ui()
 	float xpos = 64;
 	float ypos = 75;
 
-	if( IMGUI->push_button( "PLAY", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ) ).was_left_clicked() )
+	if( IMGUI->init_push_button()
+		->set_label( "PLAY" )
+		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+		->set_rect( { xpos, ypos, v_window_w - xpos * 2, 24 } )
+		->finalize()
+		->was_left_clicked() )
 	{
 		game->new_game();
 		engine->layer_mgr->pop();
@@ -53,7 +58,12 @@ void layer_main_menu::draw_ui()
 	}
 
 	ypos += 32;
-	if( IMGUI->push_button( "Exit", w_rect( xpos, ypos, v_window_w - xpos * 2, 24 ) ).was_left_clicked() )
+	if( IMGUI->init_push_button()
+		->set_label( "Exit" )
+		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+		->set_rect( { xpos, ypos, v_window_w - xpos * 2, 24 } )
+		->finalize()
+		->was_left_clicked() )
 	{
 		engine->is_running = false;
 	}
@@ -75,5 +85,5 @@ void layer_main_menu::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
-	engine->window->set_mouse_mode( mouse_mode::normal );
+	engine->window->set_mouse_mode( mouse_mode::os );
 }

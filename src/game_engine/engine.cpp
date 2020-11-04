@@ -140,6 +140,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		{ // APPLY CONFIG SETTINGS
 			v_window_w = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_w", "320" ) );
 			v_window_h = w_parser::float_from_str( engine->config_vars->find_value_opt( "v_window_h", "240" ) );
+			ui_canvas_w = w_parser::float_from_str( engine->config_vars->find_value_opt( "ui_canvas_w", "640" ) );
+			ui_canvas_h = w_parser::float_from_str( engine->config_vars->find_value_opt( "ui_canvas_h", "480" ) );
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
@@ -311,7 +313,7 @@ void w_engine::exec_main_loop()
 		// to the render functions for interpolation/prediction
 		//
 		// it is passed a percentage for easier use : 0.0f-1.0f
-		//
+
 		float interp_pct = engine->time->fts_accum_ms / w_time::FTS_step_value_ms;
 
 		// draw the scene to a framebuffer, sized to match the virtual viewport

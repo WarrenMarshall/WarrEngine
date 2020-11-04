@@ -35,6 +35,15 @@ extern float v_window_h;
 #define v_window_hw (v_window_w * 0.5f)
 #define v_window_hh (v_window_h * 0.5f)
 
+extern float ui_canvas_w;
+extern float ui_canvas_h;
+
+#define ui_canvas_hw (ui_canvas_w * 0.5f)
+#define ui_canvas_hh (ui_canvas_h * 0.5f)
+
+#define ui_canvas_scale_w (ui_canvas_w / v_window_w)
+#define ui_canvas_scale_h (ui_canvas_h / v_window_h)
+
 #include "bit_flag_generator.h"
 #include "matrix.h"
 #include "opengl_framebuffer.h"

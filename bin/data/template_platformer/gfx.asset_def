@@ -3,7 +3,7 @@
 	"type" "texture"
 	"tag" "main_sprite_sheet"
 	"filename" "gfx/main_sheet.png"
-	"subtexture_list" "\
+	"subtexture_tags" "\
 		player_spr_run_1, 0, 0, 16, 16,\
 		player_spr_run_2, 16, 0, 16, 16,\
 		player_spr_run_3, 32, 0, 16, 16,\
@@ -63,7 +63,7 @@
 	"type" "texture"
 	"tag" "main_tile_sheet"
 	"filename" "gfx/tileset.png"
-	"subtexture_list" "\
+	"subtexture_tags" "\
 		tile_01, 0, 0, 16, 16,\
 		tile_02, 16, 0, 16, 16,\
 		tile_03, 32, 0, 16, 16,\
