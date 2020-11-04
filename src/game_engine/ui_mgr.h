@@ -2,9 +2,8 @@
 
 struct w_ui_mgr
 {
-	std::unique_ptr<w_ui_theme> theme = nullptr;
-
 	w_imgui imgui;
+	a_cursor* mouse_cursor = nullptr;
 
 	void init();
 	void draw_topmost();
