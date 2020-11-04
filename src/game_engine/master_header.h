@@ -41,8 +41,7 @@ extern float ui_canvas_h;
 #define ui_canvas_hw (ui_canvas_w * 0.5f)
 #define ui_canvas_hh (ui_canvas_h * 0.5f)
 
-#define ui_canvas_scale_w (ui_canvas_w / v_window_w)
-#define ui_canvas_scale_h (ui_canvas_h / v_window_h)
+#define ui_canvas_scale (v_window_w / ui_canvas_w)
 
 #include "bit_flag_generator.h"
 #include "matrix.h"

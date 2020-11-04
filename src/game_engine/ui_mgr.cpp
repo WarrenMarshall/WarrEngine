@@ -18,8 +18,8 @@ void w_ui_mgr::draw_topmost()
 			->push_depth( zdepth_topmost )
 			->draw( mouse_cursor->subtex,
 					w_rect(
-						engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x,
-						engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y
+						(engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x),
+						(engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y)
 					)
 			)
 			->end();
