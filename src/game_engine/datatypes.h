@@ -116,6 +116,7 @@ struct w_rect
 	w_rect operator+( const w_vec2 v );
 	w_rect operator+=( const w_vec2 v );
 	w_rect operator*( float v );
+	w_rect operator*=( float v );
 
 	c2AABB as_c2AABB();
 };

@@ -157,6 +157,13 @@ w_rect w_rect::operator*( float v )
 	return w_rect( this->x * v, this->y * v, this->w * v, this->h * v );
 }
 
+w_rect w_rect::operator*=( float v )
+{
+	*this = *this * v;
+	return *this;
+}
+
+
 c2AABB w_rect::as_c2AABB()
 {
 	c2AABB bb;

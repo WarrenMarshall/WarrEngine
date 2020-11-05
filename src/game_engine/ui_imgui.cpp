@@ -87,6 +87,8 @@ w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture )
 
 w_imgui* w_imgui::set_rect( w_rect rc )
 {
+	rc *= ui_canvas_scale;
+
 	control.rc = rc;
 	calc_client_rect();
 
@@ -100,6 +102,8 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow )
 
 w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 {
+	sz *= ui_canvas_scale;
+
 	control.rc = last_control->rc;
 
 	control.rc.w = sz.w;
