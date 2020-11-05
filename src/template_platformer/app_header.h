@@ -3,7 +3,7 @@
 
 #define game (static_cast<template_platformer*>(base_game.get()))
 
-#include <game_engine.h>
+#include <warr_engine.h>
 
 // ----------------------------------------------------------------------------
 

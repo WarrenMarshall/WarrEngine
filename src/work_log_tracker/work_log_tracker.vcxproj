@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>APP_NAME=work_log_tracker;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\warr_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>APP_NAME=work_log_tracker;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\game_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external;X:\WarrenDev\src\warr_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
@@ -170,7 +170,7 @@
     <ClInclude Include="work_log_tracker.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\game_engine\game_engine.vcxproj">
+    <ProjectReference Include="..\warr_engine\warr_engine.vcxproj">
       <Project>{bf24bdda-a452-42ba-84d2-a6bbda169bf4}</Project>
     </ProjectReference>
   </ItemGroup>
