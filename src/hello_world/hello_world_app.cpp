@@ -1,7 +1,7 @@
 
 #include "app_header.h"
 
-hello_world_app::hello_world_app( std::string_view name )
+hello_world_app::hello_world_app( const char* name )
 	: w_game( name )
 {
 }

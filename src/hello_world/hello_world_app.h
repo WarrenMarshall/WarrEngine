@@ -4,7 +4,7 @@
 
 struct hello_world_app : w_game
 {
-	hello_world_app( std::string_view name );
+	hello_world_app( const char* name );
 
 	void init() override;
 	void new_game() override;

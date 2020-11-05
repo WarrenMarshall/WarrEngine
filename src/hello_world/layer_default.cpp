@@ -10,7 +10,8 @@ layer_default::layer_default()
 
 void layer_default::push()
 {
-	gradient = engine->get_asset<a_gradient>( "background_gradient" );
+	gradient = a_gradient::find( "background_gradient" );
+	engine->window->set_mouse_mode( mouse_mode::custom );
 }
 
 void layer_default::draw()
@@ -18,9 +19,19 @@ void layer_default::draw()
 	w_layer::draw();
 
 	RENDER
+		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+}
+
+void layer_default::draw_ui()
+{
+	IMGUI->init_panel()
+		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
+		->set_rect( { 0,ui_canvas_hh - 12,ui_canvas_w,32 } )
+		->finalize();
+
+	RENDER
 		->begin()
-		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
-		->push_rgb( { 1.0f, 0.5f, 0.0f } )
+		->push_rgb( w_color::white )
 		->push_align( align::centered )
 		->draw_string( engine->pixel_font, "Hello, World!", w_rect( v_window_hw, v_window_hh ) )
 		->end();
