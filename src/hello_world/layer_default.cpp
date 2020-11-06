@@ -25,14 +25,15 @@ void layer_default::draw()
 void layer_default::draw_ui()
 {
 	IMGUI->init_panel()
+		->set_label( "Hello, World!" )
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { 0,ui_canvas_hh - 12,ui_canvas_w,32 } )
+		->set_rect( { 0,ui_canvas_hh - 16,ui_canvas_w,64 } )
 		->finalize();
 
-	RENDER
-		->begin()
-		->push_rgb( w_color::white )
-		->push_align( align::centered )
-		->draw_string( engine->pixel_font, "Hello, World!", w_rect( v_window_hw, v_window_hh ) )
-		->end();
+	//RENDER
+	//	->begin()
+	//	->push_rgb( w_color::white )
+	//	->push_align( align::centered )
+	//	->draw_string( engine->pixel_font, "Hello, World!", w_rect( v_window_hw, v_window_hh ) )
+	//	->end();
 }
