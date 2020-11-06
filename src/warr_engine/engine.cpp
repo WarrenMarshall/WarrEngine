@@ -678,7 +678,7 @@ void w_engine::on_listener_event_received( e_event_id event, void* object )
 				case input_id::key_left_bracket:
 				{
 					time->dilation -= 0.1f;
-					time->dilation = std::max( time->dilation, 0.1f );
+					time->dilation = glm::max( time->dilation, 0.1f );
 
 					if( engine->input->is_shift_down() )
 					{

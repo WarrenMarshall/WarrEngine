@@ -384,15 +384,16 @@ w_vec2 w_vec2::dir_from_angle( float angle )
 	w_vec2 v;
 
 	float rad = glm::radians( angle );
-	v.x = std::sinf( rad );
-	v.y = -std::cosf( rad );
+
+	v.x = glm::sin( rad );
+	v.y = -glm::cos( rad );
 
 	return v;
 }
 
 float w_vec2::angle_from_dir( w_vec2 dir )
 {
-	float angle = atan2( dir.y, dir.x ) * 180.0f / W_PI;
+	float angle = glm::atan( dir.y, dir.x ) * 180.0f / W_PI;
 
 	// massage the resulting angle into a range that this engine likes.
 	angle += 90.0f;
@@ -446,11 +447,11 @@ w_bbox::w_bbox()
 
 void w_bbox::add( w_vec2 vtx )
 {
-	min.x = std::min( min.x, vtx.x );
-	min.y = std::min( min.y, vtx.y );
+	min.x = glm::min( min.x, vtx.x );
+	min.y = glm::min( min.y, vtx.y );
 
-	max.x = std::max( max.x, vtx.x );
-	max.y = std::max( max.y, vtx.y );
+	max.x = glm::max( max.x, vtx.x );
+	max.y = glm::max( max.y, vtx.y );
 }
 
 void w_bbox::reset()

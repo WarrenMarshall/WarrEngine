@@ -283,11 +283,11 @@ void w_camera::update()
 			// apply limits if we need to
 			if( follow.limits_x.has_value() )
 			{
-				follow.pos.x = std::clamp( follow.pos.x, follow.limits_x->l, follow.limits_x->r );
+				follow.pos.x = glm::clamp( follow.pos.x, follow.limits_x->l, follow.limits_x->r );
 			}
 			if( follow.limits_y.has_value() )
 			{
-				follow.pos.y = std::clamp( follow.pos.y, follow.limits_y->t, follow.limits_y->b );
+				follow.pos.y = glm::clamp( follow.pos.y, follow.limits_y->t, follow.limits_y->b );
 			}
 
 			// if only following on a specific axis, remove the follow influence from the other

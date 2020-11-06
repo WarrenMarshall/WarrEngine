@@ -52,7 +52,7 @@ w_rect w_window::compute_max_window_size_for_desktop()
 	// window to be positioned in the center of the screen.
 	auto wdiv = static_cast<int>( std::floorf( desktop_w / static_cast<float>( v_window_w ) ) );
 	auto hdiv = static_cast<int>( std::floorf( desktop_h / static_cast<float>( v_window_h ) ) );
-	int div = std::min( wdiv, hdiv );
+	int div = glm::min( wdiv, hdiv );
 
 	w_rect window_pos( 0.0f, 0.0f, v_window_w * div, v_window_h * div );
 	window_pos.x = ( vidmode->width - window_pos.w ) / 2;

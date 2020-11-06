@@ -35,5 +35,5 @@ unsigned str_to_uint( const std::string& str )
 
 float sin_from_angle( float angle_in_degrees )
 {
-	return std::sinf( glm::radians( angle_in_degrees ) );
+	return glm::sin( glm::radians( angle_in_degrees ) );
 }

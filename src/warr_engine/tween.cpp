@@ -76,7 +76,7 @@ int w_tween::get_ival( int low, int high )
 	// tweeny can sometimes go beyond the limits of the range you've given it,
 	// especially if you're using certain easings. if that will cause trouble,
 	// use this clamped version of get_ival instead.
-	return std::clamp<int>( static_cast<int>( get_fval() ), low, high );
+	return glm::clamp<int>( static_cast<int>( get_fval() ), low, high );
 }
 
 bool w_tween::is_negative()
