@@ -4,8 +4,15 @@
 // ----------------------------------------------------------------------------
 
 w_tokenizer::w_tokenizer( std::string_view string_buffer, char delim )
-	: string_buffer( string_buffer ), delim( delim )
 {
+	init( string_buffer, delim );
+}
+
+void w_tokenizer::init( std::string_view string_buffer, char delim )
+{
+	this->string_buffer = string_buffer;
+	this->delim = delim;
+
 	preprocess();
 	idx = 0;
 }

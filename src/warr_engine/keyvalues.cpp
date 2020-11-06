@@ -18,7 +18,7 @@ std::string_view w_keyvalues::find_value( const std::string& key ) const
 }
 
 // same as "find_values", but it isn't fatal if the key doesn't exist
-std::string_view w_keyvalues::find_value_opt( const std::string& key, const std::string& default_value ) const
+std::string_view w_keyvalues::find_value_opt( const std::string& key, const std::string_view default_value ) const
 {
 	if( !does_key_exist( key ) )
 	{
