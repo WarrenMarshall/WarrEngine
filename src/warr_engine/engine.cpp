@@ -141,12 +141,12 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 			w_tokenizer tok;
 
-			tok.init( engine->config_vars->find_value_opt( "v_window_res", "320,240" ), ',' );
+			tok.init( engine->config_vars->find_value_opt( "v_window_res", "320x240" ), 'x' );
 			v_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
 			v_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
 			log_msg( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
 
-			tok.init( engine->config_vars->find_value_opt( "ui_canvas_res", "640,480" ), ',' );
+			tok.init( engine->config_vars->find_value_opt( "ui_canvas_res", "640x480" ), 'x' );
 			ui_canvas_w = w_parser::float_from_str( tok.tokens[ 0 ] );
 			ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
 			log_msg( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
