@@ -220,6 +220,20 @@ void w_opengl::init_view_matrix_identity() const
 	}
 }
 
+void w_opengl::init_view_matrix_identity_ui() const
+{
+	RENDER->draw_master_buffer();
+
+	glm::mat4 view = glm::mat4( 1.0f );
+	view *= glm::scale( view, glm::vec3( ui_canvas_scale, ui_canvas_scale, 1.0f ) );
+
+	for( auto& iter : shader_pool )
+	{
+		iter.second->bind();
+		glUniformMatrix4fv( glGetUniformLocation( iter.second->id, "V" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	}
+}
+
 void w_opengl::set_uniform( std::string_view name, float value )
 {
 	for( auto& iter : shader_pool )

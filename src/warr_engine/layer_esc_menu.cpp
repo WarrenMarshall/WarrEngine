@@ -27,7 +27,7 @@ void layer_esc_menu::draw_ui()
 
 	RENDER
 		->push_rgba( w_color( 0.2f, 0.2f, 0.2f, 0.9f ) )
-		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
+		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
 
 	constexpr float num_buttons = 4;
 	constexpr float button_w = 140.0f;
@@ -38,7 +38,7 @@ void layer_esc_menu::draw_ui()
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { v_window_hw - ( panel_w / 2.0f ), v_window_hh - ( panel_h / 2.0f ), panel_w, panel_h } )
+		->set_rect( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ), panel_w, panel_h } )
 		->finalize();
 
 	if( IMGUI->init_push_button()

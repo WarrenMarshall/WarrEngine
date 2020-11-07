@@ -3,6 +3,7 @@
 struct layer_default : w_layer
 {
 	a_gradient* gradient = nullptr;
+	a_subtexture* subtex = nullptr;
 
 	layer_default();
 

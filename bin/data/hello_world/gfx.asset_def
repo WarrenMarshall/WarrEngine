@@ -3,8 +3,8 @@
 # textures
 # ---------------------------------------------------------
 
-# {
-# 	"type" "texture"
-# 	"tag" "tex_name"
-# 	"filename" "gfx/filename.png"
-# }
+{
+	"type" "texture"
+	"tag" "tex_hello_world"
+	"filename" "gfx/hello_world.png"
+}

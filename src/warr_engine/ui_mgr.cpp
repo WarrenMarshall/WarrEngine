@@ -16,7 +16,7 @@ void w_ui_mgr::draw_topmost()
 		RENDER
 			->begin()
 			->push_depth( zdepth_topmost )
-			->push_scale( ui_canvas_scale )
+			//->push_scale( ui_canvas_scale )
 			->draw( mouse_cursor->subtex,
 					w_rect(
 						(engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x),
@@ -27,7 +27,10 @@ void w_ui_mgr::draw_topmost()
 	}
 }
 
-bool w_ui_mgr::is_mouse_inside( w_rect& rc ) const
+// note : because we apply the canvas scale, this is only usable for UI canvas based rectangles
+bool w_ui_mgr::is_mouse_inside( w_rect rc ) const
 {
+	rc *= ui_canvas_scale;
+
 	return c2AABBtoPoint( rc.as_c2AABB(), engine->input->mouse_vwindow_pos.as_c2v() );
 }

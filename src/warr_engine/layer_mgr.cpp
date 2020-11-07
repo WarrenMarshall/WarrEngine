@@ -131,13 +131,14 @@ void w_layer_mgr::draw()
 				// draw any screen space items, like UI. these are
 				// drawn with an identity matrix so the top left of
 				// the screen is always 0,0.
-				OPENGL->init_view_matrix_identity();
+				OPENGL->init_view_matrix_identity_ui();
 				RENDER->push_depth_nudge();
 				layer_stack[ x ]->draw_ui();
 
 #ifdef _DEBUG
 				// same as the other debug draw call, but this is for
 				// info in screen space
+				OPENGL->init_view_matrix_identity();
 				RENDER->push_depth_nudge( 100 );
 				layer_stack[ x ]->draw_ui_debug();
 #endif
