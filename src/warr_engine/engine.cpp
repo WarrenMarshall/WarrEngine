@@ -351,12 +351,15 @@ void w_engine::exec_main_loop()
 			engine->draw();
 		}
 
+		OPENGL->init_view_matrix_identity_ui();
 		RENDER->end_frame();
 
 		engine->opengl->fb_game->unbind();
 
 		// reset the viewport to the size of the actual window and draw the
 		// offscreen framebuffer to the actual framebuffer as a scaled quad
+
+		OPENGL->init_view_matrix_identity();
 
 		glViewport(
 			static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
@@ -368,7 +371,9 @@ void w_engine::exec_main_loop()
 
 		static a_texture* tex = a_texture::find( "tex_game_frame_buffer" );
 
-		//OPENGL->find_shader( "crt_fx" )->bind();
+#if 1
+		OPENGL->find_shader( "crt_fx" )->bind();
+#endif
 
 		RENDER
 			->begin()

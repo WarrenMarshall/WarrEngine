@@ -29,10 +29,15 @@ void layer_default::draw_ui()
 	RENDER->draw( subtex, w_rect( 16, 16 ) );
 
 	IMGUI->init_panel()
-		->set_label( "Hello, World!" )
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { 0,ui_canvas_hh - 16,ui_canvas_w,64 } )
+		->set_rect( { ui_canvas_hw,ui_canvas_hh,ui_canvas_hw,ui_canvas_hh } )
 		->finalize();
+
+	//IMGUI->init_panel()
+	//	->set_label( "Hello, World!" )
+	//	->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
+	//	->set_rect( { 0,ui_canvas_hh - 16,ui_canvas_w,64 } )
+	//	->finalize();
 
 	//RENDER
 	//	->begin()

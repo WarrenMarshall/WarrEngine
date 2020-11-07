@@ -34,20 +34,9 @@ void layer_default::draw_ui()
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { 0,0,100,ui_canvas_h } )
+		->set_rect( { 16,16,ui_canvas_hw/1.5f,ui_canvas_hh } )
 		->finalize();
 
-	IMGUI->init_panel()
-		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { 100,0,100,ui_canvas_h/3.0f } )
-		->finalize();
-
-	IMGUI->init_panel()
-		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { 300,0,100,ui_canvas_h / 2.0f } )
-		->finalize();
-
-#if 0
 	// ----------------------------------------------------------------------------
 	// push button
 
@@ -97,7 +86,6 @@ void layer_default::draw_ui()
 	{
 		log_msg( "button #3 clicked" );
 	}
-#endif
 }
 
 void layer_default::update()

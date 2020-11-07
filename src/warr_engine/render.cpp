@@ -478,7 +478,7 @@ w_render* w_render::draw_stats()
 
 		RENDER->begin()
 			->push_rgba( w_color( .25f, .25f, .25f, 0.75f ) )
-			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, v_window_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
+			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->pop_alpha()
 			->push_depth_nudge()
 			->push_rgb( w_color::white )
@@ -487,7 +487,7 @@ w_render* w_render::draw_stats()
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( engine->pixel_font, iter, w_rect( v_window_hw, ypos ) );
+			RENDER->draw_string( engine->pixel_font, iter, w_rect( ui_canvas_hw, ypos ) );
 			ypos += font_max_height;
 		}
 
@@ -500,7 +500,7 @@ w_render* w_render::draw_stats()
 			->draw_string(
 				engine->pixel_font,
 				fmt::format( "{} FPS ({:.2f} ms)", stats.frame_count.value, stats.frame_times_ms.value ),
-				w_rect( v_window_w, 0 ) )
+				w_rect( ui_canvas_w, 0 ) )
 			->end();
 	}
 #endif
