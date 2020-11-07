@@ -21,10 +21,14 @@ struct w_imgui_control
 	bool is_active = true;
 	const char* tag = nullptr;
 	std::string label;
+	e_align label_align = align::centered;
 	a_9slice_def* slice_def = nullptr;
-	a_subtexture* subtexture = nullptr;
+	a_subtexture* subtexture[ 2 ];
+	e_align subtexture_align = align::fill;
 	w_rect rc = { 0,0,0,0 };	// full rectangle
 	w_rect crc = { 0,0,0,0 };	// client rectangle
+
+	std::function<int(const char*)> cb_get_subtexture_idx;
 };
 
 // ----------------------------------------------------------------------------
@@ -50,16 +54,21 @@ struct w_imgui
 	void reset();
 
 	// this holds COPIES of any controls that are tagged when drawn.
+	//
+	// tagging controls lets you find them later that frame if needed.
 	std::unordered_map<const char*, w_imgui_control> tagged_controls;
 	w_imgui* set_last_control_from_tag( const char* tag );
+	w_imgui_control find_control( const char* tag );
 	w_imgui* clear_last_control();
 
 	w_imgui* init_push_button( const char* tag = nullptr );
+	w_imgui* init_checkbox( const char* tag = nullptr );
 	w_imgui* init_panel( const char* tag = nullptr );
 
-	w_imgui* set_label( const std::string& label );
+	w_imgui* set_label( const std::string& label, e_align align = align::centered );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
-	w_imgui* set_subtexture( a_subtexture* subtexture );
+	w_imgui* set_subtexture( a_subtexture* subtexture, e_align align = align::fill, int idx = -1 );
+	w_imgui* set_callback( std::function<int( const char* )> cb_func );
 
 	w_imgui* set_rect( w_rect rc );
 	w_imgui* set_rect( e_imgui_flow flow );
@@ -71,7 +80,7 @@ struct w_imgui
 private:
 	void _active();
 	void _passive();
-	void _set_last_control( w_imgui_control control );
+	void _set_as_last_control( w_imgui_control control );
 
 	_NODISCARD virtual e_im_result _update_im_state( int id, w_rect rc );
 	void _draw( w_imgui_control& control, bool being_hovered, bool being_clicked );

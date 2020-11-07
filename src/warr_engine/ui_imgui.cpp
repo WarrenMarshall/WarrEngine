@@ -29,7 +29,20 @@ void w_imgui::reset()
 	tagged_controls.clear();
 }
 
+// locates the control that matches "tag" and sets up the imgui
+// to pretend that was the last control we drew.
+//
+// this is for finding controls that were created previously
+// that you now need to reference for positioning or parenting.
+
 w_imgui* w_imgui::set_last_control_from_tag( const char* tag )
+{
+	_set_as_last_control( find_control( tag ) );
+
+	return this;
+}
+
+w_imgui_control w_imgui::find_control( const char* tag )
 {
 	auto iter = tagged_controls.find( tag );
 
@@ -38,9 +51,7 @@ w_imgui* w_imgui::set_last_control_from_tag( const char* tag )
 		log_error( "{} : tagged control not found", tag );
 	}
 
-	_set_last_control( iter->second );
-
-	return this;
+	return iter->second;
 }
 
 w_imgui* w_imgui::clear_last_control()
@@ -58,6 +69,15 @@ w_imgui* w_imgui::init_push_button( const char* tag )
 	return this;
 }
 
+w_imgui* w_imgui::init_checkbox( const char* tag )
+{
+	control = {};
+	control.tag = tag;
+	control.is_active = true;
+
+	return this;
+}
+
 w_imgui* w_imgui::init_panel( const char* tag )
 {
 	control = {};
@@ -67,9 +87,10 @@ w_imgui* w_imgui::init_panel( const char* tag )
 	return this;
 }
 
-w_imgui* w_imgui::set_label( const std::string& label )
+w_imgui* w_imgui::set_label( const std::string& label, e_align align )
 {
 	control.label = label;
+	control.label_align = align;
 	return this;
 }
 
@@ -79,9 +100,26 @@ w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 	return this;
 }
 
-w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture )
+w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture, e_align align, int idx )
 {
-	control.subtexture = subtexture;
+	if( idx == -1 )
+	{
+		control.subtexture[ 0 ] = subtexture;
+		control.subtexture[ 1 ] = nullptr;
+	}
+	else
+	{
+		control.subtexture[ idx ] = subtexture;
+	}
+
+	control.subtexture_align = align;
+
+	return this;
+}
+
+w_imgui* w_imgui::set_callback( std::function<int( const char* )> cb_func )
+{
+	control.cb_get_subtexture_idx = cb_func;
 	return this;
 }
 
@@ -163,7 +201,7 @@ w_imgui_result* w_imgui::finalize()
 		tagged_controls.insert( std::pair( control.tag, control ) );
 	}
 
-	_set_last_control( control );
+	_set_as_last_control( control );
 
 	return &result;
 }
@@ -261,8 +299,12 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	w_pos label_pos = rc_draw.midpoint();
 
+	// begin
+
 	RENDER
 		->begin();
+
+	// slice def
 
 	if( control.slice_def )
 	{
@@ -272,23 +314,54 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 			->draw_sliced( control.slice_def, rc_draw );
 	}
 
-	if( control.subtexture )
+	// subtexture
+
+	a_subtexture* subtex = control.subtexture[ 0 ];
+
+	if( control.cb_get_subtexture_idx )
 	{
+		subtex = control.subtexture[ control.cb_get_subtexture_idx( control.tag ) ];
+	}
+
+	if( subtex )
+	{
+		w_rect subtex_rc = control.crc + clicked_offset;
+
+		if( control.subtexture_align & align::left )
+		{
+			subtex_rc.w = subtex->get_bounding_rect().w;
+			subtex_rc.h = subtex->get_bounding_rect().h;
+		}
+
 		RENDER
 			->push_rgb( _get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_depth_nudge()
-			->draw( control.subtexture, control.crc + clicked_offset );
+			->draw( subtex, subtex_rc );
 	}
+
+	// label
 
 	if( control.label.length() )
 	{
+		w_rect label_rc = w_rect( label_pos.x, label_pos.y );
+
+		if( subtex )
+		{
+			if( control.subtexture_align & align::left )
+			{
+				label_rc.x += subtex->get_bounding_rect().w / 2.0f;
+			}
+		}
+
 		RENDER
 			->push_depth_nudge()
 			->push_rgb( _get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
 			->push_align( align::centered );
 
-		RENDER->draw_string( engine->pixel_font, control.label, w_rect( label_pos.x, label_pos.y ) );
+		RENDER->draw_string( engine->pixel_font, control.label, label_rc );
 	}
+
+	// finish
 
 	RENDER
 		->end();
@@ -312,7 +385,7 @@ w_color w_imgui::_get_adjusted_color( w_color base_color, bool being_hovered, bo
 	return color;
 }
 
-void w_imgui::_set_last_control( w_imgui_control control )
+void w_imgui::_set_as_last_control( w_imgui_control control )
 {
 	last_control = control;
 

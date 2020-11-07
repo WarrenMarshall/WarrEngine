@@ -27,12 +27,15 @@
 	# -----------------------------------------------------
 	# alignment options
 
-	"align.left"			"1"
-	"align.right"			"2"
-	"align.hcenter"			"4"
-	"align.vcenter"			"8"
-	"align.horizontal"		"16"
-	"align.vertical"		"32"
+	"align.left" "1"
+	"align.right" "2"
+	"align.top" "4"
+	"align.bottom" "8"
+	"align.hcenter" "16"
+	"align.vcenter" "32"
+	"align.horizontal" "64"
+	"align.vertical" "128"
+	"align.fill" "256"
 
 	# -----------------------------------------------------
 	# colors
@@ -60,9 +63,4 @@
 	"tween.linear"		"1"
 	"tween.loop"		"2"
 	"tween.pingpong"	"3"
-
-	# -----------------------------------------------------
-
-	"fill.scaled"	"0"
-	"fill.tiled"	"1"
 }

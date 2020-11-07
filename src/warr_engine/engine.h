@@ -15,6 +15,7 @@ struct w_engine : i_listener
 	a_subtexture* white_wire = nullptr;
 	a_subtexture* white_solid = nullptr;
 	a_font* pixel_font = nullptr;
+	a_texture* tex_frame_buffer = nullptr;
 
 	bool is_running = false;
 	bool is_paused = false;

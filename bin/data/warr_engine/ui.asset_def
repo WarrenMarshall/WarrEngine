@@ -12,8 +12,8 @@
 		ui_arrow_down_white, 123, 496, 15, 10,\
 		ui_arrow_up_grey, 108, 498, 15, 10,\
 		ui_arrow_up_white, 93, 498, 15, 10,\
-		ui_box, 147, 433, 38, 36,\
-		ui_box_checkmark, 147, 469, 38, 36,\
+		ui_box, 224, 488, 16, 16,\
+		ui_box_checkmark, 240, 488, 16, 16,\
 		ui_box_cross, 185, 433, 38, 36,\
 		ui_box_tick, 190, 198, 36, 36,\
 		ui_button_00, 0, 143, 190, 45,\

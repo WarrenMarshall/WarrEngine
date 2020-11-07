@@ -27,6 +27,16 @@ void layer_default::draw()
 	w_layer::draw();
 }
 
+int cb_get_subtexture_idx( const char* tag )
+{
+	if( tag == "the_checkbox" )
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
 void layer_default::draw_ui()
 {
 	// ----------------------------------------------------------------------------
@@ -41,7 +51,7 @@ void layer_default::draw_ui()
 	// push button
 
 	if(
-		IMGUI->init_push_button()
+		IMGUI->init_push_button( "top push button" )
 		->set_label( "Lorem Ipsum" )
 		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_rect( imgui_flow::last_crc_topleft, { 100, 24 } )
@@ -51,6 +61,38 @@ void layer_default::draw_ui()
 		log_msg( "button clicked" );
 	}
 
+	// ----------------------------------------------------------------------------
+	// push button / warning icon
+
+	if(
+		IMGUI->init_push_button()
+		->set_subtexture( a_subtexture::find( "sub_warning_icon" ) )
+		->set_rect( imgui_flow::right | imgui_flow::vcenter, { 16, 16 } )
+		->finalize()
+		->was_left_clicked() )
+	{
+		log_msg( "img button clicked" );
+	}
+
+	// ----------------------------------------------------------------------------
+	// check box
+
+	IMGUI->set_last_control_from_tag( "top push button" );
+	if(
+		IMGUI->init_checkbox( "the_checkbox" )
+		->set_label( "An Option", align::left | align::vcenter )
+		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+		->set_subtexture( a_subtexture::find( "ui_box" ), align::left, 0 )
+		->set_subtexture( a_subtexture::find( "ui_box_checkmark" ), align::left, 1 )
+		->set_rect( imgui_flow::down )
+		->set_callback( cb_get_subtexture_idx )
+		->finalize()
+		->was_left_clicked() )
+	{
+		log_msg( "button clicked" );
+	}
+
+#if 0
 	if(
 		IMGUI->init_push_button( "button_02" )
 		->set_label( "Lorem Ipsum #2" )
@@ -86,6 +128,7 @@ void layer_default::draw_ui()
 	{
 		log_msg( "button #3 clicked" );
 	}
+#endif
 }
 
 void layer_default::update()

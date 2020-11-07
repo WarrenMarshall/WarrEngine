@@ -2,20 +2,25 @@
 #pragma once
 
 // ----------------------------------------------------------------------------
+// note : needs to match values in data/warr_engine/preproc.asset_def
 
-enum_begin( align, ubyte )
+enum_begin( align, unsigned )
 	invalid = 0,
 	left = 1,
 	right = 2,
-	hcenter = 4,
-	vcenter = 8,
-	horizontal = 16,
-	vertical = 32,
+	top = 4,
+	bottom = 8,
+	hcenter = 16,
+	vcenter = 32,
+	horizontal = 64,
+	vertical = 128,
+	fill = 256,
 
 	centered = hcenter | vcenter
 enum_end
 
 // ----------------------------------------------------------------------------
+// note : needs to match values in data/warr_engine/preproc.asset_def
 
 enum_begin( color, ubyte )
 	white = 1,
@@ -154,6 +159,7 @@ enum_begin( event_id, ubyte )
 enum_end
 
 // ----------------------------------------------------------------------------
+// note : needs to match values in data/warr_engine/preproc.asset_def
 
 enum_begin( tween_type, ubyte )
 	linear = 1,		// value iterates from start to end, once
@@ -185,6 +191,7 @@ enum_begin( opengl_blend, ubyte )
 enum_end
 
 // ----------------------------------------------------------------------------
+// note : needs to match values in data/warr_engine/preproc.asset_def
 
 enum_begin( particle_spawn_dir, sbyte )
 	inherit_from_parent = -1,

@@ -199,6 +199,9 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		// used for solid drawing
 		engine->white_solid = a_subtexture::find( "engine_white_solid" );
 
+		// the texture we are rendering to each frame
+		engine->tex_frame_buffer = a_texture::find( "tex_game_frame_buffer" );
+
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.
 		engine->pixel_font = a_font::find( "font_ui" );
@@ -369,15 +372,13 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-		static a_texture* tex = a_texture::find( "tex_game_frame_buffer" );
-
-#if 1
+#if 0
 		OPENGL->find_shader( "crt_fx" )->bind();
 #endif
 
 		RENDER
 			->begin()
-			->draw( tex, w_rect( 0, 0 ) )
+			->draw( engine->tex_frame_buffer, w_rect( 0, 0 ) )
 			->end();
 		RENDER->maybe_draw_master_buffer( nullptr );
 
