@@ -9,8 +9,10 @@
 	"filename" "ui/ui_master.png"
 	"subtexture_tags" "\
 		ui_cursor, 56, 40, 16, 16,\
-		ui_panel, 0, 48, 48, 48,\
-		ui_button, 0, 0, 48, 16\
+		ui_panel, 0, 48, 16, 16,\
+		ui_button, 0, 0, 48, 16,\
+		ui_box, 48, 0, 16, 16,\
+		ui_box_checkmark, 64, 0, 16, 16\
 		"
 }
 

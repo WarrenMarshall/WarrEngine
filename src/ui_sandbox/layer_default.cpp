@@ -80,21 +80,21 @@ void layer_default::draw_ui()
 	// ----------------------------------------------------------------------------
 	// check box
 
-	//IMGUI->set_last_control_from_tag( "top push button" );
-	//if(
-	//	IMGUI->init_checkbox( "checkbox_01" )
-	//	->set_label( "An Option", align::left | align::vcenter )
-	//	->set_subtexture_align( align::left )
-	//	->set_subtexture( a_subtexture::find( "ui_box" ), 0 )
-	//	->set_subtexture( a_subtexture::find( "ui_box_checkmark" ), 1 )
-	//	->set_rect( imgui_flow::down )
-	//	//->set_rect( w_rect( 16, 16, 100, 64 ) )
-	//	->finalize()
-	//	->was_left_clicked() )
-	//{
-	//	ui_data_provider.the_checkbox_value_01 = !ui_data_provider.the_checkbox_value_01;
-	//	log_msg( "check box clicked" );
-	//}
+	IMGUI->set_last_control_from_tag( "top push button" );
+	if(
+		IMGUI->init_checkbox( "checkbox_01" )
+		->set_label( "An Option", align::left | align::vcenter )
+		->set_subtexture_align( align::left )
+		->set_subtexture( a_subtexture::find( "ui_box" ), 0 )
+		->set_subtexture( a_subtexture::find( "ui_box_checkmark" ), 1 )
+		->set_rect( imgui_flow::down )
+		//->set_rect( w_rect( 16, 16, 100, 64 ) )
+		->finalize()
+		->was_left_clicked() )
+	{
+		ui_data_provider.the_checkbox_value_01 = !ui_data_provider.the_checkbox_value_01;
+		log_msg( "check box clicked" );
+	}
 
 #if 0
 	if(
