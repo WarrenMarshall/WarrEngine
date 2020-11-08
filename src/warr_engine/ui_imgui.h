@@ -74,7 +74,8 @@ struct w_imgui
 
 	w_imgui* set_label( const std::string& label, e_align align = align::centered );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
-	w_imgui* set_subtexture( a_subtexture* subtexture, e_align align = align::fill, int idx = -1 );
+	w_imgui* set_subtexture( a_subtexture* subtexture, int idx = -1 );
+	w_imgui* set_subtexture_align( e_align align );
 
 	w_imgui* set_rect( w_rect rc );
 	w_imgui* set_rect( e_imgui_flow flow );

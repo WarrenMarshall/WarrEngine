@@ -118,7 +118,7 @@ w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 	return this;
 }
 
-w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture, e_align align, int idx )
+w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture, int idx )
 {
 	if( idx == -1 )
 	{
@@ -130,8 +130,12 @@ w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture, e_align align, int i
 		control.subtexture[ idx ] = subtexture;
 	}
 
-	control.subtexture_align = align;
+	return this;
+}
 
+w_imgui* w_imgui::set_subtexture_align( e_align align )
+{
+	control.subtexture_align = align;
 	return this;
 }
 

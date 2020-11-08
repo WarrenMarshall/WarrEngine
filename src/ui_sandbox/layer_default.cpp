@@ -63,6 +63,7 @@ void layer_default::draw_ui()
 		log_msg( "button clicked" );
 	}
 
+#if 0
 	// ----------------------------------------------------------------------------
 	// push button / warning icon
 
@@ -75,6 +76,7 @@ void layer_default::draw_ui()
 	{
 		log_msg( "img button clicked" );
 	}
+#endif
 
 	// ----------------------------------------------------------------------------
 	// check box
@@ -83,8 +85,8 @@ void layer_default::draw_ui()
 	if(
 		IMGUI->init_checkbox( "checkbox_01" )
 		->set_label( "An Option", align::left | align::vcenter )
-		//->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
-		->set_subtexture_align( align::left )
+		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+		//->set_subtexture_align( align::left )
 		->set_subtexture( a_subtexture::find( "ui_box" ), 0 )
 		->set_subtexture( a_subtexture::find( "ui_box_checkmark" ), 1 )
 		->set_rect( imgui_flow::down )
