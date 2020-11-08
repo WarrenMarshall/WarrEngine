@@ -2,6 +2,11 @@
 
 #define UI_PADDING 2.0f
 
+struct w_imgui_data_provider
+{
+	virtual int get_subtexture_idx( w_imgui_control* control );
+};
+
 // ----------------------------------------------------------------------------
 
 struct w_imgui_result
@@ -28,7 +33,7 @@ struct w_imgui_control
 	w_rect rc = { 0,0,0,0 };	// full rectangle
 	w_rect crc = { 0,0,0,0 };	// client rectangle
 
-	std::function<int(const char*)> cb_get_subtexture_idx;
+	w_offset get_base_offset();
 };
 
 // ----------------------------------------------------------------------------
@@ -47,6 +52,8 @@ struct w_imgui
 	w_pos flow_right, flow_down;
 	std::optional<w_imgui_control> last_control = std::nullopt;
 	w_imgui_control control = {};
+
+	w_imgui_data_provider* current_data_provider = nullptr;
 
 	// the results from the last control processed
 	w_imgui_result result = {};
@@ -68,11 +75,12 @@ struct w_imgui
 	w_imgui* set_label( const std::string& label, e_align align = align::centered );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
 	w_imgui* set_subtexture( a_subtexture* subtexture, e_align align = align::fill, int idx = -1 );
-	w_imgui* set_callback( std::function<int( const char* )> cb_func );
 
 	w_imgui* set_rect( w_rect rc );
 	w_imgui* set_rect( e_imgui_flow flow );
 	w_imgui* set_rect( e_imgui_flow flow, w_sz sz );
+
+	w_imgui* set_data_provider( w_imgui_data_provider* data_provider );
 
 	void calc_client_rect();
 	w_imgui_result* finalize();

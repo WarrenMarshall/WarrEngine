@@ -2,6 +2,23 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+int w_imgui_data_provider::get_subtexture_idx( w_imgui_control* control )
+{
+	return 0;
+}
+
+// ----------------------------------------------------------------------------
+
+w_offset w_imgui_control::get_base_offset()
+{
+	if( slice_def )
+	{
+		return w_offset( 0, -2 );
+	}
+
+	return w_offset( 0, 0 );
+}
+
 // ----------------------------------------------------------------------------
 
 void w_imgui_result::operator=( e_im_result res )
@@ -26,6 +43,7 @@ void w_imgui::reset()
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
 	last_control = std::nullopt;
+	current_data_provider = nullptr;
 	tagged_controls.clear();
 }
 
@@ -117,12 +135,6 @@ w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture, e_align align, int i
 	return this;
 }
 
-w_imgui* w_imgui::set_callback( std::function<int( const char* )> cb_func )
-{
-	control.cb_get_subtexture_idx = cb_func;
-	return this;
-}
-
 w_imgui* w_imgui::set_rect( w_rect rc )
 {
 	control.rc = rc;
@@ -165,6 +177,12 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 
 	calc_client_rect();
 
+	return this;
+}
+
+w_imgui* w_imgui::set_data_provider( w_imgui_data_provider* data_provider )
+{
+	this->current_data_provider = data_provider;
 	return this;
 }
 
@@ -291,6 +309,7 @@ e_im_result w_imgui::_update_im_state( int id, w_rect rc )
 
 void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
+	w_vec2 base_offset = control.get_base_offset();
 	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
 
 	w_rect rc_draw = control.rc;
@@ -316,16 +335,11 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	// subtexture
 
-	a_subtexture* subtex = control.subtexture[ 0 ];
-
-	if( control.cb_get_subtexture_idx )
-	{
-		subtex = control.subtexture[ control.cb_get_subtexture_idx( control.tag ) ];
-	}
+	a_subtexture* subtex = control.subtexture[ current_data_provider ? current_data_provider->get_subtexture_idx( &control ) : 0 ];
 
 	if( subtex )
 	{
-		w_rect subtex_rc = control.crc + clicked_offset;
+		w_rect subtex_rc = control.crc + base_offset + clicked_offset;
 
 		if( control.subtexture_align & align::left )
 		{
@@ -343,7 +357,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	if( control.label.length() )
 	{
-		w_rect label_rc = w_rect( label_pos.x, label_pos.y );
+		w_rect label_rc = w_rect( label_pos.x, label_pos.y ) + base_offset;
 
 		if( subtex )
 		{
