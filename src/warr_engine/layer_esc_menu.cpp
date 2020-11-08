@@ -26,7 +26,7 @@ void layer_esc_menu::draw_ui()
 	w_layer::draw_ui();
 
 	RENDER
-		->push_rgba( w_color( 0.2f, 0.2f, 0.2f, 0.9f ) )
+		->push_rgba( w_color( 0.1f, 0.1f, 0.1f, 0.9f ) )
 		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
 
 	constexpr float num_buttons = 4;

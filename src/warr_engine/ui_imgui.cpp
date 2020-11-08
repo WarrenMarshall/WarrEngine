@@ -156,9 +156,6 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 {
 	control.rc = last_control->rc;
 
-	control.rc.w = sz.w;
-	control.rc.h = sz.h;
-
 	if( flow & imgui_flow::right )
 	{
 		control.rc = { flow_right.x, flow_right.y, sz.w, sz.h };
@@ -343,7 +340,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	if( subtex )
 	{
-		w_rect subtex_rc = control.crc + base_offset + clicked_offset;
+		w_rect subtex_rc = control.crc + clicked_offset;
 
 		if( control.subtexture_align & align::left )
 		{
