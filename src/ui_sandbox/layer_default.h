@@ -5,6 +5,7 @@ struct layer_default_data_provider : w_imgui_data_provider
 	virtual int get_subtexture_idx( w_imgui_control* control ) override;
 
 	bool the_checkbox_value_01 = false;
+	bool the_checkbox_value_02 = false;
 };
 
 // ----------------------------------------------------------------------------

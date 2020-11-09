@@ -23,12 +23,14 @@ struct w_imgui_result
 
 struct w_imgui_control
 {
+	e_imgui_control_type type;
 	bool is_active = true;
 	const char* tag = nullptr;
 	std::string label;
 	e_align label_align = align::centered;
 	a_9slice_def* slice_def = nullptr;
-	a_subtexture* subtexture[ 2 ];
+	std::array<a_subtexture*, imgui_control_state::max> subtextures;
+	//a_subtexture* subtexture[ 2 ];
 	e_align subtexture_align = align::fill;
 	w_rect rc = { 0,0,0,0 };	// full rectangle
 	w_rect crc = { 0,0,0,0 };	// client rectangle
@@ -74,7 +76,7 @@ struct w_imgui
 
 	w_imgui* set_label( const std::string& label, e_align align = align::centered );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
-	w_imgui* set_subtexture( a_subtexture* subtexture, int idx = -1 );
+	w_imgui* set_subtexture( e_imgui_control_state state, a_subtexture* subtexture );
 	w_imgui* set_subtexture_align( e_align align );
 
 	w_imgui* set_rect( w_rect rc );

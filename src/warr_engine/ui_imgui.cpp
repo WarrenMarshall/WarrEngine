@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-int w_imgui_data_provider::get_subtexture_idx( w_imgui_control* control )
+int w_imgui_data_provider::get_subtexture( w_imgui_control* control )
 {
 	return 0;
 }
@@ -81,6 +81,7 @@ w_imgui* w_imgui::clear_last_control()
 w_imgui* w_imgui::init_push_button( const char* tag )
 {
 	control = {};
+	control.type = imgui_control_type::push_button;
 	control.tag = tag;
 	control.is_active = true;
 
@@ -90,6 +91,7 @@ w_imgui* w_imgui::init_push_button( const char* tag )
 w_imgui* w_imgui::init_checkbox( const char* tag )
 {
 	control = {};
+	control.type = imgui_control_type::check_box;
 	control.tag = tag;
 	control.is_active = true;
 
@@ -99,6 +101,7 @@ w_imgui* w_imgui::init_checkbox( const char* tag )
 w_imgui* w_imgui::init_panel( const char* tag )
 {
 	control = {};
+	control.type = imgui_control_type::panel;
 	control.tag = tag;
 	control.is_active = false;
 
@@ -118,17 +121,9 @@ w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 	return this;
 }
 
-w_imgui* w_imgui::set_subtexture( a_subtexture* subtexture, int idx )
+w_imgui* w_imgui::set_subtexture( e_imgui_control_state state, a_subtexture* subtexture )
 {
-	if( idx == -1 )
-	{
-		control.subtexture[ 0 ] = subtexture;
-		control.subtexture[ 1 ] = nullptr;
-	}
-	else
-	{
-		control.subtexture[ idx ] = subtexture;
-	}
+	control.subtextures[ state ] = subtexture;
 
 	return this;
 }
@@ -330,7 +325,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 	{
 		RENDER
 			->push_depth_nudge()
-			->push_rgb( _get_adjusted_color( w_color::dark_grey, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::dark_teal, being_hovered, being_clicked ) )
 			->draw_sliced( control.slice_def, rc_draw );
 	}
 

@@ -3,9 +3,17 @@
 
 int layer_default_data_provider::get_subtexture_idx( w_imgui_control* control )
 {
-	if( control->tag == "checkbox_01" )
+	if( control->type == imgui_control_type::check_box )
 	{
-		return the_checkbox_value_01;
+		if( control->tag == "checkbox_01" )
+		{
+			return the_checkbox_value_01;
+		}
+
+		if( control->tag == "checkbox_02" )
+		{
+			return the_checkbox_value_02;
+		}
 	}
 
 	return 0;
@@ -69,7 +77,7 @@ void layer_default::draw_ui()
 
 	if(
 		IMGUI->init_push_button()
-		->set_subtexture( a_subtexture::find( "sub_warning_icon" ) )
+		->set_subtexture( imgui_control_state::up, a_subtexture::find( "sub_warning_icon" ) )
 		->set_rect( imgui_flow::right | imgui_flow::vcenter, { 16, 16 } )
 		->finalize()
 		->was_left_clicked() )
@@ -85,14 +93,27 @@ void layer_default::draw_ui()
 		IMGUI->init_checkbox( "checkbox_01" )
 		->set_label( "An Option", align::left | align::vcenter )
 		->set_subtexture_align( align::left )
-		->set_subtexture( a_subtexture::find( "ui_box" ), 0 )
-		->set_subtexture( a_subtexture::find( "ui_box_checkmark" ), 1 )
+		->set_subtexture( imgui_control_state::unchecked, a_subtexture::find( "ui_box" ) )
+		->set_subtexture( imgui_control_state::checked, a_subtexture::find( "ui_box_checkmark" ) )
 		->set_rect( imgui_flow::down )
-		//->set_rect( w_rect( 16, 16, 100, 64 ) )
 		->finalize()
 		->was_left_clicked() )
 	{
 		ui_data_provider.the_checkbox_value_01 = !ui_data_provider.the_checkbox_value_01;
+		log_msg( "check box clicked" );
+	}
+
+	if(
+		IMGUI->init_checkbox( "checkbox_02" )
+		->set_label( "Another Option", align::left | align::vcenter )
+		->set_subtexture_align( align::left )
+		->set_subtexture( imgui_control_state::unchecked, a_subtexture::find( "ui_box" ) )
+		->set_subtexture( imgui_control_state::checked, a_subtexture::find( "ui_box_checkmark" ) )
+		->set_rect( imgui_flow::down )
+		->finalize()
+		->was_left_clicked() )
+	{
+		ui_data_provider.the_checkbox_value_02 = !ui_data_provider.the_checkbox_value_02;
 		log_msg( "check box clicked" );
 	}
 
@@ -113,7 +134,7 @@ void layer_default::draw_ui()
 
 	if(
 		IMGUI->init_push_button()
-		->set_subtexture( a_subtexture::find( "sub_warning_icon" ) )
+		->set_subtexture( imgui_control_state::up, a_subtexture::find( "sub_warning_icon" ) )
 		->set_rect( imgui_flow::right | imgui_flow::vcenter, { 16, 16 } )
 		->finalize()
 		->was_left_clicked() )

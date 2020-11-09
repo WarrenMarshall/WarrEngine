@@ -302,3 +302,22 @@ enum_begin( imgui_flow, ubyte )		// bitfield
 	last_crc_topleft = 4,
 	vcenter = 8,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( imgui_control_type, ubyte )
+	panel = 1,
+	push_button,
+	check_box,
+enum_end
+
+
+// ----------------------------------------------------------------------------
+
+enum_begin( imgui_control_state, ubyte )
+	up = 1,
+	down,
+	checked,
+	unchecked,
+	max = 4,
+enum_end
