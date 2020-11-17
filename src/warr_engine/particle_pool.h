@@ -23,7 +23,7 @@ struct w_particle_pool
 
 	w_particle_pool( int num_particles );
 
-	_NODISCARD w_particle* get_next_particle();
+	[[nodiscard]] w_particle* get_next_particle();
 	void draw();
 	void update();
 };

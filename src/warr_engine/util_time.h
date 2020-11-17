@@ -31,5 +31,5 @@ struct w_time
 	w_time();
 	void init();
 	void update();
-	_NODISCARD uint64_t get_ticks();
+	[[nodiscard]] uint64_t get_ticks();
 };

@@ -78,7 +78,7 @@ struct w_range
 	w_range( float start, float end );
 	w_range( std::string_view str );
 
-	_NODISCARD float get_value();
+	[[nodiscard]] float get_value();
 };
 
 // ----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ struct w_vec2
 	static const w_vec2 up;
 	static const w_vec2 down;
 
-	_NODISCARD static w_vec2 get_random_unit();
+	[[nodiscard]] static w_vec2 get_random_unit();
 
 	w_vec2();
 	w_vec2( int x, int y );
@@ -168,16 +168,16 @@ struct w_vec2
 	w_vec2( std::string_view str );
 	w_vec2( b2Vec2 b2v2 );
 
-	_NODISCARD w_vec2& normalize();
-	_NODISCARD b2Vec2 as_b2Vec2();
-	_NODISCARD c2v as_c2v();
-	_NODISCARD w_vec2 to_b2d();
-	_NODISCARD w_vec2 from_b2d();
-	_NODISCARD float get_size_squared();
-	_NODISCARD float get_size();
+	[[nodiscard]] w_vec2& normalize();
+	[[nodiscard]] b2Vec2 as_b2Vec2();
+	[[nodiscard]] c2v as_c2v();
+	[[nodiscard]] w_vec2 to_b2d();
+	[[nodiscard]] w_vec2 from_b2d();
+	[[nodiscard]] float get_size_squared();
+	[[nodiscard]] float get_size();
 
-	_NODISCARD bool operator==( w_vec2 v );
-	_NODISCARD bool operator!=( w_vec2 v );
+	[[nodiscard]] bool operator==( w_vec2 v );
+	[[nodiscard]] bool operator!=( w_vec2 v );
 	w_vec2 operator+( const w_vec2 v );
 	w_vec2 operator+=( w_vec2 v );
 	w_vec2 operator-( w_vec2 v );
@@ -187,11 +187,11 @@ struct w_vec2
 	w_vec2 operator/( float v );
 	w_vec2 operator/=( float v );
 
-	_NODISCARD static float get_distance_between( w_vec2 a, w_vec2 b );
+	[[nodiscard]] static float get_distance_between( w_vec2 a, w_vec2 b );
 	static w_vec2 normalize( w_vec2 a );
-	_NODISCARD static w_vec2 dir_from_angle( float angle );
-	_NODISCARD static float angle_from_dir( w_vec2 dir );
-	_NODISCARD static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
+	[[nodiscard]] static w_vec2 dir_from_angle( float angle );
+	[[nodiscard]] static float angle_from_dir( w_vec2 dir );
+	[[nodiscard]] static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
 };
 
 struct w_vec3

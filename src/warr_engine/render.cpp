@@ -64,8 +64,14 @@ w_render* w_render::begin()
 
 w_render* w_render::push_rgb( const w_color& color )
 {
-	rs_color_stack += color;
+	rs_color_stack.emplace_back( color );
 
+	return this;
+}
+
+w_render* w_render::replace_rgb( const w_color& color )
+{
+	rs_color_stack[ rs_color_stack.size() - 1 ] = color;
 	return this;
 }
 
@@ -92,6 +98,21 @@ w_render* w_render::push_rgba( const w_color& color, const float alpha )
 	return this;
 }
 
+w_render* w_render::replace_rgba( const w_color& color )
+{
+	replace_rgb( color );
+	replace_alpha( color.a );
+	return this;
+
+}
+
+w_render* w_render::replace_rgba( const w_color& color, const float alpha )
+{
+	replace_rgb( color );
+	replace_alpha( alpha );
+	return this;
+}
+
 w_render* w_render::pop_rgba()
 {
 	pop_rgb();
@@ -102,8 +123,14 @@ w_render* w_render::pop_rgba()
 
 w_render* w_render::push_alpha( const float alpha )
 {
-	rs_alpha_stack += alpha;
+	rs_alpha_stack.emplace_back( alpha );
 
+	return this;
+}
+
+w_render* w_render::replace_alpha( const float alpha )
+{
+	rs_alpha_stack[ rs_alpha_stack.size() - 1 ] = alpha;
 	return this;
 }
 
@@ -116,29 +143,53 @@ w_render* w_render::pop_alpha()
 
 w_render* w_render::push_scale( const w_vec2& scale )
 {
-	rs_scale_stack += scale;
+	rs_scale_stack.emplace_back( scale );
 
 	return this;
 }
 
 w_render* w_render::push_scale( const float scale )
 {
-	rs_scale_stack += w_vec2( scale, scale );
+	rs_scale_stack.emplace_back( w_vec2( scale, scale ) );
 
+	return this;
+}
+
+w_render* w_render::replace_scale( const w_vec2& scale )
+{
+	rs_scale_stack[ rs_scale_stack.size() - 1 ] = scale;
+	return this;
+}
+
+w_render* w_render::replace_scale( const float scale )
+{
+	replace_scale( w_vec2( scale, scale ) );
 	return this;
 }
 
 w_render* w_render::push_angle( const float angle )
 {
-	rs_angle_stack += angle;
+	rs_angle_stack.emplace_back( angle );
 
+	return this;
+}
+
+w_render* w_render::replace_angle( const float angle )
+{
+	rs_angle_stack[ rs_angle_stack.size() - 1 ] = angle;
 	return this;
 }
 
 w_render* w_render::push_align( const e_align& align )
 {
-	rs_align_stack += align;
+	rs_align_stack.emplace_back( align );
 
+	return this;
+}
+
+w_render* w_render::replace_align( const e_align& align )
+{
+	rs_align_stack[ rs_align_stack.size() - 1 ] = align;
 	return this;
 }
 
@@ -169,6 +220,12 @@ void w_render::end()
 
 void w_render::clear_render_states()
 {
+	rs_color_stack.clear();
+	rs_alpha_stack.clear();
+	rs_scale_stack.clear();
+	rs_angle_stack.clear();
+	rs_align_stack.clear();
+
 	rs_color_stack = { w_color::white };
 	rs_alpha_stack = { 1.0f };
 	rs_scale_stack = { w_vec2( 1.0f, 1.0f ) };
@@ -406,9 +463,9 @@ void w_render::end_frame()
 	// verify that state stacks are back where they started. if not,
 	// it means there's a push/pop mismatch somewhere in the code.
 	assert( rs_color_stack.size() == 1 );
-	assert( rs_alpha_stack.length() == 1 );
-	assert( rs_scale_stack.length() == 1 );
-	assert( rs_align_stack.length() == 1 );
+	assert( rs_alpha_stack.size() == 1 );
+	assert( rs_scale_stack.size() == 1 );
+	assert( rs_align_stack.size() == 1 );
 
 	OPENGL->clear_texture_bind();
 }

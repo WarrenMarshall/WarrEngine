@@ -41,11 +41,11 @@ struct w_render
 	// ----------------------------------------------------------------------------
 	// the current render state stacks
 
-	std::basic_string<w_color> rs_color_stack;	// 3 floats per color
-	std::basic_string<float> rs_alpha_stack;
-	std::basic_string<w_vec2> rs_scale_stack;
-	std::basic_string<float> rs_angle_stack;
-	std::basic_string<e_align> rs_align_stack;
+	std::vector<w_color> rs_color_stack;
+	std::vector<float> rs_alpha_stack;
+	std::vector<w_vec2> rs_scale_stack;
+	std::vector<float> rs_angle_stack;
+	std::vector<e_align> rs_align_stack;
 
 	float zdepth = 0.0f;
 	float zdepth_nudge_accum = 0.0f;
@@ -55,16 +55,24 @@ struct w_render
 	void clear_render_states();
 
 	w_render* push_rgb( const w_color& color );
+	w_render* replace_rgb( const w_color& color );
 	w_render* pop_rgb();
 	w_render* push_rgba( const w_color& color );
+	w_render* replace_rgba( const w_color& color );
 	w_render* push_rgba( const w_color& color, const float alpha );
+	w_render* replace_rgba( const w_color& color, const float alpha );
 	w_render* pop_rgba();
 	w_render* push_alpha( const float alpha );
+	w_render* replace_alpha( const float alpha );
 	w_render* pop_alpha();
 	w_render* push_scale( const w_vec2& scale );
+	w_render* replace_scale( const w_vec2& scale );
 	w_render* push_scale( const float scale );
+	w_render* replace_scale( const float scale );
 	w_render* push_angle( const float angle );
+	w_render* replace_angle( const float angle );
 	w_render* push_align( const e_align& align );
+	w_render* replace_align( const e_align& align );
 	w_render* push_depth( const float depth );
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
 
@@ -98,7 +106,7 @@ struct w_render
 	void begin_frame( float frame_interpolate_pct );
 	void end_frame();
 
-	_NODISCARD float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
+	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 
 	w_render_stats stats;
 };

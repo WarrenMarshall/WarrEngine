@@ -60,6 +60,6 @@ struct w_layer : i_life_cycle
 		return new_entity;
 	}
 
-	_NODISCARD bool is_topmost_layer() const;
-	_NODISCARD w_entity* find_entity_from_tag( const char* tag );
+	[[nodiscard]] bool is_topmost_layer() const;
+	[[nodiscard]] w_entity* find_entity_from_tag( const char* tag );
 };

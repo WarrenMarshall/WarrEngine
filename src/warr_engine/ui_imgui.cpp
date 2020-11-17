@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-int w_imgui_data_provider::get_subtexture( w_imgui_control* control )
+int w_imgui_data_provider::get_subtexture_idx( w_imgui_control* control )
 {
 	return 0;
 }
@@ -331,6 +331,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	// subtexture
 
+#if 0
 	a_subtexture* subtex = control.subtexture[ current_data_provider ? current_data_provider->get_subtexture_idx( &control ) : 0 ];
 
 	if( subtex )
@@ -348,6 +349,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 			->push_depth_nudge()
 			->draw( subtex, subtex_rc );
 	}
+#endif
 
 	// label
 
@@ -355,6 +357,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 	{
 		w_rect label_rc = w_rect( label_pos.x, label_pos.y ) + base_offset;
 
+#if 0
 		if( subtex )
 		{
 			if( control.subtexture_align & align::left )
@@ -362,6 +365,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 				label_rc.x += subtex->get_bounding_rect().w / 2.0f;
 			}
 		}
+#endif
 
 		RENDER
 			->push_depth_nudge()

@@ -9,10 +9,10 @@ struct w_tween
 	w_tween( e_tween_type type, float start, float end, int duration_ms );
 
 	void update();
-	_NODISCARD float get_fval();
-	_NODISCARD int get_ival();
-	_NODISCARD int get_ival( int low, int high );
-	_NODISCARD bool is_negative();
+	[[nodiscard]] float get_fval();
+	[[nodiscard]] int get_ival();
+	[[nodiscard]] int get_ival( int low, int high );
+	[[nodiscard]] bool is_negative();
 
 	void reset_to_start();
 	void randomize();

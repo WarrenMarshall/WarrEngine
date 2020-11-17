@@ -113,9 +113,9 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			p->a_dir = parent_component->parent_entity->angle;
-			p->a_dir += params->r_dir_var.get_value();
-			p->v_dir = w_vec2::dir_from_angle( p->a_dir );
+			auto a_dir = parent_component->parent_entity->angle;
+			a_dir += params->r_dir_var.get_value();
+			p->v_dir = w_vec2::dir_from_angle( a_dir );
 		}
 		break;
 
@@ -130,9 +130,9 @@ void w_particle_emitter::spawn_particle()
 
 		default:
 		{
-			p->a_dir = params->a_dir;
-			p->a_dir += params->r_dir_var.get_value();
-			p->v_dir = w_vec2::dir_from_angle( p->a_dir );
+			auto a_dir = params->a_dir;
+			a_dir += params->r_dir_var.get_value();
+			p->v_dir = w_vec2::dir_from_angle( a_dir );
 		}
 		break;
 	}

@@ -25,7 +25,7 @@ struct w_cache_assets
 	}
 
 	template<typename T>
-	_NODISCARD T* find( const std::string_view tag, bool silent )
+	[[nodiscard]] T* find( const std::string_view tag, bool silent )
 	{
 		auto iter = cache.find( std::string( tag ) );
 

@@ -23,7 +23,7 @@ struct w_window
 		int h = 0;
 	} save_windowed_state;
 
-	_NODISCARD w_rect compute_max_window_size_for_desktop();
+	[[nodiscard]] w_rect compute_max_window_size_for_desktop();
 	bool init();
 	void deinit();
 	void toggle_fullscreen();

@@ -187,23 +187,23 @@ constexpr float zdepth_topmost = 14750.0f;
 // quickly compare 2 floats to see if they are equal within the epsilon tolerance
 // ----------------------------------------------------------------------------
 
-_NODISCARD constexpr bool fequals( float a, float b )
+[[nodiscard]] constexpr bool fequals( float a, float b )
 {
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
 }
 
-_NODISCARD constexpr bool fequals( float a, float b, float tolerance )
+[[nodiscard]] constexpr bool fequals( float a, float b, float tolerance )
 {
 	return ( ( (a) -( b ) ) < tolerance && ( (a) -( b ) ) > -tolerance );
 }
 
-_NODISCARD float snap_to_pixel( float f );
-_NODISCARD int str_to_int( const char* str );
-_NODISCARD int str_to_int( const std::string& str );
-_NODISCARD unsigned str_to_uint( const char* str );
-_NODISCARD unsigned str_to_uint( const std::string& str );
+[[nodiscard]] float snap_to_pixel( float f );
+[[nodiscard]] int str_to_int( const char* str );
+[[nodiscard]] int str_to_int( const std::string& str );
+[[nodiscard]] unsigned str_to_uint( const char* str );
+[[nodiscard]] unsigned str_to_uint( const std::string& str );
 
-_NODISCARD float sin_from_angle( float angle_in_degrees );
+[[nodiscard]] float sin_from_angle( float angle_in_degrees );
 
 // ----------------------------------------------------------------------------
 // box2d constants and helpers

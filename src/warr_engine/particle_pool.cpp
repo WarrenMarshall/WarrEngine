@@ -61,10 +61,9 @@ void w_particle_pool::draw()
 			// there's no harm done here. it's just a faster way of telling the renderer what each
 			// particle wants.
 
-			RENDER->rs_color_stack = { color.r, color.g, color.b };
-			RENDER->rs_alpha_stack = color.a;
-			RENDER->rs_scale_stack = { particle->base_scale * scale, particle->base_scale * scale };
-			RENDER->rs_angle_stack = interp_angle;
+			RENDER->replace_rgba( color );
+			RENDER->replace_scale( particle->base_scale * scale );
+			RENDER->replace_angle( interp_angle );
 
 			RENDER->draw_sprite( particle->tex->get_subtexture(), interp_pos );
 		}

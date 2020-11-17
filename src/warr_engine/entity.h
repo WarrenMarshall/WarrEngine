@@ -20,7 +20,7 @@ struct w_entity : i_life_cycle, i_transform
 	void set_collision( bitflags layer, bitflags collides_with );
 
 	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
-	_NODISCARD virtual bool can_be_deleted();
+	[[nodiscard]] virtual bool can_be_deleted();
 
 	virtual void update_from_physics();
 	virtual void update();
@@ -41,7 +41,7 @@ struct w_entity : i_life_cycle, i_transform
 
 	// returns the first component it finds that matches the type bit mask.
 	template<typename T>
-	_NODISCARD T* get_component( e_component_type type_mask )
+	[[nodiscard]] T* get_component( e_component_type type_mask )
 	{
 		for( auto& ec : components )
 		{
@@ -56,15 +56,15 @@ struct w_entity : i_life_cycle, i_transform
 
 	// fills a vector with all the components it finds that match the type bit mask.
 	template<typename T>
-	_NODISCARD std::basic_string<T*> get_components( e_component_type type_mask )
+	[[nodiscard]] std::vector<T*> get_components( e_component_type type_mask )
 	{
-		std::basic_string<T*> ecs;
+		std::vector<T*> ecs;
 
 		for( auto& ec : this->components )
 		{
 			if( ec->type & type_mask )
 			{
-				ecs += static_cast<T*>( ec.get() );
+				ecs.emplace_back( static_cast<T*>( ec.get() ) );
 			}
 		}
 
@@ -73,7 +73,7 @@ struct w_entity : i_life_cycle, i_transform
 
 	void remove_component( w_entity_component* ec );
 
-	_NODISCARD ec_b2d_body* phys_get_primary_body();
+	[[nodiscard]] ec_b2d_body* phys_get_primary_body();
 	void phys_set_friction( float friction );
 	void phys_set_restitution( float restitution );
 	void phys_set_density( float density );

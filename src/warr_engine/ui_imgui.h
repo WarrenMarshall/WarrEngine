@@ -15,8 +15,8 @@ struct w_imgui_result
 
 	void operator=( e_im_result res );
 
-	_NODISCARD bool was_left_clicked();
-	_NODISCARD bool was_right_clicked();
+	[[nodiscard]] bool was_left_clicked();
+	[[nodiscard]] bool was_right_clicked();
 };
 
 // ----------------------------------------------------------------------------
@@ -93,10 +93,10 @@ private:
 	void _passive();
 	void _set_as_last_control( w_imgui_control control );
 
-	_NODISCARD virtual e_im_result _update_im_state( int id, w_rect rc );
+	[[nodiscard]] virtual e_im_result _update_im_state( int id, w_rect rc );
 	void _draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
-	_NODISCARD w_offset _get_click_offset( bool being_hovered, bool being_clicked );
-	_NODISCARD w_color _get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked );
+	[[nodiscard]] w_offset _get_click_offset( bool being_hovered, bool being_clicked );
+	[[nodiscard]] w_color _get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked );
 
 	int im_automatic_id = 0;
 };
