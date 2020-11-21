@@ -45,7 +45,7 @@ void w_timeline::get_value( float pct_on_timeline, float* value )
 	// figure out which keyframe is the one we are approaching.
 	// this will be the one we are less than or equal to.
 
-	int kf_max = 0;
+	size_t kf_max = 0;
 	for( ; kf_max < keyframes.size()-1; ++kf_max )
 	{
 		if( keyframes[kf_max].pct_marker > pct_on_timeline )
@@ -54,7 +54,7 @@ void w_timeline::get_value( float pct_on_timeline, float* value )
 		}
 	}
 
-	int kf_min = kf_max - 1;
+	size_t kf_min = kf_max - 1;
 
 	// the range of percentages within the min/max keyframes
 	float pct_range = keyframes[kf_max].pct_marker - keyframes[kf_min].pct_marker;
@@ -73,7 +73,7 @@ void w_timeline::get_value( float pct_on_timeline, w_color* value )
 	// figure out which keyframe is the one we are approaching.
 	// this will be the one we are less than or equal to.
 
-	int kf_max = 0;
+	size_t kf_max = 0;
 	for( ; kf_max < keyframes.size()-1; ++kf_max )
 	{
 		if( keyframes[kf_max].pct_marker > pct_on_timeline )
@@ -82,7 +82,7 @@ void w_timeline::get_value( float pct_on_timeline, w_color* value )
 		}
 	}
 
-	int kf_min = kf_max - 1;
+	size_t kf_min = kf_max - 1;
 
 	// the range of percentages within the min/max keyframes
 	float pct_range = keyframes[kf_max].pct_marker - keyframes[kf_min].pct_marker;
@@ -205,24 +205,38 @@ w_color::w_color( int r, int g, int b, int a )
 
 w_color::w_color( std::string& str )
 {
-	str = w_string_util::remove_char( str, '[' );
-	str = w_string_util::remove_char( str, ']' );
+	assert( !str.empty() );
 
-	w_tokenizer tok( str, ',' );
-
-	r = w_parser::float_from_str( *tok.get_next_token() );
-	g = w_parser::float_from_str( *tok.get_next_token() );
-	b = w_parser::float_from_str( *tok.get_next_token() );
-	a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f" ) );
-
-	// if the colors values are greater than 1.0, they are assumed to be
-	// in 0-255 space and are converted back down to 0-1.
-	if( r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f )
+	// strings starting with a '#' or '$' char are hex values
+	if( str[ 0 ] == '#' || str[ 0 ] == '$' )
 	{
-		r *= byte_color_to_float;
-		g *= byte_color_to_float;
-		b *= byte_color_to_float;
-		a *= byte_color_to_float;
+		assert( str.length() == 7 );
+
+		r = str_to_uint( "$" + str.substr( 1, 2 ) ) * byte_color_to_float;
+		g = str_to_uint( "$" + str.substr( 3, 2 ) ) * byte_color_to_float;
+		b = str_to_uint( "$" + str.substr( 5, 2 ) ) * byte_color_to_float;
+	}
+	else
+	{
+		str = w_string_util::remove_char( str, '[' );
+		str = w_string_util::remove_char( str, ']' );
+
+		w_tokenizer tok( str, ',' );
+
+		r = w_parser::float_from_str( *tok.get_next_token() );
+		g = w_parser::float_from_str( *tok.get_next_token() );
+		b = w_parser::float_from_str( *tok.get_next_token() );
+		a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f" ) );
+
+		// if the colors values are greater than 1.0, they are assumed to be
+		// in 0-255 space and are converted back down to 0-1.
+		if( r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f )
+		{
+			r *= byte_color_to_float;
+			g *= byte_color_to_float;
+			b *= byte_color_to_float;
+			a *= byte_color_to_float;
+		}
 	}
 }
 

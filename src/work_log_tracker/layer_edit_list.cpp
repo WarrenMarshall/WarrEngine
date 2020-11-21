@@ -11,7 +11,7 @@ void layer_edit_list::draw()
 	w_layer::draw();
 
 	if( IMGUI->init_push_button()
-		->set_subtexture( a_subtexture::find( "gear_icon" ) )
+		->set_subtexture( imgui_control_state::down, a_subtexture::find( "gear_icon" ) )
 		->set_rect( { v_window_w - 24, 6, 24, 24 } )
 		->finalize()
 		->was_left_clicked() )
