@@ -8,6 +8,5 @@
 	"tag" "background_gradient"
 	"subtexture_tag" "s_background_gradient"
 	"alignment" "align.vertical"
-	#"colors" "color.black, color.dark_grey, color.grey:5, color.dark_grey, color.black"
-	"colors" "$f5ddbc, $fabb64, $fd724e, $a02f40, $5f2f45"
+	"colors" "$f5ddbc, $fabb64, $fd724e, $a02f40, $5f2f45, $a02f40, $fd724e, $fabb64, $f5ddbc"
 }
