@@ -8,5 +8,12 @@
 	"tag" "background_gradient"
 	"subtexture_tag" "s_background_gradient"
 	"alignment" "align.vertical"
-	"colors" "$f5ddbc, $fabb64, $fd724e, $a02f40, $5f2f45, $a02f40, $fd724e, $fabb64, $f5ddbc"
+	"colors" "\
+		$181010,\
+		$84739c,\
+		$f7b58c,\
+		$ffefff,\
+		$f7b58c,\
+		$84739c,\
+		$181010"
 }
