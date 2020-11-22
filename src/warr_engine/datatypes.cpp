@@ -163,7 +163,6 @@ w_rect w_rect::operator*=( float v )
 	return *this;
 }
 
-
 c2AABB w_rect::as_c2AABB()
 {
 	c2AABB bb;
@@ -192,17 +191,18 @@ const w_color w_color::light_green = w_color( 0.5f, 1.0f, 0.5f );
 const w_color w_color::dark_green = w_color( 0.25f, 0.5f, 0.25f );
 const w_color w_color::magenta = w_color( 0.96f, 0.32f, 0.65f );
 
-w_color::w_color( const w_color& other ) = default;
 w_color::w_color( float r, float g, float b, float a )
 	: r( r ), g( g ), b( b ), a( a )
 {
 }
 
+// integer values are assumed to be in the 0-255 range and are converted to float
 w_color::w_color( int r, int g, int b, int a )
 	: w_color( r * byte_color_to_float, g * byte_color_to_float, b * byte_color_to_float, a * byte_color_to_float )
 {
 }
 
+// strings can contain any supported kind of data format (hex, int, or floats)
 w_color::w_color( std::string& str )
 {
 	assert( !str.empty() );
@@ -218,6 +218,7 @@ w_color::w_color( std::string& str )
 	}
 	else
 	{
+		// in case this is a set of values, remove the surrounding braces.
 		str = w_string_util::remove_char( str, '[' );
 		str = w_string_util::remove_char( str, ']' );
 
@@ -230,6 +231,7 @@ w_color::w_color( std::string& str )
 
 		// if the colors values are greater than 1.0, they are assumed to be
 		// in 0-255 space and are converted back down to 0-1.
+
 		if( r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f )
 		{
 			r *= byte_color_to_float;

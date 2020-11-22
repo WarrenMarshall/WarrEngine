@@ -24,7 +24,6 @@ struct w_color
 	static const w_color magenta;
 
 	w_color() = default;
-	w_color( const w_color& other );
 	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( int r, int g, int b, int a = 255 );
 	w_color( std::string& str );

@@ -223,6 +223,7 @@
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="physics_callbacks.cpp" />
     <ClCompile Include="physics_debug_draw.cpp" />
+    <ClCompile Include="ui_container.cpp" />
     <ClCompile Include="ui_imgui.cpp" />
     <ClCompile Include="util_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="ui_container.h" />
     <ClInclude Include="warr_engine.h" />
     <ClInclude Include="input_game_controller.h" />
     <ClInclude Include="file_zip.h" />

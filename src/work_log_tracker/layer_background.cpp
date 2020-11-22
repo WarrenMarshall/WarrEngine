@@ -4,16 +4,16 @@
 layer_background::layer_background()
 {
 	draws_completely_solid = true;
+}
 
+void layer_background::push()
+{
 	auto e = add_entity<w_entity>();
 	e->set_position( { v_window_hw, 0.0f } );
 	e->add_component<ec_emitter>()->init( "background_fire_down" );
 	e->add_component<ec_emitter>()->init( "background_fire_up" )
 		->set_transform( { 0.0f, v_window_h }, 0.0f, 1.0f );
-}
 
-void layer_background::push()
-{
 	background = a_gradient::find( "background_gradient" );
 }
 

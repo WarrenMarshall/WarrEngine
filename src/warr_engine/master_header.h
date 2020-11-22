@@ -79,6 +79,7 @@ extern float ui_canvas_h;
 #include "input.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
+#include "ui_container.h"
 #include "ui_imgui.h"
 #include "ui_mgr.h"
 #include "engine.h"
