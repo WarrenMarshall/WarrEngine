@@ -2,23 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-int w_imgui_data_provider::get_subtexture_idx( w_imgui_control* control )
-{
-	return 0;
-}
-
-// ----------------------------------------------------------------------------
-
-w_offset w_imgui_control::get_base_offset()
-{
-	if( slice_def )
-	{
-		return w_offset( 0, -2 );
-	}
-
-	return w_offset( 0, 0 );
-}
-
 // ----------------------------------------------------------------------------
 
 void w_imgui_result::operator=( e_im_result res )
@@ -43,7 +26,6 @@ void w_imgui::reset()
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
 	last_control = std::nullopt;
-	current_data_provider = nullptr;
 	tagged_controls.clear();
 }
 
@@ -80,63 +62,63 @@ w_imgui* w_imgui::clear_last_control()
 
 w_imgui* w_imgui::init_push_button( const char* tag )
 {
-	control = {};
-	control.type = imgui_control_type::push_button;
-	control.tag = tag;
-	control.is_active = true;
+	current_control = {};
+	current_control.type = imgui_control_type::push_button;
+	current_control.tag = tag;
+	current_control.is_active = true;
 
 	return this;
 }
 
 w_imgui* w_imgui::init_checkbox( const char* tag )
 {
-	control = {};
-	control.type = imgui_control_type::check_box;
-	control.tag = tag;
-	control.is_active = true;
+	current_control = {};
+	current_control.type = imgui_control_type::check_box;
+	current_control.tag = tag;
+	current_control.is_active = true;
 
 	return this;
 }
 
 w_imgui* w_imgui::init_panel( const char* tag )
 {
-	control = {};
-	control.type = imgui_control_type::panel;
-	control.tag = tag;
-	control.is_active = false;
+	current_control = {};
+	current_control.type = imgui_control_type::panel;
+	current_control.tag = tag;
+	current_control.is_active = false;
 
 	return this;
 }
 
 w_imgui* w_imgui::set_label( const std::string& label, e_align align )
 {
-	control.label = label;
-	control.label_align = align;
+	current_control.label = label;
+	current_control.label_align = align;
 	return this;
 }
 
 w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 {
-	control.slice_def = slice_def;
+	current_control.slice_def = slice_def;
 	return this;
 }
 
 w_imgui* w_imgui::set_subtexture( e_imgui_control_state state, a_subtexture* subtexture )
 {
-	control.subtextures[ state ] = subtexture;
+	current_control.subtextures[ state ] = subtexture;
 
 	return this;
 }
 
 w_imgui* w_imgui::set_subtexture_align( e_align align )
 {
-	control.subtexture_align = align;
+	current_control.subtexture_align = align;
 	return this;
 }
 
 w_imgui* w_imgui::set_rect( w_rect rc )
 {
-	control.rc = rc;
+	current_control.rc = rc;
 	calc_client_rect();
 
 	return this;
@@ -149,36 +131,30 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow )
 
 w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 {
-	control.rc = last_control->rc;
+	current_control.rc = last_control->rc;
 
 	if( flow & imgui_flow::right )
 	{
-		control.rc = { flow_right.x, flow_right.y, sz.w, sz.h };
+		current_control.rc = { flow_right.x, flow_right.y, sz.w, sz.h };
 	}
 
 	if( flow & imgui_flow::down )
 	{
-		control.rc = { flow_down.x, flow_down.y, sz.w, sz.h };
+		current_control.rc = { flow_down.x, flow_down.y, sz.w, sz.h };
 	}
 
 	if( flow & imgui_flow::last_crc_topleft )
 	{
-		control.rc = { last_control->crc.x, last_control->crc.y, sz.w, sz.h };
+		current_control.rc = { last_control->crc.x, last_control->crc.y, sz.w, sz.h };
 	}
 
 	if( flow & imgui_flow::vcenter )
 	{
-		control.rc.y = ( last_control->rc.y + ( last_control->rc.h / 2.0f ) ) - ( sz.h / 2.0f );
+		current_control.rc.y = ( last_control->rc.y + ( last_control->rc.h / 2.0f ) ) - ( sz.h / 2.0f );
 	}
 
 	calc_client_rect();
 
-	return this;
-}
-
-w_imgui* w_imgui::set_data_provider( w_imgui_data_provider* data_provider )
-{
-	this->current_data_provider = data_provider;
 	return this;
 }
 
@@ -187,21 +163,21 @@ w_imgui* w_imgui::set_data_provider( w_imgui_data_provider* data_provider )
 
 void w_imgui::calc_client_rect()
 {
-	control.crc = control.rc;
+	current_control.crc = current_control.rc;
 
-	if( control.slice_def )
+	if( current_control.slice_def )
 	{
-		control.crc.x += control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w;
-		control.crc.y += control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h;
+		current_control.crc.x += current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w;
+		current_control.crc.y += current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h;
 
-		control.crc.w -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.w;
-		control.crc.h -= control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h + control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.h;
+		current_control.crc.w -= current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w + current_control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.w;
+		current_control.crc.h -= current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h + current_control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.h;
 	}
 }
 
 w_imgui_result* w_imgui::finalize()
 {
-	if( control.is_active )
+	if( current_control.is_active )
 	{
 		_active();
 	}
@@ -210,12 +186,12 @@ w_imgui_result* w_imgui::finalize()
 		_passive();
 	}
 
-	if( control.tag != nullptr )
+	if( current_control.tag != nullptr )
 	{
-		tagged_controls.insert( std::pair( control.tag, control ) );
+		tagged_controls.insert( std::pair( current_control.tag, current_control ) );
 	}
 
-	_set_as_last_control( control );
+	_set_as_last_control( current_control );
 
 	return &result;
 }
@@ -227,17 +203,17 @@ void w_imgui::_active()
 
 	if( containing_layer_is_topmost )
 	{
-		result = _update_im_state( im_automatic_id, control.rc );
+		result = _update_im_state( im_automatic_id, current_control.rc );
 	}
 
-	_draw( control, hover_id == im_automatic_id, hot_id == im_automatic_id );
+	_draw( current_control, hover_id == im_automatic_id, hot_id == im_automatic_id );
 }
 
 void w_imgui::_passive()
 {
 	result = {};
 
-	_draw( control, false, false );
+	_draw( current_control, false, false );
 }
 
 e_im_result w_imgui::_update_im_state( int id, w_rect rc )
@@ -305,6 +281,12 @@ e_im_result w_imgui::_update_im_state( int id, w_rect rc )
 
 void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
+	w_imgui_data_provider* data_provider = nullptr;
+	if( IMGUI->containing_layer_is_topmost )
+	{
+		data_provider = engine->layer_mgr->get_top()->ui_data_provider;
+	}
+
 	w_vec2 base_offset = control.get_base_offset();
 	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
 
@@ -331,8 +313,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	// subtexture
 
-#if 0
-	a_subtexture* subtex = control.subtexture[ current_data_provider ? current_data_provider->get_subtexture_idx( &control ) : 0 ];
+	a_subtexture* subtex = control.subtextures[ data_provider ? data_provider->get_subtexture_idx( &control ) : 0 ];
 
 	if( subtex )
 	{
@@ -349,7 +330,6 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 			->push_depth_nudge()
 			->draw( subtex, subtex_rc );
 	}
-#endif
 
 	// label
 

@@ -2,11 +2,6 @@
 
 #define UI_PADDING 2.0f
 
-struct w_imgui_data_provider
-{
-	virtual int get_subtexture_idx( w_imgui_control* control );
-};
-
 // ----------------------------------------------------------------------------
 
 struct w_imgui_result
@@ -17,25 +12,6 @@ struct w_imgui_result
 
 	[[nodiscard]] bool was_left_clicked();
 	[[nodiscard]] bool was_right_clicked();
-};
-
-// ----------------------------------------------------------------------------
-
-struct w_imgui_control
-{
-	e_imgui_control_type type;
-	bool is_active = true;
-	const char* tag = nullptr;
-	std::string label;
-	e_align label_align = align::centered;
-	a_9slice_def* slice_def = nullptr;
-	std::array<a_subtexture*, imgui_control_state::max> subtextures;
-	//a_subtexture* subtexture[ 2 ];
-	e_align subtexture_align = align::fill;
-	w_rect rc = { 0,0,0,0 };	// full rectangle
-	w_rect crc = { 0,0,0,0 };	// client rectangle
-
-	w_offset get_base_offset();
 };
 
 // ----------------------------------------------------------------------------
@@ -53,9 +29,7 @@ struct w_imgui
 	// the current control being set up or drawn
 	w_pos flow_right, flow_down;
 	std::optional<w_imgui_control> last_control = std::nullopt;
-	w_imgui_control control = {};
-
-	w_imgui_data_provider* current_data_provider = nullptr;
+	w_imgui_control current_control = {};
 
 	// the results from the last control processed
 	w_imgui_result result = {};

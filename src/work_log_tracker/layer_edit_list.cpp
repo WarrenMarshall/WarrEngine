@@ -1,17 +1,28 @@
 
 #include "app_header.h"
 
+int layer_edit_list_uidp::get_subtexture_idx( w_imgui_control* control )
+{
+	return imgui_control_state::up;
+}
+
+// ----------------------------------------------------------------------------
+
 void layer_edit_list::push()
 {
 	game->load_data();
+	uidp = std::make_unique<layer_edit_list_uidp>();
+	ui_data_provider = uidp.get();
 }
 
 void layer_edit_list::draw()
 {
 	w_layer::draw();
 
+	// ----------------------------------------------------------------------------
+
 	if( IMGUI->init_push_button()
-		->set_subtexture( imgui_control_state::down, a_subtexture::find( "gear_icon" ) )
+		->set_subtexture( imgui_control_state::up, a_subtexture::find( "gear_icon" ) )
 		->set_rect( { v_window_w - 24, 6, 24, 24 } )
 		->finalize()
 		->was_left_clicked() )

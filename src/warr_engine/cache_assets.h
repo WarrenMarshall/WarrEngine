@@ -11,7 +11,7 @@ struct w_cache_assets
 
 		if( iter != cache.end() )
 		{
-			log_msg( "Asset '{}' already cached", tag );
+			log( "Asset '{}' already cached", tag );
 			return nullptr;
 		}
 
@@ -46,10 +46,10 @@ struct w_cache_assets
 		// if we found an asset but it's the wrong type, that's also fatal - name things uniquely!
 		if( dynamic_cast<T*>( asset_ptr ) == nullptr )
 		{
-			log_msg( "Asset WAS found but the type doesn't match the requested type" );
-			log_msg( "	[{}]", tag );
-			log_msg( "	Requested type : \"{}\"", typeid( T ).name() );
-			log_msg( "	Type in cache  : \"{}\"", typeid( *asset_ptr ).name() );
+			log( "Asset WAS found but the type doesn't match the requested type" );
+			log( "	[{}]", tag );
+			log( "	Requested type : \"{}\"", typeid( T ).name() );
+			log( "	Type in cache  : \"{}\"", typeid( *asset_ptr ).name() );
 			assert( false );
 		}
 #endif

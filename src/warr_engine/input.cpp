@@ -58,7 +58,7 @@ void w_input::init()
 	if( XInputGetState( 0, &state ) == ERROR_SUCCESS )
 	{
 		// controller is connected on port 1
-		log_msg( "Using controller : {}", 0 );
+		log( "Using controller : {}", 0 );
 		game_controller = std::make_unique<w_game_controller>( 0 );
 	}
 

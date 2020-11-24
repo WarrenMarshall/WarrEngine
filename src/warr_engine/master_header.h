@@ -5,6 +5,8 @@ extern std::unique_ptr<w_logfile> logfile;
 
 // ----------------------------------------------------------------------------
 // attempts to make logging things easier
+//
+// i.e. log( "a log entry" );
 // ----------------------------------------------------------------------------
 
 template<typename ...Params>
@@ -19,7 +21,7 @@ constexpr void _log_error_( Params&&... params )
 	logfile->error( fmt::format( std::forward<Params>( params )... ) );
 }
 
-#define log_msg( fmt, ... ) _log_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
+#define log( fmt, ... ) _log_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 #define log_warning( fmt, ... ) _log_( "[{}:{}] WARNING : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 #define log_error( fmt, ... ) _log_error_( "[{}:{}] !ERROR! : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 
@@ -79,9 +81,11 @@ extern float ui_canvas_h;
 #include "input.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
-#include "ui_container.h"
+#include "ui_control.h"
+#include "ui_data_provider.h"
 #include "ui_imgui.h"
 #include "ui_mgr.h"
+
 #include "engine.h"
 
 #include "particle.h"
@@ -114,6 +118,7 @@ extern float ui_canvas_h;
 
 // ----------------------------------------------------------------------------
 // globals for all to enjoy - don't judge
+// ----------------------------------------------------------------------------
 
 extern std::unique_ptr<w_engine> engine;
 extern std::unique_ptr<w_game> base_game;

@@ -3,6 +3,7 @@
 struct w_layer : i_life_cycle
 {
 	std::vector<std::unique_ptr<w_entity>> entities;
+	w_imgui_data_provider* ui_data_provider = nullptr;
 
 	// indicates that this layer completely covers and
 	// obscures the layers below it in the stack.

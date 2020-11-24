@@ -29,9 +29,9 @@ void w_opengl::init()
 	glDebugMessageCallback( OpenGL_MessageCallback, nullptr );
 
 	// opengl info
-	log_msg( "OpenGL Version : [{}]", glGetString( GL_VERSION ) );
-	log_msg( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) );
-	log_msg( "Renderer: [{}]", glGetString( GL_RENDERER ) );
+	log( "OpenGL Version : [{}]", glGetString( GL_VERSION ) );
+	log( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) );
+	log( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );

@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="a_9slice_def.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_anim_texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_cursor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_emitter_params.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_font.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_gradient.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_mesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_sound.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_subtexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="asset.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="asset_definition_file.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="asset_definition_file_cache.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="bit_flag_generator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="cache_assets.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="datatypes.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="engine.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="entity_component.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="file_disk.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="file_mem.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="file_zip.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="i_life_cycle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="i_listener.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="i_speaker.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="i_transform.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="impl_header_only.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="input_game_controller.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="keyvalues.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="layer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="layer_esc_menu.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="layer_mgr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="logfile.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="master_header.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="master_pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="mathutil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="opengl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="opengl_framebuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="parseutil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_emitter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_pool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_spawner.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_callbacks.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_debug_draw.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="random.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render_buffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="stringutil.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="tokenizer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="tween.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_data_provider.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_imgui.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_mgr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="util_time.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_control.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="a_9slice_def.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_anim_texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_cursor.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_emitter_params.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_font.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_gradient.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_mesh.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_sound.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="asset_definition_file.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="asset_definition_file_cache.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="bit_flag_generator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cache_assets.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="datatypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="engine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="entity_component.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="file_disk.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="file_mem.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="file_zip.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="i_transform.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="i_speaker.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="i_listener.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="i_life_cycle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="window.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="warr_engine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="util_time.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_mgr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_imgui.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_data_provider.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="tween.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="tokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="stringutil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_buffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="random.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_debug_draw.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_callbacks.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_spawner.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_pool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_emitter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="parseutil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="opengl_framebuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="opengl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="mathutil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="master_pch.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="master_header.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="master_fwd_decl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="master_enum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="logfile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_mgr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_esc_menu.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="keyvalues.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="input_game_controller.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_subtexture.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="a_texture.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="asset.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_control.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{b547a94b-72f1-4643-8d5a-443c4026d348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{690e9b02-c416-473e-a16d-e17157428bb1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

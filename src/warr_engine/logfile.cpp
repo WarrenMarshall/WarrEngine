@@ -32,7 +32,7 @@ void w_logfile::time_stamp( const std::string_view msg )
 	localtime_s( &time_info, &raw_time );
 	strftime( &time_str[ 0 ], 100, "%c", &time_info );
 
-	log_msg( "{} : {}", msg, time_str );
+	log( "{} : {}", msg, time_str );
 }
 
 void w_logfile::msg( const std::string_view msg )

@@ -1,0 +1,6 @@
+X:/WarrenDev/External/pugixml-1.10/out/build/x64-Debug (default)/CMakeFiles/pugixml.dir
+X:/WarrenDev/External/pugixml-1.10/out/build/x64-Debug (default)/CMakeFiles/install/local.dir
+X:/WarrenDev/External/pugixml-1.10/out/build/x64-Debug (default)/CMakeFiles/install.dir
+X:/WarrenDev/External/pugixml-1.10/out/build/x64-Debug (default)/CMakeFiles/edit_cache.dir
+X:/WarrenDev/External/pugixml-1.10/out/build/x64-Debug (default)/CMakeFiles/rebuild_cache.dir
+X:/WarrenDev/External/pugixml-1.10/out/build/x64-Debug (default)/CMakeFiles/list_install_components.dir

@@ -9,11 +9,11 @@
 	"subtexture_tag" "s_background_gradient"
 	"alignment" "align.vertical"
 	"colors" "\
-		$181010,\
-		$84739c,\
-		$f7b58c,\
-		$ffefff,\
-		$f7b58c,\
-		$84739c,\
-		$181010"
+		#181010,\
+		#84739c,\
+		#f7b58c,\
+		#ffefff,\
+		#f7b58c,\
+		#84739c,\
+		#181010"
 }

@@ -77,7 +77,7 @@ bool w_window::init()
 	vidmode = glfwGetVideoMode( primary_monitor );
 
 	const char* monitor_name = glfwGetMonitorName( primary_monitor );
-	log_msg( "Using monitor [{} - {}x{}]", monitor_name, vidmode->width, vidmode->height );
+	log( "Using monitor [{} - {}x{}]", monitor_name, vidmode->width, vidmode->height );
 
 	w_rect window_pos = compute_max_window_size_for_desktop();
 

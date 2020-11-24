@@ -520,7 +520,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						else if( key == "t_alpha" )
 							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
 						else
-							log_msg( "Unknown key read from config block : [{} -> \"{}\"]", tag, key );
+							log( "Unknown key read from config block : [{} -> \"{}\"]", tag, key );
 					}
 
 					// ------------------------------------------------------------------------

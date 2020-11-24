@@ -30,7 +30,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		logfile->time_stamp( "Started" );
 
 		{	// ENGINE
-			log_msg( "Initializing engine" );
+			log( "Initializing engine" );
 			engine->init();
 
 			// if the paths we expect to be on the disk are not there, create them. this mitigates
@@ -47,7 +47,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		{	// WINDOW
 
-			log_msg( "Creating window" );
+			log( "Creating window" );
 			if( !engine->window->init() )
 			{
 				return false;
@@ -56,25 +56,25 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		{	// OPENGL
 
-			log_msg( "Initializing OpenGL" );
+			log( "Initializing OpenGL" );
 			OPENGL->init();
 		}
 
 		{	// RENDERER
 
-			log_msg( "Initializing renderer" );
+			log( "Initializing renderer" );
 			RENDER->init();
 		}
 
 		{	// AUDIO
 		#ifdef USE_BASS_SOUND_LIBRARY
-			log_msg( "Initializing BASS audio" );
+			log( "Initializing BASS audio" );
 			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
 			{
 				log_warning( "BASS : Audio init failed!" );
 			}
 		#else
-			log_msg( "Initializing Cute_Sound audio" );
+			log( "Initializing Cute_Sound audio" );
 			engine->c2_sound_context = cs_make_context(
 				glfwGetWin32Window( engine->window->window ),
 				44100, 8192, 150, NULL );
@@ -93,7 +93,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
 
 			// read asset definitions and cache them
-			log_msg( "Caching asset definitions (*.asset_def)..." );
+			log( "Caching asset definitions (*.asset_def)..." );
 			engine->cache_asset_definition_files( "data/warr_engine" );
 			engine->cache_asset_definition_files( fmt::format( "data/{}", base_game->name ) );
 
@@ -110,12 +110,12 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			// and the INI files loaded, and the asset_def files can use any symbols they please.
 
 			// do the preprocess pass first so the symbols are in memory
-			log_msg( "Precaching resources from definition files..." );
+			log( "Precaching resources from definition files..." );
 			engine->precache_asset_resources( 0, base_game->name );
 
 			// parse INI files after the preprocess pass so they can
 			// use preprocessor symbols
-			log_msg( "Caching configuration (*.ini)..." );
+			log( "Caching configuration (*.ini)..." );
 			engine->parse_config_files( "data/warr_engine" );
 			engine->parse_config_files( fmt::format( "data/{}", base_game->name ) );
 
@@ -144,12 +144,12 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			tok.init( engine->config_vars->find_value_opt( "v_window_res", "320x240" ), 'x' );
 			v_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
 			v_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-			log_msg( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
+			log( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
 
 			tok.init( engine->config_vars->find_value_opt( "ui_canvas_res", "640x480" ), 'x' );
 			ui_canvas_w = w_parser::float_from_str( tok.tokens[ 0 ] );
 			ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-			log_msg( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
+			log( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
@@ -159,7 +159,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
 			bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
-			log_msg( "VSync: {}", vsync ? "true" : "false" );
+			log( "VSync: {}", vsync ? "true" : "false" );
 			glfwSwapInterval( vsync ? 1 : 0 );
 			engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
 			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
@@ -169,7 +169,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		{ // Box2D
 
-			log_msg( "Initializing Box2D" );
+			log( "Initializing Box2D" );
 			engine->new_physics_world();
 		}
 
@@ -178,14 +178,14 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		{ // GAME
 
-			log_msg( "Initializing game" );
+			log( "Initializing game" );
 			base_game->init();
 			base_game->reset_layer_stack_to_main_menu();
 		}
 
 		{ // INPUT
 
-			log_msg( "Initializing input" );
+			log( "Initializing input" );
 			engine->input->init();
 		}
 
@@ -212,8 +212,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 	}
 	catch( std::exception& e )
 	{
-		log_msg( "!! EXCEPTION CAUGHT !!" );
-		log_msg( "\t{}", e.what() );
+		log( "!! EXCEPTION CAUGHT !!" );
+		log( "\t{}", e.what() );
 
 		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );
 	}
@@ -225,26 +225,26 @@ void w_engine::deinit_game_engine()
 {
 	// Clean up
 
-	log_msg( "Shutting down..." );
+	log( "Shutting down..." );
 
 	// this needs to be done before the audio or windowing systems, to give
 	// the layers a chance to clean up first.
-	log_msg( "Shutting down layer manager" );
+	log( "Shutting down layer manager" );
 	engine->layer_mgr->clear_stack();
 
-	log_msg( "Shutting down window" );
+	log( "Shutting down window" );
 	engine->window->deinit();
 
-	log_msg( "Shutting down OpenGL" );
+	log( "Shutting down OpenGL" );
 	for( auto& shader : engine->opengl->shader_pool )
 	{
 		glDeleteProgram( shader.second->id );
 	}
 
-	log_msg( "Shutting down GLFW" );
+	log( "Shutting down GLFW" );
 	glfwTerminate();
 
-	log_msg( "Shutting down Audio" );
+	log( "Shutting down Audio" );
 #ifdef USE_BASS_SOUND_LIBRARY
 	BASS_Free();
 #else
@@ -256,15 +256,15 @@ void w_engine::deinit_game_engine()
 	}
 #endif
 
-	log_msg( "Shutting down input" );
+	log( "Shutting down input" );
 	engine->input->deinit();
 
-	log_msg( "Shutting down engine" );
+	log( "Shutting down engine" );
 	engine->deinit();
 
 	// Do this last so we can log right up until the last moment
 	logfile->time_stamp( "Ended" );
-	log_msg( "Finished!" );
+	log( "Finished!" );
 	logfile->deinit();
 }
 
@@ -656,7 +656,7 @@ void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 		asset_definition_file->precache_asset_resources( pass );
 	}
 
-	log_msg( "Pass: {} / {} assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
+	log( "Pass: {} / {} assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
 }
 
 void w_engine::on_listener_event_received( e_event_id event, void* object )
