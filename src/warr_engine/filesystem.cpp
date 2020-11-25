@@ -22,7 +22,7 @@ bool w_file_system::file_exists_on_disk( const std::string_view filename )
 
 bool w_file_system::file_exists_on_disk_or_in_zip( const std::string_view filename )
 {
-	if( file_exists_on_disk( filename ) )
+	if( w_file_system::file_exists_on_disk( filename ) )
 	{
 		return true;
 	}
@@ -50,7 +50,7 @@ bool w_file_system::file_exists_on_disk_or_in_zip( const std::string_view filena
 
 std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_view filename )
 {
-	create_path_if_not_exist( filename );
+	w_file_system::create_path_if_not_exist( filename );
 
 	if( file_exists_on_disk( filename ) )
 	{
@@ -82,7 +82,7 @@ std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_vi
 
 std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std::string_view filename )
 {
-	create_path_if_not_exist( filename );
+	w_file_system::create_path_if_not_exist( filename );
 
 	if( file_exists_on_disk( filename ) )
 	{
@@ -116,18 +116,21 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 
 void w_file_system::scan_folder_for_ext( std::vector<std::string>* filenames, std::string_view folder, std::string_view extension )
 {
-	create_path_if_not_exist( folder );
+	w_file_system::create_path_if_not_exist( folder );
 
 	// look on disk
 
 	for( auto& iter : std::filesystem::directory_iterator( folder ) )
 	{
-		std::string filename = iter.path().string();
-		std::string ext = iter.path().filename().extension().string();
-
-		if( ext == extension )
+		if( !iter.is_directory() )
 		{
-			filenames->emplace_back( filename );
+			std::string filename = iter.path().string();
+			std::string ext = iter.path().filename().extension().string();
+
+			if( ext == extension )
+			{
+				filenames->emplace_back( filename );
+			}
 		}
 	}
 

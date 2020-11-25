@@ -17,6 +17,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 		type = iter_ad->find_value( "type" );
 		tag = iter_ad->find_value( "tag" );
+
 		filename = "";
 
 		switch( pass_num )
@@ -38,6 +39,31 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 			case 1:
 			{
+				if( type == "palette" )
+				{
+					assert_key_required( iter_ad->does_key_exist( "colors" ) );
+
+					auto asset_ptr = a_palette::find( tag, b_silent( true ) );
+
+					if( !asset_ptr )
+					{
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_palette>(), tag, "" );
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->colors = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals();
+				}
+			}
+			break;
+
+			case 2:
+			{
 				if( type == "texture" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "filename" ) );
@@ -46,7 +72,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_texture::find( tag, b_silent(true) );
+					auto asset_ptr = a_texture::find( tag, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
@@ -110,6 +136,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				else if( type == "gradient" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "alignment" ) );
+					// #todo : this fails if the colors are prefixed with # instead of $'
 					assert_key_required( iter_ad->does_key_exist( "colors" ) );
 
 					auto asset_ptr = a_gradient::find( tag, b_silent( true ) );
@@ -125,80 +152,21 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->colors = {};
 
-					std::string color_list = std::string( iter_ad->find_value( "colors" ) );
-
-					w_tokenizer tok( color_list, ',' );
-
-					std::vector<std::string> wk_values;
-					while( true )
-					{
-						auto val = tok.get_next_token();
-
-						if( !val.has_value() )
-						{
-							break;
-						}
-
-						char ch = ( *val )[ 0 ];
-						if( (ch >= '0' && ch <= '9') || ch == '.' )
-						{
-							std::string composited_color = std::string( *val );
-							composited_color += ",";
-							composited_color += *tok.get_next_token();
-							composited_color += ",";
-							composited_color += *tok.get_next_token();
-
-							wk_values.push_back( composited_color );
-						}
-						else
-						{
-							wk_values.emplace_back( std::string( *val ) );
-						}
-					}
-
-					std::vector<std::string> color_values;
-					int repeat_count;
-					for( auto& color_value : wk_values )
-					{
-						repeat_count = 1;
-
-						size_t pos = color_value.find_last_of( ':' );
-						if( pos != std::string::npos )
-						{
-							pos++;
-							repeat_count = str_to_int( color_value.substr( pos, color_value.length() - pos ) );
-							color_value = color_value.substr( 0, pos - 1 );
-						}
-
-						while( repeat_count > 0 )
-						{
-							color_values.emplace_back( color_value );
-							repeat_count--;
-						}
-					}
+					std::vector<w_color> color_list = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
 
 					// must reverse the order or else the gradient texture
 					// ends up backwards on the screen
-					std::reverse( color_values.begin(), color_values.end() );
+					std::reverse( color_list.begin(), color_list.end() );
 
-					for( const auto& iter : color_values )
+					for( const auto& iter : color_list )
 					{
-						auto val = iter;
-
-						if( engine->is_symbol_in_map( val ) )
-						{
-							val = *engine->find_string_from_symbol( val );
-						}
-
-						auto color = w_color( val );
-						asset_ptr->colors.push_back( color.r );
-						asset_ptr->colors.push_back( color.g );
-						asset_ptr->colors.push_back( color.b );
-						asset_ptr->colors.push_back( 1.0f );
+						asset_ptr->colors.push_back( iter.r );
+						asset_ptr->colors.push_back( iter.g );
+						asset_ptr->colors.push_back( iter.b );
+						asset_ptr->colors.push_back( iter.a );
 					}
 
-					// if the "subtexture_tag" key exists, create a subtexture for this texture
-					// that represents it's entirety.
+					// if the "subtexture_tag" key exists, create a subtexture for this gradient.
 
 					if( iter_ad->does_key_exist( "subtexture_tag" ) )
 					{
@@ -254,7 +222,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					a_subtexture* subtexture = nullptr;
 
 					std::optional<std::string_view> tex_tag = std::nullopt;
-					if( iter_ad->does_key_exist("texture_tag") )
+					if( iter_ad->does_key_exist( "texture_tag" ) )
 					{
 						tex_tag = iter_ad->find_value( "texture_tag" );
 						subtexture = a_texture::find( *tex_tag )->get_subtexture();
@@ -443,111 +411,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-			}
-			break;
-
-			case 2:
-			{
-				if( type == "emitter_params" )
-				{
-					// ------------------------------------------------------------------------
-
-					auto asset_ptr = a_emitter_params::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_emitter_params>(), tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
-
-					for( const auto& [key, value] : iter_ad->kv )
-					{
-						if( key == "tag" || key == "type" )
-						{
-							// these are valid, we just don't need them here
-						}
-						else if( key == "b_needs_warm_up" )
-							asset_ptr->needs_warm_up = bool( value == "true" );
-						else if( key == "b_one_shot" )
-							asset_ptr->is_one_shot = bool( value == "true" );
-						else if( key == "texture_tag" )
-							asset_ptr->tex = a_texture::find( value );
-						else if( key == "spawner_type" )
-						{
-							w_tokenizer tok( value, ',' );
-							std::string spawner_type = std::string( *tok.get_next_token() );
-
-							if( spawner_type == "point" )
-							{
-								// the default spawner type, don't need to do anything for this
-							}
-							else if( spawner_type == "box" )
-							{
-								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
-							}
-							else if( spawner_type == "circle" )
-							{
-								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
-							}
-							else
-							{
-								log_error( "Unknown emitter spawn type : [{}]", spawner_type );
-							}
-
-							asset_ptr->particle_spawner->parse_from_config_string( value );
-						}
-						else if( key == "a_dir" )
-							asset_ptr->a_dir = w_parser::float_from_str( value );
-						else if( key == "r_dir_var" )
-							asset_ptr->r_dir_var = w_parser::range_from_str( value );
-						else if( key == "r_scale_spawn" )
-							asset_ptr->r_scale_spawn = w_parser::range_from_str( value );
-						else if( key == "t_scale" )
-							asset_ptr->t_scale = w_parser::timeline_from_str( timeline_type::float_type, value );
-						else if( key == "s_max_spawn_per_sec" )
-							asset_ptr->s_max_spawn_per_sec = w_parser::float_from_str( value );
-						else if( key == "r_lifespan" )
-							asset_ptr->r_lifespan = w_parser::range_from_str( value );
-						else if( key == "r_velocity_spawn" )
-							asset_ptr->r_velocity_spawn = w_parser::range_from_str( value );
-						else if( key == "t_color" )
-							asset_ptr->t_color = w_parser::timeline_from_str( timeline_type::color_type, value );
-						else if( key == "r_spin_spawn" )
-							asset_ptr->r_spin_spawn = w_parser::range_from_str( value );
-						else if( key == "r_spin_per_sec" )
-							asset_ptr->r_spin_per_sec = w_parser::range_from_str( value );
-						else if( key == "t_alpha" )
-							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
-						else
-							log( "Unknown key read from config block : [{} -> \"{}\"]", tag, key );
-					}
-
-					// ------------------------------------------------------------------------
-
-					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals();
-				}
-				else if( type == "font" )
-				{
-					assert_key_required( iter_ad->does_key_exist( "font_def_tag" ) );
-
-					auto asset_ptr = a_font::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_font>(), tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
-
-					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def_tag") );
-
-					// ------------------------------------------------------------------------
-
-					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals();
-				}
 				else if( type == "cursor" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "subtexture_tag" ) );
@@ -561,8 +424,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture_tag") );
-					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot") );
+					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture_tag" ) );
+					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -588,7 +451,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					const std::string_view frames = iter_ad->find_value( "frame_subtexture_tags");
+					const std::string_view frames = iter_ad->find_value( "frame_subtexture_tags" );
 
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
@@ -611,10 +474,145 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect") );
+						w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect" ) );
 						asset_ptr = engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture_tag" ), rc ),
 															  tag, "" );
 					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals();
+				}
+			}
+			break;
+
+			case 3:
+			{
+				if( type == "emitter_params" )
+				{
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = a_emitter_params::find( tag, b_silent( true ) );
+
+					if( !asset_ptr )
+					{
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_emitter_params>(), tag, "" );
+					}
+
+					// ------------------------------------------------------------------------
+
+					for( const auto& [key, value] : iter_ad->kv )
+					{
+						if( key == "tag" || key == "type" )
+						{
+							// these are valid, we just don't need them here
+						}
+						else if( key == "b_needs_warm_up" )
+						{
+							asset_ptr->needs_warm_up = bool( value == "true" );
+						}
+						else if( key == "b_one_shot" )
+						{
+							asset_ptr->is_one_shot = bool( value == "true" );
+						}
+						else if( key == "texture_tag" )
+						{
+							asset_ptr->tex = a_texture::find( value );
+						}
+						else if( key == "spawner_type" )
+						{
+							w_tokenizer tok( value, ',' );
+							std::string spawner_type = std::string( *tok.get_next_token() );
+
+							if( spawner_type == "point" )
+							{
+								// the default spawner type, don't need to do anything for this
+							}
+							else if( spawner_type == "box" )
+							{
+								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
+							}
+							else if( spawner_type == "circle" )
+							{
+								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
+							}
+							else
+							{
+								log_error( "Unknown emitter spawn type : [{}]", spawner_type );
+							}
+
+							asset_ptr->particle_spawner->parse_from_config_string( value );
+						}
+						else if( key == "a_dir" )
+						{
+							asset_ptr->a_dir = w_parser::float_from_str( value );
+						}
+						else if( key == "r_dir_var" )
+						{
+							asset_ptr->r_dir_var = w_parser::range_from_str( value );
+						}
+						else if( key == "r_scale_spawn" )
+						{
+							asset_ptr->r_scale_spawn = w_parser::range_from_str( value );
+						}
+						else if( key == "t_scale" )
+						{
+							asset_ptr->t_scale = w_parser::timeline_from_str( timeline_type::float_type, value );
+						}
+						else if( key == "s_max_spawn_per_sec" )
+						{
+							asset_ptr->s_max_spawn_per_sec = w_parser::float_from_str( value );
+						}
+						else if( key == "r_lifespan" )
+						{
+							asset_ptr->r_lifespan = w_parser::range_from_str( value );
+						}
+						else if( key == "r_velocity_spawn" )
+						{
+							asset_ptr->r_velocity_spawn = w_parser::range_from_str( value );
+						}
+						else if( key == "t_color" )
+						{
+							asset_ptr->t_color = w_parser::timeline_from_str( timeline_type::color_type, value );
+						}
+						else if( key == "r_spin_spawn" )
+						{
+							asset_ptr->r_spin_spawn = w_parser::range_from_str( value );
+						}
+						else if( key == "r_spin_per_sec" )
+						{
+							asset_ptr->r_spin_per_sec = w_parser::range_from_str( value );
+						}
+						else if( key == "t_alpha" )
+						{
+							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
+						}
+						else
+						{
+							log_warning( "Unknown key read from config block : [{} -> \"{}\"]", tag, key );
+						}
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals();
+				}
+				else if( type == "font" )	// requires : font_def
+				{
+					assert_key_required( iter_ad->does_key_exist( "font_def_tag" ) );
+
+					auto asset_ptr = a_font::find( tag, b_silent( true ) );
+
+					if( !asset_ptr )
+					{
+						asset_ptr = engine->asset_cache->add( std::make_unique<a_font>(), tag, "" );
+					}
+
+					// ------------------------------------------------------------------------
+
+					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def_tag" ) );
 
 					// ------------------------------------------------------------------------
 

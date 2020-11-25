@@ -207,8 +207,8 @@ w_color::w_color( std::string& str )
 {
 	assert( !str.empty() );
 
-	// strings starting with a '#' or '$' char are hex values
-	if( str[ 0 ] == '#' || str[ 0 ] == '$' )
+	// strings starting with a '$' char are hex values
+	if( str[ 0 ] == '$' )
 	{
 		assert( str.length() == 7 );
 

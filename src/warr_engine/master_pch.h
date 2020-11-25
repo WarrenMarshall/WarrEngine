@@ -148,7 +148,7 @@ using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
 #include "logfile.h"
 
 #include "mathutil.h"
-#include "parseutil.h"
+#include "parser.h"
 #include "tokenizer.h"
 
 // ----------------------------------------------------------------------------

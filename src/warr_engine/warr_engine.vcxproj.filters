@@ -130,9 +130,6 @@
     <ClCompile Include="opengl_framebuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="parseutil.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="particle.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -194,6 +191,13 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="ui_control.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_palette.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render_stats.cpp" />
+    <ClCompile Include="parser.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -342,9 +346,6 @@
     <ClInclude Include="particle.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="parseutil.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="opengl_framebuffer.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -397,6 +398,13 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="ui_control.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_palette.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_stats.h" />
+    <ClInclude Include="parser.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

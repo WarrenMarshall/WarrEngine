@@ -171,3 +171,74 @@ std::unique_ptr<w_timeline> w_parser::timeline_from_str( e_timeline_type type, c
 
 	return timeline;
 }
+
+std::vector<w_color> w_parser::color_list_from_str( const std::string_view str )
+{
+	std::vector<w_color> color_list;
+
+	w_tokenizer tok( str, ',' );
+
+	std::vector<std::string> wk_values;
+	while( true )
+	{
+		auto val = tok.get_next_token();
+
+		if( !val.has_value() )
+		{
+			break;
+		}
+
+		char ch = ( *val )[ 0 ];
+		if( ( ch >= '0' && ch <= '9' ) || ch == '.' )
+		{
+			std::string composited_color = std::string( *val );
+			composited_color += ",";
+			composited_color += *tok.get_next_token();
+			composited_color += ",";
+			composited_color += *tok.get_next_token();
+
+			wk_values.emplace_back( composited_color );
+		}
+		else
+		{
+			wk_values.emplace_back( std::string( *val ) );
+		}
+	}
+
+	// repeating entries
+
+	std::vector<std::string> color_values;
+	int repeat_count;
+	for( auto& color_value : wk_values )
+	{
+		repeat_count = 1;
+
+		size_t pos = color_value.find_last_of( ':' );
+		if( pos != std::string::npos )
+		{
+			pos++;
+			repeat_count = str_to_int( color_value.substr( pos, color_value.length() - pos ) );
+			color_value = color_value.substr( 0, pos - 1 );
+		}
+
+		while( repeat_count > 0 )
+		{
+			color_values.emplace_back( color_value );
+			repeat_count--;
+		}
+	}
+
+	for( const auto& iter : color_values )
+	{
+		auto val = iter;
+
+		if( engine->is_symbol_in_map( val ) )
+		{
+			val = *engine->find_string_from_symbol( val );
+		}
+
+		color_list.emplace_back( w_color( val ) );
+	}
+
+	return color_list;
+}

@@ -1,26 +1,5 @@
 #pragma once
 
-struct w_render_stats
-{
-	w_render_stats();
-
-	std::unique_ptr<w_timer> stat_timer = nullptr;
-
-	w_accum_value frame_count;
-
-	w_accum_value render_buffers;
-	w_accum_value render_vertices;
-	w_accum_value render_indices;
-	w_accum_value frame_times_ms;
-	w_accum_value num_entities;
-
-	std::string stat_custom_string;
-
-	void update();
-};
-
-// ----------------------------------------------------------------------------
-
 struct w_render
 {
 	/*
@@ -37,6 +16,10 @@ struct w_render
 	std::unique_ptr<w_render_buffer> master_render_buffer = nullptr;
 	void draw_master_buffer();
 	void maybe_draw_master_buffer( a_texture* texture );
+
+	// palette support
+	a_palette* current_palette = nullptr;
+	w_color pal_color_from_idx( int idx );
 
 	// ----------------------------------------------------------------------------
 	// the current render state stacks

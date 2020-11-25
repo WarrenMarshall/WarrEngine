@@ -183,6 +183,7 @@
     <ClCompile Include="a_font.cpp" />
     <ClCompile Include="a_gradient.cpp" />
     <ClCompile Include="a_mesh.cpp" />
+    <ClCompile Include="a_palette.cpp" />
     <ClCompile Include="a_sound.cpp" />
     <ClCompile Include="a_subtexture.cpp" />
     <ClCompile Include="a_texture.cpp" />
@@ -217,12 +218,13 @@
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="opengl_framebuffer.cpp" />
-    <ClCompile Include="parseutil.cpp" />
+    <ClCompile Include="parser.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="physics_callbacks.cpp" />
     <ClCompile Include="physics_debug_draw.cpp" />
+    <ClCompile Include="render_stats.cpp" />
     <ClCompile Include="ui_control.cpp" />
     <ClCompile Include="ui_data_provider.cpp" />
     <ClCompile Include="ui_imgui.cpp" />
@@ -254,6 +256,7 @@
     <ClInclude Include="a_font.h" />
     <ClInclude Include="a_gradient.h" />
     <ClInclude Include="a_mesh.h" />
+    <ClInclude Include="a_palette.h" />
     <ClInclude Include="a_sound.h" />
     <ClInclude Include="a_subtexture.h" />
     <ClInclude Include="a_texture.h" />
@@ -265,6 +268,7 @@
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="render_stats.h" />
     <ClInclude Include="ui_control.h" />
     <ClInclude Include="ui_data_provider.h" />
     <ClInclude Include="warr_engine.h" />
@@ -286,7 +290,7 @@
     <ClInclude Include="matrix.h" />
     <ClInclude Include="opengl.h" />
     <ClInclude Include="opengl_framebuffer.h" />
-    <ClInclude Include="parseutil.h" />
+    <ClInclude Include="parser.h" />
     <ClInclude Include="particle_pool.h" />
     <ClInclude Include="particle_spawner.h" />
     <ClInclude Include="physics.h" />

@@ -2,34 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_render_stats::w_render_stats()
-{
-	stat_timer = std::make_unique<w_timer>( 1000 );
-}
-
-void w_render_stats::update()
-{
-	if( stat_timer->is_elapsed() )
-	{
-		stat_timer->reset();
-
-		frame_count.update_value();
-		auto steps = static_cast<int>( frame_count.value );
-
-		frame_times_ms.update_value( steps );
-		render_buffers.update_value( steps );
-		render_vertices.update_value( steps );
-		render_indices.update_value( steps );
-		num_entities.update_value( steps );
-	}
-	else
-	{
-		stat_timer->update();
-	}
-}
-
-// ----------------------------------------------------------------------------
-
 void w_render::init()
 {
 	master_render_buffer = std::make_unique<w_render_buffer>();
@@ -250,6 +222,20 @@ void w_render::maybe_draw_master_buffer( a_texture* texture )
 		draw_master_buffer();
 		current_texture = texture;
 	}
+}
+
+w_color w_render::pal_color_from_idx( int idx )
+{
+	// if there's no palette specifically in use, return a default color
+	if( !current_palette )
+	{
+		return w_color::white;
+	}
+
+	// validate we are in range
+	assert( idx < current_palette->colors.size() );
+
+	return current_palette->colors[ idx ];
 }
 
 w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )

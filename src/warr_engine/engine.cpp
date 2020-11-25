@@ -37,8 +37,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			// problems later on if the app wants to, say, save a file and would have problems
 			// if the data folder wasn't there.
 
-			engine->fs->create_path_if_not_exist( "data/warr_engine" );
-			engine->fs->create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
+			w_file_system::create_path_if_not_exist( "data/warr_engine" );
+			w_file_system::create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
 		}
 
 		{	// COMMAND LINE
@@ -128,7 +128,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			}
 
 			// precache the rest of the assets in the remaining passes
-			constexpr int num_asset_def_passes = 3;
+			constexpr int num_asset_def_passes = 4;
 			for( auto pass = 1; pass < num_asset_def_passes; ++pass )
 			{
 				engine->precache_asset_resources( pass, base_game->name );

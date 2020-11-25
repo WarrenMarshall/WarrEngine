@@ -45,6 +45,8 @@ extern float ui_canvas_h;
 
 #define ui_canvas_scale (v_window_w / ui_canvas_w)
 
+#include "filesystem.h"
+
 #include "bit_flag_generator.h"
 #include "matrix.h"
 #include "opengl_framebuffer.h"
@@ -67,6 +69,7 @@ extern float ui_canvas_h;
 #undef max	// fixes dumb compile problem
 #include "datatypes.h"
 #include "asset.h"
+#include "a_palette.h"
 #include "a_texture.h"
 #include "a_subtexture.h"
 #include "a_gradient.h"
@@ -93,6 +96,7 @@ extern float ui_canvas_h;
 #include "particle_emitter.h"
 #include "particle_pool.h"
 
+#include "render_stats.h"
 #include "render.h"
 #include "window.h"
 #include "cache_assets.h"
@@ -109,7 +113,6 @@ extern float ui_canvas_h;
 
 #include "layer_esc_menu.h"
 
-#include "filesystem.h"
 #include "file_mem.h"
 #include "file_zip.h"
 #include "file_disk.h"
