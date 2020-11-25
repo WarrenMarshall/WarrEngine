@@ -63,25 +63,27 @@ void platformer_layer::draw_ui_debug()
 		->end();
 }
 
-bool platformer_layer::handle_input_event( const w_input_event* evt )
+bool platformer_layer::event_input_pressed( const w_input_event* evt )
 {
-	if( evt->event_id == event_id::input_pressed )
+	switch( evt->input_id )
 	{
-		if( evt->input_id == input_id::key_1 )
+		case input_id::key_1:
 		{
 			game->player->set_position_deep( engine->input->mouse_vwindow_pos, true );
 			return true;
 		}
+		break;
 
-		if( evt->input_id == input_id::key_n )
+		case input_id::key_n:
 		{
 			game->spawn_coins();
 			return true;
 		}
+		break;
 
-		plat_physics->handle_input_event( evt );
 	}
-	return true;
+
+	return plat_physics->event_input_pressed( evt );
 }
 
 w_camera* platformer_layer::get_camera()

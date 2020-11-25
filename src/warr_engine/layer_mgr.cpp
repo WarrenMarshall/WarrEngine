@@ -161,9 +161,44 @@ void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 
 	for( const auto& iter : layer_stack )
 	{
-		if( iter->handle_input_event( evt ) )
+		switch( evt->event_id )
 		{
+			case event_id::input_motion:
+			{
+				if( iter->event_input_motion( evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_pressed:
+			{
+				if( iter->event_input_pressed( evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_held:
+			{
+				if( iter->event_input_held( evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_released:
+			{
+				if( iter->event_input_released( evt ) )
+				{
+					break;
+				}
+			}
 			break;
 		}
 	}
+
 }

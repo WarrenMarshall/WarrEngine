@@ -110,21 +110,21 @@ void platformer_layer::draw()
 	RENDER->end();
 }
 
-bool platformer_layer::handle_input_event( const w_input_event* evt )
+bool platformer_layer::event_input_pressed( const w_input_event* evt )
 {
-	if( evt->event_id == event_id::input_pressed )
+	if( evt->input_id == input_id::key_1 )
 	{
-		if( evt->input_id == input_id::key_1 )
-		{
-			player->set_position_deep( engine->input->mouse_vwindow_pos, true );
-		}
-
-		if( evt->input_id == input_id::key_n )
-		{
-			spawn_coins();
-		}
+		player->set_position_deep( engine->input->mouse_vwindow_pos, true );
+		return true;
 	}
-	return true;
+
+	if( evt->input_id == input_id::key_n )
+	{
+		spawn_coins();
+		return true;
+	}
+
+	return false;
 }
 
 void platformer_layer::spawn_coins()

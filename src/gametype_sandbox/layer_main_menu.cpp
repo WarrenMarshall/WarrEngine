@@ -71,17 +71,33 @@ void layer_main_menu::becoming_top_layer()
 	engine->window->set_mouse_mode( mouse_mode::os );
 }
 
-bool layer_main_menu::handle_input_event( const w_input_event* evt )
+bool layer_main_menu::event_input_pressed( const w_input_event* evt )
 {
-	if( evt->event_id == event_id::input_pressed )
+	switch( evt->input_id )
 	{
-		if( evt->input_id == input_id::key_t )
+		case input_id::key_b:
+		{
+			game->new_game();
+			engine->layer_mgr->push<breakout_layer>();
+		}
+		break;
+
+		case input_id::key_p:
+		{
+			game->new_game();
+			engine->layer_mgr->push<platformer_layer>();
+		}
+		break;
+
+		case input_id::key_t:
 		{
 			game->new_game();
 			engine->layer_mgr->push<twinstick_layer>();
-			return true;
 		}
+
+		default:
+			return false;
 	}
 
-	return false;
+	return true;
 }

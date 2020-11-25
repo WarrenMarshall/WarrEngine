@@ -46,7 +46,10 @@ struct w_layer : i_life_cycle
 	virtual void draw_ui();
 	virtual void draw_ui_debug();
 
-	virtual bool handle_input_event( const w_input_event* evt );
+	virtual bool event_input_motion( const w_input_event* evt );
+	virtual bool event_input_pressed( const w_input_event* evt );
+	virtual bool event_input_held( const w_input_event* evt );
+	virtual bool event_input_released( const w_input_event* evt );
 
 	virtual w_camera* get_camera();
 

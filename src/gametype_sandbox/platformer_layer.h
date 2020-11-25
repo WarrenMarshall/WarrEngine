@@ -37,7 +37,7 @@ struct platformer_layer : w_layer
 	virtual void pop() override;
 	virtual void update() override;
 	virtual void draw() override;
-	virtual bool handle_input_event( const w_input_event* evt );
+	virtual bool event_input_pressed( const w_input_event* evt ) override;
 
 	void spawn_coins();
 };

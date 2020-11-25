@@ -39,5 +39,9 @@ struct w_physics
 	[[nodiscard]] virtual bool point_check_all( w_vec2 pos, bitflags layer_mask, w_query_all* hit_result );
 
 	virtual void update();
-	virtual bool handle_input_event( const w_input_event* evt );
+
+	virtual bool event_input_motion( const w_input_event* evt );
+	virtual bool event_input_pressed( const w_input_event* evt );
+	virtual bool event_input_held( const w_input_event* evt );
+	virtual bool event_input_released( const w_input_event* evt );
 };

@@ -14,5 +14,6 @@ struct breakout_layer : w_layer
 	virtual void draw() override;
 
 	void spawn_ball();
-	virtual bool handle_input_event( const w_input_event* evt ) override;
+	virtual bool event_input_motion( const w_input_event* evt ) override;
+	virtual bool event_input_pressed( const w_input_event* evt ) override;
 };

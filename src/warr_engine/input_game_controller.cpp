@@ -111,7 +111,7 @@ void w_game_controller::play_rumble( e_rumble_effect effect )
 
 		case rumble_effect::none:
 		{
-			intensity = 0.0f;
+			intensity = 0;
 			duration_ms = 100;
 		}
 		break;

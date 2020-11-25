@@ -183,7 +183,22 @@ void w_physics::update()
 
 }
 
-bool w_physics::handle_input_event( const w_input_event* evt )
+bool w_physics::event_input_motion( const w_input_event* evt )
+{
+	return false;
+}
+
+bool w_physics::event_input_pressed( const w_input_event* evt )
+{
+	return false;
+}
+
+bool w_physics::event_input_held( const w_input_event* evt )
+{
+	return false;
+}
+
+bool w_physics::event_input_released( const w_input_event* evt )
 {
 	return false;
 }

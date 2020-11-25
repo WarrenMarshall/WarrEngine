@@ -23,5 +23,5 @@ struct w_platformer_physics : w_contact_listener, w_physics
 	void handle_user_input();
 
 	virtual void update() override;
-	virtual bool handle_input_event( const w_input_event* evt ) override;
+	virtual bool event_input_pressed( const w_input_event* evt ) override;
 };

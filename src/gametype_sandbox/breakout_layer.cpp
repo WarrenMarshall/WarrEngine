@@ -106,25 +106,26 @@ void breakout_layer::spawn_ball()
 	e->set_position_deep( { v_window_hw, v_window_hh }, false );
 }
 
-bool breakout_layer::handle_input_event( const w_input_event* evt )
+bool breakout_layer::event_input_motion( const w_input_event* evt )
 {
-	if( evt->event_id == event_id::input_motion )
+	if( evt->input_id == input_id::mouse )
 	{
-		if( evt->input_id == input_id::mouse )
-		{
-			w_vec2 new_pos = { player->pos.x + evt->mouse.delta.x, v_window_h - 24.0f };
-			new_pos.x = std::clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
-			player->set_position_deep( new_pos, false );
-		}
+		w_vec2 new_pos = { player->pos.x + evt->mouse.delta.x, v_window_h - 24.0f };
+		new_pos.x = std::clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
+		player->set_position_deep( new_pos, false );
+		return true;
 	}
 
-	if( evt->event_id == event_id::input_pressed )
+	return false;
+}
+
+bool breakout_layer::event_input_pressed( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::key_n )
 	{
-		if( evt->input_id == input_id::key_n )
-		{
-			spawn_ball();
-		}
+		spawn_ball();
+		return true;
 	}
 
-	return true;
+	return false;
 }
