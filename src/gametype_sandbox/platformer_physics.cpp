@@ -17,7 +17,7 @@ constexpr float player_air_control_damping = 0.35f;
 w_platformer_physics::w_platformer_physics()
 	: w_contact_listener()
 {
-	timer_jump_limiter = std::make_unique<w_timer>( w_platformer_physics::player_jump_interval );
+	timer_jump_limiter = std::make_unique<w_timer>( player_jump_interval );
 }
 
 void w_platformer_physics::BeginContact( b2Contact* contact )
@@ -81,13 +81,13 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 	{
 		if( in_air() )
 		{
-			left_stick.x *= w_platformer_physics::player_air_control_damping;
+			left_stick.x *= player_air_control_damping;
 		}
 
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 		b2Vec2 current = ec->body->GetLinearVelocity();
-		current.x += ( w_platformer_physics::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
-		float desired = std::clamp ( current.x, -w_platformer_physics::player_move_force_max, w_platformer_physics::player_move_force_max );
+		current.x += ( player_move_force * left_stick.x ) * w_time::FTS_step_value_s;
+		float desired = std::clamp( current.x, -player_move_force_max, player_move_force_max );
 
 		ec->body->SetLinearVelocity( { desired, current.y } );
 	}
@@ -103,13 +103,13 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 
 			float dir_modifier = 1.0f;
-			if( left_stick.y > w_platformer_physics::player_drop_down_normal_tolerance )
+			if( left_stick.y > player_drop_down_normal_tolerance )
 			{
 				if( can_drop_down() )
 				{
 					dir_modifier = -0.25f;
 					auto pos = ec->body->GetPosition();
-					ec->body->SetTransform( { pos.x, pos.y + to_b2d( w_platformer_physics::player_base_radius * 1.5f ) }, 0.0f );
+					ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_base_radius * 1.5f ) }, 0.0f );
 				}
 				else
 				{
@@ -128,7 +128,7 @@ void w_platformer_physics::handle_user_input( w_entity* player )
 			}
 
 			b2Vec2 current = ec->body->GetLinearVelocity();
-			ec->body->SetLinearVelocity( { current.x, ( -w_platformer_physics::player_jump_force ) * dir_modifier } );
+			ec->body->SetLinearVelocity( { current.x, ( -player_jump_force ) * dir_modifier } );
 		}
 	}
 }

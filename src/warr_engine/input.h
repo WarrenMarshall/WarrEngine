@@ -59,4 +59,5 @@ struct w_input : i_speaker
 
 	void update_button_state( e_input_id input_id, int glfw_state );
 	void play_rumble( e_rumble_effect effect );
+	void refresh_controller();
 };

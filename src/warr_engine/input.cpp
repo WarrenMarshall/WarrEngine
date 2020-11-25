@@ -46,21 +46,28 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	}
 }
 
+void joystick_callback( int jid, int event )
+{
+	if( event == GLFW_CONNECTED )
+	{
+		//log( "The joystick was connected" );
+	}
+	else if( event == GLFW_DISCONNECTED )
+	{
+		//log( "The joystick was disconnected" );
+	}
+
+	engine->input->refresh_controller();
+}
+
 // ----------------------------------------------------------------------------
 
 void w_input::init()
 {
-	// look for an attached xbox controller
+	refresh_controller();
 
-	XINPUT_STATE state;
-	ZeroMemory(&state, sizeof(XINPUT_STATE));
-
-	if( XInputGetState( 0, &state ) == ERROR_SUCCESS )
-	{
-		// controller is connected on port 1
-		log( "Using controller : {}", 0 );
-		game_controller = std::make_unique<w_game_controller>( 0 );
-	}
+	// set up callback so we know when controllers are connected/disconnected
+	glfwSetJoystickCallback( joystick_callback );
 
 	// callbacks so we can collect user input
 	glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
@@ -319,6 +326,28 @@ void w_input::play_rumble( e_rumble_effect effect )
 	}
 
 	game_controller->play_rumble( effect );
+}
+
+void w_input::refresh_controller()
+{
+	if( game_controller )
+	{
+		game_controller->play_rumble( rumble_effect::none );
+	}
+
+	game_controller = nullptr;
+
+	// look for an attached xbox controller
+
+	XINPUT_STATE state;
+	ZeroMemory( &state, sizeof( XINPUT_STATE ) );
+
+	if( XInputGetState( 0, &state ) == ERROR_SUCCESS )
+	{
+		// controller is connected on port 1
+		log( "Using controller : {}", 0 );
+		game_controller = std::make_unique<w_game_controller>( 0 );
+	}
 }
 
 bool w_input::is_button_down( e_input_id input_id )

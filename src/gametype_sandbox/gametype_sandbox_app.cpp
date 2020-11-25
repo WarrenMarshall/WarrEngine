@@ -1,7 +1,7 @@
 
 #include "app_header.h"
 
-gametype_sandbox_app::gametype_sandbox_app( std::string_view name )
+gametype_sandbox_app::gametype_sandbox_app( const char* name )
 	: w_game( name )
 {
 }
@@ -10,13 +10,13 @@ void gametype_sandbox_app::init()
 {
 	w_game::init();
 
-	snd_plat_jump = engine->get_asset<a_sound>( "snd_plat_jump" );
-	snd_plat_coin = engine->get_asset<a_sound>( "snd_plat_coin" );
-	snd_plat_drop_down = engine->get_asset<a_sound>( "snd_plat_drop_down" );
+	snd_plat_jump = a_sound::find( "snd_plat_jump" );
+	snd_plat_coin = a_sound::find( "snd_plat_coin" );
+	snd_plat_drop_down = a_sound::find( "snd_plat_drop_down" );
 
-	snd_pong_ball_hit_world = engine->get_asset<a_sound>( "snd_pong_ball_hit_world" );
-	snd_pong_ball_hit_ball = engine->get_asset<a_sound>( "snd_pong_ball_hit_ball" );
-	snd_pong_ball_hit_paddle = engine->get_asset<a_sound>( "snd_pong_ball_hit_paddle" );
+	snd_pong_ball_hit_world = a_sound::find( "snd_pong_ball_hit_world" );
+	snd_pong_ball_hit_ball = a_sound::find( "snd_pong_ball_hit_ball" );
+	snd_pong_ball_hit_paddle = a_sound::find( "snd_pong_ball_hit_paddle" );
 }
 
 void gametype_sandbox_app::new_game()

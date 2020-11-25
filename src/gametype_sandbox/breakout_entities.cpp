@@ -21,7 +21,7 @@ void e_breakout_ball::reset_velocity()
 	ec_b2d_body* ecb = get_component< ec_b2d_body>( component_type::b2d_body );
 
 	dir.normalize();
-	ecb->body->SetLinearVelocity( dir * speed );
+	ecb->body->SetLinearVelocity( ( dir * speed ).as_b2Vec2() );
 }
 
 void e_breakout_ball::update()
@@ -30,7 +30,7 @@ void e_breakout_ball::update()
 	w_vec2 vel = w_vec2( ecb->body->GetLinearVelocity() );
 	vel.normalize();
 
-	ecb->body->SetLinearVelocity( vel * speed );
+	ecb->body->SetLinearVelocity( ( vel * speed ).as_b2Vec2() );
 }
 
 // ----------------------------------------------------------------------------

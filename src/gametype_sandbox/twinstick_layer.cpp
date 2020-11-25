@@ -4,7 +4,7 @@
 twinstick_layer::twinstick_layer()
 {
 	draws_completely_solid = true;
-	music = engine->get_asset<a_sound>( "twinstick_music_track" );
+	music = a_sound::find( "twinstick_music_track" );
 }
 
 void twinstick_layer::push()
@@ -74,7 +74,7 @@ void twinstick_layer::push()
 	// camera
 
 	player_camera = add_entity<w_camera>();
-	player_camera->set_follow_target( player, follow_flags::xy_axis, 0.1f );
+	player_camera->set_follow_target( player, follow_flags::xy_axis, 0.95f );
 }
 
 void twinstick_layer::pop()

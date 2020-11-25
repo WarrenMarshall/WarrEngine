@@ -13,7 +13,7 @@
 	"type" "texture"
 	"tag" "tex_coin_pickup"
 	"filename" "gfx/plat_coin.png"
-	"subtexture_list" "\
+	"subtexture_tags" "\
 		sub_coin_frame_1, 0, 0, 16, 16,\
 		sub_coin_frame_2, 16, 0, 16, 16,\
 		sub_coin_frame_3, 32, 0, 16, 16,\

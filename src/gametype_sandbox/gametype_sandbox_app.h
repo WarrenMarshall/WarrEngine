@@ -4,7 +4,7 @@
 
 struct gametype_sandbox_app : w_game
 {
-	gametype_sandbox_app( std::string_view name );
+	gametype_sandbox_app( const char* name );
 
 	a_sound* snd_plat_jump = nullptr;
 	a_sound* snd_plat_coin = nullptr;

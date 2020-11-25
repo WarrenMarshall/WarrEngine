@@ -133,7 +133,8 @@ enum_end
 #undef small	// fixes dumb compile problem
 
 enum_begin( rumble_effect, ubyte )
-	tiny = 0,
+	none = 0,
+	tiny,
 	small,
 	medium,
 	large

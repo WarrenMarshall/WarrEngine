@@ -167,7 +167,7 @@ struct w_vec2
 	w_vec2( std::string_view str );
 	w_vec2( b2Vec2 b2v2 );
 
-	[[nodiscard]] w_vec2& normalize();
+	w_vec2& normalize();
 	[[nodiscard]] b2Vec2 as_b2Vec2();
 	[[nodiscard]] c2v as_c2v();
 	[[nodiscard]] w_vec2 to_b2d();

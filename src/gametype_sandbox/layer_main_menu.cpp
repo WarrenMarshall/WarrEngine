@@ -24,6 +24,7 @@ void layer_main_menu::draw()
 		->draw_string( engine->pixel_font, "gametype sandbox", w_rect( v_window_hw, 32 ) )
 		->end();
 
+#if 0
 	float xpos = 64;
 	float ypos = 75;
 
@@ -59,11 +60,28 @@ void layer_main_menu::draw()
 	{
 		engine->is_running = false;
 	}
+#endif
+
 }
 
 void layer_main_menu::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
-	engine->window->set_mouse_mode( mouse_mode::normal );
+	engine->window->set_mouse_mode( mouse_mode::os );
+}
+
+bool layer_main_menu::handle_input_event( const w_input_event* evt )
+{
+	if( evt->event_id == event_id::input_pressed )
+	{
+		if( evt->input_id == input_id::key_t )
+		{
+			game->new_game();
+			engine->layer_mgr->push<twinstick_layer>();
+			return true;
+		}
+	}
+
+	return false;
 }

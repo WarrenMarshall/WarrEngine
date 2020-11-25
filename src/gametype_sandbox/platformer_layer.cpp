@@ -12,7 +12,7 @@ void platformer_layer::push()
 {
 	w_layer::push();
 
-	engine->window->set_mouse_mode( mouse_mode::normal );
+	engine->window->set_mouse_mode( mouse_mode::os );
 	mover_controller = std::make_unique<w_mover_controller>( -1.0f, 1.0f, 1500.0f );
 
 	plat_physics = std::make_unique<w_platformer_physics>();
@@ -89,7 +89,7 @@ void platformer_layer::update()
 
 	auto ekb = mover->get_component<ec_b2d_kinematic>( component_type::b2d_body );
 	float speed = 100.0f * mover_controller->tween->current_val;
-	ekb->body->SetLinearVelocity( w_vec2( 0.0f, speed * (w_time::FTS_step_value_s / 2.0f) ) );
+	ekb->body->SetLinearVelocity( w_vec2( 0.0f, speed * (w_time::FTS_step_value_s / 2.0f) ).as_b2Vec2() );
 
 	w_layer::update();
 }
