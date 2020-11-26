@@ -15,7 +15,7 @@ void platformer_layer::push()
 	engine->window->set_mouse_mode( mouse_mode::os );
 	mover_controller = std::make_unique<w_mover_controller>( -1.0f, 1.0f, 1500.0f );
 
-	plat_physics = std::make_unique<w_platformer_physics>();
+	plat_physics = std::make_unique<w_platformer_contact_listener>();
 	engine->box2d_world->SetContactListener( plat_physics.get() );
 
 	ec_b2d_body* ec = nullptr;
@@ -82,8 +82,8 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	plat_physics->handle_user_input( player );
-	plat_physics->update();
+	//plat_physics->handle_user_input( player );
+	//plat_physics->update();
 
 	mover_controller->update();
 

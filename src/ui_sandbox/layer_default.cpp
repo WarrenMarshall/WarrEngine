@@ -47,7 +47,7 @@ void layer_default::draw()
 
 void layer_default::draw_ui()
 {
-	IMGUI->set_data_provider( &ui_data_provider );
+	//IMGUI->set_data_provider( &ui_data_provider );
 
 
 	// ----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ void layer_default::draw_ui()
 		->finalize()
 		->was_left_clicked() )
 	{
-		log_msg( "button clicked" );
+		log( "button clicked" );
 	}
 
 	// ----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ void layer_default::draw_ui()
 		->finalize()
 		->was_left_clicked() )
 	{
-		log_msg( "img button clicked" );
+		log( "img button clicked" );
 	}
 
 	// ----------------------------------------------------------------------------
@@ -100,7 +100,7 @@ void layer_default::draw_ui()
 		->was_left_clicked() )
 	{
 		ui_data_provider.the_checkbox_value_01 = !ui_data_provider.the_checkbox_value_01;
-		log_msg( "check box clicked" );
+		log( "check box clicked" );
 	}
 
 	if(
@@ -114,7 +114,7 @@ void layer_default::draw_ui()
 		->was_left_clicked() )
 	{
 		ui_data_provider.the_checkbox_value_02 = !ui_data_provider.the_checkbox_value_02;
-		log_msg( "check box clicked" );
+		log( "check box clicked" );
 	}
 
 #if 0
@@ -126,7 +126,7 @@ void layer_default::draw_ui()
 		->finalize()
 		->was_left_clicked() )
 	{
-		log_msg( "button #2 clicked" );
+		log( "button #2 clicked" );
 	}
 
 	// ----------------------------------------------------------------------------
@@ -139,7 +139,7 @@ void layer_default::draw_ui()
 		->finalize()
 		->was_left_clicked() )
 	{
-		log_msg( "img button clicked" );
+		log( "img button clicked" );
 	}
 
 	if(
@@ -151,7 +151,7 @@ void layer_default::draw_ui()
 		->finalize()
 		->was_left_clicked() )
 	{
-		log_msg( "button #3 clicked" );
+		log( "button #3 clicked" );
 	}
 #endif
 }

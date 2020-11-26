@@ -2,7 +2,7 @@
 
 struct breakout_layer : w_layer
 {
-	std::unique_ptr<w_breakout_physics> breakout_physics = nullptr;
+	std::unique_ptr<w_breakout_contact_listener> breakout_physics = nullptr;
 
 	e_breakout_paddle* player = nullptr;
 

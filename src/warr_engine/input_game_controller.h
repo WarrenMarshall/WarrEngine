@@ -3,7 +3,7 @@
 struct w_game_controller
 {
 	std::unique_ptr<w_timer> timer_repeat = nullptr;
-	int idx = -1;
+	int player_id = -1;
 	float rumble_time_remaining_ms = 0;
 
 	XINPUT_STATE xinput_state = { 0 };
@@ -18,7 +18,7 @@ struct w_game_controller
 	*/
 	bool is_being_used = false;
 
-	w_game_controller( int idx );
+	w_game_controller( int player_id );
 
 	void update_button_state( e_input_id input_id, int xinput_button_bit );
 	void update();

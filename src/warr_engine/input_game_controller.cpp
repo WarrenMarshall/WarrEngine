@@ -1,8 +1,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_game_controller::w_game_controller( int idx )
-	: idx( idx )
+w_game_controller::w_game_controller( int player_id )
+	: player_id( player_id )
 {
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
@@ -56,13 +56,13 @@ void w_game_controller::update()
 		XINPUT_VIBRATION rumbler;
 		rumbler.wLeftMotorSpeed = 0;
 		rumbler.wRightMotorSpeed = 0;
-		XInputSetState( idx, &rumbler );
+		XInputSetState( player_id, &rumbler );
 	}
 
 	// refresh the xinput state for this controller
 
 	ZeroMemory( &xinput_state, sizeof( XINPUT_STATE ) );
-	XInputGetState( idx, &xinput_state );
+	XInputGetState( player_id, &xinput_state );
 
 	// update state information anfd send events
 
@@ -125,7 +125,7 @@ void w_game_controller::play_rumble( int intensity, int ms )
 	XINPUT_VIBRATION rumbler;
 	rumbler.wLeftMotorSpeed = static_cast<WORD>( intensity );
 	rumbler.wRightMotorSpeed = static_cast<WORD>( intensity );
-	XInputSetState( idx, &rumbler );
+	XInputSetState( player_id, &rumbler );
 
 	rumble_time_remaining_ms = static_cast<float>( ms );
 }

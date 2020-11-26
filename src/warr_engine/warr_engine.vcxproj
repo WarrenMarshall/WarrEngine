@@ -221,9 +221,10 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
-    <ClCompile Include="physics.cpp" />
-    <ClCompile Include="physics_callbacks.cpp" />
+    <ClCompile Include="physics_query.cpp" />
+    <ClCompile Include="physics_query_callbacks.cpp" />
     <ClCompile Include="physics_debug_draw.cpp" />
+    <ClCompile Include="physics_responder.cpp" />
     <ClCompile Include="render_stats.cpp" />
     <ClCompile Include="ui_control.cpp" />
     <ClCompile Include="ui_data_provider.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="physics_responder.h" />
     <ClInclude Include="render_stats.h" />
     <ClInclude Include="ui_control.h" />
     <ClInclude Include="ui_data_provider.h" />
@@ -293,8 +295,8 @@
     <ClInclude Include="parser.h" />
     <ClInclude Include="particle_pool.h" />
     <ClInclude Include="particle_spawner.h" />
-    <ClInclude Include="physics.h" />
-    <ClInclude Include="physics_callbacks.h" />
+    <ClInclude Include="physics_query.h" />
+    <ClInclude Include="physics_query_callbacks.h" />
     <ClInclude Include="physics_debug_draw.h" />
     <ClInclude Include="ui_imgui.h" />
     <ClInclude Include="util_time.h" />

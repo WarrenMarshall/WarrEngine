@@ -342,11 +342,16 @@ void w_input::refresh_controller()
 	XINPUT_STATE state;
 	ZeroMemory( &state, sizeof( XINPUT_STATE ) );
 
-	if( XInputGetState( 0, &state ) == ERROR_SUCCESS )
+	int xinput_player_id = -1;
+	for( int pn = 0 ; pn < XUSER_MAX_COUNT && xinput_player_id == -1 ; ++pn )
 	{
-		// controller is connected on port 1
-		log( "Using controller : {}", 0 );
-		game_controller = std::make_unique<w_game_controller>( 0 );
+		if( XInputGetState( pn, &state ) == ERROR_SUCCESS )
+		{
+			xinput_player_id = pn;
+
+			log( "Using controller : player_id : {}", xinput_player_id );
+			game_controller = std::make_unique<w_game_controller>( xinput_player_id );
+		}
 	}
 }
 

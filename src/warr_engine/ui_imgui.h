@@ -57,8 +57,6 @@ struct w_imgui
 	w_imgui* set_rect( e_imgui_flow flow );
 	w_imgui* set_rect( e_imgui_flow flow, w_sz sz );
 
-	w_imgui* set_data_provider( w_imgui_data_provider* data_provider );
-
 	void calc_client_rect();
 	w_imgui_result* finalize();
 

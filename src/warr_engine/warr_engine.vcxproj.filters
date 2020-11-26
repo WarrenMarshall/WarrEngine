@@ -142,12 +142,6 @@
     <ClCompile Include="particle_spawner.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="physics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="physics_callbacks.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="physics_debug_draw.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -196,8 +190,19 @@
     <ClCompile Include="a_palette.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="render_stats.cpp" />
     <ClCompile Include="parser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render_stats.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_query_callbacks.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_query.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_responder.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -328,12 +333,6 @@
     <ClInclude Include="physics_debug_draw.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="physics_callbacks.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="physics.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="particle_spawner.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -403,8 +402,19 @@
     <ClInclude Include="a_palette.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="render_stats.h" />
     <ClInclude Include="parser.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_stats.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_query_callbacks.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_query.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_responder.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

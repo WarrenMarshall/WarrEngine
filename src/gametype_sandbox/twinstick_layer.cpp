@@ -15,7 +15,7 @@ void twinstick_layer::push()
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
-	twinstick_physics = std::make_unique<w_twinstick_physics>();
+	twinstick_physics = std::make_unique<w_twinstick_contact_listener>();
 	engine->box2d_world->SetContactListener( twinstick_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
@@ -90,8 +90,8 @@ void twinstick_layer::update()
 {
 	w_layer::update();
 
-	twinstick_physics->handle_user_input( player );
-	twinstick_physics->update();
+	//twinstick_physics->handle_user_input( player );
+	//twinstick_physics->update();
 }
 
 void twinstick_layer::draw()
@@ -119,4 +119,24 @@ void twinstick_layer::draw()
 w_camera* twinstick_layer::get_camera()
 {
 	return player_camera;
+}
+
+bool twinstick_layer::event_input_motion( const w_input_event* evt )
+{
+	return true;
+}
+
+bool twinstick_layer::event_input_pressed( const w_input_event* evt )
+{
+	return true;
+}
+
+bool twinstick_layer::event_input_held( const w_input_event* evt )
+{
+	return true;
+}
+
+bool twinstick_layer::event_input_released( const w_input_event* evt )
+{
+	return true;
 }

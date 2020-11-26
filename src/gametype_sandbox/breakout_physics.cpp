@@ -31,14 +31,14 @@ void fudge_movement_dir( w_vec2& dir )
 // ----------------------------------------------------------------------------
 
 
-w_breakout_physics::w_breakout_physics()
-	: w_contact_listener()
+w_breakout_contact_listener::w_breakout_contact_listener()
+	: w_physics_responder()
 {
 }
 
-void w_breakout_physics::BeginContact( b2Contact* contact )
+void w_breakout_contact_listener::BeginContact( b2Contact* contact )
 {
-	w_contact_listener::BeginContact( contact );
+	w_physics_responder::BeginContact( contact );
 
 	if( contact_ids_match( "paddle", "ball" ) )
 	{

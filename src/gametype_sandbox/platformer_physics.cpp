@@ -14,15 +14,15 @@ constexpr float player_air_control_damping = 0.35f;
 
 // ----------------------------------------------------------------------------
 
-w_platformer_physics::w_platformer_physics()
-	: w_contact_listener()
+w_platformer_contact_listener::w_platformer_contact_listener()
+	: w_physics_responder()
 {
 	timer_jump_limiter = std::make_unique<w_timer>( player_jump_interval );
 }
 
-void w_platformer_physics::BeginContact( b2Contact* contact )
+void w_platformer_contact_listener::BeginContact( b2Contact* contact )
 {
-	w_contact_listener::BeginContact( contact );
+	w_physics_responder::BeginContact( contact );
 
 	if( contact_ids_match( "s_on_ground", "world" ) )
 	{
@@ -43,9 +43,9 @@ void w_platformer_physics::BeginContact( b2Contact* contact )
 	}
 }
 
-void w_platformer_physics::EndContact( b2Contact* contact )
+void w_platformer_contact_listener::EndContact( b2Contact* contact )
 {
-	w_contact_listener::EndContact( contact );
+	w_physics_responder::EndContact( contact );
 
 	if( contact_ids_match( "s_on_ground", "world" ) )
 	{
@@ -58,22 +58,23 @@ void w_platformer_physics::EndContact( b2Contact* contact )
 	}
 }
 
-bool w_platformer_physics::can_jump()
+bool w_platformer_contact_listener::can_jump()
 {
 	return ( player_on_ground > 0 && timer_jump_limiter->get_elapsed_count() );
 }
 
-bool w_platformer_physics::in_air()
+bool w_platformer_contact_listener::in_air()
 {
 	return ( player_on_ground == 0 );
 }
 
-bool w_platformer_physics::can_drop_down()
+bool w_platformer_contact_listener::can_drop_down()
 {
 	return ( player_drop_down_blocked == 0 );
 }
 
-void w_platformer_physics::handle_user_input( w_entity* player )
+#if 0
+void w_platformer_physics::event_input_motion( w_entity* player )
 {
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
@@ -137,3 +138,4 @@ void w_platformer_physics::update()
 {
 	timer_jump_limiter->update();
 }
+#endif

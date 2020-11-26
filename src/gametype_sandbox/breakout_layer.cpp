@@ -12,7 +12,7 @@ void breakout_layer::push()
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
-	breakout_physics = std::make_unique<w_breakout_physics>();
+	breakout_physics = std::make_unique<w_breakout_contact_listener>();
 	engine->box2d_world->SetContactListener( breakout_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
@@ -83,7 +83,7 @@ void breakout_layer::update()
 {
 	w_layer::update();
 
-	breakout_physics->update();
+	//breakout_physics->update();
 }
 
 void breakout_layer::draw()

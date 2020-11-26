@@ -25,7 +25,7 @@ struct w_mover_controller
 
 struct platformer_layer : w_layer
 {
-	std::unique_ptr<w_platformer_physics> plat_physics = nullptr;
+	std::unique_ptr<w_platformer_contact_listener> plat_physics = nullptr;
 
 	platformer_layer();
 
