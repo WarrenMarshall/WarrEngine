@@ -159,8 +159,6 @@ struct w_vec2
 	static const w_vec2 up;
 	static const w_vec2 down;
 
-	[[nodiscard]] static w_vec2 get_random_unit();
-
 	w_vec2();
 	w_vec2( int x, int y );
 	w_vec2( float x, float y );
@@ -174,6 +172,8 @@ struct w_vec2
 	[[nodiscard]] w_vec2 from_b2d();
 	[[nodiscard]] float get_size_squared();
 	[[nodiscard]] float get_size();
+	[[nodiscard]] bool is_zero();
+	[[nodiscard]] static w_vec2 get_random_unit();
 
 	[[nodiscard]] bool operator==( w_vec2 v );
 	[[nodiscard]] bool operator!=( w_vec2 v );

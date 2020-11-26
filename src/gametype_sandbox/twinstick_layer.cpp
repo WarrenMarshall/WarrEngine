@@ -133,6 +133,11 @@ bool twinstick_layer::event_input_pressed( const w_input_event* evt )
 
 bool twinstick_layer::event_input_held( const w_input_event* evt )
 {
+	if( evt->input_id == input_id::controller_left_stick )
+	{
+
+	}
+
 	return true;
 }
 

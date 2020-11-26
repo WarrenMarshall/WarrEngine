@@ -8,11 +8,8 @@ struct w_input_event
 	// the key, mouse button, or controller button generating the event
 	e_input_id input_id = input_id::invalid;
 
-	struct
-	{
-		//w_vec2 pos = w_vec2( 0, 0 );
-		w_vec2 delta = w_vec2( 0, 0 );
-	} mouse;
+	// a place for various events to store the deltas. used for mouse and controllers.
+	w_vec2 delta = w_vec2( 0, 0 );
 };
 
 // ----------------------------------------------------------------------------

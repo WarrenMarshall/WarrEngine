@@ -257,12 +257,6 @@ const w_vec2 w_vec2::right = w_vec2( 1.0f, 0.0f );
 const w_vec2 w_vec2::up = w_vec2( 0.0f, -1.0f );
 const w_vec2 w_vec2::down = w_vec2( 0.0f, 1.0f );
 
-// generates a random point on a unit sphere.
-w_vec2 w_vec2::get_random_unit()
-{
-	return w_vec2( -1.0f + (w_random::getf() * 2.0f), -1.0f + (w_random::getf() * 2.0f) ).normalize();
-}
-
 w_vec2::w_vec2()
 	: x( 0.0f ), y( 0.0f )
 {
@@ -380,6 +374,17 @@ float w_vec2::get_size_squared()
 float w_vec2::get_size()
 {
 	return ( x * x ) + ( y * y );
+}
+
+bool w_vec2::is_zero()
+{
+	return fequals( x + y, 0.0f );
+}
+
+// generates a random point on a unit sphere.
+w_vec2 w_vec2::get_random_unit()
+{
+	return w_vec2( -1.0f + ( w_random::getf() * 2.0f ), -1.0f + ( w_random::getf() * 2.0f ) ).normalize();
 }
 
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )

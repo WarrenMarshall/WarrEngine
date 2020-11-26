@@ -3,9 +3,9 @@
 
 // ----------------------------------------------------------------------------
 
-float w_twinstick_contact_listener::player_move_force_s = 15.5f;
-float w_twinstick_contact_listener::player_base_radius = 8.0f;
-float w_twinstick_contact_listener::player_move_force_max = 0.75f;
+constexpr float player_move_force_s = 15.5f;
+constexpr float player_base_radius = 8.0f;
+constexpr float player_move_force_max = 0.75f;
 
 // ----------------------------------------------------------------------------
 
@@ -20,21 +20,20 @@ void w_twinstick_contact_listener::BeginContact( b2Contact* contact )
 
 }
 
+#if 0
 void w_twinstick_contact_listener::handle_user_input( w_entity* player )
 {
-	//auto player = LAYER->find_entity_from_tag( "player" );
-
 	w_vec2 left_stick = engine->input->get_axis_state( input_id::controller_left_stick );
 
 	if( !fequals( left_stick.x + left_stick.y, 0.0f ) )
 	{
 		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 		b2Vec2 current = ec->body->GetLinearVelocity();
-		current.x += ( w_twinstick_contact_listener::player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
-		current.y += ( w_twinstick_contact_listener::player_move_force_s * left_stick.y ) * w_time::FTS_step_value_s;
+		current.x += ( player_move_force_s * left_stick.x ) * w_time::FTS_step_value_s;
+		current.y += ( player_move_force_s * left_stick.y ) * w_time::FTS_step_value_s;
 		w_vec2 desired = {
-			std::clamp( current.x, -w_twinstick_contact_listener::player_move_force_max, w_twinstick_contact_listener::player_move_force_max ),
-			std::clamp( current.y, -w_twinstick_contact_listener::player_move_force_max, w_twinstick_contact_listener::player_move_force_max )
+			std::clamp( current.x, -player_move_force_max, player_move_force_max ),
+			std::clamp( current.y, -player_move_force_max, player_move_force_max )
 		};
 
 		ec->body->SetLinearVelocity( { desired.x, desired.y } );
@@ -48,6 +47,7 @@ void w_twinstick_contact_listener::handle_user_input( w_entity* player )
 		player->set_angle_deep( angle );
 	}
 }
+#endif
 
 #if 0
 void w_twinstick_physics::update()

@@ -2,7 +2,7 @@
 
 struct breakout_layer : w_layer
 {
-	std::unique_ptr<w_breakout_contact_listener> breakout_physics = nullptr;
+	std::unique_ptr<w_breakout_physics_responder> breakout_physics = nullptr;
 
 	e_breakout_paddle* player = nullptr;
 
@@ -15,5 +15,5 @@ struct breakout_layer : w_layer
 
 	void spawn_ball();
 	virtual bool event_input_motion( const w_input_event* evt ) override;
-	virtual bool event_input_pressed( const w_input_event* evt ) override;
+	virtual bool event_input_released( const w_input_event* evt ) override;
 };

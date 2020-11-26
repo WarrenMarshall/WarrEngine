@@ -12,7 +12,7 @@ void breakout_layer::push()
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
-	breakout_physics = std::make_unique<w_breakout_contact_listener>();
+	breakout_physics = std::make_unique<w_breakout_physics_responder>();
 	engine->box2d_world->SetContactListener( breakout_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
@@ -110,7 +110,23 @@ bool breakout_layer::event_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
-		w_vec2 new_pos = { player->pos.x + evt->mouse.delta.x, v_window_h - 24.0f };
+		w_vec2 new_pos = { player->pos.x + evt->delta.x, v_window_h - 24.0f };
+		new_pos.x = std::clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
+		player->set_position_deep( new_pos, false );
+		return true;
+	}
+
+	if( evt->input_id == input_id::controller_left_trigger )
+	{
+		w_vec2 new_pos = { player->pos.x - evt->delta.x, v_window_h - 24.0f };
+		new_pos.x = std::clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
+		player->set_position_deep( new_pos, false );
+		return true;
+	}
+
+	if( evt->input_id == input_id::controller_right_trigger || evt->input_id == input_id::controller_left_stick )
+	{
+		w_vec2 new_pos = { player->pos.x + evt->delta.x, v_window_h - 24.0f };
 		new_pos.x = std::clamp( new_pos.x, 48.0f, v_window_w - 48.0f );
 		player->set_position_deep( new_pos, false );
 		return true;
@@ -119,9 +135,9 @@ bool breakout_layer::event_input_motion( const w_input_event* evt )
 	return false;
 }
 
-bool breakout_layer::event_input_pressed( const w_input_event* evt )
+bool breakout_layer::event_input_released( const w_input_event* evt )
 {
-	if( evt->input_id == input_id::key_n )
+	if( evt->input_id == input_id::key_n || evt->input_id == input_id::controller_button_y )
 	{
 		spawn_ball();
 		return true;

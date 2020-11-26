@@ -157,7 +157,7 @@ void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 		return;
 	}
 
-	const w_input_event* evt = static_cast<w_input_event*>( object );
+	w_input_event* evt = static_cast<w_input_event*>( object );
 
 	for( const auto& iter : layer_stack )
 	{

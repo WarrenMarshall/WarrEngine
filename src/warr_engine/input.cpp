@@ -171,7 +171,7 @@ void w_input::update()
 		w_input_event evt;
 		evt.event_id = event_id::input_motion;
 		evt.input_id = input_id::mouse;
-		evt.mouse.delta = mouse_move_delta;
+		evt.delta = mouse_move_delta;
 
 		event_queue.emplace_back( std::move( evt ) );
 
@@ -262,6 +262,54 @@ void w_input::update()
 		game_controller->update();
 	}
 
+	w_vec2 delta = get_axis_state( input_id::controller_left_stick, true );
+
+	if( !delta.is_zero() )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::controller_left_stick;
+		evt.delta = delta;
+
+		event_queue.emplace_back( std::move( evt ) );
+	}
+
+	delta = get_axis_state( input_id::controller_right_stick, true );
+
+	if( !delta.is_zero() )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::controller_right_stick;
+		evt.delta = delta;
+
+		event_queue.emplace_back( std::move( evt ) );
+	}
+
+	delta = get_axis_state( input_id::controller_left_trigger, true );
+
+	if( !delta.is_zero() )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::controller_left_trigger;
+		evt.delta = delta;
+
+		event_queue.emplace_back( std::move( evt ) );
+	}
+
+	delta = get_axis_state( input_id::controller_right_trigger, true );
+
+	if( !delta.is_zero() )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::controller_right_trigger;
+		evt.delta = delta;
+
+		event_queue.emplace_back( std::move( evt ) );
+	}
+
 	// send every accumulated input message to anyone listening
 
 	for( auto& evt : event_queue )
@@ -337,7 +385,8 @@ void w_input::refresh_controller()
 
 	game_controller = nullptr;
 
-	// look for an attached xbox controller
+	// look for an attached xbox controller. the first valid one
+	// we find is the one we use for player input.
 
 	XINPUT_STATE state;
 	ZeroMemory( &state, sizeof( XINPUT_STATE ) );
@@ -429,8 +478,9 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 	these values are updated once per frame.
 */
 
-static float controller_dead_zone = 0.20f;
-static float controller_dead_zone_small = 0.10f;
+constexpr float controller_dead_zone = 0.20f;
+constexpr float controller_dead_zone_small = 0.10f;
+
 w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 {
 	float dead_zone = ignore_dead_zone ? controller_dead_zone_small : controller_dead_zone;

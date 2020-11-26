@@ -23,13 +23,13 @@ static unsigned clayer_mover = clayer_bits.next();
 #include "gametype_sandbox_app.h"
 
 #include "platformer_entities.h"
-#include "platformer_physics.h"
+#include "platformer_physics_responder.h"
 #include "platformer_layer.h"
 
 #include "breakout_entities.h"
-#include "breakout_physics.h"
+#include "breakout_physics_responder.h"
 #include "breakout_layer.h"
 
 #include "twinstick_entities.h"
-#include "twinstick_physics.h"
+#include "twinstick_physics_responder.h"
 #include "twinstick_layer.h"
