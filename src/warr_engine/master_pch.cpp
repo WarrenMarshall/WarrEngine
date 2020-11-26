@@ -3,6 +3,11 @@
 
 #include "master_pch.h"
 
+float sign_of( float val )
+{
+	return ( val < 0.0f ? -1.0f : 1.0f );
+}
+
 float snap_to_pixel( float f )
 {
 	return std::roundf( f );

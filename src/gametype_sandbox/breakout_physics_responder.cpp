@@ -3,34 +3,6 @@
 
 // ----------------------------------------------------------------------------
 
-void fudge_movement_dir( w_vec2& dir )
-{
-	if( dir.y < 0.0f )
-	{
-		dir.y = std::min( -0.3f, dir.y );
-	}
-	else
-	{
-		dir.y = std::max( 0.3f, dir.y );
-	}
-
-#if 1
-	// this was added when I did the new code but I THINK it causes problems sometimes
-	// ... so delete it eventually if you never use it
-	if( dir.x < 0.0f )
-	{
-		dir.x = std::min( -0.3f, dir.x );
-	}
-	else
-	{
-		dir.x = std::max( 0.3f, dir.x );
-	}
-#endif
-}
-
-// ----------------------------------------------------------------------------
-
-
 w_breakout_physics_responder::w_breakout_physics_responder()
 	: w_physics_responder()
 {
@@ -79,7 +51,24 @@ void w_breakout_physics_responder::BeginContact( b2Contact* contact )
 
 		w_vec2 hit_normal = calc_hit_normal( ball_body );
 		w_vec2 new_dir = w_vec2::reflect_across_normal( ball_dir, hit_normal );
-		fudge_movement_dir( new_dir );
+
+		// fudges a value so it's at least 0.3 in it's value
+
+		auto fudge_value = [] ( float& val )
+		{
+			if( val < 0.0f )
+			{
+				val = std::min( -0.3f, val );
+			}
+			else
+			{
+				val = std::max( 0.3f, val );
+			}
+		};
+
+		fudge_value( new_dir.x );
+		fudge_value( new_dir.y );
+
 		new_dir.normalize();
 
 		e_breakout_ball* ball = (e_breakout_ball*) find_entity_from_contact_id( "ball" );

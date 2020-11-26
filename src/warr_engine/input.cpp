@@ -78,79 +78,6 @@ void w_input::init()
 		button_states_last_frame[ x ] = false;
 	}
 
-	glfw_codes.insert( std::make_pair( GLFW_KEY_ESCAPE, input_id::key_esc ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_PAUSE, input_id::key_pause ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_BRACKET, input_id::key_left_bracket ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_BRACKET, input_id::key_right_bracket ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_ENTER, input_id::key_enter ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_SPACE, input_id::key_space ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F1, input_id::key_f1 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F2, input_id::key_f2 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F3, input_id::key_f3 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F4, input_id::key_f4 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F5, input_id::key_f5 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F6, input_id::key_f6 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F7, input_id::key_f7 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F8, input_id::key_f8 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F9, input_id::key_f9 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F10, input_id::key_f10 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F11, input_id::key_f11 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F12, input_id::key_f12 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_A, input_id::key_a ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_B, input_id::key_b ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_C, input_id::key_c ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_D, input_id::key_d ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_E, input_id::key_e ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_F, input_id::key_f ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_G, input_id::key_g ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_H, input_id::key_h ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_I, input_id::key_i ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_I, input_id::key_j ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_K, input_id::key_k ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_L, input_id::key_l ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_M, input_id::key_m ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_N, input_id::key_n ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_O, input_id::key_o ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_P, input_id::key_p ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_Q, input_id::key_q ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_R, input_id::key_r ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_S, input_id::key_s ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_T, input_id::key_t ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_U, input_id::key_u ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_V, input_id::key_v ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_W, input_id::key_w ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_X, input_id::key_x ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_Y, input_id::key_y ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_Z, input_id::key_z ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_0, input_id::key_0 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_1, input_id::key_1 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_2, input_id::key_2 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_3, input_id::key_3 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_4, input_id::key_4 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_5, input_id::key_5 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_6, input_id::key_6 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_7, input_id::key_7 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_8, input_id::key_8 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_9, input_id::key_9 ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_UP, input_id::key_up ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_DOWN, input_id::key_down ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT, input_id::key_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT, input_id::key_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_PERIOD, input_id::key_period ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_COMMA, input_id::key_comma ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_SLASH, input_id::key_slash ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_GRAVE_ACCENT, input_id::key_tilde ) );
-	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_LEFT, input_id::mouse_button_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_MIDDLE, input_id::mouse_button_middle ) );
-	glfw_codes.insert( std::make_pair( GLFW_MOUSE_BUTTON_RIGHT, input_id::mouse_button_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_SHIFT, input_id::key_shift_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_SHIFT, input_id::key_shift_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_CONTROL, input_id::key_control_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_CONTROL, input_id::key_control_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_LEFT_ALT, input_id::key_alt_left ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_RIGHT_ALT, input_id::key_alt_right ) );
-	glfw_codes.insert( std::make_pair( GLFW_KEY_DELETE, input_id::key_delete ) );
-
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
 
@@ -260,54 +187,41 @@ void w_input::update()
 	if( game_controller )
 	{
 		game_controller->update();
-	}
 
-	w_vec2 delta = get_axis_state( input_id::controller_left_stick, true );
+		// update state information and queue events
 
-	if( !delta.is_zero() )
-	{
-		w_input_event evt;
-		evt.event_id = event_id::input_motion;
-		evt.input_id = input_id::controller_left_stick;
-		evt.delta = delta;
+		game_controller->update_button_state( input_id::controller_button_a, XINPUT_GAMEPAD_A );
+		game_controller->update_button_state( input_id::controller_button_b, XINPUT_GAMEPAD_B );
+		game_controller->update_button_state( input_id::controller_button_x, XINPUT_GAMEPAD_X );
+		game_controller->update_button_state( input_id::controller_button_y, XINPUT_GAMEPAD_Y );
+		game_controller->update_button_state( input_id::controller_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
+		game_controller->update_button_state( input_id::controller_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
+		game_controller->update_button_state( input_id::controller_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
+		game_controller->update_button_state( input_id::controller_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
+		game_controller->update_button_state( input_id::controller_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
+		game_controller->update_button_state( input_id::controller_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
+		game_controller->update_button_state( input_id::controller_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
+		game_controller->update_button_state( input_id::controller_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
 
-		event_queue.emplace_back( std::move( evt ) );
-	}
+		auto update_axis_delta = [] ( e_input_id input_id )
+		{
+			w_vec2 delta = engine->input->get_axis_state( input_id, true );
 
-	delta = get_axis_state( input_id::controller_right_stick, true );
+			if( !delta.is_zero() )
+			{
+				w_input_event evt;
+				evt.event_id = event_id::input_motion;
+				evt.input_id = input_id;
+				evt.delta = delta;
 
-	if( !delta.is_zero() )
-	{
-		w_input_event evt;
-		evt.event_id = event_id::input_motion;
-		evt.input_id = input_id::controller_right_stick;
-		evt.delta = delta;
+				engine->input->event_queue.emplace_back( std::move( evt ) );
+			}
+		};
 
-		event_queue.emplace_back( std::move( evt ) );
-	}
-
-	delta = get_axis_state( input_id::controller_left_trigger, false );
-
-	if( !delta.is_zero() )
-	{
-		w_input_event evt;
-		evt.event_id = event_id::input_motion;
-		evt.input_id = input_id::controller_left_trigger;
-		evt.delta = delta;
-
-		event_queue.emplace_back( std::move( evt ) );
-	}
-
-	delta = get_axis_state( input_id::controller_right_trigger, false );
-
-	if( !delta.is_zero() )
-	{
-		w_input_event evt;
-		evt.event_id = event_id::input_motion;
-		evt.input_id = input_id::controller_right_trigger;
-		evt.delta = delta;
-
-		event_queue.emplace_back( std::move( evt ) );
+		update_axis_delta( input_id::controller_left_stick );
+		update_axis_delta( input_id::controller_right_stick );
+		update_axis_delta( input_id::controller_left_trigger );
+		update_axis_delta( input_id::controller_right_trigger );
 	}
 
 	// send every accumulated input message to anyone listening
@@ -483,14 +397,12 @@ constexpr float controller_dead_zone_small = 0.10f;
 
 w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 {
+	assert( game_controller );
+
 	float dead_zone = ignore_dead_zone ? controller_dead_zone_small : controller_dead_zone;
 
-	if( !game_controller )
-	{
-		return w_vec2::zero;
-	}
+	//game_controller->update_state();
 
-	game_controller->update();
 	w_vec2 value;
 
 	switch( input_id )
@@ -543,6 +455,6 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 		break;
 	}
 
-	// note : the value being returned should be normalized
+	// note : the value being returned is normalized
 	return value;
 }

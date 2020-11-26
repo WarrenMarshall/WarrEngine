@@ -10,7 +10,6 @@ struct breakout_layer : w_layer
 
 	virtual void push() override;
 	virtual void pop() override;
-	virtual void update() override;
 	virtual void draw() override;
 
 	void spawn_ball();

@@ -46,6 +46,16 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 	}
 }
 
+// updates the internal state of the controller, from xinput
+
+void w_game_controller::update_state()
+{
+	// refresh the xinput state for this controller
+
+	ZeroMemory( &xinput_state, sizeof( XINPUT_STATE ) );
+	XInputGetState( player_id, &xinput_state );
+}
+
 void w_game_controller::update()
 {
 	rumble_time_remaining_ms -= engine->time->FTS_step_value_ms;
@@ -59,25 +69,7 @@ void w_game_controller::update()
 		XInputSetState( player_id, &rumbler );
 	}
 
-	// refresh the xinput state for this controller
-
-	ZeroMemory( &xinput_state, sizeof( XINPUT_STATE ) );
-	XInputGetState( player_id, &xinput_state );
-
-	// update state information anfd send events
-
-	update_button_state( input_id::controller_button_a, XINPUT_GAMEPAD_A );
-	update_button_state( input_id::controller_button_b, XINPUT_GAMEPAD_B );
-	update_button_state( input_id::controller_button_x, XINPUT_GAMEPAD_X );
-	update_button_state( input_id::controller_button_y, XINPUT_GAMEPAD_Y );
-	update_button_state( input_id::controller_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
-	update_button_state( input_id::controller_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
-	update_button_state( input_id::controller_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
-	update_button_state( input_id::controller_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
-	update_button_state( input_id::controller_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
-	update_button_state( input_id::controller_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
-	update_button_state( input_id::controller_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
-	update_button_state( input_id::controller_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
+	update_state();
 }
 
 void w_game_controller::play_rumble( e_rumble_effect effect )

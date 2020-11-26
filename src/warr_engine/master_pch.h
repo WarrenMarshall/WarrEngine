@@ -197,6 +197,7 @@ constexpr float zdepth_topmost = 14750.0f;
 	return ( ( (a) -( b ) ) < tolerance && ( (a) -( b ) ) > -tolerance );
 }
 
+[[nodiscard]] float sign_of( float val );
 [[nodiscard]] float snap_to_pixel( float f );
 [[nodiscard]] int str_to_int( const char* str );
 [[nodiscard]] int str_to_int( const std::string& str );

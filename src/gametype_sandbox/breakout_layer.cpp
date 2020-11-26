@@ -79,13 +79,6 @@ void breakout_layer::pop()
 	engine->box2d_world->SetContactListener( nullptr );
 }
 
-void breakout_layer::update()
-{
-	w_layer::update();
-
-	//breakout_physics->update();
-}
-
 void breakout_layer::draw()
 {
 	w_layer::draw();
