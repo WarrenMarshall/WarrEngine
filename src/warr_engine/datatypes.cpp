@@ -285,7 +285,7 @@ w_vec2::w_vec2( b2Vec2 b2v2 )
 {
 }
 
-w_vec2& w_vec2::normalize()
+w_vec2 w_vec2::normalize()
 {
 	*this = w_vec2::normalize( *this );
 	return *this;

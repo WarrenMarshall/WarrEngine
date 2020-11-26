@@ -286,7 +286,7 @@ void w_input::update()
 		event_queue.emplace_back( std::move( evt ) );
 	}
 
-	delta = get_axis_state( input_id::controller_left_trigger, true );
+	delta = get_axis_state( input_id::controller_left_trigger, false );
 
 	if( !delta.is_zero() )
 	{
@@ -298,7 +298,7 @@ void w_input::update()
 		event_queue.emplace_back( std::move( evt ) );
 	}
 
-	delta = get_axis_state( input_id::controller_right_trigger, true );
+	delta = get_axis_state( input_id::controller_right_trigger, false );
 
 	if( !delta.is_zero() )
 	{

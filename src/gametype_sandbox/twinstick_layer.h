@@ -2,9 +2,10 @@
 
 struct twinstick_layer : w_layer
 {
-	std::unique_ptr<w_twinstick_contact_listener> twinstick_physics = nullptr;
+	std::unique_ptr<w_twinstick_physics_responder> twinstick_physics = nullptr;
 
 	e_twinstick_player* player = nullptr;
+	w_vec2 trace_hit_location = w_vec2::zero;
 	w_camera* player_camera = nullptr;
 	a_sound* music = nullptr;
 

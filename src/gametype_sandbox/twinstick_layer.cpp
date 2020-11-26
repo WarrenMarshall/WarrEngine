@@ -1,6 +1,14 @@
 
 #include "app_header.h"
 
+// ----------------------------------------------------------------------------
+
+constexpr float player_move_force_s = 15.5f;
+constexpr float player_base_radius = 8.0f;
+constexpr float player_move_force_max = 0.75f;
+
+// ----------------------------------------------------------------------------
+
 twinstick_layer::twinstick_layer()
 {
 	draws_completely_solid = true;
@@ -15,7 +23,7 @@ void twinstick_layer::push()
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
-	twinstick_physics = std::make_unique<w_twinstick_contact_listener>();
+	twinstick_physics = std::make_unique<w_twinstick_physics_responder>();
 	engine->box2d_world->SetContactListener( twinstick_physics.get() );
 
 	engine->box2d_world->SetGravity( { 0, 0 } );
@@ -74,7 +82,7 @@ void twinstick_layer::push()
 	// camera
 
 	player_camera = add_entity<w_camera>();
-	player_camera->set_follow_target( player, follow_flags::xy_axis, 0.95f );
+	player_camera->set_follow_target( player, follow_flags::xy_axis, 1.0f );
 }
 
 void twinstick_layer::pop()
@@ -90,6 +98,18 @@ void twinstick_layer::update()
 {
 	w_layer::update();
 
+	trace_hit_location = w_vec2::zero;
+
+	auto player = LAYER->find_entity_from_tag( "player" );
+	if( player )
+	{
+		w_raycast_closest hit;
+		if( w_physics_query::trace_closest( player->pos, w_vec2::dir_from_angle( player->angle ), 500, clayer_world, &hit ) )
+		{
+			trace_hit_location = hit.result.pos;
+		}
+	}
+
 	//twinstick_physics->handle_user_input( player );
 	//twinstick_physics->update();
 }
@@ -104,12 +124,12 @@ void twinstick_layer::draw()
 		->push_rgba( w_color::teal, 0.5f )
 		->draw_string( engine->pixel_font, "TwinStick Shooter!", w_rect( 12, ypos += 12 ) );
 
-	if( twinstick_physics->trace_hit_location != w_vec2::zero )
+	if( trace_hit_location != w_vec2::zero )
 	{
 		RENDER
 			->push_rgb( w_color::red )
 			->push_alpha( 0.15f )
-			->draw_line( player->pos, twinstick_physics->trace_hit_location );
+			->draw_line( player->pos, trace_hit_location );
 	}
 
 	RENDER
@@ -123,6 +143,26 @@ w_camera* twinstick_layer::get_camera()
 
 bool twinstick_layer::event_input_motion( const w_input_event* evt )
 {
+	if( evt->input_id == input_id::controller_left_stick )
+	{
+		auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+		b2Vec2 current = ec->body->GetLinearVelocity();
+		current.x += ( player_move_force_s * evt->delta.x ) * w_time::FTS_step_value_s;
+		current.y += ( player_move_force_s * evt->delta.y ) * w_time::FTS_step_value_s;
+		w_vec2 desired = {
+			std::clamp( current.x, -player_move_force_max, player_move_force_max ),
+			std::clamp( current.y, -player_move_force_max, player_move_force_max )
+		};
+
+		ec->body->SetLinearVelocity( { desired.x, desired.y } );
+	}
+
+	if( evt->input_id == input_id::controller_right_stick )
+	{
+		float angle = w_vec2::angle_from_dir( w_vec2::normalize( evt->delta ) );
+		player->set_angle_deep( angle );
+	}
+
 	return true;
 }
 
