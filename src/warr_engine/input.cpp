@@ -57,14 +57,14 @@ void joystick_callback( int jid, int event )
 		//log( "The joystick was disconnected" );
 	}
 
-	engine->input->refresh_controller();
+	engine->input->refresh_gamepad();
 }
 
 // ----------------------------------------------------------------------------
 
 void w_input::init()
 {
-	refresh_controller();
+	refresh_gamepad();
 
 	// set up callback so we know when controllers are connected/disconnected
 	glfwSetJoystickCallback( joystick_callback );
@@ -72,6 +72,7 @@ void w_input::init()
 	// callbacks so we can collect user input
 	glfwSetCursorPosCallback( engine->window->window, mouse_motion_callback );
 
+	// init button states so everything is considered "unpressed" at the start
 	for( auto x = 0; x < input_id::max; ++x )
 	{
 		button_states[ x ] = false;
@@ -83,7 +84,7 @@ void w_input::init()
 
 void w_input::deinit()
 {
-	game_controller = nullptr;
+	gamepad = nullptr;
 }
 
 void w_input::update()
@@ -184,28 +185,28 @@ void w_input::update()
 
 	// update game controller states
 
-	if( game_controller )
+	if( gamepad )
 	{
-		game_controller->update();
+		gamepad->update();
 
 		// update state information and queue events
 
-		game_controller->update_button_state( input_id::controller_button_a, XINPUT_GAMEPAD_A );
-		game_controller->update_button_state( input_id::controller_button_b, XINPUT_GAMEPAD_B );
-		game_controller->update_button_state( input_id::controller_button_x, XINPUT_GAMEPAD_X );
-		game_controller->update_button_state( input_id::controller_button_y, XINPUT_GAMEPAD_Y );
-		game_controller->update_button_state( input_id::controller_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
-		game_controller->update_button_state( input_id::controller_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
-		game_controller->update_button_state( input_id::controller_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
-		game_controller->update_button_state( input_id::controller_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
-		game_controller->update_button_state( input_id::controller_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
-		game_controller->update_button_state( input_id::controller_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
-		game_controller->update_button_state( input_id::controller_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
-		game_controller->update_button_state( input_id::controller_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
+		gamepad->update_button_state( input_id::gamepad_button_a, XINPUT_GAMEPAD_A );
+		gamepad->update_button_state( input_id::gamepad_button_b, XINPUT_GAMEPAD_B );
+		gamepad->update_button_state( input_id::gamepad_button_x, XINPUT_GAMEPAD_X );
+		gamepad->update_button_state( input_id::gamepad_button_y, XINPUT_GAMEPAD_Y );
+		gamepad->update_button_state( input_id::gamepad_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
+		gamepad->update_button_state( input_id::gamepad_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
+		gamepad->update_button_state( input_id::gamepad_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
+		gamepad->update_button_state( input_id::gamepad_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
+		gamepad->update_button_state( input_id::gamepad_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
+		gamepad->update_button_state( input_id::gamepad_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
+		gamepad->update_button_state( input_id::gamepad_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
+		gamepad->update_button_state( input_id::gamepad_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
 
 		auto update_axis_delta = [] ( e_input_id input_id )
 		{
-			w_vec2 delta = engine->input->get_axis_state( input_id, true );
+			w_vec2 delta = engine->input->get_axis_state( input_id );
 
 			if( !delta.is_zero() )
 			{
@@ -218,17 +219,54 @@ void w_input::update()
 			}
 		};
 
-		update_axis_delta( input_id::controller_left_stick );
-		update_axis_delta( input_id::controller_right_stick );
-		update_axis_delta( input_id::controller_left_trigger );
-		update_axis_delta( input_id::controller_right_trigger );
+		update_axis_delta( input_id::gamepad_left_stick );
+		update_axis_delta( input_id::gamepad_right_stick );
+		update_axis_delta( input_id::gamepad_left_trigger );
+		update_axis_delta( input_id::gamepad_right_trigger );
 	}
 
 	// send every accumulated input message to anyone listening
 
 	for( auto& evt : event_queue )
 	{
-		send_event_to_listeners( evt.event_id, &evt );
+		switch( evt.event_id )
+		{
+			case event_id::input_pressed:
+			{
+				if( engine->iir_on_pressed( &evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_held:
+			{
+				if( engine->iir_on_held( &evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_released:
+			{
+				if( engine->iir_on_released( &evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_motion:
+			{
+				if( engine->iir_on_motion( &evt ) )
+				{
+					break;
+				}
+			}
+			break;
+		}
 	}
 
 	event_queue = {};
@@ -282,22 +320,22 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 void w_input::play_rumble( e_rumble_effect effect )
 {
-	if( !game_controller || !game_controller->is_being_used )
+	if( !gamepad || !gamepad->is_being_used )
 	{
 		return;
 	}
 
-	game_controller->play_rumble( effect );
+	gamepad->play_rumble( effect );
 }
 
-void w_input::refresh_controller()
+void w_input::refresh_gamepad()
 {
-	if( game_controller )
+	if( gamepad )
 	{
-		game_controller->play_rumble( rumble_effect::none );
+		gamepad->play_rumble( rumble_effect::none );
 	}
 
-	game_controller = nullptr;
+	gamepad = nullptr;
 
 	// look for an attached xbox controller. the first valid one
 	// we find is the one we use for player input.
@@ -313,7 +351,8 @@ void w_input::refresh_controller()
 			xinput_player_id = pn;
 
 			log( "Using controller : player_id : {}", xinput_player_id );
-			game_controller = std::make_unique<w_game_controller>( xinput_player_id );
+			gamepad = std::make_unique<w_gamepad>( xinput_player_id );
+			break;
 		}
 	}
 }
@@ -392,14 +431,14 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 	these values are updated once per frame.
 */
 
-constexpr float controller_dead_zone = 0.20f;
-constexpr float controller_dead_zone_small = 0.10f;
+constexpr float gamepad_dead_zone = 0.20f;
+constexpr float gamepad_dead_zone_small = 0.10f;
 
 w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 {
-	assert( game_controller );
+	assert( gamepad );
 
-	float dead_zone = ignore_dead_zone ? controller_dead_zone_small : controller_dead_zone;
+	float dead_zone = ignore_dead_zone ? gamepad_dead_zone_small : gamepad_dead_zone;
 
 	//game_controller->update_state();
 
@@ -407,10 +446,10 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 
 	switch( input_id )
 	{
-		case input_id::controller_left_stick:
+		case input_id::gamepad_left_stick:
 		{
-			value.x = glm::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLX / 32767.0f );
-			value.y = glm::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbLY / 32767.0f ) * -1.0f;
+			value.x = glm::max( -1.0f, (float) gamepad->xinput_state.Gamepad.sThumbLX / 32767.0f );
+			value.y = glm::max( -1.0f, (float) gamepad->xinput_state.Gamepad.sThumbLY / 32767.0f ) * -1.0f;
 
 			if( glm::abs( value.x ) < dead_zone )
 			{
@@ -423,10 +462,10 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 		}
 		break;
 
-		case input_id::controller_right_stick:
+		case input_id::gamepad_right_stick:
 		{
-			value.x = glm::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRX / 32767.0f );
-			value.y = glm::max( -1.0f, (float) game_controller->xinput_state.Gamepad.sThumbRY / 32767.0f ) * -1.0f;
+			value.x = glm::max( -1.0f, (float) gamepad->xinput_state.Gamepad.sThumbRX / 32767.0f );
+			value.y = glm::max( -1.0f, (float) gamepad->xinput_state.Gamepad.sThumbRY / 32767.0f ) * -1.0f;
 
 			if( glm::abs( value.x ) < dead_zone || glm::abs( value.y ) < dead_zone )
 			{
@@ -436,15 +475,15 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 		}
 		break;
 
-		case input_id::controller_left_trigger:
+		case input_id::gamepad_left_trigger:
 		{
-			value.x = game_controller->xinput_state.Gamepad.bLeftTrigger / 255.0f;
+			value.x = gamepad->xinput_state.Gamepad.bLeftTrigger / 255.0f;
 		}
 		break;
 
-		case input_id::controller_right_trigger:
+		case input_id::gamepad_right_trigger:
 		{
-			value.x = game_controller->xinput_state.Gamepad.bRightTrigger / 255.0f;
+			value.x = gamepad->xinput_state.Gamepad.bRightTrigger / 255.0f;
 		}
 		break;
 

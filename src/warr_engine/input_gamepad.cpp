@@ -1,13 +1,13 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_game_controller::w_game_controller( int player_id )
+w_gamepad::w_gamepad( int player_id )
 	: player_id( player_id )
 {
 	timer_repeat = std::make_unique<w_timer>( 150 );
 }
 
-void w_game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )
+void w_gamepad::update_button_state( e_input_id input_id, int xinput_button_bit )
 {
 	bool last_state = engine->input->button_states_last_frame[ input_id ];
 
@@ -48,7 +48,7 @@ void w_game_controller::update_button_state( e_input_id input_id, int xinput_but
 
 // updates the internal state of the controller, from xinput
 
-void w_game_controller::update_state()
+void w_gamepad::update_state()
 {
 	// refresh the xinput state for this controller
 
@@ -56,7 +56,7 @@ void w_game_controller::update_state()
 	XInputGetState( player_id, &xinput_state );
 }
 
-void w_game_controller::update()
+void w_gamepad::update()
 {
 	rumble_time_remaining_ms -= engine->time->FTS_step_value_ms;
 	if( rumble_time_remaining_ms <= 0 )
@@ -72,7 +72,7 @@ void w_game_controller::update()
 	update_state();
 }
 
-void w_game_controller::play_rumble( e_rumble_effect effect )
+void w_gamepad::play_rumble( e_rumble_effect effect )
 {
 	int rumble_max = 65535;
 	int intensity = 65535;
@@ -112,7 +112,7 @@ void w_game_controller::play_rumble( e_rumble_effect effect )
 	play_rumble( intensity, duration_ms );
 }
 
-void w_game_controller::play_rumble( int intensity, int ms )
+void w_gamepad::play_rumble( int intensity, int ms )
 {
 	XINPUT_VIBRATION rumbler;
 	rumbler.wLeftMotorSpeed = static_cast<WORD>( intensity );

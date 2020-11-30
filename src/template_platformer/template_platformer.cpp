@@ -10,6 +10,8 @@ void template_platformer::init()
 {
 	w_game::init();
 
+	input_controller = std::make_unique<w_player_input_controller>();
+
 	snd_jump = a_sound::find( "snd_jump" );
 	snd_coin = a_sound::find( "snd_coin" );
 	snd_drop_down = a_sound::find( "snd_drop_down" );
@@ -77,7 +79,7 @@ void template_platformer::load_level( std::string_view level_filename )
 				// player start
 				player = LAYER->add_entity<e_platformer_player>();
 				player->set_position_deep( { tile.pos.x + 8.0f, tile.pos.y + 8.0f }, true );
-				player->set_position( { v_window_hw, tile.pos.y + 8.0f } );
+				player->it_set_position( { v_window_hw, tile.pos.y + 8.0f } );
 
 				// remove tile from map
 				tm_layer->tiles.erase( tm_layer->tiles.begin() + x );

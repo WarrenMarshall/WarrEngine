@@ -33,10 +33,10 @@ void w_layer_mgr::pop()
 	{
 		layer = layer_stack[idx].get();
 
-		if( layer->is_alive() )
+		if( layer->ilc_is_alive() )
 		{
 			layer->pop();
-			layer->set_life_cycle( life_cycle::dead );
+			layer->ilc_set( life_cycle::dead );
 			break;
 		}
 	}
@@ -62,7 +62,7 @@ void w_layer_mgr::update()
 	// remove any dead layers
 	for( size_t x = 0 ; x < layer_stack.size() ; ++x )
 	{
-		if( layer_stack[x]->is_dead() )
+		if( layer_stack[x]->ilc_is_dead() )
 		{
 			layer_stack.erase( layer_stack.begin() + x );
 			x--;
@@ -113,7 +113,7 @@ void w_layer_mgr::draw()
 			// Only UI elements on the topmost layer respond to user input
 			IMGUI->containing_layer_is_topmost = !x;
 
-			if( layer_stack[ x ]->is_alive() )
+			if( layer_stack[ x ]->ilc_is_alive() )
 			{
 				// primary draw call for the layer. uses an optional custom camera.
 				OPENGL->init_view_matrix( layer_stack[ x ]->get_camera() );
@@ -149,6 +149,7 @@ void w_layer_mgr::draw()
 	}
 }
 
+#if 0
 void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 {
 	// ignore user input when engine is paused
@@ -157,7 +158,7 @@ void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 		return;
 	}
 
-	w_input_event* evt = static_cast<w_input_event*>( object );
+	auto evt = static_cast<w_input_event*>( object );
 
 	for( const auto& iter : layer_stack )
 	{
@@ -200,5 +201,5 @@ void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
 			break;
 		}
 	}
-
 }
+#endif

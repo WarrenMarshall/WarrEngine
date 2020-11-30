@@ -62,9 +62,8 @@ extern float ui_canvas_h;
 #include "keyvalues.h"
 #include "config.h"
 
+#include "i_input_receiver.h"
 #include "i_transform.h"
-#include "i_listener.h"
-#include "i_speaker.h"
 #undef min	// fixes dumb compile problem
 #undef max	// fixes dumb compile problem
 #include "datatypes.h"
@@ -80,8 +79,9 @@ extern float ui_canvas_h;
 #include "a_9slice_def.h"
 #include "a_sound.h"
 #include "a_mesh.h"
-#include "input_game_controller.h"
+#include "input_gamepad.h"
 #include "input.h"
+#include "entity_input_controller.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
 #include "ui_control.h"

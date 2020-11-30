@@ -2,7 +2,7 @@
 
 struct platformer_layer : w_layer
 {
-	std::unique_ptr<w_platformer_physics> plat_physics = nullptr;
+	std::unique_ptr<w_platformer_physic_responder> physics_responder = nullptr;
 	a_gradient* sky_gradient = nullptr;
 	a_sound* music_gameplay = nullptr;
 
@@ -13,6 +13,7 @@ struct platformer_layer : w_layer
 	virtual void update() override;
 	virtual void draw() override;
 	virtual void draw_ui_debug() override;
-	virtual bool event_input_pressed( const w_input_event* evt ) override;
 	virtual w_camera* get_camera() override;
+	virtual bool iir_on_pressed( const w_input_event* evt ) override;
+	virtual bool iir_on_motion( const w_input_event* evt ) override;
 };

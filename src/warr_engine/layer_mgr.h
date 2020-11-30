@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_layer_mgr : i_listener
+struct w_layer_mgr// : i_listener
 {
 	/*
 		the layers are stored front-to-back
@@ -45,5 +45,5 @@ struct w_layer_mgr : i_listener
 	void update();
 	void draw();
 
-	virtual void on_listener_event_received( e_event_id event, void* object ) override;
+	//virtual void on_listener_event_received( e_event_id event, void* object ) override;
 };

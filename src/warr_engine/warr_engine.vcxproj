@@ -198,7 +198,9 @@
     <ClCompile Include="file_mem.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="impl_header_only.cpp" />
-    <ClCompile Include="input_game_controller.cpp" />
+    <ClCompile Include="entity_input_controller.cpp" />
+    <ClCompile Include="input_gamepad.cpp" />
+    <ClCompile Include="i_input_receiver.cpp" />
     <ClCompile Include="layer_esc_menu.cpp" />
     <ClCompile Include="master_header.cpp" />
     <ClCompile Include="master_pch.cpp">
@@ -209,8 +211,6 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="file_zip.cpp" />
     <ClCompile Include="i_life_cycle.cpp" />
-    <ClCompile Include="i_speaker.cpp" />
-    <ClCompile Include="i_listener.cpp" />
     <ClCompile Include="i_transform.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
@@ -269,12 +269,14 @@
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="entity_input_controller.h" />
+    <ClInclude Include="i_input_receiver.h" />
     <ClInclude Include="physics_responder.h" />
     <ClInclude Include="render_stats.h" />
     <ClInclude Include="ui_control.h" />
     <ClInclude Include="ui_data_provider.h" />
     <ClInclude Include="warr_engine.h" />
-    <ClInclude Include="input_game_controller.h" />
+    <ClInclude Include="input_gamepad.h" />
     <ClInclude Include="file_zip.h" />
     <ClInclude Include="i_transform.h" />
     <ClInclude Include="layer_esc_menu.h" />
@@ -282,8 +284,6 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="i_life_cycle.h" />
-    <ClInclude Include="i_speaker.h" />
-    <ClInclude Include="i_listener.h" />
     <ClInclude Include="layer.h" />
     <ClInclude Include="datatypes.h" />
     <ClInclude Include="entity.h" />

@@ -18,12 +18,14 @@ void platformer_layer::push()
 
 	engine->window->set_mouse_mode( mouse_mode::locked );
 
-	plat_physics = std::make_unique<w_platformer_physics>();
-	engine->box2d_world->SetContactListener( plat_physics.get() );
+	physics_responder = std::make_unique<w_platformer_physic_responder>();
+	engine->box2d_world->SetContactListener( physics_responder.get() );
+
+	game->input_controller->physics_responder = physics_responder.get();
 
 	auto e = add_entity<w_entity>();
 	e->add_component<ec_emitter>()->init( "background_stars" );
-	e->set_position( { v_window_hw, 256.0f } );
+	e->it_set_position( { v_window_hw, 256.0f } );
 
 	//music_gameplay->play();
 }
@@ -39,10 +41,35 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	plat_physics->handle_user_input();
-	plat_physics->update();
+	physics_responder->handle_user_input();
+	physics_responder->update();
 
 	w_layer::update();
+
+	auto player = LAYER->find_entity_from_tag( "player" );
+
+	if( !player )
+	{
+		return;
+	}
+
+	auto ec = player->get_component<ec_sprite>( component_type::sprite );
+	ec->tex = a_anim_texture::find( "anim_player_idle" );
+
+	auto ec_b2d = player->phys_get_primary_body();
+	w_vec2 vel = w_vec2( ec_b2d->body->GetLinearVelocity() ).from_b2d();
+
+	if( !physics_responder->on_ground() )
+	{
+		ec->tex = a_anim_texture::find( "anim_player_jump" );
+	}
+	else
+	{
+		if( !fequals( vel.x, 0.0f ) )
+		{
+			ec->tex = a_anim_texture::find( "anim_player_run" );
+		}
+	}
 }
 
 void platformer_layer::draw()
@@ -57,14 +84,26 @@ void platformer_layer::draw_ui_debug()
 {
 	RENDER
 		->begin()
-		->draw_string( engine->pixel_font, fmt::format( "on_ground : {}", plat_physics->player_on_ground ), w_rect( 8, 8 ) )
-		->draw_string( engine->pixel_font, fmt::format( "drop_down_blocked : {}", plat_physics->player_drop_down_blocked ), w_rect( 8, 16 ) )
-		->draw_string( engine->pixel_font, fmt::format( "vel : {:.1f}, {:.1f}", plat_physics->vel_x, plat_physics->vel_y ), w_rect( 8, 24 ) )
+		->draw_string( engine->pixel_font, fmt::format( "on_ground : {}", physics_responder->player_on_ground ), w_rect( 8, 8 ) )
+		->draw_string( engine->pixel_font, fmt::format( "drop_down_blocked : {}", physics_responder->player_drop_down_blocked ), w_rect( 8, 16 ) )
+		->draw_string( engine->pixel_font, fmt::format( "vel : {:.1f}, {:.1f}", physics_responder->vel_x, physics_responder->vel_y ), w_rect( 8, 24 ) )
 		->end();
 }
 
-bool platformer_layer::event_input_pressed( const w_input_event* evt )
+w_camera* platformer_layer::get_camera()
 {
+	return game->player_camera;
+}
+
+bool platformer_layer::iir_on_pressed( const w_input_event* evt )
+{
+	if( game->input_controller->iir_on_pressed( evt ) )
+	{
+		return true;
+	}
+
+	auto player = LAYER->find_entity_from_tag( "player" );
+
 	switch( evt->input_id )
 	{
 		case input_id::key_1:
@@ -80,13 +119,17 @@ bool platformer_layer::event_input_pressed( const w_input_event* evt )
 			return true;
 		}
 		break;
-
 	}
 
-	return plat_physics->event_input_pressed( evt );
+	return false;
 }
 
-w_camera* platformer_layer::get_camera()
+bool platformer_layer::iir_on_motion( const w_input_event* evt )
 {
-	return game->player_camera;
+	if( game->input_controller->iir_on_motion( evt ) )
+	{
+		return true;
+	}
+
+	return false;
 }

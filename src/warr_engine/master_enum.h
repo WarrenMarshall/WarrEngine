@@ -50,26 +50,26 @@ enum_end
 
 enum_begin( input_id, ubyte )
 	invalid = 0,
-	controller_button_dpad_up,
-	controller_button_dpad_down,
-	controller_button_dpad_left,
-	controller_button_dpad_right,
-	controller_button_start,
-	controller_button_guide,
-	controller_button_back,
-	controller_button_left_thumb,		// this is a button because you can click the stick in
-	controller_button_right_thumb,
-	controller_button_left_shoulder,
-	controller_button_right_shoulder,
-	controller_button_a,
-	controller_button_b,
-	controller_button_x,
-	controller_button_y,
+	gamepad_button_dpad_up,
+	gamepad_button_dpad_down,
+	gamepad_button_dpad_left,
+	gamepad_button_dpad_right,
+	gamepad_button_start,
+	gamepad_button_guide,
+	gamepad_button_back,
+	gamepad_button_left_thumb,		// this is a button because you can click the stick in
+	gamepad_button_right_thumb,
+	gamepad_button_left_shoulder,
+	gamepad_button_right_shoulder,
+	gamepad_button_a,
+	gamepad_button_b,
+	gamepad_button_x,
+	gamepad_button_y,
 
-	controller_left_stick,				// this is for reading the axis movement values
-	controller_right_stick,
-	controller_left_trigger,
-	controller_right_trigger,
+	gamepad_left_stick,				// this is for reading the axis movement values
+	gamepad_right_stick,
+	gamepad_left_trigger,
+	gamepad_right_trigger,
 
 	mouse_button_left,
 	mouse_button_middle,
@@ -265,6 +265,7 @@ enum_begin( component_type, unsigned )	// bitfield
 	b2d_kinematic = 64,
 	tilemap = 128,
 	mesh = 256,
+	input_controller = 512,
 enum_end
 
 // ----------------------------------------------------------------------------

@@ -25,12 +25,7 @@ void w_timer::update()
 */
 bool w_timer::is_elapsed()
 {
-	if( time_remaining_ms < 0.f )
-	{
-		return true;
-	}
-
-	return false;
+	return ( time_remaining_ms < 0.f );
 }
 
 /*
@@ -40,13 +35,13 @@ bool w_timer::is_elapsed()
 */
 int w_timer::get_elapsed_count()
 {
-	int count = 0;
+	int elapsed_counter = 0;
 
 	while( time_remaining_ms < 0.f )
 	{
-		count++;
+		elapsed_counter++;
 		time_remaining_ms += interval_ms;
 	}
 
-	return count;
+	return elapsed_counter;
 }

@@ -136,7 +136,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				else if( type == "gradient" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "alignment" ) );
-					// #todo : this fails if the colors are prefixed with # instead of $'
 					assert_key_required( iter_ad->does_key_exist( "colors" ) );
 
 					auto asset_ptr = a_gradient::find( tag, b_silent( true ) );
@@ -590,7 +589,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else
 						{
-							log_warning( "Unknown key read from config block : [{} -> \"{}\"]", tag, key );
+							log_warning( "Unknown key read from config block : [emitter tag:{} / key:\"{}\"]", tag, key );
 						}
 					}
 

@@ -21,7 +21,7 @@ void w_entity::update_from_physics()
 				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
 				float angle = edb->body->GetAngle();
 
-				set_transform( { position.x, position.y }, glm::degrees( angle ), scale );
+				it_set( { position.x, position.y }, glm::degrees( angle ), scale );
 				break;
 			}
 		}
@@ -84,7 +84,7 @@ void w_entity::draw()
 void w_entity::set_position_deep( w_vec2 pos, bool reset_velocity )
 {
 	// entity
-	set_position( pos );
+	it_set_position( pos );
 
 	// physics components
 	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
@@ -106,7 +106,7 @@ void w_entity::set_position_deep( w_vec2 pos, bool reset_velocity )
 void w_entity::set_angle_deep( float angle )
 {
 	// entity
-	set_angle( angle );
+	it_set_angle( angle );
 
 	// physics components
 	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
@@ -180,12 +180,12 @@ void w_entity::phys_set_density( float density )
 bool w_entity::can_be_deleted()
 {
 	// still alive, can't delete
-	if( is_alive() )
+	if( ilc_is_alive() )
 	{
 		return false;
 	}
 
-	if( is_dying() )
+	if( ilc_is_dying() )
 	{
 		// entity is dying, but can't be deleted until all
 		// components are dead
@@ -214,11 +214,11 @@ void w_entity::set_collision( bitflags layer, bitflags collides_with )
 	this->collides_with = collides_with;
 }
 
-void w_entity::set_life_cycle( e_life_cycle life_cycle )
+void w_entity::ilc_set( e_life_cycle life_cycle )
 {
-	i_life_cycle::set_life_cycle( life_cycle );
+	i_life_cycle::ilc_set( life_cycle );
 
-	if( !is_alive() )
+	if( !ilc_is_alive() )
 	{
 		collision_layer = 0;
 		collides_with = 0;
@@ -226,20 +226,20 @@ void w_entity::set_life_cycle( e_life_cycle life_cycle )
 
 	for( const auto& iter : components )
 	{
-		iter->set_life_cycle( life_cycle );
+		iter->ilc_set( life_cycle );
 	}
 }
 
 // ----------------------------------------------------------------------------
 
-void w_entity_fx::update()
+void w_entity_transient::update()
 {
 	w_entity::update();
 
 	// once all of the components have died, the fx container entity can die.
 	if( components.empty() )
 	{
-		set_life_cycle( life_cycle::dying );
+		ilc_set( life_cycle::dying );
 	}
 }
 

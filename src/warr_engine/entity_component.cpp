@@ -26,7 +26,7 @@ w_entity_component::w_entity_component( w_entity* parent_entity )
 */
 bool w_entity_component::is_fully_dead()
 {
-	if( is_alive() || life_timer )
+	if( ilc_is_alive() || life_timer )
 	{
 		return false;
 	}
@@ -44,16 +44,16 @@ void w_entity_component::update()
 		if( life_timer->is_elapsed() )
 		{
 			life_timer = nullptr;
-			set_life_cycle( life_cycle::dying );
+			ilc_set( life_cycle::dying );
 		}
 	}
 
 	// if this component is trying to die AND it meets the requirements to
 	// be fully dead, then mark it dead
 
-	if( is_dying() && is_fully_dead() )
+	if( ilc_is_dying() && is_fully_dead() )
 	{
-		set_life_cycle( life_cycle::dead );
+		ilc_set( life_cycle::dead );
 	}
 
 	pos_interp = w_vec2::zero;
@@ -83,7 +83,7 @@ w_entity_component* ec_sprite::init( const std::string_view tex_tag )
 
 void ec_sprite::draw()
 {
-	if( is_dead() )
+	if( ilc_is_dead() )
 	{
 		return;
 	}
@@ -109,7 +109,20 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 	emitter->set_params( a_emitter_params::find( params_tag ) );
 	emitter->parent_component = this;
 
-	post_init();
+	if( emitter->params->needs_warm_up )
+	{
+		// particle warm ups require the parent and component transforms to be applied
+		// so the warmed up particles spawn at the right position in the world.
+
+		MATRIX
+			->push()
+			->add_transform( parent_entity->pos, parent_entity->angle, parent_entity->scale )
+			->add_transform( pos, angle, scale );
+
+		emitter->warm_up();
+
+		MATRIX->pop();
+	}
 
 	return this;
 }
@@ -118,7 +131,7 @@ bool ec_emitter::is_fully_dead()
 {
 	if( w_entity_component::is_fully_dead() )
 	{
-		if( is_dying() && emitter->particle_pool->num_alive == 0 )
+		if( ilc_is_dying() && emitter->particle_pool->num_alive == 0 )
 		{
 			return true;
 		}
@@ -129,7 +142,7 @@ bool ec_emitter::is_fully_dead()
 
 void ec_emitter::draw()
 {
-	if( is_dead() )
+	if( ilc_is_dead() )
 	{
 		return;
 	}
@@ -151,7 +164,7 @@ void ec_emitter::update()
 {
 	w_entity_component::update();
 
-	if( is_dead() )
+	if( ilc_is_dead() )
 	{
 		return;
 	}
@@ -160,30 +173,15 @@ void ec_emitter::update()
 	emitter->particle_pool->update();
 }
 
-void ec_emitter::set_life_cycle( e_life_cycle life_cycle )
+void ec_emitter::ilc_set( e_life_cycle life_cycle )
 {
-	i_life_cycle::set_life_cycle( life_cycle );
+	i_life_cycle::ilc_set( life_cycle );
 
-	if( is_dying() )
+	if( ilc_is_dying() )
 	{
 		// setting the max to zero will cause the emitter to stop spawning new particles.
 		emitter->max_particles_alive = 0;
 	}
-}
-
-void ec_emitter::post_init()
-{
-	// particle warm ups require the parent and component transforms to be applied
-	// so the warmed up particles spawn at the right position in the world.
-
-	MATRIX
-		->push()
-		->add_transform( parent_entity->pos, parent_entity->angle, parent_entity->scale )
-		->add_transform( pos, angle, scale );
-
-	emitter->post_init();
-
-	MATRIX->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -209,7 +207,7 @@ void ec_sound::draw()
 	}
 	snd = nullptr;
 
-	set_life_cycle( life_cycle::dying );
+	ilc_set( life_cycle::dying );
 }
 
 // ----------------------------------------------------------------------------
@@ -616,7 +614,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 ec_mesh::ec_mesh( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::sprite;
+	type |= component_type::mesh;
 }
 
 w_entity_component* ec_mesh::init( const std::string_view mesh_tag )
@@ -627,7 +625,7 @@ w_entity_component* ec_mesh::init( const std::string_view mesh_tag )
 
 void ec_mesh::draw()
 {
-	if( is_dead() )
+	if( ilc_is_dead() )
 	{
 		return;
 	}

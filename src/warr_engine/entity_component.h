@@ -23,7 +23,6 @@ struct w_entity_component : i_life_cycle, i_transform
 	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw() {}
 	virtual void update();
-	virtual void post_init() {}
 
 	virtual void set_life_timer( int life_in_ms );
 };
@@ -54,11 +53,10 @@ struct ec_emitter : w_entity_component
 	ec_emitter( w_entity* parent_entity );
 
 	w_entity_component* init( const std::string_view params_tag );
-	virtual void set_life_cycle( e_life_cycle life_cycle ) override;
+	virtual void ilc_set( e_life_cycle life_cycle ) override;
 	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
-	virtual void post_init() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -186,4 +184,3 @@ struct ec_mesh : w_entity_component
 	w_entity_component* init( const std::string_view mesh_tag );
 	virtual void draw() override;
 };
-

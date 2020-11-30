@@ -18,7 +18,6 @@ struct w_particle_emitter : i_transform
 	float particles_to_spawn_accum = 0.0f;
 
 	void set_params( a_emitter_params* params );
-	virtual void post_init();
 	void update();
 	void spawn_particle();
 	void warm_up();

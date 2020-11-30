@@ -1,6 +1,6 @@
 #pragma once
 
-struct a_emitter_params : i_asset, i_speaker
+struct a_emitter_params : i_asset//, i_speaker
 {
 	declare_find_func( a_emitter_params )
 
@@ -30,9 +30,6 @@ struct a_emitter_params : i_asset, i_speaker
 		char needs_warm_up : 1;
 		char is_one_shot : 1;
 	};
-
-	//bool b_needs_warm_up = true;		// should this emitter "warm up" when first created?
-	//bool b_one_shot = false;			// emitter releases "s_spawn_per_sec" particles and stops.
 
 	a_emitter_params();
 };

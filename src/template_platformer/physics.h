@@ -2,9 +2,9 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_platformer_physics : w_contact_listener, w_physics
+struct w_platformer_physic_responder : w_physics_responder
 {
-	w_platformer_physics();
+	w_platformer_physic_responder();
 
 	virtual void BeginContact( b2Contact* contact ) override;
 	virtual void EndContact( b2Contact* contact ) override;
@@ -15,13 +15,12 @@ struct w_platformer_physics : w_contact_listener, w_physics
 	float vel_x = 0.0f;
 	float vel_y = 0.0f;
 
-	_NODISCARD bool can_jump() const;
-	_NODISCARD bool in_air() const;
-	_NODISCARD bool on_ground() const;
-	_NODISCARD bool can_drop_down() const;
+	[[nodiscard]] bool can_jump() const;
+	[[nodiscard]] bool in_air() const;
+	[[nodiscard]] bool on_ground() const;
+	[[nodiscard]] bool can_drop_down() const;
 	void hit_ground();
 	void handle_user_input();
 
 	virtual void update() override;
-	virtual bool event_input_pressed( const w_input_event* evt ) override;
 };

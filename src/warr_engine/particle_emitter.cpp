@@ -21,17 +21,9 @@ void w_particle_emitter::set_params( a_emitter_params* params )
 	particle_pool->parent_emitter = this;
 }
 
-void w_particle_emitter::post_init()
-{
-	if( params->needs_warm_up )
-	{
-		warm_up();
-	}
-}
-
 void w_particle_emitter::update()
 {
-	if( !parent_component->is_alive() )
+	if( !parent_component->ilc_is_alive() )
 	{
 		return;
 	}
@@ -82,14 +74,13 @@ void w_particle_emitter::update()
 	// a one-shot particle system spawns all of it's particles at once and then dies
 	if( params->is_one_shot )
 	{
-		parent_component->set_life_cycle( life_cycle::dying );
+		parent_component->ilc_set( life_cycle::dying );
 	}
 }
 
 void w_particle_emitter::spawn_particle()
 {
 	w_particle* p = particle_pool->get_next_particle();
-	//p = new( p ) w_particle();
 	*p = {};
 
 	// particle spawn locations are determined in stages. particles are different

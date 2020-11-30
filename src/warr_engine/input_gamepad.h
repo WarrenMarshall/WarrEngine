@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_game_controller
+struct w_gamepad
 {
 	std::unique_ptr<w_timer> timer_repeat = nullptr;
 	int player_id = -1;
@@ -18,7 +18,7 @@ struct w_game_controller
 	*/
 	bool is_being_used = false;
 
-	w_game_controller( int player_id );
+	w_gamepad( int player_id );
 
 	void update_button_state( e_input_id input_id, int xinput_button_bit );
 	void update_state();

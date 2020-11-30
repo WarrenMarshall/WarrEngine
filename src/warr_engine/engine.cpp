@@ -514,16 +514,11 @@ void w_engine::init()
 	opengl = std::make_unique<w_opengl>();
 	config_vars = std::make_unique<w_keyvalues>();
 
-	input->add_listener( this );
-	input->add_listener( layer_mgr.get() );
-
 	fs->init();
 }
 
 void w_engine::deinit()
 {
-	input->remove_listener( this );
-	input->remove_listener( layer_mgr.get() );
 }
 
 void w_engine::draw()
@@ -659,80 +654,80 @@ void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 	log( "Pass: {} / {} assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
 }
 
-void w_engine::on_listener_event_received( e_event_id event, void* object )
+bool w_engine::iir_on_released( const w_input_event* evt )
 {
-	auto evt = static_cast<w_input_event*>( object );
-
-	switch( event )
+	switch( evt->input_id )
 	{
-		case event_id::input_released:
+		case input_id::key_pause:
 		{
-			switch( evt->input_id )
+			toggle_pause();
+			return true;
+		}
+		break;
+
+		case input_id::key_f11:
+		{
+			window->toggle_fullscreen();
+			return true;
+		}
+		break;
+
+		case input_id::key_left_bracket:
+		{
+			time->dilation -= 0.1f;
+			time->dilation = glm::max( time->dilation, 0.1f );
+
+			if( engine->input->is_shift_down() )
 			{
-				case input_id::key_pause:
-				{
-					toggle_pause();
-				}
-				break;
-
-				case input_id::key_f11:
-				{
-					window->toggle_fullscreen();
-				}
-				break;
-
-				case input_id::key_left_bracket:
-				{
-					time->dilation -= 0.1f;
-					time->dilation = glm::max( time->dilation, 0.1f );
-
-					if( engine->input->is_shift_down() )
-					{
-						time->dilation = 1.0f;
-					}
-				}
-				break;
-
-				case input_id::key_right_bracket:
-				{
-					time->dilation += 0.1f;
-
-					if( engine->input->is_shift_down() )
-					{
-						time->dilation = 5.0f;
-					}
-				}
-				break;
-
- 				case input_id::key_enter:
-				{
-					if( engine->input->is_alt_down() )
-					{
-						window->toggle_fullscreen();
-					}
-				}
-				break;
-
-				case input_id::key_esc:
-				{
-					if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
-					{
-						layer_mgr->pop();
-					}
-					else
-					{
-						layer_mgr->push<layer_esc_menu>();
-					}
-				}
-				break;
-
-				case input_id::key_f5:
-				{
-					RENDER->show_physics_debug = !RENDER->show_physics_debug;
-				}
-				break;
+				time->dilation = 1.0f;
 			}
+			return true;
+		}
+		break;
+
+		case input_id::key_right_bracket:
+		{
+			time->dilation += 0.1f;
+
+			if( engine->input->is_shift_down() )
+			{
+				time->dilation = 5.0f;
+			}
+			return true;
+		}
+		break;
+
+ 		case input_id::key_enter:
+		{
+			if( engine->input->is_alt_down() )
+			{
+				window->toggle_fullscreen();
+			}
+			return true;
+		}
+		break;
+
+		case input_id::key_esc:
+		{
+			if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
+			{
+				layer_mgr->pop();
+			}
+			else
+			{
+				layer_mgr->push<layer_esc_menu>();
+			}
+			return true;
+		}
+		break;
+
+		case input_id::key_f5:
+		{
+			RENDER->show_physics_debug = !RENDER->show_physics_debug;
+			return true;
 		}
 		break;
 	}
+
+	return false;
 }

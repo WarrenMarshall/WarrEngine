@@ -100,6 +100,7 @@ void twinstick_layer::update()
 
 	trace_hit_location = w_vec2::zero;
 
+	/*
 	auto player = LAYER->find_entity_from_tag( "player" );
 	if( player )
 	{
@@ -109,6 +110,7 @@ void twinstick_layer::update()
 			trace_hit_location = hit.result.pos;
 		}
 	}
+	*/
 
 	//twinstick_physics->handle_user_input( player );
 	//twinstick_physics->update();

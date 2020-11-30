@@ -14,7 +14,7 @@ struct w_input_event
 
 // ----------------------------------------------------------------------------
 
-struct w_input : i_speaker
+struct w_input// : i_speaker
 {
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
@@ -27,7 +27,7 @@ struct w_input : i_speaker
 	// where the mouse currently sits in the virtual window
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );
 
-	std::unique_ptr<w_game_controller> game_controller = nullptr;
+	std::unique_ptr<w_gamepad> gamepad = nullptr;
 
 	/*
 		this is set in real time, as input is collected. we need to
@@ -53,5 +53,5 @@ struct w_input : i_speaker
 
 	void update_button_state( e_input_id input_id, int glfw_state );
 	void play_rumble( e_rumble_effect effect );
-	void refresh_controller();
+	void refresh_gamepad();
 };

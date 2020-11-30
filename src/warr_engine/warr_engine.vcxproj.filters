@@ -79,12 +79,6 @@
     <ClCompile Include="i_life_cycle.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="i_listener.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="i_speaker.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="i_transform.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -92,9 +86,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="input_game_controller.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="keyvalues.cpp">
@@ -205,6 +196,15 @@
     <ClCompile Include="physics_responder.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="input_gamepad.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="entity_input_controller.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="i_input_receiver.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="a_9slice_def.h">
@@ -277,12 +277,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="i_transform.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="i_speaker.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="i_listener.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="i_life_cycle.h">
@@ -384,9 +378,6 @@
     <ClInclude Include="keyvalues.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="input_game_controller.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="a_subtexture.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -415,6 +406,15 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="physics_responder.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="input_gamepad.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="entity_input_controller.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="i_input_receiver.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

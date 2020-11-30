@@ -2,7 +2,7 @@
 
 #include "cache_assets.h"
 
-struct w_engine : i_listener
+struct w_engine : i_input_receiver
 {
 	static bool init_game_engine( int argc, char* argv [] );
 	static void deinit_game_engine();
@@ -63,6 +63,8 @@ struct w_engine : i_listener
 	[[nodiscard]] w_range find_range_from_symbol( const std::string_view str, w_range def_value = w_range( 0, 1 ) );
 	[[nodiscard]] w_vec2 find_vec2_from_symbol( const std::string_view str, w_vec2 def_value = w_vec2( 0, 0 ) );
 
+	virtual bool iir_on_released( const w_input_event* evt ) override;
+
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
 	std::unique_ptr<w_time> time = nullptr;
 	std::unique_ptr<w_cache_assets> asset_cache = nullptr;
@@ -74,6 +76,4 @@ struct w_engine : i_listener
 	std::unique_ptr<w_file_system> fs = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
 	std::unique_ptr<w_keyvalues> config_vars = nullptr;
-
-	virtual void on_listener_event_received( e_event_id event, void* object ) override;
 };

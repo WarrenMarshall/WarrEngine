@@ -15,8 +15,8 @@ struct i_transform
 	// scale
 	float scale = 1.0f;
 
-	virtual void set_transform( w_vec2 pos, float angle, float scale );
-	virtual void set_position( w_vec2 pos );
-	virtual void set_angle( float angle );
-	virtual void set_scale( float scale );
+	void it_set( w_vec2 pos, float angle, float scale );
+	void it_set_position( w_vec2 pos );
+	void it_set_angle( float angle );
+	void it_set_scale( float scale );
 };
