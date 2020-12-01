@@ -656,77 +656,73 @@ void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 
 bool w_engine::iir_on_released( const w_input_event* evt )
 {
-	switch( evt->input_id )
+	// toggle engine pause
+	if( evt->input_id == input_id::key_pause )
 	{
-		case input_id::key_pause:
-		{
-			toggle_pause();
-			return true;
-		}
-		break;
+		toggle_pause();
+		return true;
+	}
 
-		case input_id::key_f11:
+	// slow down game clock
+	if( evt->input_id == input_id::key_left_bracket )
+	{
+		time->dilation -= 0.1f;
+		time->dilation = glm::max( time->dilation, 0.1f );
+
+		if( engine->input->is_shift_down() )
+		{
+			time->dilation = 1.0f;
+		}
+		return true;
+	}
+
+	// speed up game clock
+	if( evt->input_id == input_id::key_right_bracket )
+	{
+		time->dilation += 0.1f;
+
+		if( engine->input->is_shift_down() )
+		{
+			time->dilation = 5.0f;
+		}
+		return true;
+	}
+
+	// toggle full screen
+	if( evt->input_id == input_id::key_f11 )
+	{
+		window->toggle_fullscreen();
+		return true;
+	}
+
+ 	if( evt->input_id == input_id::key_enter )
+	{
+		if( engine->input->is_alt_down() )
 		{
 			window->toggle_fullscreen();
-			return true;
 		}
-		break;
+		return true;
+	}
 
-		case input_id::key_left_bracket:
+	// toggle esc menu
+	if( evt->input_id == input_id::key_esc )
+	{
+		if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
 		{
-			time->dilation -= 0.1f;
-			time->dilation = glm::max( time->dilation, 0.1f );
-
-			if( engine->input->is_shift_down() )
-			{
-				time->dilation = 1.0f;
-			}
-			return true;
+			layer_mgr->pop();
 		}
-		break;
-
-		case input_id::key_right_bracket:
+		else
 		{
-			time->dilation += 0.1f;
-
-			if( engine->input->is_shift_down() )
-			{
-				time->dilation = 5.0f;
-			}
-			return true;
+			layer_mgr->push<layer_esc_menu>();
 		}
-		break;
+		return true;
+	}
 
- 		case input_id::key_enter:
-		{
-			if( engine->input->is_alt_down() )
-			{
-				window->toggle_fullscreen();
-			}
-			return true;
-		}
-		break;
-
-		case input_id::key_esc:
-		{
-			if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
-			{
-				layer_mgr->pop();
-			}
-			else
-			{
-				layer_mgr->push<layer_esc_menu>();
-			}
-			return true;
-		}
-		break;
-
-		case input_id::key_f5:
-		{
-			RENDER->show_physics_debug = !RENDER->show_physics_debug;
-			return true;
-		}
-		break;
+	// toggle debug physics drawing
+	if( evt->input_id == input_id::key_f5 )
+	{
+		RENDER->show_physics_debug = !RENDER->show_physics_debug;
+		return true;
 	}
 
 	return false;

@@ -5,6 +5,8 @@
 
 bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
 {
+	// movement left/right
+
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		auto phys_responder = (w_platformer_physic_responder*) game->physics_responder.get();
@@ -43,54 +45,52 @@ bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
 
 bool w_player_input_controller::iir_on_pressed( const w_input_event* evt )
 {
-	switch( evt->input_id )
+	// jump
+
+	if( evt->input_id == input_id::gamepad_button_a )
 	{
-		case input_id::gamepad_button_a:
+		auto phys_responder = (w_platformer_physic_responder*) game->physics_responder.get();
+		auto player = LAYER->find_entity_from_tag( ( "player" ) );
+
+		if( phys_responder->can_jump() )
 		{
-			auto phys_responder = (w_platformer_physic_responder*) game->physics_responder.get();
-			auto player = LAYER->find_entity_from_tag( ( "player" ) );
+			phys_responder->timer_jump_limiter->reset();
 
-			if( phys_responder->can_jump() )
+			w_vec2 left_stick = engine->input->get_axis_state( input_id::gamepad_left_stick );
+
+			auto ec = player->phys_get_primary_body();
+
+			float dir_modifier = 1.0f;
+			if( left_stick.y > player_drop_down_normal_tolerance )
 			{
-				phys_responder->timer_jump_limiter->reset();
-
-				w_vec2 left_stick = engine->input->get_axis_state( input_id::gamepad_left_stick );
-
-				auto ec = player->phys_get_primary_body();
-
-				float dir_modifier = 1.0f;
-				if( left_stick.y > player_drop_down_normal_tolerance )
+				if( phys_responder->can_drop_down() )
 				{
-					if( phys_responder->can_drop_down() )
-					{
-						dir_modifier = -0.25f;
-						auto pos = ec->body->GetPosition();
-						ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_base_radius * 1.5f ) }, 0.0f );
-					}
-					else
-					{
-						dir_modifier = 0.0f;
-					}
+					dir_modifier = -0.25f;
+					auto pos = ec->body->GetPosition();
+					ec->body->SetTransform( { pos.x, pos.y + to_b2d( player_base_radius * 1.5f ) }, 0.0f );
 				}
-
-				if( dir_modifier > 0.0f )
+				else
 				{
-					game->snd_jump->play();
-
+					dir_modifier = 0.0f;
 				}
-
-				if( dir_modifier < 0.0f )
-				{
-					game->snd_drop_down->play();
-				}
-
-				float force_final = ec->body->GetMass() * ( -player_jump_force * dir_modifier ) / ( 1.0f / w_time::FTS_desired_frames_per_second );
-				ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
-
-				return true;
 			}
+
+			if( dir_modifier > 0.0f )
+			{
+				game->snd_jump->play();
+
+			}
+
+			if( dir_modifier < 0.0f )
+			{
+				game->snd_drop_down->play();
+			}
+
+			float force_final = ec->body->GetMass() * ( -player_jump_force * dir_modifier ) / ( 1.0f / w_time::FTS_desired_frames_per_second );
+			ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
+
+			return true;
 		}
-		break;
 	}
 
 	return false;

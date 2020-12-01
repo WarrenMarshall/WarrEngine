@@ -14,7 +14,7 @@ struct template_platformer : w_game
 
 	a_sound* music_main_menu = nullptr;
 
-	std::unique_ptr<w_player_input_controller> input_controller = nullptr;
+	std::unique_ptr<w_player_input_controller> player_input_controller = nullptr;
 
 	std::vector<a_subtexture*> tile_set_subtex;
 

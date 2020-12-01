@@ -94,26 +94,21 @@ w_camera* platformer_layer::get_camera()
 
 bool platformer_layer::iir_on_pressed( const w_input_event* evt )
 {
-	if( game->input_controller->iir_on_pressed( evt ) )
+	if( game->player_input_controller->iir_on_pressed( evt ) )
 	{
 		return true;
 	}
 
-	switch( evt->input_id )
+	if( evt->input_id == input_id::key_1 )
 	{
-		case input_id::key_1:
-		{
-			game->player->set_position_deep( engine->input->mouse_vwindow_pos, true );
-			return true;
-		}
-		break;
+		game->player->set_position_deep( engine->input->mouse_vwindow_pos, true );
+		return true;
+	}
 
-		case input_id::key_n:
-		{
-			game->spawn_coins();
-			return true;
-		}
-		break;
+	if( evt->input_id == input_id::key_n )
+	{
+		game->spawn_coins();
+		return true;
 	}
 
 	return false;
@@ -121,7 +116,7 @@ bool platformer_layer::iir_on_pressed( const w_input_event* evt )
 
 bool platformer_layer::iir_on_motion( const w_input_event* evt )
 {
-	if( game->input_controller->iir_on_motion( evt ) )
+	if( game->player_input_controller->iir_on_motion( evt ) )
 	{
 		return true;
 	}

@@ -10,7 +10,7 @@ void template_platformer::init()
 {
 	w_game::init();
 
-	input_controller = std::make_unique<w_player_input_controller>();
+	player_input_controller = std::make_unique<w_player_input_controller>();
 
 	snd_jump = a_sound::find( "snd_jump" );
 	snd_coin = a_sound::find( "snd_coin" );
