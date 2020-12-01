@@ -2,7 +2,6 @@
 
 struct platformer_layer : w_layer
 {
-	std::unique_ptr<w_platformer_physic_responder> physics_responder = nullptr;
 	a_gradient* sky_gradient = nullptr;
 	a_sound* music_gameplay = nullptr;
 

@@ -6,6 +6,8 @@ void layer_esc_menu::push()
 {
 	w_layer::push();
 
+	blocks_further_input = true;
+
 	save_mouse_mode = engine->window->mouse_mode;
 	engine->window->set_mouse_mode( mouse_mode::os );
 

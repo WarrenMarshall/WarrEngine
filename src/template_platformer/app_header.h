@@ -28,6 +28,7 @@ static unsigned clayer_coin = clayer_bits.next();
 // forward declarations
 
 struct w_player_input_controller;
+struct w_platformer_physic_responder;
 
 // ----------------------------------------------------------------------------
 

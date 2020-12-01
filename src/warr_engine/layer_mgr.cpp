@@ -149,57 +149,74 @@ void w_layer_mgr::draw()
 	}
 }
 
-#if 0
-void w_layer_mgr::on_listener_event_received( e_event_id event, void* object )
+bool w_layer_mgr::iir_on_motion( const w_input_event* evt )
 {
-	// ignore user input when engine is paused
-	if( engine->is_paused )
-	{
-		return;
-	}
-
-	auto evt = static_cast<w_input_event*>( object );
-
 	for( const auto& iter : layer_stack )
 	{
-		switch( evt->event_id )
+		if( iter->iir_on_motion( evt ) )
 		{
-			case event_id::input_motion:
-			{
-				if( iter->event_input_motion( evt ) )
-				{
-					break;
-				}
-			}
-			break;
+			return true;
+		}
 
-			case event_id::input_pressed:
-			{
-				if( iter->event_input_pressed( evt ) )
-				{
-					break;
-				}
-			}
-			break;
-
-			case event_id::input_held:
-			{
-				if( iter->event_input_held( evt ) )
-				{
-					break;
-				}
-			}
-			break;
-
-			case event_id::input_released:
-			{
-				if( iter->event_input_released( evt ) )
-				{
-					break;
-				}
-			}
+		if( iter->blocks_further_input )
+		{
 			break;
 		}
 	}
+
+	return false;
 }
-#endif
+
+bool w_layer_mgr::iir_on_pressed( const w_input_event* evt )
+{
+	for( const auto& iter : layer_stack )
+	{
+		if( iter->iir_on_pressed( evt ) )
+		{
+			return true;
+		}
+
+		if( iter->blocks_further_input )
+		{
+			break;
+		}
+	}
+
+	return false;
+}
+
+bool w_layer_mgr::iir_on_held( const w_input_event* evt )
+{
+	for( const auto& iter : layer_stack )
+	{
+		if( iter->iir_on_held( evt ) )
+		{
+			return true;
+		}
+
+		if( iter->blocks_further_input )
+		{
+			break;
+		}
+	}
+
+	return false;
+}
+
+bool w_layer_mgr::iir_on_released( const w_input_event* evt )
+{
+	for( const auto& iter : layer_stack )
+	{
+		if( iter->iir_on_released( evt ) )
+		{
+			return true;
+		}
+
+		if( iter->blocks_further_input )
+		{
+			break;
+		}
+	}
+
+	return false;
+}

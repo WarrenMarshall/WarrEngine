@@ -14,10 +14,11 @@ struct w_input_event
 
 // ----------------------------------------------------------------------------
 
-struct w_input// : i_speaker
+struct w_input
 {
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
+	const size_t event_queue_max_size = 8;
 	std::vector<w_input_event> event_queue;
 	std::unique_ptr<w_timer> timer_repeat = nullptr;
 

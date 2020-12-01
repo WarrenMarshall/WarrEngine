@@ -6,6 +6,8 @@ struct template_platformer : w_game
 {
 	template_platformer( const char* name );
 
+	std::unique_ptr<w_platformer_physic_responder> physics_responder = nullptr;
+
 	a_sound* snd_jump = nullptr;
 	a_sound* snd_coin = nullptr;
 	a_sound* snd_drop_down = nullptr;

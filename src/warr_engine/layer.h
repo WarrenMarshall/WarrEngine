@@ -5,9 +5,11 @@ struct w_layer : i_life_cycle, i_input_receiver
 	std::vector<std::unique_ptr<w_entity>> entities;
 	w_imgui_data_provider* ui_data_provider = nullptr;
 
-	// indicates that this layer completely covers and
-	// obscures the layers below it in the stack.
+	// if true, this layer completely covers and obscures the layers below it in the stack.
 	bool draws_completely_solid = false;
+
+	// if true, the layers below this one can't receive user input
+	bool blocks_further_input = false;
 
 	virtual ~w_layer() = default;
 

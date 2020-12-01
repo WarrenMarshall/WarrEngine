@@ -86,10 +86,6 @@ void w_platformer_physic_responder::hit_ground()
 	}
 }
 
-void w_platformer_physic_responder::handle_user_input()
-{
-}
-
 void w_platformer_physic_responder::update()
 {
 	timer_jump_limiter->update();

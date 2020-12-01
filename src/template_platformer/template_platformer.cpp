@@ -47,7 +47,8 @@ void template_platformer::reset_layer_stack_to_main_menu()
 
 void template_platformer::load_level( std::string_view level_filename )
 {
-	ec_b2d_body* ec = nullptr;
+	physics_responder = std::make_unique<w_platformer_physic_responder>();
+	engine->box2d_world->SetContactListener( physics_responder.get() );
 
 	// ----------------------------------------------------------------------------
 	// world geometry

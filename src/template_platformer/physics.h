@@ -20,7 +20,6 @@ struct w_platformer_physic_responder : w_physics_responder
 	[[nodiscard]] bool on_ground() const;
 	[[nodiscard]] bool can_drop_down() const;
 	void hit_ground();
-	void handle_user_input();
 
 	virtual void update() override;
 };

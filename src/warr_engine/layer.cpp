@@ -97,6 +97,5 @@ w_entity* w_layer::find_entity_from_tag( const char* tag )
 		}
 	}
 
-	assert( false );	// this really shouldn't happen
 	return nullptr;
 }

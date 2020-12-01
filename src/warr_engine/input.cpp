@@ -64,6 +64,9 @@ void joystick_callback( int jid, int event )
 
 void w_input::init()
 {
+	// minimize memory reallocations by over reserving the queue
+	event_queue.reserve( event_queue_max_size );
+
 	refresh_gamepad();
 
 	// set up callback so we know when controllers are connected/disconnected
@@ -237,12 +240,22 @@ void w_input::update()
 				{
 					break;
 				}
+
+				if( engine->layer_mgr->iir_on_pressed( &evt ) )
+				{
+					break;
+				}
 			}
 			break;
 
 			case event_id::input_held:
 			{
 				if( engine->iir_on_held( &evt ) )
+				{
+					break;
+				}
+
+				if( engine->layer_mgr->iir_on_held( &evt ) )
 				{
 					break;
 				}
@@ -255,6 +268,11 @@ void w_input::update()
 				{
 					break;
 				}
+
+				if( engine->layer_mgr->iir_on_released( &evt ) )
+				{
+					break;
+				}
 			}
 			break;
 
@@ -264,11 +282,17 @@ void w_input::update()
 				{
 					break;
 				}
+
+				if( engine->layer_mgr->iir_on_motion( &evt ) )
+				{
+					break;
+				}
 			}
 			break;
 		}
 	}
 
+	assert( event_queue.size() < event_queue_max_size );
 	event_queue = {};
 }
 

@@ -5,12 +5,11 @@
 
 bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
 {
-	assert( physics_responder );
-	auto phys_responder = (w_platformer_physic_responder*) physics_responder;
-	auto player = LAYER->find_entity_from_tag( ( "player" ) );
-
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
+		auto phys_responder = (w_platformer_physic_responder*) game->physics_responder.get();
+		auto player = LAYER->find_entity_from_tag( ( "player" ) );
+
 		w_vec2 left_stick = engine->input->get_axis_state( input_id::gamepad_left_stick );
 
 		if( !fequals( left_stick.x, 0.0f ) )
@@ -44,14 +43,13 @@ bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
 
 bool w_player_input_controller::iir_on_pressed( const w_input_event* evt )
 {
-	assert( physics_responder );
-	auto phys_responder = (w_platformer_physic_responder*) physics_responder;
-	auto player = LAYER->find_entity_from_tag( ( "player" ) );
-
 	switch( evt->input_id )
 	{
 		case input_id::gamepad_button_a:
 		{
+			auto phys_responder = (w_platformer_physic_responder*) game->physics_responder.get();
+			auto player = LAYER->find_entity_from_tag( ( "player" ) );
+
 			if( phys_responder->can_jump() )
 			{
 				phys_responder->timer_jump_limiter->reset();
