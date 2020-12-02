@@ -315,9 +315,11 @@ void w_engine::exec_main_loop()
 		{
 			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
 
-			engine->box2d_world->Step( w_time::FTS_step_value_s, b2d_velocity_iterations, b2d_position_iterations );
 			engine->input->queue_motion();
 			engine->input->update();
+
+			engine->box2d_world->Step( w_time::FTS_step_value_s, b2d_velocity_iterations, b2d_position_iterations );
+
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();

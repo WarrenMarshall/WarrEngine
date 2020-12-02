@@ -30,10 +30,10 @@ bool w_player_input_receiver::iir_on_motion( const w_input_event* evt )
 			if( std::fabs( current_velocity.x ) < player_move_force_max )
 			{
 				float force_to_be_applied = player_move_force * left_stick.x;
-				float force_final = ec->body->GetMass() * force_to_be_applied;// / w_time::FTS_step_value_s;
+				float force_final = ec->body->GetMass() * force_to_be_applied;
 				force_final = std::min( player_move_force_max, force_final );
 
-				force_final *= 50.f;
+				force_final *= w_time::FTS_desired_frames_per_second;
 
 				ec->body->ApplyForceToCenter( w_vec2( to_b2d( force_final ), 0.0f ).as_b2Vec2(), true );
 			}
@@ -89,7 +89,7 @@ bool w_player_input_receiver::iir_on_pressed( const w_input_event* evt )
 			}
 
 			float force_final = ec->body->GetMass() * ( -player_jump_force * dir_modifier );
-			force_final *= 50.f;
+			force_final *= w_time::FTS_desired_frames_per_second;
 			ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
 
 			return true;

@@ -29,7 +29,7 @@ void w_platformer_physic_responder::BeginContact( b2Contact* contact )
 	{
 		auto coin = find_entity_from_contact_tag( "coin" );
 
-		game->snd_coin->play();
+		//game->snd_coin->play();
 		coin->ilc_set( life_cycle::dying );
 	}
 }
