@@ -162,7 +162,7 @@
     <ClCompile Include="layer_game.cpp" />
     <ClCompile Include="layer_main_menu.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="player_input_controller.cpp" />
+    <ClCompile Include="player_input_receiver.cpp" />
     <ClCompile Include="template_platformer.cpp" />
     <ClCompile Include="entities.cpp" />
   </ItemGroup>
@@ -170,7 +170,7 @@
     <ClInclude Include="app_header.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="layer_game.h" />
-    <ClInclude Include="player_input_controller.h" />
+    <ClInclude Include="player_input_receiver.h" />
     <ClInclude Include="template_platformer.h" />
     <ClInclude Include="layer_main_menu.h" />
     <ClInclude Include="entities.h" />

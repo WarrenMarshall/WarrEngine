@@ -81,7 +81,6 @@ extern float ui_canvas_h;
 #include "a_mesh.h"
 #include "input_gamepad.h"
 #include "input.h"
-#include "entity_input_controller.h"
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
 #include "ui_control.h"

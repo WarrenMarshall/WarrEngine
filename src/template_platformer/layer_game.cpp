@@ -84,6 +84,7 @@ void platformer_layer::draw_ui_debug()
 		->draw_string( engine->pixel_font, fmt::format( "on_ground : {}", phys_responder->player_on_ground ), w_rect( 8, 8 ) )
 		->draw_string( engine->pixel_font, fmt::format( "drop_down_blocked : {}", phys_responder->player_drop_down_blocked ), w_rect( 8, 16 ) )
 		->draw_string( engine->pixel_font, fmt::format( "vel : {:.1f}, {:.1f}", phys_responder->vel_x, phys_responder->vel_y ), w_rect( 8, 24 ) )
+		->draw_string( engine->pixel_font, fmt::format( "input queue : {}", engine->input->event_queue.size() ), w_rect( 8, 32 ) )
 		->end();
 }
 
@@ -94,7 +95,7 @@ w_camera* platformer_layer::get_camera()
 
 bool platformer_layer::iir_on_pressed( const w_input_event* evt )
 {
-	if( game->player_input_controller->iir_on_pressed( evt ) )
+	if( game->player_input_receiver->iir_on_pressed( evt ) )
 	{
 		return true;
 	}
@@ -116,7 +117,7 @@ bool platformer_layer::iir_on_pressed( const w_input_event* evt )
 
 bool platformer_layer::iir_on_motion( const w_input_event* evt )
 {
-	if( game->player_input_controller->iir_on_motion( evt ) )
+	if( game->player_input_receiver->iir_on_motion( evt ) )
 	{
 		return true;
 	}

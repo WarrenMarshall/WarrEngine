@@ -75,7 +75,7 @@ void layer_main_menu::draw_ui()
 		->draw_string( engine->pixel_font, "-- Controls --", w_rect( v_window_hw, ypos += 16 ) )
 		->push_rgb( w_color::dark_grey )
 		->draw_string( engine->pixel_font, "F11 - Toggle Fullscreen", w_rect( v_window_hw, ypos += 16 ) )
-		->draw_string( engine->pixel_font, "Controller - Move", w_rect( v_window_hw, ypos += 8 ) )
+		->draw_string( engine->pixel_font, "Gamepad - Move", w_rect( v_window_hw, ypos += 8 ) )
 		->draw_string( engine->pixel_font, "A-Button - Jump", w_rect( v_window_hw, ypos += 8 ) )
 		->draw_string( engine->pixel_font, "DOWN + A-Button - Drop Down", w_rect( v_window_hw, ypos += 8 ) )
 		->draw_string( engine->pixel_font, "'N' - Spawn Coins From Sky", w_rect( v_window_hw, ypos += 16 ) );

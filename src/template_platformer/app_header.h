@@ -7,14 +7,14 @@
 
 // ----------------------------------------------------------------------------
 
-constexpr float player_move_force = 15.0f;
-constexpr float player_move_force_max = 100.0f;
-constexpr float player_jump_force = 325.0f;
+constexpr float player_move_force = 15;
+constexpr float player_move_force_max = 100;
+constexpr float player_jump_force = 325;
 
-constexpr float player_base_radius = 6.0f;
+constexpr float player_base_radius = 6;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
 constexpr int player_jump_interval = 75;
-constexpr float player_air_control_damping = 0.25f;
+constexpr float player_air_control_damping = 1.0f;
 
 // ----------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ static unsigned clayer_coin = clayer_bits.next();
 // ----------------------------------------------------------------------------
 // forward declarations
 
-struct w_player_input_controller;
+struct w_player_input_receiver;
 struct w_platformer_physic_responder;
 
 // ----------------------------------------------------------------------------
@@ -37,5 +37,5 @@ struct w_platformer_physic_responder;
 
 #include "entities.h"
 #include "physics.h"
-#include "player_input_controller.h"
+#include "player_input_receiver.h"
 #include "layer_game.h"

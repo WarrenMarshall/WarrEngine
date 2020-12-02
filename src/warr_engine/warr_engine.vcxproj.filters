@@ -199,9 +199,6 @@
     <ClCompile Include="input_gamepad.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="entity_input_controller.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="i_input_receiver.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -409,9 +406,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="input_gamepad.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="entity_input_controller.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="i_input_receiver.h">

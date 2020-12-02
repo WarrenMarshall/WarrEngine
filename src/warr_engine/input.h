@@ -18,7 +18,7 @@ struct w_input
 {
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
-	const size_t event_queue_max_size = 8;
+	//const size_t event_queue_max_size = 8;
 	std::vector<w_input_event> event_queue;
 	std::unique_ptr<w_timer> timer_repeat = nullptr;
 
@@ -50,9 +50,11 @@ struct w_input
 
 	void init();
 	void deinit();
+	void queue_presses();
+	void queue_motion();
 	void update();
 
 	void update_button_state( e_input_id input_id, int glfw_state );
 	void play_rumble( e_rumble_effect effect );
-	void refresh_gamepad();
+	void refresh_connected_gamepads();
 };

@@ -292,11 +292,18 @@ void w_engine::exec_main_loop()
 
 		engine->time->update();
 
+		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
+		// to the render functions for interpolation/prediction
+		//
+		// it is passed a percentage for easier use : 0.0f-1.0f
+
+		RENDER->frame_interpolate_pct = engine->time->fts_accum_ms / w_time::FTS_step_value_ms;
+
 		/*
 			process user input
 		*/
+		engine->input->queue_presses();
 
-		engine->input->update();
 		IMGUI->reset();
 
 		/*
@@ -309,27 +316,23 @@ void w_engine::exec_main_loop()
 			engine->time->fts_accum_ms -= w_time::FTS_step_value_ms;
 
 			engine->box2d_world->Step( w_time::FTS_step_value_s, b2d_velocity_iterations, b2d_position_iterations );
+			engine->input->queue_motion();
+			engine->input->update();
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
 		}
 
+		// #shader_refactor - wtf is this?
 		static float time_val = 0.0f;
 		time_val += engine->time->delta_ms / 2000.f;
 		OPENGL->set_uniform( "in_time", time_val );
 		OPENGL->set_uniform( "in_use_vignette", 1.0f );
 
-		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
-		// to the render functions for interpolation/prediction
-		//
-		// it is passed a percentage for easier use : 0.0f-1.0f
-
-		float interp_pct = engine->time->fts_accum_ms / w_time::FTS_step_value_ms;
-
 		// draw the scene to a framebuffer, sized to match the virtual viewport
 
 		engine->opengl->fb_game->bind();
-		RENDER->begin_frame( interp_pct );
+		RENDER->begin_frame();
 		{
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
 			glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );

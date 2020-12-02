@@ -3,7 +3,7 @@
 
 // ----------------------------------------------------------------------------
 
-bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
+bool w_player_input_receiver::iir_on_motion( const w_input_event* evt )
 {
 	// movement left/right
 
@@ -26,13 +26,15 @@ bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
 			auto ec = player->get_component<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
 
 			w_vec2 current_velocity = w_vec2( ec->body->GetLinearVelocity() ).from_b2d();
-			float force_to_be_applied = 0.0f;
 
 			if( std::fabs( current_velocity.x ) < player_move_force_max )
 			{
-				force_to_be_applied = player_move_force * left_stick.x;
+				float force_to_be_applied = player_move_force * left_stick.x;
+				float force_final = ec->body->GetMass() * force_to_be_applied;// / w_time::FTS_step_value_s;
+				force_final = std::min( player_move_force_max, force_final );
 
-				float force_final = ec->body->GetMass() * force_to_be_applied / ( 1.0f / w_time::FTS_desired_frames_per_second );
+				force_final *= 50.f;
+
 				ec->body->ApplyForceToCenter( w_vec2( to_b2d( force_final ), 0.0f ).as_b2Vec2(), true );
 			}
 		}
@@ -43,7 +45,7 @@ bool w_player_input_controller::iir_on_motion( const w_input_event* evt )
 	return false;
 }
 
-bool w_player_input_controller::iir_on_pressed( const w_input_event* evt )
+bool w_player_input_receiver::iir_on_pressed( const w_input_event* evt )
 {
 	// jump
 
@@ -77,16 +79,17 @@ bool w_player_input_controller::iir_on_pressed( const w_input_event* evt )
 
 			if( dir_modifier > 0.0f )
 			{
-				game->snd_jump->play();
+				//game->snd_jump->play();
 
 			}
 
 			if( dir_modifier < 0.0f )
 			{
-				game->snd_drop_down->play();
+				//game->snd_drop_down->play();
 			}
 
-			float force_final = ec->body->GetMass() * ( -player_jump_force * dir_modifier ) / ( 1.0f / w_time::FTS_desired_frames_per_second );
+			float force_final = ec->body->GetMass() * ( -player_jump_force * dir_modifier );
+			force_final *= 50.f;
 			ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
 
 			return true;

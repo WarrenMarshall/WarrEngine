@@ -86,7 +86,7 @@ struct w_render
 	w_render* draw_world_axis();
 	w_render* draw_stats();
 
-	void begin_frame( float frame_interpolate_pct );
+	void begin_frame();
 	void end_frame();
 
 	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;

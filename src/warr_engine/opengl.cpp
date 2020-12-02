@@ -37,7 +37,7 @@ void w_opengl::init()
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
 
-	// #todo : this should be read in from some sort of config file
+	// #shader_refactor : this should be read in from some sort of config file
 	std::unique_ptr<w_shader> shader_wk;
 
 	shader_wk = std::make_unique<w_shader>();

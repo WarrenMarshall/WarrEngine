@@ -416,9 +416,8 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 /*
 	call at the start of each frame to set up and clear the screen
 */
-void w_render::begin_frame( float frame_interpolate_pct )
+void w_render::begin_frame()
 {
-	this->frame_interpolate_pct = frame_interpolate_pct;
 	current_texture = nullptr;
 
 	zdepth = 0.0f;

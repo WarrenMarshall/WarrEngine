@@ -50,24 +50,21 @@ void joystick_callback( int jid, int event )
 {
 	if( event == GLFW_CONNECTED )
 	{
-		//log( "The joystick was connected" );
+		log( "Gamepad {} was connected.", jid );
 	}
 	else if( event == GLFW_DISCONNECTED )
 	{
-		//log( "The joystick was disconnected" );
+		log( "Gamepad {} was disconnected.", jid );
 	}
 
-	engine->input->refresh_gamepad();
+	engine->input->refresh_connected_gamepads();
 }
 
 // ----------------------------------------------------------------------------
 
 void w_input::init()
 {
-	// minimize memory reallocations by over reserving the queue
-	event_queue.reserve( event_queue_max_size );
-
-	refresh_gamepad();
+	refresh_connected_gamepads();
 
 	// set up callback so we know when controllers are connected/disconnected
 	glfwSetJoystickCallback( joystick_callback );
@@ -90,27 +87,8 @@ void w_input::deinit()
 	gamepad = nullptr;
 }
 
-void w_input::update()
+void w_input::queue_presses()
 {
-	// mouse motion
-	//
-	// NOTE	- mouse motion deltas are sent once per update, not for each message from the OS
-	//		- this is done to prevent tons of little messages from clogging up the works
-
-	if( !fequals( mouse_move_delta.x + mouse_move_delta.y, 0.0f ) )
-	{
-		w_input_event evt;
-		evt.event_id = event_id::input_motion;
-		evt.input_id = input_id::mouse;
-		evt.delta = mouse_move_delta;
-
-		event_queue.emplace_back( std::move( evt ) );
-
-		mouse_move_delta = w_vec2::zero;
-	}
-
-	// update button states
-
 	button_states_last_frame = button_states;
 
 	update_button_state( input_id::key_shift_left, glfwGetKey( engine->window->window, GLFW_KEY_LEFT_SHIFT ) );
@@ -206,6 +184,33 @@ void w_input::update()
 		gamepad->update_button_state( input_id::gamepad_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
 		gamepad->update_button_state( input_id::gamepad_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
 		gamepad->update_button_state( input_id::gamepad_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
+	}
+}
+
+void w_input::queue_motion()
+{
+	// mouse motion
+	//
+	// NOTE	- mouse motion deltas are sent once per update, not for each message from the OS
+	//		- this is done to prevent tons of little messages from clogging up the works
+
+	if( !fequals( mouse_move_delta.x + mouse_move_delta.y, 0.0f ) )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::mouse;
+		evt.delta = mouse_move_delta;
+
+		event_queue.emplace_back( std::move( evt ) );
+
+		mouse_move_delta = w_vec2::zero;
+	}
+
+	// update game controller states
+
+	if( gamepad )
+	{
+		gamepad->update();
 
 		auto update_axis_delta = [] ( e_input_id input_id )
 		{
@@ -227,8 +232,12 @@ void w_input::update()
 		update_axis_delta( input_id::gamepad_left_trigger );
 		update_axis_delta( input_id::gamepad_right_trigger );
 	}
+}
 
-	// send every accumulated input message to anyone listening
+void w_input::update()
+{
+	// send all queued messages down the virtual function call chain,
+	// and then empty the queue.
 
 	for( auto& evt : event_queue )
 	{
@@ -292,7 +301,6 @@ void w_input::update()
 		}
 	}
 
-	assert( event_queue.size() < event_queue_max_size );
 	event_queue = {};
 }
 
@@ -352,7 +360,7 @@ void w_input::play_rumble( e_rumble_effect effect )
 	gamepad->play_rumble( effect );
 }
 
-void w_input::refresh_gamepad()
+void w_input::refresh_connected_gamepads()
 {
 	if( gamepad )
 	{
