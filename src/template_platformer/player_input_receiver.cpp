@@ -90,8 +90,8 @@ bool w_player_input_receiver::iir_on_pressed( const w_input_event* evt )
 			}
 
 			float force_final = ec->body->GetMass() * ( -player_jump_force * dir_modifier );
-			force_final *= w_time::FTS_desired_frames_per_second;
-			ec->body->ApplyForceToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
+
+			ec->body->ApplyLinearImpulseToCenter( w_vec2( 0.0f, to_b2d( force_final ) ).as_b2Vec2(), true );
 
 			return true;
 		}
