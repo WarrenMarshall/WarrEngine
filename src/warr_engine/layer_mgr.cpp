@@ -27,7 +27,7 @@ void w_layer_mgr::pop()
 	}
 
 	w_layer* layer = nullptr;
-	int idx = 0;
+	int idx;
 
 	for( idx = 0 ; idx < layer_stack.size() ; ++idx )
 	{
