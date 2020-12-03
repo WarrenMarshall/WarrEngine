@@ -6,11 +6,10 @@
 #include <warr_engine.h>
 
 // ----------------------------------------------------------------------------
-
+// #platformer - these values should be in the game config file I think
 constexpr float player_move_force = 15;
 constexpr float player_move_force_max = 100;
 constexpr float player_jump_force = 325;
-
 constexpr float player_base_radius = 6;
 constexpr float player_drop_down_normal_tolerance = 0.8f;
 constexpr int player_jump_interval = 75;
