@@ -2,6 +2,10 @@
 
 struct w_render
 {
+	a_palette* palette = nullptr;
+
+	w_color get_palette_color_from_idx( int idx );
+
 	/*
 		a value from 0.0-1.0 that represents how near we are to the NEXT update
 		tick. this is used to interpolate/predict rendering for smooth

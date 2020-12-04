@@ -207,9 +207,16 @@ w_color::w_color( std::string& str )
 {
 	assert( !str.empty() );
 
-	// strings starting with a '$' char are hex values
-	if( str[ 0 ] == '$' )
+	if( str[0] == '@' )
 	{
+		w_tokenizer tok( str, '@' );
+		str = tok.get_next_token().value_or( "0" );
+		int idx = str_to_int( str );
+		*this = w_color::pal( idx );
+	}
+	else if( str[ 0 ] == '$' )
+	{
+		// strings starting with a '$' char are hex values
 		assert( str.length() == 7 );
 
 		r = str_to_uint( "$" + str.substr( 1, 2 ) ) * byte_color_to_float;
@@ -247,6 +254,11 @@ void w_color::scale( w_color& color, float s )
 	color.r *= s;
 	color.g *= s;
 	color.b *= s;
+}
+
+w_color w_color::pal( int idx )
+{
+	return RENDER->get_palette_color_from_idx( idx );
 }
 
 // ----------------------------------------------------------------------------

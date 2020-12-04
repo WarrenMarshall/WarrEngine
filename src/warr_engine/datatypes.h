@@ -29,6 +29,7 @@ struct w_color
 	w_color( std::string& str );
 
 	static void scale( w_color& color, float s );
+	static w_color pal( int idx );
 };
 
 // ----------------------------------------------------------------------------

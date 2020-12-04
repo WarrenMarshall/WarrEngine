@@ -307,7 +307,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 	{
 		RENDER
 			->push_depth_nudge()
-			->push_rgb( _get_adjusted_color( w_color::dark_teal, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::pal( 1 ), being_hovered, being_clicked ) )
 			->draw_sliced( control.slice_def, rc_draw );
 	}
 
@@ -326,7 +326,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 		}
 
 		RENDER
-			->push_rgb( _get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
 			->push_depth_nudge()
 			->draw( subtex, subtex_rc );
 	}
@@ -349,7 +349,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 		RENDER
 			->push_depth_nudge()
-			->push_rgb( _get_adjusted_color( w_color::light_grey, being_hovered, being_clicked ) )
+			->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
 			->push_align( align::centered );
 
 		RENDER->draw_string( engine->pixel_font, control.label, label_rc );

@@ -27,7 +27,7 @@ void w_layer_mgr::pop()
 	}
 
 	w_layer* layer = nullptr;
-	int idx;
+	size_t idx;
 
 	for( idx = 0 ; idx < layer_stack.size() ; ++idx )
 	{
@@ -43,9 +43,9 @@ void w_layer_mgr::pop()
 
 	// Since the top layer is being popped, we can tell the next layer in the stack
 	// that it is being shown.
-	if( layer_stack.size() > 1 )
+	if( layer_stack.size() > 1 )// && ( idx + 1 ) < layer_stack.size() )
 	{
-		layer = layer_stack[(size_t)idx + 1].get();
+		layer = layer_stack[idx + 1].get();
 		layer->becoming_top_layer();
 	}
 }

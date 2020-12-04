@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	base_game = std::make_unique<hello_world_app>( ADD_QUOTES( APP_NAME ) );
+	base_game = std::make_unique<snake_pong>( ADD_QUOTES( APP_NAME ) );
 
 	if( !w_engine::init_game_engine( argc, argv ) )
 	{

@@ -112,6 +112,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			// do the preprocess pass first so the symbols are in memory
 			log( "Precaching resources from definition files..." );
 			engine->precache_asset_resources( 0, base_game->name );
+			engine->precache_asset_resources( 1, base_game->name );
 
 			// parse INI files after the preprocess pass so they can
 			// use preprocessor symbols
@@ -126,16 +127,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			{
 				engine->_symbol_to_value[ key ] = value;
 			}
-
-			// precache the rest of the assets in the remaining passes
-			constexpr int num_asset_def_passes = 4;
-			for( auto pass = 1; pass < num_asset_def_passes; ++pass )
-			{
-				engine->precache_asset_resources( pass, base_game->name );
-			}
 		}
-
-		w_random::seed();
 
 		{ // APPLY CONFIG SETTINGS
 
@@ -150,6 +142,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			ui_canvas_w = w_parser::float_from_str( tok.tokens[ 0 ] );
 			ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
 			log( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
+
+			RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "" ) );
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
@@ -166,6 +160,14 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
 			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 		}
+
+		{ // FINISH ASSET PRECACHE
+
+			engine->precache_asset_resources( 2, base_game->name );
+			engine->precache_asset_resources( 3, base_game->name );
+		}
+
+		w_random::seed();
 
 		{ // Box2D
 

@@ -205,6 +205,16 @@ void w_render::clear_render_states()
 	rs_align_stack = { align::left };
 }
 
+w_color w_render::get_palette_color_from_idx( int idx )
+{
+	if( !palette )
+	{
+		return w_color::white;
+	}
+
+	return palette->get_color_from_idx( idx );
+}
+
 void w_render::draw_master_buffer()
 {
 	master_render_buffer->draw( current_texture );

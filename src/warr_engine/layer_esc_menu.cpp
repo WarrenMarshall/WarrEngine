@@ -28,8 +28,10 @@ void layer_esc_menu::draw_ui()
 	w_layer::draw_ui();
 
 	RENDER
-		->push_rgba( w_color( 0.1f, 0.1f, 0.1f, 0.9f ) )
-		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
+		->push_rgb( w_color::pal( 0 ) )
+		->push_alpha( 0.75f )
+		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
+		->pop_alpha();
 
 	constexpr float num_buttons = 4;
 	constexpr float button_w = 140.0f;
