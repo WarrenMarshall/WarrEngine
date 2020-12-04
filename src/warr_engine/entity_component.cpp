@@ -7,7 +7,7 @@
 w_entity_component::w_entity_component( w_entity* parent_entity )
 	: parent_entity( parent_entity )
 {
-	generic_offset = w_random::getf();
+	generic_offset = engine->random->getf();
 }
 
 /*
@@ -72,7 +72,7 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
 	type |= component_type::sprite;
-	anim_offset = w_random::getf();
+	anim_offset = engine->random->getf();
 }
 
 w_entity_component* ec_sprite::init( const std::string_view tex_tag )

@@ -43,7 +43,7 @@ void w_layer_mgr::pop()
 
 	// Since the top layer is being popped, we can tell the next layer in the stack
 	// that it is being shown.
-	if( layer_stack.size() > 1 )// && ( idx + 1 ) < layer_stack.size() )
+	if( layer_stack.size() > 1 )//&& ( idx + 1 ) < layer_stack.size() )
 	{
 		layer = layer_stack[idx + 1].get();
 		layer->becoming_top_layer();
@@ -160,7 +160,7 @@ bool w_layer_mgr::iir_on_motion( const w_input_event* evt )
 
 		if( iter->blocks_further_input )
 		{
-			break;
+			return true;
 		}
 	}
 
@@ -178,7 +178,7 @@ bool w_layer_mgr::iir_on_pressed( const w_input_event* evt )
 
 		if( iter->blocks_further_input )
 		{
-			break;
+			return true;
 		}
 	}
 
@@ -196,7 +196,7 @@ bool w_layer_mgr::iir_on_held( const w_input_event* evt )
 
 		if( iter->blocks_further_input )
 		{
-			break;
+			return true;
 		}
 	}
 
@@ -214,7 +214,7 @@ bool w_layer_mgr::iir_on_released( const w_input_event* evt )
 
 		if( iter->blocks_further_input )
 		{
-			break;
+			return true;
 		}
 	}
 

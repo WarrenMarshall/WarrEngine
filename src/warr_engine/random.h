@@ -2,10 +2,14 @@
 
 struct w_random
 {
-    static void seed();
-    [[nodiscard]] static int get();
-    [[nodiscard]] static float getf();
-    [[nodiscard]] static bool getb();
-    [[nodiscard]] static float getf_range( float min, float max );
-    [[nodiscard]] static int geti_range( int min, int max );
+	std::random_device rd;
+	std::mt19937 gen;
+	std::uniform_real_distribution<float> distr;
+
+	w_random();
+
+    [[nodiscard]] float getf();
+    [[nodiscard]] bool getb();
+    [[nodiscard]] float getf_range( float min, float max );
+    [[nodiscard]] int geti_range( int min, int max );
 };

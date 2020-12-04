@@ -167,8 +167,6 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			engine->precache_asset_resources( 3, base_game->name );
 		}
 
-		w_random::seed();
-
 		{ // Box2D
 
 			log( "Initializing Box2D" );
@@ -520,6 +518,7 @@ void w_engine::init()
 	fs = std::make_unique<w_file_system>();
 	opengl = std::make_unique<w_opengl>();
 	config_vars = std::make_unique<w_keyvalues>();
+	random = std::make_unique<w_random>();
 
 	fs->init();
 }

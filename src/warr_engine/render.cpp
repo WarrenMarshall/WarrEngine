@@ -529,17 +529,19 @@ w_render* w_render::draw_stats()
 		int font_max_height = engine->pixel_font->font_def->max_height;
 
 		RENDER->begin()
-			->push_rgba( w_color( .25f, .25f, .25f, 0.75f ) )
+			->push_rgba( w_color::pal( 0 ) )
+			->push_alpha( 0.75f )
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
 			->pop_alpha()
 			->push_depth_nudge()
-			->push_rgb( w_color::white )
-			->push_align( align::hcenter );
+			->push_rgb( w_color::white );
 
+		RENDER->push_align( align::hcenter );
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
 			RENDER->draw_string( engine->pixel_font, iter, w_rect( ui_canvas_hw, ypos ) );
+			//RENDER->draw_string( engine->pixel_font, iter, w_rect( 1.0f, ypos ) );
 			ypos += font_max_height;
 		}
 

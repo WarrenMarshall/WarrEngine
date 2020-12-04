@@ -114,7 +114,7 @@ w_range::w_range( std::string_view str )
 
 float w_range::get_value()
 {
-	return start + ( ( end - start ) * w_random::getf() );
+	return start + ( ( end - start ) * engine->random->getf() );
 }
 
 // ----------------------------------------------------------------------------
@@ -198,7 +198,7 @@ w_color::w_color( float r, float g, float b, float a )
 
 // integer values are assumed to be in the 0-255 range and are converted to float
 w_color::w_color( int r, int g, int b, int a )
-	: w_color( r * byte_color_to_float, g * byte_color_to_float, b * byte_color_to_float, a * byte_color_to_float )
+	: w_color( r* byte_color_to_float, g* byte_color_to_float, b* byte_color_to_float, a* byte_color_to_float )
 {
 }
 
@@ -207,8 +207,9 @@ w_color::w_color( std::string& str )
 {
 	assert( !str.empty() );
 
-	if( str[0] == '@' )
+	if( str[ 0 ] == '@' )
 	{
+		// strings starting with a '@' char are palette indices
 		w_tokenizer tok( str, '@' );
 		str = tok.get_next_token().value_or( "0" );
 		int idx = str_to_int( str );
@@ -396,7 +397,7 @@ bool w_vec2::is_zero()
 // generates a random point on a unit sphere.
 w_vec2 w_vec2::get_random_unit()
 {
-	return w_vec2( -1.0f + ( w_random::getf() * 2.0f ), -1.0f + ( w_random::getf() * 2.0f ) ).normalize();
+	return w_vec2( -1.0f + ( engine->random->getf() * 2.0f ), -1.0f + ( engine->random->getf() * 2.0f ) ).normalize();
 }
 
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )

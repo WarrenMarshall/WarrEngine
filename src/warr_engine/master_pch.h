@@ -23,6 +23,7 @@
 	#include <cmath>
 
 	// stl
+	#include <random>
 	#include <string>
 	#include <string_view>
 	#include <vector>

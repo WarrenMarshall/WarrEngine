@@ -92,5 +92,5 @@ void w_tween::reset_to_start()
 void w_tween::randomize()
 {
 
-	tween.seek( w_random::getf(), true );
+	tween.seek( engine->random->getf(), true );
 }

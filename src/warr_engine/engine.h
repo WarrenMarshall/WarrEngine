@@ -76,4 +76,5 @@ struct w_engine : i_input_receiver
 	std::unique_ptr<w_file_system> fs = nullptr;
 	std::unique_ptr<w_opengl> opengl = nullptr;
 	std::unique_ptr<w_keyvalues> config_vars = nullptr;
+	std::unique_ptr<w_random> random = nullptr;
 };

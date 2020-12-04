@@ -13,3 +13,14 @@
 		$ff8e80\
 	"
 }
+
+{
+	"type" "palette"
+	"tag" "pal_mist"
+	"colors" "\
+		$2d1b00,\
+		$1e606e,\
+		$5ab9a8,\
+		$c4f0c2\
+	"
+}
