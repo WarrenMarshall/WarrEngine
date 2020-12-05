@@ -57,7 +57,7 @@ void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* par
 	// getting random values between -1 and 1 ... this gives us a position on the outer
 	// edge of the unit circle
 	particle->pos = { engine->random->getf() - 0.5f, engine->random->getf() - 0.5f };
-	particle->pos = w_vec2::normalize( particle->pos );
+	particle->pos.normalize();
 
 	// then multiply against a random value from 0-radius to place
 	// the particle somewhere within the spawn zone

@@ -158,13 +158,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="layer_default.cpp" />
+    <ClCompile Include="layer_background.cpp" />
+    <ClCompile Include="layer_game.cpp" />
+    <ClCompile Include="layer_main_menu.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="snake_pong.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
-    <ClInclude Include="layer_default.h" />
+    <ClInclude Include="layer_background.h" />
+    <ClInclude Include="layer_game.h" />
+    <ClInclude Include="layer_main_menu.h" />
     <ClInclude Include="snake_pong.h" />
   </ItemGroup>
   <ItemGroup>

@@ -8,21 +8,13 @@ snake_pong::snake_pong( const char* name )
 
 void snake_pong::init()
 {
+	w_game::init();
+
+	engine->layer_mgr->push<layer_background>();
+	engine->layer_mgr->push<layer_main_menu>();
 }
 
 void snake_pong::new_game()
 {
 	w_game::new_game();
-
-	engine->layer_mgr->push<layer_default>();
-
-	for( int x = 0 ; x < 50 ; ++x )
-	{
-		log( "{}", engine->random->getf() );
-	}
-}
-
-void snake_pong::update()
-{
-	w_game::update();
 }

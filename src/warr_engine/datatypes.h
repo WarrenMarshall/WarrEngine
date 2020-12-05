@@ -178,17 +178,17 @@ struct w_vec2
 
 	[[nodiscard]] bool operator==( w_vec2 v );
 	[[nodiscard]] bool operator!=( w_vec2 v );
-	w_vec2 operator+( const w_vec2 v );
+	[[nodiscard]] w_vec2 operator+( const w_vec2 v );
+	[[nodiscard]] w_vec2 operator-( w_vec2 v );
+	[[nodiscard]] w_vec2 operator*( float v );
+	[[nodiscard]] w_vec2 operator/( float v );
+
 	w_vec2 operator+=( w_vec2 v );
-	w_vec2 operator-( w_vec2 v );
 	w_vec2 operator-=( w_vec2 v );
-	w_vec2 operator*( float v );
 	w_vec2 operator*=( float v );
-	w_vec2 operator/( float v );
 	w_vec2 operator/=( float v );
 
 	[[nodiscard]] static float get_distance_between( w_vec2 a, w_vec2 b );
-	static w_vec2 normalize( w_vec2 a );
 	[[nodiscard]] static w_vec2 dir_from_angle( float angle );
 	[[nodiscard]] static float angle_from_dir( w_vec2 dir );
 	[[nodiscard]] static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );

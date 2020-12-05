@@ -298,12 +298,6 @@ w_vec2::w_vec2( b2Vec2 b2v2 )
 {
 }
 
-w_vec2 w_vec2::normalize()
-{
-	*this = w_vec2::normalize( *this );
-	return *this;
-}
-
 b2Vec2 w_vec2::as_b2Vec2()
 {
 	return b2Vec2( x, y );
@@ -405,10 +399,17 @@ float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
 	return ( a - b ).get_size_squared();
 }
 
-w_vec2 w_vec2::normalize( w_vec2 a )
+// normalizes the vec2 in place, and returns itself in case the caller
+// wants to handle it as a return value instead
+
+w_vec2 w_vec2::normalize()
 {
-	float sz = a.get_size_squared();
-	return w_vec2( a.x / sz, a.y / sz );
+	float sz = get_size_squared();
+
+	x /= sz;
+	y /= sz;
+
+	return *this;
 }
 
 // takes an angle, in degrees, and returns a unit vector for it
