@@ -114,6 +114,6 @@ void template_platformer::spawn_coins()
 	for( int c = 0 ; c < 12 ; ++c )
 	{
 		auto coin = LAYER->add_entity<e_platformer_coin>();
-		coin->set_position_deep( { w_random::getf_range( 16.0f, v_window_w - 32 ), w_random::getf_range( 16.0f, 32.0f ) }, true );
+		coin->set_position_deep( { engine->random->getf_range( 16.0f, v_window_w - 32.0f ), engine->random->getf_range( 16.0f, 32.0f ) }, true );
 	}
 }

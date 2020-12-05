@@ -62,5 +62,18 @@ struct w_layer : i_life_cycle, i_input_receiver
 	}
 
 	[[nodiscard]] bool is_topmost_layer() const;
-	[[nodiscard]] w_entity* find_entity_from_tag( const char* tag );
+
+	template<typename T>
+	[[nodiscard]] T* find_from_tag( const char* tag )
+	{
+		for( auto& iter : entities )
+		{
+			if( iter->tag == tag )
+			{
+				return static_cast<T*>( iter.get() );
+			}
+		}
+
+		return nullptr;
+	}
 };

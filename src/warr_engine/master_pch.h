@@ -246,6 +246,7 @@ using b_sensor = bool;
 using b_ignore_dead_zone = bool;
 using b_parse_bracket_sets = bool;
 using b_set_current = bool;
+using b_reset_velocity = bool;
 
 // ----------------------------------------------------------------------------
 

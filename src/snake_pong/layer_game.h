@@ -9,4 +9,6 @@ struct layer_game : w_layer
 	virtual void draw() override;
 	virtual void draw_ui() override;
 	virtual void becoming_top_layer() override;
+	virtual w_camera* get_camera() override;
+	virtual void update() override;
 };

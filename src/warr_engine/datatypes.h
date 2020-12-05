@@ -174,7 +174,7 @@ struct w_vec2
 	[[nodiscard]] float get_size_squared();
 	[[nodiscard]] float get_size();
 	[[nodiscard]] bool is_zero();
-	[[nodiscard]] static w_vec2 get_random_unit();
+	[[nodiscard]] static w_vec2 get_random_unit_circle();
 
 	[[nodiscard]] bool operator==( w_vec2 v );
 	[[nodiscard]] bool operator!=( w_vec2 v );

@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entities.cpp" />
     <ClCompile Include="layer_background.cpp" />
     <ClCompile Include="layer_game.cpp" />
     <ClCompile Include="layer_main_menu.cpp" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
+    <ClInclude Include="entities.h" />
     <ClInclude Include="layer_background.h" />
     <ClInclude Include="layer_game.h" />
     <ClInclude Include="layer_main_menu.h" />

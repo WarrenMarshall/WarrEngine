@@ -42,9 +42,9 @@ void layer_main_menu::draw_ui()
 		->finalize()
 		->was_left_clicked() )
 	{
-		game->new_game();
 		engine->layer_mgr->pop();
 		engine->layer_mgr->push<layer_game>();
+		game->new_game();
 	}
 }
 
@@ -59,9 +59,9 @@ bool layer_main_menu::iir_on_pressed( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::key_space )
 	{
-		game->new_game();
 		engine->layer_mgr->pop();
 		engine->layer_mgr->push<layer_game>();
+		game->new_game();
 
 		return true;
 	}

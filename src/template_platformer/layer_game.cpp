@@ -36,7 +36,7 @@ void platformer_layer::pop()
 
 void platformer_layer::update()
 {
-	auto player = LAYER->find_entity_from_tag( "player" );
+	auto player = LAYER->find_from_tag<w_entity>( "player" );
 
 	if( !player )
 	{

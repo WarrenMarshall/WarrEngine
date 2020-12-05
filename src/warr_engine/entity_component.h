@@ -45,6 +45,21 @@ struct ec_sprite : w_entity_component
 
 // ----------------------------------------------------------------------------
 
+struct ec_primitive_shape : w_entity_component
+{
+	e_primitive_shape prim_shape = primitive_shape::rectangle;
+	w_color color = w_color::white;
+	w_rect rc;
+
+	ec_primitive_shape() = delete;
+	ec_primitive_shape( w_entity* parent_entity );
+
+	w_entity_component* init( const w_color& color, const w_rect& rc );
+	virtual void draw() override;
+};
+
+// ----------------------------------------------------------------------------
+
 struct ec_emitter : w_entity_component
 {
 	std::unique_ptr<w_particle_emitter> emitter = nullptr;

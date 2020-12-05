@@ -5,6 +5,7 @@
 bool w_physics_query::trace_simple( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask )
 {
 	w_raycast_simple callback;
+	callback.layer_mask = layer_mask;
 	engine->box2d_world->RayCast( &callback, start.to_b2d().as_b2Vec2(), ( start + ( normal * dist ) ).to_b2d().as_b2Vec2() );
 
 	return callback.hit_something;
@@ -12,6 +13,7 @@ bool w_physics_query::trace_simple( w_vec2 start, w_vec2 normal, float dist, bit
 
 bool w_physics_query::trace_simple( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_simple* hit_result )
 {
+	hit_result->layer_mask = layer_mask;
 	engine->box2d_world->RayCast( hit_result, start.to_b2d().as_b2Vec2(), ( start + ( normal * dist ) ).to_b2d().as_b2Vec2() );
 
 	return hit_result->hit_something;
@@ -19,12 +21,14 @@ bool w_physics_query::trace_simple( w_vec2 start, w_vec2 normal, float dist, bit
 
 bool w_physics_query::trace_closest( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_closest* hit_result )
 {
+	hit_result->layer_mask = layer_mask;
 	engine->box2d_world->RayCast( hit_result, start.to_b2d().as_b2Vec2(), ( start + ( normal * dist ) ).to_b2d().as_b2Vec2() );
 	return hit_result->hit_something;
 }
 
 bool w_physics_query::trace_all( w_vec2 start, w_vec2 normal, float dist, bitflags layer_mask, w_raycast_all* hit_result )
 {
+	hit_result->layer_mask = layer_mask;
 	engine->box2d_world->RayCast( hit_result, start.to_b2d().as_b2Vec2(), ( start + ( normal * dist ) ).to_b2d().as_b2Vec2() );
 	return hit_result->hit_something;
 }

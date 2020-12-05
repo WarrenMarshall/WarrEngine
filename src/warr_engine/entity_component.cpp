@@ -97,6 +97,35 @@ void ec_sprite::draw()
 
 // ----------------------------------------------------------------------------
 
+ec_primitive_shape::ec_primitive_shape( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+	type |= component_type::primitive_shape;
+}
+
+w_entity_component* ec_primitive_shape::init( const w_color& color, const w_rect& rc )
+{
+	this->color = color;
+	this->rc = rc;
+
+	return this;
+}
+
+void ec_primitive_shape::draw()
+{
+	if( ilc_is_dead() )
+	{
+		return;
+	}
+
+	RENDER
+		->push_rgb( color )
+		->draw_filled_rectangle( rc )
+		->pop_rgb();
+}
+
+// ----------------------------------------------------------------------------
+
 ec_emitter::ec_emitter( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {

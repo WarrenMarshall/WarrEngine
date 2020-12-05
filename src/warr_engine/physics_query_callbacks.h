@@ -22,6 +22,7 @@ struct w_raycast_hit
 struct w_raycast_closest : b2RayCastCallback
 {
 	bool hit_something = false;
+	bitflags layer_mask = 0;
 	w_raycast_hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
@@ -37,6 +38,7 @@ struct w_raycast_closest : b2RayCastCallback
 struct w_raycast_simple : b2RayCastCallback
 {
 	bool hit_something = false;
+	bitflags layer_mask = 0;
 	w_raycast_hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
@@ -51,6 +53,7 @@ struct w_raycast_simple : b2RayCastCallback
 struct w_raycast_all : b2RayCastCallback
 {
 	bool hit_something = false;
+	bitflags layer_mask = 0;
 	std::vector<w_raycast_hit> results;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,

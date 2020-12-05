@@ -265,7 +265,7 @@ enum_begin( component_type, unsigned )	// bitfield
 	b2d_kinematic = 64,
 	tilemap = 128,
 	mesh = 256,
-	input_controller = 512,
+	primitive_shape = 512,
 enum_end
 
 // ----------------------------------------------------------------------------
@@ -322,4 +322,13 @@ enum_begin( imgui_control_state, ubyte )
 	checked,
 	unchecked,
 	max = 4,
+enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( primitive_shape, ubyte )
+	rectangle = 1,
+	filled_rectangle,
+	polygon,
+	circle,
 enum_end

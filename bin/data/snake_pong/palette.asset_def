@@ -21,6 +21,19 @@
 		$2d1b00,\
 		$1e606e,\
 		$5ab9a8,\
-		$c4f0c2\
+		$c4f0c2,\
+		$ffffff\
 	"
 }
+
+{
+	"type" "palette"
+	"tag" "pal_sea_salt_ice_cream"
+	"colors" "\
+		$3336e8,\
+		$608ecf,\
+		$8be6ff,\
+		$fff6d3\
+	"
+}
+

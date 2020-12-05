@@ -24,6 +24,16 @@
 
 float w_raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
+	if( layer_mask > 0 )
+	{
+		auto collision_layer = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->collision_layer;
+
+		if( ( collision_layer & layer_mask) == 0 )
+		{
+			return -1.0f;
+		}
+	}
+
 	hit_something = true;
 
 	result.fraction = fraction;
@@ -37,6 +47,16 @@ float w_raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 
 float w_raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
+	if( layer_mask > 0 )
+	{
+		auto collision_layer = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->collision_layer;
+
+		if( ( collision_layer & layer_mask ) == 0 )
+		{
+			return -1.0f;
+		}
+	}
+
 	hit_something = true;
 
 	result.fraction = fraction;
@@ -50,6 +70,16 @@ float w_raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, 
 
 float w_raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
+	if( layer_mask > 0 )
+	{
+		auto collision_layer = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->collision_layer;
+
+		if( ( collision_layer & layer_mask ) == 0 )
+		{
+			return -1.0f;
+		}
+	}
+
 	hit_something = true;
 
 	w_raycast_hit hit;

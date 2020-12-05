@@ -70,7 +70,7 @@ bool w_platformer_physic_responder::can_drop_down() const
 
 void w_platformer_physic_responder::hit_ground()
 {
-	auto player = LAYER->find_entity_from_tag( "player" );
+	auto player = LAYER->find_from_tag<w_entity>( "player" );
 
 	if( player->phys_get_primary_body()->body->GetLinearVelocity().y > 0.0f )
 	{

@@ -389,9 +389,9 @@ bool w_vec2::is_zero()
 }
 
 // generates a random point on a unit sphere.
-w_vec2 w_vec2::get_random_unit()
+w_vec2 w_vec2::get_random_unit_circle()
 {
-	return w_vec2( -1.0f + ( engine->random->getf() * 2.0f ), -1.0f + ( engine->random->getf() * 2.0f ) ).normalize();
+	return w_vec2( engine->random->getf_range( -0.5, 0.5f ), engine->random->getf_range( -0.5, 0.5f ) ).normalize();
 }
 
 float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
@@ -404,11 +404,7 @@ float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
 
 w_vec2 w_vec2::normalize()
 {
-	float sz = get_size_squared();
-
-	x /= sz;
-	y /= sz;
-
+	*this /= get_size_squared();
 	return *this;
 }
 

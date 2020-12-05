@@ -86,16 +86,3 @@ bool w_layer::is_topmost_layer() const
 {
 	return ( LAYER == this );
 }
-
-w_entity* w_layer::find_entity_from_tag( const char* tag )
-{
-	for( auto& iter : entities )
-	{
-		if( iter->tag && iter->tag == tag )
-		{
-			return iter.get();
-		}
-	}
-
-	return nullptr;
-}

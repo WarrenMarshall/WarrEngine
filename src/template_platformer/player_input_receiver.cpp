@@ -10,7 +10,7 @@ bool w_player_input_receiver::iir_on_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		auto phys_responder = (w_platformer_physic_responder*) game->physics_responder.get();
-		auto player = LAYER->find_entity_from_tag( ( "player" ) );
+		auto player = LAYER->find_from_tag<w_entity>( "player" );
 
 		w_vec2 left_stick = engine->input->get_axis_state( input_id::gamepad_left_stick );
 
@@ -55,7 +55,7 @@ bool w_player_input_receiver::iir_on_pressed( const w_input_event* evt )
 
 		if( phys_responder->can_jump() )
 		{
-			auto player = LAYER->find_entity_from_tag( ( "player" ) );
+			auto player = LAYER->find_from_tag<w_entity>( "player" );
 
 			phys_responder->timer_jump_limiter->reset();
 
