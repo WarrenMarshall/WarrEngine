@@ -1,6 +1,20 @@
 #pragma once
 
+// ----------------------------------------------------------------------------
+
+struct e_paddle : w_entity
+{
+	virtual void phys_begin_contact( const w_physics_responder& responder, const char* other_tag, w_entity* other ) override;
+};
+
+// ----------------------------------------------------------------------------
+
 struct e_ball : w_entity
 {
-	virtual void phys_begin_contact( const w_physics_responder& responder, const char* other_tag, const w_entity* other ) override;
+	static constexpr float radius = 5.f;
+	static constexpr float speed = 35.f;
+
+	virtual void phys_begin_contact( const w_physics_responder& responder, const char* other_tag, w_entity* other ) override;
 };
+
+// ----------------------------------------------------------------------------

@@ -482,6 +482,8 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_valu
 void w_engine::new_physics_world()
 {
 	engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.0f, b2d_gravity_default ) );
+	engine->physics_responder = std::make_unique<w_physics_responder>();
+	engine->box2d_world->SetContactListener( engine->physics_responder.get() );
 
 	engine->physics_debug_draw = std::make_unique<w_physics_debug_draw>();
 	engine->box2d_world->SetDebugDraw( engine->physics_debug_draw.get() );

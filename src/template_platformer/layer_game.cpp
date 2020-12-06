@@ -31,7 +31,7 @@ void platformer_layer::pop()
 
 	//music_gameplay->stop();
 
-	engine->box2d_world->SetContactListener( nullptr );
+	//engine->box2d_world->SetContactListener( nullptr );
 }
 
 void platformer_layer::update()
