@@ -143,7 +143,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
 			log( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
 
-			RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "" ) );
+			RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
 
 			w_rect rc = engine->window->compute_max_window_size_for_desktop();
 			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
