@@ -179,13 +179,13 @@ void w_entity::phys_set_density( float density )
 
 // entities are touching each other
 
-void w_entity::phys_begin_contact( const w_physics_responder& responder, const char* other_tag, w_entity* other )
+void w_entity::phys_begin_contact( w_entity* other )
 {
 }
 
 // entities were touching but are not anymore
 
-void w_entity::phys_end_contact( const w_physics_responder& responder, const char* other_tag, w_entity* other )
+void w_entity::phys_end_contact( w_entity* other )
 {
 }
 

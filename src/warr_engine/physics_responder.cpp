@@ -11,8 +11,8 @@ void w_physics_responder::BeginContact( b2Contact* contact )
 	w_entity* entity_a = ( (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	w_entity* entity_b = ( (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
 
-	entity_a->phys_begin_contact( *this, contact_tags[ 1 ], entity_b );
-	entity_b->phys_begin_contact( *this, contact_tags[ 0 ], entity_a );
+	entity_a->phys_begin_contact( entity_b );
+	entity_b->phys_begin_contact( entity_a );
 }
 
 void w_physics_responder::EndContact( b2Contact* contact )
@@ -25,8 +25,8 @@ void w_physics_responder::EndContact( b2Contact* contact )
 	w_entity* entity_a = ( (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	w_entity* entity_b = ( (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
 
-	entity_a->phys_end_contact( *this, contact_tags[ 1 ], entity_b );
-	entity_b->phys_end_contact( *this, contact_tags[ 0 ], entity_a );
+	entity_a->phys_end_contact( entity_b );
+	entity_b->phys_end_contact( entity_a );
 }
 
 void w_physics_responder::PreSolve( b2Contact* contact, const b2Manifold* oldManifold )

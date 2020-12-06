@@ -80,8 +80,8 @@ struct w_entity : i_life_cycle, i_transform
 	void phys_set_restitution( float restitution );
 	void phys_set_density( float density );
 
-	virtual void phys_begin_contact( const w_physics_responder& responder, const char* other_tag, w_entity* other );
-	virtual void phys_end_contact( const w_physics_responder& responder, const char* other_tag, w_entity* other );
+	virtual void phys_begin_contact( w_entity* other );
+	virtual void phys_end_contact( w_entity* other );
 };
 
 // ----------------------------------------------------------------------------
