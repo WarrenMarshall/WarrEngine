@@ -517,7 +517,7 @@ w_render* w_render::draw_stats()
 		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
 		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.num_entities.value ) ) );
 		stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
-		stat_lines.emplace_back( fmt::format( "Mouse VPos: {:.0f}, {:.0f}", engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
+		stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f}", engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y, engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
 
 		if( stats.stat_custom_string.length() )
 		{
@@ -647,8 +647,6 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	return this;
 }
 
-// draws a line
-
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
 	maybe_draw_master_buffer( engine->white_wire->tex );
@@ -688,7 +686,7 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	a_subtexture* p_12 = slice_def->patches[ slicedef_patch::P_12 ];
 	a_subtexture* p_22 = slice_def->patches[ slicedef_patch::P_22 ];
 
-	// nudge the rendering down the height of the top row of subtextures. this
+	// nudge the rendering down by the height of the top row of subtextures. this
 	// allows us to think of the top/left of this window as the actual graphical top/left.
 
 	float xpos = dst.x;

@@ -375,10 +375,10 @@ w_vec2 w_vec2::operator/=( float v )
 
 float w_vec2::get_size_squared()
 {
-	return sqrt( w_vec2::get_size() );
+	return glm::sqrt( w_vec2::get_size_fast() );
 }
 
-float w_vec2::get_size()
+float w_vec2::get_size_fast()
 {
 	return ( x * x ) + ( y * y );
 }
@@ -426,9 +426,7 @@ float w_vec2::angle_from_dir( w_vec2 dir )
 {
 	float angle = glm::atan( dir.y, dir.x ) * 180.0f / W_PI;
 
-	// massage the resulting angle into a range that this engine likes.
-	angle += 90.0f;
-	if( angle < 0.0f ) angle += 360.0f;
+	angle = std::clamp<float>( angle + 90.f, 0.f, 360.f );
 
 	return angle;
 }

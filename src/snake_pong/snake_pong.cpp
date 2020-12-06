@@ -53,7 +53,7 @@ void snake_pong::new_game()
 	e->set_tag( "player_paddle_h" );
 	e->collision_layer = clayer_player_h;
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( w_color::pal( 4 ), rc );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::circle, w_color::pal( 4 ), 16.f );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
 	rc = w_rect( -4, -32, 8, 64 );
@@ -61,6 +61,6 @@ void snake_pong::new_game()
 	e->set_tag( "player_paddle_v" );
 	e->collision_layer = clayer_player_v;
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( w_color::pal( 4 ), rc );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::circle, w_color::pal( 4 ), 16.f );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 }

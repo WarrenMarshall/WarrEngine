@@ -172,7 +172,7 @@ struct w_vec2
 	[[nodiscard]] w_vec2 to_b2d();
 	[[nodiscard]] w_vec2 from_b2d();
 	[[nodiscard]] float get_size_squared();
-	[[nodiscard]] float get_size();
+	[[nodiscard]] float get_size_fast();
 	[[nodiscard]] bool is_zero();
 	[[nodiscard]] static w_vec2 get_random_unit_circle();
 
@@ -193,6 +193,8 @@ struct w_vec2
 	[[nodiscard]] static float angle_from_dir( w_vec2 dir );
 	[[nodiscard]] static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
 };
+
+// ----------------------------------------------------------------------------
 
 struct w_vec3
 {

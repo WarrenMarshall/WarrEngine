@@ -15,7 +15,6 @@ float w_random::getf()
     return distr( gen );
 }
 
-
 // returns a boolean value
 
 bool w_random::getb()
@@ -24,8 +23,6 @@ bool w_random::getb()
 }
 
 // returns a float value between min and max
-//
-// NOTE : min/max are inclusive
 
 float w_random::getf_range( float min, float max )
 {
@@ -35,12 +32,8 @@ float w_random::getf_range( float min, float max )
 }
 
 // returns an integer value between min and max
-//
-// NOTE : min/max are inclusive
 
 int w_random::geti_range( int min, int max )
 {
-    assert( min < max );
-
-	return static_cast<int>( round( getf_range( static_cast<float>( min ), static_cast<float>( max ) ) ) );
+	return static_cast<int>( glm::round( getf_range( static_cast<float>( min ), static_cast<float>( max ) ) ) );
 }

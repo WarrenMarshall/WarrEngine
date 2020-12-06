@@ -118,6 +118,8 @@ void w_window::toggle_fullscreen()
 
 	if( is_fullscreen )
 	{
+		// when toggling to fullscreen, save the current window state so it
+		// can be restored later.
 		glfwGetWindowPos( window, &save_windowed_state.x, &save_windowed_state.y );
 		glfwGetWindowSize( window, &save_windowed_state.w, &save_windowed_state.h );
 
@@ -127,6 +129,7 @@ void w_window::toggle_fullscreen()
 	}
 	else
 	{
+		// dropping back
 		glfwSetWindowMonitor( window, nullptr,
 			save_windowed_state.x, save_windowed_state.y,
 			save_windowed_state.w, save_windowed_state.h, 0 );

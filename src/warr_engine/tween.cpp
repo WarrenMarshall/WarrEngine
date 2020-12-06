@@ -81,7 +81,7 @@ int w_tween::get_ival( int low, int high )
 
 bool w_tween::is_negative()
 {
-	return std::signbit( get_fval() );
+	return glm::sign( get_fval() );
 }
 
 void w_tween::reset_to_start()
@@ -91,6 +91,5 @@ void w_tween::reset_to_start()
 
 void w_tween::randomize()
 {
-
 	tween.seek( engine->random->getf(), true );
 }

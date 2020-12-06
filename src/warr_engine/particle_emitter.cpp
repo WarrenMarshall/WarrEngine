@@ -45,7 +45,7 @@ void w_particle_emitter::update()
 			particles_to_spawn_accum += params->s_max_spawn_per_sec * w_time::FTS_step_value_s;
 
 			// strip off the fractional part of the accum to get the number to spawn
-			particles_to_spawn = static_cast<int>( particles_to_spawn_accum );
+			particles_to_spawn = static_cast<int>( glm::trunc( particles_to_spawn_accum ) );
 		}
 
 		if( particles_to_spawn )

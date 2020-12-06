@@ -329,6 +329,5 @@ enum_end
 enum_begin( primitive_shape, ubyte )
 	rectangle = 1,
 	filled_rectangle,
-	polygon,
 	circle,
 enum_end

@@ -31,7 +31,11 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 	last_mouse_pos = w_vec2( static_cast<float>( xpos ), static_cast<float>( ypos ) );
 
-	// convert the window space window mouse position into a position on the virtual screen.
+	// save the window space position of the mouse
+	engine->input->mouse_window_pos.x = glm::round( static_cast<float>( xpos ) );
+	engine->input->mouse_window_pos.y = glm::round( static_cast<float>( ypos ) );
+
+	// convert the window space mouse position into a position on the virtual screen.
 	auto ratio = ( v_window_w / engine->window->viewport_pos_sz.w );
 	auto vx = ( xpos - engine->window->viewport_pos_sz.x ) * ratio;
 	auto vy = ( ypos - engine->window->viewport_pos_sz.y ) * ratio;
@@ -41,8 +45,8 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	{
 		// integer mouse coordinates make things like UI click
 		// detection simpler and less error prone
-		engine->input->mouse_vwindow_pos.x = round( static_cast<float>( vx ) );
-		engine->input->mouse_vwindow_pos.y = round( static_cast<float>( vy ) );
+		engine->input->mouse_vwindow_pos.x = glm::round( static_cast<float>( vx ) );
+		engine->input->mouse_vwindow_pos.y = glm::round( static_cast<float>( vy ) );
 	}
 }
 

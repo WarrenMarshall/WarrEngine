@@ -36,6 +36,7 @@ void layer_game::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
+	log( "LOCKED MOUSE" );
 	engine->window->set_mouse_mode( mouse_mode::locked );
 }
 

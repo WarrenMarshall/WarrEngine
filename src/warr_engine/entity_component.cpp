@@ -103,10 +103,20 @@ ec_primitive_shape::ec_primitive_shape( w_entity* parent_entity )
 	type |= component_type::primitive_shape;
 }
 
-w_entity_component* ec_primitive_shape::init( const w_color& color, const w_rect& rc )
+w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const w_color& color, const w_rect& rc )
 {
+	this->prim_shape = prim_shape;
 	this->color = color;
 	this->rc = rc;
+
+	return this;
+}
+
+w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const w_color& color, const float radius )
+{
+	this->prim_shape = prim_shape;
+	this->color = color;
+	this->radius = radius;
 
 	return this;
 }
@@ -118,10 +128,30 @@ void ec_primitive_shape::draw()
 		return;
 	}
 
-	RENDER
-		->push_rgb( color )
-		->draw_filled_rectangle( rc )
-		->pop_rgb();
+	RENDER->push_rgb( color );
+
+	switch( prim_shape )
+	{
+		case primitive_shape::filled_rectangle:
+		{
+			RENDER->draw_filled_rectangle( rc );
+		}
+		break;
+
+		case primitive_shape::rectangle:
+		{
+			RENDER->draw_rectangle( rc );
+		}
+		break;
+
+		case primitive_shape::circle:
+		{
+			RENDER->draw_circle( w_vec2( 0, 0 ), radius );
+		}
+		break;
+	}
+
+	RENDER->pop_rgb();
 }
 
 // ----------------------------------------------------------------------------
