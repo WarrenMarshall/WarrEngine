@@ -18,6 +18,8 @@ void snake_pong::new_game()
 {
 	w_game::new_game();
 
+	engine->box2d_world->SetGravity( w_vec2( 0.f, 0.f ).as_b2Vec2() );
+
 	auto layer = engine->layer_mgr->get_top();
 
 	w_entity* e;
@@ -53,7 +55,7 @@ void snake_pong::new_game()
 	e->set_tag( "player_paddle_h" );
 	e->collision_layer = clayer_player_h;
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::circle, w_color::pal( 4 ), 16.f );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ), rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
 	rc = w_rect( -4, -32, 8, 64 );
@@ -61,6 +63,20 @@ void snake_pong::new_game()
 	e->set_tag( "player_paddle_v" );
 	e->collision_layer = clayer_player_v;
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::circle, w_color::pal( 4 ), 16.f );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ), rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
+
+	// ball
+
+	e = layer->add_entity<e_ball>();
+	e->set_tag( "ball" );
+	e->collision_layer = clayer_ball;
+	auto ecd = e->add_component<ec_b2d_dynamic>();
+	ecd->is_primary_body = true;
+	ecd->add_fixture_circle( "", w_vec2::zero, 8.f );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::circle, w_color::pal( 4 ), 8.f );
+	e->set_position_deep( w_vec2::zero, false );
+
+	e->set_angle_deep( engine->random->getf_range( 0.f, 360.f ) );
+	e->phys_set_restitution( 1.0f );
 }

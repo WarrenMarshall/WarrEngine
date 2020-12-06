@@ -1,6 +1,6 @@
 #pragma once
 
-struct e_paddle_h : w_entity
+struct e_ball : w_entity
 {
-	virtual void draw() override;
+	virtual void phys_begin_contact( const w_physics_responder& responder, const char* other_tag, const w_entity* other ) override;
 };

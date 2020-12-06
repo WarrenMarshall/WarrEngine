@@ -79,9 +79,11 @@ struct w_entity : i_life_cycle, i_transform
 	void phys_set_friction( float friction );
 	void phys_set_restitution( float restitution );
 	void phys_set_density( float density );
+
+	virtual void phys_begin_contact( const w_physics_responder& responder, const char* other_tag, const w_entity* other );
+	virtual void phys_end_contact( const w_physics_responder& responder, const char* other_tag, const w_entity* other );
 };
 
-// ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
@@ -99,7 +101,6 @@ struct w_entity_transient : w_entity
 	virtual void update() override;
 };
 
-// ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
 struct w_camera : w_entity
