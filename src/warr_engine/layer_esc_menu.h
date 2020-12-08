@@ -8,4 +8,6 @@ struct layer_esc_menu : w_layer
 	virtual void push() override;
 	virtual void pop() override;
 	virtual void draw_ui() override;
+
+	virtual bool iir_on_pressed( const w_input_event* evt ) override;
 };

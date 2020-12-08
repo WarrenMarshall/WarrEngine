@@ -85,3 +85,14 @@ void layer_esc_menu::draw_ui()
 		engine->is_running = false;
 	}
 }
+
+bool layer_esc_menu::iir_on_pressed( const w_input_event* evt )
+{
+	//if( evt->input_id == input_id::key_esc )
+	//{
+	//	engine->layer_mgr->pop();
+	//	return true;
+	//}
+
+	return false;
+}
