@@ -2,26 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-/*
-	input system design notes
-
-	- buttons being pressed and released are sent as listener events
-		- (keypresses, mouse buttons, or controller buttons)
-
-	- buttons can also be queried as needed
-		- (keypresses, mouse buttons, or controller buttons)
-
-	- mouse motion
-		- only sent as an event, can't be queried
-		- the delta is updated in real time via the callback function but the
-		  event is only sent once per call to Update()
-
-	- controller motion
-		- must be queried, it's never sent as an event
-		- controller motion is pressure sensitive so you need to poll each frame
-		  to see how hard the user is pushing the stick or the trigger you want
-*/
-
 static w_vec2 last_mouse_pos( 0, 0 );
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
@@ -305,7 +285,7 @@ void w_input::update()
 		}
 	}
 
-	event_queue = {};
+	event_queue.clear();
 }
 
 void w_input::update_button_state( e_input_id input_id, int glfw_state )

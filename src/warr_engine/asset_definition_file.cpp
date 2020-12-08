@@ -149,7 +149,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->find_value( "alignment" ) ) );
 
-					asset_ptr->colors = {};
+					asset_ptr->colors.clear();
 
 					std::vector<w_color> color_list = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
 

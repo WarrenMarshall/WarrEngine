@@ -2,6 +2,15 @@
 
 #include "cache_assets.h"
 
+struct w_pending_collision
+{
+	w_entity* entity_a;
+	b2Fixture* fixture_a;
+	w_entity* entity_b;
+	b2Fixture* fixture_b;
+	b2Manifold manifold;
+};
+
 struct w_engine : i_input_receiver
 {
 	static bool init_game_engine( int argc, char* argv [] );
@@ -22,7 +31,9 @@ struct w_engine : i_input_receiver
 
 	std::unique_ptr<w_physics_debug_draw> physics_debug_draw = nullptr;
 	std::unique_ptr<b2World> box2d_world = nullptr;
-	std::unique_ptr<w_physics_responder> physics_responder = nullptr;
+	std::unique_ptr<w_phys_contact_listener> physics_responder = nullptr;
+	std::vector<w_pending_collision> begin_contact_queue;
+	std::vector<w_pending_collision> end_contact_queue;
 
 	void new_physics_world();
 
@@ -78,4 +89,6 @@ struct w_engine : i_input_receiver
 	std::unique_ptr<w_opengl> opengl = nullptr;
 	std::unique_ptr<w_keyvalues> config_vars = nullptr;
 	std::unique_ptr<w_random> random = nullptr;
+
+	void process_collision_queue();
 };

@@ -168,5 +168,12 @@ void w_window::refresh_mouse_mode()
 			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
 		}
 		break;
+
+		default:
+		{
+			// unknown mouse mode
+			assert( false );
+		}
+		break;
 	}
 }

@@ -3,7 +3,7 @@
 
 // ----------------------------------------------------------------------------
 
-void e_paddle::phys_begin_contact( w_entity* other )
+void e_paddle::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 {
 	if( other->tag == "ball" )
 	{
@@ -22,7 +22,7 @@ void e_paddle::phys_begin_contact( w_entity* other )
 
 // ----------------------------------------------------------------------------
 
-void e_ball::phys_begin_contact( w_entity* other )
+void e_ball::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 {
 	if( other->tag == "ball" )
 	{
@@ -31,10 +31,10 @@ void e_ball::phys_begin_contact( w_entity* other )
 		other->phys_get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
 
 		// compute new directions
-		b2Vec2 world_point = other->phys_get_primary_body()->body->GetWorldPoint( engine->physics_responder->manifold->localPoint );
+		b2Vec2 world_point = other->phys_get_primary_body()->body->GetWorldPoint( coll.manifold.localPoint );
 
-		w_vec2 world_point_a = w_vec2( engine->physics_responder->contact->GetFixtureA()->GetBody()->GetWorldPoint( engine->physics_responder->manifold->localPoint ) ).from_b2d();
-		w_vec2 world_point_b = w_vec2( engine->physics_responder->contact->GetFixtureB()->GetBody()->GetWorldPoint( engine->physics_responder->manifold->localPoint ) ).from_b2d();
+		w_vec2 world_point_a = w_vec2( coll.fixture_a->GetBody()->GetWorldPoint( coll.manifold.localPoint ) ).from_b2d();
+		w_vec2 world_point_b = w_vec2( coll.fixture_b->GetBody()->GetWorldPoint( coll.manifold.localPoint ) ).from_b2d();
 
 		w_vec2 mid_point = world_point_a + ( ( world_point_b - world_point_a ) * 0.5f );
 
@@ -43,7 +43,9 @@ void e_ball::phys_begin_contact( w_entity* other )
 		other->phys_get_primary_body()->body->ApplyForceToCenter( ( ( other->pos - mid_point ) * e_ball::speed ).normalize().to_b2d().as_b2Vec2(), true );
 	}
 
-	if( other->tag == "" )
+	if( other->tag == "world" )
 	{
+		ilc_set( life_cycle::dying );
+		static_cast<layer_game*>( LAYER )->spawn_ball();
 	}
 }

@@ -20,7 +20,7 @@ bool a_mesh::create_internals()
 
 	auto file = engine->fs->load_text_file_into_memory( original_filename );
 
-	render_verts = {};
+	render_verts.clear();
 
 	std::vector<w_vec3> vertex_list;
 	std::vector<w_uv> uv_list;

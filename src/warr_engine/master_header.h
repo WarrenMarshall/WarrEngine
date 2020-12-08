@@ -100,7 +100,7 @@ extern float ui_canvas_h;
 #include "window.h"
 #include "cache_assets.h"
 
-#include "physics_responder.h"
+#include "physics_contact_listener.h"
 #include "physics_query_callbacks.h"
 #include "physics_query.h"
 #include "physics_debug_draw.h"

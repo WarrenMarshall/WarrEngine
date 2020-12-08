@@ -30,6 +30,10 @@ void w_entity::update_from_physics()
 
 void w_entity::update()
 {
+	if( ilc_update_count_death_delay )
+	{
+		ilc_update_count_death_delay--;
+	}
 }
 
 void w_entity::update_components()
@@ -177,35 +181,35 @@ void w_entity::phys_set_density( float density )
 	}
 }
 
-// entities are touching each other
+// entities are start to touch each other
 
-void w_entity::phys_begin_contact( w_entity* other )
+void w_entity::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 {
 }
 
 // entities were touching but are not anymore
 
-void w_entity::phys_end_contact( w_entity* other )
+void w_entity::phys_end_contact( w_pending_collision& coll, w_entity* other )
 {
 }
 
 bool w_entity::can_be_deleted()
 {
 	// still alive, can't delete
-	if( ilc_is_alive() )
-	{
+	if( ilc_is_alive() ) {
 		return false;
 	}
 
-	if( ilc_is_dying() )
-	{
+	if( ilc_update_count_death_delay ) {
+		return false;
+	}
+
+	if( ilc_is_dying() ) {
 		// entity is dying, but can't be deleted until all
 		// components are dead
 
-		for( const auto& iter : components )
-		{
-			if( !iter->is_fully_dead() )
-			{
+		for( const auto& iter : components ) {
+			if( !iter->is_fully_dead() ) {
 				return false;
 			}
 		}

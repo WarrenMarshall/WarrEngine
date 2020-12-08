@@ -30,7 +30,7 @@ struct w_vec3;
 struct w_window;
 struct w_layer;
 struct w_physics_query;
-struct w_physics_responder;
+struct w_phys_contact_listener;
 struct w_entity_component;
 struct w_entity;
 struct w_physics_debug_draw;

@@ -12,8 +12,7 @@ static w_bit_flag_generator clayer_bits( 1 );
 static unsigned clayer_all = clayer_bits.next();
 static unsigned clayer_world_top_bottom = clayer_bits.next();
 static unsigned clayer_world_left_right = clayer_bits.next();
-static unsigned clayer_player_h = clayer_bits.next();
-static unsigned clayer_player_v = clayer_bits.next();
+static unsigned clayer_paddle = clayer_bits.next();
 static unsigned clayer_ball = clayer_bits.next();
 
 // ----------------------------------------------------------------------------

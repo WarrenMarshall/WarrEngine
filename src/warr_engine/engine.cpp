@@ -318,6 +318,8 @@ void w_engine::exec_main_loop()
 
 			engine->box2d_world->Step( w_time::FTS_step_value_s, b2d_velocity_iterations, b2d_position_iterations );
 
+			engine->process_collision_queue();
+
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
@@ -482,7 +484,7 @@ w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_valu
 void w_engine::new_physics_world()
 {
 	engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.0f, b2d_gravity_default ) );
-	engine->physics_responder = std::make_unique<w_physics_responder>();
+	engine->physics_responder = std::make_unique<w_phys_contact_listener>();
 	engine->box2d_world->SetContactListener( engine->physics_responder.get() );
 
 	engine->physics_debug_draw = std::make_unique<w_physics_debug_draw>();
@@ -732,4 +734,27 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 	}
 
 	return false;
+}
+
+void w_engine::process_collision_queue()
+{
+	// begin contact
+
+	for( auto& iter : begin_contact_queue )
+	{
+		iter.entity_a->phys_begin_contact( iter, iter.entity_b );
+		iter.entity_b->phys_begin_contact( iter, iter.entity_a );
+	}
+
+	begin_contact_queue.clear();
+
+	// end contact
+
+	for( auto& iter : end_contact_queue )
+	{
+		iter.entity_a->phys_end_contact( iter, iter.entity_b );
+		iter.entity_b->phys_end_contact( iter, iter.entity_a );
+	}
+
+	end_contact_queue.clear();
 }

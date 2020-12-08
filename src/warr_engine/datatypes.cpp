@@ -19,12 +19,12 @@ w_keyframe::w_keyframe( float pct_marker, w_color value )
 w_timeline::w_timeline( e_timeline_type type )
 	: type( type )
 {
-	keyframes = {};
+	keyframes.clear();
 }
 
 w_timeline* w_timeline::kf_clear()
 {
-	keyframes = {};
+	keyframes.clear();
 	return this;
 }
 

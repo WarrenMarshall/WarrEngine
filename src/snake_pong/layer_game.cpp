@@ -36,7 +36,7 @@ void layer_game::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
-	engine->window->set_mouse_mode( mouse_mode::locked );
+	engine->window->set_mouse_mode( mouse_mode::custom );
 }
 
 w_camera* layer_game::get_camera()
@@ -102,7 +102,7 @@ void layer_game::spawn_ball()
 {
 	auto e = add_entity<e_ball>();
 	e->set_tag( "ball" );
-	e->set_collision( clayer_ball, clayer_player_h | clayer_player_v | clayer_ball );
+	e->set_collision( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
 	auto ecd = e->add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;
 	ecd->add_fixture_circle( "", w_vec2::zero, e_ball::radius );
