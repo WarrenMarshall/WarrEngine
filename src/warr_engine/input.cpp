@@ -257,15 +257,19 @@ void w_input::update()
 
 			case event_id::input_released:
 			{
+				log( "1" );
 				if( engine->iir_on_released( &evt ) )
 				{
+					log( "2" );
 					break;
 				}
 
 				if( engine->layer_mgr->iir_on_released( &evt ) )
 				{
+					log( "3" );
 					break;
 				}
+				log( "4" );
 			}
 			break;
 

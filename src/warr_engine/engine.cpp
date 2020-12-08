@@ -272,16 +272,8 @@ void w_engine::exec_main_loop()
 		main game loop
 	*/
 
-	while( engine->is_running )
+	while( engine->is_running && !glfwWindowShouldClose( engine->window->window ) )
 	{
-		if( glfwWindowShouldClose( engine->window->window ) )
-		{
-			engine->is_running = false;
-		}
-
-		/*
-			event processing
-		*/
 		glfwWaitEventsTimeout( 0.001 );
 
 		/*
@@ -289,6 +281,7 @@ void w_engine::exec_main_loop()
 		*/
 
 		engine->time->update();
+		IMGUI->reset();
 
 		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction
@@ -302,7 +295,12 @@ void w_engine::exec_main_loop()
 		*/
 		engine->input->queue_presses();
 
-		IMGUI->reset();
+		// if the engine is paused, we need to continue processing user
+		// input so that the ESC menu and engine can respond to keypresses
+		if( engine->is_paused )
+		{
+			engine->input->update();
+		}
 
 		/*
 			if we have fixed time steps to perform, walk
@@ -715,12 +713,16 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 	// toggle esc menu
 	if( evt->input_id == input_id::key_esc )
 	{
+		log( "A : {}", typeid( layer_esc_menu ).name() );
+		log( "B : {}", typeid( *layer_mgr->get_top() ).name() );
 		if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
 		{
+			log( "BB" );
 			layer_mgr->pop();
 		}
 		else
 		{
+			log( "CC" );
 			layer_mgr->push<layer_esc_menu>();
 		}
 		return true;
