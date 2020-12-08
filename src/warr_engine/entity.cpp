@@ -30,10 +30,8 @@ void w_entity::update_from_physics()
 
 void w_entity::update()
 {
-	if( ilc_update_count_death_delay )
-	{
-		ilc_update_count_death_delay--;
-	}
+	// tick the death delay down, stopping at zero
+	ilc_update_count_death_delay = glm::max( ilc_update_count_death_delay - 1, 0 );
 }
 
 void w_entity::update_components()
