@@ -101,12 +101,6 @@ bool layer_game::iir_on_pressed( const w_input_event* evt )
 void layer_game::spawn_ball()
 {
 	auto e = add_entity<e_ball>();
-	e->set_tag( "ball" );
-	e->set_collision( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
-	auto ecd = e->add_component<ec_b2d_dynamic>();
-	ecd->is_primary_body = true;
-	ecd->add_fixture_circle( "", w_vec2::zero, e_ball::radius );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ), w_rect(-e_ball::radius, -e_ball::radius, e_ball::radius * 2.f, e_ball::radius * 2.f ) );
 	e->set_position_deep( w_vec2::zero, false );
 
 	auto dir = w_vec2::dir_from_angle( engine->random->getf_range( 0.f, 360.f ) );

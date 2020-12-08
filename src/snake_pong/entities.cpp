@@ -22,6 +22,19 @@ void e_paddle::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 
 // ----------------------------------------------------------------------------
 
+e_ball::e_ball()
+{
+	set_tag( "ball" );
+	set_collision( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
+
+	auto ecd = add_component<ec_b2d_dynamic>();
+	ecd->is_primary_body = true;
+	ecd->add_fixture_circle( "", w_vec2::zero, e_ball::radius );
+	ecd->body->SetFixedRotation( true );
+
+	add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ), w_rect( -e_ball::radius, -e_ball::radius, e_ball::radius * 2.f, e_ball::radius * 2.f ) );
+}
+
 void e_ball::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 {
 	if( other->tag == "ball" )

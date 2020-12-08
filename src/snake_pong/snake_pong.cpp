@@ -10,6 +10,13 @@ void snake_pong::init()
 {
 	w_game::init();
 
+	reset_layer_stack_to_main_menu();
+}
+
+void snake_pong::reset_layer_stack_to_main_menu()
+{
+	engine->layer_mgr->clear_stack();
+
 	engine->layer_mgr->push<layer_background>();
 	engine->layer_mgr->push<layer_main_menu>();
 }
