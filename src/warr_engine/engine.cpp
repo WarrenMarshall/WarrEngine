@@ -328,6 +328,7 @@ void w_engine::exec_main_loop()
 		time_val += engine->time->delta_ms / 2000.f;
 		OPENGL->set_uniform( "in_time", time_val );
 		OPENGL->set_uniform( "in_use_vignette", 1.0f );
+		OPENGL->set_uniform( "b_use_crt_scanlines", false );
 
 		// draw the scene to a framebuffer, sized to match the virtual viewport
 
@@ -375,7 +376,7 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-#if 0
+#if 1
 		OPENGL->find_shader( "crt_fx" )->bind();
 #endif
 

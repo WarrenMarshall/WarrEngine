@@ -24,4 +24,5 @@ struct w_opengl
 	void init_view_matrix_identity() const;
 	void init_view_matrix_identity_ui() const;
 	void set_uniform( std::string_view name, float value );
+	void set_uniform( std::string_view name, bool value );
 };
