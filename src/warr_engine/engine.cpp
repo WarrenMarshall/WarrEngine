@@ -268,6 +268,9 @@ void w_engine::deinit_game_engine()
 
 void w_engine::exec_main_loop()
 {
+	OPENGL->set_uniform( "b_show_vignette", true );
+	OPENGL->set_uniform( "b_show_crt_warp", true );
+
 	/*
 		main game loop
 	*/
@@ -321,14 +324,12 @@ void w_engine::exec_main_loop()
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
-		}
 
-		// #shader_refactor - wtf is this?
-		static float time_val = 0.0f;
-		time_val += engine->time->delta_ms / 2000.f;
-		OPENGL->set_uniform( "in_time", time_val );
-		OPENGL->set_uniform( "in_use_vignette", 1.0f );
-		OPENGL->set_uniform( "b_use_crt_scanlines", false );
+			// update shader parameters
+			static float time_val = 0.0f;
+			time_val += w_time::FTS_step_value_s;
+			OPENGL->set_uniform( "in_current_time", time_val );
+		}
 
 		// draw the scene to a framebuffer, sized to match the virtual viewport
 
@@ -376,9 +377,7 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-#if 1
 		OPENGL->find_shader( "crt_fx" )->bind();
-#endif
 
 		RENDER
 			->begin()

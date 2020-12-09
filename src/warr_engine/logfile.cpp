@@ -26,7 +26,7 @@ void w_logfile::time_stamp( const std::string_view msg )
 {
 	time_t raw_time;
 	tm time_info;
-	char time_str[ 100 ];
+	char time_str[ 100 ] = {};
 
 	time( &raw_time );
 	localtime_s( &time_info, &raw_time );

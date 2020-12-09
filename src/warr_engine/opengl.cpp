@@ -48,10 +48,6 @@ void w_opengl::init()
 	shader_wk->create_and_compile( "simple", "crt" );
 	shader_pool.insert( std::make_pair( "crt_fx", std::move( shader_wk ) ) );
 
-	shader_wk = std::make_unique<w_shader>();
-	shader_wk->create_and_compile( "simple", "simple" );
-	shader_pool.insert( std::make_pair( "to_screen", std::move( shader_wk ) ) );
-
 	glEnable( GL_TEXTURE_2D );
 
 	// NOTE : we have to use a depth buffer because we are rendering in batches.
@@ -236,18 +232,26 @@ void w_opengl::init_view_matrix_identity_ui() const
 
 void w_opengl::set_uniform( std::string_view name, float value )
 {
+	GLint loc;
 	for( auto& iter : shader_pool )
 	{
 		iter.second->bind();
-		glUniform1f( glGetUniformLocation( iter.second->id, name.data() ), value );
+
+		loc = glGetUniformLocation( iter.second->id, name.data() );
+		//assert( loc > -1 );	// uniform not found in shader!
+		glUniform1f( loc, value );
 	}
 }
 
 void w_opengl::set_uniform( std::string_view name, bool value )
 {
+	GLint loc;
 	for( auto& iter : shader_pool )
 	{
 		iter.second->bind();
-		glUniform1i( glGetUniformLocation( iter.second->id, name.data() ), value );
+
+		loc = glGetUniformLocation( iter.second->id, name.data() );
+		//assert( loc > -1 );	// uniform not found in shader!
+		glUniform1i( loc, value );
 	}
 }
