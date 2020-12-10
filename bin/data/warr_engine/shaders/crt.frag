@@ -14,6 +14,8 @@ in flat int _show_crt_warp;
 in flat float _var_crt_warp_bend;
 in flat int _show_crt_scanlines;
 in flat float _var_crt_scanlines_intensity;
+in flat int _show_chromatic_abberation;
+in flat float _var_chromatic_abberation_amount;
 
 uniform sampler2D ourTexture;
 
@@ -107,6 +109,20 @@ void main()
 	}
 
 	// ----------------------------------------------------------------------------
+	// chromatic abberation
+
+	if( _show_chromatic_abberation > 0 )
+	{
+		FragColor = texture( ourTexture, final_uv );
+		FragColor.r = texture(ourTexture, vec2(final_uv.x - _var_chromatic_abberation_amount, final_uv.y - _var_chromatic_abberation_amount)).r;
+		FragColor.b = texture(ourTexture, vec2(final_uv.x + _var_chromatic_abberation_amount, final_uv.y + _var_chromatic_abberation_amount)).b;
+	}
+	else
+	{
+		FragColor = texture( ourTexture, final_uv );
+	}
+
+	// ----------------------------------------------------------------------------
 	// vignette
 
 	if( _show_vignette > 0 )
@@ -114,7 +130,5 @@ void main()
 	  	final_color *= fx_vignette( final_uv, _var_vignette_size, _var_vignette_smoothness, _var_vignette_rounding );
 	}
 
-	// ----------------------------------------------------------------------------
-
-	FragColor = texture( ourTexture, final_uv ) * final_color;
+	FragColor *= final_color;
 }

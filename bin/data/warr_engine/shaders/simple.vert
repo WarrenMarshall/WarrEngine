@@ -22,6 +22,9 @@ uniform float var_crt_warp_bend = 4.0f;
 uniform int b_show_crt_scanlines = 1;
 uniform float var_crt_scanlines_intensity = 0.01f;
 
+uniform int b_show_chromatic_abberation = 1;
+uniform float var_chromatic_abberation_amount = 0.00375f;
+
 // ----------------------------------------------------------------------------
 
 out vec2 TexCoord;
@@ -37,6 +40,8 @@ out flat int _show_crt_warp;
 out flat float _var_crt_warp_bend;
 out flat int _show_crt_scanlines;
 out flat float _var_crt_scanlines_intensity;
+out flat int _show_chromatic_abberation;
+out flat float _var_chromatic_abberation_amount;
 
 // ----------------------------------------------------------------------------
 
@@ -63,4 +68,6 @@ void main()
     _var_crt_warp_bend = var_crt_warp_bend;
     _show_crt_scanlines = b_show_crt_scanlines;
     _var_crt_scanlines_intensity = var_crt_scanlines_intensity;
+    _show_chromatic_abberation = b_show_chromatic_abberation;
+    _var_chromatic_abberation_amount = var_chromatic_abberation_amount;
 }
