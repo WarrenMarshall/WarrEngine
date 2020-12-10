@@ -198,9 +198,6 @@ void w_render::clear_render_states()
 	rs_angle_stack.clear();
 	rs_align_stack.clear();
 
-	rs_z_depth = 0.0f;
-	rs_z_depth_nudge_accum = 0.0f;
-
 	rs_snap_to_pixel = true;
 
 	rs_color_stack = { w_color::white };

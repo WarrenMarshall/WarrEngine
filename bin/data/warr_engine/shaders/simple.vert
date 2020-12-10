@@ -23,7 +23,7 @@ uniform int b_show_crt_scanlines = 1;
 uniform float var_crt_scanlines_intensity = 0.01f;
 
 uniform int b_show_chromatic_abberation = 1;
-uniform float var_chromatic_abberation_amount = 0.00375f;
+uniform float var_chromatic_abberation_amount = 0.0025f;
 
 // ----------------------------------------------------------------------------
 
