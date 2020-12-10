@@ -34,8 +34,10 @@ struct w_render
 	std::vector<float> rs_angle_stack;
 	std::vector<e_align> rs_align_stack;
 
-	float zdepth = 0.0f;
-	float zdepth_nudge_accum = 0.0f;
+	float rs_z_depth = 0.0f;
+	float rs_z_depth_nudge_accum = 0.0f;
+
+	bool rs_snap_to_pixel = true;
 
 	w_render* begin();
 	void end();

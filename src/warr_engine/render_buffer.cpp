@@ -3,14 +3,14 @@
 #include "master_header.h"
 
 w_render_buffer_vert::w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color )
-    :   x( pos.x ), y( pos.y ), z( RENDER->zdepth ),
+    :   x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
         u( uv.u ), v( uv.v ),
         r( color.r ), g( color.g ), b( color.b ), a( color.a )
 {
 }
 
 w_render_buffer_vert::w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color )
-	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->zdepth ),
+	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a )
 {
@@ -150,6 +150,14 @@ int w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
     // moves it into world space.
 
     w_vec2 vtx = MATRIX->top()->transform_vec2( w_vec2( render_vert.x, render_vert.y ) );
+
+    // snap to pixel position
+
+    if( RENDER->rs_snap_to_pixel )
+    {
+        vtx.x = snap_to_pixel( vtx.x );
+	    vtx.y = snap_to_pixel( vtx.y );
+	}
 
     const w_render_buffer_vert rv(
         w_vec2( vtx.x, vtx.y ),

@@ -12,10 +12,8 @@ in flat float _var_vignette_rounding;
 in flat int _show_crt_tint;
 in flat int _show_crt_warp;
 in flat float _var_crt_warp_bend;
-/*
 in flat int _show_crt_scanlines;
 in flat float _var_crt_scanlines_intensity;
-*/
 
 uniform sampler2D ourTexture;
 
@@ -49,7 +47,6 @@ float fx_vignette( vec2 uv, float size, float smoothness, float edgeRounding )
 	return smoothstep( 0.0f, smoothness, amount );
 }
 
-/*
 // ----------------------------------------------------------------------------
 // horizontal lines that run horizontally across the screen and move over time
 
@@ -57,7 +54,6 @@ float fx_scanline( vec2 uv, float lines, float speed )
 {
 	return sin( uv.y * lines + _current_time * speed );
 }
-*/
 
 void main()
 {
@@ -82,7 +78,6 @@ void main()
 		final_uv = crt_uv;
 	}
 
-	/*
 	// ----------------------------------------------------------------------------
 	// rolling scan lines
 
@@ -91,9 +86,8 @@ void main()
 		float s1 = fx_scanline( final_uv, 20.0f, -10.0f );
 		float s2 = fx_scanline( final_uv, 2.0f, -3.0f );
 
-		final_color = mix( texture( ourTexture, final_uv ), vec4( s1 + s2 ), _var_crt_scanlines_intensity );
+		final_color = mix( final_color, vec4( s1 + s2 ), _var_crt_scanlines_intensity );
 	}
-	*/
 
 	// ----------------------------------------------------------------------------
 	// tint every other line to create cheap CRT effect

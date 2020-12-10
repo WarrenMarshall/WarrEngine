@@ -167,8 +167,8 @@ w_render* w_render::replace_align( const e_align& align )
 
 w_render* w_render::push_depth( const float depth )
 {
-	zdepth = depth;
-	zdepth_nudge_accum = 0.0f;
+	rs_z_depth = depth;
+	rs_z_depth_nudge_accum = 0.0f;
 
 	return this;
 }
@@ -179,8 +179,8 @@ w_render* w_render::push_depth( const float depth )
 
 w_render* w_render::push_depth_nudge( const float nudge )
 {
-	zdepth += nudge;
-	zdepth_nudge_accum += nudge;
+	rs_z_depth += nudge;
+	rs_z_depth_nudge_accum += nudge;
 
 	return this;
 }
@@ -197,6 +197,11 @@ void w_render::clear_render_states()
 	rs_scale_stack.clear();
 	rs_angle_stack.clear();
 	rs_align_stack.clear();
+
+	rs_z_depth = 0.0f;
+	rs_z_depth_nudge_accum = 0.0f;
+
+	rs_snap_to_pixel = true;
 
 	rs_color_stack = { w_color::white };
 	rs_alpha_stack = { 1.0f };
@@ -429,9 +434,6 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 void w_render::begin_frame()
 {
 	current_texture = nullptr;
-
-	zdepth = 0.0f;
-	zdepth_nudge_accum = 0.0f;
 }
 
 /*
@@ -633,6 +635,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_render_buffer_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 	w_render_buffer_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color );
 
+	rs_snap_to_pixel = false;
+
 	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
 		v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
@@ -643,6 +647,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 
 		master_render_buffer->add_line( v0, v1 );
 	}
+
+	rs_snap_to_pixel = true;
 
 	return this;
 }
@@ -657,7 +663,11 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	w_render_buffer_vert v0( start, w_uv( 0, 0 ), rs_color );
 	w_render_buffer_vert v1( end, w_uv( 0, 0 ), rs_color );
 
+	rs_snap_to_pixel = false;
+
 	master_render_buffer->add_line( v0, v1 );
+
+	rs_snap_to_pixel = true;
 
 	return this;
 }
@@ -669,7 +679,11 @@ w_render* w_render::draw_point( const w_vec2& pos )
 	auto start = pos;
 	auto end = start + w_vec2( 1.0f, 0.0f );
 
+	rs_snap_to_pixel = false;
+
 	draw_line( start, end );
+
+	rs_snap_to_pixel = true;
 
 	return this;
 }
