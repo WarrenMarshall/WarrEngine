@@ -96,9 +96,10 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 	w_matrix mtx;
 	mtx.rotate( angle );
 
-	w_vec2 x_axis = mtx.transform_vec2( v + w_vec2( 10.0f, 0.0f ) );
-	w_vec2 y_axis = mtx.transform_vec2( v + w_vec2( 0.0f, 10.0f ) );
+	w_vec2 x_axis = v + mtx.transform_vec2( w_vec2( 10.0f, 0.0f ) );
+	w_vec2 y_axis = v + mtx.transform_vec2( w_vec2( 0.0f, 10.0f ) );
 
+	RENDER->rs_snap_to_pixel = false;
 	RENDER
 		->begin()
 		->push_rgb( w_color( 192, 0, 0 ) )
@@ -106,6 +107,7 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 		->push_rgb( w_color( 0, 192, 0 ) )
 		->draw_line( v, y_axis )
 		->end();
+	RENDER->rs_snap_to_pixel = true;
 }
 
 // Draw a point.
