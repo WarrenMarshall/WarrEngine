@@ -90,14 +90,15 @@ void w_physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, cons
 // @param xf a transform.
 void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 {
+	constexpr float debug_line_length = 10.f;
+
 	w_vec2 v = w_vec2( xf.p ).from_b2d();
-	float angle = glm::degrees( xf.q.GetAngle() );
 
 	w_matrix mtx;
-	mtx.rotate( angle );
+	mtx.rotate( glm::degrees( xf.q.GetAngle() ) );
 
-	w_vec2 x_axis = v + mtx.transform_vec2( w_vec2( 10.0f, 0.0f ) );
-	w_vec2 y_axis = v + mtx.transform_vec2( w_vec2( 0.0f, 10.0f ) );
+	w_vec2 x_axis = v + mtx.transform_vec2( w_vec2( debug_line_length, 0.0f ) );
+	w_vec2 y_axis = v + mtx.transform_vec2( w_vec2( 0.0f, debug_line_length ) );
 
 	RENDER->rs_snap_to_pixel = false;
 	RENDER
