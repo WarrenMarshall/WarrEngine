@@ -262,7 +262,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 		->rotate( rs_angle )
 		->scale( rs_scale.x, rs_scale.y );
 
-	for( int x = 0 ; x < mesh->render_verts.size() ; x +=3 )
+	for( auto x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
 		master_render_buffer->add_triangle(
 			mesh->render_verts[ x ],
@@ -539,8 +539,7 @@ w_render* w_render::draw_stats()
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( engine->pixel_font, iter, w_rect( ui_canvas_hw, ypos ) );
-			//RENDER->draw_string( engine->pixel_font, iter, w_rect( 1.0f, ypos ) );
+			RENDER->draw_string( iter, w_rect( ui_canvas_hw, ypos ) );
 			ypos += font_max_height;
 		}
 
@@ -551,7 +550,6 @@ w_render* w_render::draw_stats()
 		RENDER->begin()
 			->push_align( align::right )
 			->draw_string(
-				engine->pixel_font,
 				fmt::format( "{} FPS ({:.2f} ms)", stats.frame_count.value, stats.frame_times_ms.value ),
 				w_rect( ui_canvas_w, 0 ) )
 			->end();

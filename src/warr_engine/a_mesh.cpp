@@ -84,7 +84,7 @@ bool a_mesh::create_internals()
 
 			tok.get_next_token();	// eat "f "
 
-			for( int i = 0 ; i < 3 ; ++i )
+			for( auto x = 0 ; x < 3 ; ++x )
 			{
 				w_tokenizer tok2( *( tok.get_next_token() ), '/' );
 

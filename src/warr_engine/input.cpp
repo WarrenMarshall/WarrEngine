@@ -360,7 +360,7 @@ void w_input::refresh_connected_gamepads()
 	ZeroMemory( &state, sizeof( XINPUT_STATE ) );
 
 	int xinput_player_id = -1;
-	for( int pn = 0 ; pn < XUSER_MAX_COUNT && xinput_player_id == -1 ; ++pn )
+	for( auto pn = 0 ; pn < XUSER_MAX_COUNT && xinput_player_id == -1 ; ++pn )
 	{
 		if( XInputGetState( pn, &state ) == ERROR_SUCCESS )
 		{

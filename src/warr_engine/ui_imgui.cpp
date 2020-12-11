@@ -352,7 +352,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 			->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
 			->push_align( align::centered );
 
-		RENDER->draw_string( engine->pixel_font, control.label, label_rc );
+		RENDER->draw_string( control.label, label_rc );
 	}
 
 	// finish
