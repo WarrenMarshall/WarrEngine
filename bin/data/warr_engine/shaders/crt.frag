@@ -4,18 +4,27 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec4 Color;
 in vec3 Pos;
+
 in float _current_time;
+
 in flat int _show_vignette;
 in flat float _var_vignette_size;
 in flat float _var_vignette_smoothness;
 in flat float _var_vignette_rounding;
+
 in flat int _show_crt_tint;
+
 in flat int _show_crt_warp;
 in flat float _var_crt_warp_bend;
+
 in flat int _show_crt_scanlines;
 in flat float _var_crt_scanlines_intensity;
+
 in flat int _show_chromatic_abberation;
 in flat float _var_chromatic_abberation_amount;
+
+in flat int _show_desaturation;
+in flat float _var_desaturation_amount;
 
 uniform sampler2D ourTexture;
 
@@ -131,4 +140,14 @@ void main()
 	}
 
 	FragColor *= final_color;
+
+	// ----------------------------------------------------------------------------
+	// Desaturate
+
+	if( _show_desaturation > 0 )
+	{
+		vec3 rgb = vec3( FragColor.r, FragColor.g, FragColor.b );
+		float T = _var_desaturation_amount;
+		FragColor = vec4( mix( vec3( dot( rgb, vec3( 0.2125, 0.7154, 0.0721 ) ) ), rgb, T ), FragColor.a );
+	}
 }

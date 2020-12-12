@@ -268,9 +268,6 @@ void w_engine::deinit_game_engine()
 
 void w_engine::exec_main_loop()
 {
-	OPENGL->set_uniform( "b_show_vignette", true );
-	OPENGL->set_uniform( "b_show_crt_warp", true );
-
 	/*
 		main game loop
 	*/

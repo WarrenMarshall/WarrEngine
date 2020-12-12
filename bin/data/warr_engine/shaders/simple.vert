@@ -1,4 +1,5 @@
 #version 420 core
+
 layout (location = 0) in vec3 inPos;
 layout (location = 1) in vec2 inTexCoord;
 layout (location = 2) in vec4 inColor;
@@ -7,6 +8,7 @@ layout (location = 2) in vec4 inColor;
 
 uniform mat4 P; // projection matrix
 uniform mat4 V; // camera matrix
+
 uniform float in_current_time;
 
 uniform int b_show_vignette = 0;
@@ -14,16 +16,19 @@ uniform float var_vignette_size = 1.9f;
 uniform float var_vignette_smoothness = 0.6f;
 uniform float var_vignette_rounding = 16.0f;
 
-uniform int b_show_crt_tint = 1;
+uniform int b_show_crt_tint = 0;
 
 uniform int b_show_crt_warp = 0;
 uniform float var_crt_warp_bend = 4.0f;
 
-uniform int b_show_crt_scanlines = 1;
+uniform int b_show_crt_scanlines = 0;
 uniform float var_crt_scanlines_intensity = 0.01f;
 
-uniform int b_show_chromatic_abberation = 1;
+uniform int b_show_chromatic_abberation = 0;
 uniform float var_chromatic_abberation_amount = 0.0025f;
+
+uniform int b_show_desaturation = 0;
+uniform float var_desaturation_amount = 0.1f;
 
 // ----------------------------------------------------------------------------
 
@@ -42,6 +47,8 @@ out flat int _show_crt_scanlines;
 out flat float _var_crt_scanlines_intensity;
 out flat int _show_chromatic_abberation;
 out flat float _var_chromatic_abberation_amount;
+out flat int _show_desaturation;
+out flat float _var_desaturation_amount;
 
 // ----------------------------------------------------------------------------
 
@@ -70,4 +77,6 @@ void main()
     _var_crt_scanlines_intensity = var_crt_scanlines_intensity;
     _show_chromatic_abberation = b_show_chromatic_abberation;
     _var_chromatic_abberation_amount = var_chromatic_abberation_amount;
+    _show_desaturation = b_show_desaturation;
+    _var_desaturation_amount = var_desaturation_amount;
 }

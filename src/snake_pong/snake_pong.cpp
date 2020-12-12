@@ -11,6 +11,11 @@ void snake_pong::init()
 	w_game::init();
 
 	reset_layer_stack_to_main_menu();
+
+	OPENGL->set_uniform( "b_show_vignette", true );
+	OPENGL->set_uniform( "b_show_crt_warp", true );
+	OPENGL->set_uniform( "b_show_desaturation", true );
+	OPENGL->set_uniform( "var_desaturation_amount", 2.0f );
 }
 
 void snake_pong::reset_layer_stack_to_main_menu()
