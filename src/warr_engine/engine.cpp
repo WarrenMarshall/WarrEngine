@@ -174,7 +174,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		}
 
 		// set up frame buffers
-		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( "game", v_window_w, v_window_h );
+		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( base_game->name, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -200,7 +200,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		engine->white_solid = a_subtexture::find( "engine_white_solid" );
 
 		// the texture we are rendering to each frame
-		engine->tex_frame_buffer = a_texture::find( "tex_game_frame_buffer" );
+		engine->tex_frame_buffer = a_texture::find( fmt::format( "tex_{}_frame_buffer", base_game->name ) );
 
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.
