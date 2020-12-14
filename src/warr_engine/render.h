@@ -68,6 +68,8 @@ struct w_render
 	// ----------------------------------------------------------------------------
 
 	bool show_stats = false;
+	std::vector<std::string> stat_lines;
+
 	bool show_physics_debug = true;
 
 	// circle sample points are stored in a unit circle

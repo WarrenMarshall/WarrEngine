@@ -257,6 +257,19 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
 
+	// copy the color/alpha into each vertex on the mesh before rendering.
+	// #optimization : probably not the best way to do this, but fine for now.
+	w_color rs_color = rs_color_stack.back();
+	rs_color.a = rs_alpha_stack.back();
+
+	for( auto x = 0 ; x < mesh->render_verts.size() ; ++x )
+	{
+		mesh->render_verts[ x ].r = rs_color.r;
+		mesh->render_verts[ x ].g = rs_color.g;
+		mesh->render_verts[ x ].b = rs_color.b;
+		mesh->render_verts[ x ].a = rs_color.a;
+	}
+
 	MATRIX
 		->push()
 		->rotate( rs_angle )
@@ -438,14 +451,17 @@ void w_render::begin_frame()
 */
 void w_render::end_frame()
 {
-	draw_stats();
-
-	// the last draw needs to be flushed
-	maybe_draw_master_buffer( nullptr );
+	OPENGL->init_view_matrix_identity_ui();
 
 	// accum stats
 	stats.frame_times_ms.accum( engine->time->delta_ms );
 	stats.frame_count.inc();
+
+	// possibly draw stats on the screen
+	draw_stats();
+
+	// the last draw needs to be flushed
+	maybe_draw_master_buffer( nullptr );
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -461,7 +477,7 @@ void w_render::end_frame()
 	assert( rs_scale_stack.size() == 1 );
 	assert( rs_align_stack.size() == 1 );
 
-	OPENGL->clear_texture_bind();
+	//OPENGL->clear_texture_bind();
 }
 
 /*
@@ -491,7 +507,6 @@ w_render* w_render::draw_world_axis()
 	draws useful stats at the top of the screen
 */
 
-constexpr int stats_draw_reserve = 10;
 w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
@@ -501,9 +516,7 @@ w_render* w_render::draw_stats()
 
 	if( show_stats )
 	{
-		std::vector<std::string> stat_lines;
-		stat_lines.reserve( stats_draw_reserve );
-
+		stat_lines.clear();
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / TICK : {} FPS",
 											  stats.frame_count.value,
 											  stats.frame_times_ms.value,
@@ -524,7 +537,6 @@ w_render* w_render::draw_stats()
 			stats.stat_custom_string = "";
 		}
 
-		assert( stat_lines.size() < stats_draw_reserve );
 		int font_max_height = engine->pixel_font->font_def->max_height;
 
 		RENDER->begin()

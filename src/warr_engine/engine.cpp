@@ -333,13 +333,14 @@ void w_engine::exec_main_loop()
 		engine->opengl->fb_game->bind();
 		RENDER->begin_frame();
 		{
+			OPENGL->find_shader( "simple" )->bind();
+
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
 			glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 			OPENGL->init_projection_matrix();
 			OPENGL->init_view_matrix_identity();
-			OPENGL->find_shader( "simple" )->bind();
 
 			// ----------------------------------------------------------------------------
 			// render the frame
@@ -355,8 +356,6 @@ void w_engine::exec_main_loop()
 			// engine specific things, like pause borders
 			engine->draw();
 		}
-
-		OPENGL->init_view_matrix_identity_ui();
 		RENDER->end_frame();
 
 		engine->opengl->fb_game->unbind();
