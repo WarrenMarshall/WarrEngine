@@ -28,7 +28,9 @@ uniform int b_show_chromatic_abberation = 0;
 uniform float var_chromatic_abberation_amount = 0.0025f;
 
 uniform int b_show_desaturation = 0;
-uniform float var_desaturation_amount = 0.1f;
+uniform float var_desaturation_amount = 0.15f;
+
+uniform int b_show_inverted = 0;
 
 // ----------------------------------------------------------------------------
 
@@ -49,6 +51,7 @@ out flat int _show_chromatic_abberation;
 out flat float _var_chromatic_abberation_amount;
 out flat int _show_desaturation;
 out flat float _var_desaturation_amount;
+out flat int _show_inverted;
 
 // ----------------------------------------------------------------------------
 
@@ -79,4 +82,5 @@ void main()
     _var_chromatic_abberation_amount = var_chromatic_abberation_amount;
     _show_desaturation = b_show_desaturation;
     _var_desaturation_amount = var_desaturation_amount;
+    _show_inverted = b_show_inverted;
 }

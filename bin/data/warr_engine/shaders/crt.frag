@@ -26,6 +26,8 @@ in flat float _var_chromatic_abberation_amount;
 in flat int _show_desaturation;
 in flat float _var_desaturation_amount;
 
+in flat int _show_inverted;
+
 uniform sampler2D ourTexture;
 
 // ----------------------------------------------------------------------------
@@ -139,6 +141,8 @@ void main()
 	  	final_color *= fx_vignette( final_uv, _var_vignette_size, _var_vignette_smoothness, _var_vignette_rounding );
 	}
 
+	// ----------------------------------------------------------------------------
+
 	FragColor *= final_color;
 
 	// ----------------------------------------------------------------------------
@@ -149,5 +153,13 @@ void main()
 		vec3 rgb = vec3( FragColor.r, FragColor.g, FragColor.b );
 		float T = _var_desaturation_amount;
 		FragColor = vec4( mix( vec3( dot( rgb, vec3( 0.2125, 0.7154, 0.0721 ) ) ), rgb, T ), FragColor.a );
+	}
+
+	// ----------------------------------------------------------------------------
+	// Inverted
+
+	if( _show_inverted > 0 )
+	{
+		FragColor = vec4( 1.0 - FragColor.r, 1.0 - FragColor.g, 1.0 - FragColor.b, FragColor.a );
 	}
 }

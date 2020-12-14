@@ -8,13 +8,12 @@ hello_world_app::hello_world_app( const char* name )
 
 void hello_world_app::init()
 {
+	engine->layer_mgr->push<layer_default>();
 }
 
 void hello_world_app::new_game()
 {
 	w_game::new_game();
-
-	engine->layer_mgr->push<layer_default>();
 }
 
 void hello_world_app::update()
