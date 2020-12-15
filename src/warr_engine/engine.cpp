@@ -374,7 +374,7 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-#if 1
+#if 0
 		OPENGL->find_shader( "crt_fx" )->bind();
 
 		RENDER
@@ -385,18 +385,21 @@ void w_engine::exec_main_loop()
 #else
 		OPENGL->find_shader( "crt_fx" )->bind();
 
+		OPENGL->set_blend( opengl_blend::alpha );
 		RENDER
 			->begin()
 			->draw( engine->tex_frame_buffer0, w_rect( 0, 0 ) )
 			->end();
+		RENDER->draw_master_buffer();
+
 		OPENGL->set_blend( opengl_blend::add );
 		RENDER
 			->begin()
 			->draw( engine->tex_frame_buffer1, w_rect( 0, 0 ) )
 			->end();
-		RENDER->maybe_draw_master_buffer( nullptr );
-		OPENGL->set_blend( opengl_blend::alpha );
+		RENDER->draw_master_buffer();
 
+		OPENGL->set_blend( opengl_blend::alpha );
 #endif
 
 		// we're done, swap the buffers!
