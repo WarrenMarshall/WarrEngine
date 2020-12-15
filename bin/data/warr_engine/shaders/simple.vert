@@ -13,7 +13,7 @@ uniform float in_current_time;
 
 uniform int b_show_vignette = 0;
 uniform float var_vignette_size = 1.9f;
-uniform float var_vignette_smoothness = 0.6f;
+uniform float var_vignette_smoothness = 0.75f;
 uniform float var_vignette_rounding = 16.0f;
 
 uniform int b_show_crt_tint = 0;
@@ -32,12 +32,16 @@ uniform float var_desaturation_amount = 0.15f;
 
 uniform int b_show_inverted = 0;
 
+uniform vec4 var_color_tint = vec4(  1.0f, 1.0f, 1.0f, 0.0f );
+
+uniform vec4 var_color_overlay = vec4(  0.0f, 0.0f, 0.0f, 0.0f );
+
 // ----------------------------------------------------------------------------
 
 out vec2 TexCoord;
 out vec4 Color;
 out vec3 Pos;
-out float _current_time;
+out flat float _current_time;
 out flat int _show_vignette;
 out flat float _var_vignette_size;
 out flat float _var_vignette_smoothness;
@@ -52,6 +56,8 @@ out flat float _var_chromatic_abberation_amount;
 out flat int _show_desaturation;
 out flat float _var_desaturation_amount;
 out flat int _show_inverted;
+out flat vec4 _var_color_tint;
+out flat vec4 _var_color_overlay;
 
 // ----------------------------------------------------------------------------
 
@@ -83,4 +89,6 @@ void main()
     _show_desaturation = b_show_desaturation;
     _var_desaturation_amount = var_desaturation_amount;
     _show_inverted = b_show_inverted;
+    _var_color_tint = var_color_tint;
+    _var_color_overlay = var_color_overlay;
 }

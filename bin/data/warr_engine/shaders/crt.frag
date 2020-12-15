@@ -5,7 +5,7 @@ in vec2 TexCoord;
 in vec4 Color;
 in vec3 Pos;
 
-in float _current_time;
+in flat float _current_time;
 
 in flat int _show_vignette;
 in flat float _var_vignette_size;
@@ -27,6 +27,10 @@ in flat int _show_desaturation;
 in flat float _var_desaturation_amount;
 
 in flat int _show_inverted;
+
+in flat vec4 _var_color_tint;
+
+in flat vec4 _var_color_overlay;
 
 uniform sampler2D ourTexture;
 
@@ -72,12 +76,14 @@ void main()
 {
 	// ----------------------------------------------------------------------------
 	// default handling of fragments
+	// ----------------------------------------------------------------------------
 
 	vec4 final_color = Color;
 	vec2 final_uv = TexCoord;
 
 	// ----------------------------------------------------------------------------
 	// CRT bending of image in the corners
+	// ----------------------------------------------------------------------------
 
 	if( _show_crt_warp > 0 )
 	{
@@ -85,14 +91,15 @@ void main()
 
 		// adjust final_color to be fully black if outside the 0-1 range in UV coords
 
-		if( crt_uv.x <= 0.0f || crt_uv.x >= 1.0f ) final_color = vec4(0,0,0,1);
-		if( crt_uv.y <= 0.0f || crt_uv.y >= 1.0f ) final_color = vec4(0,0,0,1);
+		//if( crt_uv.x <= 0.0f || crt_uv.x >= 1.0f ) final_color = vec4(0,0,0,1);
+		//if( crt_uv.y <= 0.0f || crt_uv.y >= 1.0f ) final_color = vec4(0,0,0,1);
 
 		final_uv = crt_uv;
 	}
 
 	// ----------------------------------------------------------------------------
 	// rolling scan lines
+	// ----------------------------------------------------------------------------
 
 	if( _show_crt_scanlines > 0 )
 	{
@@ -104,6 +111,7 @@ void main()
 
 	// ----------------------------------------------------------------------------
 	// tint every other line to create cheap CRT effect
+	// ----------------------------------------------------------------------------
 
 	float crt_tint = 1.0f;
 	float crt_tint_inv = 0.0f;
@@ -121,6 +129,7 @@ void main()
 
 	// ----------------------------------------------------------------------------
 	// chromatic abberation
+	// ----------------------------------------------------------------------------
 
 	if( _show_chromatic_abberation > 0 )
 	{
@@ -134,19 +143,15 @@ void main()
 	}
 
 	// ----------------------------------------------------------------------------
-	// vignette
-
-	if( _show_vignette > 0 )
-	{
-	  	final_color *= fx_vignette( final_uv, _var_vignette_size, _var_vignette_smoothness, _var_vignette_rounding );
-	}
-
-	// ----------------------------------------------------------------------------
 
 	FragColor *= final_color;
 
+	// #todo - all of these color effects change what they do based on the order they are
+	// applied. it would be nice to be able to customize this somehow
+
 	// ----------------------------------------------------------------------------
-	// Desaturate
+	// desaturate
+	// ----------------------------------------------------------------------------
 
 	if( _show_desaturation > 0 )
 	{
@@ -156,10 +161,48 @@ void main()
 	}
 
 	// ----------------------------------------------------------------------------
-	// Inverted
+	// invert
+	//
+	// does a "1.0 - color" fragment color replacement.
+	// ----------------------------------------------------------------------------
 
 	if( _show_inverted > 0 )
 	{
 		FragColor = vec4( 1.0 - FragColor.r, 1.0 - FragColor.g, 1.0 - FragColor.b, FragColor.a );
+	}
+
+	// ----------------------------------------------------------------------------
+	// color tint
+	//
+	// gets added to the fragment color. good for damage indicators.
+	// ----------------------------------------------------------------------------
+
+	vec3 color_tint = vec3(
+		_var_color_tint.r * _var_color_tint.a,
+		_var_color_tint.g * _var_color_tint.a,
+		_var_color_tint.b * _var_color_tint.a
+	);
+
+	FragColor += vec4( color_tint, 1.0f );
+
+	// ----------------------------------------------------------------------------
+	// color overlay
+	//
+	// replaces the fragment color in a lerp.  good for color fades, like to black.
+	// ----------------------------------------------------------------------------
+
+	FragColor = mix(
+		FragColor,
+		vec4(_var_color_overlay.r, _var_color_overlay.g, _var_color_overlay.b, 1.0f),
+		_var_color_overlay.a
+	);
+
+	// ----------------------------------------------------------------------------
+	// vignette
+	// ----------------------------------------------------------------------------
+
+	if( _show_vignette > 0 )
+	{
+	  	FragColor *= fx_vignette( final_uv, _var_vignette_size, _var_vignette_smoothness, _var_vignette_rounding );
 	}
 }

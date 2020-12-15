@@ -254,3 +254,17 @@ void w_opengl::set_uniform( std::string_view name, bool value )
 		glUniform1i( loc, value );
 	}
 }
+
+void w_opengl::set_uniform( std::string_view name, w_color value )
+{
+	GLint loc;
+	for( auto& iter : shader_pool )
+	{
+		iter.second->bind();
+
+		loc = glGetUniformLocation( iter.second->id, name.data() );
+		//assert( loc > -1 );	// uniform not found in shader!
+		glUniform4f( loc, value.r, value.g, value.b, value.a );
+	}
+}
+
