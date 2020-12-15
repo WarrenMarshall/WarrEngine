@@ -1,5 +1,6 @@
 #version 420 core
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BloomColor;
 
 in vec2 TexCoord;
 in vec4 Color;
@@ -9,5 +10,20 @@ uniform sampler2D ourTexture;
 
 void main()
 {
+	// normal rendering
+
    	FragColor = texture( ourTexture, TexCoord ) * Color;
+
+   	// bloom rendering, picking out the bright/hot pixels
+
+    float brightness = dot( FragColor.rgb, vec3( 0.2126f, 0.7152f, 0.0722f ) );
+
+    if( brightness > 0.85f )
+    {
+        BloomColor = vec4( FragColor.rgb, 1.0f );
+    }
+    else
+    {
+        BloomColor = vec4( 0.0f, 0.0f, 0.0f, 1.0f );
+    }
 }

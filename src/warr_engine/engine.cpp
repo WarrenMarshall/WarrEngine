@@ -200,7 +200,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		engine->white_solid = a_subtexture::find( "engine_white_solid" );
 
 		// the texture we are rendering to each frame
-		engine->tex_frame_buffer = a_texture::find( fmt::format( "tex_{}_frame_buffer", base_game->name ) );
+		engine->tex_frame_buffer0 = a_texture::find( fmt::format( "tex0_{}_frame_buffer", base_game->name ) );
+		engine->tex_frame_buffer1 = a_texture::find( fmt::format( "tex1_{}_frame_buffer", base_game->name ) );
 
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.
@@ -373,13 +374,30 @@ void w_engine::exec_main_loop()
 		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+#if 1
 		OPENGL->find_shader( "crt_fx" )->bind();
 
 		RENDER
 			->begin()
-			->draw( engine->tex_frame_buffer, w_rect( 0, 0 ) )
+			->draw( engine->tex_frame_buffer1, w_rect( 0, 0 ) )
 			->end();
 		RENDER->maybe_draw_master_buffer( nullptr );
+#else
+		OPENGL->find_shader( "crt_fx" )->bind();
+
+		RENDER
+			->begin()
+			->draw( engine->tex_frame_buffer0, w_rect( 0, 0 ) )
+			->end();
+		OPENGL->set_blend( opengl_blend::add );
+		RENDER
+			->begin()
+			->draw( engine->tex_frame_buffer1, w_rect( 0, 0 ) )
+			->end();
+		RENDER->maybe_draw_master_buffer( nullptr );
+		OPENGL->set_blend( opengl_blend::alpha );
+
+#endif
 
 		// we're done, swap the buffers!
 

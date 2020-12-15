@@ -205,4 +205,6 @@ void main()
 	{
 	  	FragColor *= fx_vignette( final_uv, _var_vignette_size, _var_vignette_smoothness, _var_vignette_rounding );
 	}
+
+	//BrightColor = vec4( 1.0f, 0.0f, 0.0f, 1.0f );
 }

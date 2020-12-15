@@ -2,7 +2,8 @@
 
 struct w_opengl_framebuffer
 {
-	a_texture* tex = nullptr;
+	a_texture* tex0 = nullptr;
+	a_texture* tex1 = nullptr;
 	float w, h;
 	unsigned fb_id = 0;
 	unsigned rbo = 0;
