@@ -2,43 +2,60 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float w, float h )
+w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, int num_color_attachments, float w, float h )
 	: w( w ), h( h ), base_name( base_name )
 {
 	glGenFramebuffers( 1, &fb_id );
 
 	bind();
 
-	add_texture();
-	add_texture();
+	for( int a = 0 ; a < num_color_attachments ; ++a )
+	{
+		add_texture();
+	}
 
 	// depth/stencil buffer
 
-	glGenRenderbuffers( 1, &rbo );
-	glBindRenderbuffer( GL_RENDERBUFFER, rbo );
+	glGenRenderbuffers( 1, &rbo_id );
+	glBindRenderbuffer( GL_RENDERBUFFER, rbo_id );
 	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int) w, (int) h );
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo );
+	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_id );
 
 	if( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
 	{
 		log_error( "Failed to create frame buffer" );
 	}
 
-	// tell opengl to render to both color buffers (by default, it only renders to the first)
+	// tell opengl to render to all color attachments (by default, it only renders to the first)
 
-	unsigned int ids[ 2 ] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers( 2, ids );
+	std::vector<unsigned> ids;
+
+	for( unsigned id = 0 ; id < textures.size() ; ++id )
+	{
+		ids.push_back( GL_COLOR_ATTACHMENT0 + id );
+	}
+
+	glDrawBuffers( static_cast<int>( textures.size() ), ids.data() );
 
 	unbind();
 }
 
 w_opengl_framebuffer::~w_opengl_framebuffer()
 {
+	unbind();
+
 	if( fb_id )
 	{
 		glDeleteFramebuffers( 1, &fb_id );
+	}
+
+	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+
+	if( rbo_id )
+	{
+		glDeleteRenderbuffers( 1, &rbo_id );
 	}
 
 	glBindTexture( GL_TEXTURE_2D, 0 );
@@ -63,8 +80,6 @@ void w_opengl_framebuffer::add_texture()
 {
 	int texture_num = static_cast<int>( textures.size() );
 	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, base_name );
-
-	// color buffer 0
 
 	auto texture = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
 	texture->w = w;

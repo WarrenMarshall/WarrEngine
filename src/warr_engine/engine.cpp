@@ -174,7 +174,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		}
 
 		// set up frame buffers
-		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( base_game->name, v_window_w, v_window_h );
+		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( base_game->name, 2, v_window_w, v_window_h );
 
 		{ // GAME
 
