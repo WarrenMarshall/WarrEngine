@@ -43,10 +43,5 @@ void w_logfile::msg( const std::string_view msg )
 void w_logfile::error( const std::string_view msg )
 {
 	_write_line( msg );
-
-#ifdef _DEBUG
-	DebugBreak();
-#else
 	throw( std::exception( std::string( msg ).c_str() ) );
-#endif
 }

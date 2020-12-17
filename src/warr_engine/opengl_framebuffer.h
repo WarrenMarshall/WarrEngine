@@ -2,8 +2,8 @@
 
 struct w_opengl_framebuffer
 {
-	a_texture* tex0 = nullptr;
-	a_texture* tex1 = nullptr;
+	std::vector<a_texture*> textures;
+	std::string base_name;
 	float w, h;
 	unsigned fb_id = 0;
 	unsigned rbo = 0;
@@ -14,5 +14,7 @@ struct w_opengl_framebuffer
 
 	void bind();
 	void unbind();
+
+	void add_texture();
 };
 

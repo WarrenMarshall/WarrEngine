@@ -3,53 +3,14 @@
 #include "master_header.h"
 
 w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, float w, float h )
-	: w( w ), h( h )
+	: w( w ), h( h ), base_name( base_name )
 {
 	glGenFramebuffers( 1, &fb_id );
 
 	bind();
 
-	std::string tex_name = fmt::format( "tex0_{}_frame_buffer", base_name );
-
-	// color buffer 0
-
-	tex0 = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
-	tex0->w = w;
-	tex0->h = h;
-
-	glGenTextures( 1, &tex0->gl_id );
-	glBindTexture( GL_TEXTURE_2D, tex0->gl_id );
-
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex0->gl_id, 0 );
-
-	tex0->subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" );
-
-	// color buffer 1
-
-	tex_name = fmt::format( "tex1_{}_frame_buffer", base_name );
-
-	tex1 = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
-	tex1->w = w;
-	tex1->h = h;
-
-	glGenTextures( 1, &tex1->gl_id );
-	glBindTexture( GL_TEXTURE_2D, tex1->gl_id );
-
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, tex1->gl_id, 0 );
-
-	tex1->subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" );
+	add_texture();
+	add_texture();
 
 	// depth/stencil buffer
 
@@ -79,9 +40,12 @@ w_opengl_framebuffer::~w_opengl_framebuffer()
 	{
 		glDeleteFramebuffers( 1, &fb_id );
 	}
-	if( tex0->gl_id )
+
+	glBindTexture( GL_TEXTURE_2D, 0 );
+
+	for( auto iter : textures )
 	{
-		glDeleteTextures( 1, &tex0->gl_id );
+		glDeleteTextures( 1, &iter->gl_id );
 	}
 }
 
@@ -93,4 +57,31 @@ void w_opengl_framebuffer::bind()
 void w_opengl_framebuffer::unbind()
 {
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
+}
+
+void w_opengl_framebuffer::add_texture()
+{
+	int texture_num = static_cast<int>( textures.size() );
+	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, base_name );
+
+	// color buffer 0
+
+	auto texture = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
+	texture->w = w;
+	texture->h = h;
+
+	glGenTextures( 1, &texture->gl_id );
+	glBindTexture( GL_TEXTURE_2D, texture->gl_id );
+
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + texture_num, GL_TEXTURE_2D, texture->gl_id, 0 );
+
+	texture->subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" );
+
+	textures.push_back( texture );
 }

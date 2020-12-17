@@ -199,10 +199,6 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		// used for solid drawing
 		engine->white_solid = a_subtexture::find( "engine_white_solid" );
 
-		// the texture we are rendering to each frame
-		engine->tex_frame_buffer0 = a_texture::find( fmt::format( "tex0_{}_frame_buffer", base_game->name ) );
-		engine->tex_frame_buffer1 = a_texture::find( fmt::format( "tex1_{}_frame_buffer", base_game->name ) );
-
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.
 		engine->pixel_font = a_font::find( "font_ui" );
@@ -388,14 +384,14 @@ void w_engine::exec_main_loop()
 		OPENGL->set_blend( opengl_blend::alpha );
 		RENDER
 			->begin()
-			->draw( engine->tex_frame_buffer0, w_rect( 0, 0 ) )
+			->draw( OPENGL->fb_game->textures[ 0 ], w_rect( 0, 0, v_window_hw, v_window_hh ) )
 			->end();
 		RENDER->draw_master_buffer();
 
 		OPENGL->set_blend( opengl_blend::add );
 		RENDER
 			->begin()
-			->draw( engine->tex_frame_buffer1, w_rect( 0, 0 ) )
+			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( v_window_hw, v_window_hh, v_window_hw, v_window_hh ) )
 			->end();
 		RENDER->draw_master_buffer();
 
