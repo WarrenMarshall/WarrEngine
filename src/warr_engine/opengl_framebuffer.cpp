@@ -78,7 +78,7 @@ void w_opengl_framebuffer::unbind()
 
 void w_opengl_framebuffer::add_texture()
 {
-	int texture_num = static_cast<int>( textures.size() );
+	auto texture_num = static_cast<int>( textures.size() );
 	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, base_name );
 
 	auto texture = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );

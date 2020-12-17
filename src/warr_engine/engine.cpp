@@ -174,7 +174,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		}
 
 		// set up frame buffers
-		engine->opengl->fb_game = std::make_unique<w_opengl_framebuffer>( base_game->name, 2, v_window_w, v_window_h );
+		OPENGL->fb_game = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
+		OPENGL->fb_bloom = std::make_unique<w_opengl_framebuffer>( "bloom", 1, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -330,10 +331,14 @@ void w_engine::exec_main_loop()
 		engine->opengl->fb_game->bind();
 		RENDER->begin_frame();
 		{
-			OPENGL->find_shader( "simple" )->bind();
+			OPENGL->find_shader( "base_with_bloom" )->bind();
 
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
-			glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
+			glClearColor(
+				engine->window->window_clear_color.r,
+				engine->window->window_clear_color.g,
+				engine->window->window_clear_color.b,
+				engine->window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 			OPENGL->init_projection_matrix();
@@ -354,7 +359,6 @@ void w_engine::exec_main_loop()
 			engine->draw();
 		}
 		RENDER->end_frame();
-
 		engine->opengl->fb_game->unbind();
 
 		// reset the viewport to the size of the actual window and draw the
@@ -363,11 +367,17 @@ void w_engine::exec_main_loop()
 		OPENGL->init_view_matrix_identity();
 
 		glViewport(
-			static_cast<int>( engine->window->viewport_pos_sz.x ), static_cast<int>( engine->window->viewport_pos_sz.y ),
-			static_cast<int>( engine->window->viewport_pos_sz.w ), static_cast<int>( engine->window->viewport_pos_sz.h )
+			(int) engine->window->viewport_pos_sz.x,
+			(int) engine->window->viewport_pos_sz.y,
+			(int) engine->window->viewport_pos_sz.w,
+			(int) engine->window->viewport_pos_sz.h
 		);
 
-		glClearColor( engine->window->window_clear_color.r, engine->window->window_clear_color.g, engine->window->window_clear_color.b, engine->window->window_clear_color.a );
+		glClearColor(
+			engine->window->window_clear_color.r,
+			engine->window->window_clear_color.g,
+			engine->window->window_clear_color.b,
+			engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 #if 0
@@ -379,23 +389,49 @@ void w_engine::exec_main_loop()
 			->end();
 		RENDER->maybe_draw_master_buffer( nullptr );
 #else
-		OPENGL->find_shader( "crt_fx" )->bind();
+		//OPENGL->find_shader( "crt_fx" )->bind();
 
-		OPENGL->set_blend( opengl_blend::alpha );
+		// draw the main game window
+
 		RENDER
 			->begin()
 			->draw( OPENGL->fb_game->textures[ 0 ], w_rect( 0, 0, v_window_hw, v_window_hh ) )
 			->end();
 		RENDER->draw_master_buffer();
 
-		OPENGL->set_blend( opengl_blend::add );
+		// draw the bloom texure blended over the top of the game screen
+
 		RENDER
 			->begin()
-			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( v_window_hw, v_window_hh, v_window_hw, v_window_hh ) )
+			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( v_window_hw, 0, v_window_hw, v_window_hh ) )
 			->end();
 		RENDER->draw_master_buffer();
 
-		OPENGL->set_blend( opengl_blend::alpha );
+		/*
+		// blur the bloom texture into the bloom framebuffer
+
+		//OPENGL->find_shader( "simple" )->bind();
+		engine->opengl->fb_bloom->bind();
+		RENDER->begin_frame();
+		{
+			RENDER
+				->begin()
+				->draw( OPENGL->fb_game->textures[ 1 ], w_rect( 0, 0 ) )
+				->end();
+		}
+		RENDER->end_frame();
+		engine->opengl->fb_bloom->unbind();
+
+		//OPENGL->find_shader( "crt_fx" )->bind();
+		engine->opengl->fb_game->bind();
+		RENDER
+			->begin()
+			->draw( OPENGL->fb_bloom->textures[ 0 ], w_rect( 0, v_window_hh, v_window_hw, v_window_hh ) )
+			->end();
+		RENDER->draw_master_buffer();
+		engine->opengl->fb_game->unbind();
+		*/
+
 #endif
 
 		// we're done, swap the buffers!

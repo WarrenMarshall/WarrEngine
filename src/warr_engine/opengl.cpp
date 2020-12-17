@@ -37,15 +37,16 @@ void w_opengl::init()
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
 
-	std::unique_ptr<w_shader> shader_wk;
+	// create base set of shaders
+	shader_pool.insert( std::make_pair( "base_with_bloom", std::make_unique<w_shader>( "base.vert", "base_with_bloom.frag" ) ) );
+	//shader_pool.insert( std::make_pair( "vfx", std::make_unique<w_shader>( "vfx.vert", "vfx.frag" ) ) );
+	shader_pool.insert( std::make_pair( "base", std::make_unique<w_shader>( "base.vert", "base.frag" ) ) );
 
-	shader_wk = std::make_unique<w_shader>();
-	shader_wk->create_and_compile( "simple", "simple" );
-	shader_pool.insert( std::make_pair( "simple", std::move( shader_wk ) ) );
-
-	shader_wk = std::make_unique<w_shader>();
-	shader_wk->create_and_compile( "simple", "crt" );
-	shader_pool.insert( std::make_pair( "crt_fx", std::move( shader_wk ) ) );
+	/*
+	//shader_pool.insert( std::make_pair( "base_with_bloom", std::make_unique<w_shader>( "base.vert", "base_with_bloom.frag" ) ) );
+	//shader_pool.insert( std::make_pair( "vfx", std::make_unique<w_shader>( "vfx.vert", "vfx.frag" ) ) );
+	shader_pool.insert( std::make_pair( "base", std::make_unique<w_shader>( "base.vert", "base.frag" ) ) );
+	*/
 
 	glEnable( GL_TEXTURE_2D );
 

@@ -461,7 +461,7 @@ void w_render::end_frame()
 	draw_stats();
 
 	// the last draw needs to be flushed
-	maybe_draw_master_buffer( nullptr );
+	draw_master_buffer();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -476,8 +476,6 @@ void w_render::end_frame()
 	assert( rs_alpha_stack.size() == 1 );
 	assert( rs_scale_stack.size() == 1 );
 	assert( rs_align_stack.size() == 1 );
-
-	//OPENGL->clear_texture_bind();
 }
 
 /*

@@ -72,6 +72,7 @@ bool w_window::init()
 	}
 
 	// Create a windowed mode window and its OpenGL context
+	// #glfw - change monitor handling to use the monitor we are currently sitting on rather than always using the primary
 
 	primary_monitor = glfwGetPrimaryMonitor();
 	vidmode = glfwGetVideoMode( primary_monitor );
