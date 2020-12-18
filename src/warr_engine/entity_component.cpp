@@ -38,11 +38,11 @@ bool w_entity_component::is_fully_dead()
 
 void w_entity_component::update()
 {
-	// if a timer is being used, and it has elapsed, then this component is dead
 	if( life_timer )
 	{
 		life_timer->update();
 
+		// if a life timer is being used AND that timer has elapsed, then this component is dying
 		if( life_timer->is_elapsed() )
 		{
 			life_timer = nullptr;

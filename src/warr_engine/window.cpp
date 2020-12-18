@@ -71,6 +71,8 @@ bool w_window::init()
 		log_error( "GLFW failed to init" );
 	}
 
+	log( "GLFW Version : {}", glfwGetVersionString() );
+
 	// Create a windowed mode window and its OpenGL context
 	// #glfw - change monitor handling to use the monitor we are currently sitting on rather than always using the primary
 
@@ -78,7 +80,7 @@ bool w_window::init()
 	vidmode = glfwGetVideoMode( primary_monitor );
 
 	const char* monitor_name = glfwGetMonitorName( primary_monitor );
-	log( "Using monitor [{} - {}x{}]", monitor_name, vidmode->width, vidmode->height );
+	log( "Primary monitor [{} - {}x{}]", monitor_name, vidmode->width, vidmode->height );
 
 	w_rect window_pos = compute_max_window_size_for_desktop();
 
