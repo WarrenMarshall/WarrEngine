@@ -36,7 +36,7 @@ bool a_texture::create_internals()
 
 	// upload texture to opengl
 
-	glGenTextures( 1, &gl_id );
+	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	bind();
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );

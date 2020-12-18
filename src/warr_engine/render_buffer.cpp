@@ -20,26 +20,29 @@ w_render_buffer_vert::w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, c
 
 w_render_buffer::w_render_buffer()
 {
-    glGenVertexArrays( 1, &VAO );
+    glCreateVertexArrays( 1, &VAO );
     glBindVertexArray( VAO );
-
-    glGenBuffers( 1, &VBO );
 
     // data buffers
 
+	glCreateBuffers( 1, &VBO );
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) nullptr );
+
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) nullptr );
     glEnableVertexAttribArray( 0 );
+
 	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) ( sizeof( float ) * 3 ) );
     glEnableVertexAttribArray( 1 );
+
 	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) ( sizeof( float ) * 5 ) );
     glEnableVertexAttribArray( 2 );
+
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
     // index buffer
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO );
-    glGenBuffers( 1, &EBO );
+    glCreateBuffers( 1, &EBO );
 
     unbind();
 }

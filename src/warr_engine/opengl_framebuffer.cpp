@@ -5,7 +5,7 @@
 w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, int num_color_attachments, float w, float h )
 	: w( w ), h( h ), base_name( base_name )
 {
-	glGenFramebuffers( 1, &fb_id );
+	glCreateFramebuffers( 1, &fb_id );
 
 	bind();
 
@@ -16,7 +16,7 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, int nu
 
 	// depth/stencil buffer
 
-	glGenRenderbuffers( 1, &rbo_id );
+	glCreateRenderbuffers( 1, &rbo_id );
 	glBindRenderbuffer( GL_RENDERBUFFER, rbo_id );
 	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int) w, (int) h );
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
@@ -85,7 +85,7 @@ void w_opengl_framebuffer::add_texture()
 	texture->w = w;
 	texture->h = h;
 
-	glGenTextures( 1, &texture->gl_id );
+	glCreateTextures( GL_TEXTURE_2D, 1, &texture->gl_id );
 	glBindTexture( GL_TEXTURE_2D, texture->gl_id );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
