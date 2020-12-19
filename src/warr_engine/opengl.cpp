@@ -209,45 +209,24 @@ void w_opengl::init_view_matrix_identity_ui() const
 void w_opengl::set_uniform( std::string_view name, float value )
 {
 	assert( false );
-
-	//GLint loc;
-	//for( auto& iter : shader_pool )
-	//{
-	//	iter.second->bind();
-
-	//	loc = glGetUniformLocation( iter.second->id, name.data() );
-	//	//assert( loc > -1 );	// uniform not found in shader!
-	//	glUniform1f( loc, value );
-	//}
+	glProgramUniform1f( base_shader->id, glGetUniformLocation( base_shader->id, name.data() ), value );
+	glProgramUniform1f( base_with_bloom_shader->id, glGetUniformLocation( base_with_bloom_shader->id, name.data() ), value );
+	glProgramUniform1f( blur_shader->id, glGetUniformLocation( blur_shader->id, name.data() ), value );
 }
 
 void w_opengl::set_uniform( std::string_view name, bool value )
 {
 	assert( false );
-
-	//GLint loc;
-	//for( auto& iter : shader_pool )
-	//{
-	//	iter.second->bind();
-
-	//	loc = glGetUniformLocation( iter.second->id, name.data() );
-	//	//assert( loc > -1 );	// uniform not found in shader!
-	//	glUniform1i( loc, value );
-	//}
+	glProgramUniform1i( base_shader->id, glGetUniformLocation( base_shader->id, name.data() ), value );
+	glProgramUniform1i( base_with_bloom_shader->id, glGetUniformLocation( base_with_bloom_shader->id, name.data() ), value );
+	glProgramUniform1i( blur_shader->id, glGetUniformLocation( blur_shader->id, name.data() ), value );
 }
 
 void w_opengl::set_uniform( std::string_view name, w_color value )
 {
 	assert( false );
-
-	//GLint loc;
-	//for( auto& iter : shader_pool )
-	//{
-	//	iter.second->bind();
-
-	//	loc = glGetUniformLocation( iter.second->id, name.data() );
-	//	//assert( loc > -1 );	// uniform not found in shader!
-	//	glUniform4f( loc, value.r, value.g, value.b, value.a );
-	//}
+	glProgramUniform4f( base_shader->id, glGetUniformLocation( base_shader->id, name.data() ), value.r, value.g, value.b, value.a );
+	glProgramUniform4f( base_with_bloom_shader->id, glGetUniformLocation( base_with_bloom_shader->id, name.data() ), value.r, value.g, value.b, value.a );
+	glProgramUniform4f( blur_shader->id, glGetUniformLocation( blur_shader->id, name.data() ), value.r, value.g, value.b, value.a );
 }
 

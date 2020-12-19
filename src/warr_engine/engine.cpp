@@ -175,6 +175,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		// set up frame buffers
 		OPENGL->fb_game = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
+		OPENGL->fb_blur = std::make_unique<w_opengl_framebuffer>( "blur", 1, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -398,11 +399,26 @@ void w_engine::exec_main_loop()
 
 		// draw bloom texture in bottom left of screen
 
+		OPENGL->fb_blur->bind();
+		glClearColor(
+			0.25f,
+			0.5f,
+			0.75f,
+			engine->window->window_clear_color.a );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		OPENGL->blur_shader->bind();
+		RENDER
+			->begin()
+			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( 0, 0, v_window_hw, v_window_hh ) )
+			->end();
+		RENDER->draw_master_buffer();
+		OPENGL->fb_blur->unbind();
+
+		OPENGL->base_shader->bind();
 
 		RENDER
 			->begin()
-			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( 0, v_window_hh, v_window_hw, v_window_hh ) )
+			->draw( OPENGL->fb_blur->textures[ 0 ], w_rect( 0, v_window_hh, v_window_hw, v_window_hh ) )
 			->end();
 		RENDER->draw_master_buffer();
 

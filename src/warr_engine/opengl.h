@@ -4,6 +4,7 @@ struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
 	std::unique_ptr<w_opengl_framebuffer> fb_game = nullptr;
+	std::unique_ptr<w_opengl_framebuffer> fb_blur = nullptr;
 
 	std::unique_ptr<w_shader> base_shader = nullptr;
 	std::unique_ptr<w_shader> base_with_bloom_shader = nullptr;
