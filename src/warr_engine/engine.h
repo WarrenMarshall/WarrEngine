@@ -29,7 +29,7 @@ struct w_engine : i_input_receiver
 	bool is_paused = false;
 
 	std::unique_ptr<w_opengl_framebuffer> frame_buffer = nullptr;
-	std::unique_ptr<w_opengl_framebuffer> blur_frame_buffer = nullptr;
+	std::unique_ptr<w_opengl_framebuffer> blur_frame_buffers[2];
 
 	std::unique_ptr<w_physics_debug_draw> physics_debug_draw = nullptr;
 	std::unique_ptr<b2World> box2d_world = nullptr;

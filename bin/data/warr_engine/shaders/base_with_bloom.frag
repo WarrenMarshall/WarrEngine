@@ -21,9 +21,10 @@ void main()
 
     float brightness = dot( FragColor.rgb, vec3( 0.2126f, 0.7152f, 0.0722f ) );
 
-    if( brightness > 0.85f )
+    if( brightness > 0.95f )
     {
         BloomColor = FragColor;
+        //BloomColor.a = 1.0f;
     }
     else
     {

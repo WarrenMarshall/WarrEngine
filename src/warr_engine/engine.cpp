@@ -175,7 +175,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		// set up frame buffers
 		engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
-		engine->blur_frame_buffer = std::make_unique<w_opengl_framebuffer>( "blur", 1, v_window_w, v_window_h );
+		engine->blur_frame_buffers[0] = std::make_unique<w_opengl_framebuffer>( "blur1", 1, v_window_w, v_window_h );
+		engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -378,26 +379,40 @@ void w_engine::exec_main_loop()
 		// draw the brightness texture into the blur frame buffer, using the blur shader
 		// ----------------------------------------------------------------------------
 
+		glDisable( GL_DEPTH_TEST );
+
 		OPENGL->init_view_matrix_identity();
-		engine->blur_frame_buffer->bind();
+		engine->blur_frame_buffers[0]->bind();
 		OPENGL->blur_shader->bind();
-		glClearColor( 1.0f, 0.5f, 0.25f, 1.0f );
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		OPENGL->set_uniform( "horizontal", false );
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end()
 			->flush();
-		engine->blur_frame_buffer->unbind();
+		engine->blur_frame_buffers[0]->unbind();
+
+		bool pingpong = true;
+		for( int x = 0 ; x < 10 ; ++x )
+		{
+			engine->blur_frame_buffers[ pingpong ]->bind();
+			OPENGL->set_uniform( "horizontal", pingpong );
+			RENDER
+				->begin()
+				->draw( engine->blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+				->end()
+				->flush();
+			engine->blur_frame_buffers[ pingpong ]->unbind();
+
+			pingpong = !pingpong;
+		}
 
 		// ----------------------------------------------------------------------------
 		// draw the composited textures to the real window
 		// ----------------------------------------------------------------------------
 
-		// reset the viewport to the size of the actual window and draw the
-		// offscreen framebuffer to the actual framebuffer as a scaled quad
+		// reset the viewport to the size of the actual window size
 
-		glDisable( GL_DEPTH_TEST );
 		OPENGL->init_view_matrix_identity();
 
 		glViewport(
@@ -407,14 +422,30 @@ void w_engine::exec_main_loop()
 			(int) engine->window->viewport_pos_sz.h
 		);
 
+		// draw game frame buffer
+
 		OPENGL->base_shader->bind();
 
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end();
-		RENDER->flush();
+			->end()
+			->flush();
 
+		// draw bloom frame buffer
+
+		OPENGL->set_blend( opengl_blend::add );
+
+		RENDER
+			->begin()
+			->push_alpha( 0.5f )
+			->draw( engine->blur_frame_buffers[0]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->end()
+			->flush();
+
+		OPENGL->set_blend( opengl_blend::alpha );
+
+#if 0
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
@@ -441,9 +472,16 @@ void w_engine::exec_main_loop()
 		x += w;
 		RENDER
 			->begin()
-			->draw( engine->blur_frame_buffer->textures[ 0 ], w_rect( x, y, w, h ) )
+			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( x, y, w, h ) )
 			->end()
 			->flush();
+		x += w;
+		RENDER
+			->begin()
+			->draw( engine->blur_frame_buffers[ 1 ]->textures[ 0 ], w_rect( x, y, w, h ) )
+			->end()
+			->flush();
+#endif
 
 		// ----------------------------------------------------------------------------
 		// everything has been drawn the default frame buffer, so let's swap
