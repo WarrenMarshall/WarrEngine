@@ -185,9 +185,10 @@ w_render* w_render::push_depth_nudge( const float nudge )
 	return this;
 }
 
-void w_render::end()
+w_render* w_render::end()
 {
 	clear_render_states();
+	return this;
 }
 
 void w_render::clear_render_states()
@@ -217,13 +218,24 @@ w_color w_render::get_palette_color_from_idx( int idx )
 	return palette->get_color_from_idx( idx );
 }
 
-void w_render::draw_master_buffer()
+// flushes the current render buffer to the video card and clears it.
+
+void w_render::flush()
 {
 	master_render_buffer->draw( current_texture );
 	master_render_buffer->clear();
+
+	current_texture = nullptr;
 }
 
-void w_render::maybe_draw_master_buffer( a_texture* texture )
+// tells the renderer which texture we want to use for drawing. if this
+// differs from the current texture, we flush the existing draw
+// buffer first.
+//
+// this is how the engine does basic batching. if you don't change the
+// current texture, all triangles are going into the same buffer.
+
+void w_render::set_current_texture( a_texture* texture )
 {
 	if( current_texture == nullptr )
 	{
@@ -231,7 +243,7 @@ void w_render::maybe_draw_master_buffer( a_texture* texture )
 	}
 	else if( current_texture != texture )
 	{
-		draw_master_buffer();
+		flush();
 		current_texture = texture;
 	}
 }
@@ -252,7 +264,7 @@ w_color w_render::pal_color_from_idx( int idx )
 
 w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 {
-	maybe_draw_master_buffer( mesh->tex );
+	set_current_texture( mesh->tex );
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -302,7 +314,7 @@ w_render* w_render::draw_sprite( a_texture* tex, const w_vec2& dst )
 
 w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 {
-	maybe_draw_master_buffer( subtex->tex );
+	set_current_texture( subtex->tex );
 
 	float w = subtex->rc_tex.w;
 	float h = subtex->rc_tex.h;
@@ -346,7 +358,7 @@ w_render* w_render::draw( a_texture* tex, const w_rect& dst )
 
 w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
-	maybe_draw_master_buffer( subtex->tex );
+	set_current_texture( subtex->tex );
 
 	float w = dst.w ? dst.w : subtex->rc_tex.w;
 	float h = dst.h ? dst.h : subtex->rc_tex.h;
@@ -382,7 +394,7 @@ w_render* w_render::draw_string( const std::string_view text, const w_rect& dst 
 
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
-	maybe_draw_master_buffer( font->font_def->texture );
+	set_current_texture( font->font_def->texture );
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	e_align rs_align = rs_align_stack.back();
@@ -461,7 +473,7 @@ void w_render::end_frame()
 	draw_stats();
 
 	// the last draw needs to be flushed
-	draw_master_buffer();
+	flush();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -508,7 +520,7 @@ w_render* w_render::draw_world_axis()
 w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
-	maybe_draw_master_buffer( current_texture );
+	set_current_texture( current_texture );
 
 	RENDER->begin()->push_depth( zdepth_stats );
 
@@ -573,7 +585,7 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	maybe_draw_master_buffer( engine->white_solid->tex );
+	set_current_texture( engine->white_solid->tex );
 
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
@@ -608,7 +620,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_rectangle( const w_rect& dst )
 {
-	maybe_draw_master_buffer( engine->white_solid->tex );
+	set_current_texture( engine->white_solid->tex );
 
 	w_bbox box;
 	box.add( w_vec2(
@@ -632,7 +644,7 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	maybe_draw_master_buffer( engine->white_wire->tex );
+	set_current_texture( engine->white_wire->tex );
 
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
@@ -660,7 +672,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	maybe_draw_master_buffer( engine->white_wire->tex );
+	set_current_texture( engine->white_wire->tex );
 
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
@@ -679,7 +691,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 
 w_render* w_render::draw_point( const w_vec2& pos )
 {
-	maybe_draw_master_buffer( engine->white_wire->tex );
+	set_current_texture( engine->white_wire->tex );
 
 	auto start = pos;
 	auto end = start + w_vec2( 1.0f, 0.0f );

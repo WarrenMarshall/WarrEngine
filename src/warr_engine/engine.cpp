@@ -174,8 +174,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		}
 
 		// set up frame buffers
-		OPENGL->fb_game = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
-		OPENGL->fb_blur = std::make_unique<w_opengl_framebuffer>( "blur", 1, v_window_w, v_window_h );
+		engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
+		engine->blur_frame_buffer = std::make_unique<w_opengl_framebuffer>( "blur", 1, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -325,13 +325,24 @@ void w_engine::exec_main_loop()
 			//OPENGL->set_uniform( "in_current_time", time_val );
 		}
 
-		// draw the scene to the framebuffer object
+		// ----------------------------------------------------------------------------
+		// draw the scene to the engine frame buffer
+		//
+		// this draws several versions of the scene at once:
+		//
+		// 1. the scene as normal
+		// 2. same as #1 but only contains the brightest pixels (used for bloom later)
 
-		engine->opengl->fb_game->bind();
+		glEnable( GL_DEPTH_TEST );
+		engine->frame_buffer->bind();
 		OPENGL->base_with_bloom_shader->bind();
 
 		RENDER->begin_frame();
 		{
+			// ----------------------------------------------------------------------------
+			// set up the viewport for a new frame
+			// ----------------------------------------------------------------------------
+
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
 			glClearColor(
 				engine->window->window_clear_color.r,
@@ -340,11 +351,12 @@ void w_engine::exec_main_loop()
 				engine->window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+			// ----------------------------------------------------------------------------
+			// render the game frame
+			// ----------------------------------------------------------------------------
+
 			OPENGL->init_projection_matrix();
 			OPENGL->init_view_matrix_identity();
-
-			// ----------------------------------------------------------------------------
-			// render the frame
 
 			// layers and entities
 			engine->layer_mgr->draw();
@@ -358,11 +370,34 @@ void w_engine::exec_main_loop()
 			engine->draw();
 		}
 		RENDER->end_frame();
-		engine->opengl->fb_game->unbind();
+		engine->frame_buffer->unbind();
+
+		// ----------------------------------------------------------------------------
+		// the engine frame buffer now contains the color texture and the brightness texture
+		//
+		// draw the brightness texture into the blur frame buffer, using the blur shader
+		// ----------------------------------------------------------------------------
+
+		OPENGL->init_view_matrix_identity();
+		engine->blur_frame_buffer->bind();
+		OPENGL->blur_shader->bind();
+		glClearColor( 1.0f, 0.5f, 0.25f, 1.0f );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		RENDER
+			->begin()
+			->draw( engine->frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->end()
+			->flush();
+		engine->blur_frame_buffer->unbind();
+
+		// ----------------------------------------------------------------------------
+		// draw the composited textures to the real window
+		// ----------------------------------------------------------------------------
 
 		// reset the viewport to the size of the actual window and draw the
 		// offscreen framebuffer to the actual framebuffer as a scaled quad
 
+		glDisable( GL_DEPTH_TEST );
 		OPENGL->init_view_matrix_identity();
 
 		glViewport(
@@ -372,58 +407,47 @@ void w_engine::exec_main_loop()
 			(int) engine->window->viewport_pos_sz.h
 		);
 
-		glClearColor(
-			engine->window->window_clear_color.r,
-			engine->window->window_clear_color.g,
-			engine->window->window_clear_color.b,
-			engine->window->window_clear_color.a );
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-		// draw the main game window
-
 		OPENGL->base_shader->bind();
 
 		RENDER
 			->begin()
-			->draw( OPENGL->fb_game->textures[ 0 ], w_rect( 0, 0, v_window_hw, v_window_hh ) )
+			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->draw_master_buffer();
+		RENDER->flush();
 
-		// draw the bloom texure blended over the top of the game screen
-
-		RENDER
-			->begin()
-			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( v_window_hw, 0, v_window_hw, v_window_hh ) )
-			->end();
-		RENDER->draw_master_buffer();
-
-		// draw bloom texture in bottom left of screen
-
-		OPENGL->fb_blur->bind();
-		glClearColor(
-			0.25f,
-			0.5f,
-			0.75f,
-			engine->window->window_clear_color.a );
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		OPENGL->blur_shader->bind();
-		RENDER
-			->begin()
-			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( 0, 0, v_window_hw, v_window_hh ) )
-			->end();
-		RENDER->draw_master_buffer();
-		OPENGL->fb_blur->unbind();
+		// ----------------------------------------------------------------------------
+		// debug helper
+		//
+		// draw all the color buffers in little quads at the bottom of the window
+		// ----------------------------------------------------------------------------
 
 		OPENGL->base_shader->bind();
 
+		float w = v_window_w / 4.0f;
+		float h = v_window_h / 4.0f;
+		float x = 0.f;
+		float y = v_window_h - h;
 		RENDER
 			->begin()
-			->draw( OPENGL->fb_blur->textures[ 0 ], w_rect( 0, v_window_hh, v_window_hw, v_window_hh ) )
-			->end();
-		RENDER->draw_master_buffer();
+			->draw( engine->frame_buffer->textures[ 0 ], w_rect( x, y, w, h ) )
+			->end()
+			->flush();
+		x += w;
+		RENDER
+			->begin()
+			->draw( engine->frame_buffer->textures[ 1 ], w_rect( x, y, w, h ) )
+			->end()
+			->flush();
+		x += w;
+		RENDER
+			->begin()
+			->draw( engine->blur_frame_buffer->textures[ 0 ], w_rect( x, y, w, h ) )
+			->end()
+			->flush();
 
-
-		// we're done, swap the buffers!
+		// ----------------------------------------------------------------------------
+		// everything has been drawn the default frame buffer, so let's swap
+		// ----------------------------------------------------------------------------
 
 		glfwSwapBuffers( engine->window->window );
 	}

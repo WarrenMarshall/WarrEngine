@@ -156,7 +156,7 @@ void w_opengl::init_projection_matrix() const
 
 void w_opengl::init_view_matrix( w_camera* camera ) const
 {
-	RENDER->draw_master_buffer();
+	RENDER->flush();
 
 	// default to identity matrix
 	glm::mat4 view = glm::mat4( 1.0f );
@@ -185,7 +185,7 @@ void w_opengl::init_view_matrix( w_camera* camera ) const
 
 void w_opengl::init_view_matrix_identity() const
 {
-	RENDER->draw_master_buffer();
+	RENDER->flush( );
 
 	glm::mat4 view = glm::mat4( 1.0f );
 
@@ -196,7 +196,7 @@ void w_opengl::init_view_matrix_identity() const
 
 void w_opengl::init_view_matrix_identity_ui() const
 {
-	RENDER->draw_master_buffer();
+	RENDER->flush();
 
 	glm::mat4 view = glm::mat4( 1.0f );
 	view *= glm::scale( view, glm::vec3( ui_canvas_scale, ui_canvas_scale, 1.0f ) );

@@ -18,8 +18,8 @@ struct w_render
 	*/
 	a_texture* current_texture = nullptr;
 	std::unique_ptr<w_render_buffer> master_render_buffer = nullptr;
-	void draw_master_buffer();
-	void maybe_draw_master_buffer( a_texture* texture );
+	void flush();
+	void set_current_texture( a_texture* texture );
 
 	// palette support
 	a_palette* current_palette = nullptr;
@@ -40,7 +40,7 @@ struct w_render
 	bool rs_snap_to_pixel = true;
 
 	w_render* begin();
-	void end();
+	w_render* end();
 	void clear_render_states();
 
 	w_render* push_rgb( const w_color& color );

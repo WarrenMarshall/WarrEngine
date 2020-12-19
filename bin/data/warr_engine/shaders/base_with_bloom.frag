@@ -23,7 +23,7 @@ void main()
 
     if( brightness > 0.85f )
     {
-        BloomColor = vec4( brightness, brightness, brightness, FragColor.a );
+        BloomColor = FragColor;
     }
     else
     {
