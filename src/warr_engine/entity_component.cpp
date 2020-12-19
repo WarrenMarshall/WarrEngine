@@ -130,7 +130,7 @@ void ec_primitive_shape::draw()
 		return;
 	}
 
-	RENDER->push_rgb( color );
+	RENDER->push_rgba( color );
 
 	switch( prim_shape )
 	{

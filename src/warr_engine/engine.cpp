@@ -237,6 +237,7 @@ void w_engine::deinit_game_engine()
 	glDeleteProgram( OPENGL->base_shader->id );
 	glDeleteProgram( OPENGL->base_shader_with_bright_pass->id );
 	glDeleteProgram( OPENGL->blur_shader->id );
+	glDeleteProgram( OPENGL->vfx_shader->id );
 
 	log( "Shutting down GLFW" );
 	glfwTerminate();
@@ -396,8 +397,10 @@ void w_engine::exec_main_loop()
 		// pingpong back and forth between the 2 blur frame buffers, blurring them into
 		// each other, for a set amount of passes.
 
+		constexpr auto blur_passes = 6;
+
 		bool pingpong = true;
-		for( int x = 0 ; x < 10 ; ++x )
+		for( int x = 0 ; x < blur_passes ; ++x )
 		{
 			engine->blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
