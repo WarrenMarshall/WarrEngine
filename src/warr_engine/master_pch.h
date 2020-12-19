@@ -10,6 +10,7 @@
 #pragma warning(disable : 4365)
 #pragma warning(disable : 4244)
 
+	// GLM - math library
 	#include <glm/glm/glm.hpp>
 	#include <glm/glm/gtc/matrix_transform.hpp>
 	#include <glm/glm/gtc/type_ptr.hpp>
@@ -62,7 +63,7 @@
 	// (https://github.com/nothings/stb)
 	#include "stb-master/stb_image.h"
 
-	// Box2D physics
+	// Box2D - physics
 	#include "box2d-master/include/box2d/box2d.h"
 
 	// sound and music library
@@ -70,10 +71,10 @@
 	// setting this #define means we are using the BASS library
 	// and must include "bass.dll" in the game distribution.
 	//
-	// otherwise, we use cute_sound which uses DirectSound and
+	// otherwise, we use cute_sound (aka DirectSound) and
 	// requires no external files.
 
-	#define USE_BASS_SOUND_LIBRARY
+	//#define USE_BASS_SOUND_LIBRARY
 
 	#ifdef USE_BASS_SOUND_LIBRARY
 		#include "bass24/c/bass.h"
@@ -82,7 +83,7 @@
 		#include "cute_headers/cute_sound.h"
 	#endif
 
-	// cute headers
+	// cute headers - collision detection
 	// (https://github.com/RandyGaul/cute_headers)
 	#include "cute_headers/cute_c2.h"
 

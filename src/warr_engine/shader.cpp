@@ -72,17 +72,6 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
     glDeleteShader( fragment_id );
 }
 
-unsigned int w_shader::_compile_shader( unsigned int type, const std::string_view source )
-{
-    unsigned int id = glCreateShader( type );
-
-    const char* src = source.data();
-    glShaderSource( id, 1, &src, nullptr );
-    glCompileShader( id );
-
-	return id;
-}
-
 void w_shader::bind()
 {
     glUseProgram( id );

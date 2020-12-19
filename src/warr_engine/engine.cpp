@@ -77,7 +77,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 			log( "Initializing Cute_Sound audio" );
 			engine->c2_sound_context = cs_make_context(
 				glfwGetWin32Window( engine->window->window ),
-				44100, 8192, 150, NULL );
+				44100, 8192, 150, nullptr );
 
 			if( !engine->c2_sound_context )
 			{
@@ -175,7 +175,6 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 		// set up frame buffers
 		OPENGL->fb_game = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
-		OPENGL->fb_bloom = std::make_unique<w_opengl_framebuffer>( "bloom", 1, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -232,10 +231,9 @@ void w_engine::deinit_game_engine()
 	engine->window->deinit();
 
 	log( "Shutting down OpenGL" );
-	for( auto& shader : engine->opengl->shader_pool )
-	{
-		glDeleteProgram( shader.second->id );
-	}
+	glDeleteProgram( OPENGL->base_shader->id );
+	glDeleteProgram( OPENGL->base_with_bloom_shader->id );
+	glDeleteProgram( OPENGL->blur_shader->id );
 
 	log( "Shutting down GLFW" );
 	glfwTerminate();
@@ -321,18 +319,18 @@ void w_engine::exec_main_loop()
 			base_game->update();
 
 			// update shader parameters
-			static float time_val = 0.0f;
-			time_val += w_time::FTS_step_value_s;
-			OPENGL->set_uniform( "in_current_time", time_val );
+			//static float time_val = 0.0f;
+			//time_val += w_time::FTS_step_value_s;
+			//OPENGL->set_uniform( "in_current_time", time_val );
 		}
 
-		// draw the scene to a framebuffer, sized to match the virtual viewport
+		// draw the scene to the framebuffer object
 
 		engine->opengl->fb_game->bind();
+		OPENGL->base_with_bloom_shader->bind();
+
 		RENDER->begin_frame();
 		{
-			OPENGL->find_shader( "base_with_bloom" )->bind();
-
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
 			glClearColor(
 				engine->window->window_clear_color.r,
@@ -380,18 +378,9 @@ void w_engine::exec_main_loop()
 			engine->window->window_clear_color.a );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-#if 0
-		OPENGL->find_shader( "crt_fx" )->bind();
-
-		RENDER
-			->begin()
-			->draw( engine->tex_frame_buffer1, w_rect( 0, 0 ) )
-			->end();
-		RENDER->maybe_draw_master_buffer( nullptr );
-#else
-		//OPENGL->find_shader( "crt_fx" )->bind();
-
 		// draw the main game window
+
+		OPENGL->base_shader->bind();
 
 		RENDER
 			->begin()
@@ -407,32 +396,16 @@ void w_engine::exec_main_loop()
 			->end();
 		RENDER->draw_master_buffer();
 
-		/*
-		// blur the bloom texture into the bloom framebuffer
+		// draw bloom texture in bottom left of screen
 
-		//OPENGL->find_shader( "simple" )->bind();
-		engine->opengl->fb_bloom->bind();
-		RENDER->begin_frame();
-		{
-			RENDER
-				->begin()
-				->draw( OPENGL->fb_game->textures[ 1 ], w_rect( 0, 0 ) )
-				->end();
-		}
-		RENDER->end_frame();
-		engine->opengl->fb_bloom->unbind();
+		OPENGL->blur_shader->bind();
 
-		//OPENGL->find_shader( "crt_fx" )->bind();
-		engine->opengl->fb_game->bind();
 		RENDER
 			->begin()
-			->draw( OPENGL->fb_bloom->textures[ 0 ], w_rect( 0, v_window_hh, v_window_hw, v_window_hh ) )
+			->draw( OPENGL->fb_game->textures[ 1 ], w_rect( 0, v_window_hh, v_window_hw, v_window_hh ) )
 			->end();
 		RENDER->draw_master_buffer();
-		engine->opengl->fb_game->unbind();
-		*/
 
-#endif
 
 		// we're done, swap the buffers!
 

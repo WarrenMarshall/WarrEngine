@@ -7,15 +7,17 @@ in vec2 TexCoord;
 in vec4 Color;
 in vec3 Pos;
 
-uniform sampler2D ourTexture;
+uniform sampler2D Texture0;
 
 void main()
 {
+    // ------------------------------------
 	// normal rendering
 
-   	FragColor = texture( ourTexture, TexCoord ) * Color;
+   	FragColor = texture( Texture0, TexCoord ) * Color;
 
-   	// bloom rendering, picking out the bright/hot pixels
+    // ------------------------------------
+   	// bloom rendering, picking out the bright/hot pixels only
 
     float brightness = dot( FragColor.rgb, vec3( 0.2126f, 0.7152f, 0.0722f ) );
 
