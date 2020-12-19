@@ -177,6 +177,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
 		engine->blur_frame_buffers[0] = std::make_unique<w_opengl_framebuffer>( "blur1", 1, v_window_w, v_window_h );
 		engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
+		engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite", 1, v_window_w, v_window_h );
 
 		{ // GAME
 
@@ -234,7 +235,7 @@ void w_engine::deinit_game_engine()
 
 	log( "Shutting down OpenGL" );
 	glDeleteProgram( OPENGL->base_shader->id );
-	glDeleteProgram( OPENGL->base_with_bloom_shader->id );
+	glDeleteProgram( OPENGL->base_shader_with_bright_pass->id );
 	glDeleteProgram( OPENGL->blur_shader->id );
 
 	log( "Shutting down GLFW" );
@@ -321,9 +322,9 @@ void w_engine::exec_main_loop()
 			base_game->update();
 
 			// update shader parameters
-			//static float time_val = 0.0f;
-			//time_val += w_time::FTS_step_value_s;
-			//OPENGL->set_uniform( "in_current_time", time_val );
+			static float time_val = 0.0f;
+			time_val += w_time::FTS_step_value_s;
+			OPENGL->set_uniform( "in_current_time", time_val );
 		}
 
 		// ----------------------------------------------------------------------------
@@ -336,7 +337,7 @@ void w_engine::exec_main_loop()
 
 		glEnable( GL_DEPTH_TEST );
 		engine->frame_buffer->bind();
-		OPENGL->base_with_bloom_shader->bind();
+		OPENGL->base_shader_with_bright_pass->bind();
 
 		RENDER->begin_frame();
 		{
@@ -392,6 +393,9 @@ void w_engine::exec_main_loop()
 			->flush();
 		engine->blur_frame_buffers[0]->unbind();
 
+		// pingpong back and forth between the 2 blur frame buffers, blurring them into
+		// each other, for a set amount of passes.
+
 		bool pingpong = true;
 		for( int x = 0 ; x < 10 ; ++x )
 		{
@@ -408,19 +412,10 @@ void w_engine::exec_main_loop()
 		}
 
 		// ----------------------------------------------------------------------------
-		// draw the composited textures to the real window
+		// draw the base/bloom frame buffers into the compositing frame buffer
 		// ----------------------------------------------------------------------------
 
-		// reset the viewport to the size of the actual window size
-
-		OPENGL->init_view_matrix_identity();
-
-		glViewport(
-			(int) engine->window->viewport_pos_sz.x,
-			(int) engine->window->viewport_pos_sz.y,
-			(int) engine->window->viewport_pos_sz.w,
-			(int) engine->window->viewport_pos_sz.h
-		);
+		engine->composite_frame_buffer->bind();
 
 		// draw game frame buffer
 
@@ -444,6 +439,30 @@ void w_engine::exec_main_loop()
 			->flush();
 
 		OPENGL->set_blend( opengl_blend::alpha );
+
+		engine->composite_frame_buffer->unbind();
+
+		// ----------------------------------------------------------------------------
+		// draw the compositing frame buffer to the default frame buffer
+		// applying any screen based post process effects.
+		// ----------------------------------------------------------------------------
+
+		OPENGL->vfx_shader->bind();
+		OPENGL->init_view_matrix_identity();
+
+		// reset the viewport to the size of the actual window size
+		glViewport(
+			(int) engine->window->viewport_pos_sz.x,
+			(int) engine->window->viewport_pos_sz.y,
+			(int) engine->window->viewport_pos_sz.w,
+			(int) engine->window->viewport_pos_sz.h
+		);
+
+		RENDER
+			->begin()
+			->draw( engine->composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->end()
+			->flush();
 
 #if 0
 		// ----------------------------------------------------------------------------

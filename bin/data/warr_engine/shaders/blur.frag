@@ -8,8 +8,20 @@ in vec3 Pos;
 
 uniform sampler2D Texture0;
 
+// implements a gaussian blur effect either in the horizontal
+// or vertical directions, based on the "horizontal" variable.
+//
+// yoinked from : https://learnopengl.com/Advanced-Lighting/Bloom
+
 uniform bool horizontal;
-uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
+uniform float weight[5] = float[]
+	(
+		0.227027,
+		0.1945946,
+		0.1216216,
+		0.054054,
+		0.016216
+	);
 
 void main()
 {

@@ -5,8 +5,9 @@ struct w_opengl
 	std::vector<w_matrix> modelview_stack;
 
 	std::unique_ptr<w_shader> base_shader = nullptr;
-	std::unique_ptr<w_shader> base_with_bloom_shader = nullptr;
+	std::unique_ptr<w_shader> base_shader_with_bright_pass = nullptr;
 	std::unique_ptr<w_shader> blur_shader = nullptr;
+	std::unique_ptr<w_shader> vfx_shader = nullptr;
 
 	void init();
 

@@ -11,20 +11,20 @@ uniform mat4 V; // camera matrix
 
 uniform float in_current_time;
 
-uniform int b_show_vignette = 0;
+uniform int b_show_vignette = 1;
 uniform float var_vignette_size = 1.9f;
 uniform float var_vignette_smoothness = 0.75f;
 uniform float var_vignette_rounding = 16.0f;
 
-uniform int b_show_crt_tint = 0;
+uniform int b_show_crt_tint = 1;
 
-uniform int b_show_crt_warp = 0;
+uniform int b_show_crt_warp = 1;
 uniform float var_crt_warp_bend = 4.0f;
 
-uniform int b_show_crt_scanlines = 0;
+uniform int b_show_crt_scanlines = 1;
 uniform float var_crt_scanlines_intensity = 0.01f;
 
-uniform int b_show_chromatic_abberation = 0;
+uniform int b_show_chromatic_abberation = 1;
 uniform float var_chromatic_abberation_amount = 0.0025f;
 
 uniform int b_show_desaturation = 0;
