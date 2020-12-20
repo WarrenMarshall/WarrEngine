@@ -321,12 +321,10 @@ void w_engine::exec_main_loop()
 			engine->update();
 			engine->render->stats.update();
 			base_game->update();
-
-			// update shader parameters
-			static float time_val = 0.0f;
-			time_val += w_time::FTS_step_value_s;
-			OPENGL->set_uniform( "u_current_time", time_val );
 		}
+
+		// update shader parameters
+		OPENGL->set_uniform( "u_current_time", (float) engine->time->get_ticks() / 1000.f );
 
 		// ----------------------------------------------------------------------------
 		// draw the scene to the engine frame buffer

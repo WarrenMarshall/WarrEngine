@@ -55,7 +55,7 @@ extern float ui_canvas_h;
 #include "render_buffer.h"
 
 #include "i_life_cycle.h"
-#include "util_time.h"
+#include "w_time.h"
 #include "random.h"
 #include "tween.h"
 #include "timer.h"

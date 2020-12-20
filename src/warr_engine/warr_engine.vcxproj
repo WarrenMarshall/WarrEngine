@@ -228,7 +228,7 @@
     <ClCompile Include="ui_control.cpp" />
     <ClCompile Include="ui_data_provider.cpp" />
     <ClCompile Include="ui_imgui.cpp" />
-    <ClCompile Include="util_time.cpp" />
+    <ClCompile Include="w_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="engine.cpp" />
@@ -297,7 +297,7 @@
     <ClInclude Include="physics_query_callbacks.h" />
     <ClInclude Include="physics_debug_draw.h" />
     <ClInclude Include="ui_imgui.h" />
-    <ClInclude Include="util_time.h" />
+    <ClInclude Include="w_time.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="engine.h" />

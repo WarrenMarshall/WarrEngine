@@ -169,9 +169,6 @@
     <ClCompile Include="ui_mgr.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="util_time.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="window.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -200,6 +197,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="physics_contact_listener.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="w_time.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -283,9 +283,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="warr_engine.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="util_time.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="ui_mgr.h">
@@ -409,6 +406,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="physics_contact_listener.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="w_time.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
