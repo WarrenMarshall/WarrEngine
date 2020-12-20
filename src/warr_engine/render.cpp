@@ -4,7 +4,7 @@
 
 void w_render::init()
 {
-	master_render_buffer = std::make_unique<w_render_buffer>();
+	master_render_buffer = std::make_unique<w_render_batch>();
 	master_render_buffer->bind();
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
@@ -348,10 +348,10 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_buffer_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_buffer_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_buffer_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
-	w_render_buffer_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
+	w_render_batch_vert v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color, rs_emissive );
+	w_render_batch_vert v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color, rs_emissive );
+	w_render_batch_vert v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
+	w_render_batch_vert v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX
 		->push()
@@ -389,10 +389,10 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_buffer_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_buffer_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_buffer_vert v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
-	w_render_buffer_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
+	w_render_batch_vert v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color, rs_emissive );
+	w_render_batch_vert v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color, rs_emissive );
+	w_render_batch_vert v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
+	w_render_batch_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
 	master_render_buffer->add_quad( v0, v1, v2, v3 );
@@ -610,25 +610,25 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_buffer_vert v0(
+	w_render_batch_vert v0(
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
 		rs_color,
 		rs_emissive
 	);
-	w_render_buffer_vert v1(
+	w_render_batch_vert v1(
 		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
 		rs_color,
 		rs_emissive
 	);
-	w_render_buffer_vert v2(
+	w_render_batch_vert v2(
 		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
 		rs_color,
 		rs_emissive
 	);
-	w_render_buffer_vert v3(
+	w_render_batch_vert v3(
 		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
 		rs_color,
@@ -674,8 +674,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_buffer_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
-	w_render_buffer_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_batch_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_batch_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
 
 	rs_snap_to_pixel = false;
 
@@ -703,8 +703,8 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_buffer_vert v0( start, w_uv( 0, 0 ), rs_color, rs_emissive );
-	w_render_buffer_vert v1( end, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_batch_vert v0( start, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_batch_vert v1( end, w_uv( 0, 0 ), rs_color, rs_emissive );
 
 	rs_snap_to_pixel = false;
 

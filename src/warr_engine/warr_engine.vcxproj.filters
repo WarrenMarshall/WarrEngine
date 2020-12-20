@@ -142,9 +142,6 @@
     <ClCompile Include="render.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="render_buffer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="shader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -200,6 +197,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="w_time.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render_batch.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -309,9 +309,6 @@
     <ClInclude Include="shader.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="render_buffer.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="render.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -409,6 +406,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="w_time.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_batch.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

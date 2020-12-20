@@ -242,7 +242,7 @@
     <ClCompile Include="particle_emitter.cpp" />
     <ClCompile Include="ui_mgr.cpp" />
     <ClCompile Include="window.cpp" />
-    <ClCompile Include="render_buffer.cpp" />
+    <ClCompile Include="render_batch.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="keyvalues.cpp" />
   </ItemGroup>
@@ -313,7 +313,7 @@
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="ui_mgr.h" />
     <ClInclude Include="window.h" />
-    <ClInclude Include="render_buffer.h" />
+    <ClInclude Include="render_batch.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="keyvalues.h" />
   </ItemGroup>
