@@ -5,6 +5,7 @@ layout (location = 0) out vec4 FragColor;
 in vec2 TexCoord;
 in vec4 Color;
 in vec3 Pos;
+in float Emissive;
 
 uniform sampler2D Texture0;
 

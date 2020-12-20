@@ -29,6 +29,7 @@ void layer_main_menu::draw_ui()
 		->push_scale( { 2.0f, 2.0f } )
 		->push_align( align::hcenter )
 		->push_rgb( w_color::white )
+		->push_emissive( 100.0f )
 		->draw_string( "Snake Pong", w_rect( v_window_hw, 32 ) )
 		->end();
 

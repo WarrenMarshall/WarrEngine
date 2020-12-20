@@ -30,6 +30,7 @@ struct w_render
 
 	std::vector<w_color> rs_color_stack;
 	std::vector<float> rs_alpha_stack;
+	std::vector<float> rs_emissive_stack;
 	std::vector<w_vec2> rs_scale_stack;
 	std::vector<float> rs_angle_stack;
 	std::vector<e_align> rs_align_stack;
@@ -54,6 +55,8 @@ struct w_render
 	w_render* push_alpha( const float alpha );
 	w_render* replace_alpha( const float alpha );
 	w_render* pop_alpha();
+	w_render* push_emissive( const float emissive );
+	w_render* pop_emissive();
 	w_render* push_scale( const w_vec2& scale );
 	w_render* replace_scale( const w_vec2& scale );
 	w_render* push_scale( const float scale );

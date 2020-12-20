@@ -467,7 +467,7 @@ void w_engine::exec_main_loop()
 			->end()
 			->flush();
 
-#if 0
+#if 1
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
@@ -478,29 +478,22 @@ void w_engine::exec_main_loop()
 
 		float w = v_window_w / 4.0f;
 		float h = v_window_h / 4.0f;
-		float x = 0.f;
-		float y = v_window_h - h;
+		w_rect rc = { 0.0f, v_window_h - h, w, h };
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 0 ], w_rect( x, y, w, h ) )
+			->draw( engine->frame_buffer->textures[ 0 ], rc )
 			->end()
 			->flush();
-		x += w;
+		rc.x += w;
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 1 ], w_rect( x, y, w, h ) )
+			->draw( engine->frame_buffer->textures[ 1 ], rc )
 			->end()
 			->flush();
-		x += w;
+		rc.x += w;
 		RENDER
 			->begin()
-			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( x, y, w, h ) )
-			->end()
-			->flush();
-		x += w;
-		RENDER
-			->begin()
-			->draw( engine->blur_frame_buffers[ 1 ]->textures[ 0 ], w_rect( x, y, w, h ) )
+			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
 			->end()
 			->flush();
 #endif

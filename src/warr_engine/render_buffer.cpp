@@ -2,18 +2,21 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_render_buffer_vert::w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color )
+w_render_buffer_vert::w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color, const float emissive )
     :   x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
         u( uv.u ), v( uv.v ),
-        r( color.r ), g( color.g ), b( color.b ), a( color.a )
+	    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
+	    e( emissive )
 {
 }
 
-w_render_buffer_vert::w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color )
+w_render_buffer_vert::w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
 	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
 	u( uv.u ), v( uv.v ),
-	r( color.r ), g( color.g ), b( color.b ), a( color.a )
+	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
+    e( emissive )
 {
+    assert( false );    // temp disable this for testing
 }
 
 // ----------------------------------------------------------------------------
@@ -28,14 +31,15 @@ w_render_buffer::w_render_buffer()
 	glCreateBuffers( 1, &VBO );
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
 
+	glEnableVertexAttribArray( 0 );
+	glEnableVertexAttribArray( 1 );
+	glEnableVertexAttribArray( 2 );
+    glEnableVertexAttribArray( 3 );
+
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) nullptr );
-    glEnableVertexAttribArray( 0 );
-
-	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) ( sizeof( float ) * 3 ) );
-    glEnableVertexAttribArray( 1 );
-
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (void*) ( sizeof( float ) * 5 ) );
-    glEnableVertexAttribArray( 2 );
+    glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (char*) ( sizeof( float ) * 3 ) );
+	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (char*) ( sizeof( float ) * 5 ) );
+	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_buffer_vert ), (char*) ( sizeof( float ) * 9 ) );
 
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
@@ -165,7 +169,8 @@ int w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
     const w_render_buffer_vert rv(
         w_vec2( vtx.x, vtx.y ),
         w_uv( render_vert.u, render_vert.v ),
-        w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a )
+        w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a ),
+        render_vert.e
     );
 
     // add the render_vert to the vertex and index lists.

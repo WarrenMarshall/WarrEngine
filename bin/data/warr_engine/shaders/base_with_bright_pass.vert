@@ -3,6 +3,7 @@
 layout (location = 0) in vec3 inPos;
 layout (location = 1) in vec2 inTexCoord;
 layout (location = 2) in vec4 inColor;
+layout (location = 3) in float inEmissive;
 
 // ----------------------------------------------------------------------------
 
@@ -14,9 +15,10 @@ uniform mat4 V;
 
 // ----------------------------------------------------------------------------
 
+out vec3 Pos;
 out vec2 TexCoord;
 out vec4 Color;
-out vec3 Pos;
+out float Emissive;
 
 void main()
 {
@@ -31,4 +33,5 @@ void main()
 
     TexCoord = inTexCoord;
     Color = inColor;
+    Emissive = inEmissive;
 }

@@ -6,27 +6,30 @@ struct w_color
 {
 	float r = 0.0f, g = 0.0f, b = 0.0f, a = 1.0f;
 
-	static const w_color white;
-	static const w_color black;
-	static const w_color red;
-	static const w_color green;
-	static const w_color blue;
-	static const w_color light_blue;
-	static const w_color orange;
-	static const w_color yellow;
-	static const w_color teal;
-	static const w_color dark_teal;
-	static const w_color dark_grey;
-	static const w_color grey;
-	static const w_color light_grey;
-	static const w_color light_green;
-	static const w_color dark_green;
-	static const w_color magenta;
+	static w_color white;
+	static w_color black;
+	static w_color red;
+	static w_color green;
+	static w_color blue;
+	static w_color light_blue;
+	static w_color orange;
+	static w_color yellow;
+	static w_color teal;
+	static w_color dark_teal;
+	static w_color dark_grey;
+	static w_color grey;
+	static w_color light_grey;
+	static w_color light_green;
+	static w_color dark_green;
+	static w_color magenta;
 
 	w_color() = default;
 	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( int r, int g, int b, int a = 255 );
 	w_color( std::string& str );
+
+	w_color operator*( float v );
+	w_color operator*=( float v );
 
 	static void scale( w_color& color, float s );
 	static w_color pal( int idx );

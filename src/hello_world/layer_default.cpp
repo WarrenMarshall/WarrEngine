@@ -30,7 +30,6 @@ void layer_default::draw_ui()
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		//->set_rect( { ui_canvas_hw,ui_canvas_hh,ui_canvas_hw,ui_canvas_hh } )
 		->set_rect( { ui_canvas_hw,ui_canvas_hh,100,100 } )
 		->finalize();
 }

@@ -3,6 +3,7 @@
 layout (location = 0) in vec3 inPos;
 layout (location = 1) in vec2 inTexCoord;
 layout (location = 2) in vec4 inColor;
+layout (location = 3) in float inEmissive;
 
 // ----------------------------------------------------------------------------
 
@@ -38,9 +39,11 @@ uniform vec4 var_color_overlay = vec4(  0.0f, 0.0f, 0.0f, 0.0f );
 
 // ----------------------------------------------------------------------------
 
+out vec3 Pos;
 out vec2 TexCoord;
 out vec4 Color;
-out vec3 Pos;
+out float Emissive;
+
 out flat float _current_time;
 out flat int _show_vignette;
 out flat float _var_vignette_size;
@@ -74,6 +77,8 @@ void main()
 
     TexCoord = inTexCoord;
     Color = inColor;
+    Emissive = inEmissive;
+
     _current_time = in_current_time;
     _show_vignette = b_show_vignette;
     _var_vignette_size = var_vignette_size;

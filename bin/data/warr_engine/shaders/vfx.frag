@@ -1,9 +1,10 @@
 #version 420 core
 out vec4 FragColor;
 
+in vec3 Pos;
 in vec2 TexCoord;
 in vec4 Color;
-in vec3 Pos;
+in float Emissive;
 
 in flat float _current_time;
 

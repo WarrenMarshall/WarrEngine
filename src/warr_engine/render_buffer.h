@@ -4,12 +4,13 @@
 
 struct w_render_buffer_vert
 {
-	w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color );
-	w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color );
+	w_render_buffer_vert( const w_vec2& pos, const w_uv& uv, const w_color& color, const float emissive );
+	w_render_buffer_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive );
 
 	float x, y, z;
 	float u, v;
 	float r, g, b, a;
+	float e;
 };
 
 // ----------------------------------------------------------------------------
