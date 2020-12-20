@@ -30,3 +30,8 @@ void w_accum_value::inc()
 {
 	_accumulator += 1.0f;
 }
+
+void w_accum_value::dec()
+{
+	_accumulator -= 1.0f;
+}

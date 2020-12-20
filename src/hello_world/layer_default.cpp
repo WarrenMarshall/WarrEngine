@@ -13,7 +13,7 @@ void layer_default::push()
 	gradient = a_gradient::find( "background_gradient" );
 	subtex = a_texture::find( "tex_hello_world" )->get_subtexture();
 
-	engine->window->set_mouse_mode( mouse_mode::custom );
+	engine->window->set_mouse_mode( mouse_mode::os );
 }
 
 void layer_default::draw()
@@ -26,7 +26,8 @@ void layer_default::draw()
 
 void layer_default::draw_ui()
 {
-	RENDER->draw( subtex, w_rect( 16, 16 ) );
+	RENDER
+		->draw( subtex, w_rect( 16, 16 ) );
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )

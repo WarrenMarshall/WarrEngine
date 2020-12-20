@@ -1,15 +1,15 @@
 #version 420 core
 
-layout (location = 0) out vec4 FragColor;
+out vec4 out_fragment_color;
 
-in vec3 Pos;
-in vec2 TexCoord;
-in vec4 Color;
-in float Emissive;
+in vec3 fs_pos;
+in vec2 fs_tex_coord;
+in vec4 fs_color;
+in float fs_emissive;
 
-uniform sampler2D Texture0;
+uniform sampler2D u_texture_0;
 
 void main()
 {
-   	FragColor = texture( Texture0, TexCoord ) * Color;
+   	out_fragment_color = texture( u_texture_0, fs_tex_coord ) * fs_color;
 }

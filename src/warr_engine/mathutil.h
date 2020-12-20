@@ -13,6 +13,7 @@ struct w_accum_value
     void update_value();
     void accum( float value );
     void inc();
+	void dec();
 
     float _accumulator;
 };

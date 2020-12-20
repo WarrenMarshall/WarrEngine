@@ -1,13 +1,13 @@
 #version 420 core
 
-layout (location = 0) out vec4 FragColor;
+out vec4 out_fragment_color;
 
-in vec2 TexCoord;
-in vec4 Color;
-in vec3 Pos;
-in float Emissive;
+in vec3 fs_pos;
+in vec2 fs_tex_coord;
+in vec4 fs_color;
+in float fs_emissive;
 
-uniform sampler2D Texture0;
+uniform sampler2D u_texture_0;
 
 // implements a gaussian blur effect either in the horizontal
 // or vertical directions, based on the "horizontal" variable.
@@ -27,27 +27,27 @@ uniform float weight[5] = float[]
 void main()
 {
 	// gets size of single texel
-    vec2 tex_offset = 1.0 / textureSize(Texture0, 0);
+    vec2 tex_offset = 1.0 / textureSize(u_texture_0, 0);
 
 	// current fragment's contribution
-    vec3 result = texture(Texture0, TexCoord).rgb * weight[0];
+    vec3 result = texture(u_texture_0, fs_tex_coord).rgb * weight[0];
 
     if( horizontal )
     {
         for( int i = 1; i < 5; ++i )
         {
-            result += texture(Texture0, TexCoord + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-            result += texture(Texture0, TexCoord - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            result += texture(u_texture_0, fs_tex_coord + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            result += texture(u_texture_0, fs_tex_coord - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
         }
     }
     else
     {
         for( int i = 1; i < 5; ++i )
         {
-            result += texture(Texture0, TexCoord + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-            result += texture(Texture0, TexCoord - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+            result += texture(u_texture_0, fs_tex_coord + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+            result += texture(u_texture_0, fs_tex_coord - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
         }
     }
 
-    FragColor = vec4(result, 1.0);
+    out_fragment_color = vec4(result, 1.0);
 }

@@ -12,13 +12,13 @@ void snake_pong::init()
 
 	reset_layer_stack_to_main_menu();
 
-	OPENGL->set_uniform( "b_vignette", true );
-	OPENGL->set_uniform( "b_crt_warp", true );
-	OPENGL->set_uniform( "b_crt_scanlines", true );
-	OPENGL->set_uniform( "b_crt_tint", true );
-	OPENGL->set_uniform( "b_chromatic_abberation", true );
-	//OPENGL->set_uniform( "b_desaturation", true );
-	//OPENGL->set_uniform( "b_inverted", true );
+	OPENGL->set_uniform( "ub_vignette", true );
+	OPENGL->set_uniform( "ub_crt_warp", true );
+	OPENGL->set_uniform( "ub_crt_scanlines", true );
+	OPENGL->set_uniform( "ub_crt_tint", true );
+	OPENGL->set_uniform( "ub_chromatic_abberation", true );
+	//OPENGL->set_uniform( "ub_desaturation", true );
+	//OPENGL->set_uniform( "ub_inverted", true );
 	//OPENGL->set_uniform( "color_overlay", w_color( 0.15f, 0.75f, 0.45f, 0.5f ) );
 	//OPENGL->set_uniform( "color_tint", w_color( 0.15f, 0.75f, 0.45f, 0.25f ) );
 }

@@ -391,6 +391,7 @@ void w_engine::exec_main_loop()
 			->end()
 			->flush();
 		engine->blur_frame_buffers[0]->unbind();
+		RENDER->stats.render_buffers.dec();
 
 		// pingpong back and forth between the 2 blur frame buffers, blurring them into
 		// each other, for a set amount of passes.
@@ -408,6 +409,7 @@ void w_engine::exec_main_loop()
 				->end()
 				->flush();
 			engine->blur_frame_buffers[ pingpong ]->unbind();
+			RENDER->stats.render_buffers.dec();
 
 			pingpong = !pingpong;
 		}
@@ -427,6 +429,7 @@ void w_engine::exec_main_loop()
 			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end()
 			->flush();
+		RENDER->stats.render_buffers.dec();
 
 		// draw bloom frame buffer
 
@@ -438,6 +441,7 @@ void w_engine::exec_main_loop()
 			->draw( engine->blur_frame_buffers[0]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end()
 			->flush();
+		RENDER->stats.render_buffers.dec();
 
 		OPENGL->set_blend( opengl_blend::alpha );
 
@@ -464,6 +468,7 @@ void w_engine::exec_main_loop()
 			->draw( engine->composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end()
 			->flush();
+		RENDER->stats.render_buffers.dec();
 
 #if 0
 		// ----------------------------------------------------------------------------
@@ -482,18 +487,21 @@ void w_engine::exec_main_loop()
 			->draw( engine->frame_buffer->textures[ 0 ], rc )
 			->end()
 			->flush();
+		RENDER->stats.render_buffers.dec();
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 1 ], rc )
 			->end()
 			->flush();
+		RENDER->stats.render_buffers.dec();
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
 			->end()
 			->flush();
+		RENDER->stats.render_buffers.dec();
 #endif
 
 		// ----------------------------------------------------------------------------
