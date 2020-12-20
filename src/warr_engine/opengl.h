@@ -7,7 +7,7 @@ struct w_opengl
 	std::unique_ptr<w_shader> base_shader = nullptr;
 	std::unique_ptr<w_shader> base_shader_with_bright_pass = nullptr;
 	std::unique_ptr<w_shader> blur_shader = nullptr;
-	std::unique_ptr<w_shader> vfx_shader = nullptr;
+	std::unique_ptr<w_shader> post_process_shader = nullptr;
 
 	void init();
 

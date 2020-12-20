@@ -66,9 +66,9 @@ void w_render_buffer::add_quad( const w_render_buffer_vert& v0, const w_render_b
     // in the quad, we can skip the process of transforming them and searching the vertex
     // array by caching the index they are assigned the first time through and re-using it.
 
-    const int idx0 = add_render_vert( v0 );
+    const unsigned short idx0 = add_render_vert( v0 );
     add_render_vert( v1 );
-    const int idx2 = add_render_vert( v2 );
+    const unsigned short idx2 = add_render_vert( v2 );
 
     indices.emplace_back( idx0 );
     indices.emplace_back( idx2 );
@@ -110,7 +110,7 @@ void w_render_buffer::draw( a_texture* tex )
 
         // send the data to the video card
         glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_buffer_vert ), vertices.data(), GL_DYNAMIC_DRAW );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned int ), indices.data(), GL_DYNAMIC_DRAW );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof( unsigned short ), indices.data(), GL_DYNAMIC_DRAW );
 
         switch( tex->gl_prim_type )
         {
@@ -138,7 +138,7 @@ void w_render_buffer::draw( a_texture* tex )
         RENDER->stats.render_vertices.accum( static_cast<float>( vertices.size() ) );
         RENDER->stats.render_indices.accum( static_cast<float>( indices.size() ) );
 
-        glDrawElements( tex->gl_prim_type, static_cast<int>( indices.size() ), GL_UNSIGNED_INT, nullptr );
+		glDrawElements( tex->gl_prim_type, static_cast<int>( indices.size() ), GL_UNSIGNED_SHORT, nullptr );
     }
 }
 
@@ -149,7 +149,7 @@ void w_render_buffer::clear()
     indices.clear();
 }
 
-int w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
+unsigned short w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.
     //
@@ -176,8 +176,10 @@ int w_render_buffer::add_render_vert( const w_render_buffer_vert& render_vert )
     // add the render_vert to the vertex and index lists.
 
     vertices.emplace_back( rv );
-    int idx = static_cast<int>( vertices.size() ) - 1;
+    unsigned short idx = static_cast<unsigned short>( vertices.size() ) - 1;
     indices.emplace_back( idx );
+
+    assert( idx < 65500 );      // getting close to the max value of an unsigned short (65535)
 
     return idx;
 }

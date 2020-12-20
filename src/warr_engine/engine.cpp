@@ -237,7 +237,7 @@ void w_engine::deinit_game_engine()
 	glDeleteProgram( OPENGL->base_shader->id );
 	glDeleteProgram( OPENGL->base_shader_with_bright_pass->id );
 	glDeleteProgram( OPENGL->blur_shader->id );
-	glDeleteProgram( OPENGL->vfx_shader->id );
+	glDeleteProgram( OPENGL->post_process_shader->id );
 
 	log( "Shutting down GLFW" );
 	glfwTerminate();
@@ -325,7 +325,7 @@ void w_engine::exec_main_loop()
 			// update shader parameters
 			static float time_val = 0.0f;
 			time_val += w_time::FTS_step_value_s;
-			OPENGL->set_uniform( "in_current_time", time_val );
+			OPENGL->set_uniform( "u_current_time", time_val );
 		}
 
 		// ----------------------------------------------------------------------------
@@ -450,7 +450,7 @@ void w_engine::exec_main_loop()
 		// applying any screen based post process effects.
 		// ----------------------------------------------------------------------------
 
-		OPENGL->vfx_shader->bind();
+		OPENGL->post_process_shader->bind();
 		OPENGL->init_view_matrix_identity();
 
 		// reset the viewport to the size of the actual window size
@@ -467,7 +467,7 @@ void w_engine::exec_main_loop()
 			->end()
 			->flush();
 
-#if 1
+#if 0
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//

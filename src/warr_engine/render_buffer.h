@@ -21,10 +21,10 @@ struct w_render_buffer
 	~w_render_buffer();
 
 	std::vector<w_render_buffer_vert> vertices;
-	std::vector<GLuint> indices;	// indexes, in groups of 3 (aka triangles), indexing into the vertices array
-	GLuint VAO = 0;					// vertex array object
-	GLuint VBO = 0;					// vertex buffer
-	GLuint EBO = 0;					// index buffer
+	std::vector<unsigned short> indices;	// indexes, in groups of 3 (aka triangles), indexing into the vertices array
+	GLuint VAO = 0;							// vertex array object
+	GLuint VBO = 0;							// vertex buffer
+	GLuint EBO = 0;							// index buffer
 
 	void add_quad( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1, const w_render_buffer_vert& v2, const w_render_buffer_vert& v3 );
 	void add_triangle( const w_render_buffer_vert& v0, const w_render_buffer_vert& v1, const w_render_buffer_vert& v2 );
@@ -34,5 +34,5 @@ struct w_render_buffer
 	void draw( a_texture* tex );
 	void clear();
 
-	int add_render_vert( const w_render_buffer_vert& render_vert );
+	unsigned short add_render_vert( const w_render_buffer_vert& render_vert );
 };
