@@ -89,7 +89,7 @@ w_render_batch::w_render_batch()
         offset += 4;
     }
 
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ), quad_indices.data(), GL_DYNAMIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ), quad_indices.data(), GL_STATIC_DRAW );
 
     unbind();
 }
