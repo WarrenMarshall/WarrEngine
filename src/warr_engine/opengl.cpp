@@ -33,6 +33,13 @@ void w_opengl::init()
 	log( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) );
 	log( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
+	GLint MaxTextureImageUnits;
+	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits );
+	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", MaxTextureImageUnits );
+
+	// #batch - this needs to be done in a cleaner way
+	assert( MaxTextureImageUnits >= 16 );
+
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
@@ -42,8 +49,6 @@ void w_opengl::init()
 	base_shader = std::make_unique<w_shader>( "base.vert", "base.frag" );
 	blur_shader = std::make_unique<w_shader>( "base.vert", "blur.frag" );
 	post_process_shader = std::make_unique<w_shader>( "base.vert", "post_process.frag" );
-
-	//base_shader->bind();
 
 	glEnable( GL_TEXTURE_2D );
 

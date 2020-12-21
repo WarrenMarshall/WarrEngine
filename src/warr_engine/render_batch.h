@@ -11,6 +11,7 @@ struct w_render_batch_vert
 	float u, v;
 	float r, g, b, a;
 	float e;
+	float t;
 };
 
 // ----------------------------------------------------------------------------
@@ -18,12 +19,13 @@ struct w_render_batch_vert
 struct w_render_batch
 {
 	static int max_quads_per_batch;
+	static int max_texture_units;
 
 	w_render_batch();
 	~w_render_batch();
 
+	//unsigned texture_ids[]
 	std::vector<w_render_batch_vert> vertices;
-	std::vector<unsigned short> indices;	// indexes, in groups of 3 (aka triangles), indexing into the vertices array
 	int num_quads_to_render = 0;
 	GLuint VAO = 0;							// vertex array object
 	GLuint VBO = 0;							// vertex buffer

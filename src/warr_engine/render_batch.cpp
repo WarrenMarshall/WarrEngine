@@ -8,6 +8,8 @@ w_render_batch_vert::w_render_batch_vert( const w_vec2& pos, const w_uv& uv, con
 	    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	    e( emissive )
 {
+    t = static_cast<float>( RENDER->current_texture->gl_id );
+
 }
 
 w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
@@ -22,6 +24,7 @@ w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, con
 // ----------------------------------------------------------------------------
 
 int w_render_batch::max_quads_per_batch = 1000;
+int w_render_batch::max_texture_units = 16;
 
 w_render_batch::w_render_batch()
 {
@@ -33,15 +36,32 @@ w_render_batch::w_render_batch()
 	glCreateBuffers( 1, &VBO );
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
 
-	glEnableVertexAttribArray( 0 );
-	glEnableVertexAttribArray( 1 );
-	glEnableVertexAttribArray( 2 );
-    glEnableVertexAttribArray( 3 );
+    unsigned short offset = 0;
 
-    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (void*) nullptr );
-    glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * 3 ) );
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * (3 + 2) ) );
-	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * (3 + 2 + 4) ) );
+    // position
+	glEnableVertexAttribArray( 0 );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
+    offset += 3;
+
+    // texture coordinates
+    glEnableVertexAttribArray( 1 );
+    glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
+    offset += 2;
+
+    // color + alpha
+    glEnableVertexAttribArray( 2 );
+	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
+    offset += 4;
+
+    // emissive
+    glEnableVertexAttribArray( 3 );
+	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
+    offset += 1;
+
+    // texture_id
+	glEnableVertexAttribArray( 4 );
+	glVertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
+    offset += 1;
 
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
@@ -52,25 +72,24 @@ w_render_batch::w_render_batch()
 
     // preload the indices with values since they don't change frame to frame
 
-    indices.resize( w_render_batch::max_quads_per_batch * 6 );
+	std::vector<unsigned short> quad_indices;
+    quad_indices.resize( w_render_batch::max_quads_per_batch * 6 );
 
-    unsigned short offset = 0;
+    offset = 0;
     for( int q = 0 ; q < w_render_batch::max_quads_per_batch * 6 ; q += 6 )
     {
-        indices[ q + 0 ] = offset + 0;
-		indices[ q + 1 ] = offset + 1;
-		indices[ q + 2 ] = offset + 2;
+        quad_indices[ q + 0 ] = offset + 0;
+        quad_indices[ q + 1 ] = offset + 1;
+        quad_indices[ q + 2 ] = offset + 2;
 
-		indices[ q + 3 ] = offset + 0;
-		indices[ q + 4 ] = offset + 2;
-		indices[ q + 5 ] = offset + 3;
+        quad_indices[ q + 3 ] = offset + 0;
+        quad_indices[ q + 4 ] = offset + 2;
+        quad_indices[ q + 5 ] = offset + 3;
 
         offset += 4;
     }
 
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ), indices.data(), GL_DYNAMIC_DRAW );
-
-    indices.clear();
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ), quad_indices.data(), GL_DYNAMIC_DRAW );
 
     unbind();
 }
@@ -171,7 +190,6 @@ void w_render_batch::clear()
 {
     // retain capacity so we don't have to reallocate the vectors constantly
     vertices.clear();
-    //indices.clear();
     num_quads_to_render = 0;
 }
 
@@ -199,13 +217,6 @@ void w_render_batch::add_render_vert( const w_render_batch_vert& render_vert )
         render_vert.e
     );
 
-    // add the render_vert to the vertex and index lists.
-
+    // add the render_vert to the vertex list.
     vertices.emplace_back( rv );
-    //unsigned short idx = static_cast<unsigned short>( vertices.size() ) - 1;
-    //indices.emplace_back( idx );
-
-    //assert( idx < 65500 );      // getting close to the max value of an unsigned short (65535)
-
-    //return idx;
 }
