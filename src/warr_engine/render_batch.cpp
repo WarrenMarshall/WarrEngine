@@ -89,7 +89,12 @@ w_render_batch::w_render_batch()
         offset += 4;
     }
 
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ), quad_indices.data(), GL_STATIC_DRAW );
+    glBufferData(
+        GL_ELEMENT_ARRAY_BUFFER,
+        ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ),
+        quad_indices.data(),
+        GL_STATIC_DRAW
+    );
 
     unbind();
 }
@@ -105,10 +110,6 @@ w_render_batch::~w_render_batch()
 
 void w_render_batch::add_quad( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2, const w_render_batch_vert& v3 )
 {
-    // this looks a little messy but since we know that vertices 0 and 2 are going to be shared
-    // in the quad, we can skip the process of transforming them and searching the vertex
-    // array by caching the index they are assigned the first time through and re-using it.
-
     add_render_vert( v0 );
     add_render_vert( v1 );
     add_render_vert( v2 );
@@ -148,11 +149,16 @@ void w_render_batch::unbind()
 
 void w_render_batch::draw( a_texture* tex )
 {
-    if( !vertices.empty() )
+    if( num_quads_to_render )
     {
    		tex->bind();
 
-        glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_batch_vert ), vertices.data(), GL_DYNAMIC_DRAW );
+        glBufferData(
+            GL_ARRAY_BUFFER,
+            ( num_quads_to_render * 4 ) * sizeof( w_render_batch_vert ),
+            vertices.data(),
+            GL_DYNAMIC_DRAW
+        );
 
         switch( tex->gl_prim_type )
         {
@@ -177,7 +183,7 @@ void w_render_batch::draw( a_texture* tex )
         }
 
         RENDER->stats.render_buffers.inc();
-        RENDER->stats.render_vertices.accum( static_cast<float>( vertices.size() ) );
+        RENDER->stats.render_vertices.accum( static_cast<float>( num_quads_to_render * 4 ) );
         RENDER->stats.render_indices.accum( static_cast<float>( num_quads_to_render * 6 ) );
 
 		glDrawElements( tex->gl_prim_type, num_quads_to_render * 6, GL_UNSIGNED_SHORT, nullptr );
