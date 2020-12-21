@@ -644,6 +644,9 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_rectangle( const w_rect& dst )
 {
+	return this;		// #batch
+
+#if 0
 	set_current_texture( engine->white_solid->tex );
 
 	w_bbox box;
@@ -662,12 +665,15 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 	draw_line( w_vec2( box.min.x, box.max.y ), w_vec2( box.min.x, box.min.y ) );
 
 	return this;
+#endif
 }
 
 // draws a circle with line segments
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
+	return this;		// #batch
+#if 0
 	set_current_texture( engine->white_wire->tex );
 
 	w_color rs_color = rs_color_stack.back();
@@ -693,10 +699,13 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	rs_snap_to_pixel = true;
 
 	return this;
+#endif
 }
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
+	return this;		// #batch
+#if 0
 	set_current_texture( engine->white_wire->tex );
 
 	w_color rs_color = rs_color_stack.back();
@@ -713,10 +722,14 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	rs_snap_to_pixel = true;
 
 	return this;
+#endif
 }
 
 w_render* w_render::draw_point( const w_vec2& pos )
 {
+	return this;		// #batch
+
+#if 0
 	set_current_texture( engine->white_wire->tex );
 
 	auto start = pos;
@@ -729,6 +742,7 @@ w_render* w_render::draw_point( const w_vec2& pos )
 	rs_snap_to_pixel = true;
 
 	return this;
+#endif
 }
 
 w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )
