@@ -47,8 +47,8 @@ w_render_batch::w_render_batch()
 
     // index buffer
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO );
     glCreateBuffers( 1, &EBO );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO );
 
     // preload the indices with values since they don't change frame to frame
 
@@ -67,6 +67,10 @@ w_render_batch::w_render_batch()
 
         offset += 4;
     }
+
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ), indices.data(), GL_DYNAMIC_DRAW );
+
+    indices.clear();
 
     unbind();
 }
@@ -129,9 +133,7 @@ void w_render_batch::draw( a_texture* tex )
     {
    		tex->bind();
 
-        // send the data to the video card
         glBufferData( GL_ARRAY_BUFFER, vertices.size() * sizeof( w_render_batch_vert ), vertices.data(), GL_DYNAMIC_DRAW );
-        glBufferData( GL_ELEMENT_ARRAY_BUFFER, (num_quads_to_render * 6) * sizeof( unsigned short ), indices.data(), GL_DYNAMIC_DRAW );
 
         switch( tex->gl_prim_type )
         {
