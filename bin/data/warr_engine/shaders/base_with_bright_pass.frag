@@ -46,4 +46,17 @@ void main()
     {
         out_bright_color = vec4( 0.0f, 0.0f, 0.0f, 1.0f );
     }
+
+    // if( texture_idx == 0 )
+    // {
+    //     out_bright_color = vec4( 1, 0, 0, 1 );
+    // }
+    // if( texture_idx == 1 )
+    // {
+    //     out_bright_color = vec4( 0, 1, 0, 1 );
+    // }
+    // if( texture_idx == 2 )
+    // {
+    //     out_bright_color = vec4( 0, 0, 2, 1 );
+    // }
 }

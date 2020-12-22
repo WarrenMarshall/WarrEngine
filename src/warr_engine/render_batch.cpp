@@ -9,6 +9,7 @@ w_render_batch_vert::w_render_batch_vert( const w_vec2& pos, const w_uv& uv, con
     e( emissive ),
     t( static_cast<float>( RENDER->batch->current_texture_slot_idx ) )
 {
+//    log( "t: {}", t );
 }
 
 w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
@@ -114,7 +115,7 @@ w_render_batch::~w_render_batch()
 
 void w_render_batch::set_current_texture( a_texture* tex )
 {
-#if 0
+#if 1
 	current_texture = tex;
 
 	// if this texture is already in the slot list, return that index
@@ -193,18 +194,20 @@ void w_render_batch::flush()
 {
     if( num_quads_to_render )
     {
-        if( current_texture_slot_idx )
-            log( "--- batching ---" );
+        //if( current_texture_slot_idx )
+            //log( "--- batching ---" );
 
         // bind the textures to the texture units. any unused texture units will be unbound.
 
         for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
         {
-			if( current_texture_slot_idx && texture_slots[ x ] )
-                log( "{} : {}", x, texture_slots[ x ] );
+			//if( current_texture_slot_idx && texture_slots[ x ] )
+                //log( "{} : {}", x, texture_slots[ x ] );
 
             glBindTextureUnit( x, texture_slots[ x ] );
         }
+
+        //OPENGL->set_uniform_array( "u_textures", OPENGL->texture_slots.data(), OPENGL->max_texture_image_units );
 
         // upload the vertex data
 
@@ -263,12 +266,9 @@ void w_render_batch::add_render_vert( const w_render_batch_vert& render_vert )
 	    vtx.y = snap_to_pixel( vtx.y );
 	}
 
-    w_render_batch_vert rv(
-        w_vec2( vtx.x, vtx.y ),
-        w_uv( render_vert.u, render_vert.v ),
-        w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a ),
-        render_vert.e
-    );
+    w_render_batch_vert rv = render_vert;
+    rv.x = vtx.x;
+	rv.y = vtx.y;
 
     // add the render_vert to the vertex list.
     vertices.emplace_back( std::move( rv ) );
