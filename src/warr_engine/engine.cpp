@@ -470,7 +470,7 @@ void w_engine::exec_main_loop()
 		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 
-#if 1
+#if 0
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//

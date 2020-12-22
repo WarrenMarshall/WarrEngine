@@ -40,9 +40,6 @@ void w_opengl::init()
 	glGetIntegerv( GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &val );
 	log( "GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS : {}", val );
 
-	// #batch - this needs to be done in a cleaner way
-	assert( max_texture_image_units >= 16 );
-
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );

@@ -115,7 +115,6 @@ w_render_batch::~w_render_batch()
 
 void w_render_batch::set_current_texture( a_texture* tex )
 {
-#if 1
 	current_texture = tex;
 
 	// if this texture is already in the slot list, return that index
@@ -137,16 +136,6 @@ void w_render_batch::set_current_texture( a_texture* tex )
 	// otherwise, add it to the bind list
 	current_texture_slot_idx++;
 	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
-
-#else   // NO BATCHING
-	current_texture = tex;
-	flush();
-
-	// otherwise, add it to the bind list
-
-	current_texture_slot_idx++;
-	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
-#endif
 }
 
 void w_render_batch::add_quad( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2, const w_render_batch_vert& v3 )
