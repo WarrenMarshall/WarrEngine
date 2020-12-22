@@ -37,7 +37,7 @@ bool a_texture::create_internals()
 	// upload texture to opengl
 
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
-	bind();
+	glBindTexture( GL_TEXTURE_2D, gl_id );
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
@@ -45,22 +45,12 @@ bool a_texture::create_internals()
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
-	OPENGL->clear_texture_bind();
 
+	glBindTexture( GL_TEXTURE_2D, 0 );
 	stbi_image_free( color_data );
 	color_data = nullptr;
 
 	return true;
-}
-
-void a_texture::bind()
-{
-	glBindTexture( GL_TEXTURE_2D, gl_id );
-}
-
-void a_texture::unbind()
-{
-	glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
 a_subtexture* a_texture::get_subtexture( float offset )

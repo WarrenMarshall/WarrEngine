@@ -9,16 +9,18 @@ in vec4 fs_color;
 in float fs_emissive;
 in float fs_texture_id;
 
-uniform sampler2D u_texture_0;
+uniform sampler2D u_textures[32];
 
 void main()
 {
+    int texture_idx = int(fs_texture_id);
+
     // ------------------------------------
 	// first color buffer
     //
     // - regular rendering
 
-   	out_fragment_color = texture( u_texture_0, fs_tex_coord ) * fs_color;
+   	out_fragment_color = texture( u_textures[texture_idx], fs_tex_coord ) * fs_color;
 
     // ------------------------------------
     // second color buffer

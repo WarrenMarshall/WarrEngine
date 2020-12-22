@@ -21,7 +21,10 @@ void layer_default::draw()
 	w_layer::draw();
 
 	RENDER
-		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+		->begin()
+		->push_rgba( w_color::white * 1.1f )
+		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
+		->end();
 }
 
 void layer_default::draw_ui()

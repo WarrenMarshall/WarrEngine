@@ -420,4 +420,7 @@
       <UniqueIdentifier>{690e9b02-c416-473e-a16d-e17157428bb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt" />
+  </ItemGroup>
 </Project>

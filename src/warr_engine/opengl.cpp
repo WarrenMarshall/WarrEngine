@@ -113,11 +113,6 @@ w_matrix* w_opengl::top()
 	return &( modelview_stack.back() );
 }
 
-void w_opengl::clear_texture_bind() const
-{
-	glBindTexture( GL_TEXTURE_2D, 0 );
-}
-
 void w_opengl::set_blend( e_opengl_blend blend ) const
 {
 	switch( blend )

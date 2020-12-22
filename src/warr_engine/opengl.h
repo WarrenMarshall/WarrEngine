@@ -16,8 +16,6 @@ struct w_opengl
 	w_matrix* top();
 	w_matrix* pop();
 
-	void clear_texture_bind() const;
-
 	void set_blend( e_opengl_blend blend ) const;
 
 	void init_projection_matrix() const;

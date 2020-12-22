@@ -34,7 +34,7 @@ uniform vec4 u_color_tint = vec4(  1.0f, 1.0f, 1.0f, 0.0f );
 
 uniform vec4 u_color_overlay = vec4(  0.0f, 0.0f, 0.0f, 0.0f );
 
-uniform sampler2D u_texture_0;
+uniform sampler2D u_textures[32];
 
 // ----------------------------------------------------------------------------
 // warp UVs so the screen appears curved like an old crt screen.
@@ -76,6 +76,8 @@ float fx_scanline( vec2 uv, float lines, float speed )
 
 void main()
 {
+	int texture_idx = int(fs_texture_id);
+
 	// ----------------------------------------------------------------------------
 	// default handling of fragments
 	// ----------------------------------------------------------------------------
@@ -135,13 +137,13 @@ void main()
 
 	if( ub_chromatic_abberation )
 	{
-		out_fragment_color = texture( u_texture_0, final_uv );
-		out_fragment_color.r = texture(u_texture_0, vec2(final_uv.x - u_chromatic_abberation_amount, final_uv.y - u_chromatic_abberation_amount)).r;
-		out_fragment_color.b = texture(u_texture_0, vec2(final_uv.x + u_chromatic_abberation_amount, final_uv.y + u_chromatic_abberation_amount)).b;
+		out_fragment_color = texture( u_textures[texture_idx], final_uv );
+		out_fragment_color.r = texture(u_textures[texture_idx], vec2(final_uv.x - u_chromatic_abberation_amount, final_uv.y - u_chromatic_abberation_amount)).r;
+		out_fragment_color.b = texture(u_textures[texture_idx], vec2(final_uv.x + u_chromatic_abberation_amount, final_uv.y + u_chromatic_abberation_amount)).b;
 	}
 	else
 	{
-		out_fragment_color = texture( u_texture_0, final_uv );
+		out_fragment_color = texture( u_textures[texture_idx], final_uv );
 	}
 
 	// ----------------------------------------------------------------------------

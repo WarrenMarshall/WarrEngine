@@ -809,3 +809,10 @@ float w_render::calc_interpolated_per_sec_value( float current_value, float step
 {
 	return current_value + ( ( step_per_second * w_time::FTS_step_value_s ) * RENDER->frame_interpolate_pct );
 }
+
+// binds a texture to a specific texture slot
+
+void w_render::bind_texture( int slot, a_texture* tex )
+{
+	glBindTextureUnit( slot, tex->gl_id );
+}

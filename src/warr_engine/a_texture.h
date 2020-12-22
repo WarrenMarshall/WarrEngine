@@ -15,8 +15,5 @@ struct a_texture : i_asset
 	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
 
-	void bind();
-	void unbind();
-
 	[[nodiscard]] virtual a_subtexture* get_subtexture( float offset = 0.0f );
 };

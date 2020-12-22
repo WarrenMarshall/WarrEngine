@@ -1,0 +1,20 @@
+
+// ----------------------------------------------------------------------------
+
+- w_animator (generalized animation thing)
+	- w_asset_animator (specific to w_asset classes) - what does this mean?
+
+- assets aren't animating themselves anymore, all animation goes through the entities themselves
+	- this feels better! and we can easily do random offsets and varying speeds and all that
+
+workflow:
+
+spawn the entity
+add the ec_animator component
+	- set up the timing
+	- add the asset list that you want it iterating through
+
+update:
+	- update internal timer and whatever other housekeeping
+
+// ----------------------------------------------------------------------------

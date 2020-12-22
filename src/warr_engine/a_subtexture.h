@@ -19,8 +19,6 @@ struct a_subtexture : i_asset
 	a_subtexture( const std::string_view texture_tag );
 	a_subtexture( const std::string_view texture_tag, const w_rect& rc );
 
-	void bind();
-	void unbind();
 	w_rect get_bounding_rect();
 
 };

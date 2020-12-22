@@ -8,8 +8,6 @@ w_render_batch_vert::w_render_batch_vert( const w_vec2& pos, const w_uv& uv, con
 	    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	    e( emissive )
 {
-    t = static_cast<float>( RENDER->current_texture->gl_id );
-
 }
 
 w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
@@ -151,7 +149,7 @@ void w_render_batch::draw( a_texture* tex )
 {
     if( num_quads_to_render )
     {
-   		tex->bind();
+        RENDER->bind_texture( 0, tex );
 
         glBufferData(
             GL_ARRAY_BUFFER,
@@ -168,12 +166,15 @@ void w_render_batch::draw( a_texture* tex )
             }
             break;
 
+#if 0 // #batch
+
             case GL_LINES:
             {
                 glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
                 engine->white_wire->bind();
             }
             break;
+#endif
 
             default:
             {
@@ -216,13 +217,15 @@ void w_render_batch::add_render_vert( const w_render_batch_vert& render_vert )
 	    vtx.y = snap_to_pixel( vtx.y );
 	}
 
-    const w_render_batch_vert rv(
+    w_render_batch_vert rv(
         w_vec2( vtx.x, vtx.y ),
         w_uv( render_vert.u, render_vert.v ),
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a ),
         render_vert.e
     );
 
+	rv.t = static_cast<float>( RENDER->current_texture->gl_id );
+
     // add the render_vert to the vertex list.
-    vertices.emplace_back( rv );
+    vertices.emplace_back( std::move( rv ) );
 }

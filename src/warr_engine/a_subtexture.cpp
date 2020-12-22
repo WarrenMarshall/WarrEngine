@@ -47,16 +47,6 @@ a_subtexture::a_subtexture( const std::string_view texture_tag, const w_rect& rc
 	);
 }
 
-void a_subtexture::bind()
-{
-	tex->bind();
-}
-
-void a_subtexture::unbind()
-{
-	tex->unbind();
-}
-
 w_rect a_subtexture::get_bounding_rect()
 {
 	return rc_tex;
