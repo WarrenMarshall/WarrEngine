@@ -9,6 +9,8 @@ struct w_opengl
 	std::unique_ptr<w_shader> blur_shader = nullptr;
 	std::unique_ptr<w_shader> post_process_shader = nullptr;
 
+	GLint max_texture_image_units = -1;
+	std::vector<int> texture_slots;
 	void init();
 
 	w_matrix* push();
@@ -25,5 +27,5 @@ struct w_opengl
 	void set_uniform( std::string_view name, float value );
 	void set_uniform( std::string_view name, bool value );
 	void set_uniform( std::string_view name, w_color value );
-	void set_uniform_array( std::string_view name, int* value );
+	void set_uniform_array( std::string_view name, int* value, int count );
 };

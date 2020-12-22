@@ -30,7 +30,7 @@ struct w_render_batch
 	GLuint VBO = 0;							// vertex buffer
 	GLuint EBO = 0;							// index buffer
 
-	int texture_slots[ 32 ];
+	std::vector<int> texture_slots;
 	int texture_slot_idx = 0;
 	int add_texture_slot( a_texture* tex );
 

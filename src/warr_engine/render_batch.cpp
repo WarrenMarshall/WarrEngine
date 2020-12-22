@@ -25,7 +25,6 @@ w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, con
 // ----------------------------------------------------------------------------
 
 int w_render_batch::max_quads_per_batch = 1000;
-int w_render_batch::max_texture_units = 16;
 
 w_render_batch::w_render_batch()
 {
@@ -99,6 +98,8 @@ w_render_batch::w_render_batch()
 
     unbind();
 
+    texture_slots.resize( OPENGL->max_texture_image_units );
+
     reset();
 }
 
@@ -114,7 +115,7 @@ w_render_batch::~w_render_batch()
 int w_render_batch::add_texture_slot( a_texture* tex )
 {
     // if this texture is already in the slot list, return that index
-    for( int x = 0 ; x < 32 ; ++x )
+    for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
     {
         if( texture_slots[ x ] == static_cast<int>( tex->gl_id ) )
         {
@@ -124,7 +125,7 @@ int w_render_batch::add_texture_slot( a_texture* tex )
 
     // we are out of texture slots, so flush this batch and create a new one
 
-    if( texture_slot_idx == 31 )
+    if( texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
     {
         flush();
     }
@@ -184,14 +185,10 @@ void w_render_batch::flush()
     {
         // bind the textures to the texture units
 
-        int idxs[ 32 ] = {};
         for( int x = 0 ; x <= texture_slot_idx ; ++x )
         {
-            idxs[ x ] = x;
             glBindTextureUnit( x, texture_slots[ x ] );
         }
-
-        OPENGL->set_uniform_array( "u_textures", &idxs[0] );
 
         // upload the vertex data
 
@@ -223,9 +220,9 @@ void w_render_batch::reset()
 {
     vertices.clear();
 
-    for( int x = 0 ; x < 32 ; ++x )
+    for( auto& iter : texture_slots )
     {
-        texture_slots[ x ] = -1;
+        iter = -1;
     }
 
     texture_slot_idx = -1;

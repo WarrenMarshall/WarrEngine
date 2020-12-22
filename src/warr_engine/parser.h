@@ -14,6 +14,7 @@ struct w_parser
 	[[nodiscard]] static w_vec2 vec2_from_str( const std::string_view str );
 	[[nodiscard]] static std::unique_ptr<w_timeline> timeline_from_str( e_timeline_type type, const std::string_view str );
 	[[nodiscard]] static std::vector<w_color> color_list_from_str( const std::string_view str );
+	static bool replace_substring( std::string& str, const std::string_view old_str, const std::string_view new_str );
 };
 
 // ----------------------------------------------------------------------------

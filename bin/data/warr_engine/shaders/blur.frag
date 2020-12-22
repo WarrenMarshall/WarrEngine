@@ -8,7 +8,7 @@ in vec4 fs_color;
 in float fs_emissive;
 in float fs_texture_id;
 
-uniform sampler2D u_textures[32];
+uniform sampler2D u_textures[__max_texture_image_units__];
 
 // implements a gaussian blur effect either in the horizontal
 // or vertical directions, based on the "horizontal" variable.

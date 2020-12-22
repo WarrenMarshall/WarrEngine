@@ -34,7 +34,7 @@ uniform vec4 u_color_tint = vec4( 1.0f, 1.0f, 1.0f, 0.0f );
 
 uniform vec4 u_color_overlay = vec4( 0.0f, 0.0f, 0.0f, 0.0f );
 
-uniform sampler2D u_textures[32];
+uniform sampler2D u_textures[__max_texture_image_units__];
 
 // ----------------------------------------------------------------------------
 // warp UVs so the screen appears curved like an old crt screen.

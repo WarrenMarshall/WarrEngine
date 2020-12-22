@@ -33,12 +33,11 @@ void w_opengl::init()
 	log( "GLEW Version : [{}]", glewGetString( GLEW_VERSION ) );
 	log( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
-	GLint MaxTextureImageUnits;
-	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits );
-	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", MaxTextureImageUnits );
+	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &max_texture_image_units );
+	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", max_texture_image_units );
 
 	// #batch - this needs to be done in a cleaner way
-	assert( MaxTextureImageUnits >= 16 );
+	assert( max_texture_image_units >= 16 );
 
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );
@@ -49,6 +48,12 @@ void w_opengl::init()
 	base_shader = std::make_unique<w_shader>( "base.vert", "base.frag" );
 	blur_shader = std::make_unique<w_shader>( "base.vert", "blur.frag" );
 	post_process_shader = std::make_unique<w_shader>( "base.vert", "post_process.frag" );
+
+	for( int x = 0 ; x < max_texture_image_units ; ++x )
+	{
+		texture_slots.push_back( x );
+	}
+	set_uniform_array( "u_textures", texture_slots.data(), max_texture_image_units );
 
 	glEnable( GL_TEXTURE_2D );
 
@@ -235,7 +240,7 @@ void w_opengl::set_uniform( std::string_view name, w_color value )
 	glProgramUniform4f( post_process_shader->id, glGetUniformLocation( post_process_shader->id, name.data() ), value.r, value.g, value.b, value.a );
 }
 
-void w_opengl::set_uniform_array( std::string_view name, int* value )
+void w_opengl::set_uniform_array( std::string_view name, int* value, int count )
 {
 	GLint loc;
 
@@ -243,27 +248,27 @@ void w_opengl::set_uniform_array( std::string_view name, int* value )
 	glProgramUniform1iv(
 		base_shader->id,
 		loc,
-		RENDER->master_render_buffer->texture_slot_idx + 1,
+		count,
 		value );
 
 	loc = glGetUniformLocation( base_shader_with_bright_pass->id, name.data() );
 	glProgramUniform1iv(
 		base_shader_with_bright_pass->id,
 		loc,
-		RENDER->master_render_buffer->texture_slot_idx + 1,
+		count,
 		value );
 
 	loc = glGetUniformLocation( blur_shader->id, name.data() );
 	glProgramUniform1iv(
 		blur_shader->id,
 		loc,
-		RENDER->master_render_buffer->texture_slot_idx + 1,
+		count,
 		value );
 
 	loc = glGetUniformLocation( post_process_shader->id, name.data() );
 	glProgramUniform1iv(
 		post_process_shader->id,
 		loc,
-		RENDER->master_render_buffer->texture_slot_idx + 1,
+		count,
 		value );
 }

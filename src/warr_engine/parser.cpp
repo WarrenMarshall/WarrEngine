@@ -242,3 +242,27 @@ std::vector<w_color> w_parser::color_list_from_str( const std::string_view str )
 
 	return color_list;
 }
+
+// replaces the first occurence of "old" with "new" and returns the new string.
+//
+// returns TRUE if a replace was done, FALSE if nothing happened
+
+bool w_parser::replace_substring( std::string& str, const std::string_view old_str, const std::string_view new_str )
+{
+	auto pos = str.find( old_str );
+
+	if( pos == std::string::npos )
+	{
+		return false;
+	}
+
+	std::string wk;
+
+	wk = str.substr( 0, pos );
+	wk += new_str;
+	wk += str.substr( pos + old_str.size(), str.size() );
+
+	str = wk;
+
+	return true;
+}

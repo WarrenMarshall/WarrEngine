@@ -37,6 +37,11 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
         auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/warr_engine/shaders/{}", frag_filename ) );
         fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
         wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
+
+        // replace any preprocessor variables
+
+        w_parser::replace_substring( wk, "__max_texture_image_units__", fmt::format( "{}", OPENGL->max_texture_image_units ) );
+
         cptr = wk.c_str();
         glShaderSource( fragment_id, 1, &cptr, nullptr );
         glCompileShader( fragment_id );
