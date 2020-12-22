@@ -235,3 +235,35 @@ void w_opengl::set_uniform( std::string_view name, w_color value )
 	glProgramUniform4f( post_process_shader->id, glGetUniformLocation( post_process_shader->id, name.data() ), value.r, value.g, value.b, value.a );
 }
 
+void w_opengl::set_uniform_array( std::string_view name, int* value )
+{
+	GLint loc;
+
+	loc = glGetUniformLocation( base_shader->id, name.data() );
+	glProgramUniform1iv(
+		base_shader->id,
+		loc,
+		RENDER->master_render_buffer->texture_slot_idx + 1,
+		value );
+
+	loc = glGetUniformLocation( base_shader_with_bright_pass->id, name.data() );
+	glProgramUniform1iv(
+		base_shader_with_bright_pass->id,
+		loc,
+		RENDER->master_render_buffer->texture_slot_idx + 1,
+		value );
+
+	loc = glGetUniformLocation( blur_shader->id, name.data() );
+	glProgramUniform1iv(
+		blur_shader->id,
+		loc,
+		RENDER->master_render_buffer->texture_slot_idx + 1,
+		value );
+
+	loc = glGetUniformLocation( post_process_shader->id, name.data() );
+	glProgramUniform1iv(
+		post_process_shader->id,
+		loc,
+		RENDER->master_render_buffer->texture_slot_idx + 1,
+		value );
+}

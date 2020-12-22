@@ -235,10 +235,7 @@ w_color w_render::get_palette_color_from_idx( int idx )
 
 void w_render::flush()
 {
-	master_render_buffer->draw( current_texture );
-	master_render_buffer->clear();
-
-	current_texture = nullptr;
+	master_render_buffer->flush();
 }
 
 // tells the renderer which texture we want to use for drawing. if this
@@ -250,15 +247,8 @@ void w_render::flush()
 
 void w_render::set_current_texture( a_texture* texture )
 {
-	if( current_texture == nullptr )
-	{
-		current_texture = texture;
-	}
-	else if( current_texture != texture )
-	{
-		flush();
-		current_texture = texture;
-	}
+	current_texture = texture;
+	master_render_buffer->add_texture_slot( texture );
 }
 
 w_color w_render::pal_color_from_idx( int idx )
@@ -305,11 +295,13 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 
 	for( auto x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
+#if 0 // #batch
 		master_render_buffer->add_triangle(
 			mesh->render_verts[ x ],
 			mesh->render_verts[ x + 1 ],
 			mesh->render_verts[ x + 2 ]
 		);
+#endif
 	}
 
 	MATRIX->pop();
@@ -473,7 +465,6 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 */
 void w_render::begin_frame()
 {
-	current_texture = nullptr;
 }
 
 /*
@@ -672,8 +663,7 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	return this;		// #batch
-#if 0
+#if 0	// #batch
 	set_current_texture( engine->white_wire->tex );
 
 	w_color rs_color = rs_color_stack.back();
@@ -697,9 +687,9 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	}
 
 	rs_snap_to_pixel = true;
+#endif
 
 	return this;
-#endif
 }
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )

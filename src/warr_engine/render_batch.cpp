@@ -3,19 +3,22 @@
 #include "master_header.h"
 
 w_render_batch_vert::w_render_batch_vert( const w_vec2& pos, const w_uv& uv, const w_color& color, const float emissive )
-    :   x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
-        u( uv.u ), v( uv.v ),
-	    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-	    e( emissive )
+    : x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
+    u( uv.u ), v( uv.v ),
+    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
+    e( emissive ),
+    t( static_cast<float>( RENDER->master_render_buffer->texture_slot_idx ) )
 {
 }
 
 w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
-	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
-	u( uv.u ), v( uv.v ),
-	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-    e( emissive )
+    : x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
+    u( uv.u ), v( uv.v ),
+    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
+    e( emissive ),
+    t( static_cast<float>( RENDER->master_render_buffer->texture_slot_idx ) )
 {
+    // #batch
     assert( false );    // temp disable this for testing
 }
 
@@ -95,6 +98,8 @@ w_render_batch::w_render_batch()
     );
 
     unbind();
+
+    reset();
 }
 
 w_render_batch::~w_render_batch()
@@ -104,6 +109,32 @@ w_render_batch::~w_render_batch()
     glDeleteBuffers( 1, &EBO );
     glDeleteBuffers( 1, &VBO );
     glDeleteVertexArrays( 1, &VAO );
+}
+
+int w_render_batch::add_texture_slot( a_texture* tex )
+{
+    // if this texture is already in the slot list, return that index
+    for( int x = 0 ; x < 32 ; ++x )
+    {
+        if( texture_slots[ x ] == static_cast<int>( tex->gl_id ) )
+        {
+            return x;
+        }
+    }
+
+    // we are out of texture slots, so flush this batch and create a new one
+
+    if( texture_slot_idx == 31 )
+    {
+        flush();
+    }
+
+    // otherwise, add it to the bind list
+
+    texture_slot_idx++;
+    texture_slots[ texture_slot_idx ] = tex->gl_id;
+
+    return texture_slot_idx;
 }
 
 void w_render_batch::add_quad( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2, const w_render_batch_vert& v3 )
@@ -116,9 +147,9 @@ void w_render_batch::add_quad( const w_render_batch_vert& v0, const w_render_bat
     num_quads_to_render++;
 }
 
+#if 0 // #batch
 void w_render_batch::add_triangle( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2 )
 {
-    assert( false );    // #batch
 	add_render_vert( v0 );
 	add_render_vert( v1 );
 	add_render_vert( v2 );
@@ -126,10 +157,10 @@ void w_render_batch::add_triangle( const w_render_batch_vert& v0, const w_render
 
 void w_render_batch::add_line( const w_render_batch_vert& v0, const w_render_batch_vert& v1 )
 {
-    assert( false );    // #batch
     add_render_vert( v0 );
     add_render_vert( v1 );
 }
+#endif
 
 void w_render_batch::bind()
 {
@@ -145,11 +176,24 @@ void w_render_batch::unbind()
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
-void w_render_batch::draw( a_texture* tex )
+// sends the batch to the GPU for drawing and resets to a fresh state
+
+void w_render_batch::flush()
 {
     if( num_quads_to_render )
     {
-        RENDER->bind_texture( 0, tex );
+        // bind the textures to the texture units
+
+        int idxs[ 32 ] = {};
+        for( int x = 0 ; x <= texture_slot_idx ; ++x )
+        {
+            idxs[ x ] = x;
+            glBindTextureUnit( x, texture_slots[ x ] );
+        }
+
+        OPENGL->set_uniform_array( "u_textures", &idxs[0] );
+
+        // upload the vertex data
 
         glBufferData(
             GL_ARRAY_BUFFER,
@@ -158,45 +202,33 @@ void w_render_batch::draw( a_texture* tex )
             GL_DYNAMIC_DRAW
         );
 
-        switch( tex->gl_prim_type )
-        {
-            case GL_TRIANGLES:
-            {
-                glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-            }
-            break;
-
-#if 0 // #batch
-
-            case GL_LINES:
-            {
-                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-                engine->white_wire->bind();
-            }
-            break;
-#endif
-
-            default:
-            {
-                log_error( "Unsupported primitive type" );
-            }
-            break;
-        }
+        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
         RENDER->stats.render_buffers.inc();
         RENDER->stats.render_vertices.accum( static_cast<float>( num_quads_to_render * 4 ) );
         RENDER->stats.render_indices.accum( static_cast<float>( num_quads_to_render * 6 ) );
 
-		glDrawElements( tex->gl_prim_type, num_quads_to_render * 6, GL_UNSIGNED_SHORT, nullptr );
+        // draw!
 
-        vertices.clear();
+		glDrawElements( GL_TRIANGLES, num_quads_to_render * 6, GL_UNSIGNED_SHORT, nullptr );
+
+        // clear out for the next batch
+        reset();
     }
 }
 
-void w_render_batch::clear()
+// clears the render batch to an empty/fresh state
+
+void w_render_batch::reset()
 {
-    // retain capacity so we don't have to reallocate the vectors constantly
     vertices.clear();
+
+    for( int x = 0 ; x < 32 ; ++x )
+    {
+        texture_slots[ x ] = -1;
+    }
+
+    texture_slot_idx = -1;
     num_quads_to_render = 0;
 }
 
@@ -223,8 +255,6 @@ void w_render_batch::add_render_vert( const w_render_batch_vert& render_vert )
         w_color( render_vert.r, render_vert.g, render_vert.b, render_vert.a ),
         render_vert.e
     );
-
-	rv.t = static_cast<float>( RENDER->current_texture->gl_id );
 
     // add the render_vert to the vertex list.
     vertices.emplace_back( std::move( rv ) );

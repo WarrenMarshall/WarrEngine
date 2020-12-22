@@ -30,9 +30,9 @@ uniform float u_desaturation_amount = 0.15f;
 
 uniform bool ub_inverted = false;
 
-uniform vec4 u_color_tint = vec4(  1.0f, 1.0f, 1.0f, 0.0f );
+uniform vec4 u_color_tint = vec4( 1.0f, 1.0f, 1.0f, 0.0f );
 
-uniform vec4 u_color_overlay = vec4(  0.0f, 0.0f, 0.0f, 0.0f );
+uniform vec4 u_color_overlay = vec4( 0.0f, 0.0f, 0.0f, 0.0f );
 
 uniform sampler2D u_textures[32];
 

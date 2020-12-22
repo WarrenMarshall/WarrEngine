@@ -25,4 +25,5 @@ struct w_opengl
 	void set_uniform( std::string_view name, float value );
 	void set_uniform( std::string_view name, bool value );
 	void set_uniform( std::string_view name, w_color value );
+	void set_uniform_array( std::string_view name, int* value );
 };
