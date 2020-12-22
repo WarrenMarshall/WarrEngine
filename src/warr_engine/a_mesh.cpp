@@ -69,7 +69,7 @@ bool a_mesh::create_internals()
 			vertex_list.emplace_back( std::move( v ) );
 	}
 
-#if 0
+#if 0	// what is this for?  delete it?
 		if( line.substr( 0, 7 ) == "usemtl " )
 		{
 			w_tokenizer tok( line, ' ' );

@@ -16,10 +16,7 @@ struct w_render
 	/*
 		batch rendering
 	*/
-	a_texture* current_texture = nullptr;
-	std::unique_ptr<w_render_batch> master_render_buffer = nullptr;
-	void flush();
-	void set_current_texture( a_texture* texture );
+	std::unique_ptr<w_render_batch> batch = nullptr;
 
 	// palette support
 	a_palette* current_palette = nullptr;

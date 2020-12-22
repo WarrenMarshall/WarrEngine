@@ -37,7 +37,7 @@ bool a_texture::create_internals()
 	// upload texture to opengl
 
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
-	glBindTexture( GL_TEXTURE_2D, gl_id );
+	glBindTextureUnit( 0, gl_id );
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
@@ -46,7 +46,7 @@ bool a_texture::create_internals()
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
 
-	glBindTexture( GL_TEXTURE_2D, 0 );
+	glBindTextureUnit( 0, 0 );
 	stbi_image_free( color_data );
 	color_data = nullptr;
 

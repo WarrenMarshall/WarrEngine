@@ -31,8 +31,9 @@ struct w_render_batch
 	GLuint EBO = 0;							// index buffer
 
 	std::vector<int> texture_slots;
-	int texture_slot_idx = 0;
-	int add_texture_slot( a_texture* tex );
+	a_texture* current_texture = nullptr;
+	int current_texture_slot_idx = 0;
+	void set_current_texture( a_texture* tex );
 
 	void add_quad( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2, const w_render_batch_vert& v3 );
 #if 0	// #batch

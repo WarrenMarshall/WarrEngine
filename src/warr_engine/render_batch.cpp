@@ -7,7 +7,7 @@ w_render_batch_vert::w_render_batch_vert( const w_vec2& pos, const w_uv& uv, con
     u( uv.u ), v( uv.v ),
     r( color.r ), g( color.g ), b( color.b ), a( color.a ),
     e( emissive ),
-    t( static_cast<float>( RENDER->master_render_buffer->texture_slot_idx ) )
+    t( static_cast<float>( RENDER->batch->current_texture_slot_idx ) )
 {
 }
 
@@ -16,7 +16,7 @@ w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, con
     u( uv.u ), v( uv.v ),
     r( color.r ), g( color.g ), b( color.b ), a( color.a ),
     e( emissive ),
-    t( static_cast<float>( RENDER->master_render_buffer->texture_slot_idx ) )
+    t( static_cast<float>( RENDER->batch->current_texture_slot_idx ) )
 {
     // #batch
     assert( false );    // temp disable this for testing
@@ -112,30 +112,40 @@ w_render_batch::~w_render_batch()
     glDeleteVertexArrays( 1, &VAO );
 }
 
-int w_render_batch::add_texture_slot( a_texture* tex )
+void w_render_batch::set_current_texture( a_texture* tex )
 {
-    // if this texture is already in the slot list, return that index
-    for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
-    {
-        if( texture_slots[ x ] == static_cast<int>( tex->gl_id ) )
-        {
-            return x;
-        }
-    }
+#if 0
+	current_texture = tex;
 
-    // we are out of texture slots, so flush this batch and create a new one
+	// if this texture is already in the slot list, return that index
+	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
+	{
+		if( texture_slots[ x ] == static_cast<int>( tex->gl_id ) )
+		{
+			current_texture_slot_idx = x;
+			return;
+		}
+	}
 
-    if( texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
-    {
-        flush();
-    }
+	// we are out of texture slots, so flush this batch and create a new one
+	if( current_texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
+	{
+		flush();
+	}
 
-    // otherwise, add it to the bind list
+	// otherwise, add it to the bind list
+	current_texture_slot_idx++;
+	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
 
-    texture_slot_idx++;
-    texture_slots[ texture_slot_idx ] = tex->gl_id;
+#else   // NO BATCHING
+	current_texture = tex;
+	flush();
 
-    return texture_slot_idx;
+	// otherwise, add it to the bind list
+
+	current_texture_slot_idx++;
+	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
+#endif
 }
 
 void w_render_batch::add_quad( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2, const w_render_batch_vert& v3 )
@@ -183,10 +193,16 @@ void w_render_batch::flush()
 {
     if( num_quads_to_render )
     {
-        // bind the textures to the texture units
+        if( current_texture_slot_idx )
+            log( "--- batching ---" );
 
-        for( int x = 0 ; x <= texture_slot_idx ; ++x )
+        // bind the textures to the texture units. any unused texture units will be unbound.
+
+        for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
         {
+			if( current_texture_slot_idx && texture_slots[ x ] )
+                log( "{} : {}", x, texture_slots[ x ] );
+
             glBindTextureUnit( x, texture_slots[ x ] );
         }
 
@@ -208,10 +224,10 @@ void w_render_batch::flush()
         // draw!
 
 		glDrawElements( GL_TRIANGLES, num_quads_to_render * 6, GL_UNSIGNED_SHORT, nullptr );
-
-        // clear out for the next batch
-        reset();
     }
+
+	// clear out for the next batch
+	reset();
 }
 
 // clears the render batch to an empty/fresh state
@@ -222,10 +238,11 @@ void w_render_batch::reset()
 
     for( auto& iter : texture_slots )
     {
-        iter = -1;
+        iter = 0;
     }
 
-    texture_slot_idx = -1;
+    current_texture = nullptr;
+    current_texture_slot_idx = -1;
     num_quads_to_render = 0;
 }
 

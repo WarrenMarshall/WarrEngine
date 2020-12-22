@@ -4,8 +4,8 @@
 
 void w_render::init()
 {
-	master_render_buffer = std::make_unique<w_render_batch>();
-	master_render_buffer->bind();
+	batch = std::make_unique<w_render_batch>();
+	batch->bind();
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
@@ -231,26 +231,6 @@ w_color w_render::get_palette_color_from_idx( int idx )
 	return palette->get_color_from_idx( idx );
 }
 
-// flushes the current render buffer to the video card and clears it.
-
-void w_render::flush()
-{
-	master_render_buffer->flush();
-}
-
-// tells the renderer which texture we want to use for drawing. if this
-// differs from the current texture, we flush the existing draw
-// buffer first.
-//
-// this is how the engine does basic batching. if you don't change the
-// current texture, all triangles are going into the same buffer.
-
-void w_render::set_current_texture( a_texture* texture )
-{
-	current_texture = texture;
-	master_render_buffer->add_texture_slot( texture );
-}
-
 w_color w_render::pal_color_from_idx( int idx )
 {
 	// if there's no palette specifically in use, return a default color
@@ -267,7 +247,7 @@ w_color w_render::pal_color_from_idx( int idx )
 
 w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 {
-	set_current_texture( mesh->tex );
+	batch->set_current_texture( mesh->tex );
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -322,7 +302,7 @@ w_render* w_render::draw_sprite( a_texture* tex, const w_vec2& dst )
 
 w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 {
-	set_current_texture( subtex->tex );
+	batch->set_current_texture( subtex->tex );
 
 	float w = subtex->rc_tex.w;
 	float h = subtex->rc_tex.h;
@@ -350,7 +330,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	master_render_buffer->add_quad( v0, v1, v2, v3 );
+	batch->add_quad( v0, v1, v2, v3 );
 
 	MATRIX->pop();
 
@@ -367,7 +347,7 @@ w_render* w_render::draw( a_texture* tex, const w_rect& dst )
 
 w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
-	set_current_texture( subtex->tex );
+	batch->set_current_texture( subtex->tex );
 
 	float w = dst.w ? dst.w : subtex->rc_tex.w;
 	float h = dst.h ? dst.h : subtex->rc_tex.h;
@@ -387,7 +367,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_render_batch_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
-	master_render_buffer->add_quad( v0, v1, v2, v3 );
+	batch->add_quad( v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -404,7 +384,7 @@ w_render* w_render::draw_string( const std::string_view text, const w_rect& dst 
 
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
-	set_current_texture( font->font_def->texture );
+	batch->set_current_texture( font->font_def->texture );
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	e_align rs_align = rs_align_stack.back();
@@ -482,7 +462,7 @@ void w_render::end_frame()
 	draw_stats();
 
 	// the last draw needs to be flushed
-	flush();
+	batch->flush();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -530,8 +510,6 @@ w_render* w_render::draw_world_axis()
 w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
-	set_current_texture( current_texture );
-
 	RENDER->begin()->push_depth( zdepth_stats );
 
 	if( show_stats )
@@ -595,7 +573,7 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	set_current_texture( engine->white_solid->tex );
+	batch->set_current_texture( engine->white_solid->tex );
 
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
@@ -626,7 +604,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	master_render_buffer->add_quad( v0, v1, v2, v3 );
+	batch->add_quad( v0, v1, v2, v3 );
 
 	return this;
 }

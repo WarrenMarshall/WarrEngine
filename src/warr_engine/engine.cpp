@@ -388,8 +388,8 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end()
-			->flush();
+			->end();
+		RENDER->batch->flush();
 		engine->blur_frame_buffers[0]->unbind();
 		RENDER->stats.render_buffers.dec();
 
@@ -406,8 +406,8 @@ void w_engine::exec_main_loop()
 			RENDER
 				->begin()
 				->draw( engine->blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-				->end()
-				->flush();
+				->end();
+			RENDER->batch->flush();
 			engine->blur_frame_buffers[ pingpong ]->unbind();
 			RENDER->stats.render_buffers.dec();
 
@@ -427,8 +427,8 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end()
-			->flush();
+			->end();
+		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 
 		// draw bloom frame buffer
@@ -438,9 +438,9 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->push_alpha( 0.5f )
-			->draw( engine->blur_frame_buffers[0]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end()
-			->flush();
+			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->end();
+		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 
 		OPENGL->set_blend( opengl_blend::alpha );
@@ -466,8 +466,8 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->draw( engine->composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end()
-			->flush();
+			->end();
+		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 
 #if 0
@@ -485,22 +485,22 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 0 ], rc )
-			->end()
-			->flush();
+			->end();
+		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 1 ], rc )
-			->end()
-			->flush();
+			->end();
+		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
-			->end()
-			->flush();
+			->end();
+		RENDER->batch->flush();
 		RENDER->stats.render_buffers.dec();
 #endif
 
