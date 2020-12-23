@@ -9,7 +9,6 @@ w_render_batch_vert::w_render_batch_vert( const w_vec2& pos, const w_uv& uv, con
     e( emissive ),
     t( static_cast<float>( RENDER->batch->current_texture_slot_idx ) )
 {
-//    log( "t: {}", t );
 }
 
 w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
@@ -25,7 +24,15 @@ w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, con
 
 // ----------------------------------------------------------------------------
 
-int w_render_batch::max_quads_per_batch = 1000;
+// so, this computes to 10,000 x 4 vertices, which is 40,000 vertices,
+// which is 60,000 indices ... which is just shy of the limit of
+// an insigned short: 65,535
+//
+// if you want to make the batches larger, the index buffer will need to
+// use a larger data type.
+
+int w_render_batch::max_quads_per_batch = 10000;
+int w_render_batch::max_elements_vertices = max_quads_per_batch * 4;
 
 w_render_batch::w_render_batch()
 {
@@ -127,10 +134,10 @@ void w_render_batch::set_current_texture( a_texture* tex )
 		}
 	}
 
-	// we are out of texture slots, so flush this batch and create a new one
+	// we are out of texture slots, so draw the batch and reset
 	if( current_texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
 	{
-		flush();
+		draw_and_reset();
 	}
 
 	// otherwise, add it to the bind list
@@ -146,6 +153,12 @@ void w_render_batch::add_quad( const w_render_batch_vert& v0, const w_render_bat
     add_render_vert( v3 );
 
     num_quads_to_render++;
+
+    // batch is full, so draw the batch and reset
+    if( num_quads_to_render >= w_render_batch::max_quads_per_batch )
+    {
+        draw_and_reset();
+    }
 }
 
 #if 0 // #batch
@@ -179,20 +192,14 @@ void w_render_batch::unbind()
 
 // sends the batch to the GPU for drawing and resets to a fresh state
 
-void w_render_batch::flush()
+void w_render_batch::draw_and_reset()
 {
     if( num_quads_to_render )
     {
-        //if( current_texture_slot_idx )
-            //log( "--- batching ---" );
-
         // bind the textures to the texture units. any unused texture units will be unbound.
 
         for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
         {
-			//if( current_texture_slot_idx && texture_slots[ x ] )
-                //log( "{} : {}", x, texture_slots[ x ] );
-
             glBindTextureUnit( x, texture_slots[ x ] );
         }
 
@@ -209,9 +216,9 @@ void w_render_batch::flush()
 
         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
-        RENDER->stats.render_buffers.inc();
-        RENDER->stats.render_vertices.accum( static_cast<float>( num_quads_to_render * 4 ) );
-        RENDER->stats.render_indices.accum( static_cast<float>( num_quads_to_render * 6 ) );
+        RENDER->stats.draw_calls.inc();
+        RENDER->stats.vertices.accum( static_cast<float>( num_quads_to_render * 4 ) );
+        RENDER->stats.indices.accum( static_cast<float>( num_quads_to_render * 6 ) );
 
         // draw!
 

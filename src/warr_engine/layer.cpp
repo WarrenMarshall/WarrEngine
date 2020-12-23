@@ -47,7 +47,7 @@ void w_layer::draw()
 {
 	for( const auto& entity : entities )
 	{
-		RENDER->stats.num_entities.inc();
+		RENDER->stats.entities.inc();
 
 		MATRIX
 			->push()

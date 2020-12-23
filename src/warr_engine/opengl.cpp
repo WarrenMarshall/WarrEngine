@@ -36,10 +36,6 @@ void w_opengl::init()
 	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &max_texture_image_units );
 	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", max_texture_image_units );
 
-	GLint val;
-	glGetIntegerv( GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &val );
-	log( "GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS : {}", val );
-
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );
 	glDisable( GL_CULL_FACE );
@@ -147,7 +143,7 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 
 void w_opengl::init_projection_matrix() const
 {
-	RENDER->batch->flush();
+	RENDER->batch->draw_and_reset();
 
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
@@ -166,7 +162,7 @@ void w_opengl::init_projection_matrix() const
 
 void w_opengl::init_view_matrix( w_camera* camera ) const
 {
-	RENDER->batch->flush();
+	RENDER->batch->draw_and_reset();
 
 	// default to identity matrix
 	glm::mat4 view = glm::mat4( 1.0f );
@@ -196,7 +192,7 @@ void w_opengl::init_view_matrix( w_camera* camera ) const
 
 void w_opengl::init_view_matrix_identity() const
 {
-	RENDER->batch->flush();
+	RENDER->batch->draw_and_reset();
 
 	glm::mat4 view = glm::mat4( 1.0f );
 
@@ -208,7 +204,7 @@ void w_opengl::init_view_matrix_identity() const
 
 void w_opengl::init_view_matrix_identity_ui() const
 {
-	RENDER->batch->flush();
+	RENDER->batch->draw_and_reset();
 
 	glm::mat4 view = glm::mat4( 1.0f );
 	view *= glm::scale( view, glm::vec3( ui_canvas_scale, ui_canvas_scale, 1.0f ) );

@@ -53,7 +53,7 @@ void layer_main_menu::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
-	engine->window->set_mouse_mode( mouse_mode::os );
+	engine->window->set_mouse_mode( mouse_mode::custom );
 }
 
 bool layer_main_menu::iir_on_pressed( const w_input_event* evt )

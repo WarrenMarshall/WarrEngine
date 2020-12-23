@@ -8,14 +8,13 @@ struct w_render_stats
 
 	w_accum_value frame_count;
 
-	w_accum_value render_buffers;
-	w_accum_value render_vertices;
-	w_accum_value render_indices;
+	w_accum_value draw_calls;
+	w_accum_value vertices;
+	w_accum_value indices;
 	w_accum_value frame_times_ms;
-	w_accum_value num_entities;
+	w_accum_value entities;
 
 	std::string stat_custom_string;
 
 	void update();
 };
-

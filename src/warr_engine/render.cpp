@@ -462,7 +462,7 @@ void w_render::end_frame()
 	draw_stats();
 
 	// the last draw needs to be flushed
-	batch->flush();
+	batch->draw_and_reset();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -519,13 +519,13 @@ w_render* w_render::draw_stats()
 											  stats.frame_count.value,
 											  stats.frame_times_ms.value,
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
-		stat_lines.emplace_back( fmt::format( "RB: {}, V: {}, I: {}",
-											  f_commas( stats.render_buffers.value ),
-											  f_commas( stats.render_vertices.value ),
-											  f_commas( stats.render_indices.value ) )
+		stat_lines.emplace_back( fmt::format( "DC: {}, V: {}, I: {}",
+											  f_commas( stats.draw_calls.value ),
+											  f_commas( stats.vertices.value ),
+											  f_commas( stats.indices.value ) )
 		);
 		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
-		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.num_entities.value ) ) );
+		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.entities.value ) ) );
 		stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
 		stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f}", engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y, engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
 

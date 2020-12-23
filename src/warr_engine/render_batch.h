@@ -19,7 +19,7 @@ struct w_render_batch_vert
 struct w_render_batch
 {
 	static int max_quads_per_batch;
-	static int max_texture_units;
+	static int max_elements_vertices;
 
 	w_render_batch();
 	~w_render_batch();
@@ -42,7 +42,7 @@ struct w_render_batch
 #endif
 	void bind();
 	void unbind();
-	void flush();
+	void draw_and_reset();
 	void reset();
 
 	void add_render_vert( const w_render_batch_vert& render_vert );
