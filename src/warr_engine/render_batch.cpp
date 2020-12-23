@@ -37,13 +37,13 @@ int w_render_batch::max_quads_per_batch = 10000;
 
 w_render_batch::w_render_batch()
 {
-    glCreateVertexArrays( 1, &VAO );
-    glBindVertexArray( VAO );
+    glCreateVertexArrays( 1, &VAO_id );
+    glBindVertexArray( VAO_id );
 
     // data buffers
 
-	glCreateBuffers( 1, &VBO );
-    glBindBuffer( GL_ARRAY_BUFFER, VBO );
+	glCreateBuffers( 1, &VBO_id );
+    glBindBuffer( GL_ARRAY_BUFFER, VBO_id );
 
     // preallocate enough space on the card for a maximally sized batch of vertices
     glBufferData(
@@ -69,8 +69,8 @@ w_render_batch::w_render_batch()
 
     // index buffer
 
-    glCreateBuffers( 1, &EBO );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO );
+    glCreateBuffers( 1, &EBO_id );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO_id );
 
     // preload the indices with values since they don't change frame to frame
 
@@ -110,9 +110,9 @@ w_render_batch::~w_render_batch()
 {
     unbind();
 
-    glDeleteBuffers( 1, &EBO );
-    glDeleteBuffers( 1, &VBO );
-    glDeleteVertexArrays( 1, &VAO );
+    glDeleteBuffers( 1, &EBO_id );
+    glDeleteBuffers( 1, &VBO_id );
+    glDeleteVertexArrays( 1, &VAO_id );
 }
 
 void w_render_batch::set_current_texture( a_texture* tex )
@@ -135,17 +135,17 @@ void w_render_batch::set_current_texture( a_texture* tex )
 		draw_and_reset();
 	}
 
-	// otherwise, add it to the bind list
+	// add the new texture to the slot list
 	current_texture_slot_idx++;
 	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
 }
 
 void w_render_batch::add_quad( const w_batch_vert& v0, const w_batch_vert& v1, const w_batch_vert& v2, const w_batch_vert& v3 )
 {
-    add_render_vert( v0 );
-    add_render_vert( v1 );
-    add_render_vert( v2 );
-    add_render_vert( v3 );
+    add_vert( v0 );
+    add_vert( v1 );
+    add_vert( v2 );
+    add_vert( v3 );
 
     // batch is full, so draw the batch and reset
     if( vertices.size() >= w_render_batch::max_quads_per_batch )
@@ -171,9 +171,9 @@ void w_render_batch::add_line( const w_render_batch_vert& v0, const w_render_bat
 
 void w_render_batch::bind()
 {
-    glBindVertexArray( VAO );
-    glBindBuffer( GL_ARRAY_BUFFER, VBO );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO );
+    glBindVertexArray( VAO_id );
+    glBindBuffer( GL_ARRAY_BUFFER, VBO_id );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO_id );
 }
 
 void w_render_batch::unbind()
@@ -191,6 +191,8 @@ void w_render_batch::draw_and_reset()
 
     if( vertex_count )
     {
+        bind();
+
         auto index_count = static_cast<int>( vertex_count * 1.5f );
 
         // bind the textures to the texture units.
@@ -212,6 +214,8 @@ void w_render_batch::draw_and_reset()
         // draw!
 
 		glDrawElements( GL_TRIANGLES, index_count, GL_UNSIGNED_SHORT, nullptr );
+
+        unbind();
     }
 
 	// clear out for the next batch
@@ -233,7 +237,7 @@ void w_render_batch::reset()
     current_texture_slot_idx = -1;
 }
 
-void w_render_batch::add_render_vert( const w_batch_vert& render_vert )
+void w_render_batch::add_vert( const w_batch_vert& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.
     //

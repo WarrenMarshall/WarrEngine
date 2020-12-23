@@ -560,7 +560,7 @@ w_render* w_render::draw_stats()
 		RENDER->begin()
 			->push_align( align::right )
 			->draw_string(
-				fmt::format( "{} FPS ({:.2f} ms)", stats.frame_count.value, stats.frame_times_ms.value ),
+				fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
 				w_rect( ui_canvas_w, 0 ) )
 			->end();
 	}

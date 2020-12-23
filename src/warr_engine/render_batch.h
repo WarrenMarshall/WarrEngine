@@ -24,9 +24,10 @@ struct w_render_batch
 	~w_render_batch();
 
 	std::vector<w_batch_vert> vertices;
-	GLuint VAO = 0;							// vertex array object
-	GLuint VBO = 0;							// vertex buffer
-	GLuint EBO = 0;							// index buffer
+
+	GLuint VAO_id = 0;							// vertex array object
+	GLuint VBO_id = 0;							// vertex buffer
+	GLuint EBO_id = 0;							// index buffer
 
 	std::vector<int> texture_slots;
 	a_texture* current_texture = nullptr;
@@ -43,5 +44,5 @@ struct w_render_batch
 	void draw_and_reset();
 	void reset();
 
-	void add_render_vert( const w_batch_vert& render_vert );
+	void add_vert( const w_batch_vert& render_vert );
 };
