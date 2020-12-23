@@ -14,15 +14,6 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, int nu
 		add_texture();
 	}
 
-	// depth/stencil buffer
-
-	glCreateRenderbuffers( 1, &rbo_id );
-	glBindRenderbuffer( GL_RENDERBUFFER, rbo_id );
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int) w, (int) h );
-	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
-
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_id );
-
 	if( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
 	{
 		log_error( "Failed to create frame buffer" );
@@ -52,12 +43,6 @@ w_opengl_framebuffer::~w_opengl_framebuffer()
 	}
 
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
-
-	if( rbo_id )
-	{
-		glDeleteRenderbuffers( 1, &rbo_id );
-	}
-
 	glBindTextureUnit( 0, 0 );
 
 	for( auto iter : textures )
