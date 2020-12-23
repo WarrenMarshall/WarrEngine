@@ -28,11 +28,12 @@ w_render_batch_vert::w_render_batch_vert( const w_vec3& pos, const w_uv& uv, con
 // which is 60,000 indices ... which is just shy of the limit of
 // an insigned short: 65,535
 //
+// (4 verts / 6 indices = 1 quad)
+//
 // if you want to make the batches larger, the index buffer will need to
 // use a larger data type.
 
 int w_render_batch::max_quads_per_batch = 10000;
-int w_render_batch::max_elements_vertices = max_quads_per_batch * 4;
 
 w_render_batch::w_render_batch()
 {

@@ -19,7 +19,6 @@ struct w_render_batch_vert
 struct w_render_batch
 {
 	static int max_quads_per_batch;
-	static int max_elements_vertices;
 
 	w_render_batch();
 	~w_render_batch();
