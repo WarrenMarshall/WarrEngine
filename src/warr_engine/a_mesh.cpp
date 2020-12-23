@@ -91,7 +91,7 @@ bool a_mesh::create_internals()
 				int vidx = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 				int uvidx = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 
-				w_render_batch_vert rbv( vertex_list[ vidx ], uv_list[ uvidx ], w_color::white, 0.0f );
+				w_batch_vert rbv( vertex_list[ vidx ], uv_list[ uvidx ], w_color::white, 0.0f );
 				render_verts.emplace_back( std::move( rbv ) );
 			}
 		}

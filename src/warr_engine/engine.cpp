@@ -268,14 +268,8 @@ void w_engine::deinit_game_engine()
 
 void w_engine::exec_main_loop()
 {
-	/*
-		main game loop
-	*/
-
 	while( engine->is_running && !glfwWindowShouldClose( engine->window->window ) )
 	{
-		glfwWaitEventsTimeout( 0.001 );
-
 		/*
 			update core engine stuff - time, timers, etc
 		*/
@@ -509,6 +503,7 @@ void w_engine::exec_main_loop()
 		// ----------------------------------------------------------------------------
 
 		glfwSwapBuffers( engine->window->window );
+		glfwPollEvents();
 	}
 }
 

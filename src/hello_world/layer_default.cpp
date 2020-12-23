@@ -21,12 +21,14 @@ void layer_default::draw()
 	w_layer::draw();
 
 	RENDER
-		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
-		->draw( tex_hello_world, w_rect( 16, 16 ) );
+		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
 }
 
 void layer_default::draw_ui()
 {
+	RENDER
+		->draw( tex_hello_world, w_rect( 16, 16 ) );
+
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
 		->set_rect( { ui_canvas_hw,ui_canvas_hh,100,100 } )
