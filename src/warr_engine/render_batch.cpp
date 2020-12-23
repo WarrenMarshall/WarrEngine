@@ -45,34 +45,29 @@ w_render_batch::w_render_batch()
 	glCreateBuffers( 1, &VBO );
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
 
+    // preallocate enough space on the card for a maximally sized batch of vertices
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        sizeof( w_render_batch_vert ) * ( w_render_batch::max_quads_per_batch * 4 ) * sizeof( w_render_batch_vert ),
+        vertices.data(),
+        GL_DYNAMIC_DRAW
+    );
+
     unsigned short offset = 0;
 
-    // position
 	glEnableVertexAttribArray( 0 );
-    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
-    offset += 3;
-
-    // texture coordinates
-    glEnableVertexAttribArray( 1 );
-    glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
-    offset += 2;
-
-    // color + alpha
-    glEnableVertexAttribArray( 2 );
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
-    offset += 4;
-
-    // emissive
-    glEnableVertexAttribArray( 3 );
-	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
-    offset += 1;
-
-    // texture_id
+	glEnableVertexAttribArray( 1 );
+	glEnableVertexAttribArray( 2 );
+	glEnableVertexAttribArray( 3 );
 	glEnableVertexAttribArray( 4 );
-	glVertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (char*) ( sizeof( float ) * offset ) );
-    offset += 1;
 
-    glBindBuffer( GL_ARRAY_BUFFER, 0 );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (const void*) offsetof( w_render_batch_vert, x ) );
+    glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (const void*) offsetof( w_render_batch_vert, u ) );
+	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (const void*) offsetof( w_render_batch_vert, r ) );
+	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (const void*) offsetof( w_render_batch_vert, e ) );
+	glVertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_batch_vert ), (const void*) offsetof( w_render_batch_vert, t ) );
+
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
     // index buffer
 

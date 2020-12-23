@@ -24,3 +24,4 @@ bin/*_log.txt
 releases/*/*_log.txt
 bin/warr_engine.lib
 gccfun
+bin/work_log_tracker.data
