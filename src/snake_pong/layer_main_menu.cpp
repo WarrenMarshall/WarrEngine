@@ -7,17 +7,12 @@ layer_main_menu::layer_main_menu()
 
 void layer_main_menu::push()
 {
+	auto e = add_entity<w_entity>();
+	e->it_set_position( { v_window_hw, 0.0f } );
+	e->add_component<ec_emitter>()->init( "menu_fire_up" )
+		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+
 	w_layer::push();
-}
-
-void layer_main_menu::pop()
-{
-	w_layer::pop();
-}
-
-void layer_main_menu::draw()
-{
-	w_layer::draw();
 }
 
 void layer_main_menu::draw_ui()
@@ -30,7 +25,7 @@ void layer_main_menu::draw_ui()
 		->push_align( align::hcenter )
 		->push_rgb( w_color::white )
 		->push_emissive( 100.0f )
-		->draw_string( "Snake Pong", w_rect( v_window_hw, 32 ) )
+		->draw_string( "Light Snake", w_rect( v_window_hw, 32 ) )
 		->end();
 
 	float xpos = 64;
@@ -46,6 +41,19 @@ void layer_main_menu::draw_ui()
 		engine->layer_mgr->pop();
 		engine->layer_mgr->push<layer_game>();
 		game->new_game();
+	}
+
+	xpos += 16;
+	ypos += 28;
+
+	if( IMGUI->init_push_button()
+		->set_label( "Quit" )
+		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
+		->set_rect( { xpos, ypos, v_window_w - xpos * 2, 24 } )
+		->finalize()
+		->was_left_clicked() )
+	{
+		engine->is_running = false;
 	}
 }
 
