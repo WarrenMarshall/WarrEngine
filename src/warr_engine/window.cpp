@@ -4,6 +4,11 @@
 
 // ----------------------------------------------------------------------------
 
+void glfw_error_callback( int error_code, const char* description )
+{
+	log_error( "\"{}\"", description );
+}
+
 void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 {
 	// This chunk of code:
@@ -71,6 +76,8 @@ bool w_window::init()
 		log_error( "GLFW failed to init" );
 	}
 
+	glfwSetErrorCallback( glfw_error_callback );
+
 	log( "GLFW Version : {}", glfwGetVersionString() );
 
 	// Create a windowed mode window and its OpenGL context
@@ -86,7 +93,7 @@ bool w_window::init()
 
 	window = glfwCreateWindow(
 		static_cast<int>( window_pos.w ), static_cast<int>( window_pos.h ),
-		"GAME ENGINE", nullptr, nullptr
+		"WarrEngine", nullptr, nullptr
 	);
 
 	if( !window )

@@ -10,7 +10,7 @@ void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, G
 {
 	if( type == GL_DEBUG_TYPE_ERROR )
 	{
-		log_error( "OpenGL Error: \"{}\"", message );
+		log_error( "\"{}\"", message );
 	}
 }
 
