@@ -2,87 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_batch_vert::w_batch_vert( const w_vec2& pos, const w_uv& uv, const w_color& color, const float emissive )
-    : x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
-    u( uv.u ), v( uv.v ),
-    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-    e( emissive )
-{
-}
-
-w_batch_vert::w_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
-    : x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
-    u( uv.u ), v( uv.v ),
-    r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-    e( emissive )
-{
-    // #batch
-    assert( false );    // temp disable this for testing
-}
-
-// ----------------------------------------------------------------------------
-
-w_index_buffer::w_index_buffer()
-{
-	glCreateBuffers( 1, &gl_id );
-    bind();
-}
-
-w_index_buffer::~w_index_buffer()
-{
-    unbind();
-	glDeleteBuffers( 1, &gl_id );
-}
-
-void w_index_buffer::bind()
-{
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, gl_id );
-}
-
-void w_index_buffer::unbind()
-{
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
-}
-
-// ----------------------------------------------------------------------------
-
-w_index_buffer_quads::w_index_buffer_quads()
-{
-    // create the full set of indices right ahead of time since we know
-    // the pattern they will be following.
-
-    std::vector<unsigned short> indices;
-	indices.resize( w_render_batch::max_quads_per_batch * 6 );
-
-	// quad indices:
-	// 0, 1, 2, 0, 2, 3
-	// 4, 5, 6, 4, 6, 7
-	// ...
-
-	unsigned short offset = 0;
-	for( int q = 0 ; q < w_render_batch::max_quads_per_batch * 6 ; q += 6 )
-	{
-		indices[ q + 0 ] = offset + 0;
-		indices[ q + 1 ] = offset + 1;
-		indices[ q + 2 ] = offset + 2;
-
-		indices[ q + 3 ] = offset + 0;
-		indices[ q + 4 ] = offset + 2;
-		indices[ q + 5 ] = offset + 3;
-
-		offset += 4;
-	}
-
-    // send the index data to the card
-
-	glBufferData(
-		GL_ELEMENT_ARRAY_BUFFER,
-		( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ),
-		indices.data(),
-		GL_STATIC_DRAW
-	);
-}
-
 // ----------------------------------------------------------------------------
 
 // so, this computes to 10,000 x 4 vertices, which is 40,000 vertices,
@@ -102,40 +21,14 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
     glCreateVertexArrays( 1, &VAO_id );
     glBindVertexArray( VAO_id );
 
-    // data buffers
-
-	glCreateBuffers( 1, &VBO_id );
-    glBindBuffer( GL_ARRAY_BUFFER, VBO_id );
-
-    // preallocate enough space on the card for a maximally sized batch of vertices
-    glBufferData(
-        GL_ARRAY_BUFFER,
-        ( w_render_batch::max_quads_per_batch * 4 ) * sizeof( w_batch_vert ),
-        nullptr,
-        GL_DYNAMIC_DRAW
-    );
-
-	glEnableVertexAttribArray( 0 );
-    glEnableVertexAttribArray( 1 );
-	glEnableVertexAttribArray( 2 );
-	glEnableVertexAttribArray( 3 );
-	glEnableVertexAttribArray( 4 );
-
-    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_batch_vert ), (const void*) offsetof( w_batch_vert, x ) );
-    glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_batch_vert ), (const void*) offsetof( w_batch_vert, u ) );
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_batch_vert ), (const void*) offsetof( w_batch_vert, r ) );
-	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_batch_vert ), (const void*) offsetof( w_batch_vert, e ) );
-	glVertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( w_batch_vert ), (const void*) offsetof( w_batch_vert, t ) );
-
-	glBindBuffer( GL_ARRAY_BUFFER, 0 );
-
     // index buffer
 
     switch( render_prim )
     {
         case render_prim::quad:
         {
-			index_buffer = std::make_unique<w_index_buffer_quads>();
+            vertex_buffer = std::make_unique< w_vertex_buffer_quads>();
+            index_buffer = std::make_unique<w_index_buffer_quads>();
         }
         break;
 
@@ -145,9 +38,6 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
         }
     }
 
-    // reserve memory
-
-	vertices.reserve( w_render_batch::max_quads_per_batch * 4 );
     texture_slots.resize( OPENGL->max_texture_image_units );
 
     reset();
@@ -157,7 +47,6 @@ w_render_batch::~w_render_batch()
 {
     unbind();
 
-    glDeleteBuffers( 1, &VBO_id );
     glDeleteVertexArrays( 1, &VAO_id );
 }
 
@@ -186,7 +75,7 @@ int w_render_batch::assign_texture_slot( const a_texture* tex )
     return current_texture_slot_idx;
 }
 
-void w_render_batch::add_quad( const a_texture* tex, const w_batch_vert& v0, const w_batch_vert& v1, const w_batch_vert& v2, const w_batch_vert& v3 )
+void w_render_batch::add_quad( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
 {
     add_vert( tex, v0 );
     add_vert( tex, v1 );
@@ -194,7 +83,7 @@ void w_render_batch::add_quad( const a_texture* tex, const w_batch_vert& v0, con
     add_vert( tex, v3 );
 
     // batch is full, so draw the batch and reset
-    if( vertices.size() >= w_render_batch::max_quads_per_batch )
+    if( vertex_buffer->vertices.size() >= w_render_batch::max_quads_per_batch )
     {
         draw_and_reset();
     }
@@ -218,14 +107,14 @@ void w_render_batch::add_line( const w_render_batch_vert& v0, const w_render_bat
 void w_render_batch::bind()
 {
     glBindVertexArray( VAO_id );
-    glBindBuffer( GL_ARRAY_BUFFER, VBO_id );
+    vertex_buffer->bind();
     index_buffer->bind();
 }
 
 void w_render_batch::unbind()
 {
     glBindVertexArray( 0 );
-    glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	vertex_buffer->unbind();
 	index_buffer->unbind();
 }
 
@@ -233,7 +122,7 @@ void w_render_batch::unbind()
 
 void w_render_batch::draw_and_reset()
 {
-    auto vertex_count = static_cast<int>( vertices.size() );
+    auto vertex_count = static_cast<int>( vertex_buffer->vertices.size() );
 
     if( vertex_count )
     {
@@ -248,17 +137,20 @@ void w_render_batch::draw_and_reset()
             glBindTextureUnit( x, texture_slots[ x ] );
         }
 
-        // upload just the vertex data we need for this draw call
-        glBufferSubData( GL_ARRAY_BUFFER, 0, vertex_count * sizeof( w_batch_vert ), vertices.data() );
+        // upload verts to the card
 
-        RENDER->stats.draw_calls.inc();
-        RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
-        RENDER->stats.indices.accum( static_cast<float>( index_count ) );
+        vertex_buffer->upload( vertex_count );
 
         // draw!
 
 		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		glDrawElements( GL_TRIANGLES, index_count, GL_UNSIGNED_SHORT, nullptr );
+
+		// update stats and clean up
+
+		RENDER->stats.draw_calls.inc();
+		RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
+		RENDER->stats.indices.accum( static_cast<float>( index_count ) );
 
         unbind();
     }
@@ -271,7 +163,7 @@ void w_render_batch::draw_and_reset()
 
 void w_render_batch::reset()
 {
-    vertices.clear();
+    vertex_buffer->reset();
 
     for( auto& iter : texture_slots )
     {
@@ -281,7 +173,7 @@ void w_render_batch::reset()
     current_texture_slot_idx = -1;
 }
 
-void w_render_batch::add_vert( const a_texture* tex, const w_batch_vert& render_vert )
+void w_render_batch::add_vert( const a_texture* tex, const w_render_vertex& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.
     //
@@ -298,7 +190,7 @@ void w_render_batch::add_vert( const a_texture* tex, const w_batch_vert& render_
 	    vtx.y = snap_to_pixel( vtx.y );
 	}
 
-    w_batch_vert rv = render_vert;
+    w_render_vertex rv = render_vert;
 
     // update the position to the transformed position
     rv.x = vtx.x;
@@ -308,5 +200,5 @@ void w_render_batch::add_vert( const a_texture* tex, const w_batch_vert& render_
     rv.t = static_cast<float>( assign_texture_slot( tex ) );
 
     // add the render_vert to the vertex list
-    vertices.emplace_back( std::move( rv ) );
+    vertex_buffer->vertices.emplace_back( std::move( rv ) );
 }

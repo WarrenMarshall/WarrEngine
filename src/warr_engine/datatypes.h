@@ -201,14 +201,7 @@ struct w_vec2
 
 struct w_vec3
 {
-	union
-	{
-		struct
-		{
-			float x, y, z;		// xyz position
-		};
-
-	};
+	float x, y, z;
 
 	static const w_vec3 zero;
 

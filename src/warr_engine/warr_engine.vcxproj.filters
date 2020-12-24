@@ -202,6 +202,15 @@
     <ClCompile Include="render_batch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="render_index_buffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render_vertex_buffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="render_vertex.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="a_9slice_def.h">
@@ -409,6 +418,15 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="render_batch.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_index_buffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_vertex_buffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="render_vertex.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

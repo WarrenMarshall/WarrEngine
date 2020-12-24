@@ -52,6 +52,9 @@ extern float ui_canvas_h;
 #include "opengl_framebuffer.h"
 #include "opengl.h"
 #include "shader.h"
+#include "render_index_buffer.h"
+#include "render_vertex.h"
+#include "render_vertex_buffer.h"
 #include "render_batch.h"
 
 #include "i_life_cycle.h"
