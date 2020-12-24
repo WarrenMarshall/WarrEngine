@@ -4,8 +4,8 @@
 
 void w_render::init()
 {
-	batch = std::make_unique<w_render_batch>();
-	batch->bind();
+	batch_quads = std::make_unique<w_render_batch>( render_prim::quad );
+	batch_quads->bind();
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
@@ -327,7 +327,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	batch->add_quad( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_quad( subtex->tex, v0, v1, v2, v3 );
 
 	MATRIX->pop();
 
@@ -362,7 +362,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_batch_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
-	batch->add_quad( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_quad( subtex->tex, v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -455,7 +455,7 @@ void w_render::end_frame()
 	draw_stats();
 
 	// the last draw needs to be flushed
-	batch->draw_and_reset();
+	batch_quads->draw_and_reset();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -595,7 +595,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch->add_quad( engine->white_solid->tex, v0, v1, v2, v3 );
+	batch_quads->add_quad( engine->white_solid->tex, v0, v1, v2, v3 );
 
 	return this;
 }

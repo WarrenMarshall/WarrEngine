@@ -22,6 +22,69 @@ w_batch_vert::w_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& co
 
 // ----------------------------------------------------------------------------
 
+w_index_buffer::w_index_buffer()
+{
+	glCreateBuffers( 1, &gl_id );
+    bind();
+}
+
+w_index_buffer::~w_index_buffer()
+{
+    unbind();
+	glDeleteBuffers( 1, &gl_id );
+}
+
+void w_index_buffer::bind()
+{
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, gl_id );
+}
+
+void w_index_buffer::unbind()
+{
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+}
+
+// ----------------------------------------------------------------------------
+
+w_index_buffer_quads::w_index_buffer_quads()
+{
+    // create the full set of indices right ahead of time since we know
+    // the pattern they will be following.
+
+    std::vector<unsigned short> indices;
+	indices.resize( w_render_batch::max_quads_per_batch * 6 );
+
+	// quad indices:
+	// 0, 1, 2, 0, 2, 3
+	// 4, 5, 6, 4, 6, 7
+	// ...
+
+	unsigned short offset = 0;
+	for( int q = 0 ; q < w_render_batch::max_quads_per_batch * 6 ; q += 6 )
+	{
+		indices[ q + 0 ] = offset + 0;
+		indices[ q + 1 ] = offset + 1;
+		indices[ q + 2 ] = offset + 2;
+
+		indices[ q + 3 ] = offset + 0;
+		indices[ q + 4 ] = offset + 2;
+		indices[ q + 5 ] = offset + 3;
+
+		offset += 4;
+	}
+
+    // send the index data to the card
+
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,
+		( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ),
+		indices.data(),
+		GL_STATIC_DRAW
+	);
+}
+
+// ----------------------------------------------------------------------------
+
 // so, this computes to 10,000 x 4 vertices, which is 40,000 vertices,
 // which is 60,000 indices ... which is just shy of the limit of
 // an insigned short: 65,535
@@ -33,7 +96,8 @@ w_batch_vert::w_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& co
 
 int w_render_batch::max_quads_per_batch = 10000;
 
-w_render_batch::w_render_batch()
+w_render_batch::w_render_batch( e_render_prim render_prim )
+    : render_prim( render_prim )
 {
     glCreateVertexArrays( 1, &VAO_id );
     glBindVertexArray( VAO_id );
@@ -67,36 +131,21 @@ w_render_batch::w_render_batch()
 
     // index buffer
 
-    glCreateBuffers( 1, &EBO_id );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO_id );
-
-    // preload the indices with values since they don't change frame to frame
-
-	std::vector<unsigned short> quad_indices;
-    quad_indices.resize( w_render_batch::max_quads_per_batch * 6 );
-
-    unsigned short offset = 0;
-    for( int q = 0 ; q < w_render_batch::max_quads_per_batch * 6 ; q += 6 )
+    switch( render_prim )
     {
-        quad_indices[ q + 0 ] = offset + 0;
-        quad_indices[ q + 1 ] = offset + 1;
-        quad_indices[ q + 2 ] = offset + 2;
+        case render_prim::quad:
+        {
+			index_buffer = std::make_unique<w_index_buffer_quads>();
+        }
+        break;
 
-        quad_indices[ q + 3 ] = offset + 0;
-        quad_indices[ q + 4 ] = offset + 2;
-        quad_indices[ q + 5 ] = offset + 3;
-
-        offset += 4;
+        default:
+        {
+            assert( false );
+        }
     }
 
-    glBufferData(
-        GL_ELEMENT_ARRAY_BUFFER,
-        ( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ),
-        quad_indices.data(),
-        GL_STATIC_DRAW
-    );
-
-    unbind();
+    // reserve memory
 
 	vertices.reserve( w_render_batch::max_quads_per_batch * 4 );
     texture_slots.resize( OPENGL->max_texture_image_units );
@@ -108,7 +157,6 @@ w_render_batch::~w_render_batch()
 {
     unbind();
 
-    glDeleteBuffers( 1, &EBO_id );
     glDeleteBuffers( 1, &VBO_id );
     glDeleteVertexArrays( 1, &VAO_id );
 }
@@ -171,14 +219,14 @@ void w_render_batch::bind()
 {
     glBindVertexArray( VAO_id );
     glBindBuffer( GL_ARRAY_BUFFER, VBO_id );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO_id );
+    index_buffer->bind();
 }
 
 void w_render_batch::unbind()
 {
     glBindVertexArray( 0 );
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	index_buffer->unbind();
 }
 
 // sends the batch to the GPU for drawing and resets to a fresh state

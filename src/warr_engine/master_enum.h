@@ -331,3 +331,12 @@ enum_begin( primitive_shape, ubyte )
 	filled_rectangle,
 	circle,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( render_prim, ubyte )
+	quad = 0,
+	triangle,
+	line,
+	point
+enum_end
