@@ -3,6 +3,7 @@
 struct w_render_batch
 {
 	e_render_prim render_prim = render_prim::quad;
+	GLenum gl_prim_type = GL_TRIANGLES;
 
 	int max_elements_per_batch = 10000;
 	float indices_to_verts_factor = 1.5f;
@@ -10,7 +11,7 @@ struct w_render_batch
 	w_render_batch( e_render_prim render_prim );
 	~w_render_batch();
 
-	GLuint VAO_id = 0;							// vertex array object
+	GLuint VAO_id = 0;		// vertex array object
 	std::unique_ptr< w_vertex_buffer> vertex_buffer = nullptr;
 	std::unique_ptr<w_index_buffer> index_buffer = nullptr;
 
@@ -20,9 +21,8 @@ struct w_render_batch
 
 	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 );
 	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 );
-#if 0	// #batch
-	void add_line( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 );
-#endif
+	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 );
+
 	void bind();
 	void unbind();
 	void draw_and_reset();

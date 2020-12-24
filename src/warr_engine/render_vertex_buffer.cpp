@@ -95,3 +95,20 @@ void w_vertex_buffer_tris::upload( int num_verts_to_upload )
 	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
 }
 
+// ----------------------------------------------------------------------------
+
+w_vertex_buffer_lines::w_vertex_buffer_lines( w_render_batch* batch )
+	: w_vertex_buffer( batch )
+{
+	preallocate_vertices( batch->max_elements_per_batch * 2 );
+	set_up_vertex_attribs();
+
+	vertices.reserve( batch->max_elements_per_batch * 2 );
+
+	unbind();
+};
+
+void w_vertex_buffer_lines::upload( int num_verts_to_upload )
+{
+	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
+}

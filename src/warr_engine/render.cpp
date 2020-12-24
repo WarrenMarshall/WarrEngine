@@ -8,6 +8,8 @@ void w_render::init()
 	batch_quads->bind();
 	batch_triangles = std::make_unique<w_render_batch>( render_prim::triangle );
 	batch_triangles->bind();
+	batch_lines = std::make_unique<w_render_batch>( render_prim::line );
+	batch_lines->bind();
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
@@ -454,9 +456,11 @@ void w_render::end_frame()
 	// possibly draw stats on the screen
 	draw_stats();
 
-	// the last draw needs to be flushed
+	// the last draws need to be flushed
+
 	batch_quads->draw_and_reset();
 	batch_triangles->draw_and_reset();
+	batch_lines->draw_and_reset();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -605,11 +609,6 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_rectangle( const w_rect& dst )
 {
-	return this;		// #batch
-
-#if 0
-	set_current_texture( engine->white_solid->tex );
-
 	w_bbox box;
 	box.add( w_vec2(
 		static_cast<float>( dst.x ),
@@ -626,22 +625,18 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 	draw_line( w_vec2( box.min.x, box.max.y ), w_vec2( box.min.x, box.min.y ) );
 
 	return this;
-#endif
 }
 
 // draws a circle with line segments
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-#if 0	// #batch
-	set_current_texture( engine->white_wire->tex );
-
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_batch_vert v0( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
-	w_render_batch_vert v1( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
 
 	rs_snap_to_pixel = false;
 
@@ -653,36 +648,34 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		master_render_buffer->add_line( v0, v1 );
+		batch_lines->add_element( engine->white_wire->tex, v0, v1 );
 	}
 
 	rs_snap_to_pixel = true;
-#endif
 
 	return this;
 }
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	return this;		// #batch
-#if 0
-	set_current_texture( engine->white_wire->tex );
-
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_batch_vert v0( start, w_uv( 0, 0 ), rs_color, rs_emissive );
-	w_render_batch_vert v1( end, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v0( start, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v1( end, w_uv( 0, 0 ), rs_color, rs_emissive );
 
 	rs_snap_to_pixel = false;
 
-	master_render_buffer->add_line( v0, v1 );
+	batch_lines->add_element(
+		engine->white_wire->tex,
+		v0,
+		v1
+	);
 
 	rs_snap_to_pixel = true;
 
 	return this;
-#endif
 }
 
 w_render* w_render::draw_point( const w_vec2& pos )

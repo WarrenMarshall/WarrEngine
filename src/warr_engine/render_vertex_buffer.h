@@ -38,3 +38,12 @@ struct w_vertex_buffer_tris : w_vertex_buffer
 
 	virtual void upload( int num_verts_to_upload ) override;
 };
+
+// ----------------------------------------------------------------------------
+
+struct w_vertex_buffer_lines : w_vertex_buffer
+{
+	w_vertex_buffer_lines( w_render_batch* batch );
+
+	virtual void upload( int num_verts_to_upload ) override;
+};

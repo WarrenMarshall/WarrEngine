@@ -12,10 +12,12 @@ void layer_main_menu::push()
 	e->add_component<ec_emitter>()->init( "menu_fire_up" )
 		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
 
-	e = add_entity<w_entity>();
-	e->it_set_position( { v_window_hw, v_window_hh } );
-	e->add_component<ec_mesh>()->init( "mesh_torus_test" );
-	e->it_set_scale( 0.5f );
+	//e = add_entity<w_entity>();
+	//e->it_set_position( { v_window_hw, v_window_hh } );
+	//e->add_component<ec_mesh>()->init( "mesh_torus_test" )
+	//	->it_set_scale( 0.5f );
+	//e->add_component<ec_mesh>()->init( "mesh_torus_test" )
+	//	->it_set_scale( 0.25f );
 
 	w_layer::push();
 }
@@ -60,6 +62,10 @@ void layer_main_menu::draw_ui()
 	{
 		engine->is_running = false;
 	}
+
+	RENDER->draw_line( w_vec2( 8, 8 ), w_vec2( 64, 8 ) );
+	RENDER->draw_circle( w_vec2( 0, 0 ), 64.f );
+
 }
 
 void layer_main_menu::becoming_top_layer()

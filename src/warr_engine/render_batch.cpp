@@ -10,7 +10,6 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
     glCreateVertexArrays( 1, &VAO_id );
     glBindVertexArray( VAO_id );
 
-
     switch( render_prim )
     {
         case render_prim::quad:
@@ -26,6 +25,7 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 
 			max_elements_per_batch = 10000;
             indices_to_verts_factor = 1.5f;
+			gl_prim_type = GL_TRIANGLES;
 
 			vertex_buffer = std::make_unique< w_vertex_buffer_quads>( this );
 			index_buffer = std::make_unique<w_index_buffer_quads>( this );
@@ -45,13 +45,34 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 
 			max_elements_per_batch = 10000;
 			indices_to_verts_factor = 1.0f;
+			gl_prim_type = GL_TRIANGLES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer_tris>( this );
 			index_buffer = std::make_unique<w_index_buffer_tris>( this );
 		}
 		break;
 
-        default:
+		case render_prim::line:
+		{
+			// this computes to 10,000 x 2 vertices, which is 20,000 vertices max,
+			// which is 40,000 indices ... which is just shy of the limit of
+			// an insigned short: 65,535
+			//
+			// (2 verts / 2 indices = 1 line)
+			//
+			// if you want to make the batches larger, the index buffer will need to
+			// use a larger data type.
+
+			max_elements_per_batch = 10000;
+			indices_to_verts_factor = 1.0f;
+			gl_prim_type = GL_LINES;
+
+			vertex_buffer = std::make_unique<w_vertex_buffer_lines>( this );
+			index_buffer = std::make_unique<w_index_buffer_lines>( this );
+		}
+		break;
+
+		default:
         {
             assert( false );
         }
@@ -121,13 +142,17 @@ void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v
 	}
 }
 
-#if 0 // #batch
-void w_render_batch::add_line( const w_render_vertex& v0, const w_render_vertex& v1 )
+void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 )
 {
-    add_render_vert( v0 );
-    add_render_vert( v1 );
+    add_vert( tex, v0 );
+    add_vert( tex, v1 );
+
+	// batch is full, so draw the batch and reset
+	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
+	{
+		draw_and_reset();
+	}
 }
-#endif
 
 void w_render_batch::bind()
 {
@@ -169,7 +194,7 @@ void w_render_batch::draw_and_reset()
         // draw!
 
 		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-		glDrawElements( GL_TRIANGLES, index_count, GL_UNSIGNED_SHORT, nullptr );
+		glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
 
 		// update stats and clean up
 

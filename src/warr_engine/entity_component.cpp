@@ -691,10 +691,7 @@ void ec_mesh::draw()
 		return;
 	}
 
+	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER
-		->push_rgb( w_color::black )
-		->push_alpha( 0.25f )
-		->draw_mesh( mesh, pos )
-		->pop_rgb()
-		->pop_alpha();
+		->draw_mesh( mesh, pos );
 }
