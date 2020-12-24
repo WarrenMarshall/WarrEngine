@@ -247,8 +247,6 @@ w_color w_render::pal_color_from_idx( int idx )
 
 w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 {
-	batch->set_current_texture( mesh->tex );
-
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
 
@@ -277,6 +275,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 	{
 #if 0 // #batch
 		master_render_buffer->add_triangle(
+			mesh->tex,
 			mesh->render_verts[ x ],
 			mesh->render_verts[ x + 1 ],
 			mesh->render_verts[ x + 2 ]
@@ -302,8 +301,6 @@ w_render* w_render::draw_sprite( a_texture* tex, const w_vec2& dst )
 
 w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 {
-	batch->set_current_texture( subtex->tex );
-
 	float w = subtex->rc_tex.w;
 	float h = subtex->rc_tex.h;
 
@@ -330,7 +327,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	batch->add_quad( v0, v1, v2, v3 );
+	batch->add_quad( subtex->tex, v0, v1, v2, v3 );
 
 	MATRIX->pop();
 
@@ -347,8 +344,6 @@ w_render* w_render::draw( a_texture* tex, const w_rect& dst )
 
 w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 {
-	batch->set_current_texture( subtex->tex );
-
 	float w = dst.w ? dst.w : subtex->rc_tex.w;
 	float h = dst.h ? dst.h : subtex->rc_tex.h;
 
@@ -367,7 +362,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_batch_vert v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
-	batch->add_quad( v0, v1, v2, v3 );
+	batch->add_quad( subtex->tex, v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -384,8 +379,6 @@ w_render* w_render::draw_string( const std::string_view text, const w_rect& dst 
 
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
-	batch->set_current_texture( font->font_def->texture );
-
 	w_vec2 rs_scale = rs_scale_stack.back();
 	e_align rs_align = rs_align_stack.back();
 
@@ -573,8 +566,6 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	batch->set_current_texture( engine->white_solid->tex );
-
 	w_color rs_color = rs_color_stack.back();
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
@@ -604,7 +595,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch->add_quad( v0, v1, v2, v3 );
+	batch->add_quad( engine->white_solid->tex, v0, v1, v2, v3 );
 
 	return this;
 }

@@ -41,8 +41,7 @@ bool a_mesh::create_internals()
 
 			vertex_list.emplace_back( std::move( v ) );
 		}
-
-		if( line.substr( 0, 3 ) == "vt " )
+		else if( line.substr( 0, 3 ) == "vt " )
 		{
 			w_tokenizer tok( line, ' ' );
 
@@ -54,8 +53,7 @@ bool a_mesh::create_internals()
 
 			uv_list.emplace_back( std::move( v ) );
 		}
-
-		if( line.substr( 0, 3 ) == "vn " )
+		else if( line.substr( 0, 3 ) == "vn " )
 		{
 			w_tokenizer tok( line, ' ' );
 
@@ -67,18 +65,8 @@ bool a_mesh::create_internals()
 			v.z = w_parser::float_from_str( *( tok.get_next_token() ) );
 
 			vertex_list.emplace_back( std::move( v ) );
-	}
-
-#if 0	// what is this for?  delete it?
-		if( line.substr( 0, 7 ) == "usemtl " )
-		{
-			w_tokenizer tok( line, ' ' );
-			tok.get_next_token();	// eat "usemtl "
-			current_texture = a_texture::find( *( tok.get_next_token() ) );
 		}
-#endif
-
-		if( line.substr( 0, 2 ) == "f " )
+		else if( line.substr( 0, 2 ) == "f " )
 		{
 			w_tokenizer tok( line, ' ' );
 

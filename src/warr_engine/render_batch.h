@@ -30,11 +30,10 @@ struct w_render_batch
 	GLuint EBO_id = 0;							// index buffer
 
 	std::vector<int> texture_slots;
-	a_texture* current_texture = nullptr;
 	int current_texture_slot_idx = 0;
-	void set_current_texture( a_texture* tex );
+	int assign_texture_slot( const a_texture* tex );
 
-	void add_quad( const w_batch_vert& v0, const w_batch_vert& v1, const w_batch_vert& v2, const w_batch_vert& v3 );
+	void add_quad( const a_texture* tex, const w_batch_vert& v0, const w_batch_vert& v1, const w_batch_vert& v2, const w_batch_vert& v3 );
 #if 0	// #batch
 	void add_triangle( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2 );
 	void add_line( const w_render_batch_vert& v0, const w_render_batch_vert& v1 );
@@ -44,5 +43,6 @@ struct w_render_batch
 	void draw_and_reset();
 	void reset();
 
-	void add_vert( const w_batch_vert& render_vert );
+private:
+	void add_vert( const a_texture* tex, const w_batch_vert& render_vert );
 };

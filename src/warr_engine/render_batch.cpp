@@ -6,8 +6,7 @@ w_batch_vert::w_batch_vert( const w_vec2& pos, const w_uv& uv, const w_color& co
     : x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
     u( uv.u ), v( uv.v ),
     r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-    e( emissive ),
-    t( static_cast<float>( RENDER->batch->current_texture_slot_idx ) )
+    e( emissive )
 {
 }
 
@@ -15,8 +14,7 @@ w_batch_vert::w_batch_vert( const w_vec3& pos, const w_uv& uv, const w_color& co
     : x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
     u( uv.u ), v( uv.v ),
     r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-    e( emissive ),
-    t( static_cast<float>( RENDER->batch->current_texture_slot_idx ) )
+    e( emissive )
 {
     // #batch
     assert( false );    // temp disable this for testing
@@ -115,17 +113,15 @@ w_render_batch::~w_render_batch()
     glDeleteVertexArrays( 1, &VAO_id );
 }
 
-void w_render_batch::set_current_texture( a_texture* tex )
+int w_render_batch::assign_texture_slot( const a_texture* tex )
 {
-	current_texture = tex;
-
 	// if this texture is already in the slot list, return that index
 	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
 	{
 		if( texture_slots[ x ] == static_cast<int>( tex->gl_id ) )
 		{
 			current_texture_slot_idx = x;
-			return;
+			return x;
 		}
 	}
 
@@ -138,14 +134,16 @@ void w_render_batch::set_current_texture( a_texture* tex )
 	// add the new texture to the slot list
 	current_texture_slot_idx++;
 	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
+
+    return current_texture_slot_idx;
 }
 
-void w_render_batch::add_quad( const w_batch_vert& v0, const w_batch_vert& v1, const w_batch_vert& v2, const w_batch_vert& v3 )
+void w_render_batch::add_quad( const a_texture* tex, const w_batch_vert& v0, const w_batch_vert& v1, const w_batch_vert& v2, const w_batch_vert& v3 )
 {
-    add_vert( v0 );
-    add_vert( v1 );
-    add_vert( v2 );
-    add_vert( v3 );
+    add_vert( tex, v0 );
+    add_vert( tex, v1 );
+    add_vert( tex, v2 );
+    add_vert( tex, v3 );
 
     // batch is full, so draw the batch and reset
     if( vertices.size() >= w_render_batch::max_quads_per_batch )
@@ -233,11 +231,10 @@ void w_render_batch::reset()
         iter = 0;
     }
 
-    current_texture = nullptr;
     current_texture_slot_idx = -1;
 }
 
-void w_render_batch::add_vert( const w_batch_vert& render_vert )
+void w_render_batch::add_vert( const a_texture* tex, const w_batch_vert& render_vert )
 {
     // multiply the current modelview matrix against the vertex being rendered.
     //
@@ -257,6 +254,9 @@ void w_render_batch::add_vert( const w_batch_vert& render_vert )
     w_batch_vert rv = render_vert;
     rv.x = vtx.x;
 	rv.y = vtx.y;
+
+    // find a texture slot for the requested texture
+    rv.t = static_cast<float>( assign_texture_slot( tex ) );
 
     // add the render_vert to the vertex list.
     vertices.emplace_back( std::move( rv ) );
