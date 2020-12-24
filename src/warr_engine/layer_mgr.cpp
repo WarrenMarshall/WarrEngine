@@ -110,38 +110,43 @@ void w_layer_mgr::draw()
 
 		for( auto x = starting_layer_idx; x >= 0; --x )
 		{
+			auto layer = layer_stack[ x ].get();
+
 			// Only UI elements on the topmost layer respond to user input
 			IMGUI->containing_layer_is_topmost = !x;
 
-			if( layer_stack[ x ]->ilc_is_alive() )
+			if( layer->ilc_is_alive() )
 			{
 				// primary draw call for the layer. uses an optional custom camera.
-				OPENGL->init_view_matrix( layer_stack[ x ]->get_camera() );
+				OPENGL->init_view_matrix( layer->get_camera() );
 				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
-				layer_stack[ x ]->draw();
+				layer->draw();
 
-//#ifdef _DEBUG
 				// let the layer draw optional debug info. note that this is
 				// using the optional custom camera from above, so this is
 				// only for debug drawing in world space, not screen space.
+
+				// #wtf - this half space offset works but I have no idea why - feels wrong and working by accident
+				MATRIX
+					->push()
+					->translate( w_vec2( v_window_hw, v_window_hh ) );
 				RENDER->push_depth_nudge();
-				layer_stack[ x ]->draw_debug();
-//#endif
+				layer->draw_debug();
+				MATRIX
+					->pop();
 
 				// draw any screen space items, like UI. these are
 				// drawn with an identity matrix so the top left of
 				// the screen is always 0,0.
 				OPENGL->init_view_matrix_identity_ui();
 				RENDER->push_depth_nudge();
-				layer_stack[ x ]->draw_ui();
+				layer->draw_ui();
 
-//#ifdef _DEBUG
 				// same as the other debug draw call, but this is for
 				// info in screen space
 				OPENGL->init_view_matrix_identity();
 				RENDER->push_depth_nudge( 100 );
-				layer_stack[ x ]->draw_ui_debug();
-//#endif
+				layer->draw_ui_debug();
 			}
 		}
 

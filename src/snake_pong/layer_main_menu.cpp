@@ -62,10 +62,6 @@ void layer_main_menu::draw_ui()
 	{
 		engine->is_running = false;
 	}
-
-	RENDER->draw_line( w_vec2( 8, 8 ), w_vec2( 64, 8 ) );
-	RENDER->draw_circle( w_vec2( 0, 0 ), 64.f );
-
 }
 
 void layer_main_menu::becoming_top_layer()
