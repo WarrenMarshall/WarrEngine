@@ -4,10 +4,12 @@ struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
 
-	std::unique_ptr<w_shader> base_shader = nullptr;
-	std::unique_ptr<w_shader> base_shader_with_bright_pass = nullptr;
-	std::unique_ptr<w_shader> blur_shader = nullptr;
-	std::unique_ptr<w_shader> post_process_shader = nullptr;
+	std::unordered_map<const char*, std::unique_ptr<w_shader>> shaders;
+
+	//std::unique_ptr<w_shader> base_shader = nullptr;
+	//std::unique_ptr<w_shader> base_shader_with_bright_pass = nullptr;
+	//std::unique_ptr<w_shader> blur_shader = nullptr;
+	//std::unique_ptr<w_shader> post_process_shader = nullptr;
 
 	GLint max_texture_image_units = -1;
 	std::vector<int> texture_slots;

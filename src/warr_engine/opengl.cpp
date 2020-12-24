@@ -41,10 +41,10 @@ void w_opengl::init()
 	glDisable( GL_CULL_FACE );
 
 	// create base set of shaders
-	base_shader_with_bright_pass = std::make_unique<w_shader>( "base.vert", "base_with_bright_pass.frag" );
-	base_shader = std::make_unique<w_shader>( "base.vert", "base.frag" );
-	blur_shader = std::make_unique<w_shader>( "base.vert", "blur.frag" );
-	post_process_shader = std::make_unique<w_shader>( "base.vert", "post_process.frag" );
+	shaders[ "base" ] = std::make_unique<w_shader>( "base.vert", "base.frag" );
+	shaders[ "base_bright" ] = std::make_unique<w_shader>( "base.vert", "base_with_bright_pass.frag" );
+	shaders[ "blur" ] = std::make_unique<w_shader>( "base.vert", "blur.frag" );
+	shaders[ "post_process" ] = std::make_unique<w_shader>( "base.vert", "post_process.frag" );
 
 	for( int x = 0 ; x < max_texture_image_units ; ++x )
 	{
@@ -150,10 +150,11 @@ void w_opengl::init_projection_matrix() const
 		0, v_window_w, v_window_h, 0,
 		-20000.0f, 20000.0f );
 
-	glProgramUniformMatrix4fv( base_shader->id, glGetUniformLocation( base_shader->id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-	glProgramUniformMatrix4fv( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-	glProgramUniformMatrix4fv( blur_shader->id, glGetUniformLocation( blur_shader->id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
-	glProgramUniformMatrix4fv( post_process_shader->id, glGetUniformLocation( post_process_shader->id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+	}
 }
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
@@ -180,10 +181,11 @@ void w_opengl::init_view_matrix( w_camera* camera ) const
 			0.0f ) );
 	}
 
-	glProgramUniformMatrix4fv( base_shader->id, glGetUniformLocation( base_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( blur_shader->id, glGetUniformLocation( blur_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( post_process_shader->id, glGetUniformLocation( post_process_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	}
 }
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
@@ -196,10 +198,11 @@ void w_opengl::init_view_matrix_identity() const
 
 	glm::mat4 view = glm::mat4( 1.0f );
 
-	glProgramUniformMatrix4fv( base_shader->id, glGetUniformLocation( base_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( blur_shader->id, glGetUniformLocation( blur_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( post_process_shader->id, glGetUniformLocation( post_process_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	}
 }
 
 void w_opengl::init_view_matrix_identity_ui() const
@@ -209,65 +212,49 @@ void w_opengl::init_view_matrix_identity_ui() const
 	glm::mat4 view = glm::mat4( 1.0f );
 	view *= glm::scale( view, glm::vec3( ui_canvas_scale, ui_canvas_scale, 1.0f ) );
 
-	glProgramUniformMatrix4fv( base_shader->id, glGetUniformLocation( base_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( blur_shader->id, glGetUniformLocation( blur_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
-	glProgramUniformMatrix4fv( post_process_shader->id, glGetUniformLocation( post_process_shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+	}
 }
 
 void w_opengl::set_uniform( std::string_view name, float value )
 {
-	glProgramUniform1f( base_shader->id, glGetUniformLocation( base_shader->id, name.data() ), value );
-	glProgramUniform1f( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, name.data() ), value );
-	glProgramUniform1f( blur_shader->id, glGetUniformLocation( blur_shader->id, name.data() ), value );
-	glProgramUniform1f( post_process_shader->id, glGetUniformLocation( post_process_shader->id, name.data() ), value );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniform1f( shader->id, glGetUniformLocation( shader->id, name.data() ), value );
+	}
 }
 
 void w_opengl::set_uniform( std::string_view name, bool value )
 {
-	glProgramUniform1i( base_shader->id, glGetUniformLocation( base_shader->id, name.data() ), value );
-	glProgramUniform1i( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, name.data() ), value );
-	glProgramUniform1i( blur_shader->id, glGetUniformLocation( blur_shader->id, name.data() ), value );
-	glProgramUniform1i( post_process_shader->id, glGetUniformLocation( post_process_shader->id, name.data() ), value );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniform1i( shader->id, glGetUniformLocation( shader->id, name.data() ), value );
+	}
 }
 
 void w_opengl::set_uniform( std::string_view name, w_color value )
 {
-	glProgramUniform4f( base_shader->id, glGetUniformLocation( base_shader->id, name.data() ), value.r, value.g, value.b, value.a );
-	glProgramUniform4f( base_shader_with_bright_pass->id, glGetUniformLocation( base_shader_with_bright_pass->id, name.data() ), value.r, value.g, value.b, value.a );
-	glProgramUniform4f( blur_shader->id, glGetUniformLocation( blur_shader->id, name.data() ), value.r, value.g, value.b, value.a );
-	glProgramUniform4f( post_process_shader->id, glGetUniformLocation( post_process_shader->id, name.data() ), value.r, value.g, value.b, value.a );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniform4f( shader->id, glGetUniformLocation( shader->id, name.data() ), value.r, value.g, value.b, value.a );
+	}
 }
 
 void w_opengl::set_uniform_array( std::string_view name, int* value, int count )
 {
-	GLint loc;
-
-	loc = glGetUniformLocation( base_shader->id, name.data() );
-	glProgramUniform1iv(
-		base_shader->id,
-		loc,
-		count,
-		value );
-
-	loc = glGetUniformLocation( base_shader_with_bright_pass->id, name.data() );
-	glProgramUniform1iv(
-		base_shader_with_bright_pass->id,
-		loc,
-		count,
-		value );
-
-	loc = glGetUniformLocation( blur_shader->id, name.data() );
-	glProgramUniform1iv(
-		blur_shader->id,
-		loc,
-		count,
-		value );
-
-	loc = glGetUniformLocation( post_process_shader->id, name.data() );
-	glProgramUniform1iv(
-		post_process_shader->id,
-		loc,
-		count,
-		value );
+	for( auto& iter : OPENGL->shaders )
+	{
+		auto& shader = iter.second;
+		glProgramUniform1iv(
+			shader->id,
+			glGetUniformLocation( shader->id, name.data() ),
+			count,
+			value );
+	}
 }

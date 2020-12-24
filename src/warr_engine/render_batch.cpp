@@ -203,14 +203,13 @@ void w_render_batch::draw_and_reset()
         // upload just the vertex data we need for this draw call
         glBufferSubData( GL_ARRAY_BUFFER, 0, vertex_count * sizeof( w_batch_vert ), vertices.data() );
 
-        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
         RENDER->stats.draw_calls.inc();
         RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
         RENDER->stats.indices.accum( static_cast<float>( index_count ) );
 
         // draw!
 
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		glDrawElements( GL_TRIANGLES, index_count, GL_UNSIGNED_SHORT, nullptr );
 
         unbind();
@@ -252,12 +251,14 @@ void w_render_batch::add_vert( const a_texture* tex, const w_batch_vert& render_
 	}
 
     w_batch_vert rv = render_vert;
+
+    // update the position to the transformed position
     rv.x = vtx.x;
 	rv.y = vtx.y;
 
     // find a texture slot for the requested texture
     rv.t = static_cast<float>( assign_texture_slot( tex ) );
 
-    // add the render_vert to the vertex list.
+    // add the render_vert to the vertex list
     vertices.emplace_back( std::move( rv ) );
 }
