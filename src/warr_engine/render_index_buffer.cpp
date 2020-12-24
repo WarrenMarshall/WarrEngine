@@ -4,7 +4,8 @@
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer::w_index_buffer()
+w_index_buffer::w_index_buffer( w_render_batch* batch )
+	: batch( batch )
 {
 	glCreateBuffers( 1, &gl_id );
 	bind();
@@ -28,13 +29,14 @@ void w_index_buffer::unbind()
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer_quads::w_index_buffer_quads()
+w_index_buffer_quads::w_index_buffer_quads( w_render_batch* batch )
+	: w_index_buffer( batch )
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<unsigned short> indices;
-	indices.resize( w_render_batch::max_quads_per_batch * 6 );
+	indices.resize( batch->max_elements_per_batch * 6 );
 
 	// quad indices:
 	// 0, 1, 2, 0, 2, 3
@@ -42,7 +44,7 @@ w_index_buffer_quads::w_index_buffer_quads()
 	// ...
 
 	unsigned short offset = 0;
-	for( int q = 0 ; q < w_render_batch::max_quads_per_batch * 6 ; q += 6 )
+	for( int q = 0 ; q < batch->max_elements_per_batch * 6 ; q += 6 )
 	{
 		indices[ q + 0 ] = offset + 0;
 		indices[ q + 1 ] = offset + 1;
@@ -59,7 +61,38 @@ w_index_buffer_quads::w_index_buffer_quads()
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( w_render_batch::max_quads_per_batch * 6 ) * sizeof( unsigned short ),
+		( batch->max_elements_per_batch * 6 ) * sizeof( unsigned short ),
+		indices.data(),
+		GL_STATIC_DRAW
+	);
+}
+
+// ----------------------------------------------------------------------------
+
+w_index_buffer_tris::w_index_buffer_tris( w_render_batch* batch )
+	: w_index_buffer( batch )
+{
+	// create the full set of indices right ahead of time since we know
+	// the pattern they will be following.
+
+	std::vector<unsigned short> indices;
+	indices.resize( batch->max_elements_per_batch * 3 );
+
+	// triangle indices:
+	// 0, 1, 2,
+	// 3, 4, 5,
+	// ...
+
+	for( unsigned short q = 0 ; q < batch->max_elements_per_batch * 3 ; q++ )
+	{
+		indices[ q ] = q;
+	}
+
+	// send the index data to the card
+
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,
+		( batch->max_elements_per_batch * 3 ) * sizeof( unsigned short ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);

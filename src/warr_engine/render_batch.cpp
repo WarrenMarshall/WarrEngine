@@ -4,33 +4,52 @@
 
 // ----------------------------------------------------------------------------
 
-// so, this computes to 10,000 x 4 vertices, which is 40,000 vertices,
-// which is 60,000 indices ... which is just shy of the limit of
-// an insigned short: 65,535
-//
-// (4 verts / 6 indices = 1 quad)
-//
-// if you want to make the batches larger, the index buffer will need to
-// use a larger data type.
-
-int w_render_batch::max_quads_per_batch = 10000;
-
 w_render_batch::w_render_batch( e_render_prim render_prim )
     : render_prim( render_prim )
 {
     glCreateVertexArrays( 1, &VAO_id );
     glBindVertexArray( VAO_id );
 
-    // index buffer
 
     switch( render_prim )
     {
         case render_prim::quad:
         {
-            vertex_buffer = std::make_unique< w_vertex_buffer_quads>();
-            index_buffer = std::make_unique<w_index_buffer_quads>();
+			// this computes to 10,000 x 4 vertices, which is 40,000 vertices max,
+			// which is 60,000 indices ... which is just shy of the limit of
+			// an insigned short: 65,535
+			//
+			// (4 verts / 6 indices = 1 quad)
+			//
+			// if you want to make the batches larger, the index buffer will need to
+			// use a larger data type.
+
+			max_elements_per_batch = 10000;
+            indices_to_verts_factor = 1.5f;
+
+			vertex_buffer = std::make_unique< w_vertex_buffer_quads>( this );
+			index_buffer = std::make_unique<w_index_buffer_quads>( this );
         }
         break;
+
+		case render_prim::triangle:
+		{
+			// this computes to 10,000 x 3 vertices, which is 30,000 vertices max,
+			// which is 60,000 indices ... which is just shy of the limit of
+			// an insigned short: 65,535
+			//
+			// (3 verts / 3 indices = 1 triangle)
+			//
+			// if you want to make the batches larger, the index buffer will need to
+			// use a larger data type.
+
+			max_elements_per_batch = 10000;
+			indices_to_verts_factor = 1.0f;
+
+			vertex_buffer = std::make_unique<w_vertex_buffer_tris>( this );
+			index_buffer = std::make_unique<w_index_buffer_tris>( this );
+		}
+		break;
 
         default:
         {
@@ -75,7 +94,7 @@ int w_render_batch::assign_texture_slot( const a_texture* tex )
     return current_texture_slot_idx;
 }
 
-void w_render_batch::add_quad( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
+void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
 {
     add_vert( tex, v0 );
     add_vert( tex, v1 );
@@ -83,21 +102,27 @@ void w_render_batch::add_quad( const a_texture* tex, const w_render_vertex& v0, 
     add_vert( tex, v3 );
 
     // batch is full, so draw the batch and reset
-    if( vertex_buffer->vertices.size() >= w_render_batch::max_quads_per_batch )
+    if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
     {
         draw_and_reset();
     }
 }
 
-#if 0 // #batch
-void w_render_batch::add_triangle( const w_render_batch_vert& v0, const w_render_batch_vert& v1, const w_render_batch_vert& v2 )
+void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
 {
-	add_render_vert( v0 );
-	add_render_vert( v1 );
-	add_render_vert( v2 );
+	add_vert( tex, v0 );
+	add_vert( tex, v1 );
+	add_vert( tex, v2 );
+
+	// batch is full, so draw the batch and reset
+	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
+	{
+		draw_and_reset();
+	}
 }
 
-void w_render_batch::add_line( const w_render_batch_vert& v0, const w_render_batch_vert& v1 )
+#if 0 // #batch
+void w_render_batch::add_line( const w_render_vertex& v0, const w_render_vertex& v1 )
 {
     add_render_vert( v0 );
     add_render_vert( v1 );

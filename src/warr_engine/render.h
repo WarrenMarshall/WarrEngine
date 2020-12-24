@@ -17,6 +17,7 @@ struct w_render
 		batch rendering
 	*/
 	std::unique_ptr<w_render_batch> batch_quads = nullptr;
+	std::unique_ptr<w_render_batch> batch_triangles = nullptr;
 
 	// palette support
 	a_palette* current_palette = nullptr;

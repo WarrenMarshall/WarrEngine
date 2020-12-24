@@ -1,0 +1,17 @@
+
+# ---------------------------------------------------------
+# meshes
+# ---------------------------------------------------------
+
+# {
+# 	"type" "mesh"
+# 	"tag" "mesh_tag"
+# 	"filename" "meshes/filename.obj"
+# }
+
+{
+	"type" "mesh"
+	"tag" "mesh_torus_test"
+	"texture_tag" "tex_engine_white_wire"
+	"filename" "meshes/torus_test.obj"
+}

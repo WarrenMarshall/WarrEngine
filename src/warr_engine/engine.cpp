@@ -331,6 +331,7 @@ void w_engine::exec_main_loop()
 
 		glEnable( GL_DEPTH_TEST );
 		engine->frame_buffer->bind();
+
 		OPENGL->shaders[ "base_bright" ]->bind();
 
 		RENDER->begin_frame();

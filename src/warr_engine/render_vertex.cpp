@@ -16,6 +16,4 @@ w_render_vertex::w_render_vertex( const w_vec3& pos, const w_uv& uv, const w_col
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	e( emissive )
 {
-	// #batch
-	assert( false );    // temp disable this for testing
 }

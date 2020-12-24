@@ -12,6 +12,11 @@ void layer_main_menu::push()
 	e->add_component<ec_emitter>()->init( "menu_fire_up" )
 		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
 
+	e = add_entity<w_entity>();
+	e->it_set_position( { v_window_hw, v_window_hh } );
+	e->add_component<ec_mesh>()->init( "mesh_torus_test" );
+	e->it_set_scale( 0.5f );
+
 	w_layer::push();
 }
 

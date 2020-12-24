@@ -35,3 +35,4 @@ struct w_entity_component;
 struct w_entity;
 struct w_physics_debug_draw;
 struct w_input_event;
+struct w_render_batch;

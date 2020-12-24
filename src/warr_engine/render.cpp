@@ -6,6 +6,8 @@ void w_render::init()
 {
 	batch_quads = std::make_unique<w_render_batch>( render_prim::quad );
 	batch_quads->bind();
+	batch_triangles = std::make_unique<w_render_batch>( render_prim::triangle );
+	batch_triangles->bind();
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
@@ -273,14 +275,12 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 
 	for( auto x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
-#if 0 // #batch
-		master_render_buffer->add_triangle(
+		batch_triangles->add_element(
 			mesh->tex,
 			mesh->render_verts[ x ],
 			mesh->render_verts[ x + 1 ],
 			mesh->render_verts[ x + 2 ]
 		);
-#endif
 	}
 
 	MATRIX->pop();
@@ -327,7 +327,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	batch_quads->add_quad( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_element( subtex->tex, v0, v1, v2, v3 );
 
 	MATRIX->pop();
 
@@ -362,7 +362,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
-	batch_quads->add_quad( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_element( subtex->tex, v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -456,6 +456,7 @@ void w_render::end_frame()
 
 	// the last draw needs to be flushed
 	batch_quads->draw_and_reset();
+	batch_triangles->draw_and_reset();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -595,7 +596,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch_quads->add_quad( engine->white_solid->tex, v0, v1, v2, v3 );
+	batch_quads->add_element( engine->white_solid->tex, v0, v1, v2, v3 );
 
 	return this;
 }

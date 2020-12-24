@@ -691,5 +691,10 @@ void ec_mesh::draw()
 		return;
 	}
 
-	RENDER->draw_mesh( mesh, pos );
+	RENDER
+		->push_rgb( w_color::black )
+		->push_alpha( 0.25f )
+		->draw_mesh( mesh, pos )
+		->pop_rgb()
+		->pop_alpha();
 }
