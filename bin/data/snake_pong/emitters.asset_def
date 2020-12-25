@@ -6,7 +6,7 @@
 	"spawner_type" "box,256,4"
 
 	"s_max_spawn_per_sec" "25"
-	"b_needs_warm_up" "false"
+	"b_needs_warm_up" "true"
 	"a_dir" "0"
 	"r_scale_spawn" "1.0, 2.5"
 	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"

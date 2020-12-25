@@ -152,11 +152,9 @@ struct ec_b2d_kinematic : ec_b2d_body
 
 struct ec_tilemap_tile
 {
-	ec_tilemap_tile( int tileset_idx, w_pos pos, a_subtexture* subtex );
-
+	a_subtexture* subtex = nullptr;
 	int tileset_idx;
 	w_pos pos = w_pos::zero;
-	a_subtexture* subtex = nullptr;
 
 	struct
 	{
@@ -164,6 +162,8 @@ struct ec_tilemap_tile
 		bool flipped_vertically : 1;
 		bool flipped_diagonally : 1;
 	};
+
+	ec_tilemap_tile( int tileset_idx, w_pos pos, a_subtexture* subtex );
 };
 
 struct ec_tilemap_layer

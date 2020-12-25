@@ -15,11 +15,11 @@ void w_particle_spawner::parse_from_config_string( std::string_view value )
 
 // ----------------------------------------------------------------------------
 
-w_particle_spawner_box::w_particle_spawner_box( const w_particle_spawner_box& other )
-{
-	w = other.w;
-	h = other.h;
-}
+//w_particle_spawner_box::w_particle_spawner_box( const w_particle_spawner_box& other )
+//{
+//	w = other.w;
+//	h = other.h;
+//}
 
 w_particle_spawner_box::w_particle_spawner_box( int w, int h )
 	: w( w ), h( h )
@@ -42,11 +42,11 @@ void w_particle_spawner_box::parse_from_config_string( std::string_view value )
 
 // ----------------------------------------------------------------------------
 
-w_particle_spawner_circle::w_particle_spawner_circle( const w_particle_spawner_circle& other )
-	: radius( other.radius )
-{
-}
-
+//w_particle_spawner_circle::w_particle_spawner_circle( const w_particle_spawner_circle& other )
+//	: radius( other.radius )
+//{
+//}
+//
 w_particle_spawner_circle::w_particle_spawner_circle( float radius )
 	: radius( radius )
 {

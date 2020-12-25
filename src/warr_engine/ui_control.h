@@ -2,7 +2,7 @@
 
 struct w_imgui_control
 {
-	e_imgui_control_type type;
+	e_imgui_control_type type = imgui_control_type::none;
 	bool is_active = true;
 	const char* tag = nullptr;
 	std::string label;

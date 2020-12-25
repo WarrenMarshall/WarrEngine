@@ -308,7 +308,8 @@ enum_end
 // ----------------------------------------------------------------------------
 
 enum_begin( imgui_control_type, ubyte )
-	panel = 1,
+	none = 0,
+	panel,
 	push_button,
 	check_box,
 enum_end

@@ -59,15 +59,14 @@ void w_particle_emitter::update()
 
 			assert( particles_to_spawn > 0 );
 
-			//log_msg( "Spawning {} particles", particles_to_spawn );
+			// subtract the int value from the accumulator, leaving the fractional value only
+			particles_to_spawn_accum -= particles_to_spawn;
+
 			while( particles_to_spawn )
 			{
 				spawn_particle();
 				particles_to_spawn--;
 			}
-
-			// subtract the int value from the accumulator, leaving the fractional value only
-			particles_to_spawn_accum -= static_cast<int>( particles_to_spawn_accum );
 		}
 	}
 
