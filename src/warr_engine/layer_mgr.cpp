@@ -128,7 +128,7 @@ void w_layer_mgr::draw()
 
 				// draw any debug information that lives in world space.
 				{
-					if( RENDER->show_physics_debug && layer->is_topmost_layer() )
+					if( RENDER->show_physics_debug && layer->is_primary_physics_layer )
 					{
 						// box2d needs the origin of the world to be in the middle of the viewport
 

@@ -205,7 +205,7 @@ void w_render_batch::draw_and_reset()
     {
         bind();
 
-        auto index_count = static_cast<int>( vertex_count * 1.5f );
+        auto index_count = static_cast<int>( vertex_count * indices_to_verts_factor );
 
         // bind the textures to the texture units.
 

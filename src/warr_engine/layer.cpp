@@ -3,6 +3,13 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+w_layer::w_layer()
+{
+	draws_completely_solid = false;
+	blocks_further_input = false;
+	is_primary_physics_layer = false;
+}
+
 void w_layer::update()
 {
 	// clear out dead entities
