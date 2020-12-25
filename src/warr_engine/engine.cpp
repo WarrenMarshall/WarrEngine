@@ -354,11 +354,12 @@ void w_engine::exec_main_loop()
 
 			OPENGL->init_projection_matrix();
 			OPENGL->init_view_matrix_identity();
+			MATRIX->push();
 
 			// layers and entities
 			engine->layer_mgr->draw();
 
-			OPENGL->init_view_matrix_identity();
+			MATRIX->pop();
 
 			// top most UI elements, like the mouse cursor
 			UI->draw_topmost();

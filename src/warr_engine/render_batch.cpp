@@ -131,54 +131,38 @@ int w_render_batch::assign_texture_slot( const a_texture* tex )
     return current_texture_slot_idx;
 }
 
-void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
+void w_render_batch::add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
 {
     add_vert( tex, v0 );
     add_vert( tex, v1 );
     add_vert( tex, v2 );
     add_vert( tex, v3 );
 
-    // batch is full, so draw the batch and reset
-    if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
-    {
-        draw_and_reset();
-    }
+	check_draw_and_reset();
 }
 
-void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
+void w_render_batch::add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
 {
 	add_vert( tex, v0 );
 	add_vert( tex, v1 );
 	add_vert( tex, v2 );
 
-	// batch is full, so draw the batch and reset
-	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
-	{
-		draw_and_reset();
-	}
+	check_draw_and_reset();
 }
 
-void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 )
+void w_render_batch::add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 )
 {
     add_vert( tex, v0 );
     add_vert( tex, v1 );
 
-	// batch is full, so draw the batch and reset
-	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
-	{
-		draw_and_reset();
-	}
+	check_draw_and_reset();
 }
 
-void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0 )
+void w_render_batch::add_primitive( const a_texture* tex, const w_render_vertex& v0 )
 {
 	add_vert( tex, v0 );
 
-	// batch is full, so draw the batch and reset
-	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
-	{
-		draw_and_reset();
-	}
+	check_draw_and_reset();
 }
 
 void w_render_batch::bind()
@@ -193,6 +177,16 @@ void w_render_batch::unbind()
     glBindVertexArray( 0 );
 	vertex_buffer->unbind();
 	index_buffer->unbind();
+}
+
+// check if the batch is full - if so, draw the batch and reset it
+
+void w_render_batch::check_draw_and_reset()
+{
+	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
+	{
+		draw_and_reset();
+	}
 }
 
 // sends the batch to the GPU for drawing and resets to a fresh state
@@ -229,16 +223,19 @@ void w_render_batch::draw_and_reset()
 		RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
 		RENDER->stats.indices.accum( static_cast<float>( index_count ) );
 
-		if( RENDER->enable_frame_debugger )
+		// frame debugger
 		{
-			log( ">> draw call >> prim_type:{}", gl_prim_type );
-
-			for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
+			if( RENDER->enable_frame_debugger )
 			{
-				log( "  texture_{} : {}", x, texture_slots[ x ]->tag );
-			}
+				log( ">> draw call >> prim_type:{}", gl_prim_type );
 
-			log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
+				for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
+				{
+					log( "  texture_{} : {}", x, texture_slots[ x ]->tag );
+				}
+
+				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
+			}
 		}
 
         unbind();

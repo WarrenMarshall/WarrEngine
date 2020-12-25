@@ -275,7 +275,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 
 	for( auto x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
-		batch_triangles->add_element(
+		batch_triangles->add_primitive(
 			mesh->tex,
 			mesh->render_verts[ x ],
 			mesh->render_verts[ x + 1 ],
@@ -327,7 +327,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	batch_quads->add_element( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( subtex->tex, v0, v1, v2, v3 );
 
 	MATRIX->pop();
 
@@ -362,7 +362,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	MATRIX->push()->translate( { dst.x, dst.y } );
-	batch_quads->add_element( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( subtex->tex, v0, v1, v2, v3 );
 	MATRIX->pop();
 
 	return this;
@@ -601,7 +601,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch_quads->add_element( engine->white_solid->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( engine->white_solid->tex, v0, v1, v2, v3 );
 
 	return this;
 }
@@ -649,7 +649,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_lines->add_element( engine->white_wire->tex, v0, v1 );
+		batch_lines->add_primitive( engine->white_wire->tex, v0, v1 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -668,7 +668,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 
 	rs_snap_to_pixel = false;
 
-	batch_lines->add_element(
+	batch_lines->add_primitive(
 		engine->white_wire->tex,
 		v0,
 		v1
@@ -689,7 +689,7 @@ w_render* w_render::draw_point( const w_vec2& pos )
 
 	rs_snap_to_pixel = false;
 
-	batch_points->add_element(
+	batch_points->add_primitive(
 		engine->white_wire->tex,
 		v0
 	);

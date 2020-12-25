@@ -121,7 +121,7 @@ void w_layer_mgr::draw()
 
 				// draw the layer. uses an optional custom camera.
 				{
-					OPENGL->init_view_matrix( camera );
+					//OPENGL->init_view_matrix( layer->get_camera() );
 					RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
 					layer->draw();
 				}
@@ -155,7 +155,7 @@ void w_layer_mgr::draw()
 				// drawn with an identity matrix so the top left of
 				// the screen is always 0,0.
 				{
-					OPENGL->init_view_matrix_identity_ui();
+					//OPENGL->init_view_matrix_identity_ui();
 					RENDER->push_depth_nudge();
 					layer->draw_ui();
 				}

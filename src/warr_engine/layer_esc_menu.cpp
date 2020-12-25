@@ -25,6 +25,8 @@ void layer_esc_menu::pop()
 
 void layer_esc_menu::draw_ui()
 {
+	OPENGL->init_view_matrix_identity_ui();
+
 	w_layer::draw_ui();
 
 	RENDER

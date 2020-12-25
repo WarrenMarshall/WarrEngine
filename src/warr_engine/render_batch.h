@@ -19,13 +19,14 @@ struct w_render_batch
 	int current_texture_slot_idx = 0;
 	int assign_texture_slot( const a_texture* tex );
 
-	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 );
-	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 );
-	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 );
-	void add_element( const a_texture* tex, const w_render_vertex& v0 );
+	void add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 );
+	void add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 );
+	void add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 );
+	void add_primitive( const a_texture* tex, const w_render_vertex& v0 );
 
 	void bind();
 	void unbind();
+	void check_draw_and_reset();
 	void draw_and_reset();
 	void reset();
 

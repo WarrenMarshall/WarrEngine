@@ -18,6 +18,12 @@ w_camera* layer_game::get_camera()
 	return find_from_tag<w_camera>( "main_camera" );
 }
 
+void layer_game::draw()
+{
+	OPENGL->init_view_matrix( get_camera() );
+	w_layer::draw();
+}
+
 void layer_game::update()
 {
 	w_layer::update();
