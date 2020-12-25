@@ -15,8 +15,7 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
         case render_prim::quad:
         {
 			// this computes to 10,000 x 4 vertices, which is 40,000 vertices max,
-			// which is 60,000 indices ... which is just shy of the limit of
-			// an insigned short: 65,535
+			// which is 60,000 indices
 			//
 			// (4 verts / 6 indices = 1 quad)
 			//
@@ -27,7 +26,7 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
             indices_to_verts_factor = 1.5f;
 			gl_prim_type = GL_TRIANGLES;
 
-			vertex_buffer = std::make_unique< w_vertex_buffer_quads>( this );
+			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 4 );
 			index_buffer = std::make_unique<w_index_buffer_quads>( this );
         }
         break;
@@ -35,8 +34,7 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 		case render_prim::triangle:
 		{
 			// this computes to 10,000 x 3 vertices, which is 30,000 vertices max,
-			// which is 60,000 indices ... which is just shy of the limit of
-			// an insigned short: 65,535
+			// which is 60,000 indices
 			//
 			// (3 verts / 3 indices = 1 triangle)
 			//
@@ -47,7 +45,7 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 			indices_to_verts_factor = 1.0f;
 			gl_prim_type = GL_TRIANGLES;
 
-			vertex_buffer = std::make_unique<w_vertex_buffer_tris>( this );
+			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 3 );
 			index_buffer = std::make_unique<w_index_buffer_tris>( this );
 		}
 		break;
@@ -55,8 +53,7 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 		case render_prim::line:
 		{
 			// this computes to 10,000 x 2 vertices, which is 20,000 vertices max,
-			// which is 40,000 indices ... which is just shy of the limit of
-			// an insigned short: 65,535
+			// which is 40,000 indices
 			//
 			// (2 verts / 2 indices = 1 line)
 			//
@@ -67,7 +64,26 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 			indices_to_verts_factor = 1.0f;
 			gl_prim_type = GL_LINES;
 
-			vertex_buffer = std::make_unique<w_vertex_buffer_lines>( this );
+			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 2 );
+			index_buffer = std::make_unique<w_index_buffer_lines>( this );
+		}
+		break;
+
+		case render_prim::point:
+		{
+			// this computes to 10,000 x 1 vertices, which is 10,000 vertices max,
+			// which is 10,000 indices
+			//
+			// (1 verts / 1 indices = 1 point)
+			//
+			// if you want to make the batches larger, the index buffer will need to
+			// use a larger data type.
+
+			max_elements_per_batch = 10000;
+			indices_to_verts_factor = 1.0f;
+			gl_prim_type = GL_POINTS;
+
+			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 1 );
 			index_buffer = std::make_unique<w_index_buffer_lines>( this );
 		}
 		break;
@@ -146,6 +162,17 @@ void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v
 {
     add_vert( tex, v0 );
     add_vert( tex, v1 );
+
+	// batch is full, so draw the batch and reset
+	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
+	{
+		draw_and_reset();
+	}
+}
+
+void w_render_batch::add_element( const a_texture* tex, const w_render_vertex& v0 )
+{
+	add_vert( tex, v0 );
 
 	// batch is full, so draw the batch and reset
 	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )

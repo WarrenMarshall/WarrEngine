@@ -35,3 +35,10 @@ struct w_index_buffer_lines : w_index_buffer
 	w_index_buffer_lines( w_render_batch* batch );
 };
 
+// ----------------------------------------------------------------------------
+
+struct w_index_buffer_points : w_index_buffer
+{
+	w_index_buffer_points( w_render_batch* batch );
+};
+

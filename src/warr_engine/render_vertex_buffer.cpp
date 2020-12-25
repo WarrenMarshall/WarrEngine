@@ -4,11 +4,18 @@
 
 // ----------------------------------------------------------------------------
 
-w_vertex_buffer::w_vertex_buffer( w_render_batch* batch )
-	: batch( batch )
+w_vertex_buffer::w_vertex_buffer( w_render_batch* batch, int verts_per_element )
+	: batch( batch ), verts_per_element( verts_per_element )
 {
 	glCreateBuffers( 1, &gl_id );
 	bind();
+
+	preallocate_vertices( batch->max_elements_per_batch * verts_per_element );
+	set_up_vertex_attribs();
+	vertices.reserve( batch->max_elements_per_batch * verts_per_element );
+
+	unbind();
+
 }
 
 w_vertex_buffer::~w_vertex_buffer()
@@ -59,56 +66,7 @@ void w_vertex_buffer::unbind()
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 }
 
-// ----------------------------------------------------------------------------
-
-w_vertex_buffer_quads::w_vertex_buffer_quads( w_render_batch* batch )
-	: w_vertex_buffer( batch )
-{
-	preallocate_vertices( batch->max_elements_per_batch * 4 );
-	set_up_vertex_attribs();
-
-	vertices.reserve( batch->max_elements_per_batch * 4 );
-
-	unbind();
-};
-
-void w_vertex_buffer_quads::upload( int num_verts_to_upload )
-{
-	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
-}
-
-// ----------------------------------------------------------------------------
-
-w_vertex_buffer_tris::w_vertex_buffer_tris( w_render_batch* batch )
-	: w_vertex_buffer( batch )
-{
-	preallocate_vertices( batch->max_elements_per_batch * 3 );
-	set_up_vertex_attribs();
-
-	vertices.reserve( batch->max_elements_per_batch * 3 );
-
-	unbind();
-};
-
-void w_vertex_buffer_tris::upload( int num_verts_to_upload )
-{
-	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
-}
-
-// ----------------------------------------------------------------------------
-
-w_vertex_buffer_lines::w_vertex_buffer_lines( w_render_batch* batch )
-	: w_vertex_buffer( batch )
-{
-	preallocate_vertices( batch->max_elements_per_batch * 2 );
-	set_up_vertex_attribs();
-
-	vertices.reserve( batch->max_elements_per_batch * 2 );
-
-	unbind();
-};
-
-void w_vertex_buffer_lines::upload( int num_verts_to_upload )
+void w_vertex_buffer::upload( int num_verts_to_upload )
 {
 	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
 }

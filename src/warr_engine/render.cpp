@@ -5,11 +5,9 @@
 void w_render::init()
 {
 	batch_quads = std::make_unique<w_render_batch>( render_prim::quad );
-	batch_quads->bind();
 	batch_triangles = std::make_unique<w_render_batch>( render_prim::triangle );
-	batch_triangles->bind();
 	batch_lines = std::make_unique<w_render_batch>( render_prim::line );
-	batch_lines->bind();
+	batch_points = std::make_unique<w_render_batch>( render_prim::point );
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
@@ -461,6 +459,7 @@ void w_render::end_frame()
 	batch_quads->draw_and_reset();
 	batch_triangles->draw_and_reset();
 	batch_lines->draw_and_reset();
+	batch_points->draw_and_reset();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created
@@ -680,22 +679,22 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 
 w_render* w_render::draw_point( const w_vec2& pos )
 {
-	return this;		// #batch
+	w_color rs_color = rs_color_stack.back();
+	rs_color.a = rs_alpha_stack.back();
+	float rs_emissive = rs_emissive_stack.back();
 
-#if 0
-	set_current_texture( engine->white_wire->tex );
-
-	auto start = pos;
-	auto end = start + w_vec2( 1.0f, 0.0f );
+	w_render_vertex v0( pos, w_uv( 0, 0 ), rs_color, rs_emissive );
 
 	rs_snap_to_pixel = false;
 
-	draw_line( start, end );
+	batch_points->add_element(
+		engine->white_wire->tex,
+		v0
+	);
 
 	rs_snap_to_pixel = true;
 
 	return this;
-#endif
 }
 
 w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )

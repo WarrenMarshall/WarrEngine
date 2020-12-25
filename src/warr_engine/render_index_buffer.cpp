@@ -38,7 +38,7 @@ w_index_buffer_quads::w_index_buffer_quads( w_render_batch* batch )
 	std::vector<unsigned short> indices;
 	indices.resize( batch->max_elements_per_batch * 6 );
 
-	// quad indices:
+	// index format:
 	// 0, 1, 2, 0, 2, 3
 	// 4, 5, 6, 4, 6, 7
 	// ...
@@ -78,7 +78,7 @@ w_index_buffer_tris::w_index_buffer_tris( w_render_batch* batch )
 	std::vector<unsigned short> indices;
 	indices.resize( batch->max_elements_per_batch * 3 );
 
-	// triangle indices:
+	// index format:
 	// 0, 1, 2,
 	// 3, 4, 5,
 	// ...
@@ -109,7 +109,7 @@ w_index_buffer_lines::w_index_buffer_lines( w_render_batch* batch )
 	std::vector<unsigned short> indices;
 	indices.resize( batch->max_elements_per_batch * 2 );
 
-	// triangle indices:
+	// index format:
 	// 0, 1,
 	// 2, 3,
 	// ...
@@ -124,6 +124,37 @@ w_index_buffer_lines::w_index_buffer_lines( w_render_batch* batch )
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
 		( batch->max_elements_per_batch * 2 ) * sizeof( unsigned short ),
+		indices.data(),
+		GL_STATIC_DRAW
+	);
+}
+
+// ----------------------------------------------------------------------------
+
+w_index_buffer_points::w_index_buffer_points( w_render_batch* batch )
+	: w_index_buffer( batch )
+{
+	// create the full set of indices right ahead of time since we know
+	// the pattern they will be following.
+
+	std::vector<unsigned short> indices;
+	indices.resize( batch->max_elements_per_batch * 1 );
+
+	// index format:
+	// 0,
+	// 1,
+	// ...
+
+	for( unsigned short q = 0 ; q < batch->max_elements_per_batch * 1 ; q++ )
+	{
+		indices[ q ] = q;
+	}
+
+	// send the index data to the card
+
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,
+		( batch->max_elements_per_batch * 1 ) * sizeof( unsigned short ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);

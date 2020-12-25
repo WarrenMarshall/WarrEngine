@@ -22,6 +22,7 @@ struct w_render_batch
 	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 );
 	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 );
 	void add_element( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 );
+	void add_element( const a_texture* tex, const w_render_vertex& v0 );
 
 	void bind();
 	void unbind();

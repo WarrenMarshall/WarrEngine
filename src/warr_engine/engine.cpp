@@ -609,7 +609,7 @@ void w_engine::new_physics_world()
 		0
 		| b2Draw::e_shapeBit			// shapes
 		| b2Draw::e_jointBit			// joint connections
-		//| b2Draw::e_aabbBit				// axis aligned bounding boxes
+		| b2Draw::e_aabbBit				// axis aligned bounding boxes
 		| b2Draw::e_pairBit				// broad-phase pairs
 		| b2Draw::e_centerOfMassBit		// center of mass frame
 	);
