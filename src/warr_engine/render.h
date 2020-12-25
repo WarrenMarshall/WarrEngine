@@ -39,6 +39,7 @@ struct w_render
 	float rs_z_depth_nudge_accum = 0.0f;
 
 	bool rs_snap_to_pixel = true;
+	bool enable_frame_debugger = false;
 
 	w_render* begin();
 	w_render* end();

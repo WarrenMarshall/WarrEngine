@@ -15,7 +15,7 @@ struct w_render_batch
 	std::unique_ptr< w_vertex_buffer> vertex_buffer = nullptr;
 	std::unique_ptr<w_index_buffer> index_buffer = nullptr;
 
-	std::vector<int> texture_slots;
+	std::vector<const a_texture*> texture_slots;
 	int current_texture_slot_idx = 0;
 	int assign_texture_slot( const a_texture* tex );
 

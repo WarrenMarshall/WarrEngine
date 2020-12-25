@@ -819,6 +819,16 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 		return true;
 	}
 
+	// frame debugger
+	if( evt->input_id == input_id::key_f10 )
+	{
+		RENDER->enable_frame_debugger = true;
+		log_div();
+		log( "enable frame debugger ..." );
+		log_div();
+		return true;
+	}
+
 	// toggle full screen
 	if( evt->input_id == input_id::key_f11 )
 	{
@@ -826,7 +836,7 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 		return true;
 	}
 
- 	if( evt->input_id == input_id::key_enter )
+	if( evt->input_id == input_id::key_enter )
 	{
 		if( engine->input->is_alt_down() )
 		{

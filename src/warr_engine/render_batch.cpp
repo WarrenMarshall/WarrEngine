@@ -111,7 +111,7 @@ int w_render_batch::assign_texture_slot( const a_texture* tex )
 	// if this texture is already in the slot list, return that index
 	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
 	{
-		if( texture_slots[ x ] == static_cast<int>( tex->gl_id ) )
+		if( texture_slots[ x ] == tex )
 		{
 			current_texture_slot_idx = x;
 			return x;
@@ -126,7 +126,7 @@ int w_render_batch::assign_texture_slot( const a_texture* tex )
 
 	// add the new texture to the slot list
 	current_texture_slot_idx++;
-	texture_slots[ current_texture_slot_idx ] = tex->gl_id;
+	texture_slots[ current_texture_slot_idx ] = tex;
 
     return current_texture_slot_idx;
 }
@@ -209,10 +209,10 @@ void w_render_batch::draw_and_reset()
 
         // bind the textures to the texture units.
 
-        for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
+		for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
 		{
-            glBindTextureUnit( x, texture_slots[ x ] );
-        }
+			glBindTextureUnit( x, texture_slots[ x ] ? texture_slots[ x ]->gl_id : 0 );
+		}
 
         // upload verts to the card
 
@@ -229,6 +229,18 @@ void w_render_batch::draw_and_reset()
 		RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
 		RENDER->stats.indices.accum( static_cast<float>( index_count ) );
 
+		if( RENDER->enable_frame_debugger )
+		{
+			log( ">> draw call >> prim_type:{}", gl_prim_type );
+
+			for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
+			{
+				log( "  texture_{} : {}", x, texture_slots[ x ]->tag );
+			}
+
+			log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
+		}
+
         unbind();
     }
 
@@ -244,7 +256,7 @@ void w_render_batch::reset()
 
     for( auto& iter : texture_slots )
     {
-        iter = 0;
+        iter = nullptr;
     }
 
     current_texture_slot_idx = -1;
