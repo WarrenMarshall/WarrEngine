@@ -117,36 +117,48 @@ void w_layer_mgr::draw()
 
 			if( layer->ilc_is_alive() )
 			{
-				// primary draw call for the layer. uses an optional custom camera.
-				OPENGL->init_view_matrix( layer->get_camera() );
-				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
-				layer->draw();
+				w_camera* camera = layer->get_camera();
 
-				// let the layer draw optional debug info. note that this is
-				// using the optional custom camera from above, so this is
-				// only for debug drawing in world space, not screen space.
+				// draw the layer. uses an optional custom camera.
+				{
+					OPENGL->init_view_matrix( camera );
+					RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+					layer->draw();
+				}
 
-				// #wtf - this half space offset works but I have no idea why - feels wrong and working by accident
-				MATRIX
-					->push()
-					->translate( w_vec2( v_window_hw, v_window_hh ) );
-				RENDER->push_depth_nudge();
-				layer->draw_debug();
-				MATRIX
-					->pop();
+				// draw any debug information that lives in world space.
+				{
+					if( RENDER->show_physics_debug && layer->is_topmost_layer() )
+					{
+						// box2d needs the origin of the world to be in the middle of the viewport
+
+						// #todo - needs testing with a camera in place and all that
+
+						if( camera )
+						{
+							MATRIX
+								->push()
+								->translate( w_vec2( v_window_hw, v_window_hh ) );
+						}
+
+						RENDER->push_depth_nudge();
+						engine->box2d_world->DebugDraw();
+
+						if( camera )
+						{
+							MATRIX->pop();
+						}
+					}
+				}
 
 				// draw any screen space items, like UI. these are
 				// drawn with an identity matrix so the top left of
 				// the screen is always 0,0.
-				OPENGL->init_view_matrix_identity_ui();
-				RENDER->push_depth_nudge();
-				layer->draw_ui();
-
-				// same as the other debug draw call, but this is for
-				// info in screen space
-				OPENGL->init_view_matrix_identity();
-				RENDER->push_depth_nudge( 100 );
-				layer->draw_ui_debug();
+				{
+					OPENGL->init_view_matrix_identity_ui();
+					RENDER->push_depth_nudge();
+					layer->draw_ui();
+				}
 			}
 		}
 

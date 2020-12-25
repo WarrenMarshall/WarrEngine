@@ -46,7 +46,6 @@ struct w_layer : i_life_cycle, i_input_receiver
 	virtual void draw_debug();
 
 	virtual void draw_ui();
-	virtual void draw_ui_debug();
 
 	virtual w_camera* get_camera();
 

@@ -170,11 +170,16 @@ void w_opengl::init_view_matrix( w_camera* camera ) const
 
 	if( camera )
 	{
+		// when using a camera, you are looking THROUGH that camera, so offset the
+		// world by half the viewport w/h so it's in the middle of the screen
+		// rather than in the top left corner (where it is by default)
+
 		view = glm::translate( view, glm::vec3(
 			v_window_hw,
 			v_window_hh,
 			0.0f ) );
 
+		// then apply the camera position
 		view = glm::translate( view, glm::vec3(
 			-( camera->pos.x ),
 			-( camera->pos.y ),

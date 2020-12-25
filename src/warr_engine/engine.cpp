@@ -605,7 +605,14 @@ void w_engine::new_physics_world()
 
 	engine->physics_debug_draw = std::make_unique<w_physics_debug_draw>();
 	engine->box2d_world->SetDebugDraw( engine->physics_debug_draw.get() );
-	engine->physics_debug_draw->SetFlags( b2Draw::e_shapeBit | b2Draw::e_centerOfMassBit );
+	engine->physics_debug_draw->SetFlags(
+		0
+		| b2Draw::e_shapeBit			// shapes
+		| b2Draw::e_jointBit			// joint connections
+		//| b2Draw::e_aabbBit				// axis aligned bounding boxes
+		| b2Draw::e_pairBit				// broad-phase pairs
+		| b2Draw::e_centerOfMassBit		// center of mass frame
+	);
 
 #ifdef _DEBUG
 	RENDER->show_physics_debug = true;
