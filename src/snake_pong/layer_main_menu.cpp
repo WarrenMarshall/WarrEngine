@@ -7,7 +7,11 @@ layer_main_menu::layer_main_menu()
 
 void layer_main_menu::push()
 {
-	auto e = add_entity<w_entity>();
+	w_entity* e;
+
+	// particles
+
+	e = add_entity<w_entity>();
 	e->it_set_position( { v_window_hw, 0.0f } );
 	e->add_component<ec_emitter>()->init( "menu_fire_up" )
 		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );

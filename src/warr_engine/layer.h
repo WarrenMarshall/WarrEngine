@@ -16,7 +16,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 		// if true, this is the layer where the box2d entities live. as a rule, entities
 		// using the physics engine live on the same layer. the engine needs a way of
 		// knowing which layer that is so it can draw the debug information correctly.
-		bool is_primary_physics_layer : 1;
+		bool is_debug_physics_layer : 1;
 	};
 
 	w_layer();
@@ -56,7 +56,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 
 	virtual void draw_ui();
 
-	virtual w_camera* get_camera();
+	e_camera* get_camera();
 
 	template<typename T>
 	T* add_entity()
@@ -71,6 +71,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 
 	[[nodiscard]] bool is_topmost_layer() const;
 
+	// #optimization - this feels like a bottleneck waiting to happen. some sort of map look up would be way faster.
 	template<typename T>
 	[[nodiscard]] T* find_from_tag( const char* tag )
 	{

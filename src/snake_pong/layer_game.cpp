@@ -3,7 +3,7 @@
 
 layer_game::layer_game()
 {
-	is_primary_physics_layer = true;
+	is_debug_physics_layer = true;
 }
 
 void layer_game::becoming_top_layer()
@@ -11,17 +11,6 @@ void layer_game::becoming_top_layer()
 	w_layer::becoming_top_layer();
 
 	engine->window->set_mouse_mode( mouse_mode::os );
-}
-
-w_camera* layer_game::get_camera()
-{
-	return find_from_tag<w_camera>( "main_camera" );
-}
-
-void layer_game::draw()
-{
-	OPENGL->init_view_matrix( get_camera() );
-	w_layer::draw();
 }
 
 void layer_game::update()

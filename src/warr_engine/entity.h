@@ -4,7 +4,7 @@
 
 struct w_entity : i_life_cycle, i_transform
 {
-	const char* tag = nullptr;
+	std::string tag;
 
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
@@ -103,7 +103,7 @@ struct w_entity_transient : w_entity
 
 // ----------------------------------------------------------------------------
 
-struct w_camera : w_entity
+struct e_camera : w_entity
 {
 	struct
 	{

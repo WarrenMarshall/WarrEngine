@@ -1,7 +1,7 @@
 #pragma once
 
 struct w_shader;
-struct w_camera;
+struct e_camera;
 struct w_bit_flag_generator;
 struct a_emitter_params;
 struct a_subtexture;

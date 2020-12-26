@@ -14,7 +14,7 @@ void w_render::init()
 	// push an identity matrix onto the stack. this will always live
 	// as the first element in the stack and should be the only
 	// matrix remaining when the frame finishes rendering.
-	MATRIX->push_identity();
+	OPENGL->push_identity();
 
 	// initialize render state stacks
 	clear_render_states();
@@ -268,7 +268,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 		render_vert.e = rs_emissive;
 	}
 
-	MATRIX
+	OPENGL
 		->push()
 		->rotate( rs_angle )
 		->scale( rs_scale.x, rs_scale.y );
@@ -283,7 +283,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 		);
 	}
 
-	MATRIX->pop();
+	OPENGL->pop();
 
 	return this;
 }
@@ -322,14 +322,14 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
 	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
-	MATRIX
+	OPENGL
 		->push()
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
 	batch_quads->add_primitive( subtex->tex, v0, v1, v2, v3 );
 
-	MATRIX->pop();
+	OPENGL->pop();
 
 	return this;
 }
@@ -361,9 +361,9 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
 	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
-	MATRIX->push()->translate( { dst.x, dst.y } );
+	OPENGL->push()->translate( { dst.x, dst.y } );
 	batch_quads->add_primitive( subtex->tex, v0, v1, v2, v3 );
-	MATRIX->pop();
+	OPENGL->pop();
 
 	return this;
 }
@@ -405,7 +405,7 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 	// ----------------------------------------------------------------------------
 
-	MATRIX
+	OPENGL
 		->push()
 		->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
 
@@ -428,7 +428,7 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		xpos += (fch->xadvance * rs_scale.x);
 	}
 
-	MATRIX->pop();
+	OPENGL->pop();
 
 	return this;
 }

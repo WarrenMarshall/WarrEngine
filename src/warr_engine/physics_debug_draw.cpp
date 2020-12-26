@@ -41,7 +41,7 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 {
 	w_vec2 position = w_vec2( center ).from_b2d();
 
-	MATRIX
+	OPENGL
 		->push()
 		->translate( { position.x, position.y } );
 
@@ -50,7 +50,7 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 		->draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
 		->pop_rgba();
 
-	MATRIX->pop();
+	OPENGL->pop();
 }
 
 // Draw a solid circle.
@@ -58,7 +58,7 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 {
 	w_vec2 position = w_vec2( center ).from_b2d();
 
-	MATRIX
+	OPENGL
 		->push()
 		->translate( { position.x, position.y } );
 
@@ -67,7 +67,7 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 		->draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
 		->pop_rgba();
 
-	MATRIX->pop();
+	OPENGL->pop();
 }
 
 // Draw a line segment.

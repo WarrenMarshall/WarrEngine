@@ -162,7 +162,7 @@ void w_opengl::init_projection_matrix() const
 //
 // if there is a custom camera, apply it's transform.
 
-void w_opengl::init_view_matrix( w_camera* camera ) const
+void w_opengl::init_view_matrix( e_camera* camera ) const
 {
 	RENDER->batch_quads->draw_and_reset();
 
@@ -171,19 +171,10 @@ void w_opengl::init_view_matrix( w_camera* camera ) const
 
 	if( camera )
 	{
-		// when using a camera, you are looking THROUGH that camera, so offset the
-		// world by half the viewport w/h so it's in the middle of the screen
-		// rather than in the top left corner (where it is by default)
-
+		// apply the camera position
 		view = glm::translate( view, glm::vec3(
-			v_window_hw,
-			v_window_hh,
-			0.0f ) );
-
-		// then apply the camera position
-		view = glm::translate( view, glm::vec3(
-			-( camera->pos.x ),
-			-( camera->pos.y ),
+			camera->pos.x,
+			camera->pos.y,
 			0.0f ) );
 	}
 

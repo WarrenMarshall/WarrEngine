@@ -99,11 +99,16 @@ void w_layer_mgr::draw()
 		->begin()
 		->push_depth( zdepth_clear_window )
 		->push_rgb( engine->window->v_window_clear_color )
+		// #todo - is this even needed anymore? it's a waste of fill rate and messes up batching a little.
 		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) )
 		->end();
 
 	if( !layer_stack.empty() )
 	{
+		// ----------------------------------------------------------------------------
+		// DRAW
+		// ----------------------------------------------------------------------------
+
 		// draw starting from the starting_layer_idx and every layer above it
 
 		RENDER->begin();
@@ -117,52 +122,67 @@ void w_layer_mgr::draw()
 
 			if( layer->ilc_is_alive() )
 			{
-				w_camera* camera = layer->get_camera();
+				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
 
-				// draw the layer. uses an optional custom camera.
-				{
-					//OPENGL->init_view_matrix( layer->get_camera() );
-					RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
-					layer->draw();
-				}
+				e_camera* camera = layer->get_camera();
+				OPENGL->init_view_matrix( camera );
+
+				layer->draw();
 
 				// draw any debug information that lives in world space.
+				if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
 				{
-					if( RENDER->show_physics_debug && layer->is_primary_physics_layer )
+					// box2d needs the origin of the world to be in the middle of the viewport
+
+					OPENGL->push();
+					if( camera )
 					{
-						// box2d needs the origin of the world to be in the middle of the viewport
-
-						// #todo - needs testing with a camera in place and all that
-
-						if( camera )
-						{
-							MATRIX
-								->push()
-								->translate( w_vec2( v_window_hw, v_window_hh ) );
-						}
-
-						RENDER->push_depth_nudge();
-						engine->box2d_world->DebugDraw();
-
-						if( camera )
-						{
-							MATRIX->pop();
-						}
+						OPENGL->top()->translate( { camera->pos.x, camera->pos.y } );
 					}
-				}
 
-				// draw any screen space items, like UI. these are
-				// drawn with an identity matrix so the top left of
-				// the screen is always 0,0.
-				{
-					//OPENGL->init_view_matrix_identity_ui();
 					RENDER->push_depth_nudge();
-					layer->draw_ui();
+					engine->box2d_world->DebugDraw();
+
+					OPENGL
+						->pop();
 				}
 			}
 		}
 
 		RENDER->end();
+
+		// ----------------------------------------------------------------------------
+		// UI
+		// ----------------------------------------------------------------------------
+
+		RENDER
+			->begin()
+			->push_depth( zdepth_clear_window );
+
+		OPENGL->init_view_matrix_identity_ui();
+
+		for( auto x = starting_layer_idx; x >= 0; --x )
+		{
+			auto layer = layer_stack[ x ].get();
+
+			// Only UI elements on the topmost layer respond to user input
+			IMGUI->containing_layer_is_topmost = !x;
+
+			if( layer->ilc_is_alive() )
+			{
+				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+
+				// draw any screen space items, like UI. these are
+				// drawn with an identity matrix so the top left of
+				// the screen is always 0,0.
+
+				RENDER->push_depth_nudge();
+				layer->draw_ui();
+			}
+		}
+
+		RENDER->end();
+
 	}
 }
 

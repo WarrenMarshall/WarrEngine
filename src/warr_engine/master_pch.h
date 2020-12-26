@@ -231,7 +231,6 @@ constexpr float from_b2d( float v )
 // handy definitions
 // ----------------------------------------------------------------------------
 
-#define MATRIX engine->opengl
 #define OPENGL engine->opengl
 #define RENDER engine->render
 #define UI engine->ui

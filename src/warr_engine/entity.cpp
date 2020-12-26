@@ -54,13 +54,13 @@ void w_entity::update_components()
 
 	for( const auto& component : components )
 	{
-		MATRIX
+		OPENGL
 			->push()
 			->add_transform( component->pos, component->angle, component->scale );
 
 		component->update();
 
-		MATRIX
+		OPENGL
 			->pop();
 	}
 }
@@ -69,14 +69,14 @@ void w_entity::draw()
 {
 	for( const auto& component : components )
 	{
-		MATRIX
+		OPENGL
 			->push()
 			->add_transform( component->pos, component->angle, component->scale );
 
 		RENDER->push_depth_nudge();
 		component->draw();
 
-		MATRIX
+		OPENGL
 			->pop();
 	}
 }
@@ -259,7 +259,7 @@ void w_entity_transient::update()
 
 // ----------------------------------------------------------------------------
 
-void w_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength )
+void e_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength )
 {
 	follow.target = entity_to_follow;
 	follow.flags = flags;
@@ -269,17 +269,17 @@ void w_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags fla
 	set_position_deep( follow.target->pos, false );
 }
 
-void w_camera::set_follow_limits_x( w_vec2 limits )
+void e_camera::set_follow_limits_x( w_vec2 limits )
 {
 	follow.limits_x = limits;
 }
 
-void w_camera::set_follow_limits_y( w_vec2 limits )
+void e_camera::set_follow_limits_y( w_vec2 limits )
 {
 	follow.limits_y = limits;
 }
 
-void w_camera::update()
+void e_camera::update()
 {
 	w_entity::update();
 

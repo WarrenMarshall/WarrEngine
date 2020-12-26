@@ -18,7 +18,7 @@ struct w_opengl
 	void set_blend( e_opengl_blend blend ) const;
 
 	void init_projection_matrix() const;
-	void init_view_matrix( w_camera* camera ) const;
+	void init_view_matrix( e_camera* camera ) const;
 	void init_view_matrix_identity() const;
 	void init_view_matrix_identity_ui() const;
 	void set_uniform( std::string_view name, float value );

@@ -6,7 +6,7 @@ w_layer::w_layer()
 {
 	draws_completely_solid = false;
 	blocks_further_input = false;
-	is_primary_physics_layer = false;
+	is_debug_physics_layer = false;
 }
 
 void w_layer::update()
@@ -37,14 +37,14 @@ void w_layer::update()
 
 	for( const auto& entity : entities )
 	{
-		MATRIX
+		OPENGL
 			->push()
 			->add_transform( entity->pos, entity->angle, entity->scale );
 
 		entity->update();
 		entity->update_components();
 
-		MATRIX
+		OPENGL
 			->pop();
 	}
 }
@@ -55,13 +55,13 @@ void w_layer::draw()
 	{
 		RENDER->stats.entities.inc();
 
-		MATRIX
+		OPENGL
 			->push()
 			->add_transform( entity->pos, entity->angle, entity->scale );
 
 		entity->draw();
 
-		MATRIX
+		OPENGL
 			->pop();
 	}
 }
@@ -74,9 +74,9 @@ void w_layer::draw_ui()
 {
 }
 
-w_camera* w_layer::get_camera()
+e_camera* w_layer::get_camera()
 {
-	return nullptr;
+	return find_from_tag<e_camera>( "main_camera" );
 }
 
 bool w_layer::is_topmost_layer() const

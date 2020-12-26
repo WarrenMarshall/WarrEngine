@@ -90,7 +90,7 @@ void ec_sprite::draw()
 		return;
 	}
 
-	MATRIX
+	OPENGL
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
@@ -175,14 +175,14 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 		// particle warm ups require the parent and component transforms to be applied
 		// so the warmed up particles spawn at the right position in the world.
 
-		MATRIX
+		OPENGL
 			->push()
 			->add_transform( parent_entity->pos, parent_entity->angle, parent_entity->scale )
 			->add_transform( pos, angle, scale );
 
 		emitter->warm_up();
 
-		MATRIX->pop();
+		OPENGL->pop();
 	}
 
 	return this;
@@ -211,12 +211,12 @@ void ec_emitter::draw()
 	// particles live in world space, so remove any entity and
 	// component level transforms before drawing the particle pool
 
-	MATRIX
+	OPENGL
 		->push_identity();
 
 	emitter->particle_pool->draw();
 
-	MATRIX
+	OPENGL
 		->pop();
 
 }

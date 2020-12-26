@@ -44,13 +44,14 @@ void snake_pong::new_game()
 
 	// camera
 
-	e = layer->add_entity<w_camera>();
+	e = layer->add_entity<e_camera>();
 	e->set_tag( "main_camera" );
+	e->it_set_position( { v_window_hw, v_window_hh } );
 
 	// world collision geometry
 
 	ec_b2d_static* ecs;
-	constexpr float wall_length = 2000.0f;
+	constexpr float wall_length = 512.0f;
 
 	e = layer->add_entity<w_entity>();
 	e->set_tag( "world" );
