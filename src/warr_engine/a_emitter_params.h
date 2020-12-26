@@ -1,6 +1,6 @@
 #pragma once
 
-struct a_emitter_params : i_asset//, i_speaker
+struct a_emitter_params : i_asset
 {
 	declare_find_func( a_emitter_params )
 
@@ -8,8 +8,8 @@ struct a_emitter_params : i_asset//, i_speaker
 	a_texture* tex = nullptr;
 
 	// where to spawn new particles
-	std::unique_ptr<w_particle_spawner> particle_spawner = std::make_unique<w_particle_spawner>();
-	std::unique_ptr<w_timeline> t_scale = std::make_unique<w_timeline>( timeline_type::float_type );
+	std::unique_ptr<w_particle_spawner> particle_spawner = nullptr;
+	std::unique_ptr<w_timeline> t_scale = nullptr;
 
 	w_range r_velocity_spawn = w_range( 50, 50 );	// initial velocity
 	w_range r_scale_spawn = w_range( 1, 1 );		// scale - spawn value and timeline
@@ -19,8 +19,8 @@ struct a_emitter_params : i_asset//, i_speaker
 	w_range r_dir_var = w_range( 0, 0 );			// variance for the spawn direction
 
 	// timelines for interpolating color and alpha
-	std::unique_ptr<w_timeline> t_color = std::make_unique<w_timeline>( timeline_type::color_type );
-	std::unique_ptr<w_timeline> t_alpha = std::make_unique<w_timeline>( timeline_type::float_type );
+	std::unique_ptr<w_timeline> t_color = nullptr;
+	std::unique_ptr<w_timeline> t_alpha = nullptr;
 
 	float s_max_spawn_per_sec = 0.0f;	// how many particles to spawn from this emitter, per second
 	float a_dir = 0.0f;					// the base direction that particles start moving in when they spawn

@@ -378,15 +378,6 @@
     <ClInclude Include="keyvalues.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="a_subtexture.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="a_texture.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="asset.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="ui_control.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -429,6 +420,15 @@
     <ClInclude Include="render_vertex.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="a_subtexture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="asset.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -440,5 +440,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-tidy" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,14 @@ implement_find_func( a_emitter_params )
 
 a_emitter_params::a_emitter_params()
 {
+	particle_spawner = std::make_unique<w_particle_spawner>();
+	t_scale = std::make_unique<w_timeline>( timeline_type::float_type );
+	t_color = std::make_unique<w_timeline>( timeline_type::color_type );
+	t_alpha = std::make_unique<w_timeline>( timeline_type::float_type );
+
+	needs_warm_up = false;
+	is_one_shot = false;
+
 	t_scale
 		->kf_clear()
 		->kf_add( w_keyframe( 0.00f, 1.0f ) )

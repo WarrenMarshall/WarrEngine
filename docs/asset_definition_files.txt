@@ -46,10 +46,15 @@ COLORS
 
 Anywhere colors are specified, you can either use a predefined name or an RGB value split up with forward slashes
 
-"e_color_white"
+"color.white"
 ..or..
-1.0/1.0/1.0
-1.0/1.0/1.0/1.0
+1.0,1.0,1.0
+1.0,1.0,1.0,1.0
+%255/%255/%255
+
+[#/#/#] - square brackets declares a set of values
+%999 - a percent sign forces the number to parse as an integer
+$aabbccdd - a dollar sign denotes a number in hexadecimal
 
 Alpha is optional. The parsing works if it's there or not (defaults to 1.0).
 

@@ -1,3 +1,4 @@
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -7,6 +8,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 	std::filesystem::path filename_path = original_filename;
 	std::string data_folder = filename_path.parent_path().generic_string() + "/";
+
+	auto asset_cache = engine->asset_cache.get();
 
 	for( const auto& iter_ad : asset_definitions )
 	{
@@ -18,7 +21,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 		type = iter_ad->find_value( "type" );
 		tag = iter_ad->find_value( "tag" );
 
-		filename = "";
+		filename.clear();
 
 		switch( pass_num )
 		{
@@ -26,7 +29,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "preproc" )
 				{
-					for( auto& [key,value] : iter_ad->kv )
+					for( auto& [key, value] : iter_ad->kv )
 					{
 						if( key != "tag" && key != "type" )
 						{
@@ -47,7 +50,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_palette>(), tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_palette>(), tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -76,7 +79,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_texture>(), tag, filename );
+						asset_ptr = asset_cache->add( std::make_unique<a_texture>(), tag, filename );
 					}
 
 					// ------------------------------------------------------------------------
@@ -99,7 +102,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					std::string subtex_name = std::string( iter_ad->find_value_opt( "subtexture_tag", "sub_" + tag ) );
 
-					auto subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tag ), subtex_name, "" );
+					auto subtex = asset_cache->add( std::make_unique<a_subtexture>( tag ), subtex_name, "" );
 
 					asset_ptr->subtex = subtex;
 
@@ -129,7 +132,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 							w_rect rc( x, y, w, h );
 
-							engine->asset_cache->add( std::make_unique<a_subtexture>( tag, rc ), subtex_name, "" );
+							asset_cache->add( std::make_unique<a_subtexture>( tag, rc ), subtex_name, "" );
 						}
 					}
 				}
@@ -142,7 +145,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_gradient>(), tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_gradient>(), tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -169,8 +172,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( iter_ad->does_key_exist( "subtexture_tag" ) )
 					{
-						auto subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tag ),
-																iter_ad->find_value( "subtexture_tag" ), "" );
+						auto subtex = asset_cache->add( std::make_unique<a_subtexture>( tag ),
+														iter_ad->find_value( "subtexture_tag" ), "" );
 						asset_ptr->subtex = subtex;
 					}
 
@@ -192,7 +195,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_font_def>(), tag, filename );
+						asset_ptr = asset_cache->add( std::make_unique<a_font_def>(), tag, filename );
 					}
 
 					// ------------------------------------------------------------------------
@@ -213,18 +216,18 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_9slice_def>(), tag, filename );
+						asset_ptr = asset_cache->add( std::make_unique<a_9slice_def>(), tag, filename );
 					}
 
 					// ------------------------------------------------------------------------
 
 					a_subtexture* subtexture = nullptr;
 
-					std::optional<std::string_view> tex_tag = std::nullopt;
+					std::string_view tex_tag;
 					if( iter_ad->does_key_exist( "texture_tag" ) )
 					{
 						tex_tag = iter_ad->find_value( "texture_tag" );
-						subtexture = a_texture::find( *tex_tag )->get_subtexture();
+						subtexture = a_texture::find( tex_tag )->get_subtexture();
 					}
 
 					std::optional<std::string_view> sub_tex_tag = std::nullopt;
@@ -235,9 +238,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						tex_tag = subtexture->tex->tag;
 					}
 
-					std::optional<w_rect> rect;
-					std::optional<w_vec2> x_slices;
-					std::optional<w_vec2> y_slices;
+					assert( subtexture );
+
+					w_rect rect = w_rect::zero;
+					w_vec2 x_slices;
+					w_vec2 y_slices;
 
 					for( const auto& [key, value] : iter_ad->kv )
 					{
@@ -257,94 +262,89 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// No rectangle was specified but we have a subtexture name. use the
 					// dimensions of that subtexture for the rect.
-					if( !rect && sub_tex_tag )
+					if( rect == w_rect::zero && sub_tex_tag )
 					{
 						rect = subtexture->get_bounding_rect();
-					}
-
-					if( !rect || !x_slices || !y_slices )
-					{
-						log_error( "Malformed slice definition : {}", tag );
 					}
 
 					float x, y, w, h;
 
 					// top row
 
-					x = rect->x;
-					y = rect->y;
-					w = x_slices->l;
-					h = y_slices->t;
+					x = rect.x;
+					y = rect.y;
+					w = x_slices.l;
+					h = y_slices.t;
 
 					asset_ptr->patches[ slicedef_patch::P_00 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", tag ), ""
 						);
 
-					x = rect->x + x_slices->l;
-					w = rect->w - x_slices->l - x_slices->r;
+					x = rect.x + x_slices.l;
+					w = rect.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_10 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", tag ), ""
 						);
 
-					x = rect->x + rect->w - x_slices->r;
-					w = x_slices->r;
+					x = rect.x + rect.w - x_slices.r;
+					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_20 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", tag ), ""
 						);
 
 					// middle row
 
-					x = rect->x;
-					y = rect->y + y_slices->t;
-					w = x_slices->l;
-					h = rect->h - y_slices->t - y_slices->b;
+					x = rect.x;
+					y = rect.y + y_slices.t;
+					w = x_slices.l;
+					h = rect.h - y_slices.t - y_slices.b;
 
 					asset_ptr->patches[ slicedef_patch::P_01 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", tag ), ""
 						);
 
-					x = rect->x + x_slices->l;
-					w = rect->w - x_slices->l - x_slices->r;
+					x = rect.x + x_slices.l;
+					w = rect.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_11 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", tag ), ""
 						);
 
-					x = rect->x + rect->w - x_slices->r;
-					w = x_slices->r;
+					x = rect.x + rect.w - x_slices.r;
+					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_21 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", tag ), ""
 						);
 
 					// bottom row
 
-					x = rect->x;
-					y = rect->y + rect->h - y_slices->b;
-					w = x_slices->l;
-					h = y_slices->b;
+					x = rect.x;
+					y = rect.y + rect.h - y_slices.b;
+					w = x_slices.l;
+					h = y_slices.b;
 
 					asset_ptr->patches[ slicedef_patch::P_02 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", tag ), ""
 						);
 
-					x = rect->x + x_slices->l;
-					w = rect->w - x_slices->l - x_slices->r;
+					x = rect.x + x_slices.l;
+					w = rect.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_12 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", tag ), ""
 						);
 
-					x = rect->x + rect->w - x_slices->r;
-					w = x_slices->r;
+					x = rect.x + rect.w - x_slices.r;
+					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_22 ] =
-						engine->asset_cache->add(
-							std::make_unique<a_subtexture>( *tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", tag ), ""
+						asset_cache->add(
+							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", tag ), ""
 						);
 
 					// ------------------------------------------------------------------------
@@ -364,7 +364,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_sound>(), tag, filename );
+						asset_ptr = asset_cache->add( std::make_unique<a_sound>(), tag, filename );
 					}
 
 					// ------------------------------------------------------------------------
@@ -397,7 +397,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
+						asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
 					}
 
 					// ------------------------------------------------------------------------
@@ -418,7 +418,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -444,8 +444,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
-															  tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
+													  tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -474,8 +474,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					if( !asset_ptr )
 					{
 						w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect" ) );
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture_tag" ), rc ),
-															  tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture_tag" ), rc ),
+													  tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -496,7 +496,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_emitter_params>(), tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_emitter_params>(), tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -606,7 +606,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( !asset_ptr )
 					{
-						asset_ptr = engine->asset_cache->add( std::make_unique<a_font>(), tag, "" );
+						asset_ptr = asset_cache->add( std::make_unique<a_font>(), tag, "" );
 					}
 
 					// ------------------------------------------------------------------------
@@ -650,16 +650,16 @@ bool w_asset_definition_file::create_internals()
 		// a "}" marks the end of the current asset definition
 		else if( line[0] == '}' )
 		{
+			assert( current_asset_definition );
+
 			asset_definitions.emplace_back( std::move( current_asset_definition ) );
 			current_asset_definition = nullptr;
 		}
 		// parse each line into a key/value pair for the current asset definition
 		else
 		{
-			//w_tokenizer tok_kv( line, '\"', b_parse_bracket_sets( false ) );
 			w_tokenizer tok_kv( line, '\"' );
 
-			//tok_kv.get_next_token();
 			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token();
 			auto value = tok_kv.get_next_token();

@@ -319,7 +319,7 @@ void ec_b2d_body::init_body()
 }
 
 // rc - the top left of the box (relative to body) and the w/h
-b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_rect rc )
+b2Fixture* ec_b2d_body::add_fixture_box( const char* id, const w_rect& rc )
 {
 	w_vec2 pos = { rc.x + ( rc.w / 2.0f ), rc.y + ( rc.h / 2.0f ) };
 
@@ -576,8 +576,6 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 
 	if( result )
 	{
-		std::string key;
-
 		// tilemap files only have one child - the map object
 		pugi::xml_node map_node = doc.first_child();
 
@@ -588,10 +586,10 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 
 		for( pugi::xml_node child : map_node.children() )
 		{
-			std::string type = child.name();
+			std::string child_type = child.name();
 
 			// collision geometry
-			if( type == "objectgroup" )
+			if( child_type == "objectgroup" )
 			{
 				for( pugi::xml_node object : child.children() )
 				{
@@ -612,7 +610,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture
 					}
 				}
 			}
-			else if( type == "layer" )
+			else if( child_type == "layer" )
 			{
 				for( pugi::xml_node object : child.children() )
 				{

@@ -26,6 +26,8 @@ void layer_default::draw()
 
 void layer_default::draw_ui()
 {
+	OPENGL->init_view_matrix_identity_ui();
+
 	RENDER
 		->draw( tex_hello_world, w_rect( 16, 16 ) );
 

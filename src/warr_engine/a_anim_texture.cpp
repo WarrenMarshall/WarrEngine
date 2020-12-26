@@ -1,3 +1,4 @@
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -27,9 +28,9 @@ bool a_anim_texture::create_internals()
 	return true;
 }
 
-void a_anim_texture::add_frame( a_subtexture* subtex )
+void a_anim_texture::add_frame( a_subtexture* frame )
 {
-	frames.emplace_back( subtex );
+	frames.emplace_back( frame );
 }
 
 /*
@@ -51,16 +52,14 @@ a_subtexture* a_anim_texture::get_subtexture( float anim_offset )
 {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
 
-	int idx = frame_tween->get_ival( 0, static_cast<int>( frames.size() ) - 1 );
+	auto idx = (size_t)( frame_tween->get_ival( 0, static_cast<int>( frames.size() ) - 1 ) );
 
-	//log_msg( "{}", idx );
-
-	if( anim_offset )
+	if( !fequals( anim_offset, 0.0f ) )
 	{
-		idx += static_cast<int>( anim_offset * frames.size() );
+		idx += (size_t)( anim_offset * frames.size() );
 	}
 
 	idx = idx % frames.size();
+
 	return frames[ idx ];
 }
-

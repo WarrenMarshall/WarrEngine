@@ -24,7 +24,6 @@ bool a_mesh::create_internals()
 
 	std::vector<w_vec3> vertex_list;
 	std::vector<w_uv> uv_list;
-	std::vector<w_vec3> normal_list;
 
 	for( auto& line : ( *file->lines ) )
 	{
@@ -76,8 +75,8 @@ bool a_mesh::create_internals()
 			{
 				w_tokenizer tok2( *( tok.get_next_token() ), '/' );
 
-				int vidx = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
-				int uvidx = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+				size_t vidx = (size_t) w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+				size_t uvidx = (size_t) w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 
 				w_render_vertex rbv( vertex_list[ vidx ], uv_list[ uvidx ], w_color::white, 0.0f );
 				render_verts.emplace_back( std::move( rbv ) );

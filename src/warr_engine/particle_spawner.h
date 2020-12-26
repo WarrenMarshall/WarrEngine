@@ -2,6 +2,7 @@
 
 struct w_particle_spawner
 {
+	w_particle_spawner() = default;
 	virtual ~w_particle_spawner() = default;
 
 	virtual void find_spawn_pos_for_new_particle( w_particle* particle );

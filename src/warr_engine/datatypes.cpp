@@ -141,6 +141,11 @@ w_vec2 w_rect::midpoint()
 	return w_vec2( x + ( w / 2.0f ), y + ( h / 2.0f ) );
 }
 
+bool w_rect::operator==( const w_rect rhs )
+{
+	return( fequals( rhs.x, x ) && fequals( rhs.y, y ) && fequals( rhs.w, w ) && fequals( rhs.h, h ) );
+}
+
 w_rect w_rect::operator+( const w_vec2 v )
 {
 	return w_rect( this->x + v.x, this->y + v.y, this->w, this->h );

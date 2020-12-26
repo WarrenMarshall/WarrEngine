@@ -116,6 +116,7 @@ struct w_rect
 
 	w_vec2 midpoint();
 
+	bool operator==( const w_rect rhs );
 	w_rect operator+( const w_vec2 v );
 	w_rect operator+=( const w_vec2 v );
 	w_rect operator*( float v );

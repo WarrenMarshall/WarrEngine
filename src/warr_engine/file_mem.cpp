@@ -1,3 +1,4 @@
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -20,7 +21,7 @@ void w_mem_file_text::preprocess()
 
 	size_t count = std::count( buffer->begin(), buffer->end(), '\n' );
 	lines = std::make_unique<std::vector<std::string>>();
-	lines->reserve( static_cast<int>( count ) );
+	lines->reserve( count );
 
 	bool currently_splicing = false;
 	std::string spliced_line;
