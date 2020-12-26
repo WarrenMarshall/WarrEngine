@@ -79,37 +79,27 @@ void w_layer_mgr::update()
 
 void w_layer_mgr::draw()
 {
-	// Locate the first completely solid layer, starting at the top
-	// and moving backward.
-
-	int starting_layer_idx = 0;
-	for( const auto& iter : layer_stack )
-	{
-		if( iter->draws_completely_solid )
-		{
-			break;
-		}
-
-		starting_layer_idx++;
-	}
-
-	// clear the virtual viewport with a full size rectangle
-
-	RENDER
-		->begin()
-		->push_depth( zdepth_clear_window )
-		->push_rgb( engine->window->v_window_clear_color )
-		// #todo - is this even needed anymore? it's a waste of fill rate and messes up batching a little.
-		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) )
-		->end();
-
 	if( !layer_stack.empty() )
 	{
+		// Locate the first completely solid layer, starting at the top
+		// and moving backward.
+
+		int starting_layer_idx = 0;
+		for( const auto& iter : layer_stack )
+		{
+			if( iter->draws_completely_solid )
+			{
+				break;
+			}
+
+			starting_layer_idx++;
+		}
+
+		// draw starting from the starting_layer_idx and every layer above it
+
 		// ----------------------------------------------------------------------------
 		// DRAW
 		// ----------------------------------------------------------------------------
-
-		// draw starting from the starting_layer_idx and every layer above it
 
 		RENDER->begin();
 

@@ -103,6 +103,10 @@ struct w_entity_transient : w_entity
 
 // ----------------------------------------------------------------------------
 
+// a camera ony affects drawing entities and regular draw calls. it does
+// not affect UI drawing in any way. this is important because events like
+// camera shakes will shake the world but leave the UI stable.
+
 struct e_camera : w_entity
 {
 	struct
