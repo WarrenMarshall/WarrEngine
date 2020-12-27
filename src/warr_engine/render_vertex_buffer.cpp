@@ -10,6 +10,7 @@ w_vertex_buffer::w_vertex_buffer( w_vertex_array_object* vertex_array_object, in
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
+	texture_slots.resize( OPENGL->max_texture_image_units );
 	preallocate_vertices( max_elements_per_render_batch * verts_per_element );
 	set_up_vertex_attribs();
 	vertices.reserve( max_elements_per_render_batch * verts_per_element );
@@ -30,6 +31,13 @@ void w_vertex_buffer::bind()
 
 void w_vertex_buffer::reset()
 {
+	for( auto& iter : texture_slots )
+	{
+		iter = nullptr;
+	}
+
+	current_texture_slot_idx = -1;
+
 	vertices.clear();
 }
 
@@ -60,6 +68,31 @@ void w_vertex_buffer::preallocate_vertices( int max_verts )
 	);
 }
 
+int w_vertex_buffer::assign_texture_slot( const a_texture* tex )
+{
+	// if this texture is already in the slot list, return that index
+	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
+	{
+		if( texture_slots[ x ] == tex )
+		{
+			current_texture_slot_idx = x;
+			return x;
+		}
+	}
+
+	// we are out of texture slots, so draw the batch and reset
+	if( current_texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
+	{
+		vertex_array_object->draw_and_reset();
+	}
+
+	// add the new texture to the slot list
+	current_texture_slot_idx++;
+	texture_slots[ current_texture_slot_idx ] = tex;
+
+	return current_texture_slot_idx;
+}
+
 void w_vertex_buffer::unbind()
 {
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
@@ -67,5 +100,12 @@ void w_vertex_buffer::unbind()
 
 void w_vertex_buffer::upload( int num_verts_to_upload )
 {
+	// bind the textures to the texture units.
+
+	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
+	{
+		glBindTextureUnit( x, texture_slots[ x ] ? texture_slots[ x ]->gl_id : 0 );
+	}
+
 	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
 }

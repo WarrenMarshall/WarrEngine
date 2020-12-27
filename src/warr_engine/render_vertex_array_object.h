@@ -10,10 +10,8 @@ struct w_vertex_array_object
 
 	float indices_to_verts_factor = 1.5f;
 
-	std::unique_ptr< w_vertex_buffer> vertex_buffer = nullptr;
-
-	std::vector<const a_texture*> texture_slots;
-	int current_texture_slot_idx = 0;
+	std::unique_ptr<w_vertex_buffer> vertex_buffer = nullptr;
+	std::unique_ptr<w_index_buffer> index_buffer = nullptr;
 
 	w_vertex_array_object( w_render_batch* batch, e_render_prim render_prim );
 	~w_vertex_array_object();

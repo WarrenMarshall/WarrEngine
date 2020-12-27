@@ -9,8 +9,6 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 	glCreateVertexArrays( 1, &gl_id );
 	glBindVertexArray( gl_id );
 
-	texture_slots.resize( OPENGL->max_texture_image_units );
-
 	switch( render_prim )
 	{
 		case render_prim::quad:
@@ -27,6 +25,7 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 			gl_prim_type = GL_TRIANGLES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 4 );
+			index_buffer = std::make_unique<w_index_buffer_quads>( this );
 		}
 		break;
 
@@ -44,6 +43,7 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 			gl_prim_type = GL_TRIANGLES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 3 );
+			index_buffer = std::make_unique<w_index_buffer_tris>( this );
 		}
 		break;
 
@@ -61,6 +61,7 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 			gl_prim_type = GL_LINES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 2 );
+			index_buffer = std::make_unique<w_index_buffer_lines>( this );
 		}
 		break;
 
@@ -78,6 +79,7 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 			gl_prim_type = GL_POINTS;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 1 );
+			index_buffer = std::make_unique<w_index_buffer_lines>( this );
 		}
 		break;
 
@@ -97,37 +99,19 @@ void w_vertex_array_object::bind()
 {
 	glBindVertexArray( gl_id );
 	vertex_buffer->bind();
+	index_buffer->bind();
 }
 
 void w_vertex_array_object::unbind()
 {
 	glBindVertexArray( 0 );
 	vertex_buffer->unbind();
+	index_buffer->unbind();
 }
 
 int w_vertex_array_object::assign_texture_slot( const a_texture* tex )
 {
-	// if this texture is already in the slot list, return that index
-	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
-	{
-		if( texture_slots[ x ] == tex )
-		{
-			current_texture_slot_idx = x;
-			return x;
-		}
-	}
-
-	// we are out of texture slots, so draw the batch and reset
-	if( current_texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
-	{
-		draw_and_reset();
-	}
-
-	// add the new texture to the slot list
-	current_texture_slot_idx++;
-	texture_slots[ current_texture_slot_idx ] = tex;
-
-	return current_texture_slot_idx;
+	return vertex_buffer->assign_texture_slot( tex );
 }
 
 void w_vertex_array_object::check_draw_and_reset()
@@ -147,13 +131,6 @@ void w_vertex_array_object::draw_and_reset()
 		bind();
 
 		auto index_count = static_cast<int>( vertex_count * indices_to_verts_factor );
-
-		// bind the textures to the texture units.
-
-		for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
-		{
-			glBindTextureUnit( x, texture_slots[ x ] ? texture_slots[ x ]->gl_id : 0 );
-		}
 
 		// upload verts to the card
 
@@ -177,9 +154,9 @@ void w_vertex_array_object::draw_and_reset()
 			{
 				log( ">> draw call >> prim_type:{}", gl_prim_type );
 
-				for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
+				for( int x = 0 ; x <= vertex_buffer->current_texture_slot_idx ; ++x )
 				{
-					log( "  texture_{} : {}", x, texture_slots[ x ]->tag );
+					log( "  texture_{} : {}", x, vertex_buffer->texture_slots[ x ]->tag );
 				}
 
 				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
@@ -197,11 +174,4 @@ void w_vertex_array_object::draw_and_reset()
 void w_vertex_array_object::reset()
 {
 	vertex_buffer->reset();
-
-	for( auto& iter : texture_slots )
-	{
-		iter = nullptr;
-	}
-
-	current_texture_slot_idx = -1;
 }

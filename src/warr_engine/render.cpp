@@ -456,10 +456,10 @@ void w_render::end_frame()
 
 	// the last draws need to be flushed
 
-	batch_quads->vertex_array_object->draw_and_reset();
-	batch_triangles->vertex_array_object->draw_and_reset();
-	batch_lines->vertex_array_object->draw_and_reset();
-	batch_points->vertex_array_object->draw_and_reset();
+	batch_quads->draw_and_reset();
+	batch_triangles->draw_and_reset();
+	batch_lines->draw_and_reset();
+	batch_points->draw_and_reset();
 
 	// when the frame ends, there should be
 	// a single matrix left on the stack (the identity matrix we created

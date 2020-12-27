@@ -8,13 +8,16 @@ struct w_vertex_buffer
 	w_vertex_buffer( w_vertex_array_object* vertex_array_object, int verts_per_element );
 	~w_vertex_buffer();
 
-	w_vertex_array_object* vertex_array_object = nullptr;
 	unsigned int gl_id;
 	std::vector<w_render_vertex> vertices;
+	w_vertex_array_object* vertex_array_object = nullptr;
 
 	// how many vertices make up a single element.
 	// i.e. quad = 4, line = 2, point = 1
 	int verts_per_element = -1;
+
+	std::vector<const a_texture*> texture_slots;
+	int current_texture_slot_idx = 0;
 
 	virtual void bind();
 	virtual void unbind();
@@ -23,4 +26,5 @@ struct w_vertex_buffer
 
 	void set_up_vertex_attribs();
 	void preallocate_vertices( int max_verts );
+	int assign_texture_slot( const a_texture* tex );
 };
