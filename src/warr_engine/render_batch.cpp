@@ -223,6 +223,7 @@ void w_render_batch::draw_and_reset()
 		RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
 		RENDER->stats.indices.accum( static_cast<float>( index_count ) );
 
+#ifndef _FINALRELEASE
 		// frame debugger
 		{
 			if( RENDER->enable_frame_debugger )
@@ -237,6 +238,7 @@ void w_render_batch::draw_and_reset()
 				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
 			}
 		}
+#endif
 
         unbind();
     }

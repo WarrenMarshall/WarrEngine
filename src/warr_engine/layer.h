@@ -13,10 +13,12 @@ struct w_layer : i_life_cycle, i_input_receiver
 		// if true, the layers below this one can't receive user input
 		bool blocks_further_input : 1;
 
+#ifndef _FINALRELEASE
 		// if true, this is the layer where the box2d entities live. as a rule, entities
 		// using the physics engine live on the same layer. the engine needs a way of
 		// knowing which layer that is so it can draw the debug information correctly.
 		bool is_debug_physics_layer : 1;
+#endif
 	};
 
 	w_layer();
@@ -52,8 +54,6 @@ struct w_layer : i_life_cycle, i_input_receiver
 	virtual void update();
 
 	virtual void draw();
-	virtual void draw_debug();
-
 	virtual void draw_ui();
 
 	e_camera* get_camera();
@@ -61,6 +61,13 @@ struct w_layer : i_life_cycle, i_input_receiver
 	template<typename T>
 	T* add_entity()
 	{
+		// if this is the first entity being added to the layer, go ahead and allocate space for
+		// a bunch - entities don't usually travel alone.
+		if( entities.empty() )
+		{
+			entities.reserve( 32 );
+		}
+
 		entities.emplace_back( std::make_unique<T>() );
 
 		auto new_entity = static_cast<T*>( entities.back().get() );
@@ -72,6 +79,8 @@ struct w_layer : i_life_cycle, i_input_receiver
 	[[nodiscard]] bool is_topmost_layer() const;
 
 	// #optimization - this feels like a bottleneck waiting to happen. some sort of map look up would be way faster.
+	//				  - would an MRU lookup table be useful? it gets populated as you look things up and emptied on new_game?
+
 	template<typename T>
 	[[nodiscard]] T* find_from_tag( const char* tag )
 	{

@@ -119,6 +119,7 @@ void w_layer_mgr::draw()
 
 				layer->draw();
 
+#ifndef _FINALRELEASE
 				// draw any debug information that lives in world space.
 				if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
 				{
@@ -136,6 +137,7 @@ void w_layer_mgr::draw()
 					OPENGL
 						->pop();
 				}
+#endif
 			}
 		}
 

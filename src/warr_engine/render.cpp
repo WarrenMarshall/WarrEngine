@@ -476,7 +476,9 @@ void w_render::end_frame()
 	assert( rs_scale_stack.size() == 1 );
 	assert( rs_align_stack.size() == 1 );
 
+#ifndef _FINALRELEASE
 	enable_frame_debugger = false;
+#endif
 }
 
 /*

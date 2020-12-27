@@ -39,7 +39,11 @@ struct w_render
 	float rs_z_depth_nudge_accum = 0.0f;
 
 	bool rs_snap_to_pixel = true;
+
+#ifndef _FINALRELEASE
 	bool enable_frame_debugger = false;
+	bool show_physics_debug = true;
+#endif
 
 	w_render* begin();
 	w_render* end();
@@ -73,8 +77,6 @@ struct w_render
 
 	bool show_stats = false;
 	std::vector<std::string> stat_lines;
-
-	bool show_physics_debug = true;
 
 	// circle sample points are stored in a unit circle
 	static constexpr int circle_sample_points_max = 16;

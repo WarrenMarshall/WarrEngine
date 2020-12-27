@@ -615,10 +615,12 @@ void w_engine::new_physics_world()
 		| b2Draw::e_centerOfMassBit		// center of mass frame
 	);
 
-#ifdef _DEBUG
-	RENDER->show_physics_debug = true;
-#else
-	RENDER->show_physics_debug = false;
+#ifndef _FINALRELEASE
+	#ifdef _DEBUG
+		RENDER->show_physics_debug = true;
+	#else
+		RENDER->show_physics_debug = false;
+	#endif
 #endif
 }
 
@@ -820,6 +822,7 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 		return true;
 	}
 
+#ifndef _FINALRELEASE
 	// frame debugger
 	if( evt->input_id == input_id::key_f10 )
 	{
@@ -829,6 +832,14 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 		log_div();
 		return true;
 	}
+
+	// toggle debug physics drawing
+	if( evt->input_id == input_id::key_f5 )
+	{
+		RENDER->show_physics_debug = !RENDER->show_physics_debug;
+		return true;
+	}
+#endif
 
 	// toggle full screen
 	if( evt->input_id == input_id::key_f11 )
@@ -857,13 +868,6 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 		{
 			layer_mgr->push<layer_esc_menu>();
 		}
-		return true;
-	}
-
-	// toggle debug physics drawing
-	if( evt->input_id == input_id::key_f5 )
-	{
-		RENDER->show_physics_debug = !RENDER->show_physics_debug;
 		return true;
 	}
 

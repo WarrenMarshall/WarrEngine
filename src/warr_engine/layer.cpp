@@ -6,7 +6,10 @@ w_layer::w_layer()
 {
 	draws_completely_solid = false;
 	blocks_further_input = false;
+
+#ifndef _FINALRELEASE
 	is_debug_physics_layer = false;
+#endif
 }
 
 void w_layer::update()
@@ -64,10 +67,6 @@ void w_layer::draw()
 		OPENGL
 			->pop();
 	}
-}
-
-void w_layer::draw_debug()
-{
 }
 
 void w_layer::draw_ui()
