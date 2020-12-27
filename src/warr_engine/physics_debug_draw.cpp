@@ -23,14 +23,19 @@ void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCoun
 void w_physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
 	RENDER
-		->push_rgba( { color.r, color.g, color.b, color.a } );
+		->push_rgba( { color.r, color.g, color.b, 0.5f } );
 
-	for( auto v = 0 ; v < vertexCount ; ++v )
+	assert( vertexCount > 2 );
+
+	w_vec2 v0 = w_vec2( vertices[ 0 ] ).from_b2d();
+	w_vec2 v1 = w_vec2( vertices[ 1 ] ).from_b2d();
+	w_vec2 v2;
+
+	for( auto v = 2 ; v < vertexCount ; ++v )
 	{
-		w_vec2 v0 = w_vec2( vertices[ v ] ).from_b2d();
-		w_vec2 v1 = w_vec2( vertices[ ( v + 1 ) % vertexCount ] ).from_b2d();
-
-		RENDER->draw_line( v0, v1 );
+		v2 = w_vec2( vertices[ v ] ).from_b2d();
+		RENDER->draw_filled_triangle( v0, v1, v2 );
+		v1 = v2;
 	}
 
 	RENDER->pop_rgba();

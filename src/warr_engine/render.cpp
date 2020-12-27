@@ -627,6 +627,45 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 	return this;
 }
 
+w_render* w_render::draw_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 )
+{
+	draw_line( v0, v1 );
+	draw_line( v1, v2 );
+	draw_line( v2, v0 );
+
+	return this;
+}
+
+w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 )
+{
+	w_color rs_color = rs_color_stack.back();
+	rs_color.a = rs_alpha_stack.back();
+	float rs_emissive = rs_emissive_stack.back();
+
+	w_render_vertex rv0(
+		w_vec2( v0.x, v0.y ),
+		w_uv( 0, 0 ),
+		rs_color,
+		rs_emissive
+	);
+	w_render_vertex rv1(
+		w_vec2( v1.x, v1.y ),
+		w_uv( 1, 0 ),
+		rs_color,
+		rs_emissive
+	);
+	w_render_vertex rv2(
+		w_vec2( v2.x, v2.y ),
+		w_uv( 1, 1 ),
+		rs_color,
+		rs_emissive
+	);
+
+	batch_triangles->add_primitive( engine->white_solid->tex, rv0, rv1, rv2 );
+
+	return this;
+}
+
 // draws an empty rectangle
 
 w_render* w_render::draw_rectangle( const w_rect& dst )

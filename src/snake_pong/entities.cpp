@@ -32,7 +32,7 @@ e_ball::e_ball()
 	ecd->add_fixture_circle( "", w_vec2::zero, e_ball::radius );
 	//ecd->body->SetFixedRotation( true );
 
-	add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 2.0f, w_rect( -e_ball::radius, -e_ball::radius, e_ball::radius * 2.f, e_ball::radius * 2.f ) );
+	//add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 1 ), w_rect( -e_ball::radius, -e_ball::radius, e_ball::radius * 2.f, e_ball::radius * 2.f ) );
 }
 
 void e_ball::phys_begin_contact( w_pending_collision& coll, w_entity* other )

@@ -98,6 +98,8 @@ struct w_render
 	w_render* draw_string( a_font* font, const std::string_view text, const w_rect& dst );
 	w_render* draw_rectangle( const w_rect& dst );
 	w_render* draw_filled_rectangle( const w_rect& dst );
+	w_render* draw_triangle( const w_vec2& v0, const w_vec2& v1 , const w_vec2& v2 );
+	w_render* draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 );
 	w_render* draw_line( const w_vec2& start, const w_vec2& end );
 	w_render* draw_point( const w_vec2& pos );
 	w_render* draw_circle( const w_vec2& origin, float radius );
