@@ -31,7 +31,7 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 
 		case render_prim::triangle:
 		{
-			// this computes to 10,000 x 3 vertices, which is 30,000 vertices max,
+			// this computes to 104,000 x 3 vertices, which is 30,000 vertices max,
 			// which is 60,000 indices
 			//
 			// (3 verts / 3 indices = 1 triangle)

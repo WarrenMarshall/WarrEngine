@@ -4,6 +4,9 @@
 
 struct w_entity : i_life_cycle, i_transform
 {
+	w_entity();
+	~w_entity();
+
 	std::string tag;
 
 	// entity components
@@ -18,8 +21,8 @@ struct w_entity : i_life_cycle, i_transform
 	// which collision layer(s) this entity will collide WITH
 	bitflags collides_with = 0;
 
-	void set_tag( const char* tag );
-	void set_collision( bitflags layer, bitflags collides_with );
+	w_entity* set_tag( const char* tag );
+	w_entity* set_collision( bitflags layer, bitflags collides_with );
 
 	virtual void ilc_set( e_life_cycle life_cycle ) override;
 	[[nodiscard]] virtual bool can_be_deleted();

@@ -9,11 +9,14 @@ w_game::w_game( const char* name )
 
 void w_game::init()
 {
+	reset_layer_stack_to_main_menu();
+	new_game();
 }
 
 void w_game::new_game()
 {
 	engine->new_physics_world();
+	engine->layer_mgr->new_game();
 }
 
 void w_game::update()

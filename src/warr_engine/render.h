@@ -6,6 +6,8 @@ struct w_render
 
 	w_color get_palette_color_from_idx( int idx );
 
+	bool batches_are_empty();
+
 	/*
 		a value from 0.0-1.0 that represents how near we are to the NEXT update
 		tick. this is used to interpolate/predict rendering for smooth
@@ -20,6 +22,8 @@ struct w_render
 	std::unique_ptr<w_render_batch> batch_triangles = nullptr;
 	std::unique_ptr<w_render_batch> batch_lines = nullptr;
 	std::unique_ptr<w_render_batch> batch_points = nullptr;
+
+	void draw_and_reset_all_batches();
 
 	// palette support
 	a_palette* current_palette = nullptr;

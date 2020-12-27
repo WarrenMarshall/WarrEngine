@@ -16,6 +16,8 @@ struct w_render_batch
 
 	void draw_and_reset();
 
+	bool is_empty();
+
 private:
 	void add_vert( const a_texture* tex, const w_render_vertex& render_vert );
 };

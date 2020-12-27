@@ -233,6 +233,25 @@ w_color w_render::get_palette_color_from_idx( int idx )
 	return palette->get_color_from_idx( idx );
 }
 
+bool w_render::batches_are_empty()
+{
+	return
+		(
+			batch_quads->is_empty()
+			&& batch_triangles->is_empty()
+			&& batch_lines->is_empty()
+			&& batch_points->is_empty()
+		);
+}
+
+void w_render::draw_and_reset_all_batches()
+{
+	RENDER->batch_quads->draw_and_reset();
+	RENDER->batch_triangles->draw_and_reset();
+	RENDER->batch_lines->draw_and_reset();
+	RENDER->batch_points->draw_and_reset();
+}
+
 w_color w_render::pal_color_from_idx( int idx )
 {
 	// if there's no palette specifically in use, return a default color

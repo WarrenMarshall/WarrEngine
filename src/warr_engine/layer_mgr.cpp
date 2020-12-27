@@ -107,9 +107,6 @@ void w_layer_mgr::draw()
 		{
 			auto layer = layer_stack[ x ].get();
 
-			// Only UI elements on the topmost layer respond to user input
-			IMGUI->containing_layer_is_topmost = !x;
-
 			if( layer->ilc_is_alive() )
 			{
 				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
@@ -123,25 +120,17 @@ void w_layer_mgr::draw()
 				// draw any debug information that lives in world space.
 				if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
 				{
-					// box2d needs the origin of the world to be in the middle of the viewport
-
-					OPENGL->push();
-					if( camera )
-					{
-						OPENGL->top()->translate( { camera->pos.x, camera->pos.y } );
-					}
-
 					RENDER->push_depth_nudge();
 					engine->box2d_world->DebugDraw();
-
-					OPENGL
-						->pop();
 				}
 #endif
+				RENDER->draw_and_reset_all_batches();
 			}
 		}
 
 		RENDER->end();
+
+		RENDER->draw_and_reset_all_batches();
 
 		// ----------------------------------------------------------------------------
 		// UI
@@ -169,12 +158,26 @@ void w_layer_mgr::draw()
 				// the screen is always 0,0.
 
 				RENDER->push_depth_nudge();
+				OPENGL->push();
 				layer->draw_ui();
+				OPENGL->pop();
 			}
 		}
 
 		RENDER->end();
 
+		RENDER->draw_and_reset_all_batches();
+	}
+}
+
+void w_layer_mgr::new_game()
+{
+	for( auto& layer : layer_stack )
+	{
+		if( layer->ilc_is_alive() )
+		{
+			layer->new_game();
+		}
 	}
 }
 

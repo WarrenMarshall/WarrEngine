@@ -94,4 +94,6 @@ struct w_layer : i_life_cycle, i_input_receiver
 
 		return nullptr;
 	}
+
+	virtual void new_game();
 };

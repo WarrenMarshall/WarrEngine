@@ -53,6 +53,11 @@ void w_render_batch::draw_and_reset()
 	vertex_array_object->draw_and_reset();
 }
 
+bool w_render_batch::is_empty()
+{
+	return ( vertex_array_object->vertex_buffer->vertices.size() == 0 );
+}
+
 void w_render_batch::add_vert( const a_texture* tex, const w_render_vertex& render_vert )
 {
 	// multiply the current modelview matrix against the vertex being rendered.

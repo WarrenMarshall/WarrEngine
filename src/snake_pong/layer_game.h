@@ -9,4 +9,6 @@ struct layer_game : w_layer
 
 	virtual bool iir_on_pressed( const w_input_event* evt ) override;
 	void spawn_ball();
+
+	virtual void new_game() override;
 };

@@ -43,6 +43,7 @@ struct w_layer_mgr : i_input_receiver
 
 	void update();
 	void draw();
+	virtual void new_game();
 
 	virtual bool iir_on_motion( const w_input_event* evt ) override;
 	virtual bool iir_on_pressed( const w_input_event* evt ) override;

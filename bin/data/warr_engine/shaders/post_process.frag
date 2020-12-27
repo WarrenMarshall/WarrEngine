@@ -95,8 +95,8 @@ void main()
 
 		// adjust final_color to be fully black if outside the 0-1 range in UV coords
 
-		//if( crt_uv.x <= 0.0f || crt_uv.x >= 1.0f ) final_color = vec4(0,0,0,1);
-		//if( crt_uv.y <= 0.0f || crt_uv.y >= 1.0f ) final_color = vec4(0,0,0,1);
+		if( crt_uv.x <= 0.0f || crt_uv.x >= 1.0f ) final_color = vec4(0,0,0,1);
+		if( crt_uv.y <= 0.0f || crt_uv.y >= 1.0f ) final_color = vec4(0,0,0,1);
 
 		final_uv = crt_uv;
 	}

@@ -144,11 +144,6 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 
 void w_opengl::init_projection_matrix() const
 {
-	RENDER->batch_quads->draw_and_reset();
-	//RENDER->batch_triangles->draw_and_reset();
-	//RENDER->batch_lines->draw_and_reset();
-	//RENDER->batch_points->draw_and_reset();
-
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
 		0, v_window_w, v_window_h, 0,
@@ -162,18 +157,15 @@ void w_opengl::init_projection_matrix() const
 }
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
-//
-// if there is a custom camera, apply it's transform.
 
 void w_opengl::init_view_matrix( e_camera* camera ) const
 {
-	RENDER->batch_quads->draw_and_reset();
-	//RENDER->batch_triangles->draw_and_reset();
-	//RENDER->batch_lines->draw_and_reset();
-	//RENDER->batch_points->draw_and_reset();
+	assert( RENDER->batches_are_empty() );
 
 	// default to identity matrix
 	glm::mat4 view = glm::mat4( 1.0f );
+
+	// apply the camera position
 
 	if( camera )
 	{
@@ -197,10 +189,7 @@ void w_opengl::init_view_matrix( e_camera* camera ) const
 
 void w_opengl::init_view_matrix_identity() const
 {
-	RENDER->batch_quads->draw_and_reset();
-	//RENDER->batch_triangles->draw_and_reset();
-	//RENDER->batch_lines->draw_and_reset();
-	//RENDER->batch_points->draw_and_reset();
+	assert( RENDER->batches_are_empty() );
 
 	glm::mat4 view = glm::mat4( 1.0f );
 
@@ -213,10 +202,7 @@ void w_opengl::init_view_matrix_identity() const
 
 void w_opengl::init_view_matrix_identity_ui() const
 {
-	RENDER->batch_quads->draw_and_reset();
-	//RENDER->batch_triangles->draw_and_reset();
-	//RENDER->batch_lines->draw_and_reset();
-	//RENDER->batch_points->draw_and_reset();
+	assert( RENDER->batches_are_empty() );
 
 	glm::mat4 view = glm::mat4( 1.0f );
 	view *= glm::scale( view, glm::vec3( ui_canvas_scale, ui_canvas_scale, 1.0f ) );

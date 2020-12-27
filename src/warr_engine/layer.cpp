@@ -82,3 +82,8 @@ bool w_layer::is_topmost_layer() const
 {
 	return ( LAYER == this );
 }
+
+void w_layer::new_game()
+{
+	entities.clear();
+}

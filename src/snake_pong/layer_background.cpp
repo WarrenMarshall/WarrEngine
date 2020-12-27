@@ -10,6 +10,8 @@ layer_background::layer_background()
 
 void layer_background::push()
 {
+	w_layer::push();
+
 	gradient = a_gradient::find( "background_gradient" );
 
 	engine->window->set_mouse_mode( mouse_mode::custom );

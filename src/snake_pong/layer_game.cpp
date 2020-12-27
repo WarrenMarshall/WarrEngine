@@ -76,3 +76,55 @@ void layer_game::spawn_ball()
 	dir *= e_ball::speed;
 	e->phys_get_primary_body()->body->ApplyForceToCenter( dir.to_b2d().as_b2Vec2(), true );
 }
+
+void layer_game::new_game()
+{
+	w_layer::new_game();
+
+	w_entity* e;
+
+	// camera
+
+	e = add_entity<e_camera>();
+	e->set_tag( "main_camera" );
+	e->it_set_position( { v_window_hw, v_window_hh } );
+
+	// world collision geometry
+
+	ec_b2d_static* ecs;
+	constexpr float wall_length = 512.0f;
+
+	e = add_entity<w_entity>();
+	e->set_tag( "world" );
+	e->set_collision( clayer_world_top_bottom, clayer_ball );
+	ecs = e->add_component<ec_b2d_static>();
+	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( +wall_length, -v_window_hh + 4 ), w_vec2( -wall_length, -v_window_hh + 4 ) );
+	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -wall_length, v_window_hh - 4 ), w_vec2( +wall_length, v_window_hh - 4 ) );
+
+	e = add_entity<w_entity>();
+	e->set_tag( "world" );
+	e->set_collision( clayer_world_left_right, clayer_ball );
+	ecs = e->add_component<ec_b2d_static>();
+	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -v_window_hw + 4, -wall_length ), w_vec2( -v_window_hw + 4, +wall_length ) );
+	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( v_window_hw - 4, +wall_length ), w_vec2( v_window_hw - 4, -wall_length ) );
+
+	// paddles
+
+	w_rect rc;
+
+	rc = w_rect( -32, -4, 64, 8 );
+	e = add_entity<e_paddle>();
+	e->set_tag( "player_paddle_h" );
+	e->set_collision( clayer_paddle, clayer_ball );
+	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
+	e->set_position_deep( w_vec2( -1000, -1000 ), false );
+
+	rc = w_rect( -4, -32, 8, 64 );
+	e = add_entity<e_paddle>();
+	e->set_tag( "player_paddle_v" );
+	e->set_collision( clayer_paddle, clayer_ball );
+	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
+	e->set_position_deep( w_vec2( -1000, -1000 ), false );
+}

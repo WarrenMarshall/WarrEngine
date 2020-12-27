@@ -5,27 +5,6 @@ layer_main_menu::layer_main_menu()
 {
 }
 
-void layer_main_menu::push()
-{
-	w_entity* e;
-
-	// particles
-
-	e = add_entity<w_entity>();
-	e->it_set_position( { v_window_hw, 0.0f } );
-	e->add_component<ec_emitter>()->init( "menu_fire_up" )
-		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
-
-	//e = add_entity<w_entity>();
-	//e->it_set_position( { v_window_hw, v_window_hh } );
-	//e->add_component<ec_mesh>()->init( "mesh_torus_test" )
-	//	->it_set_scale( 0.5f );
-	//e->add_component<ec_mesh>()->init( "mesh_torus_test" )
-	//	->it_set_scale( 0.25f );
-
-	w_layer::push();
-}
-
 void layer_main_menu::draw_ui()
 {
 	w_layer::draw_ui();
@@ -68,11 +47,38 @@ void layer_main_menu::draw_ui()
 	}
 }
 
+void layer_main_menu::push()
+{
+	w_layer::push();
+
+	w_entity* e;
+
+	// particles
+
+	e = add_entity<w_entity>();
+	e->it_set_position( { v_window_hw, 0.0f } );
+	e->add_component<ec_emitter>()->init( "menu_fire_up" )
+		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+
+	//e = add_entity<w_entity>();
+	//e->it_set_position( { v_window_hw, v_window_hh } );
+	//e->add_component<ec_mesh>()->init( "mesh_torus_test" )
+	//	->it_set_scale( 0.5f );
+	//e->add_component<ec_mesh>()->init( "mesh_torus_test" )
+	//	->it_set_scale( 0.25f );
+}
+
 void layer_main_menu::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
 	engine->window->set_mouse_mode( mouse_mode::custom );
+}
+
+void layer_main_menu::new_game()
+{
+	w_layer::new_game();
+
 }
 
 bool layer_main_menu::iir_on_pressed( const w_input_event* evt )

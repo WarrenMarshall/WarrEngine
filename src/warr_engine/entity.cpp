@@ -217,15 +217,27 @@ bool w_entity::can_be_deleted()
 	return true;
 }
 
-void w_entity::set_tag( const char* tag )
+w_entity::w_entity()
 {
-	this->tag = tag;
 }
 
-void w_entity::set_collision( bitflags layer, bitflags collides_with )
+w_entity::~w_entity()
+{
+}
+
+w_entity* w_entity::set_tag( const char* tag )
+{
+	this->tag = tag;
+
+	return this;
+}
+
+w_entity* w_entity::set_collision( bitflags layer, bitflags collides_with )
 {
 	this->collision_layer = layer;
 	this->collides_with = collides_with;
+
+	return this;
 }
 
 void w_entity::ilc_set( e_life_cycle life_cycle )

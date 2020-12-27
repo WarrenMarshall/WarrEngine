@@ -366,6 +366,7 @@ void w_engine::exec_main_loop()
 
 			// engine specific things, like pause borders
 			engine->draw();
+			RENDER->draw_and_reset_all_batches();
 		}
 		RENDER->end_frame();
 		engine->frame_buffer->unbind();
