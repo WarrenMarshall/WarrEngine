@@ -1,13 +1,14 @@
 #pragma once
 
+constexpr int max_elements_per_render_batch = 10000;
+
 struct w_render_batch
 {
-	static int max_elements_per_batch;
-
 	w_render_batch( e_render_prim render_prim );
 	~w_render_batch();
 
 	std::unique_ptr<w_vertex_array_object> vertex_array_object = nullptr;
+	std::unique_ptr<w_index_buffer> index_buffer = nullptr;
 
 	void add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 );
 	void add_primitive( const a_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 );

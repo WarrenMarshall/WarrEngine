@@ -10,12 +10,11 @@ w_vertex_buffer::w_vertex_buffer( w_vertex_array_object* vertex_array_object, in
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
-	preallocate_vertices( w_render_batch::max_elements_per_batch * verts_per_element );
+	preallocate_vertices( max_elements_per_render_batch * verts_per_element );
 	set_up_vertex_attribs();
-	vertices.reserve( w_render_batch::max_elements_per_batch * verts_per_element );
+	vertices.reserve( max_elements_per_render_batch * verts_per_element );
 
 	unbind();
-
 }
 
 w_vertex_buffer::~w_vertex_buffer()

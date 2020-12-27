@@ -3,8 +3,8 @@
 
 // ----------------------------------------------------------------------------
 
-w_vertex_array_object::w_vertex_array_object( e_render_prim render_prim )
-	: render_prim( render_prim )
+w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_prim render_prim )
+	: batch( batch), render_prim( render_prim )
 {
 	glCreateVertexArrays( 1, &gl_id );
 	glBindVertexArray( gl_id );
@@ -27,7 +27,6 @@ w_vertex_array_object::w_vertex_array_object( e_render_prim render_prim )
 			gl_prim_type = GL_TRIANGLES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 4 );
-			index_buffer = std::make_unique<w_index_buffer_quads>( this );
 		}
 		break;
 
@@ -45,7 +44,6 @@ w_vertex_array_object::w_vertex_array_object( e_render_prim render_prim )
 			gl_prim_type = GL_TRIANGLES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 3 );
-			index_buffer = std::make_unique<w_index_buffer_tris>( this );
 		}
 		break;
 
@@ -63,7 +61,6 @@ w_vertex_array_object::w_vertex_array_object( e_render_prim render_prim )
 			gl_prim_type = GL_LINES;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 2 );
-			index_buffer = std::make_unique<w_index_buffer_lines>( this );
 		}
 		break;
 
@@ -81,7 +78,6 @@ w_vertex_array_object::w_vertex_array_object( e_render_prim render_prim )
 			gl_prim_type = GL_POINTS;
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 1 );
-			index_buffer = std::make_unique<w_index_buffer_lines>( this );
 		}
 		break;
 
@@ -101,14 +97,12 @@ void w_vertex_array_object::bind()
 {
 	glBindVertexArray( gl_id );
 	vertex_buffer->bind();
-	index_buffer->bind();
 }
 
 void w_vertex_array_object::unbind()
 {
 	glBindVertexArray( 0 );
 	vertex_buffer->unbind();
-	index_buffer->unbind();
 }
 
 int w_vertex_array_object::assign_texture_slot( const a_texture* tex )
@@ -138,7 +132,7 @@ int w_vertex_array_object::assign_texture_slot( const a_texture* tex )
 
 void w_vertex_array_object::check_draw_and_reset()
 {
-	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
+	if( vertex_buffer->vertices.size() >= max_elements_per_render_batch )
 	{
 		draw_and_reset();
 	}

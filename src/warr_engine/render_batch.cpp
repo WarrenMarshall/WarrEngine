@@ -4,11 +4,42 @@
 
 // ----------------------------------------------------------------------------
 
-int w_render_batch::max_elements_per_batch = 10000;
-
 w_render_batch::w_render_batch( e_render_prim render_prim )
 {
-	vertex_array_object = std::make_unique<w_vertex_array_object>( render_prim );
+	vertex_array_object = std::make_unique<w_vertex_array_object>( this, render_prim );
+
+	switch( render_prim )
+	{
+		case render_prim::quad:
+		{
+			index_buffer = std::make_unique<w_index_buffer_quads>( vertex_array_object.get() );
+		}
+		break;
+
+		case render_prim::triangle:
+		{
+			index_buffer = std::make_unique<w_index_buffer_tris>( vertex_array_object.get() );
+		}
+		break;
+
+		case render_prim::line:
+		{
+			index_buffer = std::make_unique<w_index_buffer_lines>( vertex_array_object.get() );
+		}
+		break;
+
+		case render_prim::point:
+		{
+			index_buffer = std::make_unique<w_index_buffer_lines>( vertex_array_object.get() );
+		}
+		break;
+
+		default:
+		{
+			assert( false );
+		}
+	}
+
     vertex_array_object->reset();
 }
 
@@ -54,11 +85,13 @@ void w_render_batch::add_primitive( const a_texture* tex, const w_render_vertex&
 void w_render_batch::bind()
 {
 	vertex_array_object->bind();
+	index_buffer->bind();
 }
 
 void w_render_batch::unbind()
 {
 	vertex_array_object->unbind();
+	index_buffer->unbind();
 }
 
 void w_render_batch::add_vert( const a_texture* tex, const w_render_vertex& render_vert )

@@ -26,3 +26,4 @@ bin/warr_engine.lib
 gccfun
 bin/work_log_tracker.data
 *.exp
+*.lib
