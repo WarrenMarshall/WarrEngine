@@ -4,95 +4,11 @@
 
 // ----------------------------------------------------------------------------
 
+int w_render_batch::max_elements_per_batch = 10000;
+
 w_render_batch::w_render_batch( e_render_prim render_prim )
-    : render_prim( render_prim )
 {
-    glCreateVertexArrays( 1, &VAO_id );
-    glBindVertexArray( VAO_id );
-
-    switch( render_prim )
-    {
-        case render_prim::quad:
-        {
-			// this computes to 10,000 x 4 vertices, which is 40,000 vertices max,
-			// which is 60,000 indices
-			//
-			// (4 verts / 6 indices = 1 quad)
-			//
-			// if you want to make the batches larger, the index buffer will need to
-			// use a larger data type.
-
-			max_elements_per_batch = 10000;
-            indices_to_verts_factor = 1.5f;
-			gl_prim_type = GL_TRIANGLES;
-
-			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 4 );
-			index_buffer = std::make_unique<w_index_buffer_quads>( this );
-        }
-        break;
-
-		case render_prim::triangle:
-		{
-			// this computes to 10,000 x 3 vertices, which is 30,000 vertices max,
-			// which is 60,000 indices
-			//
-			// (3 verts / 3 indices = 1 triangle)
-			//
-			// if you want to make the batches larger, the index buffer will need to
-			// use a larger data type.
-
-			max_elements_per_batch = 10000;
-			indices_to_verts_factor = 1.0f;
-			gl_prim_type = GL_TRIANGLES;
-
-			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 3 );
-			index_buffer = std::make_unique<w_index_buffer_tris>( this );
-		}
-		break;
-
-		case render_prim::line:
-		{
-			// this computes to 10,000 x 2 vertices, which is 20,000 vertices max,
-			// which is 40,000 indices
-			//
-			// (2 verts / 2 indices = 1 line)
-			//
-			// if you want to make the batches larger, the index buffer will need to
-			// use a larger data type.
-
-			max_elements_per_batch = 10000;
-			indices_to_verts_factor = 1.0f;
-			gl_prim_type = GL_LINES;
-
-			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 2 );
-			index_buffer = std::make_unique<w_index_buffer_lines>( this );
-		}
-		break;
-
-		case render_prim::point:
-		{
-			// this computes to 10,000 x 1 vertices, which is 10,000 vertices max,
-			// which is 10,000 indices
-			//
-			// (1 verts / 1 indices = 1 point)
-			//
-			// if you want to make the batches larger, the index buffer will need to
-			// use a larger data type.
-
-			max_elements_per_batch = 10000;
-			indices_to_verts_factor = 1.0f;
-			gl_prim_type = GL_POINTS;
-
-			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 1 );
-			index_buffer = std::make_unique<w_index_buffer_lines>( this );
-		}
-		break;
-
-		default:
-        {
-            assert( false );
-        }
-    }
+	vertex_array_object = std::make_unique<w_vertex_array_object>( render_prim );
 
     texture_slots.resize( OPENGL->max_texture_image_units );
 
@@ -102,8 +18,6 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 w_render_batch::~w_render_batch()
 {
     unbind();
-
-    glDeleteVertexArrays( 1, &VAO_id );
 }
 
 int w_render_batch::assign_texture_slot( const a_texture* tex )
@@ -167,23 +81,19 @@ void w_render_batch::add_primitive( const a_texture* tex, const w_render_vertex&
 
 void w_render_batch::bind()
 {
-    glBindVertexArray( VAO_id );
-    vertex_buffer->bind();
-    index_buffer->bind();
+	vertex_array_object->bind();
 }
 
 void w_render_batch::unbind()
 {
-    glBindVertexArray( 0 );
-	vertex_buffer->unbind();
-	index_buffer->unbind();
+	vertex_array_object->unbind();
 }
 
 // check if the batch is full - if so, draw the batch and reset it
 
 void w_render_batch::check_draw_and_reset()
 {
-	if( vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
+	if( vertex_array_object->vertex_buffer->vertices.size() >= w_render_batch::max_elements_per_batch )
 	{
 		draw_and_reset();
 	}
@@ -193,13 +103,13 @@ void w_render_batch::check_draw_and_reset()
 
 void w_render_batch::draw_and_reset()
 {
-    auto vertex_count = static_cast<int>( vertex_buffer->vertices.size() );
+    auto vertex_count = static_cast<int>( vertex_array_object->vertex_buffer->vertices.size() );
 
     if( vertex_count )
     {
         bind();
 
-        auto index_count = static_cast<int>( vertex_count * indices_to_verts_factor );
+        auto index_count = static_cast<int>( vertex_count * vertex_array_object->indices_to_verts_factor );
 
         // bind the textures to the texture units.
 
@@ -210,12 +120,12 @@ void w_render_batch::draw_and_reset()
 
         // upload verts to the card
 
-        vertex_buffer->upload( vertex_count );
+		vertex_array_object->vertex_buffer->upload( vertex_count );
 
         // draw!
 
 		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-		glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
+		glDrawElements( vertex_array_object->gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
 
 		// update stats and clean up
 
@@ -228,7 +138,7 @@ void w_render_batch::draw_and_reset()
 		{
 			if( RENDER->enable_frame_debugger )
 			{
-				log( ">> draw call >> prim_type:{}", gl_prim_type );
+				log( ">> draw call >> prim_type:{}", vertex_array_object->gl_prim_type );
 
 				for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
 				{
@@ -251,7 +161,7 @@ void w_render_batch::draw_and_reset()
 
 void w_render_batch::reset()
 {
-    vertex_buffer->reset();
+	vertex_array_object->vertex_buffer->reset();
 
     for( auto& iter : texture_slots )
     {
@@ -288,5 +198,5 @@ void w_render_batch::add_vert( const a_texture* tex, const w_render_vertex& rend
     rv.t = static_cast<float>( assign_texture_slot( tex ) );
 
     // add the render_vert to the vertex list
-    vertex_buffer->vertices.emplace_back( std::move( rv ) );
+	vertex_array_object->vertex_buffer->vertices.emplace_back( std::move( rv ) );
 }

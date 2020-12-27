@@ -4,15 +4,15 @@
 
 // ----------------------------------------------------------------------------
 
-w_vertex_buffer::w_vertex_buffer( w_render_batch* batch, int verts_per_element )
-	: batch( batch ), verts_per_element( verts_per_element )
+w_vertex_buffer::w_vertex_buffer( w_vertex_array_object* vertex_array_object, int verts_per_element )
+	: vertex_array_object( vertex_array_object ), verts_per_element( verts_per_element )
 {
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
-	preallocate_vertices( batch->max_elements_per_batch * verts_per_element );
+	preallocate_vertices( w_render_batch::max_elements_per_batch * verts_per_element );
 	set_up_vertex_attribs();
-	vertices.reserve( batch->max_elements_per_batch * verts_per_element );
+	vertices.reserve( w_render_batch::max_elements_per_batch * verts_per_element );
 
 	unbind();
 

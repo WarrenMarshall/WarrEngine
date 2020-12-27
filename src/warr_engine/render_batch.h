@@ -2,18 +2,12 @@
 
 struct w_render_batch
 {
-	e_render_prim render_prim = render_prim::quad;
-	GLenum gl_prim_type = GL_TRIANGLES;
-
-	int max_elements_per_batch = 10000;
-	float indices_to_verts_factor = 1.5f;
-
 	w_render_batch( e_render_prim render_prim );
 	~w_render_batch();
 
-	GLuint VAO_id = 0;		// vertex array object
-	std::unique_ptr< w_vertex_buffer> vertex_buffer = nullptr;
-	std::unique_ptr<w_index_buffer> index_buffer = nullptr;
+	std::unique_ptr<w_vertex_array_object> vertex_array_object = nullptr;
+
+	static int max_elements_per_batch;
 
 	std::vector<const a_texture*> texture_slots;
 	int current_texture_slot_idx = 0;

@@ -211,6 +211,9 @@
     <ClCompile Include="render_vertex.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="render_vertex_array_object.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="a_9slice_def.h">
@@ -429,6 +432,9 @@
     <ClInclude Include="asset.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="render_vertex_array_object.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -437,11 +443,5 @@
     <Filter Include="src">
       <UniqueIdentifier>{690e9b02-c416-473e-a16d-e17157428bb1}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="notes.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".clang-tidy" />
   </ItemGroup>
 </Project>

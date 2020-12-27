@@ -5,10 +5,10 @@
 
 struct w_vertex_buffer
 {
-	w_vertex_buffer( w_render_batch* batch, int verts_per_element );
+	w_vertex_buffer( w_vertex_array_object* vertex_array_object, int verts_per_element );
 	~w_vertex_buffer();
 
-	w_render_batch* batch = nullptr;
+	w_vertex_array_object* vertex_array_object = nullptr;
 	unsigned int gl_id;
 	std::vector<w_render_vertex> vertices;
 

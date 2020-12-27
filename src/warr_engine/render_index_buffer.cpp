@@ -4,8 +4,8 @@
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer::w_index_buffer( w_render_batch* batch )
-	: batch( batch )
+w_index_buffer::w_index_buffer( w_vertex_array_object* vertex_array_object )
+	: vertex_array_object( vertex_array_object )
 {
 	glCreateBuffers( 1, &gl_id );
 	bind();
@@ -29,14 +29,14 @@ void w_index_buffer::unbind()
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer_quads::w_index_buffer_quads( w_render_batch* batch )
-	: w_index_buffer( batch )
+w_index_buffer_quads::w_index_buffer_quads( w_vertex_array_object* vertex_array_object )
+	: w_index_buffer( vertex_array_object )
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<unsigned short> indices;
-	indices.resize( batch->max_elements_per_batch * 6 );
+	indices.resize( w_render_batch::max_elements_per_batch * 6 );
 
 	// index format:
 	// 0, 1, 2, 0, 2, 3
@@ -44,7 +44,7 @@ w_index_buffer_quads::w_index_buffer_quads( w_render_batch* batch )
 	// ...
 
 	unsigned short offset = 0;
-	for( int q = 0 ; q < batch->max_elements_per_batch * 6 ; q += 6 )
+	for( int q = 0 ; q < w_render_batch::max_elements_per_batch * 6 ; q += 6 )
 	{
 		indices[ q + 0 ] = offset + 0;
 		indices[ q + 1 ] = offset + 1;
@@ -61,7 +61,7 @@ w_index_buffer_quads::w_index_buffer_quads( w_render_batch* batch )
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( batch->max_elements_per_batch * 6 ) * sizeof( unsigned short ),
+		( w_render_batch::max_elements_per_batch * 6 ) * sizeof( unsigned short ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);
@@ -69,21 +69,21 @@ w_index_buffer_quads::w_index_buffer_quads( w_render_batch* batch )
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer_tris::w_index_buffer_tris( w_render_batch* batch )
-	: w_index_buffer( batch )
+w_index_buffer_tris::w_index_buffer_tris( w_vertex_array_object* vertex_array_object )
+	: w_index_buffer( vertex_array_object )
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<unsigned short> indices;
-	indices.resize( batch->max_elements_per_batch * 3 );
+	indices.resize( w_render_batch::max_elements_per_batch * 3 );
 
 	// index format:
 	// 0, 1, 2,
 	// 3, 4, 5,
 	// ...
 
-	for( unsigned short q = 0 ; q < batch->max_elements_per_batch * 3 ; q++ )
+	for( unsigned short q = 0 ; q < w_render_batch::max_elements_per_batch * 3 ; q++ )
 	{
 		indices[ q ] = q;
 	}
@@ -92,7 +92,7 @@ w_index_buffer_tris::w_index_buffer_tris( w_render_batch* batch )
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( batch->max_elements_per_batch * 3 ) * sizeof( unsigned short ),
+		( w_render_batch::max_elements_per_batch * 3 ) * sizeof( unsigned short ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);
@@ -100,21 +100,21 @@ w_index_buffer_tris::w_index_buffer_tris( w_render_batch* batch )
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer_lines::w_index_buffer_lines( w_render_batch* batch )
-	: w_index_buffer( batch )
+w_index_buffer_lines::w_index_buffer_lines( w_vertex_array_object* vertex_array_object )
+	: w_index_buffer( vertex_array_object )
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<unsigned short> indices;
-	indices.resize( batch->max_elements_per_batch * 2 );
+	indices.resize( w_render_batch::max_elements_per_batch * 2 );
 
 	// index format:
 	// 0, 1,
 	// 2, 3,
 	// ...
 
-	for( unsigned short q = 0 ; q < batch->max_elements_per_batch * 2 ; q++ )
+	for( unsigned short q = 0 ; q < w_render_batch::max_elements_per_batch * 2 ; q++ )
 	{
 		indices[ q ] = q;
 	}
@@ -123,7 +123,7 @@ w_index_buffer_lines::w_index_buffer_lines( w_render_batch* batch )
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( batch->max_elements_per_batch * 2 ) * sizeof( unsigned short ),
+		( w_render_batch::max_elements_per_batch * 2 ) * sizeof( unsigned short ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);
@@ -131,21 +131,21 @@ w_index_buffer_lines::w_index_buffer_lines( w_render_batch* batch )
 
 // ----------------------------------------------------------------------------
 
-w_index_buffer_points::w_index_buffer_points( w_render_batch* batch )
-	: w_index_buffer( batch )
+w_index_buffer_points::w_index_buffer_points( w_vertex_array_object* vertex_array_object )
+	: w_index_buffer( vertex_array_object )
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<unsigned short> indices;
-	indices.resize( batch->max_elements_per_batch * 1 );
+	indices.resize( w_render_batch::max_elements_per_batch * 1 );
 
 	// index format:
 	// 0,
 	// 1,
 	// ...
 
-	for( unsigned short q = 0 ; q < batch->max_elements_per_batch * 1 ; q++ )
+	for( unsigned short q = 0 ; q < w_render_batch::max_elements_per_batch * 1 ; q++ )
 	{
 		indices[ q ] = q;
 	}
@@ -154,7 +154,7 @@ w_index_buffer_points::w_index_buffer_points( w_render_batch* batch )
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( batch->max_elements_per_batch * 1 ) * sizeof( unsigned short ),
+		( w_render_batch::max_elements_per_batch * 1 ) * sizeof( unsigned short ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);

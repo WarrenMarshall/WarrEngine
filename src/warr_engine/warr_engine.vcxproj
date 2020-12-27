@@ -227,6 +227,7 @@
     <ClCompile Include="render_index_buffer.cpp" />
     <ClCompile Include="render_stats.cpp" />
     <ClCompile Include="render_vertex.cpp" />
+    <ClCompile Include="render_vertex_array_object.cpp" />
     <ClCompile Include="render_vertex_buffer.cpp" />
     <ClCompile Include="ui_control.cpp" />
     <ClCompile Include="ui_data_provider.cpp" />
@@ -276,6 +277,7 @@
     <ClInclude Include="render_index_buffer.h" />
     <ClInclude Include="render_stats.h" />
     <ClInclude Include="render_vertex.h" />
+    <ClInclude Include="render_vertex_array_object.h" />
     <ClInclude Include="render_vertex_buffer.h" />
     <ClInclude Include="ui_control.h" />
     <ClInclude Include="ui_data_provider.h" />
@@ -322,12 +324,6 @@
     <ClInclude Include="render_batch.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="keyvalues.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="notes.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".clang-tidy" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
