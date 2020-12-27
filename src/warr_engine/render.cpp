@@ -717,6 +717,34 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	return this;
 }
 
+w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
+{
+	w_color rs_color = rs_color_stack.back();
+	rs_color.a = rs_alpha_stack.back();
+	float rs_emissive = rs_emissive_stack.back();
+
+	w_render_vertex v0( origin, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v1 = v0;
+	w_render_vertex v2 = v0;
+
+	rs_snap_to_pixel = false;
+
+	for( auto x = 0; x < circle_sample_points_max; ++x )
+	{
+		v1.x = origin.x + ( circle_sample_points[ x ].x * radius );
+		v1.y = origin.y + ( circle_sample_points[ x ].y * radius );
+
+		v2.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+		v2.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+
+		batch_triangles->add_primitive( engine->white_wire->tex, v0, v1, v2 );
+	}
+
+	rs_snap_to_pixel = true;
+
+	return this;
+}
+
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
 	w_color rs_color = rs_color_stack.back();

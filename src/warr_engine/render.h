@@ -103,6 +103,7 @@ struct w_render
 	w_render* draw_line( const w_vec2& start, const w_vec2& end );
 	w_render* draw_point( const w_vec2& pos );
 	w_render* draw_circle( const w_vec2& origin, float radius );
+	w_render* draw_filled_circle ( const w_vec2& origin, float radius );
 	w_render* draw_world_axis();
 	w_render* draw_stats();
 

@@ -68,8 +68,8 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 		->translate( { position.x, position.y } );
 
 	RENDER
-		->push_rgba( w_color( color.r, color.g, color.b, color.a ) )
-		->draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
+		->push_rgba( w_color( color.r, color.g, color.b, 0.5f ) )
+		->draw_filled_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
 		->pop_rgba();
 
 	OPENGL->pop();
