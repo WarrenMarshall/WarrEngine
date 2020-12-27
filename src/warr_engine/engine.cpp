@@ -179,12 +179,8 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
 		engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite", 1, v_window_w, v_window_h );
 
-		// used for wireframe drawing
-		engine->white_wire = a_subtexture::find( "engine_white_wire" );
-		engine->white_wire->tex->gl_prim_type = GL_LINES;
-
 		// used for solid drawing
-		engine->white_solid = a_subtexture::find( "engine_white_solid" );
+		engine->tex_white = a_subtexture::find( "engine_white" );
 
 		// there's a simple pixel font that always lives inside of engine so
 		// there is always a font available, regardless of ui theme settings.

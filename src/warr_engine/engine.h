@@ -21,8 +21,7 @@ struct w_engine : i_input_receiver
 	cs_context_t* c2_sound_context = nullptr;
 #endif
 
-	a_subtexture* white_wire = nullptr;
-	a_subtexture* white_solid = nullptr;
+	a_subtexture* tex_white = nullptr;
 	a_font* pixel_font = nullptr;
 
 	bool is_running = false;

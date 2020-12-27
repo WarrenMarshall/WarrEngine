@@ -12,6 +12,6 @@
 {
 	"type" "mesh"
 	"tag" "mesh_torus_test"
-	"texture_tag" "tex_engine_white_wire"
+	"texture_tag" "tex_engine_white"
 	"filename" "meshes/torus_test.obj"
 }

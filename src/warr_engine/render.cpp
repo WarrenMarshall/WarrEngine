@@ -622,7 +622,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch_quads->add_primitive( engine->white_solid->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( engine->tex_white->tex, v0, v1, v2, v3 );
 
 	return this;
 }
@@ -661,7 +661,7 @@ w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, co
 		rs_emissive
 	);
 
-	batch_triangles->add_primitive( engine->white_solid->tex, rv0, rv1, rv2 );
+	batch_triangles->add_primitive( engine->tex_white->tex, rv0, rv1, rv2 );
 
 	return this;
 }
@@ -709,7 +709,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_lines->add_primitive( engine->white_wire->tex, v0, v1 );
+		batch_lines->add_primitive( engine->tex_white->tex, v0, v1 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -737,7 +737,7 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 		v2.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v2.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_triangles->add_primitive( engine->white_wire->tex, v0, v1, v2 );
+		batch_triangles->add_primitive( engine->tex_white->tex, v0, v1, v2 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -757,7 +757,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	rs_snap_to_pixel = false;
 
 	batch_lines->add_primitive(
-		engine->white_wire->tex,
+		engine->tex_white->tex,
 		v0,
 		v1
 	);
@@ -778,7 +778,7 @@ w_render* w_render::draw_point( const w_vec2& pos )
 	rs_snap_to_pixel = false;
 
 	batch_points->add_primitive(
-		engine->white_wire->tex,
+		engine->tex_white->tex,
 		v0
 	);
 

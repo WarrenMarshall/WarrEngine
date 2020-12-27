@@ -5,14 +5,7 @@
 
 {
 	"type" "texture"
-	"tag" "tex_engine_white_wire"
-	"subtexture_tag" "engine_white_wire"
-	"filename" "gfx/white_square.png"
-}
-
-{
-	"type" "texture"
-	"tag" "tex_engine_white_solid"
-	"subtexture_tag" "engine_white_solid"
+	"tag" "tex_engine_white"
+	"subtexture_tag" "engine_white"
 	"filename" "gfx/white_square.png"
 }
