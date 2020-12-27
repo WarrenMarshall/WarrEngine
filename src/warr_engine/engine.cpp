@@ -386,7 +386,7 @@ void w_engine::exec_main_loop()
 			->begin()
 			->draw( engine->frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		engine->blur_frame_buffers[0]->unbind();
 		RENDER->stats.draw_calls.dec();
 
@@ -404,7 +404,7 @@ void w_engine::exec_main_loop()
 				->begin()
 				->draw( engine->blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 				->end();
-			RENDER->batch_quads->draw_and_reset();
+			RENDER->batch_quads->vertex_array_object->draw_and_reset();
 			engine->blur_frame_buffers[ pingpong ]->unbind();
 			RENDER->stats.draw_calls.dec();
 
@@ -425,7 +425,7 @@ void w_engine::exec_main_loop()
 			->begin()
 			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 
 		// draw bloom frame buffer
@@ -437,7 +437,7 @@ void w_engine::exec_main_loop()
 			->push_alpha( 0.5f )
 			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 
 		OPENGL->set_blend( opengl_blend::alpha );
@@ -464,7 +464,7 @@ void w_engine::exec_main_loop()
 			->begin()
 			->draw( engine->composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 
 #if 0
@@ -483,21 +483,21 @@ void w_engine::exec_main_loop()
 			->begin()
 			->draw( engine->frame_buffer->textures[ 0 ], rc )
 			->end();
-		RENDER->batch->draw_and_reset();
+		RENDER->batch->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( engine->frame_buffer->textures[ 1 ], rc )
 			->end();
-		RENDER->batch->draw_and_reset();
+		RENDER->batch->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
 			->end();
-		RENDER->batch->draw_and_reset();
+		RENDER->batch->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 #endif
 
