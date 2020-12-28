@@ -32,6 +32,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 void joystick_callback( int jid, int event )
 {
+	/*
 	if( event == GLFW_CONNECTED )
 	{
 		log( "Gamepad {} was connected.", jid );
@@ -40,6 +41,7 @@ void joystick_callback( int jid, int event )
 	{
 		log( "Gamepad {} was disconnected.", jid );
 	}
+	*/
 
 	engine->input->refresh_connected_gamepads();
 }

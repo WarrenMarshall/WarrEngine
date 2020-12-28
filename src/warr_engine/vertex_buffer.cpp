@@ -4,6 +4,26 @@
 
 // ----------------------------------------------------------------------------
 
+w_render_vertex::w_render_vertex( const w_vec2& pos, const w_uv& uv, const w_color& color, const float emissive )
+	: x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
+	u( uv.u ), v( uv.v ),
+	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
+	e( emissive )
+{
+	t = -1.0f;
+}
+
+w_render_vertex::w_render_vertex( const w_vec3& pos, const w_uv& uv, const w_color& color, const float emissive )
+	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
+	u( uv.u ), v( uv.v ),
+	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
+	e( emissive )
+{
+	t = -1.0f;
+}
+
+// ----------------------------------------------------------------------------
+
 w_vertex_buffer::w_vertex_buffer( w_vertex_array_object* vertex_array_object, int verts_per_element )
 	: vertex_array_object( vertex_array_object ), verts_per_element( verts_per_element )
 {
