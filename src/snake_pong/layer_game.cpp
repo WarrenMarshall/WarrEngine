@@ -27,7 +27,19 @@ void layer_game::update()
 	// we can hit the outer walls. if so, update the paddle positions.
 
 	w_raycast_closest hit;
-	w_vec2 n = ( engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh ) ).normalize();
+
+	// this "dir" dance is here to handle the case where the user puts the mouse
+	// in the dead center of the viewport. This results in a zero length vector which
+	// causes a crash in the raycast and other bad things.
+
+	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
+
+	if( ( engine->input->mouse_vwindow_pos - w_vec2( v_window_hw , v_window_hh ) ).get_size_squared() < 4.0f )
+	{
+		dir = w_vec2( 0.0f, -1.0f );
+	}
+
+	w_vec2 n = ( dir ).normalize();
 
 	// horizontal
 
