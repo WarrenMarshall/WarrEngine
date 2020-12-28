@@ -159,9 +159,12 @@ void w_vertex_array_object::draw_and_reset()
 			{
 				log( ">> draw call >> prim_type:{}", gl_prim_type );
 
-				for( int x = 0 ; x <= vertex_buffer->current_texture_slot_idx ; ++x )
+				for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
 				{
-					log( "  texture_{} : {}", x, vertex_buffer->texture_slots[ x ]->tag );
+					if( vertex_buffer->texture_slots[ x ] )
+					{
+						log( "  texture_{} : {}", x, vertex_buffer->texture_slots[ x ]->tag );
+					}
 				}
 
 				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
