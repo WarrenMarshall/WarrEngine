@@ -8,3 +8,32 @@
 	"tag" "tex_particle_01"
 	"filename" "gfx/particle_01.png"
 }
+
+{
+	"type" "texture"
+	"tag" "tex_particle_02"
+	"filename" "gfx/particle_02.png"
+}
+
+{
+	"type" "texture"
+	"tag" "tex_lightbulb"
+	"filename" "gfx/lightbulb.png"
+}
+
+# ---------------------------------------------------------
+# crosshair
+
+{
+	"type" "texture"
+	"tag" "tex_crosshair"
+	"subtexture_tag" "sub_crosshair"
+	"filename" "gfx/crosshair.png"
+}
+
+{
+	"type" "cursor"
+	"tag" "game_cursor_default"
+	"subtexture_tag" "sub_crosshair"
+	"hotspot" "8, 8"
+}

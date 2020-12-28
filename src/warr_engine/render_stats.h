@@ -13,6 +13,10 @@ struct w_render_stats
 	w_accum_value indices;
 	w_accum_value frame_times_ms;
 	w_accum_value entities;
+	w_accum_value quads;
+	w_accum_value triangles;
+	w_accum_value lines;
+	w_accum_value points;
 
 	std::string stat_custom_string;
 

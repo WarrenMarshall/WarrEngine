@@ -539,10 +539,17 @@ w_render* w_render::draw_stats()
 											  stats.frame_count.value,
 											  stats.frame_times_ms.value,
 											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
-		stat_lines.emplace_back( fmt::format( "DC: {}, V: {}, I: {}",
+		//stat_lines.emplace_back( fmt::format( "DC: {}, V: {}, I: {}",
+		//									  f_commas( stats.draw_calls.value ),
+		//									  f_commas( stats.vertices.value ),
+		//									  f_commas( stats.indices.value ) )
+		//);
+		stat_lines.emplace_back( fmt::format( "DC:{}, Q:{}, T:{}, L:{}, P:{}",
 											  f_commas( stats.draw_calls.value ),
-											  f_commas( stats.vertices.value ),
-											  f_commas( stats.indices.value ) )
+											  f_commas( stats.quads.value ),
+											  f_commas( stats.triangles.value ),
+											  f_commas( stats.lines.value ) ,
+											  f_commas( stats.points.value ) )
 		);
 		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
 		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.entities.value ) ) );

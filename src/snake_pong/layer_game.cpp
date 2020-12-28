@@ -10,7 +10,8 @@ void layer_game::becoming_top_layer()
 {
 	w_layer::becoming_top_layer();
 
-	engine->window->set_mouse_mode( mouse_mode::os );
+	engine->window->set_mouse_mode( mouse_mode::custom );
+	engine->ui->mouse_cursor = a_cursor::find( "game_cursor_default" );
 }
 
 void layer_game::update()
@@ -27,37 +28,34 @@ void layer_game::update()
 	// we can hit the outer walls. if so, update the paddle positions.
 
 	w_raycast_closest hit;
-
-	// this "dir" dance is here to handle the case where the user puts the mouse
-	// in the dead center of the viewport. This results in a zero length vector which
-	// causes a crash in the raycast and other bad things.
-
 	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
 
-	if( ( engine->input->mouse_vwindow_pos - w_vec2( v_window_hw , v_window_hh ) ).get_size_squared() < 4.0f )
+	// note : we don't do the raycasting if the mouse is too close the middle of
+	// the viewport as this can result in a zero length vector which will crash
+	// the raycasting code. this check works around that situation.
+
+	if( dir.get_size_squared() > 4.0f )
 	{
-		dir = w_vec2( 0.0f, -1.0f );
-	}
+		w_vec2 n = ( dir ).normalize();
 
-	w_vec2 n = ( dir ).normalize();
+		// horizontal
 
-	// horizontal
+		w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_top_bottom, &hit );
 
-	w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_top_bottom, &hit );
+		if( hit.hit_something )
+		{
+			player_h->set_position_deep( hit.result.pos, b_reset_velocity( true ) );
+		}
 
-	if( hit.hit_something )
-	{
-		player_h->set_position_deep( hit.result.pos, b_reset_velocity( true ) );
-	}
+		// vertical
 
-	// vertical
+		hit = {};
+		w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_left_right, &hit );
 
-	hit = {};
-	w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_left_right, &hit );
-
-	if( hit.hit_something )
-	{
-		player_v->set_position_deep( hit.result.pos, b_reset_velocity( true ) );
+		if( hit.hit_something )
+		{
+			player_v->set_position_deep( hit.result.pos, b_reset_velocity( true ) );
+		}
 	}
 }
 
@@ -101,6 +99,11 @@ void layer_game::new_game()
 	e->set_tag( "main_camera" );
 	e->it_set_position( { v_window_hw, v_window_hh } );
 
+	// emitter background
+
+	e = add_entity<w_entity>();
+	e->add_component<ec_emitter>()->init( "emitter_game_stars" );
+
 	// world collision geometry
 
 	ec_b2d_static* ecs;
@@ -139,4 +142,11 @@ void layer_game::new_game()
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
 	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
+
+	// light bulb
+
+	e = add_entity<w_entity>();
+	e->set_tag( "lightbulb" );
+	e->add_component<ec_sprite>()->init( "tex_lightbulb" );
+	e->it_set_position( w_vec2( 0, 0 ) );
 }

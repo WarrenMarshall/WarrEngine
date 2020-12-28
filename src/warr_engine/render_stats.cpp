@@ -21,6 +21,10 @@ void w_render_stats::update()
 		vertices.update_value( steps );
 		indices.update_value( steps );
 		entities.update_value( steps );
+		quads.update_value( steps );
+		triangles.update_value( steps );
+		lines.update_value( steps );
+		points.update_value( steps );
 	}
 	else
 	{

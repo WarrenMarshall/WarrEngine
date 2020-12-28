@@ -73,6 +73,7 @@ void layer_main_menu::becoming_top_layer()
 	w_layer::becoming_top_layer();
 
 	engine->window->set_mouse_mode( mouse_mode::custom );
+	engine->ui->mouse_cursor = a_cursor::find( "mouse_cursor_default" );
 }
 
 void layer_main_menu::new_game()
