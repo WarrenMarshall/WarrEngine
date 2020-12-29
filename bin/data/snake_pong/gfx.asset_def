@@ -5,6 +5,16 @@
 
 {
 	"type" "texture"
+	"tag" "tex_ball_master"
+	"filename" "gfx/ball.png"
+	"subtexture_tags" "\
+		sub_ball_body, 0, 0, 16, 16,\
+		sub_ball_lighting, 0, 16, 16, 16\
+		"
+}
+
+{
+	"type" "texture"
 	"tag" "tex_particle_01"
 	"filename" "gfx/particle_01.png"
 }
@@ -19,6 +29,12 @@
 	"type" "texture"
 	"tag" "tex_lightbulb"
 	"filename" "gfx/lightbulb.png"
+}
+
+{
+	"type" "texture"
+	"tag" "tex_prism"
+	"filename" "gfx/prism.png"
 }
 
 # ---------------------------------------------------------

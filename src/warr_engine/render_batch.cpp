@@ -55,7 +55,7 @@ void w_render_batch::draw_and_reset()
 
 bool w_render_batch::is_empty()
 {
-	return ( vertex_array_object->vertex_buffer->vertices.size() == 0 );
+	return vertex_array_object->vertex_buffer->vertices.empty();
 }
 
 void w_render_batch::add_vert( const a_texture* tex, const w_render_vertex& render_vert )

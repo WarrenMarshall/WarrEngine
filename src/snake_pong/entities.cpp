@@ -33,6 +33,7 @@ e_ball::e_ball()
 	//ecd->body->SetFixedRotation( true );
 
 	add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, w_rect( -e_ball::radius, -e_ball::radius, e_ball::radius * 2.f, e_ball::radius * 2.f ) );
+	//add_component<ec_sprite>()->init( "sub_ball_body" );
 }
 
 void e_ball::phys_begin_contact( w_pending_collision& coll, w_entity* other )

@@ -5,7 +5,7 @@
 	"texture_tag" "tex_particle_02"
 	"spawner_type" "circle,2"
 
-	"s_max_spawn_per_sec" "2"
+	"s_max_spawn_per_sec" "5"
 	"b_needs_warm_up" "true"
 	"a_dir" "0"
 	"r_dir_var" "0,360"

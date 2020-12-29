@@ -68,7 +68,7 @@ void w_opengl::init()
 	// allows the alpha channel of the texture to be used for masking  - this has nothing
 	// to do with drawing things with transparency or blending.
 	//
-	// this is quick rejection only.
+	// this is quick rejection only, at the texture alpha channel level.
 	//
 	// (meaning that only pixels with an alpha value higher than 0.1 (or ~25) will get
 	// through to the rest of the rendering pipeline)
