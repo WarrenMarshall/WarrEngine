@@ -2,7 +2,7 @@
 
 struct w_particle final
 {
-	a_src_texture* tex = nullptr;
+	a_texture* texture = nullptr;
 	a_emitter_params* params = nullptr;
 
 	// storing this directly instead of deriving from i_transform

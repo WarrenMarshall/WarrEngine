@@ -65,7 +65,7 @@ void w_particle_pool::draw()
 			RENDER->replace_scale( particle->base_scale * scale );
 			RENDER->replace_angle( interp_angle );
 
-			RENDER->draw_sprite( particle->tex->get_subtexture(), interp_pos );
+			RENDER->draw_sprite( particle->texture, interp_pos );
 		}
 
 		particle++;

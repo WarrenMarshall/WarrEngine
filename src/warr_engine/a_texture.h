@@ -1,6 +1,9 @@
 #pragma once
 
-// defines a subsection of an a_src_texture
+// a texture is a subsection of an a_src_texture asset. it can
+// represent the entire source texture or a sub rectangle of it.
+//
+// these are what gets passed to the renderer functions.
 
 struct a_texture : i_asset
 {

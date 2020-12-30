@@ -374,7 +374,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "texture_tag" )
 						{
-							asset_ptr->tex = a_src_texture::find( value );
+							asset_ptr->texture = a_texture::find( value );
 						}
 						else if( key == "spawner_type" )
 						{
