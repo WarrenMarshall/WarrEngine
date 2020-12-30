@@ -71,23 +71,14 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ----------------------------------------------------------------------------
 
-					// #texture - this comment seems out of date
-					// every raw_image automatically creates a texture that represents it
-					//
-					// you may specify the name of this texture by including a ...
-					// "subtexture_tag" "##your_tag##"
-					// ... k/v pair in the asset definition.
-					//
-					// if that k/v pair isn't there, "sub_" will be prepended to
-					// the asset name.
+					// every src_texture automatically creates a texture that represents it
 
 					auto texture = asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
-
 					asset_ptr->texture = texture;
 
-					// the subtexture_tags" k/v is a convenient way to specify a set
-					// of subtextures belonging to a texture. an easy way to break
-					// down atlas textures or sprite sheets into subtextures.
+					// the texture_tags" k/v is a convenient way to specify a set
+					// of textures belonging to a src_texture. it's an easy way to break
+					// down atlas textures or sprite sheets into individual textures.
 
 					if( iter_ad->does_key_exist( "texture_tags" ) )
 					{
@@ -115,7 +106,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 					}
 				}
-#if 0 // #texture
 				else if( type == "gradient" )
 				{
 					assert( iter_ad->does_key_exist( "alignment" ) );
@@ -126,7 +116,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->find_value( "alignment" ) ) );
 
 					asset_ptr->colors.clear();
-
 					std::vector<w_color> color_list = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
 
 					// must reverse the order or else the gradient texture
@@ -141,21 +130,16 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						asset_ptr->colors.push_back( iter.a );
 					}
 
-					// if the "subtexture_tag" key exists, create a subtexture for this gradient.
+					// every gradienty automatically creates a texture that represents it
 
-					if( iter_ad->does_key_exist( "subtexture_tag" ) )
-					{
-						auto subtex = asset_cache->add( std::make_unique<a_subtexture>( tag ),
-														iter_ad->find_value( "subtexture_tag" ), "" );
-						asset_ptr->subtex = subtex;
-					}
+					auto texture = asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
+					asset_ptr->texture = texture;
 
 					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-#endif
 				else if( type == "font_def" )
 				{
 					assert( iter_ad->does_key_exist( "filename" ) );

@@ -30,7 +30,6 @@ struct w_vertex_buffer
 	// i.e. quad = 4, line = 2, point = 1
 	int verts_per_element = -1;
 
-	// #texture
 	std::vector<const a_texture*> texture_slots;
 	int current_texture_slot_idx = 0;
 

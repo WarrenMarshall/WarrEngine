@@ -48,6 +48,7 @@ bool a_src_texture::create_internals()
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
 
 	glBindTextureUnit( 0, 0 );
+
 	stbi_image_free( color_data );
 	color_data = nullptr;
 

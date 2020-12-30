@@ -6,7 +6,12 @@ implement_find_func( a_texture )
 
 a_texture::a_texture( const std::string_view src_texture_tag )
 {
-	src_texture = a_src_texture::find( src_texture_tag );
+	src_texture = a_src_texture::find( src_texture_tag, b_silent( true ) );
+
+	if( !src_texture )
+	{
+		src_texture = a_gradient::find( src_texture_tag );
+	}
 
 	rc = { 0, 0, src_texture->w, src_texture->h };
 

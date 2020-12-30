@@ -1,6 +1,5 @@
 #pragma once
 
-#if 0 // #texture
 struct a_gradient : a_src_texture
 {
 	declare_find_func( a_gradient )
@@ -13,5 +12,3 @@ struct a_gradient : a_src_texture
 	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
 };
-
-#endif
