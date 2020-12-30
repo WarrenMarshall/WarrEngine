@@ -172,10 +172,10 @@ void w_vertex_array_object::draw_and_reset()
 		}
 #endif
 		unbind();
-	}
 
-	// clear out for the next batch
-	reset();
+		// clear out for the next batch
+		reset();
+	}
 }
 
 void w_vertex_array_object::reset()
