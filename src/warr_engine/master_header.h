@@ -73,7 +73,7 @@ extern float ui_canvas_h;
 #include "datatypes.h"
 #include "asset.h"
 #include "a_palette.h"
-#include "a_texture.h"
+#include "a_raw_image_data.h"
 #include "a_subtexture.h"
 #include "a_gradient.h"
 #include "a_anim_texture.h"

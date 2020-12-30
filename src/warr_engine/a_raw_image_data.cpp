@@ -2,14 +2,14 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-implement_find_func( a_texture )
+implement_find_func( a_raw_image_data )
 
-a_texture::~a_texture()
+a_raw_image_data::~a_raw_image_data()
 {
-	a_texture::clean_up_internals();
+	a_raw_image_data::clean_up_internals();
 }
 
-void a_texture::clean_up_internals()
+void a_raw_image_data::clean_up_internals()
 {
 	if( gl_id )
 	{
@@ -17,7 +17,7 @@ void a_texture::clean_up_internals()
 	}
 }
 
-bool a_texture::create_internals()
+bool a_raw_image_data::create_internals()
 {
 	assert( !original_filename.empty() );
 
@@ -54,7 +54,7 @@ bool a_texture::create_internals()
 	return true;
 }
 
-a_subtexture* a_texture::get_subtexture( float offset )
+a_subtexture* a_raw_image_data::get_subtexture( float offset )
 {
 	return subtex;
 }

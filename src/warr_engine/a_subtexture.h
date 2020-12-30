@@ -7,7 +7,7 @@ struct a_subtexture : i_asset
 	declare_find_func( a_subtexture )
 
 	// the texture asset we draw from
-	a_texture* tex = nullptr;
+	a_raw_image_data* tex = nullptr;
 
 	// the source rectangle on tex that defines this subtexture.
 	w_rect rc_tex = { 0,0,0,0 };

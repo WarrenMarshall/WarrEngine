@@ -11,7 +11,6 @@ a_anim_texture::a_anim_texture( e_tween_type tween_type, int frames_per_second )
 
 a_anim_texture::~a_anim_texture()
 {
-	a_texture::~a_texture();
 	a_anim_texture::clean_up_internals();
 }
 

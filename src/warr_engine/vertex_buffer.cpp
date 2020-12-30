@@ -88,7 +88,7 @@ void w_vertex_buffer::preallocate_vertices( int max_verts )
 	);
 }
 
-int w_vertex_buffer::assign_texture_slot( const a_texture* tex )
+int w_vertex_buffer::assign_texture_slot( const a_raw_image_data* tex )
 {
 	// if this texture is already in the slot list, return that index
 	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )

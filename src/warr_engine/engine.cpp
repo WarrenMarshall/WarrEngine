@@ -823,9 +823,9 @@ bool w_engine::iir_on_released( const w_input_event* evt )
 	// frame debugger
 	if( evt->input_id == input_id::key_f10 )
 	{
-		RENDER->enable_frame_debugger = true;
+		RENDER->single_frame_debugger = true;
 		log_div();
-		log( "enable frame debugger ..." );
+		log( "single frame debugger" );
 		log_div();
 		return true;
 	}

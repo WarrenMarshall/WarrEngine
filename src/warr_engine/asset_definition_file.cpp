@@ -75,11 +75,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_texture::find( tag, b_silent( true ) );
+					auto asset_ptr = a_raw_image_data::find( tag, b_silent( true ) );
 
 					if( !asset_ptr )
 					{
-						asset_ptr = asset_cache->add( std::make_unique<a_texture>(), tag, filename );
+						asset_ptr = asset_cache->add( std::make_unique<a_raw_image_data>(), tag, filename );
 					}
 
 					// ------------------------------------------------------------------------
@@ -136,6 +136,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 					}
 				}
+#if 0 // #texture
 				else if( type == "gradient" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "alignment" ) );
@@ -182,6 +183,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+#endif
 				else if( type == "font_def_tag" )
 				{
 					assert_key_required( iter_ad->does_key_exist( "filename" ) );
@@ -201,7 +203,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// ------------------------------------------------------------------------
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->texture = a_texture::find( iter_ad->find_value( "texture_tag" ) );
+					asset_ptr->texture = a_raw_image_data::find( iter_ad->find_value( "texture_tag" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -227,7 +229,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					if( iter_ad->does_key_exist( "texture_tag" ) )
 					{
 						tex_tag = iter_ad->find_value( "texture_tag" );
-						subtexture = a_texture::find( tex_tag )->get_subtexture();
+						subtexture = a_raw_image_data::find( tex_tag )->get_subtexture();
 					}
 
 					std::optional<std::string_view> sub_tex_tag = std::nullopt;
@@ -402,7 +404,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					asset_ptr->tex = a_texture::find( iter_ad->find_value( "texture_tag" ) );
+					asset_ptr->tex = a_raw_image_data::find( iter_ad->find_value( "texture_tag" ) );
 					asset_ptr->original_filename = filename;
 
 					// ------------------------------------------------------------------------
@@ -517,7 +519,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "texture_tag" )
 						{
-							asset_ptr->tex = a_texture::find( value );
+							asset_ptr->tex = a_raw_image_data::find( value );
 						}
 						else if( key == "spawner_type" )
 						{

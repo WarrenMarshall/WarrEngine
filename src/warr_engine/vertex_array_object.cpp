@@ -109,7 +109,7 @@ void w_vertex_array_object::unbind()
 	index_buffer->unbind();
 }
 
-int w_vertex_array_object::assign_texture_slot( const a_texture* tex )
+int w_vertex_array_object::assign_texture_slot( const a_raw_image_data* tex )
 {
 	return vertex_buffer->assign_texture_slot( tex );
 }
@@ -155,7 +155,7 @@ void w_vertex_array_object::draw_and_reset()
 #ifndef _FINALRELEASE
 		// frame debugger
 		{
-			if( RENDER->enable_frame_debugger )
+			if( RENDER->single_frame_debugger )
 			{
 				log( ">> draw call >> prim_type:{}", gl_prim_type );
 

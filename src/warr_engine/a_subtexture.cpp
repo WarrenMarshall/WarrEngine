@@ -6,7 +6,7 @@ implement_find_func( a_subtexture )
 
 a_subtexture::a_subtexture( const std::string_view tex_name )
 {
-	tex = a_texture::find( tex_name );
+	tex = a_raw_image_data::find( tex_name );
 
 	rc_tex = { 0, 0, tex->w, tex->h };
 
@@ -17,7 +17,7 @@ a_subtexture::a_subtexture( const std::string_view tex_name )
 a_subtexture::a_subtexture( const std::string_view texture_tag, const w_rect& rc )
 {
 	// find the texture being referenced
-	tex = a_texture::find( texture_tag );
+	tex = a_raw_image_data::find( texture_tag );
 
 	// if W or H are -1, they are defaulted to the textures W/H
 

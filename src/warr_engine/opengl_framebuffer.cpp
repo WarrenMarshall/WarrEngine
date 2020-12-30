@@ -66,7 +66,7 @@ void w_opengl_framebuffer::add_texture()
 	auto texture_num = static_cast<int>( textures.size() );
 	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, base_name );
 
-	auto texture = engine->asset_cache->add( std::make_unique<a_texture>(), tex_name, "" );
+	auto texture = engine->asset_cache->add( std::make_unique<a_raw_image_data>(), tex_name, "" );
 	texture->w = w;
 	texture->h = h;
 

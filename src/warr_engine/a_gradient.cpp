@@ -2,11 +2,11 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+#if 0 // #texture
 implement_find_func( a_gradient )
 
 a_gradient::~a_gradient()
 {
-	a_texture::~a_texture();
 	a_gradient::clean_up_internals();
 }
 
@@ -40,3 +40,4 @@ bool a_gradient::create_internals()
 	return true;
 }
 
+#endif

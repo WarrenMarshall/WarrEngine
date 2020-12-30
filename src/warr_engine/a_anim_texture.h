@@ -1,6 +1,6 @@
 #pragma once
 
-struct a_anim_texture : a_texture
+struct a_anim_texture : a_raw_image_data
 {
 	declare_find_func( a_anim_texture )
 

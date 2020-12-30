@@ -50,9 +50,9 @@ struct w_engine : i_input_receiver
 	void cache_asset_definition_files( const std::string_view folder_name );
 	void precache_asset_resources( int pass, std::string_view game_name );
 
-	a_texture* find_texture( const std::string_view name, bool silent = false )
+	a_raw_image_data* find_texture( const std::string_view name, bool silent = false )
 	{
-		return find_asset<a_texture>( name, silent );
+		return find_asset<a_raw_image_data>( name, silent );
 	}
 	a_subtexture* find_subtexture( const std::string_view name, bool silent = false )
 	{

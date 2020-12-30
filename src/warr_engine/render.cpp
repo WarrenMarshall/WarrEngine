@@ -313,7 +313,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-w_render* w_render::draw_sprite( a_texture* tex, const w_vec2& dst )
+w_render* w_render::draw_sprite( a_raw_image_data* tex, const w_vec2& dst )
 {
 	return draw_sprite( tex->get_subtexture(), dst );
 }
@@ -356,7 +356,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 /*
 	draws a texture onto a quad.
 */
-w_render* w_render::draw( a_texture* tex, const w_rect& dst )
+w_render* w_render::draw( a_raw_image_data* tex, const w_rect& dst )
 {
 	return draw( tex->get_subtexture(), dst );
 }
@@ -496,7 +496,7 @@ void w_render::end_frame()
 	assert( rs_align_stack.size() == 1 );
 
 #ifndef _FINALRELEASE
-	enable_frame_debugger = false;
+	single_frame_debugger = false;
 #endif
 }
 
@@ -861,7 +861,7 @@ float w_render::calc_interpolated_per_sec_value( float current_value, float step
 
 // binds a texture to a specific texture slot
 
-void w_render::bind_texture( int slot, a_texture* tex )
+void w_render::bind_texture( int slot, a_raw_image_data* tex )
 {
 	glBindTextureUnit( slot, tex->gl_id );
 }

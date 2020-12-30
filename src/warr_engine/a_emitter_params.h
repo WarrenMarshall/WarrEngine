@@ -5,7 +5,7 @@ struct a_emitter_params : i_asset
 	declare_find_func( a_emitter_params )
 
 	// texture to draw for this particle
-	a_texture* tex = nullptr;
+	a_raw_image_data* tex = nullptr;
 
 	// where to spawn new particles
 	std::unique_ptr<w_particle_spawner> particle_spawner = nullptr;

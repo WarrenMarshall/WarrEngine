@@ -6,7 +6,7 @@ struct w_bit_flag_generator;
 struct a_emitter_params;
 struct a_subtexture;
 struct a_mesh;
-struct a_texture;
+struct a_raw_image_data;
 struct ec_emitter;
 struct i_asset;
 struct i_transform;

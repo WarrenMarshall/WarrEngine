@@ -79,7 +79,7 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 
 w_entity_component* ec_sprite::init( const std::string_view tex_tag )
 {
-	tex = a_texture::find( tex_tag );
+	tex = a_raw_image_data::find( tex_tag );
 	return this;
 }
 

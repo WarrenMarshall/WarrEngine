@@ -2,7 +2,7 @@
 
 struct w_opengl_framebuffer
 {
-	std::vector<a_texture*> textures;
+	std::vector<a_raw_image_data*> textures;
 	std::string base_name;
 	float w, h;
 	unsigned fb_id = 0;
