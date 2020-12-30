@@ -343,7 +343,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
 
-					asset_ptr->tex = a_src_texture::find( iter_ad->find_value( "texture_tag" ) );
+					asset_ptr->tex = a_texture::find( iter_ad->find_value( "texture_tag" ) );
 					asset_ptr->original_filename = filename;
 
 					asset_ptr->clean_up_internals();

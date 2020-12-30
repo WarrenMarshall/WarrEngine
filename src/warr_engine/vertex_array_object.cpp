@@ -109,11 +109,13 @@ void w_vertex_array_object::unbind()
 	index_buffer->unbind();
 }
 
-int w_vertex_array_object::assign_texture_slot( const a_src_texture* tex )
+// #texture - can this function be moved into the vertex buffer?
+int w_vertex_array_object::assign_texture_slot( const a_texture* texture )
 {
-	return vertex_buffer->assign_texture_slot( tex );
+	return vertex_buffer->assign_texture_slot( texture );
 }
 
+// #texture - can this function be moved into the vertex buffer?
 void w_vertex_array_object::check_draw_and_reset()
 {
 	if( vertex_buffer->vertices.size() >= max_elements_per_render_batch )
@@ -163,7 +165,7 @@ void w_vertex_array_object::draw_and_reset()
 				{
 					if( vertex_buffer->texture_slots[ x ] )
 					{
-						log( "  texture_{} : {}", x, vertex_buffer->texture_slots[ x ]->tag );
+						log( " slot {} : {}", x, vertex_buffer->texture_slots[ x ]->tag );
 					}
 				}
 
@@ -171,7 +173,6 @@ void w_vertex_array_object::draw_and_reset()
 			}
 		}
 #endif
-
 		unbind();
 	}
 

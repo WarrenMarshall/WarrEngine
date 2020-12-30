@@ -89,8 +89,8 @@ struct w_render
 	void init();
 
 	w_render* draw_mesh( a_mesh* mesh, const w_vec2& dst );
-	w_render* draw_sprite( const a_texture* subtex, const w_vec2& dst );
-	w_render* draw( const a_texture* subtex, const w_rect& dst );
+	w_render* draw_sprite( const a_texture* texture, const w_vec2& dst );
+	w_render* draw( const a_texture* texture, const w_rect& dst );
 	w_render* draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );
 	w_render* draw_string( const std::string_view text, const w_rect& dst );
 	w_render* draw_string( a_font* font, const std::string_view text, const w_rect& dst );

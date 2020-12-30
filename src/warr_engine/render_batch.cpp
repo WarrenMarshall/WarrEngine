@@ -14,38 +14,38 @@ w_render_batch::~w_render_batch()
 {
 }
 
-void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
+void w_render_batch::add_primitive( const a_texture* texture, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
 {
 	vertex_array_object->check_draw_and_reset();
 
-	add_vert( tex, v0 );
-	add_vert( tex, v1 );
-	add_vert( tex, v2 );
-	add_vert( tex, v3 );
+	add_vert( texture, v0 );
+	add_vert( texture, v1 );
+	add_vert( texture, v2 );
+	add_vert( texture, v3 );
 }
 
-void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
+void w_render_batch::add_primitive( const a_texture* texture, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
 {
 	vertex_array_object->check_draw_and_reset();
 
-	add_vert( tex, v0 );
-	add_vert( tex, v1 );
-	add_vert( tex, v2 );
+	add_vert( texture, v0 );
+	add_vert( texture, v1 );
+	add_vert( texture, v2 );
 }
 
-void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 )
+void w_render_batch::add_primitive( const a_texture* texture, const w_render_vertex& v0, const w_render_vertex& v1 )
 {
 	vertex_array_object->check_draw_and_reset();
 
-	add_vert( tex, v0 );
-	add_vert( tex, v1 );
+	add_vert( texture, v0 );
+	add_vert( texture, v1 );
 }
 
-void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0 )
+void w_render_batch::add_primitive( const a_texture* texture, const w_render_vertex& v0 )
 {
 	vertex_array_object->check_draw_and_reset();
 
-	add_vert( tex, v0 );
+	add_vert( texture, v0 );
 }
 
 void w_render_batch::draw_and_reset()
@@ -58,7 +58,7 @@ bool w_render_batch::is_empty()
 	return vertex_array_object->vertex_buffer->vertices.empty();
 }
 
-void w_render_batch::add_vert( const a_src_texture* tex, const w_render_vertex& render_vert )
+void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& render_vert )
 {
 	// multiply the current modelview matrix against the vertex being rendered.
 	//
@@ -82,7 +82,7 @@ void w_render_batch::add_vert( const a_src_texture* tex, const w_render_vertex& 
 	rv.y = vtx.y;
 
 	// find a texture slot for the requested texture
-	rv.t = static_cast<float>( vertex_array_object->assign_texture_slot( tex ) );
+	rv.t = static_cast<float>( vertex_array_object->assign_texture_slot( texture ) );
 
 	// add the render_vert to the vertex list
 	vertex_array_object->vertex_buffer->vertices.emplace_back( std::move( rv ) );

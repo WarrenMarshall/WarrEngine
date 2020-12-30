@@ -314,10 +314,10 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 	centers the quad being drawn at 0,0,0.
 */
 
-w_render* w_render::draw_sprite( const a_texture* subtex, const w_vec2& dst )
+w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 {
-	float w = subtex->rc_tex.w;
-	float h = subtex->rc_tex.h;
+	float w = texture->rc_tex.w;
+	float h = texture->rc_tex.h;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -332,17 +332,17 @@ w_render* w_render::draw_sprite( const a_texture* subtex, const w_vec2& dst )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
-	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
+	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u, texture->uv00.v ), rs_color, rs_emissive );
+	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u, texture->uv00.v ), rs_color, rs_emissive );
+	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u, texture->uv11.v ), rs_color, rs_emissive );
+	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u, texture->uv11.v ), rs_color, rs_emissive );
 
 	OPENGL
 		->push()
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	batch_quads->add_primitive( subtex->src_texture, v0, v1, v2, v3 );
+	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 
 	OPENGL->pop();
 
@@ -353,10 +353,10 @@ w_render* w_render::draw_sprite( const a_texture* subtex, const w_vec2& dst )
 	draws a texture onto a quad.
 */
 
-w_render* w_render::draw( const a_texture* subtex, const w_rect& dst )
+w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 {
-	float w = dst.w ? dst.w : subtex->rc_tex.w;
-	float h = dst.h ? dst.h : subtex->rc_tex.h;
+	float w = dst.w ? dst.w : texture->rc_tex.w;
+	float h = dst.h ? dst.h : texture->rc_tex.h;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 
@@ -367,13 +367,13 @@ w_render* w_render::draw( const a_texture* subtex, const w_rect& dst )
 	rs_color.a = rs_alpha_stack.back();
 	float rs_emissive = rs_emissive_stack.back();
 
-	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( subtex->uv00.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v1( w_vec2( w, h ), w_vec2( subtex->uv11.u, subtex->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( subtex->uv11.u, subtex->uv11.v ), rs_color, rs_emissive );
-	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
+	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u, texture->uv00.v ), rs_color, rs_emissive );
+	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u, texture->uv00.v ), rs_color, rs_emissive );
+	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u, texture->uv11.v ), rs_color, rs_emissive );
+	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u, texture->uv11.v ), rs_color, rs_emissive );
 
 	OPENGL->push()->translate( { dst.x, dst.y } );
-	batch_quads->add_primitive( subtex->src_texture, v0, v1, v2, v3 );
+	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 	OPENGL->pop();
 
 	return this;
@@ -621,7 +621,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch_quads->add_primitive( engine->tex_white->src_texture, v0, v1, v2, v3 );
+	batch_quads->add_primitive( engine->tex_white, v0, v1, v2, v3 );
 
 	return this;
 }
@@ -660,7 +660,7 @@ w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, co
 		rs_emissive
 	);
 
-	batch_triangles->add_primitive( engine->tex_white->src_texture, rv0, rv1, rv2 );
+	batch_triangles->add_primitive( engine->tex_white, rv0, rv1, rv2 );
 
 	return this;
 }
@@ -708,7 +708,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_lines->add_primitive( engine->tex_white->src_texture, v0, v1 );
+		batch_lines->add_primitive( engine->tex_white, v0, v1 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -736,7 +736,7 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 		v2.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v2.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_triangles->add_primitive( engine->tex_white->src_texture, v0, v1, v2 );
+		batch_triangles->add_primitive( engine->tex_white, v0, v1, v2 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -756,7 +756,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	rs_snap_to_pixel = false;
 
 	batch_lines->add_primitive(
-		engine->tex_white->src_texture,
+		engine->tex_white,
 		v0,
 		v1
 	);
@@ -777,7 +777,7 @@ w_render* w_render::draw_point( const w_vec2& pos )
 	rs_snap_to_pixel = false;
 
 	batch_points->add_primitive(
-		engine->tex_white->src_texture,
+		engine->tex_white,
 		v0
 	);
 

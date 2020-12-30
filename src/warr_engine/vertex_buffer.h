@@ -41,5 +41,5 @@ struct w_vertex_buffer
 
 	void set_up_vertex_attribs();
 	void preallocate_vertices( int max_verts );
-	int assign_texture_slot( const a_src_texture* tex );
+	int assign_texture_slot( const a_texture* texture );
 };

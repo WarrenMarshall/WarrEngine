@@ -130,8 +130,6 @@ void w_layer_mgr::draw()
 
 		RENDER->end();
 
-		RENDER->draw_and_reset_all_batches();
-
 		// ----------------------------------------------------------------------------
 		// UI
 		// ----------------------------------------------------------------------------
@@ -161,12 +159,11 @@ void w_layer_mgr::draw()
 				OPENGL->push();
 				layer->draw_ui();
 				OPENGL->pop();
+				RENDER->draw_and_reset_all_batches();
 			}
 		}
 
 		RENDER->end();
-
-		RENDER->draw_and_reset_all_batches();
 	}
 }
 

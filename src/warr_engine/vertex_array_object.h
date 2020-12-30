@@ -18,7 +18,7 @@ struct w_vertex_array_object
 
 	void bind();
 	void unbind();
-	int assign_texture_slot( const a_src_texture* tex );
+	int assign_texture_slot( const a_texture* texture );
 	void check_draw_and_reset();
 	void draw_and_reset();
 	void reset();
