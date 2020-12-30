@@ -12,7 +12,7 @@ void layer_background::push()
 {
 	w_layer::push();
 
-	//gradient = a_gradient::find( "background_gradient" );
+	gradient = a_texture::find( "background_gradient" );
 
 	engine->window->set_mouse_mode( mouse_mode::custom );
 }
@@ -21,6 +21,6 @@ void layer_background::draw()
 {
 	w_layer::draw();
 
-	//RENDER
-	//	->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+	RENDER
+		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
 }

@@ -50,17 +50,6 @@ struct w_engine : i_input_receiver
 	void cache_asset_definition_files( const std::string_view folder_name );
 	void precache_asset_resources( int pass, std::string_view game_name );
 
-#if 0 // #texture - wtf are these for?
-	a_src_texture* find_texture( const std::string_view name, bool silent = false )
-	{
-		return find_asset<a_src_texture>( name, silent );
-	}
-	a_texture* find_subtexture( const std::string_view name, bool silent = false )
-	{
-		return find_asset<a_texture>( name, silent );
-	}
-#endif
-
 	template<typename T>
 	T* find_asset( const std::string_view name, bool silent = false )
 	{

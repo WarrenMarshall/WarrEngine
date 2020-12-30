@@ -6,7 +6,6 @@
 {
 	"type" "gradient"
 	"tag" "background_gradient"
-	"subtexture_tag" "s_background_gradient"
 	"alignment" "align.vertical"
 	"colors" "\
 		@0,\

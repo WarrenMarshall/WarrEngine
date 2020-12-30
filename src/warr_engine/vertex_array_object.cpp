@@ -109,13 +109,11 @@ void w_vertex_array_object::unbind()
 	index_buffer->unbind();
 }
 
-// #texture - can this function be moved into the vertex buffer?
 int w_vertex_array_object::assign_texture_slot( const a_texture* texture )
 {
 	return vertex_buffer->assign_texture_slot( texture );
 }
 
-// #texture - can this function be moved into the vertex buffer?
 void w_vertex_array_object::check_draw_and_reset()
 {
 	if( vertex_buffer->vertices.size() >= max_elements_per_render_batch )
