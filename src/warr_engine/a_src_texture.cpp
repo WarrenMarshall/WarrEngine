@@ -54,9 +54,3 @@ bool a_src_texture::create_internals()
 
 	return true;
 }
-
-a_texture* a_src_texture::get_subtexture( float offset )
-{
-	return texture;
-}
-

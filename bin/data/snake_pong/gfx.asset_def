@@ -8,8 +8,8 @@
 	"tag" "tex_ball_master"
 	"filename" "gfx/ball.png"
 	"texture_tags" "\
-		sub_ball_body, 0, 0, 16, 16,\
-		sub_ball_lighting, 0, 16, 16, 16\
+		ball_body, 0, 0, 16, 16,\
+		ball_lighting, 16, 0, 16, 16\
 		"
 }
 

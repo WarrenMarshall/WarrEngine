@@ -30,10 +30,10 @@ e_ball::e_ball()
 	auto ecd = add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;
 	ecd->add_fixture_circle( "", w_vec2::zero, e_ball::radius );
-	//ecd->body->SetFixedRotation( true );
+	ecd->body->SetFixedRotation( true );
 
-	add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, w_rect( -e_ball::radius, -e_ball::radius, e_ball::radius * 2.f, e_ball::radius * 2.f ) );
-	//add_component<ec_sprite>()->init( "sub_ball_body" );
+	add_component<ec_sprite>()->init( "ball_body" );
+	add_component<ec_sprite>()->init( "ball_lighting" );
 }
 
 void e_ball::phys_begin_contact( w_pending_collision& coll, w_entity* other )

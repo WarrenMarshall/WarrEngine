@@ -79,7 +79,7 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 
 w_entity_component* ec_sprite::init( const std::string_view tex_tag )
 {
-	tex = a_src_texture::find( tex_tag );
+	texture = a_texture::find( tex_tag );
 	return this;
 }
 
@@ -94,7 +94,7 @@ void ec_sprite::draw()
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
-	RENDER->draw_sprite( tex->get_subtexture( anim_offset ), pos );
+	RENDER->draw_sprite( texture, pos );
 }
 
 // ----------------------------------------------------------------------------
