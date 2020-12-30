@@ -175,134 +175,94 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "slice_def" )
 				{
+					assert( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad->does_key_exist( "x_slices" ) );
+					assert( iter_ad->does_key_exist( "y_slices" ) );
+
 					auto asset_ptr = asset_cache->add( std::make_unique<a_9slice_def>(), tag, filename );
 
-					// ------------------------------------------------------------------------
-
-					a_texture* subtexture = nullptr;
-
-					std::string_view tex_tag;
-					if( iter_ad->does_key_exist( "texture_tag" ) )
-					{
-						tex_tag = iter_ad->find_value( "texture_tag" );
-						subtexture = a_src_texture::find( tex_tag )->get_subtexture();
-					}
-
-					std::optional<std::string_view> sub_tex_tag = std::nullopt;
-					if( iter_ad->does_key_exist( "subtexture_tag" ) )
-					{
-						sub_tex_tag = iter_ad->find_value( "subtexture_tag" );
-						subtexture = a_texture::find( *sub_tex_tag );
-						tex_tag = subtexture->src_texture->tag;
-					}
-
-					assert( subtexture );
-
-					w_rect rect = w_rect::zero;
-					w_vec2 x_slices;
-					w_vec2 y_slices;
-
-					for( const auto& [key, value] : iter_ad->kv )
-					{
-						if( key == "rect" )
-						{
-							rect = w_parser::rect_from_str( value );
-						}
-						else if( key == "x_slices" )
-						{
-							x_slices = w_parser::vec2_from_str( value );
-						}
-						else if( key == "y_slices" )
-						{
-							y_slices = w_parser::vec2_from_str( value );
-						}
-					}
-
-					// No rectangle was specified but we have a subtexture name. use the
-					// dimensions of that subtexture for the rect.
-					if( rect == w_rect::zero && sub_tex_tag )
-					{
-						rect = subtexture->get_bounding_rect();
-					}
+					a_texture* texture = a_texture::find( iter_ad->find_value( "texture_tag" ) );
+					w_vec2 x_slices = w_parser::vec2_from_str( iter_ad->find_value( "x_slices" ) );
+					w_vec2 y_slices = w_parser::vec2_from_str( iter_ad->find_value( "y_slices" ) );
 
 					float x, y, w, h;
 
 					// top row
 
-					x = rect.x;
-					y = rect.y;
+					x = texture->rc.x;
+					y = texture->rc.y;
 					w = x_slices.l;
 					h = y_slices.t;
 
 					asset_ptr->patches[ slicedef_patch::P_00 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_00", tag ), ""
 						);
 
-					x = rect.x + x_slices.l;
-					w = rect.w - x_slices.l - x_slices.r;
+					x = texture->rc.x + x_slices.l;
+					w = texture->rc.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_10 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_10", tag ), ""
 						);
 
-					x = rect.x + rect.w - x_slices.r;
+					x = texture->rc.x + texture->rc.w - x_slices.r;
 					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_20 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_20", tag ), ""
 						);
 
 					// middle row
 
-					x = rect.x;
-					y = rect.y + y_slices.t;
+					x = texture->rc.x;
+					y = texture->rc.y + y_slices.t;
 					w = x_slices.l;
-					h = rect.h - y_slices.t - y_slices.b;
+					h = texture->rc.h - y_slices.t - y_slices.b;
 
 					asset_ptr->patches[ slicedef_patch::P_01 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_01", tag ), ""
 						);
 
-					x = rect.x + x_slices.l;
-					w = rect.w - x_slices.l - x_slices.r;
+					x = texture->rc.x + x_slices.l;
+					w = texture->rc.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_11 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_11", tag ), ""
 						);
 
-					x = rect.x + rect.w - x_slices.r;
+					x = texture->rc.x + texture->rc.w - x_slices.r;
 					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_21 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_21", tag ), ""
 						);
 
 					// bottom row
 
-					x = rect.x;
-					y = rect.y + rect.h - y_slices.b;
+					x = texture->rc.x;
+					y = texture->rc.y + texture->rc.h - y_slices.b;
 					w = x_slices.l;
 					h = y_slices.b;
 
 					asset_ptr->patches[ slicedef_patch::P_02 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_02", tag ), ""
 						);
 
-					x = rect.x + x_slices.l;
-					w = rect.w - x_slices.l - x_slices.r;
+					x = texture->rc.x + x_slices.l;
+					w = texture->rc.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_12 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_12", tag ), ""
 						);
 
-					x = rect.x + rect.w - x_slices.r;
+					x = texture->rc.x + texture->rc.w - x_slices.r;
 					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_22 ] =
 						asset_cache->add(
-							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", tag ), ""
+							std::make_unique<a_texture>( texture->src_texture->tag, w_rect( x, y, w, h ) ), fmt::format( "{}_22", tag ), ""
 						);
 
 					// ------------------------------------------------------------------------

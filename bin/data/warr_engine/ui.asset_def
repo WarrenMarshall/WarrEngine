@@ -31,7 +31,7 @@
 {
 	"type" "slice_def"
 	"tag" "sd_ui_panel"
-	"subtexture_tag" "ui_panel"
+	"texture_tag" "ui_panel"
 	"x_slices" "6, 6"
 	"y_slices" "6, 6"
 }
@@ -40,7 +40,7 @@
 {
 	"type" "slice_def"
 	"tag" "sd_push_button"
-	"subtexture_tag" "ui_button"
+	"texture_tag" "ui_button"
 	"x_slices" "3, 3"
 	"y_slices" "3, 3"
 }

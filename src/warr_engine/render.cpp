@@ -316,8 +316,8 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 
 w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 {
-	float w = texture->rc_tex.w;
-	float h = texture->rc_tex.h;
+	float w = texture->rc.w;
+	float h = texture->rc.h;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 	float rs_angle = rs_angle_stack.back();
@@ -355,8 +355,8 @@ w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 
 w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 {
-	float w = dst.w ? dst.w : texture->rc_tex.w;
-	float h = dst.h ? dst.h : texture->rc_tex.h;
+	float w = dst.w ? dst.w : texture->rc.w;
+	float h = dst.h ? dst.h : texture->rc.h;
 
 	w_vec2 rs_scale = rs_scale_stack.back();
 
@@ -804,42 +804,42 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	float xpos = dst.x;
 	float ypos = dst.y;
 
-	float inner_w = dst.w - p_00->rc_tex.w - p_20->rc_tex.w;
-	float inner_h = dst.h - p_00->rc_tex.h - p_02->rc_tex.h;
+	float inner_w = dst.w - p_00->rc.w - p_20->rc.w;
+	float inner_h = dst.h - p_00->rc.h - p_02->rc.h;
 
 	// top row
 
-	draw( p_00, w_rect( xpos, ypos, p_00->rc_tex.w, p_00->rc_tex.h ) );
+	draw( p_00, w_rect( xpos, ypos, p_00->rc.w, p_00->rc.h ) );
 
-	xpos += p_00->rc_tex.w;
-	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->rc_tex.h ) );
+	xpos += p_00->rc.w;
+	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->rc.h ) );
 
 	xpos += inner_w;
-	draw( p_20, w_rect( xpos, ypos, p_20->rc_tex.w, p_20->rc_tex.h ) );
+	draw( p_20, w_rect( xpos, ypos, p_20->rc.w, p_20->rc.h ) );
 
 	// middle row
 
 	xpos = dst.x;
-	ypos += p_00->rc_tex.h;
-	draw( p_01, w_rect( xpos, ypos, p_01->rc_tex.w, inner_h ) );
+	ypos += p_00->rc.h;
+	draw( p_01, w_rect( xpos, ypos, p_01->rc.w, inner_h ) );
 
-	xpos += p_01->rc_tex.w;
+	xpos += p_01->rc.w;
 	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
 
 	xpos += inner_w;
-	draw( p_21, w_rect( xpos, ypos, p_21->rc_tex.w, inner_h ) );
+	draw( p_21, w_rect( xpos, ypos, p_21->rc.w, inner_h ) );
 
 	// bottom row
 
 	xpos = dst.x;
 	ypos += inner_h;
-	draw( p_02, w_rect( xpos, ypos, p_02->rc_tex.w, p_02->rc_tex.h ) );
+	draw( p_02, w_rect( xpos, ypos, p_02->rc.w, p_02->rc.h ) );
 
-	xpos += p_02->rc_tex.w;
-	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->rc_tex.h ) );
+	xpos += p_02->rc.w;
+	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->rc.h ) );
 
 	xpos += inner_w;
-	draw( p_22, w_rect( xpos, ypos, p_22->rc_tex.w, p_22->rc_tex.h ) );
+	draw( p_22, w_rect( xpos, ypos, p_22->rc.w, p_22->rc.h ) );
 
 	return this;
 }

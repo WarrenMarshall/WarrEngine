@@ -167,11 +167,11 @@ void w_imgui::calc_client_rect()
 
 	if( current_control.slice_def )
 	{
-		current_control.crc.x += current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w;
-		current_control.crc.y += current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h;
+		current_control.crc.x += current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc.w;
+		current_control.crc.y += current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc.h;
 
-		current_control.crc.w -= current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.w + current_control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.w;
-		current_control.crc.h -= current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc_tex.h + current_control.slice_def->patches[ slicedef_patch::P_22 ]->rc_tex.h;
+		current_control.crc.w -= current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc.w + current_control.slice_def->patches[ slicedef_patch::P_22 ]->rc.w;
+		current_control.crc.h -= current_control.slice_def->patches[ slicedef_patch::P_00 ]->rc.h + current_control.slice_def->patches[ slicedef_patch::P_22 ]->rc.h;
 	}
 }
 
@@ -313,22 +313,22 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	// subtexture
 
-	a_texture* subtex = control.subtextures[ data_provider ? data_provider->get_subtexture_idx( &control ) : 0 ];
+	a_texture* texture = control.subtextures[ data_provider ? data_provider->get_subtexture_idx( &control ) : 0 ];
 
-	if( subtex )
+	if( texture )
 	{
-		w_rect subtex_rc = control.crc + clicked_offset;
+		w_rect rc = control.crc + clicked_offset;
 
 		if( control.subtexture_align & align::left )
 		{
-			subtex_rc.w = subtex->get_bounding_rect().w;
-			subtex_rc.h = subtex->get_bounding_rect().h;
+			rc.w = texture->rc.w;
+			rc.h = texture->rc.h;
 		}
 
 		RENDER
 			->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
 			->push_depth_nudge()
-			->draw( subtex, subtex_rc );
+			->draw( texture, rc );
 	}
 
 	// label
