@@ -165,7 +165,7 @@ void w_vertex_array_object::draw_and_reset()
 				{
 					if( vertex_buffer->texture_slots[ x ] )
 					{
-						log( " slot {} : {}", x, vertex_buffer->texture_slots[ x ]->tag );
+						log( " slot {} : {}", x, vertex_buffer->texture_slots[ x ]->src_texture->tag );
 					}
 				}
 

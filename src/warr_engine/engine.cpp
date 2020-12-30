@@ -663,11 +663,15 @@ void w_engine::draw()
 			->push_depth( zdepth_topmost );
 
 		w_vec2 v0, v1, v2, v3;
+		float w, h;
+
+		w = ui_canvas_w;
+		h = ui_canvas_h;
 
 		v0 = w_vec2::zero;
-		v1 = w_vec2( v_window_w - 1, 0.0f );
-		v2 = w_vec2( v_window_w - 1, v_window_h - 1 );
-		v3 = w_vec2( 0.0f, v_window_h - 1 );
+		v1 = w_vec2( w - 1, 0.0f );
+		v2 = w_vec2( w - 1, h - 1 );
+		v3 = w_vec2( 0.0f, h - 1 );
 
 		RENDER->push_rgb( w_color::black );
 		RENDER->draw_line( v0, v1 );
@@ -676,9 +680,9 @@ void w_engine::draw()
 		RENDER->draw_line( v3, v0 );
 
 		v0 = w_vec2( 1, 1 );
-		v1 = w_vec2( v_window_w - 2, 1.0f );
-		v2 = w_vec2( v_window_w - 2, v_window_h - 2 );
-		v3 = w_vec2( 1.0f, v_window_h - 2 );
+		v1 = w_vec2( w - 2, 1.0f );
+		v2 = w_vec2( w - 2, h - 2 );
+		v3 = w_vec2( 1.0f, h - 2 );
 
 		RENDER->push_rgb( w_color::orange );
 		RENDER->draw_line( v0, v1 );
@@ -687,9 +691,9 @@ void w_engine::draw()
 		RENDER->draw_line( v3, v0 );
 
 		v0 = w_vec2( 2.0f, 2.0f );
-		v1 = w_vec2( v_window_w - 3, 2.0f );
-		v2 = w_vec2( v_window_w - 3, v_window_h - 3 );
-		v3 = w_vec2( 2.0f, v_window_h - 3 );
+		v1 = w_vec2( w - 3, 2.0f );
+		v2 = w_vec2( w - 3, h - 3 );
+		v3 = w_vec2( 2.0f, h - 3 );
 
 		RENDER->push_rgb( w_color::black );
 		RENDER->draw_line( v0, v1 );

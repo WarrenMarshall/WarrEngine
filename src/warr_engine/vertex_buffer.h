@@ -31,7 +31,7 @@ struct w_vertex_buffer
 	int verts_per_element = -1;
 
 	// #texture
-	std::vector<const a_src_texture*> texture_slots;
+	std::vector<const a_texture*> texture_slots;
 	int current_texture_slot_idx = 0;
 
 	virtual void bind();
