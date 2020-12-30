@@ -1,6 +1,7 @@
 #pragma once
 
-struct a_anim_texture : a_raw_image_data
+#if 0 // #texture
+struct a_anim_texture : a_src_texture
 {
 	declare_find_func( a_anim_texture )
 
@@ -22,3 +23,4 @@ struct a_anim_texture : a_raw_image_data
 	virtual void update() override;
 	[[nodiscard]] virtual a_subtexture* get_subtexture( float anim_offset ) override;
 };
+#endif

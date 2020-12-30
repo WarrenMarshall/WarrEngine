@@ -4,8 +4,7 @@
 # ---------------------------------------------------------
 
 {
-	"type" "texture"
-	"tag" "tex_engine_white"
-	"subtexture_tag" "engine_white"
+	"type" "src_texture"
+	"tag" "engine_white"
 	"filename" "gfx/white_square.png"
 }

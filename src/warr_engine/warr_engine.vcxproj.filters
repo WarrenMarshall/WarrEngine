@@ -25,9 +25,6 @@
     <ClCompile Include="a_sound.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="a_subtexture.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="asset.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -208,7 +205,10 @@
     <ClCompile Include="index_buffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="a_raw_image_data.cpp">
+    <ClCompile Include="a_texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="a_src_texture.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -411,9 +411,6 @@
     <ClInclude Include="render_batch.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="a_subtexture.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="asset.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -426,7 +423,10 @@
     <ClInclude Include="index_buffer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="a_raw_image_data.h">
+    <ClInclude Include="a_texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="a_src_texture.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

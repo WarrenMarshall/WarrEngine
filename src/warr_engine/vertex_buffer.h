@@ -30,7 +30,8 @@ struct w_vertex_buffer
 	// i.e. quad = 4, line = 2, point = 1
 	int verts_per_element = -1;
 
-	std::vector<const a_raw_image_data*> texture_slots;
+	// #texture
+	std::vector<const a_src_texture*> texture_slots;
 	int current_texture_slot_idx = 0;
 
 	virtual void bind();
@@ -40,5 +41,5 @@ struct w_vertex_buffer
 
 	void set_up_vertex_attribs();
 	void preallocate_vertices( int max_verts );
-	int assign_texture_slot( const a_raw_image_data* tex );
+	int assign_texture_slot( const a_src_texture* tex );
 };

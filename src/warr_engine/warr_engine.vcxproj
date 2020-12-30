@@ -185,8 +185,8 @@
     <ClCompile Include="a_mesh.cpp" />
     <ClCompile Include="a_palette.cpp" />
     <ClCompile Include="a_sound.cpp" />
-    <ClCompile Include="a_subtexture.cpp" />
-    <ClCompile Include="a_raw_image_data.cpp" />
+    <ClCompile Include="a_texture.cpp" />
+    <ClCompile Include="a_src_texture.cpp" />
     <ClCompile Include="bit_flag_generator.cpp" />
     <ClCompile Include="cache_assets.cpp" />
     <ClCompile Include="asset_definition_file_cache.cpp" />
@@ -261,8 +261,8 @@
     <ClInclude Include="a_mesh.h" />
     <ClInclude Include="a_palette.h" />
     <ClInclude Include="a_sound.h" />
-    <ClInclude Include="a_subtexture.h" />
-    <ClInclude Include="a_raw_image_data.h" />
+    <ClInclude Include="a_texture.h" />
+    <ClInclude Include="a_src_texture.h" />
     <ClInclude Include="bit_flag_generator.h" />
     <ClInclude Include="cache_assets.h" />
     <ClInclude Include="asset_definition_file_cache.h" />

@@ -1,7 +1,7 @@
 #pragma once
 
 #if 0 // #texture
-struct a_gradient : a_raw_image_data
+struct a_gradient : a_src_texture
 {
 	declare_find_func( a_gradient )
 

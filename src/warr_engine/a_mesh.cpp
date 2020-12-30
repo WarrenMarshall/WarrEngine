@@ -11,7 +11,6 @@ a_mesh::~a_mesh()
 
 void a_mesh::clean_up_internals()
 {
-
 }
 
 bool a_mesh::create_internals()

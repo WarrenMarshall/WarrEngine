@@ -44,21 +44,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "palette" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "colors" ) );
+					assert( iter_ad->does_key_exist( "colors" ) );
 
-					auto asset_ptr = a_palette::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_palette>(), tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
-
+					auto asset_ptr = asset_cache->add( std::make_unique<a_palette>(), tag, "" );
 					asset_ptr->colors = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
-
-					// ------------------------------------------------------------------------
-
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
@@ -67,52 +56,42 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 			case 2:
 			{
-				if( type == "texture" )
+				if( type == "src_texture" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "filename" ) );
+					assert( iter_ad->does_key_exist( "filename" ) );
 
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_raw_image_data::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_raw_image_data>(), tag, filename );
-					}
-
-					// ------------------------------------------------------------------------
-
+					auto asset_ptr = asset_cache->add( std::make_unique<a_src_texture>(), tag, filename );
 					asset_ptr->original_filename = filename;
-
-					// ------------------------------------------------------------------------
-
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 
-					// every texture has to have a subtexture defined for it.
+					// ----------------------------------------------------------------------------
+
+					// #texture - this comment seems out of date
+					// every raw_image automatically creates a texture that represents it
 					//
-					// you may specify the name of this subtexture by including the...
-					// "subtexture_tag" "subtex_name"
-					// ...k/v pair in the texture definition.
+					// you may specify the name of this texture by including a ...
+					// "subtexture_tag" "##your_tag##"
+					// ... k/v pair in the asset definition.
 					//
 					// if that k/v pair isn't there, "sub_" will be prepended to
-					// the texture name.
+					// the asset name.
 
-					std::string subtex_name = std::string( iter_ad->find_value_opt( "subtexture_tag", "sub_" + tag ) );
+					auto texture = asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
 
-					auto subtex = asset_cache->add( std::make_unique<a_subtexture>( tag ), subtex_name, "" );
-
-					asset_ptr->subtex = subtex;
+					asset_ptr->texture = texture;
 
 					// the subtexture_tags" k/v is a convenient way to specify a set
 					// of subtextures belonging to a texture. an easy way to break
 					// down atlas textures or sprite sheets into subtextures.
 
-					if( iter_ad->does_key_exist( "subtexture_tags" ) )
+					if( iter_ad->does_key_exist( "texture_tags" ) )
 					{
-						std::string_view subtex_list = iter_ad->find_value( "subtexture_tags" );
+						std::string_view subtex_list = iter_ad->find_value( "texture_tags" );
 
 						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
 
@@ -123,7 +102,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 						while( !tok.is_eos() )
 						{
-							subtex_name = std::string( *tok.get_next_token() );
+							auto texture_tag = std::string( *tok.get_next_token() );
 
 							float x = w_parser::float_from_str( *tok.get_next_token() );
 							float y = w_parser::float_from_str( *tok.get_next_token() );
@@ -132,24 +111,17 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 							w_rect rc( x, y, w, h );
 
-							asset_cache->add( std::make_unique<a_subtexture>( tag, rc ), subtex_name, "" );
+							asset_cache->add( std::make_unique<a_texture>( tag, rc ), texture_tag, "" );
 						}
 					}
 				}
 #if 0 // #texture
 				else if( type == "gradient" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "alignment" ) );
-					assert_key_required( iter_ad->does_key_exist( "colors" ) );
+					assert( iter_ad->does_key_exist( "alignment" ) );
+					assert( iter_ad->does_key_exist( "colors" ) );
 
-					auto asset_ptr = a_gradient::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_gradient>(), tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
+					auto asset_ptr = asset_cache->add( std::make_unique<a_gradient>(), tag, "" );
 
 					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->find_value( "alignment" ) ) );
 
@@ -184,60 +156,44 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->create_internals();
 				}
 #endif
-				else if( type == "font_def_tag" )
+				else if( type == "font_def" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "filename" ) );
-					assert_key_required( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad->does_key_exist( "filename" ) );
+					assert( iter_ad->does_key_exist( "src_texture_tag" ) );
 
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_font_def::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_font_def>(), tag, filename );
-					}
-
-					// ------------------------------------------------------------------------
+					auto asset_ptr = asset_cache->add( std::make_unique<a_font_def>(), tag, filename );
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->texture = a_raw_image_data::find( iter_ad->find_value( "texture_tag" ) );
-
-					// ------------------------------------------------------------------------
+					asset_ptr->src_texture = a_src_texture::find( iter_ad->find_value( "src_texture_tag" ) );
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
 				else if( type == "slice_def" )
 				{
-					// ------------------------------------------------------------------------
-
-					auto asset_ptr = a_9slice_def::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_9slice_def>(), tag, filename );
-					}
+					auto asset_ptr = asset_cache->add( std::make_unique<a_9slice_def>(), tag, filename );
 
 					// ------------------------------------------------------------------------
 
-					a_subtexture* subtexture = nullptr;
+					a_texture* subtexture = nullptr;
 
 					std::string_view tex_tag;
 					if( iter_ad->does_key_exist( "texture_tag" ) )
 					{
 						tex_tag = iter_ad->find_value( "texture_tag" );
-						subtexture = a_raw_image_data::find( tex_tag )->get_subtexture();
+						subtexture = a_src_texture::find( tex_tag )->get_subtexture();
 					}
 
 					std::optional<std::string_view> sub_tex_tag = std::nullopt;
 					if( iter_ad->does_key_exist( "subtexture_tag" ) )
 					{
 						sub_tex_tag = iter_ad->find_value( "subtexture_tag" );
-						subtexture = a_subtexture::find( *sub_tex_tag );
-						tex_tag = subtexture->tex->tag;
+						subtexture = a_texture::find( *sub_tex_tag );
+						tex_tag = subtexture->src_texture->tag;
 					}
 
 					assert( subtexture );
@@ -280,21 +236,21 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->patches[ slicedef_patch::P_00 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_00", tag ), ""
 						);
 
 					x = rect.x + x_slices.l;
 					w = rect.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_10 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_10", tag ), ""
 						);
 
 					x = rect.x + rect.w - x_slices.r;
 					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_20 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_20", tag ), ""
 						);
 
 					// middle row
@@ -306,21 +262,21 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->patches[ slicedef_patch::P_01 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_01", tag ), ""
 						);
 
 					x = rect.x + x_slices.l;
 					w = rect.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_11 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_11", tag ), ""
 						);
 
 					x = rect.x + rect.w - x_slices.r;
 					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_21 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_21", tag ), ""
 						);
 
 					// bottom row
@@ -332,21 +288,21 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					asset_ptr->patches[ slicedef_patch::P_02 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_02", tag ), ""
 						);
 
 					x = rect.x + x_slices.l;
 					w = rect.w - x_slices.l - x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_12 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_12", tag ), ""
 						);
 
 					x = rect.x + rect.w - x_slices.r;
 					w = x_slices.r;
 					asset_ptr->patches[ slicedef_patch::P_22 ] =
 						asset_cache->add(
-							std::make_unique<a_subtexture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", tag ), ""
+							std::make_unique<a_texture>( tex_tag, w_rect( x, y, w, h ) ), fmt::format( "sub_{}_22", tag ), ""
 						);
 
 					// ------------------------------------------------------------------------
@@ -356,21 +312,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "sound" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "filename" ) );
+					assert( iter_ad->does_key_exist( "filename" ) );
 
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_sound::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_sound>(), tag, filename );
-					}
-
-					// ------------------------------------------------------------------------
-
+					auto asset_ptr = asset_cache->add( std::make_unique<a_sound>(), tag, filename );
 					asset_ptr->original_filename = filename;
 
 					for( auto& [key, value] : iter_ad->kv )
@@ -381,76 +329,52 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 					}
 
-					// ------------------------------------------------------------------------
-
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
 				else if( type == "mesh" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "filename" ) );
-					assert_key_required( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad->does_key_exist( "filename" ) );
+					assert( iter_ad->does_key_exist( "texture_tag" ) );
 
 					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_mesh::find( tag, b_silent( true ) );
+					auto asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
 
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
-					}
-
-					// ------------------------------------------------------------------------
-
-					asset_ptr->tex = a_raw_image_data::find( iter_ad->find_value( "texture_tag" ) );
+					asset_ptr->tex = a_src_texture::find( iter_ad->find_value( "texture_tag" ) );
 					asset_ptr->original_filename = filename;
-
-					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
 				else if( type == "cursor" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "subtexture_tag" ) );
+					assert( iter_ad->does_key_exist( "texture_tag" ) );
 
-					auto asset_ptr = a_cursor::find( tag, b_silent( true ) );
+					auto asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
 
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
-
-					asset_ptr->subtex = a_subtexture::find( iter_ad->find_value( "subtexture_tag" ) );
+					asset_ptr->subtex = a_texture::find( iter_ad->find_value( "texture_tag" ) );
 					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot" ) );
-
-					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+#if 0 // #texture
 				else if( type == "anim_texture" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "frame_subtexture_tags" ) );
-					assert_key_required( iter_ad->does_key_exist( "frames_per_sec" ) );
-					assert_key_required( iter_ad->does_key_exist( "tween" ) );
+					assert( iter_ad->does_key_exist( "frame_subtexture_tags" ) );
+					assert( iter_ad->does_key_exist( "frames_per_sec" ) );
+					assert( iter_ad->does_key_exist( "tween" ) );
 
 					auto asset_ptr = a_anim_texture::find( tag, b_silent( true ) );
 
 					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec" ) );
 					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween" ) ) );
 
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
+					auto asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
 													  tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
 
 					const std::string_view frames = iter_ad->find_value( "frame_subtexture_tags" );
 
@@ -461,26 +385,18 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						asset_ptr->add_frame( subtex );
 					}
 
-					// ------------------------------------------------------------------------
-
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+#endif
 				else if( type == "subtexture" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "rect" ) );
-					assert_key_required( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad->does_key_exist( "rect" ) );
+					assert( iter_ad->does_key_exist( "texture_tag" ) );
 
-					auto asset_ptr = a_subtexture::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect" ) );
-						asset_ptr = asset_cache->add( std::make_unique<a_subtexture>( iter_ad->find_value( "texture_tag" ), rc ),
+					w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect" ) );
+					auto asset_ptr = asset_cache->add( std::make_unique<a_texture>( iter_ad->find_value( "texture_tag" ), rc ),
 													  tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
@@ -494,12 +410,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				{
 					// ------------------------------------------------------------------------
 
-					auto asset_ptr = a_emitter_params::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_emitter_params>(), tag, "" );
-					}
+					auto asset_ptr = asset_cache->add( std::make_unique<a_emitter_params>(), tag, "" );
 
 					// ------------------------------------------------------------------------
 
@@ -519,7 +430,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "texture_tag" )
 						{
-							asset_ptr->tex = a_raw_image_data::find( value );
+							asset_ptr->tex = a_src_texture::find( value );
 						}
 						else if( key == "spawner_type" )
 						{
@@ -595,28 +506,15 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 					}
 
-					// ------------------------------------------------------------------------
-
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-				else if( type == "font" )	// requires : font_def
+				else if( type == "font" )
 				{
-					assert_key_required( iter_ad->does_key_exist( "font_def_tag" ) );
+					assert( iter_ad->does_key_exist( "font_def_tag" ) );
 
-					auto asset_ptr = a_font::find( tag, b_silent( true ) );
-
-					if( !asset_ptr )
-					{
-						asset_ptr = asset_cache->add( std::make_unique<a_font>(), tag, "" );
-					}
-
-					// ------------------------------------------------------------------------
-
+					auto asset_ptr = asset_cache->add( std::make_unique<a_font>(), tag, "" );
 					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def_tag" ) );
-
-					// ------------------------------------------------------------------------
-
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}

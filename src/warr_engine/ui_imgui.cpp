@@ -103,7 +103,7 @@ w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 	return this;
 }
 
-w_imgui* w_imgui::set_subtexture( e_imgui_control_state state, a_subtexture* subtexture )
+w_imgui* w_imgui::set_subtexture( e_imgui_control_state state, a_texture* subtexture )
 {
 	current_control.subtextures[ state ] = subtexture;
 
@@ -313,7 +313,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	// subtexture
 
-	a_subtexture* subtex = control.subtextures[ data_provider ? data_provider->get_subtexture_idx( &control ) : 0 ];
+	a_texture* subtex = control.subtextures[ data_provider ? data_provider->get_subtexture_idx( &control ) : 0 ];
 
 	if( subtex )
 	{

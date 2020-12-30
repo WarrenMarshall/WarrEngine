@@ -9,7 +9,7 @@ struct w_font_char
 	float xoffset = 0.0f;
 	float yoffset = 0.0f;
 	float xadvance = 0.0f;
-	std::unique_ptr<a_subtexture> subtex = nullptr;
+	std::unique_ptr<a_texture> subtex = nullptr;
 };
 
 // ----------------------------------------------------------------------------
@@ -21,7 +21,7 @@ struct a_font_def : i_asset
 	declare_find_func( a_font_def )
 
 	// the font texture this font definition is pulling from
-	a_raw_image_data* texture = nullptr;
+	a_src_texture* src_texture = nullptr;
 
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.

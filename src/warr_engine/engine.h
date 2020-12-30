@@ -21,7 +21,7 @@ struct w_engine : i_input_receiver
 	cs_context_t* c2_sound_context = nullptr;
 #endif
 
-	a_subtexture* tex_white = nullptr;
+	a_texture* tex_white = nullptr;
 	a_font* pixel_font = nullptr;
 
 	bool is_running = false;
@@ -50,14 +50,16 @@ struct w_engine : i_input_receiver
 	void cache_asset_definition_files( const std::string_view folder_name );
 	void precache_asset_resources( int pass, std::string_view game_name );
 
-	a_raw_image_data* find_texture( const std::string_view name, bool silent = false )
+#if 0 // #texture - wtf are these for?
+	a_src_texture* find_texture( const std::string_view name, bool silent = false )
 	{
-		return find_asset<a_raw_image_data>( name, silent );
+		return find_asset<a_src_texture>( name, silent );
 	}
-	a_subtexture* find_subtexture( const std::string_view name, bool silent = false )
+	a_texture* find_subtexture( const std::string_view name, bool silent = false )
 	{
-		return find_asset<a_subtexture>( name, silent );
+		return find_asset<a_texture>( name, silent );
 	}
+#endif
 
 	template<typename T>
 	T* find_asset( const std::string_view name, bool silent = false )

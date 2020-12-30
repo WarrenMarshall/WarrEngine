@@ -89,10 +89,8 @@ struct w_render
 	void init();
 
 	w_render* draw_mesh( a_mesh* mesh, const w_vec2& dst );
-	w_render* draw_sprite( a_raw_image_data* tex, const w_vec2& dst );
-	w_render* draw_sprite( const a_subtexture* subtex, const w_vec2& dst );
-	w_render* draw( a_raw_image_data* tex, const w_rect& dst );
-	w_render* draw( const a_subtexture* subtex, const w_rect& dst );
+	w_render* draw_sprite( const a_texture* subtex, const w_vec2& dst );
+	w_render* draw( const a_texture* subtex, const w_rect& dst );
 	w_render* draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );
 	w_render* draw_string( const std::string_view text, const w_rect& dst );
 	w_render* draw_string( a_font* font, const std::string_view text, const w_rect& dst );
@@ -112,7 +110,7 @@ struct w_render
 
 	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 
-	void bind_texture( int slot, a_raw_image_data* tex );
+	void bind_texture( int slot, a_src_texture* tex );
 	w_render_stats stats;
 };
 

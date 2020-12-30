@@ -11,7 +11,7 @@ layer_default::layer_default()
 void layer_default::push()
 {
 	//gradient = a_gradient::find( "background_gradient" );
-	tex_hello_world = a_raw_image_data::find( "tex_hello_world" );
+	tex_hello_world = a_texture::find( "tex_hello_world" );
 
 	engine->window->set_mouse_mode( mouse_mode::os );
 }

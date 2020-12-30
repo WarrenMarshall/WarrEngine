@@ -66,7 +66,7 @@ void w_opengl_framebuffer::add_texture()
 	auto texture_num = static_cast<int>( textures.size() );
 	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, base_name );
 
-	auto texture = engine->asset_cache->add( std::make_unique<a_raw_image_data>(), tex_name, "" );
+	auto texture = engine->asset_cache->add( std::make_unique<a_src_texture>(), tex_name, "" );
 	texture->w = w;
 	texture->h = h;
 
@@ -81,7 +81,7 @@ void w_opengl_framebuffer::add_texture()
 
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + texture_num, GL_TEXTURE_2D, texture->gl_id, 0 );
 
-	texture->subtex = engine->asset_cache->add( std::make_unique<a_subtexture>( tex_name ), "sub_" + tex_name, "" );
+	texture->texture = engine->asset_cache->add( std::make_unique<a_texture>( tex_name ), "fb_" + tex_name, "" );
 
 	textures.push_back( texture );
 }

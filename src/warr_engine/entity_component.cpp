@@ -79,7 +79,7 @@ ec_sprite::ec_sprite( w_entity* parent_entity )
 
 w_entity_component* ec_sprite::init( const std::string_view tex_tag )
 {
-	tex = a_raw_image_data::find( tex_tag );
+	tex = a_src_texture::find( tex_tag );
 	return this;
 }
 
@@ -518,7 +518,7 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 
 // ----------------------------------------------------------------------------
 
-ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_subtexture* subtex )
+ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* subtex )
 	: tileset_idx( tileset_idx ), pos( pos ), subtex( subtex )
 {
 
@@ -564,7 +564,7 @@ const unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
 const unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 const unsigned SPECIAL_FLAGS = 0xE0000000;
 
-void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_subtexture*>& subtex_tiles, std::string_view level_filename )
+void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>& subtex_tiles, std::string_view level_filename )
 {
 	auto b2d_static = parent_entity->get_component<ec_b2d_static>( component_type::b2d_body );
 

@@ -109,7 +109,7 @@ void w_vertex_array_object::unbind()
 	index_buffer->unbind();
 }
 
-int w_vertex_array_object::assign_texture_slot( const a_raw_image_data* tex )
+int w_vertex_array_object::assign_texture_slot( const a_src_texture* tex )
 {
 	return vertex_buffer->assign_texture_slot( tex );
 }

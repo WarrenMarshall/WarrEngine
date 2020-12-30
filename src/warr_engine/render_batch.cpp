@@ -14,7 +14,7 @@ w_render_batch::~w_render_batch()
 {
 }
 
-void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
+void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
 {
 	vertex_array_object->check_draw_and_reset();
 
@@ -24,7 +24,7 @@ void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_
 	add_vert( tex, v3 );
 }
 
-void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
+void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2 )
 {
 	vertex_array_object->check_draw_and_reset();
 
@@ -33,7 +33,7 @@ void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_
 	add_vert( tex, v2 );
 }
 
-void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_vertex& v0, const w_render_vertex& v1 )
+void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0, const w_render_vertex& v1 )
 {
 	vertex_array_object->check_draw_and_reset();
 
@@ -41,7 +41,7 @@ void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_
 	add_vert( tex, v1 );
 }
 
-void w_render_batch::add_primitive( const a_raw_image_data* tex, const w_render_vertex& v0 )
+void w_render_batch::add_primitive( const a_src_texture* tex, const w_render_vertex& v0 )
 {
 	vertex_array_object->check_draw_and_reset();
 
@@ -58,7 +58,7 @@ bool w_render_batch::is_empty()
 	return vertex_array_object->vertex_buffer->vertices.empty();
 }
 
-void w_render_batch::add_vert( const a_raw_image_data* tex, const w_render_vertex& render_vert )
+void w_render_batch::add_vert( const a_src_texture* tex, const w_render_vertex& render_vert )
 {
 	// multiply the current modelview matrix against the vertex being rendered.
 	//

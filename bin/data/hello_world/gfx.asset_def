@@ -4,7 +4,7 @@
 # ---------------------------------------------------------
 
 {
-	"type" "texture"
+	"type" "src_texture"
 	"tag" "tex_hello_world"
 	"filename" "gfx/hello_world.png"
 }

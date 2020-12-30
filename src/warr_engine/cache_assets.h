@@ -5,29 +5,49 @@ struct w_cache_assets
 	std::unordered_map<std::string, std::unique_ptr<i_asset>> cache;
 
 	template<typename T>
-	T* add( std::unique_ptr<T> asset, const std::string_view tag, const std::string_view filename )
+	T* add( std::unique_ptr<T> asset, const std::string& tag, const std::string_view filename )
 	{
-		auto iter = cache.find( std::string( tag ) );
+		// this is compiler dependent, but since MSVC returns an unmangled name for
+		// the type - I'm using it. MSVC will return type names like "struct name"
+		// so we just have to strip off the "struct " prefix and we're good to go.
+		std::string tag_prefix = typeid( T ).name();
+		std::string full_tag = fmt::format( "{}::{}", tag_prefix.substr( 7, std::string::npos ), tag );
+
+		auto iter = cache.find( std::string( full_tag ) );
 
 		if( iter != cache.end() )
 		{
-			log( "Asset '{}' already cached", tag );
+			log_error( "Asset '{}' already cached", full_tag );
 			return nullptr;
 		}
 
-		asset->tag = tag;
+		asset->tag = full_tag;
 		asset->original_filename = filename;
 
-		// save it into the cache
-		cache.insert( std::make_pair( tag, std::move( asset ) ) );
+		// save it into the cache and return a raw pointer to the caller
 
-		return find<T>( tag, b_silent( true ) );
+		T* return_ptr = asset.get();
+		cache.insert( std::make_pair( full_tag, std::move( asset ) ) );
+		return return_ptr;
 	}
 
 	template<typename T>
 	[[nodiscard]] T* find( const std::string_view tag, bool silent )
 	{
-		auto iter = cache.find( std::string( tag ) );
+		std::string full_tag = std::string( tag );
+
+		// if the tag being searched for is NOT already decorated with the
+		// type name, add the type name as a prefix.
+		if( tag.find_first_of( ':', 0 ) == std::string::npos )
+		{
+			// this is compiler dependent, but since MSVC returns an unmangled name for
+			// the type - I'm using it. MSVC will return type names like "struct name"
+			// so we just have to strip off the "struct " prefix and we're good to go.
+			std::string tag_prefix = typeid( T ).name();
+			full_tag = fmt::format( "{}::{}", tag_prefix.substr( 7, std::string::npos ), tag );
+		}
+
+		auto iter = cache.find( std::string( full_tag ) );
 
 		// if the asset isn't in the cache, that's fatal.
 		// check the asset_def files and make sure it's been requested.
@@ -35,25 +55,11 @@ struct w_cache_assets
 		if( iter == cache.end() )
 		{
 			if( !silent )
-				log_error( "not found : [{}]", tag );
+				log_error( "not found : [{}]", full_tag );
 
 			return nullptr;
 		}
 
-		auto asset_ptr = static_cast<T*>( iter->second.get() );
-
-#ifdef _DEBUG
-		// if we found an asset but it's the wrong type, that's also fatal - name things uniquely!
-		if( dynamic_cast<T*>( asset_ptr ) == nullptr )
-		{
-			log( "Asset WAS found but the type doesn't match the requested type" );
-			log( "	[{}]", tag );
-			log( "	Requested type : \"{}\"", typeid( T ).name() );
-			log( "	Type in cache  : \"{}\"", typeid( *asset_ptr ).name() );
-			assert( false );
-		}
-#endif
-
-		return static_cast<T*>( asset_ptr );
+		return static_cast<T*>( iter->second.get() );
 	}
 };

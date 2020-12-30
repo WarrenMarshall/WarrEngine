@@ -313,12 +313,8 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 	this offsets along left and up by half the texture size, which
 	centers the quad being drawn at 0,0,0.
 */
-w_render* w_render::draw_sprite( a_raw_image_data* tex, const w_vec2& dst )
-{
-	return draw_sprite( tex->get_subtexture(), dst );
-}
 
-w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
+w_render* w_render::draw_sprite( const a_texture* subtex, const w_vec2& dst )
 {
 	float w = subtex->rc_tex.w;
 	float h = subtex->rc_tex.h;
@@ -346,7 +342,7 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 		->translate( { dst.x, dst.y } )
 		->rotate( rs_angle );
 
-	batch_quads->add_primitive( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( subtex->src_texture, v0, v1, v2, v3 );
 
 	OPENGL->pop();
 
@@ -356,12 +352,8 @@ w_render* w_render::draw_sprite( const a_subtexture* subtex, const w_vec2& dst )
 /*
 	draws a texture onto a quad.
 */
-w_render* w_render::draw( a_raw_image_data* tex, const w_rect& dst )
-{
-	return draw( tex->get_subtexture(), dst );
-}
 
-w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
+w_render* w_render::draw( const a_texture* subtex, const w_rect& dst )
 {
 	float w = dst.w ? dst.w : subtex->rc_tex.w;
 	float h = dst.h ? dst.h : subtex->rc_tex.h;
@@ -381,7 +373,7 @@ w_render* w_render::draw( const a_subtexture* subtex, const w_rect& dst )
 	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( subtex->uv00.u, subtex->uv11.v ), rs_color, rs_emissive );
 
 	OPENGL->push()->translate( { dst.x, dst.y } );
-	batch_quads->add_primitive( subtex->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( subtex->src_texture, v0, v1, v2, v3 );
 	OPENGL->pop();
 
 	return this;
@@ -629,7 +621,7 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		rs_emissive
 	);
 
-	batch_quads->add_primitive( engine->tex_white->tex, v0, v1, v2, v3 );
+	batch_quads->add_primitive( engine->tex_white->src_texture, v0, v1, v2, v3 );
 
 	return this;
 }
@@ -668,7 +660,7 @@ w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, co
 		rs_emissive
 	);
 
-	batch_triangles->add_primitive( engine->tex_white->tex, rv0, rv1, rv2 );
+	batch_triangles->add_primitive( engine->tex_white->src_texture, rv0, rv1, rv2 );
 
 	return this;
 }
@@ -716,7 +708,7 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_lines->add_primitive( engine->tex_white->tex, v0, v1 );
+		batch_lines->add_primitive( engine->tex_white->src_texture, v0, v1 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -744,7 +736,7 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 		v2.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 		v2.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_triangles->add_primitive( engine->tex_white->tex, v0, v1, v2 );
+		batch_triangles->add_primitive( engine->tex_white->src_texture, v0, v1, v2 );
 	}
 
 	rs_snap_to_pixel = true;
@@ -764,7 +756,7 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 	rs_snap_to_pixel = false;
 
 	batch_lines->add_primitive(
-		engine->tex_white->tex,
+		engine->tex_white->src_texture,
 		v0,
 		v1
 	);
@@ -785,7 +777,7 @@ w_render* w_render::draw_point( const w_vec2& pos )
 	rs_snap_to_pixel = false;
 
 	batch_points->add_primitive(
-		engine->tex_white->tex,
+		engine->tex_white->src_texture,
 		v0
 	);
 
@@ -796,15 +788,15 @@ w_render* w_render::draw_point( const w_vec2& pos )
 
 w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )
 {
-	a_subtexture* p_00 = slice_def->patches[ slicedef_patch::P_00 ];
-	a_subtexture* p_10 = slice_def->patches[ slicedef_patch::P_10 ];
-	a_subtexture* p_20 = slice_def->patches[ slicedef_patch::P_20 ];
-	a_subtexture* p_01 = slice_def->patches[ slicedef_patch::P_01 ];
-	a_subtexture* p_11 = slice_def->patches[ slicedef_patch::P_11 ];
-	a_subtexture* p_21 = slice_def->patches[ slicedef_patch::P_21 ];
-	a_subtexture* p_02 = slice_def->patches[ slicedef_patch::P_02 ];
-	a_subtexture* p_12 = slice_def->patches[ slicedef_patch::P_12 ];
-	a_subtexture* p_22 = slice_def->patches[ slicedef_patch::P_22 ];
+	a_texture* p_00 = slice_def->patches[ slicedef_patch::P_00 ];
+	a_texture* p_10 = slice_def->patches[ slicedef_patch::P_10 ];
+	a_texture* p_20 = slice_def->patches[ slicedef_patch::P_20 ];
+	a_texture* p_01 = slice_def->patches[ slicedef_patch::P_01 ];
+	a_texture* p_11 = slice_def->patches[ slicedef_patch::P_11 ];
+	a_texture* p_21 = slice_def->patches[ slicedef_patch::P_21 ];
+	a_texture* p_02 = slice_def->patches[ slicedef_patch::P_02 ];
+	a_texture* p_12 = slice_def->patches[ slicedef_patch::P_12 ];
+	a_texture* p_22 = slice_def->patches[ slicedef_patch::P_22 ];
 
 	// nudge the rendering down by the height of the top row of subtextures. this
 	// allows us to think of the top/left of this window as the actual graphical top/left.
@@ -861,7 +853,7 @@ float w_render::calc_interpolated_per_sec_value( float current_value, float step
 
 // binds a texture to a specific texture slot
 
-void w_render::bind_texture( int slot, a_raw_image_data* tex )
+void w_render::bind_texture( int slot, a_src_texture* tex )
 {
 	glBindTextureUnit( slot, tex->gl_id );
 }

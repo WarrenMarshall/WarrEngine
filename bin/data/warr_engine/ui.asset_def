@@ -4,10 +4,10 @@
 # ---------------------------------------------------------
 
 {
-	"type" "texture"
+	"type" "src_texture"
 	"tag" "tex_ui_default"
 	"filename" "ui/ui_master.png"
-	"subtexture_tags" "\
+	"texture_tags" "\
 		ui_cursor, 56, 40, 16, 16,\
 		ui_panel, 0, 48, 16, 16,\
 		ui_button, 0, 0, 48, 16,\
@@ -21,7 +21,7 @@
 {
 	"type" "cursor"
 	"tag" "mouse_cursor_default"
-	"subtexture_tag" "ui_cursor"
+	"texture_tag" "ui_cursor"
 	"hotspot" "1, 1"
 }
 
