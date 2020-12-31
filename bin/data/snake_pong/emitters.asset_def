@@ -25,7 +25,7 @@
 	"texture_tag" "tex_particle_01"
 	"spawner_type" "box,256,4"
 
-	"s_max_spawn_per_sec" "25"
+	"s_max_spawn_per_sec" "50"
 	"b_needs_warm_up" "true"
 	"a_dir" "0"
 	"r_scale_spawn" "1.0, 2.5"

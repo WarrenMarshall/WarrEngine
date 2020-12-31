@@ -30,6 +30,8 @@ void layer_game::update()
 	w_raycast_closest hit;
 	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
 
+	log( "{}", w_vec2::angle_from_dir( dir ) );
+
 	// note : we don't do the raycasting if the mouse is too close the middle of
 	// the viewport as this can result in a zero length vector which will crash
 	// the raycasting code. this check works around that situation.
@@ -148,6 +150,6 @@ void layer_game::new_game()
 	e = add_entity<w_entity>();
 	e->set_tag( "lightbulb" );
 	e->add_component<ec_mesh>()->init( "shadow_beam" );
-	e->add_component<ec_sprite>()->init( "tex_lightbulb" );
+	e->add_component<ec_sprite>()->init( "ball_body" );
 	e->it_set_position( w_vec2( 0, 0 ) );
 }

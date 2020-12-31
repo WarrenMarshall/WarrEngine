@@ -27,3 +27,4 @@ gccfun
 bin/work_log_tracker.data
 *.exp
 *.lib
+*.blend1
