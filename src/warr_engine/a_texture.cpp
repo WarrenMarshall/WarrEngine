@@ -15,6 +15,13 @@ a_texture::a_texture( const std::string_view src_texture_tag )
 
 	rc = { 0, 0, src_texture->w, src_texture->h };
 
+#ifndef _FINALRELEASE
+	if( ( rc.x + rc.w ) > src_texture->w || ( rc.y + rc.h ) > src_texture->h )
+	{
+		log_error( "texture extends outside the bounds of the src_texture : {}", std::string( src_texture_tag ) );
+	}
+#endif
+
 	uv00 = w_uv( 0, 0 );
 	uv11 = w_uv( 1, 1 );
 }
@@ -39,6 +46,13 @@ a_texture::a_texture( const std::string_view src_texture_tag, const w_rect& rc_t
 		rc_tex.w,
 		rc_tex.h
 	);
+
+#ifndef _FINALRELEASE
+	if( ( rc.x + rc.w ) > src_texture->w || ( rc.y + rc.h ) > src_texture->h )
+	{
+		log_error( "texture extends outside the bounds of the src_texture : {}", std::string( src_texture_tag ) );
+	}
+#endif
 
 	// compute uv coordinates for the top left and bottom right corners. these corners
 	// provide enough information to reconstruct UV01 and UV10 when needed.
