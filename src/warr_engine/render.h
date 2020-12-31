@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct alignas( 64 ) w_render_state
+struct alignas( struct_alignment_for_cache ) w_render_state
 {
 	w_color color;
 	float emissive;

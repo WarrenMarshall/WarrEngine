@@ -1,5 +1,7 @@
 #pragma once
 
+constexpr int struct_alignment_for_cache = 64;
+
 #pragma warning(disable : 4324 )	// structure was padded due to alignment specifier
 
 #pragma warning( push, 0 )	// turn off all warnings for external libraries
