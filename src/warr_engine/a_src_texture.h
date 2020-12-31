@@ -18,7 +18,7 @@ struct a_src_texture : i_asset
 	float w = 0.0f;
 	float h = 0.0f;
 	// #texture can we get rid of this?
-	a_texture* texture = nullptr;
+	//a_texture* texture = nullptr;
 
 	virtual ~a_src_texture() override;
 

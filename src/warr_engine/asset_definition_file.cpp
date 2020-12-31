@@ -73,8 +73,8 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// every src_texture automatically creates a texture that represents it
 
-					auto texture = asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
-					asset_ptr->texture = texture;
+					asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
+					//asset_ptr->texture = texture;
 
 					// the texture_tags" k/v is a convenient way to specify a set
 					// of textures belonging to a src_texture. it's an easy way to break
@@ -133,7 +133,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// every gradienty automatically creates a texture that represents it
 
 					auto texture = asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
-					asset_ptr->texture = texture;
+					//asset_ptr->texture = texture;
 
 					// ------------------------------------------------------------------------
 

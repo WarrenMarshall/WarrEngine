@@ -10,7 +10,7 @@ void snake_pong::init()
 {
 	w_game::init();
 
-	//OPENGL->set_uniform( "ub_vignette", true );
+	OPENGL->set_uniform( "ub_vignette", true );
 	OPENGL->set_uniform( "ub_crt_warp", true );
 	//OPENGL->set_uniform( "ub_crt_scanlines", true );
 	OPENGL->set_uniform( "ub_crt_tint", true );

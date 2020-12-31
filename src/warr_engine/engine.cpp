@@ -381,7 +381,7 @@ void w_engine::exec_main_loop()
 		OPENGL->set_uniform( "horizontal", false );
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 1 ]->texture, w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( engine->frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		engine->blur_frame_buffers[0]->unbind();
@@ -399,7 +399,7 @@ void w_engine::exec_main_loop()
 			OPENGL->set_uniform( "horizontal", pingpong );
 			RENDER
 				->begin()
-				->draw( engine->blur_frame_buffers[ !pingpong ]->textures[ 0 ]->texture, w_rect( 0, 0, v_window_w, v_window_h ) )
+				->draw( engine->blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 				->end();
 			RENDER->batch_quads->draw_and_reset();
 			engine->blur_frame_buffers[ pingpong ]->unbind();
@@ -420,7 +420,7 @@ void w_engine::exec_main_loop()
 
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 0 ]->texture, w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
@@ -432,7 +432,7 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->push_alpha( 0.5f )
-			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ]->texture, w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
@@ -459,7 +459,7 @@ void w_engine::exec_main_loop()
 
 		RENDER
 			->begin()
-			->draw( engine->composite_frame_buffer->textures[ 0 ]->texture, w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( engine->composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();

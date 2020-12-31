@@ -47,7 +47,7 @@ w_opengl_framebuffer::~w_opengl_framebuffer()
 
 	for( auto iter : textures )
 	{
-		glDeleteTextures( 1, &iter->gl_id );
+		glDeleteTextures( 1, &iter->src_texture->gl_id );
 	}
 }
 
@@ -66,12 +66,13 @@ void w_opengl_framebuffer::add_texture()
 	auto texture_num = static_cast<int>( textures.size() );
 	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, base_name );
 
-	auto texture = engine->asset_cache->add( std::make_unique<a_src_texture>(), tex_name, "" );
-	texture->w = w;
-	texture->h = h;
+	engine->asset_cache->add( std::make_unique<a_src_texture>(), tex_name, "" );
+	auto texture = engine->asset_cache->add( std::make_unique<a_texture>( tex_name ), "fb_" + tex_name, "" );
+	texture->src_texture->w = w;
+	texture->src_texture->h = h;
 
-	glCreateTextures( GL_TEXTURE_2D, 1, &texture->gl_id );
-	glBindTextureUnit( 0, texture->gl_id );
+	glCreateTextures( GL_TEXTURE_2D, 1, &texture->src_texture->gl_id );
+	glBindTextureUnit( 0, texture->src_texture->gl_id );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
@@ -79,9 +80,7 @@ void w_opengl_framebuffer::add_texture()
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + texture_num, GL_TEXTURE_2D, texture->gl_id, 0 );
-
-	texture->texture = engine->asset_cache->add( std::make_unique<a_texture>( tex_name ), "fb_" + tex_name, "" );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + texture_num, GL_TEXTURE_2D, texture->src_texture->gl_id, 0 );
 
 	textures.push_back( texture );
 }
