@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_particle final
+struct alignas( 64 ) w_particle final
 {
 	a_texture* texture = nullptr;
 	a_emitter_params* params = nullptr;

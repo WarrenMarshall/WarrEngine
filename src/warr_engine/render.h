@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_render_state
+struct alignas( 64 ) w_render_state
 {
 	w_color color;
 	float emissive;
@@ -12,6 +12,10 @@ struct w_render_state
 	bool snap_to_pixel;
 };
 
+// making sure that these are small enough to fit into the cache nicely and
+// that they are fast to copy around.
+
+static_assert( sizeof( w_render_state ) <= 64 );
 static_assert( std::is_trivially_assignable<w_render_state, w_render_state>() );
 static_assert( std::is_trivially_copy_constructible<w_render_state>() );
 

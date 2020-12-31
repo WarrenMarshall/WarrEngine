@@ -1,14 +1,10 @@
 #pragma once
 
-#pragma warning(disable : 26812 4514 4711 4625 4626 )
-
-// data padding added warnings - can be useful for optimizing memory packing of structs
-// NOTE : have to turn on ALL warnings to see these
-//#pragma warning(disable : 4820)
+#pragma warning(disable : 4324 )	// structure was padded due to alignment specifier
 
 #pragma warning( push, 0 )	// turn off all warnings for external libraries
-#pragma warning(disable : 4365)
-#pragma warning(disable : 4244)
+
+	#pragma warning(disable : 4244)	// possible loss of data
 
 	// GLM - math library
 	#include <glm/glm/glm.hpp>
