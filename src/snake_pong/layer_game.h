@@ -2,6 +2,9 @@
 
 struct layer_game : w_layer
 {
+	w_entity* prism = nullptr;
+	bool power_flicker = false;
+
 	layer_game();
 
 	virtual void becoming_top_layer() override;
@@ -11,4 +14,5 @@ struct layer_game : w_layer
 	void spawn_ball();
 
 	virtual void new_game() override;
+	virtual void draw() override;
 };

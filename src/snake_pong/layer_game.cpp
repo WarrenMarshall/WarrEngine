@@ -18,6 +18,8 @@ void layer_game::update()
 {
 	w_layer::update();
 
+	power_flicker = engine->random->getb();
+
 	auto player_h = find_from_tag<w_entity>( "player_paddle_h" );
 	assert( player_h );
 
@@ -30,7 +32,8 @@ void layer_game::update()
 	w_raycast_closest hit;
 	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
 
-	log( "{}", w_vec2::angle_from_dir( dir ) );
+	// match the prism rotation to face the same direction as the raycasts
+	prism->it_set_angle( w_vec2::angle_from_dir( dir ) );
 
 	// note : we don't do the raycasting if the mouse is too close the middle of
 	// the viewport as this can result in a zero length vector which will crash
@@ -134,7 +137,7 @@ void layer_game::new_game()
 	e->set_tag( "player_paddle_h" );
 	e->set_collision( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
+	//e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
 	rc = w_rect( -4, -32, 8, 64 );
@@ -142,14 +145,37 @@ void layer_game::new_game()
 	e->set_tag( "player_paddle_v" );
 	e->set_collision( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
+	//e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
-	// light bulb
+	// prism
 
-	e = add_entity<w_entity>();
-	e->set_tag( "lightbulb" );
+	prism = e = add_entity<w_entity>();
+	e->set_tag( "prism" );
 	e->add_component<ec_mesh>()->init( "shadow_beam" );
-	e->add_component<ec_sprite>()->init( "ball_body" );
+	e->add_component<ec_sprite>()->init( "lightbulb" );
 	e->it_set_position( w_vec2( 0, 0 ) );
+}
+
+void layer_game::draw()
+{
+	w_layer::draw();
+
+	constexpr float edge_sz = 8.0f;
+	w_rect rc = w_rect( -v_window_hw + edge_sz, -v_window_hh + edge_sz, v_window_w - ( edge_sz * 2 ), v_window_h - ( edge_sz * 2 ) );
+	w_rect rc2 = w_rect( -v_window_hw + edge_sz - 1.0f, -v_window_hh + edge_sz - 1.0f, v_window_w - ( edge_sz * 2 ) + 2.0f, v_window_h - ( edge_sz * 2 ) + 2.0f );
+
+	RENDER
+		->push_rgb( w_color::black )
+		->draw_filled_rectangle( w_rect( -v_window_hw, -v_window_hh, v_window_w, edge_sz ) )
+		->draw_filled_rectangle( w_rect( -v_window_hw, v_window_hh - edge_sz, v_window_w, edge_sz ) )
+		->draw_filled_rectangle( w_rect( -v_window_hw, -v_window_hh, edge_sz, v_window_h ) )
+		->draw_filled_rectangle( w_rect( v_window_hw - edge_sz, -v_window_hh, edge_sz, v_window_h ) )
+		->pop()
+		->push_rgb( w_color::teal )
+		->push_emissive( power_flicker ? 0.0f : 1.0f )
+		->draw_rectangle( rc )
+		->draw_rectangle( rc2 )
+		->pop()
+		->pop();
 }

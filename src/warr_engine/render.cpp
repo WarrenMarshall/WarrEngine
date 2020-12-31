@@ -185,6 +185,13 @@ w_render* w_render::push_snap_to_pixel( bool snap_to_pixel )
 	return this;
 }
 
+w_render* w_render::push_render_state( w_render_state& rs )
+{
+	rs_push( rs );
+
+	return this;
+}
+
 w_render* w_render::pop()
 {
 	rs_pop();
@@ -270,11 +277,13 @@ w_render_state* w_render::rs_push( w_render_state& rs )
 	return rs_top();
 }
 
-void w_render::rs_pop()
+w_render_state* w_render::rs_pop()
 {
 	assert( render_states.size() > 1 );
 
 	render_states.pop_back();
+
+	return rs_top();
 }
 
 void w_render::rs_reset()

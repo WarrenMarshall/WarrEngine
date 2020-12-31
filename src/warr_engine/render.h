@@ -4,12 +4,12 @@
 
 struct alignas( struct_alignment_for_cache ) w_render_state
 {
-	w_color color;
-	float emissive;
-	w_vec2 scale;
-	float angle;
-	e_align align;
-	bool snap_to_pixel;
+	w_color color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float emissive = 0.0f;
+	w_vec2 scale = { 1.0f, 1.0f };
+	float angle = 0.0f;
+	e_align align = align::left;
+	bool snap_to_pixel = true;
 };
 
 // making sure that these are small enough to fit into the cache nicely and
@@ -57,7 +57,7 @@ struct w_render
 	w_render_state* rs_top();
 	w_render_state* rs_push();
 	w_render_state* rs_push( w_render_state& rs);
-	void rs_pop();
+	w_render_state* rs_pop();
 	void rs_reset();
 
 	float rs_z_depth = 0.0f;
@@ -91,6 +91,7 @@ struct w_render
 	w_render* push_depth( const float depth );
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
 	w_render* push_snap_to_pixel( bool snap_to_pixel );
+	w_render* push_render_state( w_render_state& rs );
 	w_render* pop();
 
 	// ----------------------------------------------------------------------------

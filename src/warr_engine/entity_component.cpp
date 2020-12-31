@@ -689,9 +689,15 @@ void ec_mesh::draw()
 		return;
 	}
 
+	w_render_state rs;
+	rs.snap_to_pixel = false;
+	rs.color = w_color::teal;
+	rs.color.a = 0.25f;
+	rs.emissive = 2.0f;
+
 	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER
-		->push_snap_to_pixel( false )
+		->push_render_state( rs )
 		->draw_mesh( mesh, pos )
-		->push_snap_to_pixel( true );
+		->rs_pop();
 }

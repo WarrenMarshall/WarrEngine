@@ -27,7 +27,7 @@
 
 {
 	"type" "src_texture"
-	"tag" "tex_lightbulb"
+	"tag" "lightbulb"
 	"filename" "gfx/lightbulb.png"
 }
 
