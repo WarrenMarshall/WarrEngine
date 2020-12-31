@@ -1,5 +1,23 @@
 #pragma once
 
+// ----------------------------------------------------------------------------
+
+struct w_render_state
+{
+	w_color color;
+	float alpha;
+	float emissive;
+	w_vec2 scale;
+	float angle;
+	e_align align;
+	bool snap_to_pixel;
+};
+
+static_assert( std::is_trivially_assignable<w_render_state, w_render_state>() );
+static_assert( std::is_trivially_copy_constructible<w_render_state>() );
+
+// ----------------------------------------------------------------------------
+
 struct w_render
 {
 	a_palette* palette = nullptr;
@@ -32,17 +50,15 @@ struct w_render
 	// ----------------------------------------------------------------------------
 	// the current render state stacks
 
-	std::vector<w_color> rs_color_stack;
-	std::vector<float> rs_alpha_stack;
-	std::vector<float> rs_emissive_stack;
-	std::vector<w_vec2> rs_scale_stack;
-	std::vector<float> rs_angle_stack;
-	std::vector<e_align> rs_align_stack;
+	std::vector<w_render_state> render_states;
+	w_render_state* rs_top();
+	w_render_state* rs_push();
+	w_render_state* rs_push( w_render_state& rs);
+	void rs_pop();
+	void rs_reset();
 
 	float rs_z_depth = 0.0f;
 	float rs_z_depth_nudge_accum = 0.0f;
-
-	bool rs_snap_to_pixel = true;
 
 #ifndef _FINALRELEASE
 	bool single_frame_debugger = false;
@@ -51,21 +67,16 @@ struct w_render
 
 	w_render* begin();
 	w_render* end();
-	void clear_render_states();
 
 	w_render* push_rgb( const w_color& color );
 	w_render* replace_rgb( const w_color& color );
-	w_render* pop_rgb();
 	w_render* push_rgba( const w_color& color );
 	w_render* replace_rgba( const w_color& color );
 	w_render* push_rgba( const w_color& color, const float alpha );
 	w_render* replace_rgba( const w_color& color, const float alpha );
-	w_render* pop_rgba();
 	w_render* push_alpha( const float alpha );
 	w_render* replace_alpha( const float alpha );
-	w_render* pop_alpha();
 	w_render* push_emissive( const float emissive );
-	w_render* pop_emissive();
 	w_render* push_scale( const w_vec2& scale );
 	w_render* replace_scale( const w_vec2& scale );
 	w_render* push_scale( const float scale );
@@ -76,6 +87,8 @@ struct w_render
 	w_render* replace_align( const e_align& align );
 	w_render* push_depth( const float depth );
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
+	w_render* push_snap_to_pixel( bool snap_to_pixel );
+	w_render* pop();
 
 	// ----------------------------------------------------------------------------
 

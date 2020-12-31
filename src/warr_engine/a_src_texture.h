@@ -17,8 +17,6 @@ struct a_src_texture : i_asset
 	unsigned int gl_id = 0;
 	float w = 0.0f;
 	float h = 0.0f;
-	// #texture can we get rid of this?
-	//a_texture* texture = nullptr;
 
 	virtual ~a_src_texture() override;
 

@@ -2,6 +2,9 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// used to manage the potential allocations for the render_states vector.
+constexpr size_t max_render_states = 15;
+
 void w_render::init()
 {
 	batch_quads = std::make_unique<w_render_batch>( render_prim::quad );
@@ -17,7 +20,8 @@ void w_render::init()
 	OPENGL->push_identity();
 
 	// initialize render state stacks
-	clear_render_states();
+	render_states.reserve( max_render_states );
+	rs_reset();
 
 	// generate the sample points for drawing a circle. these verts sit
 	// on a unit circle and are scaled to match the radius requested for
@@ -38,143 +42,120 @@ w_render* w_render::begin()
 
 w_render* w_render::push_rgb( const w_color& color )
 {
-	rs_color_stack.emplace_back( color );
-
+	rs_push()->color = color;
 	return this;
 }
 
 w_render* w_render::replace_rgb( const w_color& color )
 {
-	rs_color_stack[ rs_color_stack.size() - 1 ] = color;
-	return this;
-}
-
-w_render* w_render::pop_rgb()
-{
-	rs_color_stack.pop_back();
-
+	rs_top()->color = color;
 	return this;
 }
 
 w_render* w_render::push_rgba( const w_color& color )
 {
-	push_rgb( color );
-	push_alpha( color.a );
+	auto rs = rs_push();
+	rs->color = color;
+	rs->alpha = color.a;
 
 	return this;
 }
 
 w_render* w_render::push_rgba( const w_color& color, const float alpha )
 {
-	push_rgb( color );
-	push_alpha( alpha );
+	auto rs = rs_push();
+	rs->color = color;
+	rs->alpha = alpha;
 
 	return this;
 }
 
 w_render* w_render::replace_rgba( const w_color& color )
 {
-	replace_rgb( color );
-	replace_alpha( color.a );
-	return this;
+	auto rs = rs_top();
+	rs->color = color;
+	rs->alpha = color.a;
 
+	return this;
 }
 
 w_render* w_render::replace_rgba( const w_color& color, const float alpha )
 {
-	replace_rgb( color );
-	replace_alpha( alpha );
-	return this;
-}
-
-w_render* w_render::pop_rgba()
-{
-	pop_rgb();
-	pop_alpha();
+	auto rs = rs_top();
+	rs->color = color;
+	rs->alpha = color.a;
 
 	return this;
 }
 
 w_render* w_render::push_alpha( const float alpha )
 {
-	rs_alpha_stack.emplace_back( alpha );
+	rs_push()->alpha = alpha;
 
 	return this;
 }
 
 w_render* w_render::replace_alpha( const float alpha )
 {
-	rs_alpha_stack[ rs_alpha_stack.size() - 1 ] = alpha;
-	return this;
-}
-
-w_render* w_render::pop_alpha()
-{
-	rs_alpha_stack.pop_back();
+	rs_top()->alpha = alpha;
 	return this;
 }
 
 w_render* w_render::push_emissive( const float emissive )
 {
-	rs_emissive_stack.emplace_back( emissive );
-	return this;
-}
-
-w_render* w_render::pop_emissive()
-{
-	rs_emissive_stack.pop_back();
+	rs_push()->emissive = emissive;
 	return this;
 }
 
 w_render* w_render::push_scale( const w_vec2& scale )
 {
-	rs_scale_stack.emplace_back( scale );
+	rs_push()->scale = scale;
 
 	return this;
 }
 
 w_render* w_render::push_scale( const float scale )
 {
-	rs_scale_stack.emplace_back( w_vec2( scale, scale ) );
+	rs_push()->scale = w_vec2( scale, scale );
 
 	return this;
 }
 
 w_render* w_render::replace_scale( const w_vec2& scale )
 {
-	rs_scale_stack[ rs_scale_stack.size() - 1 ] = scale;
+	rs_top()->scale = scale;
 	return this;
 }
 
 w_render* w_render::replace_scale( const float scale )
 {
-	replace_scale( w_vec2( scale, scale ) );
+	rs_top()->scale = w_vec2( scale, scale );
 	return this;
 }
 
 w_render* w_render::push_angle( const float angle )
 {
-	rs_angle_stack.emplace_back( angle );
+	rs_push()->angle = angle;
 
 	return this;
 }
 
 w_render* w_render::replace_angle( const float angle )
 {
-	rs_angle_stack[ rs_angle_stack.size() - 1 ] = angle;
+	rs_top()->angle = angle;
 	return this;
 }
 
 w_render* w_render::push_align( const e_align& align )
 {
-	rs_align_stack.emplace_back( align );
+	rs_push()->align = align;
 
 	return this;
 }
 
 w_render* w_render::replace_align( const e_align& align )
 {
-	rs_align_stack[ rs_align_stack.size() - 1 ] = align;
+	rs_top()->align = align;
 	return this;
 }
 
@@ -198,29 +179,23 @@ w_render* w_render::push_depth_nudge( const float nudge )
 	return this;
 }
 
-w_render* w_render::end()
+w_render* w_render::push_snap_to_pixel( bool snap_to_pixel )
 {
-	clear_render_states();
+	rs_push()->snap_to_pixel = snap_to_pixel;
 	return this;
 }
 
-void w_render::clear_render_states()
+w_render* w_render::pop()
 {
-	rs_color_stack.clear();
-	rs_alpha_stack.clear();
-	rs_emissive_stack.clear();
-	rs_scale_stack.clear();
-	rs_angle_stack.clear();
-	rs_align_stack.clear();
+	rs_pop();
 
-	rs_snap_to_pixel = true;
+	return this;
+}
 
-	rs_color_stack = { w_color::white };
-	rs_alpha_stack = { 1.0f };
-	rs_emissive_stack = { 0.0f };
-	rs_scale_stack = { w_vec2( 1.0f, 1.0f ) };
-	rs_angle_stack = { 0.0f };
-	rs_align_stack = { align::left };
+w_render* w_render::end()
+{
+	rs_reset();
+	return this;
 }
 
 w_color w_render::get_palette_color_from_idx( int idx )
@@ -266,31 +241,79 @@ w_color w_render::pal_color_from_idx( int idx )
 	return current_palette->colors[ idx ];
 }
 
+w_render_state* w_render::rs_top()
+{
+	return &( render_states.back() );
+}
+
+w_render_state* w_render::rs_push()
+{
+	// duplicates the render_state at the top of the stack
+	auto rs = *rs_top();
+	render_states.emplace_back( std::move( rs ) );
+
+	assert( render_states.size() < max_render_states );
+
+	return rs_top();
+}
+
+// places a copy of the provided w_render_state block
+// on top of the stack. allows for easy mass setting
+// of render state vars.
+
+w_render_state* w_render::rs_push( w_render_state& rs )
+{
+	render_states.emplace_back( rs );
+
+	assert( render_states.size() < max_render_states );
+
+	return rs_top();
+}
+
+void w_render::rs_pop()
+{
+	assert( render_states.size() > 1 );
+
+	render_states.pop_back();
+}
+
+void w_render::rs_reset()
+{
+	render_states.clear();
+
+	w_render_state rs;
+
+	rs.color = w_color::white;
+	rs.alpha = 1.0f;
+	rs.emissive = 0.0f;
+	rs.scale = w_vec2( 1.0f, 1.0f );
+	rs.angle = 0.0f;
+	rs.align = align::left;
+	rs.snap_to_pixel = true;
+
+	render_states.emplace_back( std::move( rs ) );
+}
+
 w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 {
-	w_vec2 rs_scale = rs_scale_stack.back();
-	float rs_angle = rs_angle_stack.back();
-
 	// copy the color/alpha into each vertex on the mesh before rendering.
-	// #optimization : probably not the best way to do this, but fine for now.
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+
+	auto rs = rs_top();
 
 	for(auto & render_vert : mesh->render_verts)
 	{
-		render_vert.r = rs_color.r;
-		render_vert.g = rs_color.g;
-		render_vert.b = rs_color.b;
-		render_vert.a = rs_color.a;
+		render_vert.r = rs->color.r;
+		render_vert.g = rs->color.g;
+		render_vert.b = rs->color.b;
+		render_vert.a = rs->color.a;
 
-		render_vert.e = rs_emissive;
+		render_vert.e = rs->emissive;
 	}
 
 	OPENGL
 		->push()
-		->rotate( rs_angle )
-		->scale( rs_scale.x, rs_scale.y );
+		->rotate( rs->angle )
+		->scale( rs->scale.x, rs->scale.y );
 
 	for( auto x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
@@ -319,28 +342,23 @@ w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	float w = texture->rc.w;
 	float h = texture->rc.h;
 
-	w_vec2 rs_scale = rs_scale_stack.back();
-	float rs_angle = rs_angle_stack.back();
+	auto rs = rs_top();
 
-	w *= rs_scale.x;
-	h *= rs_scale.y;
+	w *= rs->scale.x;
+	h *= rs->scale.y;
 
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
-
-	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u, texture->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u, texture->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u, texture->uv11.v ), rs_color, rs_emissive );
-	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u, texture->uv11.v ), rs_color, rs_emissive );
+	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->emissive );
+	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->emissive );
+	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->emissive );
+	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->emissive );
 
 	OPENGL
 		->push()
 		->translate( { dst.x, dst.y } )
-		->rotate( rs_angle );
+		->rotate( rs->angle );
 
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 
@@ -358,19 +376,15 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	float w = dst.w ? dst.w : texture->rc.w;
 	float h = dst.h ? dst.h : texture->rc.h;
 
-	w_vec2 rs_scale = rs_scale_stack.back();
+	auto rs = rs_top();
 
-	w *= rs_scale.x;
-	h *= rs_scale.y;
+	w *= rs->scale.x;
+	h *= rs->scale.y;
 
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
-
-	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u, texture->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u, texture->uv00.v ), rs_color, rs_emissive );
-	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u, texture->uv11.v ), rs_color, rs_emissive );
-	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u, texture->uv11.v ), rs_color, rs_emissive );
+	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->emissive );
+	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->emissive );
+	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->emissive );
+	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->emissive );
 
 	OPENGL->push()->translate( { dst.x, dst.y } );
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
@@ -390,28 +404,27 @@ w_render* w_render::draw_string( const std::string_view text, const w_rect& dst 
 
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
 {
-	w_vec2 rs_scale = rs_scale_stack.back();
-	e_align rs_align = rs_align_stack.back();
+	auto rs = rs_top();
 
 	// ----------------------------------------------------------------------------
 
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
-	if( rs_align & align::hcenter )
+	if( rs->align & align::hcenter )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs_scale.x;
+		w_vec2 extents = font->get_string_extents( text ) * rs->scale.x;
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
-	if( rs_align & align::right )
+	if( rs->align & align::right )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs_scale.x;
+		w_vec2 extents = font->get_string_extents( text ) * rs->scale.x;
 		alignment_pos_adjustment.x -= extents.x;
 	}
 
-	if( rs_align & align::vcenter )
+	if( rs->align & align::vcenter )
 	{
-		alignment_pos_adjustment.y -= (font->font_def->max_height * rs_scale.y ) / 2.0f;
+		alignment_pos_adjustment.y -= ( font->font_def->max_height * rs->scale.y ) / 2.0f;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -432,11 +445,11 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		{
 			draw(
 				fch->subtex.get(),
-				w_rect( xpos + ( fch->xoffset * rs_scale.x ), ypos + ( fch->yoffset * rs_scale.y ) )
+				w_rect( xpos + ( fch->xoffset * rs->scale.x ), ypos + ( fch->yoffset * rs->scale.y ) )
 			);
 		}
 
-		xpos += (fch->xadvance * rs_scale.x);
+		xpos += ( fch->xadvance * rs->scale.x);
 	}
 
 	OPENGL->pop();
@@ -478,14 +491,6 @@ void w_render::end_frame()
 	// there is an uneven push/pop combo somewhere in the code.
 
 	assert( OPENGL->modelview_stack.size() == 1 );
-
-	// verify that state stacks are back where they started. if not,
-	// it means there's a push/pop mismatch somewhere in the code.
-	assert( rs_color_stack.size() == 1 );
-	assert( rs_alpha_stack.size() == 1 );
-	assert( rs_emissive_stack.size() == 1 );
-	assert( rs_scale_stack.size() == 1 );
-	assert( rs_align_stack.size() == 1 );
 
 #ifndef _FINALRELEASE
 	single_frame_debugger = false;
@@ -556,15 +561,17 @@ w_render* w_render::draw_stats()
 
 		int font_max_height = engine->pixel_font->font_def->max_height;
 
-		RENDER->begin()
+		RENDER
+			->begin()
 			->push_rgba( w_color::pal( 0 ) )
 			->push_alpha( 0.75f )
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
-			->pop_alpha()
+			->pop()
+			->pop()
 			->push_depth_nudge()
-			->push_rgb( w_color::white );
+			->push_rgb( w_color::white )
+			->push_align( align::hcenter );
 
-		RENDER->push_align( align::hcenter );
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
@@ -592,33 +599,31 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+	auto rs = rs_top();
 
 	w_render_vertex v0(
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 	w_render_vertex v1(
 		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 	w_render_vertex v2(
 		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 	w_render_vertex v3(
 		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 
 	batch_quads->add_primitive( engine->tex_white, v0, v1, v2, v3 );
@@ -637,27 +642,25 @@ w_render* w_render::draw_triangle( const w_vec2& v0, const w_vec2& v1, const w_v
 
 w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 )
 {
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+	auto rs = rs_top();
 
 	w_render_vertex rv0(
 		w_vec2( v0.x, v0.y ),
 		w_uv( 0, 0 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 	w_render_vertex rv1(
 		w_vec2( v1.x, v1.y ),
 		w_uv( 1, 0 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 	w_render_vertex rv2(
 		w_vec2( v2.x, v2.y ),
 		w_uv( 1, 1 ),
-		rs_color,
-		rs_emissive
+		rs->color,
+		rs->emissive
 	);
 
 	batch_triangles->add_primitive( engine->tex_white, rv0, rv1, rv2 );
@@ -691,14 +694,12 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+	auto rs = rs_top();
 
-	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
-	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->emissive );
+	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->emissive );
 
-	rs_snap_to_pixel = false;
+	RENDER->push_snap_to_pixel( false );
 
 	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
@@ -711,22 +712,20 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 		batch_lines->add_primitive( engine->tex_white, v0, v1 );
 	}
 
-	rs_snap_to_pixel = true;
+	RENDER->pop();
 
 	return this;
 }
 
 w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 {
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+	auto rs = rs_top();
 
-	w_render_vertex v0( origin, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v0( origin, w_uv( 0, 0 ), rs->color, rs->emissive );
 	w_render_vertex v1 = v0;
 	w_render_vertex v2 = v0;
 
-	rs_snap_to_pixel = false;
+	RENDER->push_snap_to_pixel( false );
 
 	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
@@ -739,21 +738,19 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 		batch_triangles->add_primitive( engine->tex_white, v0, v1, v2 );
 	}
 
-	rs_snap_to_pixel = true;
+	RENDER->pop();
 
 	return this;
 }
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+	auto rs = rs_top();
 
-	w_render_vertex v0( start, w_uv( 0, 0 ), rs_color, rs_emissive );
-	w_render_vertex v1( end, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v0( start, w_uv( 0, 0 ), rs->color, rs->emissive );
+	w_render_vertex v1( end, w_uv( 0, 0 ), rs->color, rs->emissive );
 
-	rs_snap_to_pixel = false;
+	RENDER->push_snap_to_pixel( false );
 
 	batch_lines->add_primitive(
 		engine->tex_white,
@@ -761,27 +758,25 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 		v1
 	);
 
-	rs_snap_to_pixel = true;
+	RENDER->pop();
 
 	return this;
 }
 
 w_render* w_render::draw_point( const w_vec2& pos )
 {
-	w_color rs_color = rs_color_stack.back();
-	rs_color.a = rs_alpha_stack.back();
-	float rs_emissive = rs_emissive_stack.back();
+	auto rs = rs_top();
 
-	w_render_vertex v0( pos, w_uv( 0, 0 ), rs_color, rs_emissive );
+	w_render_vertex v0( pos, w_uv( 0, 0 ), rs->color, rs->emissive );
 
-	rs_snap_to_pixel = false;
+	RENDER->push_snap_to_pixel( false );
 
 	batch_points->add_primitive(
 		engine->tex_white,
 		v0
 	);
 
-	rs_snap_to_pixel = true;
+	RENDER->pop();
 
 	return this;
 }

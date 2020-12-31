@@ -31,6 +31,8 @@ struct w_cache_assets
 		return return_ptr;
 	}
 
+	[[nodiscard]] a_src_texture* find_src_texture_for_tag( const std::string_view tag );
+
 	template<typename T>
 	[[nodiscard]] T* find( const std::string_view tag, bool silent )
 	{

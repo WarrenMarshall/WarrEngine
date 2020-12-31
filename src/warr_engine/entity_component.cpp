@@ -153,7 +153,7 @@ void ec_primitive_shape::draw()
 		break;
 	}
 
-	RENDER->pop_rgb();
+	RENDER->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -691,5 +691,7 @@ void ec_mesh::draw()
 
 	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER
-		->draw_mesh( mesh, pos );
+		->push_snap_to_pixel( false )
+		->draw_mesh( mesh, pos )
+		->push_snap_to_pixel( true );
 }

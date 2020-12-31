@@ -15,3 +15,10 @@
 	"texture_tag" "engine_white"
 	"filename" "meshes/torus_test.obj"
 }
+
+{
+	"type" "mesh"
+	"tag" "shadow_beam"
+	"texture_tag" "engine_white"
+	"filename" "meshes/shadow_beam.obj"
+}

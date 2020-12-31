@@ -147,6 +147,7 @@ void layer_game::new_game()
 
 	e = add_entity<w_entity>();
 	e->set_tag( "lightbulb" );
+	e->add_component<ec_mesh>()->init( "shadow_beam" );
 	e->add_component<ec_sprite>()->init( "tex_lightbulb" );
 	e->it_set_position( w_vec2( 0, 0 ) );
 }

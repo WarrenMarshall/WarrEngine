@@ -16,7 +16,7 @@ void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCoun
 		RENDER->draw_line( v0, v1 );
 	}
 
-	RENDER->pop_rgba();
+	RENDER->pop();
 }
 
 // Draw a solid closed polygon provided in CCW order.
@@ -38,7 +38,7 @@ void w_physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 verte
 		v1 = v2;
 	}
 
-	RENDER->pop_rgba();
+	RENDER->pop();
 }
 
 // Draw a circle.
@@ -53,7 +53,7 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 	RENDER
 		->push_rgba( w_color( color.r, color.g, color.b, color.a ) )
 		->draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
-		->pop_rgba();
+		->pop();
 
 	OPENGL->pop();
 }
@@ -70,7 +70,7 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 	RENDER
 		->push_rgba( w_color( color.r, color.g, color.b, 0.5f ) )
 		->draw_filled_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
-		->pop_rgba();
+		->pop();
 
 	OPENGL->pop();
 }
@@ -84,7 +84,7 @@ void w_physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, cons
 	RENDER
 		->push_rgba( { color.r, color.g, color.b, color.a } )
 		->draw_line( start, end )
-		->pop_rgba();
+		->pop();
 }
 
 // Draw a transform. Choose your own length scale.
@@ -101,15 +101,15 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 	w_vec2 x_axis = v + mtx.transform_vec2( w_vec2( debug_line_length, 0.0f ) );
 	w_vec2 y_axis = v + mtx.transform_vec2( w_vec2( 0.0f, debug_line_length ) );
 
-	RENDER->rs_snap_to_pixel = false;
 	RENDER
+		->push_snap_to_pixel( false )
 		->push_rgb( w_color( 192, 0, 0 ) )
 		->draw_line( v, x_axis )
-		->pop_rgb()
+		->pop()
 		->push_rgb( w_color( 0, 192, 0 ) )
 		->draw_line( v, y_axis )
-		->pop_rgb();
-	RENDER->rs_snap_to_pixel = true;
+		->pop()
+		->pop();
 }
 
 // Draw a point.
@@ -120,5 +120,5 @@ void w_physics_debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color
 	RENDER
 		->push_rgba( { color.r, color.g, color.b, color.a } )
 		->draw_point( v )
-		->pop_rgba();
+		->pop();
 }
