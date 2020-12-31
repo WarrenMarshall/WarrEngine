@@ -693,7 +693,7 @@ void ec_mesh::draw()
 	rs.snap_to_pixel = false;
 	rs.color = w_color::teal;
 	rs.color.a = 0.25f;
-	rs.emissive = 2.0f;
+	rs.glow = 2.0f;
 
 	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER

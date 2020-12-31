@@ -49,7 +49,7 @@ void w_breakout_physics_responder::BeginContact( b2Contact* contact )
 		auto ball_body = find_body_from_contact_id( "ball" );
 		auto ball_dir = w_vec2( ball_body->GetLinearVelocity() );
 
-		w_vec2 hit_normal = calc_hit_normal( ball_body );
+		w_vec2 hit_normal = w_vec2( coll->manifold->localNormal.x, coll->manifold->localNormal.y ).normalize();
 		w_vec2 new_dir = w_vec2::reflect_across_normal( ball_dir, hit_normal );
 
 		// fudges a value so it's at least 0.3 in it's value

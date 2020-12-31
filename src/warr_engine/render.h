@@ -5,7 +5,7 @@
 struct alignas( struct_alignment_for_cache ) w_render_state
 {
 	w_color color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	float emissive = 0.0f;
+	float glow = 0.0f;
 	w_vec2 scale = { 1.0f, 1.0f };
 	float angle = 0.0f;
 	e_align align = align::left;
@@ -79,7 +79,7 @@ struct w_render
 	w_render* replace_rgba( const w_color& color, const float alpha );
 	w_render* push_alpha( const float alpha );
 	w_render* replace_alpha( const float alpha );
-	w_render* push_emissive( const float emissive );
+	w_render* push_glow( const float glow );
 	w_render* push_scale( const w_vec2& scale );
 	w_render* replace_scale( const w_vec2& scale );
 	w_render* push_scale( const float scale );

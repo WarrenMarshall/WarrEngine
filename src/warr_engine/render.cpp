@@ -101,9 +101,9 @@ w_render* w_render::replace_alpha( const float alpha )
 	return this;
 }
 
-w_render* w_render::push_emissive( const float emissive )
+w_render* w_render::push_glow( const float glow )
 {
-	rs_push()->emissive = emissive;
+	rs_push()->glow = glow;
 	return this;
 }
 
@@ -293,7 +293,7 @@ void w_render::rs_reset()
 	w_render_state rs;
 
 	rs.color = w_color::white;
-	rs.emissive = 0.0f;
+	rs.glow = 0.0f;
 	rs.scale = w_vec2( 1.0f, 1.0f );
 	rs.angle = 0.0f;
 	rs.align = align::left;
@@ -315,7 +315,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 		render_vert.b = rs->color.b;
 		render_vert.a = rs->color.a;
 
-		render_vert.e = rs->emissive;
+		render_vert.e = rs->glow;
 	}
 
 	OPENGL
@@ -358,10 +358,10 @@ w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->emissive );
-	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->emissive );
-	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->emissive );
-	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->emissive );
+	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->glow );
+	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->glow );
+	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->glow );
+	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->glow );
 
 	OPENGL
 		->push()
@@ -389,10 +389,10 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	w *= rs->scale.x;
 	h *= rs->scale.y;
 
-	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->emissive );
-	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->emissive );
-	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->emissive );
-	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->emissive );
+	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->glow );
+	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->glow );
+	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->glow );
+	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->glow );
 
 	OPENGL->push()->translate( { dst.x, dst.y } );
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
@@ -613,25 +613,25 @@ w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 	w_render_vertex v1(
 		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 	w_render_vertex v2(
 		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 	w_render_vertex v3(
 		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 
 	batch_quads->add_primitive( engine->tex_white, v0, v1, v2, v3 );
@@ -656,19 +656,19 @@ w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, co
 		w_vec2( v0.x, v0.y ),
 		w_uv( 0, 0 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 	w_render_vertex rv1(
 		w_vec2( v1.x, v1.y ),
 		w_uv( 1, 0 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 	w_render_vertex rv2(
 		w_vec2( v2.x, v2.y ),
 		w_uv( 1, 1 ),
 		rs->color,
-		rs->emissive
+		rs->glow
 	);
 
 	batch_triangles->add_primitive( engine->tex_white, rv0, rv1, rv2 );
@@ -704,8 +704,8 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
 	auto rs = rs_top();
 
-	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->emissive );
-	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->emissive );
+	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->glow );
+	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->glow );
 
 	RENDER->push_snap_to_pixel( false );
 
@@ -729,7 +729,7 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 {
 	auto rs = rs_top();
 
-	w_render_vertex v0( origin, w_uv( 0, 0 ), rs->color, rs->emissive );
+	w_render_vertex v0( origin, w_uv( 0, 0 ), rs->color, rs->glow );
 	w_render_vertex v1 = v0;
 	w_render_vertex v2 = v0;
 
@@ -755,8 +755,8 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
 	auto rs = rs_top();
 
-	w_render_vertex v0( start, w_uv( 0, 0 ), rs->color, rs->emissive );
-	w_render_vertex v1( end, w_uv( 0, 0 ), rs->color, rs->emissive );
+	w_render_vertex v0( start, w_uv( 0, 0 ), rs->color, rs->glow );
+	w_render_vertex v1( end, w_uv( 0, 0 ), rs->color, rs->glow );
 
 	RENDER->push_snap_to_pixel( false );
 
@@ -775,7 +775,7 @@ w_render* w_render::draw_point( const w_vec2& pos )
 {
 	auto rs = rs_top();
 
-	w_render_vertex v0( pos, w_uv( 0, 0 ), rs->color, rs->emissive );
+	w_render_vertex v0( pos, w_uv( 0, 0 ), rs->color, rs->glow );
 
 	RENDER->push_snap_to_pixel( false );
 
