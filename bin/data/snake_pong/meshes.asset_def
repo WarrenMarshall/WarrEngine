@@ -21,4 +21,7 @@
 	"tag" "shadow_beam"
 	"texture_tag" "engine_white"
 	"filename" "meshes/shadow_beam.obj"
+
+	"rs_color" "@1"
+	"rs_alpha" "0.25f"
 }

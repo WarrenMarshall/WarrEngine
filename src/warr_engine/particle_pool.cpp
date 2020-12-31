@@ -64,7 +64,6 @@ void w_particle_pool::draw()
 			auto rs = RENDER->rs_top();
 
 			rs->color = color;
-			rs->alpha = color.a;
 			rs->scale.x = particle->base_scale * scale;
 			rs->scale.y = rs->scale.x;
 			rs->angle = interp_angle;

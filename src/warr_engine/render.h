@@ -5,7 +5,6 @@
 struct w_render_state
 {
 	w_color color;
-	float alpha;
 	float emissive;
 	w_vec2 scale;
 	float angle;

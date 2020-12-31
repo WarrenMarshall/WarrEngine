@@ -56,16 +56,16 @@ w_render* w_render::push_rgba( const w_color& color )
 {
 	auto rs = rs_push();
 	rs->color = color;
-	rs->alpha = color.a;
 
 	return this;
 }
 
 w_render* w_render::push_rgba( const w_color& color, const float alpha )
 {
+	// #render - is this function dead?
 	auto rs = rs_push();
 	rs->color = color;
-	rs->alpha = alpha;
+	rs->color.a = alpha;
 
 	return this;
 }
@@ -74,30 +74,30 @@ w_render* w_render::replace_rgba( const w_color& color )
 {
 	auto rs = rs_top();
 	rs->color = color;
-	rs->alpha = color.a;
 
 	return this;
 }
 
 w_render* w_render::replace_rgba( const w_color& color, const float alpha )
 {
+	// #render - is this function dead?
 	auto rs = rs_top();
 	rs->color = color;
-	rs->alpha = color.a;
+	rs->color.a = alpha;
 
 	return this;
 }
 
 w_render* w_render::push_alpha( const float alpha )
 {
-	rs_push()->alpha = alpha;
+	rs_push()->color.a = alpha;
 
 	return this;
 }
 
 w_render* w_render::replace_alpha( const float alpha )
 {
-	rs_top()->alpha = alpha;
+	rs_top()->color.a = alpha;
 	return this;
 }
 
@@ -284,7 +284,6 @@ void w_render::rs_reset()
 	w_render_state rs;
 
 	rs.color = w_color::white;
-	rs.alpha = 1.0f;
 	rs.emissive = 0.0f;
 	rs.scale = w_vec2( 1.0f, 1.0f );
 	rs.angle = 0.0f;
