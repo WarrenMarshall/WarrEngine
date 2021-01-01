@@ -9,41 +9,16 @@ void e_paddle::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 
 	if( other->tag == "ball" )
 	{
-		/*
-		// compute direction away from paddles center
-
-		w_vec2 push_away_dir = ;
-		push_away_dir *= e_ball::speed;
-		*/
-
-		auto ball_body = other->phys_get_primary_body();
-		auto ball_dir = w_vec2( ball_body->body->GetLinearVelocity() );
-
-		w_vec2 hit_normal = w_vec2( coll.manifold.localNormal ).normalize();
-		w_vec2 new_dir = w_vec2::reflect_across_normal( ball_dir, hit_normal );
-
-		// fudges a value so it's at least 0.3 in it's value
-
-		auto fudge_value = [] ( float& val )
-		{
-			if( val < 0.0f )
-			{
-				val = std::min( -0.3f, val );
-			}
-			else
-			{
-				val = std::max( 0.3f, val );
-			}
-		};
-
-		fudge_value( new_dir.x );
-		fudge_value( new_dir.y );
-
 		// stop ball
 		other->phys_get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
 
+		// compute direction away from paddles center
+
+		w_vec2 push_away_dir = ( other->pos - pos ).normalize();
+		push_away_dir *= e_ball::speed;
+
 		// push ball in that new direction
-		other->phys_get_primary_body()->body->ApplyForceToCenter( new_dir.to_b2d().as_b2Vec2(), true );
+		other->phys_get_primary_body()->body->ApplyForceToCenter( push_away_dir.to_b2d().as_b2Vec2(), true );
 	}
 }
 

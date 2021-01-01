@@ -137,7 +137,7 @@ void layer_game::new_game()
 	e->set_tag( "player_paddle_h" );
 	e->set_collision( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	//e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
 	rc = w_rect( -4, -32, 8, 64 );
@@ -145,7 +145,7 @@ void layer_game::new_game()
 	e->set_tag( "player_paddle_v" );
 	e->set_collision( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	//e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::pal( 4 ) * 1.1f, rc );
+	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
 	// prism
@@ -167,10 +167,6 @@ void layer_game::draw()
 
 	RENDER
 		->push_rgb( w_color::black )
-		->draw_filled_rectangle( w_rect( -v_window_hw, -v_window_hh, v_window_w, edge_sz ) )
-		->draw_filled_rectangle( w_rect( -v_window_hw, v_window_hh - edge_sz, v_window_w, edge_sz ) )
-		->draw_filled_rectangle( w_rect( -v_window_hw, -v_window_hh, edge_sz, v_window_h ) )
-		->draw_filled_rectangle( w_rect( v_window_hw - edge_sz, -v_window_hh, edge_sz, v_window_h ) )
 		->pop()
 		->push_rgb( w_color::teal )
 		->push_glow( power_flicker ? 0.0f : 1.0f )
