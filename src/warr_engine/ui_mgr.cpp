@@ -17,7 +17,7 @@ void w_ui_mgr::draw_topmost()
 			->begin()
 			->push_depth( zdepth_topmost )
 			->push_scale( ui_canvas_scale )
-			->draw( mouse_cursor->subtex,
+			->draw( mouse_cursor->texture,
 					w_rect(
 						(engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x),
 						(engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y)

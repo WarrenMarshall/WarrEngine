@@ -9,10 +9,10 @@ struct a_texture : i_asset
 {
 	declare_find_func( a_texture )
 
-	// the raw_image asset this subtexture sources from
+	// the raw_image asset this texture sources from
 	a_src_texture* src_texture = nullptr;
 
-	// the rectangle on the raw_image that defines this subtexture
+	// the rectangle on the raw_image that defines this texture
 	w_rect rc = { 0,0,0,0 };
 
 	// the uv coordinates that define this image within the raw_image

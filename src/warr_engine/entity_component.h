@@ -152,7 +152,7 @@ struct ec_b2d_kinematic : ec_b2d_body
 
 struct ec_tilemap_tile
 {
-	a_texture* subtex = nullptr;
+	a_texture* texture = nullptr;
 	int tileset_idx;
 	w_pos pos = w_pos::zero;
 
@@ -163,7 +163,7 @@ struct ec_tilemap_tile
 		bool flipped_diagonally : 1;
 	};
 
-	ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* subtex );
+	ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* texture );
 };
 
 struct ec_tilemap_layer
@@ -186,7 +186,7 @@ struct ec_tilemap : w_entity_component
 
 	w_entity_component* init();
 	virtual void draw() override;
-	void load_from_disk( const char* tag, const std::vector<a_texture*>& subtex_tiles, std::string_view level_filename );
+	void load_from_disk( const char* tag, const std::vector<a_texture*>& texture_tiles, std::string_view level_filename );
 };
 
 // ----------------------------------------------------------------------------

@@ -801,7 +801,7 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 	a_texture* p_12 = slice_def->patches[ slicedef_patch::P_12 ];
 	a_texture* p_22 = slice_def->patches[ slicedef_patch::P_22 ];
 
-	// nudge the rendering down by the height of the top row of subtextures. this
+	// nudge the rendering down by the height of the top row of textures. this
 	// allows us to think of the top/left of this window as the actual graphical top/left.
 
 	float xpos = dst.x;

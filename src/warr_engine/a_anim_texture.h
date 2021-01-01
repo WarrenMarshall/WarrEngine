@@ -5,7 +5,7 @@ struct a_anim_texture : a_src_texture
 {
 	declare_find_func( a_anim_texture )
 
-	std::vector<a_subtexture*> frames;
+	std::vector<a_texture*> frames;
 	std::unique_ptr<w_tween> frame_tween = nullptr;
 
 	e_tween_type tween_type = tween_type::loop;
@@ -17,10 +17,10 @@ struct a_anim_texture : a_src_texture
 
 	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
-	void add_frame( a_subtexture* subtex );
+	void add_frame( a_texture* texture );
 	void randomize();
 
 	virtual void update() override;
-	[[nodiscard]] virtual a_subtexture* get_subtexture( float anim_offset ) override;
+	[[nodiscard]] virtual a_texture* get_texture( float anim_offset ) override;
 };
 #endif

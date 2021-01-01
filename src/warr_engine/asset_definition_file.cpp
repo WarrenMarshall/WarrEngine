@@ -81,14 +81,14 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					if( iter_ad.does_key_exist( "texture_tags" ) )
 					{
-						std::string_view subtex_list = iter_ad.find_value( "texture_tags" );
+						std::string_view texture_list = iter_ad.find_value( "texture_tags" );
 
-						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
+						int comma_count = static_cast<int>( std::count( texture_list.begin(), texture_list.end(), ',' ) );
 
 						if( ( comma_count % 5 ) != 4 )
-							log_error( "'{}' has bad formatting - too many or too few commas", subtex_list );
+							log_error( "'{}' has bad formatting - too many or too few commas", texture_list );
 
-						w_tokenizer tok( subtex_list, ',' );
+						w_tokenizer tok( texture_list, ',' );
 
 						while( !tok.is_eos() )
 						{
@@ -297,7 +297,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
 
-					asset_ptr->subtex = a_texture::find( iter_ad.find_value( "texture_tag" ) );
+					asset_ptr->texture = a_texture::find( iter_ad.find_value( "texture_tag" ) );
 					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad.find_value( "hotspot" ) );
 
 					asset_ptr->clean_up_internals();
@@ -306,7 +306,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 #if 0 // #texture
 				else if( type == "anim_texture" )
 				{
-					assert( iter_ad.does_key_exist( "frame_subtexture_tags" ) );
+					assert( iter_ad.does_key_exist( "frame_texture_tags" ) );
 					assert( iter_ad.does_key_exist( "frames_per_sec" ) );
 					assert( iter_ad.does_key_exist( "tween" ) );
 
@@ -318,13 +318,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					auto asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
 													  tag, "" );
 
-					const std::string_view frames = iter_ad.find_value( "frame_subtexture_tags" );
+					const std::string_view frames = iter_ad.find_value( "frame_texture_tags" );
 
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
 					{
-						auto subtex = a_subtexture::find( *tok.get_next_token() );
-						asset_ptr->add_frame( subtex );
+						auto texture = a_texture::find( *tok.get_next_token() );
+						asset_ptr->add_frame( texture );
 					}
 
 					asset_ptr->clean_up_internals();

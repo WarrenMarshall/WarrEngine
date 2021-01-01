@@ -28,7 +28,7 @@ bool a_anim_texture::create_internals()
 	return true;
 }
 
-void a_anim_texture::add_frame( a_subtexture* frame )
+void a_anim_texture::add_frame( a_texture* frame )
 {
 	frames.emplace_back( frame );
 }
@@ -48,7 +48,7 @@ void a_anim_texture::update()
 	frame_tween->update();
 }
 
-a_subtexture* a_anim_texture::get_subtexture( float anim_offset )
+a_texture* a_anim_texture::get_texture( float anim_offset )
 {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
 

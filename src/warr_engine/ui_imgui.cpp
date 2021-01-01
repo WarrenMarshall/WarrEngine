@@ -103,16 +103,16 @@ w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 	return this;
 }
 
-w_imgui* w_imgui::set_subtexture( e_imgui_control_state state, a_texture* subtexture )
+w_imgui* w_imgui::set_texture( e_imgui_control_state state, a_texture* texture )
 {
-	current_control.subtextures[ state ] = subtexture;
+	current_control.textures[ state ] = texture;
 
 	return this;
 }
 
-w_imgui* w_imgui::set_subtexture_align( e_align align )
+w_imgui* w_imgui::set_texture_align( e_align align )
 {
-	current_control.subtexture_align = align;
+	current_control.texture_align = align;
 	return this;
 }
 
@@ -310,15 +310,15 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 			->draw_sliced( control.slice_def, rc_draw );
 	}
 
-	// subtexture
+	// texture
 
-	a_texture* texture = control.subtextures[ data_provider ? data_provider->get_subtexture_idx( &control ) : 0 ];
+	a_texture* texture = control.textures[ data_provider ? data_provider->get_texture_idx( &control ) : 0 ];
 
 	if( texture )
 	{
 		w_rect rc = control.crc + clicked_offset;
 
-		if( control.subtexture_align & align::left )
+		if( control.texture_align & align::left )
 		{
 			rc.w = texture->rc.w;
 			rc.h = texture->rc.h;
@@ -337,11 +337,11 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 		w_rect label_rc = w_rect( label_pos.x, label_pos.y ) + base_offset;
 
 #if 0
-		if( subtex )
+		if( texture )
 		{
-			if( control.subtexture_align & align::left )
+			if( control.texture_align & align::left )
 			{
-				label_rc.x += subtex->get_bounding_rect().w / 2.0f;
+				label_rc.x += texture->get_bounding_rect().w / 2.0f;
 			}
 		}
 #endif

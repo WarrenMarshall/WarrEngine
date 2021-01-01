@@ -518,8 +518,8 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 
 // ----------------------------------------------------------------------------
 
-ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* subtex )
-	: tileset_idx( tileset_idx ), pos( pos ), subtex( subtex )
+ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* texture )
+	: tileset_idx( tileset_idx ), pos( pos ), texture( texture )
 {
 
 }
@@ -549,7 +549,7 @@ void ec_tilemap::draw()
 				RENDER->push_scale( { tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f } );
 			}
 
-			RENDER->draw_sprite( tile.subtex, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
+			RENDER->draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
 
 			if( tile.flipped_horizontally || tile.flipped_vertically )
 			{
@@ -564,7 +564,7 @@ const unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
 const unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 const unsigned SPECIAL_FLAGS = 0xE0000000;
 
-void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>& subtex_tiles, std::string_view level_filename )
+void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>& texture_tiles, std::string_view level_filename )
 {
 	auto b2d_static = parent_entity->get_component<ec_b2d_static>( component_type::b2d_body );
 
@@ -645,7 +645,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 								int y = xy_idx / width;
 								int x = xy_idx - (y * width);
 
-								auto tile = ec_tilemap_tile( idx - 1, w_pos( x * tile_width, y * tile_height ), subtex_tiles[ idx - 1 ] );
+								auto tile = ec_tilemap_tile( idx - 1, w_pos( x * tile_width, y * tile_height ), texture_tiles[ idx - 1 ] );
 								tile.flipped_horizontally = flipped_horizontally;
 								tile.flipped_vertically = flipped_vertically;
 								tile.flipped_diagonally = flipped_diagonally;
