@@ -8,7 +8,7 @@ struct w_entity_component : i_life_cycle, i_transform
 	w_vec2 pos_interp;
 	unsigned id = 0;
 
-	std::unique_ptr<w_timer> life_timer = nullptr;
+	std::optional<w_timer> life_timer = std::nullopt;
 
 	// components have pointers to their entity parents for convenience
 	w_entity* parent_entity = nullptr;

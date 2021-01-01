@@ -28,7 +28,7 @@ w_entity_component::w_entity_component( w_entity* parent_entity )
 */
 bool w_entity_component::is_fully_dead()
 {
-	if( ilc_is_alive() || life_timer )
+	if( ilc_is_alive() || life_timer.has_value() )
 	{
 		return false;
 	}
@@ -38,14 +38,14 @@ bool w_entity_component::is_fully_dead()
 
 void w_entity_component::update()
 {
-	if( life_timer )
+	if( life_timer.has_value() )
 	{
 		life_timer->update();
 
 		// if a life timer is being used AND that timer has elapsed, then this component is dying
 		if( life_timer->is_elapsed() )
 		{
-			life_timer = nullptr;
+			life_timer = std::nullopt;
 			ilc_set( life_cycle::dying );
 		}
 	}
@@ -63,9 +63,9 @@ void w_entity_component::update()
 
 void w_entity_component::set_life_timer( int life_in_ms )
 {
-	assert( life_timer == nullptr );
+	assert( !life_timer.has_value() );
 
-	life_timer = std::make_unique<w_timer>( life_in_ms );
+	life_timer = w_timer( life_in_ms );
 }
 
 // ----------------------------------------------------------------------------
