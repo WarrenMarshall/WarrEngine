@@ -781,9 +781,9 @@ void w_engine::parse_config_file( std::string_view filename )
 */
 void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 {
-	for( const auto& asset_definition_file : engine->asset_definition_file_cache->cache )
+	for( auto& iter : engine->asset_definition_file_cache->cache )
 	{
-		asset_definition_file->precache_asset_resources( pass );
+		iter.precache_asset_resources( pass );
 	}
 
 	log( "Pass: {} / {} assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
