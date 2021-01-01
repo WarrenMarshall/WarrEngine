@@ -44,13 +44,10 @@ void w_logfile::error( const std::string_view msg )
 {
 	_write_line( msg );
 
-#ifdef _DEBUG
+	// make sure the log file is written before breaking on the error
+	fflush( file );
+
 	// this is more useful in debug mode since it drops you right on this line
 	// and you can use the callstack to walk back to the problem code.
 	DebugBreak();
-#else
-	// throwing the assert just ends the program, which is fine in release mode.
-	// check the log file for info.
-	throw( std::exception( std::string( msg ).c_str() ) );
-#endif
 }
