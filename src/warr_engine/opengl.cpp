@@ -232,7 +232,7 @@ void w_opengl::set_uniform( std::string_view name, bool value )
 	}
 }
 
-void w_opengl::set_uniform( std::string_view name, w_color value )
+void w_opengl::set_uniform( std::string_view name, const w_color& value )
 {
 	for( auto& iter : OPENGL->shaders )
 	{
