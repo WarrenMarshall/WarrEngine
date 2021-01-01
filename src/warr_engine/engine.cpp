@@ -233,7 +233,7 @@ void w_engine::deinit_game_engine()
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glDeleteProgram( shader->id );
+		glDeleteProgram( shader.id );
 	}
 
 	log( "Shutting down GLFW" );
@@ -328,7 +328,7 @@ void w_engine::exec_main_loop()
 		glEnable( GL_DEPTH_TEST );
 		engine->frame_buffer->bind();
 
-		OPENGL->shaders[ "base_bright" ]->bind();
+		OPENGL->shaders[ "base_bright" ].bind();
 
 		RENDER->begin_frame();
 		{
@@ -377,7 +377,7 @@ void w_engine::exec_main_loop()
 
 		OPENGL->init_view_matrix_identity();
 		engine->blur_frame_buffers[0]->bind();
-		OPENGL->shaders[ "blur" ]->bind();
+		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
 		RENDER
 			->begin()
@@ -416,7 +416,7 @@ void w_engine::exec_main_loop()
 
 		// draw game frame buffer
 
-		OPENGL->shaders[ "base" ]->bind();
+		OPENGL->shaders[ "base" ].bind();
 
 		RENDER
 			->begin()
@@ -446,7 +446,7 @@ void w_engine::exec_main_loop()
 		// applying any screen based post process effects.
 		// ----------------------------------------------------------------------------
 
-		OPENGL->shaders[ "post_process" ]->bind();
+		OPENGL->shaders[ "post_process" ].bind();
 		OPENGL->init_view_matrix_identity();
 
 		// reset the viewport to the size of the actual window size

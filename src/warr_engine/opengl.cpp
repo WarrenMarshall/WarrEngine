@@ -42,10 +42,10 @@ void w_opengl::init()
 	glDisable( GL_CULL_FACE );
 
 	// create base set of shaders
-	shaders.insert( std::make_pair( "base", std::make_unique<w_shader>( "base.vert", "base.frag" ) ) );
-	shaders.insert( std::make_pair( "base_bright", std::make_unique<w_shader>( "base.vert", "base_with_bright_pass.frag" ) ) );
-	shaders.insert( std::make_pair( "blur", std::make_unique<w_shader>( "base.vert", "blur.frag" ) ) );
-	shaders.insert( std::make_pair( "post_process", std::make_unique<w_shader>( "base.vert", "post_process.frag" ) ) );
+	shaders.insert( std::make_pair( "base", std::move( w_shader( "base.vert", "base.frag" ) ) ) );
+	shaders.insert( std::make_pair( "base_bright", std::move( w_shader( "base.vert", "base_with_bright_pass.frag" ) ) ) );
+	shaders.insert( std::make_pair( "blur", std::move( w_shader( "base.vert", "blur.frag" ) ) ) );
+	shaders.insert( std::make_pair( "post_process", std::move( w_shader( "base.vert", "post_process.frag" ) ) ) );
 
 	for( int x = 0 ; x < max_texture_image_units ; ++x )
 	{
@@ -152,7 +152,7 @@ void w_opengl::init_projection_matrix() const
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
 	}
 }
 
@@ -179,7 +179,7 @@ void w_opengl::init_view_matrix( e_camera* camera ) const
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
 	}
 }
 
@@ -196,7 +196,7 @@ void w_opengl::init_view_matrix_identity() const
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
 	}
 }
 
@@ -210,7 +210,7 @@ void w_opengl::init_view_matrix_identity_ui() const
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniformMatrix4fv( shader->id, glGetUniformLocation( shader->id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
+		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
 	}
 }
 
@@ -219,7 +219,7 @@ void w_opengl::set_uniform( std::string_view name, float value )
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniform1f( shader->id, glGetUniformLocation( shader->id, name.data() ), value );
+		glProgramUniform1f( shader.id, glGetUniformLocation( shader.id, name.data() ), value );
 	}
 }
 
@@ -228,7 +228,7 @@ void w_opengl::set_uniform( std::string_view name, bool value )
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniform1i( shader->id, glGetUniformLocation( shader->id, name.data() ), value );
+		glProgramUniform1i( shader.id, glGetUniformLocation( shader.id, name.data() ), value );
 	}
 }
 
@@ -237,7 +237,7 @@ void w_opengl::set_uniform( std::string_view name, const w_color& value )
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
-		glProgramUniform4f( shader->id, glGetUniformLocation( shader->id, name.data() ), value.r, value.g, value.b, value.a );
+		glProgramUniform4f( shader.id, glGetUniformLocation( shader.id, name.data() ), value.r, value.g, value.b, value.a );
 	}
 }
 
@@ -247,8 +247,8 @@ void w_opengl::set_uniform_array( std::string_view name, int* value, int count )
 	{
 		auto& shader = iter.second;
 		glProgramUniform1iv(
-			shader->id,
-			glGetUniformLocation( shader->id, name.data() ),
+			shader.id,
+			glGetUniformLocation( shader.id, name.data() ),
 			count,
 			value );
 	}

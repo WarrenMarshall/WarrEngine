@@ -4,7 +4,7 @@ struct w_opengl
 {
 	std::vector<w_matrix> modelview_stack;
 
-	std::unordered_map<std::string, std::unique_ptr<w_shader>> shaders;
+	std::unordered_map<std::string, w_shader> shaders;
 
 	GLint max_texture_image_units = -1;
 	std::vector<int> texture_slots;
