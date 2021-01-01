@@ -2,6 +2,8 @@
 
 #include "cache_assets.h"
 
+// ----------------------------------------------------------------------------
+
 struct w_pending_collision
 {
 	w_entity* entity_a;
@@ -10,6 +12,8 @@ struct w_pending_collision
 	b2Fixture* fixture_b;
 	b2Manifold manifold;
 };
+
+// ----------------------------------------------------------------------------
 
 struct w_engine : i_input_receiver
 {
@@ -64,9 +68,9 @@ struct w_engine : i_input_receiver
 	[[nodiscard]] std::optional<std::string> find_string_from_symbol( const std::string_view str );
 	[[nodiscard]] int find_int_from_symbol( const std::string_view str, int def_value = 0 );
 	[[nodiscard]] float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
-	[[nodiscard]] w_color find_color_from_symbol( const std::string_view str, w_color def_value = w_color::white );
-	[[nodiscard]] w_range find_range_from_symbol( const std::string_view str, w_range def_value = w_range( 0, 1 ) );
-	[[nodiscard]] w_vec2 find_vec2_from_symbol( const std::string_view str, w_vec2 def_value = w_vec2( 0, 0 ) );
+	[[nodiscard]] w_color find_color_from_symbol( const std::string_view str, const w_color& def_value = w_color::white );
+	[[nodiscard]] w_range find_range_from_symbol( const std::string_view str, const w_range& def_value = w_range( 0, 1 ) );
+	[[nodiscard]] w_vec2 find_vec2_from_symbol( const std::string_view str, const w_vec2& def_value = w_vec2( 0, 0 ) );
 
 	virtual bool iir_on_released( const w_input_event* evt ) override;
 

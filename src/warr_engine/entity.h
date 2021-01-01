@@ -33,7 +33,7 @@ struct w_entity : i_life_cycle, i_transform
 	virtual void draw();
 
 	// sets the entities position and also updates all physics components
-	void set_position_deep( w_vec2 pos, bool reset_velocity );
+	void set_position_deep( const w_vec2& pos, bool reset_velocity );
 	void set_angle_deep( float angle );
 
 	template<typename T> T* add_component()

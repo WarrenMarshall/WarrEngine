@@ -37,3 +37,9 @@ int w_random::geti_range( int min, int max )
 {
 	return static_cast<int>( glm::round( getf_range( static_cast<float>( min ), static_cast<float>( max ) ) ) );
 }
+
+// generates a random point on a unit sphere.
+w_vec2 w_random::get_random_unit_circle()
+{
+	return w_vec2( engine->random->getf_range( -0.5, 0.5f ), engine->random->getf_range( -0.5, 0.5f ) ).normalize();
+}

@@ -83,7 +83,7 @@ void w_entity::draw()
 
 // immediately moves the entity and it's dynamic/kinematic bodies to a new position.
 
-void w_entity::set_position_deep( w_vec2 pos, bool reset_velocity )
+void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 {
 	// entity
 	it_set_position( pos );

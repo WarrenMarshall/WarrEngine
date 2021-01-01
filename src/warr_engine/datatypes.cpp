@@ -9,7 +9,7 @@ w_keyframe::w_keyframe( float pct_marker, float value )
 {
 }
 
-w_keyframe::w_keyframe( float pct_marker, w_color value )
+w_keyframe::w_keyframe( float pct_marker, const w_color& value )
 	: pct_marker( pct_marker ), color_value( value )
 {
 }
@@ -28,7 +28,7 @@ w_timeline* w_timeline::kf_clear()
 	return this;
 }
 
-w_timeline* w_timeline::kf_add( w_keyframe keyframe )
+w_timeline* w_timeline::kf_add( const w_keyframe& keyframe )
 {
 	keyframes.emplace_back( std::move( keyframe ) );
 	return this;
@@ -131,7 +131,7 @@ w_rect::w_rect( float x, float y, float w, float h )
 {
 }
 
-w_rect::w_rect( w_vec2 top_left, w_vec2 bottom_right )
+w_rect::w_rect( const w_vec2& top_left, const w_vec2& bottom_right )
 	: x( top_left.x ), y( top_left.y ), w( bottom_right.x - top_left.x ), h( bottom_right.y - top_left.y )
 {
 }
@@ -141,17 +141,17 @@ w_vec2 w_rect::midpoint()
 	return w_vec2( x + ( w / 2.0f ), y + ( h / 2.0f ) );
 }
 
-bool w_rect::operator==( const w_rect rhs )
+bool w_rect::operator==( const w_rect& rhs )
 {
 	return( fequals( rhs.x, x ) && fequals( rhs.y, y ) && fequals( rhs.w, w ) && fequals( rhs.h, h ) );
 }
 
-w_rect w_rect::operator+( const w_vec2 v )
+w_rect w_rect::operator+( const w_vec2& v )
 {
 	return w_rect( this->x + v.x, this->y + v.y, this->w, this->h );
 }
 
-w_rect w_rect::operator+=( const w_vec2 v )
+w_rect w_rect::operator+=( const w_vec2& v )
 {
 	*this = *this + v;
 	return *this;
@@ -170,7 +170,7 @@ w_rect w_rect::operator*=( float v )
 
 c2AABB w_rect::as_c2AABB()
 {
-	c2AABB bb;
+	c2AABB bb = {};
 	bb.min = { x, y };
 	bb.max = { x + w, y + h };
 
@@ -208,7 +208,7 @@ w_color::w_color( int r, int g, int b, int a )
 }
 
 // strings can contain any supported kind of data format (hex, int, or floats)
-w_color::w_color( std::string& str )
+w_color::w_color( const std::string& str )
 {
 	assert( !str.empty() );
 
@@ -216,8 +216,7 @@ w_color::w_color( std::string& str )
 	{
 		// strings starting with a '@' char are palette indices
 		w_tokenizer tok( str, '@' );
-		str = tok.get_next_token().value_or( "0" );
-		int idx = str_to_int( str );
+		int idx = str_to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
 		*this = w_color::pal( idx );
 	}
 	else if( str[ 0 ] == '$' )
@@ -232,10 +231,10 @@ w_color::w_color( std::string& str )
 	else
 	{
 		// in case this is a set of values, remove the surrounding braces.
-		str = w_string_util::remove_char( str, '[' );
-		str = w_string_util::remove_char( str, ']' );
+		auto new_str = w_string_util::remove_char( str, '[' );
+		new_str = w_string_util::remove_char( new_str, ']' );
 
-		w_tokenizer tok( str, ',' );
+		w_tokenizer tok( new_str, ',' );
 
 		r = w_parser::float_from_str( *tok.get_next_token() );
 		g = w_parser::float_from_str( *tok.get_next_token() );
@@ -309,7 +308,7 @@ w_vec2::w_vec2( std::string_view str )
 	y = w_parser::float_from_str( *tok.get_next_token() );
 }
 
-w_vec2::w_vec2( b2Vec2 b2v2 )
+w_vec2::w_vec2( const b2Vec2& b2v2 )
 	: x( b2v2.x ), y( b2v2.y )
 {
 }
@@ -325,43 +324,43 @@ c2v w_vec2::as_c2v()
 	return v;
 }
 
-w_vec2 w_vec2::to_b2d()
+w_vec2 w_vec2::to_b2d() const
 {
 	return w_vec2( ::to_b2d( x ), ::to_b2d( y ) );
 }
 
-w_vec2 w_vec2::from_b2d()
+w_vec2 w_vec2::from_b2d() const
 {
 	return w_vec2( ::from_b2d( x ), ::from_b2d( y ) );
 }
 
-bool w_vec2::operator==( w_vec2 v )
+bool w_vec2::operator==( const w_vec2& v )
 {
 	return ( fequals( this->x, v.x ) && fequals( this->y, v.y ) );
 }
 
-bool w_vec2::operator!=( w_vec2 v )
+bool w_vec2::operator!=( const w_vec2& v )
 {
 	return !( fequals( this->x, v.x ) && fequals( this->y, v.y ) );
 }
 
-w_vec2 w_vec2::operator+( w_vec2 v )
+w_vec2 w_vec2::operator+( const w_vec2& v )
 {
 	return w_vec2( this->x + v.x, this->y + v.y );
 }
 
-w_vec2 w_vec2::operator+=( w_vec2 v )
+w_vec2 w_vec2::operator+=( const w_vec2& v )
 {
 	*this = *this + v;
 	return *this;
 }
 
-w_vec2 w_vec2::operator-( w_vec2 v )
+w_vec2 w_vec2::operator-( const w_vec2& v )
 {
 	return w_vec2( this->x - v.x, this->y - v.y );
 }
 
-w_vec2 w_vec2::operator-=( w_vec2 v )
+w_vec2 w_vec2::operator-=( const w_vec2& v )
 {
 	*this = *this - v;
 	return *this;
@@ -404,15 +403,11 @@ bool w_vec2::is_zero()
 	return fequals( x + y, 0.0f );
 }
 
-// generates a random point on a unit sphere.
-w_vec2 w_vec2::get_random_unit_circle()
+float w_vec2::get_distance_between( const w_vec2& a, const w_vec2& b )
 {
-	return w_vec2( engine->random->getf_range( -0.5, 0.5f ), engine->random->getf_range( -0.5, 0.5f ) ).normalize();
-}
-
-float w_vec2::get_distance_between( w_vec2 a, w_vec2 b )
-{
-	return ( a - b ).get_size_squared();
+	w_vec2 wk = a;
+	wk -= b;
+	return wk.get_size_squared();
 }
 
 // normalizes the vec2 in place, and returns itself in case the caller
@@ -438,7 +433,7 @@ w_vec2 w_vec2::dir_from_angle( float angle )
 	return v;
 }
 
-float w_vec2::angle_from_dir( w_vec2 dir )
+float w_vec2::angle_from_dir( const w_vec2& dir )
 {
 	float angle = glm::atan( dir.y, dir.x ) * 180.0f / W_PI;
 
@@ -449,7 +444,7 @@ float w_vec2::angle_from_dir( w_vec2 dir )
 
 // computes the reflection angle of "v" across the normal "n"
 
-w_vec2 w_vec2::reflect_across_normal( w_vec2 v, w_vec2 n )
+w_vec2 w_vec2::reflect_across_normal( const w_vec2& v, const w_vec2& n )
 {
 	glm::vec3 rdir = glm::reflect( glm::vec3( v.x, v.y, 0.0f ), glm::vec3( n.x, n.y, 0.0f ) );
 	return w_vec2( rdir.x, rdir.y );
@@ -490,7 +485,7 @@ w_bbox::w_bbox()
 	reset();
 }
 
-void w_bbox::add( w_vec2 vtx )
+void w_bbox::add( const w_vec2& vtx )
 {
 	min.x = glm::min( min.x, vtx.x );
 	min.y = glm::min( min.y, vtx.y );

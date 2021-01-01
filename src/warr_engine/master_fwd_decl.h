@@ -37,3 +37,4 @@ struct w_physics_debug_draw;
 struct w_input_event;
 struct w_render_batch;
 struct w_vertex_array_object;
+struct w_cache_assets;

@@ -54,12 +54,7 @@ w_particle_spawner_circle::w_particle_spawner_circle( float radius )
 
 void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* particle )
 {
-	particle->pos = w_vec2::get_random_unit_circle();
-
-	// then multiply against a random value from 0-radius to place
-	// the particle somewhere within the spawn zone
-	particle->pos.x *= radius * engine->random->getf();
-	particle->pos.y *= radius * engine->random->getf();
+	particle->pos = engine->random->get_random_unit_circle() * ( radius * engine->random->getf() );
 }
 
 void w_particle_spawner_circle::parse_from_config_string( std::string_view value )

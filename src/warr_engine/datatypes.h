@@ -26,7 +26,7 @@ struct w_color
 	w_color() = default;
 	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( int r, int g, int b, int a = 255 );
-	w_color( std::string& str );
+	w_color( const std::string& str );
 
 	w_color operator*( float v );
 	w_color operator*=( float v );
@@ -49,7 +49,7 @@ struct w_keyframe
 
 	w_keyframe() = default;
 	w_keyframe( float pct_marker, float value );
-	w_keyframe( float pct_marker, w_color value );
+	w_keyframe( float pct_marker, const w_color& value );
 };
 
 /*
@@ -64,7 +64,7 @@ struct w_timeline
 	w_timeline( e_timeline_type type );
 
 	w_timeline* kf_clear();
-	w_timeline* kf_add( w_keyframe keyframe );
+	w_timeline* kf_add( const w_keyframe& keyframe );
 
 	void get_value( float pct_on_timeline, float* value );
 	void get_value( float pct_on_timeline, w_color* value );
@@ -95,30 +95,30 @@ struct w_rect
 	w_rect() = default;
 	w_rect( float x, float y );
 	w_rect( float x, float y, float w, float h );
-	w_rect( w_vec2 top_left, w_vec2 bottom_right );
+	w_rect( const w_vec2& top_left, const w_vec2& bottom_right );
 
-	constexpr float left()
+	float left()
 	{
 		return x;
 	}
-	constexpr float top()
+	float top()
 	{
 		return y;
 	}
-	constexpr float bottom()
+	float bottom()
 	{
 		return y + h;
 	}
-	constexpr float right()
+	float right()
 	{
 		return x + w;
 	}
 
 	w_vec2 midpoint();
 
-	bool operator==( const w_rect rhs );
-	w_rect operator+( const w_vec2 v );
-	w_rect operator+=( const w_vec2 v );
+	bool operator==( const w_rect& rhs );
+	w_rect operator+( const w_vec2& v );
+	w_rect operator+=( const w_vec2& v );
 	w_rect operator*( float v );
 	w_rect operator*=( float v );
 
@@ -168,34 +168,33 @@ struct w_vec2
 	w_vec2( int x, int y );
 	w_vec2( float x, float y );
 	w_vec2( std::string_view str );
-	w_vec2( b2Vec2 b2v2 );
+	w_vec2( const b2Vec2& b2v2 );
 
 	w_vec2 normalize();
 	[[nodiscard]] b2Vec2 as_b2Vec2();
 	[[nodiscard]] c2v as_c2v();
-	[[nodiscard]] w_vec2 to_b2d();
-	[[nodiscard]] w_vec2 from_b2d();
+	[[nodiscard]] w_vec2 to_b2d() const;
+	[[nodiscard]] w_vec2 from_b2d() const;
 	[[nodiscard]] float get_size_squared();
 	[[nodiscard]] float get_size_fast();
 	[[nodiscard]] bool is_zero();
-	[[nodiscard]] static w_vec2 get_random_unit_circle();
 
-	[[nodiscard]] bool operator==( w_vec2 v );
-	[[nodiscard]] bool operator!=( w_vec2 v );
-	[[nodiscard]] w_vec2 operator+( const w_vec2 v );
-	[[nodiscard]] w_vec2 operator-( w_vec2 v );
+	[[nodiscard]] bool operator==( const w_vec2& v );
+	[[nodiscard]] bool operator!=( const w_vec2& v );
+	[[nodiscard]] w_vec2 operator+( const w_vec2& v );
+	[[nodiscard]] w_vec2 operator-( const w_vec2& v );
 	[[nodiscard]] w_vec2 operator*( float v );
 	[[nodiscard]] w_vec2 operator/( float v );
 
-	w_vec2 operator+=( w_vec2 v );
-	w_vec2 operator-=( w_vec2 v );
+	w_vec2 operator+=( const w_vec2& v );
+	w_vec2 operator-=( const w_vec2& v );
 	w_vec2 operator*=( float v );
 	w_vec2 operator/=( float v );
 
-	[[nodiscard]] static float get_distance_between( w_vec2 a, w_vec2 b );
+	[[nodiscard]] static float get_distance_between( const w_vec2& a, const w_vec2& b );
 	[[nodiscard]] static w_vec2 dir_from_angle( float angle );
-	[[nodiscard]] static float angle_from_dir( w_vec2 dir );
-	[[nodiscard]] static w_vec2 reflect_across_normal( w_vec2 v, w_vec2 n );
+	[[nodiscard]] static float angle_from_dir( const w_vec2& dir );
+	[[nodiscard]] static w_vec2 reflect_across_normal( const w_vec2& v, const w_vec2& n );
 };
 
 // ----------------------------------------------------------------------------
@@ -220,6 +219,6 @@ struct w_bbox
 
 	w_bbox();
 
-	void add( w_vec2 vtx );
+	void add( const w_vec2& vtx );
 	void reset();
 };

@@ -559,7 +559,7 @@ float w_engine::find_float_from_symbol( std::string_view symbol, float def_value
 	return static_cast<float>( strtof( std::string(*sval).data(), ( char** ) nullptr ) );
 }
 
-w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_value )
+w_color w_engine::find_color_from_symbol( std::string_view symbol, const w_color& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -571,7 +571,7 @@ w_color w_engine::find_color_from_symbol( std::string_view symbol, w_color def_v
 	return w_color( *sval );
 }
 
-w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_value )
+w_range w_engine::find_range_from_symbol( std::string_view symbol, const w_range& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -583,7 +583,7 @@ w_range w_engine::find_range_from_symbol( std::string_view symbol, w_range def_v
 	return w_range( *sval );
 }
 
-w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, w_vec2 def_value )
+w_vec2 w_engine::find_vec2_from_symbol( std::string_view symbol, const w_vec2& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 

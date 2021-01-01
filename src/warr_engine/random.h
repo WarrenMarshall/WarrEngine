@@ -12,4 +12,5 @@ struct w_random
     [[nodiscard]] bool getb();
     [[nodiscard]] float getf_range( float min, float max );
     [[nodiscard]] int geti_range( int min, int max );
+	[[nodiscard]] w_vec2 get_random_unit_circle();
 };
