@@ -28,9 +28,8 @@ void w_ui_mgr::draw_topmost()
 }
 
 // note : because we apply the canvas scale, this is only usable for UI canvas based rectangles
-bool w_ui_mgr::is_mouse_inside( w_rect rc ) const
+bool w_ui_mgr::is_mouse_inside( const w_rect& rc ) const
 {
-	rc *= ui_canvas_scale;
-
-	return c2AABBtoPoint( rc.as_c2AABB(), engine->input->mouse_vwindow_pos.as_c2v() );
+	w_rect rc_scaled = rc * ui_canvas_scale;
+	return c2AABBtoPoint( rc_scaled.as_c2AABB(), engine->input->mouse_vwindow_pos.as_c2v() );
 }

@@ -53,7 +53,7 @@ struct w_imgui
 	w_imgui* set_subtexture( e_imgui_control_state state, a_texture* subtexture );
 	w_imgui* set_subtexture_align( e_align align );
 
-	w_imgui* set_rect( w_rect rc );
+	w_imgui* set_rect( const w_rect& rc );
 	w_imgui* set_rect( e_imgui_flow flow );
 	w_imgui* set_rect( e_imgui_flow flow, w_sz sz );
 
@@ -65,10 +65,10 @@ private:
 	void _passive();
 	void _set_as_last_control( w_imgui_control control );
 
-	[[nodiscard]] virtual e_im_result _update_im_state( int id, w_rect rc );
+	[[nodiscard]] virtual e_im_result _update_im_state( int id, const w_rect& rc );
 	void _draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
 	[[nodiscard]] w_offset _get_click_offset( bool being_hovered, bool being_clicked );
-	[[nodiscard]] w_color _get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked );
+	[[nodiscard]] w_color _get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked );
 
 	int im_automatic_id = 0;
 };

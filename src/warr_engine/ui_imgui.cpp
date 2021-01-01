@@ -116,7 +116,7 @@ w_imgui* w_imgui::set_subtexture_align( e_align align )
 	return this;
 }
 
-w_imgui* w_imgui::set_rect( w_rect rc )
+w_imgui* w_imgui::set_rect( const w_rect& rc )
 {
 	current_control.rc = rc;
 	calc_client_rect();
@@ -216,7 +216,7 @@ void w_imgui::_passive()
 	_draw( current_control, false, false );
 }
 
-e_im_result w_imgui::_update_im_state( int id, w_rect rc )
+e_im_result w_imgui::_update_im_state( int id, const w_rect& rc )
 {
 	assert( rc.w );
 	assert( rc.h );
@@ -229,11 +229,10 @@ e_im_result w_imgui::_update_im_state( int id, w_rect rc )
 		 from being able to highlight/click more than one at a time.
 	*/
 
-	rc.w -= 1.0f;
-	rc.h -= 1.0f;
+	w_rect rc_hit = w_rect( rc.x, rc.y, rc.w - 1.0f, rc.h - 1.0f );
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( rc );
+	bool mouse_is_inside = UI->is_mouse_inside( rc_hit );
 
 	if( mouse_is_inside )
 	{
@@ -363,7 +362,7 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 // takes a base color and modifies it based on the state of the UI
 
-w_color w_imgui::_get_adjusted_color( w_color base_color, bool being_hovered, bool being_clicked )
+w_color w_imgui::_get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked )
 {
 	w_color color = base_color;
 

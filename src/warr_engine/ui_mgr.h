@@ -7,5 +7,5 @@ struct w_ui_mgr
 
 	void init();
 	void draw_topmost();
-	bool is_mouse_inside( w_rect rc ) const;
+	bool is_mouse_inside( const w_rect& rc ) const;
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+// ----------------------------------------------------------------------------
+
 struct w_particle_spawner
 {
 	w_particle_spawner() = default;
@@ -9,7 +11,9 @@ struct w_particle_spawner
 	virtual void parse_from_config_string( std::string_view value );
 };
 
+// ----------------------------------------------------------------------------
 // a box, centered on the position
+
 struct w_particle_spawner_box : w_particle_spawner
 {
 	int w = 0, h = 0;
@@ -21,6 +25,8 @@ struct w_particle_spawner_box : w_particle_spawner
 	virtual void find_spawn_pos_for_new_particle( w_particle* particle ) override;
 	virtual void parse_from_config_string( std::string_view value ) override;
 };
+
+// ----------------------------------------------------------------------------
 
 struct w_particle_spawner_circle : w_particle_spawner
 {
