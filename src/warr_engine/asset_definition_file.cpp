@@ -13,13 +13,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 	for( const auto& iter_ad : asset_definitions )
 	{
-		if( iter_ad->kv.empty() )
+		if( iter_ad.kv.empty() )
 		{
 			continue;
 		}
 
-		type = iter_ad->find_value( "type" );
-		tag = iter_ad->find_value( "tag" );
+		type = iter_ad.find_value( "type" );
+		tag = iter_ad.find_value( "tag" );
 
 		filename.clear();
 
@@ -29,7 +29,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "preproc" )
 				{
-					for( auto& [key, value] : iter_ad->kv )
+					for( auto& [key, value] : iter_ad.kv )
 					{
 						if( key != "tag" && key != "type" )
 						{
@@ -44,10 +44,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "palette" )
 				{
-					assert( iter_ad->does_key_exist( "colors" ) );
+					assert( iter_ad.does_key_exist( "colors" ) );
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_palette>(), tag, "" );
-					asset_ptr->colors = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
+					asset_ptr->colors = w_parser::color_list_from_str( iter_ad.find_value( "colors" ) );
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
@@ -58,9 +58,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 			{
 				if( type == "src_texture" )
 				{
-					assert( iter_ad->does_key_exist( "filename" ) );
+					assert( iter_ad.does_key_exist( "filename" ) );
 
-					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
+					filename = fmt::format( "{}{}", data_folder, iter_ad.find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
@@ -79,9 +79,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					// of textures belonging to a src_texture. it's an easy way to break
 					// down atlas textures or sprite sheets into individual textures.
 
-					if( iter_ad->does_key_exist( "texture_tags" ) )
+					if( iter_ad.does_key_exist( "texture_tags" ) )
 					{
-						std::string_view subtex_list = iter_ad->find_value( "texture_tags" );
+						std::string_view subtex_list = iter_ad.find_value( "texture_tags" );
 
 						int comma_count = static_cast<int>( std::count( subtex_list.begin(), subtex_list.end(), ',' ) );
 
@@ -107,15 +107,15 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "gradient" )
 				{
-					assert( iter_ad->does_key_exist( "alignment" ) );
-					assert( iter_ad->does_key_exist( "colors" ) );
+					assert( iter_ad.does_key_exist( "alignment" ) );
+					assert( iter_ad.does_key_exist( "colors" ) );
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_gradient>(), tag, "" );
 
-					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad->find_value( "alignment" ) ) );
+					asset_ptr->alignment = static_cast<e_align>( engine->find_int_from_symbol( iter_ad.find_value( "alignment" ) ) );
 
 					asset_ptr->colors.clear();
-					std::vector<w_color> color_list = w_parser::color_list_from_str( iter_ad->find_value( "colors" ) );
+					std::vector<w_color> color_list = w_parser::color_list_from_str( iter_ad.find_value( "colors" ) );
 
 					// must reverse the order or else the gradient texture
 					// ends up backwards on the screen
@@ -140,32 +140,32 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "font_def" )
 				{
-					assert( iter_ad->does_key_exist( "filename" ) );
-					assert( iter_ad->does_key_exist( "src_texture_tag" ) );
+					assert( iter_ad.does_key_exist( "filename" ) );
+					assert( iter_ad.does_key_exist( "src_texture_tag" ) );
 
-					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
+					filename = fmt::format( "{}{}", data_folder, iter_ad.find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_font_def>(), tag, filename );
 
 					asset_ptr->original_filename = filename;
-					asset_ptr->src_texture = a_src_texture::find( iter_ad->find_value( "src_texture_tag" ) );
+					asset_ptr->src_texture = a_src_texture::find( iter_ad.find_value( "src_texture_tag" ) );
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
 				else if( type == "slice_def" )
 				{
-					assert( iter_ad->does_key_exist( "texture_tag" ) );
-					assert( iter_ad->does_key_exist( "x_slices" ) );
-					assert( iter_ad->does_key_exist( "y_slices" ) );
+					assert( iter_ad.does_key_exist( "texture_tag" ) );
+					assert( iter_ad.does_key_exist( "x_slices" ) );
+					assert( iter_ad.does_key_exist( "y_slices" ) );
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_9slice_def>(), tag, filename );
 
-					a_texture* texture = a_texture::find( iter_ad->find_value( "texture_tag" ) );
-					w_vec2 x_slices = w_parser::vec2_from_str( iter_ad->find_value( "x_slices" ) );
-					w_vec2 y_slices = w_parser::vec2_from_str( iter_ad->find_value( "y_slices" ) );
+					a_texture* texture = a_texture::find( iter_ad.find_value( "texture_tag" ) );
+					w_vec2 x_slices = w_parser::vec2_from_str( iter_ad.find_value( "x_slices" ) );
+					w_vec2 y_slices = w_parser::vec2_from_str( iter_ad.find_value( "y_slices" ) );
 
 					float x, y, w, h;
 
@@ -254,16 +254,16 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "sound" )
 				{
-					assert( iter_ad->does_key_exist( "filename" ) );
+					assert( iter_ad.does_key_exist( "filename" ) );
 
-					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
+					filename = fmt::format( "{}{}", data_folder, iter_ad.find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_sound>(), tag, filename );
 					asset_ptr->original_filename = filename;
 
-					for( auto& [key, value] : iter_ad->kv )
+					for( auto& [key, value] : iter_ad.kv )
 					{
 						if( key == "looped" )
 						{
@@ -276,16 +276,16 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "mesh" )
 				{
-					assert( iter_ad->does_key_exist( "filename" ) );
-					assert( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad.does_key_exist( "filename" ) );
+					assert( iter_ad.does_key_exist( "texture_tag" ) );
 
-					filename = fmt::format( "{}{}", data_folder, iter_ad->find_value( "filename" ) );
+					filename = fmt::format( "{}{}", data_folder, iter_ad.find_value( "filename" ) );
 
 					// ------------------------------------------------------------------------
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
 
-					asset_ptr->tex = a_texture::find( iter_ad->find_value( "texture_tag" ) );
+					asset_ptr->tex = a_texture::find( iter_ad.find_value( "texture_tag" ) );
 					asset_ptr->original_filename = filename;
 
 					asset_ptr->clean_up_internals();
@@ -293,12 +293,12 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "cursor" )
 				{
-					assert( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad.does_key_exist( "texture_tag" ) );
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
 
-					asset_ptr->subtex = a_texture::find( iter_ad->find_value( "texture_tag" ) );
-					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad->find_value( "hotspot" ) );
+					asset_ptr->subtex = a_texture::find( iter_ad.find_value( "texture_tag" ) );
+					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad.find_value( "hotspot" ) );
 
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
@@ -306,19 +306,19 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 #if 0 // #texture
 				else if( type == "anim_texture" )
 				{
-					assert( iter_ad->does_key_exist( "frame_subtexture_tags" ) );
-					assert( iter_ad->does_key_exist( "frames_per_sec" ) );
-					assert( iter_ad->does_key_exist( "tween" ) );
+					assert( iter_ad.does_key_exist( "frame_subtexture_tags" ) );
+					assert( iter_ad.does_key_exist( "frames_per_sec" ) );
+					assert( iter_ad.does_key_exist( "tween" ) );
 
 					auto asset_ptr = a_anim_texture::find( tag, b_silent( true ) );
 
-					int frames_per_sec = w_parser::int_from_str( iter_ad->find_value( "frames_per_sec" ) );
-					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad->find_value( "tween" ) ) );
+					int frames_per_sec = w_parser::int_from_str( iter_ad.find_value( "frames_per_sec" ) );
+					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad.find_value( "tween" ) ) );
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
 													  tag, "" );
 
-					const std::string_view frames = iter_ad->find_value( "frame_subtexture_tags" );
+					const std::string_view frames = iter_ad.find_value( "frame_subtexture_tags" );
 
 					w_tokenizer tok( frames, ',' );
 					while( !tok.is_eos() )
@@ -331,13 +331,13 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->create_internals();
 				}
 #endif
-				else if( type == "subtexture" )
+				else if( type == "texture" )
 				{
-					assert( iter_ad->does_key_exist( "rect" ) );
-					assert( iter_ad->does_key_exist( "texture_tag" ) );
+					assert( iter_ad.does_key_exist( "rect" ) );
+					assert( iter_ad.does_key_exist( "texture_tag" ) );
 
-					w_rect rc = w_parser::rect_from_str( iter_ad->find_value( "rect" ) );
-					auto asset_ptr = asset_cache->add( std::make_unique<a_texture>( iter_ad->find_value( "texture_tag" ), rc ),
+					w_rect rc = w_parser::rect_from_str( iter_ad.find_value( "rect" ) );
+					auto asset_ptr = asset_cache->add( std::make_unique<a_texture>( iter_ad.find_value( "texture_tag" ), rc ),
 													  tag, "" );
 
 					asset_ptr->clean_up_internals();
@@ -356,7 +356,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					// ------------------------------------------------------------------------
 
-					for( const auto& [key, value] : iter_ad->kv )
+					for( const auto& [key, value] : iter_ad.kv )
 					{
 						if( key == "tag" || key == "type" )
 						{
@@ -453,10 +453,10 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 				}
 				else if( type == "font" )
 				{
-					assert( iter_ad->does_key_exist( "font_def_tag" ) );
+					assert( iter_ad.does_key_exist( "font_def_tag" ) );
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_font>(), tag, "" );
-					asset_ptr->font_def = a_font_def::find( iter_ad->find_value( "font_def_tag" ) );
+					asset_ptr->font_def = a_font_def::find( iter_ad.find_value( "font_def_tag" ) );
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
@@ -479,7 +479,7 @@ bool w_asset_definition_file::create_internals()
 
 	auto file = engine->fs->load_text_file_into_memory( original_filename );
 
-	std::unique_ptr<w_keyvalues> current_asset_definition = nullptr;
+	w_keyvalues current_asset_definition;
 
 	// loop through every line of the asset_def fil and
 	for( const auto& line : *( file->lines.get() ) )
@@ -487,15 +487,13 @@ bool w_asset_definition_file::create_internals()
 		// a "{" marks the beginning of a new asset definition
 		if( line[ 0 ] == '{' )
 		{
-			current_asset_definition = std::make_unique<w_keyvalues>();
+			current_asset_definition = {};
 		}
 		// a "}" marks the end of the current asset definition
 		else if( line[0] == '}' )
 		{
-			assert( current_asset_definition );
-
 			asset_definitions.emplace_back( std::move( current_asset_definition ) );
-			current_asset_definition = nullptr;
+			current_asset_definition = {};
 		}
 		// parse each line into a key/value pair for the current asset definition
 		else
@@ -508,7 +506,7 @@ bool w_asset_definition_file::create_internals()
 
 			if( key.has_value() && value.has_value() )
 			{
-				current_asset_definition->insert_or_assign( *key, *value );
+				current_asset_definition.insert_or_assign( *key, *value );
 			}
 		}
 	}

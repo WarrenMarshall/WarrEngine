@@ -9,7 +9,14 @@ struct w_font_char
 	float xoffset = 0.0f;
 	float yoffset = 0.0f;
 	float xadvance = 0.0f;
-	std::unique_ptr<a_texture> subtex = nullptr;
+
+	// this is not cached as it would be inefficient to flood the asset
+	// cache with an a_texture for every glyph in a font.
+	//
+	// nobody else will ever need to reference this texture, so we
+	// keep it to ourselves.
+
+	std::unique_ptr<a_texture> glyph_texture = nullptr;
 };
 
 // ----------------------------------------------------------------------------

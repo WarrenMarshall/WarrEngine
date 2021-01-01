@@ -32,7 +32,7 @@ bool a_font_def::create_internals()
 			fch->w = w;
 			fch->h = h;
 
-			fch->subtex = std::make_unique<a_texture>( src_texture->tag, w_rect( x, y, w, h ) );
+			fch->glyph_texture = std::make_unique<a_texture>( src_texture->tag, w_rect( x, y, w, h ) );
 
 			max_height = glm::max( max_height, static_cast<int>( fch->h ) );
 		}

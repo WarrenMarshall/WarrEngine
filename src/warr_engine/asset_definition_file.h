@@ -8,7 +8,7 @@
 struct w_asset_definition_file
 {
 	std::string original_filename;
-	std::vector<std::unique_ptr<w_keyvalues>> asset_definitions;
+	std::vector<w_keyvalues> asset_definitions;
 
 	virtual ~w_asset_definition_file() = default;
 

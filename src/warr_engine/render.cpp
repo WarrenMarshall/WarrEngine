@@ -452,7 +452,7 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		if( fch->w > 0 )
 		{
 			draw(
-				fch->subtex.get(),
+				fch->glyph_texture.get(),
 				w_rect( xpos + ( fch->xoffset * rs->scale.x ), ypos + ( fch->yoffset * rs->scale.y ) )
 			);
 		}
