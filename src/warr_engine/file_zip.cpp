@@ -2,6 +2,26 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// ----------------------------------------------------------------------------
+/*
+	the ZIP system works as follows:
+
+	1. the ZIP file containing the data files cannot use any compression
+	   or encryption. the engine doesn't have any idea what to do with that.
+	   files must be stored in the ZIP, that's it.
+
+	2. The ZIP file must be sitting in the same folder as the EXE.
+
+	3. the ZIP file must have "data" at the root of it's file structure. this
+	   directly mimics the file structure used during development.
+
+	   i.e.
+	   data/warr_engine/filename.asset_def
+	   data/my_game/gfx/filename.png
+	   ...etc...
+*/
+// ----------------------------------------------------------------------------
+
 w_zip_toc_entry::w_zip_toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size )
 	: zip_filename( zip_filename ), filename( filename ), offset_from_start_of_file( offset ), size( size )
 {
@@ -64,7 +84,7 @@ void w_file_zip::scan_and_build_table_of_contents()
 							table_of_contents.insert(
 								std::make_pair(
 									new_filename,
-									std::make_unique<w_zip_toc_entry>( zip_filename, new_filename, (int) ( rptr - buffer.data() ), hdr->uncompressed_size )
+									w_zip_toc_entry( zip_filename, new_filename, (int) ( rptr - buffer.data() ), hdr->uncompressed_size )
 								)
 							);
 							rptr += hdr->uncompressed_size;
@@ -94,24 +114,16 @@ void w_file_zip::scan_and_build_table_of_contents()
 	}
 }
 
-bool w_file_zip::does_toc_contain_filename( std::string_view filename )
-{
-	if( table_of_contents.count( std::string( filename ) ) > 0 )
-	{
-		return true;
-	}
-
-	return false;
-}
-
 w_zip_toc_entry* w_file_zip::get_toc_entry_for_filename( std::string_view filename )
 {
-	if( !does_toc_contain_filename( filename ) )
+	auto iter = table_of_contents.find( std::string( filename ) );
+
+	if( iter == table_of_contents.end() )
 	{
 		return nullptr;
 	}
 
-	return table_of_contents[ std::string( filename ) ].get();
+	return &( iter->second );
 }
 
 std::unique_ptr<std::vector<char>> w_file_zip::get_data_for_filename( std::string_view filename )

@@ -28,7 +28,7 @@ struct w_color
 	w_color( int r, int g, int b, int a = 255 );
 	w_color( const std::string& str );
 
-	w_color operator*( float v );
+	w_color operator*( float v ) const;
 	w_color operator*=( float v );
 
 	static void scale( w_color& color, float s );
@@ -116,10 +116,10 @@ struct w_rect
 
 	w_vec2 midpoint();
 
-	bool operator==( const w_rect& rhs );
-	w_rect operator+( const w_vec2& v );
+	bool operator==( const w_rect& rhs ) const;
+	w_rect operator+( const w_vec2& v ) const;
 	w_rect operator+=( const w_vec2& v );
-	w_rect operator*( float v );
+	w_rect operator*( float v ) const;
 	w_rect operator*=( float v );
 
 	c2AABB as_c2AABB();
@@ -179,12 +179,12 @@ struct w_vec2
 	[[nodiscard]] float get_size_fast();
 	[[nodiscard]] bool is_zero();
 
-	[[nodiscard]] bool operator==( const w_vec2& v );
-	[[nodiscard]] bool operator!=( const w_vec2& v );
-	[[nodiscard]] w_vec2 operator+( const w_vec2& v );
-	[[nodiscard]] w_vec2 operator-( const w_vec2& v );
-	[[nodiscard]] w_vec2 operator*( float v );
-	[[nodiscard]] w_vec2 operator/( float v );
+	[[nodiscard]] bool operator==( const w_vec2& v ) const;
+	[[nodiscard]] bool operator!=( const w_vec2& v ) const;
+	[[nodiscard]] w_vec2 operator+( const w_vec2& v ) const;
+	[[nodiscard]] w_vec2 operator-( const w_vec2& v ) const;
+	[[nodiscard]] w_vec2 operator*( float v ) const;
+	[[nodiscard]] w_vec2 operator/( float v ) const;
 
 	w_vec2 operator+=( const w_vec2& v );
 	w_vec2 operator-=( const w_vec2& v );

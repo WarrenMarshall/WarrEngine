@@ -4,8 +4,6 @@
 
 void w_file_disk::open_for_read( std::string_view filename )
 {
-	engine->fs->create_path_if_not_exist( filename );
-
 	fopen_s( &file_handle, filename.data(), "rb" );
 
 	if( file_handle == nullptr )

@@ -51,8 +51,6 @@ bool w_file_system::file_exists_on_disk_or_in_zip( const std::string_view filena
 
 std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_view filename )
 {
-	w_file_system::create_path_if_not_exist( filename );
-
 	if( file_exists_on_disk( filename ) )
 	{
 		std::ifstream file( filename.data(), std::ios::binary | std::ios::ate );
@@ -83,8 +81,6 @@ std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_vi
 
 std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std::string_view filename )
 {
-	w_file_system::create_path_if_not_exist( filename );
-
 	if( file_exists_on_disk( filename ) )
 	{
 		std::ifstream file( filename.data(), std::ios::in | std::ios::ate );
@@ -117,8 +113,6 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 
 void w_file_system::scan_folder_for_ext( std::vector<std::string>* filenames, std::string_view folder, std::string_view extension )
 {
-	w_file_system::create_path_if_not_exist( folder );
-
 	// look on disk
 
 	for( auto& iter : std::filesystem::directory_iterator( folder ) )
@@ -139,14 +133,11 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>* filenames, st
 
 	for( auto& [filename, toc_entry] : zip_io->table_of_contents )
 	{
-		w_tokenizer tok( filename, '/' );
-		auto foldername = tok.get_next_token();
+		std::string new_filename = w_string_util::replace_char( filename, '\\', '/' );
 
-		if( foldername.has_value() && foldername == folder )
+		if( new_filename.substr( 0, folder.size() ) == folder )
 		{
-			std::string new_filename = w_string_util::replace_char( filename, '\\', '/' );
 			std::filesystem::path path = new_filename;
-
 			if( path.extension() == extension )
 			{
 				if( std::find( filenames->begin(), filenames->end(), new_filename ) == filenames->end() )

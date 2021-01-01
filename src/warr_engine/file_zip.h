@@ -1,7 +1,6 @@
 #pragma once
 
 // ----------------------------------------------------------------------------
-
 // the packing has to be forced to 1-byte here because that's how the data
 // is stored inside the ZIP file. If we don't force this, the compiler
 // pads and aligns variables in memory whch makes the struct not match
@@ -42,10 +41,9 @@ struct w_zip_toc_entry
 
 struct w_file_zip
 {
-	std::unordered_map<std::string, std::unique_ptr<w_zip_toc_entry>> table_of_contents;
+	std::unordered_map<std::string, w_zip_toc_entry> table_of_contents;
 
 	void scan_and_build_table_of_contents();
-	[[nodiscard]] bool does_toc_contain_filename( std::string_view filename );
 	[[nodiscard]] w_zip_toc_entry* get_toc_entry_for_filename( std::string_view filename );
 	[[nodiscard]] std::unique_ptr<std::vector<char>> get_data_for_filename( std::string_view filename );
 };

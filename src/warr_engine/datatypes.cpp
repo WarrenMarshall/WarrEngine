@@ -141,12 +141,12 @@ w_vec2 w_rect::midpoint()
 	return w_vec2( x + ( w / 2.0f ), y + ( h / 2.0f ) );
 }
 
-bool w_rect::operator==( const w_rect& rhs )
+bool w_rect::operator==( const w_rect& rhs ) const
 {
 	return( fequals( rhs.x, x ) && fequals( rhs.y, y ) && fequals( rhs.w, w ) && fequals( rhs.h, h ) );
 }
 
-w_rect w_rect::operator+( const w_vec2& v )
+w_rect w_rect::operator+( const w_vec2& v ) const
 {
 	return w_rect( this->x + v.x, this->y + v.y, this->w, this->h );
 }
@@ -157,7 +157,7 @@ w_rect w_rect::operator+=( const w_vec2& v )
 	return *this;
 }
 
-w_rect w_rect::operator*( float v )
+w_rect w_rect::operator*( float v ) const
 {
 	return w_rect( this->x * v, this->y * v, this->w * v, this->h * v );
 }
@@ -254,7 +254,7 @@ w_color::w_color( const std::string& str )
 	}
 }
 
-w_color w_color::operator*( float v )
+w_color w_color::operator*( float v ) const
 {
 	return w_color( this->r * v, this->g * v, this->b * v );
 }
@@ -334,17 +334,17 @@ w_vec2 w_vec2::from_b2d() const
 	return w_vec2( ::from_b2d( x ), ::from_b2d( y ) );
 }
 
-bool w_vec2::operator==( const w_vec2& v )
+bool w_vec2::operator==( const w_vec2& v ) const
 {
 	return ( fequals( this->x, v.x ) && fequals( this->y, v.y ) );
 }
 
-bool w_vec2::operator!=( const w_vec2& v )
+bool w_vec2::operator!=( const w_vec2& v ) const
 {
 	return !( fequals( this->x, v.x ) && fequals( this->y, v.y ) );
 }
 
-w_vec2 w_vec2::operator+( const w_vec2& v )
+w_vec2 w_vec2::operator+( const w_vec2& v ) const
 {
 	return w_vec2( this->x + v.x, this->y + v.y );
 }
@@ -355,7 +355,7 @@ w_vec2 w_vec2::operator+=( const w_vec2& v )
 	return *this;
 }
 
-w_vec2 w_vec2::operator-( const w_vec2& v )
+w_vec2 w_vec2::operator-( const w_vec2& v ) const
 {
 	return w_vec2( this->x - v.x, this->y - v.y );
 }
@@ -366,7 +366,7 @@ w_vec2 w_vec2::operator-=( const w_vec2& v )
 	return *this;
 }
 
-w_vec2 w_vec2::operator*( float v )
+w_vec2 w_vec2::operator*( float v ) const
 {
 	return w_vec2( this->x * v, this->y * v );
 }
@@ -377,7 +377,7 @@ w_vec2 w_vec2::operator*=( float v )
 	return *this;
 }
 
-w_vec2 w_vec2::operator/( float v )
+w_vec2 w_vec2::operator/( float v ) const
 {
 	return w_vec2( this->x / v, this->y / v );
 }
