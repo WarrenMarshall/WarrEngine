@@ -3,7 +3,7 @@
 struct w_layer : i_life_cycle, i_input_receiver
 {
 	std::vector<std::unique_ptr<w_entity>> entities;
-	w_imgui_data_provider* ui_data_provider = nullptr;
+	w_imgui_callback* ui_callback = nullptr;
 
 	struct
 	{

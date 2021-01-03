@@ -1,7 +1,8 @@
 #pragma once
 
-struct w_imgui_data_provider
+struct w_imgui_callback
 {
-	virtual int get_texture_idx( w_imgui_control* control );
+	virtual e_imgui_control_state get_state_for_control( w_imgui_control* control );
+	virtual void was_left_clicked( w_imgui_control* control );
+	virtual void was_right_clicked( w_imgui_control* control );
 };
-

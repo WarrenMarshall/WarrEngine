@@ -8,7 +8,7 @@ struct w_imgui_result
 {
 	e_im_result result = im_result::none;
 
-	void operator=( e_im_result res );
+	void operator=( const e_im_result res );
 
 	[[nodiscard]] bool was_left_clicked();
 	[[nodiscard]] bool was_right_clicked();
@@ -31,6 +31,8 @@ struct w_imgui
 	std::optional<w_imgui_control> last_control = std::nullopt;
 	w_imgui_control current_control = {};
 
+	w_imgui_callback* data_provider = nullptr;
+
 	// the results from the last control processed
 	w_imgui_result result = {};
 
@@ -44,20 +46,20 @@ struct w_imgui
 	w_imgui_control find_control( const char* tag );
 	w_imgui* clear_last_control();
 
+	w_imgui* init_panel( const char* tag = nullptr );
 	w_imgui* init_push_button( const char* tag = nullptr );
 	w_imgui* init_checkbox( const char* tag = nullptr );
-	w_imgui* init_panel( const char* tag = nullptr );
 
-	w_imgui* set_label( const std::string& label, e_align align = align::centered );
+	w_imgui* set_label( const std::string& label );
+	w_imgui* set_label_align( e_align align );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
 	w_imgui* set_texture( e_imgui_control_state state, a_texture* texture );
 	w_imgui* set_texture_align( e_align align );
+	w_imgui* set_pos( const w_vec2& pos );
+	w_imgui* set_pos( e_imgui_flow flow );
+	w_imgui* set_size( const w_sz& size );
 
-	w_imgui* set_rect( const w_rect& rc );
-	w_imgui* set_rect( e_imgui_flow flow );
-	w_imgui* set_rect( e_imgui_flow flow, w_sz sz );
-
-	void calc_client_rect();
+	void compute_clientrect_from_rect();
 	w_imgui_result* finalize();
 
 private:

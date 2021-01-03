@@ -42,14 +42,16 @@ void layer_esc_menu::draw_ui()
 	float panel_h = ( button_h * num_buttons ) + ( UI_PADDING * ( num_buttons + 6 ) );
 
 	IMGUI->init_panel()
-		->set_slice_def( a_9slice_def::find( "sd_ui_panel" ) )
-		->set_rect( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ), panel_w, panel_h } )
+		->set_slice_def( a_9slice_def::find( "simple_ui_panel" ) )
+		->set_pos( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
+		->set_size( { panel_w, panel_h } )
 		->finalize();
 
 	if( IMGUI->init_push_button()
 		->set_label( "Resume" )
-		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
-		->set_rect( imgui_flow::last_crc_topleft, { IMGUI->last_control->crc.w, button_h } )
+		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
+		->set_pos( imgui_flow::last_crc_topleft )
+		->set_size( { IMGUI->last_control->crc.w, button_h } )
 		->finalize()
 		->was_left_clicked() )
 	{
@@ -58,8 +60,8 @@ void layer_esc_menu::draw_ui()
 
 	if( IMGUI->init_push_button()
 		->set_label( "Main Menu" )
-		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
-		->set_rect( imgui_flow::down )
+		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
+		->set_pos( imgui_flow::down )
 		->finalize()
 		->was_left_clicked() )
 	{
@@ -68,8 +70,8 @@ void layer_esc_menu::draw_ui()
 
 	if( IMGUI->init_push_button()
 		->set_label( "Toggle Fullscreen" )
-		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
-		->set_rect( imgui_flow::down )
+		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
+		->set_pos( imgui_flow::down )
 		->finalize()
 		->was_left_clicked() )
 	{
@@ -78,8 +80,8 @@ void layer_esc_menu::draw_ui()
 
 	if( IMGUI->init_push_button()
 		->set_label( "Exit To Windows" )
-		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
-		->set_rect( imgui_flow::down )
+		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
+		->set_pos( imgui_flow::down )
 		->finalize()
 		->was_left_clicked() )
 	{

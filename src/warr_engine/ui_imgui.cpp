@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-void w_imgui_result::operator=( e_im_result res )
+void w_imgui_result::operator=( const e_im_result res )
 {
 	result = res;
 }
@@ -27,6 +27,7 @@ void w_imgui::reset()
 	containing_layer_is_topmost = false;
 	last_control = std::nullopt;
 	tagged_controls.clear();
+	data_provider = nullptr;
 }
 
 // locates the control that matches "tag" and sets up the imgui
@@ -60,12 +61,26 @@ w_imgui* w_imgui::clear_last_control()
 	return this;
 }
 
+w_imgui* w_imgui::init_panel( const char* tag )
+{
+	current_control = {};
+	current_control.type = imgui_control_type::panel;
+	current_control.tag = tag;
+	current_control.is_active = false;
+	current_control.slice_def = a_9slice_def::find( "simple_ui_panel" );
+	current_control.label_align = align::left | align::top;
+
+	return this;
+}
+
 w_imgui* w_imgui::init_push_button( const char* tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::push_button;
 	current_control.tag = tag;
 	current_control.is_active = true;
+	current_control.slice_def = a_9slice_def::find( "simple_ui_push_button" );
+	current_control.label_align = align::centered;
 
 	return this;
 }
@@ -76,23 +91,19 @@ w_imgui* w_imgui::init_checkbox( const char* tag )
 	current_control.type = imgui_control_type::check_box;
 	current_control.tag = tag;
 	current_control.is_active = true;
+	current_control.label_align = align::left | align::vcenter;
 
 	return this;
 }
 
-w_imgui* w_imgui::init_panel( const char* tag )
-{
-	current_control = {};
-	current_control.type = imgui_control_type::panel;
-	current_control.tag = tag;
-	current_control.is_active = false;
-
-	return this;
-}
-
-w_imgui* w_imgui::set_label( const std::string& label, e_align align )
+w_imgui* w_imgui::set_label( const std::string& label )
 {
 	current_control.label = label;
+	return this;
+}
+
+w_imgui* w_imgui::set_label_align( e_align align )
+{
 	current_control.label_align = align;
 	return this;
 }
@@ -116,44 +127,51 @@ w_imgui* w_imgui::set_texture_align( e_align align )
 	return this;
 }
 
-w_imgui* w_imgui::set_rect( const w_rect& rc )
+w_imgui* w_imgui::set_pos( const w_vec2& pos )
 {
-	current_control.rc = rc;
-	calc_client_rect();
+	current_control.rc = last_control->rc;
+
+	current_control.rc.x = pos.x;
+	current_control.rc.y = pos.y;
+
+	compute_clientrect_from_rect();
 
 	return this;
 }
 
-w_imgui* w_imgui::set_rect( e_imgui_flow flow )
-{
-	return set_rect( flow, { last_control->rc.w, last_control->rc.h } );
-}
-
-w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
+w_imgui* w_imgui::set_pos( e_imgui_flow flow )
 {
 	current_control.rc = last_control->rc;
 
 	if( flow & imgui_flow::right )
 	{
-		current_control.rc = { flow_right.x, flow_right.y, sz.w, sz.h };
+		current_control.rc.x = flow_right.x;
+		current_control.rc.y = flow_right.y;
 	}
 
 	if( flow & imgui_flow::down )
 	{
-		current_control.rc = { flow_down.x, flow_down.y, sz.w, sz.h };
+		current_control.rc.x = flow_down.x;
+		current_control.rc.y = flow_down.y;
 	}
 
 	if( flow & imgui_flow::last_crc_topleft )
 	{
-		current_control.rc = { last_control->crc.x, last_control->crc.y, sz.w, sz.h };
+		current_control.rc.x = last_control->crc.x;
+		current_control.rc.y = last_control->crc.y;
 	}
 
-	if( flow & imgui_flow::vcenter )
-	{
-		current_control.rc.y = ( last_control->rc.y + ( last_control->rc.h / 2.0f ) ) - ( sz.h / 2.0f );
-	}
+	compute_clientrect_from_rect();
 
-	calc_client_rect();
+	return this;
+}
+
+w_imgui* w_imgui::set_size( const w_sz& size )
+{
+	current_control.rc.w = size.w;
+	current_control.rc.h = size.h;
+
+	compute_clientrect_from_rect();
 
 	return this;
 }
@@ -161,7 +179,7 @@ w_imgui* w_imgui::set_rect( e_imgui_flow flow, w_sz sz )
 // copies the overall control rect to the client rect, and then makes adjustments
 // to compensate for graphical frames and whatever else would affect the client area.
 
-void w_imgui::calc_client_rect()
+void w_imgui::compute_clientrect_from_rect()
 {
 	current_control.crc = current_control.rc;
 
@@ -280,13 +298,12 @@ e_im_result w_imgui::_update_im_state( int id, const w_rect& rc )
 
 void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
-	w_imgui_data_provider* data_provider = nullptr;
+	w_imgui_callback* data_provider = nullptr;
 	if( IMGUI->containing_layer_is_topmost )
 	{
 		data_provider = engine->layer_mgr->get_top()->ui_data_provider;
 	}
 
-	w_vec2 base_offset = control.get_base_offset();
 	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
 
 	w_rect rc_draw = control.rc;
@@ -312,7 +329,14 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	// texture
 
-	a_texture* texture = control.textures[ data_provider ? data_provider->get_texture_idx( &control ) : 0 ];
+	// #ui - this is where checkbox needs to get it's texture drawn
+	a_texture* texture = nullptr;
+
+	if( data_provider )
+	{
+		auto idx = data_provider->get_state_for_control( &control ) == imgui_control_state::checked ? 1 : 0;
+		texture = control.textures[ idx ];
+	}
 
 	if( texture )
 	{
@@ -334,22 +358,12 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 
 	if( control.label.length() )
 	{
-		w_rect label_rc = w_rect( label_pos.x, label_pos.y ) + base_offset;
-
-#if 0
-		if( texture )
-		{
-			if( control.texture_align & align::left )
-			{
-				label_rc.x += texture->get_bounding_rect().w / 2.0f;
-			}
-		}
-#endif
+		w_rect label_rc = w_rect( label_pos.x, label_pos.y, current_control.crc.w, current_control.crc.h );
 
 		RENDER
 			->push_depth_nudge()
 			->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
-			->push_align( align::centered );
+			->push_align( control.label_align );
 
 		RENDER->draw_string( control.label, label_rc );
 	}

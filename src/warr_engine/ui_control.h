@@ -12,6 +12,4 @@ struct w_imgui_control
 	e_align texture_align = align::fill;
 	w_rect rc = { 0,0,0,0 };	// full rectangle
 	w_rect crc = { 0,0,0,0 };	// client rectangle
-
-	w_offset get_base_offset();
 };

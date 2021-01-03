@@ -8,11 +8,21 @@
 	"tag" "tex_ui_default"
 	"filename" "ui/ui_master.png"
 	"texture_tags" "\
-		ui_cursor, 56, 40, 16, 16,\
-		ui_panel, 0, 48, 16, 16,\
-		ui_button, 0, 0, 48, 16,\
 		ui_box, 48, 0, 16, 16,\
 		ui_box_checkmark, 64, 0, 16, 16\
+		"
+}
+
+{
+	"type" "src_texture"
+	"tag" "simple_ui"
+	"filename" "ui/simple_ui.png"
+	"texture_tags" "\
+		ui_cursor, 0, 24, 16, 16,\
+		ui_panel, 0, 0, 24, 24,\
+		ui_button, 28, 4, 16, 16,\
+		ui_checkbox_off, 47, 7, 10, 10,\
+		ui_checkbox_on, 58, 7, 10, 10\
 		"
 }
 
@@ -22,7 +32,7 @@
 	"type" "cursor"
 	"tag" "mouse_cursor_default"
 	"texture_tag" "ui_cursor"
-	"hotspot" "1, 1"
+	"hotspot" "3, 2"
 }
 
 # ---------------------------------------------------------
@@ -30,17 +40,17 @@
 # panel
 {
 	"type" "slice_def"
-	"tag" "sd_ui_panel"
+	"tag" "simple_ui_panel"
 	"texture_tag" "ui_panel"
-	"x_slices" "6, 6"
-	"y_slices" "6, 6"
+	"x_slices" "8, 8"
+	"y_slices" "8, 8"
 }
 
 # push button
 {
 	"type" "slice_def"
-	"tag" "sd_push_button"
+	"tag" "simple_ui_push_button"
 	"texture_tag" "ui_button"
-	"x_slices" "3, 3"
-	"y_slices" "3, 3"
+	"x_slices" "5, 5"
+	"y_slices" "5, 5"
 }
