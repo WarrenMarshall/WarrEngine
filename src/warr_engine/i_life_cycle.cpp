@@ -6,6 +6,8 @@ void i_life_cycle::ilc_set( e_life_cycle life_cycle )
 {
 	this->life_cycle = life_cycle;
 
+	// adds a delay of a few frames to make sure that anyone
+	// who needs to clean up re: this object, can do so.
 	if( life_cycle == life_cycle::dying )
 	{
 		ilc_update_count_death_delay = 2;
