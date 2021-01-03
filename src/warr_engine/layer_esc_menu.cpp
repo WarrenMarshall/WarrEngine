@@ -2,6 +2,30 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// ----------------------------------------------------------------------------
+
+void layer_esc_menu_ui_callback::was_left_clicked( w_imgui_control* control )
+{
+	if( control->tag == "button_resume" )
+	{
+		engine->layer_mgr->pop();
+	}
+	else if( control->tag == "button_main_menu" )
+	{
+		base_game->reset_layer_stack_to_main_menu();
+	}
+	else if( control->tag == "button_fullscreen" )
+	{
+		engine->window->toggle_fullscreen();
+	}
+	else if( control->tag == "button_exit" )
+	{
+		engine->is_running = false;
+	}
+}
+
+// ----------------------------------------------------------------------------
+
 void layer_esc_menu::push()
 {
 	w_layer::push();
@@ -47,44 +71,29 @@ void layer_esc_menu::draw_ui()
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
-	if( IMGUI->init_push_button()
+	IMGUI->init_push_button( "button_resume" )
 		->set_label( "Resume" )
-		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
 		->set_pos( imgui_flow::last_crc_topleft )
 		->set_size( { IMGUI->last_control->crc.w, button_h } )
-		->finalize()
-		->was_left_clicked() )
-	{
-		engine->layer_mgr->pop();
-	}
+		->finalize();
 
-	if( IMGUI->init_push_button()
+	IMGUI->init_push_button( "button_main_menu" )
 		->set_label( "Main Menu" )
-		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
 		->set_pos( imgui_flow::down )
-		->finalize()
-		->was_left_clicked() )
-	{
-		base_game->reset_layer_stack_to_main_menu();
-	}
+		->finalize();
 
-	if( IMGUI->init_push_button()
+	IMGUI->init_push_button( "button_fullscreen" )
 		->set_label( "Toggle Fullscreen" )
-		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
 		->set_pos( imgui_flow::down )
-		->finalize()
-		->was_left_clicked() )
-	{
-		engine->window->toggle_fullscreen();
-	}
+		->finalize();
 
-	if( IMGUI->init_push_button()
+	IMGUI->init_push_button( "button_exit" )
 		->set_label( "Exit To Windows" )
-		->set_slice_def( a_9slice_def::find( "simple_ui_push_button" ) )
 		->set_pos( imgui_flow::down )
-		->finalize()
-		->was_left_clicked() )
-	{
-		engine->is_running = false;
-	}
+		->finalize();
+}
+
+w_imgui_callback* layer_esc_menu::get_imgui_callback()
+{
+	return &ui_callback;
 }

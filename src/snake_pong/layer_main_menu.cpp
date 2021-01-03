@@ -1,5 +1,22 @@
 
 #include "app_header.h"
+// ----------------------------------------------------------------------------
+
+void layer_main_menu_ui_callback::was_left_clicked( w_imgui_control* control )
+{
+	if( control->tag == "button_play" )
+	{
+		engine->layer_mgr->pop();
+		engine->layer_mgr->push<layer_game>();
+		game->new_game();
+	}
+	else if( control->tag == "button_quit" )
+	{
+		engine->is_running = false;
+	}
+}
+
+// ----------------------------------------------------------------------------
 
 layer_main_menu::layer_main_menu()
 {
@@ -21,32 +38,20 @@ void layer_main_menu::draw_ui()
 	float xpos = 64;
 	float ypos = 75;
 
-	if( IMGUI->init_push_button()
+	IMGUI->init_push_button( "button_play" )
 		->set_label( "PLAY" )
-		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_pos( { xpos, ypos } )
 		->set_size( { v_window_w - xpos * 2, 24.0f } )
-		->finalize()
-		->was_left_clicked() )
-	{
-		engine->layer_mgr->pop();
-		engine->layer_mgr->push<layer_game>();
-		game->new_game();
-	}
+		->finalize();
 
 	xpos += 16;
 	ypos += 28;
 
-	if( IMGUI->init_push_button()
+	IMGUI->init_push_button( "button_quit" )
 		->set_label( "Quit" )
-		->set_slice_def( a_9slice_def::find( "sd_push_button" ) )
 		->set_pos( { xpos, ypos } )
 		->set_size( { v_window_w - xpos * 2.0f, 24.0f } )
-		->finalize()
-		->was_left_clicked() )
-	{
-		engine->is_running = false;
-	}
+		->finalize();
 }
 
 void layer_main_menu::push()
@@ -61,6 +66,8 @@ void layer_main_menu::push()
 	e->it_set_position( { v_window_hw, 0.0f } );
 	e->add_component<ec_emitter>()->init( "menu_fire_up" )
 		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+
+	// mechanical meshes
 
 	e = add_entity<w_entity>();
 	e->it_set_position( { v_window_hw, v_window_hh } );
@@ -78,12 +85,6 @@ void layer_main_menu::becoming_top_layer()
 	engine->ui->mouse_cursor = a_cursor::find( "mouse_cursor_default" );
 }
 
-void layer_main_menu::new_game()
-{
-	w_layer::new_game();
-
-}
-
 bool layer_main_menu::iir_on_pressed( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::key_space )
@@ -96,4 +97,9 @@ bool layer_main_menu::iir_on_pressed( const w_input_event* evt )
 	}
 
 	return false;
+}
+
+w_imgui_callback* layer_main_menu::get_imgui_callback()
+{
+	return &imgui_callback;
 }

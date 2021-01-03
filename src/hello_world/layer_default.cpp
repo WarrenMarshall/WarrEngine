@@ -37,8 +37,6 @@ void layer_default::push()
 	gradient = a_texture::find( "background_gradient" );
 	tex_hello_world = a_texture::find( "tex_hello_world" );
 
-	ui_data_provider = &data_provider;
-
 	engine->window->set_mouse_mode( mouse_mode::os );
 }
 
@@ -62,30 +60,26 @@ void layer_default::draw_ui()
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 
-	if( IMGUI->init_push_button( "push_button_01" )
+	IMGUI->init_push_button( "push_button_01" )
 		->set_label( "Push Button #1" )
 		->set_pos( imgui_flow::last_crc_topleft )
 		->set_size( { 130.0f, 24.0f } )
-		->finalize()->was_left_clicked() )
-	{
-		log( "PUSH BUTTON #1 clicked" );
-	}
+		->finalize();
 
-	if( IMGUI->init_push_button( "push_button_02" )
+	IMGUI->init_push_button( "push_button_02" )
 		->set_label( "Push Button #2" )
 		->set_pos( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )
-		->finalize()->was_left_clicked() )
-	{
-		log( "PUSH BUTTON #2 clicked" );
-	}
+		->finalize();
 
-	if( IMGUI->init_checkbox( "checkbox_01" )
+	IMGUI->init_checkbox( "checkbox_01" )
 		->set_label( "Check Box #1" )
 		->set_pos( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )
-		->finalize()->was_left_clicked() )
-	{
-		log( "CHECK BOX #1 clicked" );
-	}
+		->finalize();
+}
+
+w_imgui_callback* layer_default::get_imgui_callback()
+{
+	return &imgui_callback;
 }

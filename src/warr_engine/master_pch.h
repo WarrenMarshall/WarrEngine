@@ -4,6 +4,7 @@ constexpr int struct_alignment_for_cache = 64;
 
 #pragma warning(disable : 4324 )	// structure was padded due to alignment specifier
 #pragma warning(disable : 4530 )	// C++ exception handler used, but unwind semantics are not enabled
+#pragma warning(disable : 4130 )	// logical operation on address of string constant
 
 #pragma warning( push, 0 )	// turn off all warnings for external libraries
 

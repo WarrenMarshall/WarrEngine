@@ -87,3 +87,8 @@ void w_layer::new_game()
 {
 	entities.clear();
 }
+
+w_imgui_callback* w_layer::get_imgui_callback()
+{
+	return nullptr;
+}

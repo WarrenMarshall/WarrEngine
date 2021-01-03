@@ -17,11 +17,12 @@ struct layer_default : w_layer
 	a_texture* gradient = nullptr;
 	a_texture* tex_hello_world = nullptr;
 
-	layer_default_ui_callback ui_callback;
+	layer_default_ui_callback imgui_callback;
 
 	layer_default();
 
 	virtual void push() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;
+	virtual w_imgui_callback* get_imgui_callback() override;
 };

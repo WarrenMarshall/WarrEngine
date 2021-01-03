@@ -3,7 +3,7 @@
 struct w_layer : i_life_cycle, i_input_receiver
 {
 	std::vector<std::unique_ptr<w_entity>> entities;
-	w_imgui_callback* ui_callback = nullptr;
+	w_imgui_callback* imgui_callback = nullptr;
 
 	struct
 	{
@@ -96,4 +96,5 @@ struct w_layer : i_life_cycle, i_input_receiver
 	}
 
 	virtual void new_game();
+	virtual w_imgui_callback* get_imgui_callback();
 };

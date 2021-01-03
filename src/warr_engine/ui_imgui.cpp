@@ -27,7 +27,6 @@ void w_imgui::reset()
 	containing_layer_is_topmost = false;
 	last_control = std::nullopt;
 	tagged_controls.clear();
-	data_provider = nullptr;
 }
 
 // locates the control that matches "tag" and sets up the imgui
@@ -61,7 +60,7 @@ w_imgui* w_imgui::clear_last_control()
 	return this;
 }
 
-w_imgui* w_imgui::init_panel( const char* tag )
+w_imgui* w_imgui::init_panel( const std::string& tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::panel;
@@ -73,7 +72,7 @@ w_imgui* w_imgui::init_panel( const char* tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_push_button( const char* tag )
+w_imgui* w_imgui::init_push_button( const std::string& tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::push_button;
@@ -85,7 +84,7 @@ w_imgui* w_imgui::init_push_button( const char* tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_checkbox( const char* tag )
+w_imgui* w_imgui::init_checkbox( const std::string& tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::check_box;
@@ -204,12 +203,31 @@ w_imgui_result* w_imgui::finalize()
 		_passive();
 	}
 
-	if( current_control.tag != nullptr )
+	if( !current_control.tag.empty() )
 	{
 		tagged_controls.insert( std::pair( current_control.tag, current_control ) );
 	}
 
 	_set_as_last_control( current_control );
+
+	w_imgui_callback* callback = nullptr;
+
+	if( IMGUI->containing_layer_is_topmost )
+	{
+		callback = LAYER->get_imgui_callback();
+	}
+
+	if( callback )
+	{
+		if( result.was_left_clicked() )
+		{
+			callback->was_left_clicked( &current_control );
+		}
+		if( result.was_right_clicked() )
+		{
+			callback->was_right_clicked( &current_control );
+		}
+	}
 
 	return &result;
 }
@@ -298,10 +316,10 @@ e_im_result w_imgui::_update_im_state( int id, const w_rect& rc )
 
 void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
-	w_imgui_callback* data_provider = nullptr;
+	w_imgui_callback* callback = nullptr;
 	if( IMGUI->containing_layer_is_topmost )
 	{
-		data_provider = engine->layer_mgr->get_top()->ui_data_provider;
+		callback = LAYER->get_imgui_callback();
 	}
 
 	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
@@ -332,9 +350,9 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 	// #ui - this is where checkbox needs to get it's texture drawn
 	a_texture* texture = nullptr;
 
-	if( data_provider )
+	if( callback )
 	{
-		auto idx = data_provider->get_state_for_control( &control ) == imgui_control_state::checked ? 1 : 0;
+		auto idx = callback->get_state_for_control( &control ) == imgui_control_state::checked ? 1 : 0;
 		texture = control.textures[ idx ];
 	}
 
