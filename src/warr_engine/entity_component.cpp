@@ -68,6 +68,37 @@ void w_entity_component::set_life_timer( int life_in_ms )
 	life_timer = w_timer( life_in_ms );
 }
 
+bool w_entity_component::is_permanent()
+{
+	return false;
+}
+
+// ----------------------------------------------------------------------------
+
+w_entity_component_permanent::w_entity_component_permanent( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+
+}
+
+bool w_entity_component_permanent::is_fully_dead()
+{
+	return false;
+}
+
+bool w_entity_component_permanent::is_permanent()
+{
+	return true;
+}
+
+// ----------------------------------------------------------------------------
+
+ec_transform::ec_transform( w_entity* parent_entity )
+	: w_entity_component_permanent( parent_entity )
+{
+	type |= component_type::transform;
+}
+
 // ----------------------------------------------------------------------------
 
 ec_sprite::ec_sprite( w_entity* parent_entity )
@@ -177,7 +208,7 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 
 		OPENGL
 			->push()
-			->add_transform( parent_entity->pos, parent_entity->angle, parent_entity->scale )
+			->add_transform( *( parent_entity->get_transform() ) )
 			->add_transform( pos, angle, scale );
 
 		emitter->warm_up();
@@ -330,7 +361,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, const w_rect& rc )
 // w/h - size of box
 b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, float h )
 {
-	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2PolygonShape shape;
 	{
@@ -358,7 +389,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, fl
 
 b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float radius )
 {
-	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2CircleShape shape;
 	{
@@ -382,7 +413,7 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float ra
 
 b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
-	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2EdgeShape shape;
 	{
@@ -418,7 +449,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 	// Box2D requirement
 	assert( verts.size() >= 3 );
 
-	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -454,7 +485,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 
 b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
-	body->SetTransform( parent_entity->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;

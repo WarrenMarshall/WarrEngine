@@ -169,10 +169,12 @@ void w_opengl::init_view_matrix( e_camera* camera ) const
 
 	if( camera )
 	{
+		auto ec = camera->get_transform();
+
 		// apply the camera position
 		view = glm::translate( view, glm::vec3(
-			camera->pos.x,
-			camera->pos.y,
+			ec->pos.x,
+			ec->pos.y,
 			0.0f ) );
 	}
 

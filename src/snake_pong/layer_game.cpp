@@ -33,7 +33,7 @@ void layer_game::update()
 	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
 
 	// match the prism rotation to face the same direction as the raycasts
-	prism->it_set_angle( w_vec2::angle_from_dir( dir ) );
+	prism->get_transform()->set_angle( w_vec2::angle_from_dir( dir ) );
 
 	// note : we don't do the raycasting if the mouse is too close the middle of
 	// the viewport as this can result in a zero length vector which will crash
@@ -102,7 +102,7 @@ void layer_game::new_game()
 
 	e = add_entity<e_camera>();
 	e->set_tag( "main_camera" );
-	e->it_set_position( { v_window_hw, v_window_hh } );
+	e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
 
 	// emitter background
 
@@ -154,7 +154,6 @@ void layer_game::new_game()
 	e->set_tag( "prism" );
 	e->add_component<ec_mesh>()->init( "shadow_beam" );
 	e->add_component<ec_sprite>()->init( "lightbulb" );
-	e->it_set_position( w_vec2( 0, 0 ) );
 }
 
 void layer_game::draw()

@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_entity : i_life_cycle, i_transform
+struct w_entity : i_life_cycle
 {
 	w_entity();
 	~w_entity();
@@ -27,7 +27,7 @@ struct w_entity : i_life_cycle, i_transform
 	virtual void ilc_set( e_life_cycle life_cycle ) override;
 	[[nodiscard]] virtual bool can_be_deleted();
 
-	virtual void update_from_physics();
+	void update_from_physics();
 	virtual void update();
 	virtual void update_components();
 	virtual void draw();
@@ -85,6 +85,12 @@ struct w_entity : i_life_cycle, i_transform
 
 	virtual void phys_begin_contact( w_pending_collision& coll, w_entity* other );
 	virtual void phys_end_contact( w_pending_collision& coll, w_entity* other );
+
+	w_transform* const get_transform()
+	{
+		auto ec = get_component<ec_transform>( component_type::transform );
+		return &(ec->xform);
+	}
 };
 
 // ----------------------------------------------------------------------------

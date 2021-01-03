@@ -38,11 +38,11 @@ void w_layer::update()
 
 	// update entities and components
 
-	for( const auto& entity : entities )
+	for( auto& entity : entities )
 	{
 		OPENGL
 			->push()
-			->add_transform( entity->pos, entity->angle, entity->scale );
+			->add_transform( *( entity->get_transform() ) );
 
 		entity->update();
 		entity->update_components();
@@ -60,7 +60,7 @@ void w_layer::draw()
 
 		OPENGL
 			->push()
-			->add_transform( entity->pos, entity->angle, entity->scale );
+			->add_transform( *entity->get_transform() );
 
 		entity->draw();
 

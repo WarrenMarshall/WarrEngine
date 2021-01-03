@@ -18,13 +18,38 @@ struct w_entity_component : i_life_cycle, i_transform
 
 	w_entity_component() = delete;
 	w_entity_component( w_entity* parent_entity );
-	virtual ~w_entity_component() {};
 
 	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw() {}
 	virtual void update();
 
 	virtual void set_life_timer( int life_in_ms );
+
+	[[nodiscard]] virtual bool is_permanent();
+};
+
+// ----------------------------------------------------------------------------
+// used as the base class for any entity components which are meant to always
+// exist on the entity, like their transform.
+//
+// components that are assumed to always exist and be valid.
+
+struct w_entity_component_permanent : w_entity_component
+{
+	w_entity_component_permanent( w_entity* parent_entity );
+
+	[[nodiscard]] virtual bool is_fully_dead() override;
+	[[nodiscard]] virtual bool is_permanent() override;
+};
+
+// ----------------------------------------------------------------------------
+
+struct ec_transform : w_entity_component_permanent
+{
+	w_transform xform;
+
+	ec_transform() = delete;
+	ec_transform( w_entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------

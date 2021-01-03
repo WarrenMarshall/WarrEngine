@@ -266,6 +266,7 @@ enum_begin( component_type, unsigned )	// bitfield
 	tilemap = 128,
 	mesh = 256,
 	primitive_shape = 512,
+	transform = 1024,
 enum_end
 
 // ----------------------------------------------------------------------------

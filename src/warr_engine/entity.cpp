@@ -2,6 +2,15 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+w_entity::w_entity()
+{
+	add_component<ec_transform>();
+}
+
+w_entity::~w_entity()
+{
+}
+
 void w_entity::update_from_physics()
 {
 	// entities with box2d components need their transforms
@@ -18,10 +27,11 @@ void w_entity::update_from_physics()
 			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
+				auto xform = get_transform();
 				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
 				float angle = edb->body->GetAngle();
 
-				it_set( { position.x, position.y }, glm::degrees( angle ), scale );
+				xform->set( { position.x, position.y }, glm::degrees( angle ), xform->scale );
 				break;
 			}
 		}
@@ -43,7 +53,7 @@ void w_entity::update_components()
 	{
 		w_entity_component* ec = components[ x ].get();
 
-		if( ec->is_fully_dead() )
+		if( ec->is_fully_dead() && !ec->is_permanent() )
 		{
 			components.erase( components.begin() + x );
 			x--;
@@ -86,7 +96,7 @@ void w_entity::draw()
 void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 {
 	// entity
-	it_set_position( pos );
+	get_transform()->set_pos( pos );
 
 	// physics components
 	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
@@ -108,7 +118,7 @@ void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 void w_entity::set_angle_deep( float angle )
 {
 	// entity
-	it_set_angle( angle );
+	get_transform()->set_angle( angle );
 
 	// physics components
 	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
@@ -194,35 +204,35 @@ void w_entity::phys_end_contact( w_pending_collision& coll, w_entity* other )
 bool w_entity::can_be_deleted()
 {
 	// still alive, can't delete
-	if( ilc_is_alive() ) {
+	if( ilc_is_alive() )
+	{
 		return false;
 	}
 
-	if( ilc_update_count_death_delay ) {
+	if( ilc_update_count_death_delay )
+	{
 		return false;
 	}
 
-	if( ilc_is_dying() ) {
+	if( ilc_is_dying() )
+	{
 		// entity is dying, but can't be deleted until all
-		// components are dead
+		// components are dead.
 
-		for( const auto& iter : components ) {
-			if( !iter->is_fully_dead() ) {
-				return false;
+		for( const auto& iter : components )
+		{
+			if( !iter->is_permanent() )
+			{
+				if( !iter->is_fully_dead() )
+				{
+					return false;
+				}
 			}
 		}
 	}
 
 	// entity is fully dead, delete it
 	return true;
-}
-
-w_entity::w_entity()
-{
-}
-
-w_entity::~w_entity()
-{
 }
 
 w_entity* w_entity::set_tag( const char* tag )
@@ -276,9 +286,9 @@ void e_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags fla
 	follow.target = entity_to_follow;
 	follow.flags = flags;
 	follow.strength = strength;
-	follow.pos = entity_to_follow->pos;
+	follow.pos = entity_to_follow->get_transform()->pos;
 
-	set_position_deep( follow.target->pos, false );
+	set_position_deep( follow.target->get_transform()->pos, false );
 }
 
 void e_camera::set_follow_limits_x( w_vec2 limits )
@@ -297,14 +307,16 @@ void e_camera::update()
 
 	if( follow.target )
 	{
+		auto target_pos = follow.target->get_transform()->pos;
+
 		// position
 
-		w_vec2 delta_pos = follow.target->pos - pos;
+		w_vec2 delta_pos = target_pos - get_transform()->pos;
 
 		if( follow.flags & follow_flags::xy_axis )
 		{
 			// interpolate towards follow target position
-			follow.pos += (( follow.target->pos - follow.pos ) * follow.strength ) * w_time::FTS_step_value_s;
+			follow.pos += ( ( target_pos - follow.pos ) * follow.strength ) * w_time::FTS_step_value_s;
 
 			// apply limits if we need to
 			if( follow.limits_x.has_value() )
@@ -317,13 +329,13 @@ void e_camera::update()
 			}
 
 			// if only following on a specific axis, remove the follow influence from the other
-			if( !(follow.flags & follow_flags::x_axis) )
+			if( !( follow.flags & follow_flags::x_axis ) )
 			{
-				follow.pos.x = pos.x;
+				follow.pos.x = get_transform()->pos.x;
 			}
 			if( !( follow.flags & follow_flags::y_axis ) )
 			{
-				follow.pos.y = pos.y;
+				follow.pos.y = get_transform()->pos.y;
 			}
 		}
 
@@ -333,7 +345,7 @@ void e_camera::update()
 
 		if( follow.flags & follow_flags::angle )
 		{
-			set_angle_deep( follow.target->angle );
+			set_angle_deep( follow.target->get_transform()->angle );
 		}
 	}
 }

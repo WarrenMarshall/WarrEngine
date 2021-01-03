@@ -2,6 +2,28 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+w_matrix* w_matrix::set_identity()
+{
+	m = glm::mat4( 1 );
+
+	return this;
+}
+
+w_matrix* w_matrix::add_transform( const w_matrix& matrix )
+{
+	m = m * matrix.m;
+
+	return this;
+}
+
+w_matrix* w_matrix::add_transform( const w_transform& transform )
+{
+	m = m * transform.matrix.m;
+
+	return this;
+}
+
+// #transform : can we delete this function once ec_transform is in place?
 w_matrix* w_matrix::add_transform( const i_transform& t )
 {
 	return add_transform( t.pos, t.angle, t.scale );

@@ -222,3 +222,28 @@ struct w_bbox
 	void add( const w_vec2& vtx );
 	void reset();
 };
+
+// ----------------------------------------------------------------------------
+
+struct w_transform
+{
+	// position
+	w_vec2 pos = w_vec2( 0, 0 );
+
+	// rotation (around z axis)
+	float angle = 0.0f;
+
+	// scale
+	float scale = 1.0f;
+
+	w_transform();
+
+	void set( w_vec2 pos, float angle, float scale );
+	void set_pos( w_vec2 pos );
+	void set_angle( float angle );
+	void set_scale( float scale );
+
+	void rebuild_xform();
+
+	w_matrix matrix;
+};

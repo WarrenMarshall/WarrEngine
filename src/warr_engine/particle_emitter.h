@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_particle_emitter : i_transform
+struct w_particle_emitter //: i_transform
 {
 	ec_emitter* parent_component = nullptr;
 
