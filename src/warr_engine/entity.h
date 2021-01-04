@@ -76,8 +76,6 @@ struct w_entity : i_life_cycle
 		return ecs;
 	}
 
-	void remove_component( w_entity_component* ec );
-
 	[[nodiscard]] ec_b2d_body* phys_get_primary_body();
 	void phys_set_friction( float friction );
 	void phys_set_restitution( float restitution );

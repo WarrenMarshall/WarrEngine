@@ -130,20 +130,6 @@ void w_entity::set_angle_deep( float angle )
 	}
 }
 
-void w_entity::remove_component( w_entity_component* ec )
-{
-	for( auto x = 0 ; x < components.size() ; ++x )
-	{
-		if( components[x].get() == ec )
-		{
-			components.erase( components.begin() + x );
-			return;
-		}
-	}
-
-	assert( false );	// the entity component wasn't found
-}
-
 ec_b2d_body* w_entity::phys_get_primary_body()
 {
 	for( auto& ec : components )
