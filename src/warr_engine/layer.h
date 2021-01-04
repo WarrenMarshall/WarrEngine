@@ -61,13 +61,6 @@ struct w_layer : i_life_cycle, i_input_receiver
 	template<typename T>
 	T* add_entity()
 	{
-		// if this is the first entity being added to the layer, go ahead and allocate space for
-		// a bunch - entities don't usually travel alone.
-		if( entities.empty() )
-		{
-			entities.reserve( 32 );
-		}
-
 		entities.emplace_back( std::make_unique<T>() );
 
 		auto new_entity = static_cast<T*>( entities.back().get() );

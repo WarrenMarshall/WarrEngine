@@ -201,7 +201,7 @@ struct ec_tilemap : w_entity_component
 	ec_tilemap() = delete;
 	ec_tilemap( w_entity* parent_entity );
 
-	std::vector<std::unique_ptr<ec_tilemap_layer>> tile_layers;
+	std::vector<ec_tilemap_layer> tile_layers;
 
 	// info about the tile map
 	int width = 0;

@@ -573,7 +573,7 @@ void ec_tilemap::draw()
 	for( auto& tmlayer : tile_layers )
 	{
 		RENDER->push_depth_nudge();
-		for( auto& tile : tmlayer->tiles )
+		for( auto& tile : tmlayer.tiles )
 		{
 			if( tile.flipped_horizontally || tile.flipped_vertically )
 			{
@@ -603,7 +603,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer ) );
 
-	std::unique_ptr<ec_tilemap_layer> tm_layer = nullptr;
+	std::optional<ec_tilemap_layer> tm_layer = std::nullopt;
 
 	if( result )
 	{
@@ -650,13 +650,13 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 						std::string data = object.first_child().value();
 						auto data_str = w_string_util::replace_char( data, '\n', ' ' );
 
-						if( tm_layer )
+						if( tm_layer.has_value() )
 						{
-							tile_layers.emplace_back( std::move( tm_layer ) );
-							tm_layer = nullptr;
+							tile_layers.emplace_back( std::move( *tm_layer ) );
+							tm_layer = std::nullopt;
 						}
 
-						tm_layer = std::make_unique<ec_tilemap_layer>();
+						tm_layer = ec_tilemap_layer();
 
 						w_tokenizer tok( data_str, ',' );
 						int xy_idx = 0;
@@ -690,10 +690,10 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 			}
 		}
 
-		if( tm_layer )
+		if( tm_layer.has_value() )
 		{
-			tile_layers.emplace_back( std::move( tm_layer ) );
-			tm_layer = nullptr;
+			tile_layers.emplace_back( std::move( *tm_layer ) );
+			tm_layer = std::nullopt;
 		}
 
 	}
