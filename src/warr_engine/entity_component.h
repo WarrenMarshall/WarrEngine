@@ -46,7 +46,7 @@ struct w_entity_component_permanent : w_entity_component
 
 struct ec_transform : w_entity_component_permanent
 {
-	w_transform xform;
+	w_transform tform;
 
 	ec_transform() = delete;
 	ec_transform( w_entity* parent_entity );

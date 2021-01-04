@@ -9,8 +9,6 @@ struct w_render_stats
 	w_accum_value frame_count;
 
 	w_accum_value draw_calls;
-	w_accum_value vertices;
-	w_accum_value indices;
 	w_accum_value frame_times_ms;
 	w_accum_value entities;
 	w_accum_value quads;

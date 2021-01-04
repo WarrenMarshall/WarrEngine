@@ -243,7 +243,7 @@ struct w_transform
 	void set_angle( float angle );
 	void set_scale( float scale );
 
-	void rebuild_xform();
+	void rebuild_tform();
 
 	w_matrix matrix;
 };

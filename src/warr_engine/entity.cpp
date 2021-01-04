@@ -27,11 +27,11 @@ void w_entity::update_from_physics()
 			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
-				auto xform = get_transform();
+				auto tform = get_transform();
 				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
 				float angle = edb->body->GetAngle();
 
-				xform->set( { position.x, position.y }, glm::degrees( angle ), xform->scale );
+				tform->set( { position.x, position.y }, glm::degrees( angle ), tform->scale );
 				break;
 			}
 		}

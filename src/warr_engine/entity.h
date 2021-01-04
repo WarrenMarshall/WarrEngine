@@ -87,7 +87,7 @@ struct w_entity : i_life_cycle
 	w_transform* const get_transform()
 	{
 		auto ec = get_component<ec_transform>( component_type::transform );
-		return &(ec->xform);
+		return &(ec->tform);
 	}
 };
 

@@ -18,8 +18,6 @@ void w_render_stats::update()
 
 		frame_times_ms.update_value( steps );
 		draw_calls.update_value( steps );
-		vertices.update_value( steps );
-		indices.update_value( steps );
 		entities.update_value( steps );
 		quads.update_value( steps );
 		triangles.update_value( steps );

@@ -118,7 +118,7 @@ void w_vertex_buffer::unbind()
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 }
 
-void w_vertex_buffer::upload( int num_verts_to_upload )
+void w_vertex_buffer::upload()
 {
 	// bind the textures to the texture units.
 
@@ -127,5 +127,5 @@ void w_vertex_buffer::upload( int num_verts_to_upload )
 		glBindTextureUnit( x, texture_slots[ x ] ? texture_slots[ x ]->src_texture->gl_id : 0 );
 	}
 
-	glBufferSubData( GL_ARRAY_BUFFER, 0, num_verts_to_upload * sizeof( w_render_vertex ), vertices.data() );
+	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.size() * sizeof( w_render_vertex ), vertices.data() );
 }

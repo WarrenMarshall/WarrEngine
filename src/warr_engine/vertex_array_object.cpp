@@ -124,17 +124,15 @@ void w_vertex_array_object::check_draw_and_reset()
 
 void w_vertex_array_object::draw_and_reset()
 {
-	auto vertex_count = static_cast<int>( vertex_buffer->vertices.size() );
+	auto index_count = static_cast<int>( vertex_buffer->vertices.size() * indices_to_verts_factor );
 
-	if( vertex_count )
+	if( index_count )
 	{
 		bind();
 
-		auto index_count = static_cast<int>( vertex_count * indices_to_verts_factor );
-
 		// upload verts to the card
 
-		vertex_buffer->upload( vertex_count );
+		vertex_buffer->upload();
 
 		// draw!
 
@@ -144,8 +142,6 @@ void w_vertex_array_object::draw_and_reset()
 		// update stats and clean up
 
 		RENDER->stats.draw_calls.inc();
-		RENDER->stats.vertices.accum( static_cast<float>( vertex_count ) );
-		RENDER->stats.indices.accum( static_cast<float>( index_count ) );
 
 		if( render_prim == render_prim::quad ) { RENDER->stats.quads.accum( vertex_buffer->vertices.size() / 4.0f ); }
 		else if( render_prim == render_prim::triangle ) { RENDER->stats.triangles.accum( vertex_buffer->vertices.size() / 3.0f ); }
@@ -167,7 +163,7 @@ void w_vertex_array_object::draw_and_reset()
 					}
 				}
 
-				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_count ) ), f_commas( static_cast<float>( index_count ) ) );
+				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_buffer->vertices.size() ) ), f_commas( static_cast<float>( index_count ) ) );
 			}
 		}
 #endif

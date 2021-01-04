@@ -71,9 +71,11 @@ void layer_main_menu::push()
 
 	e = add_entity<w_entity>();
 	e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
-	e->add_component<ec_mesh>()->init( "mesh_torus_test" )
+	e->add_component<ec_mesh>()
+		->init( "mesh_torus_test" )
 		->it_set_scale( 0.5f );
-	e->add_component<ec_mesh>()->init( "mesh_torus_test" )
+	e->add_component<ec_mesh>()
+		->init( "mesh_torus_test" )
 		->it_set_scale( 0.25f );
 }
 
