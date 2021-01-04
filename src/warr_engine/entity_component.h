@@ -5,6 +5,7 @@
 struct w_entity_component : i_life_cycle, i_transform
 {
 	e_component_type type = component_type::invalid;
+	w_transform tform;
 	w_vec2 pos_interp;
 	unsigned id = 0;
 
@@ -129,7 +130,7 @@ struct ec_b2d_body : w_entity_component
 
 	ec_b2d_body() = delete;
 	ec_b2d_body( w_entity* parent_entity );
-	virtual ~ec_b2d_body() override;
+	virtual ~ec_b2d_body();
 
 	void init_body();
 
