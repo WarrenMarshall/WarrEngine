@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------------
 
-struct w_entity_component : i_life_cycle, i_transform
+struct w_entity_component : i_life_cycle
 {
 	e_component_type type = component_type::invalid;
 	w_transform tform;
@@ -19,6 +19,7 @@ struct w_entity_component : i_life_cycle, i_transform
 
 	w_entity_component() = delete;
 	w_entity_component( w_entity* parent_entity );
+	virtual ~w_entity_component() = default;
 
 	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw() {}
@@ -130,7 +131,7 @@ struct ec_b2d_body : w_entity_component
 
 	ec_b2d_body() = delete;
 	ec_b2d_body( w_entity* parent_entity );
-	virtual ~ec_b2d_body();
+	virtual ~ec_b2d_body() override;
 
 	void init_body();
 

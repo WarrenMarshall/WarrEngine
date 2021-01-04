@@ -5,7 +5,7 @@ struct alignas( struct_alignment_for_cache ) w_particle final
 	a_texture* texture = nullptr;
 	a_emitter_params* params = nullptr;
 
-	// storing this directly instead of deriving from i_transform
+	// storing this directly instead of using a w_transform
 	// saves the size overhead of the virtual functions and extra floats
 	w_vec2 pos;
 

@@ -125,7 +125,7 @@ void ec_sprite::draw()
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
-	RENDER->draw_sprite( texture, pos );
+	RENDER->draw_sprite( texture, tform.pos );
 }
 
 // ----------------------------------------------------------------------------
@@ -209,7 +209,7 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 		OPENGL
 			->push()
 			->add_transform( *( parent_entity->get_transform() ) )
-			->add_transform( pos, angle, scale );
+			->add_transform( tform );
 
 		emitter->warm_up();
 
@@ -341,7 +341,7 @@ void ec_b2d_body::init_body()
 	b2BodyDef body_definition;
 	{
 		body_definition.type = body_type;
-		body_definition.position.Set( to_b2d( pos.x ), to_b2d( pos.y ) );
+		body_definition.position.Set( to_b2d( tform.pos.x ), to_b2d( tform.pos.y ) );
 		body_definition.angle = 0.0f;
 	}
 
@@ -729,6 +729,6 @@ void ec_mesh::draw()
 	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER
 		->push_render_state( rs )
-		->draw_mesh( mesh, pos )
+		->draw_mesh( mesh, tform.pos )
 		->rs_pop();
 }

@@ -73,9 +73,6 @@
     <ClCompile Include="i_life_cycle.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="i_transform.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="impl_header_only.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -280,9 +277,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="i_transform.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="i_life_cycle.h">

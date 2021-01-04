@@ -213,7 +213,6 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="file_zip.cpp" />
     <ClCompile Include="i_life_cycle.cpp" />
-    <ClCompile Include="i_transform.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="mathutil.cpp" />
@@ -285,7 +284,6 @@
     <ClInclude Include="warr_engine.h" />
     <ClInclude Include="input_gamepad.h" />
     <ClInclude Include="file_zip.h" />
-    <ClInclude Include="i_transform.h" />
     <ClInclude Include="layer_esc_menu.h" />
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />

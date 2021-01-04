@@ -9,7 +9,6 @@ struct a_mesh;
 struct a_src_texture;
 struct ec_emitter;
 struct i_asset;
-struct i_transform;
 struct w_color;
 struct w_entity;
 struct w_file_system;

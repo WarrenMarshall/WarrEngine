@@ -66,7 +66,7 @@ void w_entity::update_components()
 	{
 		OPENGL
 			->push()
-			->add_transform( component->pos, component->angle, component->scale );
+			->add_transform( component->tform );
 
 		component->update();
 
@@ -81,7 +81,7 @@ void w_entity::draw()
 	{
 		OPENGL
 			->push()
-			->add_transform( component->pos, component->angle, component->scale );
+			->add_transform( component->tform );
 
 		RENDER->push_depth_nudge();
 		component->draw();

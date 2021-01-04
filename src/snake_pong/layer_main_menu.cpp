@@ -64,8 +64,9 @@ void layer_main_menu::push()
 
 	e = add_entity<w_entity>();
 	e->get_transform()->set_pos( { v_window_hw, 0.0f } );
-	e->add_component<ec_emitter>()->init( "menu_fire_up" )
-		->it_set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+	e->add_component<ec_emitter>()
+		->init( "menu_fire_up" )
+		->tform.set( { 0.0f, v_window_h }, 0.0f, 1.0f );
 
 	// mechanical meshes
 
@@ -73,10 +74,10 @@ void layer_main_menu::push()
 	e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
 	e->add_component<ec_mesh>()
 		->init( "mesh_torus_test" )
-		->it_set_scale( 0.5f );
+		->tform.set_scale( 0.5f );
 	e->add_component<ec_mesh>()
 		->init( "mesh_torus_test" )
-		->it_set_scale( 0.25f );
+		->tform.set_scale( 0.25f );
 }
 
 void layer_main_menu::becoming_top_layer()

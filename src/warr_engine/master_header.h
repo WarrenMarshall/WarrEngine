@@ -67,7 +67,6 @@ extern float ui_canvas_h;
 #include "config.h"
 
 #include "i_input_receiver.h"
-#include "i_transform.h"
 #undef min	// fixes dumb compile problem
 #undef max	// fixes dumb compile problem
 #include "datatypes.h"
