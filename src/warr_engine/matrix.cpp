@@ -23,12 +23,6 @@ w_matrix* w_matrix::add_transform( const w_transform& transform )
 	return this;
 }
 
-// #transform : can we delete this function once ec_transform is in place?
-w_matrix* w_matrix::add_transform( const i_transform& t )
-{
-	return add_transform( t.pos, t.angle, t.scale );
-}
-
 w_matrix* w_matrix::add_transform( const w_vec2& pos, const float angle, const float _scale )
 {
 	// save current matrix and reset internal to identity

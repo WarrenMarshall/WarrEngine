@@ -89,7 +89,7 @@ struct ec_primitive_shape : w_entity_component
 
 struct ec_emitter : w_entity_component
 {
-	std::optional<w_particle_emitter> emitter = std::nullopt;
+	std::unique_ptr<w_particle_emitter> emitter = nullptr;
 
 	ec_emitter() = delete;
 	ec_emitter( w_entity* parent_entity );

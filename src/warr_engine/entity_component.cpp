@@ -197,7 +197,7 @@ ec_emitter::ec_emitter( w_entity* parent_entity )
 
 w_entity_component* ec_emitter::init( const std::string_view params_tag )
 {
-	emitter = w_particle_emitter();
+	emitter = std::make_unique<w_particle_emitter>();
 	emitter->set_params( a_emitter_params::find( params_tag ) );
 	emitter->parent_component = this;
 
