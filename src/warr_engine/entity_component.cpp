@@ -96,7 +96,6 @@ bool w_entity_component_permanent::is_permanent()
 ec_transform::ec_transform( w_entity* parent_entity )
 	: w_entity_component_permanent( parent_entity )
 {
-	type |= component_type::transform;
 }
 
 // ----------------------------------------------------------------------------
@@ -104,7 +103,6 @@ ec_transform::ec_transform( w_entity* parent_entity )
 ec_sprite::ec_sprite( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::sprite;
 	anim_offset = engine->random->getf();
 }
 
@@ -133,7 +131,6 @@ void ec_sprite::draw()
 ec_primitive_shape::ec_primitive_shape( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::primitive_shape;
 }
 
 w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const w_color& color, const w_rect& rc )
@@ -192,7 +189,6 @@ void ec_primitive_shape::draw()
 ec_emitter::ec_emitter( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::emitter;
 }
 
 w_entity_component* ec_emitter::init( const std::string_view params_tag )
@@ -281,7 +277,6 @@ void ec_emitter::ilc_set( e_life_cycle life_cycle )
 ec_sound::ec_sound( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::sound;
 }
 
 w_entity_component* ec_sound::init( const std::string_view snd_tag )
@@ -307,7 +302,6 @@ void ec_sound::draw()
 ec_b2d_body::ec_b2d_body( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::b2d_body;
 }
 
 ec_b2d_body::~ec_b2d_body()
@@ -519,7 +513,6 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const s
 ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
-	type |= component_type::b2d_static;
 	body_type = b2_staticBody;
 
 	init_body();
@@ -530,7 +523,6 @@ ec_b2d_static::ec_b2d_static( w_entity* parent_entity )
 ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
-	type |= component_type::b2d_dynamic;
 	body_type = b2_dynamicBody;
 
 	init_body();
@@ -541,7 +533,6 @@ ec_b2d_dynamic::ec_b2d_dynamic( w_entity* parent_entity )
 ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 	: ec_b2d_body( parent_entity )
 {
-	type |= component_type::b2d_kinematic;
 	body_type = b2_kinematicBody;
 
 	init_body();
@@ -560,7 +551,6 @@ ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* texture
 ec_tilemap::ec_tilemap( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::tilemap;
 }
 
 w_entity_component* ec_tilemap::init()
@@ -704,7 +694,6 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 ec_mesh::ec_mesh( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
-	type |= component_type::mesh;
 }
 
 w_entity_component* ec_mesh::init( const std::string_view mesh_tag )

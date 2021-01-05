@@ -20,20 +20,20 @@ void w_entity::update_from_physics()
 	// to an entity so it is assumed that once we find and
 	// process that one, we're done.
 
-	for( auto& ec : components )
-	{
-		if( ec->type & (component_type::b2d_dynamic | component_type::b2d_kinematic ) )
-		{
-			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
-			if( edb->is_primary_body )
-			{
-				auto tform = get_tform();
-				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
-				float angle = edb->body->GetAngle();
+	std::vector<ec_b2d_body*> ecs;
+	get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
+	get_components<ec_b2d_body, ec_b2d_kinematic>( ecs );
 
-				tform->set( { position.x, position.y }, glm::degrees( angle ), tform->scale );
-				break;
-			}
+	for( auto& ec : ecs )
+	{
+		if( ec->is_primary_body )
+		{
+			auto tform = get_tform();
+			w_vec2 position = w_vec2( ec->body->GetPosition() ).from_b2d();
+			float angle = ec->body->GetAngle();
+
+			tform->set( { position.x, position.y }, glm::degrees( angle ), tform->scale );
+			break;
 		}
 	}
 }
@@ -136,15 +136,15 @@ void w_entity::set_angle_deep( float angle )
 
 ec_b2d_body* w_entity::phys_get_primary_body()
 {
-	for( auto& ec : components )
+	std::vector<ec_b2d_body*> ecs;
+	get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
+	get_components<ec_b2d_body, ec_b2d_kinematic>( ecs );
+
+	for( auto& ec : ecs )
 	{
-		if( ec->type & ( component_type::b2d_dynamic | component_type::b2d_kinematic ) )
+		if( ec->is_primary_body )
 		{
-			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
-			if( edb->is_primary_body )
-			{
-				return edb;
-			}
+			return ec;
 		}
 	}
 

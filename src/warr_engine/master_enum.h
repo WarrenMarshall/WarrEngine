@@ -254,23 +254,6 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( component_type, unsigned )	// bitfield
-	invalid = 0,
-	sprite = 1,
-	emitter = 2,
-	sound = 4,
-	b2d_body = 8,
-	b2d_static = 16,
-	b2d_dynamic = 32,
-	b2d_kinematic = 64,
-	tilemap = 128,
-	mesh = 256,
-	primitive_shape = 512,
-	transform = 1024,
-enum_end
-
-// ----------------------------------------------------------------------------
-
 enum_begin( easing_type, ubyte )
 	invalid = 0,
 	linear,

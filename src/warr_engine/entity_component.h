@@ -4,7 +4,6 @@
 
 struct w_entity_component : i_life_cycle
 {
-	e_component_type type = component_type::invalid;
 	w_transform tform;
 	w_vec2 pos_interp;
 	unsigned id = 0;
