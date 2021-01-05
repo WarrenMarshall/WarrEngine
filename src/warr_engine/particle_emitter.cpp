@@ -103,7 +103,7 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			auto a_dir = parent_component->parent_entity->get_transform()->angle;
+			auto a_dir = parent_component->parent_entity->get_tform()->angle;
 			a_dir += params->r_dir_var.get_value();
 			p->v_dir = w_vec2::dir_from_angle( a_dir );
 		}
@@ -114,7 +114,7 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component );
 			assert( parent_component->parent_entity );
 
-			p->v_dir = ( p->pos - parent_component->parent_entity->get_transform()->pos ).normalize();
+			p->v_dir = ( p->pos - parent_component->parent_entity->get_tform()->pos ).normalize();
 		}
 		break;
 
@@ -130,7 +130,7 @@ void w_particle_emitter::spawn_particle()
 	p->params = params;
 	p->life_span_save = p->life_span = params->r_lifespan.get_value();
 	p->velocity_per_sec = params->r_velocity_spawn.get_value();
-	p->base_scale = params->r_scale_spawn.get_value() * parent_component->parent_entity->get_transform()->scale;
+	p->base_scale = params->r_scale_spawn.get_value() * parent_component->parent_entity->get_tform()->scale;
 	p->spin_per_sec = params->r_spin_per_sec.get_value();
 	p->spin = params->r_spin_spawn.get_value();
 }

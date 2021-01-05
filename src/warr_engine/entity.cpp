@@ -27,7 +27,7 @@ void w_entity::update_from_physics()
 			auto* edb = static_cast<ec_b2d_body*>( ec.get() );
 			if( edb->is_primary_body )
 			{
-				auto tform = get_transform();
+				auto tform = get_tform();
 				w_vec2 position = w_vec2( edb->body->GetPosition() ).from_b2d();
 				float angle = edb->body->GetAngle();
 
@@ -96,10 +96,12 @@ void w_entity::draw()
 void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 {
 	// entity
-	get_transform()->set_pos( pos );
+	get_tform()->set_position( pos );
 
 	// physics components
-	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+	std::vector<ec_b2d_body*> ecs;
+	get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
+	get_components<ec_b2d_body, ec_b2d_kinematic>( ecs );
 
 	for( auto ec : ecs )
 	{
@@ -118,10 +120,12 @@ void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 void w_entity::set_angle_deep( float angle )
 {
 	// entity
-	get_transform()->set_angle( angle );
+	get_tform()->set_angle( angle );
 
 	// physics components
-	auto ecs = get_components<ec_b2d_body>( component_type::b2d_dynamic | component_type::b2d_kinematic );
+	std::vector<ec_b2d_body*> ecs;
+	get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
+	get_components<ec_b2d_body, ec_b2d_kinematic>( ecs );
 
 	for( auto ec : ecs )
 	{
@@ -185,6 +189,11 @@ void w_entity::phys_begin_contact( w_pending_collision& coll, w_entity* other )
 
 void w_entity::phys_end_contact( w_pending_collision& coll, w_entity* other )
 {
+}
+
+w_transform* w_entity::get_tform()
+{
+	return &( get_component<ec_transform>()->tform );
 }
 
 bool w_entity::can_be_deleted()
@@ -272,9 +281,9 @@ void e_camera::set_follow_target( w_entity* entity_to_follow, e_follow_flags fla
 	follow.target = entity_to_follow;
 	follow.flags = flags;
 	follow.strength = strength;
-	follow.pos = entity_to_follow->get_transform()->pos;
+	follow.pos = entity_to_follow->get_tform()->pos;
 
-	set_position_deep( follow.target->get_transform()->pos, false );
+	set_position_deep( follow.target->get_tform()->pos, false );
 }
 
 void e_camera::set_follow_limits_x( w_vec2 limits )
@@ -293,11 +302,11 @@ void e_camera::update()
 
 	if( follow.target )
 	{
-		auto target_pos = follow.target->get_transform()->pos;
+		auto target_pos = follow.target->get_tform()->pos;
 
 		// position
 
-		w_vec2 delta_pos = target_pos - get_transform()->pos;
+		w_vec2 delta_pos = target_pos - get_tform()->pos;
 
 		if( follow.flags & follow_flags::xy_axis )
 		{
@@ -317,11 +326,11 @@ void e_camera::update()
 			// if only following on a specific axis, remove the follow influence from the other
 			if( !( follow.flags & follow_flags::x_axis ) )
 			{
-				follow.pos.x = get_transform()->pos.x;
+				follow.pos.x = get_tform()->pos.x;
 			}
 			if( !( follow.flags & follow_flags::y_axis ) )
 			{
-				follow.pos.y = get_transform()->pos.y;
+				follow.pos.y = get_tform()->pos.y;
 			}
 		}
 
@@ -331,7 +340,7 @@ void e_camera::update()
 
 		if( follow.flags & follow_flags::angle )
 		{
-			set_angle_deep( follow.target->get_transform()->angle );
+			set_angle_deep( follow.target->get_tform()->angle );
 		}
 	}
 }

@@ -507,33 +507,41 @@ w_transform::w_transform()
 	matrix.set_identity();
 }
 
-void w_transform::set( w_vec2 pos, float angle, float scale )
+w_transform* w_transform::set( w_vec2 pos, float angle, float scale )
 {
-	set_pos( pos );
+	set_position( pos );
 	set_angle( angle );
 	set_scale( scale );
+
+	return this;
 }
 
-void w_transform::set_pos( w_vec2 pos )
+w_transform* w_transform::set_position( w_vec2 pos )
 {
 	this->pos.x = snap_to_pixel( pos.x );
 	this->pos.y = snap_to_pixel( pos.y );
 
 	rebuild_tform();
+
+	return this;
 }
 
-void w_transform::set_angle( float angle )
+w_transform* w_transform::set_angle( float angle )
 {
 	this->angle = snap_to_pixel( angle );
 
 	rebuild_tform();
+
+	return this;
 }
 
-void w_transform::set_scale( float scale )
+w_transform* w_transform::set_scale( float scale )
 {
 	this->scale = scale;
 
 	rebuild_tform();
+
+	return this;
 }
 
 // compiles the current transform into a matrix for ease of use
@@ -545,4 +553,3 @@ void w_transform::rebuild_tform()
 	matrix.rotate( angle );
 	matrix.scale( scale );
 }
-

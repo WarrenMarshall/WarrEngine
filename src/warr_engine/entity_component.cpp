@@ -208,7 +208,7 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 
 		OPENGL
 			->push()
-			->add_transform( *( parent_entity->get_transform() ) )
+			->add_transform( *( parent_entity->get_tform() ) )
 			->add_transform( tform );
 
 		emitter->warm_up();
@@ -361,7 +361,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, const w_rect& rc )
 // w/h - size of box
 b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, float h )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2PolygonShape shape;
 	{
@@ -389,7 +389,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, fl
 
 b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float radius )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2CircleShape shape;
 	{
@@ -413,7 +413,7 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float ra
 
 b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2EdgeShape shape;
 	{
@@ -449,7 +449,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 	// Box2D requirement
 	assert( verts.size() >= 3 );
 
-	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -485,7 +485,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 
 b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -597,7 +597,7 @@ const unsigned SPECIAL_FLAGS = 0xE0000000;
 
 void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>& texture_tiles, std::string_view level_filename )
 {
-	auto b2d_static = parent_entity->get_component<ec_b2d_static>( component_type::b2d_body );
+	auto b2d_static = parent_entity->get_component<ec_b2d_static>();
 
 	auto file = engine->fs->load_file_into_memory( level_filename );
 	pugi::xml_document doc;

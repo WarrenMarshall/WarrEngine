@@ -19,6 +19,9 @@ struct layer_main_menu : w_layer
 	virtual void becoming_top_layer() override;
 	virtual void push() override;
 
-	virtual bool iir_on_pressed( const w_input_event* evt ) override;
 	virtual w_imgui_callback* get_imgui_callback() override;
+
+	virtual bool iir_on_pressed( const w_input_event* evt ) override;
+	virtual bool iir_on_held( const w_input_event* evt ) override;
+	virtual bool iir_on_motion( const w_input_event* evt ) override;
 };

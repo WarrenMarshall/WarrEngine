@@ -20,10 +20,10 @@ void layer_game::update()
 
 	power_flicker = engine->random->getb();
 
-	auto player_h = find_from_tag<w_entity>( "player_paddle_h" );
+	auto player_h = find_entity( "player_paddle_h" );
 	assert( player_h );
 
-	auto player_v = find_from_tag<w_entity>( "player_paddle_v" );
+	auto player_v = find_entity( "player_paddle_v" );
 	assert( player_v );
 
 	// trace from the center of the world towards the mouse and see if
@@ -33,7 +33,7 @@ void layer_game::update()
 	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
 
 	// match the prism rotation to face the same direction as the raycasts
-	prism->get_transform()->set_angle( w_vec2::angle_from_dir( dir ) );
+	prism->get_tform()->set_angle( w_vec2::angle_from_dir( dir ) );
 
 	// note : we don't do the raycasting if the mouse is too close the middle of
 	// the viewport as this can result in a zero length vector which will crash
@@ -73,7 +73,7 @@ bool layer_game::iir_on_pressed( const w_input_event* evt )
 
 	if( evt->input_id == input_id::key_r )
 	{
-		auto ball = find_from_tag<e_ball>( "ball" );
+		auto ball = find_entity( "ball" );
 		ball->set_position_deep( w_vec2::zero, false );
 
 		return true;
@@ -102,7 +102,7 @@ void layer_game::new_game()
 
 	e = add_entity<e_camera>();
 	e->set_tag( "main_camera" );
-	e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
+	e->get_tform()->set_position( { v_window_hw, v_window_hh } );
 
 	// emitter background
 

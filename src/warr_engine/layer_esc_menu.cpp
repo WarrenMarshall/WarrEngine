@@ -67,29 +67,29 @@ void layer_esc_menu::draw_ui()
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "simple_ui_panel" ) )
-		->set_pos( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
+		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
 	IMGUI->init_push_button( "button_resume" )
 		->set_label( "Resume" )
-		->set_pos( imgui_flow::last_crc_topleft )
+		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { IMGUI->last_control->crc.w, button_h } )
 		->finalize();
 
 	IMGUI->init_push_button( "button_main_menu" )
 		->set_label( "Main Menu" )
-		->set_pos( imgui_flow::down )
+		->set_position( imgui_flow::down )
 		->finalize();
 
 	IMGUI->init_push_button( "button_fullscreen" )
 		->set_label( "Toggle Fullscreen" )
-		->set_pos( imgui_flow::down )
+		->set_position( imgui_flow::down )
 		->finalize();
 
 	IMGUI->init_push_button( "button_exit" )
 		->set_label( "Exit To Windows" )
-		->set_pos( imgui_flow::down )
+		->set_position( imgui_flow::down )
 		->finalize();
 }
 

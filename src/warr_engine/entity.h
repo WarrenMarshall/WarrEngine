@@ -46,11 +46,11 @@ struct w_entity : i_life_cycle
 
 	// returns the first component it finds that matches the type bit mask.
 	template<typename T>
-	[[nodiscard]] T* get_component( e_component_type type_mask )
+	[[nodiscard]] T* get_component()
 	{
 		for( auto& ec : components )
 		{
-			if( ec->type & type_mask )
+			if( dynamic_cast<T*>( ec.get() ) )
 			{
 				return static_cast<T*>( ec.get() );
 			}
@@ -60,20 +60,29 @@ struct w_entity : i_life_cycle
 	}
 
 	// fills a vector with all the components it finds that match the type bit mask.
-	template<typename T>
-	[[nodiscard]] std::vector<T*> get_components( e_component_type type_mask )
-	{
-		std::vector<T*> ecs;
 
+	template<typename T>
+	void get_components( std::vector<T*>& ecs )
+	{
 		for( auto& ec : this->components )
 		{
-			if( ec->type & type_mask )
+			if( dynamic_cast<T*>( ec.get() ) )
 			{
 				ecs.emplace_back( static_cast<T*>( ec.get() ) );
 			}
 		}
+	}
 
-		return ecs;
+	template<typename BaseT, typename T>
+	void get_components( std::vector<BaseT*>& ecs )
+	{
+		for( auto& ec : this->components )
+		{
+			if( dynamic_cast<T*>( ec.get() ) )
+			{
+				ecs.emplace_back( static_cast<BaseT*>( ec.get() ) );
+			}
+		}
 	}
 
 	[[nodiscard]] ec_b2d_body* phys_get_primary_body();
@@ -84,11 +93,7 @@ struct w_entity : i_life_cycle
 	virtual void phys_begin_contact( w_pending_collision& coll, w_entity* other );
 	virtual void phys_end_contact( w_pending_collision& coll, w_entity* other );
 
-	w_transform* const get_transform()
-	{
-		auto ec = get_component<ec_transform>( component_type::transform );
-		return &(ec->tform);
-	}
+	w_transform* get_tform();
 };
 
 // ----------------------------------------------------------------------------

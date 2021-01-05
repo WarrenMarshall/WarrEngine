@@ -238,10 +238,10 @@ struct w_transform
 
 	w_transform();
 
-	void set( w_vec2 pos, float angle, float scale );
-	void set_pos( w_vec2 pos );
-	void set_angle( float angle );
-	void set_scale( float scale );
+	w_transform* set( w_vec2 pos, float angle, float scale );
+	w_transform* set_position( w_vec2 pos );
+	w_transform* set_angle( float angle );
+	w_transform* set_scale( float scale );
 
 	void rebuild_tform();
 

@@ -126,7 +126,7 @@ w_imgui* w_imgui::set_texture_align( e_align align )
 	return this;
 }
 
-w_imgui* w_imgui::set_pos( const w_vec2& pos )
+w_imgui* w_imgui::set_position( const w_vec2& pos )
 {
 	current_control.rc = last_control->rc;
 
@@ -138,7 +138,7 @@ w_imgui* w_imgui::set_pos( const w_vec2& pos )
 	return this;
 }
 
-w_imgui* w_imgui::set_pos( e_imgui_flow flow )
+w_imgui* w_imgui::set_position( e_imgui_flow flow )
 {
 	current_control.rc = last_control->rc;
 

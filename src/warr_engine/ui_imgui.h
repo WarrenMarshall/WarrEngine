@@ -54,8 +54,8 @@ struct w_imgui
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
 	w_imgui* set_texture( e_imgui_control_state state, a_texture* texture );
 	w_imgui* set_texture_align( e_align align );
-	w_imgui* set_pos( const w_vec2& pos );
-	w_imgui* set_pos( e_imgui_flow flow );
+	w_imgui* set_position( const w_vec2& pos );
+	w_imgui* set_position( e_imgui_flow flow );
 	w_imgui* set_size( const w_sz& size );
 
 	void compute_clientrect_from_rect();

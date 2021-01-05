@@ -111,8 +111,7 @@ void w_layer_mgr::draw()
 			{
 				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
 
-				e_camera* camera = layer->get_camera();
-				OPENGL->init_view_matrix( camera );
+				OPENGL->init_view_matrix( layer->get_camera() );
 
 				layer->draw();
 

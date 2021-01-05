@@ -158,7 +158,7 @@ void w_opengl::init_projection_matrix() const
 
 // VIEW MATRIX - getting stuff into camera space from worldspace
 
-void w_opengl::init_view_matrix( e_camera* camera ) const
+void w_opengl::init_view_matrix( w_entity* camera ) const
 {
 	assert( RENDER->batches_are_empty() );
 
@@ -169,7 +169,7 @@ void w_opengl::init_view_matrix( e_camera* camera ) const
 
 	if( camera )
 	{
-		auto ec = camera->get_transform();
+		auto ec = camera->get_tform();
 
 		// apply the camera position
 		view = glm::translate( view, glm::vec3(

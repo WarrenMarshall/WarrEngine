@@ -45,7 +45,7 @@ void w_layer::update()
 	{
 		OPENGL
 			->push()
-			->add_transform( *( entity->get_transform() ) );
+			->add_transform( *( entity->get_tform() ) );
 
 		entity->update();
 		entity->update_components();
@@ -63,7 +63,7 @@ void w_layer::draw()
 
 		OPENGL
 			->push()
-			->add_transform( *entity->get_transform() );
+			->add_transform( *entity->get_tform() );
 
 		entity->draw();
 
@@ -76,14 +76,30 @@ void w_layer::draw_ui()
 {
 }
 
-e_camera* w_layer::get_camera()
+w_entity* w_layer::get_camera()
 {
-	return find_from_tag<e_camera>( "main_camera" );
+	return find_entity( "main_camera" );
 }
 
 bool w_layer::is_topmost_layer() const
 {
 	return ( LAYER == this );
+}
+
+// #optimization - this feels like a bottleneck waiting to happen. some sort of map look up would be way faster.
+//				  - would an MRU lookup table be useful? it gets populated as you look things up and emptied on new_game?
+
+w_entity* w_layer::find_entity( const char* tag )
+{
+	for( auto& iter : entities )
+	{
+		if( iter->tag == tag )
+		{
+			return iter.get();
+		}
+	}
+
+	return nullptr;
 }
 
 void w_layer::new_game()

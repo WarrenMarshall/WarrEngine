@@ -56,7 +56,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 	virtual void draw();
 	virtual void draw_ui();
 
-	e_camera* get_camera();
+	w_entity* get_camera();
 
 	template<typename T>
 	T* add_entity()
@@ -70,23 +70,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 	}
 
 	[[nodiscard]] bool is_topmost_layer() const;
-
-	// #optimization - this feels like a bottleneck waiting to happen. some sort of map look up would be way faster.
-	//				  - would an MRU lookup table be useful? it gets populated as you look things up and emptied on new_game?
-
-	template<typename T>
-	[[nodiscard]] T* find_from_tag( const char* tag )
-	{
-		for( auto& iter : entities )
-		{
-			if( iter->tag == tag )
-			{
-				return static_cast<T*>( iter.get() );
-			}
-		}
-
-		return nullptr;
-	}
+	[[nodiscard]] w_entity* find_entity( const char* tag );
 
 	virtual void new_game();
 	virtual w_imgui_callback* get_imgui_callback();
