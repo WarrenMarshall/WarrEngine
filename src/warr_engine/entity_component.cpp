@@ -299,6 +299,77 @@ void ec_sound::draw()
 
 // ----------------------------------------------------------------------------
 
+ec_physics::ec_physics( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+
+}
+
+ec_physics::~ec_physics()
+{
+
+}
+
+void ec_physics::set_collision_flags( bitflags collision_layer, bitflags collides_with )
+{
+	this->collision_layer = collision_layer;
+	this->collides_with = collides_with;
+}
+
+void ec_physics::clear_collision_flags()
+{
+	collision_layer = 0;
+	collides_with = 0;
+}
+
+ec_b2d_body* ec_physics::phys_get_primary_body()
+{
+	std::vector<ec_b2d_body*> ecs;
+	parent_entity->get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
+	parent_entity->get_components<ec_b2d_body, ec_b2d_kinematic>( ecs );
+
+	for( auto& ec : ecs )
+	{
+		if( ec->is_primary_body )
+		{
+			return ec;
+		}
+	}
+
+	assert( false );	// no primary body found!
+	return nullptr;
+}
+
+
+// friction : 0 - slide, 1 - stick
+void ec_physics::phys_set_friction( float friction )
+{
+	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		fixture->SetFriction( friction );
+	}
+}
+
+// restitution : 0 = no bounce, 1 = full bounce
+void ec_physics::phys_set_restitution( float restitution )
+{
+	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		fixture->SetRestitution( restitution );
+	}
+}
+
+// density : 0 = no density, 1 = full density
+void ec_physics::phys_set_density( float density )
+{
+	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	{
+		fixture->SetDensity( density );
+	}
+}
+
+// ----------------------------------------------------------------------------
+
 ec_b2d_body::ec_b2d_body( w_entity* parent_entity )
 	: w_entity_component( parent_entity )
 {
@@ -369,12 +440,14 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, fl
 
 	b2FixtureDef fixture;
 	{
+		auto ecp = parent_entity->get_component<ec_physics>();
+
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
 		fixture.restitution = 0.0f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
 		fixture.userData.pointer = (uintptr_t) id;
 	}
 
@@ -393,12 +466,14 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float ra
 
 	b2FixtureDef fixture;
 	{
+		auto ecp = parent_entity->get_component<ec_physics>();
+
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
 		fixture.restitution = 0.0f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
 		fixture.userData.pointer = (uintptr_t) id;
 	}
 
@@ -426,12 +501,14 @@ b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 sta
 
 	b2FixtureDef fixture;
 	{
+		auto ecp = parent_entity->get_component<ec_physics>();
+
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
 		fixture.restitution = 0.0f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
 		fixture.userData.pointer = (uintptr_t) id;
 	}
 
@@ -465,12 +542,14 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 
 	b2FixtureDef fixture;
 	{
+		auto ecp = parent_entity->get_component<ec_physics>();
+
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
 		fixture.restitution = 0.0f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
 		fixture.userData.pointer = (uintptr_t) id;
 	}
 
@@ -496,12 +575,14 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const s
 
 	b2FixtureDef fixture;
 	{
+		auto ecp = parent_entity->get_component<ec_physics>();
+
 		fixture.shape = &shape;
 		fixture.density = 1.0f;
 		fixture.friction = 0.3f;
 		fixture.restitution = 0.0f;
-		fixture.filter.categoryBits = static_cast<uint16>( parent_entity->collision_layer );
-		fixture.filter.maskBits = static_cast<uint16>( parent_entity->collides_with );
+		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
+		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
 		fixture.userData.pointer = (uintptr_t) id;
 	}
 

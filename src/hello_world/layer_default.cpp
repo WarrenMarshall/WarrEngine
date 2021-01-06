@@ -56,25 +56,25 @@ void layer_default::draw_ui()
 		->draw( tex_hello_world, w_rect( 16, 16 ) );
 
 	IMGUI->init_panel()
-		->set_pos( { ui_canvas_hw, 32.0f } )
+		->set_position( { ui_canvas_hw, 32.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 
 	IMGUI->init_push_button( "push_button_01" )
 		->set_label( "Push Button #1" )
-		->set_pos( imgui_flow::last_crc_topleft )
+		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
 	IMGUI->init_push_button( "push_button_02" )
 		->set_label( "Push Button #2" )
-		->set_pos( imgui_flow::down )
+		->set_position( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
 	IMGUI->init_checkbox( "checkbox_01" )
 		->set_label( "Check Box #1" )
-		->set_pos( imgui_flow::down )
+		->set_position( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 }

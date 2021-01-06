@@ -26,9 +26,9 @@ float w_raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 {
 	if( layer_mask > 0 )
 	{
-		auto collision_layer = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->collision_layer;
+		auto ecp = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<ec_physics>();
 
-		if( ( collision_layer & layer_mask) == 0 )
+		if( ( ecp->collision_layer & layer_mask) == 0 )
 		{
 			return -1.0f;
 		}
@@ -49,9 +49,9 @@ float w_raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, 
 {
 	if( layer_mask > 0 )
 	{
-		auto collision_layer = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->collision_layer;
+		auto ecp = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<ec_physics>();
 
-		if( ( collision_layer & layer_mask ) == 0 )
+		if( ( ecp->collision_layer & layer_mask ) == 0 )
 		{
 			return -1.0f;
 		}
@@ -72,9 +72,9 @@ float w_raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, con
 {
 	if( layer_mask > 0 )
 	{
-		auto collision_layer = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->collision_layer;
+		auto ecp = ( (w_entity_component*) ( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<ec_physics>();
 
-		if( ( collision_layer & layer_mask ) == 0 )
+		if( ( ecp->collision_layer & layer_mask ) == 0 )
 		{
 			return -1.0f;
 		}

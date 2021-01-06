@@ -4,7 +4,7 @@
 
 struct e_paddle : w_entity
 {
-	virtual void phys_begin_contact( w_pending_collision& coll, w_entity* other ) override;
+	virtual void on_collision_begin( w_pending_collision& coll, w_entity* other ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -16,7 +16,7 @@ struct e_ball : w_entity
 
 	e_ball();
 
-	virtual void phys_begin_contact( w_pending_collision& coll, w_entity* other ) override;
+	virtual void on_collision_begin( w_pending_collision& coll, w_entity* other ) override;
 };
 
 // ----------------------------------------------------------------------------

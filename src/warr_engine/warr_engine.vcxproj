@@ -96,6 +96,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
       <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,7 @@
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -162,6 +164,7 @@
       <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

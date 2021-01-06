@@ -12,14 +12,7 @@ struct w_entity : i_life_cycle
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
-	// which collision layer(s) this entity is a part of
-	bitflags collision_layer = 0;
-
-	// which collision layer(s) this entity will collide WITH
-	bitflags collides_with = 0;
-
 	w_entity* set_tag( const char* tag );
-	w_entity* set_collision( bitflags layer, bitflags collides_with );
 
 	virtual void ilc_set( e_life_cycle life_cycle ) override;
 	[[nodiscard]] virtual bool can_be_deleted();
@@ -56,7 +49,7 @@ struct w_entity : i_life_cycle
 		return nullptr;
 	}
 
-	// fills a vector with all the components it finds that match the type bit mask.
+	// fills a vector with all the components it finds that match the class "T"
 
 	template<typename T>
 	void get_components( std::vector<T*>& ecs )
@@ -70,25 +63,25 @@ struct w_entity : i_life_cycle
 		}
 	}
 
-	template<typename BaseT, typename T>
-	void get_components( std::vector<BaseT*>& ecs )
+	// fills a vector with all the components it finds that match the class "T" and have a base class of "B"
+
+	template<typename B, typename T>
+	void get_components( std::vector<B*>& ecs )
 	{
 		for( auto& ec : this->components )
 		{
 			if( dynamic_cast<T*>( ec.get() ) )
 			{
-				ecs.emplace_back( static_cast<BaseT*>( ec.get() ) );
+				ecs.emplace_back( static_cast<B*>( ec.get() ) );
 			}
 		}
 	}
 
-	[[nodiscard]] ec_b2d_body* phys_get_primary_body();
-	void phys_set_friction( float friction );
-	void phys_set_restitution( float restitution );
-	void phys_set_density( float density );
+	virtual void on_collision_begin( w_pending_collision& coll, w_entity* other );
+	virtual void on_collision_end( w_pending_collision& coll, w_entity* other );
 
-	virtual void phys_begin_contact( w_pending_collision& coll, w_entity* other );
-	virtual void phys_end_contact( w_pending_collision& coll, w_entity* other );
+	virtual void on_touch_begin( w_pending_collision& coll, w_entity* other );
+	virtual void on_touch_end( w_pending_collision& coll, w_entity* other );
 
 	w_transform* get_tform();
 };

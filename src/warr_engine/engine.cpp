@@ -881,8 +881,8 @@ void w_engine::process_collision_queue()
 
 	for( auto& iter : begin_contact_queue )
 	{
-		iter.entity_a->phys_begin_contact( iter, iter.entity_b );
-		iter.entity_b->phys_begin_contact( iter, iter.entity_a );
+		iter.entity_a->on_collision_begin( iter, iter.entity_b );
+		iter.entity_b->on_collision_begin( iter, iter.entity_a );
 	}
 
 	begin_contact_queue.clear();
@@ -891,8 +891,8 @@ void w_engine::process_collision_queue()
 
 	for( auto& iter : end_contact_queue )
 	{
-		iter.entity_a->phys_end_contact( iter, iter.entity_b );
-		iter.entity_b->phys_end_contact( iter, iter.entity_a );
+		iter.entity_a->on_collision_end( iter, iter.entity_b );
+		iter.entity_b->on_collision_end( iter, iter.entity_a );
 	}
 
 	end_contact_queue.clear();

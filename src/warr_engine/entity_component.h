@@ -116,6 +116,32 @@ struct ec_sound : w_entity_component
 };
 
 // ----------------------------------------------------------------------------
+// physics
+//
+
+struct ec_physics : w_entity_component
+{
+	ec_physics() = delete;
+	ec_physics( w_entity* parent_entity );
+	virtual ~ec_physics() override;
+
+	// which collision layer(s) this entity is a part of
+	bitflags collision_layer = 0;
+
+	// which collision layer(s) this entity will collide WITH
+	bitflags collides_with = 0;
+
+	void set_collision_flags( bitflags collision_layer, bitflags collides_with );
+	void clear_collision_flags();
+
+	[[nodiscard]] ec_b2d_body* phys_get_primary_body();
+
+	void phys_set_friction( float friction );
+	void phys_set_restitution( float restitution );
+	void phys_set_density( float density );
+};
+
+// ----------------------------------------------------------------------------
 // Box2D bodies
 //
 

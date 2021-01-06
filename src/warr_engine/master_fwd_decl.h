@@ -39,3 +39,4 @@ struct w_vertex_array_object;
 struct w_cache_assets;
 struct ec_transform;
 struct w_transform;
+struct ec_b2d_body;

@@ -5,6 +5,7 @@
 w_entity::w_entity()
 {
 	add_component<ec_transform>();
+	add_component<ec_physics>();
 }
 
 w_entity::~w_entity()
@@ -134,61 +135,30 @@ void w_entity::set_angle_deep( float angle )
 	}
 }
 
-ec_b2d_body* w_entity::phys_get_primary_body()
-{
-	std::vector<ec_b2d_body*> ecs;
-	get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
-	get_components<ec_b2d_body, ec_b2d_kinematic>( ecs );
+// entities are starting to collide
 
-	for( auto& ec : ecs )
-	{
-		if( ec->is_primary_body )
-		{
-			return ec;
-		}
-	}
-
-	assert( false );	// no primary body found!
-	return nullptr;
-}
-
-// friction : 0 - slide, 1 - stick
-void w_entity::phys_set_friction( float friction )
-{
-	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
-	{
-		fixture->SetFriction( friction );
-	}
-}
-
-// restitution : 0 = no bounce, 1 = full bounce
-void w_entity::phys_set_restitution( float restitution )
-{
-	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
-	{
-		fixture->SetRestitution( restitution );
-	}
-}
-
-// density : 0 = no density, 1 = full density
-void w_entity::phys_set_density( float density )
-{
-	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
-	{
-		fixture->SetDensity( density );
-	}
-}
-
-// entities are start to touch each other
-
-void w_entity::phys_begin_contact( w_pending_collision& coll, w_entity* other )
+void w_entity::on_collision_begin( w_pending_collision& coll, w_entity* other )
 {
 }
 
-// entities were touching but are not anymore
+// entities are no longer colliding
 
-void w_entity::phys_end_contact( w_pending_collision& coll, w_entity* other )
+void w_entity::on_collision_end( w_pending_collision& coll, w_entity* other )
 {
+}
+
+// entities are starting to touch
+
+void w_entity::on_touch_begin( w_pending_collision& coll, w_entity* other )
+{
+	// #todo - this should be called when a sensor collides with something
+}
+
+// entities are not longer touching
+
+void w_entity::on_touch_end( w_pending_collision& coll, w_entity* other )
+{
+	// #todo - this should be called when a sensor stops colliding with something
 }
 
 w_transform* w_entity::get_tform()
@@ -237,22 +207,13 @@ w_entity* w_entity::set_tag( const char* tag )
 	return this;
 }
 
-w_entity* w_entity::set_collision( bitflags layer, bitflags collides_with )
-{
-	this->collision_layer = layer;
-	this->collides_with = collides_with;
-
-	return this;
-}
-
 void w_entity::ilc_set( e_life_cycle life_cycle )
 {
 	i_life_cycle::ilc_set( life_cycle );
 
 	if( !ilc_is_alive() )
 	{
-		collision_layer = 0;
-		collides_with = 0;
+		get_component<ec_physics>()->clear_collision_flags();
 	}
 
 	for( const auto& iter : components )
