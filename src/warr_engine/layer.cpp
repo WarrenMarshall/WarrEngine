@@ -32,13 +32,6 @@ void w_layer::update()
 		}
 	}
 
-	// update all entities as per the physics engine
-
-	for( const auto& entity : entities )
-	{
-		entity->update_from_physics();
-	}
-
 	// update entities and components
 
 	for( auto& entity : entities )
@@ -49,6 +42,7 @@ void w_layer::update()
 
 		entity->update();
 		entity->update_components();
+		entity->update_from_physics();
 
 		OPENGL
 			->pop();

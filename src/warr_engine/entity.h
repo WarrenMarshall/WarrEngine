@@ -12,9 +12,6 @@ struct w_entity : i_life_cycle
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
-	// the layer that this entity lives on
-	w_layer* parent_layer = nullptr;
-
 	// which collision layer(s) this entity is a part of
 	bitflags collision_layer = 0;
 
@@ -121,6 +118,7 @@ struct w_entity_transient : w_entity
 
 struct e_camera : w_entity
 {
+	// #component - this should all get moved into a "ec_follow_target" component
 	struct
 	{
 		w_entity* target = nullptr;

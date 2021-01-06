@@ -62,10 +62,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 	T* add_entity()
 	{
 		entities.emplace_back( std::make_unique<T>() );
-
 		auto new_entity = static_cast<T*>( entities.back().get() );
-		new_entity->parent_layer = this;
-
 		return new_entity;
 	}
 
