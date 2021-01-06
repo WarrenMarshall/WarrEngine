@@ -322,7 +322,7 @@ void ec_physics::clear_collision_flags()
 	collides_with = 0;
 }
 
-ec_b2d_body* ec_physics::phys_get_primary_body()
+ec_b2d_body* ec_physics::get_primary_body()
 {
 	std::vector<ec_b2d_body*> ecs;
 	parent_entity->get_components<ec_b2d_body, ec_b2d_dynamic>( ecs );
@@ -340,29 +340,28 @@ ec_b2d_body* ec_physics::phys_get_primary_body()
 	return nullptr;
 }
 
-
 // friction : 0 - slide, 1 - stick
-void ec_physics::phys_set_friction( float friction )
+void ec_physics::set_friction( float friction )
 {
-	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
 		fixture->SetFriction( friction );
 	}
 }
 
 // restitution : 0 = no bounce, 1 = full bounce
-void ec_physics::phys_set_restitution( float restitution )
+void ec_physics::set_restitution( float restitution )
 {
-	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
 		fixture->SetRestitution( restitution );
 	}
 }
 
 // density : 0 = no density, 1 = full density
-void ec_physics::phys_set_density( float density )
+void ec_physics::set_density( float density )
 {
-	for( b2Fixture* fixture = phys_get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
+	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
 		fixture->SetDensity( density );
 	}

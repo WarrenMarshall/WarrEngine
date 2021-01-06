@@ -134,11 +134,11 @@ struct ec_physics : w_entity_component
 	void set_collision_flags( bitflags collision_layer, bitflags collides_with );
 	void clear_collision_flags();
 
-	[[nodiscard]] ec_b2d_body* phys_get_primary_body();
+	[[nodiscard]] ec_b2d_body* get_primary_body();
 
-	void phys_set_friction( float friction );
-	void phys_set_restitution( float restitution );
-	void phys_set_density( float density );
+	void set_friction( float friction );
+	void set_restitution( float restitution );
+	void set_density( float density );
 };
 
 // ----------------------------------------------------------------------------

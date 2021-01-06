@@ -89,7 +89,7 @@ void layer_game::spawn_ball()
 
 	auto dir = w_vec2::dir_from_angle( engine->random->getf_range( 0.f, 360.f ) );
 	dir *= e_ball::speed;
-	e->get_component<ec_physics>()->phys_get_primary_body()->body->ApplyForceToCenter( dir.to_b2d().as_b2Vec2(), true );
+	e->get_component<ec_physics>()->get_primary_body()->body->ApplyForceToCenter( dir.to_b2d().as_b2Vec2(), true );
 }
 
 void layer_game::new_game()

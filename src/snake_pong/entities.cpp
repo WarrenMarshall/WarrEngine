@@ -10,7 +10,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 	if( other->tag == "ball" )
 	{
 		// stop ball
-		other->get_component<ec_physics>()->phys_get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
+		other->get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
 
 		// compute direction away from paddles center
 
@@ -18,7 +18,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 		push_away_dir *= e_ball::speed;
 
 		// push ball in that new direction
-		other->get_component<ec_physics>()->phys_get_primary_body()->body->ApplyForceToCenter( push_away_dir.to_b2d().as_b2Vec2(), true );
+		other->get_component<ec_physics>()->get_primary_body()->body->ApplyForceToCenter( push_away_dir.to_b2d().as_b2Vec2(), true );
 	}
 }
 
@@ -45,11 +45,11 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 	if( other->tag == "ball" )
 	{
 		// stop balls
-		get_component<ec_physics>()->phys_get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
-		other->get_component<ec_physics>()->phys_get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
+		get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
+		other->get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
 
 		// compute new directions
-		b2Vec2 world_point = other->get_component<ec_physics>()->phys_get_primary_body()->body->GetWorldPoint( coll.manifold.localPoint );
+		b2Vec2 world_point = other->get_component<ec_physics>()->get_primary_body()->body->GetWorldPoint( coll.manifold.localPoint );
 
 		w_vec2 world_point_a = w_vec2( coll.fixture_a->GetBody()->GetWorldPoint( coll.manifold.localPoint ) ).from_b2d();
 		w_vec2 world_point_b = w_vec2( coll.fixture_b->GetBody()->GetWorldPoint( coll.manifold.localPoint ) ).from_b2d();
@@ -57,8 +57,8 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 		w_vec2 mid_point = world_point_a + ( ( world_point_b - world_point_a ) * 0.5f );
 
 		// push balls in new directions
-		get_component<ec_physics>()->phys_get_primary_body()->body->ApplyForceToCenter( ( ( get_tform()->pos - mid_point ).normalize() * e_ball::speed ).to_b2d().as_b2Vec2(), true );
-		other->get_component<ec_physics>()->phys_get_primary_body()->body->ApplyForceToCenter( ( ( other->get_tform()->pos - mid_point ) * e_ball::speed ).normalize().to_b2d().as_b2Vec2(), true );
+		get_component<ec_physics>()->get_primary_body()->body->ApplyForceToCenter( ( ( get_tform()->pos - mid_point ).normalize() * e_ball::speed ).to_b2d().as_b2Vec2(), true );
+		other->get_component<ec_physics>()->get_primary_body()->body->ApplyForceToCenter( ( ( other->get_tform()->pos - mid_point ) * e_ball::speed ).normalize().to_b2d().as_b2Vec2(), true );
 	}
 
 	// touching the world kills the ball

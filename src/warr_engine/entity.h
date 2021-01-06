@@ -54,6 +54,10 @@ struct w_entity : i_life_cycle
 	template<typename T>
 	void get_components( std::vector<T*>& ecs )
 	{
+		// make sure the vector can handle at least 10 items - most get_* calls will result in
+		// fewer than that so this saves unnecessary reallocations
+		ecs.reserve( 10 );
+
 		for( auto& ec : this->components )
 		{
 			if( dynamic_cast<T*>( ec.get() ) )
@@ -68,6 +72,10 @@ struct w_entity : i_life_cycle
 	template<typename B, typename T>
 	void get_components( std::vector<B*>& ecs )
 	{
+		// make sure the vector can handle at least 10 items - most get_* calls will result in
+		// fewer than that so this saves unnecessary reallocations
+		ecs.reserve( 10 );
+
 		for( auto& ec : this->components )
 		{
 			if( dynamic_cast<T*>( ec.get() ) )
