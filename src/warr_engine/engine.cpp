@@ -6,211 +6,200 @@
 
 bool w_engine::init_game_engine( int argc, char* argv [] )
 {
-	try
-	{
-
 #if defined(_FINALRELEASE)
-		// in final release, we don't want to bother the user with
-		// the visual clutter of the console window
-		ShowWindow( GetConsoleWindow(), SW_HIDE );
+	// in final release, we don't want to bother the user with
+	// the visual clutter of the console window
+	ShowWindow( GetConsoleWindow(), SW_HIDE );
 #endif
 
-		{	// LOG FILE
+	{	// LOG FILE
 
-			// get the log file running so we can immediately start writing into it
-			logfile = std::make_unique<w_logfile>();
-			logfile->init( base_game->name );
-		}
-
-		{ // ENGINE
-
-			engine = std::make_unique<w_engine>();
-		}
-
-		logfile->time_stamp( "Started" );
-
-		{	// ENGINE
-			log( "Initializing engine" );
-			engine->init();
-
-			// if the paths we expect to be on the disk are not there, create them. this mitigates
-			// problems later on if the app wants to, say, save a file and would have problems
-			// if the data folder wasn't there.
-
-			w_file_system::create_path_if_not_exist( "data/warr_engine" );
-			w_file_system::create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
-		}
-
-		{	// COMMAND LINE
-
-		}
-
-		{	// WINDOW
-
-			log( "Creating window" );
-			if( !engine->window->init() )
-			{
-				return false;
-			}
-		}
-
-		{	// OPENGL
-
-			log( "Initializing OpenGL" );
-			OPENGL->init();
-		}
-
-		{	// RENDERER
-
-			log( "Initializing renderer" );
-			RENDER->init();
-		}
-
-		{	// AUDIO
-		#ifdef USE_BASS_SOUND_LIBRARY
-			log( "Initializing BASS audio" );
-			if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
-			{
-				log_warning( "BASS : Audio init failed!" );
-			}
-		#else
-			log( "Initializing Cute_Sound audio" );
-			engine->c2_sound_context = cs_make_context(
-				glfwGetWin32Window( engine->window->window ),
-				44100, 8192, 150, nullptr );
-
-			if( !engine->c2_sound_context )
-			{
-				log_warning( "Cute_Sound : Audio init failed!" );
-			}
-			else
-			{
-				cs_spawn_mix_thread( engine->c2_sound_context );
-			}
-		#endif
-		}
-
-		{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
-
-			// read asset definitions and cache them
-			log( "Caching asset definitions (*.asset_def)..." );
-			engine->cache_asset_definition_files( "data/warr_engine" );
-			engine->cache_asset_definition_files( fmt::format( "data/{}", base_game->name ) );
-
-			// this feels like an odd dance, but the idea is that we:
-			//
-			// 1. parse the asset_def files looking for preprocessor symbols (pass 0)
-			// 2. parse the INI files
-			// 3. parse the asset_def files again, for the rest of the passes (pass 1+)
-			//
-			// this ordering is important because step 2 may want to use symbols
-			// like "true" or "false" or "v_window_h" in the INI files.
-			//
-			// by the time we get to step 3, we have all the symbols from the preproc
-			// and the INI files loaded, and the asset_def files can use any symbols they please.
-
-			// do the preprocess pass first so the symbols are in memory
-			log( "Precaching resources from definition files..." );
-			engine->precache_asset_resources( 0, base_game->name );
-			engine->precache_asset_resources( 1, base_game->name );
-
-			// parse INI files after the preprocess pass so they can
-			// use preprocessor symbols
-			log( "Caching configuration (*.ini)..." );
-			engine->parse_config_files( "data/warr_engine" );
-			engine->parse_config_files( fmt::format( "data/{}", base_game->name ) );
-
-			// put the k/v pairs from the INI files into the global symbol
-			// table so they can be referenced by assets in the asset_def files
-
-			for( const auto& [key, value] : engine->config_vars->kv )
-			{
-				engine->_symbol_to_value[ key ] = value;
-			}
-		}
-
-		{ // APPLY CONFIG SETTINGS
-
-			w_tokenizer tok;
-
-			tok.init( engine->config_vars->find_value_opt( "v_window_res", "320x240" ), 'x' );
-			v_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
-			v_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-			log( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
-
-			tok.init( engine->config_vars->find_value_opt( "ui_canvas_res", "640x480" ), 'x' );
-			ui_canvas_w = w_parser::float_from_str( tok.tokens[ 0 ] );
-			ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-			log( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
-
-			RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
-
-			w_rect rc = engine->window->compute_max_window_size_for_desktop();
-			glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
-			glfwSetWindowSize( engine->window->window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
-			glfwSetWindowAspectRatio( engine->window->window,
-									  100,
-									  static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
-
-			bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
-			log( "VSync: {}", vsync ? "true" : "false" );
-			glfwSwapInterval( vsync ? 1 : 0 );
-			engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
-			glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
-			engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
-			engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
-		}
-
-		{ // FINISH ASSET PRECACHE
-
-			engine->precache_asset_resources( 2, base_game->name );
-			engine->precache_asset_resources( 3, base_game->name );
-		}
-
-		{ // Box2D
-
-			log( "Initializing Box2D" );
-			engine->new_physics_world();
-		}
-
-		// set up frame buffers
-		engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
-		engine->blur_frame_buffers[0] = std::make_unique<w_opengl_framebuffer>( "blur1", 1, v_window_w, v_window_h );
-		engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
-		engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite", 1, v_window_w, v_window_h );
-
-		// used for solid drawing
-		engine->tex_white = a_texture::find( "engine_white" );
-
-		// there's a simple pixel font that always lives inside of engine so
-		// there is always a font available, regardless of ui theme settings.
-		engine->pixel_font = a_font::find( "engine_pixel_font" );
-
-		{ // GAME
-
-			log( "Initializing game" );
-			base_game->init();
-			base_game->reset_layer_stack_to_main_menu();
-		}
-
-		{ // INPUT
-
-			log( "Initializing input" );
-			engine->input->init();
-		}
-
- 		engine->is_running = true;
-		engine->time->init();
-
-		engine->ui->init();
+		// get the log file running so we can immediately start writing into it
+		logfile = std::make_unique<w_logfile>();
+		logfile->init( base_game->name );
 	}
-	catch( std::exception& e )
-	{
-		log( "!! EXCEPTION CAUGHT !!" );
-		log( "\t{}", e.what() );
 
-		MessageBoxA( nullptr, e.what(), "Exception!", MB_OK );
+	{ // ENGINE
+
+		engine = std::make_unique<w_engine>();
 	}
+
+	logfile->time_stamp( "Started" );
+
+	{	// ENGINE
+		log( "Initializing engine" );
+		engine->init();
+
+		// if the paths we expect to be on the disk are not there, create them. this mitigates
+		// problems later on if the app wants to, say, save a file and would have problems
+		// if the data folder wasn't there.
+
+		w_file_system::create_path_if_not_exist( "data/warr_engine" );
+		w_file_system::create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
+	}
+
+	{	// COMMAND LINE
+
+	}
+
+	{	// WINDOW
+
+		log( "Creating window" );
+		if( !engine->window->init() )
+		{
+			return false;
+		}
+	}
+
+	{	// OPENGL
+
+		log( "Initializing OpenGL" );
+		OPENGL->init();
+	}
+
+	{	// RENDERER
+
+		log( "Initializing renderer" );
+		RENDER->init();
+	}
+
+	{	// AUDIO
+	#ifdef USE_BASS_SOUND_LIBRARY
+		log( "Initializing BASS audio" );
+		if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
+		{
+			log_warning( "BASS : Audio init failed!" );
+		}
+	#else
+		log( "Initializing Cute_Sound audio" );
+		engine->c2_sound_context = cs_make_context(
+			glfwGetWin32Window( engine->window->window ),
+			44100, 8192, 150, nullptr );
+
+		if( !engine->c2_sound_context )
+		{
+			log_warning( "Cute_Sound : Audio init failed!" );
+		}
+		else
+		{
+			cs_spawn_mix_thread( engine->c2_sound_context );
+		}
+	#endif
+	}
+
+	{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
+
+		// read asset definitions and cache them
+		log( "Caching asset definitions (*.asset_def)..." );
+		engine->cache_asset_definition_files( "data/warr_engine" );
+		engine->cache_asset_definition_files( fmt::format( "data/{}", base_game->name ) );
+
+		// this feels like an odd dance, but the idea is that we:
+		//
+		// 1. parse the asset_def files looking for preprocessor symbols (pass 0)
+		// 2. parse the INI files
+		// 3. parse the asset_def files again, for the rest of the passes (pass 1+)
+		//
+		// this ordering is important because step 2 may want to use symbols
+		// like "true" or "false" or "v_window_h" in the INI files.
+		//
+		// by the time we get to step 3, we have all the symbols from the preproc
+		// and the INI files loaded, and the asset_def files can use any symbols they please.
+
+		// do the preprocess pass first so the symbols are in memory
+		log( "Precaching resources from definition files..." );
+		engine->precache_asset_resources( 0, base_game->name );
+		engine->precache_asset_resources( 1, base_game->name );
+
+		// parse INI files after the preprocess pass so they can
+		// use preprocessor symbols
+		log( "Caching configuration (*.ini)..." );
+		engine->parse_config_files( "data/warr_engine" );
+		engine->parse_config_files( fmt::format( "data/{}", base_game->name ) );
+
+		// put the k/v pairs from the INI files into the global symbol
+		// table so they can be referenced by assets in the asset_def files
+
+		for( const auto& [key, value] : engine->config_vars->kv )
+		{
+			engine->_symbol_to_value[ key ] = value;
+		}
+	}
+
+	{ // APPLY CONFIG SETTINGS
+
+		w_tokenizer tok;
+
+		tok.init( engine->config_vars->find_value_opt( "v_window_res", "320x240" ), 'x' );
+		v_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
+		v_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
+		log( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
+
+		tok.init( engine->config_vars->find_value_opt( "ui_canvas_res", "640x480" ), 'x' );
+		ui_canvas_w = w_parser::float_from_str( tok.tokens[ 0 ] );
+		ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
+		log( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
+
+		RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
+
+		w_rect rc = engine->window->compute_max_window_size_for_desktop();
+		glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
+		glfwSetWindowSize( engine->window->window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
+		glfwSetWindowAspectRatio( engine->window->window,
+									100,
+									static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
+
+		bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
+		log( "VSync: {}", vsync ? "true" : "false" );
+		glfwSwapInterval( vsync ? 1 : 0 );
+		engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
+		glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
+		engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
+		engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
+	}
+
+	{ // FINISH ASSET PRECACHE
+
+		engine->precache_asset_resources( 2, base_game->name );
+		engine->precache_asset_resources( 3, base_game->name );
+	}
+
+	{ // Box2D
+
+		log( "Initializing Box2D" );
+		engine->new_physics_world();
+	}
+
+	// set up frame buffers
+	engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
+	engine->blur_frame_buffers[0] = std::make_unique<w_opengl_framebuffer>( "blur1", 1, v_window_w, v_window_h );
+	engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
+	engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite", 1, v_window_w, v_window_h );
+
+	// used for solid drawing
+	engine->tex_white = a_texture::find( "engine_white" );
+
+	// there's a simple pixel font that always lives inside of engine so
+	// there is always a font available, regardless of ui theme settings.
+	engine->pixel_font = a_font::find( "engine_pixel_font" );
+
+	{ // GAME
+
+		log( "Initializing game" );
+		base_game->init();
+		base_game->reset_layer_stack_to_main_menu();
+	}
+
+	{ // INPUT
+
+		log( "Initializing input" );
+		engine->input->init();
+	}
+
+ 	engine->is_running = true;
+	engine->time->init();
+
+	engine->ui->init();
 
 	return true;
 }
