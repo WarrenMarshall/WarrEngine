@@ -126,12 +126,12 @@ struct ec_physics : w_entity_component
 	virtual ~ec_physics() override;
 
 	// which collision layer(s) this entity is a part of
-	bitflags collision_layer = 0;
+	int collision_layer = 0;
 
 	// which collision layer(s) this entity will collide WITH
-	bitflags collides_with = 0;
+	int collides_with = 0;
 
-	void set_collision_flags( bitflags collision_layer, bitflags collides_with );
+	void set_collision_flags( int collision_layer, int collides_with );
 	void clear_collision_flags();
 
 	[[nodiscard]] ec_b2d_body* get_primary_body();

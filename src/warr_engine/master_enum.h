@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 // note : needs to match values in data/warr_engine/preproc.asset_def
 
-enum_begin( align, unsigned )
+enum_begin( align )
 	invalid = 0,
 	left = 1,
 	right = 2,
@@ -22,7 +22,7 @@ enum_end
 // ----------------------------------------------------------------------------
 // note : needs to match values in data/warr_engine/preproc.asset_def
 
-enum_begin( color, ubyte )
+enum_begin( color )
 	white = 1,
 	black,
 	red,
@@ -40,7 +40,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( timeline_type, ubyte )
+enum_begin( timeline_type )
 	invalid = 0,
 	float_type,
 	color_type
@@ -48,7 +48,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( input_id, ubyte )
+enum_begin( input_id )
 	invalid = 0,
 	gamepad_button_dpad_up,
 	gamepad_button_dpad_down,
@@ -132,7 +132,7 @@ enum_end
 
 #undef small	// fixes dumb compile problem
 
-enum_begin( rumble_effect, ubyte )
+enum_begin( rumble_effect )
 	none = 0,
 	tiny,
 	small,
@@ -142,7 +142,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( life_cycle, ubyte )
+enum_begin( life_cycle )
 	invalid = 0,
 	alive,
 	dying,			// pending delete whenever the object is finished doing everything (components are finished, etc)
@@ -151,7 +151,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( event_id, ubyte )
+enum_begin( event_id )
 	invalid = 0,
 	input_pressed,
 	input_released,
@@ -162,7 +162,7 @@ enum_end
 // ----------------------------------------------------------------------------
 // note : needs to match values in data/warr_engine/preproc.asset_def
 
-enum_begin( tween_type, ubyte )
+enum_begin( tween_type )
 	linear = 1,		// value iterates from start to end, once
 	loop,			// value iterates from start to end and resets to start, looping
 	pingpong		// value iterates from start to end and back again, looping
@@ -177,7 +177,7 @@ enum_end
 // 01 11 21
 // 02 12 22
 
-enum_begin( slicedef_patch, ubyte )
+enum_begin( slicedef_patch )
 	P_00 = 0, P_10, P_20,
 	P_01, P_11, P_21,
 	P_02, P_12, P_22
@@ -185,7 +185,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( opengl_blend, ubyte )
+enum_begin( opengl_blend )
 	alpha = 0,
 	add,
 	multiply
@@ -194,7 +194,7 @@ enum_end
 // ----------------------------------------------------------------------------
 // note : needs to match values in data/warr_engine/preproc.asset_def
 
-enum_begin( particle_spawn_dir, sbyte )
+enum_begin( particle_spawn_dir )
 	inherit_from_parent = -1,
 	away_from_center = -2
 enum_end
@@ -204,7 +204,7 @@ enum_end
 // custom = custom cursor image, OS mouse pointer is hidden
 // locked = no cursor showing at all, mouse is locked to game window
 
-enum_begin( mouse_mode, ubyte )
+enum_begin( mouse_mode )
 	os = 0,
 	custom,
 	locked
@@ -212,7 +212,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( button_state, ubyte )
+enum_begin( button_state )
 	invalid = 0,
 	pressed,
 	held,
@@ -223,7 +223,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( im_result, ubyte )
+enum_begin( im_result )
 	none = 0,
 	hovered = 1,
 	hot = 2,
@@ -233,7 +233,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( collision_layer, short )
+enum_begin( collision_layer )
 	//bit1 = 1,		// don't use this, as everything IS this by default in Box2D
 	bit2 = 2,
 	bit3 = 4,
@@ -254,7 +254,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( easing_type, ubyte )
+enum_begin( easing_type )
 	invalid = 0,
 	linear,
 	quadratic,
@@ -271,7 +271,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( follow_flags, ubyte )	// bitfield
+enum_begin( follow_flags )	// bitfield
 	none = 0,
 	x_axis = 1,
 	y_axis = 2,
@@ -282,7 +282,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( imgui_flow, ubyte )		// bitfield
+enum_begin( imgui_flow )		// bitfield
 	right = 1,
 	down = 2,
 	last_crc_topleft = 4,
@@ -290,7 +290,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( imgui_control_type, ubyte )
+enum_begin( imgui_control_type )
 	none = 0,
 	panel,				// a window frame
 	push_button,		// a button that clicks up/down
@@ -303,7 +303,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( imgui_control_state, ubyte )
+enum_begin( imgui_control_state )
 	none = 0,
 	up,
 	down,
@@ -314,7 +314,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( primitive_shape, ubyte )
+enum_begin( primitive_shape )
 	rectangle = 1,
 	filled_rectangle,
 	circle,
@@ -322,7 +322,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( render_prim, ubyte )
+enum_begin( render_prim )
 	quad = 0,
 	triangle,
 	line,

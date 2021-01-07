@@ -310,7 +310,7 @@ ec_physics::~ec_physics()
 
 }
 
-void ec_physics::set_collision_flags( bitflags collision_layer, bitflags collides_with )
+void ec_physics::set_collision_flags( int collision_layer, int collides_with )
 {
 	this->collision_layer = collision_layer;
 	this->collides_with = collides_with;

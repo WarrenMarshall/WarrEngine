@@ -126,15 +126,36 @@ using w_uv = w_vec2;
 using w_sz = w_vec2;
 using w_offset = w_vec2;
 using w_pos = w_vec2;
-using bitflags = unsigned;
-using sbyte = char;				// shortcut for "signed 8-byte value"
-using ubyte = unsigned char;	// shortcut for "unsigned 8-byte value"
 
 // ----------------------------------------------------------------------------
-// macros to make enum definitions easier to read
+/*
+	macros to make enum definitions easier to read.
 
-#define enum_begin( name, type )\
-	using e_##name = type;\
+	we do it this way because using the standard enum declarations in C++
+	makes the compiler spew warnings about conversions to and from int.
+
+	usage example:
+
+		enum_begin( color )
+			red,
+			white,
+			blue
+		enum_end
+
+	this create an integer alias called "e_color" which
+	can be used in place of "int" when defining vars using
+	this enum.
+
+	to access the enum values, use "color::white" format.
+
+	i.e.
+		e_color border_clr = color::white;
+
+		void set_screen_color( e_color clr );
+*/
+
+#define enum_begin( name )\
+	using e_##name = int;\
 	namespace name\
 	{\
 		enum\
@@ -237,6 +258,10 @@ constexpr float from_b2d( float v )
 #define INPUT engine->input
 #define LAYER engine->layer_mgr->get_top()
 #define LAYER_MGR engine->layer_mgr
+
+// ----------------------------------------------------------------------------
+
+#define tag(str) engine->find_or_create_tag(str)
 
 // ----------------------------------------------------------------------------
 

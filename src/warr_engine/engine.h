@@ -17,6 +17,22 @@ struct w_pending_collision
 
 struct w_engine : i_input_receiver
 {
+	std::unordered_map<std::string, int> tags;
+	int last_tag_id = -1;
+
+	int find_or_create_tag( const std::string& tag )
+	{
+		auto iter = tags.find( tag );
+		if( iter == tags.end() )
+		{
+			last_tag_id++;
+			tags.insert( std::make_pair( tag, last_tag_id ) );
+			return last_tag_id;
+		}
+
+		return iter->second;
+	}
+
 	static bool init_game_engine( int argc, char* argv [] );
 	static void deinit_game_engine();
 	static void exec_main_loop();
