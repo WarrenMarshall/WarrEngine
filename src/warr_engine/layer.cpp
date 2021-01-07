@@ -72,7 +72,7 @@ void w_layer::draw_ui()
 
 w_entity* w_layer::get_camera()
 {
-	return find_entity( "main_camera" );
+	return find_entity( tag( "main_camera" ) );
 }
 
 bool w_layer::is_topmost_layer() const
@@ -83,7 +83,7 @@ bool w_layer::is_topmost_layer() const
 // #optimization - this feels like a bottleneck waiting to happen. some sort of map look up would be way faster.
 //				  - would an MRU lookup table be useful? it gets populated as you look things up and emptied on new_game?
 
-w_entity* w_layer::find_entity( const char* tag )
+w_entity* w_layer::find_entity( int tag )
 {
 	for( auto& iter : entities )
 	{

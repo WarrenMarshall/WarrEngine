@@ -20,10 +20,10 @@ void layer_game::update()
 
 	power_flicker = engine->random->getb();
 
-	auto player_h = find_entity( "player_paddle_h" );
+	auto player_h = find_entity( tag( "player_paddle_h" ) );
 	assert( player_h );
 
-	auto player_v = find_entity( "player_paddle_v" );
+	auto player_v = find_entity( tag( "player_paddle_v" ) );
 	assert( player_v );
 
 	// trace from the center of the world towards the mouse and see if
@@ -71,14 +71,6 @@ bool layer_game::iir_on_pressed( const w_input_event* evt )
 		spawn_ball();
 	}
 
-	if( evt->input_id == input_id::key_r )
-	{
-		auto ball = find_entity( "ball" );
-		ball->set_position_deep( w_vec2::zero, false );
-
-		return true;
-	}
-
 	return false;
 }
 
@@ -101,7 +93,7 @@ void layer_game::new_game()
 	// camera
 
 	e = add_entity<e_camera>();
-	e->set_tag( "main_camera" );
+	e->tag = tag( "main_camera" );
 	e->get_tform()->set_position( { v_window_hw, v_window_hh } );
 
 	// emitter background
@@ -115,14 +107,14 @@ void layer_game::new_game()
 	constexpr float wall_length = 512.0f;
 
 	e = add_entity<w_entity>();
-	e->set_tag( "world" );
+	e->tag = tag( "world" );
 	e->get_component<ec_physics>()->set_collision_flags( clayer_world_top_bottom, clayer_ball );
 	ecs = e->add_component<ec_b2d_static>();
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( +wall_length, -v_window_hh + 4 ), w_vec2( -wall_length, -v_window_hh + 4 ) );
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -wall_length, v_window_hh - 4 ), w_vec2( +wall_length, v_window_hh - 4 ) );
 
 	e = add_entity<w_entity>();
-	e->set_tag( "world" );
+	e->tag = tag( "world" );
 	e->get_component<ec_physics>()->set_collision_flags( clayer_world_left_right, clayer_ball );
 	ecs = e->add_component<ec_b2d_static>();
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -v_window_hw + 4, -wall_length ), w_vec2( -v_window_hw + 4, +wall_length ) );
@@ -134,7 +126,7 @@ void layer_game::new_game()
 
 	rc = w_rect( -32, -4, 64, 8 );
 	e = add_entity<e_paddle>();
-	e->set_tag( "player_paddle_h" );
+	e->tag = tag( "player_paddle_h" );
 	e->get_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
 	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
@@ -142,7 +134,7 @@ void layer_game::new_game()
 
 	rc = w_rect( -4, -32, 8, 64 );
 	e = add_entity<e_paddle>();
-	e->set_tag( "player_paddle_v" );
+	e->tag = tag( "player_paddle_v" );
 	e->get_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
 	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
@@ -151,7 +143,7 @@ void layer_game::new_game()
 	// prism
 
 	prism = e = add_entity<w_entity>();
-	e->set_tag( "prism" );
+	e->tag = tag( "prism" );
 	e->add_component<ec_mesh>()->init( "shadow_beam" );
 	e->add_component<ec_sprite>()->init( "lightbulb" );
 }

@@ -59,28 +59,32 @@ void layer_main_menu::push()
 	w_layer::push();
 
 	w_entity* e = nullptr;
-	w_entity_component* ec = nullptr;
 
 	// particles
 
 	e = add_entity<w_entity>();
-	e->get_tform()->set_position( { v_window_hw, 0.0f } );
-	e->add_component<ec_emitter>()
-		->init( "menu_fire_up" )
-		->tform.set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+	{
+		e->get_tform()->set_position( { v_window_hw, 0.0f } );
+		e->add_component<ec_emitter>()
+			->init( "menu_fire_up" )
+			->tform.set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+	}
 
 	// mechanical meshes
 
-	e = add_entity<w_entity>()->set_tag( "wheels" );
-	e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.25f );
+	e = add_entity<w_entity>();
+	{
+		e->tag = tag( "wheels" );
+		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.25f );
 
-	e->add_component<ec_mesh>()
-		->init( "mesh_torus_test" )
-		->tform.set_scale( 0.5f )->set_angle( 120.0f );
+		e->add_component<ec_mesh>()
+			->init( "mesh_torus_test" )
+			->tform.set_scale( 0.5f )->set_angle( 120.0f );
 
-	e->add_component<ec_mesh>()
-		->init( "mesh_torus_test" )
-		->tform.set_position( { 96.0f, 0.0f } )->set_scale( 0.25f );
+		e->add_component<ec_mesh>()
+			->init( "mesh_torus_test" )
+			->tform.set_position( { 96.0f, 0.0f } )->set_scale( 0.25f );
+	}
 }
 
 void layer_main_menu::becoming_top_layer()
@@ -112,13 +116,13 @@ bool layer_main_menu::iir_on_held( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_button_left_shoulder )
 	{
 		angle -= 5.0f;
-		find_entity( "wheels" )->get_tform()->set_angle( angle );
+		find_entity( tag( "wheels" ) )->get_tform()->set_angle( angle );
 	}
 
 	if( evt->input_id == input_id::gamepad_button_right_shoulder )
 	{
 		angle += 5.0f;
-		find_entity( "wheels" )->get_tform()->set_angle( angle );
+		find_entity( tag( "wheels" ) )->get_tform()->set_angle( angle );
 	}
 
 	return false;
@@ -131,7 +135,7 @@ bool layer_main_menu::iir_on_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		wheel_01_pos += evt->delta;
-		find_entity( "wheels" )->get_tform()->set_position( wheel_01_pos );
+		find_entity( tag( "wheels" ) )->get_tform()->set_position( wheel_01_pos );
 	}
 
 	return false;

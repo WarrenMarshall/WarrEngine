@@ -7,12 +7,10 @@ struct w_entity : i_life_cycle
 	w_entity();
 	~w_entity();
 
-	std::string tag;
+	int tag = -1;
 
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
-
-	w_entity* set_tag( const char* tag );
 
 	virtual void ilc_set( e_life_cycle life_cycle ) override;
 	[[nodiscard]] virtual bool can_be_deleted();

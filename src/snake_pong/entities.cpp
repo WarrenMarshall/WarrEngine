@@ -7,7 +7,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 {
 	// balls bounce off of paddles
 
-	if( other->tag == "ball" )
+	if( other->tag == tag( "ball" ) )
 	{
 		// stop ball
 		other->get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
@@ -26,7 +26,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 e_ball::e_ball()
 {
-	set_tag( "ball" );
+	tag = tag( "ball" );
 	get_component<ec_physics>()->set_collision_flags( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
 
 	auto ecd = add_component<ec_b2d_dynamic>();
@@ -42,7 +42,7 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 {
 	// balls bounce off of each other
 
-	if( other->tag == "ball" )
+	if( other->tag == tag( "ball" ) )
 	{
 		// stop balls
 		get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
@@ -63,7 +63,7 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 	// touching the world kills the ball
 
-	if( other->tag == "world" )
+	if( other->tag == tag( "world" ) )
 	{
 		ilc_set( life_cycle::dying );
 		static_cast<layer_game*>( LAYER )->spawn_ball();

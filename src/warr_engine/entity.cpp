@@ -200,13 +200,6 @@ bool w_entity::can_be_deleted()
 	return true;
 }
 
-w_entity* w_entity::set_tag( const char* tag )
-{
-	this->tag = tag;
-
-	return this;
-}
-
 void w_entity::ilc_set( e_life_cycle life_cycle )
 {
 	i_life_cycle::ilc_set( life_cycle );
