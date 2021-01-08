@@ -80,9 +80,6 @@ bool w_layer::is_topmost_layer() const
 	return ( LAYER == this );
 }
 
-// #optimization - this feels like a bottleneck waiting to happen. some sort of map look up would be way faster.
-//				  - would an MRU lookup table be useful? it gets populated as you look things up and emptied on new_game?
-
 w_entity* w_layer::find_entity( int tag )
 {
 	for( auto& iter : entities )
