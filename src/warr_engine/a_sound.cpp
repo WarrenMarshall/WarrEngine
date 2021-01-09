@@ -11,62 +11,33 @@ a_sound::~a_sound()
 
 void a_sound::clean_up_internals()
 {
-#ifdef USE_BASS_SOUND_LIBRARY
-	if( snd > -1 )
+	if( sample_handle > 0 )
 	{
-		BASS_SampleFree( snd );
-		snd = -1;
+		BASS_SampleFree( sample_handle );
+		sample_handle = 0;
 	}
-#else
-	if( engine->c2_sound_context && snd.sample_rate )
-	{
-		cs_free_sound( &snd );
-		ZeroMemory( &snd, sizeof( snd ) );
-	}
-#endif
 }
 
 void a_sound::play()
 {
-#ifdef USE_BASS_SOUND_LIBRARY
-
 	if( looped )
 	{
-		channel = BASS_SampleGetChannel( snd, false );
+		channel_handle = BASS_SampleGetChannel( sample_handle, false );
+		BASS_ChannelPlay( channel_handle, false );
 	}
-
-	BASS_ChannelPlay( channel, !looped );
-
-	if( looped )
+	else
 	{
-		BASS_ChannelFlags( channel, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP );
+		BASS_ChannelPlay( channel_handle, true );
 	}
-
-#else
-	if( engine->c2_sound_context && snd.sample_rate )
-	{
-		cs_play_sound_def_t def = cs_make_def( &snd );
-
-		if( looped )
-		{
-			def.looped = 1;
-		}
-
-		snd_playing = cs_play_sound( engine->c2_sound_context, def );
-	}
-#endif
 }
 
 void a_sound::stop()
 {
-#ifdef USE_BASS_SOUND_LIBRARY
-	BASS_ChannelStop( channel );
-#else
-	if( engine->c2_sound_context )
+	if( channel_handle )
 	{
-		cs_stop_sound( snd_playing );
+		BASS_ChannelStop( channel_handle );
+		channel_handle = 0;
 	}
-#endif
 }
 
 bool a_sound::create_internals()
@@ -80,27 +51,21 @@ bool a_sound::create_internals()
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
 
-#ifdef USE_BASS_SOUND_LIBRARY
-	snd = BASS_SampleLoad( true, file->buffer->data(), 0, static_cast<int>( file->buffer->size() ), 1, 0 );
+	sample_handle = BASS_SampleLoad(
+		true,
+		file->buffer->data(),
+		0,
+		static_cast<int>( file->buffer->size() ),
+		looped ? 1 : 32,
+		BASS_SAMPLE_OVER_VOL | (looped ? BASS_SAMPLE_LOOP : 0)
+	);
 
-	if( !snd && BASS_IsStarted() )
+	if( !sample_handle && BASS_IsStarted() )
 	{
 		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
 
-	if( !looped )
-	{
-		channel = BASS_SampleGetChannel( snd, false );
-	}
-#else
-	cs_read_mem_wav( file->buffer->data(), static_cast<int>( file->buffer->size() ), &snd );
-
-	if( !engine->c2_sound_context && !snd.sample_rate )
-	{
-		log_error( "Couldn't load the file : [{}]", original_filename );
-	}
-#endif
+	channel_handle = BASS_SampleGetChannel( sample_handle, false );
 
 	return true;
 }
-

@@ -9,6 +9,9 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 	if( other->tag == tag( "ball" ) )
 	{
+		// effects
+		a_sound::find( "hit_paddle" )->play();
+
 		// stop ball
 		other->get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
 
@@ -44,6 +47,9 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 	if( other->tag == tag( "ball" ) )
 	{
+		// effects
+		a_sound::find( "ball_hit_ball" )->play();
+
 		// stop balls
 		get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
 		other->get_component<ec_physics>()->get_primary_body()->body->SetLinearVelocity( w_vec2( 0, 0 ).as_b2Vec2() );
@@ -65,6 +71,9 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 	if( other->tag == tag( "world" ) )
 	{
+		// effects
+		a_sound::find( "ball_fizzle" )->play();
+
 		ilc_set( life_cycle::dying );
 		static_cast<layer_game*>( LAYER )->spawn_ball();
 	}

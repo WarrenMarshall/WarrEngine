@@ -56,6 +56,8 @@ void layer_main_menu::draw_ui()
 
 void layer_main_menu::push()
 {
+	//a_sound::find( "main_menu_music" )->play();
+
 	w_layer::push();
 
 	w_entity* e = nullptr;
@@ -85,6 +87,14 @@ void layer_main_menu::push()
 			->init( "mesh_torus_test" )
 			->tform.set_position( { 96.0f, 0.0f } )->set_scale( 0.25f );
 	}
+
+	//a_sound::find( "main_menu_music" )->play();
+}
+
+void layer_main_menu::pop()
+{
+	w_layer::pop();
+	//a_sound::find( "main_menu_music" )->stop();
 }
 
 void layer_main_menu::becoming_top_layer()
@@ -97,6 +107,21 @@ void layer_main_menu::becoming_top_layer()
 
 bool layer_main_menu::iir_on_pressed( const w_input_event* evt )
 {
+	if( evt->input_id == input_id::key_1 )
+	{
+		a_sound::find( "ball_fizzle" )->play();
+	}
+
+	if( evt->input_id == input_id::key_2 )
+	{
+		a_sound::find( "main_menu_music" )->play();
+	}
+
+	if( evt->input_id == input_id::key_3 )
+	{
+		a_sound::find( "gameplay_music" )->play();
+	}
+
 	if( evt->input_id == input_id::key_space )
 	{
 		engine->layer_mgr->pop();

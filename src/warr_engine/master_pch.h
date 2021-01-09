@@ -66,22 +66,8 @@ constexpr int struct_alignment_for_cache = 64;
 	// Box2D - physics
 	#include "box2d-master/include/box2d/box2d.h"
 
-	// sound and music library
-	//
-	// setting this #define means we are using the BASS library
-	// and must include "bass.dll" in the game distribution.
-	//
-	// otherwise, we use cute_sound (aka DirectSound) and
-	// requires no external files.
-
-	//#define USE_BASS_SOUND_LIBRARY
-
-	#ifdef USE_BASS_SOUND_LIBRARY
-		#include "bass24/c/bass.h"
-	#else
-		// sound and music library
-		#include "cute_headers/cute_sound.h"
-	#endif
+	// BASS - sound and music library
+	#include "bass24/c/bass.h"
 
 	// cute headers - collision detection
 	// (https://github.com/RandyGaul/cute_headers)

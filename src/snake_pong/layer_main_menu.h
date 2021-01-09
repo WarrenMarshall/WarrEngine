@@ -18,6 +18,7 @@ struct layer_main_menu : w_layer
 	virtual void draw_ui() override;
 	virtual void becoming_top_layer() override;
 	virtual void push() override;
+	virtual void pop() override;
 
 	virtual w_imgui_callback* get_imgui_callback() override;
 

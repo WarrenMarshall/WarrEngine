@@ -21,10 +21,6 @@ struct w_engine : i_input_receiver
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
-#ifndef USE_BASS_SOUND_LIBRARY
-	cs_context_t* c2_sound_context = nullptr;
-#endif
-
 	a_texture* tex_white = nullptr;
 	a_font* pixel_font = nullptr;
 

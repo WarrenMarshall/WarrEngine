@@ -12,6 +12,13 @@ void layer_game::becoming_top_layer()
 
 	engine->window->set_mouse_mode( mouse_mode::custom );
 	engine->ui->mouse_cursor = a_cursor::find( "game_cursor_default" );
+
+	a_sound::find( "gameplay_music" )->play();
+}
+
+void layer_game::getting_covered()
+{
+	a_sound::find( "gameplay_music" )->stop();
 }
 
 void layer_game::update()

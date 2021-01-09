@@ -64,27 +64,11 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 	}
 
 	{	// AUDIO
-	#ifdef USE_BASS_SOUND_LIBRARY
 		log( "Initializing BASS audio" );
-		if( !BASS_Init( -1, 44100, 0, nullptr, nullptr ) )
+		if( !BASS_Init( -1, 44100, BASS_DEVICE_LATENCY | BASS_DEVICE_MONO, nullptr, nullptr ) )
 		{
 			log_warning( "BASS : Audio init failed!" );
 		}
-	#else
-		log( "Initializing Cute_Sound audio" );
-		engine->c2_sound_context = cs_make_context(
-			glfwGetWin32Window( engine->window->window ),
-			44100, 8192, 150, nullptr );
-
-		if( !engine->c2_sound_context )
-		{
-			log_warning( "Cute_Sound : Audio init failed!" );
-		}
-		else
-		{
-			cs_spawn_mix_thread( engine->c2_sound_context );
-		}
-	#endif
 	}
 
 	{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
@@ -229,16 +213,7 @@ void w_engine::deinit_game_engine()
 	glfwTerminate();
 
 	log( "Shutting down Audio" );
-#ifdef USE_BASS_SOUND_LIBRARY
 	BASS_Free();
-#else
-	if( engine->c2_sound_context )
-	{
-		cs_stop_all_sounds( engine->c2_sound_context );
-		cs_shutdown_context( engine->c2_sound_context );
-		engine->c2_sound_context = nullptr;
-	}
-#endif
 
 	log( "Shutting down input" );
 	engine->input->deinit();

@@ -4,13 +4,8 @@ struct a_sound : i_asset
 {
 	declare_find_func( a_sound )
 
-#ifdef USE_BASS_SOUND_LIBRARY
-	int snd = -1;
-	int channel = -1;
-#else
-	cs_loaded_sound_t snd = {};
-	cs_playing_sound_t* snd_playing = nullptr;
-#endif
+	HSAMPLE sample_handle = 0;
+	HCHANNEL channel_handle = 0;
 	bool looped = false;
 
 	virtual ~a_sound() override;
