@@ -23,12 +23,9 @@ void a_sound::play()
 	if( looped )
 	{
 		channel_handle = BASS_SampleGetChannel( sample_handle, false );
-		BASS_ChannelPlay( channel_handle, false );
 	}
-	else
-	{
-		BASS_ChannelPlay( channel_handle, true );
-	}
+
+	BASS_ChannelPlay( channel_handle, !looped );
 }
 
 void a_sound::stop()
