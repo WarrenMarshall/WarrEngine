@@ -18,8 +18,11 @@ struct a_src_texture : i_asset
 	float w = 0.0f;
 	float h = 0.0f;
 
+	unsigned char* color_data = nullptr;
+
 	virtual ~a_src_texture() override;
 
 	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
+	virtual void finalize_after_loading() override;
 };

@@ -50,7 +50,7 @@ struct w_engine : i_input_receiver
 	void toggle_pause();
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
-	void precache_asset_resources( int pass, std::string_view game_name );
+	void precache_asset_resources( int pass );
 	void wait_for_thread_pool_to_finish();
 
 	template<typename T>

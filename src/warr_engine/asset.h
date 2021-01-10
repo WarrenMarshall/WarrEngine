@@ -11,6 +11,7 @@ struct i_asset
 
 	virtual void clean_up_internals();
 	virtual bool create_internals();
+	virtual void finalize_after_loading();
 
 	virtual void update() {};
 };

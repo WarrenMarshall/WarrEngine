@@ -52,5 +52,5 @@ void main()
         }
     }
 
-    out_fragment_color = vec4(result, 1.0);
+    out_fragment_color = vec4(result, 1.0) * 1.05f;
 }

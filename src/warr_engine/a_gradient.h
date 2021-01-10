@@ -11,4 +11,5 @@ struct a_gradient : a_src_texture
 
 	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
+	virtual void finalize_after_loading() override;
 };

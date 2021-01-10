@@ -1,5 +1,7 @@
 #pragma once
 
+// comment this line out if start up is crashing and you want to rule out
+// the threaded asset loading code.
 #define USE_THREADED_ASSET_LOADING
 
 constexpr int struct_alignment_for_cache = 64;

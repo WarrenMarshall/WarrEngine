@@ -15,7 +15,7 @@ struct w_cache_assets
 		std::string tag_prefix = typeid( T ).name();
 		std::string full_tag = fmt::format( "{}::{}", tag_prefix.substr( 7, std::string::npos ), tag );
 
-		auto iter = cache.find( std::string( full_tag ) );
+		auto iter = cache.find( full_tag );
 
 		if( iter != cache.end() )
 		{
@@ -51,7 +51,7 @@ struct w_cache_assets
 			full_tag = fmt::format( "{}::{}", tag_prefix.substr( 7, std::string::npos ), tag );
 		}
 
-		auto iter = cache.find( std::string( full_tag ) );
+		auto iter = cache.find( full_tag );
 
 		// if the asset isn't in the cache, that's fatal.
 		// check the asset_def files and make sure it's been requested.
@@ -59,7 +59,9 @@ struct w_cache_assets
 		if( iter == cache.end() )
 		{
 			if( !silent )
+			{
 				log_error( "not found : [{}]", full_tag );
+			}
 
 			return nullptr;
 		}

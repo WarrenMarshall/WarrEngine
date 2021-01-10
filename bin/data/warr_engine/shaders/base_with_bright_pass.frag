@@ -40,7 +40,7 @@ void main()
     }
     else if( brightness > 1.0f )
     {
-       out_bright_color = out_fragment_color;
+        out_bright_color = out_fragment_color;
     }
     else
     {

@@ -23,7 +23,7 @@ bool a_src_texture::create_internals()
 
 	auto file = engine->fs->load_file_into_memory( original_filename );
 	int width, height, bpp;
-	unsigned char* color_data = stbi_load_from_memory(
+	color_data = stbi_load_from_memory(
 		(const stbi_uc*) ( file->buffer->data() ),
 		static_cast<int>( file->buffer->size() ),
 		&width, &height, &bpp, 4 );
@@ -35,8 +35,11 @@ bool a_src_texture::create_internals()
 		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
 
-	// upload texture to opengl
+	return true;
+}
 
+void a_src_texture::finalize_after_loading()
+{
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
@@ -45,12 +48,13 @@ bool a_src_texture::create_internals()
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGBA8,
+		static_cast<int>( w ), static_cast<int>( h ),
+		0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
 
-	glBindTextureUnit( 0, 0 );
+	// free the source data now that it's been uploaded to opengl
 
 	stbi_image_free( color_data );
 	color_data = nullptr;
-
-	return true;
 }

@@ -274,35 +274,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-				else if( type == "mesh" )
-				{
-					assert( iter_ad.does_key_exist( "filename" ) );
-					assert( iter_ad.does_key_exist( "texture_tag" ) );
-
-					filename = fmt::format( "{}{}", data_folder, iter_ad.find_value( "filename" ) );
-
-					// ------------------------------------------------------------------------
-
-					auto asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
-
-					asset_ptr->tex = a_texture::find( iter_ad.find_value( "texture_tag" ) );
-					asset_ptr->original_filename = filename;
-
-					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals();
-				}
-				else if( type == "cursor" )
-				{
-					assert( iter_ad.does_key_exist( "texture_tag" ) );
-
-					auto asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
-
-					asset_ptr->texture = a_texture::find( iter_ad.find_value( "texture_tag" ) );
-					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad.find_value( "hotspot" ) );
-
-					asset_ptr->clean_up_internals();
-					asset_ptr->create_internals();
-				}
 #if 0 // #texture
 				else if( type == "anim_texture" )
 				{
@@ -457,6 +428,35 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_font>(), tag, "" );
 					asset_ptr->font_def = a_font_def::find( iter_ad.find_value( "font_def_tag" ) );
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals();
+				}
+				else if( type == "mesh" )
+				{
+					assert( iter_ad.does_key_exist( "filename" ) );
+					assert( iter_ad.does_key_exist( "texture_tag" ) );
+
+					filename = fmt::format( "{}{}", data_folder, iter_ad.find_value( "filename" ) );
+
+					// ------------------------------------------------------------------------
+
+					auto asset_ptr = asset_cache->add( std::make_unique<a_mesh>(), tag, filename );
+
+					asset_ptr->tex = a_texture::find( iter_ad.find_value( "texture_tag" ) );
+					asset_ptr->original_filename = filename;
+
+					asset_ptr->clean_up_internals();
+					asset_ptr->create_internals();
+				}
+				else if( type == "cursor" )
+				{
+					assert( iter_ad.does_key_exist( "texture_tag" ) );
+
+					auto asset_ptr = asset_cache->add( std::make_unique<a_cursor>(), tag, "" );
+
+					asset_ptr->texture = a_texture::find( iter_ad.find_value( "texture_tag" ) );
+					asset_ptr->hotspot_offset = w_parser::vec2_from_str( iter_ad.find_value( "hotspot" ) );
+
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}

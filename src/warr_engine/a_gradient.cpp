@@ -24,6 +24,11 @@ bool a_gradient::create_internals()
 	w = static_cast<float>( ( alignment == align::horizontal ) ? ( colors.size() / 4 ) : 1 );
 	h = static_cast<float>( ( alignment == align::vertical ) ? ( colors.size() / 4 ) : 1 );
 
+	return true;
+}
+
+void a_gradient::finalize_after_loading()
+{
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
@@ -33,8 +38,4 @@ bool a_gradient::create_internals()
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei) w, (GLsizei) h, 0, GL_RGBA, GL_FLOAT, colors.data() );
-
-	glBindTextureUnit( 0, 0 );
-
-	return true;
 }
