@@ -1,5 +1,7 @@
 #pragma once
 
+#define USE_THREADED_ASSET_LOADING
+
 constexpr int struct_alignment_for_cache = 64;
 
 #pragma warning(disable : 4324 )	// structure was padded due to alignment specifier
@@ -45,6 +47,7 @@ constexpr int struct_alignment_for_cache = 64;
 	#include <variant>
 	#include <memory>
 	#include <optional>
+	#include <future>
 
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"

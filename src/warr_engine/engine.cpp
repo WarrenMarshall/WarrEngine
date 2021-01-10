@@ -73,10 +73,16 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 	{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
 
+#ifdef USE_THREADED_ASSET_LOADING
+		log( "Using threaded asset loading" );
+#endif
+
 		// read asset definitions and cache them
 		log( "Caching asset definitions (*.asset_def)..." );
 		engine->cache_asset_definition_files( "data/warr_engine" );
 		engine->cache_asset_definition_files( fmt::format( "data/{}", base_game->name ) );
+
+		engine->wait_for_thread_pool_to_finish();
 
 		// this feels like an odd dance, but the idea is that we:
 		//
@@ -227,8 +233,43 @@ void w_engine::deinit_game_engine()
 	logfile->deinit();
 }
 
+#if 0	// #thread_example
+static std::mutex log_mutex;
+
+static void worker_thread( int id, int count )
+{
+	for( int x = 0 ; x < count ; ++x )
+	{
+		{
+			//std::lock_guard<std::mutex> lock( log_mutex );
+			log( "{} : {}", id, x );
+		}
+
+		std::this_thread::sleep_for( std::chrono::milliseconds( x * engine->random->geti_range( 10, 100 ) ) );
+	}
+
+	std::lock_guard<std::mutex> lock( log_mutex );
+	log( "{} : finished!", id );
+}
+#endif
+
 void w_engine::exec_main_loop()
 {
+#if 0	// #thread_example
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 1, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 2, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 3, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 4, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 5, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 6, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 7, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 8, 10 ) );
+	engine->futures.push_back( std::async( std::launch::async, worker_thread, 9, 10 ) );
+
+	engine->wait_for_thread_pool_to_finish();
+	log( "all threads complete!" );
+#endif
+
 	while( engine->is_running && !glfwWindowShouldClose( engine->window->window ) )
 	{
 		/*
@@ -691,6 +732,13 @@ void w_engine::set_pause( bool paused )
 	is_paused = paused;
 }
 
+#ifdef USE_THREADED_ASSET_LOADING
+static void t_load_asset_def_file( std::string filename )
+{
+	engine->asset_definition_file_cache->add( filename );
+}
+#endif
+
 // loads and caches every "*.asset_def" file it sees in the "asset_def" folder
 
 void w_engine::cache_asset_definition_files( const std::string_view folder_name )
@@ -700,7 +748,11 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 
 	for( const auto& iter : filenames )
 	{
+#ifdef USE_THREADED_ASSET_LOADING
+		engine->futures.push_back( std::async( std::launch::async, t_load_asset_def_file, std::string( iter ) ) );
+#else
 		engine->asset_definition_file_cache->add( iter );
+#endif
 	}
 }
 
@@ -751,6 +803,19 @@ void w_engine::precache_asset_resources( int pass, std::string_view game_name )
 	}
 
 	log( "Pass: {} / {} assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
+}
+
+// loops through all threads we have a handle for and waits until they
+// finish executing. the list is then cleared.
+
+void w_engine::wait_for_thread_pool_to_finish()
+{
+	for( auto& future : futures )
+	{
+		future.wait();
+	}
+
+	futures.clear();
 }
 
 bool w_engine::iir_on_released( const w_input_event* evt )
@@ -861,16 +926,6 @@ void w_engine::process_collision_queue()
 
 	end_contact_queue.clear();
 }
-
-/*
- use the "tag" macro to make this easier to use
-
- i.e.
-
-	int my_tag = tag("name_of_thing);
-	..instead of...
-	int my_tag = engine->find_or_create_tag( "name_of_thing" );
-*/
 
 int w_engine::find_or_create_tag( const std::string& tag )
 {

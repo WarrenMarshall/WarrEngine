@@ -21,6 +21,8 @@ struct w_engine : i_input_receiver
 	static void deinit_game_engine();
 	static void exec_main_loop();
 
+	std::vector<std::future<void>> futures;
+
 	a_texture* tex_white = nullptr;
 	a_font* pixel_font = nullptr;
 
@@ -49,6 +51,7 @@ struct w_engine : i_input_receiver
 	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
 	void precache_asset_resources( int pass, std::string_view game_name );
+	void wait_for_thread_pool_to_finish();
 
 	template<typename T>
 	T* find_asset( const std::string_view name, bool silent = false )

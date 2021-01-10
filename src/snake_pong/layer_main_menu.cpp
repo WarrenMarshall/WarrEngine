@@ -56,7 +56,7 @@ void layer_main_menu::draw_ui()
 
 void layer_main_menu::push()
 {
-	//a_sound::find( "main_menu_music" )->play();
+	a_sound::find( "main_menu_music" )->play();
 
 	w_layer::push();
 
@@ -77,24 +77,24 @@ void layer_main_menu::push()
 	e = add_entity<w_entity>();
 	{
 		e->tag = tag( "wheels" );
-		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.25f );
+		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.5f );
 
 		e->add_component<ec_mesh>()
 			->init( "mesh_torus_test" )
-			->tform.set_scale( 0.5f )->set_angle( 120.0f );
+			->tform.set_scale( 1.0f )->set_angle( 120.0f );
 
 		e->add_component<ec_mesh>()
 			->init( "mesh_torus_test" )
-			->tform.set_position( { 96.0f, 0.0f } )->set_scale( 0.25f );
+			->tform.set_scale( 0.5f );
 	}
 
-	//a_sound::find( "main_menu_music" )->play();
+	a_sound::find( "main_menu_music" )->play();
 }
 
 void layer_main_menu::pop()
 {
 	w_layer::pop();
-	//a_sound::find( "main_menu_music" )->stop();
+	a_sound::find( "main_menu_music" )->stop();
 }
 
 void layer_main_menu::becoming_top_layer()
