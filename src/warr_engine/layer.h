@@ -67,7 +67,7 @@ struct w_layer : i_life_cycle, i_input_receiver
 	}
 
 	[[nodiscard]] bool is_topmost_layer() const;
-	[[nodiscard]] w_entity* find_entity( const std::string& tag );
+	[[nodiscard]] w_entity* find_entity( w_hash tag );
 
 	virtual void new_game();
 	virtual w_imgui_callback* get_imgui_callback();

@@ -46,6 +46,7 @@ extern float ui_canvas_h;
 
 #define ui_canvas_scale (v_window_w / ui_canvas_w)
 
+#include "hash_string.h"
 #include "filesystem.h"
 
 #include "bit_flag_generator.h"
