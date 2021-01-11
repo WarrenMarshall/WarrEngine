@@ -947,20 +947,3 @@ void w_engine::process_collision_queue()
 
 	end_contact_queue.clear();
 }
-
-int w_engine::find_or_create_tag( const std::string& tag )
-{
-	// try to find the tag in the existing pool
-	auto iter = tags.find( tag );
-
-	// if it's not there, insert it and return the id
-	if( iter == tags.end() )
-	{
-		int id = static_cast<int>( tags.size() + 1 );
-		tags.insert( std::make_pair( tag, id ) );
-		return id;
-	}
-
-	// if it WAS there, return the id previously assigned to it
-	return iter->second;
-}

@@ -76,7 +76,7 @@ void layer_main_menu::push()
 
 	e = add_entity<w_entity>();
 	{
-		e->tag = tag( "wheels" );
+		e->tag = "wheels";
 		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.5f );
 
 		e->add_component<ec_mesh>()
@@ -141,13 +141,13 @@ bool layer_main_menu::iir_on_held( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_button_left_shoulder )
 	{
 		angle -= 5.0f;
-		find_entity( tag( "wheels" ) )->get_tform()->set_angle( angle );
+		find_entity( "wheels" )->get_tform()->set_angle( angle );
 	}
 
 	if( evt->input_id == input_id::gamepad_button_right_shoulder )
 	{
 		angle += 5.0f;
-		find_entity( tag( "wheels" ) )->get_tform()->set_angle( angle );
+		find_entity( "wheels" )->get_tform()->set_angle( angle );
 	}
 
 	return false;
@@ -160,7 +160,7 @@ bool layer_main_menu::iir_on_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		wheel_01_pos += evt->delta;
-		find_entity( tag( "wheels" ) )->get_tform()->set_position( wheel_01_pos );
+		find_entity( "wheels" )->get_tform()->set_position( wheel_01_pos );
 	}
 
 	return false;

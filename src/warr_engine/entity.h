@@ -7,7 +7,7 @@ struct w_entity : i_life_cycle
 	w_entity();
 	~w_entity();
 
-	int tag = -1;
+	std::string tag;
 
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;

@@ -7,7 +7,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 {
 	// balls bounce off of paddles
 
-	if( other->tag == tag( "ball" ) )
+	if( other->tag == "ball" )
 	{
 		// effects
 		a_sound::find( "hit_paddle" )->play();
@@ -29,7 +29,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 e_ball::e_ball()
 {
-	tag = tag( "ball" );
+	tag = "ball";
 	get_component<ec_physics>()->set_collision_flags( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
 
 	auto ecd = add_component<ec_b2d_dynamic>();
@@ -45,7 +45,7 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 {
 	// balls bounce off of each other
 
-	if( other->tag == tag( "ball" ) )
+	if( other->tag == "ball" )
 	{
 		// effects
 		a_sound::find( "ball_hit_ball" )->play();
@@ -69,7 +69,7 @@ void e_ball::on_collision_begin( w_pending_collision& coll, w_entity* other )
 
 	// touching the world kills the ball
 
-	if( other->tag == tag( "world" ) )
+	if( other->tag == "world" )
 	{
 		// effects
 		a_sound::find( "ball_fizzle" )->play();

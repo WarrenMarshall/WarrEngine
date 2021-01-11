@@ -252,10 +252,6 @@ constexpr float from_b2d( float v )
 
 // ----------------------------------------------------------------------------
 
-#define tag(str) engine->find_or_create_tag(str)
-
-// ----------------------------------------------------------------------------
-
 using b_silent = bool;
 using b_sensor = bool;
 using b_ignore_dead_zone = bool;

@@ -87,11 +87,4 @@ struct w_engine : i_input_receiver
 	std::unique_ptr<w_random> random = nullptr;
 
 	void process_collision_queue();
-
-	// ----------------------------------------------------------------------------
-	// tags - similar to fname in unreal
-
-	std::unordered_map<std::string, int> tags;
-
-	int find_or_create_tag( const std::string& tag );
 };
