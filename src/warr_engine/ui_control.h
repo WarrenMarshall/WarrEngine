@@ -4,7 +4,7 @@ struct w_imgui_control
 {
 	e_imgui_control_type type = imgui_control_type::none;
 	bool is_active = true;
-	std::string tag;
+	hash tag;
 	std::string label;
 	e_align label_align = align::centered;
 	a_9slice_def* slice_def = nullptr;

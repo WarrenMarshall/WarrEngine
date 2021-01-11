@@ -72,7 +72,7 @@ void w_layer::draw_ui()
 
 w_entity* w_layer::get_camera()
 {
-	return find_entity( w_hash( "main_camera" ) );
+	return find_entity( H( "main_camera" ) );
 }
 
 bool w_layer::is_topmost_layer() const
@@ -80,7 +80,7 @@ bool w_layer::is_topmost_layer() const
 	return ( LAYER == this );
 }
 
-w_entity* w_layer::find_entity( w_hash tag )
+w_entity* w_layer::find_entity( hash tag )
 {
 	for( auto& iter : entities )
 	{

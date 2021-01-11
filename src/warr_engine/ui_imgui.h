@@ -40,14 +40,14 @@ struct w_imgui
 	// this holds COPIES of any controls that are tagged when drawn.
 	//
 	// tagging controls lets you find them later that frame if needed.
-	std::unordered_map<std::string, w_imgui_control> tagged_controls;
-	w_imgui* set_last_control_from_tag( const char* tag );
-	w_imgui_control find_control( const char* tag );
+	std::unordered_map<hash, w_imgui_control> tagged_controls;
+	w_imgui* set_last_control_from_tag( hash tag );
+	w_imgui_control find_control( hash tag );
 	w_imgui* clear_last_control();
 
-	w_imgui* init_panel( const std::string& tag = "" );
-	w_imgui* init_push_button( const std::string& tag = "" );
-	w_imgui* init_checkbox( const std::string& tag = "" );
+	w_imgui* init_panel( hash tag = 0 );
+	w_imgui* init_push_button( hash tag = 0 );
+	w_imgui* init_checkbox( hash tag = 0 );
 
 	w_imgui* set_label( const std::string& label );
 	w_imgui* set_label_align( e_align align );

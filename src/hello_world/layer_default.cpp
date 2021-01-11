@@ -5,7 +5,7 @@
 
 e_imgui_control_state layer_default_ui_callback::get_state_for_control( w_imgui_control* control )
 {
-	if( control->tag == "checkbox_01" )
+	if( control->tag == H( "checkbox_01" ) )
 	{
 		return b_checkbox_01 ? imgui_control_state::checked : imgui_control_state::unchecked;
 	}
@@ -15,11 +15,11 @@ e_imgui_control_state layer_default_ui_callback::get_state_for_control( w_imgui_
 
 void layer_default_ui_callback::was_left_clicked( w_imgui_control* control )
 {
-	if( control->tag == "push_button_01" )
+	if( control->tag == H( "push_button_01" ) )
 	{
 		log( "BAM! Button_01 in the callback hizzy." );
 	}
-	else if( control->tag == "push_button_02" )
+	else if( control->tag == H( "push_button_02" ) )
 	{
 		log( "BAM! Button_02 in the callback hizzy." );
 	}
@@ -60,19 +60,19 @@ void layer_default::draw_ui()
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 
-	IMGUI->init_push_button( "push_button_01" )
+	IMGUI->init_push_button( H( "push_button_01" ) )
 		->set_label( "Push Button #1" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
-	IMGUI->init_push_button( "push_button_02" )
+	IMGUI->init_push_button( H( "push_button_02" ) )
 		->set_label( "Push Button #2" )
 		->set_position( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
-	IMGUI->init_checkbox( "checkbox_01" )
+	IMGUI->init_checkbox( H( "checkbox_01" ) )
 		->set_label( "Check Box #1" )
 		->set_position( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )

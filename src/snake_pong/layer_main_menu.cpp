@@ -4,13 +4,13 @@
 
 void layer_main_menu_ui_callback::was_left_clicked( w_imgui_control* control )
 {
-	if( control->tag == "button_play" )
+	if( control->tag == H( "button_play" ) )
 	{
 		engine->layer_mgr->pop();
 		engine->layer_mgr->push<layer_game>();
 		game->new_game();
 	}
-	else if( control->tag == "button_quit" )
+	else if( control->tag == H( "button_quit" ) )
 	{
 		engine->is_running = false;
 	}
@@ -38,7 +38,7 @@ void layer_main_menu::draw_ui()
 	float xpos = 64;
 	float ypos = 75;
 
-	IMGUI->init_push_button( "button_play" )
+	IMGUI->init_push_button( H( "button_play" ) )
 		->set_label( "PLAY" )
 		->set_position( { xpos, ypos } )
 		->set_size( { v_window_w - xpos * 2, 24.0f } )
@@ -47,7 +47,7 @@ void layer_main_menu::draw_ui()
 	xpos += 16;
 	ypos += 28;
 
-	IMGUI->init_push_button( "button_quit" )
+	IMGUI->init_push_button( H( "button_quit" ) )
 		->set_label( "Quit" )
 		->set_position( { xpos, ypos } )
 		->set_size( { v_window_w - xpos * 2.0f, 24.0f } )
@@ -76,7 +76,7 @@ void layer_main_menu::push()
 
 	e = add_entity<w_entity>();
 	{
-		e->tag = w_hash( "wheels" );
+		e->tag = H( "wheels" );
 		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.5f );
 
 		e->add_component<ec_mesh>()
@@ -141,13 +141,13 @@ bool layer_main_menu::iir_on_held( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_button_left_shoulder )
 	{
 		angle -= 5.0f;
-		find_entity( w_hash( "wheels" ) )->get_tform()->set_angle( angle );
+		find_entity( H( "wheels" ) )->get_tform()->set_angle( angle );
 	}
 
 	if( evt->input_id == input_id::gamepad_button_right_shoulder )
 	{
 		angle += 5.0f;
-		find_entity( w_hash( "wheels" ) )->get_tform()->set_angle( angle );
+		find_entity( H( "wheels" ) )->get_tform()->set_angle( angle );
 	}
 
 	return false;
@@ -160,7 +160,7 @@ bool layer_main_menu::iir_on_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		wheel_01_pos += evt->delta;
-		find_entity( w_hash( "wheels" ) )->get_tform()->set_position( wheel_01_pos );
+		find_entity( H( "wheels" ) )->get_tform()->set_position( wheel_01_pos );
 	}
 
 	return false;

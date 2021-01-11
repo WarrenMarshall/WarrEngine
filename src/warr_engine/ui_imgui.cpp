@@ -35,14 +35,14 @@ void w_imgui::reset()
 // this is for finding controls that were created previously
 // that you now need to reference for positioning or parenting.
 
-w_imgui* w_imgui::set_last_control_from_tag( const char* tag )
+w_imgui* w_imgui::set_last_control_from_tag( hash tag )
 {
 	_set_as_last_control( find_control( tag ) );
 
 	return this;
 }
 
-w_imgui_control w_imgui::find_control( const char* tag )
+w_imgui_control w_imgui::find_control( hash tag )
 {
 	auto iter = tagged_controls.find( tag );
 
@@ -60,7 +60,7 @@ w_imgui* w_imgui::clear_last_control()
 	return this;
 }
 
-w_imgui* w_imgui::init_panel( const std::string& tag )
+w_imgui* w_imgui::init_panel( hash tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::panel;
@@ -72,7 +72,7 @@ w_imgui* w_imgui::init_panel( const std::string& tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_push_button( const std::string& tag )
+w_imgui* w_imgui::init_push_button( hash tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::push_button;
@@ -84,7 +84,7 @@ w_imgui* w_imgui::init_push_button( const std::string& tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_checkbox( const std::string& tag )
+w_imgui* w_imgui::init_checkbox( hash tag )
 {
 	current_control = {};
 	current_control.type = imgui_control_type::check_box;
@@ -203,7 +203,7 @@ w_imgui_result* w_imgui::finalize()
 		_passive();
 	}
 
-	if( !current_control.tag.empty() )
+	if( current_control.tag )
 	{
 		tagged_controls.insert( std::pair( current_control.tag, current_control ) );
 	}

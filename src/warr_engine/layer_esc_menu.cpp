@@ -6,19 +6,19 @@
 
 void layer_esc_menu_ui_callback::was_left_clicked( w_imgui_control* control )
 {
-	if( control->tag == "button_resume" )
+	if( control->tag == H( "button_resume" ) )
 	{
 		engine->layer_mgr->pop();
 	}
-	else if( control->tag == "button_main_menu" )
+	else if( control->tag == H( "button_main_menu" ) )
 	{
 		base_game->reset_layer_stack_to_main_menu();
 	}
-	else if( control->tag == "button_fullscreen" )
+	else if( control->tag == H( "button_fullscreen" ) )
 	{
 		engine->window->toggle_fullscreen();
 	}
-	else if( control->tag == "button_exit" )
+	else if( control->tag == H( "button_exit" ) )
 	{
 		engine->is_running = false;
 	}
@@ -71,23 +71,23 @@ void layer_esc_menu::draw_ui()
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
-	IMGUI->init_push_button( "button_resume" )
+	IMGUI->init_push_button( H( "button_resume" ) )
 		->set_label( "Resume" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { IMGUI->last_control->crc.w, button_h } )
 		->finalize();
 
-	IMGUI->init_push_button( "button_main_menu" )
+	IMGUI->init_push_button( H( "button_main_menu" ) )
 		->set_label( "Main Menu" )
 		->set_position( imgui_flow::down )
 		->finalize();
 
-	IMGUI->init_push_button( "button_fullscreen" )
+	IMGUI->init_push_button( H( "button_fullscreen" ) )
 		->set_label( "Toggle Fullscreen" )
 		->set_position( imgui_flow::down )
 		->finalize();
 
-	IMGUI->init_push_button( "button_exit" )
+	IMGUI->init_push_button( H( "button_exit" ) )
 		->set_label( "Exit To Windows" )
 		->set_position( imgui_flow::down )
 		->finalize();

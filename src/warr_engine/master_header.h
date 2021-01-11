@@ -27,6 +27,23 @@ constexpr void _log_error_( Params&&... params )
 #define log_div() _log_( "[{}:{}] ----------------------------------------\n", __FUNCTION__, __LINE__ )
 
 // ----------------------------------------------------------------------------
+// hashes a string at compile time for quicker comparisons
+// yoinked from : https://stackoverflow.com/questions/2111667/compile-time-string-hashing
+
+using hash = unsigned;
+
+// #C++20 - when MSVC supports "consteval" use that instead of "constexpr" to make sure this is compile time only
+unsigned constexpr H( const char* str )
+{
+	if( *str )
+	{
+		return static_cast<unsigned int>( *str ) + 33 * H( str + 1 );
+	}
+
+	return 5381;	// i have no idea what this means but OK
+}
+
+// ----------------------------------------------------------------------------
 /*
 	the size of the virtual screen. all rendering is done on the assumption
 	of these dimensions. the renderer handles scaling this up to the actual
@@ -46,7 +63,6 @@ extern float ui_canvas_h;
 
 #define ui_canvas_scale (v_window_w / ui_canvas_w)
 
-#include "hash_string.h"
 #include "filesystem.h"
 
 #include "bit_flag_generator.h"
