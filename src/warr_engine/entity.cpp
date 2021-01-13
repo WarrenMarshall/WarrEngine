@@ -5,6 +5,7 @@
 w_entity::w_entity()
 {
 	add_component<ec_transform>();
+	// #todo - not ALL entities need physics components - don't make this automatic
 	add_component<ec_physics>();
 }
 
