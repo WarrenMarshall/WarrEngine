@@ -66,6 +66,7 @@ struct w_timeline
 	w_timeline* kf_clear();
 	w_timeline* kf_add( const w_keyframe& keyframe );
 
+	size_t find_next_keyframe_idx_from_pct( float pct );
 	void get_value( float pct_on_timeline, float* value );
 	void get_value( float pct_on_timeline, w_color* value );
 };

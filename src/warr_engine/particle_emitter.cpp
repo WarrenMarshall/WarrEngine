@@ -80,6 +80,7 @@ void w_particle_emitter::update()
 void w_particle_emitter::spawn_particle()
 {
 	w_particle* p = particle_pool->get_next_particle();
+	//new( p ) w_particle();
 	*p = {};
 
 	// particle spawn locations are determined in stages. particles are different

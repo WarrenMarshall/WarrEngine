@@ -32,14 +32,23 @@ constexpr void _log_error_( Params&&... params )
 
 using hash = unsigned;
 
-// #C++20 - when MSVC fully supports "consteval" use that instead of "constexpr" to make sure this is compile time only
+// #C++20 - when MSVC fully supports "consteval" use that instead
+//          of "constexpr" to make sure this is compile time only
+#if 1
 unsigned constexpr H( char const* str )
-//unsigned consteval H( char const* str )
 {
 	return *str ?
 		static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
 		5381;
 }
+#else
+unsigned constevalH( char const* str )
+{
+	return *str ?
+		static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
+		5381;
+}
+#endif
 
 // ----------------------------------------------------------------------------
 /*

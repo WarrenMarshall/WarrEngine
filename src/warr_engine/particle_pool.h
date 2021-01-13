@@ -11,14 +11,16 @@ struct w_particle_pool
 	w_particle_emitter* parent_emitter = nullptr;
 
 	// particle object pool
-	std::unique_ptr<w_particle[]> particles = nullptr;
-	int pool_sz = -1;
+	std::vector<w_particle> particles;	// preallocates the memory for the particle pool
+	w_particle* data = nullptr;			// direct pointer to the vector memory
+	int pool_sz = -1;					// the total number of particle slots in this pool
 
 	// which particle we're going to use next. this wraps around the vector
 	// above, endlessly, re-using particles.
 	int idx = 0;
 
-	// the number of particles in the pool that are currently alive.
+	// the number of particles in the pool that are currently alive. this is
+	// updated with each "update" cycle.
 	int num_alive = 0;
 
 	w_particle_pool( int num_particles );

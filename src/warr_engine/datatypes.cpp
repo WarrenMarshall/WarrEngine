@@ -34,6 +34,24 @@ w_timeline* w_timeline::kf_add( const w_keyframe& keyframe )
 	return this;
 }
 
+// figure out which keyframe is the one we are approaching next
+// based on a percentage indicator of where we are on the timeline.
+
+size_t w_timeline::find_next_keyframe_idx_from_pct( float pct )
+{
+	size_t kf_max = 0;
+
+	for( ; kf_max < keyframes.size() - 1; ++kf_max )
+	{
+		if( keyframes[ kf_max ].pct_marker > pct )
+		{
+			break;
+		}
+	}
+
+	return kf_max;
+}
+
 /*
 	computes a value on the timeline between 0-1, based
 	on the "pct_on_timeline" pass in.
@@ -42,18 +60,7 @@ void w_timeline::get_value( float pct_on_timeline, float* value )
 {
 	assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
 
-	// figure out which keyframe is the one we are approaching.
-	// this will be the one we are less than or equal to.
-
-	size_t kf_max = 0;
-	for( ; kf_max < keyframes.size()-1; ++kf_max )
-	{
-		if( keyframes[kf_max].pct_marker > pct_on_timeline )
-		{
-			break;
-		}
-	}
-
+	auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
 	size_t kf_min = kf_max - 1;
 
 	// the range of percentages within the min/max keyframes
@@ -70,18 +77,7 @@ void w_timeline::get_value( float pct_on_timeline, w_color* value )
 {
 	assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
 
-	// figure out which keyframe is the one we are approaching.
-	// this will be the one we are less than or equal to.
-
-	size_t kf_max = 0;
-	for( ; kf_max < keyframes.size()-1; ++kf_max )
-	{
-		if( keyframes[kf_max].pct_marker > pct_on_timeline )
-		{
-			break;
-		}
-	}
-
+	auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
 	size_t kf_min = kf_max - 1;
 
 	// the range of percentages within the min/max keyframes

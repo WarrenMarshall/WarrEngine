@@ -5,7 +5,8 @@
 w_particle_pool::w_particle_pool( int num_particles )
 	: pool_sz( num_particles )
 {
-	particles = std::make_unique<w_particle[]>( pool_sz );
+	particles.resize( pool_sz );
+	data = particles.data();
 	//log_msg( "Creating a particle pool with {} particles", num_particles );
 }
 
@@ -15,7 +16,7 @@ w_particle* w_particle_pool::get_next_particle()
 	idx = ( idx + 1 ) % pool_sz;
 
 	// return a pointer to the particle at that index.
-	return particles.get() + idx;
+	return data + idx;
 }
 
 void w_particle_pool::draw()
@@ -23,7 +24,7 @@ void w_particle_pool::draw()
 	RENDER
 		->begin();
 
-	w_particle* particle = particles.get();
+	w_particle* particle = data;
 	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
@@ -81,7 +82,7 @@ void w_particle_pool::update()
 {
 	num_alive = 0;
 
-	w_particle* particle = particles.get();
+	w_particle* particle = data;
 	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
