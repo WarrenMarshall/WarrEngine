@@ -253,3 +253,38 @@ struct ec_mesh : w_entity_component
 	w_entity_component* init( const std::string_view mesh_tag );
 	virtual void draw() override;
 };
+
+// ----------------------------------------------------------------------------
+
+// #test - this component remains untested until we actually write a game that uses it
+struct ec_follow_target : w_entity_component
+{
+	struct
+	{
+		w_entity* target = nullptr;
+		e_follow_flags flags = follow_flags::xy_axis;
+
+		// this is a multiplier against the default speed.
+		// So 2.0 is twice as fast, 0.5f is twice as slow.
+		float strength = 1.0f;
+
+		// positions are snapped to the grid when set_position is called on an entity,
+		// so this is a scratch pad where we can keep the position of the following
+		// entity in floating point form - aka not snapped to the grid. this means we
+		// can smoothly interpolate towards the target each frame while still snapping
+		// the entity itself to the grid for accurate rendering.
+		w_vec2 pos = w_vec2::zero;
+
+		std::optional<w_vec2> limits_x = std::nullopt;
+		std::optional<w_vec2> limits_y = std::nullopt;
+	} follow;
+
+	ec_follow_target() = delete;
+	ec_follow_target( w_entity* parent_entity );
+
+	virtual void update() override;
+
+	void set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength );
+	void set_follow_limits_x( w_vec2 limits );
+	void set_follow_limits_y( w_vec2 limits );
+};

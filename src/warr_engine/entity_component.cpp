@@ -801,3 +801,78 @@ void ec_mesh::draw()
 		->draw_mesh( mesh, tform.pos )
 		->rs_pop();
 }
+
+// ----------------------------------------------------------------------------
+
+ec_follow_target::ec_follow_target( w_entity* parent_entity )
+	: w_entity_component( parent_entity )
+{
+}
+
+void ec_follow_target::update()
+{
+	if( follow.target )
+	{
+		auto target_pos = follow.target->get_tform()->pos;
+
+		// position
+
+		w_vec2 delta_pos = target_pos - parent_entity->get_tform()->pos;
+
+		if( follow.flags & follow_flags::xy_axis )
+		{
+			// interpolate towards follow target position
+			follow.pos += ( ( target_pos - follow.pos ) * follow.strength ) * w_time::FTS_step_value_s;
+
+			// apply limits if we need to
+			if( follow.limits_x.has_value() )
+			{
+				follow.pos.x = glm::clamp( follow.pos.x, follow.limits_x->l, follow.limits_x->r );
+			}
+			if( follow.limits_y.has_value() )
+			{
+				follow.pos.y = glm::clamp( follow.pos.y, follow.limits_y->t, follow.limits_y->b );
+			}
+
+			// if only following on a specific axis, remove the follow influence from the other
+			if( !( follow.flags & follow_flags::x_axis ) )
+			{
+				follow.pos.x = parent_entity->get_tform()->pos.x;
+			}
+			if( !( follow.flags & follow_flags::y_axis ) )
+			{
+				follow.pos.y = parent_entity->get_tform()->pos.y;
+			}
+		}
+
+		parent_entity->set_position_deep( follow.pos, false );
+
+		// angle
+
+		if( follow.flags & follow_flags::angle )
+		{
+			parent_entity->set_angle_deep( follow.target->get_tform()->angle );
+		}
+	}
+}
+
+void ec_follow_target::set_follow_target( w_entity* entity_to_follow, e_follow_flags flags, float strength )
+{
+	follow.target = entity_to_follow;
+	follow.flags = flags;
+	follow.strength = strength;
+	follow.pos = entity_to_follow->get_tform()->pos;
+
+	parent_entity->set_position_deep( follow.target->get_tform()->pos, false );
+}
+
+void ec_follow_target::set_follow_limits_x( w_vec2 limits )
+{
+	follow.limits_x = limits;
+}
+
+void ec_follow_target::set_follow_limits_y( w_vec2 limits )
+{
+	follow.limits_y = limits;
+}
+
