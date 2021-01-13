@@ -30,7 +30,7 @@ void e_paddle::on_collision_begin( w_pending_collision& coll, w_entity* other )
 e_ball::e_ball()
 {
 	tag = H( "ball" );
-	get_component<ec_physics>()->set_collision_flags( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
+	add_component<ec_physics>()->set_collision_flags( clayer_ball, clayer_paddle | clayer_ball | clayer_world_left_right | clayer_world_top_bottom );
 
 	auto ecd = add_component<ec_b2d_dynamic>();
 	ecd->is_primary_body = true;

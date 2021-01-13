@@ -115,14 +115,14 @@ void layer_game::new_game()
 
 	e = add_entity<w_entity>();
 	e->tag = H( "world" );
-	e->get_component<ec_physics>()->set_collision_flags( clayer_world_top_bottom, clayer_ball );
+	e->add_component<ec_physics>()->set_collision_flags( clayer_world_top_bottom, clayer_ball );
 	ecs = e->add_component<ec_b2d_static>();
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( +wall_length, -v_window_hh + 4 ), w_vec2( -wall_length, -v_window_hh + 4 ) );
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -wall_length, v_window_hh - 4 ), w_vec2( +wall_length, v_window_hh - 4 ) );
 
 	e = add_entity<w_entity>();
 	e->tag = H( "world" );
-	e->get_component<ec_physics>()->set_collision_flags( clayer_world_left_right, clayer_ball );
+	e->add_component<ec_physics>()->set_collision_flags( clayer_world_left_right, clayer_ball );
 	ecs = e->add_component<ec_b2d_static>();
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -v_window_hw + 4, -wall_length ), w_vec2( -v_window_hw + 4, +wall_length ) );
 	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( v_window_hw - 4, +wall_length ), w_vec2( v_window_hw - 4, -wall_length ) );
@@ -134,7 +134,7 @@ void layer_game::new_game()
 	rc = w_rect( -32, -4, 64, 8 );
 	e = add_entity<e_paddle>();
 	e->tag = H( "player_paddle_h" );
-	e->get_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
+	e->add_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
 	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
@@ -142,7 +142,7 @@ void layer_game::new_game()
 	rc = w_rect( -4, -32, 8, 64 );
 	e = add_entity<e_paddle>();
 	e->tag = H( "player_paddle_v" );
-	e->get_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
+	e->add_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
 	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
 	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
 	e->set_position_deep( w_vec2( -1000, -1000 ), false );
