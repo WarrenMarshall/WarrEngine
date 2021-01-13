@@ -6,7 +6,7 @@ w_particle_pool::w_particle_pool( int num_particles )
 	: pool_sz( num_particles )
 {
 	particles.resize( pool_sz );
-	data = particles.data();
+	data_ptr = particles.data();
 	//log_msg( "Creating a particle pool with {} particles", num_particles );
 }
 
@@ -16,7 +16,7 @@ w_particle* w_particle_pool::get_next_particle()
 	idx = ( idx + 1 ) % pool_sz;
 
 	// return a pointer to the particle at that index.
-	return data + idx;
+	return data_ptr + idx;
 }
 
 void w_particle_pool::draw()
@@ -24,7 +24,7 @@ void w_particle_pool::draw()
 	RENDER
 		->begin();
 
-	w_particle* particle = data;
+	w_particle* particle = data_ptr;
 	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
@@ -82,7 +82,7 @@ void w_particle_pool::update()
 {
 	num_alive = 0;
 
-	w_particle* particle = data;
+	w_particle* particle = data_ptr;
 	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )

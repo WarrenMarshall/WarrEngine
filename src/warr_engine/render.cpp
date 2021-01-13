@@ -46,12 +46,6 @@ w_render* w_render::push_rgb( const w_color& color )
 	return this;
 }
 
-w_render* w_render::replace_rgb( const w_color& color )
-{
-	rs_top()->color = color;
-	return this;
-}
-
 w_render* w_render::push_rgba( const w_color& color )
 {
 	auto rs = rs_push();
@@ -62,26 +56,7 @@ w_render* w_render::push_rgba( const w_color& color )
 
 w_render* w_render::push_rgba( const w_color& color, const float alpha )
 {
-	// #render - is this function dead?
 	auto rs = rs_push();
-	rs->color = color;
-	rs->color.a = alpha;
-
-	return this;
-}
-
-w_render* w_render::replace_rgba( const w_color& color )
-{
-	auto rs = rs_top();
-	rs->color = color;
-
-	return this;
-}
-
-w_render* w_render::replace_rgba( const w_color& color, const float alpha )
-{
-	// #render - is this function dead?
-	auto rs = rs_top();
 	rs->color = color;
 	rs->color.a = alpha;
 
@@ -92,12 +67,6 @@ w_render* w_render::push_alpha( const float alpha )
 {
 	rs_push()->color.a = alpha;
 
-	return this;
-}
-
-w_render* w_render::replace_alpha( const float alpha )
-{
-	rs_top()->color.a = alpha;
 	return this;
 }
 
@@ -121,18 +90,6 @@ w_render* w_render::push_scale( const float scale )
 	return this;
 }
 
-w_render* w_render::replace_scale( const w_vec2& scale )
-{
-	rs_top()->scale = scale;
-	return this;
-}
-
-w_render* w_render::replace_scale( const float scale )
-{
-	rs_top()->scale = w_vec2( scale, scale );
-	return this;
-}
-
 w_render* w_render::push_angle( const float angle )
 {
 	rs_push()->angle = angle;
@@ -140,22 +97,10 @@ w_render* w_render::push_angle( const float angle )
 	return this;
 }
 
-w_render* w_render::replace_angle( const float angle )
-{
-	rs_top()->angle = angle;
-	return this;
-}
-
 w_render* w_render::push_align( const e_align& align )
 {
 	rs_push()->align = align;
 
-	return this;
-}
-
-w_render* w_render::replace_align( const e_align& align )
-{
-	rs_top()->align = align;
 	return this;
 }
 

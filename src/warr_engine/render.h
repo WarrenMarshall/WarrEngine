@@ -92,22 +92,14 @@ struct w_render
 	w_render* end();
 
 	w_render* push_rgb( const w_color& color );
-	w_render* replace_rgb( const w_color& color );
 	w_render* push_rgba( const w_color& color );
-	w_render* replace_rgba( const w_color& color );
 	w_render* push_rgba( const w_color& color, const float alpha );
-	w_render* replace_rgba( const w_color& color, const float alpha );
 	w_render* push_alpha( const float alpha );
-	w_render* replace_alpha( const float alpha );
 	w_render* push_glow( const float glow );
 	w_render* push_scale( const w_vec2& scale );
-	w_render* replace_scale( const w_vec2& scale );
 	w_render* push_scale( const float scale );
-	w_render* replace_scale( const float scale );
 	w_render* push_angle( const float angle );
-	w_render* replace_angle( const float angle );
 	w_render* push_align( const e_align& align );
-	w_render* replace_align( const e_align& align );
 	w_render* push_depth( const float depth );
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
 	w_render* push_snap_to_pixel( bool snap_to_pixel );

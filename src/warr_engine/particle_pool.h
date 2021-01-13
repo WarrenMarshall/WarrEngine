@@ -12,7 +12,7 @@ struct w_particle_pool
 
 	// particle object pool
 	std::vector<w_particle> particles;	// preallocates the memory for the particle pool
-	w_particle* data = nullptr;			// direct pointer to the vector memory
+	w_particle* data_ptr = nullptr;			// direct pointer to the vector memory
 	int pool_sz = -1;					// the total number of particle slots in this pool
 
 	// which particle we're going to use next. this wraps around the vector
