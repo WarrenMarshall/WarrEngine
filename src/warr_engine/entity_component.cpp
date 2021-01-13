@@ -789,15 +789,14 @@ void ec_mesh::draw()
 		return;
 	}
 
-	w_render_state rs;
-	rs.snap_to_pixel = false;
-	rs.color = w_color::teal;
-	rs.color.a = 0.25f;
-	rs.glow = 2.0f;
+	w_render_state_opt rso;
+	rso.snap_to_pixel = false;
+	rso.color = w_color( 0.2f, 0.2f, 0.2f, 1.0f );
+	rso.glow = 1.1f;
 
 	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER
-		->push_render_state( rs )
+		->push_render_state( rso )
 		->draw_mesh( mesh, tform.pos )
 		->rs_pop();
 }

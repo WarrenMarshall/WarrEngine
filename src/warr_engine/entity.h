@@ -86,9 +86,6 @@ struct w_entity : i_life_cycle
 	virtual void on_collision_begin( w_pending_collision& coll, w_entity* other );
 	virtual void on_collision_end( w_pending_collision& coll, w_entity* other );
 
-	virtual void on_touch_begin( w_pending_collision& coll, w_entity* other );
-	virtual void on_touch_end( w_pending_collision& coll, w_entity* other );
-
 	w_transform* get_tform();
 };
 

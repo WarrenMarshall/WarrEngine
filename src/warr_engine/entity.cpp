@@ -147,20 +147,6 @@ void w_entity::on_collision_end( w_pending_collision& coll, w_entity* other )
 {
 }
 
-// entities are starting to touch
-
-void w_entity::on_touch_begin( w_pending_collision& coll, w_entity* other )
-{
-	// #todo - this should be called when a sensor collides with something
-}
-
-// entities are not longer touching
-
-void w_entity::on_touch_end( w_pending_collision& coll, w_entity* other )
-{
-	// #todo - this should be called when a sensor stops colliding with something
-}
-
 w_transform* w_entity::get_tform()
 {
 	return &( get_component<ec_transform>()->tform );

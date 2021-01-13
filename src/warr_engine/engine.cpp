@@ -240,43 +240,8 @@ void w_engine::deinit_game_engine()
 	logfile->deinit();
 }
 
-#if 0	// #thread_example
-static std::mutex log_mutex;
-
-static void worker_thread( int id, int count )
-{
-	for( int x = 0 ; x < count ; ++x )
-	{
-		{
-			//std::lock_guard<std::mutex> lock( log_mutex );
-			log( "{} : {}", id, x );
-		}
-
-		std::this_thread::sleep_for( std::chrono::milliseconds( x * engine->random->geti_range( 10, 100 ) ) );
-	}
-
-	std::lock_guard<std::mutex> lock( log_mutex );
-	log( "{} : finished!", id );
-}
-#endif
-
 void w_engine::exec_main_loop()
 {
-#if 0	// #thread_example
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 1, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 2, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 3, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 4, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 5, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 6, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 7, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 8, 10 ) );
-	engine->futures.push_back( std::async( std::launch::async, worker_thread, 9, 10 ) );
-
-	engine->wait_for_thread_pool_to_finish();
-	log( "all threads complete!" );
-#endif
-
 	while( engine->is_running && !glfwWindowShouldClose( engine->window->window ) )
 	{
 		/*

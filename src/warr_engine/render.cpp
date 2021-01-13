@@ -192,6 +192,14 @@ w_render* w_render::push_render_state( w_render_state& rs )
 	return this;
 }
 
+w_render* w_render::push_render_state( w_render_state_opt& rso )
+{
+	auto rs = rs_push();
+	rso.populate( rs );
+
+	return this;
+}
+
 w_render* w_render::pop()
 {
 	rs_pop();

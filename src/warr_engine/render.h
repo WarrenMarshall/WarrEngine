@@ -12,6 +12,26 @@ struct alignas( struct_alignment_for_cache ) w_render_state
 	bool snap_to_pixel = true;
 };
 
+struct w_render_state_opt
+{
+	std::optional<w_color> color = std::nullopt;
+	std::optional<float> glow = std::nullopt;
+	std::optional<w_vec2> scale = std::nullopt;
+	std::optional<float> angle = std::nullopt;
+	std::optional<e_align> align = std::nullopt;
+	std::optional<bool> snap_to_pixel = std::nullopt;
+
+	void populate( w_render_state* rs )
+	{
+		rs->color = color.value_or( rs->color );
+		rs->glow = glow.value_or( rs->glow );
+		rs->scale = scale.value_or( rs->scale );
+		rs->angle = angle.value_or( rs->angle );
+		rs->align = align.value_or( rs->align );
+		rs->snap_to_pixel = snap_to_pixel.value_or( rs->snap_to_pixel );
+	}
+};
+
 // making sure that these are small enough to fit into the cache nicely and
 // that they are fast to copy around.
 
@@ -92,6 +112,7 @@ struct w_render
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
 	w_render* push_snap_to_pixel( bool snap_to_pixel );
 	w_render* push_render_state( w_render_state& rs );
+	w_render* push_render_state( w_render_state_opt& rso );
 	w_render* pop();
 
 	// ----------------------------------------------------------------------------
