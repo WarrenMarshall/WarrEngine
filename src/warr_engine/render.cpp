@@ -527,8 +527,10 @@ w_render* w_render::draw_stats()
 			->push_rgba( w_color::pal( 0 ) )
 			->push_alpha( 0.75f )
 			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
-			->pop()
-			->pop()
+			->end();
+
+		RENDER
+			->begin()
 			->push_depth_nudge()
 			->push_rgb( w_color::white )
 			->push_align( align::hcenter );

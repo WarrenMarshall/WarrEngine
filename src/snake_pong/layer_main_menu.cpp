@@ -26,12 +26,15 @@ void layer_main_menu::draw_ui()
 {
 	w_layer::draw_ui();
 
+	w_render_state_opt rso;
+	rso.scale = { 2.0f, 2.0f };
+	rso.align = align::hcenter;
+	rso.color = w_color::white;
+	rso.glow = 1.1f;
+
 	RENDER
 		->begin()
-		->push_scale( { 2.0f, 2.0f } )
-		->push_align( align::hcenter )
-		->push_rgb( w_color::white )
-		->push_glow( 100.0f )
+		->push_render_state( rso )
 		->draw_string( "Light Snake", w_rect( v_window_hw, 32 ) )
 		->end();
 
@@ -79,12 +82,19 @@ void layer_main_menu::push()
 		e->tag = H( "wheels" );
 		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.5f );
 
-		e->add_component<ec_mesh>()
-			->init( "mesh_torus_test" )
-			->tform.set_scale( 1.0f )->set_angle( 120.0f );
+		w_render_state_opt rso;
+		rso.snap_to_pixel = false;
+		rso.color = w_color::black;
+		rso.color->a = 0.15f;
 
 		e->add_component<ec_mesh>()
 			->init( "mesh_torus_test" )
+			->set_render_state( rso )
+			->tform.set_scale( 1.25f )->set_angle( 120.0f );
+
+		e->add_component<ec_mesh>()
+			->init( "mesh_torus_test" )
+			->set_render_state( rso )
 			->tform.set_scale( 0.5f );
 	}
 

@@ -51,11 +51,13 @@ void layer_esc_menu::draw_ui()
 {
 	w_layer::draw_ui();
 
+	w_render_state_opt rso;
+	rso.color = w_color::pal( 0 );
+	rso.color->a = 0.75f;
+
 	RENDER
-		->push_rgb( w_color::pal( 0 ) )
-		->push_alpha( 0.75f )
+		->push_render_state( rso )
 		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
-		->pop()
 		->pop();
 
 	constexpr float num_buttons = 4;

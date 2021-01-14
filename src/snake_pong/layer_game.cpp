@@ -151,7 +151,17 @@ void layer_game::new_game()
 
 	prism = e = add_entity<w_entity>();
 	e->tag = H( "prism" );
-	e->add_component<ec_mesh>()->init( "shadow_beam" );
+
+	w_render_state_opt rso;
+	rso.snap_to_pixel = false;
+	rso.color = w_color::teal;
+	rso.color->a = 0.25f;
+	rso.glow = 1.1f;
+
+	e->add_component<ec_mesh>()
+		->init( "shadow_beam" )
+		->set_render_state( rso );
+
 	e->add_component<ec_sprite>()->init( "lightbulb" );
 }
 
@@ -163,13 +173,13 @@ void layer_game::draw()
 	w_rect rc = w_rect( -v_window_hw + edge_sz, -v_window_hh + edge_sz, v_window_w - ( edge_sz * 2 ), v_window_h - ( edge_sz * 2 ) );
 	w_rect rc2 = w_rect( -v_window_hw + edge_sz - 1.0f, -v_window_hh + edge_sz - 1.0f, v_window_w - ( edge_sz * 2 ) + 2.0f, v_window_h - ( edge_sz * 2 ) + 2.0f );
 
+	w_render_state_opt rso;
+	rso.color = w_color::teal;
+	rso.glow = power_flicker ? 0.0f : 1.0f;
+
 	RENDER
-		->push_rgb( w_color::black )
-		->pop()
-		->push_rgb( w_color::teal )
-		->push_glow( power_flicker ? 0.0f : 1.0f )
+		->push_render_state( rso )
 		->draw_rectangle( rc )
 		->draw_rectangle( rc2 )
-		->pop()
 		->pop();
 }

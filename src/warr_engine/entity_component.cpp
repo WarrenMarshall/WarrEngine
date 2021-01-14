@@ -61,6 +61,13 @@ void w_entity_component::update()
 	pos_interp = w_vec2::zero;
 }
 
+w_entity_component* w_entity_component::set_render_state( w_render_state_opt& rso )
+{
+	this->rs_opt = rso;
+
+	return this;
+}
+
 void w_entity_component::set_life_timer( int life_in_ms )
 {
 	assert( !life_timer.has_value() );
@@ -789,14 +796,8 @@ void ec_mesh::draw()
 		return;
 	}
 
-	w_render_state_opt rso;
-	rso.snap_to_pixel = false;
-	rso.color = w_color( 0.2f, 0.2f, 0.2f, 1.0f );
-	rso.glow = 1.1f;
-
-	// #todo - mesh rendering needs to be controllable for colors, alpha, depth, etc
 	RENDER
-		->push_render_state( rso )
+		->push_render_state( rs_opt )
 		->draw_mesh( mesh, tform.pos )
 		->rs_pop();
 }

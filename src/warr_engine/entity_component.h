@@ -7,6 +7,7 @@ struct w_entity_component : i_life_cycle
 	w_transform tform;
 	w_vec2 pos_interp;
 	unsigned id = 0;
+	w_render_state_opt rs_opt;
 
 	std::optional<w_timer> life_timer = std::nullopt;
 
@@ -23,6 +24,7 @@ struct w_entity_component : i_life_cycle
 	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw() {}
 	virtual void update();
+	w_entity_component* set_render_state( w_render_state_opt& rso );
 
 	virtual void set_life_timer( int life_in_ms );
 
