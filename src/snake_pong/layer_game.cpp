@@ -99,70 +99,83 @@ void layer_game::new_game()
 
 	// camera
 
-	e = add_entity<e_camera>();
-	e->tag = H( "main_camera" );
-	e->get_tform()->set_position( { v_window_hw, v_window_hh } );
+	{
+		e = add_entity<e_camera>();
+		e->tag = H( "main_camera" );
+		e->get_tform()->set_position( { v_window_hw, v_window_hh } );
+	}
 
-	// emitter background
+	// background particles
 
-	e = add_entity<w_entity>();
-	e->add_component<ec_emitter>()->init( "emitter_game_stars" );
+	{
+		e = add_entity<w_entity>();
+		e->add_component<ec_emitter>()->init( "emitter_game_stars" );
+	}
 
 	// world collision geometry
+	{
+		ec_b2d_static* ecs;
+		constexpr float wall_length = 512.0f;
 
-	ec_b2d_static* ecs;
-	constexpr float wall_length = 512.0f;
+		e = add_entity<w_entity>();
+		e->tag = H( "world" );
+		e->add_component<ec_physics>()->set_collision_flags( clayer_world_top_bottom, clayer_ball );
+		ecs = e->add_component<ec_b2d_static>();
+		ecs->add_fixture_line( "", w_vec2::zero, w_vec2( +wall_length, -v_window_hh + 4 ), w_vec2( -wall_length, -v_window_hh + 4 ) );
+		ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -wall_length, v_window_hh - 4 ), w_vec2( +wall_length, v_window_hh - 4 ) );
 
-	e = add_entity<w_entity>();
-	e->tag = H( "world" );
-	e->add_component<ec_physics>()->set_collision_flags( clayer_world_top_bottom, clayer_ball );
-	ecs = e->add_component<ec_b2d_static>();
-	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( +wall_length, -v_window_hh + 4 ), w_vec2( -wall_length, -v_window_hh + 4 ) );
-	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -wall_length, v_window_hh - 4 ), w_vec2( +wall_length, v_window_hh - 4 ) );
-
-	e = add_entity<w_entity>();
-	e->tag = H( "world" );
-	e->add_component<ec_physics>()->set_collision_flags( clayer_world_left_right, clayer_ball );
-	ecs = e->add_component<ec_b2d_static>();
-	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -v_window_hw + 4, -wall_length ), w_vec2( -v_window_hw + 4, +wall_length ) );
-	ecs->add_fixture_line( "", w_vec2::zero, w_vec2( v_window_hw - 4, +wall_length ), w_vec2( v_window_hw - 4, -wall_length ) );
+		e = add_entity<w_entity>();
+		e->tag = H( "world" );
+		e->add_component<ec_physics>()->set_collision_flags( clayer_world_left_right, clayer_ball );
+		ecs = e->add_component<ec_b2d_static>();
+		ecs->add_fixture_line( "", w_vec2::zero, w_vec2( -v_window_hw + 4, -wall_length ), w_vec2( -v_window_hw + 4, +wall_length ) );
+		ecs->add_fixture_line( "", w_vec2::zero, w_vec2( v_window_hw - 4, +wall_length ), w_vec2( v_window_hw - 4, -wall_length ) );
+	}
 
 	// paddles
+	{
+		w_render_state_opt rso;
+		rso.color = w_color::teal * 1.1f;
 
-	w_rect rc;
+		w_rect rc;
 
-	rc = w_rect( -32, -4, 64, 8 );
-	e = add_entity<e_paddle>();
-	e->tag = H( "player_paddle_h" );
-	e->add_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
-	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
-	e->set_position_deep( w_vec2( -1000, -1000 ), false );
+		rc = w_rect( -32, -4, 64, 8 );
+		e = add_entity<e_paddle>();
+		e->tag = H( "player_paddle_h" );
+		e->add_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
+		e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
+		e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, rc )
+			->set_render_state( rso );
+		e->set_position_deep( w_vec2( -1000, -1000 ), false );
 
-	rc = w_rect( -4, -32, 8, 64 );
-	e = add_entity<e_paddle>();
-	e->tag = H( "player_paddle_v" );
-	e->add_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
-	e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
-	e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, w_color::teal * 1.1f, rc );
-	e->set_position_deep( w_vec2( -1000, -1000 ), false );
+		rc = w_rect( -4, -32, 8, 64 );
+		e = add_entity<e_paddle>();
+		e->tag = H( "player_paddle_v" );
+		e->add_component<ec_physics>()->set_collision_flags( clayer_paddle, clayer_ball );
+		e->add_component<ec_b2d_kinematic>()->add_fixture_box( "", rc );
+		e->add_component<ec_primitive_shape>()->init( primitive_shape::filled_rectangle, rc )
+			->set_render_state( rso );
+		e->set_position_deep( w_vec2( -1000, -1000 ), false );
+	}
 
 	// prism
 
-	prism = e = add_entity<w_entity>();
-	e->tag = H( "prism" );
+	{
+		prism = e = add_entity<w_entity>();
+		e->tag = H( "prism" );
 
-	w_render_state_opt rso;
-	rso.snap_to_pixel = false;
-	rso.color = w_color::teal;
-	rso.color->a = 0.25f;
-	rso.glow = 1.1f;
+		w_render_state_opt rso;
+		rso.snap_to_pixel = false;
+		rso.color = w_color::teal;
+		rso.color->a = 0.25f;
+		rso.glow = 1.1f;
 
-	e->add_component<ec_mesh>()
-		->init( "shadow_beam" )
-		->set_render_state( rso );
+		e->add_component<ec_mesh>()
+			->init( "shadow_beam" )
+			->set_render_state( rso );
 
-	e->add_component<ec_sprite>()->init( "lightbulb" );
+		e->add_component<ec_sprite>()->init( "lightbulb" );
+	}
 }
 
 void layer_game::draw()

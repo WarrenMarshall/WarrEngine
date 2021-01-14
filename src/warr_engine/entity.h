@@ -33,12 +33,17 @@ struct w_entity : i_life_cycle
 	}
 
 	// returns the first component it finds that matches the type bit mask.
+	[[nodiscard]] w_entity_component* get_component( hash tag = 0 )
+	{
+		return get_component<w_entity_component>( tag );
+	}
+
 	template<typename T>
-	[[nodiscard]] T* get_component()
+	[[nodiscard]] T* get_component( hash tag = 0 )
 	{
 		for( auto& ec : components )
 		{
-			if( dynamic_cast<T*>( ec.get() ) )
+			if( dynamic_cast<T*>( ec.get() ) && ( tag == 0 || ec->tag == tag ) )
 			{
 				return static_cast<T*>( ec.get() );
 			}
@@ -50,7 +55,7 @@ struct w_entity : i_life_cycle
 	// fills a vector with all the components it finds that match the class "T"
 
 	template<typename T>
-	void get_components( std::vector<T*>& ecs )
+	void get_components( std::vector<T*>& ecs, hash tag = 0 )
 	{
 		// make sure the vector can handle at least 10 items - most get_* calls will result in
 		// fewer than that so this saves unnecessary reallocations
@@ -58,7 +63,7 @@ struct w_entity : i_life_cycle
 
 		for( auto& ec : this->components )
 		{
-			if( dynamic_cast<T*>( ec.get() ) )
+			if( dynamic_cast<T*>( ec.get() ) && ( tag == 0 || ec->tag == tag ) )
 			{
 				ecs.emplace_back( static_cast<T*>( ec.get() ) );
 			}

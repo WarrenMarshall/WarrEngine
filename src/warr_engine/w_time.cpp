@@ -2,10 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-const float w_time::FTS_desired_frames_per_second = 60;
-const float w_time::FTS_step_value_ms = 1000.0f / w_time::FTS_desired_frames_per_second;
-const float w_time::FTS_step_value_s = w_time::FTS_step_value_ms / 1000.f;
-
 w_time::w_time()
 {
 	init();

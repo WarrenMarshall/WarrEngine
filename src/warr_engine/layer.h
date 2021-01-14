@@ -5,21 +5,18 @@ struct w_layer : i_life_cycle, i_input_receiver
 	std::vector<std::unique_ptr<w_entity>> entities;
 	w_imgui_callback* imgui_callback = nullptr;
 
-	struct
-	{
-		// if true, this layer completely covers and obscures the layers below it in the stack.
-		bool draws_completely_solid : 1;
+	// if true, this layer completely covers and obscures the layers below it in the stack.
+	bool draws_completely_solid = false;
 
-		// if true, the layers below this one can't receive user input
-		bool blocks_further_input : 1;
+	// if true, the layers below this one can't receive user input
+	bool blocks_further_input = false;
 
 #ifndef _FINALRELEASE
-		// if true, this is the layer where the box2d entities live. as a rule, entities
-		// using the physics engine live on the same layer. the engine needs a way of
-		// knowing which layer that is so it can draw the debug information correctly.
-		bool is_debug_physics_layer : 1;
+	// if true, this is the layer where the box2d entities live. as a rule, entities
+	// using the physics engine live on the same layer. the engine needs a way of
+	// knowing which layer that is so it can draw the debug information correctly.
+	bool is_debug_physics_layer = false;
 #endif
-	};
 
 	w_layer();
 	virtual ~w_layer() = default;

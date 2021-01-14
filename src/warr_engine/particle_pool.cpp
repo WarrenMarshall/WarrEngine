@@ -21,16 +21,13 @@ w_particle* w_particle_pool::get_next_particle()
 
 void w_particle_pool::draw()
 {
-	RENDER
-		->begin();
-
 	w_particle* particle = data_ptr;
 	for( auto p = 0 ; p < pool_sz ; ++p )
 	{
 		if( particle->is_alive() )
 		{
 			// lifetime
-			float interp_life_span = RENDER->calc_interpolated_per_sec_value( particle->life_span, -engine->time->FTS_step_value_ms );
+			float interp_life_span = RENDER->calc_interpolated_per_sec_value( particle->life_span, -FTS::ms_per_step );
 
 			float pct_of_life = glm::abs( 1.0f - ( interp_life_span / particle->life_span_save ) );
 			pct_of_life = glm::clamp( pct_of_life, 0.0f, 1.0f );
@@ -74,8 +71,6 @@ void w_particle_pool::draw()
 
 		particle++;
 	}
-
-	RENDER->end();
 }
 
 void w_particle_pool::update()

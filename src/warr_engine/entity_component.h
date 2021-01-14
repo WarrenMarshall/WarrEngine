@@ -7,8 +7,8 @@ struct w_entity_component : i_life_cycle
 	w_transform tform;
 	w_vec2 pos_interp;
 	unsigned id = 0;
+	hash tag;
 	w_render_state_opt rs_opt;
-
 	std::optional<w_timer> life_timer = std::nullopt;
 
 	// components have pointers to their entity parents for convenience
@@ -22,9 +22,12 @@ struct w_entity_component : i_life_cycle
 	virtual ~w_entity_component() = default;
 
 	[[nodiscard]] virtual bool is_fully_dead();
-	virtual void draw() {}
+	virtual void draw();
 	virtual void update();
+	virtual void play();
+	virtual void stop();
 	w_entity_component* set_render_state( w_render_state_opt& rso );
+	w_entity_component* set_tag( hash tag );
 
 	virtual void set_life_timer( int life_in_ms );
 
@@ -83,8 +86,8 @@ struct ec_primitive_shape : w_entity_component
 	ec_primitive_shape() = delete;
 	ec_primitive_shape( w_entity* parent_entity );
 
-	w_entity_component* init( const e_primitive_shape prim_shape, const w_color& color, const w_rect& rc );
-	w_entity_component* init( const e_primitive_shape prim_shape, const w_color& color, const float radius );
+	w_entity_component* init( const e_primitive_shape prim_shape, const w_rect& rc );
+	w_entity_component* init( const e_primitive_shape prim_shape, const float radius );
 	virtual void draw() override;
 };
 
@@ -110,11 +113,35 @@ struct ec_sound : w_entity_component
 {
 	a_sound* snd = nullptr;
 
+	// general usage cases:
+	//
+	// music
+	//		- one_shot = false, auto_play = false
+	// sound
+	//		- one_shot = true, auto_play = false
+	// sound_fx (i.e. part of a w_entity_transient)
+	//		- one_shot = true, auto_play = true
+
+	// indicates that this sound is played exactly once. after
+	// it plays, the component will mark itself as dying so it
+	// can be cleaned up.
+	//
+	// setting this to false is useful if you want to be able
+	// to trigger a sound over and over again on the same
+	// entity component;
+	bool one_shot = false;
+
+	// means that the sound will automatically start playing the next
+	// time the "update" function is called
+	bool auto_play = false;
+
 	ec_sound() = delete;
 	ec_sound( w_entity* parent_entity );
 
-	w_entity_component* init( const std::string_view snd_tag );
-	virtual void draw() override;
+	w_entity_component* init( const std::string_view snd_tag, bool one_shot, bool auto_play );
+	virtual void update() override;
+	virtual void play() override;
+	virtual void stop() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -210,12 +237,9 @@ struct ec_tilemap_tile
 	int tileset_idx;
 	w_pos pos = w_pos::zero;
 
-	struct
-	{
-		bool flipped_horizontally : 1;
-		bool flipped_vertically : 1;
-		bool flipped_diagonally : 1;
-	};
+	bool flipped_horizontally = false;
+	bool flipped_vertically = false;
+	bool flipped_diagonally = false;
 
 	ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* texture );
 };

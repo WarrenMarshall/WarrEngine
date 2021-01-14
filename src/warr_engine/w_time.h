@@ -4,15 +4,6 @@
 
 struct w_time
 {
-	// set to however many times per second you want your game/engine logic updated
-	static const float FTS_desired_frames_per_second;
-
-	// how large a time step is in fixed time
-	static const float FTS_step_value_ms;
-
-	// how much of 1 second is covered by the fixed time step
-	static const float FTS_step_value_s;
-
 	float delta_ms = 0.0f;
 
 	// fixed time step accumulator. this accrues each frame

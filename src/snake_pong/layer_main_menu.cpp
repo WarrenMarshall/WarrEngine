@@ -35,7 +35,7 @@ void layer_main_menu::draw_ui()
 	RENDER
 		->begin()
 		->push_render_state( rso )
-		->draw_string( "Light Snake", w_rect( v_window_hw, 32 ) )
+		->draw_string( "Pong Paddle Thing", w_rect( v_window_hw, 32 ) )
 		->end();
 
 	float xpos = 64;
@@ -65,16 +65,6 @@ void layer_main_menu::push()
 
 	w_entity* e = nullptr;
 
-	// particles
-
-	e = add_entity<w_entity>();
-	{
-		e->get_tform()->set_position( { v_window_hw, 0.0f } );
-		e->add_component<ec_emitter>()
-			->init( "menu_fire_up" )
-			->tform.set( { 0.0f, v_window_h }, 0.0f, 1.0f );
-	}
-
 	// mechanical meshes
 
 	e = add_entity<w_entity>();
@@ -85,17 +75,37 @@ void layer_main_menu::push()
 		w_render_state_opt rso;
 		rso.snap_to_pixel = false;
 		rso.color = w_color::black;
-		rso.color->a = 0.15f;
+		rso.color->a = 0.95f;
 
 		e->add_component<ec_mesh>()
 			->init( "mesh_torus_test" )
+			->set_tag( H( "mega_outer_wheel" ) )
+			->set_render_state( rso )
+			->tform.set_scale( 2.75f )->set_angle( 240.0f );
+
+		rso.color->a = 0.65f;
+		e->add_component<ec_mesh>()
+			->init( "mesh_torus_test" )
+			->set_tag( H("outer_wheel") )
 			->set_render_state( rso )
 			->tform.set_scale( 1.25f )->set_angle( 120.0f );
 
+		rso.color->a = 0.35f;
 		e->add_component<ec_mesh>()
 			->init( "mesh_torus_test" )
+			->set_tag( H( "inner_wheel" ) )
 			->set_render_state( rso )
 			->tform.set_scale( 0.5f );
+	}
+
+	// particles
+
+	e = add_entity<w_entity>();
+	{
+		e->get_tform()->set_position( { v_window_hw, 0.0f } );
+		e->add_component<ec_emitter>()
+			->init( "menu_fire_up" )
+			->tform.set( { 0.0f, v_window_h }, 0.0f, 1.0f );
 	}
 
 	a_sound::find( "main_menu_music" )->play();
@@ -105,6 +115,19 @@ void layer_main_menu::pop()
 {
 	w_layer::pop();
 	a_sound::find( "main_menu_music" )->stop();
+}
+
+void layer_main_menu::update()
+{
+	w_layer::update();
+
+	static float angle = 0.0f;
+
+	find_entity( H( "wheels" ) )->get_component( H( "mega_outer_wheel" ) )->tform.set_angle( -angle );
+	find_entity( H( "wheels" ) )->get_component( H("outer_wheel") )->tform.set_angle( angle );
+	find_entity( H( "wheels" ) )->get_component( H( "inner_wheel" ) )->tform.set_angle( -angle );
+
+	angle += 15.0f * FTS::per_second_scaler;
 }
 
 void layer_main_menu::becoming_top_layer()

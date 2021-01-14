@@ -19,6 +19,7 @@ struct layer_main_menu : w_layer
 	virtual void becoming_top_layer() override;
 	virtual void push() override;
 	virtual void pop() override;
+	virtual void update() override;
 
 	virtual w_imgui_callback* get_imgui_callback() override;
 

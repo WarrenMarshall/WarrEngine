@@ -1,11 +1,5 @@
 #pragma once
 
-// comment this line out if start up is crashing and you want to rule out
-// the threaded asset loading code.
-#define USE_THREADED_ASSET_LOADING
-
-constexpr int struct_alignment_for_cache = 64;
-
 #pragma warning(disable : 4324 )	// structure was padded due to alignment specifier
 #pragma warning(disable : 4530 )	// C++ exception handler used, but unwind semantics are not enabled
 #pragma warning(disable : 4130 )	// logical operation on address of string constant
@@ -94,10 +88,41 @@ constexpr int struct_alignment_for_cache = 64;
 #pragma warning(pop)	// turn warnings back on
 
 // ----------------------------------------------------------------------------
-// game engine specific stuff that doesn't change often
-//
-// putting things in here will speed up partial compiles
+// game engine specific stuff that doesn't change
 // ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+// fixed-time stepping constants
+
+namespace FTS
+{
+	// how many fixed time steps, per second
+	constexpr float frames_per_second = 60.0f;
+
+	// how many milliseconds will have passed each time a fixed time step update occurs
+	constexpr float ms_per_step = 1000.0f / frames_per_second;
+
+	// any value you want to update as a "per second" value in an update function should
+	// be multiplied against this constant.
+	//
+	// i.e. if you want to rotate something 15 degrees per second, then in your
+	// update function, increase your angle value with something like:
+	//
+	// angle += 15.0f * FTS::per_second_scaler;
+
+	constexpr float per_second_scaler = ms_per_step / 1000.f;
+}
+
+// ----------------------------------------------------------------------------
+
+// comment this line out if start up is crashing and you want to rule out
+// the threaded asset loading code.
+
+#define USE_THREADED_ASSET_LOADING
+
+// ----------------------------------------------------------------------------
+
+constexpr int struct_alignment_for_cache = 64;
 
 #include "master_fwd_decl.h"
 
@@ -119,42 +144,6 @@ using w_offset = w_vec2;
 using w_pos = w_vec2;
 
 // ----------------------------------------------------------------------------
-/*
-	macros to make enum definitions easier to read.
-
-	we do it this way because using the standard enum declarations in C++
-	makes the compiler spew warnings about conversions to and from int.
-
-	usage example:
-
-		enum_begin( color )
-			red,
-			white,
-			blue
-		enum_end
-
-	this create an integer alias called "e_color" which
-	can be used in place of "int" when defining vars using
-	this enum.
-
-	to access the enum values, use "color::white" format.
-
-	i.e.
-		e_color border_clr = color::white;
-
-		void set_screen_color( e_color clr );
-*/
-
-#define enum_begin( name )\
-	using e_##name = int;\
-	namespace name\
-	{\
-		enum\
-		{
-
-#define enum_end\
-		};\
-	};
 
 #include "master_enum.h"
 
@@ -258,6 +247,8 @@ using b_ignore_dead_zone = bool;
 using b_parse_bracket_sets = bool;
 using b_set_current = bool;
 using b_reset_velocity = bool;
+using b_one_shot = bool;
+using b_auto_play = bool;
 
 // ----------------------------------------------------------------------------
 

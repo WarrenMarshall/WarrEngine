@@ -496,12 +496,7 @@ w_render* w_render::draw_stats()
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / TICK : {} FPS",
 											  stats.frame_count.value,
 											  stats.frame_times_ms.value,
-											  static_cast<int>( w_time::FTS_desired_frames_per_second ) ) );
-		//stat_lines.emplace_back( fmt::format( "DC: {}, V: {}, I: {}",
-		//									  f_commas( stats.draw_calls.value ),
-		//									  f_commas( stats.vertices.value ),
-		//									  f_commas( stats.indices.value ) )
-		//);
+											  static_cast<int>( FTS::frames_per_second ) ) );
 		stat_lines.emplace_back( fmt::format( "DC:{}, Q:{}, T:{}, L:{}, P:{}",
 											  f_commas( stats.draw_calls.value ),
 											  f_commas( stats.quads.value ),
@@ -806,7 +801,7 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 
 float w_render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const
 {
-	return current_value + ( ( step_per_second * w_time::FTS_step_value_s ) * RENDER->frame_interpolate_pct );
+	return current_value + ( ( step_per_second * FTS::per_second_scaler ) * RENDER->frame_interpolate_pct );
 }
 
 // binds a texture to a specific texture slot

@@ -59,7 +59,7 @@ void w_gamepad::update_state()
 
 void w_gamepad::update()
 {
-	rumble_time_remaining_ms -= engine->time->FTS_step_value_ms;
+	rumble_time_remaining_ms -= FTS::ms_per_step;
 	if( rumble_time_remaining_ms <= 0 )
 	{
 		rumble_time_remaining_ms = 0;

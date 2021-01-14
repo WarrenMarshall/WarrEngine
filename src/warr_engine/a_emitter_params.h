@@ -25,11 +25,8 @@ struct a_emitter_params : i_asset
 	float s_max_spawn_per_sec = 0.0f;	// how many particles to spawn from this emitter, per second
 	float a_dir = 0.0f;					// the base direction that particles start moving in when they spawn
 
-	struct
-	{
-		char needs_warm_up : 1;
-		char is_one_shot : 1;
-	};
+	bool needs_warm_up = false;
+	bool is_one_shot = false;
 
 	a_emitter_params();
 };

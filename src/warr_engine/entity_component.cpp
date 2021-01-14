@@ -36,6 +36,10 @@ bool w_entity_component::is_fully_dead()
 	return true;
 }
 
+void w_entity_component::draw()
+{
+}
+
 void w_entity_component::update()
 {
 	if( life_timer.has_value() )
@@ -61,9 +65,24 @@ void w_entity_component::update()
 	pos_interp = w_vec2::zero;
 }
 
+void w_entity_component::play()
+{
+}
+
+void w_entity_component::stop()
+{
+}
+
 w_entity_component* w_entity_component::set_render_state( w_render_state_opt& rso )
 {
 	this->rs_opt = rso;
+
+	return this;
+}
+
+w_entity_component* w_entity_component::w_entity_component::set_tag( hash tag )
+{
+	this->tag = tag;
 
 	return this;
 }
@@ -130,7 +149,10 @@ void ec_sprite::draw()
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
-	RENDER->draw_sprite( texture, tform.pos );
+	RENDER
+		->push_render_state( rs_opt )
+		->draw_sprite( texture, tform.pos )
+		->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -140,19 +162,17 @@ ec_primitive_shape::ec_primitive_shape( w_entity* parent_entity )
 {
 }
 
-w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const w_color& color, const w_rect& rc )
+w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const w_rect& rc )
 {
 	this->prim_shape = prim_shape;
-	this->color = color;
 	this->rc = rc;
 
 	return this;
 }
 
-w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const w_color& color, const float radius )
+w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape, const float radius )
 {
 	this->prim_shape = prim_shape;
-	this->color = color;
 	this->radius = radius;
 
 	return this;
@@ -165,7 +185,8 @@ void ec_primitive_shape::draw()
 		return;
 	}
 
-	RENDER->push_rgba( color );
+	RENDER
+		->push_render_state( rs_opt );
 
 	switch( prim_shape )
 	{
@@ -245,13 +266,17 @@ void ec_emitter::draw()
 	// particles live in world space, so remove any entity and
 	// component level transforms before drawing the particle pool
 
-	OPENGL
-		->push_identity();
+	OPENGL->push_identity();
+	RENDER
+		->begin()
+		->push_render_state( rs_opt );
 
 	emitter->particle_pool->draw();
 
-	OPENGL
-		->pop();
+	RENDER
+		->pop()
+		->end();
+	OPENGL->pop();
 
 }
 
@@ -286,22 +311,41 @@ ec_sound::ec_sound( w_entity* parent_entity )
 {
 }
 
-w_entity_component* ec_sound::init( const std::string_view snd_tag )
+w_entity_component* ec_sound::init( const std::string_view snd_tag, bool one_shot, bool auto_play )
 {
 	snd = a_sound::find( snd_tag );
+	this->one_shot = one_shot;
+	this->auto_play = auto_play;
 
 	return this;
 }
 
-void ec_sound::draw()
+void ec_sound::update()
 {
-	if( snd )
+	if( auto_play )
 	{
-		snd->play();
+		auto_play = false;
+		play();
 	}
-	snd = nullptr;
+}
 
-	ilc_set( life_cycle::dying );
+void ec_sound::play()
+{
+	assert( snd );
+
+	snd->play();
+
+	if( one_shot )
+	{
+		ilc_set( life_cycle::dying );
+	}
+}
+
+void ec_sound::stop()
+{
+	assert( snd );
+
+	snd->stop();
 }
 
 // ----------------------------------------------------------------------------
@@ -647,6 +691,8 @@ w_entity_component* ec_tilemap::init()
 
 void ec_tilemap::draw()
 {
+	RENDER->push_render_state( rs_opt );
+
 	for( auto& tmlayer : tile_layers )
 	{
 		RENDER->push_depth_nudge();
@@ -665,6 +711,8 @@ void ec_tilemap::draw()
 			}
 		}
 	}
+
+	RENDER->pop();
 }
 
 const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
@@ -799,7 +847,7 @@ void ec_mesh::draw()
 	RENDER
 		->push_render_state( rs_opt )
 		->draw_mesh( mesh, tform.pos )
-		->rs_pop();
+		->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -822,7 +870,7 @@ void ec_follow_target::update()
 		if( follow.flags & follow_flags::xy_axis )
 		{
 			// interpolate towards follow target position
-			follow.pos += ( ( target_pos - follow.pos ) * follow.strength ) * w_time::FTS_step_value_s;
+			follow.pos += ( ( target_pos - follow.pos ) * follow.strength ) * FTS::per_second_scaler;
 
 			// apply limits if we need to
 			if( follow.limits_x.has_value() )
