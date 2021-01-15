@@ -2,7 +2,7 @@
 
 struct w_game
 {
-	w_game( const char* name );
+	w_game( std::string name );
 	virtual ~w_game() = default;
 
 	virtual void init();
@@ -12,5 +12,5 @@ struct w_game
 
 	const char* get_game_name();
 
-	const char* name = nullptr;
+	std::string name;
 };

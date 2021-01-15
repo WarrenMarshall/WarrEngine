@@ -10,6 +10,7 @@ float ui_canvas_h = 480;
 std::unique_ptr<w_logfile> logfile = nullptr;
 std::unique_ptr<w_engine> engine = nullptr;
 std::unique_ptr<w_game> base_game = nullptr;
+//w_game* base_game = nullptr;
 
 // yoinked from : http://stevendebock.blogspot.com/2013/07/nvidia-optimus.html
 // also : https://www.reddit.com/r/gamedev/comments/bk7xbe/psa_for_anyone_developing_a_gameengine_in_c/

@@ -12,7 +12,7 @@ struct w_window
 	w_rect save_window_rect = {};
 	e_mouse_mode mouse_mode = mouse_mode::os;
 
-	GLFWwindow* window = nullptr;
+	GLFWwindow* glfw_window = nullptr;
 	GLFWmonitor* primary_monitor = nullptr;
 	const GLFWvidmode* vidmode = nullptr;
 	struct

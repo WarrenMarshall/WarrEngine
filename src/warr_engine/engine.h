@@ -17,9 +17,18 @@ struct w_pending_collision
 
 struct w_engine : i_input_receiver
 {
-	static bool init_game_engine( int argc, char* argv [] );
-	static void deinit_game_engine();
-	static void exec_main_loop();
+	// the function that all games/apps call to get the engine up and running
+	template<typename T>
+	static void go( int argc, char* argv [] )
+	{
+		base_game = std::make_unique<T>( T::get_custom_name() );
+
+		launch( argc, argv );
+	}
+
+	static void launch( int argc, char* argv [] );
+	void main_loop();
+	void shutdown();
 
 	std::vector<std::future<void>> futures;
 

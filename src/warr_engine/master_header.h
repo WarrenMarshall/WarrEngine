@@ -115,6 +115,8 @@ extern float ui_canvas_h;
 #include "ui_imgui.h"
 #include "ui_mgr.h"
 
+//extern w_game* base_game;
+extern std::unique_ptr<w_game> base_game;
 #include "engine.h"
 
 #include "particle.h"
@@ -151,4 +153,4 @@ extern float ui_canvas_h;
 // ----------------------------------------------------------------------------
 
 extern std::unique_ptr<w_engine> engine;
-extern std::unique_ptr<w_game> base_game;
+//extern std::unique_ptr<w_game> base_game;

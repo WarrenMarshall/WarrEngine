@@ -55,6 +55,7 @@ w_rect w_window::compute_max_window_size_for_desktop()
 
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.
+
 	auto wdiv = static_cast<int>( std::floorf( desktop_w / static_cast<float>( v_window_w ) ) );
 	auto hdiv = static_cast<int>( std::floorf( desktop_h / static_cast<float>( v_window_h ) ) );
 	int div = glm::min( wdiv, hdiv );
@@ -70,7 +71,6 @@ w_rect w_window::compute_max_window_size_for_desktop()
 
 bool w_window::init()
 {
-	// Initialize GLFW
 	if( !glfwInit() )
 	{
 		log_error( "GLFW failed to init" );
@@ -80,8 +80,6 @@ bool w_window::init()
 
 	log( "GLFW Version : {}", glfwGetVersionString() );
 
-	// Create a windowed mode window and its OpenGL context
-
 	primary_monitor = glfwGetPrimaryMonitor();
 	vidmode = glfwGetVideoMode( primary_monitor );
 
@@ -90,35 +88,34 @@ bool w_window::init()
 
 	w_rect window_pos = compute_max_window_size_for_desktop();
 
-	window = glfwCreateWindow(
+	glfw_window = glfwCreateWindow(
 		static_cast<int>( window_pos.w ), static_cast<int>( window_pos.h ),
 		"WarrEngine", nullptr, nullptr
 	);
 
-	if( !window )
+	if( !glfw_window )
 	{
 		log_error( "Failed to create window" );
 	}
 
-	glfwSetWindowPos( window,
+	glfwSetWindowPos( glfw_window,
 					  static_cast<int>( window_pos.x ),
 					  static_cast<int>( window_pos.y ) );
 
-	glfwSetFramebufferSizeCallback( window, framebuffer_size_callback );
-	glfwSetWindowFocusCallback( window, focus_change_callback );
+	glfwSetFramebufferSizeCallback( glfw_window, framebuffer_size_callback );
+	glfwSetWindowFocusCallback( glfw_window, focus_change_callback );
 
-	// Make the window's context current
-	glfwMakeContextCurrent( window );
+	glfwMakeContextCurrent( glfw_window );
 
-	glfwSetInputMode( window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE );
-	glfwSetInputMode( window, GLFW_STICKY_KEYS, GLFW_TRUE );
+	glfwSetInputMode( glfw_window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE );
+	glfwSetInputMode( glfw_window, GLFW_STICKY_KEYS, GLFW_TRUE );
 
 	return true;
 }
 
 void w_window::deinit()
 {
-	glfwDestroyWindow( window );
+	glfwDestroyWindow( glfw_window );
 }
 
 void w_window::toggle_fullscreen()
@@ -129,17 +126,17 @@ void w_window::toggle_fullscreen()
 	{
 		// when toggling to fullscreen, save the current window state so it
 		// can be restored later.
-		glfwGetWindowPos( window, &save_windowed_state.x, &save_windowed_state.y );
-		glfwGetWindowSize( window, &save_windowed_state.w, &save_windowed_state.h );
+		glfwGetWindowPos( glfw_window, &save_windowed_state.x, &save_windowed_state.y );
+		glfwGetWindowSize( glfw_window, &save_windowed_state.w, &save_windowed_state.h );
 
-		glfwSetWindowMonitor( window, primary_monitor,
+		glfwSetWindowMonitor( glfw_window, primary_monitor,
 			0, 0,
 			vidmode->width, vidmode->height, vidmode->refreshRate );
 	}
 	else
 	{
 		// dropping back
-		glfwSetWindowMonitor( window, nullptr,
+		glfwSetWindowMonitor( glfw_window, nullptr,
 			save_windowed_state.x, save_windowed_state.y,
 			save_windowed_state.w, save_windowed_state.h, 0 );
 	}
@@ -147,7 +144,7 @@ void w_window::toggle_fullscreen()
 
 void w_window::set_title( const std::string_view title )
 {
-	glfwSetWindowTitle( window, title.data() );
+	glfwSetWindowTitle( glfw_window, title.data() );
 }
 
 void w_window::set_mouse_mode( e_mouse_mode mouse_mode )
@@ -162,19 +159,19 @@ void w_window::refresh_mouse_mode()
 	{
 		case mouse_mode::os:
 		{
-			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
+			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
 		}
 		break;
 
 		case mouse_mode::custom:
 		{
-			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
+			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
 		}
 		break;
 
 		case mouse_mode::locked:
 		{
-			glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
 		}
 		break;
 

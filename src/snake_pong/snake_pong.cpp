@@ -1,7 +1,7 @@
 
 #include "app_header.h"
 
-snake_pong::snake_pong( const char* name )
+snake_pong::snake_pong( std::string name )
 	: w_game( name )
 {
 }

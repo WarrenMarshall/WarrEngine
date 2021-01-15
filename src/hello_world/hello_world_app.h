@@ -4,7 +4,12 @@
 
 struct hello_world_app : w_game
 {
-	hello_world_app( const char* name );
+	static std::string get_custom_name()
+	{
+		return "hello_world";
+	}
+
+	hello_world_app( std::string name );
 
 	void init() override;
 	void new_game() override;

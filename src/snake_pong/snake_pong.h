@@ -4,7 +4,12 @@
 
 struct snake_pong : w_game
 {
-	snake_pong( const char* name );
+	static std::string get_custom_name()
+	{
+		return "snake_pong";
+	}
+
+	snake_pong( std::string name );
 
 	virtual void init() override;
 	virtual void reset_layer_stack_to_main_menu() override;

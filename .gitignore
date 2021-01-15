@@ -28,3 +28,9 @@ bin/work_log_tracker.data
 *.exp
 *.lib
 *.blend1
+AsmSandbox/Debug
+AsmSandbox/AsmSandbox.vcxproj
+AsmSandbox/AsmSandbox.vcxproj.filters
+AsmSandbox/AsmSandbox.vcxproj.user
+AsmSandbox
+*.tmp

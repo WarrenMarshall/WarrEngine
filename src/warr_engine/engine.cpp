@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-bool w_engine::init_game_engine( int argc, char* argv [] )
+void w_engine::launch( int argc, char* argv [] )
 {
 #if defined(_FINALRELEASE)
 	// in final release, we don't want to bother the user with
@@ -45,10 +45,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 	{	// WINDOW
 
 		log( "Creating window" );
-		if( !engine->window->init() )
-		{
-			return false;
-		}
+		engine->window->init();
 	}
 
 	{	// OPENGL
@@ -133,9 +130,9 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
 
 		w_rect rc = engine->window->compute_max_window_size_for_desktop();
-		glfwSetWindowPos( engine->window->window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
-		glfwSetWindowSize( engine->window->window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
-		glfwSetWindowAspectRatio( engine->window->window,
+		glfwSetWindowPos( engine->window->glfw_window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
+		glfwSetWindowSize( engine->window->glfw_window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
+		glfwSetWindowAspectRatio( engine->window->glfw_window,
 									100,
 									static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
 
@@ -143,7 +140,7 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 		log( "VSync: {}", vsync ? "true" : "false" );
 		glfwSwapInterval( vsync ? 1 : 0 );
 		engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
-		glfwSetWindowAttrib( engine->window->window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
+		glfwSetWindowAttrib( engine->window->glfw_window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
 		engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
 		engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 	}
@@ -198,10 +195,11 @@ bool w_engine::init_game_engine( int argc, char* argv [] )
 
 	engine->ui->init();
 
-	return true;
+	engine->main_loop();
+	engine->shutdown();
 }
 
-void w_engine::deinit_game_engine()
+void w_engine::shutdown()
 {
 	// Clean up
 
@@ -210,10 +208,10 @@ void w_engine::deinit_game_engine()
 	// this needs to be done before the audio or windowing systems, to give
 	// the layers a chance to clean up first.
 	log( "Shutting down layer manager" );
-	engine->layer_mgr->clear_stack();
+	layer_mgr->clear_stack();
 
 	log( "Shutting down window" );
-	engine->window->deinit();
+	window->deinit();
 
 	log( "Shutting down OpenGL" );
 	for( auto& iter : OPENGL->shaders )
@@ -229,10 +227,10 @@ void w_engine::deinit_game_engine()
 	BASS_Free();
 
 	log( "Shutting down input" );
-	engine->input->deinit();
+	input->deinit();
 
 	log( "Shutting down engine" );
-	engine->deinit();
+	deinit();
 
 	// Do this last so we can log right up until the last moment
 	logfile->time_stamp( "Ended" );
@@ -240,34 +238,34 @@ void w_engine::deinit_game_engine()
 	logfile->deinit();
 }
 
-void w_engine::exec_main_loop()
+void w_engine::main_loop()
 {
-	while( engine->is_running && !glfwWindowShouldClose( engine->window->window ) )
+	while( is_running && !glfwWindowShouldClose( window->glfw_window ) )
 	{
 		/*
 			update core engine stuff - time, timers, etc
 		*/
 
-		engine->time->update();
+		time->update();
 		IMGUI->reset();
 
-		// whatever remaining ms are left in engine->time->fts_accum_ms should be passed
+		// whatever remaining ms are left in time->fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction
 		//
 		// it is passed a percentage for easier use : 0.0f-1.0f
 
-		RENDER->frame_interpolate_pct = engine->time->fts_accum_ms / FTS::ms_per_step;
+		RENDER->frame_interpolate_pct = time->fts_accum_ms / FTS::ms_per_step;
 
 		/*
 			process user input
 		*/
-		engine->input->queue_presses();
+		input->queue_presses();
 
 		// if the engine is paused, we need to continue processing user
 		// input so that the ESC menu and engine can respond to keypresses
-		if( engine->is_paused )
+		if( is_paused )
 		{
-			engine->input->update();
+			input->update();
 		}
 
 		/*
@@ -275,24 +273,24 @@ void w_engine::exec_main_loop()
 			through them one at a time
 		*/
 
-		while( engine->time->fts_accum_ms >= FTS::ms_per_step )
+		while( time->fts_accum_ms >= FTS::ms_per_step )
 		{
-			engine->time->fts_accum_ms -= FTS::ms_per_step;
+			time->fts_accum_ms -= FTS::ms_per_step;
 
-			engine->input->queue_motion();
-			engine->input->update();
+			input->queue_motion();
+			input->update();
 
-			engine->box2d_world->Step( FTS::per_second_scaler, b2d_velocity_iterations, b2d_position_iterations );
+			box2d_world->Step( FTS::per_second_scaler, b2d_velocity_iterations, b2d_position_iterations );
 
-			engine->process_collision_queue();
+			process_collision_queue();
 
-			engine->update();
-			engine->render->stats.update();
+			update();
+			render->stats.update();
 			base_game->update();
 		}
 
 		// update shader parameters
-		OPENGL->set_uniform( "u_current_time", (float) engine->time->get_ticks() / 1000.f );
+		OPENGL->set_uniform( "u_current_time", (float) time->get_ticks() / 1000.f );
 
 		// ----------------------------------------------------------------------------
 		// draw the scene to the engine frame buffer
@@ -303,7 +301,7 @@ void w_engine::exec_main_loop()
 		// 2. same as #1 but only contains the brightest pixels (used for bloom later)
 
 		glEnable( GL_DEPTH_TEST );
-		engine->frame_buffer->bind();
+		frame_buffer->bind();
 
 		OPENGL->shaders[ "base_bright" ].bind();
 
@@ -315,10 +313,10 @@ void w_engine::exec_main_loop()
 
 			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
 			glClearColor(
-				engine->window->window_clear_color.r,
-				engine->window->window_clear_color.g,
-				engine->window->window_clear_color.b,
-				engine->window->window_clear_color.a );
+				window->window_clear_color.r,
+				window->window_clear_color.g,
+				window->window_clear_color.b,
+				window->window_clear_color.a );
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 			// ----------------------------------------------------------------------------
@@ -330,7 +328,7 @@ void w_engine::exec_main_loop()
 			OPENGL->push();
 
 			// layers and entities
-			engine->layer_mgr->draw();
+			layer_mgr->draw();
 
 			OPENGL->pop();
 
@@ -338,11 +336,11 @@ void w_engine::exec_main_loop()
 			UI->draw_topmost();
 
 			// engine specific things, like pause borders
-			engine->draw();
+			draw();
 			RENDER->draw_and_reset_all_batches();
 		}
 		RENDER->end_frame();
-		engine->frame_buffer->unbind();
+		frame_buffer->unbind();
 
 		// ----------------------------------------------------------------------------
 		// the engine frame buffer now contains the color texture and the brightness texture
@@ -353,15 +351,15 @@ void w_engine::exec_main_loop()
 		glDisable( GL_DEPTH_TEST );
 
 		OPENGL->init_view_matrix_identity();
-		engine->blur_frame_buffers[0]->bind();
+		blur_frame_buffers[0]->bind();
 		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
-		engine->blur_frame_buffers[0]->unbind();
+		blur_frame_buffers[0]->unbind();
 		RENDER->stats.draw_calls.dec();
 
 		// pingpong back and forth between the 2 blur frame buffers, blurring them into
@@ -372,14 +370,14 @@ void w_engine::exec_main_loop()
 		bool pingpong = true;
 		for( int x = 0 ; x < blur_passes ; ++x )
 		{
-			engine->blur_frame_buffers[ pingpong ]->bind();
+			blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
 			RENDER
 				->begin()
-				->draw( engine->blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+				->draw( blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 				->end();
 			RENDER->batch_quads->draw_and_reset();
-			engine->blur_frame_buffers[ pingpong ]->unbind();
+			blur_frame_buffers[ pingpong ]->unbind();
 			RENDER->stats.draw_calls.dec();
 
 			pingpong = !pingpong;
@@ -389,7 +387,7 @@ void w_engine::exec_main_loop()
 		// draw the base/bloom frame buffers into the compositing frame buffer
 		// ----------------------------------------------------------------------------
 
-		engine->composite_frame_buffer->bind();
+		composite_frame_buffer->bind();
 
 		// draw game frame buffer
 
@@ -397,7 +395,7 @@ void w_engine::exec_main_loop()
 
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
@@ -409,14 +407,14 @@ void w_engine::exec_main_loop()
 		RENDER
 			->begin()
 			->push_alpha( 0.5f )
-			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 
 		OPENGL->set_blend( opengl_blend::alpha );
 
-		engine->composite_frame_buffer->unbind();
+		composite_frame_buffer->unbind();
 
 		// ----------------------------------------------------------------------------
 		// draw the compositing frame buffer to the default frame buffer
@@ -428,15 +426,15 @@ void w_engine::exec_main_loop()
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
-			(int) engine->window->viewport_pos_sz.x,
-			(int) engine->window->viewport_pos_sz.y,
-			(int) engine->window->viewport_pos_sz.w,
-			(int) engine->window->viewport_pos_sz.h
+			(int) window->viewport_pos_sz.x,
+			(int) window->viewport_pos_sz.y,
+			(int) window->viewport_pos_sz.w,
+			(int) window->viewport_pos_sz.h
 		);
 
 		RENDER
 			->begin()
-			->draw( engine->composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
+			->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
@@ -455,21 +453,21 @@ void w_engine::exec_main_loop()
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 0 ], rc )
+			->draw( frame_buffer->textures[ 0 ], rc )
 			->end();
 		RENDER->batch->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 		rc.x += w;
 		RENDER
 			->begin()
-			->draw( engine->frame_buffer->textures[ 1 ], rc )
+			->draw( frame_buffer->textures[ 1 ], rc )
 			->end();
 		RENDER->batch->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 		rc.x += w;
 		RENDER
 			->begin()
-			->draw( engine->blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
+			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
 			->end();
 		RENDER->batch->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
@@ -479,7 +477,7 @@ void w_engine::exec_main_loop()
 		// everything has been drawn the default frame buffer, so let's swap
 		// ----------------------------------------------------------------------------
 
-		glfwSwapBuffers( engine->window->window );
+		glfwSwapBuffers( window->glfw_window );
 		glfwPollEvents();
 	}
 }
