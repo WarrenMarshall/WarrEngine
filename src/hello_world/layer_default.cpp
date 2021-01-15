@@ -5,9 +5,13 @@
 
 e_imgui_control_state layer_default_ui_callback::get_state_for_control( w_imgui_control* control )
 {
-	if( control->tag == H( "checkbox_01" ) )
+	switch( control->tag )
 	{
-		return b_checkbox_01 ? imgui_control_state::checked : imgui_control_state::unchecked;
+		case H( "checkbox_01" ):
+		{
+			return b_checkbox_01 ? imgui_control_state::checked : imgui_control_state::unchecked;
+		}
+		break;
 	}
 
 	return w_imgui_callback::get_state_for_control( control );
@@ -15,13 +19,19 @@ e_imgui_control_state layer_default_ui_callback::get_state_for_control( w_imgui_
 
 void layer_default_ui_callback::was_left_clicked( w_imgui_control* control )
 {
-	if( control->tag == H( "push_button_01" ) )
+	switch( control->tag )
 	{
-		log( "BAM! Button_01 in the callback hizzy." );
-	}
-	else if( control->tag == H( "push_button_02" ) )
-	{
-		log( "BAM! Button_02 in the callback hizzy." );
+		case H( "push_button_01" ):
+		{
+			log( "BAM! Button_01." );
+		}
+		break;
+
+		case H( "push_button_02" ):
+		{
+			log( "BAM! Button_02." );
+		}
+		break;
 	}
 }
 

@@ -6,21 +6,31 @@
 
 void layer_esc_menu_ui_callback::was_left_clicked( w_imgui_control* control )
 {
-	if( control->tag == H( "button_resume" ) )
+	switch( control->tag )
 	{
-		engine->layer_mgr->pop();
-	}
-	else if( control->tag == H( "button_main_menu" ) )
-	{
-		base_game->reset_layer_stack_to_main_menu();
-	}
-	else if( control->tag == H( "button_fullscreen" ) )
-	{
-		engine->window->toggle_fullscreen();
-	}
-	else if( control->tag == H( "button_exit" ) )
-	{
-		engine->is_running = false;
+		case H( "button_resume" ):
+		{
+			engine->layer_mgr->pop();
+		}
+		break;
+
+		case H( "button_main_menu" ):
+		{
+			base_game->reset_layer_stack_to_main_menu();
+		}
+		break;
+
+		case H( "button_fullscreen" ):
+		{
+			engine->window->toggle_fullscreen();
+		}
+		break;
+
+		case H( "button_exit" ):
+		{
+			engine->is_running = false;
+		}
+		break;
 	}
 }
 
