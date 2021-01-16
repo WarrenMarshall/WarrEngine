@@ -13,8 +13,8 @@
 		ui_cursor, 0, 24, 16, 16,\
 		ui_panel, 0, 0, 24, 24,\
 		ui_button, 25, 1, 16, 16,\
-		ui_checkbox_off, 17, 25, 10, 10,\
-		ui_checkbox_on, 29, 25, 10, 10\
+		ui_checkbox_off, 17, 25, 12, 12,\
+		ui_checkbox_on, 30, 25, 12, 12\
 		"
 }
 

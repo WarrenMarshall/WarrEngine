@@ -60,8 +60,19 @@ w_imgui* w_imgui::clear_last_control()
 	return this;
 }
 
+void w_imgui::set_current_callback_from_current_layer()
+{
+	current_callback = &default_callback;
+	if( IMGUI->containing_layer_is_topmost )
+	{
+		current_callback = LAYER->get_imgui_callback();
+	}
+}
+
 w_imgui* w_imgui::init_panel( hash tag )
 {
+	set_current_callback_from_current_layer();
+
 	current_control = {};
 	current_control.type = imgui_control_type::panel;
 	current_control.tag = tag;
@@ -74,6 +85,8 @@ w_imgui* w_imgui::init_panel( hash tag )
 
 w_imgui* w_imgui::init_push_button( hash tag )
 {
+	set_current_callback_from_current_layer();
+
 	current_control = {};
 	current_control.type = imgui_control_type::push_button;
 	current_control.tag = tag;
@@ -86,8 +99,10 @@ w_imgui* w_imgui::init_push_button( hash tag )
 
 w_imgui* w_imgui::init_checkbox( hash tag )
 {
+	set_current_callback_from_current_layer();
+
 	current_control = {};
-	//current_control.type = imgui_control_type::check_box;
+	current_control.type = imgui_control_type::check_box;
 	current_control.tag = tag;
 	current_control.is_active = true;
 	current_control.text_align = align::left | align::vcenter;
@@ -110,6 +125,8 @@ w_imgui* w_imgui::set_text_align( e_align align )
 w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 {
 	current_control.slice_def = slice_def;
+	compute_clientrect_from_rect();
+
 	return this;
 }
 
@@ -197,23 +214,13 @@ w_imgui_result* w_imgui::finalize()
 
 	_set_as_last_control( current_control );
 
-	w_imgui_callback* callback = nullptr;
-
-	if( IMGUI->containing_layer_is_topmost )
+	if( result.was_left_clicked() )
 	{
-		callback = LAYER->get_imgui_callback();
+		current_callback->was_left_clicked( current_control );
 	}
-
-	if( callback )
+	if( result.was_right_clicked() )
 	{
-		if( result.was_left_clicked() )
-		{
-			callback->was_left_clicked( &current_control );
-		}
-		if( result.was_right_clicked() )
-		{
-			callback->was_right_clicked( &current_control );
-		}
+		current_callback->was_right_clicked( current_control );
 	}
 
 	return &result;
@@ -301,14 +308,8 @@ e_im_result w_imgui::_update_im_state( int id, const w_rect& rc_win )
 	return imresult;
 }
 
-void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
+void w_imgui::_draw( const w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
-	w_imgui_callback* callback = &default_callback;
-	if( IMGUI->containing_layer_is_topmost )
-	{
-		callback = LAYER->get_imgui_callback();
-	}
-
 	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
 
 	w_rect rc_win_offset = control.rc_win;
@@ -335,6 +336,28 @@ void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_cl
 			_draw_text( control, rc_client_offset, being_hovered, being_clicked );
 		}
 		break;
+
+		case imgui_control_type::check_box:
+		{
+			a_texture* texture = current_callback->get_texture_for_checkbox( control );
+
+			_draw_slice_def( control, rc_win_offset, being_hovered, being_clicked );
+
+			w_rect rc_texture =
+				w_rect(
+					rc_client_offset.x, rc_client_offset.y,
+					texture->rc.w,
+					rc_client_offset.h
+				);
+			rc_client_offset =
+				w_rect( rc_client_offset.x + current_callback->get_control_padding() + texture->rc.w, rc_client_offset.y,
+						rc_client_offset.w - current_callback->get_control_padding() - texture->rc.w, rc_client_offset.h
+				);
+
+			_draw_texture( control, rc_texture, texture, being_hovered, being_clicked );
+			_draw_text( control, rc_client_offset, being_hovered, being_clicked );
+		}
+		break;
 	}
 
 	RENDER->end();
@@ -348,6 +371,13 @@ void w_imgui::_draw_slice_def( const w_imgui_control& control, const w_rect& rc_
 			->push_rgb( _get_adjusted_color( w_color::pal( 1 ), being_hovered, being_clicked ) )
 			->draw_sliced( control.slice_def, rc_win );
 	}
+}
+
+void w_imgui::_draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool being_hovered, bool being_clicked )
+{
+	RENDER->push_depth_nudge()
+		->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
+		->draw_sprite( texture, rc.midpoint() );
 }
 
 void w_imgui::_draw_text( const w_imgui_control& control, const w_rect& rc_client, bool being_hovered, bool being_clicked )
@@ -385,8 +415,8 @@ void w_imgui::_set_as_last_control( w_imgui_control control )
 {
 	last_control = control;
 
-	flow_right = { last_control->rc_win.x + last_control->rc_win.w + UI_PADDING, last_control->rc_win.y };
-	flow_down = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + UI_PADDING };
+	flow_right = { last_control->rc_win.x + last_control->rc_win.w + current_callback->get_control_margin(), last_control->rc_win.y };
+	flow_down = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + current_callback->get_control_margin() };
 }
 
 // a control with the mouse button held down on it will offset slightly

@@ -3,9 +3,9 @@
 
 // ----------------------------------------------------------------------------
 
-e_imgui_control_state layer_default_ui_callback::get_state_for_control( w_imgui_control* control )
+e_imgui_control_state layer_default_ui_callback::get_state_for_control( const w_imgui_control& control )
 {
-	switch( control->tag )
+	switch( control.tag )
 	{
 		case H( "checkbox_01" ):
 		{
@@ -17,10 +17,16 @@ e_imgui_control_state layer_default_ui_callback::get_state_for_control( w_imgui_
 	return w_imgui_callback::get_state_for_control( control );
 }
 
-void layer_default_ui_callback::was_left_clicked( w_imgui_control* control )
+void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control )
 {
-	switch( control->tag )
+	switch( control.tag )
 	{
+		case H( "checkbox_01" ):
+		{
+			b_checkbox_01 = !b_checkbox_01;
+		}
+		break;
+
 		case H( "push_button_01" ):
 		{
 			log( "BAM! Button_01." );
@@ -71,22 +77,28 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->init_push_button( H( "push_button_01" ) )
-		->set_text( "Push Button #1" )
+		->set_text( "Push Button" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
-	IMGUI->init_push_button( H( "push_button_02" ) )
-		->set_text( "Push Button #2" )
+	IMGUI->init_checkbox( H( "checkbox_01" ) )
+		->set_text( "Check Box" )
 		->set_position( imgui_flow::down )
-		->set_size( { 130.0f, 24.0f } )
+		->set_size( { 130.0f, 12.0f } )
 		->finalize();
 
-	//IMGUI->init_checkbox( H( "checkbox_01" ) )
-	//	->set_text( "Check Box #1" )
-	//	->set_position( imgui_flow::down )
-	//	->set_size( { 130.0f, 24.0f } )
-	//	->finalize();
+	IMGUI->init_checkbox( H( "checkbox_03" ) )
+		->set_text( "Allow Auto-Aim?" )
+		->set_position( imgui_flow::down )
+		->set_size( { 130.0f, 12.0f } )
+		->finalize();
+
+	IMGUI->init_checkbox( H( "checkbox_03" ) )
+		->set_text( "Use V-Sync?" )
+		->set_position( imgui_flow::down )
+		->set_size( { 130.0f, 12.0f } )
+		->finalize();
 }
 
 w_imgui_callback* layer_default::get_imgui_callback()

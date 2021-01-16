@@ -4,9 +4,9 @@
 
 // ----------------------------------------------------------------------------
 
-void layer_esc_menu_ui_callback::was_left_clicked( w_imgui_control* control )
+void layer_esc_menu_ui_callback::was_left_clicked( const w_imgui_control& control )
 {
-	switch( control->tag )
+	switch( control.tag )
 	{
 		case H( "button_resume" ):
 		{
@@ -74,8 +74,15 @@ void layer_esc_menu::draw_ui()
 	constexpr float button_w = 140.0f;
 	constexpr float button_h = 24.0f;
 
-	float panel_w = button_w + ( UI_PADDING * 4.0f );
-	float panel_h = ( button_h * num_buttons ) + ( UI_PADDING * ( num_buttons + 6 ) );
+	float panel_w = button_w + ( IMGUI->current_callback->get_control_margin() * 4.0f );
+	auto slice = a_9slice_def::find( "simple_ui_panel" );
+	float panel_h =
+		(
+			( button_h * num_buttons )
+			+ ( IMGUI->current_callback->get_control_margin() * ( num_buttons - 1 ) )
+			+ slice->patches[ slicedef_patch::P_00 ]->rc.h
+			+ slice->patches[ slicedef_patch::P_22 ]->rc.h
+		);
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "simple_ui_panel" ) )
