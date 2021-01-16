@@ -2,17 +2,23 @@
 #include "app_header.h"
 // ----------------------------------------------------------------------------
 
-void layer_main_menu_ui_callback::was_left_clicked( w_imgui_control* control )
+void layer_main_menu_ui_callback::was_left_clicked( const w_imgui_control& control )
 {
-	if( control->tag == H( "button_play" ) )
+	switch( control.tag )
 	{
-		engine->layer_mgr->pop();
-		engine->layer_mgr->push<layer_game>();
-		game->new_game();
-	}
-	else if( control->tag == H( "button_quit" ) )
-	{
-		engine->is_running = false;
+		case H( "button_play" ):
+		{
+			engine->layer_mgr->pop();
+			engine->layer_mgr->push<layer_game>();
+			game->new_game();
+		}
+		break;
+
+		case H( "button_quit" ):
+		{
+			engine->is_running = false;
+		}
+		break;
 	}
 }
 
@@ -35,14 +41,14 @@ void layer_main_menu::draw_ui()
 	RENDER
 		->begin()
 		->push_render_state( rso )
-		->draw_string( "Pong Paddle Thing", w_rect( v_window_hw, 32 ) )
+		->draw_string( "Pong Paddle Thing", { v_window_hw, 32.0f } )
 		->end();
 
 	float xpos = 64;
 	float ypos = 75;
 
 	IMGUI->init_push_button( H( "button_play" ) )
-		->set_label( "PLAY" )
+		->set_text( "PLAY" )
 		->set_position( { xpos, ypos } )
 		->set_size( { v_window_w - xpos * 2, 24.0f } )
 		->finalize();
@@ -51,7 +57,7 @@ void layer_main_menu::draw_ui()
 	ypos += 28;
 
 	IMGUI->init_push_button( H( "button_quit" ) )
-		->set_label( "Quit" )
+		->set_text( "Quit" )
 		->set_position( { xpos, ypos } )
 		->set_size( { v_window_w - xpos * 2.0f, 24.0f } )
 		->finalize();
