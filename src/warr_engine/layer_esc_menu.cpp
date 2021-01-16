@@ -20,7 +20,7 @@ void layer_esc_menu_ui_callback::was_left_clicked( const w_imgui_control& contro
 		}
 		break;
 
-		case H( "button_fullscreen" ):
+		case H( "option_fullscreen" ):
 		{
 			engine->window->toggle_fullscreen();
 		}
@@ -32,6 +32,20 @@ void layer_esc_menu_ui_callback::was_left_clicked( const w_imgui_control& contro
 		}
 		break;
 	}
+}
+
+e_imgui_control_state layer_esc_menu_ui_callback::get_state_for_control( const w_imgui_control& control )
+{
+	switch( control.tag )
+	{
+		case H("option_fullscreen"):
+		{
+			return engine->window->is_fullscreen ? imgui_control_state::checked : imgui_control_state::unchecked;
+		}
+		break;
+	}
+
+	return w_imgui_callback::get_state_for_control( control );
 }
 
 // ----------------------------------------------------------------------------
@@ -101,8 +115,8 @@ void layer_esc_menu::draw_ui()
 		->set_position( imgui_flow::down )
 		->finalize();
 
-	IMGUI->init_push_button( H( "button_fullscreen" ) )
-		->set_text( "Toggle Fullscreen" )
+	IMGUI->init_checkbox( H( "option_fullscreen" ) )
+		->set_text( "Full Screen?" )
 		->set_position( imgui_flow::down )
 		->finalize();
 

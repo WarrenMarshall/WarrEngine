@@ -85,19 +85,7 @@ void layer_default::draw_ui()
 	IMGUI->init_checkbox( H( "checkbox_01" ) )
 		->set_text( "Check Box" )
 		->set_position( imgui_flow::down )
-		->set_size( { 130.0f, 12.0f } )
-		->finalize();
-
-	IMGUI->init_checkbox( H( "checkbox_03" ) )
-		->set_text( "Allow Auto-Aim?" )
-		->set_position( imgui_flow::down )
-		->set_size( { 130.0f, 12.0f } )
-		->finalize();
-
-	IMGUI->init_checkbox( H( "checkbox_03" ) )
-		->set_text( "Use V-Sync?" )
-		->set_position( imgui_flow::down )
-		->set_size( { 130.0f, 12.0f } )
+		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 }
 
