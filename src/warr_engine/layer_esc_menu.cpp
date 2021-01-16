@@ -84,23 +84,23 @@ void layer_esc_menu::draw_ui()
 		->finalize();
 
 	IMGUI->init_push_button( H( "button_resume" ) )
-		->set_label( "Resume" )
+		->set_text( "Resume" )
 		->set_position( imgui_flow::last_crc_topleft )
-		->set_size( { IMGUI->last_control->crc.w, button_h } )
+		->set_size( { IMGUI->last_control->rc_client.w, button_h } )
 		->finalize();
 
 	IMGUI->init_push_button( H( "button_main_menu" ) )
-		->set_label( "Main Menu" )
+		->set_text( "Main Menu" )
 		->set_position( imgui_flow::down )
 		->finalize();
 
 	IMGUI->init_push_button( H( "button_fullscreen" ) )
-		->set_label( "Toggle Fullscreen" )
+		->set_text( "Toggle Fullscreen" )
 		->set_position( imgui_flow::down )
 		->finalize();
 
 	IMGUI->init_push_button( H( "button_exit" ) )
-		->set_label( "Exit To Windows" )
+		->set_text( "Exit To Windows" )
 		->set_position( imgui_flow::down )
 		->finalize();
 }

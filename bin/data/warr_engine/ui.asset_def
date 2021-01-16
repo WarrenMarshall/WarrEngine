@@ -1,17 +1,9 @@
 
 # ---------------------------------------------------------
-# Default UI
+# Default UI that lives in the engine itself
+#
+# if you don't define your own UI, you'll get this one.
 # ---------------------------------------------------------
-
-{
-	"type" "src_texture"
-	"tag" "tex_ui_default"
-	"filename" "ui/ui_master.png"
-	"texture_tags" "\
-		ui_box, 48, 0, 16, 16,\
-		ui_box_checkmark, 64, 0, 16, 16\
-		"
-}
 
 {
 	"type" "src_texture"
@@ -20,9 +12,9 @@
 	"texture_tags" "\
 		ui_cursor, 0, 24, 16, 16,\
 		ui_panel, 0, 0, 24, 24,\
-		ui_button, 28, 4, 16, 16,\
-		ui_checkbox_off, 47, 7, 10, 10,\
-		ui_checkbox_on, 58, 7, 10, 10\
+		ui_button, 25, 1, 16, 16,\
+		ui_checkbox_off, 17, 25, 10, 10,\
+		ui_checkbox_on, 29, 25, 10, 10\
 		"
 }
 

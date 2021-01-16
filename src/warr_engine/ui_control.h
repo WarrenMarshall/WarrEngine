@@ -5,11 +5,11 @@ struct w_imgui_control
 	e_imgui_control_type type = imgui_control_type::none;
 	bool is_active = true;
 	hash tag;
-	std::string label;
-	e_align label_align = align::centered;
+	std::string text;
+	e_align text_align = align::hcenter | align::vcenter;
 	a_9slice_def* slice_def = nullptr;
-	std::array<a_texture*, imgui_control_state::max> textures;
 	e_align texture_align = align::fill;
-	w_rect rc = { 0,0,0,0 };	// full rectangle
-	w_rect crc = { 0,0,0,0 };	// client rectangle
+
+	w_rect rc_win = { 0,0,0,0 };
+	w_rect rc_client = { 0,0,0,0 };
 };

@@ -98,27 +98,16 @@ struct w_rect
 	w_rect( float x, float y, float w, float h );
 	w_rect( const w_vec2& top_left, const w_vec2& bottom_right );
 
-	float left()
-	{
-		return x;
-	}
-	float top()
-	{
-		return y;
-	}
-	float bottom()
-	{
-		return y + h;
-	}
-	float right()
-	{
-		return x + w;
-	}
-
-	w_vec2 midpoint();
+	w_vec2 extents() const;
+	w_vec2 top_left() const;
+	w_vec2 bottom_right() const;
+	w_vec2 midpoint() const;
+	w_pos get_position_from_alignment( e_align align ) const;
 
 	bool operator==( const w_rect& rhs ) const;
 	w_rect operator+( const w_vec2& v ) const;
+	w_rect operator+( const w_rect& rhs ) const;
+	w_rect operator-( const w_rect& rhs ) const;
 	w_rect operator+=( const w_vec2& v );
 	w_rect operator*( float v ) const;
 	w_rect operator*=( float v );

@@ -71,22 +71,22 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->init_push_button( H( "push_button_01" ) )
-		->set_label( "Push Button #1" )
+		->set_text( "Push Button #1" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
 	IMGUI->init_push_button( H( "push_button_02" ) )
-		->set_label( "Push Button #2" )
+		->set_text( "Push Button #2" )
 		->set_position( imgui_flow::down )
 		->set_size( { 130.0f, 24.0f } )
 		->finalize();
 
-	IMGUI->init_checkbox( H( "checkbox_01" ) )
-		->set_label( "Check Box #1" )
-		->set_position( imgui_flow::down )
-		->set_size( { 130.0f, 24.0f } )
-		->finalize();
+	//IMGUI->init_checkbox( H( "checkbox_01" ) )
+	//	->set_text( "Check Box #1" )
+	//	->set_position( imgui_flow::down )
+	//	->set_size( { 130.0f, 24.0f } )
+	//	->finalize();
 }
 
 w_imgui_callback* layer_default::get_imgui_callback()

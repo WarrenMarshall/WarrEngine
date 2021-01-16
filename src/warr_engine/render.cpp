@@ -357,13 +357,13 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 /*
 	draws a string from a bitmap font, char by char
 */
-w_render* w_render::draw_string( const std::string_view text, const w_rect& dst )
+w_render* w_render::draw_string( const std::string_view text, const w_pos& pos )
 {
 	// not specifying a font means you want to use the default font
-	return draw_string( engine->pixel_font, text, dst );
+	return draw_string( engine->pixel_font, text, pos );
 }
 
-w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_rect& dst )
+w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_pos& pos )
 {
 	auto rs = rs_top();
 
@@ -390,12 +390,12 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 	// ----------------------------------------------------------------------------
 
-	OPENGL
-		->push()
-		->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
+	//OPENGL
+	//	->push()
+	//	->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
 
-	float xpos = dst.x;
-	float ypos = dst.y;
+	float xpos = pos.x + alignment_pos_adjustment.x;
+	float ypos = pos.y + alignment_pos_adjustment.y;
 
 	for( const char iter : text )
 	{
@@ -413,7 +413,7 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		xpos += ( fch->xadvance * rs->scale.x);
 	}
 
-	OPENGL->pop();
+	//OPENGL->pop();
 
 	return this;
 }
@@ -533,7 +533,7 @@ w_render* w_render::draw_stats()
 		float ypos = 0;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( iter, w_rect( ui_canvas_hw, ypos ) );
+			RENDER->draw_string( iter, { ui_canvas_hw, ypos } );
 			ypos += font_max_height;
 		}
 
@@ -545,7 +545,7 @@ w_render* w_render::draw_stats()
 			->push_align( align::right )
 			->draw_string(
 				fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
-				w_rect( ui_canvas_w, 0 ) )
+				{ ui_canvas_w, 0.0f	} )
 			->end();
 	}
 #endif

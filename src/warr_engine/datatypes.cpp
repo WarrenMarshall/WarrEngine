@@ -132,9 +132,53 @@ w_rect::w_rect( const w_vec2& top_left, const w_vec2& bottom_right )
 {
 }
 
-w_vec2 w_rect::midpoint()
+w_vec2 w_rect::extents() const
+{
+	return { ( w - x ), ( h - y ) };
+}
+
+w_vec2 w_rect::top_left() const
+{
+	return { x, y };
+}
+
+w_vec2 w_rect::bottom_right() const
+{
+	return { x + w, y + h };
+}
+
+w_vec2 w_rect::midpoint() const
 {
 	return w_vec2( x + ( w / 2.0f ), y + ( h / 2.0f ) );
+}
+
+// returns a position within this rectangle that represents
+// the best spot to start drawing from, given the alignment
+// requested.
+
+w_pos w_rect::get_position_from_alignment( e_align align ) const
+{
+	w_pos pos = { x, y };
+
+	if( align & align::right )
+	{
+		pos.x = x + w;
+	}
+	if( align & align::hcenter )
+	{
+		pos.x = x + ( w / 2.0f );
+	}
+
+	if( align & align::bottom )
+	{
+		pos.y = y + h;
+	}
+	if( align & align::vcenter )
+	{
+		pos.y = y + ( h / 2.0f );
+	}
+
+	return pos;
 }
 
 bool w_rect::operator==( const w_rect& rhs ) const
@@ -151,6 +195,16 @@ w_rect w_rect::operator+=( const w_vec2& v )
 {
 	*this = *this + v;
 	return *this;
+}
+
+w_rect w_rect::operator+( const w_rect& rhs ) const
+{
+	return w_rect( x + rhs.x, y + rhs.y, w + rhs.w, h + rhs.h );
+}
+
+w_rect w_rect::operator-( const w_rect& rhs ) const
+{
+	return w_rect( x - rhs.x, y - rhs.y, w - rhs.w, h - rhs.h );
 }
 
 w_rect w_rect::operator*( float v ) const

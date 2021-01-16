@@ -16,8 +16,16 @@ struct w_imgui_result
 
 // ----------------------------------------------------------------------------
 
+struct wm_imgui_default_callback : w_imgui_callback
+{
+};
+
+// ----------------------------------------------------------------------------
+
 struct w_imgui
 {
+	wm_imgui_default_callback default_callback;
+
 	// #ui - this feels clunky. there has to be a better way to express this situation/condition.
 	bool containing_layer_is_topmost = false;
 
@@ -49,11 +57,9 @@ struct w_imgui
 	w_imgui* init_push_button( hash tag = 0 );
 	w_imgui* init_checkbox( hash tag = 0 );
 
-	w_imgui* set_label( const std::string& label );
-	w_imgui* set_label_align( e_align align );
+	w_imgui* set_text( const std::string& text );
+	w_imgui* set_text_align( e_align align );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
-	w_imgui* set_texture( e_imgui_control_state state, a_texture* texture );
-	w_imgui* set_texture_align( e_align align );
 	w_imgui* set_position( const w_vec2& pos );
 	w_imgui* set_position( e_imgui_flow flow );
 	w_imgui* set_size( const w_sz& size );
@@ -66,8 +72,10 @@ private:
 	void _passive();
 	void _set_as_last_control( w_imgui_control control );
 
-	[[nodiscard]] virtual e_im_result _update_im_state( int id, const w_rect& rc );
+	[[nodiscard]] virtual e_im_result _update_im_state( int id, const w_rect& rc_win );
 	void _draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
+	void _draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool being_hovered, bool being_clicked );
+	void _draw_text( const w_imgui_control& control, const w_rect& rc_client, bool being_hovered, bool being_clicked );
 	[[nodiscard]] w_offset _get_click_offset( bool being_hovered, bool being_clicked );
 	[[nodiscard]] w_color _get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked );
 
