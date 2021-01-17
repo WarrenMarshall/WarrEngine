@@ -50,7 +50,7 @@ void layer_main_menu::draw_ui()
 	IMGUI->init_push_button( H( "button_play" ) )
 		->set_text( "PLAY" )
 		->set_position( { xpos, ypos } )
-		->set_size( { v_window_w - xpos * 2.0f, 0.0f } )
+		->set_size( { v_window_w - xpos * 2.0f, w_sz::def } )
 		->finalize();
 
 	xpos += 16;
@@ -59,7 +59,7 @@ void layer_main_menu::draw_ui()
 	IMGUI->init_push_button( H( "button_quit" ) )
 		->set_text( "Quit" )
 		->set_position( { xpos, ypos } )
-		->set_size( { v_window_w - xpos * 2.0f, 0.0f } )
+		->set_size( { v_window_w - xpos * 2.0f, w_sz::def } )
 		->finalize();
 }
 
@@ -81,13 +81,6 @@ void layer_main_menu::push()
 		w_render_state_opt rso;
 		rso.snap_to_pixel = false;
 		rso.color = w_color::black;
-		rso.color->a = 0.95f;
-
-		e->add_component<ec_mesh>()
-			->init( "mesh_torus_test" )
-			->set_tag( H( "mega_outer_wheel" ) )
-			->set_render_state( rso )
-			->tform.set_scale( 2.75f )->set_angle( 240.0f );
 
 		rso.color->a = 0.65f;
 		e->add_component<ec_mesh>()
@@ -129,7 +122,6 @@ void layer_main_menu::update()
 
 	static float angle = 0.0f;
 
-	find_entity( H( "wheels" ) )->get_component( H( "mega_outer_wheel" ) )->tform.set_angle( -angle );
 	find_entity( H( "wheels" ) )->get_component( H("outer_wheel") )->tform.set_angle( angle );
 	find_entity( H( "wheels" ) )->get_component( H( "inner_wheel" ) )->tform.set_angle( -angle );
 

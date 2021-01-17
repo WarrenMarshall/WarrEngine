@@ -334,6 +334,8 @@ const w_vec2 w_vec2::left = w_vec2( -1.0f, 0.0f );
 const w_vec2 w_vec2::right = w_vec2( 1.0f, 0.0f );
 const w_vec2 w_vec2::up = w_vec2( 0.0f, -1.0f );
 const w_vec2 w_vec2::down = w_vec2( 0.0f, 1.0f );
+const float w_vec2::def = -1.0f;
+const float w_vec2::ignore = -2.0f;
 
 w_vec2::w_vec2()
 	: x( 0.0f ), y( 0.0f )

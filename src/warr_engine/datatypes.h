@@ -153,6 +153,8 @@ struct w_vec2
 	static const w_vec2 right;
 	static const w_vec2 up;
 	static const w_vec2 down;
+	static const float def;
+	static const float ignore;
 
 	w_vec2();
 	w_vec2( int x, int y );

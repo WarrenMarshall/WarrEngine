@@ -86,9 +86,15 @@ void layer_default::draw_ui()
 		->set_position( imgui_flow::down )
 		->finalize();
 
+	IMGUI->init_divider()
+		->set_position( imgui_flow::down )
+		->finalize();
+
 	IMGUI->init_label( H( "caption_label" ) )
 		->set_text( "Warren Rules!" )
-		->set_position( imgui_flow::down )
+		->set_position( imgui_flow::down );
+	IMGUI->set_size( { w_sz::ignore, 16.0f } );
+	IMGUI->set_slice_def( "simple_ui_label" )
 		->finalize();
 }
 

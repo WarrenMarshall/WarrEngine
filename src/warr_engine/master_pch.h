@@ -194,11 +194,6 @@ constexpr float zdepth_topmost = 14750.0f;
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
 }
 
-[[nodiscard]] constexpr bool fequals( float a, float b, float tolerance )
-{
-	return ( ( (a) -( b ) ) < tolerance && ( (a) -( b ) ) > -tolerance );
-}
-
 [[nodiscard]] float sign_of( float val );
 [[nodiscard]] float snap_to_pixel( float f );
 [[nodiscard]] int str_to_int( const char* str );

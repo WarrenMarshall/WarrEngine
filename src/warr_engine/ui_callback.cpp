@@ -21,10 +21,12 @@ a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& co
 
 void w_imgui_callback::was_left_clicked( const w_imgui_control& control )
 {
+	log_warning( "left clicked not handled!" );
 }
 
 void w_imgui_callback::was_right_clicked( const w_imgui_control& control )
 {
+	log_warning( "right clicked not handled!" );
 }
 
 // space to leave between controls within the client area
@@ -50,13 +52,6 @@ float w_imgui_callback::get_default_width( const w_imgui_control& control )
 {
 	switch( control.type )
 	{
-		case imgui_control_type::push_button:
-		case imgui_control_type::check_box:
-		case imgui_control_type::label:
-		{
-			return 120.0f;
-		}
-
 		case imgui_control_type::slider:
 		{
 			return 100.0f;
@@ -80,6 +75,11 @@ float w_imgui_callback::get_default_height( const w_imgui_control& control )
 		case imgui_control_type::slider:
 		{
 			return 12.0f;
+		}
+
+		case imgui_control_type::divider:
+		{
+			return 4.0f;
 		}
 	}
 

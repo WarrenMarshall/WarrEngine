@@ -15,6 +15,10 @@
 		ui_button, 25, 1, 16, 16,\
 		ui_checkbox_off, 17, 25, 12, 12,\
 		ui_checkbox_on, 30, 25, 12, 12,\
+		ui_label, 40, 40, 16, 16,\
+		ui_divider, 31, 18, 10, 4,\
+		ui_text_box, 16, 47, 12, 16,\
+		ui_text_caret, 32, 50, 5, 10,\
 		ui_slider_body, 15, 39, 12, 6,\
 		ui_slider_thumb, 3, 42, 10, 12\
 		"
@@ -37,7 +41,7 @@
 	"tag" "simple_ui_panel"
 	"texture_tag" "ui_panel"
 	"x_slices" "8, 8"
-	"y_slices" "8, 8"
+	"y_slices" "7, 7"
 }
 
 # push button
@@ -49,6 +53,24 @@
 	"y_slices" "5, 5"
 }
 
+# label
+{
+	"type" "slice_def"
+	"tag" "simple_ui_label"
+	"texture_tag" "ui_label"
+	"x_slices" "3, 3"
+	"y_slices" "3, 3"
+}
+
+# divider
+{
+	"type" "slice_def"
+	"tag" "simple_ui_divider"
+	"texture_tag" "ui_divider"
+	"x_slices" "1, 1"
+	"y_slices" "1, 1"
+}
+
 # slider
 {
 	"type" "slice_def"
@@ -56,4 +78,13 @@
 	"texture_tag" "ui_slider_body"
 	"x_slices" "2, 2"
 	"y_slices" "2, 2"
+}
+
+# text box
+{
+	"type" "slice_def"
+	"tag" "simple_ui_text_box"
+	"texture_tag" "ui_text_box"
+	"x_slices" "4, 4"
+	"y_slices" "5, 5"
 }

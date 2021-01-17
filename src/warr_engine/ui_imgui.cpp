@@ -80,7 +80,7 @@ w_imgui* w_imgui::init_panel( hash tag )
 	current_control.slice_def = a_9slice_def::find( "simple_ui_panel" );
 	current_control.text_align = align::left | align::top;
 
-	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+	set_size( { w_sz::def, w_sz::def } );
 
 	return this;
 }
@@ -96,7 +96,7 @@ w_imgui* w_imgui::init_push_button( hash tag )
 	current_control.slice_def = a_9slice_def::find( "simple_ui_push_button" );
 	current_control.text_align = align::centered;
 
-	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+	set_size( { w_sz::def, w_sz::def } );
 
 	return this;
 }
@@ -111,7 +111,22 @@ w_imgui* w_imgui::init_checkbox( hash tag )
 	current_control.is_active = true;
 	current_control.text_align = align::left | align::vcenter;
 
-	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+	set_size( { w_sz::def, w_sz::def } );
+
+	return this;
+}
+
+w_imgui* w_imgui::init_divider( hash tag )
+{
+	set_current_callback_from_current_layer();
+
+	current_control = {};
+	current_control.type = imgui_control_type::divider;
+	current_control.tag = tag;
+	current_control.is_active = false;
+	current_control.slice_def = a_9slice_def::find( "simple_ui_divider" );
+
+	set_size( { w_sz::def, w_sz::def } );
 
 	return this;
 }
@@ -123,10 +138,10 @@ w_imgui* w_imgui::init_label( hash tag )
 	current_control = {};
 	current_control.type = imgui_control_type::label;
 	current_control.tag = tag;
-	current_control.is_active = true;
+	current_control.is_active = false;
 	current_control.text_align = align::centered;
 
-	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) }  );
+	set_size( { w_sz::def, w_sz::def } );
 
 	return this;
 }
@@ -141,7 +156,7 @@ w_imgui* w_imgui::init_slider( hash tag )
 	current_control.is_active = true;
 	current_control.text_align = align::left | align::vcenter;
 
-	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+	set_size( { w_sz::def, w_sz::def } );
 
 	return this;
 }
@@ -158,9 +173,9 @@ w_imgui* w_imgui::set_text_align( e_align align )
 	return this;
 }
 
-w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
+w_imgui* w_imgui::set_slice_def( const std::string& tag )
 {
-	current_control.slice_def = slice_def;
+	current_control.slice_def = a_9slice_def::find( tag );
 	compute_clientrect_from_rect();
 
 	return this;
@@ -208,8 +223,20 @@ w_imgui* w_imgui::set_position( e_imgui_flow flow )
 
 w_imgui* w_imgui::set_size( const w_sz& sz )
 {
-	current_control.rc_win.w = ( sz.w > 0.0f ) ? sz.w : current_callback->get_default_width( current_control );
-	current_control.rc_win.h = ( sz.h > 0.0f ) ? sz.h : current_callback->get_default_height( current_control );
+	if( sz.w != w_sz::ignore )
+	{
+		current_control.rc_win.w =
+			( sz.w == w_sz::def )
+			? current_callback->get_default_width( current_control )
+			: sz.w;
+	}
+	if( sz.h != w_sz::ignore )
+	{
+		current_control.rc_win.h =
+			( sz.h == w_sz::def )
+			? current_callback->get_default_height( current_control )
+			: sz.h;
+	}
 
 	compute_clientrect_from_rect();
 
@@ -393,6 +420,19 @@ void w_imgui::_draw( const w_imgui_control& control, bool being_hovered, bool be
 
 			_draw_texture( control, rc_texture, texture, being_hovered, being_clicked );
 			_draw_text( control, rc_client_offset, being_hovered, being_clicked );
+		}
+		break;
+
+		case imgui_control_type::label:
+		{
+			_draw_slice_def( control, rc_win_offset, false, false );
+			_draw_text( control, rc_client_offset, false, false );
+		}
+		break;
+
+		case imgui_control_type::divider:
+		{
+			_draw_slice_def( control, rc_win_offset, false, false );
 		}
 		break;
 	}

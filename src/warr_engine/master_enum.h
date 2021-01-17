@@ -332,6 +332,7 @@ enum_begin( imgui_control_type )
 	panel,				// a window frame
 	push_button,		// a button that clicks up/down
 	check_box,			// a button that has a toggle state
+	divider,			// a simple divider
 	label,				// text
 	slider,				// a line with a slider knob
 	//progress_bar,		// a bar showing progress between 0-100

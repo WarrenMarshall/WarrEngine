@@ -97,7 +97,6 @@ void layer_esc_menu::draw_ui()
 		+ slice->patches[ slicedef_patch::P_22 ]->rc.h;
 
 	IMGUI->init_panel()
-		->set_slice_def( a_9slice_def::find( "simple_ui_panel" ) )
 		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
@@ -105,7 +104,7 @@ void layer_esc_menu::draw_ui()
 	IMGUI->init_push_button( H( "button_resume" ) )
 		->set_text( "Resume" )
 		->set_position( imgui_flow::last_crc_topleft )
-		->set_size( { IMGUI->last_control->rc_client.w, button_h } )
+		->set_size( { w_sz::ignore, button_h } )
 		->finalize();
 
 	IMGUI->init_push_button( H( "button_main_menu" ) )
