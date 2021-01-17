@@ -85,21 +85,23 @@ void layer_esc_menu::draw_ui()
 		->pop();
 
 	constexpr float num_buttons = 4.0f;
-	constexpr float button_w = 140.0f;
-	constexpr float button_h = 24.0f;
+	float button_w = IMGUI->current_callback->get_default_width( imgui_control_type::push_button );
+	float button_h = IMGUI->current_callback->get_default_height( imgui_control_type::push_button );
 
 	auto slice_def = a_9slice_def::find( "simple_ui_panel" );
 	float panel_w =
 		slice_def->get_left_slice_sz()
-		+ IMGUI->current_callback->get_default_width( imgui_control_type::push_button )
+		+ button_w
 		+ slice_def->get_right_slice_sz();
 	float panel_h =
 		( button_h * num_buttons )
 		+ slice_def->get_top_slice_sz()
 		+ ( IMGUI->current_callback->get_control_margin() * ( num_buttons - 1 ) )
-		+ slice_def->get_bottom_slice_sz();
+		+ slice_def->get_bottom_slice_sz()
+		+ 12.0f;
 
 	IMGUI->do_panel( H( "main_panel" ) )
+		->set_text( "Pause Menu" )
 		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();

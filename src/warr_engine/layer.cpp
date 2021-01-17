@@ -100,5 +100,5 @@ void w_layer::new_game()
 
 w_imgui_callback* w_layer::get_imgui_callback()
 {
-	return nullptr;
+	return &( IMGUI->default_callback );
 }

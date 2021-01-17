@@ -17,4 +17,5 @@ struct w_imgui_callback
 	virtual float get_default_width( const w_imgui_control& control );
 	virtual float get_default_width( e_imgui_control_type control_type );
 	virtual float get_default_height( const w_imgui_control& control );
+	virtual float get_default_height( e_imgui_control_type control_type );
 };

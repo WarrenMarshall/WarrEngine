@@ -68,7 +68,12 @@ float w_imgui_callback::get_default_width( e_imgui_control_type control_type )
 
 float w_imgui_callback::get_default_height( const w_imgui_control& control )
 {
-	switch( control.type )
+	return get_default_height( control.type );
+}
+
+float w_imgui_callback::get_default_height( e_imgui_control_type control_type )
+{
+	switch( control_type )
 	{
 		case imgui_control_type::push_button:
 		{

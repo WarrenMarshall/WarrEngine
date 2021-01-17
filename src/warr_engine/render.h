@@ -70,14 +70,6 @@ struct w_render
 	a_palette* current_palette = nullptr;
 	w_color pal_color_from_idx( int idx );
 
-	// ----------------------------------------------------------------------------
-	// the current render state stacks
-
-	std::vector<w_render_state> render_states;
-	w_render_state* rs_top();
-	w_render_state* rs_push();
-	w_render_state* rs_push( w_render_state& rs);
-	w_render_state* rs_pop();
 	void rs_reset();
 
 	float rs_z_depth = 0.0f;
@@ -142,5 +134,12 @@ struct w_render
 
 	void bind_texture( int slot, a_src_texture* tex );
 	w_render_stats stats;
+
+	std::vector<w_render_state> render_states;
+	w_render_state* rs_top();
+	w_render_state* rs_push();
+	w_render_state* rs_push( w_render_state& rs );
+	w_render_state* rs_pop();
+
 };
 

@@ -30,11 +30,7 @@ void w_imgui::reset()
 
 void w_imgui::set_current_callback_from_current_layer()
 {
-	current_callback = &default_callback;
-	if( IMGUI->containing_layer_is_topmost )
-	{
-		current_callback = LAYER->get_imgui_callback();
-	}
+	current_callback = LAYER->get_imgui_callback();
 }
 
 w_imgui* w_imgui::do_panel( hash tag )
@@ -46,7 +42,7 @@ w_imgui* w_imgui::do_panel( hash tag )
 	current_control.tag = tag;
 	current_control.is_active = false;
 	current_control.slice_def = a_9slice_def::find( "simple_ui_panel" );
-	current_control.text_align = align::left | align::top;
+	current_control.text_align = align::hcenter | align::vcenter;
 
 	set_size( { w_sz::def, w_sz::def } );
 
@@ -344,7 +340,7 @@ e_im_result w_imgui::_update_im_state( int id, const w_rect& rc_win )
 	return imresult;
 }
 
-void w_imgui::_draw( const w_imgui_control& control, bool being_hovered, bool being_clicked )
+void w_imgui::_draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
 {
 	w_vec2 clicked_offset = _get_click_offset( being_hovered, being_clicked );
 
@@ -363,13 +359,38 @@ void w_imgui::_draw( const w_imgui_control& control, bool being_hovered, bool be
 		case imgui_control_type::panel:
 		{
 			_draw_slice_def( control, rc_win_offset, being_hovered, being_clicked );
+
+			// text on a panel translates to a caption bar at the
+			// top of the panel.
+			//
+			// the client area of the panel is then adjusted to remove
+			// the space used for the caption bar.
+
+			if( !control.text.empty() && control.slice_def )	// can't have a caption without a slicedef
+			{
+				w_render_state_opt rso;
+				rso.color = w_color::pal(1);
+
+				w_rect rc = rc_win_offset;
+
+				auto extent = engine->pixel_font->get_string_extents( control.text );
+				rc.h = extent.h + current_callback->get_control_margin() + 7.0f;
+
+				_draw_slice_def( control, rc, true, being_clicked );
+				_draw_text( control, rc, w_color::pal( 3 ), being_hovered, being_clicked );
+
+				rc_client_offset.y += rc.h - ( control.slice_def->get_top_slice_sz() / 2.0f );
+				rc_client_offset.h -= rc.h;
+
+				control.rc_client = rc_client_offset;
+			}
 		}
 		break;
 
 		case imgui_control_type::push_button:
 		{
 			_draw_slice_def( control, rc_win_offset, being_hovered, being_clicked );
-			_draw_text( control, rc_client_offset, being_hovered, being_clicked );
+			_draw_text( control, rc_client_offset, w_color::pal( 2 ), being_hovered, being_clicked );
 		}
 		break;
 
@@ -391,14 +412,14 @@ void w_imgui::_draw( const w_imgui_control& control, bool being_hovered, bool be
 				);
 
 			_draw_texture( control, rc_texture, texture, being_hovered, being_clicked );
-			_draw_text( control, rc_client_offset, being_hovered, being_clicked );
+			_draw_text( control, rc_client_offset, w_color::pal( 2 ), being_hovered, being_clicked );
 		}
 		break;
 
 		case imgui_control_type::label:
 		{
 			_draw_slice_def( control, rc_win_offset, false, false );
-			_draw_text( control, rc_client_offset, false, false );
+			_draw_text( control, rc_client_offset, w_color::pal( 2 ), false, false );
 		}
 		break;
 
@@ -429,16 +450,20 @@ void w_imgui::_draw_texture( const w_imgui_control& control, const w_rect& rc, c
 		->draw_sprite( texture, rc.midpoint() );
 }
 
-void w_imgui::_draw_text( const w_imgui_control& control, const w_rect& rc_client, bool being_hovered, bool being_clicked )
+void w_imgui::_draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool being_hovered, bool being_clicked )
 {
 	if( control.text.length() )
 	{
 		w_pos pos = rc_client.get_position_from_alignment( control.text_align );
 
+		w_render_state_opt rso;
+		rso.color = _get_adjusted_color( color, being_hovered, being_clicked );
+		rso.align = control.text_align;
+
 		RENDER->push_depth_nudge()
-			->push_rgb( _get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
-			->push_align( control.text_align )
-			->draw_string( control.text, pos );
+			->push_render_state( rso )
+			->draw_string( control.text, pos )
+			->pop();
 	}
 }
 

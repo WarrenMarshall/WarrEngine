@@ -110,7 +110,6 @@ void w_layer_mgr::draw()
 			if( layer->ilc_is_alive() )
 			{
 				RENDER->push_depth( zdepth_layers - ( zdepth_layer_step * x ) );
-
 				OPENGL->init_view_matrix( layer->get_camera() );
 
 				layer->draw();
