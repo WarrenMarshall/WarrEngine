@@ -15,7 +15,7 @@ struct w_pending_collision
 
 // ----------------------------------------------------------------------------
 
-struct w_engine : i_input_receiver
+struct w_engine
 {
 	// the function that all games/apps call to get the engine up and running
 	template<typename T>
@@ -80,7 +80,10 @@ struct w_engine : i_input_receiver
 	[[nodiscard]] w_range find_range_from_symbol( const std::string_view str, const w_range& def_value = w_range( 0, 1 ) );
 	[[nodiscard]] w_vec2 find_vec2_from_symbol( const std::string_view str, const w_vec2& def_value = w_vec2( 0, 0 ) );
 
-	virtual bool iir_on_released( const w_input_event* evt ) override;
+	bool on_input_motion( const w_input_event* evt ) { return false; }
+	bool on_input_pressed( const w_input_event* evt ) { return false; }
+	bool on_input_held( const w_input_event* evt ) { return false; }
+	bool on_input_released( const w_input_event* evt );
 
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
 	std::unique_ptr<w_time> time = nullptr;

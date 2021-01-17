@@ -231,12 +231,12 @@ void w_input::update()
 		{
 			case event_id::input_pressed:
 			{
-				if( engine->iir_on_pressed( &evt ) )
+				if( engine->on_input_pressed( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->iir_on_pressed( &evt ) )
+				if( engine->layer_mgr->on_input_pressed( &evt ) )
 				{
 					break;
 				}
@@ -245,12 +245,12 @@ void w_input::update()
 
 			case event_id::input_held:
 			{
-				if( engine->iir_on_held( &evt ) )
+				if( engine->on_input_held( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->iir_on_held( &evt ) )
+				if( engine->layer_mgr->on_input_held( &evt ) )
 				{
 					break;
 				}
@@ -259,12 +259,12 @@ void w_input::update()
 
 			case event_id::input_released:
 			{
-				if( engine->iir_on_released( &evt ) )
+				if( engine->on_input_released( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->iir_on_released( &evt ) )
+				if( engine->layer_mgr->on_input_released( &evt ) )
 				{
 					break;
 				}
@@ -273,12 +273,12 @@ void w_input::update()
 
 			case event_id::input_motion:
 			{
-				if( engine->iir_on_motion( &evt ) )
+				if( engine->on_input_motion( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->iir_on_motion( &evt ) )
+				if( engine->layer_mgr->on_input_motion( &evt ) )
 				{
 					break;
 				}

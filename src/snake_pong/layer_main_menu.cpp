@@ -136,7 +136,7 @@ void layer_main_menu::becoming_top_layer()
 	engine->ui->mouse_cursor = a_cursor::find( "mouse_cursor_default" );
 }
 
-bool layer_main_menu::iir_on_pressed( const w_input_event* evt )
+bool layer_main_menu::on_input_pressed( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::key_1 )
 	{
@@ -165,7 +165,7 @@ bool layer_main_menu::iir_on_pressed( const w_input_event* evt )
 	return false;
 }
 
-bool layer_main_menu::iir_on_held( const w_input_event* evt )
+bool layer_main_menu::on_input_held( const w_input_event* evt )
 {
 	static float angle = 0.0f;
 
@@ -184,7 +184,7 @@ bool layer_main_menu::iir_on_held( const w_input_event* evt )
 	return false;
 }
 
-bool layer_main_menu::iir_on_motion( const w_input_event* evt )
+bool layer_main_menu::on_input_motion( const w_input_event* evt )
 {
 	static w_vec2 wheel_01_pos = { v_window_hw, v_window_hh };
 

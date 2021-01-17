@@ -90,7 +90,6 @@ extern float ui_canvas_h;
 #include "keyvalues.h"
 #include "config.h"
 
-#include "i_input_receiver.h"
 #undef min	// fixes dumb compile problem
 #undef max	// fixes dumb compile problem
 #include "datatypes.h"

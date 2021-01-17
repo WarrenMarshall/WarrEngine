@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_layer_mgr : i_input_receiver
+struct w_layer_mgr
 {
 	/*
 		the layers are stored front-to-back
@@ -45,8 +45,8 @@ struct w_layer_mgr : i_input_receiver
 	void draw();
 	virtual void new_game();
 
-	virtual bool iir_on_motion( const w_input_event* evt ) override;
-	virtual bool iir_on_pressed( const w_input_event* evt ) override;
-	virtual bool iir_on_held( const w_input_event* evt ) override;
-	virtual bool iir_on_released( const w_input_event* evt ) override;
+	bool on_input_motion( const w_input_event* evt );
+	bool on_input_pressed( const w_input_event* evt );
+	bool on_input_held( const w_input_event* evt );
+	bool on_input_released( const w_input_event* evt );
 };

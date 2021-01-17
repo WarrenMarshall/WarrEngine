@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_layer : i_life_cycle, i_input_receiver
+struct w_layer : i_life_cycle
 {
 	std::vector<std::unique_ptr<w_entity>> entities;
 	w_imgui_callback* imgui_callback = nullptr;
@@ -68,4 +68,9 @@ struct w_layer : i_life_cycle, i_input_receiver
 
 	virtual void new_game();
 	virtual w_imgui_callback* get_imgui_callback();
+
+	virtual bool on_input_motion( const w_input_event* evt ) { return false; }
+	virtual bool on_input_pressed( const w_input_event* evt ) { return false; }
+	virtual bool on_input_held( const w_input_event* evt ) { return false; }
+	virtual bool on_input_released( const w_input_event* evt ) { return false; }
 };

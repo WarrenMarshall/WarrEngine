@@ -802,7 +802,7 @@ void w_engine::wait_for_thread_pool_to_finish()
 	futures.clear();
 }
 
-bool w_engine::iir_on_released( const w_input_event* evt )
+bool w_engine::on_input_released( const w_input_event* evt )
 {
 	// toggle engine pause
 	if( evt->input_id == input_id::key_pause )

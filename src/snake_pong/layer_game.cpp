@@ -71,7 +71,7 @@ void layer_game::update()
 	}
 }
 
-bool layer_game::iir_on_pressed( const w_input_event* evt )
+bool layer_game::on_input_pressed( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::key_b )
 	{

@@ -177,11 +177,11 @@ void w_layer_mgr::new_game()
 	}
 }
 
-bool w_layer_mgr::iir_on_motion( const w_input_event* evt )
+bool w_layer_mgr::on_input_motion( const w_input_event* evt )
 {
 	for( const auto& iter : layer_stack )
 	{
-		if( iter->iir_on_motion( evt ) )
+		if( iter->on_input_motion( evt ) )
 		{
 			return true;
 		}
@@ -195,11 +195,11 @@ bool w_layer_mgr::iir_on_motion( const w_input_event* evt )
 	return false;
 }
 
-bool w_layer_mgr::iir_on_pressed( const w_input_event* evt )
+bool w_layer_mgr::on_input_pressed( const w_input_event* evt )
 {
 	for( const auto& iter : layer_stack )
 	{
-		if( iter->iir_on_pressed( evt ) )
+		if( iter->on_input_pressed( evt ) )
 		{
 			return true;
 		}
@@ -213,11 +213,11 @@ bool w_layer_mgr::iir_on_pressed( const w_input_event* evt )
 	return false;
 }
 
-bool w_layer_mgr::iir_on_held( const w_input_event* evt )
+bool w_layer_mgr::on_input_held( const w_input_event* evt )
 {
 	for( const auto& iter : layer_stack )
 	{
-		if( iter->iir_on_held( evt ) )
+		if( iter->on_input_held( evt ) )
 		{
 			return true;
 		}
@@ -231,11 +231,11 @@ bool w_layer_mgr::iir_on_held( const w_input_event* evt )
 	return false;
 }
 
-bool w_layer_mgr::iir_on_released( const w_input_event* evt )
+bool w_layer_mgr::on_input_released( const w_input_event* evt )
 {
 	for( const auto& iter : layer_stack )
 	{
-		if( iter->iir_on_released( evt ) )
+		if( iter->on_input_released( evt ) )
 		{
 			return true;
 		}

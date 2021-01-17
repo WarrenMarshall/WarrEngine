@@ -178,9 +178,6 @@
     <ClCompile Include="input_gamepad.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="i_input_receiver.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="physics_contact_listener.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -388,9 +385,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="input_gamepad.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="i_input_receiver.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="physics_contact_listener.h">
