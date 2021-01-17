@@ -11,6 +11,7 @@ struct w_pending_collision
 	w_entity* entity_b;
 	b2Fixture* fixture_b;
 	b2Manifold manifold;
+	b2WorldManifold wmanifold;
 };
 
 // ----------------------------------------------------------------------------

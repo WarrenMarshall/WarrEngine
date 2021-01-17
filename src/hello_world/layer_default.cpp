@@ -71,30 +71,27 @@ void layer_default::draw_ui()
 	RENDER
 		->draw( tex_hello_world, w_rect( 16, 16 ) );
 
-	IMGUI->init_panel( H( "main_panel" ) )
+	IMGUI->do_panel( H( "main_panel" ) )
 		->set_position( { ui_canvas_hw, 32.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 
-	IMGUI->init_push_button( H( "push_button_01" ) )
+	IMGUI->do_push_button( H( "push_button_01" ) )
 		->set_text( "Push Button" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->finalize();
 
-	IMGUI->init_checkbox( H( "checkbox_01" ) )
+	IMGUI->do_checkbox( H( "checkbox_01" ) )
 		->set_text( "Check Box" )
-		->set_position( imgui_flow::down )
 		->finalize();
 
-	IMGUI->init_divider()
-		->set_position( imgui_flow::down )
+	IMGUI->do_divider()
 		->finalize();
 
-	IMGUI->init_label( H( "caption_label" ) )
+	IMGUI->do_label( H( "caption_label" ) )
 		->set_text( "Warren Rules!" )
-		->set_position( imgui_flow::down );
-	IMGUI->set_size( { w_sz::ignore, 16.0f } );
-	IMGUI->set_slice_def( "simple_ui_label" )
+		->set_slice_def( "simple_ui_label" )
+		->set_size( { w_sz::ignore, 16.0f } )
 		->finalize();
 }
 

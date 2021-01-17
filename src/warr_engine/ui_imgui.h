@@ -37,22 +37,14 @@ struct w_imgui
 	w_imgui_result result = {};
 
 	void reset();
-
-	// this holds COPIES of any controls that are tagged when drawn.
-	//
-	// tagging controls lets you find them later that frame if needed.
-	std::unordered_map<hash, w_imgui_control> tagged_controls;
-	w_imgui* set_last_control_from_tag( hash tag );
-	w_imgui_control find_control( hash tag );
-	w_imgui* clear_last_control();
-
 	void set_current_callback_from_current_layer();
-	w_imgui* init_panel( hash tag = 0 );
-	w_imgui* init_push_button( hash tag = 0 );
-	w_imgui* init_checkbox( hash tag = 0 );
-	w_imgui* init_divider( hash tag = 0 );
-	w_imgui* init_label( hash tag = 0 );
-	w_imgui* init_slider( hash tag = 0 );
+
+	w_imgui* do_panel( hash tag = 0 );
+	w_imgui* do_push_button( hash tag = 0 );
+	w_imgui* do_checkbox( hash tag = 0 );
+	w_imgui* do_divider( hash tag = 0 );
+	w_imgui* do_label( hash tag = 0 );
+	w_imgui* do_slider( hash tag = 0 );
 
 	w_imgui* set_text( const std::string& text );
 	w_imgui* set_text_align( e_align align );
@@ -65,8 +57,8 @@ struct w_imgui
 	w_imgui_result* finalize();
 
 private:
-	void _active();
-	void _passive();
+	void finalize_active();
+	void finalize_passive();
 	void _set_as_last_control( w_imgui_control control );
 
 	[[nodiscard]] virtual e_im_result _update_im_state( int id, const w_rect& rc_win );

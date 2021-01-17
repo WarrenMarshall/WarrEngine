@@ -26,38 +26,6 @@ void w_imgui::reset()
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
 	last_control = std::nullopt;
-	tagged_controls.clear();
-}
-
-// locates the control that matches "tag" and sets up the imgui
-// to pretend that was the last control we drew.
-//
-// this is for finding controls that were created previously
-// that you now need to reference for positioning or parenting.
-
-w_imgui* w_imgui::set_last_control_from_tag( hash tag )
-{
-	_set_as_last_control( find_control( tag ) );
-
-	return this;
-}
-
-w_imgui_control w_imgui::find_control( hash tag )
-{
-	auto iter = tagged_controls.find( tag );
-
-	if( iter == tagged_controls.end() )
-	{
-		log_error( "{} : tagged control not found", tag );
-	}
-
-	return iter->second;
-}
-
-w_imgui* w_imgui::clear_last_control()
-{
-	last_control = std::nullopt;
-	return this;
 }
 
 void w_imgui::set_current_callback_from_current_layer()
@@ -69,7 +37,7 @@ void w_imgui::set_current_callback_from_current_layer()
 	}
 }
 
-w_imgui* w_imgui::init_panel( hash tag )
+w_imgui* w_imgui::do_panel( hash tag )
 {
 	set_current_callback_from_current_layer();
 
@@ -85,7 +53,7 @@ w_imgui* w_imgui::init_panel( hash tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_push_button( hash tag )
+w_imgui* w_imgui::do_push_button( hash tag )
 {
 	set_current_callback_from_current_layer();
 
@@ -101,7 +69,7 @@ w_imgui* w_imgui::init_push_button( hash tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_checkbox( hash tag )
+w_imgui* w_imgui::do_checkbox( hash tag )
 {
 	set_current_callback_from_current_layer();
 
@@ -116,7 +84,7 @@ w_imgui* w_imgui::init_checkbox( hash tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_divider( hash tag )
+w_imgui* w_imgui::do_divider( hash tag )
 {
 	set_current_callback_from_current_layer();
 
@@ -131,7 +99,7 @@ w_imgui* w_imgui::init_divider( hash tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_label( hash tag )
+w_imgui* w_imgui::do_label( hash tag )
 {
 	set_current_callback_from_current_layer();
 
@@ -146,7 +114,7 @@ w_imgui* w_imgui::init_label( hash tag )
 	return this;
 }
 
-w_imgui* w_imgui::init_slider( hash tag )
+w_imgui* w_imgui::do_slider( hash tag )
 {
 	set_current_callback_from_current_layer();
 
@@ -189,6 +157,7 @@ w_imgui* w_imgui::set_position( const w_pos& pos )
 	current_control.rc_win.y = pos.y;
 
 	compute_clientrect_from_rect();
+	current_control.set_position_called = true;
 
 	return this;
 }
@@ -218,6 +187,7 @@ w_imgui* w_imgui::set_position( e_imgui_flow flow )
 
 	compute_clientrect_from_rect();
 
+	current_control.set_position_called = true;
 	return this;
 }
 
@@ -262,18 +232,20 @@ void w_imgui::compute_clientrect_from_rect()
 
 w_imgui_result* w_imgui::finalize()
 {
+	// if this control was never given a position directly,
+	// assume it wants to flow down from the last control.
+	if( !current_control.set_position_called )
+	{
+		set_position( imgui_flow::down );
+	}
+
 	if( current_control.is_active )
 	{
-		_active();
+		finalize_active();
 	}
 	else
 	{
-		_passive();
-	}
-
-	if( current_control.tag )
-	{
-		tagged_controls.insert( std::pair( current_control.tag, current_control ) );
+		finalize_passive();
 	}
 
 	_set_as_last_control( current_control );
@@ -290,7 +262,7 @@ w_imgui_result* w_imgui::finalize()
 	return &result;
 }
 
-void w_imgui::_active()
+void w_imgui::finalize_active()
 {
 	result = {};
 	im_automatic_id++;
@@ -303,7 +275,7 @@ void w_imgui::_active()
 	_draw( current_control, hover_id == im_automatic_id, hot_id == im_automatic_id );
 }
 
-void w_imgui::_passive()
+void w_imgui::finalize_passive()
 {
 	result = {};
 

@@ -88,39 +88,43 @@ void layer_esc_menu::draw_ui()
 	constexpr float button_w = 140.0f;
 	constexpr float button_h = 24.0f;
 
-	float panel_w = button_w + ( IMGUI->current_callback->get_control_margin() * 4.0f );
-	auto slice = a_9slice_def::find( "simple_ui_panel" );
+	auto slice_def = a_9slice_def::find( "simple_ui_panel" );
+	float panel_w =
+		slice_def->get_left_slice_sz()
+		+ IMGUI->current_callback->get_default_width( imgui_control_type::push_button )
+		+ slice_def->get_right_slice_sz();
 	float panel_h =
 		( button_h * num_buttons )
+		+ slice_def->get_top_slice_sz()
 		+ ( IMGUI->current_callback->get_control_margin() * ( num_buttons - 1 ) )
-		+ slice->patches[ slicedef_patch::P_00 ]->rc.h
-		+ slice->patches[ slicedef_patch::P_22 ]->rc.h;
+		+ slice_def->get_bottom_slice_sz();
 
-	IMGUI->init_panel()
+	IMGUI->do_panel( H( "main_panel" ) )
 		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
-	IMGUI->init_push_button( H( "button_resume" ) )
+	IMGUI->do_push_button( H( "button_resume" ) )
 		->set_text( "Resume" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->set_size( { w_sz::ignore, button_h } )
 		->finalize();
 
-	IMGUI->init_push_button( H( "button_main_menu" ) )
+	IMGUI->do_push_button( H( "button_main_menu" ) )
 		->set_text( "Main Menu" )
-		->set_position( imgui_flow::down )
 		->finalize();
 
-	IMGUI->init_checkbox( H( "option_fullscreen" ) )
-		->set_text( "Full Screen?" )
-		->set_position( imgui_flow::down )
-		->finalize();
-
-	IMGUI->init_push_button( H( "button_exit" ) )
+	IMGUI->do_push_button( H( "button_exit" ) )
 		->set_text( "Exit To Windows" )
-		->set_position( imgui_flow::down )
 		->finalize();
+
+	IMGUI->do_divider()
+		->finalize();
+
+	IMGUI->do_checkbox( H( "option_fullscreen" ) )
+		->set_text( "Full Screen?" )
+		->finalize();
+
 }
 
 w_imgui_callback* layer_esc_menu::get_imgui_callback()
