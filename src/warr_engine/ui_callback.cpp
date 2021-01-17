@@ -31,9 +31,9 @@ void w_imgui_callback::was_right_clicked( const w_imgui_control& control )
 //
 // i.e between a checkbox and it's label
 
-int w_imgui_callback::get_control_padding()
+float w_imgui_callback::get_control_padding()
 {
-	return 4;
+	return 4.0f;
 }
 
 // how much space should be left between a control
@@ -41,7 +41,47 @@ int w_imgui_callback::get_control_padding()
 //
 // i.e. between 2 buttons sitting side by side
 
-int w_imgui_callback::get_control_margin()
+float w_imgui_callback::get_control_margin()
 {
-	return 2;
+	return 2.0f;
+}
+
+float w_imgui_callback::get_default_width( const w_imgui_control& control )
+{
+	switch( control.type )
+	{
+		case imgui_control_type::push_button:
+		case imgui_control_type::check_box:
+		case imgui_control_type::label:
+		{
+			return 120.0f;
+		}
+
+		case imgui_control_type::slider:
+		{
+			return 100.0f;
+		}
+	}
+
+	return 120.0f;
+}
+
+float w_imgui_callback::get_default_height( const w_imgui_control& control )
+{
+	switch( control.type )
+	{
+		case imgui_control_type::push_button:
+		{
+			return 24.0f;
+		}
+
+		case imgui_control_type::check_box:
+		case imgui_control_type::label:
+		case imgui_control_type::slider:
+		{
+			return 12.0f;
+		}
+	}
+
+	return 100.0f;
 }

@@ -332,8 +332,8 @@ enum_begin( imgui_control_type )
 	panel,				// a window frame
 	push_button,		// a button that clicks up/down
 	check_box,			// a button that has a toggle state
-	//label,				// text wrapped to within the client rect
-	//slider,				// a line with a slider knob
+	label,				// text
+	slider,				// a line with a slider knob
 	//progress_bar,		// a bar showing progress between 0-100
 	//texture				// an image within the client rect
 enum_end

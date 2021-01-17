@@ -50,7 +50,7 @@ void layer_main_menu::draw_ui()
 	IMGUI->init_push_button( H( "button_play" ) )
 		->set_text( "PLAY" )
 		->set_position( { xpos, ypos } )
-		->set_size( { v_window_w - xpos * 2, 24.0f } )
+		->set_size( { v_window_w - xpos * 2.0f, 0.0f } )
 		->finalize();
 
 	xpos += 16;
@@ -59,7 +59,7 @@ void layer_main_menu::draw_ui()
 	IMGUI->init_push_button( H( "button_quit" ) )
 		->set_text( "Quit" )
 		->set_position( { xpos, ypos } )
-		->set_size( { v_window_w - xpos * 2.0f, 24.0f } )
+		->set_size( { v_window_w - xpos * 2.0f, 0.0f } )
 		->finalize();
 }
 

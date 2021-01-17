@@ -148,9 +148,6 @@
     <ClCompile Include="tween.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="ui_data_provider.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="ui_imgui.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -206,6 +203,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="a_src_texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ui_callback.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -292,9 +292,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="ui_imgui.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_data_provider.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="tween.h">
@@ -421,6 +418,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="a_src_texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_callback.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

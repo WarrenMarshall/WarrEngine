@@ -12,6 +12,8 @@ struct w_imgui_callback
 	virtual a_texture* get_texture_for_checkbox( const w_imgui_control& control );
 	virtual void was_left_clicked( const w_imgui_control& control );
 	virtual void was_right_clicked( const w_imgui_control& control );
-	virtual int get_control_padding();
-	virtual int get_control_margin();
+	virtual float get_control_padding();
+	virtual float get_control_margin();
+	virtual float get_default_width( const w_imgui_control& control );
+	virtual float get_default_height( const w_imgui_control& control );
 };

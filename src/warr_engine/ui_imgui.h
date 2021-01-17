@@ -50,13 +50,15 @@ struct w_imgui
 	w_imgui* init_panel( hash tag = 0 );
 	w_imgui* init_push_button( hash tag = 0 );
 	w_imgui* init_checkbox( hash tag = 0 );
+	w_imgui* init_label( hash tag = 0 );
+	w_imgui* init_slider( hash tag = 0 );
 
 	w_imgui* set_text( const std::string& text );
 	w_imgui* set_text_align( e_align align );
 	w_imgui* set_slice_def( a_9slice_def* slice_def );
-	w_imgui* set_position( const w_vec2& pos );
+	w_imgui* set_position( const w_pos& pos );
 	w_imgui* set_position( e_imgui_flow flow );
-	w_imgui* set_size( const w_sz& size );
+	w_imgui* set_size( const w_sz& sz );
 
 	void compute_clientrect_from_rect();
 	w_imgui_result* finalize();

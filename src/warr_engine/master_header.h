@@ -111,11 +111,10 @@ extern float ui_canvas_h;
 #include "asset_definition_file.h"
 #include "asset_definition_file_cache.h"
 #include "ui_control.h"
-#include "ui_data_provider.h"
+#include "ui_callback.h"
 #include "ui_imgui.h"
 #include "ui_mgr.h"
 
-//extern w_game* base_game;
 extern std::unique_ptr<w_game> base_game;
 #include "engine.h"
 

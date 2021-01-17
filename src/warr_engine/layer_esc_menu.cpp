@@ -84,19 +84,17 @@ void layer_esc_menu::draw_ui()
 		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
 		->pop();
 
-	constexpr float num_buttons = 4;
+	constexpr float num_buttons = 4.0f;
 	constexpr float button_w = 140.0f;
 	constexpr float button_h = 24.0f;
 
 	float panel_w = button_w + ( IMGUI->current_callback->get_control_margin() * 4.0f );
 	auto slice = a_9slice_def::find( "simple_ui_panel" );
 	float panel_h =
-		(
-			( button_h * num_buttons )
-			+ ( IMGUI->current_callback->get_control_margin() * ( num_buttons - 1 ) )
-			+ slice->patches[ slicedef_patch::P_00 ]->rc.h
-			+ slice->patches[ slicedef_patch::P_22 ]->rc.h
-		);
+		( button_h * num_buttons )
+		+ ( IMGUI->current_callback->get_control_margin() * ( num_buttons - 1 ) )
+		+ slice->patches[ slicedef_patch::P_00 ]->rc.h
+		+ slice->patches[ slicedef_patch::P_22 ]->rc.h;
 
 	IMGUI->init_panel()
 		->set_slice_def( a_9slice_def::find( "simple_ui_panel" ) )

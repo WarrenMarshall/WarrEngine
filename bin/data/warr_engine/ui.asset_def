@@ -14,7 +14,9 @@
 		ui_panel, 0, 0, 24, 24,\
 		ui_button, 25, 1, 16, 16,\
 		ui_checkbox_off, 17, 25, 12, 12,\
-		ui_checkbox_on, 30, 25, 12, 12\
+		ui_checkbox_on, 30, 25, 12, 12,\
+		ui_slider_body, 15, 39, 12, 6,\
+		ui_slider_thumb, 3, 42, 10, 12\
 		"
 }
 
@@ -45,4 +47,13 @@
 	"texture_tag" "ui_button"
 	"x_slices" "5, 5"
 	"y_slices" "5, 5"
+}
+
+# slider
+{
+	"type" "slice_def"
+	"tag" "simple_ui_slider_body"
+	"texture_tag" "ui_slider_body"
+	"x_slices" "2, 2"
+	"y_slices" "2, 2"
 }

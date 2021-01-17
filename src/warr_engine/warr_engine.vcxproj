@@ -234,7 +234,7 @@
     <ClCompile Include="vertex_array_object.cpp" />
     <ClCompile Include="vertex_buffer.cpp" />
     <ClCompile Include="ui_control.cpp" />
-    <ClCompile Include="ui_data_provider.cpp" />
+    <ClCompile Include="ui_callback.cpp" />
     <ClCompile Include="ui_imgui.cpp" />
     <ClCompile Include="w_time.cpp" />
     <ClCompile Include="tokenizer.cpp" />
@@ -283,7 +283,7 @@
     <ClInclude Include="vertex_array_object.h" />
     <ClInclude Include="vertex_buffer.h" />
     <ClInclude Include="ui_control.h" />
-    <ClInclude Include="ui_data_provider.h" />
+    <ClInclude Include="ui_callback.h" />
     <ClInclude Include="warr_engine.h" />
     <ClInclude Include="input_gamepad.h" />
     <ClInclude Include="file_zip.h" />

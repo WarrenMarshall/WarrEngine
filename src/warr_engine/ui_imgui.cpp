@@ -80,6 +80,8 @@ w_imgui* w_imgui::init_panel( hash tag )
 	current_control.slice_def = a_9slice_def::find( "simple_ui_panel" );
 	current_control.text_align = align::left | align::top;
 
+	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+
 	return this;
 }
 
@@ -94,6 +96,8 @@ w_imgui* w_imgui::init_push_button( hash tag )
 	current_control.slice_def = a_9slice_def::find( "simple_ui_push_button" );
 	current_control.text_align = align::centered;
 
+	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+
 	return this;
 }
 
@@ -106,6 +110,38 @@ w_imgui* w_imgui::init_checkbox( hash tag )
 	current_control.tag = tag;
 	current_control.is_active = true;
 	current_control.text_align = align::left | align::vcenter;
+
+	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
+
+	return this;
+}
+
+w_imgui* w_imgui::init_label( hash tag )
+{
+	set_current_callback_from_current_layer();
+
+	current_control = {};
+	current_control.type = imgui_control_type::label;
+	current_control.tag = tag;
+	current_control.is_active = true;
+	current_control.text_align = align::centered;
+
+	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) }  );
+
+	return this;
+}
+
+w_imgui* w_imgui::init_slider( hash tag )
+{
+	set_current_callback_from_current_layer();
+
+	current_control = {};
+	current_control.type = imgui_control_type::slider;
+	current_control.tag = tag;
+	current_control.is_active = true;
+	current_control.text_align = align::left | align::vcenter;
+
+	set_size( { current_callback->get_default_width( current_control ), current_callback->get_default_height( current_control ) } );
 
 	return this;
 }
@@ -130,7 +166,7 @@ w_imgui* w_imgui::set_slice_def( a_9slice_def* slice_def )
 	return this;
 }
 
-w_imgui* w_imgui::set_position( const w_vec2& pos )
+w_imgui* w_imgui::set_position( const w_pos& pos )
 {
 	current_control.rc_win = last_control->rc_win;
 
@@ -144,7 +180,8 @@ w_imgui* w_imgui::set_position( const w_vec2& pos )
 
 w_imgui* w_imgui::set_position( e_imgui_flow flow )
 {
-	current_control.rc_win = last_control->rc_win;
+	current_control.rc_win.x = last_control->rc_win.x;
+	current_control.rc_win.y = last_control->rc_win.y;
 
 	if( flow & imgui_flow::right )
 	{
@@ -169,10 +206,10 @@ w_imgui* w_imgui::set_position( e_imgui_flow flow )
 	return this;
 }
 
-w_imgui* w_imgui::set_size( const w_sz& size )
+w_imgui* w_imgui::set_size( const w_sz& sz )
 {
-	current_control.rc_win.w = size.w;
-	current_control.rc_win.h = size.h;
+	current_control.rc_win.w = ( sz.w > 0.0f ) ? sz.w : current_callback->get_default_width( current_control );
+	current_control.rc_win.h = ( sz.h > 0.0f ) ? sz.h : current_callback->get_default_height( current_control );
 
 	compute_clientrect_from_rect();
 
