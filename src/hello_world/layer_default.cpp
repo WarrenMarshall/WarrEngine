@@ -72,7 +72,6 @@ void layer_default::draw_ui()
 		->draw( tex_hello_world, w_rect( 16, 16 ) );
 
 	IMGUI->do_panel( H( "main_panel" ) )
-		->set_text( "MY PANEL" )
 		->set_position( { ui_canvas_hw, 32.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
@@ -89,10 +88,11 @@ void layer_default::draw_ui()
 	IMGUI->do_divider()
 		->finalize();
 
-	IMGUI->do_label( H( "caption_label" ) )
-		->set_text( "Warren Rules!" )
-		->set_slice_def( "simple_ui_label" )
-		->set_size( { w_sz::ignore, 16.0f } )
+	IMGUI->do_label()
+		->set_text( "Label Test" )
+		->finalize();
+
+	IMGUI->do_slider( H("slider_01" ))
 		->finalize();
 }
 

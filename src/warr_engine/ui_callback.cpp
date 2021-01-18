@@ -82,9 +82,13 @@ float w_imgui_callback::get_default_height( e_imgui_control_type control_type )
 
 		case imgui_control_type::check_box:
 		case imgui_control_type::label:
-		case imgui_control_type::slider:
 		{
 			return 12.0f;
+		}
+
+		case imgui_control_type::slider:
+		{
+			return 6.0f;
 		}
 
 		case imgui_control_type::divider:

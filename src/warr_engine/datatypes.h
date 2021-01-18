@@ -82,6 +82,8 @@ struct w_range
 	w_range( float start, float end );
 	w_range( std::string_view str );
 
+	float clamp_value( float value );
+
 	[[nodiscard]] float get_value();
 };
 

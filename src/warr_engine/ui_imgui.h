@@ -59,15 +59,15 @@ struct w_imgui
 private:
 	void finalize_active();
 	void finalize_passive();
-	void _set_as_last_control( w_imgui_control control );
+	void set_as_last_control( w_imgui_control control );
 
-	[[nodiscard]] virtual e_im_result _update_im_state( int id, const w_rect& rc_win );
-	void _draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
-	void _draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool being_hovered, bool being_clicked );
-	void _draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool being_hovered, bool being_clicked );
-	void _draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool being_hovered, bool being_clicked );
-	[[nodiscard]] w_offset _get_click_offset( bool being_hovered, bool being_clicked );
-	[[nodiscard]] w_color _get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked );
+	[[nodiscard]] virtual e_im_result update_im_state( int id, const w_rect& rc_win );
+	void draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
+	void draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool being_hovered, bool being_clicked );
+	void draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool being_hovered, bool being_clicked );
+	void draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool being_hovered, bool being_clicked );
+	[[nodiscard]] w_offset get_click_offset( bool being_hovered, bool being_clicked );
+	[[nodiscard]] w_color get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked );
 
 	int im_automatic_id = 0;
 };

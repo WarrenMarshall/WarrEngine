@@ -108,6 +108,11 @@ w_range::w_range( std::string_view str )
 	end = w_parser::float_from_str( *tok.get_next_token() );
 }
 
+float w_range::clamp_value( float value )
+{
+	return std::clamp( value, start, end );
+}
+
 float w_range::get_value()
 {
 	return start + ( ( end - start ) * engine->random->getf() );
