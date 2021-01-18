@@ -31,6 +31,7 @@ w_vertex_buffer::w_vertex_buffer( w_vertex_array_object* vertex_array_object, in
 	bind();
 
 	texture_slots.resize( OPENGL->max_texture_image_units );
+	total_texture_slots_used = 0;
 	preallocate_vertices( max_elements_per_render_batch * verts_per_element );
 	set_up_vertex_attribs();
 	vertices.reserve( max_elements_per_render_batch * verts_per_element );
@@ -56,10 +57,7 @@ void w_vertex_buffer::reset()
 		iter = nullptr;
 	}
 
-	current_texture_slot_idx = -1;
-
-	//texture_slots[ 0 ] = engine->tex_white;
-	//current_texture_slot_idx = 0;
+	total_texture_slots_used = 0;
 
 	vertices.clear();
 }
@@ -94,31 +92,25 @@ void w_vertex_buffer::preallocate_vertices( int max_verts )
 int w_vertex_buffer::assign_texture_slot( const a_texture* texture )
 {
 	// if this texture is already in the slot list, return that index
-	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
+	for( int x = 0 ; x < total_texture_slots_used ; ++x )
 	{
-		if( !texture_slots[ x ] )
-		{
-			break;
-		}
-
 		if( texture_slots[ x ]->src_texture->gl_id == texture->src_texture->gl_id )
 		{
-			current_texture_slot_idx = x;
 			return x;
 		}
 	}
 
 	// we are out of texture slots, so draw the batch and reset
-	if( current_texture_slot_idx == ( OPENGL->max_texture_image_units - 1 ) )
+	if( total_texture_slots_used == OPENGL->max_texture_image_units )
 	{
 		vertex_array_object->draw_and_reset();
 	}
 
 	// add the new texture to the slot list
-	current_texture_slot_idx++;
-	texture_slots[ current_texture_slot_idx ] = texture;
+	texture_slots[ total_texture_slots_used ] = texture;
+	total_texture_slots_used++;
 
-	return current_texture_slot_idx;
+	return total_texture_slots_used - 1;
 }
 
 void w_vertex_buffer::unbind()
@@ -128,9 +120,17 @@ void w_vertex_buffer::unbind()
 
 void w_vertex_buffer::bind_texture_units()
 {
-	for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
+	for( int x = 0 ; x < total_texture_slots_used ; ++x )
 	{
-		glBindTextureUnit( x, texture_slots[ x ]->src_texture->gl_id );
+		if( texture_slots[ x ] )
+		{
+			if( RENDER->single_frame_debugger )
+			{
+				log( "TU: {} bound to \"{}\"", x, texture_slots[ x ]->src_texture->tag );
+			}
+
+			glBindTextureUnit( x, texture_slots[ x ]->src_texture->gl_id );
+		}
 	}
 }
 
