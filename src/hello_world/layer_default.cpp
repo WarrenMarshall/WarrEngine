@@ -89,10 +89,13 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->do_label()
-		->set_text( "Label Test" )
+		->set_text( "Label Test : 0 %" )
 		->finalize();
 
 	IMGUI->do_slider( H("slider_01" ))
+		->finalize();
+
+	IMGUI->do_divider()
 		->finalize();
 }
 

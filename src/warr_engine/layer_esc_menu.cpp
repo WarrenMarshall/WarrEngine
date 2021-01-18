@@ -101,7 +101,7 @@ void layer_esc_menu::draw_ui()
 		+ 12.0f;
 
 	IMGUI->do_panel( H( "main_panel" ) )
-		->set_text( "Pause Menu" )
+		->set_text( "PAUSE MENU" )
 		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();

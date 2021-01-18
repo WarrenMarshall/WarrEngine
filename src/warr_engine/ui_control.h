@@ -11,7 +11,7 @@ struct w_imgui_control
 	a_9slice_def* slice_def = nullptr;
 	e_align texture_align = align::fill;
 	w_range value_range = { 0.0f, 100.0f };
-	float value = 0.0f;
+	float pct = 0.0f;		// 0-1
 
 	w_rect rc_win = { 0,0,0,0 };
 	w_rect rc_client = { 0,0,0,0 };

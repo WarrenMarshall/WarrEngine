@@ -372,14 +372,25 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 				w_render_state_opt rso;
 				rso.color = w_color::pal(1);
 
-				w_rect rc = rc_win_offset;
+				w_rect rc = rc_client_offset;
 
 				auto extent = engine->pixel_font->get_string_extents( control.text );
-				rc.h = extent.h + current_callback->get_control_margin() + 7.0f;
+				rc.h = extent.h;
 
-				draw_text( control, rc, w_color::pal( 3 ), being_hovered, being_clicked );
+				draw_text( control, rc, w_color::pal( 2 ), being_hovered, being_clicked );
 
-				rc_client_offset.y += rc.h - ( control.slice_def->get_top_slice_sz() / 2.0f );
+				// #todo - this breaks the renderer. the rest of the UI draws using the font texure if we draw this rectangle
+				// however, if we "draw_text" before AND after the rectangle, it's fine.
+				// but if we do NOT "draw_text" before and only do it after, it breaks.
+				w_rect rc_label_background( rc_client_offset );
+				rc_label_background.h = extent.h + current_callback->get_control_margin();
+				RENDER
+					->push_rgb( w_color::pal( 0 ) )
+					->draw_filled_rectangle( rc_label_background );
+
+				draw_text( control, rc, w_color::pal( 1 ), being_hovered, being_clicked );
+
+				rc_client_offset.y += rc.h + current_callback->get_control_padding();
 				rc_client_offset.h -= rc.h;
 
 				control.rc_client = rc_client_offset;
@@ -432,6 +443,19 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 		case imgui_control_type::slider:
 		{
 			draw_slice_def( control, rc_win_offset, false, false );
+			
+			control.pct = 0.65f;
+
+			w_vec2 pos = {
+				rc_client_offset.x + ( rc_client_offset.w * control.pct ),
+				rc_client_offset.y + ( rc_client_offset.h / 2.0f )
+			};
+
+			RENDER
+				->push_rgb( get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
+				->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
+
+
 		}
 		break;
 	}
