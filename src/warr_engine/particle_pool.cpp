@@ -66,7 +66,7 @@ void w_particle_pool::draw()
 			rs->scale.y = rs->scale.x;
 			rs->angle = interp_angle;
 
-			RENDER->draw_sprite( particle->texture, interp_pos );
+			RENDER->draw_sprite( particle->params->texture, interp_pos );
 		}
 
 		particle++;

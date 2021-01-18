@@ -95,8 +95,6 @@ void w_particle_emitter::spawn_particle()
 	//    particle position into world space
 	p->pos = OPENGL->top()->transform_vec2( p->pos );
 
-	p->texture = params->texture;
-
 	switch( static_cast<e_particle_spawn_dir>( params->a_dir ) )
 	{
 		case particle_spawn_dir::inherit_from_parent:

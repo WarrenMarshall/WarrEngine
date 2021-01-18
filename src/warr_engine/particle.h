@@ -2,7 +2,6 @@
 
 struct alignas( struct_alignment_for_cache ) w_particle final
 {
-	a_texture* texture = nullptr;
 	a_emitter_params* params = nullptr;
 
 	// storing this directly instead of using a w_transform
@@ -26,7 +25,7 @@ struct alignas( struct_alignment_for_cache ) w_particle final
 	float spin_per_sec = 0.0f;
 
 	void update();
-	[[nodiscard]] constexpr bool is_alive();
+	[[nodiscard]] bool is_alive() const;
 };
 
 // make sure the particle struct doesn't get above 64 bytes

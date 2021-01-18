@@ -19,7 +19,7 @@ void w_particle::update()
 	spin = fmod( spin, 360.f );
 }
 
-constexpr bool w_particle::is_alive()
+bool w_particle::is_alive() const
 {
 	return life_span > 0;
 }
