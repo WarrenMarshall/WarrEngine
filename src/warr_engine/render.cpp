@@ -494,7 +494,7 @@ w_render* w_render::draw_stats()
 	if( show_stats )
 	{
 		stat_lines.clear();
-		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / TICK : {} FPS",
+		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
 											  f_commas( stats.frame_count.value ),
 											  stats.frame_times_ms.value,
 											  FTS::frames_per_second ) );

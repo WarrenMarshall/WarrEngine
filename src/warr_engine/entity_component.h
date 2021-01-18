@@ -5,17 +5,11 @@
 struct w_entity_component : i_life_cycle
 {
 	w_transform tform;
-	w_vec2 pos_interp;
-	unsigned id = 0;
+	w_entity* parent_entity = nullptr;
 	hash tag;
 	w_render_state_opt rs_opt;
+
 	std::optional<w_timer> life_timer = std::nullopt;
-
-	// components have pointers to their entity parents for convenience
-	w_entity* parent_entity = nullptr;
-
-	// used for offsetting whatever the component needs to (0-1 range)
-	float generic_offset = 0.0f;
 
 	w_entity_component() = delete;
 	w_entity_component( w_entity* parent_entity );

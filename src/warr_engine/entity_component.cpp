@@ -7,7 +7,6 @@
 w_entity_component::w_entity_component( w_entity* parent_entity )
 	: parent_entity( parent_entity )
 {
-	generic_offset = engine->random->getf();
 }
 
 /*
@@ -59,8 +58,6 @@ void w_entity_component::update()
 	{
 		ilc_set( life_cycle::dead );
 	}
-
-	pos_interp = w_vec2::zero;
 }
 
 void w_entity_component::play()

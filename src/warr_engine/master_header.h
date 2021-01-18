@@ -100,6 +100,10 @@ extern float ui_canvas_h;
 #include "a_texture.h"
 #include "a_gradient.h"
 #include "a_anim_texture.h"
+#include "particle.h"
+#include "particle_spawner.h"
+#include "particle_emitter.h"
+#include "particle_pool.h"
 #include "a_emitter_params.h"
 #include "a_font.h"
 #include "a_cursor.h"
@@ -117,11 +121,6 @@ extern float ui_canvas_h;
 
 extern std::unique_ptr<w_game> base_game;
 #include "engine.h"
-
-#include "particle.h"
-#include "particle_spawner.h"
-#include "particle_emitter.h"
-#include "particle_pool.h"
 
 #include "render_stats.h"
 #include "render.h"

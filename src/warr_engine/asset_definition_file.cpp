@@ -383,7 +383,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "t_scale" )
 						{
-							asset_ptr->t_scale = w_parser::timeline_from_str( timeline_type::float_type, value );
+							asset_ptr->t_scale = *w_parser::timeline_from_str( timeline_type::float_type, value );
 						}
 						else if( key == "s_max_spawn_per_sec" )
 						{
@@ -399,7 +399,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "t_color" )
 						{
-							asset_ptr->t_color = w_parser::timeline_from_str( timeline_type::color_type, value );
+							asset_ptr->t_color = *w_parser::timeline_from_str( timeline_type::color_type, value );
 						}
 						else if( key == "r_spin_spawn" )
 						{
@@ -411,7 +411,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "t_alpha" )
 						{
-							asset_ptr->t_alpha = w_parser::timeline_from_str( timeline_type::float_type, value );
+							asset_ptr->t_alpha = *w_parser::timeline_from_str( timeline_type::float_type, value );
 						}
 						else
 						{

@@ -34,12 +34,12 @@ void w_particle_pool::draw()
 
 			// color + alpha
 			w_color color;
-			particle->params->t_color->get_value( pct_of_life, &color );
-			particle->params->t_alpha->get_value( pct_of_life, &color.a );
+			particle->params->t_color.get_value( pct_of_life, &color );
+			particle->params->t_alpha.get_value( pct_of_life, &color.a );
 
 			// scale
 			float scale;
-			particle->params->t_scale->get_value( pct_of_life, &scale );
+			particle->params->t_scale.get_value( pct_of_life, &scale );
 
 			// angle
 			float interp_angle = RENDER->calc_interpolated_per_sec_value( particle->spin, particle->spin_per_sec );
