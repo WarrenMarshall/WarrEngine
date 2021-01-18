@@ -58,6 +58,9 @@ void w_vertex_buffer::reset()
 
 	current_texture_slot_idx = -1;
 
+	//texture_slots[ 0 ] = engine->tex_white;
+	//current_texture_slot_idx = 0;
+
 	vertices.clear();
 }
 
@@ -93,7 +96,12 @@ int w_vertex_buffer::assign_texture_slot( const a_texture* texture )
 	// if this texture is already in the slot list, return that index
 	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
 	{
-		if( texture_slots[ x ] && texture_slots[ x ]->src_texture->gl_id == texture->src_texture->gl_id )
+		if( !texture_slots[ x ] )
+		{
+			break;
+		}
+
+		if( texture_slots[ x ]->src_texture->gl_id == texture->src_texture->gl_id )
 		{
 			current_texture_slot_idx = x;
 			return x;
@@ -118,14 +126,15 @@ void w_vertex_buffer::unbind()
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 }
 
+void w_vertex_buffer::bind_texture_units()
+{
+	for( int x = 0 ; x <= current_texture_slot_idx ; ++x )
+	{
+		glBindTextureUnit( x, texture_slots[ x ]->src_texture->gl_id );
+	}
+}
+
 void w_vertex_buffer::upload()
 {
-	// bind the textures to the texture units.
-
-	for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
-	{
-		glBindTextureUnit( x, texture_slots[ x ] ? texture_slots[ x ]->src_texture->gl_id : 0 );
-	}
-
 	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.size() * sizeof( w_render_vertex ), vertices.data() );
 }

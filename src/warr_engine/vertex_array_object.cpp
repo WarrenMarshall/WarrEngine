@@ -131,16 +131,15 @@ void w_vertex_array_object::draw_and_reset()
 		bind();
 
 		// upload verts to the card
-
 		vertex_buffer->upload();
 
-		// draw!
+		// bind texture units
+		vertex_buffer->bind_texture_units();
 
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+		// draw
 		glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
 
 		// update stats and clean up
-
 		RENDER->stats.draw_calls.inc();
 
 		if( render_prim == render_prim::quad ) { RENDER->stats.quads.accum( vertex_buffer->vertices.size() / 4.0f ); }

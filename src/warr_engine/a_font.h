@@ -32,7 +32,7 @@ struct a_font_def : i_asset
 
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.
-	int max_height = 0;
+	float max_height = 0.0f;
 
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.
@@ -49,5 +49,5 @@ struct a_font : i_asset
 
 	a_font_def* font_def = nullptr;
 
-	[[nodiscard]] w_vec2 get_string_extents( const std::string_view text );
+	[[nodiscard]] w_vec2 get_string_extents( const std::string_view text ) const;
 };

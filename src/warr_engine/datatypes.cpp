@@ -110,7 +110,7 @@ w_range::w_range( std::string_view str )
 
 float w_range::clamp_value( float value )
 {
-	return std::clamp( value, start, end );
+	return glm::clamp( value, start, end );
 }
 
 float w_range::get_value()

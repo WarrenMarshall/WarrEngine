@@ -83,6 +83,7 @@ struct w_render
 	w_render* begin();
 	w_render* end();
 
+	w_render* push();
 	w_render* push_rgb( const w_color& color );
 	w_render* push_rgba( const w_color& color );
 	w_render* push_rgba( const w_color& color, const float alpha );

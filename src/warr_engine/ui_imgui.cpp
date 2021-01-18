@@ -369,31 +369,26 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 
 			if( !control.text.empty() && control.slice_def )	// can't have a caption without a slicedef
 			{
-				w_render_state_opt rso;
-				rso.color = w_color::pal(1);
+				// caption area starts out as matching the client rect,
+				// then gets shrunk to match the font height.
+				w_rect rc = control.rc_client;
+				rc.h = engine->pixel_font->font_def->max_height;
 
-				w_rect rc = rc_client_offset;
-
-				auto extent = engine->pixel_font->get_string_extents( control.text );
-				rc.h = extent.h;
-
-				draw_text( control, rc, w_color::pal( 2 ), being_hovered, being_clicked );
-
-				// #todo - this breaks the renderer. the rest of the UI draws using the font texure if we draw this rectangle
-				// however, if we "draw_text" before AND after the rectangle, it's fine.
-				// but if we do NOT "draw_text" before and only do it after, it breaks.
-				w_rect rc_label_background( rc_client_offset );
-				rc_label_background.h = extent.h + current_callback->get_control_margin();
+				// background bar that sits behind the caption text
+				w_rect rc_label_background( control.rc_client );
+				rc_label_background.h = engine->pixel_font->font_def->max_height + current_callback->get_control_margin();
 				RENDER
 					->push_rgb( w_color::pal( 0 ) )
 					->draw_filled_rectangle( rc_label_background );
 
-				draw_text( control, rc, w_color::pal( 1 ), being_hovered, being_clicked );
+				// caption text
+				draw_text( control, rc, w_color::pal( 3 ), being_hovered, being_clicked );
 
-				rc_client_offset.y += rc.h + current_callback->get_control_padding();
-				rc_client_offset.h -= rc.h;
+				// panel client rect is adjusted so that it sits below the caption area
+				control.rc_client.y += rc.h + current_callback->get_control_padding();
+				control.rc_client.h -= rc.h;
 
-				control.rc_client = rc_client_offset;
+				control.rc_client = control.rc_client;
 			}
 		}
 		break;
@@ -444,10 +439,10 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 		{
 			draw_slice_def( control, rc_win_offset, false, false );
 			
-			control.pct = 0.65f;
+			const float pct = 1.0f;
 
 			w_vec2 pos = {
-				rc_client_offset.x + ( rc_client_offset.w * control.pct ),
+				rc_client_offset.x + ( rc_client_offset.w * pct ),
 				rc_client_offset.y + ( rc_client_offset.h / 2.0f )
 			};
 
@@ -484,13 +479,13 @@ void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client
 {
 	if( control.text.length() )
 	{
-		w_pos pos = rc_client.get_position_from_alignment( control.text_align );
+		const w_pos pos = rc_client.get_position_from_alignment( control.text_align );
 
 		w_render_state_opt rso;
 		rso.color = get_adjusted_color( color, being_hovered, being_clicked );
 		rso.align = control.text_align;
 
-		RENDER->push_depth_nudge()
+		RENDER
 			->push_render_state( rso )
 			->draw_string( control.text, pos )
 			->pop();

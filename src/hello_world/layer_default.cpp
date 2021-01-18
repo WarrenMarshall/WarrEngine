@@ -38,6 +38,12 @@ void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control
 			log( "BAM! Button_02." );
 		}
 		break;
+
+		case H( "slider_01" ):
+		{
+			log( "SLIDER CLICKED" );
+		}
+		break;
 	}
 }
 
@@ -72,6 +78,7 @@ void layer_default::draw_ui()
 		->draw( tex_hello_world, w_rect( 16, 16 ) );
 
 	IMGUI->do_panel( H( "main_panel" ) )
+		->set_text( "SAMPLE CONTROLS" )
 		->set_position( { ui_canvas_hw, 32.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();

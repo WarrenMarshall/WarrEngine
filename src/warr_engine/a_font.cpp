@@ -34,7 +34,7 @@ bool a_font_def::create_internals()
 
 			fch->glyph_texture = std::make_unique<a_texture>( src_texture->tag, w_rect( x, y, w, h ) );
 
-			max_height = glm::max( max_height, static_cast<int>( fch->h ) );
+			max_height = glm::max( max_height, fch->h );
 		}
 	}
 
@@ -48,7 +48,7 @@ implement_find_func( a_font )
 /*
 	computes how wide and how tall a string is using this font.
 */
-w_vec2 a_font::get_string_extents( const std::string_view text )
+w_vec2 a_font::get_string_extents( const std::string_view text ) const
 {
 	w_font_char* pxch;
 	w_vec2 bounds;

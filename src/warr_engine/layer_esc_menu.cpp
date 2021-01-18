@@ -89,10 +89,12 @@ void layer_esc_menu::draw_ui()
 	float button_h = IMGUI->current_callback->get_default_height( imgui_control_type::push_button );
 
 	auto slice_def = a_9slice_def::find( "simple_ui_panel" );
+
 	float panel_w =
 		slice_def->get_left_slice_sz()
 		+ button_w
 		+ slice_def->get_right_slice_sz();
+
 	float panel_h =
 		( button_h * num_buttons )
 		+ slice_def->get_top_slice_sz()

@@ -53,6 +53,8 @@ void w_opengl::init()
 	}
 	set_uniform_array( "u_textures", texture_slots.data(), max_texture_image_units );
 
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
 	glEnable( GL_TEXTURE_2D );
 
 	// NOTE : we have to use a depth buffer because we are rendering in batches.

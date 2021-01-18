@@ -31,6 +31,7 @@ constexpr void _log_error_( Params&&... params )
 // yoinked from : https://stackoverflow.com/questions/2111667/compile-time-string-hashing
 
 using hash = unsigned;
+constexpr hash hash_none = 0;
 
 // #C++20 - when MSVC fully supports "consteval" use that instead
 //          of "constexpr" to make sure this is compile time only

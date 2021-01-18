@@ -37,6 +37,7 @@ struct w_vertex_buffer
 
 	virtual void bind();
 	virtual void unbind();
+	void bind_texture_units();
 	virtual void upload();
 	virtual void reset();
 

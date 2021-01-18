@@ -158,6 +158,13 @@ w_render* w_render::end()
 	return this;
 }
 
+w_render* w_render::push()
+{
+	rs_push();
+
+	return this;
+}
+
 w_color w_render::get_palette_color_from_idx( int idx )
 {
 	if( !palette )
@@ -390,10 +397,6 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 	// ----------------------------------------------------------------------------
 
-	//OPENGL
-	//	->push()
-	//	->translate( { alignment_pos_adjustment.x, alignment_pos_adjustment.y } );
-
 	float xpos = pos.x + alignment_pos_adjustment.x;
 	float ypos = pos.y + alignment_pos_adjustment.y;
 
@@ -412,8 +415,6 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 		xpos += ( fch->xadvance * rs->scale.x);
 	}
-
-	//OPENGL->pop();
 
 	return this;
 }
@@ -494,10 +495,10 @@ w_render* w_render::draw_stats()
 	{
 		stat_lines.clear();
 		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / TICK : {} FPS",
-											  stats.frame_count.value,
+											  f_commas( stats.frame_count.value ),
 											  stats.frame_times_ms.value,
-											  static_cast<int>( FTS::frames_per_second ) ) );
-		stat_lines.emplace_back( fmt::format( "DC:{}, Q:{}, T:{}, L:{}, P:{}",
+											  FTS::frames_per_second ) );
+		stat_lines.emplace_back( fmt::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
 											  f_commas( stats.draw_calls.value ),
 											  f_commas( stats.quads.value ),
 											  f_commas( stats.triangles.value ),
@@ -515,13 +516,11 @@ w_render* w_render::draw_stats()
 			stats.stat_custom_string = "";
 		}
 
-		int font_max_height = engine->pixel_font->font_def->max_height;
-
 		RENDER
 			->begin()
 			->push_rgba( w_color::pal( 0 ) )
 			->push_alpha( 0.75f )
-			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, static_cast<float>( font_max_height * stat_lines.size() ) ) )
+			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, engine->pixel_font->font_def->max_height * stat_lines.size() ) )
 			->end();
 
 		RENDER
@@ -534,7 +533,7 @@ w_render* w_render::draw_stats()
 		for( const auto& iter : stat_lines )
 		{
 			RENDER->draw_string( iter, { ui_canvas_hw, ypos } );
-			ypos += font_max_height;
+			ypos += engine->pixel_font->font_def->max_height;
 		}
 
 		RENDER->end();
