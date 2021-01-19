@@ -63,21 +63,21 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
-    <IntDir>r:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir>c:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
-    <IntDir>r:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir>c:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
-    <IntDir>r:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
+    <IntDir>c:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
