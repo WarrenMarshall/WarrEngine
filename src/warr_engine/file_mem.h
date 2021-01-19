@@ -16,11 +16,11 @@ struct w_file_mem
 // adds a preprocess step after loading that strips out stuff
 // that is only useful to humans - comments, line continuations, blank, etc.
 
-struct w_mem_file_text : w_file_mem
+struct w_file_mem_text : w_file_mem
 {
 	std::unique_ptr<std::vector<std::string>> lines = nullptr;
 
-	w_mem_file_text() = default;
-	w_mem_file_text( int size);
+	w_file_mem_text() = default;
+	w_file_mem_text( int size);
 	void preprocess();
 };

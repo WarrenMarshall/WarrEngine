@@ -4,7 +4,7 @@
 
 // ----------------------------------------------------------------------------
 
-void layer_esc_menu_ui_callback::was_left_clicked( const w_imgui_control& control )
+void layer_esc_menu_ui_callback::was_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
 	switch( control.tag )
 	{

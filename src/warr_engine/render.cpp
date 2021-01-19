@@ -508,7 +508,11 @@ w_render* w_render::draw_stats()
 		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
 		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.entities.value ) ) );
 		stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
-		stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f}", engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y, engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y ) );
+		stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
+											  engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y,
+											  engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y,
+											  engine->input->mouse_uiwindow_pos.x, engine->input->mouse_uiwindow_pos.y )
+		);
 
 		if( stats.stat_custom_string.length() )
 		{

@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-void w_phys_contact_listener::BeginContact( b2Contact* contact )
+void w_physics_contact_listener::BeginContact( b2Contact* contact )
 {
 	this->contact = contact;
 	manifold = contact->GetManifold();
@@ -18,7 +18,7 @@ void w_phys_contact_listener::BeginContact( b2Contact* contact )
 	engine->begin_contact_queue.emplace_back( std::move( pc ) );
 }
 
-void w_phys_contact_listener::EndContact( b2Contact* contact )
+void w_physics_contact_listener::EndContact( b2Contact* contact )
 {
 	w_pending_collision pc;
 	pc.fixture_b = contact->GetFixtureB();
@@ -34,7 +34,7 @@ void w_phys_contact_listener::EndContact( b2Contact* contact )
 	engine->end_contact_queue.emplace_back( pc );
 }
 
-w_vec2 w_phys_contact_listener::calc_hit_normal( b2Body* body_colliding )
+w_vec2 w_physics_contact_listener::calc_hit_normal( b2Body* body_colliding )
 {
 	w_vec2 hit_normal = w_vec2::zero;
 

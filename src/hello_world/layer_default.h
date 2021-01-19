@@ -5,7 +5,7 @@
 struct layer_default_ui_callback : w_imgui_callback
 {
 	virtual e_imgui_control_state get_state_for_control( const w_imgui_control& control ) override;
-	virtual void was_left_clicked( const w_imgui_control& control ) override;
+	virtual void was_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
 
 	bool b_checkbox_01 = false;
 };

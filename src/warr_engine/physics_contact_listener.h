@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_phys_contact_listener : b2ContactListener
+struct w_physics_contact_listener : b2ContactListener
 {
 	b2Contact* contact = nullptr;
 	b2Manifold* manifold = nullptr;

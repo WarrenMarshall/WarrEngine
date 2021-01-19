@@ -9,13 +9,13 @@ w_file_mem::w_file_mem( int size )
 
 // ----------------------------------------------------------------------------
 
-w_mem_file_text::w_mem_file_text( int size )
+w_file_mem_text::w_file_mem_text( int size )
 	: w_file_mem( size )
 {
 	lines = std::make_unique<std::vector<std::string>>();
 }
 
-void w_mem_file_text::preprocess()
+void w_file_mem_text::preprocess()
 {
 	w_tokenizer tok( buffer->data(), '\n' );
 

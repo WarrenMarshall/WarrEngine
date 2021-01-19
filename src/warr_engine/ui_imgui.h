@@ -4,7 +4,11 @@
 
 struct w_imgui_result
 {
-	e_im_result result = im_result::none;
+	e_im_result code = im_result::none;
+
+	// the mouse position, normalized to within the client
+	// rect of the control.
+	w_pos client_click_location = {};
 
 	void operator=( const e_im_result res );
 
@@ -61,7 +65,7 @@ private:
 	void finalize_passive();
 	void set_as_last_control( w_imgui_control control );
 
-	[[nodiscard]] virtual e_im_result update_im_state( int id, const w_rect& rc_win );
+	virtual void update_im_state( int id, const w_rect& rc_win );
 	void draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
 	void draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool being_hovered, bool being_clicked );
 	void draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool being_hovered, bool being_clicked );

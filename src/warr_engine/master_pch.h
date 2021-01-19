@@ -1,5 +1,7 @@
 #pragma once
 
+#include "master_fwd_decl.h"
+
 #pragma warning(disable : 4324 )	// structure was padded due to alignment specifier
 #pragma warning(disable : 4530 )	// C++ exception handler used, but unwind semantics are not enabled
 #pragma warning(disable : 4130 )	// logical operation on address of string constant
@@ -123,8 +125,6 @@ namespace FTS
 // ----------------------------------------------------------------------------
 
 constexpr int struct_alignment_for_cache = 64;
-
-#include "master_fwd_decl.h"
 
 #define declare_find_func( struct_type )\
 static struct_type* find( const std::string_view name, bool silent = false );

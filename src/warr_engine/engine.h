@@ -45,7 +45,7 @@ struct w_engine
 
 	std::unique_ptr<w_physics_debug_draw> physics_debug_draw = nullptr;
 	std::unique_ptr<b2World> box2d_world = nullptr;
-	std::unique_ptr<w_phys_contact_listener> physics_responder = nullptr;
+	std::unique_ptr<w_physics_contact_listener> physics_responder = nullptr;
 	std::vector<w_pending_collision> begin_contact_queue;
 	std::vector<w_pending_collision> end_contact_queue;
 

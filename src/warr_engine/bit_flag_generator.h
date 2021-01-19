@@ -1,6 +1,6 @@
 #pragma once
 
-struct w_bit_flag_generator
+struct w_bit_flag_generator final
 {
 	unsigned bit = 1;
 

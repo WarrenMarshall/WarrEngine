@@ -6,17 +6,17 @@
 
 void w_imgui_result::operator=( const e_im_result res )
 {
-	result = res;
+	code = res;
 }
 
 bool w_imgui_result::was_left_clicked()
 {
-	return ( result == im_result::left_clicked );
+	return ( code == im_result::left_clicked );
 }
 
 bool w_imgui_result::was_right_clicked()
 {
-	return ( result == im_result::right_clicked );
+	return ( code == im_result::right_clicked );
 }
 
 // ----------------------------------------------------------------------------
@@ -249,11 +249,11 @@ w_imgui_result* w_imgui::finalize()
 
 	if( result.was_left_clicked() )
 	{
-		current_callback->was_left_clicked( current_control );
+		current_callback->was_left_clicked( current_control, result );
 	}
 	if( result.was_right_clicked() )
 	{
-		current_callback->was_right_clicked( current_control );
+		current_callback->was_right_clicked( current_control, result );
 	}
 
 	return &result;
@@ -261,12 +261,11 @@ w_imgui_result* w_imgui::finalize()
 
 void w_imgui::finalize_active()
 {
-	result = {};
 	im_automatic_id++;
 
 	if( containing_layer_is_topmost )
 	{
-		result = update_im_state( im_automatic_id, current_control.rc_win );
+		update_im_state( im_automatic_id, current_control.rc_win );
 	}
 
 	draw( current_control, hover_id == im_automatic_id, hot_id == im_automatic_id );
@@ -274,17 +273,18 @@ void w_imgui::finalize_active()
 
 void w_imgui::finalize_passive()
 {
-	result = {};
+	result.code = im_result::none;
+	result.client_click_location = w_vec2::zero;
 
 	draw( current_control, false, false );
 }
 
-e_im_result w_imgui::update_im_state( int id, const w_rect& rc_win )
+void w_imgui::update_im_state( int id, const w_rect& rc_win )
 {
 	assert( rc_win.w );
 	assert( rc_win.h );
 
-	e_im_result imresult = im_result::none;
+	result.code = im_result::none;
 
 	/*
 		 reduce the size of the hit rectangle. this gives more breathing room
@@ -292,6 +292,7 @@ e_im_result w_imgui::update_im_state( int id, const w_rect& rc_win )
 		 from being able to highlight/click more than one at a time.
 	*/
 
+	// #todo - still need this?
 	w_rect rc_hit = rc_win - w_rect( 0.0f, 0.0f, 1.0f, 1.0f );
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
@@ -311,7 +312,7 @@ e_im_result w_imgui::update_im_state( int id, const w_rect& rc_win )
 		{
 			if( IMGUI->hot_id == id && IMGUI->hover_id == id )
 			{
-				imresult |= im_result::left_clicked;
+				result.code |= im_result::left_clicked;
 			}
 			IMGUI->hover_id = IMGUI->hot_id = -1;
 		}
@@ -331,14 +332,21 @@ e_im_result w_imgui::update_im_state( int id, const w_rect& rc_win )
 
 	if( IMGUI->hover_id == id )
 	{
-		imresult |= im_result::hovered;
+		result.code |= im_result::hovered;
 	}
 	if( IMGUI->hot_id == id )
 	{
-		imresult |= im_result::hot;
+		result.code |= im_result::hot;
 	}
 
-	return imresult;
+	// client rect position of mouse cursor
+
+	if( result.code == im_result::left_clicked )
+	{
+		// convert mouse location to client rect position inside control
+		result.client_click_location.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
+		result.client_click_location.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y;
+	}
 }
 
 void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
@@ -438,7 +446,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 		case imgui_control_type::slider:
 		{
 			draw_slice_def( control, rc_win_offset, false, false );
-			
+
 			const float pct = 1.0f;
 
 			w_vec2 pos = {

@@ -28,6 +28,7 @@ struct w_input
 	// where the mouse currently sits in the ...
 	w_vec2 mouse_window_pos = w_vec2( 0, 0 );	// window
 	w_vec2 mouse_vwindow_pos = w_vec2( 0, 0 );	// virtual window
+	w_vec2 mouse_uiwindow_pos = w_vec2( 0, 0 );	// UI canvas
 
 	std::unique_ptr<w_gamepad> gamepad = nullptr;
 

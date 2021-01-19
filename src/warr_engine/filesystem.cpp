@@ -79,7 +79,7 @@ std::unique_ptr<w_file_mem> w_file_system::load_file_into_memory( std::string_vi
 	return nullptr;
 }
 
-std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std::string_view filename )
+std::unique_ptr<w_file_mem_text> w_file_system::load_text_file_into_memory( std::string_view filename )
 {
 	if( file_exists_on_disk( filename ) )
 	{
@@ -87,7 +87,7 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 		std::streamsize size = file.tellg();
 		file.seekg( 0, std::ios::beg );
 
-		auto mem_file = std::make_unique<w_mem_file_text>( static_cast<int>( size ) );
+		auto mem_file = std::make_unique<w_file_mem_text>( static_cast<int>( size ) );
 		file.read( mem_file->buffer->data(), size );
 		mem_file->preprocess();
 		return std::move( mem_file );
@@ -101,7 +101,7 @@ std::unique_ptr<w_mem_file_text> w_file_system::load_text_file_into_memory( std:
 		}
 		else
 		{
-			auto mem_file = std::make_unique<w_mem_file_text>( toc_entry->size );
+			auto mem_file = std::make_unique<w_file_mem_text>( toc_entry->size );
 			mem_file->buffer = zip_io->get_data_for_filename( filename );
 			mem_file->preprocess();
 			return std::move( mem_file );

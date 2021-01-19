@@ -25,8 +25,12 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	{
 		// integer mouse coordinates make things like UI click
 		// detection simpler and less error prone
+
 		engine->input->mouse_vwindow_pos.x = glm::round( static_cast<float>( vx ) );
 		engine->input->mouse_vwindow_pos.y = glm::round( static_cast<float>( vy ) );
+
+		engine->input->mouse_uiwindow_pos.x = glm::round( engine->input->mouse_vwindow_pos.x / ui_canvas_scale );
+		engine->input->mouse_uiwindow_pos.y = glm::round( engine->input->mouse_vwindow_pos.y / ui_canvas_scale );
 	}
 }
 

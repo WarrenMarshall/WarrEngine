@@ -17,7 +17,7 @@ e_imgui_control_state layer_default_ui_callback::get_state_for_control( const w_
 	return w_imgui_callback::get_state_for_control( control );
 }
 
-void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control )
+void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
 	switch( control.tag )
 	{
@@ -29,7 +29,7 @@ void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control
 
 		case H( "push_button_01" ):
 		{
-			log( "BAM! Button_01." );
+			log( "BAM! Button_01 : {:.0f}, {:.0f}", result.client_click_location.x, result.client_click_location.y );
 		}
 		break;
 
@@ -41,7 +41,7 @@ void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control
 
 		case H( "slider_01" ):
 		{
-			log( "SLIDER CLICKED" );
+			log( "SLIDER CLICKED : {:.0f}, {:.0f}", result.client_click_location.x, result.client_click_location.y );
 		}
 		break;
 	}
@@ -72,10 +72,10 @@ void layer_default::draw()
 
 void layer_default::draw_ui()
 {
-	OPENGL->init_view_matrix_identity_ui();
+	w_layer::draw_ui();
 
 	RENDER
-		->draw( tex_hello_world, w_rect( 16, 16 ) );
+		->draw( tex_hello_world, w_rect( 16, 24 ) );
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "SAMPLE CONTROLS" )
