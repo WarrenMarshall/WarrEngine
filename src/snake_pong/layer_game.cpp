@@ -36,7 +36,6 @@ void layer_game::update()
 	// trace from the center of the world towards the mouse and see if
 	// we can hit the outer walls. if so, update the paddle positions.
 
-	w_raycast_closest hit;
 	w_vec2 dir = engine->input->mouse_vwindow_pos - w_vec2( v_window_hw, v_window_hh );
 
 	// match the prism rotation to face the same direction as the raycasts
@@ -49,22 +48,18 @@ void layer_game::update()
 	if( dir.get_size_squared() > 4.0f )
 	{
 		w_vec2 n = ( dir ).normalize();
+		w_raycast_closest hit;
 
 		// horizontal
 
-		w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_top_bottom, &hit );
-
-		if( hit.hit_something )
+		if( w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_top_bottom, &hit ) )
 		{
 			player_h->set_position_deep( hit.result.pos, b_reset_velocity( true ) );
 		}
 
 		// vertical
 
-		hit = {};
-		w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_left_right, &hit );
-
-		if( hit.hit_something )
+		if( w_physics_query::trace_closest( w_vec2( 0, 0 ), n, 2000.f, clayer_world_left_right, &hit ) )
 		{
 			player_v->set_position_deep( hit.result.pos, b_reset_velocity( true ) );
 		}
