@@ -128,13 +128,6 @@ void w_vertex_array_object::draw_and_reset()
 
 	if( index_count )
 	{
-		if( RENDER->single_frame_debugger )
-		{
-			log( "---------------------------------------------" );
-			log( "-- NEW DRAW CALL ----------------------------" );
-			log( "---------------------------------------------" );
-		}
-
 		bind();
 
 		// upload verts to the card

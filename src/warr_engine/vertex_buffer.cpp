@@ -124,10 +124,12 @@ void w_vertex_buffer::bind_texture_units()
 	{
 		if( texture_slots[ x ] )
 		{
+#ifndef _FINALRELEASE
 			if( RENDER->single_frame_debugger )
 			{
 				log( "TU: {} bound to \"{}\"", x, texture_slots[ x ]->src_texture->tag );
 			}
+#endif
 
 			glBindTextureUnit( x, texture_slots[ x ]->src_texture->gl_id );
 		}

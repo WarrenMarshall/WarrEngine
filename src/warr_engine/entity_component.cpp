@@ -455,8 +455,9 @@ void ec_b2d_body::init_body()
 		body_definition.angle = 0.0f;
 	}
 
-	body =engine->box2d_world->CreateBody( &body_definition );
-	body->m_userData.pointer = (uintptr_t) this;
+	body = engine->box2d_world->CreateBody(&body_definition);
+	// #box2d
+	//body->m_userData.pointer = (uintptr_t) this;
 }
 
 // rc - the top left of the box (relative to body) and the w/h
