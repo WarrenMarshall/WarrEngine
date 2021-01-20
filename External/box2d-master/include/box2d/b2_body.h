@@ -464,7 +464,7 @@ private:
 	float m_gravityScale;
 
 	float m_sleepTime;
-
+public:
 	b2BodyUserData m_userData;
 };
 

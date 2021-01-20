@@ -456,8 +456,7 @@ void ec_b2d_body::init_body()
 	}
 
 	body = engine->box2d_world->CreateBody(&body_definition);
-	// #box2d
-	//body->m_userData.pointer = (uintptr_t) this;
+	body->m_userData.pointer = (uintptr_t) this;
 }
 
 // rc - the top left of the box (relative to body) and the w/h
