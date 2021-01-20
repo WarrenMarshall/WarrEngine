@@ -304,6 +304,7 @@ int main()
 
 	Error += test_compute_glm();
 	Error += test_compute_gtx();
+	
 	float Det = glm::determinant(glm::simdMat4(1.0));
 	Error += Det == 1.0f ? 0 : 1;
 	

@@ -52,7 +52,7 @@
 
 	// GLEW provides access to modern OpenGL - everything after v1.1
 	#define GLEW_STATIC
-	#include <glew-2.1.0/include/GL/glew.h>
+	#include <glew-2.2.0/include/GL/glew.h>
 
 	// GLFW makes getting OpenGL up and running a lot easier
 	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3.h>

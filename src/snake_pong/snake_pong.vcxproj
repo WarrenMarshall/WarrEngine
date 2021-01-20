@@ -80,12 +80,12 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
     <IntDir>c:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
     <IntDir>c:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -135,7 +135,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\src\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\src\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;bass.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -161,7 +161,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\src\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\src\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;bass.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
