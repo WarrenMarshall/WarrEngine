@@ -287,17 +287,8 @@ void w_imgui::update_im_state( int id, const w_rect& rc_win )
 
 	result.code = im_result::none;
 
-	/*
-		 reduce the size of the hit rectangle. this gives more breathing room
-		 when mousing over tightly packed UI elements and stops the user
-		 from being able to highlight/click more than one at a time.
-	*/
-
-	// #todo - still need this?
-	w_rect rc_hit = rc_win - w_rect( 0.0f, 0.0f, 1.0f, 1.0f );
-
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( rc_hit );
+	bool mouse_is_inside = UI->is_mouse_inside( rc_win );
 
 	if( mouse_is_inside )
 	{

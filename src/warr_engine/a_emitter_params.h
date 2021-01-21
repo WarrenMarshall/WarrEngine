@@ -4,15 +4,13 @@ struct a_emitter_params : i_asset
 {
 	declare_find_func( a_emitter_params )
 
-	// [hot]
 	// texture to draw for this particle
 	a_texture* texture = nullptr;
 	w_timeline t_color = w_timeline( timeline_type::color_type );
 	w_timeline t_alpha = w_timeline( timeline_type::float_type );
 	w_timeline t_scale = w_timeline( timeline_type::float_type );
-	// #todo : refactor this so it's a single class that can be instantiated inline
+	// #heap
 	std::unique_ptr<w_particle_spawner> particle_spawner = nullptr;
-	// [hot]
 
 	w_range r_velocity_spawn = w_range( 50, 50 );	// initial velocity
 	w_range r_scale_spawn = w_range( 1, 1 );		// scale - spawn value and timeline
