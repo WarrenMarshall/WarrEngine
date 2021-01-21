@@ -8,7 +8,8 @@ struct w_imgui_result
 
 	// the mouse position, normalized to within the client
 	// rect of the control.
-	w_pos client_click_location = {};
+	w_pos click_pos = {};
+	w_vec2 click_pct = {};
 
 	void operator=( const e_im_result res );
 

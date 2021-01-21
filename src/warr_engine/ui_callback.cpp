@@ -7,6 +7,11 @@ e_imgui_control_state w_imgui_callback::get_state_for_control( const w_imgui_con
 	return imgui_control_state::none;
 }
 
+float w_imgui_callback::get_data_for_control(const w_imgui_control& control)
+{
+	return 0.0f;
+}
+
 a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& control )
 {
 	auto state = get_state_for_control( control );

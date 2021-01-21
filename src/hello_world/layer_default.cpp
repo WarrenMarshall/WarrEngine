@@ -17,6 +17,20 @@ e_imgui_control_state layer_default_ui_callback::get_state_for_control( const w_
 	return w_imgui_callback::get_state_for_control( control );
 }
 
+float layer_default_ui_callback::get_data_for_control(const w_imgui_control& control)
+{
+	switch (control.tag)
+	{
+		case H("slider_01"):
+		{
+			return slider_value;
+		}
+		break;
+	}
+
+	return 0.0f;
+}
+
 void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
 	switch( control.tag )
@@ -29,7 +43,7 @@ void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control
 
 		case H( "push_button_01" ):
 		{
-			log( "BAM! Button_01 : {:.0f}, {:.0f}", result.client_click_location.x, result.client_click_location.y );
+			log( "BAM! Button_01 : {:.0f}, {:.0f}", result.click_pos.x, result.click_pos.y );
 		}
 		break;
 
@@ -41,7 +55,7 @@ void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control
 
 		case H( "slider_01" ):
 		{
-			log( "SLIDER CLICKED : {:.0f}, {:.0f}", result.client_click_location.x, result.client_click_location.y );
+			slider_value = result.click_pct.x;
 		}
 		break;
 	}

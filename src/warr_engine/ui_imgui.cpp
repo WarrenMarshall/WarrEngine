@@ -274,7 +274,8 @@ void w_imgui::finalize_active()
 void w_imgui::finalize_passive()
 {
 	result.code = im_result::none;
-	result.client_click_location = w_vec2::zero;
+	result.click_pos = w_vec2::zero;
+	result.click_pct = w_vec2::zero;
 
 	draw( current_control, false, false );
 }
@@ -344,8 +345,11 @@ void w_imgui::update_im_state( int id, const w_rect& rc_win )
 	if( result.code == im_result::left_clicked )
 	{
 		// convert mouse location to client rect position inside control
-		result.client_click_location.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
-		result.client_click_location.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y;
+		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
+		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y;
+
+		result.click_pct.x = result.click_pos.x / current_control.rc_win.w;
+		result.click_pos.y = result.click_pos.y / current_control.rc_win.h;
 	}
 }
 
@@ -447,7 +451,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 		{
 			draw_slice_def( control, rc_win_offset, false, false );
 
-			const float pct = 1.0f;
+			const float pct = current_callback->get_data_for_control(control);
 
 			w_vec2 pos = {
 				rc_client_offset.x + ( rc_client_offset.w * pct ),
@@ -457,8 +461,6 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 			RENDER
 				->push_rgb( get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
 				->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
-
-
 		}
 		break;
 	}
