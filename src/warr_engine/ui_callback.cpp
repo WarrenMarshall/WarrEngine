@@ -24,14 +24,12 @@ a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& co
 	return a_texture::find( "ui_checkbox_off" );
 }
 
-void w_imgui_callback::was_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
+void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
-	log_warning( "left clicked not handled!" );
 }
 
-void w_imgui_callback::was_right_clicked( const w_imgui_control& control, const w_imgui_result& result )
+void w_imgui_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
 {
-	log_warning( "right clicked not handled!" );
 }
 
 // space to leave between controls within the client area

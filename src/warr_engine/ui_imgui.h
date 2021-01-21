@@ -14,7 +14,6 @@ struct w_imgui_result
 	void operator=( const e_im_result res );
 
 	[[nodiscard]] bool was_left_clicked();
-	[[nodiscard]] bool was_right_clicked();
 };
 
 // ----------------------------------------------------------------------------
@@ -62,17 +61,15 @@ struct w_imgui
 	w_imgui_result* finalize();
 
 private:
-	void finalize_active();
-	void finalize_passive();
 	void set_as_last_control( w_imgui_control control );
 
-	virtual void update_im_state( int id, const w_rect& rc_win );
-	void draw( w_imgui_control& control, bool being_hovered, bool being_clicked );
-	void draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool being_hovered, bool being_clicked );
-	void draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool being_hovered, bool being_clicked );
-	void draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool being_hovered, bool being_clicked );
-	[[nodiscard]] w_offset get_click_offset( bool being_hovered, bool being_clicked );
-	[[nodiscard]] w_color get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked );
+	virtual void update_im_state( int id, const w_imgui_control& control, bool is_hovered, bool is_hot );
+	void draw( w_imgui_control& control, bool is_hovered, bool is_hot );
+	void draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool is_hovered, bool is_hot );
+	void draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool is_hovered, bool is_hot );
+	void draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool is_hovered, bool is_hot );
+	[[nodiscard]] w_offset get_click_offset( bool is_hovered, bool is_hot );
+	[[nodiscard]] w_color get_adjusted_color( const w_color& base_color, bool is_hovered, bool is_hot );
 
 	int im_automatic_id = 0;
 };

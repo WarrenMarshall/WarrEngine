@@ -14,11 +14,6 @@ bool w_imgui_result::was_left_clicked()
 	return ( code == im_result::left_clicked );
 }
 
-bool w_imgui_result::was_right_clicked()
-{
-	return ( code == im_result::right_clicked );
-}
-
 // ----------------------------------------------------------------------------
 
 void w_imgui::reset()
@@ -120,6 +115,8 @@ w_imgui* w_imgui::do_slider( hash tag )
 	current_control.is_active = true;
 	current_control.text_align = align::left | align::vcenter;
 	current_control.slice_def = a_9slice_def::find( "simple_ui_slider_body" );
+	current_control.sticky_hover = true;
+	current_control.uses_click_offset = false;
 
 	set_size( { w_sz::def, w_sz::def } );
 
@@ -238,57 +235,51 @@ w_imgui_result* w_imgui::finalize()
 
 	if( current_control.is_active )
 	{
-		finalize_active();
+		im_automatic_id++;
+
+		bool is_hot = hot_id == im_automatic_id;
+		bool is_hovered = hover_id == im_automatic_id;
+
+		if( containing_layer_is_topmost )
+		{
+			update_im_state( im_automatic_id, current_control, is_hovered, is_hot );
+		}
+
+		draw( current_control, is_hovered, is_hot );
+
+		if( result.was_left_clicked() )
+		{
+			current_callback->on_left_clicked( current_control, result );
+		}
+
+		if( is_hot && current_control.sticky_hover )
+		{
+			current_callback->on_motion( current_control, result );
+		}
 	}
 	else
 	{
-		finalize_passive();
+		result.code = im_result::none;
+		result.click_pos = w_vec2::zero;
+		result.click_pct = w_vec2::zero;
+
+		draw( current_control, false, false );
 	}
 
 	set_as_last_control( current_control );
 
-	if( result.was_left_clicked() )
-	{
-		current_callback->was_left_clicked( current_control, result );
-	}
-	if( result.was_right_clicked() )
-	{
-		current_callback->was_right_clicked( current_control, result );
-	}
-
 	return &result;
 }
 
-void w_imgui::finalize_active()
+void w_imgui::update_im_state( int id, const w_imgui_control& control, bool is_hovered, bool is_hot )
 {
-	im_automatic_id++;
-
-	if( containing_layer_is_topmost )
-	{
-		update_im_state( im_automatic_id, current_control.rc_win );
-	}
-
-	draw( current_control, hover_id == im_automatic_id, hot_id == im_automatic_id );
-}
-
-void w_imgui::finalize_passive()
-{
-	result.code = im_result::none;
-	result.click_pos = w_vec2::zero;
-	result.click_pct = w_vec2::zero;
-
-	draw( current_control, false, false );
-}
-
-void w_imgui::update_im_state( int id, const w_rect& rc_win )
-{
-	assert( rc_win.w );
-	assert( rc_win.h );
+	assert( control.rc_win.w );
+	assert( control.rc_win.h );
 
 	result.code = im_result::none;
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( rc_win );
+	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win );
 
 	if( mouse_is_inside )
 	{
@@ -311,9 +302,12 @@ void w_imgui::update_im_state( int id, const w_rect& rc_win )
 	}
 	else
 	{
-		if( IMGUI->hover_id == id )
+		if( IMGUI->hover_id == id && control.sticky_hover == false )
 		{
-			IMGUI->hover_id = -1;
+			if( IMGUI->hover_id == id )
+			{
+				IMGUI->hover_id = -1;
+			}
 		}
 
 		if( bs_left == button_state::released && IMGUI->hot_id == id )
@@ -333,7 +327,7 @@ void w_imgui::update_im_state( int id, const w_rect& rc_win )
 
 	// client rect position of mouse cursor
 
-	if( result.code == im_result::left_clicked )
+	if( result.code == im_result::left_clicked || control.sticky_hover )
 	{
 		// convert mouse location to client rect position inside control
 		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
@@ -341,12 +335,15 @@ void w_imgui::update_im_state( int id, const w_rect& rc_win )
 
 		result.click_pct.x = result.click_pos.x / current_control.rc_win.w;
 		result.click_pos.y = result.click_pos.y / current_control.rc_win.h;
+
+		result.click_pct.x = glm::clamp( result.click_pct.x, 0.0f, 1.0f );
+		result.click_pct.y = glm::clamp( result.click_pct.y, 0.0f, 1.0f );
 	}
 }
 
-void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_clicked )
+void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 {
-	w_vec2 clicked_offset = get_click_offset( being_hovered, being_clicked );
+	w_vec2 clicked_offset = get_click_offset( is_hovered, is_hot );
 
 	w_rect rc_win_offset = control.rc_win;
 	rc_win_offset.x += clicked_offset.x;
@@ -362,7 +359,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 	{
 		case imgui_control_type::panel:
 		{
-			draw_slice_def( control, rc_win_offset, being_hovered, being_clicked );
+			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
 			// text on a panel translates to a caption bar at the
 			// top of the panel.
@@ -385,7 +382,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 					->draw_filled_rectangle( rc_label_background );
 
 				// caption text
-				draw_text( control, rc, w_color::pal( 3 ), being_hovered, being_clicked );
+				draw_text( control, rc, w_color::pal( 3 ), is_hovered, is_hot );
 
 				// panel client rect is adjusted so that it sits below the caption area
 				control.rc_client.y += rc.h + current_callback->get_control_padding();
@@ -398,8 +395,8 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 
 		case imgui_control_type::push_button:
 		{
-			draw_slice_def( control, rc_win_offset, being_hovered, being_clicked );
-			draw_text( control, rc_client_offset, w_color::pal( 2 ), being_hovered, being_clicked );
+			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
+			draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
 		}
 		break;
 
@@ -407,7 +404,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 		{
 			a_texture* texture = current_callback->get_texture_for_checkbox( control );
 
-			draw_slice_def( control, rc_win_offset, being_hovered, being_clicked );
+			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
 			w_rect rc_texture =
 				w_rect(
@@ -420,8 +417,8 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 						rc_client_offset.w - current_callback->get_control_padding() - texture->rc.w, rc_client_offset.h
 				);
 
-			draw_texture( control, rc_texture, texture, being_hovered, being_clicked );
-			draw_text( control, rc_client_offset, w_color::pal( 2 ), being_hovered, being_clicked );
+			draw_texture( control, rc_texture, texture, is_hovered, is_hot );
+			draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
 		}
 		break;
 
@@ -450,7 +447,7 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 			};
 
 			RENDER
-				->push_rgb( get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
+				->push_rgb( get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot ) )
 				->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
 		}
 		break;
@@ -459,31 +456,31 @@ void w_imgui::draw( w_imgui_control& control, bool being_hovered, bool being_cli
 	RENDER->end();
 }
 
-void w_imgui::draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool being_hovered, bool being_clicked )
+void w_imgui::draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool is_hovered, bool is_hot )
 {
 	if( control.slice_def )
 	{
 		RENDER->push_depth_nudge()
-			->push_rgb( get_adjusted_color( w_color::pal( 1 ), being_hovered, being_clicked ) )
+			->push_rgb( get_adjusted_color( w_color::pal( 1 ), is_hovered, is_hot ) )
 			->draw_sliced( control.slice_def, rc_win );
 	}
 }
 
-void w_imgui::draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool being_hovered, bool being_clicked )
+void w_imgui::draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool is_hovered, bool is_hot )
 {
 	RENDER->push_depth_nudge()
-		->push_rgb( get_adjusted_color( w_color::pal( 2 ), being_hovered, being_clicked ) )
+		->push_rgb( get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot ) )
 		->draw_sprite( texture, rc.midpoint() );
 }
 
-void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool being_hovered, bool being_clicked )
+void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool is_hovered, bool is_hot )
 {
 	if( control.text.length() )
 	{
 		const w_pos pos = rc_client.get_position_from_alignment( control.text_align );
 
 		w_render_state_opt rso;
-		rso.color = get_adjusted_color( color, being_hovered, being_clicked );
+		rso.color = get_adjusted_color( color, is_hovered, is_hot );
 		rso.align = control.text_align;
 
 		RENDER
@@ -495,15 +492,15 @@ void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client
 
 // takes a base color and modifies it based on the state of the UI
 
-w_color w_imgui::get_adjusted_color( const w_color& base_color, bool being_hovered, bool being_clicked )
+w_color w_imgui::get_adjusted_color( const w_color& base_color, bool is_hovered, bool is_hot )
 {
 	w_color color = base_color;
 
-	if( being_clicked )
+	if( is_hot )
 	{
 		w_color::scale( color, 1.75f );
 	}
-	else if( being_hovered )
+	else if( is_hovered )
 	{
 		w_color::scale( color, 1.25f );
 	}
@@ -521,9 +518,9 @@ void w_imgui::set_as_last_control( w_imgui_control control )
 
 // a control with the mouse button held down on it will offset slightly
 
-w_offset w_imgui::get_click_offset( bool being_hovered, bool being_clicked )
+w_offset w_imgui::get_click_offset( bool is_hovered, bool is_hot )
 {
-	if( being_hovered && being_clicked )
+	if( current_control.uses_click_offset && is_hovered && is_hot )
 	{
 		return w_offset( 1, 1 );
 	}

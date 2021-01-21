@@ -265,7 +265,6 @@ enum_begin( im_result )
 	hovered = 1,
 	hot = 2,
 	left_clicked = 4,
-	right_clicked = 8
 enum_end
 
 // ----------------------------------------------------------------------------

@@ -31,7 +31,7 @@ float layer_default_ui_callback::get_data_for_control(const w_imgui_control& con
 	return 0.0f;
 }
 
-void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
+void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
 	switch( control.tag )
 	{
@@ -53,6 +53,18 @@ void layer_default_ui_callback::was_left_clicked( const w_imgui_control& control
 		}
 		break;
 
+		case H( "slider_01" ):
+		{
+			slider_value = result.click_pct.x;
+		}
+		break;
+	}
+}
+
+void layer_default_ui_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
+{
+	switch( control.tag )
+	{
 		case H( "slider_01" ):
 		{
 			slider_value = result.click_pct.x;
@@ -110,10 +122,11 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->do_label()
-		->set_text( "Label Test : 0 %" )
+		->set_text( fmt::format( "Label Test : {:.0f}%", imgui_callback.slider_value * 100.0f ) )
 		->finalize();
 
-	IMGUI->do_slider( H("slider_01" ))
+	IMGUI->do_slider( H( "slider_01" ) )
+		->set_size( { 66.0f, w_sz::ignore } )
 		->finalize();
 
 	IMGUI->do_divider()

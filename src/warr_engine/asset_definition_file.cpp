@@ -274,7 +274,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-#if 0 // #texture
+#if 0 // #anim_texture
 				else if( type == "anim_texture" )
 				{
 					assert( iter_ad.does_key_exist( "frame_texture_tags" ) );

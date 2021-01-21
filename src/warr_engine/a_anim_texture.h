@@ -1,6 +1,6 @@
 #pragma once
 
-#if 0 // #texture
+#if 0 // #anim_texture
 struct a_anim_texture : a_src_texture
 {
 	declare_find_func( a_anim_texture )

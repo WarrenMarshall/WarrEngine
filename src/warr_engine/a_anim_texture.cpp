@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-#if 0 // #texture
+#if 0 // #anim_texture
 implement_find_func( a_anim_texture )
 
 a_anim_texture::a_anim_texture( e_tween_type tween_type, int frames_per_second )

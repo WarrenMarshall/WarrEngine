@@ -3,8 +3,6 @@
 struct w_imgui_control
 {
 	e_imgui_control_type type = imgui_control_type::none;
-	// the ui control that this control lives inside of
-	hash tag_container;
 	hash tag;
 	std::string text;
 	e_align text_align = align::hcenter | align::vcenter;
@@ -21,6 +19,13 @@ struct w_imgui_control
 	// whether or not to use default sizes.
 	bool set_position_called = false;
 
-	// when the control is hot, does it want callbacks with active mouse positions?
-	bool wants_motion_updates = false;
+	// indicates that a control, once hot, won't release it's hover state until
+	// the mouse button is actually released.
+	//
+	// used for controls that want continuous feedback, like sliders, so they
+	// don't hop around between hover states as you drag.
+	bool sticky_hover = false;
+
+	// does this control do a position offset when it's made hot / clicked?
+	bool uses_click_offset = true;
 };
