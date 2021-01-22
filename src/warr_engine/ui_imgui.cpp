@@ -69,6 +69,7 @@ w_imgui* w_imgui::do_checkbox( hash tag )
 	current_control.tag = tag;
 	current_control.is_active = true;
 	current_control.text_align = align::left | align::vcenter;
+	current_control.uses_click_offset = false;
 
 	set_size( { w_sz::def, w_sz::def } );
 
@@ -190,14 +191,14 @@ w_imgui* w_imgui::set_size( const w_sz& sz )
 	if( sz.w != w_sz::ignore )
 	{
 		current_control.rc_win.w =
-			( sz.w == w_sz::def )
+			fequals( sz.w, w_sz::def )
 			? current_callback->get_default_width( current_control )
 			: sz.w;
 	}
 	if( sz.h != w_sz::ignore )
 	{
 		current_control.rc_win.h =
-			( sz.h == w_sz::def )
+			fequals( sz.h, w_sz::def )
 			? current_callback->get_default_height( current_control )
 			: sz.h;
 	}

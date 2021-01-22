@@ -524,7 +524,8 @@ w_render* w_render::draw_stats()
 			->begin()
 			->push_rgba( w_color::pal( 0 ) )
 			->push_alpha( 0.75f )
-			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w, engine->pixel_font->font_def->max_height * stat_lines.size() ) )
+			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w,
+				engine->pixel_font->font_def->max_height * stat_lines.size() ) )
 			->end();
 
 		RENDER
@@ -533,7 +534,7 @@ w_render* w_render::draw_stats()
 			->push_rgb( w_color::white )
 			->push_align( align::hcenter );
 
-		float ypos = 0;
+		auto ypos = 0.0f;
 		for( const auto& iter : stat_lines )
 		{
 			RENDER->draw_string( iter, { ui_canvas_hw, ypos } );

@@ -17,7 +17,7 @@ struct w_imgui_control
 
 	// has the "set_position" call been made for this control? used when deciding
 	// whether or not to use default sizes.
-	bool set_position_called = false;
+	bool set_position_called =  false;
 
 	// indicates that a control, once hot, won't release it's hover state until
 	// the mouse button is actually released.
