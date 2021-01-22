@@ -33,7 +33,7 @@ struct w_imgui
 	int hot_id = -1;
 
 	// the current control being set up or drawn
-	w_pos flow_right, flow_down;
+	w_pos flow_right_pos, flow_down_pos;
 	std::optional<w_imgui_control> last_control = std::nullopt;
 	w_imgui_control current_control = {};
 

@@ -163,14 +163,14 @@ w_imgui* w_imgui::set_position( e_imgui_flow flow )
 
 	if( flow & imgui_flow::right )
 	{
-		current_control.rc_win.x = flow_right.x;
-		current_control.rc_win.y = flow_right.y;
+		current_control.rc_win.x = flow_right_pos.x;
+		current_control.rc_win.y = flow_right_pos.y;
 	}
 
 	if( flow & imgui_flow::down )
 	{
-		current_control.rc_win.x = flow_down.x;
-		current_control.rc_win.y = flow_down.y;
+		current_control.rc_win.x = flow_down_pos.x;
+		current_control.rc_win.y = flow_down_pos.y;
 	}
 
 	if( flow & imgui_flow::last_crc_topleft )
@@ -512,8 +512,8 @@ void w_imgui::set_as_last_control( w_imgui_control control )
 {
 	last_control = control;
 
-	flow_right = { last_control->rc_win.x + last_control->rc_win.w + current_callback->get_control_margin(), last_control->rc_win.y };
-	flow_down = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + current_callback->get_control_margin() };
+	flow_right_pos = { last_control->rc_win.x + last_control->rc_win.w + current_callback->get_control_margin(), last_control->rc_win.y };
+	flow_down_pos = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + current_callback->get_control_margin() };
 }
 
 // a control with the mouse button held down on it will offset slightly
