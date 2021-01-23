@@ -4,13 +4,18 @@
 
 struct w_time
 {
-	int delta_ms = 0;
+	// the time when this frame started
+	time_ms time_now_ms = 0;
+	time_ms prev_frame_ms = 0;
+
+	// the time that has elapsed since the last frame.
+	time_ms delta_ms = 0;
 
 	// fixed time step accumulator. this accrues each frame until it exceeds
 	// FTS_step_value_ms - then we call update() until it is below the threshold
 	// again.
 
-	int fts_accum_ms = 0;
+	time_ms fts_accum_ms = 0;
 
 	// used to change the speed of time passing. lower values are slower, higher
 	// is faster.
@@ -21,10 +26,8 @@ struct w_time
 
 	float dilation = 1.0f;
 
-	int prev_frame_ms = 0;
-
 	w_time();
 	void init();
 	void update();
-	[[nodiscard]] int get_time_ms() const;
+	[[nodiscard]] time_ms get_time_ms() const;
 };

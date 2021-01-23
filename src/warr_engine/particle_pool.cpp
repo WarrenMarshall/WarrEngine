@@ -52,13 +52,14 @@ void w_particle_pool::draw()
 				RENDER->calc_interpolated_per_sec_value( particle->pos.y, ( v.y * particle->velocity_per_sec ) )
 			);
 
-			// the particle system issues a LOT of draw calls and these values are changing for every
-			// particle. it doesn't make sense to go through the render_state stack calls to set these
-			// so we just set them here directly.
+			// the particle system issues a LOT of draw calls and these values
+			// are changing for every particle. it doesn't make sense to go
+			// through the render_state stack calls to set these so we just set
+			// them here directly.
 			//
-			// the call to RENDER->end() at the end of the function resets the render_state stacks so
-			// there's no harm done here. it's just a faster way of telling the renderer what each
-			// particle wants.
+			// the call to RENDER->end() at the end of the function resets the
+			// render_state stacks so there's no harm done here. it's just a
+			// faster way of telling the renderer what each particle wants.
 
 			auto rs = RENDER->rs_top();
 

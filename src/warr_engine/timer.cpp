@@ -2,20 +2,15 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_timer::w_timer( int interval_ms )
-	: interval_ms( static_cast<float>( interval_ms ) )
+w_timer::w_timer( time_ms interval_ms )
+	: interval_ms( interval_ms )
 {
-	reset();
+	restart();
 }
 
-void w_timer::reset()
+void w_timer::restart()
 {
-	time_remaining_ms += interval_ms;
-}
-
-void w_timer::update()
-{
-	time_remaining_ms -= FTS::ms_per_step;
+	time_last = engine->time->time_now_ms;
 }
 
 // call to see if timer has run over it's duration
@@ -24,7 +19,8 @@ void w_timer::update()
 
 bool w_timer::is_elapsed() const
 {
-	return ( time_remaining_ms < 0.f );
+	time_ms delta = ( engine->time->time_now_ms - time_last );
+	return ( delta >= interval_ms );
 }
 
 // call repeatedly to see how many times the timer has elapsed
@@ -33,13 +29,10 @@ bool w_timer::is_elapsed() const
 
 int w_timer::get_elapsed_count()
 {
-	int elapsed_counter = 0;
+	time_ms delta = ( engine->time->time_now_ms - time_last );
 
-	while( time_remaining_ms < 0.f )
-	{
-		elapsed_counter++;
-		time_remaining_ms += interval_ms;
-	}
+	int num_times_elapsed = static_cast<int>( delta / interval_ms );
+	time_last += num_times_elapsed * interval_ms;
 
-	return elapsed_counter;
+	return num_times_elapsed;
 }

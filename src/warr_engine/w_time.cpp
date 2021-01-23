@@ -16,26 +16,33 @@ void w_time::init()
 
 void w_time::update()
 {
-	int time_now_ms = get_time_ms();
+	// get current time
+	time_now_ms = get_time_ms();
 
+	// compute the delta since the last frame
 	delta_ms = time_now_ms - prev_frame_ms;
-	delta_ms = static_cast<int>( delta_ms * dilation );
-
-	prev_frame_ms = time_now_ms;
 
 	if( engine->is_paused )
 	{
+		// if the engine has paused, pretend like no time has passed
 		delta_ms = 0;
 	}
+	else
+	{
+		delta_ms = (time_ms)( delta_ms * dilation );
+		fts_accum_ms += delta_ms;
+	}
 
-	fts_accum_ms += delta_ms;
+	// save the current time as the previous frame time
+	prev_frame_ms = time_now_ms;
 }
 
 // returns the current time in ms
 //
-// so 1 second would be returned as 1000 ticks
+// so 1 second would be returned as 1000 ms
 
-int w_time::get_time_ms() const
+time_ms w_time::get_time_ms() const
 {
-	return static_cast<int>( (float)glfwGetTime() * 1000.0f );
+	auto time = glfwGetTime();
+	return static_cast<time_ms>( time * 1000.0 );
 }

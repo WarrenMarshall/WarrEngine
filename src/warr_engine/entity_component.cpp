@@ -40,8 +40,6 @@ void w_entity_component::update()
 {
 	if( life_timer.has_value() )
 	{
-		life_timer->update();
-
 		// if a life timer is being used AND that timer has elapsed, then this component is dying
 		if( life_timer->is_elapsed() )
 		{

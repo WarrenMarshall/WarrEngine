@@ -310,7 +310,7 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
 
-			timer_repeat->reset();
+			timer_repeat->restart();
 		}
 		break;
 
@@ -326,7 +326,6 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 		case button_state::held:
 		{
-			timer_repeat->update();
 			if( timer_repeat->get_elapsed_count() )
 			{
 				w_input_event evt;

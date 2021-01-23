@@ -11,7 +11,7 @@ void w_render_stats::update()
 {
 	if( stat_timer->is_elapsed() )
 	{
-		stat_timer->reset();
+		stat_timer->restart();
 
 		frame_count.update_value();
 		auto steps = static_cast<int>( frame_count.value );
@@ -23,9 +23,5 @@ void w_render_stats::update()
 		triangles.update_value( steps );
 		lines.update_value( steps );
 		points.update_value( steps );
-	}
-	else
-	{
-		stat_timer->update();
 	}
 }

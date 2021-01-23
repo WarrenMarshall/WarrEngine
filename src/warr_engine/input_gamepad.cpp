@@ -35,7 +35,6 @@ void w_gamepad::update_button_state( e_input_id input_id, int xinput_button_bit 
 	}
 	else if( last_state && current_state )
 	{
-		timer_repeat->update();
 		if( timer_repeat->get_elapsed_count() )
 		{
 			w_input_event evt;

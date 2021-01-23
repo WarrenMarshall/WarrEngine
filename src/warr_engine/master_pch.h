@@ -143,6 +143,7 @@ using w_uv = w_vec2;
 using w_sz = w_vec2;
 using w_offset = w_vec2;
 using w_pos = w_vec2;
+using time_ms = uint64_t;
 
 // ----------------------------------------------------------------------------
 

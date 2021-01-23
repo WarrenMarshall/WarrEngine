@@ -12,7 +12,7 @@ struct w_accum_value
 	void update_value( int steps );
 	void update_value();
 	void accum( float value );
-	void accum( int value );
+	void accum( time_ms value );
 	void inc();
 	void dec();
 

@@ -26,7 +26,7 @@ void w_accum_value::accum( float value )
 	_accumulator += value;
 }
 
-void w_accum_value::accum( int value )
+void w_accum_value::accum( time_ms value )
 {
 	_accumulator += static_cast<float>( value );
 }

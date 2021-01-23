@@ -92,16 +92,16 @@ void w_file_zip::scan_and_build_table_of_contents()
 						}
 						else
 						{
-							// Anything else means the entry is compressed and/or
-							// encrypted, which we don't support
+							// Anything else means the entry is compressed
+							// and/or encrypted, which we don't support
 							log_error( "Compression and/or encryption are NOT supported in ZIP files : [{}]", zip_filename );
 						}
 					}
 					// central directory file header
 					else if( *( (int*) rptr ) == 0x02014b50 )
 					{
-						// once we hit the central directory, we're done with file entries
-						// and can stop reading the ZIP file
+						// once we hit the central directory, we're done with
+						// file entries and can stop reading the ZIP file
 						break;
 					}
 				}
