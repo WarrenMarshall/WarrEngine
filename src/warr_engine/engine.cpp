@@ -7,14 +7,15 @@
 void w_engine::launch( int argc, char* argv [] )
 {
 #if defined(_FINALRELEASE)
-	// in final release, we don't want to bother the user with
-	// the visual clutter of the console window
+	// in final release, we don't want to bother the user with the visual
+	// clutter of the console window
 	ShowWindow( GetConsoleWindow(), SW_HIDE );
 #endif
 
 	{	// LOG FILE
 
 		// get the log file running so we can immediately start writing into it
+
 		logfile = std::make_unique<w_logfile>();
 		logfile->init( base_game->name );
 	}
@@ -30,9 +31,9 @@ void w_engine::launch( int argc, char* argv [] )
 		log( "Initializing engine" );
 		engine->init();
 
-		// if the paths we expect to be on the disk are not there, create them. this mitigates
-		// problems later on if the app wants to, say, save a file and would have problems
-		// if the data folder wasn't there.
+		// if the paths we expect to be on the disk are not there, create them.
+		// this mitigates problems later on if the app wants to, say, save a
+		// file and would have problems if the data folder wasn't there.
 
 		w_file_system::create_path_if_not_exist( "data/warr_engine" );
 		w_file_system::create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
@@ -90,22 +91,25 @@ void w_engine::launch( int argc, char* argv [] )
 		// this ordering is important because step 2 may want to use symbols
 		// like "true" or "false" or "v_window_h" in the INI files.
 		//
-		// by the time we get to step 3, we have all the symbols from the preproc
-		// and the INI files loaded, and the asset_def files can use any symbols they please.
+		// by the time we get to step 3, we have all the symbols from the
+		// preproc and the INI files loaded, and the asset_def files can use any
+		// symbols they please.
 
 		// do the preprocess pass first so the symbols are in memory
+
 		log( "Precaching resources from definition files..." );
 		engine->precache_asset_resources( 0 );
 		engine->precache_asset_resources( 1 );
 
-		// parse INI files after the preprocess pass so they can
-		// use preprocessor symbols
+		// parse INI files after the preprocess pass so they can use
+		// preprocessor symbols
+
 		log( "Caching configuration (*.ini)..." );
 		engine->parse_config_files( "data/warr_engine" );
 		engine->parse_config_files( fmt::format( "data/{}", base_game->name ) );
 
-		// put the k/v pairs from the INI files into the global symbol
-		// table so they can be referenced by assets in the asset_def files
+		// put the k/v pairs from the INI files into the global symbol table so
+		// they can be referenced by assets in the asset_def files
 
 		for( const auto& [key, value] : engine->config_vars->kv )
 		{
@@ -151,7 +155,9 @@ void w_engine::launch( int argc, char* argv [] )
 		engine->precache_asset_resources( 3 );
 	}
 
-	{	// finalize the asset precache by allowing assets to do things that aren't thread safe
+	{
+		// finalize the asset precache by allowing assets to do things that
+		// aren't thread safe
 		for( auto& asset : engine->asset_cache->cache )
 		{
 			asset.second->finalize_after_loading();
@@ -173,8 +179,8 @@ void w_engine::launch( int argc, char* argv [] )
 	// used for solid drawing
 	engine->tex_white = a_texture::find( "engine_white" );
 
-	// there's a simple pixel font that always lives inside of engine so
-	// there is always a font available, regardless of ui theme settings.
+	// there's a simple pixel font that always lives inside of engine so there
+	// is always a font available, regardless of ui theme settings.
 	engine->pixel_font = a_font::find( "engine_pixel_font" );
 
 	{ // GAME
@@ -190,7 +196,7 @@ void w_engine::launch( int argc, char* argv [] )
 		engine->input->init();
 	}
 
- 	engine->is_running = true;
+	engine->is_running = true;
 	engine->time->init();
 
 	engine->ui->init();
@@ -205,8 +211,9 @@ void w_engine::shutdown()
 
 	log( "Shutting down..." );
 
-	// this needs to be done before the audio or windowing systems, to give
-	// the layers a chance to clean up first.
+	// this needs to be done before the audio or windowing systems, to give the
+	// layers a chance to clean up first.
+
 	log( "Shutting down layer manager" );
 	layer_mgr->clear_stack();
 
@@ -242,9 +249,7 @@ void w_engine::main_loop()
 {
 	while( is_running && !glfwWindowShouldClose( window->glfw_window ) )
 	{
-		/*
-			update core engine stuff - time, timers, etc
-		*/
+		// update core engine stuff - time, timers, etc
 
 		time->update();
 		IMGUI->reset();
@@ -254,24 +259,21 @@ void w_engine::main_loop()
 		//
 		// it is passed a percentage for easier use : 0.0f-1.0f
 
-		RENDER->frame_interpolate_pct = time->fts_accum_ms / FTS::ms_per_step;
+		RENDER->frame_interpolate_pct = time->fts_accum_ms / (float)FTS::ms_per_step;
 
-		/*
-			process user input
-		*/
+		// process user input
+
 		input->queue_presses();
 
-		// if the engine is paused, we need to continue processing user
-		// input so that the ESC menu and engine can respond to keypresses
+		// if the engine is paused, we need to continue processing user input so
+		// that the ESC menu and engine can respond to keypresses
+
 		if( is_paused )
 		{
 			input->update();
 		}
 
-		/*
-			if we have fixed time steps to perform, walk
-			through them one at a time
-		*/
+		// if we have fixed time steps to perform, walk through them one at a time
 
 		while( time->fts_accum_ms >= FTS::ms_per_step )
 		{
@@ -290,7 +292,7 @@ void w_engine::main_loop()
 		}
 
 		// update shader parameters
-		OPENGL->set_uniform( "u_current_time", (float) time->get_ticks() / 1000.f );
+		OPENGL->set_uniform( "u_current_time", (float) time->get_time_ms() / 1000.f );
 
 		// ----------------------------------------------------------------------------
 		// draw the scene to the engine frame buffer
@@ -298,7 +300,8 @@ void w_engine::main_loop()
 		// this draws several versions of the scene at once:
 		//
 		// 1. the scene as normal
-		// 2. same as #1 but only contains the brightest pixels (used for bloom later)
+		// 2. same as #1 but only contains the brightest pixels (used for bloom
+		//    later)
 
 		glEnable( GL_DEPTH_TEST );
 		frame_buffer->bind();
@@ -343,9 +346,11 @@ void w_engine::main_loop()
 		frame_buffer->unbind();
 
 		// ----------------------------------------------------------------------------
-		// the engine frame buffer now contains the color texture and the brightness texture
+		// the engine frame buffer now contains the color texture and the
+		// brightness texture
 		//
-		// draw the brightness texture into the blur frame buffer, using the blur shader
+		// draw the brightness texture into the blur frame buffer, using the
+		// blur shader
 		// ----------------------------------------------------------------------------
 
 		glDisable( GL_DEPTH_TEST );
@@ -362,8 +367,8 @@ void w_engine::main_loop()
 		blur_frame_buffers[0]->unbind();
 		RENDER->stats.draw_calls.dec();
 
-		// pingpong back and forth between the 2 blur frame buffers, blurring them into
-		// each other, for a set amount of passes.
+		// pingpong back and forth between the 2 blur frame buffers, blurring
+		// them into each other, for a set amount of passes.
 
 		constexpr auto blur_passes = 6;
 
@@ -400,7 +405,7 @@ void w_engine::main_loop()
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 
-		// draw bloom frame buffer
+		// draw bloom frame buffer on top with blending
 
 		OPENGL->set_blend( opengl_blend::add );
 
@@ -439,38 +444,54 @@ void w_engine::main_loop()
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
 
-#if 0
+#if 1
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
-		// draw all the color buffers in little quads at the bottom of the window
+		// draw all the color buffers in little quads at the bottom of the
+		// window
 		// ----------------------------------------------------------------------------
 
-		OPENGL->base_shader->bind();
+		OPENGL->shaders[ "base" ].bind();
 
 		float w = v_window_w / 4.0f;
 		float h = v_window_h / 4.0f;
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
+
+	// main
+	#if 1
 		RENDER
 			->begin()
 			->draw( frame_buffer->textures[ 0 ], rc )
+			->draw_string( "(base)", { rc.x, rc.y } )
 			->end();
-		RENDER->batch->vertex_array_object->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
+	#endif
+
+	// glow
+	#if 1
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( frame_buffer->textures[ 1 ], rc )
+			->draw_string( "(glow)", { rc.x, rc.y } )
 			->end();
-		RENDER->batch->vertex_array_object->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
+	#endif
+
+	// blurred glow
+	#if 0
 		rc.x += w;
 		RENDER
 			->begin()
 			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
+			->draw_string( "(blur)", { rc.x, rc.y } )
 			->end();
-		RENDER->batch->vertex_array_object->draw_and_reset();
+		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls.dec();
+	#endif
 #endif
 
 		// ----------------------------------------------------------------------------
@@ -482,19 +503,14 @@ void w_engine::main_loop()
 	}
 }
 
-// ----------------------------------------------------------------------------
+// checks if 'symbol' exists in the map
 
-/*
-	checks if 'symbol' exists in the map
-*/
 bool w_engine::is_symbol_in_map( const std::string_view symbol )
 {
 	return _symbol_to_value.count( std::string( symbol ) ) > 0;
 }
 
-/*
-	returns a string containing the value stored for 'symbol'
-*/
+// returns a string containing the value stored for 'symbol'
 std::optional<std::string> w_engine::find_string_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
@@ -505,11 +521,10 @@ std::optional<std::string> w_engine::find_string_from_symbol( std::string_view s
 	return _symbol_to_value[ std::string( symbol ) ];
 }
 
-/*
-	returns a value to the caller based on the contents of 'symbol'
+// returns a value to the caller based on the contents of 'symbol'
+//
+// if no value is found for 'symbol', the default value is returned
 
-	if no value is found for 'symbol', the default value is returned
-*/
 int w_engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
@@ -596,9 +611,7 @@ void w_engine::new_physics_world()
 #endif
 }
 
-/*
-	called ONCE, as the engine is starting up
-*/
+// called ONCE, as the engine is starting up
 
 void w_engine::init()
 {
@@ -759,12 +772,10 @@ void w_engine::parse_config_file( std::string_view filename )
 	}
 }
 
-/*
-	iterate through all the cached asset_definition_files and look
-	for any asset_definitions that have assets we need to precache
-
-	things like texture files, sound files, etc.
-*/
+// iterate through all the cached asset_definition_files and look for any
+// asset_definitions that have assets we need to precache
+//
+// things like texture files, sound files, etc.
 
 #ifdef USE_THREADED_ASSET_LOADING
 static void t_precache_asset_resources( int pass, w_asset_definition_file* asset_def_file )
@@ -789,8 +800,8 @@ void w_engine::precache_asset_resources( int pass )
 	log( "Pass: {} / {} total assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
 }
 
-// loops through all threads we have a handle for and waits until they
-// finish executing. the list is then cleared.
+// loops through all threads we have a handle for and waits until they finish
+// executing. the list is then cleared.
 
 void w_engine::wait_for_thread_pool_to_finish()
 {

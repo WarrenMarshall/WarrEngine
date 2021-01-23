@@ -21,6 +21,7 @@ struct layer_default : w_layer
 	a_texture* tex_hello_world = nullptr;
 
 	layer_default_ui_callback imgui_callback;
+	w_lerp_value<float> checkbox_lerp;
 
 	layer_default();
 

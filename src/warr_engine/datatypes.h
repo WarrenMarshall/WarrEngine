@@ -37,9 +37,10 @@ struct w_color
 
 // ----------------------------------------------------------------------------
 
-/*
-	a single stop on a timeline
-*/
+
+// #warren - this feels like "float_value"/"color_value" should be a template
+
+// a single stop on a timeline
 
 struct w_keyframe
 {
@@ -52,9 +53,7 @@ struct w_keyframe
 	w_keyframe( float pct_marker, const w_color& value );
 };
 
-/*
-	represents successive steps through a 0-1 timeline
-*/
+// represents successive steps through a 0-1 timeline
 
 struct w_timeline
 {

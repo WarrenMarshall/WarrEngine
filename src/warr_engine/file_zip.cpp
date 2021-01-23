@@ -3,23 +3,19 @@
 #include "master_header.h"
 
 // ----------------------------------------------------------------------------
-/*
-	the ZIP system works as follows:
-
-	1. the ZIP file containing the data files cannot use any compression
-	   or encryption. the engine doesn't have any idea what to do with that.
-	   files must be stored in the ZIP, that's it.
-
-	2. The ZIP file must be sitting in the same folder as the EXE.
-
-	3. the ZIP file must have "data" at the root of it's file structure. this
-	   directly mimics the file structure used during development.
-
-	   i.e.
-	   data/warr_engine/filename.asset_def
-	   data/my_game/gfx/filename.png
-	   ...etc...
-*/
+// the ZIP system works as follows:
+//
+// 1. the ZIP file containing the data files cannot use any compression or
+//    encryption. the engine doesn't have any idea what to do with that. files
+//    must be stored in the ZIP, that's it.
+//
+// 2. The ZIP file must be sitting in the same folder as the EXE.
+//
+// 3. the ZIP file must have "data" at the root of it's file structure. this
+//    directly mimics the file structure used during development.
+//
+// 	i.e. data/warr_engine/filename.asset_def data/my_game/gfx/filename.png
+// 	...etc...
 // ----------------------------------------------------------------------------
 
 w_zip_toc_entry::w_zip_toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size )

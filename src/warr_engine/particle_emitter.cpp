@@ -134,13 +134,12 @@ void w_particle_emitter::spawn_particle()
 	p->spin = params->r_spin_spawn.get_value();
 }
 
-/*
-	"warms up" a particle emitter by updating it for the maximum life span of one of it's
-	particles. It does this in 1000ms chunks so it's pretty quick.
+// "warms up" a particle emitter by updating it for the maximum life span of one
+// of it's particles. It does this in 1000ms chunks so it's pretty quick.
+//
+// This is good for not having all the torches turn on when you walk into a
+// room, for example. They will look as tho they've been burning for awhile.
 
-	This is good for not having all the torches turn on when you walk into a room, for example.
-	They will look as tho they've been burning for awhile.
-*/
 void w_particle_emitter::warm_up()
 {
 	float max_life_span = params->r_lifespan.end;

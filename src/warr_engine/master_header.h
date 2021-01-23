@@ -52,11 +52,10 @@ unsigned constevalH( char const* str )
 #endif
 
 // ----------------------------------------------------------------------------
-/*
-	the size of the virtual screen. all rendering is done on the assumption
-	of these dimensions. the renderer handles scaling this up to the actual
-	game window the player sees. this makes a lot of things simpler.
-*/
+// the size of the virtual screen. all rendering is done on the assumption of
+// these dimensions. the renderer handles scaling this up to the actual game
+// window the player sees. this makes a lot of things simpler.
+
 extern float v_window_w;
 extern float v_window_h;
 

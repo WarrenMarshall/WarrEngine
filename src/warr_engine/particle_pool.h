@@ -1,18 +1,16 @@
 #pragma once
 
-/*
-	this is a static pool of particle objects that lives on the heap.
+// this is a static pool of particle objects that lives on the heap.
+//
+// the size is determined at construction and never changes.
 
-	the size is determined at construction and never changes.
-
-*/
 struct w_particle_pool
 {
 	w_particle_emitter* parent_emitter = nullptr;
 
 	// particle object pool
 	std::vector<w_particle> particles;	// preallocates the memory for the particle pool
-	w_particle* data_ptr = nullptr;			// direct pointer to the vector memory
+	w_particle* data_ptr = nullptr;		// direct pointer to the vector memory
 	int pool_sz = -1;					// the total number of particle slots in this pool
 
 	// which particle we're going to use next. this wraps around the vector

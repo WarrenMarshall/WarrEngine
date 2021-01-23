@@ -1,8 +1,6 @@
 #pragma once
 
-/*
-	the actual OS window on the screen.
-*/
+// the actual OS window on the screen.
 
 struct w_window
 {

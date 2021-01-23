@@ -9,20 +9,19 @@ w_entity_component::w_entity_component( w_entity* parent_entity )
 {
 }
 
-/*
-	each component can implement it's own criteria here for
-	whether or not it is fully dead or not.
+// each component can implement it's own criteria here for whether or not it is
+// fully dead or not.
+//
+// components can sometimes have more work left to do before their owning
+// entities can be safely deleted.
+//
+// reasons to return false from here might include:
+//
+// - you are emitting particles and need to wait until they are all faded out
+//   before letting yourself get deleted.
+// - you are waiting for a sound effect to finish playing
+// - etc
 
-	components can sometimes have more work left to do before
-	their owning entities can be safely deleted.
-
-	reasons to return false from here might include:
-
-	- you are emitting particles and need to wait until they are all faded
-	  out before letting yourself get deleted.
-	- you are waiting for a sound effect to finish playing
-	- etc
-*/
 bool w_entity_component::is_fully_dead()
 {
 	if( ilc_is_alive() || life_timer.has_value() )

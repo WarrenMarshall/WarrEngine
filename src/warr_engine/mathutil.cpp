@@ -26,6 +26,11 @@ void w_accum_value::accum( float value )
 	_accumulator += value;
 }
 
+void w_accum_value::accum( int value )
+{
+	_accumulator += static_cast<float>( value );
+}
+
 void w_accum_value::inc()
 {
 	_accumulator += 1.0f;

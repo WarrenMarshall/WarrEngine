@@ -11,11 +11,9 @@ struct w_gamepad
 	// this can change if a controller gets unplugged during gameplay or after the game starts
 	bool is_connected = false;
 
-	/*
-		 set to true the first time a button is pressed on the controller
+	// set to true the first time a button is pressed on the controller. this is
+	// how the engine knows to play rumble effects on that controller or not
 
-		 this is how the engine knows to play rumble effects on that controller or not
-	*/
 	bool is_being_used = false;
 
 	w_gamepad( int player_id );

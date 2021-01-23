@@ -1,31 +1,30 @@
 
 #pragma once
 
-/*
-	macros to make enum definitions easier to read.
-
-	we do it this way because using the standard enum declarations in C++
-	makes the compiler spew warnings about conversions to and from int.
-
-	usage example:
-
-		enum_begin( color )
-			red,
-			white,
-			blue
-		enum_end
-
-	this create an integer alias called "e_color" which
-	can be used in place of "int" when defining vars using
-	this enum.
-
-	to access the enum values, use "color::white" format.
-
-	i.e.
-		e_color border_clr = color::white;
-
-		void set_screen_color( e_color clr );
-*/
+// ----------------------------------------------------------------------------
+// macros to make enum definitions easier to read.
+//
+// we do it this way because using the standard enum declarations in C++ makes
+// the compiler spew warnings about conversions to and from int.
+//
+// usage example:
+//
+//	enum_begin( color )
+//		red,
+//		white,
+//		blue
+//	enum_end
+//
+// this create an integer alias called "e_color" which can be used in place of
+// "int" when defining vars using this enum.
+//
+// to access the enum values, use "color::white" format.
+//
+// i.e.
+//	e_color border_clr = color::white;
+//
+//	void set_screen_color( e_color clr );
+// ----------------------------------------------------------------------------
 
 #define enum_begin( name )\
 	using e_##name = int;\
@@ -38,7 +37,6 @@
 		};\
 	};
 
-// ----------------------------------------------------------------------------
 // note : needs to match values in data/warr_engine/preproc.asset_def
 
 enum_begin( align )

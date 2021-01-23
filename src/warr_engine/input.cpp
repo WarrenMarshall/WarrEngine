@@ -36,7 +36,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 void joystick_callback( int jid, int event )
 {
-	/*
+#if 0
 	if( event == GLFW_CONNECTED )
 	{
 		log( "Gamepad {} was connected.", jid );
@@ -45,7 +45,7 @@ void joystick_callback( int jid, int event )
 	{
 		log( "Gamepad {} was disconnected.", jid );
 	}
-	*/
+#endif
 
 	engine->input->refresh_connected_gamepads();
 }
@@ -447,11 +447,9 @@ e_button_state w_input::get_button_state( e_input_id input_id )
 	return bs;
 }
 
-/*
-	returns a value between -1.0/+1.0 for the requested axis.
-
-	these values are updated once per frame.
-*/
+// returns a value between -1.0/+1.0 for the requested axis.
+//
+// these values are updated once per frame.
 
 constexpr float gamepad_dead_zone = 0.20f;
 constexpr float gamepad_dead_zone_small = 0.10f;
@@ -461,9 +459,6 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 	assert( gamepad );
 
 	float dead_zone = ignore_dead_zone ? gamepad_dead_zone_small : gamepad_dead_zone;
-
-	//game_controller->update_state();
-
 	w_vec2 value;
 
 	switch( input_id )

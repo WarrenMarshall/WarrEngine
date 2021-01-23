@@ -45,9 +45,8 @@ bool a_font_def::create_internals()
 
 implement_find_func( a_font )
 
-/*
-	computes how wide and how tall a string is using this font.
-*/
+// computes how wide and how tall a string is using this font.
+
 w_vec2 a_font::get_string_extents( const std::string_view text ) const
 {
 	w_font_char* pxch;

@@ -100,10 +100,10 @@
 namespace FTS
 {
 	// how many fixed time steps, per second
-	constexpr float frames_per_second = 60.0f;
+	constexpr int frames_per_second = 60;
 
 	// how many milliseconds will have passed each time a fixed time step update occurs
-	constexpr float ms_per_step = 1000.0f / frames_per_second;
+	constexpr int ms_per_step = static_cast< int >( 1000.0f / (float)frames_per_second );
 
 	// any value you want to update as a "per second" value in an update function should
 	// be multiplied against this constant.

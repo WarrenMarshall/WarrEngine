@@ -3,10 +3,8 @@
 #include "master_header.h"
 
 // ----------------------------------------------------------------------------
+// utilities for trimming the whitespace off the front and back of a string
 
-/*
-    utilities for trimming the whitespace off the front and back of a string
-*/
 
 const std::string WHITESPACE = " \n\r\t\f\v";
 

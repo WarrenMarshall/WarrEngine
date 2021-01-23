@@ -32,11 +32,10 @@ struct w_input
 
 	std::unique_ptr<w_gamepad> gamepad = nullptr;
 
-	/*
-		this is set in real time, as input is collected. we need to
-		know this so we don't rumble a controller that isn't
-		actively being used to play the game.
-	*/
+	// this is set in real time, as input is collected. we need to know this so
+	// we don't rumble a controller that isn't actively being used to play the
+	// game.
+
 	bool game_controller_being_used = false;
 
 	std::array<bool, input_id::max> button_states = {};

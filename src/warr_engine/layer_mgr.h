@@ -2,13 +2,12 @@
 
 struct w_layer_mgr
 {
-	/*
-		the layers are stored front-to-back
+	// the layers are stored front-to-back so this means that the topmost layer
+	// on the screen is first in the vector.
+	//
+	// therefore, iterating forwards through this vector is drilling downwards
+	// into the screen.
 
-		this means that the topmost layer is first in the list.
-
-		so iterating forwards is drilling downwards into the screen.
-	*/
 	std::vector<std::unique_ptr<w_layer>> layer_stack;
 
 	~w_layer_mgr();

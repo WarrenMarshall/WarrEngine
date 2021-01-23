@@ -3,10 +3,8 @@
 #include "master_header.h"
 
 // ----------------------------------------------------------------------------
+// callback so OpenGL can relay messages and warnings
 
-/*
-	callback so OpenGL can relay messages and warnings
-*/
 void GLAPIENTRY OpenGL_MessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam )
 {
 	if( type == GL_DEBUG_TYPE_ERROR )

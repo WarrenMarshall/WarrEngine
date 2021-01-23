@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-// used to manage the potential allocations for the render_states vector.
+// used to manage the potential allocations for the render_states vector
 constexpr size_t max_render_states = 15;
 
 void w_render::init()
@@ -14,18 +14,21 @@ void w_render::init()
 
 	// MODEL MATRIX (getting stuff into worldspace from model space)
 	//
-	// push an identity matrix onto the stack. this will always live
-	// as the first element in the stack and should be the only
-	// matrix remaining when the frame finishes rendering.
+	// push an identity matrix onto the stack. this will always live as the
+	// first element in the stack and should be the only matrix remaining when
+	// the frame finishes rendering.
+
 	OPENGL->push_identity();
 
 	// initialize render state stacks
+
 	render_states.reserve( max_render_states );
 	rs_reset();
 
-	// generate the sample points for drawing a circle. these verts sit
-	// on a unit circle and are scaled to match the radius requested for
-	// each circle we draw.
+	// generate the sample points for drawing a circle. these verts sit on a
+	// unit circle and are scaled to match the radius requested for each circle
+	// we draw.
+
 	float angle = 0;
 	float angle_step = 360.0f / static_cast<float>( circle_sample_points_max );
 	for( auto& circle_sample_point : circle_sample_points )
@@ -224,9 +227,8 @@ w_render_state* w_render::rs_push()
 	return rs_top();
 }
 
-// places a copy of the provided w_render_state block
-// on top of the stack. allows for easy mass setting
-// of render state vars.
+// places a copy of the provided w_render_state block on top of the stack.
+// allows for easy mass setting of render state vars.
 
 w_render_state* w_render::rs_push( w_render_state& rs )
 {
@@ -298,12 +300,10 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 	return this;
 }
 
-/*
-	draws a texture as a sprite onto the screen.
-
-	this offsets along left and up by half the texture size, which
-	centers the quad being drawn at 0,0,0.
-*/
+// draws a texture as a sprite onto the screen.
+//
+// this offsets along left and up by half the texture size, which centers the
+// quad being drawn at 0,0,0.
 
 w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 {
@@ -335,9 +335,7 @@ w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	return this;
 }
 
-/*
-	draws a texture onto a quad.
-*/
+// draws a textured quad
 
 w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 {
@@ -361,9 +359,8 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	return this;
 }
 
-/*
-	draws a string from a bitmap font, char by char
-*/
+// draws a string from a bitmap font, char by char, as textured quads
+
 w_render* w_render::draw_string( const std::string_view text, const w_pos& pos )
 {
 	// not specifying a font means you want to use the default font
@@ -419,25 +416,23 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 	return this;
 }
 
-/*
-	call at the start of each frame to set up and clear the screen
-*/
+// called at the start of each frame to set up and clear the screen
+
 void w_render::begin_frame()
 {
 }
 
-/*
-	call at end of frame to finalize frame and render all buffers
-*/
+// called at end of each frame to finalize and render all buffers
+
 void w_render::end_frame()
 {
 	OPENGL->init_view_matrix_identity_ui();
 
-	// accum stats
+	// stats
+
 	stats.frame_times_ms.accum( engine->time->delta_ms );
 	stats.frame_count.inc();
 
-	// possibly draw stats on the screen
 	draw_stats();
 
 	// the last draws need to be flushed
@@ -447,10 +442,10 @@ void w_render::end_frame()
 	batch_lines->draw_and_reset();
 	batch_points->draw_and_reset();
 
-	// when the frame ends, there should be
-	// a single matrix left on the stack (the identity matrix we created
-	// at the renderer start up). If there are any other number, then
-	// there is an uneven push/pop combo somewhere in the code.
+	// when the frame ends, there should be a single matrix left on the stack
+	// (the identity matrix we created at renderer start up). If there is any
+	// other number, then there is an uneven push/pop combo somewhere in the
+	// code.
 
 	assert( OPENGL->modelview_stack.size() == 1 );
 
@@ -459,11 +454,9 @@ void w_render::end_frame()
 #endif
 }
 
-/*
-	draws the X and Y axis in the viewport at the world origin
-
-	positive directions are brighter than the negative ones
-*/
+// draws the X and Y axis in the viewport at the world origin
+//
+// positive directions are brighter than the negative ones
 
 w_render* w_render::draw_world_axis()
 {
@@ -482,9 +475,9 @@ w_render* w_render::draw_world_axis()
 	return this;
 }
 
-/*
-	draws useful stats at the top of the screen
-*/
+
+// draws useful stats at the top of the screen
+
 
 w_render* w_render::draw_stats()
 {

@@ -4,7 +4,7 @@
 
 struct layer_main_menu_ui_callback : w_imgui_callback
 {
-	virtual void was_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
+	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
 };
 
 // ----------------------------------------------------------------------------

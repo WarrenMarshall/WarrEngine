@@ -33,9 +33,8 @@ void a_anim_texture::add_frame( a_texture* frame )
 	frames.emplace_back( frame );
 }
 
-/*
-	moves the animation tween to a random value between start and end
-*/
+// moves the animation tween to a random value between start and end
+
 void a_anim_texture::randomize()
 {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
