@@ -57,8 +57,9 @@ struct w_entity : i_life_cycle
 	template<typename T>
 	void get_components( std::vector<T*>& ecs, hash tag = 0 )
 	{
-		// make sure the vector can handle at least 10 items - most get_* calls will result in
-		// fewer than that so this saves unnecessary reallocations
+		// make sure the vector can handle at least 10 items - most get_* calls
+		// will result in fewer than that so this saves unnecessary
+		// reallocations
 		ecs.reserve( 10 );
 
 		for( auto& ec : this->components )
@@ -70,13 +71,15 @@ struct w_entity : i_life_cycle
 		}
 	}
 
-	// fills a vector with all the components it finds that match the class "T" and have a base class of "B"
+	// fills a vector with all the components it finds that match the class "T"
+	// and have a base class of "B"
 
 	template<typename B, typename T>
 	void get_components( std::vector<B*>& ecs )
 	{
-		// make sure the vector can handle at least 10 items - most get_* calls will result in
-		// fewer than that so this saves unnecessary reallocations
+		// make sure the vector can handle at least 10 items - most get_* calls
+		// will result in fewer than that so this saves unnecessary
+		// reallocations
 		ecs.reserve( 10 );
 
 		for( auto& ec : this->components )
@@ -95,16 +98,14 @@ struct w_entity : i_life_cycle
 };
 
 // ----------------------------------------------------------------------------
-
 // this is a handy way to spawn temp effects like explosions or muzzle flashes.
 //
-// NOTE : a transient entity will only live as long as it's components do.
-// therefore, you must make sure that all components added to it will
-// die out on their own.
+// a transient entity will only live as long as it's components do. therefore,
+// you must make sure that all components added to it will die out on their own.
 //
-// so adding an emitter component to an instance of this class
-// which spits out particles forever means that instance will never be
-// die or be deleted. give that emitter a "one shot" flag or a lifetime timer.
+// so adding an emitter component to an instance of this class which spits out
+// particles forever means that instance will never be die or be deleted. give
+// that emitter a "one shot" flag or a lifetime timer.
 
 struct w_entity_transient : w_entity
 {
@@ -112,10 +113,9 @@ struct w_entity_transient : w_entity
 };
 
 // ----------------------------------------------------------------------------
-
-// a camera ony affects drawing entities and regular draw calls. it does
-// not affect UI drawing in any way. this is important because events like
-// camera shakes will shake the world but leave the UI stable.
+// a camera ony affects drawing entities and regular draw calls. it does not
+// affect UI drawing in any way. this is important because events like camera
+// shakes will shake the world but leave the UI stable.
 
 struct e_camera : w_entity
 {

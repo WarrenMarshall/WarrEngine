@@ -16,6 +16,12 @@ constexpr void _log_( Params&&... params )
 }
 
 template<typename ...Params>
+constexpr void _verbose_( Params&&... params )
+{
+	logfile->verbose( fmt::format( std::forward<Params>( params )... ) );
+}
+
+template<typename ...Params>
 constexpr void _log_error_( Params&&... params )
 {
 	logfile->error( fmt::format( std::forward<Params>( params )... ) );
@@ -25,6 +31,7 @@ constexpr void _log_error_( Params&&... params )
 #define log_warning( fmt, ... ) _log_( "[{}:{}] WARNING : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 #define log_error( fmt, ... ) _log_error_( "[{}:{}] !ERROR! : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 #define log_div() _log_( "[{}:{}] ----------------------------------------\n", __FUNCTION__, __LINE__ )
+#define log_verbose( fmt, ... ) _verbose_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 
 // ----------------------------------------------------------------------------
 // hashes a string at compile time for quicker comparisons

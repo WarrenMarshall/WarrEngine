@@ -39,8 +39,18 @@ void w_engine::launch( int argc, char* argv [] )
 		w_file_system::create_path_if_not_exist( fmt::format( "data/{}", base_game->get_game_name() ) );
 	}
 
-	{	// COMMAND LINE
+	// COMMAND LINE
+	{
+		for( auto x = 1 ; x < argc ; ++x )
+		{
+			std::string arg = argv[ x ];
 
+			if( arg == "-verbose" )
+			{
+				logfile->is_verbose = true;
+				log_verbose( "cmdline : \"{}\" : Verbose logging enabled.", arg );
+			}
+		}
 	}
 
 	{	// WINDOW

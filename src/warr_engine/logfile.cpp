@@ -40,6 +40,14 @@ void w_logfile::msg( const std::string_view msg )
 	_write_line( std::string( msg ) );
 }
 
+void w_logfile::verbose( const std::string_view msg )
+{
+	if( is_verbose )
+	{
+		_write_line( std::string( msg ) );
+	}
+}
+
 void w_logfile::error( const std::string_view msg )
 {
 	_write_line( msg );

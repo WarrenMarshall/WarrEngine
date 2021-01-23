@@ -7,7 +7,8 @@ w_particle_pool::w_particle_pool( int num_particles )
 {
 	particles.resize( pool_sz );
 	data_ptr = particles.data();
-	//log_msg( "Creating a particle pool with {} particles", num_particles );
+
+	log_verbose( "Creating a particle pool with {} particles", num_particles );
 }
 
 w_particle* w_particle_pool::get_next_particle()

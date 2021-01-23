@@ -32,7 +32,7 @@ a_texture::a_texture( const std::string_view src_texture_tag, const w_rect& rc_t
 	rc.w = ( rc_tex.w == -1 ) ? src_texture->w : rc_tex.w;
 	rc.h = ( rc_tex.h == -1 ) ? src_texture->h : rc_tex.h;
 
-	// note : images are upside down, so the Y coordinate gets flipped across the V axis
+	// images are upside down, so the Y coordinate gets flipped across the V axis
 
 	w_rect rc_src(
 		rc_tex.x,

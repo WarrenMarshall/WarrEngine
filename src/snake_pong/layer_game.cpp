@@ -41,7 +41,7 @@ void layer_game::update()
 	// match the prism rotation to face the same direction as the raycasts
 	prism->get_tform()->set_angle( w_vec2::angle_from_dir( dir ) );
 
-	// note : we don't do the raycasting if the mouse is too close the middle of
+	// we don't do the raycasting if the mouse is too close the middle of
 	// the viewport as this can result in a zero length vector which will crash
 	// the raycasting code. this check works around that situation.
 
