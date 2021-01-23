@@ -862,7 +862,7 @@ void ec_follow_target::update()
 		if( follow.flags & follow_flags::xy_axis )
 		{
 			// interpolate towards follow target position
-			follow.pos += ( ( target_pos - follow.pos ) * follow.strength ) * FTS::per_second_scaler;
+			follow.pos += ( ( target_pos - follow.pos ) * follow.strength ) * fixed_time_step::per_second_scaler;
 
 			// apply limits if we need to
 			if( follow.limits_x.has_value() )

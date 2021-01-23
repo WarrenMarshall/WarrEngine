@@ -58,12 +58,12 @@ void w_gamepad::update_state()
 
 void w_gamepad::update()
 {
-	rumble_time_remaining_ms -= FTS::ms_per_step;
+	rumble_time_remaining_ms -= fixed_time_step::ms_per_step;
 	if( rumble_time_remaining_ms <= 0 )
 	{
 		rumble_time_remaining_ms = 0;
 
-		XINPUT_VIBRATION rumbler;
+		XINPUT_VIBRATION rumbler{};
 		rumbler.wLeftMotorSpeed = 0;
 		rumbler.wRightMotorSpeed = 0;
 		XInputSetState( player_id, &rumbler );
@@ -114,7 +114,7 @@ void w_gamepad::play_rumble( e_rumble_effect effect )
 
 void w_gamepad::play_rumble( int intensity, int ms )
 {
-	XINPUT_VIBRATION rumbler;
+	XINPUT_VIBRATION rumbler{};
 	rumbler.wLeftMotorSpeed = static_cast<WORD>( intensity );
 	rumbler.wRightMotorSpeed = static_cast<WORD>( intensity );
 	XInputSetState( player_id, &rumbler );

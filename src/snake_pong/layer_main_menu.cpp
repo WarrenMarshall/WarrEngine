@@ -126,7 +126,7 @@ void layer_main_menu::update()
 	find_entity( H( "wheels" ) )->get_component( H("outer_wheel") )->tform.set_angle( angle );
 	find_entity( H( "wheels" ) )->get_component( H( "inner_wheel" ) )->tform.set_angle( -angle );
 
-	angle += 15.0f * FTS::per_second_scaler;
+	angle += 15.0f * fixed_time_step::per_second_scaler;
 }
 
 void layer_main_menu::becoming_top_layer()

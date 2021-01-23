@@ -4,7 +4,7 @@
 
 void w_particle::update()
 {
-	life_span -= FTS::ms_per_step;
+	life_span -= fixed_time_step::ms_per_step;
 
 	if( !is_alive() )
 	{
@@ -12,10 +12,10 @@ void w_particle::update()
 	}
 
 	w_vec2 v = v_dir;
- 	pos.x += v.x * ( velocity_per_sec * FTS::per_second_scaler );
-	pos.y += v.y * ( velocity_per_sec * FTS::per_second_scaler );
+ 	pos.x += v.x * ( velocity_per_sec * fixed_time_step::per_second_scaler );
+	pos.y += v.y * ( velocity_per_sec * fixed_time_step::per_second_scaler );
 
-	spin += spin_per_sec * FTS::per_second_scaler;
+	spin += spin_per_sec * fixed_time_step::per_second_scaler;
 	spin = fmod( spin, 360.f );
 }
 

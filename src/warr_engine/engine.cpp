@@ -269,7 +269,7 @@ void w_engine::main_loop()
 		//
 		// it is passed a percentage for easier use : 0.0f-1.0f
 
-		RENDER->frame_interpolate_pct = time->fts_accum_ms / (float)FTS::ms_per_step;
+		RENDER->frame_interpolate_pct = time->fts_accum_ms / (float)fixed_time_step::ms_per_step;
 
 		// process user input
 
@@ -285,14 +285,14 @@ void w_engine::main_loop()
 
 		// if we have fixed time steps to perform, walk through them one at a time
 
-		while( time->fts_accum_ms >= FTS::ms_per_step )
+		while( time->fts_accum_ms >= fixed_time_step::ms_per_step )
 		{
-			time->fts_accum_ms -= FTS::ms_per_step;
+			time->fts_accum_ms -= fixed_time_step::ms_per_step;
 
 			input->queue_motion();
 			input->update();
 
-			box2d_world->Step( FTS::per_second_scaler, b2d_velocity_iterations, b2d_position_iterations );
+			box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_position_iterations );
 
 			process_collision_queue();
 

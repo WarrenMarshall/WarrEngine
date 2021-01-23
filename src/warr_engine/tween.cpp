@@ -58,7 +58,7 @@ w_tween::w_tween( e_tween_type type, float start, float end, int duration_ms )
 
 void w_tween::update()
 {
-	current_val = tween.step( static_cast<int>( FTS::ms_per_step ) );
+	current_val = tween.step( static_cast<int>( fixed_time_step::ms_per_step ) );
 }
 
 float w_tween::get_fval()

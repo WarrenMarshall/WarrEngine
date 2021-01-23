@@ -42,7 +42,7 @@ void w_particle_emitter::update()
 		else
 		{
 			// accumulate the time step into our spawn count
-			particles_to_spawn_accum += params->s_max_spawn_per_sec * FTS::per_second_scaler;
+			particles_to_spawn_accum += params->s_max_spawn_per_sec * fixed_time_step::per_second_scaler;
 
 			// strip off the fractional part of the accum to get the number to spawn
 			particles_to_spawn = static_cast<int>( glm::trunc( particles_to_spawn_accum ) );
@@ -149,6 +149,6 @@ void w_particle_emitter::warm_up()
 		update();
 		particle_pool->update();
 
-		max_life_span -= FTS::ms_per_step;
+		max_life_span -= fixed_time_step::ms_per_step;
 	}
 }
