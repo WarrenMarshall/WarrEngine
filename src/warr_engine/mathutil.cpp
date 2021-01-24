@@ -21,22 +21,54 @@ void w_accum_value::update_value()
 	_accumulator = 0.0f;
 }
 
-void w_accum_value::accum( float value )
-{
-	_accumulator += value;
-}
-
-void w_accum_value::accum( time_ms value )
-{
-	_accumulator += static_cast<float>( value );
-}
-
-void w_accum_value::inc()
+w_accum_value& w_accum_value::operator++()
 {
 	_accumulator += 1.0f;
+	return *this;
 }
 
-void w_accum_value::dec()
+w_accum_value w_accum_value::operator++( int )
+{
+	w_accum_value val( *this );
+	++( *this );
+	return val;
+}
+
+w_accum_value& w_accum_value::operator--()
 {
 	_accumulator -= 1.0f;
+	return *this;
+}
+
+w_accum_value w_accum_value::operator--( int )
+{
+	w_accum_value val( *this );
+	--(*this);
+	return val;
+}
+
+w_accum_value w_accum_value::operator+( float v ) const
+{
+	w_accum_value av( *this );
+	av._accumulator += v;
+	return av;
+}
+
+w_accum_value w_accum_value::operator+=( float v )
+{
+	*this = *this + v;
+	return *this;
+}
+
+w_accum_value w_accum_value::operator+( time_ms v ) const
+{
+	w_accum_value av( *this );
+	av._accumulator += v;
+	return av;
+}
+
+w_accum_value w_accum_value::operator+=( time_ms v )
+{
+	*this = *this + v;
+	return *this;
 }

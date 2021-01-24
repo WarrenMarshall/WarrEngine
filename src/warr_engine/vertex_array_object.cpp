@@ -140,12 +140,12 @@ void w_vertex_array_object::draw_and_reset()
 		glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
 
 		// update stats and clean up
-		RENDER->stats.draw_calls.inc();
+		RENDER->stats.draw_calls++;
 
-		if( render_prim == render_prim::quad ) { RENDER->stats.quads.accum( vertex_buffer->vertices.size() / 4.0f ); }
-		else if( render_prim == render_prim::triangle ) { RENDER->stats.triangles.accum( vertex_buffer->vertices.size() / 3.0f ); }
-		else if( render_prim == render_prim::line ) { RENDER->stats.lines.accum( vertex_buffer->vertices.size() / 2.0f ); }
-		else if( render_prim == render_prim::point ) { RENDER->stats.points.accum( vertex_buffer->vertices.size() / 1.0f ); }
+		if( render_prim == render_prim::quad ) { RENDER->stats.quads += vertex_buffer->vertices.size() / 4.0f; }
+		else if( render_prim == render_prim::triangle ) { RENDER->stats.triangles += vertex_buffer->vertices.size() / 3.0f; }
+		else if( render_prim == render_prim::line ) { RENDER->stats.lines += vertex_buffer->vertices.size() / 2.0f; }
+		else if( render_prim == render_prim::point ) { RENDER->stats.points += vertex_buffer->vertices.size() / 1.0f; }
 
 #ifndef _FINALRELEASE
 		// frame debugger

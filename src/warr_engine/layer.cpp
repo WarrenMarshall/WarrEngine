@@ -53,7 +53,7 @@ void w_layer::draw()
 {
 	for( const auto& entity : entities )
 	{
-		RENDER->stats.entities.inc();
+		RENDER->stats.entities++;
 
 		OPENGL
 			->push()

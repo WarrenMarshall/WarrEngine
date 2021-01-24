@@ -11,10 +11,15 @@ struct w_accum_value
 	void init();
 	void update_value( int steps );
 	void update_value();
-	void accum( float value );
-	void accum( time_ms value );
-	void inc();
-	void dec();
+
+	w_accum_value& operator++();
+	w_accum_value operator++( int );
+	w_accum_value& operator--();
+	w_accum_value operator--( int );
+	w_accum_value operator+( float value ) const;
+	w_accum_value operator+=( float v );
+	w_accum_value operator+( time_ms value ) const;
+	w_accum_value operator+=( time_ms v );
 
 	float _accumulator;
 };

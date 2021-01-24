@@ -430,8 +430,8 @@ void w_render::end_frame()
 
 	// stats
 
-	stats.frame_times_ms.accum( engine->time->delta_ms );
-	stats.frame_count.inc();
+	stats.frame_times_ms += engine->time->delta_ms;
+	stats.frame_count++;
 
 	draw_stats();
 

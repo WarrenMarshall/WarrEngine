@@ -375,7 +375,7 @@ void w_engine::main_loop()
 			->end();
 		RENDER->batch_quads->draw_and_reset();
 		blur_frame_buffers[0]->unbind();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
 
 		// pingpong back and forth between the 2 blur frame buffers, blurring
 		// them into each other, for a set amount of passes.
@@ -393,7 +393,7 @@ void w_engine::main_loop()
 				->end();
 			RENDER->batch_quads->draw_and_reset();
 			blur_frame_buffers[ pingpong ]->unbind();
-			RENDER->stats.draw_calls.dec();
+			RENDER->stats.draw_calls--;
 
 			pingpong = !pingpong;
 		}
@@ -413,7 +413,7 @@ void w_engine::main_loop()
 			->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
 
 		// draw bloom frame buffer on top with blending
 
@@ -425,7 +425,7 @@ void w_engine::main_loop()
 			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
 
 		OPENGL->set_blend( opengl_blend::alpha );
 
@@ -452,7 +452,7 @@ void w_engine::main_loop()
 			->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
 		RENDER->batch_quads->draw_and_reset();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
 
 #if 1
 		// ----------------------------------------------------------------------------
@@ -476,7 +476,7 @@ void w_engine::main_loop()
 			->draw_string( "(base)", { rc.x, rc.y } )
 			->end();
 		RENDER->batch_quads->vertex_array_object->draw_and_reset();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
 	#endif
 
 	// glow
@@ -488,7 +488,7 @@ void w_engine::main_loop()
 			->draw_string( "(glow)", { rc.x, rc.y } )
 			->end();
 		RENDER->batch_quads->vertex_array_object->draw_and_reset();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
 	#endif
 
 	// blurred glow
