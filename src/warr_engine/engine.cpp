@@ -302,7 +302,7 @@ void w_engine::main_loop()
 		}
 
 		// update shader parameters
-		OPENGL->set_uniform( "u_current_time", (float) time->get_time_ms() / 1000.f );
+		OPENGL->set_uniform( "u_current_time", (float) time->now() / 1000.f );
 
 		// ----------------------------------------------------------------------------
 		// draw the scene to the engine frame buffer

@@ -78,8 +78,7 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 layer_default::layer_default()
 {
 	draws_completely_solid = true;
-	//checkbox_lerp = w_lerp_value<float>( 0.0f, 1.0f, 1000 );
-	glow_timer = w_timer( 1000 );
+	glow_tween = w_tween( tween_type::pingpong, tween_via::quartic , 0.0f, 5.0f, 2500 );
 }
 
 void layer_default::push()
@@ -102,13 +101,8 @@ void layer_default::draw_ui()
 {
 	w_layer::draw_ui();
 
-	if( glow_timer.get_elapsed_count() )
-	{
-		glow = !glow;
-	}
-
 	RENDER
-		->push_glow( glow ? 1.0f : 0.0f )
+		->push_glow( *glow_tween )
 		->draw( tex_hello_world, w_rect( 16, 24 ) )
 		->push_glow( 0.0f );
 

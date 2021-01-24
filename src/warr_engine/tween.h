@@ -3,17 +3,17 @@
 struct w_tween
 {
 	tweeny::tween<float> tween = {};
-	e_tween_type type = tween_type::linear;
+	e_tween_type type = tween_type::loop;
+	float start = 0.0f, end = 1.0f;
 	float current_val = 0.0f;
 
-	w_tween( e_tween_type type, float start, float end, int duration_ms );
+	time_ms time_last;
 
-	void update();
-	[[nodiscard]] float get_fval();
-	[[nodiscard]] int get_ival();
-	[[nodiscard]] int get_ival( int low, int high );
-	[[nodiscard]] bool is_negative();
+	w_tween();
+	w_tween( e_tween_type type, e_tween_via via, float start, float end, time_ms duration_ms );
 
-	void reset_to_start();
+	float operator*();
+
+	void restart();
 	void randomize();
 };

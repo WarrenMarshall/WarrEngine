@@ -5,7 +5,7 @@
 struct w_time
 {
 	// the time when this frame started
-	time_ms time_now_ms = 0;
+	time_ms current_frame_ms = 0;
 	time_ms prev_frame_ms = 0;
 
 	// the time that has elapsed since the last frame.
@@ -29,5 +29,5 @@ struct w_time
 	w_time();
 	void init();
 	void update();
-	[[nodiscard]] time_ms get_time_ms() const;
+	[[nodiscard]] time_ms now() const;
 };

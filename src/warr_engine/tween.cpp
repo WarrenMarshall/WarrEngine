@@ -2,6 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// ----------------------------------------------------------------------------
 // loop
 //
 // - when the end is reached, reset to the start
@@ -16,6 +17,7 @@ bool on_step_loop( tweeny::tween<float>& tween )
 	return false;
 }
 
+// ----------------------------------------------------------------------------
 // pingpong
 //
 // - when end is reached, start moving backwards
@@ -36,9 +38,28 @@ bool on_step_pingpong( tweeny::tween<float>& tween )
 	return false;
 }
 
-w_tween::w_tween( e_tween_type type, float start, float end, int duration_ms )
+// ----------------------------------------------------------------------------
+
+w_tween::w_tween( e_tween_type type, e_tween_via via, float start, float end, time_ms duration_ms )
+	: start( start ), end( end )
 {
 	tween = tweeny::from( start ).to( end ).during( duration_ms );
+
+	switch( via )
+	{
+		case tween_via::linear:			tween.via( tweeny::easing::linear );			break;
+		case tween_via::quadratic:		tween.via( tweeny::easing::quadraticInOut );	break;
+		case tween_via::cubic:			tween.via( tweeny::easing::cubicInOut );		break;
+		case tween_via::quartic:		tween.via( tweeny::easing::quarticInOut );		break;
+		case tween_via::quintic:		tween.via( tweeny::easing::quinticInOut );		break;
+		case tween_via::sinusoidal:		tween.via( tweeny::easing::sinusoidalInOut );	break;
+		case tween_via::exponential:	tween.via( tweeny::easing::exponentialInOut );	break;
+		case tween_via::circular:		tween.via( tweeny::easing::circularInOut );		break;
+		case tween_via::bounce:			tween.via( tweeny::easing::bounceInOut );		break;
+		case tween_via::elastic:		tween.via( tweeny::easing::elasticInOut );		break;
+		case tween_via::back:			tween.via( tweeny::easing::backInOut );			break;
+		default:						assert( false );	// unknown via type
+	}
 
 	switch( type )
 	{
@@ -54,37 +75,25 @@ w_tween::w_tween( e_tween_type type, float start, float end, int duration_ms )
 		}
 		break;
 	}
+
+	time_last = engine->time->now();
 }
 
-void w_tween::update()
+w_tween::w_tween()
 {
-	current_val = tween.step( static_cast<int>( fixed_time_step::ms_per_step ) );
+	time_last = engine->time->now();
 }
 
-float w_tween::get_fval()
+float w_tween::operator*()
 {
-	return current_val;
+	time_ms delta = engine->time->now() - time_last;
+	time_last = engine->time->now();
+
+	return glm::clamp( tween.step( static_cast<int>( delta ) ), start, end );
+
 }
 
-int w_tween::get_ival()
-{
-	return static_cast<int>( get_fval() );
-}
-
-int w_tween::get_ival( int low, int high )
-{
-	// tweeny can sometimes go beyond the limits of the range you've given it,
-	// especially if you're using certain easings. if that will cause trouble,
-	// use this clamped version of get_ival instead.
-	return glm::clamp<int>( static_cast<int>( get_fval() ), low, high );
-}
-
-bool w_tween::is_negative()
-{
-	return glm::sign( get_fval() );
-}
-
-void w_tween::reset_to_start()
+void w_tween::restart()
 {
 	tween.seek( 0.0f, true );
 }

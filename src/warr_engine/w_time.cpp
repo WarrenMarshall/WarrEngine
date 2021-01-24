@@ -9,7 +9,7 @@ w_time::w_time()
 
 void w_time::init()
 {
-	prev_frame_ms = get_time_ms();
+	prev_frame_ms = now();
 }
 
 // called at the start of each frame to update the internal time keeping
@@ -17,10 +17,10 @@ void w_time::init()
 void w_time::update()
 {
 	// get current time
-	time_now_ms = get_time_ms();
+	current_frame_ms = now();
 
 	// compute the delta since the last frame
-	delta_ms = time_now_ms - prev_frame_ms;
+	delta_ms = current_frame_ms - prev_frame_ms;
 
 	if( engine->is_paused )
 	{
@@ -34,14 +34,14 @@ void w_time::update()
 	}
 
 	// save the current time as the previous frame time
-	prev_frame_ms = time_now_ms;
+	prev_frame_ms = current_frame_ms;
 }
 
 // returns the current time in ms
 //
 // so 1 second would be returned as 1000 ms
 
-time_ms w_time::get_time_ms() const
+time_ms w_time::now() const
 {
 	auto time = glfwGetTime();
 	return static_cast<time_ms>( time * 1000.0 );

@@ -10,7 +10,7 @@ w_timer::w_timer( time_ms interval_ms )
 
 void w_timer::restart()
 {
-	time_last = engine->time->time_now_ms;
+	time_last = engine->time->now();
 }
 
 // call to see if timer has run over it's duration
@@ -19,7 +19,7 @@ void w_timer::restart()
 
 bool w_timer::is_elapsed() const
 {
-	time_ms delta = ( engine->time->time_now_ms - time_last );
+	time_ms delta = ( engine->time->now() - time_last );
 	return ( delta >= interval_ms );
 }
 
@@ -29,7 +29,7 @@ bool w_timer::is_elapsed() const
 
 int w_timer::get_elapsed_count()
 {
-	time_ms delta = ( engine->time->time_now_ms - time_last );
+	time_ms delta = ( engine->time->now() - time_last );
 
 	int num_times_elapsed = static_cast<int>( delta / interval_ms );
 	time_last += num_times_elapsed * interval_ms;

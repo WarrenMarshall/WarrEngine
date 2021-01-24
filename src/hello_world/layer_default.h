@@ -21,8 +21,8 @@ struct layer_default : w_layer
 	a_texture* tex_hello_world = nullptr;
 
 	layer_default_ui_callback imgui_callback;
-	w_timer glow_timer;
-	bool glow = false;
+
+	w_tween glow_tween;
 
 	layer_default();
 

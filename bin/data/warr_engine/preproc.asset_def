@@ -60,7 +60,7 @@
 	# -----------------------------------------------------
 	# tween types
 
-	"tween.linear"		"1"
+	"tween.one_shot"	"1"
 	"tween.loop"		"2"
 	"tween.pingpong"	"3"
 }
