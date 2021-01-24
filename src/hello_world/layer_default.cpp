@@ -33,11 +33,14 @@ float layer_default_ui_callback::get_data_for_control(const w_imgui_control& con
 
 void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
+	auto layer = static_cast<layer_default*>( LAYER );
+
 	switch( control.tag )
 	{
 		case H( "checkbox_01" ):
 		{
 			b_checkbox_01 = !b_checkbox_01;
+			layer->glow_tween.toggle_direction();
 		}
 		break;
 
@@ -78,7 +81,7 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 layer_default::layer_default()
 {
 	draws_completely_solid = true;
-	glow_tween = w_tween( tween_type::pingpong, tween_via::quartic , 0.0f, 5.0f, 2500 );
+	glow_tween = w_tween( tween_type::one_shot, tween_via::linear, 0.0f, 5.0f, 2500 );
 }
 
 void layer_default::push()

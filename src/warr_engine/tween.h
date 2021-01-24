@@ -16,4 +16,5 @@ struct w_tween
 
 	void restart();
 	void randomize();
+	void toggle_direction();
 };
