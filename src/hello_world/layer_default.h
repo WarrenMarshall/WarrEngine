@@ -10,7 +10,7 @@ struct layer_default_ui_callback : w_imgui_callback
 	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result ) override;
 
 	bool b_checkbox_01 = false;
-	float slider_value = 0.5f;
+	float slider_value = 0.01f;
 };
 
 // ----------------------------------------------------------------------------
@@ -23,6 +23,7 @@ struct layer_default : w_layer
 	layer_default_ui_callback imgui_callback;
 
 	w_tween glow_tween;
+	float glow_intensity = 0.0f;
 
 	layer_default();
 

@@ -454,7 +454,7 @@ void w_engine::main_loop()
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls--;
 
-#if 1
+#if 0
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//

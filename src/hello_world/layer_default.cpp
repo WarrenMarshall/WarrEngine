@@ -66,11 +66,14 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 
 void layer_default_ui_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
 {
+	auto layer = static_cast<layer_default*>( LAYER );
+
 	switch( control.tag )
 	{
 		case H( "slider_01" ):
 		{
 			slider_value = result.click_pct.x;
+			layer->glow_intensity = slider_value * 3.0f;
 		}
 		break;
 	}
@@ -81,7 +84,7 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 layer_default::layer_default()
 {
 	draws_completely_solid = true;
-	glow_tween = w_tween( tween_type::one_shot, tween_via::linear, 0.0f, 5.0f, 2500 );
+	glow_tween = w_tween( 0.0f, 5.0f, 2500 );
 }
 
 void layer_default::push()
@@ -105,7 +108,7 @@ void layer_default::draw_ui()
 	w_layer::draw_ui();
 
 	RENDER
-		->push_glow( *glow_tween )
+		->push_glow( glow_intensity )// *glow_tween )
 		->draw( tex_hello_world, w_rect( 16, 24 ) )
 		->push_glow( 0.0f );
 
@@ -128,11 +131,11 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->do_label()
-		->set_text( fmt::format( "Label Test : {:.0f}%", imgui_callback.slider_value * 100.0f ) )
+		->set_text( fmt::format( "Glow Intensity : {:.0f}%", imgui_callback.slider_value * 100.0f ) )
 		->finalize();
 
 	IMGUI->do_slider( H( "slider_01" ) )
-		->set_size( { 66.0f, w_sz::ignore } )
+		//->set_size( { 66.0f, w_sz::ignore } )
 		->finalize();
 
 	IMGUI->do_divider()

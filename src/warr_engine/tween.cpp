@@ -40,61 +40,10 @@ bool on_step_pingpong( tweeny::tween<float>& tween )
 
 // ----------------------------------------------------------------------------
 
-w_tween::w_tween( e_tween_type type, e_tween_via via, float start, float end, time_ms duration_ms )
+w_tween::w_tween( float start, float end, time_ms duration_ms )
 	: start( start ), end( end )
 {
 	tween = tweeny::from( start ).to( end ).during( duration_ms );
-
-	switch( via )
-	{
-		case tween_via::linear:				tween.via( tweeny::easing::linear );			break;
-		case tween_via::quadratic:			tween.via( tweeny::easing::quadraticInOut );	break;
-		case tween_via::quadratic_in:		tween.via( tweeny::easing::quadraticIn );		break;
-		case tween_via::quadratic_out:		tween.via( tweeny::easing::quadraticOut );		break;
-		case tween_via::cubic:				tween.via( tweeny::easing::cubicInOut );		break;
-		case tween_via::cubic_in:			tween.via( tweeny::easing::cubicIn );			break;
-		case tween_via::cubic_out:			tween.via( tweeny::easing::cubicOut );			break;
-		case tween_via::quartic:			tween.via( tweeny::easing::quarticInOut );		break;
-		case tween_via::quartic_in:			tween.via( tweeny::easing::quarticIn );			break;
-		case tween_via::quartic_out:		tween.via( tweeny::easing::quarticOut );		break;
-		case tween_via::quintic:			tween.via( tweeny::easing::quinticInOut );		break;
-		case tween_via::quintic_in:			tween.via( tweeny::easing::quinticIn );			break;
-		case tween_via::quintic_out:		tween.via( tweeny::easing::quinticOut );		break;
-		case tween_via::sinusoidal:			tween.via( tweeny::easing::sinusoidalInOut );	break;
-		case tween_via::sinusoidal_in:		tween.via( tweeny::easing::sinusoidalIn );		break;
-		case tween_via::sinusoidal_out:		tween.via( tweeny::easing::sinusoidalOut );		break;
-		case tween_via::exponential:		tween.via( tweeny::easing::exponentialInOut );	break;
-		case tween_via::exponential_in:		tween.via( tweeny::easing::exponentialIn );		break;
-		case tween_via::exponential_out:	tween.via( tweeny::easing::exponentialOut );	break;
-		case tween_via::circular:			tween.via( tweeny::easing::circularInOut );		break;
-		case tween_via::circular_in:		tween.via( tweeny::easing::circularIn );		break;
-		case tween_via::circular_out:		tween.via( tweeny::easing::circularOut );		break;
-		case tween_via::bounce:				tween.via( tweeny::easing::bounceInOut );		break;
-		case tween_via::bounce_in:			tween.via( tweeny::easing::bounceIn );			break;
-		case tween_via::bounce_out:			tween.via( tweeny::easing::bounceOut );			break;
-		case tween_via::elastic:			tween.via( tweeny::easing::elasticInOut );		break;
-		case tween_via::elastic_in:			tween.via( tweeny::easing::elasticIn );			break;
-		case tween_via::elastic_out:		tween.via( tweeny::easing::elasticOut );		break;
-		case tween_via::back:				tween.via( tweeny::easing::backInOut );			break;
-		case tween_via::back_in:			tween.via( tweeny::easing::backIn );			break;
-		case tween_via::back_out:			tween.via( tweeny::easing::backOut );			break;
-		default:							assert( false );	// unknown via type
-	}
-
-	switch( type )
-	{
-		case tween_type::loop:
-		{
-			tween.onStep( on_step_loop );
-		}
-		break;
-
-		case tween_type::pingpong:
-		{
-			tween.onStep( on_step_pingpong );
-		}
-		break;
-	}
 
 	time_last = engine->time->now();
 }
@@ -134,5 +83,68 @@ void w_tween::toggle_direction()
 	else
 	{
 		tween.forward();
+	}
+}
+
+void w_tween::set_backwards()
+{
+	tween.seek( 1.0f, false );
+	tween.backward();
+}
+
+void w_tween::set_type( e_tween_type type )
+{
+	switch( type )
+	{
+		case tween_type::loop:
+		{
+			tween.onStep( on_step_loop );
+		}
+		break;
+
+		case tween_type::pingpong:
+		{
+			tween.onStep( on_step_pingpong );
+		}
+		break;
+	}
+}
+
+void w_tween::set_via( e_tween_via via )
+{
+	switch( via )
+	{
+		case tween_via::linear:				tween.via( tweeny::easing::linear );			break;
+		case tween_via::quadratic:			tween.via( tweeny::easing::quadraticInOut );	break;
+		case tween_via::quadratic_in:		tween.via( tweeny::easing::quadraticIn );		break;
+		case tween_via::quadratic_out:		tween.via( tweeny::easing::quadraticOut );		break;
+		case tween_via::cubic:				tween.via( tweeny::easing::cubicInOut );		break;
+		case tween_via::cubic_in:			tween.via( tweeny::easing::cubicIn );			break;
+		case tween_via::cubic_out:			tween.via( tweeny::easing::cubicOut );			break;
+		case tween_via::quartic:			tween.via( tweeny::easing::quarticInOut );		break;
+		case tween_via::quartic_in:			tween.via( tweeny::easing::quarticIn );			break;
+		case tween_via::quartic_out:		tween.via( tweeny::easing::quarticOut );		break;
+		case tween_via::quintic:			tween.via( tweeny::easing::quinticInOut );		break;
+		case tween_via::quintic_in:			tween.via( tweeny::easing::quinticIn );			break;
+		case tween_via::quintic_out:		tween.via( tweeny::easing::quinticOut );		break;
+		case tween_via::sinusoidal:			tween.via( tweeny::easing::sinusoidalInOut );	break;
+		case tween_via::sinusoidal_in:		tween.via( tweeny::easing::sinusoidalIn );		break;
+		case tween_via::sinusoidal_out:		tween.via( tweeny::easing::sinusoidalOut );		break;
+		case tween_via::exponential:		tween.via( tweeny::easing::exponentialInOut );	break;
+		case tween_via::exponential_in:		tween.via( tweeny::easing::exponentialIn );		break;
+		case tween_via::exponential_out:	tween.via( tweeny::easing::exponentialOut );	break;
+		case tween_via::circular:			tween.via( tweeny::easing::circularInOut );		break;
+		case tween_via::circular_in:		tween.via( tweeny::easing::circularIn );		break;
+		case tween_via::circular_out:		tween.via( tweeny::easing::circularOut );		break;
+		case tween_via::bounce:				tween.via( tweeny::easing::bounceInOut );		break;
+		case tween_via::bounce_in:			tween.via( tweeny::easing::bounceIn );			break;
+		case tween_via::bounce_out:			tween.via( tweeny::easing::bounceOut );			break;
+		case tween_via::elastic:			tween.via( tweeny::easing::elasticInOut );		break;
+		case tween_via::elastic_in:			tween.via( tweeny::easing::elasticIn );			break;
+		case tween_via::elastic_out:		tween.via( tweeny::easing::elasticOut );		break;
+		case tween_via::back:				tween.via( tweeny::easing::backInOut );			break;
+		case tween_via::back_in:			tween.via( tweeny::easing::backIn );			break;
+		case tween_via::back_out:			tween.via( tweeny::easing::backOut );			break;
+		default:							assert( false );	// unknown via type
 	}
 }
