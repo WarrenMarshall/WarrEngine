@@ -49,6 +49,7 @@ struct w_imgui
 	w_imgui* do_divider( hash tag = 0 );
 	w_imgui* do_label( hash tag = 0 );
 	w_imgui* do_slider( hash tag = 0 );
+	w_imgui* do_edit_box( hash tag = 0 );
 
 	w_imgui* set_text( const std::string& text );
 	w_imgui* set_text_align( e_align align );

@@ -127,7 +127,7 @@ void w_vertex_buffer::bind_texture_units()
 #ifndef _FINALRELEASE
 			if( RENDER->single_frame_debugger )
 			{
-				log( "TU: {} bound to \"{}\"", x, texture_slots[ x ]->src_texture->tag );
+				log_verbose( "TU: {} bound to \"{}\"", x, texture_slots[ x ]->src_texture->tag );
 			}
 #endif
 

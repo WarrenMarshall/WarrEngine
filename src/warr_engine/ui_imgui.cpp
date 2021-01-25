@@ -124,6 +124,22 @@ w_imgui* w_imgui::do_slider( hash tag )
 	return this;
 }
 
+w_imgui* w_imgui::do_edit_box( hash tag )
+{
+	set_current_callback_from_current_layer();
+
+	current_control = {};
+	current_control.type = imgui_control_type::edit_box;
+	current_control.tag = tag;
+	current_control.is_active = true;
+	current_control.slice_def = a_9slice_def::find( "simple_ui_edit_box" );
+	current_control.text_align = align::left | align::vcenter;
+
+	set_size( { w_sz::def, w_sz::def } );
+
+	return this;
+}
+
 w_imgui* w_imgui::set_text( const std::string& text )
 {
 	current_control.text = text;
@@ -421,7 +437,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				);
 			rc_client_offset =
 				w_rect( rc_client_offset.x + current_callback->get_control_padding() + texture->rc.w, rc_client_offset.y,
-						rc_client_offset.w - current_callback->get_control_padding() - texture->rc.w, rc_client_offset.h
+					rc_client_offset.w - current_callback->get_control_padding() - texture->rc.w, rc_client_offset.h
 				);
 
 			draw_texture( control, rc_texture, texture, is_hovered, is_hot );
@@ -460,7 +476,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				auto tex_tick = a_texture::find( "ui_slider_tick" );
 
 				w_pos tick_pos = { rc_client_offset.x, control.rc_win.y + 4 };
-				auto steps = (int)(1.0f / control.interval);
+				auto steps = (int)( 1.0f / control.interval );
 				auto stride = rc_client_offset.w * control.interval;
 
 				for( auto x = 0 ; x <= steps ; ++x )
@@ -472,6 +488,12 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 			// draw the thumb indicator
 			RENDER->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
+		}
+		break;
+
+		case imgui_control_type::edit_box:
+		{
+			draw_slice_def( control, rc_win_offset, false, false );
 		}
 		break;
 	}

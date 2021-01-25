@@ -158,8 +158,7 @@ void layer_default::draw_ui()
 	IMGUI->do_slider( H( "slider_01" ) )
 		->finalize();
 
-	IMGUI->do_divider()
-		->finalize();
+	IMGUI->do_divider()->finalize();
 
 	IMGUI->do_label()
 		->set_text( "Fixed Interval Slider" )
@@ -168,9 +167,10 @@ void layer_default::draw_ui()
 		->set_interval( 0.2f )
 		->finalize();
 
-	IMGUI->do_divider()
-		->finalize();
+	IMGUI->do_divider()->finalize();
 
+	IMGUI->do_edit_box( H( "edit_box_01" ) )
+		->finalize();
 }
 
 w_imgui_callback* layer_default::get_imgui_callback()

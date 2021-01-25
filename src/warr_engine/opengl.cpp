@@ -79,7 +79,7 @@ void w_opengl::init()
 
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );
-	glDisable( GL_CULL_FACE );
+	//glDisable( GL_CULL_FACE );
 
 	// create base set of shaders
 	shaders.insert( std::make_pair( "base", std::move( w_shader( "base.vert", "base.frag" ) ) ) );

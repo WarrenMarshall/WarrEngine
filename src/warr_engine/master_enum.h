@@ -50,7 +50,6 @@ enum_begin( align )
 	horizontal = 64,
 	vertical = 128,
 	fill = 256,
-
 	centered = hcenter | vcenter
 enum_end
 
@@ -100,17 +99,14 @@ enum_begin( input_id )
 	gamepad_button_b,
 	gamepad_button_x,
 	gamepad_button_y,
-
 	gamepad_left_stick,				// this is for reading the axis movement values
 	gamepad_right_stick,
 	gamepad_left_trigger,
 	gamepad_right_trigger,
-
 	mouse_button_left,
 	mouse_button_middle,
 	mouse_button_right,
 	mouse,
-
 	key_a,	key_b,	key_c,	key_d,	key_e,	key_f,	key_g,
 	key_h,	key_i,	key_j,	key_k,	key_l,	key_m,	key_n,
 	key_o,	key_p,	key_q,	key_r,	key_s,	key_t,	key_u,
@@ -152,14 +148,12 @@ enum_begin( input_id )
 	key_backquote,
 	key_pause,
 	key_delete,
-
 	key_shift_left,
 	key_shift_right,
 	key_control_left,
 	key_control_right,
 	key_alt_left,
 	key_alt_right,
-
 	max
 enum_end
 
@@ -360,13 +354,15 @@ enum_end
 
 enum_begin( imgui_control_type )
 	none = 0,
-	panel,				// a window frame
-	push_button,		// a button that clicks up/down
-	check_box,			// a button that has a toggle state
-	divider,			// a simple divider
+	panel,				// window frame
+	push_button,		// button that clicks up/down
+	check_box,			// button that has a toggle state
+	divider,			// simple horizontal divider
+	spacer,				// invisible dead space, simply use for aesthetics
 	label,				// text
-	slider,				// a line with a slider knob
-	//progress_bar,		// a bar showing progress between 0-100
+	slider,				// horizontal line with a slider thumb
+	edit_box,			// single line, text entry
+	//progress_bar,		// bar showing progress between 0-100
 	//texture				// an image within the client rect
 enum_end
 

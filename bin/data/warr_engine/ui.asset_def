@@ -17,8 +17,8 @@
 		ui_checkbox_on, 30, 25, 12, 12,\
 		ui_label, 40, 40, 16, 16,\
 		ui_divider, 31, 18, 10, 4,\
-		ui_text_box, 16, 47, 12, 16,\
-		ui_text_caret, 32, 50, 4, 10,\
+		ui_edit_box, 16, 47, 12, 16,\
+		ui_edit_box_caret, 32, 50, 4, 10,\
 		ui_slider_body, 15, 39, 12, 6,\
 		ui_slider_thumb, 3, 42, 10, 12,\
 		ui_slider_tick, 5, 55, 7, 7\
@@ -81,11 +81,11 @@
 	"y_slices" "2, 2"
 }
 
-# text box
+# edit box
 {
 	"type" "slice_def"
-	"tag" "simple_ui_text_box"
-	"texture_tag" "ui_text_box"
+	"tag" "simple_ui_edit_box"
+	"texture_tag" "ui_edit_box"
 	"x_slices" "4, 4"
 	"y_slices" "5, 5"
 }
