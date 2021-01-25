@@ -10,6 +10,8 @@ struct w_file_mem
 
 	w_file_mem() = default;
 	w_file_mem( int size );
+
+	virtual void preprocess() {}
 };
 
 // ----------------------------------------------------------------------------
@@ -22,5 +24,6 @@ struct w_file_mem_text : w_file_mem
 
 	w_file_mem_text() = default;
 	w_file_mem_text( int size);
-	void preprocess();
+
+	virtual void preprocess() override;
 };

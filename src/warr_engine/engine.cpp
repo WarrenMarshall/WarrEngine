@@ -762,7 +762,7 @@ void w_engine::parse_config_files( const std::string_view folder_name )
 
 void w_engine::parse_config_file( std::string_view filename )
 {
-	auto file = engine->fs->load_text_file_into_memory( filename );
+	auto file = engine->fs->load_text_file( filename );
 
 	for( const auto& line : *( file->lines.get() ) )
 	{

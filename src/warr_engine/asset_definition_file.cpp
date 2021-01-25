@@ -477,7 +477,7 @@ bool w_asset_definition_file::create_internals()
 	// read the contents of the asset definition file and break it up
 	// into individual asset definitions
 
-	auto file = engine->fs->load_text_file_into_memory( original_filename );
+	auto file = engine->fs->load_text_file( original_filename );
 
 	w_keyvalues current_asset_definition;
 

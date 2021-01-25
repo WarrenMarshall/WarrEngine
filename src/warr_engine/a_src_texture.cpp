@@ -21,7 +21,7 @@ bool a_src_texture::create_internals()
 {
 	assert( !original_filename.empty() );
 
-	auto file = engine->fs->load_file_into_memory( original_filename );
+	auto file = engine->fs->load_binary_file( original_filename );
 	int width, height, bpp;
 	color_data = stbi_load_from_memory(
 		(const stbi_uc*) ( file->buffer->data() ),

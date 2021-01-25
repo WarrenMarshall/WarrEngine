@@ -8,7 +8,7 @@ bool a_font_def::create_internals()
 {
 	ZeroMemory( char_map, sizeof( w_font_char ) * max_font_chars );
 
-	auto file = engine->fs->load_text_file_into_memory( original_filename );
+	auto file = engine->fs->load_text_file( original_filename );
 
 	float x, y, w, h;
 

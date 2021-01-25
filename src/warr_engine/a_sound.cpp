@@ -46,7 +46,7 @@ bool a_sound::create_internals()
 		log_error( "Couldn't find the file : [{}]", tag );
 	}
 
-	auto file = engine->fs->load_file_into_memory( original_filename );
+	auto file = engine->fs->load_binary_file( original_filename );
 
 	sample_handle = BASS_SampleLoad(
 		true,

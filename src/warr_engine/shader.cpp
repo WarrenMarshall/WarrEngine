@@ -17,7 +17,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
 	// vertex shader
 	unsigned int vertex_id;
 	{
-		auto vertex_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/warr_engine/shaders/{}", vert_filename ) );
+		auto vertex_shader_src = engine->fs->load_binary_file( fmt::format( "data/warr_engine/shaders/{}", vert_filename ) );
 		vertex_id = glCreateShader( GL_VERTEX_SHADER );
 		wk = std::string( vertex_shader_src->buffer->begin(), vertex_shader_src->buffer->end() );
 		cptr = wk.c_str();
@@ -35,7 +35,7 @@ void w_shader::create_and_compile( const std::string_view vert_filename, const s
 	// fragment shader
 	unsigned int fragment_id;
 	{
-		auto fragment_shader_src = engine->fs->load_file_into_memory( fmt::format( "data/warr_engine/shaders/{}", frag_filename ) );
+		auto fragment_shader_src = engine->fs->load_binary_file( fmt::format( "data/warr_engine/shaders/{}", frag_filename ) );
 		fragment_id = glCreateShader( GL_FRAGMENT_SHADER );
 		wk = std::string( fragment_shader_src->buffer->begin(), fragment_shader_src->buffer->end() );
 

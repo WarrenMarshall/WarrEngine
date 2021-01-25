@@ -17,7 +17,7 @@ bool a_mesh::create_internals()
 {
 	assert( !original_filename.empty() );
 
-	auto file = engine->fs->load_text_file_into_memory( original_filename );
+	auto file = engine->fs->load_text_file( original_filename );
 
 	render_verts.clear();
 
