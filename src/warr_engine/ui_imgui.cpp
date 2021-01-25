@@ -459,7 +459,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 			{
 				auto tex_tick = a_texture::find( "ui_slider_tick" );
 
-				w_pos tick_pos = { rc_client_offset.x, control.rc_win.y + 6 };
+				w_pos tick_pos = { rc_client_offset.x, control.rc_win.y + 4 };
 				int steps = (int)(1.0f / control.interval);
 				float stride = rc_client_offset.w * control.interval;
 

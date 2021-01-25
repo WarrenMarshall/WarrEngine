@@ -168,6 +168,9 @@ void layer_default::draw_ui()
 		->set_interval( 0.2f )
 		->finalize();
 
+	IMGUI->do_divider()
+		->finalize();
+
 }
 
 w_imgui_callback* layer_default::get_imgui_callback()
