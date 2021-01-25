@@ -12,7 +12,7 @@ void w_particle::update()
 	}
 
 	w_vec2 v = v_dir;
- 	pos.x += v.x * ( velocity_per_sec * fixed_time_step::per_second_scaler );
+	pos.x += v.x * ( velocity_per_sec * fixed_time_step::per_second_scaler );
 	pos.y += v.y * ( velocity_per_sec * fixed_time_step::per_second_scaler );
 
 	spin += spin_per_sec * fixed_time_step::per_second_scaler;

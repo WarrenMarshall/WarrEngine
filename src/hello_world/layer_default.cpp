@@ -26,6 +26,12 @@ float layer_default_ui_callback::get_data_for_control(const w_imgui_control& con
 			return slider_value;
 		}
 		break;
+
+		case H( "slider_02" ):
+		{
+			return slider_value2;
+		}
+		break;
 	}
 
 	return 0.0f;
@@ -61,6 +67,12 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 			slider_value = result.click_pct.x;
 		}
 		break;
+
+		case H( "slider_02" ):
+		{
+			slider_value2 = result.click_pct.x;
+		}
+		break;
 	}
 }
 
@@ -74,6 +86,16 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 		{
 			slider_value = result.click_pct.x;
 			layer->glow_intensity = slider_value * 3.0f;
+		}
+		break;
+
+		case H( "slider_02" ):
+		{
+			slider_value2 = result.click_pct.x;
+			if( control.interval > 0 )
+			{
+				slider_value2 = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
+			}
 		}
 		break;
 	}
@@ -133,13 +155,19 @@ void layer_default::draw_ui()
 	IMGUI->do_label()
 		->set_text( fmt::format( "Glow Intensity : {:.0f}%", imgui_callback.slider_value * 100.0f ) )
 		->finalize();
-
 	IMGUI->do_slider( H( "slider_01" ) )
-		//->set_size( { 66.0f, w_sz::ignore } )
 		->finalize();
 
 	IMGUI->do_divider()
 		->finalize();
+
+	IMGUI->do_label()
+		->set_text( "Fixed Interval Slider" )
+		->finalize();
+	IMGUI->do_slider( H( "slider_02" ) )
+		->set_interval( 0.2f )
+		->finalize();
+
 }
 
 w_imgui_callback* layer_default::get_imgui_callback()

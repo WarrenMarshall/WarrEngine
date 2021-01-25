@@ -10,7 +10,7 @@
 	"tag" "simple_ui"
 	"filename" "ui/simple_ui.png"
 	"texture_tags" "\
-		ui_cursor, 0, 24, 16, 16,\
+		ui_cursor, 0, 24, 14, 16,\
 		ui_panel, 0, 0, 24, 24,\
 		ui_button, 25, 1, 16, 16,\
 		ui_checkbox_off, 17, 25, 12, 12,\
@@ -18,9 +18,10 @@
 		ui_label, 40, 40, 16, 16,\
 		ui_divider, 31, 18, 10, 4,\
 		ui_text_box, 16, 47, 12, 16,\
-		ui_text_caret, 32, 50, 5, 10,\
+		ui_text_caret, 32, 50, 4, 10,\
 		ui_slider_body, 15, 39, 12, 6,\
-		ui_slider_thumb, 3, 42, 10, 12\
+		ui_slider_thumb, 3, 42, 10, 12,\
+		ui_slider_tick, 5, 55, 7, 7\
 		"
 }
 

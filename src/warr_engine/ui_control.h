@@ -9,14 +9,17 @@ struct w_imgui_control
 	a_9slice_def* slice_def = nullptr;
 	e_align texture_align = align::fill;
 
+	// expressed as a 0-1 percentage.  So 0.2 would be 5 intervals, 0.1 would be 10, etc.
+	float interval = 0.0f;
+
 	w_rect rc_win = { 0,0,0,0 };
 	w_rect rc_client = { 0,0,0,0 };
 
 	// is this control an "active" or "passive" control?
 	bool is_active = true;
 
-	// has the "set_position" call been made for this control? used when deciding
-	// whether or not to use default sizes.
+	// has the "set_position" call been made for this control? used when
+	// deciding whether or not to use default sizes.
 	bool set_position_called =  false;
 
 	// indicates that a control, once hot, won't release it's hover state until

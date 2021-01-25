@@ -56,6 +56,7 @@ struct w_imgui
 	w_imgui* set_position( const w_pos& pos );
 	w_imgui* set_position( e_imgui_flow flow );
 	w_imgui* set_size( const w_sz& sz );
+	w_imgui* set_interval( const float interval );
 
 	void compute_clientrect_from_rect();
 	w_imgui_result* finalize();
