@@ -134,6 +134,7 @@ w_imgui* w_imgui::do_edit_box( hash tag )
 	current_control.is_active = true;
 	current_control.slice_def = a_9slice_def::find( "simple_ui_edit_box" );
 	current_control.text_align = align::left | align::vcenter;
+	current_control.uses_click_offset = false;
 
 	set_size( { w_sz::def, w_sz::def } );
 
@@ -460,7 +461,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 		case imgui_control_type::slider:
 		{
-			draw_slice_def( control, rc_win_offset, false, false );
+			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
 			w_vec2 pos = {
 				rc_client_offset.x + ( rc_client_offset.w * current_callback->get_data_for_control( control ) ),
@@ -493,7 +494,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 		case imgui_control_type::edit_box:
 		{
-			draw_slice_def( control, rc_win_offset, false, false );
+			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 		}
 		break;
 	}
