@@ -4,6 +4,7 @@
 
 void w_ui_mgr::init()
 {
+	imgui = std::make_unique<w_imgui>();
 	mouse_cursor = a_cursor::find( "mouse_cursor_default", b_silent( true ) );
 }
 

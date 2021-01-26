@@ -2,7 +2,7 @@
 
 struct w_ui_mgr
 {
-	w_imgui imgui;
+	std::unique_ptr<w_imgui> imgui = nullptr;
 	a_cursor* mouse_cursor = nullptr;
 
 	void init();

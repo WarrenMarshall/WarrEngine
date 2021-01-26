@@ -232,7 +232,7 @@ constexpr float from_b2d( float v )
 #define OPENGL engine->opengl
 #define RENDER engine->render
 #define UI engine->ui
-#define IMGUI (&(engine->ui->imgui))
+#define IMGUI engine->ui->imgui
 #define INPUT engine->input
 #define LAYER engine->layer_mgr->get_top()
 #define LAYER_MGR engine->layer_mgr
