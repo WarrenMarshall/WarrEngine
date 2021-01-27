@@ -61,7 +61,7 @@ void main()
 			max( out_glow_buffer.r, glow_color.r ),
 			max( out_glow_buffer.g, glow_color.g ),
 			max( out_glow_buffer.b, glow_color.b ),
-			out_color_buffer.a
+			out_glow_buffer.a
 		);
 	}
 }

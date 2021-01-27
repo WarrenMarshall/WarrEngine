@@ -489,7 +489,7 @@ void w_engine::main_loop()
 	#endif
 
 	// blurred glow
-	#if 0
+	#if 1
 		RENDER
 			->begin()
 			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
