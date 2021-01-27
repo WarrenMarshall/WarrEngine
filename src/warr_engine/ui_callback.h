@@ -11,7 +11,7 @@ struct w_imgui_callback
 	virtual e_imgui_control_state get_state_for_control( const w_imgui_control& control );
 	virtual float get_data_for_control(const w_imgui_control& control);
 	virtual a_texture* get_texture_for_checkbox( const w_imgui_control& control );
-	
+
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result );
 	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result );
 
@@ -21,4 +21,8 @@ struct w_imgui_callback
 	virtual float get_default_width( e_imgui_control_type control_type );
 	virtual float get_default_height( const w_imgui_control& control );
 	virtual float get_default_height( e_imgui_control_type control_type );
+
+	// if a control is meant to retain focus across frames, store it's
+	// hashed tag here.
+	hash tag_sticky_hot = hash_none;
 };

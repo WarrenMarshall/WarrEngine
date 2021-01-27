@@ -31,4 +31,8 @@ struct w_imgui_control
 
 	// does this control do a position offset when it's made hot / clicked?
 	bool uses_click_offset = true;
+
+	// can this control retain focus across frames? if true, then this control
+	// will remain "hot" until the user is done interacting with it.
+	bool sticky_hot = false;
 };

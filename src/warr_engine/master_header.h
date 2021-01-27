@@ -34,8 +34,8 @@ constexpr void _log_error_( Params&&... params )
 #define log_verbose( fmt, ... ) _verbose_( "[{}:{}] " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__ )
 
 // ----------------------------------------------------------------------------
-// hashes a string at compile time for quicker comparisons
-// yoinked from : https://stackoverflow.com/questions/2111667/compile-time-string-hashing
+// hashes a string at compile time for quicker comparisons. yoinked from:
+// https://stackoverflow.com/questions/2111667/compile-time-string-hashing
 
 using hash = unsigned;
 constexpr hash hash_none = 0;
@@ -43,19 +43,19 @@ constexpr hash hash_none = 0;
 // #C++20 - when MSVC fully supports "consteval" use that instead
 //          of "constexpr" to make sure this is compile time only
 #if 1
-unsigned constexpr H( char const* str )
-{
-	return *str ?
-		static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
-		5381;
-}
+	unsigned constexpr H( char const* str )
+	{
+		return *str ?
+			static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
+			5381;
+	}
 #else
-unsigned constevalH( char const* str )
-{
-	return *str ?
-		static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
-		5381;
-}
+	unsigned constevalH( char const* str )
+	{
+		return *str ?
+			static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
+			5381;
+	}
 #endif
 
 // ----------------------------------------------------------------------------

@@ -23,17 +23,17 @@ out float fs_texture_id;
 
 void main()
 {
-    fs_pos = vs_pos;
+	fs_pos = vs_pos;
 
-    // apply matrix transforms to get the vertex to screen space.
+	// apply matrix transforms to get the vertex to screen space.
 	// "world space to camera space" * "camera space to projection space" * VertexPosition
 
-    gl_Position = u_projection_matrix * u_view_matrix * vec4( fs_pos, 1.0 );
+	gl_Position = u_projection_matrix * u_view_matrix * vec4( fs_pos, 1.0 );
 
-    // pass values to fragment shader
+	// pass values to fragment shader
 
-    fs_tex_coord = vs_tex_coord;
-    fs_color = vs_color;
-    fs_glow = vs_glow;
-    fs_texture_id = vs_texture_id;
+	fs_tex_coord = vs_tex_coord;
+	fs_color = vs_color;
+	fs_glow = vs_glow;
+	fs_texture_id = vs_texture_id;
 }

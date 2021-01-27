@@ -156,6 +156,14 @@ void w_layer_mgr::draw()
 				RENDER->push_depth_nudge();
 				OPENGL->push();
 				layer->draw_ui();
+
+				// when the final layer has been drawn, add anything on top that
+				// we need to - like a mouse cursor - to contain it within the same draw call.
+				if( !x )
+				{
+					UI->draw_topmost();
+				}
+
 				OPENGL->pop();
 				RENDER->draw_and_reset_all_batches();
 			}

@@ -163,6 +163,7 @@ void w_vertex_array_object::draw_and_reset()
 				}
 
 				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_buffer->vertices.size() ) ), f_commas( static_cast<float>( index_count ) ) );
+				log_div();
 			}
 		}
 #endif

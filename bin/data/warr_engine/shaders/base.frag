@@ -14,5 +14,5 @@ void main()
 {
 	int texture_idx = int(fs_texture_id);
 
-   	out_fragment_color = texture( u_textures[texture_idx], fs_tex_coord ) * fs_color;
+	out_fragment_color = texture( u_textures[texture_idx], fs_tex_coord ) * fs_color;
 }

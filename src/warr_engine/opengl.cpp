@@ -83,7 +83,7 @@ void w_opengl::init()
 
 	// create base set of shaders
 	shaders.insert( std::make_pair( "base", std::move( w_shader( "base.vert", "base.frag" ) ) ) );
-	shaders.insert( std::make_pair( "base_bright", std::move( w_shader( "base.vert", "base_with_bright_pass.frag" ) ) ) );
+	shaders.insert( std::make_pair( "base_with_glow", std::move( w_shader( "base.vert", "base_with_glow.frag" ) ) ) );
 	shaders.insert( std::make_pair( "blur", std::move( w_shader( "base.vert", "blur.frag" ) ) ) );
 	shaders.insert( std::make_pair( "post_process", std::move( w_shader( "base.vert", "post_process.frag" ) ) ) );
 

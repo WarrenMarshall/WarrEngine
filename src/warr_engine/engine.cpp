@@ -316,7 +316,7 @@ void w_engine::main_loop()
 		glEnable( GL_DEPTH_TEST );
 		frame_buffer->bind();
 
-		OPENGL->shaders[ "base_bright" ].bind();
+		OPENGL->shaders[ "base_with_glow" ].bind();
 
 		RENDER->begin_frame();
 		{
@@ -344,9 +344,6 @@ void w_engine::main_loop()
 			layer_mgr->draw();
 
 			OPENGL->pop();
-
-			// top most UI elements, like the mouse cursor
-			UI->draw_topmost();
 
 			// engine specific things, like pause borders
 			draw();
@@ -454,7 +451,7 @@ void w_engine::main_loop()
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls--;
 
-#if 0
+#if 1
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
@@ -469,7 +466,7 @@ void w_engine::main_loop()
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
 	// main
-	#if 1
+	#if 0
 		RENDER
 			->begin()
 			->draw( frame_buffer->textures[ 0 ], rc )
@@ -477,11 +474,11 @@ void w_engine::main_loop()
 			->end();
 		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls--;
+		rc.x += w;
 	#endif
 
 	// glow
 	#if 1
-		rc.x += w;
 		RENDER
 			->begin()
 			->draw( frame_buffer->textures[ 1 ], rc )
@@ -489,18 +486,19 @@ void w_engine::main_loop()
 			->end();
 		RENDER->batch_quads->vertex_array_object->draw_and_reset();
 		RENDER->stats.draw_calls--;
+		rc.x += w;
 	#endif
 
 	// blurred glow
 	#if 0
-		rc.x += w;
 		RENDER
 			->begin()
 			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
 			->draw_string( "(blur)", { rc.x, rc.y } )
 			->end();
 		RENDER->batch_quads->vertex_array_object->draw_and_reset();
-		RENDER->stats.draw_calls.dec();
+		RENDER->stats.draw_calls--;
+		rc.x += w;
 	#endif
 #endif
 

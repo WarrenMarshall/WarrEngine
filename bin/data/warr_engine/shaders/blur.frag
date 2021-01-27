@@ -27,30 +27,30 @@ uniform float weight[5] = float[]
 
 void main()
 {
-    int texture_idx = int(fs_texture_id);
+	int texture_idx = int(fs_texture_id);
 
 	// gets size of single texel
-    vec2 tex_offset = 1.0 / textureSize(u_textures[texture_idx], 0);
+	vec2 tex_offset = 1.0 / textureSize(u_textures[texture_idx], 0);
 
 	// current fragment's contribution
-    vec3 result = texture(u_textures[texture_idx], fs_tex_coord).rgb * weight[0];
+	vec3 result = texture(u_textures[texture_idx], fs_tex_coord).rgb * weight[0];
 
-    if( horizontal )
-    {
-        for( int i = 1; i < 5; ++i )
-        {
-            result += texture(u_textures[texture_idx], fs_tex_coord + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-            result += texture(u_textures[texture_idx], fs_tex_coord - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-        }
-    }
-    else
-    {
-        for( int i = 1; i < 5; ++i )
-        {
-            result += texture(u_textures[texture_idx], fs_tex_coord + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-            result += texture(u_textures[texture_idx], fs_tex_coord - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-        }
-    }
+	if( horizontal )
+	{
+		for( int i = 1; i < 5; ++i )
+		{
+			result += texture(u_textures[texture_idx], fs_tex_coord + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+			result += texture(u_textures[texture_idx], fs_tex_coord - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+		}
+	}
+	else
+	{
+		for( int i = 1; i < 5; ++i )
+		{
+			result += texture(u_textures[texture_idx], fs_tex_coord + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+			result += texture(u_textures[texture_idx], fs_tex_coord - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+		}
+	}
 
-    out_fragment_color = vec4(result, 1.0) * 1.05f;
+	out_fragment_color = vec4(result, 1.0) * 1.05f;
 }

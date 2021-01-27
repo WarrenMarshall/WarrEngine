@@ -135,6 +135,7 @@ w_imgui* w_imgui::do_edit_box( hash tag )
 	current_control.slice_def = a_9slice_def::find( "simple_ui_edit_box" );
 	current_control.text_align = align::left | align::vcenter;
 	current_control.uses_click_offset = false;
+	current_control.sticky_hot = true;
 
 	set_size( { w_sz::def, w_sz::def } );
 
@@ -261,8 +262,8 @@ w_imgui_result* w_imgui::finalize()
 	{
 		im_automatic_id++;
 
-		bool is_hot = hot_id == im_automatic_id;
-		bool is_hovered = hover_id == im_automatic_id;
+		bool is_hot = ( hot_id == im_automatic_id );
+		bool is_hovered = ( hover_id == im_automatic_id );
 
 		if( containing_layer_is_topmost )
 		{
@@ -367,6 +368,21 @@ void w_imgui::update_im_state( int id, const w_imgui_control& control, bool is_h
 
 void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 {
+	if( control.sticky_hot )
+	{
+		if( current_callback->tag_sticky_hot == control.tag )
+		{
+			is_hot = true;
+		}
+	}
+	else
+	{
+		if( is_hot )
+		{
+			current_callback->tag_sticky_hot = hash_none;
+		}
+	}
+
 	w_vec2 clicked_offset = get_click_offset( is_hovered, is_hot );
 
 	w_rect rc_win_offset = control.rc_win;
@@ -500,6 +516,11 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	}
 
 	RENDER->end();
+
+	if( is_hot && control.sticky_hot )
+	{
+		current_callback->tag_sticky_hot = control.tag;
+	}
 }
 
 void w_imgui::draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool is_hovered, bool is_hot )
