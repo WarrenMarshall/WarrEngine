@@ -20,9 +20,10 @@
 	# -----------------------------------------------------
 	# opengl blending options
 
-	"opengl_blend.add"		"0"
+	"opengl_blend.alpha"	"0"
 	"opengl_blend.add"		"1"
 	"opengl_blend.multiply"	"2"
+	"opengl_blend.glow"		"3"
 
 	# -----------------------------------------------------
 	# alignment options

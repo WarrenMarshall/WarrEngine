@@ -251,7 +251,8 @@ enum_end
 enum_begin( opengl_blend )
 	alpha = 0,
 	add,
-	multiply
+	multiply,
+	glow,
 enum_end
 
 // ----------------------------------------------------------------------------

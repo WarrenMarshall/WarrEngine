@@ -16,13 +16,17 @@ uniform sampler2D u_textures[__max_texture_image_units__];
 // yoinked from : https://learnopengl.com/Advanced-Lighting/Bloom
 
 uniform bool horizontal;
-uniform float weight[5] = float[]
+uniform float weight[9] = float[]
 	(
-		0.227027,
-		0.1945946,
+		0.227027 / 2.0f,
+		0.227027 / 2.0f,
+		0.1945946 / 2.0f,
+		0.1945946 / 2.0f,
 		0.1216216,
-		0.054054,
-		0.016216
+		0.054054 / 2.0f,
+		0.054054 / 2.0f,
+		0.016216 / 2.0f,
+		0.016216 / 2.0f
 	);
 
 void main()
@@ -37,7 +41,7 @@ void main()
 
 	if( horizontal )
 	{
-		for( int i = 1; i < 5; ++i )
+		for( int i = 1; i < 9; ++i )
 		{
 			result += texture(u_textures[texture_idx], fs_tex_coord + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
 			result += texture(u_textures[texture_idx], fs_tex_coord - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
@@ -45,7 +49,7 @@ void main()
 	}
 	else
 	{
-		for( int i = 1; i < 5; ++i )
+		for( int i = 1; i < 9; ++i )
 		{
 			result += texture(u_textures[texture_idx], fs_tex_coord + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
 			result += texture(u_textures[texture_idx], fs_tex_coord - vec2(0.0, tex_offset.y * i)).rgb * weight[i];

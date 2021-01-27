@@ -179,6 +179,12 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 			glBlendFunc( GL_DST_COLOR, GL_ZERO );
 		}
 		break;
+
+		case opengl_blend::glow:
+		{
+			glBlendFunc( GL_ONE, GL_ONE );
+		}
+		break;
 	}
 }
 

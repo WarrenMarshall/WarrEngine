@@ -85,7 +85,7 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 		case H( "slider_01" ):
 		{
 			slider_value = result.click_pct.x;
-			layer->glow_intensity = slider_value * 3.0f;
+			layer->glow_intensity = slider_value * 1.0f;
 		}
 		break;
 

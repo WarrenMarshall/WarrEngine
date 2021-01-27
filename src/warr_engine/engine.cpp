@@ -310,8 +310,7 @@ void w_engine::main_loop()
 		// this draws several versions of the scene at once:
 		//
 		// 1. the scene as normal
-		// 2. same as #1 but only contains the brightest pixels (used for bloom
-		//    later)
+		// 2. same as #1 but only contains the brightest pixels (used for glow effects)
 
 		glEnable( GL_DEPTH_TEST );
 		frame_buffer->bind();
@@ -412,7 +411,7 @@ void w_engine::main_loop()
 		RENDER->batch_quads->draw_and_reset();
 		RENDER->stats.draw_calls--;
 
-		// draw bloom frame buffer on top with blending
+		// draw glow frame buffer on top with blending
 
 		OPENGL->set_blend( opengl_blend::add );
 
