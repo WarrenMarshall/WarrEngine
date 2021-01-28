@@ -22,3 +22,10 @@ struct w_tween
 	void set_type( e_tween_type type );
 	void set_via( e_tween_via via );
 };
+
+// ----------------------------------------------------------------------------
+
+struct float_tween : w_tween
+{
+
+};

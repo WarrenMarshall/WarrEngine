@@ -34,19 +34,19 @@ void layer_main_menu::draw_ui()
 	w_layer::draw_ui();
 
 	w_render_state_opt rso;
-	rso.scale = { 2.0f, 2.0f };
+	rso.scale = { 2.0f, 4.0f };
 	rso.align = align::hcenter;
 	rso.color = w_color::white;
-	rso.glow = 1.1f;
+	rso.glow = 0.25f;
 
 	RENDER
 		->begin()
 		->push_render_state( rso )
-		->draw_string( "Pong Paddle Thing", { v_window_hw, 32.0f } )
+		->draw_string( "Pong Paddle Thing", { v_window_hw + *xlogo_tween, 32.0f + *logo_tween } )
 		->end();
 
 	float xpos = 64;
-	float ypos = 75;
+	float ypos = 100;
 
 	IMGUI->do_push_button( H( "button_play" ) )
 		->set_text( "PLAY" )
@@ -66,37 +66,35 @@ void layer_main_menu::draw_ui()
 
 void layer_main_menu::push()
 {
-	a_sound::find( "main_menu_music" )->play();
-
 	w_layer::push();
 
 	w_entity* e = nullptr;
 
 	// mechanical meshes
 
-	e = add_entity<w_entity>();
-	{
-		e->tag = H( "wheels" );
-		e->get_tform()->set_position( { v_window_hw, v_window_hh } )->set_scale( 0.5f );
-
-		w_render_state_opt rso;
-		rso.snap_to_pixel = false;
-		rso.color = w_color::black;
-
-		rso.color->a = 0.65f;
-		e->add_component<ec_mesh>()
-			->init( "mesh_torus_test" )
-			->set_tag( H("outer_wheel") )
-			->set_render_state( rso )
-			->tform.set_scale( 1.25f )->set_angle( 120.0f );
-
-		rso.color->a = 0.35f;
-		e->add_component<ec_mesh>()
-			->init( "mesh_torus_test" )
-			->set_tag( H( "inner_wheel" ) )
-			->set_render_state( rso )
-			->tform.set_scale( 0.5f );
-	}
+// 	e = add_entity<w_entity>();
+// 	{
+// 		e->tag = H( "wheels" );
+// 		e->get_tform()->set_position( { v_window_w, v_window_h } )->set_scale( 0.75 );
+//
+// 		w_render_state_opt rso;
+// 		rso.snap_to_pixel = false;
+// 		rso.color = w_color::black;
+//
+// 		rso.color->a = 0.15f;
+// 		e->add_component<ec_mesh>()
+// 			->init( "mesh_torus_test" )
+// 			->set_tag( H( "right_wheel" ) )
+// 			->set_render_state( rso );
+//
+// 		rso.color->a = 0.15f;
+// 		e->add_component<ec_mesh>()
+// 			->init( "mesh_torus_test" )
+// 			->set_tag( H( "left_wheel" ) )
+// 			->set_render_state( rso )
+// 			->tform.set_position( { -v_window_w - 64, 0.0f } );
+//
+// 	}
 
 	// particles
 
@@ -106,27 +104,39 @@ void layer_main_menu::push()
 		e->add_component<ec_emitter>()
 			->init( "menu_fire_up" )
 			->tform.set( { 0.0f, v_window_h }, 0.0f, 1.0f );
+		e->add_component<ec_emitter>()->init( "emitter_game_stars" )
+			->tform.set( { 0.0f, v_window_hw }, 0.0f, 1.0f );
+		e->add_component<ec_emitter>()->init( "emitter_game_stars" )
+			->tform.set( { 0.0f, v_window_hw }, 0.0f, 1.0f );
 	}
 
-	a_sound::find( "main_menu_music" )->play();
+	gear_tween = w_tween( 0.0f, 360.0f, 7500 );
+	gear_tween.set_type( tween_type::pingpong );
+	gear_tween.set_via( tween_via::bounce );
+
+	logo_tween = w_tween( 0.0f, 16.0f, 250 );
+	logo_tween.set_type( tween_type::pingpong );
+	logo_tween.set_via( tween_via::sinusoidal_in );
+
+	xlogo_tween = w_tween( -32.0f, 32.0f, 750 );
+	xlogo_tween.set_type( tween_type::pingpong );
+	xlogo_tween.set_via( tween_via::sinusoidal );
+
+	//a_sound::find( "main_menu_music" )->play();
 }
 
 void layer_main_menu::pop()
 {
 	w_layer::pop();
-	a_sound::find( "main_menu_music" )->stop();
+	//a_sound::find( "main_menu_music" )->stop();
 }
 
 void layer_main_menu::update()
 {
 	w_layer::update();
 
-	static float angle = 0.0f;
-
-	find_entity( H( "wheels" ) )->get_component( H("outer_wheel") )->tform.set_angle( angle );
-	find_entity( H( "wheels" ) )->get_component( H( "inner_wheel" ) )->tform.set_angle( -angle );
-
-	angle += 15.0f * fixed_time_step::per_second_scaler;
+	//find_entity( H( "wheels" ) )->get_component( H( "left_wheel" ) )->tform.set_angle( -*gear_tween );
+	//find_entity( H( "wheels" ) )->get_component( H( "right_wheel" ) )->tform.set_angle( *gear_tween );
 }
 
 void layer_main_menu::becoming_top_layer()

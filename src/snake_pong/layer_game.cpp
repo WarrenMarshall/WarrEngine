@@ -163,7 +163,7 @@ void layer_game::new_game()
 		rso.snap_to_pixel = false;
 		rso.color = w_color::teal;
 		rso.color->a = 0.25f;
-		rso.glow = 1.1f;
+		rso.glow = 0.25f;
 
 		e->add_component<ec_mesh>()
 			->init( "shadow_beam" )

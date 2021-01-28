@@ -13,6 +13,10 @@ struct layer_main_menu : w_layer
 {
 	layer_main_menu_ui_callback imgui_callback;
 
+	w_tween gear_tween;
+	w_tween logo_tween;
+	w_tween xlogo_tween;
+
 	layer_main_menu();
 
 	virtual void draw_ui() override;
