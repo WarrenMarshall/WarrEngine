@@ -34,7 +34,7 @@ struct w_imgui
 
 	// the current control being set up or drawn
 	w_pos flow_right_pos, flow_down_pos;
-	std::optional<w_imgui_control> last_control = std::nullopt;
+	w_rect last_rc_win, last_rc_client;
 	w_imgui_control current_control = {};
 
 	// the results from the last control processed
@@ -62,7 +62,7 @@ struct w_imgui
 	w_imgui_result* finalize();
 
 private:
-	void set_as_last_control( w_imgui_control control );
+	void set_last_control( w_imgui_control control );
 
 	virtual void update_im_state( int id, const w_imgui_control& control, bool is_hovered, bool is_hot );
 	void draw( w_imgui_control& control, bool is_hovered, bool is_hot );

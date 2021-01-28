@@ -31,7 +31,7 @@ w_imgui_control_data layer_default_ui_callback::get_data_for_control(const w_img
 
 void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
-	auto layer = static_cast<layer_default*>( LAYER );
+	auto layer = static_cast<layer_default*>( IMGUI->current_layer );
 
 	switch( control.tag )
 	{
@@ -70,7 +70,7 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 
 void layer_default_ui_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
 {
-	auto layer = static_cast<layer_default*>( LAYER );
+	auto layer = static_cast<layer_default*>( IMGUI->current_layer );
 
 	switch( control.tag )
 	{

@@ -20,7 +20,7 @@ void w_imgui::reset()
 {
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
-	last_control = std::nullopt;
+	last_rc_win = last_rc_client = w_rect::zero;
 }
 
 w_imgui* w_imgui::do_panel( hash tag )
@@ -145,7 +145,7 @@ w_imgui* w_imgui::set_slice_def( const std::string& tag )
 
 w_imgui* w_imgui::set_position( const w_pos& pos )
 {
-	current_control.rc_win = last_control->rc_win;
+	current_control.rc_win = last_rc_win;
 
 	current_control.rc_win.x = pos.x;
 	current_control.rc_win.y = pos.y;
@@ -158,8 +158,8 @@ w_imgui* w_imgui::set_position( const w_pos& pos )
 
 w_imgui* w_imgui::set_position( e_imgui_flow flow )
 {
-	current_control.rc_win.x = last_control->rc_win.x;
-	current_control.rc_win.y = last_control->rc_win.y;
+	current_control.rc_win.x = last_rc_win.x;
+	current_control.rc_win.y = last_rc_win.y;
 
 	if( flow & imgui_flow::right )
 	{
@@ -175,8 +175,8 @@ w_imgui* w_imgui::set_position( e_imgui_flow flow )
 
 	if( flow & imgui_flow::last_crc_topleft )
 	{
-		current_control.rc_win.x = last_control->rc_client.x;
-		current_control.rc_win.y = last_control->rc_client.y;
+		current_control.rc_win.x = last_rc_client.x;
+		current_control.rc_win.y = last_rc_client.y;
 	}
 
 	compute_clientrect_from_rect();
@@ -272,7 +272,7 @@ w_imgui_result* w_imgui::finalize()
 		draw( current_control, false, false );
 	}
 
-	set_as_last_control( current_control );
+	set_last_control( current_control );
 
 	return &result;
 }
@@ -556,12 +556,13 @@ w_color w_imgui::get_adjusted_color( const w_color& base_color, bool is_hovered,
 	return color;
 }
 
-void w_imgui::set_as_last_control( w_imgui_control control )
+void w_imgui::set_last_control( w_imgui_control control )
 {
-	last_control = control;
+	last_rc_win = control.rc_win;
+	last_rc_client = control.rc_client;
 
-	flow_right_pos = { last_control->rc_win.x + last_control->rc_win.w + current_layer->get_imgui_callback()->get_control_margin(), last_control->rc_win.y };
-	flow_down_pos = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + current_layer->get_imgui_callback()->get_control_margin() };
+	flow_right_pos = { last_rc_win.x + last_rc_win.w + current_layer->get_imgui_callback()->get_control_margin(), last_rc_win.y };
+	flow_down_pos = { last_rc_win.x, last_rc_win.y + last_rc_win.h + current_layer->get_imgui_callback()->get_control_margin() };
 }
 
 // a control with the mouse button held down on it will offset slightly

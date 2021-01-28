@@ -26,7 +26,6 @@ struct w_imgui_callback
 	virtual bool on_input_held( const w_input_event* evt );
 	virtual bool on_input_released( const w_input_event* evt );
 
-	// if a control is meant to retain focus across frames, store it's
-	// hashed tag here.
+	// if a control is meant to retain focus across frames, store the tag here.
 	hash tag_sticky_hot = hash_none;
 };
