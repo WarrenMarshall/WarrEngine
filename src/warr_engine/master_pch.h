@@ -126,6 +126,7 @@ namespace fixed_time_step
 
 // ----------------------------------------------------------------------------
 
+// #todo - is this necessary?  does it do what you THINK it does?
 constexpr int struct_alignment_for_cache = 64;
 
 #define declare_find_func( struct_type )\
@@ -145,6 +146,7 @@ using w_sz = w_vec2;
 using w_offset = w_vec2;
 using w_pos = w_vec2;
 using time_ms = uint64_t;
+using w_imgui_control_data = std::variant<bool, float, std::string>;
 
 // ----------------------------------------------------------------------------
 

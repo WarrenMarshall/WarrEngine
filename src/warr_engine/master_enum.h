@@ -364,18 +364,7 @@ enum_begin( imgui_control_type )
 	slider,				// horizontal line with a slider thumb
 	edit_box,			// single line, text entry
 	//progress_bar,		// bar showing progress between 0-100
-	//texture				// an image within the client rect
-enum_end
-
-// ----------------------------------------------------------------------------
-
-enum_begin( imgui_control_state )
-	none = 0,
-	up,
-	down,
-	checked,
-	unchecked,
-	max
+	//texture			// an image within the client rect
 enum_end
 
 // ----------------------------------------------------------------------------

@@ -23,15 +23,8 @@ void w_imgui::reset()
 	last_control = std::nullopt;
 }
 
-void w_imgui::set_current_callback_from_current_layer()
-{
-	current_callback = LAYER->get_imgui_callback();
-}
-
 w_imgui* w_imgui::do_panel( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::panel;
 	current_control.tag = tag;
@@ -46,8 +39,6 @@ w_imgui* w_imgui::do_panel( hash tag )
 
 w_imgui* w_imgui::do_push_button( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::push_button;
 	current_control.tag = tag;
@@ -62,8 +53,6 @@ w_imgui* w_imgui::do_push_button( hash tag )
 
 w_imgui* w_imgui::do_checkbox( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::check_box;
 	current_control.tag = tag;
@@ -78,8 +67,6 @@ w_imgui* w_imgui::do_checkbox( hash tag )
 
 w_imgui* w_imgui::do_divider( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::divider;
 	current_control.tag = tag;
@@ -93,8 +80,6 @@ w_imgui* w_imgui::do_divider( hash tag )
 
 w_imgui* w_imgui::do_label( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::label;
 	current_control.tag = tag;
@@ -108,8 +93,6 @@ w_imgui* w_imgui::do_label( hash tag )
 
 w_imgui* w_imgui::do_slider( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::slider;
 	current_control.tag = tag;
@@ -126,8 +109,6 @@ w_imgui* w_imgui::do_slider( hash tag )
 
 w_imgui* w_imgui::do_edit_box( hash tag )
 {
-	set_current_callback_from_current_layer();
-
 	current_control = {};
 	current_control.type = imgui_control_type::edit_box;
 	current_control.tag = tag;
@@ -210,14 +191,14 @@ w_imgui* w_imgui::set_size( const w_sz& sz )
 	{
 		current_control.rc_win.w =
 			fequals( sz.w, w_sz::def )
-			? current_callback->get_default_width( current_control )
+			? current_layer->get_imgui_callback()->get_default_width( current_control )
 			: sz.w;
 	}
 	if( sz.h != w_sz::ignore )
 	{
 		current_control.rc_win.h =
 			fequals( sz.h, w_sz::def )
-			? current_callback->get_default_height( current_control )
+			? current_layer->get_imgui_callback()->get_default_height( current_control )
 			: sz.h;
 	}
 
@@ -274,12 +255,12 @@ w_imgui_result* w_imgui::finalize()
 
 		if( result.was_left_clicked() )
 		{
-			current_callback->on_left_clicked( current_control, result );
+			current_layer->get_imgui_callback()->on_left_clicked( current_control, result );
 		}
 
 		if( is_hot && current_control.sticky_hover )
 		{
-			current_callback->on_motion( current_control, result );
+			current_layer->get_imgui_callback()->on_motion( current_control, result );
 		}
 	}
 	else
@@ -370,7 +351,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 {
 	if( control.sticky_hot )
 	{
-		if( current_callback->tag_sticky_hot == control.tag )
+		if( current_layer->get_imgui_callback()->tag_sticky_hot == control.tag )
 		{
 			is_hot = true;
 		}
@@ -379,7 +360,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	{
 		if( is_hot )
 		{
-			current_callback->tag_sticky_hot = hash_none;
+			current_layer->get_imgui_callback()->tag_sticky_hot = hash_none;
 		}
 	}
 
@@ -416,7 +397,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 				// background bar that sits behind the caption text
 				w_rect rc_label_background( control.rc_client );
-				rc_label_background.h = engine->pixel_font->font_def->max_height + current_callback->get_control_margin();
+				rc_label_background.h = engine->pixel_font->font_def->max_height + current_layer->get_imgui_callback()->get_control_margin();
 				RENDER
 					->push_rgb( w_color::pal( 0 ) )
 					->draw_filled_rectangle( rc_label_background );
@@ -425,7 +406,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				draw_text( control, rc, w_color::pal( 3 ), is_hovered, is_hot );
 
 				// panel client rect is adjusted so that it sits below the caption area
-				control.rc_client.y += rc.h + current_callback->get_control_padding();
+				control.rc_client.y += rc.h + current_layer->get_imgui_callback()->get_control_padding();
 				control.rc_client.h -= rc.h;
 
 				control.rc_client = control.rc_client;
@@ -442,7 +423,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 		case imgui_control_type::check_box:
 		{
-			a_texture* texture = current_callback->get_texture_for_checkbox( control );
+			a_texture* texture = current_layer->get_imgui_callback()->get_texture_for_checkbox( control );
 
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
@@ -453,8 +434,8 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 					rc_client_offset.h
 				);
 			rc_client_offset =
-				w_rect( rc_client_offset.x + current_callback->get_control_padding() + texture->rc.w, rc_client_offset.y,
-					rc_client_offset.w - current_callback->get_control_padding() - texture->rc.w, rc_client_offset.h
+				w_rect( rc_client_offset.x + current_layer->get_imgui_callback()->get_control_padding() + texture->rc.w, rc_client_offset.y,
+					rc_client_offset.w - current_layer->get_imgui_callback()->get_control_padding() - texture->rc.w, rc_client_offset.h
 				);
 
 			draw_texture( control, rc_texture, texture, is_hovered, is_hot );
@@ -480,7 +461,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
 			w_vec2 pos = {
-				rc_client_offset.x + ( rc_client_offset.w * current_callback->get_data_for_control( control ) ),
+				rc_client_offset.x + ( rc_client_offset.w * std::get<float>( current_layer->get_imgui_callback()->get_data_for_control( control ) ) ),
 				rc_client_offset.y + ( rc_client_offset.h / 2.0f )
 			};
 
@@ -519,7 +500,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 	if( is_hot && control.sticky_hot )
 	{
-		current_callback->tag_sticky_hot = control.tag;
+		current_layer->get_imgui_callback()->tag_sticky_hot = control.tag;
 	}
 }
 
@@ -579,8 +560,8 @@ void w_imgui::set_as_last_control( w_imgui_control control )
 {
 	last_control = control;
 
-	flow_right_pos = { last_control->rc_win.x + last_control->rc_win.w + current_callback->get_control_margin(), last_control->rc_win.y };
-	flow_down_pos = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + current_callback->get_control_margin() };
+	flow_right_pos = { last_control->rc_win.x + last_control->rc_win.w + current_layer->get_imgui_callback()->get_control_margin(), last_control->rc_win.y };
+	flow_down_pos = { last_control->rc_win.x, last_control->rc_win.y + last_control->rc_win.h + current_layer->get_imgui_callback()->get_control_margin() };
 }
 
 // a control with the mouse button held down on it will offset slightly

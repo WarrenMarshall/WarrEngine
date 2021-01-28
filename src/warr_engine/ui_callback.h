@@ -8,8 +8,7 @@
 
 struct w_imgui_callback
 {
-	virtual e_imgui_control_state get_state_for_control( const w_imgui_control& control );
-	virtual float get_data_for_control(const w_imgui_control& control);
+	virtual w_imgui_control_data get_data_for_control(const w_imgui_control& control);
 	virtual a_texture* get_texture_for_checkbox( const w_imgui_control& control );
 
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result );
@@ -21,6 +20,11 @@ struct w_imgui_callback
 	virtual float get_default_width( e_imgui_control_type control_type );
 	virtual float get_default_height( const w_imgui_control& control );
 	virtual float get_default_height( e_imgui_control_type control_type );
+
+	virtual bool on_input_motion( const w_input_event* evt );
+	virtual bool on_input_pressed( const w_input_event* evt );
+	virtual bool on_input_held( const w_input_event* evt );
+	virtual bool on_input_released( const w_input_event* evt );
 
 	// if a control is meant to retain focus across frames, store it's
 	// hashed tag here.

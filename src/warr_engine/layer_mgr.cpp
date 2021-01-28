@@ -155,7 +155,10 @@ void w_layer_mgr::draw()
 
 				RENDER->push_depth_nudge();
 				OPENGL->push();
+
+				IMGUI->current_layer = layer;
 				layer->draw_ui();
+				IMGUI->current_layer = nullptr;
 
 				// when the final layer has been drawn, add anything on top that
 				// we need to - like a mouse cursor - to contain it within the same draw call.

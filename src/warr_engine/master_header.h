@@ -43,14 +43,32 @@ constexpr hash hash_none = 0;
 // #C++20 - when MSVC fully supports "consteval" use that instead
 //          of "constexpr" to make sure this is compile time only
 #if 1
+	// this hash is super simple (it just sums up all the values of the letters)
+	// and it WILL give false positives for strings with transposed characters.
+	//
+	// i.e. H("warren") == H("warrne")
+	//
+	// so be careful.
+
 	unsigned constexpr H( char const* str )
 	{
 		return *str ?
-			static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
-			5381;
+			static_cast<unsigned int>( *str ) + H( str + 1 ) :
+			1;
 	}
+
+	// this hash is the one copied from the link above but I don't necessarily
+	// see how it's any better than my super simple one above. if it turns out
+	// that it IS way better, use it instead.
+
+// 	unsigned constexpr H( char const* str )
+// 	{
+// 		return *str ?
+// 			static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :
+// 			5381;
+// 	}
 #else
-	unsigned constevalH( char const* str )
+	unsigned consteval H( char const* str )
 	{
 		return *str ?
 			static_cast<unsigned int>( *str ) + 33 * H( str + 1 ) :

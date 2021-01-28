@@ -4,14 +4,13 @@
 
 struct layer_default_ui_callback : w_imgui_callback
 {
-	virtual e_imgui_control_state get_state_for_control( const w_imgui_control& control ) override;
-	virtual float get_data_for_control( const w_imgui_control& control ) override;
+	virtual w_imgui_control_data get_data_for_control( const w_imgui_control& control ) override;
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
 	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result ) override;
 
-	bool b_checkbox_01 = false;
-	float slider_value = 0.0f;
-	float slider_value2 = 0.0f;
+	w_imgui_control_data b_checkbox_01 = false;
+	w_imgui_control_data slider_value = 0.0f;
+	w_imgui_control_data slider_value2 = 0.0f;
 };
 
 // ----------------------------------------------------------------------------

@@ -128,8 +128,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <ExceptionHandling>false</ExceptionHandling>
-      <StringPooling>
-      </StringPooling>
+      <StringPooling>true</StringPooling>
       <FloatingPointModel>Precise</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>

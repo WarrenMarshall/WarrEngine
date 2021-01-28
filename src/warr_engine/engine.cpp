@@ -18,14 +18,14 @@ void w_engine::launch( int argc, char* argv [] )
 
 		logfile = std::make_unique<w_logfile>();
 		logfile->init( base_game->name );
+		log( "Logging started" );
 	}
 
 	{ // ENGINE
 
+		log( "Creating engine instance" );
 		engine = std::make_unique<w_engine>();
 	}
-
-	logfile->time_stamp( "Started" );
 
 	{	// ENGINE
 		log( "Initializing engine" );
@@ -55,7 +55,7 @@ void w_engine::launch( int argc, char* argv [] )
 
 	{	// WINDOW
 
-		log( "Creating window" );
+		log( "Creating main window" );
 		engine->window->init();
 	}
 
@@ -72,7 +72,7 @@ void w_engine::launch( int argc, char* argv [] )
 	}
 
 	{	// AUDIO
-		log( "Initializing BASS audio" );
+		log( "Initializing audio" );
 		if( !BASS_Init( -1, 44100, BASS_DEVICE_LATENCY | BASS_DEVICE_MONO, nullptr, nullptr ) )
 		{
 			log_warning( "BASS : Audio init failed!" );
@@ -251,7 +251,6 @@ void w_engine::shutdown()
 
 	// Do this last so we can log right up until the last moment
 	logfile->time_stamp( "Ended" );
-	log( "Finished!" );
 	logfile->deinit();
 }
 

@@ -105,10 +105,6 @@ w_imgui_callback* w_layer::get_imgui_callback()
 
 bool w_layer::on_input_motion( const w_input_event* evt )
 {
-	if( is_topmost_layer() && IMGUI->current_callback )
-	{
-	}
-
 	return false;
 }
 

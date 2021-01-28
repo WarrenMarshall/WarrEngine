@@ -20,32 +20,32 @@ void layer_esc_menu_ui_callback::on_left_clicked( const w_imgui_control& control
 		}
 		break;
 
-		case H( "option_fullscreen" ):
-		{
-			engine->window->toggle_fullscreen();
-		}
-		break;
-
 		case H( "button_exit" ):
 		{
 			engine->is_running = false;
 		}
 		break;
+
+		case H( "option_fullscreen" ):
+		{
+			engine->window->toggle_fullscreen();
+		}
+		break;
 	}
 }
 
-e_imgui_control_state layer_esc_menu_ui_callback::get_state_for_control( const w_imgui_control& control )
+w_imgui_control_data layer_esc_menu_ui_callback::get_data_for_control( const w_imgui_control& control )
 {
 	switch( control.tag )
 	{
-		case H("option_fullscreen"):
+		case H( "option_fullscreen" ):
 		{
-			return engine->window->is_fullscreen ? imgui_control_state::checked : imgui_control_state::unchecked;
+			return w_imgui_control_data( engine->window->is_fullscreen );
 		}
 		break;
 	}
 
-	return w_imgui_callback::get_state_for_control( control );
+	return w_imgui_callback::get_data_for_control( control );
 }
 
 // ----------------------------------------------------------------------------
@@ -89,8 +89,8 @@ void layer_esc_menu::draw_ui()
 		->pop();
 
 	constexpr float num_buttons = 4.0f;
-	float button_w = IMGUI->current_callback->get_default_width( imgui_control_type::push_button );
-	float button_h = IMGUI->current_callback->get_default_height( imgui_control_type::push_button );
+	float button_w = get_imgui_callback()->get_default_width( imgui_control_type::push_button );
+	float button_h = get_imgui_callback()->get_default_height( imgui_control_type::push_button );
 
 	auto slice_def = a_9slice_def::find( "simple_ui_panel" );
 
@@ -102,7 +102,7 @@ void layer_esc_menu::draw_ui()
 	float panel_h =
 		( button_h * num_buttons )
 		+ slice_def->get_top_slice_sz()
-		+ ( IMGUI->current_callback->get_control_margin() * ( num_buttons - 1 ) )
+		+ ( get_imgui_callback()->get_control_margin() * ( num_buttons - 1 ) )
 		+ slice_def->get_bottom_slice_sz()
 		+ 12.0f;
 

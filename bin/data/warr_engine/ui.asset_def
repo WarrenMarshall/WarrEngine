@@ -5,6 +5,11 @@
 # if you don't define your own UI, you'll get this one.
 # ---------------------------------------------------------
 
+# {
+# 	"type" "ui_theme"
+# 	"tag" "simple_theme"
+# }
+
 {
 	"type" "src_texture"
 	"tag" "simple_ui"

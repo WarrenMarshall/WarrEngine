@@ -6,7 +6,7 @@
 struct layer_esc_menu_ui_callback : w_imgui_callback
 {
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
-	virtual e_imgui_control_state get_state_for_control( const w_imgui_control& control ) override;
+	virtual w_imgui_control_data get_data_for_control( const w_imgui_control& control ) override;
 };
 
 // ----------------------------------------------------------------------------

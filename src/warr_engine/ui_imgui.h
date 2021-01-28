@@ -21,10 +21,10 @@ struct w_imgui_result
 struct w_imgui
 {
 	w_imgui_callback default_callback;
-	w_imgui_callback* current_callback = nullptr;
 
 	// #ui - this feels clunky. there has to be a better way to express this situation/condition.
 	bool containing_layer_is_topmost = false;
+	w_layer* current_layer = nullptr;
 
 	// which UI control the mouse is hovering over
 	int hover_id = -1;
@@ -41,7 +41,6 @@ struct w_imgui
 	w_imgui_result result = {};
 
 	void reset();
-	void set_current_callback_from_current_layer();
 
 	w_imgui* do_panel( hash tag = 0 );
 	w_imgui* do_push_button( hash tag = 0 );

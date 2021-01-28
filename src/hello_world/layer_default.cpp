@@ -3,24 +3,16 @@
 
 // ----------------------------------------------------------------------------
 
-e_imgui_control_state layer_default_ui_callback::get_state_for_control( const w_imgui_control& control )
-{
-	switch( control.tag )
-	{
-		case H( "checkbox_01" ):
-		{
-			return b_checkbox_01 ? imgui_control_state::checked : imgui_control_state::unchecked;
-		}
-		break;
-	}
-
-	return w_imgui_callback::get_state_for_control( control );
-}
-
-float layer_default_ui_callback::get_data_for_control(const w_imgui_control& control)
+w_imgui_control_data layer_default_ui_callback::get_data_for_control(const w_imgui_control& control)
 {
 	switch (control.tag)
 	{
+		case H( "checkbox_01" ):
+		{
+			return b_checkbox_01;
+		}
+		break;
+
 		case H("slider_01"):
 		{
 			return slider_value;
@@ -29,7 +21,7 @@ float layer_default_ui_callback::get_data_for_control(const w_imgui_control& con
 
 		case H( "slider_02" ):
 		{
-			return slider_value;
+			return slider_value2;
 		}
 		break;
 	}
@@ -45,7 +37,7 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 	{
 		case H( "checkbox_01" ):
 		{
-			b_checkbox_01 = !b_checkbox_01;
+			b_checkbox_01 = !std::get<bool>( b_checkbox_01 );
 			layer->glow_tween.toggle_direction();
 		}
 		break;
@@ -70,7 +62,7 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 
 		case H( "slider_02" ):
 		{
-			slider_value = result.click_pct.x;
+			slider_value2 = result.click_pct.x;
 		}
 		break;
 	}
@@ -85,18 +77,17 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 		case H( "slider_01" ):
 		{
 			slider_value = result.click_pct.x;
-			layer->glow_intensity = slider_value * 5.0f;
+			layer->glow_intensity = std::get<float>( slider_value ) * 5.0f;
 		}
 		break;
 
 		case H( "slider_02" ):
 		{
-			slider_value = result.click_pct.x;
+			slider_value2 = result.click_pct.x;
 			if( control.interval > 0 )
 			{
-				slider_value = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
+				slider_value2 = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
 			}
-			layer->glow_intensity = slider_value * 5.0f;
 		}
 		break;
 	}
@@ -154,7 +145,7 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->do_label()
-		->set_text( fmt::format( "Glow Intensity : {:.0f}%", imgui_callback.slider_value * 100.0f ) )
+		->set_text( fmt::format( "Glow Intensity : {:.0f}%", std::get<float>( imgui_callback.slider_value ) * 100.0f ) )
 		->finalize();
 	IMGUI->do_slider( H( "slider_01" ) )
 		->finalize();

@@ -8,8 +8,8 @@ hello_world_app::hello_world_app( std::string name )
 
 void hello_world_app::init()
 {
-	OPENGL->set_uniform( "ub_auto_glow", true );
-	OPENGL->set_uniform( "u_auto_glow_lower_limit", 0.9f );
+	//OPENGL->set_uniform( "ub_auto_glow", true );
+	//OPENGL->set_uniform( "u_auto_glow_lower_limit", 0.9f );
 
 	//OPENGL->set_uniform( "ub_vignette", true );
 	//OPENGL->set_uniform( "ub_crt_warp", true );

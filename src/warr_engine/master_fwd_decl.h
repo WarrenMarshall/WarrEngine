@@ -11,6 +11,7 @@ struct w_file_zip;
 struct w_file_mem_text;
 struct w_imgui_result;
 struct w_game;
+struct w_layer;
 struct w_layer_mgr;
 struct w_particle_pool;
 struct w_physics_debug_draw;
