@@ -126,9 +126,6 @@ namespace fixed_time_step
 
 // ----------------------------------------------------------------------------
 
-// #todo - is this necessary?  does it do what you THINK it does?
-constexpr int struct_alignment_for_cache = 64;
-
 #define declare_find_func( struct_type )\
 static struct_type* find( const std::string_view name, bool silent = false );
 

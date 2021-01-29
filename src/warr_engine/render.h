@@ -2,11 +2,11 @@
 
 // ----------------------------------------------------------------------------
 
-struct alignas( struct_alignment_for_cache ) w_render_state
+struct w_render_state
 {
 	w_color color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	float glow = 0.0f;
 	w_vec2 scale = { 1.0f, 1.0f };
+	float glow = 0.0f;
 	float angle = 0.0f;
 	e_align align = align::left;
 	bool snap_to_pixel = true;

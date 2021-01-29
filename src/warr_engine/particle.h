@@ -1,6 +1,6 @@
 #pragma once
 
-struct alignas( struct_alignment_for_cache ) w_particle final
+struct w_particle final
 {
 	a_emitter_params* params = nullptr;
 
