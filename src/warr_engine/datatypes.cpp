@@ -55,6 +55,8 @@ size_t w_timeline::find_next_keyframe_idx_from_pct( float pct )
 // computes a value on the timeline between 0-1, based on the "pct_on_timeline"
 // pass in.
 
+// #DRY - these 2 functions are basically indentical
+
 void w_timeline::get_value( float pct_on_timeline, float* value )
 {
 	assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );

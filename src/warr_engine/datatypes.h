@@ -36,15 +36,12 @@ struct w_color
 };
 
 // ----------------------------------------------------------------------------
-
-
-// #warren - this feels like "float_value"/"color_value" should be a template
-
 // a single stop on a timeline
 
 struct w_keyframe
 {
 	float pct_marker = 0.0f;
+
 	float float_value = 0.0f;
 	w_color color_value = w_color::white;
 
@@ -68,6 +65,28 @@ struct w_timeline
 	size_t find_next_keyframe_idx_from_pct( float pct );
 	void get_value( float pct_on_timeline, float* value );
 	void get_value( float pct_on_timeline, w_color* value );
+
+private:
+
+	template<typename T>
+	void get_value( float pct_on_timeline, T* value )
+	{
+		assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
+
+		auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
+		size_t kf_min = kf_max - 1;
+
+		// the range of percentages within the min/max keyframes
+		float pct_range = keyframes[ kf_max ].pct_marker - keyframes[ kf_min ].pct_marker;
+
+		// the pct we are at within the min/max keyframes
+		float pct_within = ( pct_on_timeline - keyframes[ kf_min ].pct_marker ) / pct_range;
+
+
+		// the value represented by that pct_within
+		*value = keyframes[ kf_min ].float_value + ( ( keyframes[ kf_max ].float_value - keyframes[ kf_min ].float_value ) * pct_within );
+	}
+
 };
 
 // ----------------------------------------------------------------------------
