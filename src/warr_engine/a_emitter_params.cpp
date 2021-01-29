@@ -5,7 +5,6 @@ implement_find_func( a_emitter_params )
 
 a_emitter_params::a_emitter_params()
 {
-	particle_spawner = nullptr;
 	needs_warm_up = false;
 	is_one_shot = false;
 

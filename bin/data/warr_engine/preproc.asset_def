@@ -64,4 +64,11 @@
 	"tween.one_shot"	"1"
 	"tween.loop"		"2"
 	"tween.pingpong"	"3"
+
+	# -----------------------------------------------------
+	# particle spawner types
+
+	"spawner_type.point"	"1"
+	"spawner_type.box"		"2"
+	"spawner_type.circle"	"3"
 }

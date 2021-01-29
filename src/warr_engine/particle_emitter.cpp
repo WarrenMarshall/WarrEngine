@@ -89,7 +89,7 @@ void w_particle_emitter::spawn_particle()
 
 	// 1. find a spawn location based on the particle spawner we are using
 	//    relative to the world origin
-	params->particle_spawner->find_spawn_pos_for_new_particle( p );
+	params->particle_spawner.find_spawn_pos_for_new_particle( p );
 
 	// 2. apply the current transform (entity+component) to move the
 	//    particle position into world space

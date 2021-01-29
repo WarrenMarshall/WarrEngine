@@ -6,60 +6,54 @@
 
 void w_particle_spawner::find_spawn_pos_for_new_particle( w_particle* particle )
 {
-	particle->pos = w_vec2::zero;
+	switch( type )
+	{
+		case particle_spawner_type::point:
+		{
+			particle->pos = w_vec2::zero;
+		}
+		break;
+
+		case particle_spawner_type::box:
+		{
+			particle->pos.x = w_range( -( w / 2.0f ), ( w / 2.0f ) ).get_value();
+			particle->pos.y = w_range( -( h / 2.0f ), ( h / 2.0f ) ).get_value();
+		}
+		break;
+
+		case particle_spawner_type::circle:
+		{
+			particle->pos = engine->random->get_random_unit_circle() * ( radius * engine->random->getf() );
+		}
+		break;
+	}
 }
 
 void w_particle_spawner::parse_from_config_string( std::string_view value )
 {
-}
-
-// ----------------------------------------------------------------------------
-
-//w_particle_spawner_box::w_particle_spawner_box( const w_particle_spawner_box& other )
-//{
-//	w = other.w;
-//	h = other.h;
-//}
-
-w_particle_spawner_box::w_particle_spawner_box( int w, int h )
-	: w( w ), h( h )
-{
-}
-
-void w_particle_spawner_box::find_spawn_pos_for_new_particle( w_particle* particle )
-{
-	particle->pos.x = w_range( -( w / 2.0f ), ( w / 2.0f ) ).get_value();
-	particle->pos.y = w_range( -( h / 2.0f ), ( h / 2.0f ) ).get_value();
-}
-
-void w_particle_spawner_box::parse_from_config_string( std::string_view value )
-{
 	w_tokenizer tok( value, ',' );
-	tok.get_next_token();	// throw away the type
-	w = w_parser::int_from_str( *tok.get_next_token() );
-	h = w_parser::int_from_str( *tok.get_next_token() );
-}
 
-// ----------------------------------------------------------------------------
+	type = engine->find_int_from_symbol( *tok.get_next_token() );
+	assert( type > 0 );
 
-//w_particle_spawner_circle::w_particle_spawner_circle( const w_particle_spawner_circle& other )
-//	: radius( other.radius )
-//{
-//}
-//
-w_particle_spawner_circle::w_particle_spawner_circle( float radius )
-	: radius( radius )
-{
-}
+	switch( type )
+	{
+		case particle_spawner_type::point:
+		{
+		}
+		break;
 
-void w_particle_spawner_circle::find_spawn_pos_for_new_particle( w_particle* particle )
-{
-	particle->pos = engine->random->get_random_unit_circle() * ( radius * engine->random->getf() );
-}
+		case particle_spawner_type::box:
+		{
+			w = w_parser::int_from_str( *tok.get_next_token() );
+			h = w_parser::int_from_str( *tok.get_next_token() );
+		}
+		break;
 
-void w_particle_spawner_circle::parse_from_config_string( std::string_view value )
-{
-	w_tokenizer tok( value, ',' );
-	tok.get_next_token();	// throw away the type
-	radius = w_parser::float_from_str( *tok.get_next_token() );
+		case particle_spawner_type::circle:
+		{
+			radius = w_parser::float_from_str( *tok.get_next_token() );
+		}
+		break;
+	}
 }

@@ -347,27 +347,7 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 						else if( key == "spawner_type" )
 						{
-							w_tokenizer tok( value, ',' );
-							std::string spawner_type = std::string( *tok.get_next_token() );
-
-							if( spawner_type == "point" )
-							{
-								// the default spawner type, don't need to do anything for this
-							}
-							else if( spawner_type == "box" )
-							{
-								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_box>();
-							}
-							else if( spawner_type == "circle" )
-							{
-								asset_ptr->particle_spawner = std::make_unique<w_particle_spawner_circle>();
-							}
-							else
-							{
-								log_error( "Unknown emitter spawn type : [{}]", spawner_type );
-							}
-
-							asset_ptr->particle_spawner->parse_from_config_string( value );
+							asset_ptr->particle_spawner.parse_from_config_string( value );
 						}
 						else if( key == "a_dir" )
 						{

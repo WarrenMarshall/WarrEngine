@@ -3,7 +3,7 @@
 	"type" "emitter_params"
 	"tag" "emitter_game_stars"
 	"texture_tag" "tex_particle_02"
-	"spawner_type" "circle,2"
+	"spawner_type" "spawner_type.circle,2"
 
 	"s_max_spawn_per_sec" "5"
 	"b_needs_warm_up" "true"
@@ -14,8 +14,6 @@
 	"r_lifespan" "8000, 8000"
 	"r_velocity_spawn" "40,60"
 	"t_color" "0,@4, 1.0,@0"
-	#"r_spin_spawn" "0,0"
-	#"r_spin_per_sec" "-90,90"
 	"t_alpha" "0,0, 0.15,0.25, 1,0"
 }
 
@@ -23,7 +21,7 @@
 	"type" "emitter_params"
 	"tag" "menu_fire_up"
 	"texture_tag" "tex_particle_01"
-	"spawner_type" "box,256,4"
+	"spawner_type" "spawner_type.box,256,4"
 
 	"s_max_spawn_per_sec" "50"
 	"b_needs_warm_up" "true"

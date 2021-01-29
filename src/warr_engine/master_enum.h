@@ -383,3 +383,13 @@ enum_begin( render_prim )
 	line,
 	point
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( particle_spawner_type )
+	point = 1,
+	box,
+	circle,
+enum_end
+
+
