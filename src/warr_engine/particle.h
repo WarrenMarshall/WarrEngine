@@ -2,6 +2,7 @@
 
 struct w_particle final
 {
+	bool is_alive = true;
 	a_emitter_params* params = nullptr;
 
 	// storing this directly instead of using a w_transform
@@ -25,7 +26,6 @@ struct w_particle final
 	float spin_per_sec = 0.0f;
 
 	void update();
-	[[nodiscard]] bool is_alive() const;
 };
 
 // make sure the particle struct doesn't get above 64 bytes

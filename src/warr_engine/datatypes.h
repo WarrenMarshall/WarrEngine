@@ -30,6 +30,10 @@ struct w_color
 
 	w_color operator*( float v ) const;
 	w_color operator*=( float v );
+	w_color operator-( w_color v ) const;
+	w_color operator-=( w_color v );
+	w_color operator+( w_color v ) const;
+	w_color operator+=( w_color v );
 
 	static void scale( w_color& color, float s );
 	static w_color pal( int idx );
@@ -41,9 +45,7 @@ struct w_color
 struct w_keyframe
 {
 	float pct_marker = 0.0f;
-
-	float float_value = 0.0f;
-	w_color color_value = w_color::white;
+	w_keyframe_data value = {};
 
 	w_keyframe() = default;
 	w_keyframe( float pct_marker, float value );
@@ -63,15 +65,14 @@ struct w_timeline
 	w_timeline* kf_add( const w_keyframe& keyframe );
 
 	size_t find_next_keyframe_idx_from_pct( float pct );
-	void get_value( float pct_on_timeline, float* value );
-	void get_value( float pct_on_timeline, w_color* value );
 
-private:
+	// computes a value on the timeline between 0-1, based on the
+	// "pct_on_timeline" pass in.
 
 	template<typename T>
 	void get_value( float pct_on_timeline, T* value )
 	{
-		assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
+		//assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
 
 		auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
 		size_t kf_min = kf_max - 1;
@@ -82,9 +83,12 @@ private:
 		// the pct we are at within the min/max keyframes
 		float pct_within = ( pct_on_timeline - keyframes[ kf_min ].pct_marker ) / pct_range;
 
+		// compute the value represented by that pct_within within the min/max keyframes
 
-		// the value represented by that pct_within
-		*value = keyframes[ kf_min ].float_value + ( ( keyframes[ kf_max ].float_value - keyframes[ kf_min ].float_value ) * pct_within );
+		T min_value = std::get<T>( keyframes[ kf_min ].value );
+		T max_value = std::get<T>( keyframes[ kf_max ].value );
+
+		*value = min_value + ( ( max_value - min_value ) * pct_within );
 	}
 
 };

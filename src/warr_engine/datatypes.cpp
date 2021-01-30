@@ -5,12 +5,12 @@
 // ----------------------------------------------------------------------------
 
 w_keyframe::w_keyframe( float pct_marker, float value )
-	: pct_marker( pct_marker ), float_value( value )
+	: pct_marker( pct_marker ), value( value )
 {
 }
 
 w_keyframe::w_keyframe( float pct_marker, const w_color& value )
-	: pct_marker( pct_marker ), color_value( value )
+	: pct_marker( pct_marker ), value( value )
 {
 }
 
@@ -39,59 +39,17 @@ w_timeline* w_timeline::kf_add( const w_keyframe& keyframe )
 
 size_t w_timeline::find_next_keyframe_idx_from_pct( float pct )
 {
-	size_t kf_max = 0;
+	size_t kf_next = 0;
 
-	for( ; kf_max < keyframes.size() - 1; ++kf_max )
+	for( ; kf_next < keyframes.size() - 1; ++kf_next )
 	{
-		if( keyframes[ kf_max ].pct_marker > pct )
+		if( keyframes[ kf_next ].pct_marker > pct )
 		{
 			break;
 		}
 	}
 
-	return kf_max;
-}
-
-// computes a value on the timeline between 0-1, based on the "pct_on_timeline"
-// pass in.
-
-// #DRY - these 2 functions are basically indentical
-
-void w_timeline::get_value( float pct_on_timeline, float* value )
-{
-	assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
-
-	auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
-	size_t kf_min = kf_max - 1;
-
-	// the range of percentages within the min/max keyframes
-	float pct_range = keyframes[kf_max].pct_marker - keyframes[kf_min].pct_marker;
-
-	// the pct we are at within the min/max keyframes
-	float pct_within = (pct_on_timeline - keyframes[kf_min].pct_marker) / pct_range;
-
-	// the value represented by that pct_within
-	*value = keyframes[kf_min].float_value + ( (keyframes[kf_max].float_value - keyframes[kf_min].float_value ) * pct_within );
-}
-
-void w_timeline::get_value( float pct_on_timeline, w_color* value )
-{
-	assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
-
-	auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
-	size_t kf_min = kf_max - 1;
-
-	// the range of percentages within the min/max keyframes
-	float pct_range = keyframes[kf_max].pct_marker - keyframes[kf_min].pct_marker;
-
-	// the pct we are at within the min/max keyframes
-	float pct_within = (pct_on_timeline - keyframes[kf_min].pct_marker) / pct_range;
-
-	// the value represented by that pct_within
-	value->r = keyframes[kf_min].color_value.r + ( ( keyframes[kf_max].color_value.r - keyframes[kf_min].color_value.r ) * pct_within );
-	value->g = keyframes[kf_min].color_value.g + ( ( keyframes[kf_max].color_value.g - keyframes[kf_min].color_value.g ) * pct_within );
-	value->b = keyframes[kf_min].color_value.b + ( ( keyframes[kf_max].color_value.b - keyframes[kf_min].color_value.b ) * pct_within );
-	value->a = keyframes[kf_min].color_value.a + ( ( keyframes[kf_max].color_value.a - keyframes[kf_min].color_value.a ) * pct_within );
+	return kf_next;
 }
 
 // ----------------------------------------------------------------------------
@@ -318,6 +276,28 @@ w_color w_color::operator*( float v ) const
 w_color w_color::operator*=( float v )
 {
 	*this = *this * v;
+	return *this;
+}
+
+w_color w_color::operator-( w_color v ) const
+{
+	return w_color( this->r - v.r, this->g - v.g, this->b - v.b, this->a - v.a );
+}
+
+w_color w_color::operator-=( w_color v )
+{
+	*this = *this - v;
+	return *this;
+}
+
+w_color w_color::operator+( w_color v ) const
+{
+	return w_color( this->r + v.r, this->g + v.g, this->b + v.b, this->a + v.a );
+}
+
+w_color w_color::operator+=( w_color v )
+{
+	*this = *this + v;
 	return *this;
 }
 
