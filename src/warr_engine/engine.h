@@ -39,6 +39,17 @@ struct w_engine
 	bool is_running = false;
 	bool is_paused = false;
 
+	struct
+	{
+		// "-verbose" to set TRUE
+		//		* enables optional log messages that are marked using "log_verbose"
+		bool verbose = false;
+
+		// "-nobatch" to set TRUE
+		//		* pretend like the video card has a single texture unit
+		bool nobatch = false;
+	} cmdline;
+
 	std::unique_ptr<w_opengl_framebuffer> frame_buffer = nullptr;
 	std::unique_ptr<w_opengl_framebuffer> blur_frame_buffers[2];
 	std::unique_ptr<w_opengl_framebuffer> composite_frame_buffer = nullptr;

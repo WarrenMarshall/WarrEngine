@@ -47,8 +47,14 @@ void w_engine::launch( int argc, char* argv [] )
 
 			if( arg == "-verbose" )
 			{
-				logfile->is_verbose = true;
+				engine->cmdline.verbose = true;
 				log_verbose( "cmdline : \"{}\" : Verbose logging enabled.", arg );
+			}
+
+			if( arg == "-nobatch" )
+			{
+				engine->cmdline.nobatch = true;
+				log_verbose( "cmdline : \"{}\" : Batch rendering disabled.", arg );
 			}
 		}
 	}

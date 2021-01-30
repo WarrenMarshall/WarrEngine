@@ -75,6 +75,12 @@ void w_opengl::init()
 	log( "Renderer: [{}]", glGetString( GL_RENDERER ) );
 
 	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &max_texture_image_units );
+
+	if( engine->cmdline.nobatch )
+	{
+		max_texture_image_units = 1;
+	}
+
 	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", max_texture_image_units );
 
 	// front facing triangles are wound counter clockwise

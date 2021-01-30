@@ -4,7 +4,6 @@
 struct w_logfile
 {
 	FILE* file;
-	bool is_verbose = false;	// pass "-verbose" on command line to enable
 
 	void init( const std::string_view name );
 	void deinit();
