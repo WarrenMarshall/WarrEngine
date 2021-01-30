@@ -25,9 +25,15 @@ w_imgui_control_data layer_default_ui_callback::get_data_for_control(const w_img
 		}
 		break;
 
-		case H( "edit_box_01" ):
+		case H( "edit_name" ):
 		{
-			return edit_value;
+			return edit_name;
+		}
+		break;
+
+		case H( "edit_email" ):
+		{
+			return edit_email;
 		}
 		break;
 	}
@@ -105,17 +111,50 @@ bool layer_default_ui_callback::on_input_pressed( const w_input_event* evt )
 
 	switch( layer->get_imgui_callback()->tag_focus )
 	{
-		case H( "edit_box_01" ):
+		case H( "edit_name" ):
 		{
 			switch( evt->input_id )
 			{
 				case input_id::key_backspace:
 				{
-					std::string str = std::get<std::string>( edit_value );
+					std::string str = std::get<std::string>( edit_name );
 					if( !str.empty() )
 					{
 						str = str.substr( 0, str.size() - 1 );
-						edit_value = str;
+						edit_name = str;
+					}
+					return true;
+				}
+				break;
+
+				case input_id::key_esc:
+				case input_id::key_enter:
+				{
+					layer->get_imgui_callback()->tag_focus = hash_none;
+					return true;
+				}
+				break;
+
+				default:
+				{
+					return true;
+				}
+				break;
+			}
+		}
+		break;
+
+		case H( "edit_email" ):
+		{
+			switch( evt->input_id )
+			{
+				case input_id::key_backspace:
+				{
+					std::string str = std::get<std::string>( edit_email );
+					if( !str.empty() )
+					{
+						str = str.substr( 0, str.size() - 1 );
+						edit_email = str;
 					}
 					return true;
 				}
@@ -148,17 +187,36 @@ bool layer_default_ui_callback::on_input_held( const w_input_event* evt )
 
 	switch( layer->get_imgui_callback()->tag_focus )
 	{
-		case H( "edit_box_01" ):
+		case H( "edit_name" ):
 		{
 			switch( evt->input_id )
 			{
 				case input_id::key_backspace:
 				{
-					std::string str = std::get<std::string>( edit_value );
+					std::string str = std::get<std::string>( edit_name );
 					if( !str.empty() )
 					{
 						str = str.substr( 0, str.size() - 1 );
-						edit_value = str;
+						edit_name = str;
+					}
+					return true;
+				}
+				break;
+			}
+		}
+		break;
+
+		case H( "edit_email" ):
+		{
+			switch( evt->input_id )
+			{
+				case input_id::key_backspace:
+				{
+					std::string str = std::get<std::string>( edit_email );
+					if( !str.empty() )
+					{
+						str = str.substr( 0, str.size() - 1 );
+						edit_email = str;
 					}
 					return true;
 				}
@@ -177,9 +235,15 @@ bool layer_default_ui_callback::on_input_key( const w_input_event* evt )
 
 	switch( layer->get_imgui_callback()->tag_focus )
 	{
-		case H( "edit_box_01" ):
+		case H( "edit_name" ):
 		{
-			edit_value = std::get<std::string>( edit_value ) + evt->ch;
+			edit_name = std::get<std::string>( edit_name ) + evt->ch;
+			return true;
+		}
+
+		case H( "edit_email" ):
+		{
+			edit_email = std::get<std::string>( edit_email ) + evt->ch;
 			return true;
 		}
 	}
@@ -255,7 +319,10 @@ void layer_default::draw_ui()
 
 	IMGUI->do_divider()->finalize();
 
-	IMGUI->do_edit_box( H( "edit_box_01" ) )
+	IMGUI->do_edit_box( H( "edit_name" ) )
+		->finalize();
+
+	IMGUI->do_edit_box( H( "edit_email" ) )
 		->finalize();
 }
 
