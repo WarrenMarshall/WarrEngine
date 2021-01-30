@@ -127,3 +127,8 @@ bool w_imgui_callback::on_input_released( const w_input_event* evt )
 {
 	return false;
 }
+
+bool w_imgui_callback::on_input_key( const w_input_event* evt )
+{
+	return false;
+}

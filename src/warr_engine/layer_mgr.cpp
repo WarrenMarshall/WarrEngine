@@ -258,3 +258,21 @@ bool w_layer_mgr::on_input_released( const w_input_event* evt )
 
 	return false;
 }
+
+bool w_layer_mgr::on_input_key( const w_input_event* evt )
+{
+	for( const auto& iter : layer_stack )
+	{
+		if( iter->on_input_key( evt ) )
+		{
+			return true;
+		}
+
+		if( iter->blocks_further_input )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

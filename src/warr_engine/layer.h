@@ -69,4 +69,5 @@ struct w_layer : i_life_cycle
 	virtual bool on_input_pressed( const w_input_event* evt );
 	virtual bool on_input_held( const w_input_event* evt );
 	virtual bool on_input_released( const w_input_event* evt );
+	virtual bool on_input_key( const w_input_event* evt );
 };

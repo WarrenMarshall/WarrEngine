@@ -116,7 +116,7 @@ w_imgui* w_imgui::do_edit_box( hash tag )
 	current_control.slice_def = a_9slice_def::find( "simple_ui_edit_box" );
 	current_control.text_align = align::left | align::vcenter;
 	current_control.uses_click_offset = false;
-	current_control.sticky_hot = true;
+	current_control.can_retain_focus = true;
 
 	set_size( { w_sz::def, w_sz::def } );
 
@@ -349,18 +349,15 @@ void w_imgui::update_im_state( int id, const w_imgui_control& control, bool is_h
 
 void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 {
-	if( control.sticky_hot )
+	if( control.can_retain_focus && current_layer->get_imgui_callback()->tag_focus == control.tag )
 	{
-		if( current_layer->get_imgui_callback()->tag_sticky_hot == control.tag )
-		{
-			is_hot = true;
-		}
+		is_hot = true;
 	}
 	else
 	{
 		if( is_hot )
 		{
-			current_layer->get_imgui_callback()->tag_sticky_hot = hash_none;
+			current_layer->get_imgui_callback()->tag_focus = hash_none;
 		}
 	}
 
@@ -491,16 +488,34 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 		case imgui_control_type::edit_box:
 		{
+			// background
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
+
+			// text
+			control.text = std::get<std::string>( current_layer->get_imgui_callback()->get_data_for_control( control ) );
+			draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
+
+			if( current_layer->get_imgui_callback()->tag_focus == control.tag )
+			{
+				// caret
+				w_sz extents = engine->pixel_font->get_string_extents( control.text );
+				auto tex_caret = a_texture::find( "ui_edit_box_caret" );
+				RENDER->draw_sprite( tex_caret,
+					{
+						rc_client_offset.x + extents.x + current_layer->get_imgui_callback()->get_control_margin(),
+						rc_client_offset.y + ( rc_client_offset.h / 2.0f )
+					}
+				);
+			}
 		}
 		break;
 	}
 
 	RENDER->end();
 
-	if( is_hot && control.sticky_hot )
+	if( is_hot && control.can_retain_focus )
 	{
-		current_layer->get_imgui_callback()->tag_sticky_hot = control.tag;
+		current_layer->get_imgui_callback()->tag_focus = control.tag;
 	}
 }
 

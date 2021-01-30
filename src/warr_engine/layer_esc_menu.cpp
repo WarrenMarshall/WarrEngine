@@ -48,6 +48,20 @@ w_imgui_control_data layer_esc_menu_ui_callback::get_data_for_control( const w_i
 	return w_imgui_callback::get_data_for_control( control );
 }
 
+bool layer_esc_menu_ui_callback::on_input_pressed( const w_input_event* evt )
+{
+	switch( evt->input_id )
+	{
+		case input_id::key_esc:
+		{
+			engine->layer_mgr->pop();
+		}
+		break;
+	}
+
+	return false;
+}
+
 // ----------------------------------------------------------------------------
 
 void layer_esc_menu::push()

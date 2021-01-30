@@ -97,9 +97,10 @@ struct w_engine
 	[[nodiscard]] w_vec2 find_vec2_from_symbol( const std::string_view str, const w_vec2& def_value = w_vec2( 0, 0 ) );
 
 	bool on_input_motion( const w_input_event* evt ) { return false; }
-	bool on_input_pressed( const w_input_event* evt ) { return false; }
+	bool on_input_pressed( const w_input_event* evt );
 	bool on_input_held( const w_input_event* evt ) { return false; }
 	bool on_input_released( const w_input_event* evt );
+	bool on_input_key( const w_input_event* evt ) { return false; }
 
 	std::unique_ptr<w_cache_asset_definition_files> asset_definition_file_cache = nullptr;
 	std::unique_ptr<w_time> time = nullptr;

@@ -717,8 +717,6 @@ void w_engine::update()
 	{
 		asset->update();
 	}
-
-	render->show_stats = input->is_button_down( input_id::key_s);
 }
 
 void w_engine::toggle_pause()
@@ -821,6 +819,8 @@ void w_engine::precache_asset_resources( int pass )
 
 void w_engine::wait_for_thread_pool_to_finish()
 {
+	log_verbose( "Waiting for {} threads to finish.", threads.size() );
+
 	for( auto& thread : threads )
 	{
 		thread.wait();
@@ -829,87 +829,120 @@ void w_engine::wait_for_thread_pool_to_finish()
 	threads.clear();
 }
 
-bool w_engine::on_input_released( const w_input_event* evt )
+bool w_engine::on_input_pressed( const w_input_event* evt )
 {
-	// toggle engine pause
-	if( evt->input_id == input_id::key_pause )
+	switch( evt->input_id )
 	{
-		toggle_pause();
-		return true;
-	}
-
-	// slow down game clock
-	if( evt->input_id == input_id::key_left_bracket )
-	{
-		time->dilation -= 0.1f;
-		time->dilation = glm::max( time->dilation, 0.1f );
-
-		if( engine->input->is_shift_down() )
+		// toggle engine pause
+		case input_id::key_pause:
 		{
-			time->dilation = 1.0f;
+			toggle_pause();
+			return true;
 		}
-		return true;
-	}
+		break;
 
-	// speed up game clock
-	if( evt->input_id == input_id::key_right_bracket )
-	{
-		time->dilation += 0.1f;
-
-		if( engine->input->is_shift_down() )
+		// slow down game clock
+		case input_id::key_left_bracket:
 		{
-			time->dilation = 5.0f;
+			time->dilation -= 0.1f;
+			time->dilation = glm::max( time->dilation, 0.1f );
+
+			if( engine->input->is_shift_down() )
+			{
+				time->dilation = 1.0f;
+			}
+			return true;
 		}
-		return true;
-	}
+		break;
 
-#ifndef _FINALRELEASE
-	// frame debugger
-	if( evt->input_id == input_id::key_f10 )
-	{
-		RENDER->single_frame_debugger = true;
-		log_div();
-		log( "single frame debugger" );
-		log_div();
-		return true;
-	}
+		// speed up game clock
+		case input_id::key_right_bracket:
+		{
+			time->dilation += 0.1f;
 
-	// toggle debug physics drawing
-	if( evt->input_id == input_id::key_f5 )
-	{
-		RENDER->show_physics_debug = !RENDER->show_physics_debug;
-		return true;
-	}
-#endif
+			if( engine->input->is_shift_down() )
+			{
+				time->dilation = 5.0f;
+			}
+			return true;
+		}
+		break;
 
-	// toggle full screen
-	if( evt->input_id == input_id::key_f11 )
-	{
-		window->toggle_fullscreen();
-		return true;
-	}
+	#ifndef _FINALRELEASE
+		// frame debugger
+		case input_id::key_f10:
+		{
+			RENDER->single_frame_debugger = true;
+			log_div();
+			log( "single frame debugger" );
+			log_div();
+			return true;
+		}
+		break;
 
-	if( evt->input_id == input_id::key_enter )
-	{
-		if( engine->input->is_alt_down() )
+		// toggle debug physics drawing
+		case input_id::key_f5:
+		{
+			RENDER->show_physics_debug = !RENDER->show_physics_debug;
+			return true;
+		}
+		break;
+	#endif
+
+		// toggle full screen
+		case input_id::key_f11:
 		{
 			window->toggle_fullscreen();
+			return true;
 		}
-		return true;
+		break;
+
+		case input_id::key_enter:
+		{
+			if( engine->input->is_alt_down() )
+			{
+				window->toggle_fullscreen();
+			}
+			return true;
+		}
+		break;
+
+		// toggle esc menu
+		case input_id::key_esc:
+		{
+			if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
+			{
+				layer_mgr->pop();
+			}
+			else
+			{
+				layer_mgr->push<layer_esc_menu>();
+			}
+			return true;
+		}
+		break;
+
+		case input_id::key_s:
+		{
+			render->show_stats = true;
+			return true;
+		}
+		break;
 	}
 
-	// toggle esc menu
-	if( evt->input_id == input_id::key_esc )
+	return false;
+}
+
+bool w_engine::on_input_released( const w_input_event* evt )
+{
+	switch( evt->input_id )
 	{
-		if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
+		case input_id::key_s:
 		{
-			layer_mgr->pop();
+			render->show_stats = false;
+			return true;
 		}
-		else
-		{
-			layer_mgr->push<layer_esc_menu>();
-		}
-		return true;
+		break;
 	}
 
 	return false;

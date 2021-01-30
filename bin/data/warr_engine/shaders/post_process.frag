@@ -34,6 +34,12 @@ uniform vec4 u_color_tint = vec4( 1.0f, 1.0f, 1.0f, 0.0f );
 
 uniform vec4 u_color_overlay = vec4( 0.0f, 0.0f, 0.0f, 0.0f );
 
+/*
+  case ${i}:
+	sum += texture2D(texturesArray[${i}], vUv);
+	break;
+*/
+
 uniform sampler2D u_textures[__max_texture_image_units__];
 
 // ----------------------------------------------------------------------------
@@ -128,7 +134,7 @@ void main()
 			crt_tint_inv = 0.01f;
 		}
 
-	   	final_color *= crt_tint;
+		final_color *= crt_tint;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -208,6 +214,6 @@ void main()
 
 	if( ub_vignette )
 	{
-	  	out_fragment_color *= fx_vignette( final_uv, u_vignette_size, u_vignette_smoothness, u_vignette_rounding );
+		out_fragment_color *= fx_vignette( final_uv, u_vignette_size, u_vignette_smoothness, u_vignette_rounding );
 	}
 }

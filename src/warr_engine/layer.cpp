@@ -110,15 +110,52 @@ bool w_layer::on_input_motion( const w_input_event* evt )
 
 bool w_layer::on_input_pressed( const w_input_event* evt )
 {
+	if( LAYER == this )
+	{
+		if( get_imgui_callback()->on_input_pressed( evt ) )
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
 bool w_layer::on_input_held( const w_input_event* evt )
 {
+	if( LAYER == this )
+	{
+		if( get_imgui_callback()->on_input_held( evt ) )
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
 bool w_layer::on_input_released( const w_input_event* evt )
 {
+	if( LAYER == this )
+	{
+		if( get_imgui_callback()->on_input_released( evt ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool w_layer::on_input_key( const w_input_event* evt )
+{
+	if( LAYER == this )
+	{
+		if( get_imgui_callback()->on_input_key( evt ) )
+		{
+			return true;
+		}
+	}
+
 	return false;
 }

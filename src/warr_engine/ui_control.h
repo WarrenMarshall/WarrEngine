@@ -34,5 +34,5 @@ struct w_imgui_control
 
 	// can this control retain focus across frames? if true, then this control
 	// will remain "hot" until the user is done interacting with it.
-	bool sticky_hot = false;
+	bool can_retain_focus = false;
 };

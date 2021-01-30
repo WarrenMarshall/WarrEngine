@@ -24,6 +24,12 @@ w_imgui_control_data layer_default_ui_callback::get_data_for_control(const w_img
 			return slider_value2;
 		}
 		break;
+
+		case H( "edit_box_01" ):
+		{
+			return edit_value;
+		}
+		break;
 	}
 
 	return 0.0f;
@@ -91,6 +97,94 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 		}
 		break;
 	}
+}
+
+bool layer_default_ui_callback::on_input_pressed( const w_input_event* evt )
+{
+	auto layer = static_cast<layer_default*>( LAYER );
+
+	switch( layer->get_imgui_callback()->tag_focus )
+	{
+		case H( "edit_box_01" ):
+		{
+			switch( evt->input_id )
+			{
+				case input_id::key_backspace:
+				{
+					std::string str = std::get<std::string>( edit_value );
+					if( !str.empty() )
+					{
+						str = str.substr( 0, str.size() - 1 );
+						edit_value = str;
+					}
+					return true;
+				}
+				break;
+
+				case input_id::key_esc:
+				case input_id::key_enter:
+				{
+					layer->get_imgui_callback()->tag_focus = hash_none;
+					return true;
+				}
+				break;
+
+				default:
+				{
+					return true;
+				}
+				break;
+			}
+		}
+		break;
+	}
+
+	return false;
+}
+
+bool layer_default_ui_callback::on_input_held( const w_input_event* evt )
+{
+	auto layer = static_cast<layer_default*>( LAYER );
+
+	switch( layer->get_imgui_callback()->tag_focus )
+	{
+		case H( "edit_box_01" ):
+		{
+			switch( evt->input_id )
+			{
+				case input_id::key_backspace:
+				{
+					std::string str = std::get<std::string>( edit_value );
+					if( !str.empty() )
+					{
+						str = str.substr( 0, str.size() - 1 );
+						edit_value = str;
+					}
+					return true;
+				}
+				break;
+			}
+		}
+		break;
+	}
+
+	return false;
+}
+
+bool layer_default_ui_callback::on_input_key( const w_input_event* evt )
+{
+	auto layer = static_cast<layer_default*>( LAYER );
+
+	switch( layer->get_imgui_callback()->tag_focus )
+	{
+		case H( "edit_box_01" ):
+		{
+			edit_value = std::get<std::string>( edit_value ) + evt->ch;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // ----------------------------------------------------------------------------

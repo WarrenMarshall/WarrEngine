@@ -4,6 +4,15 @@
 
 static w_vec2 last_mouse_pos( 0, 0 );
 
+void character_callback( GLFWwindow* window, unsigned int key_code )
+{
+	w_input_event evt;
+	evt.event_id = event_id::input_key;
+	evt.ch = (unsigned char)key_code;
+
+	engine->input->event_queue.emplace_back( std::move( evt ) );
+}
+
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
 	engine->input->mouse_move_delta.x += static_cast<float>( xpos ) - last_mouse_pos.x;
@@ -36,16 +45,14 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 void joystick_callback( int jid, int event )
 {
-#if 0
 	if( event == GLFW_CONNECTED )
 	{
-		log( "Gamepad {} was connected.", jid );
+		log_verbose( "Gamepad {} was connected.", jid );
 	}
 	else if( event == GLFW_DISCONNECTED )
 	{
-		log( "Gamepad {} was disconnected.", jid );
+		log_verbose( "Gamepad {} was disconnected.", jid );
 	}
-#endif
 
 	engine->input->refresh_connected_gamepads();
 }
@@ -62,6 +69,9 @@ void w_input::init()
 	// callbacks so we can collect user input
 	glfwSetCursorPosCallback( engine->window->glfw_window, mouse_motion_callback );
 
+	// keyboard input
+	glfwSetCharCallback( engine->window->glfw_window, character_callback );
+
 	// init button states so everything is considered "unpressed" at the start
 	for( auto x = 0; x < input_id::max; ++x )
 	{
@@ -70,6 +80,47 @@ void w_input::init()
 	}
 
 	timer_repeat = std::make_unique<w_timer>( 150 );
+
+	// set up id to char mappings for input routines
+
+	input_id_to_char.insert( std::make_pair( input_id::key_a, 'a' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_b, 'b' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_c, 'c' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_d, 'd' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_e, 'e' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_f, 'f' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_g, 'g' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_h, 'h' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_i, 'i' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_j, 'j' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_k, 'k' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_l, 'l' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_m, 'm' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_n, 'n' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_o, 'o' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_p, 'p' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_q, 'q' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_r, 'r' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_s, 's' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_t, 't' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_u, 'u' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_v, 'v' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_w, 'w' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_x, 'x' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_y, 'y' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_z, 'z' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_space, ' ' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_0, '0' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_1, '1' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_2, '2' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_3, '3' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_4, '4' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_5, '5' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_6, '6' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_7, '7' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_8, '8' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_9, '9' ) );
+	input_id_to_char.insert( std::make_pair( input_id::key_period, '.' ) );
 }
 
 void w_input::deinit()
@@ -81,6 +132,7 @@ void w_input::queue_presses()
 {
 	button_states_last_frame = button_states;
 
+	update_button_state( input_id::key_backspace, glfwGetKey( engine->window->glfw_window, GLFW_KEY_BACKSPACE ) );
 	update_button_state( input_id::key_shift_left, glfwGetKey( engine->window->glfw_window, GLFW_KEY_LEFT_SHIFT ) );
 	update_button_state( input_id::key_shift_right, glfwGetKey( engine->window->glfw_window, GLFW_KEY_RIGHT_SHIFT ) );
 	update_button_state( input_id::key_control_left, glfwGetKey( engine->window->glfw_window, GLFW_KEY_LEFT_CONTROL ) );
@@ -235,12 +287,12 @@ void w_input::update()
 		{
 			case event_id::input_pressed:
 			{
-				if( engine->on_input_pressed( &evt ) )
+				if( engine->layer_mgr->on_input_pressed( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->on_input_pressed( &evt ) )
+				if( engine->on_input_pressed( &evt ) )
 				{
 					break;
 				}
@@ -249,12 +301,12 @@ void w_input::update()
 
 			case event_id::input_held:
 			{
-				if( engine->on_input_held( &evt ) )
+				if( engine->layer_mgr->on_input_held( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->on_input_held( &evt ) )
+				if( engine->on_input_held( &evt ) )
 				{
 					break;
 				}
@@ -263,12 +315,12 @@ void w_input::update()
 
 			case event_id::input_released:
 			{
-				if( engine->on_input_released( &evt ) )
+				if( engine->layer_mgr->on_input_released( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->on_input_released( &evt ) )
+				if( engine->on_input_released( &evt ) )
 				{
 					break;
 				}
@@ -277,12 +329,26 @@ void w_input::update()
 
 			case event_id::input_motion:
 			{
-				if( engine->on_input_motion( &evt ) )
+				if( engine->layer_mgr->on_input_motion( &evt ) )
 				{
 					break;
 				}
 
-				if( engine->layer_mgr->on_input_motion( &evt ) )
+				if( engine->on_input_motion( &evt ) )
+				{
+					break;
+				}
+			}
+			break;
+
+			case event_id::input_key:
+			{
+				if( engine->layer_mgr->on_input_key( &evt ) )
+				{
+					break;
+				}
+
+				if( engine->on_input_key( &evt ) )
 				{
 					break;
 				}

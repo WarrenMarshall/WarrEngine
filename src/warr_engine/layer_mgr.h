@@ -48,4 +48,5 @@ struct w_layer_mgr
 	bool on_input_pressed( const w_input_event* evt );
 	bool on_input_held( const w_input_event* evt );
 	bool on_input_released( const w_input_event* evt );
+	bool on_input_key( const w_input_event* evt );
 };

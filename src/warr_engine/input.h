@@ -8,6 +8,9 @@ struct w_input_event
 	// the key, mouse button, or controller button generating the event
 	e_input_id input_id = input_id::invalid;
 
+	// the char representation of the key that was pressed
+	char ch;
+
 	// a place for various events to store the deltas. used for mouse and controllers.
 	w_vec2 delta = w_vec2( 0, 0 );
 };
@@ -40,6 +43,8 @@ struct w_input
 
 	std::array<bool, input_id::max> button_states = {};
 	std::array<bool, input_id::max> button_states_last_frame = {};
+
+	std::map<e_input_id, char> input_id_to_char = {};
 
 	[[nodiscard]] bool is_button_down( e_input_id input_id );
 	[[nodiscard]] bool is_shift_down();
