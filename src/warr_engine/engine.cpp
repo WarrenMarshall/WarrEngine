@@ -176,7 +176,7 @@ void w_engine::launch( int argc, char* argv [] )
 
 	{ // Box2D
 
-		log( "Initializing Box2D" );
+		log( "Initializing physics" );
 		engine->new_physics_world();
 	}
 
@@ -211,7 +211,11 @@ void w_engine::launch( int argc, char* argv [] )
 
 	engine->ui->init();
 
+	log( "Running..." );
+
 	engine->main_loop();
+
+	log( "Shutting down..." );
 	engine->shutdown();
 }
 

@@ -72,8 +72,6 @@ struct w_timeline
 	template<typename T>
 	void get_value( float pct_on_timeline, T* value )
 	{
-		//assert( pct_on_timeline >= 0.0f && pct_on_timeline <= 1.0f );
-
 		auto kf_max = find_next_keyframe_idx_from_pct( pct_on_timeline );
 		size_t kf_min = kf_max - 1;
 
@@ -90,7 +88,6 @@ struct w_timeline
 
 		*value = min_value + ( ( max_value - min_value ) * pct_within );
 	}
-
 };
 
 // ----------------------------------------------------------------------------
