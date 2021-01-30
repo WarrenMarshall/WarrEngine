@@ -748,7 +748,7 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 	for( const auto& iter : filenames )
 	{
 #ifdef USE_THREADED_ASSET_LOADING
-		engine->futures.push_back( std::async( std::launch::async, t_load_asset_def_file, std::string( iter ) ) );
+		engine->threads.push_back( std::async( std::launch::async, t_load_asset_def_file, std::string( iter ) ) );
 #else
 		engine->asset_definition_file_cache->add( iter );
 #endif
@@ -805,7 +805,7 @@ void w_engine::precache_asset_resources( int pass )
 	for( auto& iter : engine->asset_definition_file_cache->cache )
 	{
 #ifdef USE_THREADED_ASSET_LOADING
-		engine->futures.push_back( std::async( std::launch::async, t_precache_asset_resources, pass, &iter ) );
+		engine->threads.push_back( std::async( std::launch::async, t_precache_asset_resources, pass, &iter ) );
 #else
 		iter.precache_asset_resources( pass );
 #endif
@@ -821,12 +821,12 @@ void w_engine::precache_asset_resources( int pass )
 
 void w_engine::wait_for_thread_pool_to_finish()
 {
-	for( auto& future : futures )
+	for( auto& thread : threads )
 	{
-		future.wait();
+		thread.wait();
 	}
 
-	futures.clear();
+	threads.clear();
 }
 
 bool w_engine::on_input_released( const w_input_event* evt )

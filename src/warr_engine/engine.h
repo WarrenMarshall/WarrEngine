@@ -16,6 +16,19 @@ struct w_pending_collision
 
 // ----------------------------------------------------------------------------
 
+struct w_cmdline_args
+{
+	// "-verbose" to set TRUE
+	//		* enables optional log messages that are marked using "log_verbose"
+	bool verbose = false;
+
+	// "-nobatch" to set TRUE
+	//		* pretend like the video card has a single texture unit
+	bool nobatch = false;
+};
+
+// ----------------------------------------------------------------------------
+
 struct w_engine
 {
 	// the function that all games/apps call to get the engine up and running
@@ -31,7 +44,7 @@ struct w_engine
 	void main_loop();
 	void shutdown();
 
-	std::vector<std::future<void>> futures;
+	std::vector<std::future<void>> threads;
 
 	a_texture* tex_white = nullptr;
 	a_font* pixel_font = nullptr;
@@ -39,16 +52,7 @@ struct w_engine
 	bool is_running = false;
 	bool is_paused = false;
 
-	struct
-	{
-		// "-verbose" to set TRUE
-		//		* enables optional log messages that are marked using "log_verbose"
-		bool verbose = false;
-
-		// "-nobatch" to set TRUE
-		//		* pretend like the video card has a single texture unit
-		bool nobatch = false;
-	} cmdline;
+	w_cmdline_args cmdline;
 
 	std::unique_ptr<w_opengl_framebuffer> frame_buffer = nullptr;
 	std::unique_ptr<w_opengl_framebuffer> blur_frame_buffers[2];
