@@ -80,47 +80,6 @@ void w_input::init()
 	}
 
 	timer_repeat = std::make_unique<w_timer>( 150 );
-
-	// set up id to char mappings for input routines
-
-	input_id_to_char.insert( std::make_pair( input_id::key_a, 'a' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_b, 'b' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_c, 'c' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_d, 'd' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_e, 'e' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_f, 'f' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_g, 'g' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_h, 'h' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_i, 'i' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_j, 'j' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_k, 'k' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_l, 'l' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_m, 'm' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_n, 'n' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_o, 'o' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_p, 'p' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_q, 'q' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_r, 'r' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_s, 's' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_t, 't' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_u, 'u' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_v, 'v' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_w, 'w' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_x, 'x' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_y, 'y' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_z, 'z' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_space, ' ' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_0, '0' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_1, '1' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_2, '2' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_3, '3' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_4, '4' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_5, '5' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_6, '6' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_7, '7' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_8, '8' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_9, '9' ) );
-	input_id_to_char.insert( std::make_pair( input_id::key_period, '.' ) );
 }
 
 void w_input::deinit()

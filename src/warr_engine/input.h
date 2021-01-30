@@ -44,8 +44,6 @@ struct w_input
 	std::array<bool, input_id::max> button_states = {};
 	std::array<bool, input_id::max> button_states_last_frame = {};
 
-	std::map<e_input_id, char> input_id_to_char = {};
-
 	[[nodiscard]] bool is_button_down( e_input_id input_id );
 	[[nodiscard]] bool is_shift_down();
 	[[nodiscard]] bool is_control_down();

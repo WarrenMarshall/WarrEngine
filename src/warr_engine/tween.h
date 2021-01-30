@@ -3,7 +3,7 @@
 struct w_tween
 {
 	tweeny::tween<float> tween = {};
-	e_tween_type type = tween_type::loop;
+	e_tween_type type = tween_type::pingpong;
 	e_tween_via via = tween_via::linear;
 	float start = 0.0f, end = 1.0f;
 	float current_val = 0.0f;
@@ -21,11 +21,4 @@ struct w_tween
 	void set_backwards();
 	void set_type( e_tween_type type );
 	void set_via( e_tween_via via );
-};
-
-// ----------------------------------------------------------------------------
-
-struct float_tween : w_tween
-{
-
 };

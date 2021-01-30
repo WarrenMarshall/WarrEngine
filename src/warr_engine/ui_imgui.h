@@ -73,4 +73,5 @@ private:
 	[[nodiscard]] w_color get_adjusted_color( const w_color& base_color, bool is_hovered, bool is_hot );
 
 	int im_automatic_id = 0;
+	w_tween caret_blink_tween = w_tween( 0.0f, 1.0f, 1000 );
 };
