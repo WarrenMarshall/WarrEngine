@@ -196,6 +196,12 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 					return true;
 				}
 				break;
+
+				default:
+				{
+					return true;
+				}
+				break;
 			}
 		}
 	}
@@ -222,6 +228,12 @@ bool w_imgui_callback::on_input_held( const w_input_event* evt )
 						str = str.substr( 0, str.size() - 1 );
 						*control_data = str;
 					}
+					return true;
+				}
+				break;
+
+				default:
+				{
 					return true;
 				}
 				break;
