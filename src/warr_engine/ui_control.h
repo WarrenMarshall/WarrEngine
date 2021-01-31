@@ -29,6 +29,7 @@ struct w_imgui_control
 	// don't hop around between hover states as you drag.
 	bool sticky_hover = false;
 
+	// #theme
 	// does this control do a position offset when it's made hot / clicked?
 	bool uses_click_offset = true;
 

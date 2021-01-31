@@ -473,7 +473,7 @@ w_vec2 w_vec2::dir_from_angle( float angle )
 
 float w_vec2::angle_from_dir( const w_vec2& dir )
 {
-	float angle = glm::atan( dir.y, dir.x ) * 180.0f / W_PI;
+	auto angle = (float)( glm::atan( dir.y, dir.x ) * 180.0 / std::numbers::pi );
 
 	angle = glm::mod<float>( angle + 90.f, 360.f );
 

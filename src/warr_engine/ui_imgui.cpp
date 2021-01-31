@@ -493,7 +493,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 			// text
 			control.text = std::get<std::string>( current_layer->get_imgui_callback()->get_data_for_control( control ) );
-			draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
+			draw_text( control, rc_client_offset - w_rect(0,1,0,0), w_color::pal( 2 ), is_hovered, is_hot );
 
 			if( current_layer->get_imgui_callback()->tag_focus == control.tag )
 			{

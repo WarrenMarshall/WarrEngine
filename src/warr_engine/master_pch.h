@@ -48,6 +48,7 @@
 	#include <memory>
 	#include <optional>
 	#include <future>
+	#include <numbers>
 
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"
@@ -162,12 +163,6 @@ using w_keyframe_data = std::variant<float, w_color>;
 // ----------------------------------------------------------------------------
 
 #define f_commas w_string_util::format_with_commas
-
-// ----------------------------------------------------------------------------
-// constants
-// ----------------------------------------------------------------------------
-
-constexpr float W_PI = 3.14159265358979323846f;
 
 // ----------------------------------------------------------------------------
 // used to convert color values in the range 0-255 to 0-1

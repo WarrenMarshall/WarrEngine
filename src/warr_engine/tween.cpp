@@ -44,8 +44,6 @@ w_tween::w_tween( float start, float end, time_ms duration_ms )
 	: start( start ), end( end )
 {
 	tween = tweeny::from( start ).to( end ).during( duration_ms );
-	set_type( tween_type::loop );
-	set_via( tween_via::linear );
 
 	time_last = engine->time->now();
 }
@@ -61,7 +59,6 @@ float w_tween::operator*()
 	time_last = engine->time->now();
 
 	return glm::clamp( tween.step( static_cast<int>( delta ) ), start, end );
-
 }
 
 void w_tween::restart()
