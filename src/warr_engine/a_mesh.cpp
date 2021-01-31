@@ -4,15 +4,6 @@
 
 implement_find_func( a_mesh )
 
-a_mesh::~a_mesh()
-{
-	a_mesh::clean_up_internals();
-}
-
-void a_mesh::clean_up_internals()
-{
-}
-
 bool a_mesh::create_internals()
 {
 	assert( !original_filename.empty() );

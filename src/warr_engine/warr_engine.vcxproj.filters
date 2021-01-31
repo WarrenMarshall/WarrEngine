@@ -205,6 +205,9 @@
     <ClCompile Include="render.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
+    <ClCompile Include="ui_imgui_result.cpp">
+      <Filter>src\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -416,6 +419,9 @@
     </ClInclude>
     <ClInclude Include="vertex_buffer.h">
       <Filter>include\render</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_imgui_result.h">
+      <Filter>include\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

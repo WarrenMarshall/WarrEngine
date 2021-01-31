@@ -2,30 +2,17 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-// ----------------------------------------------------------------------------
-
-void w_imgui_result::operator=( const e_im_result res )
-{
-	code = res;
-}
-
-bool w_imgui_result::was_left_clicked()
-{
-	return ( code == im_result::left_clicked );
-}
-
 w_imgui::w_imgui()
 {
 	caret_blink_tween = w_tween( 0.0f, 1.0f, 1000, tween_type::loop, tween_via::linear );
 }
-
-// ----------------------------------------------------------------------------
 
 void w_imgui::reset()
 {
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
 	last_rc_win = last_rc_client = w_rect::zero;
+	hash_to_control_data.clear();
 }
 
 w_imgui* w_imgui::do_panel( hash tag )
@@ -235,8 +222,13 @@ void w_imgui::compute_clientrect_from_rect()
 	}
 }
 
-w_imgui_result* w_imgui::finalize()
+w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 {
+	if( current_control.tag != hash_none && data )
+	{
+		hash_to_control_data.insert_or_assign( current_control.tag, data );
+	}
+
 	// if this control was never given a position directly,
 	// assume it wants to flow down from the last control.
 	if( !current_control.set_position_called )
@@ -258,7 +250,7 @@ w_imgui_result* w_imgui::finalize()
 
 		draw( current_control, is_hovered, is_hot );
 
-		if( result.was_left_clicked() )
+		if( result.code == im_result::left_clicked )
 		{
 			current_layer->get_imgui_callback()->on_left_clicked( current_control, result );
 		}
@@ -378,6 +370,8 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 	RENDER->begin();
 
+	auto control_data = get_control_data( control.tag );
+
 	switch( control.type )
 	{
 		case imgui_control_type::panel:
@@ -462,8 +456,10 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 		{
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
+			auto data = std::get<float>( control_data ? *control_data : current_layer->get_imgui_callback()->get_data_for_control( control ) );
+
 			w_vec2 pos = {
-				rc_client_offset.x + ( rc_client_offset.w * std::get<float>( current_layer->get_imgui_callback()->get_data_for_control( control ) ) ),
+				rc_client_offset.x + ( rc_client_offset.w * data ),
 				rc_client_offset.y + ( rc_client_offset.h / 2.0f )
 			};
 
@@ -497,7 +493,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
 			// text
-			control.text = std::get<std::string>( current_layer->get_imgui_callback()->get_data_for_control( control ) );
+			control.text = std::get<std::string>( control_data ? *control_data : current_layer->get_imgui_callback()->get_data_for_control( control ) );
 			draw_text( control, rc_client_offset - w_rect(0,1,0,0), w_color::pal( 2 ), is_hovered, is_hot );
 
 			if( current_layer->get_imgui_callback()->tag_focus == control.tag )
@@ -577,6 +573,18 @@ w_color w_imgui::get_adjusted_color( const w_color& base_color, bool is_hovered,
 	}
 
 	return color;
+}
+
+w_imgui_control_data* w_imgui::get_control_data( hash tag )
+{
+	w_imgui_control_data* control_data = nullptr;
+
+	if( tag != hash_none )
+	{
+		control_data = hash_to_control_data[ tag ];
+	}
+
+	return control_data;
 }
 
 void w_imgui::set_last_control( w_imgui_control control )

@@ -140,6 +140,7 @@ extern float ui_canvas_h;
 #include "asset_definition_file_cache.h"
 #include "ui_control.h"
 #include "ui_callback.h"
+#include "ui_imgui_result.h"
 #include "ui_imgui.h"
 #include "ui_mgr.h"
 

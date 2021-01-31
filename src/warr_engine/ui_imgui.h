@@ -1,23 +1,5 @@
 #pragma once
 
-// ----------------------------------------------------------------------------
-
-struct w_imgui_result
-{
-	e_im_result code = im_result::none;
-
-	// the mouse position, normalized to within the client
-	// rect of the control.
-	w_pos click_pos = {};
-	w_vec2 click_pct = {};
-
-	void operator=( const e_im_result res );
-
-	[[nodiscard]] bool was_left_clicked();
-};
-
-// ----------------------------------------------------------------------------
-
 struct w_imgui
 {
 	w_imgui_callback default_callback;
@@ -40,6 +22,8 @@ struct w_imgui
 	// the results from the last control processed
 	w_imgui_result result = {};
 
+	std::unordered_map<hash, w_imgui_control_data*> hash_to_control_data;
+
 	w_imgui();
 
 	void reset();
@@ -61,7 +45,8 @@ struct w_imgui
 	w_imgui* set_interval( const float interval );
 
 	void compute_clientrect_from_rect();
-	w_imgui_result* finalize();
+	w_imgui_result* finalize( w_imgui_control_data* data = nullptr );
+	w_imgui_control_data* get_control_data( hash tag );
 
 private:
 	void set_last_control( w_imgui_control control );

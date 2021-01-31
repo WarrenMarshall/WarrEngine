@@ -280,8 +280,7 @@ void w_engine::main_loop()
 
 		RENDER->frame_interpolate_pct = time->fts_accum_ms / (float)fixed_time_step::ms_per_step;
 
-		// process user input
-
+		// queue up inputs for processing later in the loop
 		input->queue_presses();
 
 		// if the engine is paused, we need to continue processing user input so
@@ -298,8 +297,8 @@ void w_engine::main_loop()
 		{
 			time->fts_accum_ms -= fixed_time_step::ms_per_step;
 
+			// queue up inputs for processing later in the loop
 			input->queue_motion();
-			input->update();
 
 			box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_position_iterations );
 
@@ -359,6 +358,12 @@ void w_engine::main_loop()
 		}
 		RENDER->end_frame();
 		frame_buffer->unbind();
+
+		// process the input that queued earlier AFTER the rendering has taken place
+		// so that the imgui code has a chance to respond. the ui has to be drawn
+		// before it can react to input.
+
+		input->update();
 
 		// ----------------------------------------------------------------------------
 		// the engine frame buffer now contains the color texture and the

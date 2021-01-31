@@ -72,29 +72,28 @@ void layer_main_menu::push()
 
 	// mechanical meshes
 
-// 	e = add_entity<w_entity>();
-// 	{
-// 		e->tag = H( "wheels" );
-// 		e->get_tform()->set_position( { v_window_w, v_window_h } )->set_scale( 0.75 );
-//
-// 		w_render_state_opt rso;
-// 		rso.snap_to_pixel = false;
-// 		rso.color = w_color::black;
-//
-// 		rso.color->a = 0.15f;
-// 		e->add_component<ec_mesh>()
-// 			->init( "mesh_torus_test" )
-// 			->set_tag( H( "right_wheel" ) )
-// 			->set_render_state( rso );
-//
-// 		rso.color->a = 0.15f;
-// 		e->add_component<ec_mesh>()
-// 			->init( "mesh_torus_test" )
-// 			->set_tag( H( "left_wheel" ) )
-// 			->set_render_state( rso )
-// 			->tform.set_position( { -v_window_w - 64, 0.0f } );
-//
-// 	}
+	e = add_entity<w_entity>();
+	{
+		e->tag = H( "wheels" );
+		e->get_tform()->set_position( { v_window_w, v_window_h } )->set_scale( 0.75 );
+
+		w_render_state_opt rso;
+		rso.snap_to_pixel = false;
+		rso.color = w_color::black;
+
+		rso.color->a = 0.15f;
+		e->add_component<ec_mesh>()
+			->init( "mesh_torus_test" )
+			->set_tag( H( "right_wheel" ) )
+			->set_render_state( rso );
+
+		rso.color->a = 0.15f;
+		e->add_component<ec_mesh>()
+			->init( "mesh_torus_test" )
+			->set_tag( H( "left_wheel" ) )
+			->set_render_state( rso )
+			->tform.set_position( { -v_window_w - 64, 0.0f } );
+	}
 
 	// particles
 
@@ -127,8 +126,8 @@ void layer_main_menu::update()
 {
 	w_layer::update();
 
-	//find_entity( H( "wheels" ) )->get_component( H( "left_wheel" ) )->tform.set_angle( -*gear_tween );
-	//find_entity( H( "wheels" ) )->get_component( H( "right_wheel" ) )->tform.set_angle( *gear_tween );
+	find_entity( H( "wheels" ) )->get_component( H( "left_wheel" ) )->tform.set_angle( -*gear_tween );
+	find_entity( H( "wheels" ) )->get_component( H( "right_wheel" ) )->tform.set_angle( *gear_tween );
 }
 
 void layer_main_menu::becoming_top_layer()
@@ -141,21 +140,6 @@ void layer_main_menu::becoming_top_layer()
 
 bool layer_main_menu::on_input_pressed( const w_input_event* evt )
 {
-	if( evt->input_id == input_id::key_1 )
-	{
-		a_sound::find( "ball_fizzle" )->play();
-	}
-
-	if( evt->input_id == input_id::key_2 )
-	{
-		a_sound::find( "main_menu_music" )->play();
-	}
-
-	if( evt->input_id == input_id::key_3 )
-	{
-		a_sound::find( "gameplay_music" )->play();
-	}
-
 	if( evt->input_id == input_id::key_space )
 	{
 		engine->layer_mgr->pop();
@@ -163,38 +147,6 @@ bool layer_main_menu::on_input_pressed( const w_input_event* evt )
 		game->new_game();
 
 		return true;
-	}
-
-	return false;
-}
-
-bool layer_main_menu::on_input_held( const w_input_event* evt )
-{
-	static float angle = 0.0f;
-
-	if( evt->input_id == input_id::gamepad_button_left_shoulder )
-	{
-		angle -= 5.0f;
-		find_entity( H( "wheels" ) )->get_tform()->set_angle( angle );
-	}
-
-	if( evt->input_id == input_id::gamepad_button_right_shoulder )
-	{
-		angle += 5.0f;
-		find_entity( H( "wheels" ) )->get_tform()->set_angle( angle );
-	}
-
-	return false;
-}
-
-bool layer_main_menu::on_input_motion( const w_input_event* evt )
-{
-	static w_vec2 wheel_01_pos = { v_window_hw, v_window_hh };
-
-	if( evt->input_id == input_id::gamepad_left_stick )
-	{
-		wheel_01_pos += evt->delta;
-		find_entity( H( "wheels" ) )->get_tform()->set_position( wheel_01_pos );
 	}
 
 	return false;

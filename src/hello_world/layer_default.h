@@ -4,19 +4,14 @@
 
 struct layer_default_ui_callback : w_imgui_callback
 {
-	virtual w_imgui_control_data get_data_for_control( const w_imgui_control& control ) override;
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
 	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result ) override;
 
-	virtual bool on_input_pressed( const w_input_event* evt ) override;
-	virtual bool on_input_held( const w_input_event* evt ) override;
-	virtual bool on_input_key( const w_input_event* evt ) override;
-
-	w_imgui_control_data b_checkbox_01 = false;
-	w_imgui_control_data slider_value = 0.0f;
-	w_imgui_control_data slider_value2 = 0.0f;
-	w_imgui_control_data edit_name = std::string( "" );
-	w_imgui_control_data edit_email = std::string( "" );
+	w_imgui_control_data checkbox_data = false;
+	w_imgui_control_data slider_01_value = 0.0f;
+	w_imgui_control_data slider_02_value = 0.0f;
+	w_imgui_control_data edit_name_data = std::string( "" );
+	w_imgui_control_data edit_email_data = std::string( "" );
 };
 
 // ----------------------------------------------------------------------------
