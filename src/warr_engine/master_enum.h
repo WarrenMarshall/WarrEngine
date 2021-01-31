@@ -193,12 +193,14 @@ enum_end
 // note : needs to match values in data/warr_engine/preproc.asset_def
 
 enum_begin( tween_type )
-	one_shot = 1,	// value iterates from start to end, once
+	invalid = -1,
+	one_shot,		// value iterates from start to end, once. when complete, it sits at the end forever.
 	loop,			// value iterates from start to end and resets to start, looping
 	pingpong		// value iterates from start to end and back again, looping
 enum_end
 
 enum_begin( tween_via )
+	invalid = -1,
 	linear = 0,
 	quadratic,
 	quadratic_in,

@@ -50,7 +50,6 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 		case H( "checkbox_01" ):
 		{
 			b_checkbox_01 = !std::get<bool>( b_checkbox_01 );
-			layer->glow_tween.toggle_direction();
 		}
 		break;
 
@@ -256,7 +255,6 @@ bool layer_default_ui_callback::on_input_key( const w_input_event* evt )
 layer_default::layer_default()
 {
 	draws_completely_solid = true;
-	glow_tween = w_tween( 0.0f, 5.0f, 2500 );
 }
 
 void layer_default::push()
@@ -280,7 +278,7 @@ void layer_default::draw_ui()
 	w_layer::draw_ui();
 
 	RENDER
-		->push_glow( glow_intensity )// *glow_tween )
+		->push_glow( glow_intensity )
 		->draw( tex_hello_world, w_rect( 16, 24 ) )
 		->push_glow( 0.0f );
 

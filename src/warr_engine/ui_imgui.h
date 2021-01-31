@@ -40,6 +40,8 @@ struct w_imgui
 	// the results from the last control processed
 	w_imgui_result result = {};
 
+	w_imgui();
+
 	void reset();
 
 	w_imgui* do_panel( hash tag = 0 );
@@ -73,5 +75,5 @@ private:
 	[[nodiscard]] w_color get_adjusted_color( const w_color& base_color, bool is_hovered, bool is_hot );
 
 	int im_automatic_id = 0;
-	w_tween caret_blink_tween = w_tween( 0.0f, 1.0f, 1000 );
+	w_tween caret_blink_tween;
 };

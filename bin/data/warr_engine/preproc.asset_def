@@ -61,9 +61,44 @@
 	# -----------------------------------------------------
 	# tween types
 
-	"tween.one_shot"	"1"
-	"tween.loop"		"2"
-	"tween.pingpong"	"3"
+	"tween.one_shot"	"0"
+	"tween.loop"		"1"
+	"tween.pingpong"	"2"
+
+	# -----------------------------------------------------
+	# particle spawner types
+
+	"tween_via.linear"			"0"
+	"tween_via.quadratic"		"1"
+	"tween_via.quadratic_in"	"2"
+	"tween_via.quadratic_out"	"3"
+	"tween_via.cubic"			"4"
+	"tween_via.cubic_in"		"5"
+	"tween_via.cubic_out"		"6"
+	"tween_via.quartic"			"7"
+	"tween_via.quartic_in"		"8"
+	"tween_via.quartic_out"		"9"
+	"tween_via.quintic"			"10"
+	"tween_via.quintic_in"		"11"
+	"tween_via.quintic_out"		"12"
+	"tween_via.sinusoidal"		"13"
+	"tween_via.sinusoidal_in"	"14"
+	"tween_via.sinusoidal_out"	"15"
+	"tween_via.exponential"		"16"
+	"tween_via.exponential_in"	"17"
+	"tween_via.exponential_out"	"18"
+	"tween_via.circular"		"19"
+	"tween_via.circular_in"		"20"
+	"tween_via.circular_out"	"21"
+	"tween_via.bounce"			"22"
+	"tween_via.bounce_in"		"23"
+	"tween_via.bounce_out"		"24"
+	"tween_via.elastic"			"25"
+	"tween_via.elastic_in"		"26"
+	"tween_via.elastic_out"		"27"
+	"tween_via.back"			"28"
+	"tween_via.back_in"			"29"
+	"tween_via.back_out"		"30"
 
 	# -----------------------------------------------------
 	# particle spawner types

@@ -110,17 +110,9 @@ void layer_main_menu::push()
 			->tform.set( { 0.0f, v_window_hw }, 0.0f, 1.0f );
 	}
 
-	gear_tween = w_tween( 0.0f, 360.0f, 7500 );
-	gear_tween.set_type( tween_type::pingpong );
-	gear_tween.set_via( tween_via::bounce );
-
-	logo_tween = w_tween( 0.0f, 16.0f, 250 );
-	logo_tween.set_type( tween_type::pingpong );
-	logo_tween.set_via( tween_via::sinusoidal_in );
-
-	xlogo_tween = w_tween( -32.0f, 32.0f, 750 );
-	xlogo_tween.set_type( tween_type::pingpong );
-	xlogo_tween.set_via( tween_via::sinusoidal );
+	gear_tween = w_tween( 0.0f, 360.0f, 7500, tween_type::pingpong, tween_via::bounce );
+	logo_tween = w_tween( 0.0f, 16.0f, 250, tween_type::pingpong, tween_via::sinusoidal_in );
+	xlogo_tween = w_tween( -32.0f, 32.0f, 750, tween_type::pingpong, tween_via::sinusoidal );
 
 	//a_sound::find( "main_menu_music" )->play();
 }

@@ -14,6 +14,11 @@ bool w_imgui_result::was_left_clicked()
 	return ( code == im_result::left_clicked );
 }
 
+w_imgui::w_imgui()
+{
+	caret_blink_tween = w_tween( 0.0f, 1.0f, 1000, tween_type::loop, tween_via::linear );
+}
+
 // ----------------------------------------------------------------------------
 
 void w_imgui::reset()

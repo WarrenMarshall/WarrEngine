@@ -28,7 +28,6 @@ struct layer_default : w_layer
 
 	layer_default_ui_callback imgui_callback;
 
-	w_tween glow_tween;
 	float glow_intensity = 0.0f;
 
 	layer_default();
