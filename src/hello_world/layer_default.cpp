@@ -3,6 +3,13 @@
 
 // ----------------------------------------------------------------------------
 
+layer_default_ui_callback::layer_default_ui_callback()
+	: w_imgui_callback()
+{
+	edit_name_data.max_length = 5;
+	edit_email_data.max_length = 10;
+}
+
 void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
 	w_imgui_callback::on_left_clicked( control, result );
@@ -27,7 +34,7 @@ void layer_default_ui_callback::on_motion( const w_imgui_control& control, const
 	{
 		case H( "slider_01" ):
 		{
-			layer->glow_intensity = std::get<float>( slider_01_value ) * 5.0f;
+			layer->glow_intensity = std::get<float>( slider_01_value.data ) * 5.0f;
 		}
 		break;
 	}
@@ -84,7 +91,7 @@ void layer_default::draw_ui()
 		->finalize();
 
 	IMGUI->do_label()
-		->set_text( fmt::format( "Glow Intensity : {:.0f}%", std::get<float>( imgui_callback.slider_01_value ) * 100.0f ) )
+		->set_text( fmt::format( "Glow Intensity : {:.0f}%", std::get<float>( imgui_callback.slider_01_value.data ) * 100.0f ) )
 		->finalize();
 	IMGUI->do_slider( H( "slider_01" ) )
 		->finalize( &imgui_callback.slider_01_value );

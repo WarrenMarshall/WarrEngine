@@ -14,6 +14,8 @@ struct w_imgui_callback
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result );
 	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result );
 
+	virtual bool validate_value_change( hash tag, w_imgui_control_data& old_value, w_imgui_control_data& new_value );
+
 	virtual float get_control_padding();
 	virtual float get_control_margin();
 	virtual float get_default_width( const w_imgui_control& control );

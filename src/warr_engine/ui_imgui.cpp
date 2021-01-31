@@ -205,7 +205,7 @@ w_imgui* w_imgui::set_interval( const float interval )
 	return this;
 }
 
-// copies the overall control rect to the client rect, and then makes adjustments
+// copies the window rect to the client rect, and then makes adjustments
 // to compensate for graphical frames and whatever else would affect the client area.
 
 void w_imgui::compute_clientrect_from_rect()
@@ -227,6 +227,12 @@ w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 	if( current_control.tag != hash_none && data )
 	{
 		hash_to_control_data.insert_or_assign( current_control.tag, data );
+	}
+
+	// stuff some useful data about this control into it's data object
+	if( data )
+	{
+		data->control_type = current_control.type;
 	}
 
 	// if this control was never given a position directly,
@@ -456,7 +462,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 		{
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
-			auto data = std::get<float>( control_data ? *control_data : current_layer->get_imgui_callback()->get_data_for_control( control ) );
+			auto data = std::get<float>( control_data ? control_data->data : current_layer->get_imgui_callback()->get_data_for_control( control ).data );
 
 			w_vec2 pos = {
 				rc_client_offset.x + ( rc_client_offset.w * data ),
@@ -493,7 +499,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
 			// text
-			control.text = std::get<std::string>( control_data ? *control_data : current_layer->get_imgui_callback()->get_data_for_control( control ) );
+			control.text = std::get<std::string>( control_data ? control_data->data : current_layer->get_imgui_callback()->get_data_for_control( control ).data );
 			draw_text( control, rc_client_offset - w_rect(0,1,0,0), w_color::pal( 2 ), is_hovered, is_hot );
 
 			if( current_layer->get_imgui_callback()->tag_focus == control.tag )

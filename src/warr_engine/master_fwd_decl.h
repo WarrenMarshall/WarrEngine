@@ -9,6 +9,7 @@ struct w_entity;
 struct w_file_mem;
 struct w_file_zip;
 struct w_file_mem_text;
+struct w_imgui_control_data;
 struct w_imgui_result;
 struct w_game;
 struct w_layer;

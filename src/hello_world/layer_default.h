@@ -4,6 +4,8 @@
 
 struct layer_default_ui_callback : w_imgui_callback
 {
+	layer_default_ui_callback();
+
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
 	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result ) override;
 

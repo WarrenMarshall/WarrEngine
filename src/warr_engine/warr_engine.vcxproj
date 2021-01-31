@@ -235,6 +235,7 @@
     <ClCompile Include="physics_contact_listener.cpp" />
     <ClCompile Include="index_buffer.cpp" />
     <ClCompile Include="render_stats.cpp" />
+    <ClCompile Include="ui_imgui_control_data.cpp" />
     <ClCompile Include="ui_imgui_result.cpp" />
     <ClCompile Include="vertex_array_object.cpp" />
     <ClCompile Include="vertex_buffer.cpp" />
@@ -284,6 +285,7 @@
     <ClInclude Include="physics_contact_listener.h" />
     <ClInclude Include="index_buffer.h" />
     <ClInclude Include="render_stats.h" />
+    <ClInclude Include="ui_imgui_control_data.h" />
     <ClInclude Include="ui_imgui_result.h" />
     <ClInclude Include="vertex_array_object.h" />
     <ClInclude Include="vertex_buffer.h" />

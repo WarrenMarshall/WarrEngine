@@ -9,8 +9,8 @@ w_imgui_control_data w_imgui_callback::get_data_for_control(const w_imgui_contro
 
 a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& control )
 {
-	auto control_data = IMGUI->get_control_data( control.tag );
-	auto checked = std::get<bool>( control_data ? *control_data : get_data_for_control( control ) );
+	w_imgui_control_data* control_data = IMGUI->get_control_data( control.tag );
+	auto checked = std::get<bool>( control_data ? control_data->data : get_data_for_control( control ).data );
 
 	if( checked )
 	{
@@ -28,17 +28,17 @@ void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_
 	{
 		case imgui_control_type::check_box:
 		{
-			*control_data = !std::get<bool>( *control_data );
+			control_data->data = !std::get<bool>( control_data->data );
 		}
 		break;
 
 		case imgui_control_type::slider:
 		{
-			*control_data = result.click_pct.x;
+			control_data->data = result.click_pct.x;
 
 			if( control.interval > 0 )
 			{
-				*control_data = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
+				control_data->data = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
 			}
 		}
 		break;
@@ -62,6 +62,22 @@ void w_imgui_callback::on_motion( const w_imgui_control& control, const w_imgui_
 		}
 		break;
 	}
+}
+
+bool w_imgui_callback::validate_value_change( hash tag, w_imgui_control_data& old_value, w_imgui_control_data& new_value )
+{
+	if( old_value.control_type == imgui_control_type::edit_box )
+	{
+		if( old_value.max_length > 0 )
+		{
+			if( std::get<std::string>( new_value.data ).size() > old_value.max_length )
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 // space to leave between controls within the client area
@@ -157,13 +173,13 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 		auto control_data = IMGUI->get_control_data( tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
-		if( std::holds_alternative<std::string>( *control_data ) )
+		if( std::holds_alternative<std::string>( control_data->data ) )
 		{
 			switch( evt->input_id )
 			{
 				case input_id::key_backspace:
 				{
-					std::string str = std::get<std::string>( *control_data );
+					std::string str = std::get<std::string>( control_data->data );
 					if( !str.empty() )
 					{
 						str = str.substr( 0, str.size() - 1 );
@@ -194,13 +210,13 @@ bool w_imgui_callback::on_input_held( const w_input_event* evt )
 		auto control_data = IMGUI->get_control_data( tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
-		if( std::holds_alternative<std::string>( *control_data ) )
+		if( std::holds_alternative<std::string>( control_data->data ) )
 		{
 			switch( evt->input_id )
 			{
 				case input_id::key_backspace:
 				{
-					std::string str = std::get<std::string>( *control_data );
+					std::string str = std::get<std::string>( control_data->data );
 					if( !str.empty() )
 					{
 						str = str.substr( 0, str.size() - 1 );
@@ -228,9 +244,14 @@ bool w_imgui_callback::on_input_key( const w_input_event* evt )
 		auto control_data = IMGUI->get_control_data( tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
-		if( std::holds_alternative<std::string>( *control_data ) )
+		if( std::holds_alternative<std::string>( control_data->data ) )
 		{
-			*control_data = std::get<std::string>( *control_data ) + evt->ch;
+			auto new_data = w_imgui_control_data( std::get<std::string>( control_data->data ) + evt->ch );
+
+			if( validate_value_change( tag_focus, *control_data, new_data ) )
+			{
+				control_data->data = new_data.data;
+			}
 		}
 	}
 

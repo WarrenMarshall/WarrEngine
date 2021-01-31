@@ -144,7 +144,7 @@ using w_sz = w_vec2;
 using w_offset = w_vec2;
 using w_pos = w_vec2;
 using time_ms = uint64_t;
-using w_imgui_control_data = std::variant<bool, float, std::string>;
+//using w_imgui_control_data = std::variant<bool, float, std::string>;
 using w_keyframe_data = std::variant<float, w_color>;
 
 // ----------------------------------------------------------------------------

@@ -208,6 +208,9 @@
     <ClCompile Include="ui_imgui_result.cpp">
       <Filter>src\ui</Filter>
     </ClCompile>
+    <ClCompile Include="ui_imgui_control_data.cpp">
+      <Filter>src\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -421,6 +424,9 @@
       <Filter>include\render</Filter>
     </ClInclude>
     <ClInclude Include="ui_imgui_result.h">
+      <Filter>include\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_imgui_control_data.h">
       <Filter>include\ui</Filter>
     </ClInclude>
   </ItemGroup>
