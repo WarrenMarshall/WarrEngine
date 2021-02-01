@@ -199,6 +199,7 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 
 				default:
 				{
+					// if a ui control has focus, we want to eat all of these events
 					return true;
 				}
 				break;
@@ -234,6 +235,7 @@ bool w_imgui_callback::on_input_held( const w_input_event* evt )
 
 				default:
 				{
+					// if a ui control has focus, we want to eat all of these events
 					return true;
 				}
 				break;
