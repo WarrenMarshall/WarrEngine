@@ -119,7 +119,7 @@ bool w_layer::on_input_pressed( const w_input_event* evt )
 			return true;
 		}
 
-		callback->tag_focus = hash_none;
+		UI->tag_focus = hash_none;
 	}
 
 	return false;

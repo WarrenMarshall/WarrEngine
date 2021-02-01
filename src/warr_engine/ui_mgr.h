@@ -8,4 +8,7 @@ struct w_ui_mgr
 	void init();
 	void draw_topmost();
 	bool is_mouse_inside( const w_rect& rc ) const;
+
+	// if a control is meant to retain focus across frames, store the tag here.
+	hash tag_focus = hash_none;
 };

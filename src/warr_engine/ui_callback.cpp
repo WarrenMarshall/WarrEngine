@@ -192,9 +192,9 @@ bool w_imgui_callback::on_input_motion( const w_input_event* evt )
 
 bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 {
-	if( tag_focus != hash_none )
+	if( UI->tag_focus != hash_none )
 	{
-		auto control_data = IMGUI->get_control_data( tag_focus );
+		auto control_data = IMGUI->get_control_data( UI->tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
 		if( std::holds_alternative<std::string>( control_data->data ) )
@@ -208,7 +208,26 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 					{
 						str = str.substr( 0, str.size() - 1 );
 						*control_data = str;
+						control_data->caret_pos--;
 					}
+					return true;
+				}
+				break;
+
+				case input_id::key_left:
+				{
+					control_data->caret_pos--;
+					control_data->caret_pos = glm::max( 0, control_data->caret_pos );
+					return true;
+				}
+				break;
+
+				case input_id::key_right:
+				{
+					std::string str = std::get<std::string>( control_data->data );
+
+					control_data->caret_pos++;
+					control_data->caret_pos = glm::min( (int)str.size(), control_data->caret_pos );
 					return true;
 				}
 				break;
@@ -216,7 +235,7 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 				case input_id::key_esc:
 				case input_id::key_enter:
 				{
-					tag_focus = hash_none;
+					UI->tag_focus = hash_none;
 					return true;
 				}
 				break;
@@ -236,9 +255,9 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 
 bool w_imgui_callback::on_input_held( const w_input_event* evt )
 {
-	if( tag_focus != hash_none )
+	if( UI->tag_focus != hash_none )
 	{
-		auto control_data = IMGUI->get_control_data( tag_focus );
+		auto control_data = IMGUI->get_control_data( UI->tag_focus );
 
 		if( control_data )
 		{
@@ -253,6 +272,7 @@ bool w_imgui_callback::on_input_held( const w_input_event* evt )
 						{
 							str = str.substr( 0, str.size() - 1 );
 							*control_data = str;
+							control_data->caret_pos--;
 						}
 						return true;
 					}
@@ -279,18 +299,21 @@ bool w_imgui_callback::on_input_released( const w_input_event* evt )
 
 bool w_imgui_callback::on_input_key( const w_input_event* evt )
 {
-	if( tag_focus != hash_none )
+	if( UI->tag_focus != hash_none )
 	{
-		auto control_data = IMGUI->get_control_data( tag_focus );
+		auto control_data = IMGUI->get_control_data( UI->tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
 		if( std::holds_alternative<std::string>( control_data->data ) )
 		{
-			auto new_data = w_imgui_control_data( std::get<std::string>( control_data->data ) + evt->ch );
+			std::string new_str = std::get<std::string>( control_data->data );
+			new_str.insert( new_str.begin() + control_data->caret_pos, evt->ch );
+			auto new_data = w_imgui_control_data( new_str );
 
-			if( validate_value_change( tag_focus, *control_data, new_data ) )
+			if( validate_value_change( UI->tag_focus, *control_data, new_data ) )
 			{
 				control_data->data = new_data.data;
+				control_data->caret_pos++;
 			}
 		}
 	}

@@ -6,6 +6,7 @@ struct w_imgui_control_data
 	e_imgui_control_type control_type = imgui_control_type::none;
 	int max_length = -1;
 	std::optional<std::string> valid_char_list = std::nullopt;
+	int caret_pos = 0;
 
 	w_imgui_control_data( bool value );
 	w_imgui_control_data( std::string value );
