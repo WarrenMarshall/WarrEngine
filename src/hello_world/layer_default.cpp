@@ -4,9 +4,9 @@
 // ----------------------------------------------------------------------------
 
 layer_default_ui_callback::layer_default_ui_callback()
-	: w_imgui_callback()
 {
-	edit_name_data.max_length = 5;
+	edit_name_data.max_length = 15;
+	edit_name_data.valid_char_list = valid_chars_alphanumeric;
 	edit_email_data.max_length = 10;
 }
 

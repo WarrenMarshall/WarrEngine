@@ -144,8 +144,17 @@ using w_sz = w_vec2;
 using w_offset = w_vec2;
 using w_pos = w_vec2;
 using time_ms = uint64_t;
-//using w_imgui_control_data = std::variant<bool, float, std::string>;
 using w_keyframe_data = std::variant<float, w_color>;
+
+// ----------------------------------------------------------------------------
+// strings to validate text input against
+
+constexpr auto valid_chars_alphabet_upper = "ABCDEFGHJIKLMNOPQRSTUVWXYZ";
+constexpr auto valid_chars_alphabet_lower = "abcdefghjiklmnopqrstuvwxyz";
+constexpr auto valid_chars_numbers = "1234567890";
+constexpr auto valid_chars_alphanumeric = "ABCDEFGHJIKLMNOPQRSTUVWXYZabcdefghjiklmnopqrstuvwxyz1234567890";
+constexpr auto valid_chars_simple_whitespace = " -_";
+constexpr auto valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 // ----------------------------------------------------------------------------
 

@@ -10,19 +10,19 @@ const std::string WHITESPACE = " \n\r\t\f\v";
 
 const std::string_view w_string_util::ltrim( const std::string_view s )
 {
-    const size_t start = s.find_first_not_of( WHITESPACE );
-    return ( start == std::string_view::npos ) ? "" : s.substr( start );
+	const size_t start = s.find_first_not_of( WHITESPACE );
+	return ( start == std::string_view::npos ) ? "" : s.substr( start );
 }
 
 const std::string_view w_string_util::rtrim( const std::string_view s )
 {
-    const size_t end = s.find_last_not_of( WHITESPACE );
-    return ( end == std::string_view::npos ) ? "" : s.substr( 0, end + 1 );
+	const size_t end = s.find_last_not_of( WHITESPACE );
+	return ( end == std::string_view::npos ) ? "" : s.substr( 0, end + 1 );
 }
 
 const std::string_view w_string_util::trim( const std::string_view s )
 {
-    return w_string_util::rtrim( w_string_util::ltrim( s ) );
+	return w_string_util::rtrim( w_string_util::ltrim( s ) );
 }
 
 const std::string w_string_util::format_with_commas( float value )
@@ -64,4 +64,10 @@ const std::string w_string_util::remove_char( const std::string& string, char ch
 	new_string.erase( std::remove( new_string.begin(), new_string.end(), char_to_remove ), new_string.end() );
 
 	return new_string;
+}
+
+const bool w_string_util::contains_char( const std::string& string, char char_to_find )
+{
+	const size_t idx = string.find_first_of( char_to_find );
+	return ( idx != std::string_view::npos );
 }

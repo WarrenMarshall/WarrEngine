@@ -509,12 +509,14 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 					// caret
 					w_sz extents = engine->pixel_font->get_string_extents( control.text );
 					auto tex_caret = a_texture::find( "ui_edit_box_caret" );
+					RENDER->push_rgb( w_color::white );
 					RENDER->draw_sprite( tex_caret,
 						{
 							rc_client_offset.x + extents.x + current_layer->get_imgui_callback()->get_control_margin(),
 							rc_client_offset.y + ( rc_client_offset.h / 2.0f )
 						}
 					);
+					RENDER->pop();
 				}
 			}
 		}

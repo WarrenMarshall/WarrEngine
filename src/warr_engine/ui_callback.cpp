@@ -68,11 +68,35 @@ bool w_imgui_callback::validate_value_change( hash tag, w_imgui_control_data& ol
 {
 	if( old_value.control_type == imgui_control_type::edit_box )
 	{
+		std::string new_str = std::get<std::string>( new_value.data );
+		std::string old_str = std::get<std::string>( old_value.data );
+
+		if( new_str.empty() )
+		{
+			// new value is empty, which is always valid
+			return true;
+		}
+
 		if( old_value.max_length > 0 )
 		{
+			// validate against length
+
 			if( std::get<std::string>( new_value.data ).size() > old_value.max_length )
 			{
 				return false;
+			}
+
+			// validate against character list
+
+			if( new_str.size() > old_str.size() )
+			{
+				if( old_value.valid_char_list.has_value() )
+				{
+					if( !w_string_util::contains_char( *old_value.valid_char_list, new_str.back() ) )
+					{
+						return false;
+					}
+				}
 			}
 		}
 	}
