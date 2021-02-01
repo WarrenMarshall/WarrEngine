@@ -239,30 +239,32 @@ bool w_imgui_callback::on_input_held( const w_input_event* evt )
 	if( tag_focus != hash_none )
 	{
 		auto control_data = IMGUI->get_control_data( tag_focus );
-		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
-		if( std::holds_alternative<std::string>( control_data->data ) )
+		if( control_data )
 		{
-			switch( evt->input_id )
+			if( std::holds_alternative<std::string>( control_data->data ) )
 			{
-				case input_id::key_backspace:
+				switch( evt->input_id )
 				{
-					std::string str = std::get<std::string>( control_data->data );
-					if( !str.empty() )
+					case input_id::key_backspace:
 					{
-						str = str.substr( 0, str.size() - 1 );
-						*control_data = str;
+						std::string str = std::get<std::string>( control_data->data );
+						if( !str.empty() )
+						{
+							str = str.substr( 0, str.size() - 1 );
+							*control_data = str;
+						}
+						return true;
 					}
-					return true;
-				}
-				break;
+					break;
 
-				default:
-				{
-					// if a ui control has focus, we want to eat all of these events
-					return true;
+					default:
+					{
+						// if a ui control has focus, we want to eat all of these events
+						return true;
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}

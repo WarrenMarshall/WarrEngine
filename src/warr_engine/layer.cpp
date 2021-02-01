@@ -112,10 +112,14 @@ bool w_layer::on_input_pressed( const w_input_event* evt )
 {
 	if( LAYER == this )
 	{
-		if( get_imgui_callback()->on_input_pressed( evt ) )
+		auto callback = get_imgui_callback();
+
+		if( callback->on_input_pressed( evt ) )
 		{
 			return true;
 		}
+
+		callback->tag_focus = hash_none;
 	}
 
 	return false;

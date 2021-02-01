@@ -129,7 +129,13 @@ w_imgui* w_imgui::set_text_align( e_align align )
 
 w_imgui* w_imgui::set_slice_def( const std::string& tag )
 {
-	current_control.slice_def = a_9slice_def::find( tag );
+	current_control.slice_def = nullptr;
+
+	if( !tag.empty() )
+	{
+		current_control.slice_def = a_9slice_def::find( tag );
+	}
+
 	compute_clientrect_from_rect();
 
 	return this;

@@ -7,6 +7,8 @@ layer_default_ui_callback::layer_default_ui_callback()
 {
 	edit_name_data.max_length = 15;
 	edit_name_data.valid_char_list = valid_chars_alphanumeric;
+	*edit_name_data.valid_char_list += valid_chars_simple_whitespace;
+	*edit_name_data.valid_char_list += valid_chars_punctuation;
 	edit_email_data.max_length = 10;
 }
 
@@ -117,4 +119,14 @@ void layer_default::draw_ui()
 w_imgui_callback* layer_default::get_imgui_callback()
 {
 	return &imgui_callback;
+}
+
+bool layer_default::on_input_pressed( const w_input_event* evt )
+{
+	if( !w_layer::on_input_pressed( evt ) )
+	{
+		log( "LAYER CLICKED!" );
+	}
+
+	return false;
 }
