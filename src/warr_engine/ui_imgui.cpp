@@ -535,6 +535,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 	if( is_hot && control.can_retain_focus )
 	{
+		caret_blink_tween.restart();
 		UI->tag_focus = control.tag;
 	}
 }
