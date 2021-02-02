@@ -512,7 +512,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 			if( UI->tag_focus == control.tag )
 			{
-				if( *caret_blink_tween > 0.5f )
+				if( *caret_blink_tween < 0.5f )
 				{
 					// caret
 					w_sz extents = engine->pixel_font->get_string_extents( control.text.substr( 0, control_data->caret_pos ) );
