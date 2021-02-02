@@ -1,0 +1,12 @@
+[w_engine::launch:21] Logging started
+[w_engine::launch:26] Creating engine instance
+[w_engine::launch:31] Initializing engine
+[w_engine::launch:64] Creating main window
+[w_window::init:81] GLFW Version : 3.3.2 Win32 WGL EGL OSMesa VisualC
+[w_window::init:87] Primary monitor [Generic PnP Monitor - 1920x1080]
+[w_engine::launch:70] Initializing OpenGL
+[w_opengl::init:73] OpenGL Version : [4.6.0 NVIDIA 461.40]
+[w_opengl::init:74] GLEW Version : [2.2.0]
+[w_opengl::init:75] Renderer: [GeForce RTX 3090/PCIe/SSE2]
+[w_opengl::init:84] GL_MAX_TEXTURE_IMAGE_UNITS : 32
+[w_file_system::load_file_into_memory:60] !ERROR! : File not found on disk OR in a zip file : [data/warr_engine/shaders/base.vert]

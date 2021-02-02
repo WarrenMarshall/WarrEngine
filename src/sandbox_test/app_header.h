@@ -7,5 +7,5 @@
 
 #include <warr_engine.h>
 
-#include "hello_world_app.h"
+#include "sandbox_test.h"
 #include "layer_default.h"

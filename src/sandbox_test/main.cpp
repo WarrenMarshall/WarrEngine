@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	w_engine::go<hello_world_app>( argc, argv );
+	w_engine::go<sandbox_test_app>( argc, argv );
 
 	return 0;
 }
