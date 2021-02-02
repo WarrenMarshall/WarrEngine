@@ -927,7 +927,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		}
 		break;
 
-		case input_id::key_s:
+		case input_id::key_f8:
 		{
 			render->show_stats = true;
 			return true;
@@ -942,7 +942,7 @@ bool w_engine::on_input_released( const w_input_event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::key_s:
+		case input_id::key_f8:
 		{
 			render->show_stats = false;
 			return true;

@@ -24,6 +24,7 @@ struct w_imgui_callback
 	virtual float get_default_height( e_imgui_control_type control_type );
 
 	virtual bool on_input_motion( const w_input_event* evt );
+	bool handle_editing_key( const w_input_event* evt );
 	virtual bool on_input_pressed( const w_input_event* evt );
 	virtual bool on_input_held( const w_input_event* evt );
 	virtual bool on_input_released( const w_input_event* evt );

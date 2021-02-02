@@ -120,13 +120,3 @@ w_imgui_callback* layer_default::get_imgui_callback()
 {
 	return &imgui_callback;
 }
-
-bool layer_default::on_input_pressed( const w_input_event* evt )
-{
-	if( !w_layer::on_input_pressed( evt ) )
-	{
-		log( "LAYER CLICKED!" );
-	}
-
-	return false;
-}

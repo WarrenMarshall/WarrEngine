@@ -190,63 +190,110 @@ bool w_imgui_callback::on_input_motion( const w_input_event* evt )
 	return false;
 }
 
+bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
+{
+	auto control_data = IMGUI->get_control_data( UI->tag_focus );
+	assert( control_data );	// a control has focus but isn't in the tag/data map?
+
+	if( control_data->control_type == imgui_control_type::edit_box )
+	{
+		// ----------------------------------------------------------------------------
+		// standard text editing keys
+
+		switch( evt->input_id )
+		{
+			case input_id::key_backspace:
+			{
+				std::string str = std::get<std::string>( control_data->data );
+				if( !str.empty() )
+				{
+					std::string str_pre_caret = str.substr( 0, control_data->caret_pos - 1 );
+					std::string str_post_caret = str.substr( control_data->caret_pos, std::string::npos );
+
+					*control_data = str_pre_caret + str_post_caret;;
+					control_data->caret_pos--;
+				}
+				return true;
+			}
+			break;
+
+			case input_id::key_delete:
+			{
+				std::string str = std::get<std::string>( control_data->data );
+				if( !str.empty() && control_data->caret_pos < str.size() )
+				{
+					std::string str_pre_caret = str.substr( 0, control_data->caret_pos );
+					std::string str_post_caret = str.substr( control_data->caret_pos + 1, std::string::npos );
+
+					*control_data = str_pre_caret + str_post_caret;;
+				}
+				return true;
+			}
+			break;
+
+			case input_id::key_left:
+			{
+				if( control_data->caret_pos > 0 )
+				{
+					control_data->caret_pos--;
+				}
+				return true;
+			}
+			break;
+
+			case input_id::key_right:
+			{
+				std::string str = std::get<std::string>( control_data->data );
+
+				control_data->caret_pos++;
+				control_data->caret_pos = glm::min<size_t>( str.size(), control_data->caret_pos );
+				return true;
+			}
+			break;
+
+			case input_id::key_home:
+			{
+				control_data->caret_pos = 0;
+				return true;
+			}
+			break;
+
+			case input_id::key_end:
+			{
+				std::string str = std::get<std::string>( control_data->data );
+				control_data->caret_pos = str.length();
+				return true;
+			}
+			break;
+
+			case input_id::key_esc:
+			case input_id::key_enter:
+			{
+				UI->tag_focus = hash_none;
+				return true;
+			}
+			break;
+		}
+	}
+
+	return false;
+}
+
 bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 {
 	if( UI->tag_focus != hash_none )
 	{
 		auto control_data = IMGUI->get_control_data( UI->tag_focus );
-		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
-		if( std::holds_alternative<std::string>( control_data->data ) )
+		if( control_data )
 		{
-			switch( evt->input_id )
+			if( handle_editing_key( evt ) )
 			{
-				case input_id::key_backspace:
-				{
-					std::string str = std::get<std::string>( control_data->data );
-					if( !str.empty() )
-					{
-						str = str.substr( 0, str.size() - 1 );
-						*control_data = str;
-						control_data->caret_pos--;
-					}
-					return true;
-				}
-				break;
-
-				case input_id::key_left:
-				{
-					control_data->caret_pos--;
-					control_data->caret_pos = glm::max( 0, control_data->caret_pos );
-					return true;
-				}
-				break;
-
-				case input_id::key_right:
-				{
-					std::string str = std::get<std::string>( control_data->data );
-
-					control_data->caret_pos++;
-					control_data->caret_pos = glm::min( (int)str.size(), control_data->caret_pos );
-					return true;
-				}
-				break;
-
-				case input_id::key_esc:
-				case input_id::key_enter:
-				{
-					UI->tag_focus = hash_none;
-					return true;
-				}
-				break;
-
-				default:
-				{
-					// if a ui control has focus, we want to eat all of these events
-					return true;
-				}
-				break;
+				return true;
 			}
+
+			// if a ui control has focus, we want to eat all of these events regardless
+			return true;
 		}
 	}
 
@@ -261,31 +308,13 @@ bool w_imgui_callback::on_input_held( const w_input_event* evt )
 
 		if( control_data )
 		{
-			if( std::holds_alternative<std::string>( control_data->data ) )
+			if( handle_editing_key( evt ) )
 			{
-				switch( evt->input_id )
-				{
-					case input_id::key_backspace:
-					{
-						std::string str = std::get<std::string>( control_data->data );
-						if( !str.empty() )
-						{
-							str = str.substr( 0, str.size() - 1 );
-							*control_data = str;
-							control_data->caret_pos--;
-						}
-						return true;
-					}
-					break;
-
-					default:
-					{
-						// if a ui control has focus, we want to eat all of these events
-						return true;
-					}
-					break;
-				}
+				return true;
 			}
+
+			// if a ui control has focus, we want to eat all of these events regardless
+			return true;
 		}
 	}
 
@@ -304,7 +333,10 @@ bool w_imgui_callback::on_input_key( const w_input_event* evt )
 		auto control_data = IMGUI->get_control_data( UI->tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
-		if( std::holds_alternative<std::string>( control_data->data ) )
+		// ----------------------------------------------------------------------------
+		// text controls want keypresses
+
+		if( control_data->control_type == imgui_control_type::edit_box )
 		{
 			std::string new_str = std::get<std::string>( control_data->data );
 			new_str.insert( new_str.begin() + control_data->caret_pos, evt->ch );

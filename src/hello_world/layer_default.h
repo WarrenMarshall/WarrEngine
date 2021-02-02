@@ -33,6 +33,4 @@ struct layer_default : w_layer
 	virtual void draw() override;
 	virtual void draw_ui() override;
 	virtual w_imgui_callback* get_imgui_callback() override;
-
-	virtual bool on_input_pressed( const w_input_event* evt ) override;
 };

@@ -2,44 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-// ----------------------------------------------------------------------------
-// loop
-//
-// - when the end is reached, reset to the start
-
-bool on_step_loop( tweeny::tween<float>& tween )
-{
-	if( tween.progress() >= 1.0f )
-	{
-		tween.seek( 0.0f, false );
-	}
-
-	return false;
-}
-
-// ----------------------------------------------------------------------------
-// pingpong
-//
-// - when end is reached, start moving backwards
-// - when start is reached, start moving forwards
-
-bool on_step_pingpong( tweeny::tween<float>& tween )
-{
-	if( tween.progress() >= 1.0f )
-	{
-		tween.backward();
-	}
-
-	if( tween.progress() <= 0.001f )
-	{
-		tween.forward();
-	}
-
-	return false;
-}
-
-// ----------------------------------------------------------------------------
-
 w_tween::w_tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via )
 	: start( start ), end( end ), type( type ), via( via )
 {
@@ -54,6 +16,9 @@ w_tween::w_tween()
 {
 	time_last = engine->time->now();
 }
+
+// when a tween is dereferenced, it is updated with the amount of time that has
+// passed since the last time. the value is then returned.
 
 float w_tween::operator*()
 {
@@ -91,6 +56,42 @@ void w_tween::set_backwards()
 {
 	tween.seek( 1.0f, false );
 	tween.backward();
+}
+
+// ----------------------------------------------------------------------------
+// loop
+//
+// - when the end is reached, reset to the start
+
+bool on_step_loop( tweeny::tween<float>& tween )
+{
+	if( tween.progress() >= 1.0f )
+	{
+		tween.seek( 0.0f, false );
+	}
+
+	return false;
+}
+
+// ----------------------------------------------------------------------------
+// pingpong
+//
+// - when end is reached, start moving backwards
+// - when start is reached, start moving forwards
+
+bool on_step_pingpong( tweeny::tween<float>& tween )
+{
+	if( tween.progress() >= 1.0f )
+	{
+		tween.backward();
+	}
+
+	if( tween.progress() <= 0.001f )
+	{
+		tween.forward();
+	}
+
+	return false;
 }
 
 void w_tween::set_type( e_tween_type type )

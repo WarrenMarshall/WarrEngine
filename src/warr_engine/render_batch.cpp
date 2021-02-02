@@ -7,7 +7,7 @@
 w_render_batch::w_render_batch( e_render_prim render_prim )
 {
 	vertex_array_object = std::make_unique<w_vertex_array_object>( this, render_prim );
-    vertex_array_object->reset();
+	vertex_array_object->reset();
 }
 
 w_render_batch::~w_render_batch()

@@ -163,7 +163,12 @@ void w_input::queue_presses()
 	update_button_state( input_id::key_comma, glfwGetKey( engine->window->glfw_window, GLFW_KEY_COMMA ) );
 	update_button_state( input_id::key_slash, glfwGetKey( engine->window->glfw_window, GLFW_KEY_SLASH ) );
 	update_button_state( input_id::key_tilde, glfwGetKey( engine->window->glfw_window, GLFW_KEY_GRAVE_ACCENT ) );
+	update_button_state( input_id::key_insert, glfwGetKey( engine->window->glfw_window, GLFW_KEY_INSERT ) );
 	update_button_state( input_id::key_delete, glfwGetKey( engine->window->glfw_window, GLFW_KEY_DELETE ) );
+	update_button_state( input_id::key_home, glfwGetKey( engine->window->glfw_window, GLFW_KEY_HOME ) );
+	update_button_state( input_id::key_end, glfwGetKey( engine->window->glfw_window, GLFW_KEY_END ) );
+	update_button_state( input_id::key_page_up, glfwGetKey( engine->window->glfw_window, GLFW_KEY_PAGE_UP ) );
+	update_button_state( input_id::key_page_down, glfwGetKey( engine->window->glfw_window, GLFW_KEY_PAGE_DOWN ) );
 
 	// update game controller states
 
