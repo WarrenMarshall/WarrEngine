@@ -228,6 +228,8 @@ std::vector<w_color> w_parser::color_list_from_str( const std::string_view str )
 		}
 	}
 
+	// replace symbols with real values
+
 	for( const auto& iter : color_values )
 	{
 		auto val = iter;

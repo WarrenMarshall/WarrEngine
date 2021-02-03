@@ -248,22 +248,33 @@ w_color::w_color( const std::string& str )
 		auto new_str = w_string_util::remove_char( str, '[' );
 		new_str = w_string_util::remove_char( new_str, ']' );
 
-		w_tokenizer tok( new_str, ',' );
+		// if string contains a "%" marker anywhere, we assume this to
+		// be a set of integer values. Otherwise, they are treated as floats.
+		//
+		// note : you can't mix-and-match
 
-		r = w_parser::float_from_str( *tok.get_next_token() );
-		g = w_parser::float_from_str( *tok.get_next_token() );
-		b = w_parser::float_from_str( *tok.get_next_token() );
-		a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f" ) );
-
-		// if the colors values are greater than 1.0, they are assumed to be
-		// in 0-255 space and are converted back down to 0-1.
-
-		if( r > 1.0f || g > 1.0f || b > 1.0f || a > 1.0f )
+		if( w_string_util::contains_char( new_str, '%' ) )
 		{
-			r *= byte_color_to_float;
-			g *= byte_color_to_float;
-			b *= byte_color_to_float;
-			a *= byte_color_to_float;
+			new_str = w_string_util::remove_char( new_str, '%' );
+			w_tokenizer tok( new_str, ',' );
+
+			r = w_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
+			g = w_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
+			b = w_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
+			a = w_parser::int_from_str( tok.get_next_token().value_or( "1.0f" ) ) * byte_color_to_float;
+		}
+		else
+		{
+			// remove any 'f' postfixes that may have been added to the
+			// color values out of programmer habit
+
+			new_str = w_string_util::remove_char( new_str, 'f' );
+			w_tokenizer tok( new_str, ',' );
+
+			r = w_parser::float_from_str( *tok.get_next_token() );
+			g = w_parser::float_from_str( *tok.get_next_token() );
+			b = w_parser::float_from_str( *tok.get_next_token() );
+			a = w_parser::float_from_str( tok.get_next_token().value_or( "1.0f" ) );
 		}
 	}
 }
