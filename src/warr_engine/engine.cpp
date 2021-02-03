@@ -383,9 +383,8 @@ void w_engine::main_loop()
 			->begin()
 			->draw( frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
+		RENDER->batch_quads->draw_and_reset_internal();
 		blur_frame_buffers[0]->unbind();
-		RENDER->stats.draw_calls--;
 
 		// pingpong back and forth between the 2 blur frame buffers, blurring
 		// them into each other, for a set amount of passes.
@@ -401,9 +400,8 @@ void w_engine::main_loop()
 				->begin()
 				->draw( blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 				->end();
-			RENDER->batch_quads->draw_and_reset();
+			RENDER->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
-			RENDER->stats.draw_calls--;
 
 			pingpong = !pingpong;
 		}
@@ -422,8 +420,7 @@ void w_engine::main_loop()
 			->begin()
 			->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
-		RENDER->stats.draw_calls--;
+		RENDER->batch_quads->draw_and_reset_internal();
 
 		// draw glow frame buffer on top with blending
 
@@ -434,8 +431,7 @@ void w_engine::main_loop()
 			->push_alpha( 0.5f )
 			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
-		RENDER->stats.draw_calls--;
+		RENDER->batch_quads->draw_and_reset_internal();
 
 		OPENGL->set_blend( opengl_blend::alpha );
 
@@ -451,20 +447,19 @@ void w_engine::main_loop()
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
-			(int) window->viewport_pos_sz.x,
-			(int) window->viewport_pos_sz.y,
-			(int) window->viewport_pos_sz.w,
-			(int) window->viewport_pos_sz.h
+			(int)window->viewport_pos_sz.x,
+			(int)window->viewport_pos_sz.y,
+			(int)window->viewport_pos_sz.w,
+			(int)window->viewport_pos_sz.h
 		);
 
 		RENDER
 			->begin()
 			->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
 			->end();
-		RENDER->batch_quads->draw_and_reset();
-		RENDER->stats.draw_calls--;
+		RENDER->batch_quads->draw_and_reset_internal();
 
-#if 0
+	#if 0
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
@@ -478,39 +473,36 @@ void w_engine::main_loop()
 		float h = v_window_h / 4.0f;
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
-	// main
+		// main
 	#if 0
 		RENDER
 			->begin()
 			->draw( frame_buffer->textures[ 0 ], rc )
 			->draw_string( "(base)", { rc.x, rc.y } )
 			->end();
-		RENDER->batch_quads->vertex_array_object->draw_and_reset();
-		RENDER->stats.draw_calls--;
+		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 		rc.x += w;
 	#endif
 
-	// glow
+		// glow
 	#if 1
 		RENDER
 			->begin()
 			->draw( frame_buffer->textures[ 1 ], rc )
 			->draw_string( "(glow)", { rc.x, rc.y } )
 			->end();
-		RENDER->batch_quads->vertex_array_object->draw_and_reset();
-		RENDER->stats.draw_calls--;
+		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 		rc.x += w;
 	#endif
 
-	// blurred glow
+		// blurred glow
 	#if 1
 		RENDER
 			->begin()
 			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
 			->draw_string( "(blur)", { rc.x, rc.y } )
 			->end();
-		RENDER->batch_quads->vertex_array_object->draw_and_reset();
-		RENDER->stats.draw_calls--;
+		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 		rc.x += w;
 	#endif
 #endif
@@ -879,7 +871,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		{
 			RENDER->single_frame_debugger = true;
 			log_div();
-			log( "single frame debugger" );
+			log( "-- Single Frame Debugger" );
 			log_div();
 			return true;
 		}

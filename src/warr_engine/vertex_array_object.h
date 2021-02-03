@@ -21,5 +21,6 @@ struct w_vertex_array_object
 	int assign_texture_slot( const a_texture* texture );
 	void check_draw_and_reset();
 	void draw_and_reset();
+	void draw_and_reset_internal();
 	void reset();
 };

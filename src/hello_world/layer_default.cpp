@@ -10,8 +10,8 @@ void layer_default::push()
 {
 	gradient = a_texture::find( "background_gradient" );
 	tex_hello_world = a_texture::find( "tex_hello_world" );
-	movement_tween = w_tween( -150, 150, 2000, tween_type::pingpong, tween_via::sinusoidal );
-	scale_tween = w_tween( 1.0f, 2.0f, 4500, tween_type::pingpong, tween_via::quadratic );
+	movement_tween = w_tween( -175, 175, 2000, tween_type::pingpong, tween_via::sinusoidal );
+	scale_tween = w_tween( 1.0f, 5.0f, 4500, tween_type::pingpong, tween_via::quadratic );
 
 	engine->window->set_mouse_mode( mouse_mode::os );
 }

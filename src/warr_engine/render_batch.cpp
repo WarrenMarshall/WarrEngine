@@ -53,6 +53,11 @@ void w_render_batch::draw_and_reset()
 	vertex_array_object->draw_and_reset();
 }
 
+void w_render_batch::draw_and_reset_internal()
+{
+	vertex_array_object->draw_and_reset_internal();
+}
+
 bool w_render_batch::is_empty()
 {
 	return vertex_array_object->vertex_buffer->vertices.empty();

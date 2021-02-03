@@ -15,6 +15,7 @@ struct w_render_batch
 	void add_primitive( const a_texture* texture, const w_render_vertex& v0 );
 
 	void draw_and_reset();
+	void draw_and_reset_internal();
 
 	bool is_empty();
 

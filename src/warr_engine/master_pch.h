@@ -251,6 +251,7 @@ using b_set_current = bool;
 using b_reset_velocity = bool;
 using b_one_shot = bool;
 using b_auto_play = bool;
+using b_show_in_debug_frame_buffer = bool;
 
 // ----------------------------------------------------------------------------
 

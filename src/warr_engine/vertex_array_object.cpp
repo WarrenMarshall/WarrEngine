@@ -124,21 +124,8 @@ void w_vertex_array_object::check_draw_and_reset()
 
 void w_vertex_array_object::draw_and_reset()
 {
-	auto index_count = static_cast<int>( vertex_buffer->vertices.size() * indices_to_verts_factor );
-
-	if( index_count )
+	if( vertex_buffer->vertices.size() )
 	{
-		bind();
-
-		// upload verts to the card
-		vertex_buffer->upload();
-
-		// bind texture units
-		vertex_buffer->bind_texture_units();
-
-		// draw
-		glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
-
 		// update stats and clean up
 		RENDER->stats.draw_calls++;
 
@@ -162,11 +149,36 @@ void w_vertex_array_object::draw_and_reset()
 					}
 				}
 
-				log( "  {} vertices, {} indices", f_commas( static_cast<float>( vertex_buffer->vertices.size() ) ), f_commas( static_cast<float>( index_count ) ) );
+				log( "  {} vertices, {} indices",
+					f_commas( static_cast<float>( vertex_buffer->vertices.size() ) ),
+					f_commas( vertex_buffer->vertices.size() * indices_to_verts_factor )
+				);
 				log_div();
 			}
 		}
 #endif
+
+		draw_and_reset_internal();
+	}
+}
+
+void w_vertex_array_object::draw_and_reset_internal()
+{
+	auto index_count = static_cast<int>( vertex_buffer->vertices.size() * indices_to_verts_factor );
+
+	if( index_count )
+	{
+		bind();
+
+		// upload verts to the card
+		vertex_buffer->upload();
+
+		// bind texture units
+		vertex_buffer->bind_texture_units();
+
+		// draw
+		glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_SHORT, nullptr );
+
 		unbind();
 
 		// clear out for the next batch
