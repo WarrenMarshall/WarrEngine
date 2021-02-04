@@ -3,14 +3,15 @@
 
 // ----------------------------------------------------------------------------
 
-void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
+void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
 	w_imgui_callback::on_left_clicked( control, result );
 
 	switch( control.tag )
 	{
-		case H( "button_UI" ):
+		case H( "button_ui" ):
 		{
+			LAYER_MGR->push<layer_ui>();
 		}
 		break;
 	}
@@ -18,19 +19,19 @@ void layer_default_ui_callback::on_left_clicked( const w_imgui_control& control,
 
 // ----------------------------------------------------------------------------
 
-layer_default::layer_default()
+layer_main_menu::layer_main_menu()
 {
 	draws_completely_solid = true;
 }
 
-void layer_default::push()
+void layer_main_menu::push()
 {
 	gradient = a_texture::find( "background_gradient" );
 
 	engine->window->set_mouse_mode( mouse_mode::os );
 }
 
-void layer_default::draw()
+void layer_main_menu::draw()
 {
 	w_layer::draw();
 
@@ -38,7 +39,7 @@ void layer_default::draw()
 		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
 }
 
-void layer_default::draw_ui()
+void layer_main_menu::draw_ui()
 {
 	w_layer::draw_ui();
 
@@ -48,13 +49,13 @@ void layer_default::draw_ui()
 		->set_size( { ui_canvas_w - 32, ui_canvas_h - 32 } )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_UI" ) )
+	IMGUI->do_push_button( H( "button_ui" ) )
 		->set_text( "UI Controls" )
 		->set_position( imgui_flow::last_crc_topleft )
 		->finalize();
 }
 
-w_imgui_callback* layer_default::get_imgui_callback()
+w_imgui_callback* layer_main_menu::get_imgui_callback()
 {
 	return &imgui_callback;
 }

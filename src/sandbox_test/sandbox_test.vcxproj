@@ -169,13 +169,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="layer_default.cpp" />
+    <ClCompile Include="layer_main_menu.cpp" />
+    <ClCompile Include="layer_ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sandbox_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
-    <ClInclude Include="layer_default.h" />
+    <ClInclude Include="layer_main_menu.h" />
+    <ClInclude Include="layer_ui.h" />
     <ClInclude Include="sandbox_test.h" />
   </ItemGroup>
   <ItemGroup>

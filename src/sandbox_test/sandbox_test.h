@@ -11,7 +11,8 @@ struct sandbox_test_app : w_game
 
 	sandbox_test_app( std::string name );
 
-	void init() override;
-	void new_game() override;
-	void update() override;
+	virtual void init() override;
+	virtual void reset_layer_stack_to_main_menu() override;
+	virtual void new_game() override;
+	virtual void update() override;
 };

@@ -13,10 +13,11 @@ void w_layer_mgr::clear_stack()
 
 	for( const auto& layer : layer_stack )
 	{
-		layer->pop();
+		layer->ilc_set( life_cycle::dead );
+		//layer->pop();
 	}
 
-	layer_stack.clear();
+	//layer_stack.clear();
 }
 
 void w_layer_mgr::pop()

@@ -2,22 +2,22 @@
 
 // ----------------------------------------------------------------------------
 
-struct layer_default_ui_callback : w_imgui_callback
+struct layer_main_menu_ui_callback : w_imgui_callback
 {
 	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct layer_default : w_layer
+struct layer_main_menu : w_layer
 {
 	a_texture* gradient = nullptr;
 
-	layer_default_ui_callback imgui_callback;
+	layer_main_menu_ui_callback imgui_callback;
 
 	float glow_intensity = 0.0f;
 
-	layer_default();
+	layer_main_menu();
 
 	virtual void push() override;
 	virtual void draw() override;

@@ -11,7 +11,7 @@ struct hello_world_app : w_game
 
 	hello_world_app( std::string name );
 
-	void init() override;
-	void new_game() override;
-	void update() override;
+	virtual void init() override;
+	virtual void new_game() override;
+	virtual void update() override;
 };

@@ -21,10 +21,13 @@ struct w_layer_mgr
 		{
 			w_layer* top_layer = get_top();
 
-			if( typeid( *top_layer ) == typeid( *new_layer ) )
+			if( top_layer->ilc_is_alive() )
 			{
-				log_error( "Duplicate layer types at top of stack : {}", typeid( *top_layer ).name() );
-				assert( false );
+				if( typeid( *top_layer ) == typeid( *new_layer ) )
+				{
+					log_error( "Duplicate layer types at top of stack : {}", typeid( *top_layer ).name() );
+					assert( false );
+				}
 			}
 
 			top_layer->getting_covered();

@@ -16,7 +16,14 @@ void sandbox_test_app::init()
 	//OPENGL->set_uniform( "ub_crt_scanlines", true );
 	//OPENGL->set_uniform( "ub_crt_tint", false );
 
-	engine->layer_mgr->push<layer_default>();
+	engine->layer_mgr->push<layer_main_menu>();
+}
+
+void sandbox_test_app::reset_layer_stack_to_main_menu()
+{
+	engine->layer_mgr->clear_stack();
+
+	engine->layer_mgr->push<layer_main_menu>();
 }
 
 void sandbox_test_app::new_game()
