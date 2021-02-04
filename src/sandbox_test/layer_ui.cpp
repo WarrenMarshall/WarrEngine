@@ -6,9 +6,7 @@
 layer_ui_callback::layer_ui_callback()
 {
 	edit_name_data.max_length = 15;
-	edit_name_data.valid_char_list = valid_chars_alphanumeric;
-	*edit_name_data.valid_char_list += valid_chars_simple_whitespace;
-	*edit_name_data.valid_char_list += valid_chars_punctuation;
+	edit_name_data.valid_char_list = valid_chars_alphanumeric + valid_chars_simple_whitespace + valid_chars_punctuation;
 	edit_email_data.max_length = 10;
 }
 

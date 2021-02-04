@@ -90,9 +90,9 @@ bool w_imgui_callback::validate_value_change( hash tag, w_imgui_control_data& ol
 
 			if( new_str.size() > old_str.size() )
 			{
-				if( old_value.valid_char_list.has_value() )
+				if( !old_value.valid_char_list.empty() )
 				{
-					if( !w_string_util::contains_char( *old_value.valid_char_list, new_str.back() ) )
+					if( !w_string_util::contains_char( old_value.valid_char_list, new_str.back() ) )
 					{
 						return false;
 					}

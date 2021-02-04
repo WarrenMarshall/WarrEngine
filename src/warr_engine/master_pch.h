@@ -149,12 +149,12 @@ using w_keyframe_data = std::variant<float, w_color>;
 // ----------------------------------------------------------------------------
 // strings to validate text input against
 
-constexpr auto valid_chars_alphabet_upper = "ABCDEFGHJIKLMNOPQRSTUVWXYZ";
-constexpr auto valid_chars_alphabet_lower = "abcdefghjiklmnopqrstuvwxyz";
-constexpr auto valid_chars_numbers = "1234567890";
-constexpr auto valid_chars_alphanumeric = "ABCDEFGHJIKLMNOPQRSTUVWXYZabcdefghjiklmnopqrstuvwxyz1234567890";
-constexpr auto valid_chars_simple_whitespace = " -_";
-constexpr auto valid_chars_punctuation = "!@#$%^&*(),.;:";
+const std::string valid_chars_alphabet_upper = "ABCDEFGHJIKLMNOPQRSTUVWXYZ";
+const std::string valid_chars_alphabet_lower = "abcdefghjiklmnopqrstuvwxyz";
+const std::string valid_chars_numbers = "1234567890";
+const std::string valid_chars_alphanumeric = "ABCDEFGHJIKLMNOPQRSTUVWXYZabcdefghjiklmnopqrstuvwxyz1234567890";
+const std::string valid_chars_simple_whitespace = " -_";
+const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 // ----------------------------------------------------------------------------
 
