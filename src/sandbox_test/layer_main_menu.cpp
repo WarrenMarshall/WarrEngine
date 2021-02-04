@@ -45,13 +45,17 @@ void layer_main_menu::draw_ui()
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "Test Cases" )
-		->set_position( { 16.0f, 16.0f } )
-		->set_size( { ui_canvas_w - 32, ui_canvas_h - 32 } )
+		->set_position( { 4.0f, 4.0f } )
+		->set_size( { ui_canvas_w - 8, ui_canvas_h - 8 } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_ui" ) )
 		->set_text( "UI Controls" )
 		->set_position( imgui_flow::last_crc_topleft )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_anim_texture" ) )
+		->set_text( "Anim Texture" )
 		->finalize();
 }
 
