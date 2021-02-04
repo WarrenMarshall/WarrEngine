@@ -9,7 +9,8 @@ w_time::w_time()
 
 void w_time::init()
 {
-	prev_frame_ms = now();
+	time_since_app_start_ms = 0;
+	prev_frame_ms = get_ticks();
 }
 
 // called at the start of each frame to update the internal time keeping
@@ -17,10 +18,10 @@ void w_time::init()
 void w_time::update()
 {
 	// get current time
-	current_frame_ms = now();
+	current_frame_ms = get_ticks();
 
 	// compute the delta since the last frame
-	delta_ms = current_frame_ms - prev_frame_ms;
+	delta_ms = (float)(current_frame_ms - prev_frame_ms);
 
 	if( engine->is_paused )
 	{
@@ -29,12 +30,20 @@ void w_time::update()
 	}
 	else
 	{
-		delta_ms = (time_ms)( delta_ms * dilation );
-		fts_accum_ms += delta_ms;
+		delta_ms = delta_ms * dilation;
 	}
+
+	fts_accum_ms += delta_ms;
+	time_since_app_start_ms += delta_ms;
 
 	// save the current time as the previous frame time
 	prev_frame_ms = current_frame_ms;
+}
+
+time_ms w_time::get_ticks()
+{
+	auto time = glfwGetTime();
+	return static_cast<time_ms>( time * 1000.0 );
 }
 
 // returns the current time in ms
@@ -43,6 +52,5 @@ void w_time::update()
 
 time_ms w_time::now() const
 {
-	auto time = glfwGetTime();
-	return static_cast<time_ms>( time * 1000.0 );
+	return (time_ms)time_since_app_start_ms;
 }
