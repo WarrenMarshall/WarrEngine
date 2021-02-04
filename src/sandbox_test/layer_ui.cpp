@@ -54,16 +54,15 @@ void layer_ui::push()
 void layer_ui::draw()
 {
 	w_layer::draw();
-
-
-	RENDER
-		->push_rgba( w_color( 0.2f, 0.2f, 0.2f, 0.5f ) )
-		->draw_filled_rectangle( w_rect( 0, 0, v_window_w, v_window_h ) );
 }
 
 void layer_ui::draw_ui()
 {
 	w_layer::draw_ui();
+
+	RENDER
+		->push_rgba( w_color( 0.2f, 0.2f, 0.2f, 0.85f ) )
+		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
 
 	IMGUI
 		->do_panel( H( "main_panel" ) )

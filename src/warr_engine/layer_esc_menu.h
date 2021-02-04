@@ -18,7 +18,6 @@ struct layer_esc_menu : w_layer
 	e_mouse_mode save_mouse_mode;
 
 	layer_esc_menu_ui_callback ui_callback;
-	w_tween window_top_tween;
 
 	virtual void push() override;
 	virtual void pop() override;

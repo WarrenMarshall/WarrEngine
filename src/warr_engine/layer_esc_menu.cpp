@@ -73,10 +73,7 @@ void layer_esc_menu::push()
 	save_mouse_mode = engine->window->mouse_mode;
 	engine->window->set_mouse_mode( mouse_mode::os );
 
-	window_top_tween = w_tween( 0.0f, 150.0f, 500, tween_type::one_shot, tween_via::circular_in );
-	window_top_tween.set_backwards();
-
-	//engine->set_pause( true );
+	engine->set_pause( true );
 }
 
 void layer_esc_menu::pop()
@@ -85,7 +82,7 @@ void layer_esc_menu::pop()
 
 	engine->window->set_mouse_mode( save_mouse_mode );
 
-	//engine->set_pause( false );
+	engine->set_pause( false );
 }
 
 void layer_esc_menu::draw_ui()
@@ -121,7 +118,7 @@ void layer_esc_menu::draw_ui()
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "PAUSE MENU" )
-		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) - *window_top_tween } )
+		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
