@@ -50,7 +50,18 @@ struct w_engine
 	a_font* pixel_font = nullptr;
 
 	bool is_running = false;
-	bool is_paused = false;
+
+	struct
+	{
+		// if pause_toggle is true or pause_ref_count > 0, the engine is paused
+		bool toggle = false;
+		short ref_count = 0;
+	} pause_state;
+
+	void toggle_pause();
+	void pause();
+	void resume();
+	bool is_paused();
 
 	w_cmdline_args cmdline;
 
@@ -72,8 +83,6 @@ struct w_engine
 	void deinit();
 	void draw();
 	void update();
-	void toggle_pause();
-	void set_pause( bool paused );
 	void cache_asset_definition_files( const std::string_view folder_name );
 	void precache_asset_resources( int pass );
 	void wait_for_thread_pool_to_finish();

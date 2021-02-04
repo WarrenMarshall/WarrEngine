@@ -286,7 +286,7 @@ void w_engine::main_loop()
 		// if the engine is paused, we need to continue processing user input so
 		// that the ESC menu and engine can respond to keypresses
 
-		if( is_paused )
+		if( is_paused() )
 		{
 			input->update();
 		}
@@ -657,7 +657,7 @@ void w_engine::draw()
 {
 	// If engine is paused, draw a border around the screen for visibility
 
-	if( is_paused )
+	if( is_paused() )
 	{
 		RENDER
 			->begin()
@@ -718,12 +718,22 @@ void w_engine::update()
 
 void w_engine::toggle_pause()
 {
-	is_paused = !is_paused;
+	pause_state.toggle = !pause_state.toggle;
 }
 
-void w_engine::set_pause( bool paused )
+void w_engine::pause()
 {
-	is_paused = paused;
+	pause_state.ref_count++;
+}
+
+void w_engine::resume()
+{
+	pause_state.ref_count--;
+}
+
+bool w_engine::is_paused()
+{
+	return pause_state.toggle || pause_state.ref_count > 0;
 }
 
 #ifdef USE_THREADED_ASSET_LOADING

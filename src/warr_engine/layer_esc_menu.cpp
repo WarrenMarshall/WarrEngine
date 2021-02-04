@@ -16,6 +16,7 @@ void layer_esc_menu_ui_callback::on_left_clicked( const w_imgui_control& control
 
 		case H( "button_main_menu" ):
 		{
+			engine->layer_mgr->pop();
 			base_game->reset_layer_stack_to_main_menu();
 		}
 		break;
@@ -73,7 +74,7 @@ void layer_esc_menu::push()
 	save_mouse_mode = engine->window->mouse_mode;
 	engine->window->set_mouse_mode( mouse_mode::os );
 
-	engine->set_pause( true );
+	engine->pause();
 }
 
 void layer_esc_menu::pop()
@@ -82,7 +83,7 @@ void layer_esc_menu::pop()
 
 	engine->window->set_mouse_mode( save_mouse_mode );
 
-	engine->set_pause( false );
+	engine->resume();
 }
 
 void layer_esc_menu::draw_ui()

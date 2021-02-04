@@ -43,7 +43,7 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 
 void focus_change_callback( GLFWwindow* window, int focused )
 {
-	engine->set_pause( ( focused == 0 ) );
+	focused ? engine->resume() : engine->pause();
 }
 
 // ----------------------------------------------------------------------------

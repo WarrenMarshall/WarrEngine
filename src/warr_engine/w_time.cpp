@@ -23,7 +23,7 @@ void w_time::update()
 	// compute the delta since the last frame
 	delta_ms = (float)(current_frame_ms - prev_frame_ms);
 
-	if( engine->is_paused )
+	if( engine->is_paused() )
 	{
 		// if the engine has paused, pretend like no time has passed
 		delta_ms = 0;
