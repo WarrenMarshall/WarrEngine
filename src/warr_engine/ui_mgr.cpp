@@ -28,9 +28,17 @@ void w_ui_mgr::draw_topmost()
 	}
 }
 
-// note : because we apply the canvas scale, this is only usable for UI canvas based rectangles
 bool w_ui_mgr::is_mouse_inside( const w_rect& rc ) const
 {
+	// note : because we apply the canvas scale, this is only usable for UI canvas based rectangles
 	w_rect rc_scaled = rc * ui_canvas_scale;
+
+	// note : all ui interactions are reduced to checking the mouse position inside of an AABB
 	return c2AABBtoPoint( rc_scaled.as_c2AABB(), engine->input->mouse_vwindow_pos.as_c2v() );
+}
+
+void w_ui_mgr::show_msg_box( const std::string& msg )
+{
+	msg_box.msg = msg;
+	LAYER_MGR->push<layer_msg_box>();
 }

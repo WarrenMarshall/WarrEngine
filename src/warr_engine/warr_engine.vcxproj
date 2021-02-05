@@ -211,6 +211,7 @@
     <ClCompile Include="impl_header_only.cpp" />
     <ClCompile Include="input_gamepad.cpp" />
     <ClCompile Include="layer_esc_menu.cpp" />
+    <ClCompile Include="layer_msg_box.cpp" />
     <ClCompile Include="master_header.cpp" />
     <ClCompile Include="master_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -282,6 +283,7 @@
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
+    <ClInclude Include="layer_msg_box.h" />
     <ClInclude Include="physics_contact_listener.h" />
     <ClInclude Include="index_buffer.h" />
     <ClInclude Include="render_stats.h" />

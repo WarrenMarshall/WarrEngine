@@ -18,7 +18,7 @@ void layer_ui_callback::on_left_clicked( const w_imgui_control& control, const w
 	{
 		case H( "push_button_01" ):
 		{
-			log( "BAM! Button_01 : {:.0f}, {:.0f}", result.click_pos.x, result.click_pos.y );
+			UI->show_msg_box( "You clicked the button!" );
 		}
 		break;
 	}

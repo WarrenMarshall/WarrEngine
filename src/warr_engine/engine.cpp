@@ -846,7 +846,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			toggle_pause();
 			return true;
 		}
-		break;
 
 		// slow down game clock
 		case input_id::key_left_bracket:
@@ -860,7 +859,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			}
 			return true;
 		}
-		break;
 
 		// speed up game clock
 		case input_id::key_right_bracket:
@@ -873,7 +871,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			}
 			return true;
 		}
-		break;
 
 	#ifndef _FINALRELEASE
 		// frame debugger
@@ -885,7 +882,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			log_div();
 			return true;
 		}
-		break;
 
 		// toggle debug physics drawing
 		case input_id::key_f5:
@@ -893,7 +889,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			RENDER->show_physics_debug = !RENDER->show_physics_debug;
 			return true;
 		}
-		break;
 	#endif
 
 		// toggle full screen
@@ -902,7 +897,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			window->toggle_fullscreen();
 			return true;
 		}
-		break;
 
 		case input_id::key_enter:
 		{
@@ -912,7 +906,6 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			}
 			return true;
 		}
-		break;
 
 		// toggle esc menu
 		case input_id::key_esc:
@@ -927,14 +920,12 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			}
 			return true;
 		}
-		break;
 
 		case input_id::key_f8:
 		{
 			render->show_stats = true;
 			return true;
 		}
-		break;
 	}
 
 	return false;
@@ -949,7 +940,6 @@ bool w_engine::on_input_released( const w_input_event* evt )
 			render->show_stats = false;
 			return true;
 		}
-		break;
 	}
 
 	return false;

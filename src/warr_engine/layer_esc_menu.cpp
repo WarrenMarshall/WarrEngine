@@ -43,7 +43,6 @@ w_imgui_control_data layer_esc_menu_ui_callback::get_data_for_control( const w_i
 		{
 			return w_imgui_control_data( engine->window->is_fullscreen );
 		}
-		break;
 	}
 
 	return w_imgui_callback::get_data_for_control( control );

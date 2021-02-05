@@ -211,6 +211,9 @@
     <ClCompile Include="ui_imgui_control_data.cpp">
       <Filter>src\ui</Filter>
     </ClCompile>
+    <ClCompile Include="layer_msg_box.cpp">
+      <Filter>src\layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -428,6 +431,9 @@
     </ClInclude>
     <ClInclude Include="ui_imgui_control_data.h">
       <Filter>include\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_msg_box.h">
+      <Filter>include\layers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

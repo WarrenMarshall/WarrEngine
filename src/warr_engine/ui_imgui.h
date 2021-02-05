@@ -28,13 +28,13 @@ struct w_imgui
 
 	void reset();
 
-	w_imgui* do_panel( hash tag = 0 );
-	w_imgui* do_push_button( hash tag = 0 );
-	w_imgui* do_checkbox( hash tag = 0 );
-	w_imgui* do_divider( hash tag = 0 );
-	w_imgui* do_label( hash tag = 0 );
-	w_imgui* do_slider( hash tag = 0 );
-	w_imgui* do_edit_box( hash tag = 0 );
+	w_imgui* do_panel( hash tag = hash_none );
+	w_imgui* do_push_button( hash tag = hash_none );
+	w_imgui* do_checkbox( hash tag = hash_none );
+	w_imgui* do_divider( hash tag = hash_none );
+	w_imgui* do_label( hash tag = hash_none );
+	w_imgui* do_slider( hash tag = hash_none );
+	w_imgui* do_edit_box( hash tag = hash_none );
 
 	w_imgui* set_text( const std::string& text );
 	w_imgui* set_text_align( e_align align );
@@ -43,6 +43,7 @@ struct w_imgui
 	w_imgui* set_position( e_imgui_flow flow );
 	w_imgui* set_size( const w_sz& sz );
 	w_imgui* set_interval( const float interval );
+	w_imgui* set_align( e_align align );
 
 	void compute_clientrect_from_rect();
 	w_imgui_result* finalize( w_imgui_control_data* data = nullptr );

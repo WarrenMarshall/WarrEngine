@@ -215,7 +215,6 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 				}
 				return true;
 			}
-			break;
 
 			case input_id::key_delete:
 			{
@@ -229,7 +228,6 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 				}
 				return true;
 			}
-			break;
 
 			case input_id::key_left:
 			{
@@ -239,7 +237,6 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 				}
 				return true;
 			}
-			break;
 
 			case input_id::key_right:
 			{
@@ -249,14 +246,12 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 				control_data->caret_pos = glm::min<size_t>( str.size(), control_data->caret_pos );
 				return true;
 			}
-			break;
 
 			case input_id::key_home:
 			{
 				control_data->caret_pos = 0;
 				return true;
 			}
-			break;
 
 			case input_id::key_end:
 			{
@@ -264,7 +259,6 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 				control_data->caret_pos = str.length();
 				return true;
 			}
-			break;
 
 			case input_id::key_esc:
 			case input_id::key_enter:
@@ -272,7 +266,6 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 				UI->tag_focus = hash_none;
 				return true;
 			}
-			break;
 		}
 	}
 

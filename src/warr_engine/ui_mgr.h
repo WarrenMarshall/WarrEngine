@@ -11,4 +11,13 @@ struct w_ui_mgr
 
 	// if a control is meant to retain focus across frames, store the tag here.
 	hash tag_focus = hash_none;
+
+	// message box
+
+	void show_msg_box( const std::string& msg );
+
+	struct
+	{
+		std::string msg;
+	} msg_box;
 };

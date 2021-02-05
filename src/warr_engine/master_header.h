@@ -165,6 +165,7 @@ extern std::unique_ptr<w_game> base_game;
 #include "layer_mgr.h"
 
 #include "layer_esc_menu.h"
+#include "layer_msg_box.h"
 
 #include "file_mem.h"
 #include "file_zip.h"

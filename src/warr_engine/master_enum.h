@@ -353,7 +353,7 @@ enum_end
 enum_begin( imgui_flow )		// bitfield
 	right = 1,
 	down = 2,
-	last_crc_topleft = 4,
+	last_crc_topleft = 4
 enum_end
 
 // ----------------------------------------------------------------------------

@@ -211,6 +211,12 @@ w_imgui* w_imgui::set_interval( const float interval )
 	return this;
 }
 
+w_imgui* w_imgui::set_align( e_align align )
+{
+	current_control.control_align = align;
+	return this;
+}
+
 // copies the window rect to the client rect, and then makes adjustments
 // to compensate for graphical frames and whatever else would affect the client area.
 
@@ -247,6 +253,31 @@ w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 	{
 		set_position( imgui_flow::down );
 	}
+
+#if 0
+	// the control has been completely set up, so apply any
+	// alignment settings that were requested.
+
+	switch( current_control.control_align )
+	{
+		case align::hcenter:
+		{
+			w_rect rc_win_master = last_rc_win;
+
+			if( current_control.control_align_ref != hash_none )
+			{
+				auto cd = get_control_data( current_control.control_align_ref );
+				cd->
+			}
+
+			current_control.rc_win.x += last_rc_win.w / 2.0f;
+			current_control.rc_win.x -= current_control.rc_win.w / 2.0f;
+
+			compute_clientrect_from_rect();
+		}
+		break;
+	}
+#endif //
 
 	if( current_control.is_active )
 	{
