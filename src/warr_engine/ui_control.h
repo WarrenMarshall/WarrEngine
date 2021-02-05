@@ -2,8 +2,6 @@
 
 struct w_imgui_control
 {
-	e_align control_align = align::left | align::top;
-
 	e_imgui_control_type type = imgui_control_type::none;
 	hash tag;
 	// #perf - can this be a ref?

@@ -171,6 +171,7 @@ float w_imgui_callback::get_default_height( e_imgui_control_type control_type )
 			return 6.0f;
 		}
 
+		case imgui_control_type::spacer:
 		case imgui_control_type::divider:
 		{
 			return 4.0f;

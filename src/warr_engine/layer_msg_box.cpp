@@ -63,24 +63,32 @@ void layer_msg_box::draw_ui()
 		->pop();
 
 	IMGUI->do_panel( H( "main_panel" ) )
-		->set_position( { 0.0f, ui_canvas_hh } )
-		->set_size( { ui_canvas_w, ui_canvas_h } )
+		->set_position( { 0.0f, ui_canvas_hh - 32.0f } )
+		->set_size( { ui_canvas_w, 68.0f } )
 		->finalize();
 
-	w_rect rc_win_panel = IMGUI->last_rc_win;
+	w_rect rc_client_panel = IMGUI->last_rc_client;
+
+	IMGUI
+		->do_spacer()
+		->set_position( imgui_flow::last_crc_topleft )
+		->finalize();
 
 	IMGUI
 		->do_label()
-		->set_position( imgui_flow::last_crc_topleft )
-		->set_size( { rc_win_panel.w, w_sz::ignore } )
+		->set_size( { rc_client_panel.w, w_sz::ignore } )
 		->set_text( UI->msg_box.msg )
 		->set_text_align( align::hcenter )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_OK" ) )
-		->set_text( "OK" )
+	IMGUI
+		->do_spacer()
 		->finalize();
 
+	IMGUI->do_push_button( H( "button_OK" ) )
+		->set_text( "OK" )
+		->set_align( rc_client_panel, align::hcenter )
+		->finalize();
 }
 
 w_imgui_callback* layer_msg_box::get_imgui_callback()
