@@ -348,11 +348,6 @@ ec_physics::ec_physics( w_entity* parent_entity )
 
 }
 
-ec_physics::~ec_physics()
-{
-
-}
-
 void ec_physics::set_collision_flags( int collision_layer, int collides_with )
 {
 	this->collision_layer = collision_layer;
@@ -567,6 +562,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
 
+	b2verts.reserve( verts.size() );
 	for( w_vec2 v : verts )
 	{
 		b2verts.push_back( ( v + pos ).to_b2d().as_b2Vec2() );
@@ -605,6 +601,7 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const s
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
 
+	b2verts.reserve( verts.size() );
 	for( w_vec2 v : verts )
 	{
 		b2verts.push_back( ( v + pos ).to_b2d().as_b2Vec2() );
@@ -664,7 +661,7 @@ ec_b2d_kinematic::ec_b2d_kinematic( w_entity* parent_entity )
 // ----------------------------------------------------------------------------
 
 ec_tilemap_tile::ec_tilemap_tile( int tileset_idx, w_pos pos, a_texture* texture )
-	: tileset_idx( tileset_idx ), pos( pos ), texture( texture )
+	: texture( texture ), tileset_idx( tileset_idx ), pos( pos )
 {
 
 }
@@ -838,7 +835,7 @@ void ec_mesh::draw()
 
 	RENDER
 		->push_render_state( rs_opt )
-		->draw_mesh( mesh, tform.pos )
+		->draw_mesh( mesh )
 		->pop();
 }
 
@@ -856,8 +853,6 @@ void ec_follow_target::update()
 		auto target_pos = follow.target->get_tform()->pos;
 
 		// position
-
-		w_vec2 delta_pos = target_pos - parent_entity->get_tform()->pos;
 
 		if( follow.flags & follow_flags::xy_axis )
 		{

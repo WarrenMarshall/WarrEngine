@@ -88,10 +88,10 @@ void w_opengl::init()
 	//glDisable( GL_CULL_FACE );
 
 	// create base set of shaders
-	shaders.insert( std::make_pair( "base", std::move( w_shader( "base.vert", "base.frag" ) ) ) );
-	shaders.insert( std::make_pair( "base_with_glow", std::move( w_shader( "base.vert", "base_with_glow.frag" ) ) ) );
-	shaders.insert( std::make_pair( "blur", std::move( w_shader( "base.vert", "blur.frag" ) ) ) );
-	shaders.insert( std::make_pair( "post_process", std::move( w_shader( "base.vert", "post_process.frag" ) ) ) );
+	shaders.insert( std::make_pair( "base", w_shader( "base.vert", "base.frag" ) ) );
+	shaders.insert( std::make_pair( "base_with_glow", w_shader( "base.vert", "base_with_glow.frag" ) ) );
+	shaders.insert( std::make_pair( "blur", w_shader( "base.vert", "blur.frag" ) ) );
+	shaders.insert( std::make_pair( "post_process", w_shader( "base.vert", "post_process.frag" ) ) );
 
 	for( int x = 0 ; x < max_texture_image_units ; ++x )
 	{

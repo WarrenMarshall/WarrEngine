@@ -4,7 +4,7 @@ struct w_imgui_control_data
 {
 	std::variant<bool, float, std::string> data;
 	e_imgui_control_type control_type = imgui_control_type::none;
-	int max_length = -1;
+	size_t max_length = 0;
 	std::string valid_char_list;
 	size_t caret_pos = 0;
 

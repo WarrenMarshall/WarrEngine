@@ -146,7 +146,6 @@ struct ec_physics : w_entity_component
 {
 	ec_physics() = delete;
 	ec_physics( w_entity* parent_entity );
-	virtual ~ec_physics() override;
 
 	// which collision layer(s) this entity is a part of
 	int collision_layer = 0;

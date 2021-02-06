@@ -44,7 +44,7 @@ void w_file_mem_text::preprocess()
 		}
 
 		// strip off trailing comments
-		size_t pos = line.find_first_of( "#", 0 );
+		size_t pos = line.find_first_of( '#', 0 );
 
 		if( pos != std::string::npos )
 		{

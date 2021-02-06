@@ -54,7 +54,7 @@ w_vec2 a_font::get_string_extents( const std::string_view text ) const
 
 	for( auto ch : text )
 	{
-		pxch = &( font_def->char_map[ ch ] );
+		pxch = &( font_def->char_map[ (int)ch ] );
 
 		bounds.x += pxch->xadvance;
 		bounds.y = glm::max( bounds.y, pxch->h + pxch->yoffset );

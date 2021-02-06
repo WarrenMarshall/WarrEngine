@@ -4,7 +4,7 @@
 // ----------------------------------------------------------------------------
 
 w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_prim render_prim )
-	: batch( batch), render_prim( render_prim )
+	: render_prim( render_prim ), batch( batch )
 {
 	glCreateVertexArrays( 1, &gl_id );
 	glBindVertexArray( gl_id );

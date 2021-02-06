@@ -66,7 +66,7 @@ const std::string w_string_util::remove_char( const std::string& string, char ch
 	return new_string;
 }
 
-const bool w_string_util::contains_char( const std::string& string, char char_to_find )
+bool w_string_util::contains_char( const std::string& string, char char_to_find )
 {
 	const size_t idx = string.find_first_of( char_to_find );
 	return ( idx != std::string_view::npos );

@@ -211,7 +211,7 @@ void w_render::draw_and_reset_all_batches()
 	RENDER->batch_points->draw_and_reset();
 }
 
-w_color w_render::pal_color_from_idx( int idx )
+w_color w_render::pal_color_from_idx( size_t idx )
 {
 	// if there's no palette specifically in use, return a default color
 	if( !current_palette )
@@ -278,7 +278,7 @@ void w_render::rs_reset()
 	render_states.emplace_back( std::move( rs ) );
 }
 
-w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
+w_render* w_render::draw_mesh( a_mesh* mesh )
 {
 	// copy the color/alpha into each vertex on the mesh before rendering.
 
@@ -299,7 +299,7 @@ w_render* w_render::draw_mesh( a_mesh* mesh, const w_vec2& dst )
 		->rotate( rs->angle )
 		->scale( rs->scale.x, rs->scale.y );
 
-	for( auto x = 0 ; x < mesh->render_verts.size() ; x +=3 )
+	for( size_t x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
 		batch_triangles->add_primitive(
 			mesh->tex,

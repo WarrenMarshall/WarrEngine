@@ -3,7 +3,7 @@
 #include "master_header.h"
 
 w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name, int num_color_attachments, float w, float h )
-	: w( w ), h( h ), base_name( base_name )
+	: base_name( base_name ), w( w ), h( h )
 {
 	glCreateFramebuffers( 1, &fb_id );
 

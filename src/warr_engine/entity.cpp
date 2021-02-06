@@ -8,10 +8,6 @@ w_entity::w_entity()
 	add_component<ec_transform>();
 }
 
-w_entity::~w_entity()
-{
-}
-
 void w_entity::update_from_physics()
 {
 	// entities with box2d components need their transforms
@@ -50,7 +46,7 @@ void w_entity::update_components()
 	// clear out dead components
 	// NOTE : uses standard 'for' loop because it manipulates the vector as it runs.
 
-	for( auto x = 0; x < components.size(); ++x )
+	for( size_t x = 0; x < components.size(); ++x )
 	{
 		w_entity_component* ec = components[ x ].get();
 

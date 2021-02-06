@@ -6,5 +6,5 @@ struct a_palette : i_asset
 
 	std::vector<w_color> colors;
 
-	w_color get_color_from_idx( int idx );
+	w_color get_color_from_idx( size_t idx );
 };

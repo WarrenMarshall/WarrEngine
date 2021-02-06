@@ -33,7 +33,7 @@ bool w_physics_query::trace_all( const w_vec2& start, const w_vec2& normal, floa
 	return hit_result->hit_something;
 }
 
-bool w_physics_query::point_check_simple( const w_vec2& pos, int layer_mask )
+bool w_physics_query::point_check_simple( const w_vec2& pos )
 {
 	w_query_first hit_result;
 	b2Vec2 bpos = pos.to_b2d().as_b2Vec2();
@@ -52,7 +52,7 @@ bool w_physics_query::point_check_simple( const w_vec2& pos, int layer_mask )
 	return true;
 }
 
-bool w_physics_query::point_check_simple( const w_vec2& pos, int layer_mask, w_query_first* hit_result )
+bool w_physics_query::point_check_simple( const w_vec2& pos, w_query_first* hit_result )
 {
 	b2Vec2 bpos = pos.to_b2d().as_b2Vec2();
 
@@ -71,7 +71,7 @@ bool w_physics_query::point_check_simple( const w_vec2& pos, int layer_mask, w_q
 	return true;
 }
 
-bool w_physics_query::point_check_all( const w_vec2& pos, int layer_mask, w_query_all* hit_result )
+bool w_physics_query::point_check_all( const w_vec2& pos, w_query_all* hit_result )
 {
 	b2Vec2 bpos = pos.to_b2d().as_b2Vec2();
 

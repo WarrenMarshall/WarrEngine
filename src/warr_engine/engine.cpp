@@ -910,7 +910,8 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		// toggle esc menu
 		case input_id::key_esc:
 		{
-			if( typeid( *layer_mgr->get_top() ) == typeid( layer_esc_menu ) )
+			auto layer_ptr = layer_mgr->get_top();
+			if( typeid( *layer_ptr ) == typeid( layer_esc_menu ) )
 			{
 				layer_mgr->pop();
 			}

@@ -68,7 +68,7 @@ struct w_render
 
 	// palette support
 	a_palette* current_palette = nullptr;
-	w_color pal_color_from_idx( int idx );
+	w_color pal_color_from_idx( size_t idx );
 
 	void rs_reset();
 
@@ -113,7 +113,7 @@ struct w_render
 
 	void init();
 
-	w_render* draw_mesh( a_mesh* mesh, const w_vec2& dst );
+	w_render* draw_mesh( a_mesh* mesh );
 	w_render* draw_sprite( const a_texture* texture, const w_vec2& dst );
 	w_render* draw( const a_texture* texture, const w_rect& dst );
 	w_render* draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );

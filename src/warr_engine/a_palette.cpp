@@ -4,7 +4,7 @@
 
 implement_find_func( a_palette )
 
-w_color a_palette::get_color_from_idx( int idx )
+w_color a_palette::get_color_from_idx( size_t idx )
 {
 	assert( idx < colors.size() );
 

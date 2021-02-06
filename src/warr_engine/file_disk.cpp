@@ -12,7 +12,7 @@ void w_file_disk::open_for_read( std::string_view filename )
 	}
 }
 
-bool w_file_disk::read_glob( void* write_ptr, int size )
+bool w_file_disk::read_glob( void* write_ptr, size_t size )
 {
 	size_t elements_read = fread_s( write_ptr, size, 1, size, file_handle );
 
@@ -37,7 +37,7 @@ void w_file_disk::open_for_write( std::string_view filename )
 	}
 }
 
-void w_file_disk::write_glob( void* read_ptr, int size )
+void w_file_disk::write_glob( void* read_ptr, size_t size )
 {
 	size_t elements_written = fwrite( read_ptr, 1, size, file_handle );
 

@@ -11,7 +11,7 @@ struct w_file_system
 	w_file_system();
 	void init();
 
-	static _NODISCARD bool file_exists_on_disk( const std::string_view filename );
+	static bool file_exists_on_disk( const std::string_view filename );
 	static void create_path_if_not_exist( std::string_view path );
 
 	_NODISCARD bool file_exists_on_disk_or_in_zip( const std::string_view filename );
