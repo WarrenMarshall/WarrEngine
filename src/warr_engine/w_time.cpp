@@ -40,12 +40,6 @@ void w_time::update()
 	prev_frame_ms = current_frame_ms;
 }
 
-time_ms w_time::get_ticks()
-{
-	auto time = glfwGetTime();
-	return static_cast<time_ms>( time * 1000.0 );
-}
-
 // returns the current time in ms
 //
 // so 1 second would be returned as 1000 ms
@@ -54,3 +48,14 @@ time_ms w_time::now() const
 {
 	return (time_ms)time_since_app_start_ms;
 }
+
+// returns the current time in ms, up to the very current tick
+//
+// so 1 second would be returned as 1000 ms
+
+time_ms w_time::get_ticks()
+{
+	auto time = glfwGetTime();
+	return static_cast<time_ms>( time * 1000.0 );
+}
+

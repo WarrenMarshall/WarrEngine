@@ -11,8 +11,8 @@ struct w_index_buffer
 
 	unsigned int gl_id;
 
-	virtual void bind();
-	virtual void unbind();
+	void bind();
+	void unbind();
 };
 
 // ----------------------------------------------------------------------------

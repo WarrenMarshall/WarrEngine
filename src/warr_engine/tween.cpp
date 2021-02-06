@@ -3,7 +3,7 @@
 #include "master_header.h"
 
 w_tween::w_tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via )
-	: start( start ), end( end ), type( type ), via( via )
+	: start( start ), end( end )
 {
 	tween = tweeny::from( start ).to( end ).during( duration_ms );
 	set_type( type );

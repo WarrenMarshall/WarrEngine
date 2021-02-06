@@ -17,7 +17,6 @@ struct w_time
 	// fixed time step accumulator. this accrues each frame until it exceeds
 	// FTS_step_value_ms - then we call update() until it is below the threshold
 	// again.
-
 	float fts_accum_ms = 0;
 
 	// used to change the speed of time passing. lower values are slower, higher
@@ -26,12 +25,13 @@ struct w_time
 	// 0.25 = 25% of normal
 	// 1.0 = normal speed (default)
 	// 2.0 = 200% of normal
-
 	float dilation = 1.0f;
 
 	w_time();
 	void init();
 	void update();
-	time_ms get_ticks();
 	_NODISCARD time_ms now() const;
+
+private:
+	_NODISCARD time_ms get_ticks();
 };
