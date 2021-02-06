@@ -13,4 +13,8 @@ struct w_game
 	const char* get_game_name();
 
 	std::string name;
+
+	// set to TRUE if this app has a main menu to return to. setting to FALSE
+	// will remove the "main menu" button from the engine ESC menu.
+	bool has_main_menu = false;
 };

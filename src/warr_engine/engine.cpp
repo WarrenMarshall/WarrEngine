@@ -203,7 +203,7 @@ void w_engine::launch( int argc, char* argv [] )
 
 		log( "Initializing game" );
 		base_game->init();
-		base_game->reset_layer_stack_to_main_menu();
+		//base_game->reset_layer_stack_to_main_menu();
 	}
 
 	{ // INPUT

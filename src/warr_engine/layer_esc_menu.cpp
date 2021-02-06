@@ -98,7 +98,12 @@ void layer_esc_menu::draw_ui()
 		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
 		->pop();
 
-	constexpr float num_buttons = 4.0f;
+	int num_buttons = 3;
+	if( base_game->has_main_menu )
+	{
+		num_buttons++;
+	}
+
 	float button_w = get_imgui_callback()->get_default_width( imgui_control_type::push_button );
 	float button_h = get_imgui_callback()->get_default_height( imgui_control_type::push_button );
 
@@ -128,9 +133,12 @@ void layer_esc_menu::draw_ui()
 		->set_size( { w_sz::ignore, button_h } )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_main_menu" ) )
-		->set_text( "Main Menu" )
-		->finalize();
+	if( base_game->has_main_menu )
+	{
+		IMGUI->do_push_button( H( "button_main_menu" ) )
+			->set_text( "Main Menu" )
+			->finalize();
+	}
 
 	IMGUI->do_push_button( H( "button_exit" ) )
 		->set_text( "Exit To Windows" )

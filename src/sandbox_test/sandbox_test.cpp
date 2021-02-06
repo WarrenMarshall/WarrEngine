@@ -4,6 +4,7 @@
 sandbox_test_app::sandbox_test_app( std::string name )
 	: w_game( name )
 {
+	has_main_menu = true;
 }
 
 void sandbox_test_app::init()

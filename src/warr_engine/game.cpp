@@ -9,7 +9,11 @@ w_game::w_game( std::string name )
 
 void w_game::init()
 {
-	reset_layer_stack_to_main_menu();
+	if( has_main_menu )
+	{
+		reset_layer_stack_to_main_menu();
+	}
+
 	new_game();
 }
 
