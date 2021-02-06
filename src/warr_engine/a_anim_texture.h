@@ -21,6 +21,6 @@ struct a_anim_texture : a_src_texture
 	void randomize();
 
 	virtual void update() override;
-	[[nodiscard]] virtual a_texture* get_texture( float anim_offset ) override;
+	_NODISCARD virtual a_texture* get_texture( float anim_offset ) override;
 };
 #endif

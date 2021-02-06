@@ -182,7 +182,7 @@ w_rect w_rect::operator*=( float v )
 	return *this;
 }
 
-c2AABB w_rect::as_c2AABB()
+c2AABB w_rect::as_c2AABB() const
 {
 	c2AABB bb = {};
 	bb.min = { x, y };
@@ -362,12 +362,12 @@ w_vec2::w_vec2( const b2Vec2& b2v2 )
 {
 }
 
-b2Vec2 w_vec2::as_b2Vec2()
+b2Vec2 w_vec2::as_b2Vec2() const
 {
 	return b2Vec2( x, y );
 }
 
-c2v w_vec2::as_c2v()
+c2v w_vec2::as_c2v() const
 {
 	c2v v = { x, y };
 	return v;

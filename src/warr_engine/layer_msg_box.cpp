@@ -38,15 +38,11 @@ void layer_msg_box::push()
 	w_layer::push();
 
 	blocks_further_input = true;
-
-	//engine->pause();
 }
 
 void layer_msg_box::pop()
 {
 	w_layer::pop();
-
-	//engine->resume();
 }
 
 void layer_msg_box::draw_ui()
@@ -67,7 +63,7 @@ void layer_msg_box::draw_ui()
 		->set_size( { ui_canvas_w, 68.0f } )
 		->finalize();
 
-	w_rect rc_client_panel = IMGUI->last_rc_client;
+	w_rect rc_client_main_panel = IMGUI->last_rc_client;
 
 	IMGUI
 		->do_spacer()
@@ -76,7 +72,7 @@ void layer_msg_box::draw_ui()
 
 	IMGUI
 		->do_label()
-		->set_size( { rc_client_panel.w, w_sz::ignore } )
+		->set_size( { rc_client_main_panel.w, w_sz::ignore } )
 		->set_text( UI->msg_box.msg )
 		->set_text_align( align::hcenter )
 		->finalize();
@@ -87,7 +83,7 @@ void layer_msg_box::draw_ui()
 
 	IMGUI->do_push_button( H( "button_OK" ) )
 		->set_text( "OK" )
-		->set_align( rc_client_panel, align::hcenter )
+		->set_align( rc_client_main_panel, align::hcenter )
 		->finalize();
 }
 

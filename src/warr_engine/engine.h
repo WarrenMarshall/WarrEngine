@@ -97,13 +97,13 @@ struct w_engine
 	void parse_config_file( std::string_view filename );
 
 	std::unordered_map<std::string, std::string> _symbol_to_value;
-	[[nodiscard]] bool is_symbol_in_map( const std::string_view str );
-	[[nodiscard]] std::optional<std::string> find_string_from_symbol( const std::string_view str );
-	[[nodiscard]] int find_int_from_symbol( const std::string_view str, int def_value = 0 );
-	[[nodiscard]] float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
-	[[nodiscard]] w_color find_color_from_symbol( const std::string_view str, const w_color& def_value = w_color::white );
-	[[nodiscard]] w_range find_range_from_symbol( const std::string_view str, const w_range& def_value = w_range( 0, 1 ) );
-	[[nodiscard]] w_vec2 find_vec2_from_symbol( const std::string_view str, const w_vec2& def_value = w_vec2( 0, 0 ) );
+	_NODISCARD bool is_symbol_in_map( const std::string_view str );
+	_NODISCARD std::optional<std::string> find_string_from_symbol( const std::string_view str );
+	_NODISCARD int find_int_from_symbol( const std::string_view str, int def_value = 0 );
+	_NODISCARD float find_float_from_symbol( const std::string_view str, float def_value = 0.0f );
+	_NODISCARD w_color find_color_from_symbol( const std::string_view str, const w_color& def_value = w_color::white );
+	_NODISCARD w_range find_range_from_symbol( const std::string_view str, const w_range& def_value = w_range( 0, 1 ) );
+	_NODISCARD w_vec2 find_vec2_from_symbol( const std::string_view str, const w_vec2& def_value = w_vec2( 0, 0 ) );
 
 	bool on_input_motion( const w_input_event* evt ) { return false; }
 	bool on_input_pressed( const w_input_event* evt );

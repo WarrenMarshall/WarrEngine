@@ -57,6 +57,26 @@ void layer_main_menu::draw_ui()
 	IMGUI->do_push_button( H( "button_anim_texture" ) )
 		->set_text( "Anim Texture" )
 		->finalize();
+
+	IMGUI->do_push_button( H( "button_gradients" ) )
+		->set_text( "Gradients" )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_box2d" ) )
+		->set_text( "Box2D" )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_particles" ) )
+		->set_text( "Particles" )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_sounds" ) )
+		->set_text( "Sound FX" )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_game_controller" ) )
+		->set_text( "Game Controller" )
+		->finalize();
 }
 
 w_imgui_callback* layer_main_menu::get_imgui_callback()

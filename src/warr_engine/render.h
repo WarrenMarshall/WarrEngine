@@ -128,7 +128,7 @@ struct w_render
 	void begin_frame();
 	void end_frame();
 
-	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
+	_NODISCARD float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 
 	void bind_texture( int slot, a_src_texture* tex );
 	w_render_stats stats;

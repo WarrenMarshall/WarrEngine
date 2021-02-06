@@ -10,6 +10,6 @@ struct w_timer
 	w_timer( time_ms interval_ms );
 
 	void restart();
-	[[nodiscard]] bool is_elapsed() const;
-	[[nodiscard]] int get_elapsed_count();
+	_NODISCARD bool is_elapsed() const;
+	_NODISCARD int get_elapsed_count();
 };

@@ -103,7 +103,7 @@ struct w_range
 
 	float clamp_value( float value );
 
-	[[nodiscard]] float get_value();
+	_NODISCARD float get_value();
 };
 
 // ----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ struct w_rect
 	w_rect operator*( float v ) const;
 	w_rect operator*=( float v );
 
-	c2AABB as_c2AABB();
+	c2AABB as_c2AABB() const;
 };
 
 // ----------------------------------------------------------------------------
@@ -184,30 +184,31 @@ struct w_vec2
 	w_vec2( const b2Vec2& b2v2 );
 
 	w_vec2 normalize();
-	[[nodiscard]] b2Vec2 as_b2Vec2();
-	[[nodiscard]] c2v as_c2v();
-	[[nodiscard]] w_vec2 to_b2d() const;
-	[[nodiscard]] w_vec2 from_b2d() const;
-	[[nodiscard]] float get_size_squared();
-	[[nodiscard]] float get_size_fast();
-	[[nodiscard]] bool is_zero();
 
-	[[nodiscard]] bool operator==( const w_vec2& v ) const;
-	[[nodiscard]] bool operator!=( const w_vec2& v ) const;
-	[[nodiscard]] w_vec2 operator+( const w_vec2& v ) const;
-	[[nodiscard]] w_vec2 operator-( const w_vec2& v ) const;
-	[[nodiscard]] w_vec2 operator*( float v ) const;
-	[[nodiscard]] w_vec2 operator/( float v ) const;
+	_NODISCARD b2Vec2 as_b2Vec2() const;
+	_NODISCARD c2v as_c2v() const;
+	_NODISCARD w_vec2 to_b2d() const;
+	_NODISCARD w_vec2 from_b2d() const;
+	_NODISCARD float get_size_squared();
+	_NODISCARD float get_size_fast();
+	_NODISCARD bool is_zero();
+
+	_NODISCARD bool operator==( const w_vec2& v ) const;
+	_NODISCARD bool operator!=( const w_vec2& v ) const;
+	_NODISCARD w_vec2 operator+( const w_vec2& v ) const;
+	_NODISCARD w_vec2 operator-( const w_vec2& v ) const;
+	_NODISCARD w_vec2 operator*( float v ) const;
+	_NODISCARD w_vec2 operator/( float v ) const;
 
 	w_vec2 operator+=( const w_vec2& v );
 	w_vec2 operator-=( const w_vec2& v );
 	w_vec2 operator*=( float v );
 	w_vec2 operator/=( float v );
 
-	[[nodiscard]] static float get_distance_between( const w_vec2& a, const w_vec2& b );
-	[[nodiscard]] static w_vec2 dir_from_angle( float angle );
-	[[nodiscard]] static float angle_from_dir( const w_vec2& dir );
-	[[nodiscard]] static w_vec2 reflect_across_normal( const w_vec2& v, const w_vec2& n );
+	_NODISCARD static float get_distance_between( const w_vec2& a, const w_vec2& b );
+	_NODISCARD static w_vec2 dir_from_angle( float angle );
+	_NODISCARD static float angle_from_dir( const w_vec2& dir );
+	_NODISCARD static w_vec2 reflect_across_normal( const w_vec2& v, const w_vec2& n );
 };
 
 // ----------------------------------------------------------------------------

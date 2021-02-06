@@ -33,5 +33,5 @@ struct w_time
 	void init();
 	void update();
 	time_ms get_ticks();
-	[[nodiscard]] time_ms now() const;
+	_NODISCARD time_ms now() const;
 };
