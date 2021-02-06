@@ -5,9 +5,9 @@
 
 layer_ui_callback::layer_ui_callback()
 {
-	edit_name_data.max_length = 15;
-	edit_name_data.valid_char_list = valid_chars_alphanumeric + valid_chars_simple_whitespace + valid_chars_punctuation;
-	edit_email_data.max_length = 10;
+	edit_text_01_data.max_length = 15;
+	edit_text_01_data.valid_char_list = valid_chars_alphanumeric + valid_chars_simple_whitespace + valid_chars_punctuation;
+	edit_text_02_data.max_length = 10;
 }
 
 void layer_ui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
@@ -67,7 +67,7 @@ void layer_ui::draw_ui()
 	IMGUI
 		->do_panel( H( "main_panel" ) )
 		->set_text( "SAMPLE CONTROLS" )
-		->set_position( { ui_canvas_hw, 32.0f } )
+		->set_position( { ui_canvas_hw - 73.0f, ui_canvas_hh - 100.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 
@@ -88,7 +88,7 @@ void layer_ui::draw_ui()
 
 	IMGUI
 		->do_label()
-		->set_text( fmt::format( "Glow Intensity : {:.0f}%", std::get<float>( imgui_callback.slider_01_value.data ) * 100.0f ) )
+		->set_text( fmt::format( "Slider Value : {:.0f}%", std::get<float>( imgui_callback.slider_01_value.data ) * 100.0f ) )
 		->finalize();
 
 	IMGUI
@@ -114,12 +114,12 @@ void layer_ui::draw_ui()
 		->finalize();
 
 	IMGUI
-		->do_edit_box( H( "edit_name" ) )
-		->finalize( &imgui_callback.edit_name_data );
+		->do_edit_box( H( "edit_text_01" ) )
+		->finalize( &imgui_callback.edit_text_01_data );
 
 	IMGUI
-		->do_edit_box( H( "edit_email" ) )
-		->finalize( &imgui_callback.edit_email_data );
+		->do_edit_box( H( "edit_text_02" ) )
+		->finalize( &imgui_callback.edit_text_02_data );
 }
 
 w_imgui_callback* layer_ui::get_imgui_callback()

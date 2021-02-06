@@ -79,7 +79,7 @@ void w_input::init()
 		button_states_last_frame[ x ] = false;
 	}
 
-	timer_repeat = std::make_unique<w_timer>( 100 );
+	timer_repeat = std::make_unique<w_timer>( 200 );
 }
 
 void w_input::deinit()

@@ -206,7 +206,7 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 			case input_id::key_backspace:
 			{
 				std::string str = std::get<std::string>( control_data->data );
-				if( !str.empty() )
+				if( !str.empty() && control_data->caret_pos > 0 )
 				{
 					std::string str_pre_caret = str.substr( 0, control_data->caret_pos - 1 );
 					std::string str_post_caret = str.substr( control_data->caret_pos, std::string::npos );

@@ -12,8 +12,8 @@ struct layer_ui_callback : w_imgui_callback
 	w_imgui_control_data checkbox_data = false;
 	w_imgui_control_data slider_01_value = 0.0f;
 	w_imgui_control_data slider_02_value = 0.0f;
-	w_imgui_control_data edit_name_data = std::string( "" );
-	w_imgui_control_data edit_email_data = std::string( "" );
+	w_imgui_control_data edit_text_01_data = std::string( "" );
+	w_imgui_control_data edit_text_02_data = std::string( "" );
 };
 
 // ----------------------------------------------------------------------------
