@@ -49,13 +49,17 @@ void layer_msg_box::draw_ui()
 {
 	w_layer::draw_ui();
 
+	a_texture* tiling_background = a_texture::find( "engine_tile_background_stripe" );
+	w_rect rc = w_rect( 0, 0, ui_canvas_w, ui_canvas_h );
+
 	w_render_state_opt rso;
 	rso.color = w_color::pal( 0 );
-	rso.color->a = 0.75f;
+	rso.color->a = 0.25f;
+	rso.uv_tiling = w_vec2::get_uv_tiling( tiling_background, rc ) / 2.0f;
 
 	RENDER
 		->push_render_state( rso )
-		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
+		->draw( tiling_background, rc )
 		->pop();
 
 	IMGUI->do_panel( H( "main_panel" ) )

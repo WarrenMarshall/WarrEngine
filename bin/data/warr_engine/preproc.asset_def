@@ -106,4 +106,10 @@
 	"spawner_type.point"	"1"
 	"spawner_type.box"		"2"
 	"spawner_type.circle"	"3"
+
+	# -----------------------------------------------------
+	# texture tiling
+
+	"tiling.clamp"	"0"
+	"tiling.repeat"	"1"
 }

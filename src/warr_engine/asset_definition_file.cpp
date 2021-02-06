@@ -66,10 +66,15 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 					auto asset_ptr = asset_cache->add( std::make_unique<a_src_texture>(), tag, filename );
 					asset_ptr->original_filename = filename;
+					auto fuck = iter_ad.find_value_opt( "tiling", "tiling.clamp" );
+					log( "{}", fuck );
+					asset_ptr->tiling = engine->find_int_from_symbol( iter_ad.find_value_opt( "tiling", "tiling.clamp" ) );
+
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 
 					// ----------------------------------------------------------------------------
+
 
 					// every src_texture automatically creates an a_texture with the same name
 
@@ -85,8 +90,11 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 
 						int comma_count = static_cast<int>( std::count( texture_list.begin(), texture_list.end(), ',' ) );
 
+						// each texture_tag is expected to have 5 args : name,x,y,w,h
 						if( ( comma_count % 5 ) != 4 )
+						{
 							log_error( "'{}' has bad formatting - too many or too few commas", texture_list );
+						}
 
 						w_tokenizer tok( texture_list, ',' );
 

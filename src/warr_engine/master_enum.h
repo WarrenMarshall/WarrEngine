@@ -302,99 +302,104 @@ enum_end
 // ----------------------------------------------------------------------------
 
 enum_begin( collision_layer )
-	//bit1 = 1,		// don't use this, as everything IS this by default in Box2D
-	bit2 = 2,
-	bit3 = 4,
-	bit4 = 8,
-	bit5 = 16,
-	bit6 = 32,
-	bit7 = 64,
-	bit8 = 128,
-	bit9 = 256,
-	bit10 = 512,
-	bit11 = 1024,
-	bit12 = 2048,
-	bit13 = 4096,
-	bit14 = 8192,
-	bit15 = 16384,
-	bit16 = 32768
+//bit1 = 1,		// don't use this, as everything IS this by default in Box2D
+bit2 = 2,
+bit3 = 4,
+bit4 = 8,
+bit5 = 16,
+bit6 = 32,
+bit7 = 64,
+bit8 = 128,
+bit9 = 256,
+bit10 = 512,
+bit11 = 1024,
+bit12 = 2048,
+bit13 = 4096,
+bit14 = 8192,
+bit15 = 16384,
+bit16 = 32768
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( easing_type )
-	invalid = 0,
-	linear,
-	quadratic,
-	cubic,
-	quartic,
-	quintic,
-	sinuisodal,
-	exponential,
-	circular,
-	back,
-	elastic,
-	bounce
+invalid = 0,
+linear,
+quadratic,
+cubic,
+quartic,
+quintic,
+sinuisodal,
+exponential,
+circular,
+back,
+elastic,
+bounce
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( follow_flags )	// bitfield
-	none = 0,
-	x_axis = 1,
-	y_axis = 2,
-	angle = 4,
+none = 0,
+x_axis = 1,
+y_axis = 2,
+angle = 4,
 
-	xy_axis = x_axis | y_axis,
+xy_axis = x_axis | y_axis,
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( imgui_flow )		// bitfield
-	right = 1,
-	down = 2,
-	last_crc_topleft = 4
+right = 1,
+down = 2,
+last_crc_topleft = 4
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( imgui_control_type )
-	none = 0,
-	panel,				// window frame
-	push_button,		// button that clicks up/down
-	check_box,			// button that has a toggle state
-	divider,			// simple horizontal divider
-	spacer,				// invisible dead space, simply use for aesthetics
-	label,				// text
-	slider,				// horizontal line with a slider thumb
-	edit_box,			// single line, text entry
-	//progress_bar,		// bar showing progress between 0-100
-	//texture			// an image within the client rect
+none = 0,
+panel,				// window frame
+push_button,		// button that clicks up/down
+check_box,			// button that has a toggle state
+divider,			// simple horizontal divider
+spacer,				// invisible dead space, simply use for aesthetics
+label,				// text
+slider,				// horizontal line with a slider thumb
+edit_box,			// single line, text entry
+//progress_bar,		// bar showing progress between 0-100
+//texture			// an image within the client rect
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( primitive_shape )
-	rectangle = 1,
-	filled_rectangle,
-	circle,
+rectangle = 1,
+filled_rectangle,
+circle,
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( render_prim )
-	quad = 0,
-	triangle,
-	line,
-	point
+quad = 0,
+triangle,
+line,
+point
 enum_end
 
 // ----------------------------------------------------------------------------
 
 enum_begin( particle_spawner_type )
-	point = 1,
-	box,
-	circle,
+point = 1,
+box,
+circle,
 enum_end
 
+// ----------------------------------------------------------------------------
 
+enum_begin( tiling )
+	clamp = 0,
+	repeat,
+enum_end

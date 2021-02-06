@@ -93,6 +93,20 @@ w_render* w_render::push_scale( const float scale )
 	return this;
 }
 
+w_render* w_render::push_uv_tiling( const w_vec2& uv_tiling )
+{
+	rs_push()->uv_tiling = uv_tiling;
+
+	return this;
+}
+
+w_render* w_render::push_uv_tiling( const float uv_tiling )
+{
+	rs_push()->uv_tiling = w_vec2( uv_tiling, uv_tiling );
+
+	return this;
+}
+
 w_render* w_render::push_angle( const float angle )
 {
 	rs_push()->angle = angle;
@@ -318,10 +332,10 @@ w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->glow );
-	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->glow );
-	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->glow );
-	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->glow );
+	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
 
 	OPENGL
 		->push()
@@ -347,10 +361,10 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	w *= rs->scale.x;
 	h *= rs->scale.y;
 
-	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u, texture->uv00.v ), rs->color, rs->glow );
-	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u, texture->uv00.v ), rs->color, rs->glow );
-	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u, texture->uv11.v ), rs->color, rs->glow );
-	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u, texture->uv11.v ), rs->color, rs->glow );
+	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
 
 	OPENGL->push()->translate( { dst.x, dst.y } );
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );

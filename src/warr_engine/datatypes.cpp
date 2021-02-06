@@ -452,6 +452,11 @@ bool w_vec2::is_zero()
 	return fequals( x + y, 0.0f );
 }
 
+void w_vec2::operator=( const float& v )
+{
+	x = y = v;
+}
+
 float w_vec2::get_distance_between( const w_vec2& a, const w_vec2& b )
 {
 	w_vec2 wk = a;
@@ -497,6 +502,14 @@ w_vec2 w_vec2::reflect_across_normal( const w_vec2& v, const w_vec2& n )
 {
 	glm::vec3 rdir = glm::reflect( glm::vec3( v.x, v.y, 0.0f ), glm::vec3( n.x, n.y, 0.0f ) );
 	return w_vec2( rdir.x, rdir.y );
+}
+
+// returns a w_vec2 representing the uv tiling factors needed to tile "texture"
+// inside of "rc" a natural number of times in both the U and V directions.
+
+w_vec2 w_vec2::get_uv_tiling( a_texture* texture, const w_rect& rc )
+{
+	return w_vec2( rc.w / texture->rc.w, rc.h / texture->rc.h );
 }
 
 // ----------------------------------------------------------------------------

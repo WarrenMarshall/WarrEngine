@@ -183,6 +183,7 @@ struct w_vec2
 	w_vec2( std::string_view str );
 	w_vec2( const b2Vec2& b2v2 );
 
+	static w_vec2 get_uv_tiling( a_texture* texture, const w_rect& rc );
 	w_vec2 normalize();
 
 	_NODISCARD b2Vec2 as_b2Vec2() const;
@@ -204,6 +205,7 @@ struct w_vec2
 	w_vec2 operator-=( const w_vec2& v );
 	w_vec2 operator*=( float v );
 	w_vec2 operator/=( float v );
+	void operator=( const float& v );
 
 	_NODISCARD static float get_distance_between( const w_vec2& a, const w_vec2& b );
 	_NODISCARD static w_vec2 dir_from_angle( float angle );
