@@ -83,7 +83,9 @@ void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& 
 	rv.y = vtx.y;
 
 	// find a texture slot for the requested texture
-	rv.t = static_cast<float>( vertex_array_object->assign_texture_slot( texture ) );
+	rv.texture_id = static_cast<float>( vertex_array_object->assign_texture_slot( texture ) );
+
+	rv.pick_id = RS->pick_id;
 
 	// add the render_vert to the vertex list
 	vertex_array_object->vertex_buffer->vertices.emplace_back( std::move( rv ) );

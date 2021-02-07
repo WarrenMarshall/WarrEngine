@@ -8,6 +8,7 @@ struct w_entity : i_life_cycle
 	~w_entity() = default;
 
 	hash tag;
+	float pick_id = 0.0f;
 
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;

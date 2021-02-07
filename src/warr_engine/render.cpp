@@ -131,7 +131,7 @@ void w_render::clear_render_state_stack()
 
 w_render* w_render::draw_mesh( a_mesh* mesh )
 {
-	// copy the color/alpha into each vertex on the mesh before rendering.
+	// copy the render state into each vertex on the mesh before rendering.
 
 	for(auto & render_vert : mesh->render_verts)
 	{
@@ -140,7 +140,8 @@ w_render* w_render::draw_mesh( a_mesh* mesh )
 		render_vert.b = RS->color.b;
 		render_vert.a = RS->color.a;
 
-		render_vert.e = RS->glow;
+		render_vert.glow = RS->glow;
+		render_vert.pick_id = RS->pick_id;
 	}
 
 	OPENGL
@@ -676,6 +677,7 @@ void w_render_state::set_from_opt( w_render_state_opt& rso )
 	glow = rso.glow.value_or( glow );
 	scale = rso.scale.value_or( scale );
 	angle = rso.angle.value_or( angle );
+	pick_id = rso.angle.value_or( pick_id );
 	align = rso.align.value_or( align );
 	uv_tiling = rso.uv_tiling.value_or( uv_tiling );
 	snap_to_pixel = rso.snap_to_pixel.value_or( snap_to_pixel );

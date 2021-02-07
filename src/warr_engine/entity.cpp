@@ -80,8 +80,10 @@ void w_entity::draw()
 			->push()
 			->add_transform( component->tform );
 
+		RS->pick_id = pick_id;
 		RENDER->nudge_z_depth();
 		component->draw();
+		RS->pick_id = 0.0f;
 
 		OPENGL
 			->pop();

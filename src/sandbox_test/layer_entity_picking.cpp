@@ -14,6 +14,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_entity<w_entity>();
+		e->pick_id = 0.5f;
 		e->get_tform()->set_position( { v_window_hw - 100.0f, 125.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
@@ -24,6 +25,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_entity<w_entity>();
+		e->pick_id = 0.25f;
 		e->get_tform()->set_position( { v_window_hw, 125.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
@@ -34,6 +36,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_entity<w_entity>();
+		e->pick_id = 0.75f;
 		e->get_tform()->set_position( { v_window_hw + 100.0f, 125.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();

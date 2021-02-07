@@ -8,18 +8,16 @@ w_render_vertex::w_render_vertex( const w_vec2& pos, const w_uv& uv, const w_col
 	: x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-	e( glow )
+	glow( glow )
 {
-	t = -1.0f;
 }
 
 w_render_vertex::w_render_vertex( const w_vec3& pos, const w_uv& uv, const w_color& color, const float glow )
 	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
-	e( glow )
+	glow( glow )
 {
-	t = -1.0f;
 }
 
 // ----------------------------------------------------------------------------
@@ -69,12 +67,14 @@ void w_vertex_buffer::set_up_vertex_attribs()
 	glEnableVertexAttribArray( 2 );
 	glEnableVertexAttribArray( 3 );
 	glEnableVertexAttribArray( 4 );
+	glEnableVertexAttribArray( 5 );
 
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*) offsetof( w_render_vertex, x ) );
-	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*) offsetof( w_render_vertex, u ) );
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*) offsetof( w_render_vertex, r ) );
-	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*) offsetof( w_render_vertex, e ) );
-	glVertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*) offsetof( w_render_vertex, t ) );
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*)offsetof( w_render_vertex, x ) );
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*)offsetof( w_render_vertex, u ) );
+	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*)offsetof( w_render_vertex, r ) );
+	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*)offsetof( w_render_vertex, glow ) );
+	glVertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*)offsetof( w_render_vertex, texture_id ) );
+	glVertexAttribPointer( 5, 1, GL_FLOAT, GL_FALSE, sizeof( w_render_vertex ), (const void*)offsetof( w_render_vertex, pick_id ) );
 }
 
 // pre-allocate memory on the card for all the verts we will ever use

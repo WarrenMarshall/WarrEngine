@@ -8,6 +8,7 @@ struct w_render_state
 	w_vec2 scale = { 1.0f, 1.0f };
 	float glow = 0.0f;
 	float angle = 0.0f;
+	float pick_id = 0.0f;
 	w_vec2 uv_tiling = { 1.0f, 1.0f };
 	e_align align = align::left;
 	bool snap_to_pixel = true;
@@ -21,6 +22,7 @@ struct w_render_state_opt
 	std::optional<float> glow = std::nullopt;
 	std::optional<w_vec2> scale = std::nullopt;
 	std::optional<float> angle = std::nullopt;
+	std::optional<float> pick_id = std::nullopt;
 	std::optional<e_align> align = std::nullopt;
 	std::optional<bool> snap_to_pixel = std::nullopt;
 	std::optional<w_vec2> uv_tiling = std::nullopt;

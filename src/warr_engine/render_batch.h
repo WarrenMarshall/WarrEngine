@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr int max_elements_per_render_batch = 10000;
+constexpr int max_elements_per_render_batch = 5000;
 
 struct w_render_batch
 {

@@ -2,12 +2,14 @@
 
 layout (location = 0) out vec4 out_color_buffer;
 layout (location = 1) out vec4 out_glow_buffer;
+layout (location = 2) out vec4 out_pick_buffer;
 
 in vec3 fs_pos;
 in vec2 fs_tex_coord;
 in vec4 fs_color;
 in float fs_glow;
 flat in float fs_texture_id;
+flat in float fs_pick_id;
 
 // set to "true" to have the screen automatically glow if
 // pixel colors are bright enough.
@@ -22,7 +24,7 @@ void main()
 	int texture_idx = int(fs_texture_id);
 
 	// ------------------------------------
-	// first color buffer
+	// first color buffer - "main"
 	//
 	// - regular rendering
 
@@ -64,4 +66,9 @@ void main()
 			out_glow_buffer.a
 		);
 	}
+
+	// ------------------------------------
+	// third color buffer - "pick"
+
+	out_pick_buffer = vec4( fs_pick_id, fs_pick_id, fs_pick_id, 1.0f );
 }

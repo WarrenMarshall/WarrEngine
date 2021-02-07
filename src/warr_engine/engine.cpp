@@ -195,7 +195,7 @@ void w_engine::launch( int argc, char* argv [] )
 	}
 
 	// set up frame buffers
-	engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 2, v_window_w, v_window_h );
+	engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 3, v_window_w, v_window_h );
 	engine->blur_frame_buffers[0] = std::make_unique<w_opengl_framebuffer>( "blur1", 1, v_window_w, v_window_h );
 	engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
 	engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite", 1, v_window_w, v_window_h );
@@ -457,8 +457,8 @@ void w_engine::main_loop()
 		float h = v_window_h / 4.0f;
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
-		// main
 	#if 1
+		// main
 		RENDER_BLOCK
 		(
 			RENDER->draw( frame_buffer->textures[ 0 ], rc );
@@ -469,8 +469,8 @@ void w_engine::main_loop()
 		)
 	#endif
 
-		// glow
 	#if 0
+		// glow
 		RENDER_BLOCK
 		(
 			RENDER->draw( frame_buffer->textures[ 1 ], rc );
@@ -480,8 +480,20 @@ void w_engine::main_loop()
 		)
 	#endif
 
+	#if 1
+		// pick
+		RENDER_BLOCK
+		(
+			RENDER->draw( frame_buffer->textures[ 2 ], rc );
+			RS->scale = 0.5f;
+			RENDER->draw_string( "(pick)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		)
+	#endif
+
+		#if 0
 		// blurred glow
-	#if 0
 		RENDER_BLOCK
 		(
 			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );

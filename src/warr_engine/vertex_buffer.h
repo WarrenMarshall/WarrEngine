@@ -8,11 +8,12 @@ struct w_render_vertex
 	w_render_vertex( const w_vec2& pos, const w_uv& uv, const w_color& color, const float glow );
 	w_render_vertex( const w_vec3& pos, const w_uv& uv, const w_color& color, const float glow );
 
-	float x, y, z;
-	float u, v;
-	float r, g, b, a;
-	float e;
-	float t;
+	float x = 0.0f, y = 0.0f, z = 0.0f;
+	float u = 0.0f, v = 0.0f;
+	float r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f;
+	float glow = 0.0f;
+	float texture_id = -1.0f;
+	float pick_id = 1.0f;
 };
 
 // ----------------------------------------------------------------------------
