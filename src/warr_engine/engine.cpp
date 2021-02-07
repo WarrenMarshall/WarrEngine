@@ -974,3 +974,18 @@ void w_engine::process_collision_queue()
 
 	end_contact_queue.clear();
 }
+
+float w_engine::sample_pick_id( w_vec2 click_pos ) const
+{
+	frame_buffer->bind();
+	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
+
+	click_pos.y = v_window_h - click_pos.y;
+
+	float pixel[ 4 ];
+	glReadPixels( (int)click_pos.x, (int)click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
+
+	log( "clicked : {}", pixel[0] );
+
+	return 0.0f;
+}

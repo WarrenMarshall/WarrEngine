@@ -70,5 +70,8 @@ void main()
 	// ------------------------------------
 	// third color buffer - "pick"
 
-	out_pick_buffer = vec4( fs_pick_id, fs_pick_id, fs_pick_id, 1.0f );
+	if( fs_pick_id > 0.0f )
+	{
+		out_pick_buffer = vec4( fs_pick_id, 0, 0, 1.0f );
+	}
 }

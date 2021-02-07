@@ -15,7 +15,7 @@ void layer_entity_picking::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->pick_id = 0.5f;
-		e->get_tform()->set_position( { v_window_hw - 100.0f, 125.0f } );
+		e->get_tform()->set_position( { v_window_hw - 100.0f, 85.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_rectangle, w_rect( -16, -16, 32, 32 ) );
@@ -37,7 +37,8 @@ void layer_entity_picking::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->pick_id = 0.75f;
-		e->get_tform()->set_position( { v_window_hw + 100.0f, 125.0f } );
+		e->get_tform()->set_angle( 15.0f );
+		e->get_tform()->set_position( { v_window_hw + 100.0f, 165.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::rectangle, w_rect( -16, -16, 32, 32 ) );
@@ -67,4 +68,18 @@ void layer_entity_picking::draw()
 void layer_entity_picking::draw_ui()
 {
 	w_layer::draw_ui();
+}
+
+bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::mouse_button_left )
+	{
+		w_vec2 click_pos = INPUT->mouse_vwindow_pos;
+
+		float pick_id = engine->sample_pick_id( click_pos );
+
+		return true;
+	}
+
+	return false;
 }
