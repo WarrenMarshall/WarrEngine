@@ -398,7 +398,7 @@ w_render* w_render::draw_stats()
 		RENDER->push();
 		RS->color = w_color::pal( 0 );
 		RS->color.a = 0.75f;
-		RENDER->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w,
+		RENDER->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_window_w,
 			engine->pixel_font->font_def->max_height * stat_lines.size() ) );
 		RENDER->pop();
 
@@ -410,7 +410,7 @@ w_render* w_render::draw_stats()
 		auto ypos = 0.0f;
 		for( const auto& iter : stat_lines )
 		{
-			RENDER->draw_string( iter, { ui_canvas_hw, ypos } );
+			RENDER->draw_string( iter, { ui_window_hw, ypos } );
 			ypos += engine->pixel_font->font_def->max_height;
 		}
 
@@ -422,7 +422,7 @@ w_render* w_render::draw_stats()
 		RS->align = align::right;
 		RENDER->draw_string(
 			fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
-			{ ui_canvas_w, 0.0f } );
+			{ ui_window_w, 0.0f } );
 		RENDER->pop();
 	}
 #endif

@@ -91,6 +91,11 @@ bool w_entity_component::is_permanent()
 	return false;
 }
 
+_NODISCARD w_transform* w_entity_component::get_tform()
+{
+	return &tform;
+}
+
 // ----------------------------------------------------------------------------
 
 w_entity_component_permanent::w_entity_component_permanent( w_entity* parent_entity )
@@ -170,6 +175,13 @@ w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape
 	return this;
 }
 
+w_entity_component* ec_primitive_shape::init( const e_primitive_shape prim_shape )
+{
+	this->prim_shape = prim_shape;
+
+	return this;
+}
+
 void ec_primitive_shape::draw()
 {
 	if( ilc_is_dead() )
@@ -197,6 +209,18 @@ void ec_primitive_shape::draw()
 		case primitive_shape::circle:
 		{
 			RENDER->draw_circle( w_vec2( 0, 0 ), radius );
+		}
+		break;
+
+		case primitive_shape::filled_circle:
+		{
+			RENDER->draw_filled_circle( w_vec2( 0, 0 ), radius );
+		}
+		break;
+
+		case primitive_shape::point:
+		{
+			RENDER->draw_point( w_vec2( 0, 0 ) );
 		}
 		break;
 	}
@@ -230,6 +254,11 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 		emitter->warm_up();
 
 		OPENGL->pop();
+	}
+	else
+	{
+		// the pool needs at least one update pass or it gets crashy
+		emitter->particle_pool->update();
 	}
 
 	return this;

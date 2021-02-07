@@ -26,6 +26,7 @@ struct w_entity_component : i_life_cycle
 	virtual void set_life_timer( int life_in_ms );
 
 	_NODISCARD virtual bool is_permanent();
+	_NODISCARD w_transform* get_tform();
 };
 
 // ----------------------------------------------------------------------------
@@ -82,6 +83,7 @@ struct ec_primitive_shape : w_entity_component
 
 	w_entity_component* init( const e_primitive_shape prim_shape, const w_rect& rc );
 	w_entity_component* init( const e_primitive_shape prim_shape, const float radius );
+	w_entity_component* init( const e_primitive_shape prim_shape );
 	virtual void draw() override;
 };
 

@@ -135,7 +135,7 @@ void w_particle_emitter::spawn_particle()
 }
 
 // "warms up" a particle emitter by updating it for the maximum life span of one
-// of it's particles. It does this in 1000ms chunks so it's pretty quick.
+// of it's particles. It does this in FTS chunks so it's pretty quick.
 //
 // This is good for not having all the torches turn on when you walk into a
 // room, for example. They will look as tho they've been burning for awhile.

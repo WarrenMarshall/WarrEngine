@@ -87,13 +87,13 @@ extern float v_window_h;
 #define v_window_hw (v_window_w * 0.5f)
 #define v_window_hh (v_window_h * 0.5f)
 
-extern float ui_canvas_w;
-extern float ui_canvas_h;
+extern float ui_window_w;
+extern float ui_window_h;
 
-#define ui_canvas_hw (ui_canvas_w * 0.5f)
-#define ui_canvas_hh (ui_canvas_h * 0.5f)
+#define ui_window_hw (ui_window_w * 0.5f)
+#define ui_window_hh (ui_window_h * 0.5f)
 
-#define ui_canvas_scale (v_window_w / ui_canvas_w)
+#define ui_window_scale (v_window_w / ui_window_w)
 
 #include "filesystem.h"
 

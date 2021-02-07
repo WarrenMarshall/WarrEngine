@@ -16,7 +16,7 @@ void w_ui_mgr::draw_topmost()
 	{
 		RENDER->push();
 		RENDER->set_z_depth( zdepth_topmost );
-		RS->scale = ui_canvas_scale;
+		RS->scale = ui_window_scale;
 		RENDER->draw( mouse_cursor->texture,
 			w_rect(
 				( engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x ),
@@ -29,8 +29,8 @@ void w_ui_mgr::draw_topmost()
 
 bool w_ui_mgr::is_mouse_inside( const w_rect& rc ) const
 {
-	// note : because we apply the canvas scale, this is only usable for UI canvas based rectangles
-	w_rect rc_scaled = rc * ui_canvas_scale;
+	// note : because we apply the ui_window_scale, this is only usable for UI based rectangles
+	w_rect rc_scaled = rc * ui_window_scale;
 
 	// note : all ui interactions are reduced to checking the mouse position inside of an AABB
 	return c2AABBtoPoint( rc_scaled.as_c2AABB(), engine->input->mouse_vwindow_pos.as_c2v() );

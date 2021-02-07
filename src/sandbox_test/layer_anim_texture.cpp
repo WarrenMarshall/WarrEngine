@@ -58,11 +58,11 @@ void layer_anim_texture::draw_ui()
 
 	RENDER->push();
 	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_window_w, ui_window_h ) );
 	RS->align = align::centered;
 	RS->scale = 2.0f;
 	RS->color = w_color::white;
-	RENDER->draw_string( "Animated Textures", { ui_canvas_w / 2.0f, 16.0f } );
+	RENDER->draw_string( "Animated Textures", { ui_window_w / 2.0f, 16.0f } );
 	RENDER->pop();
 
 	IMGUI

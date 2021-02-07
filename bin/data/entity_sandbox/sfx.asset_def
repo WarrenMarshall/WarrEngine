@@ -1,8 +1,0 @@
-
-# SFX
-
-{
-	"type" "sound"
-	"tag" "powup_hit"
-	"filename" "sfx/powup_hit.wav"
-}

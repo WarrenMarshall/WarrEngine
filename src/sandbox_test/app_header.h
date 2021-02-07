@@ -8,6 +8,9 @@
 #include <warr_engine.h>
 
 #include "sandbox_test.h"
+
 #include "layer_ui.h"
 #include "layer_anim_texture.h"
+#include "layer_particles.h"
+
 #include "layer_main_menu.h"

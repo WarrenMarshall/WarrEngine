@@ -1,9 +1,0 @@
-
-# MUSIC
-
-{
-	"type" "sound"
-	"tag" "twinstick_music_track"
-	"filename" "music/realtime.wav"
-	"looped" "true"
-}

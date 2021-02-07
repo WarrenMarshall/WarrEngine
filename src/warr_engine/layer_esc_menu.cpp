@@ -90,7 +90,7 @@ void layer_esc_menu::draw_ui()
 	w_layer::draw_ui();
 
 	a_texture* tiling_background = a_texture::find( "engine_tile_background_stripe" );
-	w_rect rc = w_rect( 0, 0, ui_canvas_w, ui_canvas_h );
+	w_rect rc = w_rect( 0, 0, ui_window_w, ui_window_h );
 
 	w_render_state_opt rso;
 	rso.color = w_color::pal( 0 );
@@ -126,7 +126,7 @@ void layer_esc_menu::draw_ui()
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "PAUSE MENU" )
-		->set_position( { ui_canvas_hw - ( panel_w / 2.0f ), ui_canvas_hh - ( panel_h / 2.0f ) } )
+		->set_position( { ui_window_hw - ( panel_w / 2.0f ), ui_window_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 

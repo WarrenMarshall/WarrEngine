@@ -261,7 +261,7 @@ void w_opengl::init_view_matrix_identity_ui() const
 	assert( RENDER->batches_are_empty() );
 
 	glm::mat4 view = glm::mat4( 1.0f );
-	view *= glm::scale( view, glm::vec3( ui_canvas_scale, ui_canvas_scale, 1.0f ) );
+	view *= glm::scale( view, glm::vec3( ui_window_scale, ui_window_scale, 1.0f ) );
 
 	for( auto& iter : OPENGL->shaders )
 	{

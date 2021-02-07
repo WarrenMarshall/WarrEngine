@@ -140,12 +140,20 @@ void w_engine::launch( int argc, char* argv [] )
 		tok.init( engine->config_vars->find_value_opt( "v_window_res", "320x240" ), 'x' );
 		v_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
 		v_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
+		engine->_symbol_to_value[ "v_window_w" ] = fmt::format( "{}", v_window_w );
+		engine->_symbol_to_value[ "v_window_h" ] = fmt::format( "{}", v_window_h );
+		engine->_symbol_to_value[ "v_window_hw" ] = fmt::format( "{}", v_window_hw );
+		engine->_symbol_to_value[ "v_window_hh" ] = fmt::format( "{}", v_window_hh );
 		log( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
 
-		tok.init( engine->config_vars->find_value_opt( "ui_canvas_res", "640x480" ), 'x' );
-		ui_canvas_w = w_parser::float_from_str( tok.tokens[ 0 ] );
-		ui_canvas_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-		log( "UI Canvas Res: {}x{}", (int) ui_canvas_w, (int) ui_canvas_h );
+		tok.init( engine->config_vars->find_value_opt( "ui_window_res", "640x480" ), 'x' );
+		ui_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
+		ui_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
+		engine->_symbol_to_value[ "ui_window_w" ] = fmt::format( "{}", ui_window_w );
+		engine->_symbol_to_value[ "ui_window_h" ] = fmt::format( "{}", ui_window_h );
+		engine->_symbol_to_value[ "ui_window_hw" ] = fmt::format( "{}", ui_window_hw );
+		engine->_symbol_to_value[ "ui_window_hh" ] = fmt::format( "{}", ui_window_hh );
+		log( "UI Window Res: {}x{}", (int) ui_window_w, (int) ui_window_h );
 
 		RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
 
@@ -631,8 +639,8 @@ void w_engine::draw()
 		w_vec2 v0, v1, v2, v3;
 		float w, h;
 
-		w = ui_canvas_w;
-		h = ui_canvas_h;
+		w = ui_window_w;
+		h = ui_window_h;
 
 		v0 = w_vec2::zero;
 		v1 = w_vec2( w - 1, 0.0f );

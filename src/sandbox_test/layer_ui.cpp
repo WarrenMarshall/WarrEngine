@@ -62,13 +62,17 @@ void layer_ui::draw_ui()
 
 	RENDER->push();
 	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_window_w, ui_window_h ) );
+	RS->align = align::centered;
+	RS->scale = 2.0f;
+	RS->color = w_color::white;
+	RENDER->draw_string( "User Interface Controls", { ui_window_w / 2.0f, 16.0f } );
 	RENDER->pop();
 
 	IMGUI
 		->do_panel( H( "main_panel" ) )
 		->set_text( "SAMPLE CONTROLS" )
-		->set_position( { ui_canvas_hw - 73.0f, ui_canvas_hh - 100.0f } )
+		->set_position( { ui_window_hw - 73.0f, ui_window_hh - 85.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 

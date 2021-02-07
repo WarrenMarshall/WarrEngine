@@ -22,6 +22,13 @@ void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& contro
 			LAYER_MGR->push<layer_anim_texture>();
 		}
 		break;
+
+		case H( "button_particles" ):
+		{
+			LAYER_MGR->pop();
+			LAYER_MGR->push<layer_particles>();
+		}
+		break;
 	}
 }
 
@@ -54,7 +61,7 @@ void layer_main_menu::draw_ui()
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "Test Cases" )
 		->set_position( { 4.0f, 4.0f } )
-		->set_size( { ui_canvas_w - 8, ui_canvas_h - 8 } )
+		->set_size( { ui_window_w - 8, ui_window_h - 8 } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_ui" ) )
@@ -68,6 +75,12 @@ void layer_main_menu::draw_ui()
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
+	IMGUI->do_push_button( H( "button_particles" ) )
+		->set_text( "Particles" )
+		->set_size( { 100.0f, w_vec2::ignore } )
+		->finalize();
+
+	/*
 	IMGUI->do_push_button( H( "button_mouse_picking" ) )
 		->set_text( "Mouse Picking" )
 		->set_size( { 100.0f, w_vec2::ignore } )
@@ -97,6 +110,7 @@ void layer_main_menu::draw_ui()
 		->set_text( "Game Controller" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
+	*/
 }
 
 w_imgui_callback* layer_main_menu::get_imgui_callback()

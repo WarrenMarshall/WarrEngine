@@ -1,19 +1,74 @@
 
-# {
-# 	"type" "emitter_params"
-# 	"tag" "background_stars"
-# 	"texture_tag" "tex_particle_star"
-# 	"spawner_type" "box,v_window_w,v_window_h"
+#  ----------------------------------------------------------------------------
 
-# 	"s_max_spawn_per_sec" "2"
-# 	"b_needs_warm_up" "false"
-# 	"a_dir" "0"
-# 	"r_scale_spawn" "0.5, 1.25"
-# 	"t_scale" "0.0,0.0, 0.2,1.0, 0.4,0.0, 1.0,0.0"
-# 	"r_lifespan" "6000, 12000"
-# 	"r_velocity_spawn" "-5,-10"
-# 	"t_color" "0,color.white, 1.0,color.white"
-# 	"r_spin_spawn" "-180,180"
-# 	"r_spin_per_sec" "0,0"
-# 	"t_alpha" "0,0, 0.15,1, 1,0"
-# }
+{
+	"type" "src_texture"
+	"tag" "tex_particle_01"
+	"filename" "gfx/particle_01.png"
+}
+
+{
+	"type" "emitter_params"
+	"tag" "em_stars"
+	"texture_tag" "tex_particle_02"
+	"spawner_type" "spawner_type.circle,2"
+
+	"s_max_spawn_per_sec" "5"
+	"b_needs_warm_up" "true"
+	"a_dir" "0"
+	"r_dir_var" "0,360"
+	"r_scale_spawn" "1.0, 2.0"
+	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
+	"r_lifespan" "8000, 8000"
+	"r_velocity_spawn" "40,60"
+	"t_color" "0,@4, 1.0,@0"
+	"t_alpha" "0,1, 1,0"
+}
+
+#  ----------------------------------------------------------------------------
+
+{
+	"type" "src_texture"
+	"tag" "tex_particle_02"
+	"filename" "gfx/particle_02.png"
+}
+
+{
+	"type" "emitter_params"
+	"tag" "em_fire_upwards"
+	"texture_tag" "tex_particle_01"
+	"spawner_type" "spawner_type.box,v_window_w,4"
+
+	"s_max_spawn_per_sec" "50"
+	"b_needs_warm_up" "true"
+	"a_dir" "0"
+	"r_scale_spawn" "1.0, 2.5"
+	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
+	"r_lifespan" "2000, 6000"
+	"r_velocity_spawn" "15,25"
+	"t_color" "0,@0, 0.25,@4, 1.0,@2"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "-90,90"
+	"t_alpha" "0,0, 0.25,1, 1,0"
+}
+
+#  ----------------------------------------------------------------------------
+
+{
+	"type" "emitter_params"
+	"tag" "em_torch"
+	"texture_tag" "tex_particle_01"
+	"spawner_type" "spawner_type.circle,5"
+
+	"s_max_spawn_per_sec" "50"
+	"b_needs_warm_up" "true"
+	"a_dir" "inherit_from_parent"
+	"r_scale_spawn" "0.5, 1.5"
+	"t_scale" "0,0, 0.25,1.0, 1.0,0.0"
+	"r_lifespan" "1000, 2500"
+	"r_velocity_spawn" "15,25"
+	"t_color" "0,color.red, 0.25,color.yellow, 1.0,color.black"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "-180,180"
+	"t_alpha" "0,0, 0.15,1, 1,0"
+}
