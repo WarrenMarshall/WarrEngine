@@ -24,17 +24,6 @@ struct w_render_state_opt
 	std::optional<e_align> align = std::nullopt;
 	std::optional<bool> snap_to_pixel = std::nullopt;
 	std::optional<w_vec2> uv_tiling = std::nullopt;
-
-// 	void set_from_rs( w_render_state* rs )
-// 	{
-// 		rs->color = color.value_or( rs->color );
-// 		rs->glow = glow.value_or( rs->glow );
-// 		rs->scale = scale.value_or( rs->scale );
-// 		rs->angle = angle.value_or( rs->angle );
-// 		rs->align = align.value_or( rs->align );
-// 		rs->uv_tiling = uv_tiling.value_or( rs->uv_tiling );
-// 		rs->snap_to_pixel = snap_to_pixel.value_or( rs->snap_to_pixel );
-// 	}
 };
 
 // making sure that these are small enough to fit into the cache nicely and
@@ -83,20 +72,8 @@ struct w_render
 #endif
 
 	w_render* push();
-	w_render* push_rgb( const w_color& color );
-	w_render* push_rgba( const w_color& color );
-	w_render* push_rgba( const w_color& color, const float alpha );
-	w_render* push_alpha( const float alpha );
-	w_render* push_glow( const float glow );
-	w_render* push_scale( const w_vec2& scale );
-	w_render* push_scale( const float scale );
-	w_render* push_uv_tiling( const w_vec2& uv_tiling );
-	w_render* push_uv_tiling( const float uv_tiling );
-	w_render* push_angle( const float angle );
-	w_render* push_align( const e_align& align );
 	w_render* push_depth( const float depth );
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
-	w_render* push_snap_to_pixel( bool snap_to_pixel );
 	w_render* pop();
 
 	// ----------------------------------------------------------------------------

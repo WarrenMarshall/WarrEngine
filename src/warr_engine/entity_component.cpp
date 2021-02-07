@@ -685,14 +685,14 @@ void ec_tilemap::draw()
 		{
 			if( tile.flipped_horizontally || tile.flipped_vertically )
 			{
-				RENDER->push_scale( { tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f } );
+				RS->scale = { tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f };
 			}
 
 			RENDER->draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
 
 			if( tile.flipped_horizontally || tile.flipped_vertically )
 			{
-				RENDER->push_scale( { tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f } );
+				RS->scale = { tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f };
 			}
 		}
 	}

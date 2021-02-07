@@ -639,7 +639,7 @@ void w_engine::draw()
 		v2 = w_vec2( w - 1, h - 1 );
 		v3 = w_vec2( 0.0f, h - 1 );
 
-		RENDER->push_rgb( w_color::black );
+		RS->color = w_color::black;
 		RENDER->draw_line( v0, v1 );
 		RENDER->draw_line( v1, v2 );
 		RENDER->draw_line( v2, v3 );
@@ -650,7 +650,7 @@ void w_engine::draw()
 		v2 = w_vec2( w - 2, h - 2 );
 		v3 = w_vec2( 1.0f, h - 2 );
 
-		RENDER->push_rgb( w_color::orange );
+		RS->color = w_color::orange;
 		RENDER->draw_line( v0, v1 );
 		RENDER->draw_line( v1, v2 );
 		RENDER->draw_line( v2, v3 );
@@ -661,7 +661,7 @@ void w_engine::draw()
 		v2 = w_vec2( w - 3, h - 3 );
 		v3 = w_vec2( 2.0f, h - 3 );
 
-		RENDER->push_rgb( w_color::black );
+		RS->color = w_color::black;
 		RENDER->draw_line( v0, v1 );
 		RENDER->draw_line( v1, v2 );
 		RENDER->draw_line( v2, v3 );

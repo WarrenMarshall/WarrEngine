@@ -5,8 +5,8 @@
 // Draw a closed polygon provided in CCW order.
 void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
-	RENDER
-		->push_rgba( { color.r, color.g, color.b, color.a } );
+	RENDER->push();
+	RS->color = { color.r, color.g, color.b, color.a };
 
 	for( auto v = 0 ; v < vertexCount ; ++v )
 	{
@@ -22,8 +22,8 @@ void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCoun
 // Draw a solid closed polygon provided in CCW order.
 void w_physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
-	RENDER
-		->push_rgba( { color.r, color.g, color.b, 0.5f } );
+	RENDER->push();
+	RS->color = { color.r, color.g, color.b, 0.5f };
 
 	assert( vertexCount > 2 );
 
@@ -50,10 +50,10 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 		->push()
 		->translate( { position.x, position.y } );
 
-	RENDER
-		->push_rgba( w_color( color.r, color.g, color.b, color.a ) )
-		->draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
-		->pop();
+	RENDER->push();
+	RS->color = { color.r, color.g, color.b, color.a };
+	RENDER->draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) );
+	RENDER->pop();
 
 	OPENGL->pop();
 }
@@ -67,10 +67,10 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 		->push()
 		->translate( { position.x, position.y } );
 
-	RENDER
-		->push_rgba( w_color( color.r, color.g, color.b, 0.5f ) )
-		->draw_filled_circle( { 0.0f, 0.0f }, from_b2d( radius ) )
-		->pop();
+	RENDER->push();
+	RS->color = { color.r, color.g, color.b, 0.5f };
+	RENDER->draw_filled_circle( { 0.0f, 0.0f }, from_b2d( radius ) );
+	RENDER->pop();
 
 	OPENGL->pop();
 }
@@ -81,10 +81,10 @@ void w_physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, cons
 	w_vec2 start = w_vec2( p1 ).from_b2d();
 	w_vec2 end = w_vec2( p2 ).from_b2d();
 
-	RENDER
-		->push_rgba( { color.r, color.g, color.b, color.a } )
-		->draw_line( start, end )
-		->pop();
+	RENDER->push();
+	RS->color = { color.r, color.g, color.b, color.a };
+	RENDER->draw_line( start, end );
+	RENDER->pop();
 }
 
 // Draw a transform. Choose your own length scale.
@@ -101,15 +101,13 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 	w_vec2 x_axis = v + mtx.transform_vec2( w_vec2( debug_line_length, 0.0f ) );
 	w_vec2 y_axis = v + mtx.transform_vec2( w_vec2( 0.0f, debug_line_length ) );
 
-	RENDER
-		->push_snap_to_pixel( false )
-		->push_rgb( w_color( 192, 0, 0 ) )
-		->draw_line( v, x_axis )
-		->pop()
-		->push_rgb( w_color( 0, 192, 0 ) )
-		->draw_line( v, y_axis )
-		->pop()
-		->pop();
+	RENDER->push();
+	RS->snap_to_pixel = false;
+	RS->color = { 192, 0, 0 };
+	RENDER->draw_line( v, x_axis );
+	RS->color = { 0, 192, 0 };
+	RENDER->draw_line( v, y_axis );
+	RENDER->pop();
 }
 
 // Draw a point.
@@ -117,8 +115,8 @@ void w_physics_debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color
 {
 	w_vec2 v = w_vec2( p ).from_b2d();
 
-	RENDER
-		->push_rgba( { color.r, color.g, color.b, color.a } )
-		->draw_point( v )
-		->pop();
+	RENDER->push();
+	RS->color = { color.r, color.g, color.b, color.a };
+	RENDER->draw_point( v );
+	RENDER->pop();
 }

@@ -60,11 +60,10 @@ void layer_ui::draw_ui()
 {
 	w_layer::draw_ui();
 
-	RENDER
-		->push()
-		->push_rgb( w_color::dark_teal )
-		->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
-		->pop();
+	RENDER->push();
+	RS->color = w_color::dark_teal;
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
+	RENDER->pop();
 
 	IMGUI
 		->do_panel( H( "main_panel" ) )

@@ -38,84 +38,6 @@ void w_render::init()
 	}
 }
 
-w_render* w_render::push_rgb( const w_color& color )
-{
-	rs_push()->color = color;
-	return this;
-}
-
-w_render* w_render::push_rgba( const w_color& color )
-{
-	auto rs = rs_push();
-	rs->color = color;
-
-	return this;
-}
-
-w_render* w_render::push_rgba( const w_color& color, const float alpha )
-{
-	auto rs = rs_push();
-	rs->color = color;
-	rs->color.a = alpha;
-
-	return this;
-}
-
-w_render* w_render::push_alpha( const float alpha )
-{
-	rs_push()->color.a = alpha;
-
-	return this;
-}
-
-w_render* w_render::push_glow( const float glow )
-{
-	rs_push()->glow = glow;
-	return this;
-}
-
-w_render* w_render::push_scale( const w_vec2& scale )
-{
-	rs_push()->scale = scale;
-
-	return this;
-}
-
-w_render* w_render::push_scale( const float scale )
-{
-	rs_push()->scale = w_vec2( scale, scale );
-
-	return this;
-}
-
-w_render* w_render::push_uv_tiling( const w_vec2& uv_tiling )
-{
-	rs_push()->uv_tiling = uv_tiling;
-
-	return this;
-}
-
-w_render* w_render::push_uv_tiling( const float uv_tiling )
-{
-	rs_push()->uv_tiling = w_vec2( uv_tiling, uv_tiling );
-
-	return this;
-}
-
-w_render* w_render::push_angle( const float angle )
-{
-	rs_push()->angle = angle;
-
-	return this;
-}
-
-w_render* w_render::push_align( const e_align& align )
-{
-	rs_push()->align = align;
-
-	return this;
-}
-
 w_render* w_render::push_depth( const float depth )
 {
 	rs_z_depth = depth;
@@ -133,12 +55,6 @@ w_render* w_render::push_depth_nudge( const float nudge )
 	rs_z_depth += nudge;
 	rs_z_depth_nudge_accum += nudge;
 
-	return this;
-}
-
-w_render* w_render::push_snap_to_pixel( bool snap_to_pixel )
-{
-	rs_push()->snap_to_pixel = snap_to_pixel;
 	return this;
 }
 
@@ -256,22 +172,20 @@ w_render* w_render::draw_mesh( a_mesh* mesh )
 {
 	// copy the color/alpha into each vertex on the mesh before rendering.
 
-	auto rs = rs_top();
-
 	for(auto & render_vert : mesh->render_verts)
 	{
-		render_vert.r = rs->color.r;
-		render_vert.g = rs->color.g;
-		render_vert.b = rs->color.b;
-		render_vert.a = rs->color.a;
+		render_vert.r = RS->color.r;
+		render_vert.g = RS->color.g;
+		render_vert.b = RS->color.b;
+		render_vert.a = RS->color.a;
 
-		render_vert.e = rs->glow;
+		render_vert.e = RS->glow;
 	}
 
 	OPENGL
 		->push()
-		->rotate( rs->angle )
-		->scale( rs->scale.x, rs->scale.y );
+		->rotate( RS->angle )
+		->scale( RS->scale.x, RS->scale.y );
 
 	for( size_t x = 0 ; x < mesh->render_verts.size() ; x +=3 )
 	{
@@ -298,23 +212,21 @@ w_render* w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	float w = texture->rc.w;
 	float h = texture->rc.h;
 
-	auto rs = rs_top();
-
-	w *= rs->scale.x;
-	h *= rs->scale.y;
+	w *= RS->scale.x;
+	h *= RS->scale.y;
 
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
-	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
-	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
-	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u * RS->uv_tiling.u, texture->uv00.v * RS->uv_tiling.v ), RS->color, RS->glow );
+	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u * RS->uv_tiling.u, texture->uv00.v * RS->uv_tiling.v ), RS->color, RS->glow );
+	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u * RS->uv_tiling.u, texture->uv11.v * RS->uv_tiling.v ), RS->color, RS->glow );
+	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u * RS->uv_tiling.u, texture->uv11.v * RS->uv_tiling.v ), RS->color, RS->glow );
 
 	OPENGL
 		->push()
 		->translate( { dst.x, dst.y } )
-		->rotate( rs->angle );
+		->rotate( RS->angle );
 
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 
@@ -330,15 +242,13 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	float w = dst.w ? dst.w : texture->rc.w;
 	float h = dst.h ? dst.h : texture->rc.h;
 
-	auto rs = rs_top();
+	w *= RS->scale.x;
+	h *= RS->scale.y;
 
-	w *= rs->scale.x;
-	h *= rs->scale.y;
-
-	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
-	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv00.v * rs->uv_tiling.v ), rs->color, rs->glow );
-	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
-	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * rs->uv_tiling.u, texture->uv11.v * rs->uv_tiling.v ), rs->color, rs->glow );
+	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u * RS->uv_tiling.u, texture->uv00.v * RS->uv_tiling.v ), RS->color, RS->glow );
+	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u * RS->uv_tiling.u, texture->uv00.v * RS->uv_tiling.v ), RS->color, RS->glow );
+	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u * RS->uv_tiling.u, texture->uv11.v * RS->uv_tiling.v ), RS->color, RS->glow );
+	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * RS->uv_tiling.u, texture->uv11.v * RS->uv_tiling.v ), RS->color, RS->glow );
 
 	OPENGL->push()->translate( { dst.x, dst.y } );
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
@@ -369,27 +279,23 @@ w_render* w_render::draw_string( const std::string_view text, const w_pos& pos )
 
 w_render* w_render::draw_string( a_font* font, const std::string_view text, const w_pos& pos )
 {
-	auto rs = rs_top();
-
-	// ----------------------------------------------------------------------------
-
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
-	if( rs->align & align::hcenter )
+	if( RS->align & align::hcenter )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs->scale.x;
+		w_vec2 extents = font->get_string_extents( text ) * RS->scale.x;
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
-	if( rs->align & align::right )
+	if( RS->align & align::right )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs->scale.x;
+		w_vec2 extents = font->get_string_extents( text ) * RS->scale.x;
 		alignment_pos_adjustment.x -= extents.x;
 	}
 
-	if( rs->align & align::vcenter )
+	if( RS->align & align::vcenter )
 	{
-		alignment_pos_adjustment.y -= ( font->font_def->max_height * rs->scale.y ) / 2.0f;
+		alignment_pos_adjustment.y -= ( font->font_def->max_height * RS->scale.y ) / 2.0f;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -406,11 +312,11 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 		{
 			draw(
 				fch->glyph_texture.get(),
-				w_rect( xpos + ( fch->xoffset * rs->scale.x ), ypos + ( fch->yoffset * rs->scale.y ) )
+				w_rect( xpos + ( fch->xoffset * RS->scale.x ), ypos + ( fch->yoffset * RS->scale.y ) )
 			);
 		}
 
-		xpos += ( fch->xadvance * rs->scale.x);
+		xpos += ( fch->xadvance * RS->scale.x);
 	}
 
 	return this;
@@ -474,16 +380,16 @@ void w_render::end_frame()
 
 w_render* w_render::draw_world_axis()
 {
-	push_rgb( w_color( 1.0f, 0.0f, 0.0f ) );
+	RS->color = { 1.0f, 0.0f, 0.0f };
 	draw_line( w_vec2::zero, w_vec2( 5000, 0 ) );
 
-	push_rgb( w_color( 0.5f, 0.0f, 0.0f ) );
+	RS->color = { 0.5f, 0.0f, 0.0f };
 	draw_line( w_vec2::zero, w_vec2( -5000, 0 ) );
 
-	push_rgb( w_color( 0.0f, 1.0f, 0.0f ) );
+	RS->color = { 0.0f, 1.0f, 0.0f };
 	draw_line( w_vec2::zero, w_vec2( 0, 5000 ) );
 
-	push_rgb( w_color( 0.0f, 0.5f, 0.0f ) );
+	RS->color = { 0.0f, 0.5f, 0.0f };
 	draw_line( w_vec2::zero, w_vec2( 0, -5000 ) );
 
 	return this;
@@ -567,31 +473,29 @@ w_render* w_render::draw_stats()
 
 w_render* w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	auto rs = rs_top();
-
 	w_render_vertex v0(
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 	w_render_vertex v1(
 		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 	w_render_vertex v2(
 		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 	w_render_vertex v3(
 		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 
 	batch_quads->add_primitive( engine->tex_white, v0, v1, v2, v3 );
@@ -610,25 +514,23 @@ w_render* w_render::draw_triangle( const w_vec2& v0, const w_vec2& v1, const w_v
 
 w_render* w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 )
 {
-	auto rs = rs_top();
-
 	w_render_vertex rv0(
 		w_vec2( v0.x, v0.y ),
 		w_uv( 0, 0 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 	w_render_vertex rv1(
 		w_vec2( v1.x, v1.y ),
 		w_uv( 1, 0 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 	w_render_vertex rv2(
 		w_vec2( v2.x, v2.y ),
 		w_uv( 1, 1 ),
-		rs->color,
-		rs->glow
+		RS->color,
+		RS->glow
 	);
 
 	batch_triangles->add_primitive( engine->tex_white, rv0, rv1, rv2 );
@@ -662,12 +564,11 @@ w_render* w_render::draw_rectangle( const w_rect& dst )
 
 w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	auto rs = rs_top();
+	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), RS->color, RS->glow );
+	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), RS->color, RS->glow );
 
-	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->glow );
-	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs->color, rs->glow );
-
-	RENDER->push_snap_to_pixel( false );
+	RENDER->push();
+	RS->snap_to_pixel = false;
 
 	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
@@ -687,13 +588,12 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 
 w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 {
-	auto rs = rs_top();
-
-	w_render_vertex v0( origin, w_uv( 0, 0 ), rs->color, rs->glow );
+	w_render_vertex v0( origin, w_uv( 0, 0 ), RS->color, RS->glow );
 	w_render_vertex v1 = v0;
 	w_render_vertex v2 = v0;
 
-	RENDER->push_snap_to_pixel( false );
+	RENDER->push();
+	RS->snap_to_pixel = false;
 
 	for( auto x = 0; x < circle_sample_points_max; ++x )
 	{
@@ -713,12 +613,10 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 
 w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	auto rs = rs_top();
+	w_render_vertex v0( start, w_uv( 0, 0 ), RS->color, RS->glow );
+	w_render_vertex v1( end, w_uv( 0, 0 ), RS->color, RS->glow );
 
-	w_render_vertex v0( start, w_uv( 0, 0 ), rs->color, rs->glow );
-	w_render_vertex v1( end, w_uv( 0, 0 ), rs->color, rs->glow );
-
-	RENDER->push_snap_to_pixel( false );
+	RS->snap_to_pixel = false;
 
 	batch_lines->add_primitive(
 		engine->tex_white,
@@ -726,18 +624,15 @@ w_render* w_render::draw_line( const w_vec2& start, const w_vec2& end )
 		v1
 	);
 
-	RENDER->pop();
-
 	return this;
 }
 
 w_render* w_render::draw_point( const w_vec2& pos )
 {
-	auto rs = rs_top();
+	w_render_vertex v0( pos, w_uv( 0, 0 ), RS->color, RS->glow );
 
-	w_render_vertex v0( pos, w_uv( 0, 0 ), rs->color, rs->glow );
-
-	RENDER->push_snap_to_pixel( false );
+	RENDER->push();
+	RS->snap_to_pixel = false;
 
 	batch_points->add_primitive(
 		engine->tex_white,

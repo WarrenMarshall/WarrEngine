@@ -60,30 +60,42 @@ void layer_main_menu::draw_ui()
 	IMGUI->do_push_button( H( "button_ui" ) )
 		->set_text( "UI Controls" )
 		->set_position( imgui_flow::last_crc_topleft )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_anim_texture" ) )
 		->set_text( "Anim Texture" )
+		->set_size( { 100.0f, w_vec2::ignore } )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_mouse_picking" ) )
+		->set_text( "Mouse Picking" )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_gradients" ) )
 		->set_text( "Gradients" )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_box2d" ) )
 		->set_text( "Box2D" )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_particles" ) )
 		->set_text( "Particles" )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_sounds" ) )
 		->set_text( "Sound FX" )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_game_controller" ) )
 		->set_text( "Game Controller" )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 }
 
