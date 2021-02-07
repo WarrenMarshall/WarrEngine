@@ -21,19 +21,17 @@ void layer_ui_callback::on_left_clicked( const w_imgui_control& control, const w
 			UI->show_msg_box( "You clicked the button!" );
 		}
 		break;
-	}
-}
 
-void layer_ui_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
-{
-	w_imgui_callback::on_motion( control, result );
-
-	auto layer = static_cast<layer_ui*>( IMGUI->current_layer );
-
-	switch( control.tag )
-	{
-		case H( "slider_01" ):
+		case H( "checkbox_01" ):
 		{
+			if( std::get<bool>( checkbox_data.data ) )
+			{
+				engine->window->set_mouse_mode( mouse_mode::custom );
+			}
+			else
+			{
+				engine->window->set_mouse_mode( mouse_mode::os );
+			}
 		}
 		break;
 	}
@@ -53,21 +51,22 @@ void layer_ui::push()
 
 void layer_ui::draw()
 {
+	RS->color = w_color::dark_teal;
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h ) );
+
+	RENDER->push();
+	RS->align = align::centered;
+	RS->scale = 2.0f;
+	RS->color = w_color::white;
+	RENDER->draw_string( "Animated Textures", { ui_window_w / 2.0f, 16.0f } );
+	RENDER->pop();
+
 	w_layer::draw();
 }
 
 void layer_ui::draw_ui()
 {
 	w_layer::draw_ui();
-
-	RENDER->push();
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_window_w, ui_window_h ) );
-	RS->align = align::centered;
-	RS->scale = 2.0f;
-	RS->color = w_color::white;
-	RENDER->draw_string( "User Interface Controls", { ui_window_w / 2.0f, 16.0f } );
-	RENDER->pop();
 
 	IMGUI
 		->do_panel( H( "main_panel" ) )
@@ -84,7 +83,7 @@ void layer_ui::draw_ui()
 
 	IMGUI
 		->do_checkbox( H( "checkbox_01" ) )
-		->set_text( "Check Box" )
+		->set_text( "Custom Mouse Cusor" )
 		->finalize( &imgui_callback.checkbox_data );
 
 	IMGUI

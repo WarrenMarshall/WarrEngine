@@ -139,7 +139,12 @@ void w_vertex_array_object::draw_and_reset()
 		{
 			if( RENDER->single_frame_debugger )
 			{
-				log( ">> draw call >> prim_type:{}", gl_prim_type );
+				std::string prim_type_desc = "quads";
+				if( render_prim == render_prim::triangle )		prim_type_desc = "triangles";
+				else if( render_prim == render_prim::line )		prim_type_desc = "lines";
+				else if( render_prim == render_prim::point )	prim_type_desc = "points";
+
+				log( ">> draw call >> \"{}\"", prim_type_desc );
 
 				for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
 				{

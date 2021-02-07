@@ -53,7 +53,7 @@ struct w_imgui
 private:
 	void set_last_control( w_imgui_control control );
 
-	virtual void update_im_state( int id, const w_imgui_control& control, bool is_hovered, bool is_hot );
+	virtual void update_im_state( int id, w_imgui_control& control, bool is_hovered, bool is_hot );
 	void draw( w_imgui_control& control, bool is_hovered, bool is_hot );
 	void draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool is_hovered, bool is_hot );
 	void draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool is_hovered, bool is_hot );

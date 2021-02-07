@@ -22,7 +22,8 @@ void layer_particles::push()
 		{
 			auto ec = entity->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_rectangle, w_rect( -v_window_hw, -2.0f, v_window_w, 4.0f ) );
-			ec->rs_opt.color = w_color::red;
+			ec->rs_opt.color = w_color::light_green;
+			ec->rs_opt.color->a = 0.25f;
 		}
 		{
 			auto ec = entity->add_component<ec_emitter>();
@@ -32,7 +33,7 @@ void layer_particles::push()
 		{
 			auto ec = entity->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::point, 3.0f );
-			ec->rs_opt.color = w_color::white;
+			ec->rs_opt.color = w_color::light_green;
 			ec->get_tform()->set_position( { 0.0f, -v_window_hh } );
 		}
 	}
@@ -48,8 +49,9 @@ void layer_particles::push()
 		}
 		{
 			auto ec = entity->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::circle, 5.0f );
-			ec->rs_opt.color = w_color::white;
+			ec->init( primitive_shape::filled_circle, 5.0f );
+			ec->rs_opt.color = w_color::light_green;
+			ec->rs_opt.color->a = 0.25f;
 		}
 	}
 
@@ -60,7 +62,10 @@ void layer_particles::update()
 {
 	w_layer::update();
 
-	find_entity( H( "mouse_torch" ) )->get_tform()->set_position( INPUT->mouse_vwindow_pos );
+	if( cb_follow_mouse == true )
+	{
+		find_entity( H( "mouse_torch" ) )->get_tform()->set_position( INPUT->mouse_vwindow_pos );
+	}
 }
 
 void layer_particles::draw()
@@ -76,4 +81,16 @@ void layer_particles::draw()
 	RENDER->pop();
 
 	w_layer::draw();
+}
+
+void layer_particles::draw_ui()
+{
+	w_layer::draw_ui();
+
+
+	IMGUI
+		->do_checkbox( H( "checkbox_01" ) )
+		->set_position( { 64, 32 } )
+		->set_text( "Follow Mouse" )
+		->finalize( &cb_follow_mouse );
 }

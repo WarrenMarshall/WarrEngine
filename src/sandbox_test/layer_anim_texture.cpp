@@ -49,21 +49,22 @@ void layer_anim_texture::push()
 
 void layer_anim_texture::draw()
 {
+	RS->color = w_color::dark_teal;
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h ) );
+
+	RENDER->push();
+	RS->align = align::centered;
+	RS->scale = 2.0f;
+	RS->color = w_color::white;
+	RENDER->draw_string( "Animated Textures", { ui_window_w / 2.0f, 16.0f } );
+	RENDER->pop();
+
 	w_layer::draw();
 }
 
 void layer_anim_texture::draw_ui()
 {
 	w_layer::draw_ui();
-
-	RENDER->push();
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_window_w, ui_window_h ) );
-	RS->align = align::centered;
-	RS->scale = 2.0f;
-	RS->color = w_color::white;
-	RENDER->draw_string( "Animated Textures", { ui_window_w / 2.0f, 16.0f } );
-	RENDER->pop();
 
 	IMGUI
 		->do_panel()

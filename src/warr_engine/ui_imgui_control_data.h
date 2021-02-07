@@ -15,4 +15,8 @@ struct w_imgui_control_data
 	void operator=( bool value );
 	void operator=( std::string value );
 	void operator=( float value );
+
+	bool operator==( bool value );
+	bool operator==( std::string value );
+	bool operator==( float value );
 };

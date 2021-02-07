@@ -310,10 +310,19 @@ w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 	return &result;
 }
 
-void w_imgui::update_im_state( int id, const w_imgui_control& control, bool is_hovered, bool is_hot )
+void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered, bool is_hot )
 {
-	assert( control.rc_win.w );
-	assert( control.rc_win.h );
+	if( !control.rc_win.w )
+	{
+		control.rc_win.w = current_layer->get_imgui_callback()->get_default_width( control.type );
+	}
+	if( !control.rc_win.h )
+	{
+		control.rc_win.h = current_layer->get_imgui_callback()->get_default_height( control.type );
+	}
+
+	//assert( control.rc_win.w );
+	//assert( control.rc_win.h );
 
 	result.code = im_result::none;
 
