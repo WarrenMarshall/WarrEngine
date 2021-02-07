@@ -282,24 +282,21 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-#if 0 // #anim_texture
 				else if( type == "anim_texture" )
 				{
 					assert( iter_ad.does_key_exist( "frame_texture_tags" ) );
 					assert( iter_ad.does_key_exist( "frames_per_sec" ) );
 					assert( iter_ad.does_key_exist( "tween" ) );
 
-					auto asset_ptr = a_anim_texture::find( tag, b_silent( true ) );
-
 					int frames_per_sec = w_parser::int_from_str( iter_ad.find_value( "frames_per_sec" ) );
 					auto tween_type = static_cast<e_tween_type>( w_parser::int_from_str( iter_ad.find_value( "tween" ) ) );
 
-					auto asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ),
-													  tag, "" );
+					auto asset_ptr = asset_cache->add( std::make_unique<a_anim_texture>( tween_type, frames_per_sec ), tag, "" );
 
 					const std::string_view frames = iter_ad.find_value( "frame_texture_tags" );
 
 					w_tokenizer tok( frames, ',' );
+					asset_ptr->frames.reserve( tok.tokens.size() );
 					while( !tok.is_eos() )
 					{
 						auto texture = a_texture::find( *tok.get_next_token() );
@@ -309,7 +306,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
-#endif
 				else if( type == "texture" )
 				{
 					assert( iter_ad.does_key_exist( "rect" ) );

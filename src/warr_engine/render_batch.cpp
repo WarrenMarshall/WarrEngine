@@ -10,10 +10,6 @@ w_render_batch::w_render_batch( e_render_prim render_prim )
 	vertex_array_object->reset();
 }
 
-w_render_batch::~w_render_batch()
-{
-}
-
 void w_render_batch::add_primitive( const a_texture* texture, const w_render_vertex& v0, const w_render_vertex& v1, const w_render_vertex& v2, const w_render_vertex& v3 )
 {
 	vertex_array_object->check_draw_and_reset();

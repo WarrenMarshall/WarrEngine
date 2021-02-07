@@ -43,7 +43,7 @@ void layer_ui_callback::on_motion( const w_imgui_control& control, const w_imgui
 
 layer_ui::layer_ui()
 {
-	draws_completely_solid = false;
+	draws_completely_solid = true;
 }
 
 void layer_ui::push()
@@ -61,8 +61,10 @@ void layer_ui::draw_ui()
 	w_layer::draw_ui();
 
 	RENDER
-		->push_rgba( w_color( 0.2f, 0.2f, 0.2f, 0.85f ) )
-		->draw_filled_rectangle( w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) );
+		->push()
+		->push_rgb( w_color::dark_teal )
+		->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0, 0, ui_canvas_w, ui_canvas_h ) )
+		->pop();
 
 	IMGUI
 		->do_panel( H( "main_panel" ) )

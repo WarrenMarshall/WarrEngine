@@ -404,7 +404,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	rc_client_offset.x += clicked_offset.x;
 	rc_client_offset.y += clicked_offset.y;
 
-	RENDER->begin();
+	RENDER->push();
 
 	auto control_data = get_control_data( control.tag );
 
@@ -430,9 +430,9 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				// background bar that sits behind the caption text
 				w_rect rc_label_background( control.rc_client );
 				rc_label_background.h = engine->pixel_font->font_def->max_height + current_layer->get_imgui_callback()->get_control_margin();
-				RENDER
-					->push_rgb( w_color::pal( 0 ) )
-					->draw_filled_rectangle( rc_label_background );
+
+				RS->color = w_color::pal( 0 );
+				RENDER->draw_filled_rectangle( rc_label_background );
 
 				// caption text
 				draw_text( control, rc, w_color::pal( 3 ), is_hovered, is_hot );
@@ -499,7 +499,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				rc_client_offset.y + ( rc_client_offset.h / 2.0f )
 			};
 
-			RENDER->push_rgb( get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot ) );
+			RS->color = get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot );
 
 			// draw tick marks if this slider is using an interval
 
@@ -541,21 +541,21 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 					// caret
 					w_sz extents = engine->pixel_font->get_string_extents( control.text.substr( 0, control_data->caret_pos ) );
 					auto tex_caret = a_texture::find( "ui_edit_box_caret" );
-					RENDER->push_rgb( w_color::white );
+
+					RS->color = w_color::white;
 					RENDER->draw_sprite( tex_caret,
 						{
 							rc_client_offset.x + extents.x,
 							rc_client_offset.y + ( rc_client_offset.h / 2.0f )
 						}
 					);
-					RENDER->pop();
 				}
 			}
 		}
 		break;
 	}
 
-	RENDER->end();
+	RENDER->pop();
 
 	if( is_hot && control.can_retain_focus )
 	{
@@ -567,17 +567,17 @@ void w_imgui::draw_slice_def( const w_imgui_control& control, const w_rect& rc_w
 {
 	if( control.slice_def )
 	{
-		RENDER->push_depth_nudge()
-			->push_rgb( get_adjusted_color( w_color::pal( 1 ), is_hovered, is_hot ) )
-			->draw_sliced( control.slice_def, rc_win );
+		RENDER->push_depth_nudge();
+		RS->color = get_adjusted_color( w_color::pal( 1 ), is_hovered, is_hot );
+		RENDER->draw_sliced( control.slice_def, rc_win );
 	}
 }
 
 void w_imgui::draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool is_hovered, bool is_hot )
 {
-	RENDER->push_depth_nudge()
-		->push_rgb( get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot ) )
-		->draw_sprite( texture, rc.midpoint() );
+	RENDER->push_depth_nudge();
+	RS->color = get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot );
+	RENDER->draw_sprite( texture, rc.midpoint() );
 }
 
 void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool is_hovered, bool is_hot )
@@ -586,14 +586,10 @@ void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client
 	{
 		const w_pos pos = rc_client.get_position_from_alignment( control.text_align );
 
-		w_render_state_opt rso;
-		rso.color = get_adjusted_color( color, is_hovered, is_hot );
-		rso.align = control.text_align;
+		RS->color = get_adjusted_color( color, is_hovered, is_hot );
+		RS->align = control.text_align;
 
-		RENDER
-			->push_render_state( rso )
-			->draw_string( control.text, pos )
-			->pop();
+		RENDER->draw_string( control.text, pos );
 	}
 }
 

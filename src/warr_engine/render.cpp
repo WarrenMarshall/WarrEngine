@@ -23,7 +23,7 @@ void w_render::init()
 	// initialize render state stacks
 
 	render_states.reserve( max_render_states );
-	rs_reset();
+	clear_render_state_stack();
 
 	// generate the sample points for drawing a circle. these verts sit on a
 	// unit circle and are scaled to match the radius requested for each circle
@@ -36,11 +36,6 @@ void w_render::init()
 		circle_sample_point = w_vec2::dir_from_angle( angle );
 		angle += angle_step;
 	}
-}
-
-w_render* w_render::begin()
-{
-	return this;
 }
 
 w_render* w_render::push_rgb( const w_color& color )
@@ -147,31 +142,10 @@ w_render* w_render::push_snap_to_pixel( bool snap_to_pixel )
 	return this;
 }
 
-w_render* w_render::push_render_state( w_render_state& rs )
-{
-	rs_push( rs );
-
-	return this;
-}
-
-w_render* w_render::push_render_state( w_render_state_opt& rso )
-{
-	auto rs = rs_push();
-	rso.populate( rs );
-
-	return this;
-}
-
 w_render* w_render::pop()
 {
 	rs_pop();
 
-	return this;
-}
-
-w_render* w_render::end()
-{
-	rs_reset();
 	return this;
 }
 
@@ -262,7 +236,7 @@ w_render_state* w_render::rs_pop()
 	return rs_top();
 }
 
-void w_render::rs_reset()
+void w_render::clear_render_state_stack()
 {
 	render_states.clear();
 
@@ -373,6 +347,18 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	return this;
 }
 
+w_render* w_render::draw_tiled( const a_texture* texture, const w_rect& dst )
+{
+	auto save_uv_tiling = RS->uv_tiling;
+	RS->uv_tiling = w_vec2::get_uv_tiling( texture, dst );
+
+	draw( texture, dst );
+
+	std::swap( save_uv_tiling, RS->uv_tiling );
+
+	return this;
+}
+
 // draws a string from a bitmap font, char by char, as textured quads
 
 w_render* w_render::draw_string( const std::string_view text, const w_pos& pos )
@@ -434,6 +420,18 @@ w_render* w_render::draw_string( a_font* font, const std::string_view text, cons
 
 void w_render::begin_frame()
 {
+	// ----------------------------------------------------------------------------
+	// set up the viewport for a new frame
+	// ----------------------------------------------------------------------------
+
+	glViewport( 0, 0, (int)v_window_w, (int)v_window_h );
+	glClearColor(
+		engine->window->window_clear_color.r,
+		engine->window->window_clear_color.g,
+		engine->window->window_clear_color.b,
+		engine->window->window_clear_color.a );
+
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
 // called at end of each frame to finalize and render all buffers
@@ -466,6 +464,8 @@ void w_render::end_frame()
 #ifndef _FINALRELEASE
 	single_frame_debugger = false;
 #endif
+
+	clear_render_state_stack();
 }
 
 // draws the X and Y axis in the viewport at the world origin
@@ -496,7 +496,8 @@ w_render* w_render::draw_world_axis()
 w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
-	RENDER->begin()->push_depth( zdepth_stats );
+	RENDER->push();
+	RENDER->push_depth( zdepth_stats );
 
 	if( show_stats )
 	{
@@ -527,19 +528,17 @@ w_render* w_render::draw_stats()
 			stats.stat_custom_string = "";
 		}
 
-		RENDER
-			->begin()
-			->push_rgba( w_color::pal( 0 ) )
-			->push_alpha( 0.75f )
-			->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w,
-				engine->pixel_font->font_def->max_height * stat_lines.size() ) )
-			->end();
+		RENDER->push();
+		RS->color = w_color::pal( 0 );
+		RS->color.a = 0.75f;
+		RENDER->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_canvas_w,
+			engine->pixel_font->font_def->max_height * stat_lines.size() ) );
+		RENDER->pop();
 
-		RENDER
-			->begin()
-			->push_depth_nudge()
-			->push_rgb( w_color::white )
-			->push_align( align::hcenter );
+		RENDER->push();
+		RENDER->push_depth_nudge();
+		RS->color = w_color::white;
+		RS->align = align::hcenter;
 
 		auto ypos = 0.0f;
 		for( const auto& iter : stat_lines )
@@ -548,20 +547,20 @@ w_render* w_render::draw_stats()
 			ypos += engine->pixel_font->font_def->max_height;
 		}
 
-		RENDER->end();
+		RENDER->pop();
 	}
 	else
 	{
-		RENDER->begin()
-			->push_align( align::right )
-			->draw_string(
-				fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
-				{ ui_canvas_w, 0.0f	} )
-			->end();
+		RENDER->push();
+		RS->align = align::right;
+		RENDER->draw_string(
+			fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
+			{ ui_canvas_w, 0.0f } );
+		RENDER->pop();
 	}
 #endif
 
-	RENDER->end();
+	RENDER->pop();
 
 	return this;
 }
@@ -820,4 +819,15 @@ float w_render::calc_interpolated_per_sec_value( float current_value, float step
 void w_render::bind_texture( int slot, a_src_texture* tex )
 {
 	glBindTextureUnit( slot, tex->gl_id );
+}
+
+void w_render_state::set_from_opt( w_render_state_opt& rso )
+{
+	color = rso.color.value_or( color );
+	glow = rso.glow.value_or( glow );
+	scale = rso.scale.value_or( scale );
+	angle = rso.angle.value_or( angle );
+	align = rso.align.value_or( align );
+	uv_tiling = rso.uv_tiling.value_or( uv_tiling );
+	snap_to_pixel = rso.snap_to_pixel.value_or( snap_to_pixel );
 }

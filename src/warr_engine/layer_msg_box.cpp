@@ -54,13 +54,12 @@ void layer_msg_box::draw_ui()
 
 	w_render_state_opt rso;
 	rso.color = w_color::pal( 0 );
-	rso.color->a = 0.25f;
-	rso.uv_tiling = w_vec2::get_uv_tiling( tiling_background, rc ) / 2.0f;
+	rso.color->a = 0.5f;
 
-	RENDER
-		->push_render_state( rso )
-		->draw( tiling_background, rc )
-		->pop();
+	RENDER->push();
+	RS->set_from_opt( rso );
+	RENDER->draw_tiled( tiling_background, rc );
+	RENDER->pop();
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_position( { 0.0f, ui_canvas_hh - 32.0f } )

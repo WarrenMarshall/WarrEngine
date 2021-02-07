@@ -507,7 +507,7 @@ w_vec2 w_vec2::reflect_across_normal( const w_vec2& v, const w_vec2& n )
 // returns a w_vec2 representing the uv tiling factors needed to tile "texture"
 // inside of "rc" a natural number of times in both the U and V directions.
 
-w_vec2 w_vec2::get_uv_tiling( a_texture* texture, const w_rect& rc )
+w_vec2 w_vec2::get_uv_tiling( const a_texture* texture, const w_rect& rc )
 {
 	return w_vec2( rc.w / texture->rc.w, rc.h / texture->rc.h );
 }

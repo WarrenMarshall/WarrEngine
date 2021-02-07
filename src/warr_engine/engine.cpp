@@ -328,18 +328,6 @@ void w_engine::main_loop()
 		RENDER->begin_frame();
 		{
 			// ----------------------------------------------------------------------------
-			// set up the viewport for a new frame
-			// ----------------------------------------------------------------------------
-
-			glViewport( 0, 0, (int) v_window_w, (int) v_window_h );
-			glClearColor(
-				window->window_clear_color.r,
-				window->window_clear_color.g,
-				window->window_clear_color.b,
-				window->window_clear_color.a );
-			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-			// ----------------------------------------------------------------------------
 			// render the game frame
 			// ----------------------------------------------------------------------------
 
@@ -379,10 +367,7 @@ void w_engine::main_loop()
 		blur_frame_buffers[0]->bind();
 		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
-		RENDER
-			->begin()
-			->draw( frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end();
+		RENDER->draw( frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 		blur_frame_buffers[0]->unbind();
 
@@ -396,10 +381,7 @@ void w_engine::main_loop()
 		{
 			blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
-			RENDER
-				->begin()
-				->draw( blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-				->end();
+			RENDER->draw( blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
 
@@ -410,32 +392,28 @@ void w_engine::main_loop()
 		// draw the base/bloom frame buffers into the compositing frame buffer
 		// ----------------------------------------------------------------------------
 
+		RENDER->push();
 		composite_frame_buffer->bind();
 
 		// draw game frame buffer
 
 		OPENGL->shaders[ "base" ].bind();
 
-		RENDER
-			->begin()
-			->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end();
+		RENDER->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
 		// draw glow frame buffer on top with blending
 
 		OPENGL->set_blend( opengl_blend::add );
 
-		RENDER
-			->begin()
-			->push_alpha( 0.5f )
-			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end();
+		RS->color.a = 0.5f;
+		RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
 		OPENGL->set_blend( opengl_blend::alpha );
 
 		composite_frame_buffer->unbind();
+		RENDER->pop();
 
 		// ----------------------------------------------------------------------------
 		// draw the compositing frame buffer to the default frame buffer
@@ -453,10 +431,7 @@ void w_engine::main_loop()
 			(int)window->viewport_pos_sz.h
 		);
 
-		RENDER
-			->begin()
-			->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) )
-			->end();
+		RENDER->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
 	#if 0
@@ -475,33 +450,24 @@ void w_engine::main_loop()
 
 		// main
 	#if 0
-		RENDER
-			->begin()
-			->draw( frame_buffer->textures[ 0 ], rc )
-			->draw_string( "(base)", { rc.x, rc.y } )
-			->end();
+		RENDER->draw( frame_buffer->textures[ 0 ], rc );
+		RENDER->draw_string( "(base)", { rc.x, rc.y } );
 		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 		rc.x += w;
 	#endif
 
 		// glow
 	#if 1
-		RENDER
-			->begin()
-			->draw( frame_buffer->textures[ 1 ], rc )
-			->draw_string( "(glow)", { rc.x, rc.y } )
-			->end();
+		RENDER->draw( frame_buffer->textures[ 1 ], rc );
+		RENDER->draw_string( "(glow)", { rc.x, rc.y } );
 		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 		rc.x += w;
 	#endif
 
 		// blurred glow
 	#if 1
-		RENDER
-			->begin()
-			->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc )
-			->draw_string( "(blur)", { rc.x, rc.y } )
-			->end();
+		RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );
+		RENDER->draw_string( "(blur)", { rc.x, rc.y } );
 		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 		rc.x += w;
 	#endif
@@ -659,9 +625,8 @@ void w_engine::draw()
 
 	if( is_paused() )
 	{
-		RENDER
-			->begin()
-			->push_depth( zdepth_topmost );
+		RENDER->push();
+		RENDER->push_depth( zdepth_topmost );
 
 		w_vec2 v0, v1, v2, v3;
 		float w, h;
@@ -702,7 +667,7 @@ void w_engine::draw()
 		RENDER->draw_line( v2, v3 );
 		RENDER->draw_line( v3, v0 );
 
-		RENDER->end();
+		RENDER->pop();
 	}
 }
 

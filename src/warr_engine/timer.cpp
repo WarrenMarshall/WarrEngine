@@ -31,7 +31,7 @@ int w_timer::get_elapsed_count()
 {
 	time_ms delta = ( engine->time->now() - time_last );
 
-	int num_times_elapsed = static_cast<int>( delta / interval_ms );
+	auto num_times_elapsed = (int)( delta / interval_ms );
 	time_last += num_times_elapsed * interval_ms;
 
 	return num_times_elapsed;

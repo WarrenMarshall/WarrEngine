@@ -11,6 +11,8 @@ struct w_render_state
 	w_vec2 uv_tiling = { 1.0f, 1.0f };
 	e_align align = align::left;
 	bool snap_to_pixel = true;
+
+	void set_from_opt( w_render_state_opt& rso );
 };
 
 struct w_render_state_opt
@@ -23,16 +25,16 @@ struct w_render_state_opt
 	std::optional<bool> snap_to_pixel = std::nullopt;
 	std::optional<w_vec2> uv_tiling = std::nullopt;
 
-	void populate( w_render_state* rs )
-	{
-		rs->color = color.value_or( rs->color );
-		rs->glow = glow.value_or( rs->glow );
-		rs->scale = scale.value_or( rs->scale );
-		rs->angle = angle.value_or( rs->angle );
-		rs->align = align.value_or( rs->align );
-		rs->uv_tiling = uv_tiling.value_or( rs->uv_tiling );
-		rs->snap_to_pixel = snap_to_pixel.value_or( rs->snap_to_pixel );
-	}
+// 	void set_from_rs( w_render_state* rs )
+// 	{
+// 		rs->color = color.value_or( rs->color );
+// 		rs->glow = glow.value_or( rs->glow );
+// 		rs->scale = scale.value_or( rs->scale );
+// 		rs->angle = angle.value_or( rs->angle );
+// 		rs->align = align.value_or( rs->align );
+// 		rs->uv_tiling = uv_tiling.value_or( rs->uv_tiling );
+// 		rs->snap_to_pixel = snap_to_pixel.value_or( rs->snap_to_pixel );
+// 	}
 };
 
 // making sure that these are small enough to fit into the cache nicely and
@@ -70,7 +72,7 @@ struct w_render
 	a_palette* current_palette = nullptr;
 	w_color pal_color_from_idx( size_t idx );
 
-	void rs_reset();
+	void clear_render_state_stack();
 
 	float rs_z_depth = 0.0f;
 	float rs_z_depth_nudge_accum = 0.0f;
@@ -79,9 +81,6 @@ struct w_render
 	bool single_frame_debugger = false;
 	bool show_physics_debug = true;
 #endif
-
-	w_render* begin();
-	w_render* end();
 
 	w_render* push();
 	w_render* push_rgb( const w_color& color );
@@ -98,8 +97,6 @@ struct w_render
 	w_render* push_depth( const float depth );
 	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
 	w_render* push_snap_to_pixel( bool snap_to_pixel );
-	w_render* push_render_state( w_render_state& rs );
-	w_render* push_render_state( w_render_state_opt& rso );
 	w_render* pop();
 
 	// ----------------------------------------------------------------------------
@@ -116,6 +113,7 @@ struct w_render
 	w_render* draw_mesh( a_mesh* mesh );
 	w_render* draw_sprite( const a_texture* texture, const w_vec2& dst );
 	w_render* draw( const a_texture* texture, const w_rect& dst );
+	w_render* draw_tiled( const a_texture* texture, const w_rect& dst );
 	w_render* draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );
 	w_render* draw_string( const std::string_view text, const w_pos& pos );
 	w_render* draw_string( a_font* font, const std::string_view text, const w_pos& pos );
@@ -143,6 +141,5 @@ struct w_render
 	w_render_state* rs_push();
 	w_render_state* rs_push( w_render_state& rs );
 	w_render_state* rs_pop();
-
 };
 

@@ -1,15 +1,14 @@
 #pragma once
 
-#if 0 // #anim_texture
 struct a_anim_texture : a_src_texture
 {
 	declare_find_func( a_anim_texture )
 
 	std::vector<a_texture*> frames;
-	std::unique_ptr<w_tween> frame_tween = nullptr;
+	w_tween frame_tween;
 
 	e_tween_type tween_type = tween_type::loop;
-	int frames_per_second = 1;
+	int frames_per_second = 0;
 
 	a_anim_texture() = delete;
 	a_anim_texture( e_tween_type tween_type, int frames_per_second );
@@ -20,7 +19,5 @@ struct a_anim_texture : a_src_texture
 	void add_frame( a_texture* texture );
 	void randomize();
 
-	virtual void update() override;
-	_NODISCARD virtual a_texture* get_texture( float anim_offset ) override;
+	_NODISCARD a_texture* get_texture( float anim_offset );
 };
-#endif

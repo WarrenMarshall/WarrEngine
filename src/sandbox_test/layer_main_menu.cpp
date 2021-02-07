@@ -11,7 +11,15 @@ void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& contro
 	{
 		case H( "button_ui" ):
 		{
+			LAYER_MGR->pop();
 			LAYER_MGR->push<layer_ui>();
+		}
+		break;
+
+		case H( "button_anim_texture" ):
+		{
+			LAYER_MGR->pop();
+			LAYER_MGR->push<layer_anim_texture>();
 		}
 		break;
 	}

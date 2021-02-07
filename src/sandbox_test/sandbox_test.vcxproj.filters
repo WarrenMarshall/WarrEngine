@@ -3,13 +3,35 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sandbox_test.cpp" />
-    <ClCompile Include="layer_ui.cpp" />
-    <ClCompile Include="layer_main_menu.cpp" />
+    <ClCompile Include="layer_anim_texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="layer_main_menu.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="layer_ui.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="layer_anim_texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_main_menu.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_ui.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="app_header.h" />
     <ClInclude Include="sandbox_test.h" />
-    <ClInclude Include="layer_ui.h" />
-    <ClInclude Include="layer_main_menu.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{da6c1f70-7fe3-4f0e-9649-86612795895b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{1cb16a9d-2c27-4eda-b303-75fc57218422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

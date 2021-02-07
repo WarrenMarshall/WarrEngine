@@ -95,12 +95,11 @@ void layer_esc_menu::draw_ui()
 	w_render_state_opt rso;
 	rso.color = w_color::pal( 0 );
 	rso.color->a = 0.75f;
-	rso.uv_tiling = w_vec2::get_uv_tiling( tiling_background, rc ) / 2.0f;
 
-	RENDER
-		->push_render_state( rso )
-		->draw( tiling_background, rc )
-		->pop();
+	RENDER->push();
+	RS->set_from_opt( rso );
+	RENDER->draw_tiled( tiling_background, rc );
+	RENDER->pop();
 
 	int num_buttons = 3;
 	if( base_game->has_main_menu )

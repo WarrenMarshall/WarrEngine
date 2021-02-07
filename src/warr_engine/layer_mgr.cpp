@@ -83,15 +83,22 @@ void w_layer_mgr::draw()
 		// and moving backward.
 
 		int starting_layer_idx = 0;
+		bool found_opaque_layer = false;
 		for( const auto& iter : layer_stack )
 		{
 			if( iter->draws_completely_solid )
 			{
+				found_opaque_layer = true;
 				break;
 			}
 
 			starting_layer_idx++;
 		}
+
+		// if we never find an opaque layer something has been set up
+		// wrong. make sure that at least 1 layer in the stack is marked as
+		// "draws_completely_solid = true"
+		assert( found_opaque_layer );
 
 		// draw starting from the starting_layer_idx and every layer above it
 
@@ -99,7 +106,7 @@ void w_layer_mgr::draw()
 		// DRAW
 		// ----------------------------------------------------------------------------
 
-		RENDER->begin();
+		RENDER->push();
 
 		for( auto x = starting_layer_idx; x >= 0; --x )
 		{
@@ -124,15 +131,14 @@ void w_layer_mgr::draw()
 			}
 		}
 
-		RENDER->end();
+		RENDER->pop();
 
 		// ----------------------------------------------------------------------------
 		// UI
 		// ----------------------------------------------------------------------------
 
-		RENDER
-			->begin()
-			->push_depth( zdepth_clear_window );
+		RENDER->push();
+		RENDER->push_depth( zdepth_clear_window );
 
 		OPENGL->init_view_matrix_identity_ui();
 
@@ -170,7 +176,7 @@ void w_layer_mgr::draw()
 			}
 		}
 
-		RENDER->end();
+		RENDER->pop();
 	}
 }
 

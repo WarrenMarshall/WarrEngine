@@ -124,7 +124,7 @@ void w_vertex_array_object::check_draw_and_reset()
 
 void w_vertex_array_object::draw_and_reset()
 {
-	if( vertex_buffer->vertices.size() )
+	if( !vertex_buffer->vertices.empty() )
 	{
 		// update stats and clean up
 		RENDER->stats.draw_calls++;

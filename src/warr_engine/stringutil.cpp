@@ -5,7 +5,6 @@
 // ----------------------------------------------------------------------------
 // utilities for trimming the whitespace off the front and back of a string
 
-
 const std::string WHITESPACE = " \n\r\t\f\v";
 
 const std::string_view w_string_util::ltrim( const std::string_view s )

@@ -141,10 +141,10 @@ void ec_sprite::draw()
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
-	RENDER
-		->push_render_state( rs_opt )
-		->draw_sprite( texture, tform.pos )
-		->pop();
+	RENDER->push();
+	RS->set_from_opt( rs_opt );
+	RENDER->draw_sprite( texture, tform.pos );
+	RENDER->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -177,8 +177,8 @@ void ec_primitive_shape::draw()
 		return;
 	}
 
-	RENDER
-		->push_render_state( rs_opt );
+	RENDER->push();
+	RS->set_from_opt( rs_opt );
 
 	switch( prim_shape )
 	{
@@ -259,15 +259,10 @@ void ec_emitter::draw()
 	// component level transforms before drawing the particle pool
 
 	OPENGL->push_identity();
-	RENDER
-		->begin()
-		->push_render_state( rs_opt );
-
+	RENDER->push();
+	RS->set_from_opt( rs_opt );
 	emitter->particle_pool->draw();
-
-	RENDER
-		->pop()
-		->end();
+	RENDER->pop();
 	OPENGL->pop();
 
 }
@@ -680,7 +675,8 @@ w_entity_component* ec_tilemap::init()
 
 void ec_tilemap::draw()
 {
-	RENDER->push_render_state( rs_opt );
+	RENDER->push();
+	RS->set_from_opt( rs_opt );
 
 	for( auto& tmlayer : tile_layers )
 	{
@@ -833,10 +829,10 @@ void ec_mesh::draw()
 		return;
 	}
 
-	RENDER
-		->push_render_state( rs_opt )
-		->draw_mesh( mesh )
-		->pop();
+	RENDER->push();
+	RS->set_from_opt( rs_opt );
+	RENDER->draw_mesh( mesh );
+	RENDER->pop();
 }
 
 // ----------------------------------------------------------------------------

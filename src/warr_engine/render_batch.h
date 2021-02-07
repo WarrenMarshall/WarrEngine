@@ -5,7 +5,6 @@ constexpr int max_elements_per_render_batch = 10000;
 struct w_render_batch
 {
 	w_render_batch( e_render_prim render_prim );
-	~w_render_batch();
 
 	std::unique_ptr<w_vertex_array_object> vertex_array_object;
 

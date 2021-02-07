@@ -21,6 +21,8 @@ struct w_range;
 struct w_rect;
 struct w_render;
 struct w_render_batch;
+struct w_render_state;
+struct w_render_state_opt;
 struct w_shader;
 struct w_timeline;
 struct w_transform;
