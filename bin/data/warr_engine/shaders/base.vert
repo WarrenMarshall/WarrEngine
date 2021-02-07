@@ -17,7 +17,7 @@ out vec3 fs_pos;
 out vec2 fs_tex_coord;
 out vec4 fs_color;
 out float fs_glow;
-out float fs_texture_id;
+flat out float fs_texture_id;
 
 // ----------------------------------------------------------------------------
 

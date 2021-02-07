@@ -7,7 +7,7 @@ in vec3 fs_pos;
 in vec2 fs_tex_coord;
 in vec4 fs_color;
 in float fs_glow;
-in float fs_texture_id;
+flat in float fs_texture_id;
 
 // set to "true" to have the screen automatically glow if
 // pixel colors are bright enough.

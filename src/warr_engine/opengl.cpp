@@ -126,10 +126,6 @@ void w_opengl::init()
 	// default blending is transparency using the alpha channel
 	glEnable( GL_BLEND );
 	set_blend( opengl_blend::alpha );
-
-	// smooth things look nicer
-	glEnable( GL_LINE_SMOOTH );
-	glEnable( GL_POINT_SMOOTH );
 }
 
 // pushes a new matrix on top of the stack.
