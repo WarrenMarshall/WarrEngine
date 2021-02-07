@@ -625,6 +625,18 @@ void w_engine::init()
 
 void w_engine::deinit()
 {
+	asset_definition_file_cache = nullptr;
+	time = nullptr;
+	asset_cache = nullptr;
+	layer_mgr = nullptr;
+	window = nullptr;
+	render = nullptr;
+	input = nullptr;
+	ui = nullptr;
+	fs = nullptr;
+	opengl = nullptr;
+	config_vars = nullptr;
+	random = nullptr;
 }
 
 void w_engine::draw()

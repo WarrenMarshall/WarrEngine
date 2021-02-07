@@ -170,6 +170,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="layer_anim_texture.cpp" />
+    <ClCompile Include="layer_entity_picking.cpp" />
     <ClCompile Include="layer_main_menu.cpp" />
     <ClCompile Include="layer_particles.cpp" />
     <ClCompile Include="layer_ui.cpp" />
@@ -179,6 +180,7 @@
   <ItemGroup>
     <ClInclude Include="app_header.h" />
     <ClInclude Include="layer_anim_texture.h" />
+    <ClInclude Include="layer_entity_picking.h" />
     <ClInclude Include="layer_main_menu.h" />
     <ClInclude Include="layer_particles.h" />
     <ClInclude Include="layer_ui.h" />

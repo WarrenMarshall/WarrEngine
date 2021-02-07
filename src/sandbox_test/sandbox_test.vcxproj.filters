@@ -15,6 +15,9 @@
     <ClCompile Include="layer_particles.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="layer_entity_picking.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layer_anim_texture.h">
@@ -29,6 +32,9 @@
     <ClInclude Include="app_header.h" />
     <ClInclude Include="sandbox_test.h" />
     <ClInclude Include="layer_particles.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_entity_picking.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
