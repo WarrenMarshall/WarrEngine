@@ -985,7 +985,9 @@ float w_engine::sample_pick_id( w_vec2 click_pos ) const
 	float pixel[ 4 ];
 	glReadPixels( (int)click_pos.x, (int)click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
 
-	log( "clicked : {}", pixel[0] );
+	auto pick_id = glm::round( pixel[ 0 ] * 100.0f ) / 100.0f;
 
-	return 0.0f;
+	log( "clicked : {} / {}", pixel[0], pick_id );
+
+	return pick_id;
 }
