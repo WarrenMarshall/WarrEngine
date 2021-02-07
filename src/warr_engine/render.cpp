@@ -356,78 +356,78 @@ w_render* w_render::draw_world_axis()
 	return this;
 }
 
-
 // draws useful stats at the top of the screen
-
 
 w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
-	RENDER->push();
-	RENDER->set_z_depth( zdepth_stats );
+	RENDER_BLOCK
+	(
+		RENDER->set_z_depth( zdepth_stats );
 
-	if( show_stats )
-	{
-		stat_lines.clear();
-		stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
-											  f_commas( stats.frame_count.value ),
-											  stats.frame_times_ms.value,
-											  fixed_time_step::frames_per_second ) );
-		stat_lines.emplace_back( fmt::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
-											  f_commas( stats.draw_calls.value ),
-											  f_commas( stats.quads.value ),
-											  f_commas( stats.triangles.value ),
-											  f_commas( stats.lines.value ) ,
-											  f_commas( stats.points.value ) )
-		);
-		stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
-		stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.entities.value ) ) );
-		stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
-		stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
-											  engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y,
-											  engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y,
-											  engine->input->mouse_uiwindow_pos.x, engine->input->mouse_uiwindow_pos.y )
-		);
-
-		if( stats.stat_custom_string.length() )
+		if( show_stats )
 		{
-			stat_lines.emplace_back( stats.stat_custom_string );
-			stats.stat_custom_string = "";
+			stat_lines.clear();
+			stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
+												  f_commas( stats.frame_count.value ),
+												  stats.frame_times_ms.value,
+												  fixed_time_step::frames_per_second ) );
+			stat_lines.emplace_back( fmt::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
+												  f_commas( stats.draw_calls.value ),
+												  f_commas( stats.quads.value ),
+												  f_commas( stats.triangles.value ),
+												  f_commas( stats.lines.value ) ,
+												  f_commas( stats.points.value ) )
+			);
+			stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
+			stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( stats.entities.value ) ) );
+			stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
+			stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
+												  engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y,
+												  engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y,
+												  engine->input->mouse_uiwindow_pos.x, engine->input->mouse_uiwindow_pos.y )
+			);
+
+			if( stats.stat_custom_string.length() )
+			{
+				stat_lines.emplace_back( stats.stat_custom_string );
+				stats.stat_custom_string = "";
+			}
+
+			RENDER_BLOCK
+			(
+				RS->color = w_color::pal( 0 );
+				RS->color.a = 0.75f;
+				RENDER->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_window_w,
+					engine->pixel_font->font_def->max_height * stat_lines.size() ) );
+			)
+
+			RENDER_BLOCK
+			(
+				RENDER->nudge_z_depth();
+				RS->color = w_color::white;
+				RS->align = align::hcenter;
+
+				auto ypos = 0.0f;
+				for( const auto& iter : stat_lines )
+				{
+					RENDER->draw_string( iter, { ui_window_hw, ypos } );
+					ypos += engine->pixel_font->font_def->max_height;
+				}
+			)
 		}
-
-		RENDER->push();
-		RS->color = w_color::pal( 0 );
-		RS->color.a = 0.75f;
-		RENDER->draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_window_w,
-			engine->pixel_font->font_def->max_height * stat_lines.size() ) );
-		RENDER->pop();
-
-		RENDER->push();
-		RENDER->nudge_z_depth();
-		RS->color = w_color::white;
-		RS->align = align::hcenter;
-
-		auto ypos = 0.0f;
-		for( const auto& iter : stat_lines )
+		else
 		{
-			RENDER->draw_string( iter, { ui_window_hw, ypos } );
-			ypos += engine->pixel_font->font_def->max_height;
+			RENDER_BLOCK
+			(
+				RS->align = align::right;
+				RENDER->draw_string(
+					fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
+					{ ui_window_w, 0.0f } );
+			)
 		}
-
-		RENDER->pop();
-	}
-	else
-	{
-		RENDER->push();
-		RS->align = align::right;
-		RENDER->draw_string(
-			fmt::format( "{} FPS ({:.2f} ms)", f_commas( stats.frame_count.value ), stats.frame_times_ms.value ),
-			{ ui_window_w, 0.0f } );
-		RENDER->pop();
-	}
+	)
 #endif
-
-	RENDER->pop();
 
 	return this;
 }
@@ -528,21 +528,21 @@ w_render* w_render::draw_circle( const w_vec2& origin, float radius )
 	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), RS->color, RS->glow );
 	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), RS->color, RS->glow );
 
-	RENDER->push();
-	RS->snap_to_pixel = false;
+	RENDER_BLOCK
+	(
+		RS->snap_to_pixel = false;
 
-	for( auto x = 0; x < circle_sample_points_max; ++x )
-	{
-		v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
-		v0.y = origin.y + ( circle_sample_points[ x ].y * radius );
+		for( auto x = 0; x < circle_sample_points_max; ++x )
+		{
+			v0.x = origin.x + ( circle_sample_points[ x ].x * radius );
+			v0.y = origin.y + ( circle_sample_points[ x ].y * radius );
 
-		v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-		v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+			v1.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+			v1.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_lines->add_primitive( engine->tex_white, v0, v1 );
-	}
-
-	RENDER->pop();
+			batch_lines->add_primitive( engine->tex_white, v0, v1 );
+		}
+	)
 
 	return this;
 }
@@ -553,21 +553,21 @@ w_render* w_render::draw_filled_circle( const w_vec2& origin, float radius )
 	w_render_vertex v1 = v0;
 	w_render_vertex v2 = v0;
 
-	RENDER->push();
-	RS->snap_to_pixel = false;
+	RENDER_BLOCK
+	(
+		RS->snap_to_pixel = false;
 
-	for( auto x = 0; x < circle_sample_points_max; ++x )
-	{
-		v1.x = origin.x + ( circle_sample_points[ x ].x * radius );
-		v1.y = origin.y + ( circle_sample_points[ x ].y * radius );
+		for( auto x = 0; x < circle_sample_points_max; ++x )
+		{
+			v1.x = origin.x + ( circle_sample_points[ x ].x * radius );
+			v1.y = origin.y + ( circle_sample_points[ x ].y * radius );
 
-		v2.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-		v2.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+			v2.x = origin.x + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+			v2.y = origin.y + ( circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-		batch_triangles->add_primitive( engine->tex_white, v0, v1, v2 );
-	}
-
-	RENDER->pop();
+			batch_triangles->add_primitive( engine->tex_white, v0, v1, v2 );
+		}
+	)
 
 	return this;
 }
@@ -592,15 +592,15 @@ w_render* w_render::draw_point( const w_vec2& pos )
 {
 	w_render_vertex v0( pos, w_uv( 0, 0 ), RS->color, RS->glow );
 
-	RENDER->push();
-	RS->snap_to_pixel = false;
+	RENDER_BLOCK
+	(
+		RS->snap_to_pixel = false;
 
-	batch_points->add_primitive(
-		engine->tex_white,
-		v0
-	);
-
-	RENDER->pop();
+		batch_points->add_primitive(
+			engine->tex_white,
+			v0
+		);
+	)
 
 	return this;
 }

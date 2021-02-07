@@ -7,9 +7,7 @@ w_layer::w_layer()
 	draws_completely_solid = false;
 	blocks_further_input = false;
 
-#ifndef _FINALRELEASE
 	is_debug_physics_layer = false;
-#endif
 
 	// preallocate some space for entity pointers
 	entities.reserve( 150 );

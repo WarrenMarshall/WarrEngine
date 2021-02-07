@@ -400,28 +400,29 @@ void w_engine::main_loop()
 		// draw the base/bloom frame buffers into the compositing frame buffer
 		// ----------------------------------------------------------------------------
 
-		RENDER->push();
-		composite_frame_buffer->bind();
+		RENDER_BLOCK
+		(
+			composite_frame_buffer->bind();
 
-		// draw game frame buffer
+			// draw game frame buffer
 
-		OPENGL->shaders[ "base" ].bind();
+			OPENGL->shaders[ "base" ].bind();
 
-		RENDER->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
-		RENDER->batch_quads->draw_and_reset_internal();
+			RENDER->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+			RENDER->batch_quads->draw_and_reset_internal();
 
-		// draw glow frame buffer on top with blending
+			// draw glow frame buffer on top with blending
 
-		OPENGL->set_blend( opengl_blend::add );
+			OPENGL->set_blend( opengl_blend::add );
 
-		RS->color.a = 0.5f;
-		RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
-		RENDER->batch_quads->draw_and_reset_internal();
+			RS->color.a = 0.5f;
+			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+			RENDER->batch_quads->draw_and_reset_internal();
 
-		OPENGL->set_blend( opengl_blend::alpha );
+			OPENGL->set_blend( opengl_blend::alpha );
 
-		composite_frame_buffer->unbind();
-		RENDER->pop();
+			composite_frame_buffer->unbind();
+		)
 
 		// ----------------------------------------------------------------------------
 		// draw the compositing frame buffer to the default frame buffer
@@ -458,26 +459,36 @@ void w_engine::main_loop()
 
 		// main
 	#if 1
-		RENDER->draw( frame_buffer->textures[ 0 ], rc );
-		RENDER->draw_string( "(base)", { rc.x, rc.y } );
-		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-		rc.x += w;
+		RENDER_BLOCK
+		(
+			RENDER->draw( frame_buffer->textures[ 0 ], rc );
+			RS->scale = 0.5f;
+			RENDER->draw_string( "(base)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		)
 	#endif
 
 		// glow
 	#if 0
-		RENDER->draw( frame_buffer->textures[ 1 ], rc );
-		RENDER->draw_string( "(glow)", { rc.x, rc.y } );
-		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-		rc.x += w;
+		RENDER_BLOCK
+		(
+			RENDER->draw( frame_buffer->textures[ 1 ], rc );
+			RENDER->draw_string( "(glow)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		)
 	#endif
 
 		// blurred glow
 	#if 0
-		RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );
-		RENDER->draw_string( "(blur)", { rc.x, rc.y } );
-		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-		rc.x += w;
+		RENDER_BLOCK
+		(
+			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );
+			RENDER->draw_string( "(blur)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		)
 	#endif
 #endif
 
@@ -589,13 +600,11 @@ void w_engine::new_physics_world()
 		| b2Draw::e_centerOfMassBit		// center of mass frame
 	);
 
-#ifndef _FINALRELEASE
 	#ifdef _DEBUG
 		RENDER->show_physics_debug = true;
 	#else
 		RENDER->show_physics_debug = false;
 	#endif
-#endif
 }
 
 // called ONCE, as the engine is starting up
@@ -645,49 +654,49 @@ void w_engine::draw()
 
 	if( is_paused() )
 	{
-		RENDER->push();
-		RENDER->set_z_depth( zdepth_topmost );
-
 		w_vec2 v0, v1, v2, v3;
 		float w, h;
 
-		w = ui_window_w;
-		h = ui_window_h;
+		RENDER_BLOCK
+		(
+			RENDER->set_z_depth( zdepth_topmost );
 
-		v0 = w_vec2::zero;
-		v1 = w_vec2( w - 1, 0.0f );
-		v2 = w_vec2( w - 1, h - 1 );
-		v3 = w_vec2( 0.0f, h - 1 );
+			w = ui_window_w;
+			h = ui_window_h;
 
-		RS->color = w_color::black;
-		RENDER->draw_line( v0, v1 );
-		RENDER->draw_line( v1, v2 );
-		RENDER->draw_line( v2, v3 );
-		RENDER->draw_line( v3, v0 );
+			v0 = w_vec2::zero;
+			v1 = w_vec2( w - 1, 0.0f );
+			v2 = w_vec2( w - 1, h - 1 );
+			v3 = w_vec2( 0.0f, h - 1 );
 
-		v0 = w_vec2( 1, 1 );
-		v1 = w_vec2( w - 2, 1.0f );
-		v2 = w_vec2( w - 2, h - 2 );
-		v3 = w_vec2( 1.0f, h - 2 );
+			RS->color = w_color::black;
+			RENDER->draw_line( v0, v1 );
+			RENDER->draw_line( v1, v2 );
+			RENDER->draw_line( v2, v3 );
+			RENDER->draw_line( v3, v0 );
 
-		RS->color = w_color::orange;
-		RENDER->draw_line( v0, v1 );
-		RENDER->draw_line( v1, v2 );
-		RENDER->draw_line( v2, v3 );
-		RENDER->draw_line( v3, v0 );
+			v0 = w_vec2( 1, 1 );
+			v1 = w_vec2( w - 2, 1.0f );
+			v2 = w_vec2( w - 2, h - 2 );
+			v3 = w_vec2( 1.0f, h - 2 );
 
-		v0 = w_vec2( 2.0f, 2.0f );
-		v1 = w_vec2( w - 3, 2.0f );
-		v2 = w_vec2( w - 3, h - 3 );
-		v3 = w_vec2( 2.0f, h - 3 );
+			RS->color = w_color::orange;
+			RENDER->draw_line( v0, v1 );
+			RENDER->draw_line( v1, v2 );
+			RENDER->draw_line( v2, v3 );
+			RENDER->draw_line( v3, v0 );
 
-		RS->color = w_color::black;
-		RENDER->draw_line( v0, v1 );
-		RENDER->draw_line( v1, v2 );
-		RENDER->draw_line( v2, v3 );
-		RENDER->draw_line( v3, v0 );
+			v0 = w_vec2( 2.0f, 2.0f );
+			v1 = w_vec2( w - 3, 2.0f );
+			v2 = w_vec2( w - 3, h - 3 );
+			v3 = w_vec2( 2.0f, h - 3 );
 
-		RENDER->pop();
+			RS->color = w_color::black;
+			RENDER->draw_line( v0, v1 );
+			RENDER->draw_line( v1, v2 );
+			RENDER->draw_line( v2, v3 );
+			RENDER->draw_line( v3, v0 );
+		)
 	}
 }
 

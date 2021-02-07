@@ -146,10 +146,11 @@ void ec_sprite::draw()
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
-	RENDER->push();
-	RS->set_from_opt( rs_opt );
-	RENDER->draw_sprite( texture, tform.pos );
-	RENDER->pop();
+	RENDER_BLOCK
+	(
+		RS->set_from_opt( rs_opt );
+		RENDER->draw_sprite( texture, tform.pos );
+	)
 }
 
 // ----------------------------------------------------------------------------
@@ -189,43 +190,43 @@ void ec_primitive_shape::draw()
 		return;
 	}
 
-	RENDER->push();
-	RS->set_from_opt( rs_opt );
+	RENDER_BLOCK
+	(
+		RS->set_from_opt( rs_opt );
 
-	switch( prim_shape )
-	{
-		case primitive_shape::filled_rectangle:
+		switch( prim_shape )
 		{
-			RENDER->draw_filled_rectangle( rc );
-		}
-		break;
+			case primitive_shape::filled_rectangle:
+			{
+				RENDER->draw_filled_rectangle( rc );
+			}
+			break;
 
-		case primitive_shape::rectangle:
-		{
-			RENDER->draw_rectangle( rc );
-		}
-		break;
+			case primitive_shape::rectangle:
+			{
+				RENDER->draw_rectangle( rc );
+			}
+			break;
 
-		case primitive_shape::circle:
-		{
-			RENDER->draw_circle( w_vec2( 0, 0 ), radius );
-		}
-		break;
+			case primitive_shape::circle:
+			{
+				RENDER->draw_circle( w_vec2( 0, 0 ), radius );
+			}
+			break;
 
-		case primitive_shape::filled_circle:
-		{
-			RENDER->draw_filled_circle( w_vec2( 0, 0 ), radius );
-		}
-		break;
+			case primitive_shape::filled_circle:
+			{
+				RENDER->draw_filled_circle( w_vec2( 0, 0 ), radius );
+			}
+			break;
 
-		case primitive_shape::point:
-		{
-			RENDER->draw_point( w_vec2( 0, 0 ) );
+			case primitive_shape::point:
+			{
+				RENDER->draw_point( w_vec2( 0, 0 ) );
+			}
+			break;
 		}
-		break;
-	}
-
-	RENDER->pop();
+	)
 }
 
 // ----------------------------------------------------------------------------
@@ -288,10 +289,11 @@ void ec_emitter::draw()
 	// component level transforms before drawing the particle pool
 
 	OPENGL->push_identity();
-	RENDER->push();
-	RS->set_from_opt( rs_opt );
-	emitter->particle_pool->draw();
-	RENDER->pop();
+	RENDER_BLOCK
+	(
+		RS->set_from_opt( rs_opt );
+		emitter->particle_pool->draw();
+	)
 	OPENGL->pop();
 
 }
@@ -704,29 +706,29 @@ w_entity_component* ec_tilemap::init()
 
 void ec_tilemap::draw()
 {
-	RENDER->push();
-	RS->set_from_opt( rs_opt );
+	RENDER_BLOCK
+	(
+		RS->set_from_opt( rs_opt );
 
-	for( auto& tmlayer : tile_layers )
-	{
-		RENDER->nudge_z_depth();
-		for( auto& tile : tmlayer.tiles )
+		for( auto& tmlayer : tile_layers )
 		{
-			if( tile.flipped_horizontally || tile.flipped_vertically )
+			RENDER->nudge_z_depth();
+			for( auto& tile : tmlayer.tiles )
 			{
-				RS->scale = { tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f };
-			}
+				if( tile.flipped_horizontally || tile.flipped_vertically )
+				{
+					RS->scale = w_vec2( tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f );
+				}
 
-			RENDER->draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
+				RENDER->draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
 
-			if( tile.flipped_horizontally || tile.flipped_vertically )
-			{
-				RS->scale = { tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f };
+				if( tile.flipped_horizontally || tile.flipped_vertically )
+				{
+					RS->scale = w_vec2( tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f );
+				}
 			}
 		}
-	}
-
-	RENDER->pop();
+	)
 }
 
 const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
@@ -858,10 +860,11 @@ void ec_mesh::draw()
 		return;
 	}
 
-	RENDER->push();
-	RS->set_from_opt( rs_opt );
-	RENDER->draw_mesh( mesh );
-	RENDER->pop();
+	RENDER_BLOCK
+	(
+		RS->set_from_opt( rs_opt );
+		RENDER->draw_mesh( mesh );
+	)
 }
 
 // ----------------------------------------------------------------------------

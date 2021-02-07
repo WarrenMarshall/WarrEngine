@@ -106,77 +106,75 @@ void w_layer_mgr::draw()
 		// DRAW
 		// ----------------------------------------------------------------------------
 
-		RENDER->push();
-
-		for( auto x = starting_layer_idx; x >= 0; --x )
-		{
-			auto layer = layer_stack[ x ].get();
-
-			if( layer->ilc_is_alive() )
+		RENDER_BLOCK
+		(
+			for( auto x = starting_layer_idx; x >= 0; --x )
 			{
-				RENDER->set_z_depth( zdepth_layers - ( zdepth_layer_step * x ) );
-				OPENGL->init_view_matrix( layer->get_camera() );
+				auto layer = layer_stack[ x ].get();
 
-				layer->draw();
-
-#ifndef _FINALRELEASE
-				// draw any debug information that lives in world space.
-				if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
+				if( layer->ilc_is_alive() )
 				{
-					RENDER->nudge_z_depth();
-					engine->box2d_world->DebugDraw();
-				}
-#endif
-				RENDER->draw_and_reset_all_batches();
-			}
-		}
+					RENDER->set_z_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+					OPENGL->init_view_matrix( layer->get_camera() );
 
-		RENDER->pop();
+					layer->draw();
+
+					// draw any debug information that lives in world space.
+					if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
+					{
+						RENDER->nudge_z_depth();
+						engine->box2d_world->DebugDraw();
+					}
+
+					RENDER->draw_and_reset_all_batches();
+				}
+			}
+		)
 
 		// ----------------------------------------------------------------------------
 		// UI
 		// ----------------------------------------------------------------------------
 
-		RENDER->push();
-		RENDER->set_z_depth( zdepth_clear_window );
+		RENDER_BLOCK
+		(
+			RENDER->set_z_depth( zdepth_clear_window );
 
-		OPENGL->init_view_matrix_identity_ui();
+			OPENGL->init_view_matrix_identity_ui();
 
-		for( auto x = starting_layer_idx; x >= 0; --x )
-		{
-			auto layer = layer_stack[ x ].get();
-
-			// Only UI elements on the topmost layer respond to user input
-			IMGUI->containing_layer_is_topmost = !x;
-
-			if( layer->ilc_is_alive() )
+			for( auto x = starting_layer_idx; x >= 0; --x )
 			{
-				RENDER->set_z_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+				auto layer = layer_stack[ x ].get();
 
-				// draw any screen space items, like UI. these are
-				// drawn with an identity matrix so the top left of
-				// the screen is always 0,0.
+				// Only UI elements on the topmost layer respond to user input
+				IMGUI->containing_layer_is_topmost = !x;
 
-				RENDER->nudge_z_depth();
-				OPENGL->push();
-
-				IMGUI->current_layer = layer;
-				layer->draw_ui();
-				IMGUI->current_layer = nullptr;
-
-				// when the final layer has been drawn, add anything on top that
-				// we need to - like a mouse cursor - to contain it within the same draw call.
-				if( !x )
+				if( layer->ilc_is_alive() )
 				{
-					UI->draw_topmost();
+					RENDER->set_z_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+
+					// draw any screen space items, like UI. these are
+					// drawn with an identity matrix so the top left of
+					// the screen is always 0,0.
+
+					RENDER->nudge_z_depth();
+					OPENGL->push();
+
+					IMGUI->current_layer = layer;
+					layer->draw_ui();
+					IMGUI->current_layer = nullptr;
+
+					// when the final layer has been drawn, add anything on top that
+					// we need to - like a mouse cursor - to contain it within the same draw call.
+					if( !x )
+					{
+						UI->draw_topmost();
+					}
+
+					OPENGL->pop();
+					RENDER->draw_and_reset_all_batches();
 				}
-
-				OPENGL->pop();
-				RENDER->draw_and_reset_all_batches();
 			}
-		}
-
-		RENDER->pop();
+		)
 	}
 }
 

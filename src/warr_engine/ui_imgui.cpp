@@ -413,158 +413,157 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	rc_client_offset.x += clicked_offset.x;
 	rc_client_offset.y += clicked_offset.y;
 
-	RENDER->push();
+	RENDER_BLOCK
+	(
+		auto control_data = get_control_data( control.tag );
 
-	auto control_data = get_control_data( control.tag );
-
-	switch( control.type )
-	{
-		case imgui_control_type::panel:
+		switch( control.type )
 		{
-			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
-
-			// text on a panel translates to a caption bar at the
-			// top of the panel.
-			//
-			// the client area of the panel is then adjusted to remove
-			// the space used for the caption bar.
-
-			if( !control.text.empty() && control.slice_def )	// can't have a caption without a slicedef
+			case imgui_control_type::panel:
 			{
-				// caption area starts out as matching the client rect,
-				// then gets shrunk to match the font height.
-				w_rect rc = control.rc_client;
-				rc.h = engine->pixel_font->font_def->max_height;
+				draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 
-				// background bar that sits behind the caption text
-				w_rect rc_label_background( control.rc_client );
-				rc_label_background.h = engine->pixel_font->font_def->max_height + current_layer->get_imgui_callback()->get_control_margin();
+				// text on a panel translates to a caption bar at the
+				// top of the panel.
+				//
+				// the client area of the panel is then adjusted to remove
+				// the space used for the caption bar.
 
-				RS->color = w_color::pal( 0 );
-				RENDER->draw_filled_rectangle( rc_label_background );
-
-				// caption text
-				draw_text( control, rc, w_color::pal( 3 ), is_hovered, is_hot );
-
-				// panel client rect is adjusted so that it sits below the caption area
-				control.rc_client.y += rc.h + current_layer->get_imgui_callback()->get_control_padding();
-				control.rc_client.h -= rc.h;
-
-				control.rc_client = control.rc_client;
-			}
-		}
-		break;
-
-		case imgui_control_type::push_button:
-		{
-			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
-			draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
-		}
-		break;
-
-		case imgui_control_type::check_box:
-		{
-			a_texture* texture = current_layer->get_imgui_callback()->get_texture_for_checkbox( control );
-
-			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
-
-			w_rect rc_texture =
-				w_rect(
-					rc_client_offset.x, rc_client_offset.y,
-					texture->rc.w,
-					rc_client_offset.h
-				);
-			rc_client_offset =
-				w_rect( rc_client_offset.x + current_layer->get_imgui_callback()->get_control_padding() + texture->rc.w, rc_client_offset.y,
-					rc_client_offset.w - current_layer->get_imgui_callback()->get_control_padding() - texture->rc.w, rc_client_offset.h
-				);
-
-			draw_texture( control, rc_texture, texture, is_hovered, is_hot );
-			draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
-		}
-		break;
-
-		case imgui_control_type::label:
-		{
-			draw_slice_def( control, rc_win_offset, false, false );
-			draw_text( control, rc_client_offset, w_color::pal( 2 ), false, false );
-		}
-		break;
-
-		case imgui_control_type::divider:
-		{
-			draw_slice_def( control, rc_win_offset, false, false );
-		}
-		break;
-
-		case imgui_control_type::slider:
-		{
-			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
-
-			auto data = std::get<float>( control_data ? control_data->data : current_layer->get_imgui_callback()->get_data_for_control( control ).data );
-
-			w_vec2 pos = {
-				rc_client_offset.x + ( rc_client_offset.w * data ),
-				rc_client_offset.y + ( rc_client_offset.h / 2.0f )
-			};
-
-			RS->color = get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot );
-
-			// draw tick marks if this slider is using an interval
-
-			if( control.interval )
-			{
-				auto tex_tick = a_texture::find( "ui_slider_tick" );
-
-				w_pos tick_pos = { rc_client_offset.x, control.rc_win.y + 4 };
-				auto steps = (int)( 1.0f / control.interval );
-				auto stride = rc_client_offset.w * control.interval;
-
-				for( auto x = 0 ; x <= steps ; ++x )
+				if( !control.text.empty() && control.slice_def )	// can't have a caption without a slicedef
 				{
-					RENDER->draw_sprite( tex_tick, tick_pos );
-					tick_pos.x += stride;
+					// caption area starts out as matching the client rect,
+					// then gets shrunk to match the font height.
+					w_rect rc = control.rc_client;
+					rc.h = engine->pixel_font->font_def->max_height;
+
+					// background bar that sits behind the caption text
+					w_rect rc_label_background( control.rc_client );
+					rc_label_background.h = engine->pixel_font->font_def->max_height + current_layer->get_imgui_callback()->get_control_margin();
+
+					RS->color = w_color::pal( 0 );
+					RENDER->draw_filled_rectangle( rc_label_background );
+
+					// caption text
+					draw_text( control, rc, w_color::pal( 3 ), is_hovered, is_hot );
+
+					// panel client rect is adjusted so that it sits below the caption area
+					control.rc_client.y += rc.h + current_layer->get_imgui_callback()->get_control_padding();
+					control.rc_client.h -= rc.h;
+
+					control.rc_client = control.rc_client;
 				}
 			}
+			break;
 
-			// draw the thumb indicator
-			RENDER->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
-		}
-		break;
-
-		case imgui_control_type::edit_box:
-		{
-			assert( control_data );
-
-			// background
-			draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
-
-			// text
-			control.text = std::get<std::string>( control_data->data );
-			draw_text( control, rc_client_offset - w_rect(0,1,0,0), w_color::pal( 2 ), is_hovered, is_hot );
-
-			if( UI->tag_focus == control.tag )
+			case imgui_control_type::push_button:
 			{
-				if( *caret_blink_tween < 0.5f )
-				{
-					// caret
-					w_sz extents = engine->pixel_font->get_string_extents( control.text.substr( 0, control_data->caret_pos ) );
-					auto tex_caret = a_texture::find( "ui_edit_box_caret" );
+				draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
+				draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
+			}
+			break;
 
-					RS->color = w_color::white;
-					RENDER->draw_sprite( tex_caret,
-						{
-							rc_client_offset.x + extents.x,
-							rc_client_offset.y + ( rc_client_offset.h / 2.0f )
-						}
+			case imgui_control_type::check_box:
+			{
+				a_texture* texture = current_layer->get_imgui_callback()->get_texture_for_checkbox( control );
+
+				draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
+
+				w_rect rc_texture =
+					w_rect(
+						rc_client_offset.x, rc_client_offset.y,
+						texture->rc.w,
+						rc_client_offset.h
 					);
+				rc_client_offset =
+					w_rect( rc_client_offset.x + current_layer->get_imgui_callback()->get_control_padding() + texture->rc.w, rc_client_offset.y,
+						rc_client_offset.w - current_layer->get_imgui_callback()->get_control_padding() - texture->rc.w, rc_client_offset.h
+					);
+
+				draw_texture( control, rc_texture, texture, is_hovered, is_hot );
+				draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
+			}
+			break;
+
+			case imgui_control_type::label:
+			{
+				draw_slice_def( control, rc_win_offset, false, false );
+				draw_text( control, rc_client_offset, w_color::pal( 2 ), false, false );
+			}
+			break;
+
+			case imgui_control_type::divider:
+			{
+				draw_slice_def( control, rc_win_offset, false, false );
+			}
+			break;
+
+			case imgui_control_type::slider:
+			{
+				draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
+
+				auto data = std::get<float>( control_data ? control_data->data : current_layer->get_imgui_callback()->get_data_for_control( control ).data );
+
+				w_vec2 pos = w_vec2(
+					rc_client_offset.x + ( rc_client_offset.w * data ),
+					rc_client_offset.y + ( rc_client_offset.h / 2.0f )
+				);
+
+				RS->color = get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot );
+
+				// draw tick marks if this slider is using an interval
+
+				if( control.interval )
+				{
+					auto tex_tick = a_texture::find( "ui_slider_tick" );
+
+					w_pos tick_pos = w_pos( rc_client_offset.x, control.rc_win.y + 4 );
+					auto steps = (int)( 1.0f / control.interval );
+					auto stride = rc_client_offset.w * control.interval;
+
+					for( auto x = 0 ; x <= steps ; ++x )
+					{
+						RENDER->draw_sprite( tex_tick, tick_pos );
+						tick_pos.x += stride;
+					}
+				}
+
+				// draw the thumb indicator
+				RENDER->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
+			}
+			break;
+
+			case imgui_control_type::edit_box:
+			{
+				assert( control_data );
+
+				// background
+				draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
+
+				// text
+				control.text = std::get<std::string>( control_data->data );
+				draw_text( control, rc_client_offset - w_rect(0,1,0,0), w_color::pal( 2 ), is_hovered, is_hot );
+
+				if( UI->tag_focus == control.tag )
+				{
+					if( *caret_blink_tween < 0.5f )
+					{
+						// caret
+						w_sz extents = engine->pixel_font->get_string_extents( control.text.substr( 0, control_data->caret_pos ) );
+						auto tex_caret = a_texture::find( "ui_edit_box_caret" );
+
+						RS->color = w_color::white;
+						RENDER->draw_sprite( tex_caret,
+							w_vec2(
+								rc_client_offset.x + extents.x,
+								rc_client_offset.y + ( rc_client_offset.h / 2.0f )
+							)
+						);
+					}
 				}
 			}
+			break;
 		}
-		break;
-	}
-
-	RENDER->pop();
+	)
 
 	if( is_hot && control.can_retain_focus )
 	{

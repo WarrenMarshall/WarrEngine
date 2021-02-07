@@ -67,10 +67,8 @@ struct w_render
 	float rs_z_depth = 0.0f;
 	float rs_z_depth_nudge_accum = 0.0f;
 
-#ifndef _FINALRELEASE
 	bool single_frame_debugger = false;
 	bool show_physics_debug = true;
-#endif
 
 	w_render* set_z_depth( const float depth );
 	w_render* nudge_z_depth( const float nudge = zdepth_nudge );

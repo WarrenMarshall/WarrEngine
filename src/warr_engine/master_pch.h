@@ -158,6 +158,17 @@ const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 // ----------------------------------------------------------------------------
 
+#define RENDER_BLOCK( code )\
+{\
+	RENDER->push();\
+	{\
+		code\
+	}\
+	RENDER->pop();\
+}
+
+// ----------------------------------------------------------------------------
+
 #include "master_enum.h"
 
 #include "stringutil.h"

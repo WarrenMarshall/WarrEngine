@@ -73,12 +73,13 @@ void layer_particles::draw()
 	RS->color = w_color::dark_grey;
 	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h ) );
 
-	RENDER->push();
-	RS->align = align::centered;
-	RS->scale = 2.0f;
-	RS->color = w_color::white;
-	RENDER->draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
-	RENDER->pop();
+	RENDER_BLOCK
+	(
+		RS->align = align::centered;
+		RS->scale = 2.0f;
+		RS->color = w_color::white;
+		RENDER->draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
+	)
 
 	w_layer::draw();
 }

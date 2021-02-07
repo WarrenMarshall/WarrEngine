@@ -11,12 +11,10 @@ struct w_layer : i_life_cycle
 	// if true, the layers below this one can't receive user input
 	bool blocks_further_input = false;
 
-#ifndef _FINALRELEASE
 	// if true, this is the layer where the box2d entities live. as a rule, entities
 	// using the physics engine live on the same layer. the engine needs a way of
 	// knowing which layer that is so it can draw the debug information correctly.
 	bool is_debug_physics_layer = false;
-#endif
 
 	w_layer();
 	virtual ~w_layer() = default;
