@@ -15,7 +15,7 @@ void w_ui_mgr::draw_topmost()
 	if( mouse_cursor && engine->window->mouse_mode == mouse_mode::custom )
 	{
 		RENDER->push();
-		RENDER->push_depth( zdepth_topmost );
+		RENDER->set_z_depth( zdepth_topmost );
 		RS->scale = ui_canvas_scale;
 		RENDER->draw( mouse_cursor->texture,
 			w_rect(

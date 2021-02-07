@@ -28,8 +28,6 @@ w_particle* w_particle_pool::get_next_particle()
 
 void w_particle_pool::draw()
 {
-	auto rs = RENDER->rs_top();
-
 	w_color color;
 	float scale;
 	float interp_life_span;
@@ -53,7 +51,7 @@ void w_particle_pool::draw()
 			particle->params->t_scale.get_value( pct_of_life, &scale );
 
 			// angle
-			rs->angle = RENDER->calc_interpolated_per_sec_value( particle->spin, particle->spin_per_sec );
+			RS->angle = RENDER->calc_interpolated_per_sec_value( particle->spin, particle->spin_per_sec );
 
 			// position
 			interp_pos.x = RENDER->calc_interpolated_per_sec_value( particle->pos.x, ( particle->v_dir.x * particle->velocity_per_sec ) );
@@ -68,9 +66,8 @@ void w_particle_pool::draw()
 			// render_state stacks so there's no harm done here. it's just a
 			// faster way of telling the renderer what each particle wants.
 
-			rs->color = color;
-			rs->scale.x = particle->base_scale * scale;
-			rs->scale.y = rs->scale.x;
+			RS->color = color;
+			RS->scale = particle->base_scale * scale;
 
 			RENDER->draw_sprite( particle->params->texture, interp_pos );
 		}

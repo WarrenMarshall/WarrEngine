@@ -4,7 +4,7 @@
 
 struct w_render_state
 {
-	w_color color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	w_color color = w_color::white;
 	w_vec2 scale = { 1.0f, 1.0f };
 	float glow = 0.0f;
 	float angle = 0.0f;
@@ -32,6 +32,7 @@ struct w_render_state_opt
 static_assert( sizeof( w_render_state ) <= 64 );
 static_assert( std::is_trivially_assignable<w_render_state, w_render_state>() );
 static_assert( std::is_trivially_copy_constructible<w_render_state>() );
+static_assert( std::is_trivially_copyable<w_render_state>() );
 
 // ----------------------------------------------------------------------------
 
@@ -71,10 +72,8 @@ struct w_render
 	bool show_physics_debug = true;
 #endif
 
-	w_render* push();
-	w_render* push_depth( const float depth );
-	w_render* push_depth_nudge( const float nudge = zdepth_nudge );
-	w_render* pop();
+	w_render* set_z_depth( const float depth );
+	w_render* nudge_z_depth( const float nudge = zdepth_nudge );
 
 	// ----------------------------------------------------------------------------
 
@@ -110,13 +109,12 @@ struct w_render
 
 	_NODISCARD float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 
-	void bind_texture( int slot, a_src_texture* tex );
 	w_render_stats stats;
 
-	std::vector<w_render_state> render_states;
-	w_render_state* rs_top();
-	w_render_state* rs_push();
-	w_render_state* rs_push( w_render_state& rs );
-	w_render_state* rs_pop();
-};
+	// ----------------------------------------------------------------------------
 
+	std::vector<w_render_state> render_states;
+
+	w_render* push();
+	w_render* pop();
+};

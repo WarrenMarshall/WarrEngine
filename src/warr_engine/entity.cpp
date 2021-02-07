@@ -80,7 +80,7 @@ void w_entity::draw()
 			->push()
 			->add_transform( component->tform );
 
-		RENDER->push_depth_nudge();
+		RENDER->nudge_z_depth();
 		component->draw();
 
 		OPENGL

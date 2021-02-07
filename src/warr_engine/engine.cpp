@@ -626,7 +626,7 @@ void w_engine::draw()
 	if( is_paused() )
 	{
 		RENDER->push();
-		RENDER->push_depth( zdepth_topmost );
+		RENDER->set_z_depth( zdepth_topmost );
 
 		w_vec2 v0, v1, v2, v3;
 		float w, h;

@@ -680,7 +680,7 @@ void ec_tilemap::draw()
 
 	for( auto& tmlayer : tile_layers )
 	{
-		RENDER->push_depth_nudge();
+		RENDER->nudge_z_depth();
 		for( auto& tile : tmlayer.tiles )
 		{
 			if( tile.flipped_horizontally || tile.flipped_vertically )

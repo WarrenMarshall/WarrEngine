@@ -38,7 +38,27 @@ void w_render::init()
 	}
 }
 
-w_render* w_render::push_depth( const float depth )
+w_render* w_render::push()
+{
+	// duplicates the render_state at the top of the stack
+	auto rs = *RS;
+	render_states.emplace_back( std::move( rs ) );
+
+	assert( render_states.size() < max_render_states );
+
+	return this;
+}
+
+w_render* w_render::pop()
+{
+	assert( render_states.size() > 1 );
+
+	render_states.pop_back();
+
+	return this;
+}
+
+w_render* w_render::set_z_depth( const float depth )
 {
 	rs_z_depth = depth;
 	rs_z_depth_nudge_accum = 0.0f;
@@ -50,24 +70,10 @@ w_render* w_render::push_depth( const float depth )
 // to, for example, nudge something in front of something else without
 // having to know the current depth
 
-w_render* w_render::push_depth_nudge( const float nudge )
+w_render* w_render::nudge_z_depth( const float nudge )
 {
 	rs_z_depth += nudge;
 	rs_z_depth_nudge_accum += nudge;
-
-	return this;
-}
-
-w_render* w_render::pop()
-{
-	rs_pop();
-
-	return this;
-}
-
-w_render* w_render::push()
-{
-	rs_push();
 
 	return this;
 }
@@ -115,56 +121,11 @@ w_color w_render::pal_color_from_idx( size_t idx )
 	return current_palette->colors[ idx ];
 }
 
-w_render_state* w_render::rs_top()
-{
-	return &( render_states.back() );
-}
-
-w_render_state* w_render::rs_push()
-{
-	// duplicates the render_state at the top of the stack
-	auto rs = *rs_top();
-	render_states.emplace_back( std::move( rs ) );
-
-	assert( render_states.size() < max_render_states );
-
-	return rs_top();
-}
-
-// places a copy of the provided w_render_state block on top of the stack.
-// allows for easy mass setting of render state vars.
-
-w_render_state* w_render::rs_push( w_render_state& rs )
-{
-	render_states.emplace_back( rs );
-
-	assert( render_states.size() < max_render_states );
-
-	return rs_top();
-}
-
-w_render_state* w_render::rs_pop()
-{
-	assert( render_states.size() > 1 );
-
-	render_states.pop_back();
-
-	return rs_top();
-}
-
 void w_render::clear_render_state_stack()
 {
 	render_states.clear();
 
 	w_render_state rs;
-
-	rs.color = w_color::white;
-	rs.glow = 0.0f;
-	rs.scale = w_vec2( 1.0f, 1.0f );
-	rs.angle = 0.0f;
-	rs.align = align::left;
-	rs.snap_to_pixel = true;
-
 	render_states.emplace_back( std::move( rs ) );
 }
 
@@ -403,7 +364,7 @@ w_render* w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
 	RENDER->push();
-	RENDER->push_depth( zdepth_stats );
+	RENDER->set_z_depth( zdepth_stats );
 
 	if( show_stats )
 	{
@@ -442,7 +403,7 @@ w_render* w_render::draw_stats()
 		RENDER->pop();
 
 		RENDER->push();
-		RENDER->push_depth_nudge();
+		RENDER->nudge_z_depth();
 		RS->color = w_color::white;
 		RS->align = align::hcenter;
 
@@ -707,13 +668,6 @@ w_render* w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& ds
 float w_render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const
 {
 	return current_value + ( ( step_per_second * fixed_time_step::per_second_scaler ) * RENDER->frame_interpolate_pct );
-}
-
-// binds a texture to a specific texture slot
-
-void w_render::bind_texture( int slot, a_src_texture* tex )
-{
-	glBindTextureUnit( slot, tex->gl_id );
 }
 
 void w_render_state::set_from_opt( w_render_state_opt& rso )

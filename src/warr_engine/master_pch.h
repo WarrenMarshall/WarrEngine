@@ -235,7 +235,7 @@ constexpr float from_b2d( float v )
 
 #define OPENGL (engine->opengl)
 #define RENDER (engine->render)
-#define RS (engine->render->rs_top())
+#define RS (&(engine->render->render_states.back()))
 #define UI (engine->ui)
 #define IMGUI (engine->ui->imgui)
 #define INPUT (engine->input)

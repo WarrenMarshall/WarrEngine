@@ -70,7 +70,7 @@ void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& 
 
 	// snap to pixel position
 
-	if( RENDER->rs_top()->snap_to_pixel )
+	if( RS->snap_to_pixel )
 	{
 		vtx.x = snap_to_pixel( vtx.x );
 		vtx.y = snap_to_pixel( vtx.y );

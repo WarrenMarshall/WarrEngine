@@ -567,7 +567,7 @@ void w_imgui::draw_slice_def( const w_imgui_control& control, const w_rect& rc_w
 {
 	if( control.slice_def )
 	{
-		RENDER->push_depth_nudge();
+		RENDER->nudge_z_depth();
 		RS->color = get_adjusted_color( w_color::pal( 1 ), is_hovered, is_hot );
 		RENDER->draw_sliced( control.slice_def, rc_win );
 	}
@@ -575,7 +575,7 @@ void w_imgui::draw_slice_def( const w_imgui_control& control, const w_rect& rc_w
 
 void w_imgui::draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool is_hovered, bool is_hot )
 {
-	RENDER->push_depth_nudge();
+	RENDER->nudge_z_depth();
 	RS->color = get_adjusted_color( w_color::pal( 2 ), is_hovered, is_hot );
 	RENDER->draw_sprite( texture, rc.midpoint() );
 }
