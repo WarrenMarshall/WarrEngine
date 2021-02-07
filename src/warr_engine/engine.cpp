@@ -442,7 +442,7 @@ void w_engine::main_loop()
 		RENDER->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
-	#if 0
+	#if 1
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
@@ -457,7 +457,7 @@ void w_engine::main_loop()
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
 		// main
-	#if 0
+	#if 1
 		RENDER->draw( frame_buffer->textures[ 0 ], rc );
 		RENDER->draw_string( "(base)", { rc.x, rc.y } );
 		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
@@ -465,7 +465,7 @@ void w_engine::main_loop()
 	#endif
 
 		// glow
-	#if 1
+	#if 0
 		RENDER->draw( frame_buffer->textures[ 1 ], rc );
 		RENDER->draw_string( "(glow)", { rc.x, rc.y } );
 		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
@@ -473,7 +473,7 @@ void w_engine::main_loop()
 	#endif
 
 		// blurred glow
-	#if 1
+	#if 0
 		RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );
 		RENDER->draw_string( "(blur)", { rc.x, rc.y } );
 		RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();

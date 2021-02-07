@@ -3,37 +3,6 @@
 
 // ----------------------------------------------------------------------------
 
-void layer_entity_picking_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
-{
-	w_imgui_callback::on_left_clicked( control, result );
-
-// 	switch( control.tag )
-// 	{
-// 		case H( "push_button_01" ):
-// 		{
-// 			UI->show_msg_box( "You clicked the button!" );
-// 		}
-// 		break;
-// 	}
-}
-
-void layer_entity_picking_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
-{
-	w_imgui_callback::on_motion( control, result );
-
-	auto layer = static_cast<layer_entity_picking*>( IMGUI->current_layer );
-
-// 	switch( control.tag )
-// 	{
-// 		case H( "slider_01" ):
-// 		{
-// 		}
-// 		break;
-// 	}
-}
-
-// ----------------------------------------------------------------------------
-
 layer_entity_picking::layer_entity_picking()
 {
 	draws_completely_solid = true;
@@ -42,6 +11,36 @@ layer_entity_picking::layer_entity_picking()
 void layer_entity_picking::push()
 {
 	engine->window->set_mouse_mode( mouse_mode::os );
+
+	{
+		auto e = add_entity<w_entity>();
+		e->get_tform()->set_position( { v_window_hw - 100.0f, 125.0f } );
+		{
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->init( primitive_shape::filled_rectangle, w_rect( -16, -16, 32, 32 ) );
+			ec->rs_opt.color = w_color::orange;
+		}
+	}
+
+	{
+		auto e = add_entity<w_entity>();
+		e->get_tform()->set_position( { v_window_hw, 125.0f } );
+		{
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->init( primitive_shape::filled_circle, 16.0f );
+			ec->rs_opt.color = w_color::light_green;
+		}
+	}
+
+	{
+		auto e = add_entity<w_entity>();
+		e->get_tform()->set_position( { v_window_hw + 100.0f, 125.0f } );
+		{
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->init( primitive_shape::rectangle, w_rect( -16, -16, 32, 32 ) );
+			ec->rs_opt.color = w_color::yellow;
+		}
+	}
 }
 
 void layer_entity_picking::draw()
@@ -57,14 +56,11 @@ void layer_entity_picking::draw()
 	RENDER->pop();
 
 	w_layer::draw();
+
+	RENDER->draw_world_axis();
 }
 
 void layer_entity_picking::draw_ui()
 {
 	w_layer::draw_ui();
-}
-
-w_imgui_callback* layer_entity_picking::get_imgui_callback()
-{
-	return &imgui_callback;
 }
