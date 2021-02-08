@@ -52,6 +52,13 @@ void layer_entity_picking::draw()
 	RS->color = w_color::dark_teal;
 	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h ) );
 
+	RENDER->draw_world_axis();
+
+	w_layer::draw();
+}
+
+void layer_entity_picking::draw_ui()
+{
 	RENDER_BLOCK
 	(
 		RS->align = align::centered;
@@ -59,8 +66,6 @@ void layer_entity_picking::draw()
 		RS->color = w_color::white;
 		RENDER->draw_string( "Entity Picking", { ui_window_w / 2.0f, 16.0f } );
 	)
-
-	RENDER->draw_world_axis();
 
 	RENDER_BLOCK
 	(
@@ -71,7 +76,7 @@ void layer_entity_picking::draw()
 		RENDER->draw_string( "LEFT_DRAG to move selected entity", w_pos( v_window_hw, 216.0f ) );
 	)
 
-	w_layer::draw();
+	w_layer::draw_ui();
 }
 
 bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
