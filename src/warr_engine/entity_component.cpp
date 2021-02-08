@@ -65,20 +65,6 @@ void w_entity_component::stop()
 {
 }
 
-w_entity_component* w_entity_component::set_render_state( w_render_state_opt& rso )
-{
-	this->rs_opt = rso;
-
-	return this;
-}
-
-w_entity_component* w_entity_component::w_entity_component::set_tag( hash tag )
-{
-	this->tag = tag;
-
-	return this;
-}
-
 void w_entity_component::set_life_timer( int life_in_ms )
 {
 	assert( !life_timer.has_value() );

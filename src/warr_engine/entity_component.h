@@ -20,8 +20,6 @@ struct w_entity_component : i_life_cycle
 	virtual void update();
 	virtual void play();
 	virtual void stop();
-	w_entity_component* set_render_state( w_render_state_opt& rso );
-	w_entity_component* set_tag( hash tag );
 
 	virtual void set_life_timer( int life_in_ms );
 

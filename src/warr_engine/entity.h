@@ -7,6 +7,7 @@ struct w_entity : i_life_cycle
 	hash tag;
 	float pick_id = 0.0f;
 	bool is_selected;
+	w_render_state_opt rs_opt;
 
 	w_entity();
 	~w_entity() = default;

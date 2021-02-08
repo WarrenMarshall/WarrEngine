@@ -14,6 +14,11 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_entity<w_entity>();
+		e->tag = H( "main_camera" );
+	}
+
+	{
+		auto e = add_entity<w_entity>();
 		e->pick_id = 1.0f;
 		e->get_tform()->set_position( { v_window_hw - 100.0f, 65.0f } );
 		{
@@ -41,12 +46,12 @@ void layer_entity_picking::push()
 		e->get_tform()->set_position( { v_window_hw + 100.0f, 165.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::rectangle, w_rect( -16, -16, 32, 32 ) );
+			ec->init( primitive_shape::filled_rectangle, w_rect( -32, -16, 64, 32 ) );
 			ec->rs_opt.color = w_color::yellow;
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::filled_rectangle, w_rect( -12, -12, 24, 24 ) );
+			ec->init( primitive_shape::filled_rectangle, w_rect( -24, -12, 48, 24 ) );
 			ec->rs_opt.color = w_color::white;
 		}
 	}
@@ -96,7 +101,7 @@ bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
 
 		for( auto& e : entities )
 		{
-			e->get_component<ec_primitive_shape>()->rs_opt.glow = e->is_selected ? 0.25f : 0.0f;
+			e->rs_opt.glow = e->is_selected ? 0.25f : 0.0f;
 		}
 
 		return true;
