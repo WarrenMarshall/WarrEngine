@@ -2,6 +2,20 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+void w_render_state::set_from_opt( w_render_state_opt& rso )
+{
+	color = rso.color.value_or( color );
+	glow = rso.glow.value_or( glow );
+	scale = rso.scale.value_or( scale );
+	angle = rso.angle.value_or( angle );
+	pick_id = rso.angle.value_or( pick_id );
+	align = rso.align.value_or( align );
+	uv_tiling = rso.uv_tiling.value_or( uv_tiling );
+	snap_to_pixel = rso.snap_to_pixel.value_or( snap_to_pixel );
+}
+
+// ----------------------------------------------------------------------------
+
 // used to manage the potential allocations for the render_states vector
 constexpr size_t max_render_states = 15;
 
@@ -671,14 +685,20 @@ float w_render::calc_interpolated_per_sec_value( float current_value, float step
 	return current_value + ( ( step_per_second * fixed_time_step::per_second_scaler ) * RENDER->frame_interpolate_pct );
 }
 
-void w_render_state::set_from_opt( w_render_state_opt& rso )
+// samples the "pick" frame buffer at click_pos and returns the pick_id found
+// there.
+
+int w_render::sample_pick_id_at( w_vec2 click_pos ) const
 {
-	color = rso.color.value_or( color );
-	glow = rso.glow.value_or( glow );
-	scale = rso.scale.value_or( scale );
-	angle = rso.angle.value_or( angle );
-	pick_id = rso.angle.value_or( pick_id );
-	align = rso.align.value_or( align );
-	uv_tiling = rso.uv_tiling.value_or( uv_tiling );
-	snap_to_pixel = rso.snap_to_pixel.value_or( snap_to_pixel );
+	engine->frame_buffer->bind();
+	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
+
+	// texture is flipped vertically from screen space
+	click_pos.y = v_window_h - click_pos.y;
+
+	// read single pixel back from texture to see what was at click_pos
+	float pixel[ 4 ];
+	glReadPixels( (int)click_pos.x, (int)click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
+
+	return static_cast<int>( pixel[ 0 ] );
 }

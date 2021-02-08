@@ -19,6 +19,15 @@ struct w_layer : i_life_cycle
 	w_layer();
 	virtual ~w_layer() = default;
 
+	// ----------------------------------------------------------------------------
+	// entity selections
+
+	void select_by_pick_id( int pick_id );
+	void deselect_all();
+	void get_selected( std::vector<w_entity*>& selections );
+
+	// ----------------------------------------------------------------------------
+
 	// called each time the layer is pushed onto the stack
 	//
 	// good for setting state variables and making sure the state is ready to

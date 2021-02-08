@@ -3,6 +3,7 @@
 #include "master_header.h"
 
 static w_vec2 last_mouse_pos( 0, 0 );
+static w_vec2 last_vmouse_pos( 0, 0 );
 
 void character_callback( GLFWwindow* window, unsigned int key_code )
 {
@@ -15,6 +16,7 @@ void character_callback( GLFWwindow* window, unsigned int key_code )
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
+	// compute movement delta in window space
 	engine->input->mouse_move_delta.x += static_cast<float>( xpos ) - last_mouse_pos.x;
 	engine->input->mouse_move_delta.y += static_cast<float>( ypos ) - last_mouse_pos.y;
 
@@ -25,16 +27,19 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	engine->input->mouse_window_pos.y = glm::round( static_cast<float>( ypos ) );
 
 	// convert the window space mouse position into a position on the virtual screen.
-	auto ratio = ( v_window_w / engine->window->viewport_pos_sz.w );
-	auto vx = ( xpos - engine->window->viewport_pos_sz.x ) * ratio;
-	auto vy = ( ypos - engine->window->viewport_pos_sz.y ) * ratio;
+	float vratio = ( v_window_w / engine->window->viewport_pos_sz.w );
+	float vx = ( (float)xpos - engine->window->viewport_pos_sz.x ) * vratio;
+	float vy = ( (float)ypos - engine->window->viewport_pos_sz.y ) * vratio;
+
+	// compute movement delta in virtual window space
+	engine->input->vmouse_move_delta.x += vx - last_vmouse_pos.x;
+	engine->input->vmouse_move_delta.y += vy - last_vmouse_pos.y;
+
+	last_vmouse_pos = w_vec2( vx, vy );
 
 	// only update the position if the mouse is moving over the virtual window itself
 	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
 	{
-		// integer mouse coordinates make things like UI click
-		// detection simpler and less error prone
-
 		engine->input->mouse_vwindow_pos.x = glm::round( static_cast<float>( vx ) );
 		engine->input->mouse_vwindow_pos.y = glm::round( static_cast<float>( vy ) );
 
@@ -210,6 +215,19 @@ void w_input::queue_motion()
 		event_queue.emplace_back( std::move( evt ) );
 
 		mouse_move_delta = w_vec2::zero;
+	}
+
+	w_vec2 vmouse_move_delta_rounded = { glm::floor( vmouse_move_delta.x ), glm::floor( vmouse_move_delta.y ) };
+	if( !fequals( vmouse_move_delta_rounded.x + vmouse_move_delta_rounded.y, 0.0f ) )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::mouse;
+		evt.vdelta = vmouse_move_delta_rounded;
+
+		event_queue.emplace_back( std::move( evt ) );
+
+		vmouse_move_delta -= vmouse_move_delta_rounded;
 	}
 
 	// update game controller states

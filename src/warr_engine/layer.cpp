@@ -13,6 +13,42 @@ w_layer::w_layer()
 	entities.reserve( 150 );
 }
 
+// ----------------------------------------------------------------------------
+
+void w_layer::select_by_pick_id( int pick_id )
+{
+	for( const auto& e : entities )
+	{
+		if( e->pick_id == pick_id )
+		{
+			e->is_selected = true;
+		}
+	}
+}
+
+void w_layer::deselect_all()
+{
+	for( const auto& e : entities )
+	{
+		e->is_selected = false;
+	}
+}
+
+void w_layer::get_selected( std::vector<w_entity*>& selections )
+{
+	selections.clear();
+
+	for( const auto& e : entities )
+	{
+		if( e->is_selected )
+		{
+			selections.emplace_back( e.get() );
+		}
+	}
+}
+
+// ----------------------------------------------------------------------------
+
 void w_layer::update()
 {
 	// clear out dead entities

@@ -11,4 +11,5 @@ struct layer_entity_picking : w_layer
 	virtual void draw_ui() override;
 
 	virtual bool on_input_pressed( const w_input_event* evt ) override;
+	virtual bool on_input_motion( const w_input_event* evt ) override;
 };

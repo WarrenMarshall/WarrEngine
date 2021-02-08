@@ -4,11 +4,12 @@
 
 struct w_entity : i_life_cycle
 {
-	w_entity();
-	~w_entity() = default;
-
 	hash tag;
 	float pick_id = 0.0f;
+	bool is_selected;
+
+	w_entity();
+	~w_entity() = default;
 
 	// entity components
 	std::vector<std::unique_ptr<w_entity_component>> components;
@@ -118,6 +119,7 @@ struct w_entity_transient : w_entity
 // affect UI drawing in any way. this is important because events like camera
 // shakes will shake the world but leave the UI stable.
 
+// #delete - do we need this class anymore?
 struct e_camera : w_entity
 {
 };

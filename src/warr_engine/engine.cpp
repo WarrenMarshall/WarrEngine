@@ -976,18 +976,3 @@ void w_engine::process_collision_queue()
 
 	end_contact_queue.clear();
 }
-
-float w_engine::sample_pick_id( w_vec2 click_pos ) const
-{
-	frame_buffer->bind();
-	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
-
-	// texture is flipped vertically from screen space
-	click_pos.y = v_window_h - click_pos.y;
-
-	// read single pixel back from texture to see what was at click_pos
-	float pixel[ 4 ];
-	glReadPixels( (int)click_pos.x, (int)click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
-
-	return pixel[0];
-}

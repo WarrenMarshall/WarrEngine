@@ -117,4 +117,6 @@ struct w_render
 
 	w_render* push();
 	w_render* pop();
+
+	int sample_pick_id_at( w_vec2 click_pos ) const;
 };

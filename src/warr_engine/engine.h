@@ -125,5 +125,4 @@ struct w_engine
 	std::unique_ptr<w_random> random = nullptr;
 
 	void process_collision_queue();
-	float sample_pick_id( w_vec2 click_pos ) const;
 };

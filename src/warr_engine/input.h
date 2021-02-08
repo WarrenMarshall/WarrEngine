@@ -13,6 +13,7 @@ struct w_input_event
 
 	// a place for various events to store the deltas. used for mouse and controllers.
 	w_vec2 delta = w_vec2( 0, 0 );
+	w_vec2 vdelta = w_vec2( 0, 0 );
 };
 
 // ----------------------------------------------------------------------------
@@ -27,6 +28,7 @@ struct w_input
 
 	// tracks the mouse movement delta since the last call to Update()
 	w_vec2 mouse_move_delta = w_vec2( 0, 0 );
+	w_vec2 vmouse_move_delta = w_vec2( 0, 0 );
 
 	// where the mouse currently sits in the ...
 	w_vec2 mouse_window_pos = w_vec2( 0, 0 );	// window

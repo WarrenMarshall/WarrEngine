@@ -44,6 +44,11 @@ void layer_entity_picking::push()
 			ec->init( primitive_shape::rectangle, w_rect( -16, -16, 32, 32 ) );
 			ec->rs_opt.color = w_color::yellow;
 		}
+		{
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->init( primitive_shape::filled_rectangle, w_rect( -12, -12, 24, 24 ) );
+			ec->rs_opt.color = w_color::white;
+		}
 	}
 }
 
@@ -84,16 +89,32 @@ bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
 	if( evt->input_id == input_id::mouse_button_left )
 	{
 		w_vec2 click_pos = INPUT->mouse_vwindow_pos;
+		auto pick_id = RENDER->sample_pick_id_at( click_pos );
 
-		float pick_id = engine->sample_pick_id( click_pos );
+		deselect_all();
+		select_by_pick_id( pick_id );
 
 		for( auto& e : entities )
 		{
-			e->get_component<ec_primitive_shape>()->rs_opt.glow = 0.0f;
-			if( fequals( e->pick_id, pick_id ) )
-			{
-				e->get_component<ec_primitive_shape>()->rs_opt.glow = 1.0f;
-			}
+			e->get_component<ec_primitive_shape>()->rs_opt.glow = e->is_selected ? 0.25f : 0.0f;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool layer_entity_picking::on_input_motion( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::mouse && INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
+	{
+		std::vector<w_entity*> sels;
+		get_selected( sels );
+
+		for( auto& e : sels )
+		{
+			e->get_tform()->set_position( e->get_tform()->pos + evt->vdelta );
 		}
 
 		return true;
