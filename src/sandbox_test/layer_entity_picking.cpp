@@ -60,9 +60,18 @@ void layer_entity_picking::draw()
 		RENDER->draw_string( "Entity Picking", { ui_window_w / 2.0f, 16.0f } );
 	)
 
-	w_layer::draw();
-
 	RENDER->draw_world_axis();
+
+	RENDER_BLOCK
+	(
+		RS->color = w_color::white;
+		RS->align = align::hcenter;
+		RENDER->draw_string( "RIGHT_DRAG to move camera", w_pos( v_window_hw, 200.0f ) );
+		RENDER->draw_string( "LEFT_CLICK to select entity", w_pos( v_window_hw, 208.0f ) );
+		RENDER->draw_string( "LEFT_DRAG to move selected entity", w_pos( v_window_hw, 216.0f ) );
+	)
+
+	w_layer::draw();
 }
 
 bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
