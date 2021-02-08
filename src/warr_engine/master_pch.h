@@ -123,7 +123,7 @@ namespace fixed_time_step
 // comment this line out if start up is crashing and you want to rule out
 // the threaded asset loading code.
 
-#define USE_THREADED_ASSET_LOADING
+//#define USE_THREADED_ASSET_LOADING
 
 // ----------------------------------------------------------------------------
 

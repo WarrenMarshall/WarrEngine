@@ -44,11 +44,6 @@ w_opengl_framebuffer::~w_opengl_framebuffer()
 
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 	glBindTextureUnit( 0, 0 );
-
-	for( auto iter : textures )
-	{
-		glDeleteTextures( 1, &iter->src_texture->gl_id );
-	}
 }
 
 void w_opengl_framebuffer::bind()
@@ -74,7 +69,7 @@ void w_opengl_framebuffer::add_texture()
 	glCreateTextures( GL_TEXTURE_2D, 1, &texture->src_texture->gl_id );
 	glBindTextureUnit( 0, texture->src_texture->gl_id );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA16F, (int) w, (int) h, 0, GL_RGBA, GL_FLOAT, nullptr );
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );

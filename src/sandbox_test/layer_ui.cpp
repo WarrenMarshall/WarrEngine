@@ -84,7 +84,7 @@ void layer_ui::draw_ui()
 
 	IMGUI
 		->do_checkbox( H( "checkbox_01" ) )
-		->set_text( "Custom Mouse Cusor" )
+		->set_text( "Custom Cursor" )
 		->finalize( &imgui_callback.checkbox_data );
 
 	IMGUI

@@ -443,7 +443,7 @@ void w_engine::main_loop()
 		RENDER->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
-	#if 1
+	#if 0
 		// ----------------------------------------------------------------------------
 		// debug helper
 		//
@@ -457,7 +457,7 @@ void w_engine::main_loop()
 		float h = v_window_h / 4.0f;
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
-	#if 1
+	#if 0
 		// main
 		RENDER_BLOCK
 		(
@@ -474,13 +474,14 @@ void w_engine::main_loop()
 		RENDER_BLOCK
 		(
 			RENDER->draw( frame_buffer->textures[ 1 ], rc );
+			RS->scale = 0.5f;
 			RENDER->draw_string( "(glow)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		)
 	#endif
 
-	#if 1
+	#if 0
 		// pick
 		RENDER_BLOCK
 		(
@@ -497,6 +498,7 @@ void w_engine::main_loop()
 		RENDER_BLOCK
 		(
 			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );
+			RS->scale = 0.5f;
 			RENDER->draw_string( "(blur)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
@@ -980,14 +982,12 @@ float w_engine::sample_pick_id( w_vec2 click_pos ) const
 	frame_buffer->bind();
 	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
 
+	// texture is flipped vertically from screen space
 	click_pos.y = v_window_h - click_pos.y;
 
+	// read single pixel back from texture to see what was at click_pos
 	float pixel[ 4 ];
 	glReadPixels( (int)click_pos.x, (int)click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
 
-	auto pick_id = glm::round( pixel[ 0 ] * 100.0f ) / 100.0f;
-
-	log( "clicked : {} / {}", pixel[0], pick_id );
-
-	return pick_id;
+	return pixel[0];
 }

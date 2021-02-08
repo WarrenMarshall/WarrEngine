@@ -14,6 +14,7 @@ void a_src_texture::clean_up_internals()
 	if( gl_id )
 	{
 		glDeleteTextures( 1, &gl_id );
+		gl_id = 0;
 	}
 }
 

@@ -5,12 +5,12 @@
 
 float sign_of( float val )
 {
-	return ( val < 0.0f ? -1.0f : 1.0f );
+	return glm::sign( val );
 }
 
 float snap_to_pixel( float f )
 {
-	return std::roundf( f );
+	return glm::round( f );
 }
 
 float str_to_float( const char* str )
