@@ -226,7 +226,9 @@ w_render* w_render::draw( const a_texture* texture, const w_rect& dst )
 	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u * RS->uv_tiling.u, texture->uv11.v * RS->uv_tiling.v ), RS->color, RS->glow );
 	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * RS->uv_tiling.u, texture->uv11.v * RS->uv_tiling.v ), RS->color, RS->glow );
 
-	OPENGL->push()->translate( { dst.x, dst.y } );
+	OPENGL
+		->push()
+		->translate( { dst.x, dst.y } );
 	batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 	OPENGL->pop();
 

@@ -17,6 +17,11 @@ w_layer::w_layer()
 
 void w_layer::select_by_pick_id( int pick_id )
 {
+	if( !pick_id )
+	{
+		return;
+	}
+
 	for( const auto& e : entities )
 	{
 		if( e->pick_id == pick_id )
