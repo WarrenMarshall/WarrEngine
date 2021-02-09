@@ -77,7 +77,7 @@ void w_layer::update()
 	{
 		OPENGL
 			->push()
-			->add_transform( *( entity->get_tform() ) );
+			->add_transform( *( entity->get_transform() ) );
 
 		entity->update();
 		entity->update_components();
@@ -96,7 +96,7 @@ void w_layer::draw()
 
 		OPENGL
 			->push()
-			->add_transform( *entity->get_tform() );
+			->add_transform( *entity->get_transform() );
 
 		entity->draw();
 
@@ -107,6 +107,11 @@ void w_layer::draw()
 
 void w_layer::draw_ui()
 {
+}
+
+w_entity* w_layer::add_camera()
+{
+	return add_entity<e_camera>();
 }
 
 w_entity* w_layer::get_camera()

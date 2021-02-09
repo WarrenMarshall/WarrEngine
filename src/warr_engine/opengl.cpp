@@ -227,13 +227,16 @@ void w_opengl::init_view_matrix( w_entity* camera ) const
 
 	if( camera )
 	{
-		auto ec = camera->get_tform();
+		auto tf = camera->get_transform();
 
 		// apply the camera position
 		view = glm::translate( view, glm::vec3(
-			ec->pos.x,
-			ec->pos.y,
+			tf->pos.x,
+			tf->pos.y,
 			0.0f ) );
+
+		// apply the camera rotation
+		view = glm::rotate( view, glm::radians( tf->angle ), glm::vec3(0,0,1) );
 	}
 
 	for( auto& iter : OPENGL->shaders )

@@ -56,6 +56,7 @@ struct w_layer : i_life_cycle
 	virtual void draw();
 	virtual void draw_ui();
 
+	w_entity* add_camera();
 	w_entity* get_camera();
 
 	template<typename T>

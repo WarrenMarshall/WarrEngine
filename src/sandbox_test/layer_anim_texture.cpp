@@ -61,6 +61,8 @@ void layer_anim_texture::draw()
 	)
 
 	w_layer::draw();
+
+	RENDER->draw_world_axis();
 }
 
 void layer_anim_texture::draw_ui()

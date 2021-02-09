@@ -14,6 +14,12 @@ void character_callback( GLFWwindow* window, unsigned int key_code )
 	engine->input->event_queue.emplace_back( std::move( evt ) );
 }
 
+void mouse_wheel_callback( GLFWwindow* window, double xoffset, double yoffset )
+{
+	engine->input->mouse_wheel_delta.x += static_cast<float>( xoffset );
+	engine->input->mouse_wheel_delta.y += static_cast<float>( yoffset );
+}
+
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
 	// compute movement delta in window space
@@ -73,6 +79,7 @@ void w_input::init()
 
 	// callbacks so we can collect user input
 	glfwSetCursorPosCallback( engine->window->glfw_window, mouse_motion_callback );
+	glfwSetScrollCallback( engine->window->glfw_window, mouse_wheel_callback );
 
 	// keyboard input
 	glfwSetCharCallback( engine->window->glfw_window, character_callback );
@@ -228,6 +235,18 @@ void w_input::queue_motion()
 		event_queue.emplace_back( std::move( evt ) );
 
 		vmouse_move_delta -= vmouse_move_delta_rounded;
+	}
+
+	if( !fequals( mouse_wheel_delta.x + mouse_wheel_delta.y, 0.0f ) )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id::mouse_wheel;
+		evt.delta = mouse_wheel_delta;
+
+		event_queue.emplace_back( std::move( evt ) );
+
+		mouse_wheel_delta = w_vec2::zero;
 	}
 
 	// update game controller states

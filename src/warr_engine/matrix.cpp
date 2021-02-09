@@ -82,3 +82,9 @@ w_vec2 w_matrix::transform_vec2( const w_vec2& vtx )
 	auto v = m * glm::vec4( vtx.x, vtx.y, 0.0f, 1.0f );
 	return w_vec2( v.x, v.y );
 }
+
+w_vec2 w_matrix::inverse_transform_vec2( const w_vec2& vtx )
+{
+	auto v = glm::inverse( m ) * glm::vec4( vtx.x, vtx.y, 0.0f, 1.0f );
+	return w_vec2( v.x, v.y );
+}

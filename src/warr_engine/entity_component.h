@@ -24,7 +24,7 @@ struct w_entity_component : i_life_cycle
 	virtual void set_life_timer( int life_in_ms );
 
 	_NODISCARD virtual bool is_permanent();
-	_NODISCARD w_transform* get_tform();
+	_NODISCARD w_transform* get_transform();
 };
 
 // ----------------------------------------------------------------------------

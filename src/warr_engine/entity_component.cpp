@@ -77,7 +77,7 @@ bool w_entity_component::is_permanent()
 	return false;
 }
 
-_NODISCARD w_transform* w_entity_component::get_tform()
+_NODISCARD w_transform* w_entity_component::get_transform()
 {
 	return &tform;
 }
@@ -235,7 +235,7 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 
 		OPENGL
 			->push()
-			->add_transform( *( parent_entity->get_tform() ) )
+			->add_transform( *( parent_entity->get_transform() ) )
 			->add_transform( tform );
 
 		emitter->warm_up();
@@ -475,7 +475,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, const w_rect& rc )
 // w/h - size of box
 b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, float h )
 {
-	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2PolygonShape shape;
 	{
@@ -505,7 +505,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, fl
 
 b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float radius )
 {
-	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2CircleShape shape;
 	{
@@ -531,7 +531,7 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float ra
 
 b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 start, w_vec2 end )
 {
-	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	b2EdgeShape shape;
 	{
@@ -569,7 +569,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 	// Box2D requirement
 	assert( verts.size() >= 3 );
 
-	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -608,7 +608,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 
 b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const std::vector<w_vec2>& verts )
 {
-	body->SetTransform( parent_entity->get_tform()->pos.to_b2d().as_b2Vec2(), 0.0f );
+	body->SetTransform( parent_entity->get_transform()->pos.to_b2d().as_b2Vec2(), 0.0f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -864,7 +864,7 @@ void ec_follow_target::update()
 {
 	if( follow.target )
 	{
-		auto target_pos = follow.target->get_tform()->pos;
+		auto target_pos = follow.target->get_transform()->pos;
 
 		// position
 
@@ -886,11 +886,11 @@ void ec_follow_target::update()
 			// if only following on a specific axis, remove the follow influence from the other
 			if( !( follow.flags & follow_flags::x_axis ) )
 			{
-				follow.pos.x = parent_entity->get_tform()->pos.x;
+				follow.pos.x = parent_entity->get_transform()->pos.x;
 			}
 			if( !( follow.flags & follow_flags::y_axis ) )
 			{
-				follow.pos.y = parent_entity->get_tform()->pos.y;
+				follow.pos.y = parent_entity->get_transform()->pos.y;
 			}
 		}
 
@@ -900,7 +900,7 @@ void ec_follow_target::update()
 
 		if( follow.flags & follow_flags::angle )
 		{
-			parent_entity->set_angle_deep( follow.target->get_tform()->angle );
+			parent_entity->set_angle_deep( follow.target->get_transform()->angle );
 		}
 	}
 }
@@ -910,9 +910,9 @@ void ec_follow_target::set_follow_target( w_entity* entity_to_follow, e_follow_f
 	follow.target = entity_to_follow;
 	follow.flags = flags;
 	follow.strength = strength;
-	follow.pos = entity_to_follow->get_tform()->pos;
+	follow.pos = entity_to_follow->get_transform()->pos;
 
-	parent_entity->set_position_deep( follow.target->get_tform()->pos, false );
+	parent_entity->set_position_deep( follow.target->get_transform()->pos, false );
 }
 
 void ec_follow_target::set_follow_limits_x( w_vec2 limits )

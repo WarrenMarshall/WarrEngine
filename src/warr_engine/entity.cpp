@@ -25,7 +25,7 @@ void w_entity::update_from_physics()
 	{
 		if( ec->is_primary_body )
 		{
-			auto tform = get_tform();
+			auto tform = get_transform();
 			w_vec2 position = w_vec2( ec->body->GetPosition() ).from_b2d();
 			float angle = ec->body->GetAngle();
 
@@ -100,7 +100,7 @@ void w_entity::draw()
 void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 {
 	// entity
-	get_tform()->set_position( pos );
+	get_transform()->set_position( pos );
 
 	// physics components
 	std::vector<ec_b2d_body*> ecs;
@@ -124,7 +124,7 @@ void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
 void w_entity::set_angle_deep( float angle )
 {
 	// entity
-	get_tform()->set_angle( angle );
+	get_transform()->set_angle( angle );
 
 	// physics components
 	std::vector<ec_b2d_body*> ecs;
@@ -150,7 +150,7 @@ void w_entity::on_collision_end( w_pending_collision& coll, w_entity* other )
 {
 }
 
-w_transform* w_entity::get_tform()
+w_transform* w_entity::get_transform()
 {
 	return &( get_component<ec_transform>()->tform );
 }
@@ -223,4 +223,12 @@ void w_entity_transient::update()
 	{
 		ilc_set( life_cycle::dying );
 	}
+}
+
+// ----------------------------------------------------------------------------
+
+e_camera::e_camera()
+	: w_entity()
+{
+	tag = H( "main_camera" );
 }

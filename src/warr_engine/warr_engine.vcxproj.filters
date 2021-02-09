@@ -214,6 +214,9 @@
     <ClCompile Include="layer_msg_box.cpp">
       <Filter>src\layers</Filter>
     </ClCompile>
+    <ClCompile Include="transform.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -434,6 +437,9 @@
     </ClInclude>
     <ClInclude Include="layer_msg_box.h">
       <Filter>include\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="transform.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -118,6 +118,7 @@ extern float ui_window_h;
 #undef min	// fixes dumb compile problem
 #undef max	// fixes dumb compile problem
 #include "datatypes.h"
+#include "transform.h"
 #include "asset.h"
 #include "a_palette.h"
 #include "a_src_texture.h"

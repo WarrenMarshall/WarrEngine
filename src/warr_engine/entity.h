@@ -100,7 +100,7 @@ struct w_entity : i_life_cycle
 	virtual void on_collision_begin( w_pending_collision& coll, w_entity* other );
 	virtual void on_collision_end( w_pending_collision& coll, w_entity* other );
 
-	w_transform* get_tform();
+	w_transform* get_transform();
 };
 
 // ----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ struct w_entity_transient : w_entity
 // affect UI drawing in any way. this is important because events like camera
 // shakes will shake the world but leave the UI stable.
 
-// #delete - do we need this class anymore?
 struct e_camera : w_entity
 {
+	e_camera();
 };

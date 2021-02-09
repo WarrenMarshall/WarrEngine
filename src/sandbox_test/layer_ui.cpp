@@ -49,8 +49,7 @@ void layer_ui::push()
 	engine->window->set_mouse_mode( mouse_mode::os );
 
 	{
-		auto e = add_entity<w_entity>();
-		e->tag = H( "main_camera" );
+		add_camera();
 	}
 }
 
@@ -68,6 +67,8 @@ void layer_ui::draw()
 	)
 
 	w_layer::draw();
+
+	RENDER->draw_world_axis();
 }
 
 void layer_ui::draw_ui()
@@ -130,6 +131,13 @@ void layer_ui::draw_ui()
 	IMGUI
 		->do_edit_box( H( "edit_text_02" ) )
 		->finalize( &imgui_callback.edit_text_02_data );
+
+	RENDER_BLOCK
+	(
+		RS->color = w_color::white;
+		RS->align = align::hcenter;
+		RENDER->draw_string( "R_DRAG - move camera", w_pos( v_window_hw, 200.0f ) );
+	)
 }
 
 w_imgui_callback* layer_ui::get_imgui_callback()
@@ -144,7 +152,7 @@ bool layer_ui::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_tform()->add_position_delta( evt->vdelta );
+			get_camera()->get_transform()->add_position_delta( evt->vdelta );
 
 			return true;
 		}

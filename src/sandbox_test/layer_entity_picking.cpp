@@ -13,15 +13,14 @@ void layer_entity_picking::push()
 	engine->window->set_mouse_mode( mouse_mode::os );
 
 	{
-		auto e = add_entity<w_entity>();
-		e->tag = H( "main_camera" );
-		e->get_tform()->set_position( { ui_window_hw, ui_window_hh } );
+		auto e = add_camera();
+		e->get_transform()->set_position( { ui_window_hw, ui_window_hh } );
 	}
 
 	{
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
-		e->get_tform()->set_position( { -100.0f, -75.0f } );
+		e->get_transform()->set_position( { -100.0f, -75.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_rectangle, w_rect( -16, -16, 32, 32 ) );
@@ -32,7 +31,7 @@ void layer_entity_picking::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
-		e->get_tform()->set_position( { 0.0f, 0.0f } );
+		e->get_transform()->set_position( { 0.0f, 0.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_circle, 16.0f );
@@ -43,8 +42,8 @@ void layer_entity_picking::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
-		e->get_tform()->set_angle( 15.0f );
-		e->get_tform()->set_position( { +100.0f, +75.0f } );
+		e->get_transform()->set_angle( 15.0f );
+		e->get_transform()->set_position( { +100.0f, +75.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::rectangle, w_rect( -32, -16, 64, 32 ) );
@@ -63,9 +62,9 @@ void layer_entity_picking::draw()
 	RS->color = w_color::dark_teal;
 	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -ui_window_hw, -ui_window_hh, ui_window_w, ui_window_h ) );
 
-	RENDER->draw_world_axis();
-
 	w_layer::draw();
+
+	RENDER->draw_world_axis();
 }
 
 void layer_entity_picking::draw_ui()
@@ -82,9 +81,9 @@ void layer_entity_picking::draw_ui()
 	(
 		RS->color = w_color::white;
 		RS->align = align::hcenter;
-		RENDER->draw_string( "RIGHT_DRAG to move camera", w_pos( v_window_hw, 200.0f ) );
-		RENDER->draw_string( "LEFT_CLICK to select entity", w_pos( v_window_hw, 208.0f ) );
-		RENDER->draw_string( "LEFT_DRAG to move selected entity", w_pos( v_window_hw, 216.0f ) );
+		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( v_window_hw, 200.0f ) );
+		RENDER->draw_string( "L_CLICK - select entity", w_pos( v_window_hw, 208.0f ) );
+		RENDER->draw_string( "L_DRAG - move entity", w_pos( v_window_hw, 216.0f ) );
 	)
 
 	w_layer::draw_ui();
@@ -122,7 +121,7 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 
 			for( auto& e : sels )
 			{
-				e->get_tform()->add_position_delta( evt->vdelta );
+				e->get_transform()->add_position_delta( evt->vdelta );
 			}
 
 			return true;
@@ -130,7 +129,14 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_tform()->add_position_delta( evt->vdelta );
+			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+
+			return true;
+		}
+
+		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
+		{
+			get_camera()->get_transform()->add_angle_delta( evt->vdelta.x );
 
 			return true;
 		}
