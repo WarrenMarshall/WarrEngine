@@ -66,7 +66,7 @@ void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& 
 	// until this point, the vertex has been in model coordinate space. this
 	// moves it into world space.
 
-	w_vec2 vtx = OPENGL->top()->transform_vec2( w_vec2( render_vert.x, render_vert.y ) );
+	w_vec2 vtx = OPENGL->top()->transform( w_vec2( render_vert.x, render_vert.y ) );
 
 	// snap to pixel position
 

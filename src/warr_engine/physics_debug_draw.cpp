@@ -101,8 +101,8 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 	w_matrix mtx;
 	mtx.rotate( glm::degrees( xf.q.GetAngle() ) );
 
-	w_vec2 x_axis = v + mtx.transform_vec2( w_vec2( debug_line_length, 0.0f ) );
-	w_vec2 y_axis = v + mtx.transform_vec2( w_vec2( 0.0f, debug_line_length ) );
+	w_vec2 x_axis = v + mtx.transform( w_vec2( debug_line_length, 0.0f ) );
+	w_vec2 y_axis = v + mtx.transform( w_vec2( 0.0f, debug_line_length ) );
 
 	RENDER_BLOCK
 	(

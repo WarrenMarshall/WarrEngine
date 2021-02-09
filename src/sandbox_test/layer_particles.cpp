@@ -73,7 +73,7 @@ void layer_particles::update()
 	{
 		// #refactor - this should get moved into a function that can convert between various coordinate spaces
 		//			   in this case, vwindow -> camera
-		w_vec2 world_pos = get_camera()->get_transform()->matrix.inverse_transform_vec2( INPUT->mouse_vwindow_pos );
+		w_vec2 world_pos = get_camera()->get_transform()->inverse_transform_pos( INPUT->mouse_vwindow_pos );
 
 		find_entity( H( "mouse_torch" ) )->get_transform()->set_position( world_pos );
 	}

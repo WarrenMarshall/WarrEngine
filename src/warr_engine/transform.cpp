@@ -6,6 +6,7 @@
 w_transform::w_transform()
 {
 	matrix.set_identity();
+	matrix_dir.set_identity();
 }
 
 w_transform* w_transform::set( w_vec2 pos, float angle, float scale )
@@ -68,4 +69,37 @@ void w_transform::rebuild_matrix()
 	matrix.translate( pos );
 	matrix.rotate( angle );
 	matrix.scale( scale );
+
+	matrix_dir.set_identity();
+	matrix_dir.rotate( angle );
+}
+
+// "pos" represents a position, not a direction
+
+w_vec2 w_transform::transform_pos( const w_vec2& pos )
+{
+	auto v = matrix.m * glm::vec4( pos.x, pos.y, 0.0f, 1.0f );
+	return w_vec2( v.x, v.y );
+}
+
+w_vec2 w_transform::inverse_transform_pos( const w_vec2& pos )
+{
+	auto v = glm::inverse( matrix.m ) * glm::vec4( pos.x, pos.y, 0.0f, 1.0f );
+	return w_vec2( v.x, v.y );
+}
+
+// "dir" represents a direction, not a position
+
+// #check - does "dir" need to be normalized?
+
+w_vec2 w_transform::transform_dir( const w_vec2& dir )
+{
+	auto v = matrix_dir.m * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
+	return w_vec2( v.x, v.y );
+}
+
+w_vec2 w_transform::inverse_transform_vec( const w_vec2& dir )
+{
+	auto v = glm::inverse( matrix_dir.m ) * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
+	return w_vec2( v.x, v.y );
 }

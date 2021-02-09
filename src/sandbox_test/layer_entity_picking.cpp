@@ -14,7 +14,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_camera();
-		e->get_transform()->set_position( { ui_window_hw, ui_window_hh } );
+		//e->get_transform()->set_position( { ui_window_hw, ui_window_hh } );
 	}
 
 	{
@@ -116,12 +116,15 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
 		{
+			w_vec2 cvdelta = get_camera()->get_transform()->transform_dir( evt->vdelta );
+			log( "{},{} = {},{}", evt->vdelta.x, evt->vdelta.y, cvdelta.x, cvdelta.y );
+
 			std::vector<w_entity*> sels;
 			get_selected( sels );
 
 			for( auto& e : sels )
 			{
-				e->get_transform()->add_position_delta( evt->vdelta );
+				e->get_transform()->add_position_delta( cvdelta );
 			}
 
 			return true;

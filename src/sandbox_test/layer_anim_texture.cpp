@@ -45,6 +45,10 @@ void layer_anim_texture::push()
 	animtex_coin_01 = a_anim_texture::find( "anim_coin" );
 
 	engine->window->set_mouse_mode( mouse_mode::os );
+
+	{
+		add_camera();
+	}
 }
 
 void layer_anim_texture::draw()
@@ -88,9 +92,38 @@ void layer_anim_texture::draw_ui()
 	RENDER->draw_sprite( animtex_coin_01->get_texture( 0.0f ), { 128.0f, 64.0f } );
 	RENDER->draw_sprite( animtex_coin_01->get_texture( 0.3f ), { 160.0f, 64.0f } );
 	RENDER->draw_sprite( animtex_coin_01->get_texture( 0.6f ), { 192.0f, 64.0f } );
+
+	RENDER_BLOCK
+	(
+		RS->color = w_color::white;
+		RS->align = align::hcenter;
+		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( v_window_hw, 200.0f ) );
+	)
 }
 
 w_imgui_callback* layer_anim_texture::get_imgui_callback()
 {
 	return &imgui_callback;
+}
+
+bool layer_anim_texture::on_input_motion( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::mouse )
+	{
+		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		{
+			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+
+			return true;
+		}
+
+		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
+		{
+			get_camera()->get_transform()->add_angle_delta( evt->vdelta.x );
+
+			return true;
+		}
+	}
+
+	return false;
 }

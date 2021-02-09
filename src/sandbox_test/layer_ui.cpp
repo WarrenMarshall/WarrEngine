@@ -136,7 +136,7 @@ void layer_ui::draw_ui()
 	(
 		RS->color = w_color::white;
 		RS->align = align::hcenter;
-		RENDER->draw_string( "R_DRAG - move camera", w_pos( v_window_hw, 200.0f ) );
+		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( v_window_hw, 200.0f ) );
 	)
 }
 
@@ -145,7 +145,6 @@ w_imgui_callback* layer_ui::get_imgui_callback()
 	return &imgui_callback;
 }
 
-
 bool layer_ui::on_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
@@ -153,6 +152,13 @@ bool layer_ui::on_input_motion( const w_input_event* evt )
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+
+			return true;
+		}
+
+		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
+		{
+			get_camera()->get_transform()->add_angle_delta( evt->vdelta.x );
 
 			return true;
 		}

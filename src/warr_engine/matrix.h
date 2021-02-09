@@ -14,6 +14,6 @@ struct w_matrix
 	w_matrix* scale( float v );
 	w_matrix* scale( float x, float y );
 	w_matrix* rotate( float v );
-	_NODISCARD w_vec2 transform_vec2( const w_vec2& vtx );
-	_NODISCARD w_vec2 inverse_transform_vec2( const w_vec2& vtx );
+
+	_NODISCARD w_vec2 transform( const w_vec2& v );
 };
