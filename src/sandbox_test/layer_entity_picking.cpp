@@ -20,7 +20,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_entity<w_entity>();
-		e->pick_id = 1.0f;
+		e->make_pickable();
 		e->get_tform()->set_position( { -100.0f, -75.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
@@ -31,23 +31,23 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_entity<w_entity>();
-		e->pick_id = 2.0f;
+		e->make_pickable();
 		e->get_tform()->set_position( { 0.0f, 0.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_circle, 16.0f );
-			ec->rs_opt.color = w_color::red;
+			ec->rs_opt.color = w_color::teal;
 		}
 	}
 
 	{
 		auto e = add_entity<w_entity>();
-		e->pick_id = 3.0f;
+		e->make_pickable();
 		e->get_tform()->set_angle( 15.0f );
 		e->get_tform()->set_position( { +100.0f, +75.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::filled_rectangle, w_rect( -32, -16, 64, 32 ) );
+			ec->init( primitive_shape::rectangle, w_rect( -32, -16, 64, 32 ) );
 			ec->rs_opt.color = w_color::dark_green;
 		}
 		{

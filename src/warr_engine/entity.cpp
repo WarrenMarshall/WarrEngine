@@ -189,6 +189,14 @@ bool w_entity::can_be_deleted()
 	return true;
 }
 
+float w_entity::last_pick_id = 0.0f;
+
+void w_entity::make_pickable()
+{
+	last_pick_id += 1.0f;
+	pick_id = last_pick_id;
+}
+
 void w_entity::ilc_set( e_life_cycle life_cycle )
 {
 	i_life_cycle::ilc_set( life_cycle );

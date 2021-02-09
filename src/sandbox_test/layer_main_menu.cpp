@@ -92,12 +92,12 @@ void layer_main_menu::draw_ui()
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
-	/*
 	IMGUI->do_push_button( H( "button_gradients" ) )
 		->set_text( "Gradients" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
+	/*
 	IMGUI->do_push_button( H( "button_box2d" ) )
 		->set_text( "Box2D" )
 		->set_size( { 100.0f, w_vec2::ignore } )

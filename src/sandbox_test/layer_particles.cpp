@@ -10,6 +10,12 @@ layer_particles::layer_particles()
 
 void layer_particles::push()
 {
+	// camera
+	{
+		auto entity = add_entity<w_entity>();
+		entity->tag = H( "main_camera" );
+	}
+
 	// background emitters
 	{
 		auto entity = add_entity<w_entity>();
@@ -62,7 +68,7 @@ void layer_particles::update()
 {
 	w_layer::update();
 
-	if( cb_follow_mouse == true )
+	if( follow_mouse )
 	{
 		find_entity( H( "mouse_torch" ) )->get_tform()->set_position( INPUT->mouse_vwindow_pos );
 	}
@@ -88,10 +94,44 @@ void layer_particles::draw_ui()
 {
 	w_layer::draw_ui();
 
+	RENDER_BLOCK
+	(
+		RS->color = w_color::white;
+		RS->align = align::hcenter;
+		RENDER->draw_string( "RIGHT_DRAG to move camera", w_pos( v_window_hw, 200.0f ) );
+		RENDER->draw_string( "F - toggle follow mode for fire ball", w_pos( v_window_hw, 208.0f ) );
+	)
+}
 
-	IMGUI
-		->do_checkbox( H( "checkbox_01" ) )
-		->set_position( { 64, 32 } )
-		->set_text( "Follow Mouse" )
-		->finalize( &cb_follow_mouse );
+bool layer_particles::on_input_pressed( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::key_f )
+	{
+// #warren
+// 		this messes up if you move the camera. so we need some sort of
+// 		vwindow to world space conversion function.
+//
+// 		should this be expanded into a general X-space to X-space series of functions?
+
+		follow_mouse = !follow_mouse;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool layer_particles::on_input_motion( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::mouse )
+	{
+		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		{
+			get_camera()->get_tform()->add_position_delta( evt->vdelta );
+
+			return true;
+		}
+	}
+
+	return false;
 }

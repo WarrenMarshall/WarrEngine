@@ -47,6 +47,11 @@ layer_ui::layer_ui()
 void layer_ui::push()
 {
 	engine->window->set_mouse_mode( mouse_mode::os );
+
+	{
+		auto e = add_entity<w_entity>();
+		e->tag = H( "main_camera" );
+	}
 }
 
 void layer_ui::draw()
@@ -130,4 +135,20 @@ void layer_ui::draw_ui()
 w_imgui_callback* layer_ui::get_imgui_callback()
 {
 	return &imgui_callback;
+}
+
+
+bool layer_ui::on_input_motion( const w_input_event* evt )
+{
+	if( evt->input_id == input_id::mouse )
+	{
+		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		{
+			get_camera()->get_tform()->add_position_delta( evt->vdelta );
+
+			return true;
+		}
+	}
+
+	return false;
 }
