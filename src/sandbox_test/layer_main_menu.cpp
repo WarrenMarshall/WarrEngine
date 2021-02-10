@@ -67,13 +67,13 @@ void layer_main_menu::draw_ui()
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "Test Cases" )
-		->set_position( { 4.0f, 4.0f } )
+		->set_pos( { 4.0f, 4.0f } )
 		->set_size( { ui_window_w - 8, ui_window_h - 8 } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_ui" ) )
 		->set_text( "UI Controls" )
-		->set_position( imgui_flow::last_crc_topleft )
+		->set_pos( imgui_flow::last_crc_topleft )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 

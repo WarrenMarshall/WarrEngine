@@ -123,7 +123,7 @@ struct w_rect
 	w_vec2 top_left() const;
 	w_vec2 bottom_right() const;
 	w_vec2 midpoint() const;
-	w_pos get_position_from_alignment( e_align align ) const;
+	w_pos get_pos_from_alignment( e_align align ) const;
 
 	bool operator==( const w_rect& rhs ) const;
 	w_rect operator+( const w_vec2& v ) const;

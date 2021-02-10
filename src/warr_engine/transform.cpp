@@ -11,14 +11,14 @@ w_transform::w_transform()
 
 w_transform* w_transform::set( w_vec2 pos, float angle, float scale )
 {
-	set_position( pos );
+	set_pos( pos );
 	set_angle( angle );
 	set_scale( scale );
 
 	return this;
 }
 
-w_transform* w_transform::set_position( w_vec2 pos )
+w_transform* w_transform::set_pos( w_vec2 pos )
 {
 	this->pos.x = snap_to_pixel( pos.x );
 	this->pos.y = snap_to_pixel( pos.y );
@@ -46,9 +46,9 @@ w_transform* w_transform::set_scale( float scale )
 	return this;
 }
 
-w_transform* w_transform::add_position_delta( w_vec2 delta )
+w_transform* w_transform::add_pos_delta( w_vec2 delta )
 {
-	return set_position( this->pos + delta );
+	return set_pos( this->pos + delta );
 }
 
 w_transform* w_transform::add_angle_delta( float delta )
@@ -82,7 +82,7 @@ w_vec2 w_transform::transform_pos( const w_vec2& pos )
 	return w_vec2( v.x, v.y );
 }
 
-w_vec2 w_transform::inverse_transform_pos( const w_vec2& pos )
+w_vec2 w_transform::inv_transform_pos( const w_vec2& pos )
 {
 	auto v = glm::inverse( matrix.m ) * glm::vec4( pos.x, pos.y, 0.0f, 1.0f );
 	return w_vec2( v.x, v.y );
@@ -90,15 +90,13 @@ w_vec2 w_transform::inverse_transform_pos( const w_vec2& pos )
 
 // "dir" represents a direction, not a position
 
-// #check - does "dir" need to be normalized?
-
 w_vec2 w_transform::transform_dir( const w_vec2& dir )
 {
 	auto v = matrix_dir.m * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
 	return w_vec2( v.x, v.y );
 }
 
-w_vec2 w_transform::inverse_transform_vec( const w_vec2& dir )
+w_vec2 w_transform::inv_transform_dir( const w_vec2& dir )
 {
 	auto v = glm::inverse( matrix_dir.m ) * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
 	return w_vec2( v.x, v.y );

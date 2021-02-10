@@ -120,7 +120,7 @@ w_vec2 w_rect::midpoint() const
 // the best spot to start drawing from, given the alignment
 // requested.
 
-w_pos w_rect::get_position_from_alignment( e_align align ) const
+w_pos w_rect::get_pos_from_alignment( e_align align ) const
 {
 	w_pos pos = { x, y };
 

@@ -127,13 +127,13 @@ void layer_esc_menu::draw_ui()
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "PAUSE MENU" )
-		->set_position( { ui_window_hw - ( panel_w / 2.0f ), ui_window_hh - ( panel_h / 2.0f ) } )
+		->set_pos( { ui_window_hw - ( panel_w / 2.0f ), ui_window_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_resume" ) )
 		->set_text( "Resume" )
-		->set_position( imgui_flow::last_crc_topleft )
+		->set_pos( imgui_flow::last_crc_topleft )
 		->set_size( { w_sz::ignore, button_h } )
 		->finalize();
 

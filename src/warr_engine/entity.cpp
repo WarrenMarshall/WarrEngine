@@ -97,10 +97,10 @@ void w_entity::draw()
 
 // immediately moves the entity and it's dynamic/kinematic bodies to a new position.
 
-void w_entity::set_position_deep( const w_vec2& pos, bool reset_velocity )
+void w_entity::set_pos_deep( const w_vec2& pos, bool reset_velocity )
 {
 	// entity
-	get_transform()->set_position( pos );
+	get_transform()->set_pos( pos );
 
 	// physics components
 	std::vector<ec_b2d_body*> ecs;

@@ -308,7 +308,7 @@ void w_engine::main_loop()
 			// queue up inputs for processing later in the loop
 			input->queue_motion();
 
-			box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_position_iterations );
+			box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
 
 			process_collision_queue();
 

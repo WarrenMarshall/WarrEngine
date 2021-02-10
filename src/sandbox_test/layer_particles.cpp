@@ -20,7 +20,7 @@ void layer_particles::push()
 	{
 		auto e = add_entity<w_entity>();
 
-		e->get_transform()->set_position( { v_window_hw, v_window_h } );
+		e->get_transform()->set_pos( { v_window_hw, v_window_h } );
 		{
 			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_fire_upwards" );
@@ -34,13 +34,13 @@ void layer_particles::push()
 		{
 			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_stars" );
-			ec->get_transform()->set_position( { 0.0f, -v_window_hh } );
+			ec->get_transform()->set_pos( { 0.0f, -v_window_hh } );
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::point, 3.0f );
 			ec->rs_opt.color = w_color::light_green;
-			ec->get_transform()->set_position( { 0.0f, -v_window_hh } );
+			ec->get_transform()->set_pos( { 0.0f, -v_window_hh } );
 		}
 	}
 
@@ -48,7 +48,7 @@ void layer_particles::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->tag = H( "mouse_torch" );
-		e->get_transform()->set_position( { v_window_hw, v_window_hh } );
+		e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
 
 		{
 			auto ec = e->add_component<ec_emitter>();
@@ -73,9 +73,9 @@ void layer_particles::update()
 	{
 		// #refactor - this should get moved into a function that can convert between various coordinate spaces
 		//			   in this case, vwindow -> camera
-		w_vec2 world_pos = get_camera()->get_transform()->inverse_transform_pos( INPUT->mouse_vwindow_pos );
+		w_vec2 world_pos = get_camera()->get_transform()->inv_transform_pos( INPUT->mouse_vwindow_pos );
 
-		find_entity( H( "mouse_torch" ) )->get_transform()->set_position( world_pos );
+		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( world_pos );
 	}
 }
 
@@ -128,7 +128,7 @@ bool layer_particles::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+			get_camera()->get_transform()->add_pos_delta( evt->vdelta );
 
 			return true;
 		}

@@ -894,7 +894,7 @@ void ec_follow_target::update()
 			}
 		}
 
-		parent_entity->set_position_deep( follow.pos, false );
+		parent_entity->set_pos_deep( follow.pos, false );
 
 		// angle
 
@@ -912,7 +912,7 @@ void ec_follow_target::set_follow_target( w_entity* entity_to_follow, e_follow_f
 	follow.strength = strength;
 	follow.pos = entity_to_follow->get_transform()->pos;
 
-	parent_entity->set_position_deep( follow.target->get_transform()->pos, false );
+	parent_entity->set_pos_deep( follow.target->get_transform()->pos, false );
 }
 
 void ec_follow_target::set_follow_limits_x( w_vec2 limits )

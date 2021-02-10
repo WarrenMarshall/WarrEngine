@@ -63,7 +63,7 @@ void layer_msg_box::draw_ui()
 	)
 
 	IMGUI->do_panel( H( "main_panel" ) )
-		->set_position( { 0.0f, ui_window_hh - 32.0f } )
+		->set_pos( { 0.0f, ui_window_hh - 32.0f } )
 		->set_size( { ui_window_w, 68.0f } )
 		->finalize();
 
@@ -71,7 +71,7 @@ void layer_msg_box::draw_ui()
 
 	IMGUI
 		->do_spacer()
-		->set_position( imgui_flow::last_crc_topleft )
+		->set_pos( imgui_flow::last_crc_topleft )
 		->finalize();
 
 	IMGUI

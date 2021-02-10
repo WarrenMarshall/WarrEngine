@@ -153,7 +153,7 @@ w_imgui* w_imgui::set_slice_def( const std::string& tag )
 	return this;
 }
 
-w_imgui* w_imgui::set_position( const w_pos& pos )
+w_imgui* w_imgui::set_pos( const w_pos& pos )
 {
 	current_control.rc_win = last_rc_win;
 
@@ -161,12 +161,12 @@ w_imgui* w_imgui::set_position( const w_pos& pos )
 	current_control.rc_win.y = pos.y;
 
 	compute_clientrect_from_rect();
-	current_control.set_position_called = true;
+	current_control.set_pos_called = true;
 
 	return this;
 }
 
-w_imgui* w_imgui::set_position( e_imgui_flow flow )
+w_imgui* w_imgui::set_pos( e_imgui_flow flow )
 {
 	current_control.rc_win.x = last_rc_win.x;
 	current_control.rc_win.y = last_rc_win.y;
@@ -191,7 +191,7 @@ w_imgui* w_imgui::set_position( e_imgui_flow flow )
 
 	compute_clientrect_from_rect();
 
-	current_control.set_position_called = true;
+	current_control.set_pos_called = true;
 	return this;
 }
 
@@ -227,7 +227,7 @@ w_imgui* w_imgui::set_align( w_rect rc_client, e_align align )
 {
 	if( align & align::hcenter )
 	{
-		set_position( imgui_flow::down );
+		set_pos( imgui_flow::down );
 		current_control.rc_win.x = ( rc_client.x + ( rc_client.w / 2.0f ) ) - ( current_control.rc_win.w / 2.0f );
 		compute_clientrect_from_rect();
 	}
@@ -267,9 +267,9 @@ w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 
 	// if this control was never given a position directly,
 	// assume it wants to flow down from the last control.
-	if( !current_control.set_position_called )
+	if( !current_control.set_pos_called )
 	{
-		set_position( imgui_flow::down );
+		set_pos( imgui_flow::down );
 	}
 
 	if( current_control.is_active )
@@ -592,7 +592,7 @@ void w_imgui::draw_text( const w_imgui_control& control, const w_rect& rc_client
 {
 	if( control.text.length() )
 	{
-		const w_pos pos = rc_client.get_position_from_alignment( control.text_align );
+		const w_pos pos = rc_client.get_pos_from_alignment( control.text_align );
 
 		RS->color = get_adjusted_color( color, is_hovered, is_hot );
 		RS->align = control.text_align;

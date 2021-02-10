@@ -40,8 +40,8 @@ struct w_imgui
 	w_imgui* set_text( const std::string& text );
 	w_imgui* set_text_align( e_align align );
 	w_imgui* set_slice_def( const std::string& tag );
-	w_imgui* set_position( const w_pos& pos );
-	w_imgui* set_position( e_imgui_flow flow );
+	w_imgui* set_pos( const w_pos& pos );
+	w_imgui* set_pos( e_imgui_flow flow );
 	w_imgui* set_size( const w_sz& sz );
 	w_imgui* set_interval( const float interval );
 	w_imgui* set_align( w_rect rc_client, e_align align );

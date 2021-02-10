@@ -78,14 +78,14 @@ void layer_ui::draw_ui()
 	IMGUI
 		->do_panel( H( "main_panel" ) )
 		->set_text( "SAMPLE CONTROLS" )
-		->set_position( { ui_window_hw - 73.0f, ui_window_hh - 85.0f } )
+		->set_pos( { ui_window_hw - 73.0f, ui_window_hh - 85.0f } )
 		->set_size( { 146.0f, 200.0f } )
 		->finalize();
 
 	IMGUI
 		->do_push_button( H( "push_button_01" ) )
 		->set_text( "Push Button" )
-		->set_position( imgui_flow::last_crc_topleft )
+		->set_pos( imgui_flow::last_crc_topleft )
 		->finalize();
 
 	IMGUI
@@ -151,7 +151,7 @@ bool layer_ui::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+			get_camera()->get_transform()->add_pos_delta( evt->vdelta );
 
 			return true;
 		}

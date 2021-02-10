@@ -76,14 +76,14 @@ void layer_anim_texture::draw_ui()
 	IMGUI
 		->do_panel()
 		->set_text( "Simple" )
-		->set_position( { 16.0f, 32.0f } )
+		->set_pos( { 16.0f, 32.0f } )
 		->set_size( { 64.0f, 48.0f} )
 		->finalize();
 
 	IMGUI
 		->do_panel()
 		->set_text( "Offsets" )
-		->set_position( { 96.0f, 32.0f } )
+		->set_pos( { 96.0f, 32.0f } )
 		->set_size( { 128.0f, 48.0f } )
 		->finalize();
 
@@ -112,7 +112,7 @@ bool layer_anim_texture::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+			get_camera()->get_transform()->add_pos_delta( evt->vdelta );
 
 			return true;
 		}

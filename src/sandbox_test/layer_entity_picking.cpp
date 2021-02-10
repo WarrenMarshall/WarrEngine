@@ -14,13 +14,13 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_camera();
-		//e->get_transform()->set_position( { ui_window_hw, ui_window_hh } );
+		//e->get_transform()->set_pos( { ui_window_hw, ui_window_hh } );
 	}
 
 	{
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
-		e->get_transform()->set_position( { -100.0f, -75.0f } );
+		e->get_transform()->set_pos( { -100.0f, -75.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_rectangle, w_rect( -16, -16, 32, 32 ) );
@@ -31,7 +31,7 @@ void layer_entity_picking::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
-		e->get_transform()->set_position( { 0.0f, 0.0f } );
+		e->get_transform()->set_pos( { 0.0f, 0.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_circle, 16.0f );
@@ -43,7 +43,7 @@ void layer_entity_picking::push()
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
 		e->get_transform()->set_angle( 15.0f );
-		e->get_transform()->set_position( { +100.0f, +75.0f } );
+		e->get_transform()->set_pos( { +100.0f, +75.0f } );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::rectangle, w_rect( -32, -16, 64, 32 ) );
@@ -124,7 +124,7 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 
 			for( auto& e : sels )
 			{
-				e->get_transform()->add_position_delta( cvdelta );
+				e->get_transform()->add_pos_delta( cvdelta );
 			}
 
 			return true;
@@ -132,7 +132,7 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_position_delta( evt->vdelta );
+			get_camera()->get_transform()->add_pos_delta( evt->vdelta );
 
 			return true;
 		}

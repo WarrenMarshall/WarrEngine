@@ -287,7 +287,7 @@ struct ec_follow_target : w_entity_component
 		// So 2.0 is twice as fast, 0.5f is twice as slow.
 		float strength = 1.0f;
 
-		// positions are snapped to the grid when set_position is called on an entity,
+		// positions are snapped to the grid when set_pos is called on an entity,
 		// so this is a scratch pad where we can keep the position of the following
 		// entity in floating point form - aka not snapped to the grid. this means we
 		// can smoothly interpolate towards the target each frame while still snapping
