@@ -97,7 +97,7 @@ bool w_imgui_callback::validate_value_change( hash tag, w_imgui_control_data& ol
 			{
 				if( !old_value.valid_char_list.empty() )
 				{
-					if( !w_string_util::contains_char( old_value.valid_char_list, new_str.back() ) )
+					if( old_value.valid_char_list.find_first_of( new_str.back() ) == std::string::npos )
 					{
 						return false;
 					}

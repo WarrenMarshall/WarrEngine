@@ -415,7 +415,7 @@ void w_engine::main_loop()
 
 			OPENGL->set_blend( opengl_blend::add );
 
-			RS->color.a = 0.5f;
+			//RS->color.a = 0.5f;
 			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 

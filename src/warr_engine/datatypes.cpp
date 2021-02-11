@@ -222,7 +222,7 @@ w_color::w_color( int r, int g, int b, int a )
 }
 
 // strings can contain any supported kind of data format (hex, int, or floats)
-w_color::w_color( const std::string& str )
+w_color::w_color( std::string& str )
 {
 	assert( !str.empty() );
 
@@ -245,18 +245,18 @@ w_color::w_color( const std::string& str )
 	else
 	{
 		// in case this is a set of values, remove the surrounding braces.
-		auto new_str = w_string_util::remove_char( str, '[' );
-		new_str = w_string_util::remove_char( new_str, ']' );
+		str.erase( std::remove( str.begin(), str.end(), '[' ), str.end() );
+		str.erase( std::remove( str.begin(), str.end(), ']' ), str.end() );
 
 		// if string contains a "%" marker anywhere, we assume this to
 		// be a set of integer values. Otherwise, they are treated as floats.
 		//
 		// note : you can't mix-and-match
 
-		if( w_string_util::contains_char( new_str, '%' ) )
+		if( str.find_first_of( '%' ) != std::string::npos )
 		{
-			new_str = w_string_util::remove_char( new_str, '%' );
-			w_tokenizer tok( new_str, ',' );
+			str.erase( std::remove( str.begin(), str.end(), '%' ), str.end() );
+			w_tokenizer tok( str, ',' );
 
 			r = w_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
 			g = w_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
@@ -268,8 +268,8 @@ w_color::w_color( const std::string& str )
 			// remove any 'f' postfixes that may have been added to the
 			// color values out of programmer habit
 
-			new_str = w_string_util::remove_char( new_str, 'f' );
-			w_tokenizer tok( new_str, ',' );
+			str.erase( std::remove( str.begin(), str.end(), 'f' ), str.end() );
+			w_tokenizer tok( str, ',' );
 
 			r = w_parser::float_from_str( *tok.get_next_token() );
 			g = w_parser::float_from_str( *tok.get_next_token() );

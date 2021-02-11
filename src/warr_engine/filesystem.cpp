@@ -71,16 +71,17 @@ void w_file_system::scan_folder_for_ext( std::vector<std::string>* filenames, st
 
 	for( auto& [filename, toc_entry] : zip_io->table_of_contents )
 	{
-		std::string new_filename = w_string_util::replace_char( filename, '\\', '/' );
+		std::string wk_filename = filename;
+		std::replace( wk_filename.begin(), wk_filename.end(), '\\', '/' );
 
-		if( new_filename.substr( 0, folder.size() ) == folder )
+		if( wk_filename.substr( 0, folder.size() ) == folder )
 		{
-			std::filesystem::path path = new_filename;
+			std::filesystem::path path = wk_filename;
 			if( path.extension() == extension )
 			{
-				if( std::find( filenames->begin(), filenames->end(), new_filename ) == filenames->end() )
+				if( std::find( filenames->begin(), filenames->end(), wk_filename ) == filenames->end() )
 				{
-					filenames->emplace_back( new_filename );
+					filenames->emplace_back( wk_filename );
 				}
 			}
 		}

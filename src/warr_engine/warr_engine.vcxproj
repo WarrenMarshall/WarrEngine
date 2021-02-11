@@ -226,7 +226,7 @@
     <ClCompile Include="i_life_cycle.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="mathutil.cpp" />
+    <ClCompile Include="util_math.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="opengl_framebuffer.cpp" />
@@ -255,7 +255,7 @@
     <ClCompile Include="random.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="layer_mgr.cpp" />
-    <ClCompile Include="stringutil.cpp" />
+    <ClCompile Include="util_string.cpp" />
     <ClCompile Include="tween.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particle_emitter.cpp" />
@@ -327,11 +327,11 @@
     <ClInclude Include="engine.h" />
     <ClInclude Include="logfile.h" />
     <ClInclude Include="master_header.h" />
-    <ClInclude Include="mathutil.h" />
+    <ClInclude Include="util_math.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="layer_mgr.h" />
-    <ClInclude Include="stringutil.h" />
+    <ClInclude Include="util_string.h" />
     <ClInclude Include="tween.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_emitter.h" />

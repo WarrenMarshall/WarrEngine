@@ -1,6 +1,4 @@
 
-// this file exists soley and entirely to generate the precompiled header file
-
 #include "master_pch.h"
 
 float sign_of( float val )

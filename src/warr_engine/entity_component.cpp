@@ -775,7 +775,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 					if( object.name() == std::string( "data" ) )
 					{
 						std::string data = object.first_child().value();
-						auto data_str = w_string_util::replace_char( data, '\n', ' ' );
+						std::replace( data.begin(), data.end(), '\n', ' ' );
 
 						if( tm_layer.has_value() )
 						{
@@ -785,7 +785,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 
 						tm_layer = ec_tilemap_layer();
 
-						w_tokenizer tok( data_str, ',' );
+						w_tokenizer tok( data, ',' );
 						int xy_idx = 0;
 
 						while( !tok.is_eos() )

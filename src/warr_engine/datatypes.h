@@ -26,7 +26,7 @@ struct w_color
 	w_color() = default;
 	w_color( float r, float g, float b, float a = 1.0f );
 	w_color( int r, int g, int b, int a = 255 );
-	w_color( const std::string& str );
+	w_color( std::string& str );
 
 	w_color operator*( float v ) const;
 	w_color operator*=( float v );

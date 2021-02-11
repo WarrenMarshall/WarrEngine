@@ -171,10 +171,10 @@ const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 #include "master_enum.h"
 
-#include "stringutil.h"
+#include "util_string.h"
 #include "logfile.h"
 
-#include "mathutil.h"
+#include "util_math.h"
 #include "parser.h"
 #include "tokenizer.h"
 

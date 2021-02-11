@@ -74,13 +74,13 @@ void w_file_zip::scan_and_build_table_of_contents()
 
 							rptr += hdr->file_name_length;
 
-							std::string new_filename = filename;
-							new_filename = w_string_util::replace_char( new_filename, '\\', '/' );
+							std::string wk_filename = filename;
+							std::replace( wk_filename.begin(), wk_filename.end(), '\\', '/' );
 
 							table_of_contents.insert(
 								std::make_pair(
-									new_filename,
-									w_zip_toc_entry( zip_filename, new_filename, (int) ( rptr - buffer.data() ), hdr->uncompressed_size )
+									wk_filename,
+									w_zip_toc_entry( zip_filename, wk_filename, (int) ( rptr - buffer.data() ), hdr->uncompressed_size )
 								)
 							);
 							rptr += hdr->uncompressed_size;
