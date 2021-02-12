@@ -13,7 +13,7 @@ struct w_particle_pool
 
 	// which particle we're going to use next. this wraps around the vector
 	// above, endlessly, re-using particles.
-	int idx = 0;
+	size_t idx = 0;
 
 	// the number of particles in the pool that are currently alive. this is
 	// updated with each "update" cycle.

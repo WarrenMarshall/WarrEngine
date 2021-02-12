@@ -11,7 +11,7 @@ w_particle_pool::w_particle_pool( int num_particles )
 
 w_particle* w_particle_pool::get_next_particle()
 {
-	int sz = (int)particles.size();
+	auto sz = particles.size();
 
 	// move the idx ahead by 1, wrapping around from the end to the start
 
