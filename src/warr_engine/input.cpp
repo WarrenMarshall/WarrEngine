@@ -297,8 +297,9 @@ void w_input::update()
 				{
 					break;
 				}
+
+				break;
 			}
-			break;
 
 			case event_id::input_held:
 			{
@@ -311,8 +312,8 @@ void w_input::update()
 				{
 					break;
 				}
+				break;
 			}
-			break;
 
 			case event_id::input_released:
 			{
@@ -325,8 +326,8 @@ void w_input::update()
 				{
 					break;
 				}
+				break;
 			}
-			break;
 
 			case event_id::input_motion:
 			{
@@ -339,8 +340,8 @@ void w_input::update()
 				{
 					break;
 				}
+				break;
 			}
-			break;
 
 			case event_id::input_key:
 			{
@@ -353,8 +354,8 @@ void w_input::update()
 				{
 					break;
 				}
+				break;
 			}
-			break;
 		}
 	}
 
@@ -378,8 +379,8 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 			engine->input->event_queue.emplace_back( std::move( evt ) );
 
 			timer_repeat->restart();
+			break;
 		}
-		break;
 
 		case button_state::released:
 		{
@@ -388,8 +389,8 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 			evt.input_id = input_id;
 
 			engine->input->event_queue.emplace_back( std::move( evt ) );
+			break;
 		}
-		break;
 
 		case button_state::held:
 		{
@@ -401,8 +402,8 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 				engine->input->event_queue.emplace_back( std::move( evt ) );
 			}
+			break;
 		}
-		break;
 	}
 }
 
@@ -542,8 +543,8 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 			{
 				value.y = 0.f;
 			}
+			break;
 		}
-		break;
 
 		case input_id::gamepad_right_stick:
 		{
@@ -555,26 +556,26 @@ w_vec2 w_input::get_axis_state( e_input_id input_id, bool ignore_dead_zone )
 				value.x = 0.f;
 				value.y = 0.f;
 			}
+			break;
 		}
-		break;
 
 		case input_id::gamepad_left_trigger:
 		{
 			value.x = gamepad->xinput_state.Gamepad.bLeftTrigger / 255.0f;
+			break;
 		}
-		break;
 
 		case input_id::gamepad_right_trigger:
 		{
 			value.x = gamepad->xinput_state.Gamepad.bRightTrigger / 255.0f;
+			break;
 		}
-		break;
 
 		default:
 		{
 			log_error( "Unknown axis" );
+			break;
 		}
-		break;
 	}
 
 	// note : the value being returned is normalized

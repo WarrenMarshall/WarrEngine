@@ -84,29 +84,29 @@ void w_gamepad::play_rumble( e_rumble_effect effect )
 		{
 			intensity = static_cast<int>( rumble_max * 0.75f );
 			duration_ms = 400;
+			break;
 		}
-		break;
 
 		case rumble_effect::small:
 		{
 			intensity = static_cast<int>( rumble_max * 0.5f );
 			duration_ms = 300;
+			break;
 		}
-		break;
 
 		case rumble_effect::tiny:
 		{
 			intensity = static_cast<int>( rumble_max * 0.35f );
 			duration_ms = 200;
+			break;
 		}
-		break;
 
 		case rumble_effect::none:
 		{
 			intensity = 0;
 			duration_ms = 100;
+			break;
 		}
-		break;
 	}
 
 	play_rumble( intensity, duration_ms );

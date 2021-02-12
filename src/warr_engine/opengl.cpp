@@ -175,26 +175,26 @@ void w_opengl::set_blend( e_opengl_blend blend ) const
 		case opengl_blend::alpha:
 		{
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			break;
 		}
-		break;
 
 		case opengl_blend::add:
 		{
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+			break;
 		}
-		break;
 
 		case opengl_blend::multiply:
 		{
 			glBlendFunc( GL_DST_COLOR, GL_ZERO );
+			break;
 		}
-		break;
 
 		case opengl_blend::glow:
 		{
 			glBlendFunc( GL_SRC_COLOR, GL_ONE );
+			break;
 		}
-		break;
 	}
 }
 

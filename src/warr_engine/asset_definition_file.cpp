@@ -37,8 +37,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 						}
 					}
 				}
+
+				break;
 			}
-			break;
 
 			case 1:
 			{
@@ -51,8 +52,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+
+				break;
 			}
-			break;
 
 			case 2:
 			{
@@ -72,8 +74,6 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->create_internals();
 
 					// ----------------------------------------------------------------------------
-
-
 					// every src_texture automatically creates an a_texture with the same name
 
 					asset_cache->add( std::make_unique<a_texture>( tag ), tag, "" );
@@ -316,8 +316,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+
+				break;
 			}
-			break;
 
 			case 3:
 			{
@@ -442,8 +443,9 @@ void w_asset_definition_file::precache_asset_resources( size_t pass_num )
 					asset_ptr->clean_up_internals();
 					asset_ptr->create_internals();
 				}
+
+				break;
 			}
-			break;
 		}
 	}
 }

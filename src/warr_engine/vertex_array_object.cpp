@@ -26,8 +26,8 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 4 );
 			index_buffer = std::make_unique<w_index_buffer_quads>( this );
+			break;
 		}
-		break;
 
 		case render_prim::triangle:
 		{
@@ -44,8 +44,8 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 3 );
 			index_buffer = std::make_unique<w_index_buffer_tris>( this );
+			break;
 		}
-		break;
 
 		case render_prim::line:
 		{
@@ -62,8 +62,8 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 2 );
 			index_buffer = std::make_unique<w_index_buffer_lines>( this );
+			break;
 		}
-		break;
 
 		case render_prim::point:
 		{
@@ -80,8 +80,8 @@ w_vertex_array_object::w_vertex_array_object( w_render_batch* batch, e_render_pr
 
 			vertex_buffer = std::make_unique<w_vertex_buffer>( this, 1 );
 			index_buffer = std::make_unique<w_index_buffer_lines>( this );
+			break;
 		}
-		break;
 
 		default:
 		{

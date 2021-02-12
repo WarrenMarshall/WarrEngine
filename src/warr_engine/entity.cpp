@@ -87,7 +87,6 @@ void w_entity::draw()
 			RS->set_from_opt( rs_opt );
 			RS->pick_id = pick_id;
 			component->draw();
-			//RS->pick_id = 0.0f;
 		)
 
 		OPENGL

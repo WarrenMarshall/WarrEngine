@@ -13,29 +13,33 @@ void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& contro
 		{
 			LAYER_MGR->pop();
 			LAYER_MGR->push<layer_ui>();
+
+			break;
 		}
-		break;
 
 		case H( "button_anim_texture" ):
 		{
 			LAYER_MGR->pop();
 			LAYER_MGR->push<layer_anim_texture>();
+
+			break;
 		}
-		break;
 
 		case H( "button_particles" ):
 		{
 			LAYER_MGR->pop();
 			LAYER_MGR->push<layer_particles>();
+
+			break;
 		}
-		break;
 
 		case H( "button_entity_picking" ):
 		{
 			LAYER_MGR->pop();
 			LAYER_MGR->push<layer_entity_picking>();
+
+			break;
 		}
-		break;
 	}
 }
 

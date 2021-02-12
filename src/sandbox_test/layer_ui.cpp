@@ -19,8 +19,9 @@ void layer_ui_callback::on_left_clicked( const w_imgui_control& control, const w
 		case H( "push_button_01" ):
 		{
 			UI->show_msg_box( "You clicked the button!" );
+
+			break;
 		}
-		break;
 
 		case H( "checkbox_01" ):
 		{
@@ -32,8 +33,9 @@ void layer_ui_callback::on_left_clicked( const w_imgui_control& control, const w
 			{
 				engine->window->set_mouse_mode( mouse_mode::os );
 			}
+
+			break;
 		}
-		break;
 	}
 }
 

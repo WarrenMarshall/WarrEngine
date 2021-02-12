@@ -34,8 +34,8 @@ void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_
 		case imgui_control_type::check_box:
 		{
 			control_data->data = !std::get<bool>( control_data->data );
+			break;
 		}
-		break;
 
 		case imgui_control_type::slider:
 		{
@@ -45,8 +45,8 @@ void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_
 			{
 				control_data->data = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
 			}
+			break;
 		}
-		break;
 	}
 }
 
@@ -64,8 +64,8 @@ void w_imgui_callback::on_motion( const w_imgui_control& control, const w_imgui_
 			{
 				*control_data = result.click_pct.x - glm::mod( result.click_pct.x, control.interval );
 			}
+			break;
 		}
-		break;
 	}
 }
 

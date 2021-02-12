@@ -24,8 +24,8 @@ bool layer_msg_box_ui_callback::on_input_pressed( const w_input_event* evt )
 		case input_id::key_esc:
 		{
 			engine->layer_mgr->pop();
+			break;
 		}
-		break;
 	}
 
 	return false;

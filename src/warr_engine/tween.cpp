@@ -101,14 +101,14 @@ void w_tween::set_type( e_tween_type type )
 		case tween_type::loop:
 		{
 			tween.onStep( on_step_loop );
+			break;
 		}
-		break;
 
 		case tween_type::pingpong:
 		{
 			tween.onStep( on_step_pingpong );
+			break;
 		}
-		break;
 	}
 }
 

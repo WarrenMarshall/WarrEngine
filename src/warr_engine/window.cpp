@@ -160,26 +160,25 @@ void w_window::refresh_mouse_mode()
 		case mouse_mode::os:
 		{
 			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
+			break;
 		}
-		break;
 
 		case mouse_mode::custom:
 		{
 			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
+			break;
 		}
-		break;
 
 		case mouse_mode::locked:
 		{
 			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+			break;
 		}
-		break;
 
 		default:
 		{
 			// unknown mouse mode
 			assert( false );
 		}
-		break;
 	}
 }

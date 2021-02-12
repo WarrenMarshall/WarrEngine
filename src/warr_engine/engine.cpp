@@ -852,6 +852,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		case input_id::key_pause:
 		{
 			toggle_pause();
+
 			return true;
 		}
 
@@ -865,6 +866,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			{
 				time->dilation = 1.0f;
 			}
+
 			return true;
 		}
 
@@ -877,6 +879,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			{
 				time->dilation = 5.0f;
 			}
+
 			return true;
 		}
 
@@ -888,6 +891,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			log_div();
 			log( "-- Single Frame Debugger" );
 			log_div();
+
 			return true;
 		}
 
@@ -895,6 +899,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		case input_id::key_f5:
 		{
 			RENDER->show_physics_debug = !RENDER->show_physics_debug;
+
 			return true;
 		}
 	#endif
@@ -903,6 +908,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		case input_id::key_f11:
 		{
 			window->toggle_fullscreen();
+
 			return true;
 		}
 
@@ -912,6 +918,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			{
 				window->toggle_fullscreen();
 			}
+
 			return true;
 		}
 
@@ -927,12 +934,14 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			{
 				layer_mgr->push<layer_esc_menu>();
 			}
+
 			return true;
 		}
 
 		case input_id::key_f8:
 		{
 			render->show_stats = true;
+
 			return true;
 		}
 	}
@@ -947,6 +956,7 @@ bool w_engine::on_input_released( const w_input_event* evt )
 		case input_id::key_f8:
 		{
 			render->show_stats = false;
+
 			return true;
 		}
 	}

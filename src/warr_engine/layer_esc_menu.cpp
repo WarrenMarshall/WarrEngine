@@ -11,27 +11,27 @@ void layer_esc_menu_ui_callback::on_left_clicked( const w_imgui_control& control
 		case H( "button_resume" ):
 		{
 			engine->layer_mgr->pop();
+			break;
 		}
-		break;
 
 		case H( "button_main_menu" ):
 		{
 			engine->layer_mgr->pop();
 			base_game->reset_layer_stack_to_main_menu();
+			break;
 		}
-		break;
 
 		case H( "button_exit" ):
 		{
 			engine->is_running = false;
+			break;
 		}
-		break;
 
 		case H( "option_fullscreen" ):
 		{
 			engine->window->toggle_fullscreen();
+			break;
 		}
-		break;
 	}
 }
 
@@ -55,8 +55,8 @@ bool layer_esc_menu_ui_callback::on_input_pressed( const w_input_event* evt )
 		case input_id::key_esc:
 		{
 			engine->layer_mgr->pop();
+			break;
 		}
-		break;
 	}
 
 	return false;

@@ -452,15 +452,15 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 					control.rc_client = control.rc_client;
 				}
+				break;
 			}
-			break;
 
 			case imgui_control_type::push_button:
 			{
 				draw_slice_def( control, rc_win_offset, is_hovered, is_hot );
 				draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
+				break;
 			}
-			break;
 
 			case imgui_control_type::check_box:
 			{
@@ -481,21 +481,21 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 				draw_texture( control, rc_texture, texture, is_hovered, is_hot );
 				draw_text( control, rc_client_offset, w_color::pal( 2 ), is_hovered, is_hot );
+				break;
 			}
-			break;
 
 			case imgui_control_type::label:
 			{
 				draw_slice_def( control, rc_win_offset, false, false );
 				draw_text( control, rc_client_offset, w_color::pal( 2 ), false, false );
+				break;
 			}
-			break;
 
 			case imgui_control_type::divider:
 			{
 				draw_slice_def( control, rc_win_offset, false, false );
+				break;
 			}
-			break;
 
 			case imgui_control_type::slider:
 			{
@@ -529,8 +529,8 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 				// draw the thumb indicator
 				RENDER->draw_sprite( a_texture::find( "ui_slider_thumb" ), pos );
+				break;
 			}
-			break;
 
 			case imgui_control_type::edit_box:
 			{
@@ -560,8 +560,8 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 						);
 					}
 				}
+				break;
 			}
-			break;
 		}
 	)
 

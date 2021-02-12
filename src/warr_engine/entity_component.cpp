@@ -185,32 +185,32 @@ void ec_primitive_shape::draw()
 			case primitive_shape::filled_rectangle:
 			{
 				RENDER->draw_filled_rectangle( rc );
+				break;
 			}
-			break;
 
 			case primitive_shape::rectangle:
 			{
 				RENDER->draw_rectangle( rc );
+				break;
 			}
-			break;
 
 			case primitive_shape::circle:
 			{
 				RENDER->draw_circle( w_vec2( 0, 0 ), radius );
+				break;
 			}
-			break;
 
 			case primitive_shape::filled_circle:
 			{
 				RENDER->draw_filled_circle( w_vec2( 0, 0 ), radius );
+				break;
 			}
-			break;
 
 			case primitive_shape::point:
 			{
 				RENDER->draw_point( w_vec2( 0, 0 ) );
+				break;
 			}
-			break;
 		}
 	)
 }

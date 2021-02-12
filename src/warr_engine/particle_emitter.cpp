@@ -83,9 +83,9 @@ void w_particle_emitter::spawn_particle()
 	//new( p ) w_particle();
 	*p = {};
 
-	// particle spawn locations are determined in stages. particles are different
-	// from most things in that they are spawned and updated in world space, independent
-	// of whatever is spawning them.
+	// particle spawn locations are determined in stages. particles are
+	// different from most things in that they are spawned and updated in world
+	// space, independent of whatever is spawning them.
 
 	// 1. find a spawn location based on the particle spawner we are using
 	//    relative to the world origin
@@ -105,8 +105,8 @@ void w_particle_emitter::spawn_particle()
 			auto a_dir = parent_component->parent_entity->get_transform()->angle;
 			a_dir += params->r_dir_var.get_value();
 			p->v_dir = w_vec2::dir_from_angle( a_dir );
+			break;
 		}
-		break;
 
 		case particle_spawn_dir::away_from_center:
 		{
@@ -114,16 +114,16 @@ void w_particle_emitter::spawn_particle()
 			assert( parent_component->parent_entity );
 
 			p->v_dir = ( p->pos - parent_component->parent_entity->get_transform()->pos ).normalize();
+			break;
 		}
-		break;
 
 		default:
 		{
 			auto a_dir = params->a_dir;
 			a_dir += params->r_dir_var.get_value();
 			p->v_dir = w_vec2::dir_from_angle( a_dir );
+			break;
 		}
-		break;
 	}
 
 	p->params = params;
