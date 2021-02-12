@@ -66,7 +66,7 @@ struct w_engine
 	w_cmdline_args cmdline;
 
 	std::unique_ptr<w_opengl_framebuffer> frame_buffer = nullptr;
-	std::unique_ptr<w_opengl_framebuffer> blur_frame_buffers[2];
+	std::unique_ptr<w_opengl_framebuffer> blur_frame_buffers[ 2 ] = { nullptr, nullptr };
 	std::unique_ptr<w_opengl_framebuffer> composite_frame_buffer = nullptr;
 
 	std::unique_ptr<w_physics_debug_draw> physics_debug_draw = nullptr;

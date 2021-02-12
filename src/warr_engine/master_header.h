@@ -96,6 +96,7 @@ extern float ui_window_h;
 #define ui_window_scale (v_window_w / ui_window_w)
 
 #include "filesystem.h"
+#include "datatypes.h"
 
 #include "bit_flag_generator.h"
 #include "matrix.h"
@@ -118,7 +119,6 @@ extern float ui_window_h;
 
 #undef min	// fixes dumb compile problem
 #undef max	// fixes dumb compile problem
-#include "datatypes.h"
 #include "transform.h"
 #include "asset.h"
 #include "a_palette.h"

@@ -2,11 +2,11 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_opengl_color_attachment::w_opengl_color_attachment( w_opengl_framebuffer* fb_owner )
-	: fb_owner( fb_owner )
+w_opengl_color_attachment::w_opengl_color_attachment( w_opengl_framebuffer* fb_owner, const w_color& clear_color )
+	: fb_owner( fb_owner ), clear_color( clear_color )
 {
 	// figure out how to identify the internal texture
-	int texture_num = (int)fb_owner->color_attachments.size();
+	auto texture_num = (int)fb_owner->color_attachments.size();
 	std::string tex_name = fmt::format( "tex{}_{}_frame_buffer", texture_num, fb_owner->base_name );
 
 	// create the internal texture
@@ -28,4 +28,9 @@ w_opengl_color_attachment::w_opengl_color_attachment( w_opengl_framebuffer* fb_o
 
 	// attach to the owning frame buffer
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + texture_num, GL_TEXTURE_2D, texture->src_texture->gl_id, 0 );
+}
+
+void w_opengl_color_attachment::clear()
+{
+	glClearTexImage( texture->src_texture->gl_id, 0, GL_RGBA, GL_FLOAT, &( clear_color.r ) );
 }

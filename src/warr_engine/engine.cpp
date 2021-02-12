@@ -197,7 +197,7 @@ void w_engine::launch( int argc, char* argv [] )
 	// set up frame buffers
 
 	engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game" );
-	engine->frame_buffer->add_color_attachment();
+	engine->frame_buffer->add_color_attachment( engine->window->window_clear_color );
 	engine->frame_buffer->add_color_attachment();
 	engine->frame_buffer->add_color_attachment();
 	engine->frame_buffer->finalize();

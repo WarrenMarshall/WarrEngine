@@ -10,9 +10,9 @@ w_opengl_framebuffer::w_opengl_framebuffer( const std::string& base_name )
 	bind();
 }
 
-void w_opengl_framebuffer::add_color_attachment()
+void w_opengl_framebuffer::add_color_attachment( const w_color& clear_color )
 {
-	color_attachments.emplace_back( w_opengl_color_attachment( this ) );
+	color_attachments.emplace_back( w_opengl_color_attachment( this, clear_color ) );
 }
 
 void w_opengl_framebuffer::finalize()

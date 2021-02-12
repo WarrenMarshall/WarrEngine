@@ -10,7 +10,7 @@ struct w_opengl_framebuffer
 	w_opengl_framebuffer( const std::string& base_name );
 	~w_opengl_framebuffer();
 
-	void add_color_attachment();
+	void add_color_attachment( const w_color& clear_color = w_color::black );
 	void finalize();
 	void bind();
 	void unbind();

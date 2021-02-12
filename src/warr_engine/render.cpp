@@ -309,13 +309,13 @@ void w_render::begin_frame()
 	// ----------------------------------------------------------------------------
 
 	glViewport( 0, 0, (int)v_window_w, (int)v_window_h );
-	glClearColor(
-		engine->window->window_clear_color.r,
-		engine->window->window_clear_color.g,
-		engine->window->window_clear_color.b,
-		engine->window->window_clear_color.a );
 
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	// clear for depth only
+	glClear( GL_DEPTH_BUFFER_BIT );
+
+	// clear specific color attachments
+	engine->frame_buffer->color_attachments[ 0 ].clear();	// main
+	engine->frame_buffer->color_attachments[ 1 ].clear();	// glow
 }
 
 // called at end of each frame to finalize and render all buffers
