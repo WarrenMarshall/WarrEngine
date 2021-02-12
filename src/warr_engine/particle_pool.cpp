@@ -3,27 +3,27 @@
 #include "master_header.h"
 
 w_particle_pool::w_particle_pool( int num_particles )
-	: pool_sz( num_particles )
 {
-	particles.resize( pool_sz );
-	data_ptr = particles.data();
+	particles.resize( num_particles );
 
 	log_verbose( "Creating a particle pool with {} particles", num_particles );
 }
 
 w_particle* w_particle_pool::get_next_particle()
 {
+	int sz = (int)particles.size();
+
 	// move the idx ahead by 1, wrapping around from the end to the start
 
 	idx++;
 
-	if( idx >= pool_sz )
+	if( idx >= sz )
 	{
-		idx -= pool_sz;
+		idx -= sz;
 	}
 
 	// return a pointer to the particle at that index.
-	return data_ptr + idx;
+	return &( particles[ idx ] );
 }
 
 void w_particle_pool::draw()
@@ -34,28 +34,27 @@ void w_particle_pool::draw()
 	float pct_of_life;
 	w_vec2 interp_pos;
 
-	w_particle* particle = data_ptr;
-	for( auto p = 0 ; p < pool_sz ; ++p )
+	for( const auto& particle : particles )
 	{
-		if( particle->is_alive )
+		if( particle.is_alive )
 		{
 			// lifetime
-			interp_life_span = RENDER->calc_interpolated_per_sec_value( particle->life_span, -fixed_time_step::ms_per_step );
-			pct_of_life = glm::abs( 1.0f - ( interp_life_span / particle->life_span_save ) );
+			interp_life_span = RENDER->calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
+			pct_of_life = glm::abs( 1.0f - ( interp_life_span / particle.life_span_save ) );
 
 			// color + alpha
-			particle->params->t_color.get_value( pct_of_life, &color );
-			particle->params->t_alpha.get_value( pct_of_life, &color.a );
+			particle.params->t_color.get_value( pct_of_life, &color );
+			particle.params->t_alpha.get_value( pct_of_life, &color.a );
 
 			// scale
-			particle->params->t_scale.get_value( pct_of_life, &scale );
+			particle.params->t_scale.get_value( pct_of_life, &scale );
 
 			// angle
-			RS->angle = RENDER->calc_interpolated_per_sec_value( particle->spin, particle->spin_per_sec );
+			RS->angle = RENDER->calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec );
 
 			// position
-			interp_pos.x = RENDER->calc_interpolated_per_sec_value( particle->pos.x, ( particle->v_dir.x * particle->velocity_per_sec ) );
-			interp_pos.y = RENDER->calc_interpolated_per_sec_value( particle->pos.y, ( particle->v_dir.y * particle->velocity_per_sec ) );
+			interp_pos.x = RENDER->calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) );
+			interp_pos.y = RENDER->calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) );
 
 			// the particle system issues a LOT of draw calls and these values
 			// are changing for every particle. it doesn't make sense to go
@@ -67,12 +66,10 @@ void w_particle_pool::draw()
 			// faster way of telling the renderer what each particle wants.
 
 			RS->color = color;
-			RS->scale = particle->base_scale * scale;
+			RS->scale = particle.base_scale * scale;
 
-			RENDER->draw_sprite( particle->params->texture, interp_pos );
+			RENDER->draw_sprite( particle.params->texture, interp_pos );
 		}
-
-		particle++;
 	}
 }
 
@@ -80,15 +77,12 @@ void w_particle_pool::update()
 {
 	num_alive = 0;
 
-	w_particle* particle = data_ptr;
-	for( auto p = 0 ; p < pool_sz ; ++p )
+	for( auto& particle : particles )
 	{
-		if( particle->is_alive )
+		if( particle.is_alive )
 		{
 			num_alive++;
-			particle->update();
+			particle.update();
 		}
-
-		particle++;
 	}
 }

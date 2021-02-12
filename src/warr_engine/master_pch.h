@@ -49,6 +49,7 @@
 	#include <optional>
 	#include <future>
 	#include <numbers>
+	#include <span>
 
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"
