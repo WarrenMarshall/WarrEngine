@@ -217,6 +217,9 @@
     <ClCompile Include="opengl_framebuffer.cpp">
       <Filter>src\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="opengl_color_attachment.cpp">
+      <Filter>src\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -439,6 +442,9 @@
       <Filter>include\opengl</Filter>
     </ClInclude>
     <ClInclude Include="opengl_framebuffer.h">
+      <Filter>include\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="opengl_color_attachment.h">
       <Filter>include\opengl</Filter>
     </ClInclude>
   </ItemGroup>
