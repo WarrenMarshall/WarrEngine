@@ -195,10 +195,24 @@ void w_engine::launch( int argc, char* argv [] )
 	}
 
 	// set up frame buffers
-	engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game", 3, v_window_w, v_window_h );
-	engine->blur_frame_buffers[0] = std::make_unique<w_opengl_framebuffer>( "blur1", 1, v_window_w, v_window_h );
-	engine->blur_frame_buffers[1] = std::make_unique<w_opengl_framebuffer>( "blur2", 1, v_window_w, v_window_h );
-	engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite", 1, v_window_w, v_window_h );
+
+	engine->frame_buffer = std::make_unique<w_opengl_framebuffer>( "game" );
+	engine->frame_buffer->add_color_attachment();
+	engine->frame_buffer->add_color_attachment();
+	engine->frame_buffer->add_color_attachment();
+	engine->frame_buffer->finalize();
+
+	engine->blur_frame_buffers[ 0 ] = std::make_unique<w_opengl_framebuffer>( "blur1" );
+	engine->blur_frame_buffers[ 0 ]->add_color_attachment();
+	engine->blur_frame_buffers[ 0 ]->finalize();
+
+	engine->blur_frame_buffers[ 1 ] = std::make_unique<w_opengl_framebuffer>( "blur2" );
+	engine->blur_frame_buffers[ 1 ]->add_color_attachment();
+	engine->blur_frame_buffers[ 1 ]->finalize();
+
+	engine->composite_frame_buffer = std::make_unique<w_opengl_framebuffer>( "composite" );
+	engine->composite_frame_buffer->add_color_attachment();
+	engine->composite_frame_buffer->finalize();
 
 	// used for solid drawing
 	engine->tex_white = a_texture::find( "engine_white" );
@@ -375,7 +389,7 @@ void w_engine::main_loop()
 		blur_frame_buffers[0]->bind();
 		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
-		RENDER->draw( frame_buffer->textures[ 1 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+		RENDER->draw( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 		blur_frame_buffers[0]->unbind();
 
@@ -389,7 +403,7 @@ void w_engine::main_loop()
 		{
 			blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
-			RENDER->draw( blur_frame_buffers[ !pingpong ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+			RENDER->draw( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
 
@@ -408,7 +422,7 @@ void w_engine::main_loop()
 
 			OPENGL->shaders[ "base" ].bind();
 
-			RENDER->draw( frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+			RENDER->draw( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			// draw glow frame buffer on top with blending
@@ -416,7 +430,7 @@ void w_engine::main_loop()
 			OPENGL->set_blend( opengl_blend::add );
 
 			//RS->color.a = 0.5f;
-			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+			RENDER->draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			OPENGL->set_blend( opengl_blend::alpha );
@@ -440,11 +454,11 @@ void w_engine::main_loop()
 			(int)window->viewport_pos_sz.h
 		);
 
-		RENDER->draw( composite_frame_buffer->textures[ 0 ], w_rect( 0, 0, v_window_w, v_window_h ) );
+		RENDER->draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
-	#if 0
-		// ----------------------------------------------------------------------------
+	#if 1
+		// ---------------------------------------------------------------------------
 		// debug helper
 		//
 		// draw all the color buffers in little quads at the bottom of the
@@ -457,47 +471,47 @@ void w_engine::main_loop()
 		float h = v_window_h / 4.0f;
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
-	#if 0
-		// main
-		RENDER_BLOCK
-		(
-			RENDER->draw( frame_buffer->textures[ 0 ], rc );
-			RS->scale = 0.5f;
-			RENDER->draw_string( "(base)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-			rc.x += w;
-		)
-	#endif
+		#if 0
+			// main
+			RENDER_BLOCK
+			(
+				RENDER->draw( frame_buffer->color_attachments[ 0 ].texture, rc );
+				RS->scale = 0.5f;
+				RENDER->draw_string( "(base)", { rc.x, rc.y } );
+				RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+				rc.x += w;
+			)
+		#endif
 
-	#if 0
-		// glow
-		RENDER_BLOCK
-		(
-			RENDER->draw( frame_buffer->textures[ 1 ], rc );
-			RS->scale = 0.5f;
-			RENDER->draw_string( "(glow)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-			rc.x += w;
-		)
-	#endif
-
-	#if 0
-		// pick
-		RENDER_BLOCK
-		(
-			RENDER->draw( frame_buffer->textures[ 2 ], rc );
-			RS->scale = 0.5f;
-			RENDER->draw_string( "(pick)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-			rc.x += w;
-		)
-	#endif
+		#if 1
+			// glow
+			RENDER_BLOCK
+			(
+				RENDER->draw( frame_buffer->color_attachments[ 1 ].texture, rc );
+				RS->scale = 0.5f;
+				RENDER->draw_string( "(glow)", { rc.x, rc.y } );
+				RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+				rc.x += w;
+			)
+		#endif
 
 		#if 0
+			// pick
+			RENDER_BLOCK
+			(
+				RENDER->draw( frame_buffer->color_attachments[ 2 ].texture, rc );
+				RS->scale = 0.5f;
+				RENDER->draw_string( "(pick)", { rc.x, rc.y } );
+				RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+				rc.x += w;
+			)
+		#endif
+
+		#if 1
 		// blurred glow
 		RENDER_BLOCK
 		(
-			RENDER->draw( blur_frame_buffers[ 0 ]->textures[ 0 ], rc );
+			RENDER->draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, rc );
 			RS->scale = 0.5f;
 			RENDER->draw_string( "(blur)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();

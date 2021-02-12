@@ -14,6 +14,7 @@ struct w_imgui_result;
 struct w_game;
 struct w_layer;
 struct w_layer_mgr;
+struct w_opengl_framebuffer;
 struct w_particle_pool;
 struct w_physics_debug_draw;
 struct w_physics_contact_listener;
