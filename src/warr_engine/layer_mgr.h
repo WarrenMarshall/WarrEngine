@@ -10,8 +10,6 @@ struct w_layer_mgr
 
 	std::vector<std::unique_ptr<w_layer>> layer_stack;
 
-	~w_layer_mgr();
-
 	template<typename T>
 	void push()
 	{

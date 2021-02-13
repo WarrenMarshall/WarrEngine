@@ -51,6 +51,10 @@
 	#include <numbers>
 	#include <span>
 
+	// SMFL
+	#include <SFML/Audio.hpp>
+	#include <SFML/Graphics.hpp>
+
 	// Tweeny
 	#include "tweeny-master/include/tweeny.h"
 
@@ -63,10 +67,6 @@
 	#define GLFW_EXPOSE_NATIVE_WIN32
 	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3native.h>
 	#undef APIENTRY
-
-	// image loading
-	// (https://github.com/nothings/stb)
-	#include "stb-master/stb_image.h"
 
 	// Box2D - physics
 	#include "box2d-master/include/box2d/box2d.h"
@@ -88,9 +88,6 @@
 	#define PUGIXML_HEADER_ONLY
 	#include "pugixml-1.10/src/pugixml.hpp"
 
-	// SMFL
-	#include <SFML/Audio.hpp>
-
 #pragma warning(pop)	// turn warnings back on
 
 // ----------------------------------------------------------------------------
@@ -105,11 +102,12 @@ namespace fixed_time_step
 	// how many fixed time steps, per second
 	constexpr int frames_per_second = 60;
 
-	// how many milliseconds will have passed each time a fixed time step update occurs
-	constexpr int ms_per_step = static_cast< int >( 1000.0f / (float)frames_per_second );
+	// how many milliseconds will have passed each time a fixed time step update
+	// occurs
+	constexpr int ms_per_step = static_cast<int>( 1000.0f / (float)frames_per_second );
 
-	// any value you want to update as a "per second" value in an update function should
-	// be multiplied against this constant.
+	// any value you want to update as a "per second" value in an update
+	// function should be multiplied against this constant.
 	//
 	// i.e. if you want to rotate something 15 degrees per second, then in your
 	// update function, increase your angle value with something like:
@@ -121,20 +119,20 @@ namespace fixed_time_step
 
 // ----------------------------------------------------------------------------
 
-// comment this line out if start up is crashing and you want to rule out
-// the threaded asset loading code.
+// comment this line out if start up is crashing and you want to rule out the
+// threaded asset loading code.
 
 #define USE_THREADED_ASSET_LOADING
 
 // ----------------------------------------------------------------------------
 
-#define declare_find_func( struct_type )\
-static struct_type* find( const std::string_view name, bool silent = false );
+#define declare_find_func( struct_name )\
+static struct_name* find( const std::string_view name, bool silent = false );
 
-#define implement_find_func( struct_type )\
-struct_type* struct_type::find( const std::string_view name, bool silent )\
+#define implement_find_func( struct_name )\
+struct_name* struct_name::find( const std::string_view name, bool silent )\
 {\
-	return engine->find_asset<struct_type>( name, silent );\
+	return engine->find_asset<struct_name>( name, silent );\
 }
 
 // ----------------------------------------------------------------------------

@@ -18,8 +18,7 @@ struct a_src_texture : i_asset
 	float w = 0.0f;
 	float h = 0.0f;
 	e_tiling tiling = tiling::clamp;
-
-	unsigned char* color_data = nullptr;
+	std::unique_ptr<sf::Image> image = nullptr;
 
 	virtual ~a_src_texture() override;
 

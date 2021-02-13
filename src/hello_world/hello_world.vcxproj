@@ -137,7 +137,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\SFML\lib;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -164,7 +164,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\SFML\lib;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-window-s.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>

@@ -242,7 +242,6 @@ void w_engine::launch( int argc, char* argv [] )
 void w_engine::shutdown()
 {
 	// Clean up
-
 	log( "Shutting down..." );
 
 	// this needs to be done before the audio or windowing systems, to give the
@@ -254,15 +253,15 @@ void w_engine::shutdown()
 	log( "Shutting down window" );
 	window->deinit();
 
+	log( "Shutting down GLFW" );
+	glfwTerminate();
+
 	log( "Shutting down OpenGL" );
 	for( auto& iter : OPENGL->shaders )
 	{
 		auto& shader = iter.second;
 		glDeleteProgram( shader.id );
 	}
-
-	log( "Shutting down GLFW" );
-	glfwTerminate();
 
 	log( "Shutting down input" );
 	input->deinit();
@@ -631,7 +630,7 @@ void w_engine::init()
 	// make sure we are only calling this function ONE time per instance
 	assert( time == nullptr );
 
-	stbi_set_flip_vertically_on_load( 1 );
+	//stbi_set_flip_vertically_on_load( 1 );
 
 	time = std::make_unique<w_time>();
 	asset_definition_file_cache = std::make_unique<w_cache_asset_definition_files>();
@@ -652,6 +651,8 @@ void w_engine::init()
 void w_engine::deinit()
 {
 	asset_definition_file_cache = nullptr;
+
+	/*
 	time = nullptr;
 	asset_cache = nullptr;
 	layer_mgr = nullptr;
@@ -663,6 +664,7 @@ void w_engine::deinit()
 	opengl = nullptr;
 	config_vars = nullptr;
 	random = nullptr;
+	*/
 }
 
 void w_engine::draw()

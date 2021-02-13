@@ -2,11 +2,6 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_layer_mgr::~w_layer_mgr()
-{
-	clear_stack();
-}
-
 void w_layer_mgr::clear_stack()
 {
 	// Give each layer a chance to clean up before the manager shuts down.

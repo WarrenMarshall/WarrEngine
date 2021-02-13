@@ -23,18 +23,18 @@ bool a_src_texture::create_internals()
 	assert( !original_filename.empty() );
 
 	auto file = engine->fs->load_binary_file( original_filename );
-	int width, height, bpp;
-	color_data = stbi_load_from_memory(
-		(const stbi_uc*) ( file->buffer->data() ),
-		static_cast<int>( file->buffer->size() ),
-		&width, &height, &bpp, 4 );
-	w = static_cast<float>( width );
-	h = static_cast<float>( height );
-
-	if( !color_data )
+	image = std::make_unique<sf::Image>();
+	if( !image->loadFromMemory( file->buffer->data(), file->buffer->size() ) )
 	{
+		image = nullptr;
 		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
+
+	auto sz = image->getSize();
+	w = (float)sz.x;
+	h = (float)sz.y;
+
+	image->flipVertically();
 
 	return true;
 }
@@ -58,13 +58,14 @@ void a_src_texture::finalize_after_loading()
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 	}
 
-	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGBA8,
-		static_cast<int>( w ), static_cast<int>( h ),
-		0, GL_RGBA, GL_UNSIGNED_BYTE, color_data );
+	if( image )
+	{
+		glTexImage2D(
+			GL_TEXTURE_2D, 0, GL_RGBA8,
+			static_cast<int>( w ), static_cast<int>( h ),
+			0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)( image->getPixelsPtr() ) );
+	}
 
 	// free the source data now that it's been uploaded to opengl
-
-	stbi_image_free( color_data );
-	color_data = nullptr;
+	image = nullptr;
 }
