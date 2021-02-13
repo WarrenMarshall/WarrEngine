@@ -227,7 +227,7 @@
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="opengl_color_attachment.cpp" />
-    <ClCompile Include="util_math.cpp" />
+    <ClCompile Include="accum_value.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
     <ClCompile Include="opengl_framebuffer.cpp" />
@@ -329,7 +329,7 @@
     <ClInclude Include="engine.h" />
     <ClInclude Include="logfile.h" />
     <ClInclude Include="master_header.h" />
-    <ClInclude Include="util_math.h" />
+    <ClInclude Include="accum_value.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="layer_mgr.h" />

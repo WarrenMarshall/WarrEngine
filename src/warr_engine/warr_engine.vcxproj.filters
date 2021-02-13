@@ -40,19 +40,10 @@
     <ClCompile Include="logfile.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="matrix.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="random.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="timer.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="tokenizer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="tween.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="window.cpp">
@@ -208,9 +199,6 @@
     <ClCompile Include="util_string.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="util_math.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="opengl.cpp">
       <Filter>src\opengl</Filter>
     </ClCompile>
@@ -219,6 +207,18 @@
     </ClCompile>
     <ClCompile Include="opengl_color_attachment.cpp">
       <Filter>src\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="matrix.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="random.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="tween.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="accum_value.cpp">
+      <Filter>src\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,19 +258,10 @@
     <ClInclude Include="warr_engine.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="tween.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="tokenizer.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="timer.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="random.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="matrix.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="logfile.h">
@@ -435,9 +426,6 @@
     <ClInclude Include="util_string.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="util_math.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="opengl.h">
       <Filter>include\opengl</Filter>
     </ClInclude>
@@ -446,6 +434,18 @@
     </ClInclude>
     <ClInclude Include="opengl_color_attachment.h">
       <Filter>include\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="random.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="tween.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="accum_value.h">
+      <Filter>include\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -508,6 +508,12 @@
     </Filter>
     <Filter Include="include\opengl">
       <UniqueIdentifier>{4219c0d2-3f5f-4f3f-8586-ccfa96043aaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\math">
+      <UniqueIdentifier>{d697c078-86c4-485b-bad9-d4371a985b18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\math">
+      <UniqueIdentifier>{756d839e-b63e-43b4-8ab1-0dd223bf5eb9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

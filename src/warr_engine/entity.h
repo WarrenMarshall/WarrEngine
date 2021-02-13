@@ -12,7 +12,6 @@ struct w_entity : i_life_cycle
 	w_entity();
 	~w_entity() = default;
 
-	static float last_pick_id;
 	void make_pickable();
 
 	// entity components
