@@ -71,12 +71,12 @@ void layer_sound_board::draw_ui()
 	w_layer::draw_ui();
 
 	IMGUI->do_push_button( H( "button_sfx_01" ) )
-		->set_text( "Sound #1" )
+		->set_text( "Sound : Coin" )
 		->set_pos( { 16.0f, 32.0f } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_sfx_02" ) )
-		->set_text( "Sound #2" )
+		->set_text( "Sound : Jump" )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_sfx_doom" ) )
@@ -90,11 +90,11 @@ void layer_sound_board::draw_ui()
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_pause_music" ) )
-		->set_text( "Pause Music" )
+		->set_text( "Pause" )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_stop_music" ) )
-		->set_text( "Stop Music" )
+		->set_text( "Stop" )
 		->finalize();
 
 	RENDER_BLOCK
@@ -104,6 +104,15 @@ void layer_sound_board::draw_ui()
 		RS->color = w_color::white;
 		RENDER->draw_string( "Sound Board", { ui_window_w / 2.0f, 16.0f } );
 	)
+}
+
+void layer_sound_board::pop()
+{
+	a_sound::find( "music_01" )->stop();
+
+	// #todo - should probably stop all sounds from playing, but too lazy right now
+
+	w_layer::pop();
 }
 
 w_imgui_callback* layer_sound_board::get_imgui_callback()

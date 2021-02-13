@@ -19,5 +19,6 @@ struct layer_sound_board : w_layer
 
 	virtual void draw() override;
 	virtual void draw_ui() override;
+	virtual void pop() override;
 	virtual w_imgui_callback* get_imgui_callback() override;
 };

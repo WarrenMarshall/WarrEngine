@@ -13,6 +13,8 @@ void w_layer_mgr::clear_stack()
 
 	for( const auto& layer : layer_stack )
 	{
+		layer->getting_covered();
+		layer->pop();
 		layer->ilc_set( life_cycle::dead );
 	}
 }
