@@ -9,8 +9,8 @@ w_imgui_control_data w_imgui_callback::get_data_for_control(const w_imgui_contro
 
 a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& control )
 {
-	w_imgui_control_data* control_data = IMGUI->get_control_data( control.tag );
-	auto checked = std::get<bool>( control_data ? control_data->data : false );
+	auto control_data = IMGUI->get_control_data( control.tag );
+	auto checked = std::get<bool>( control_data ? control_data->data : get_data_for_control( control ).data );
 
 	if( checked )
 	{

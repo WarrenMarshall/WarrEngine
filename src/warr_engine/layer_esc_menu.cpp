@@ -154,7 +154,6 @@ void layer_esc_menu::draw_ui()
 	IMGUI->do_checkbox( H( "option_fullscreen" ) )
 		->set_text( "Full Screen?" )
 		->finalize();
-
 }
 
 w_imgui_callback* layer_esc_menu::get_imgui_callback()
