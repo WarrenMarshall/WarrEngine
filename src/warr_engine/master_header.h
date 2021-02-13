@@ -99,6 +99,7 @@ extern float ui_window_h;
 #include "datatypes.h"
 
 #include "bit_flag_generator.h"
+#include "coord.h"
 #include "matrix.h"
 #include "opengl_color_attachment.h"
 #include "opengl_framebuffer.h"

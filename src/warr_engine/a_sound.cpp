@@ -7,34 +7,27 @@ implement_find_func( a_sound )
 a_sound::~a_sound()
 {
 	a_sound::clean_up_internals();
+
 }
 
 void a_sound::clean_up_internals()
 {
-	if( sample_handle > 0 )
-	{
-		BASS_SampleFree( sample_handle );
-		sample_handle = 0;
-	}
+	sound.stop();
 }
 
 void a_sound::play()
 {
-	if( looped )
-	{
-		channel_handle = BASS_SampleGetChannel( sample_handle, false );
-	}
+	sound.play();
+}
 
-	BASS_ChannelPlay( channel_handle, !looped );
+void a_sound::pause()
+{
+	sound.pause();
 }
 
 void a_sound::stop()
 {
-	if( channel_handle )
-	{
-		BASS_ChannelStop( channel_handle );
-		channel_handle = 0;
-	}
+	sound.stop();
 }
 
 bool a_sound::create_internals()
@@ -48,21 +41,15 @@ bool a_sound::create_internals()
 
 	auto file = engine->fs->load_binary_file( original_filename );
 
-	sample_handle = BASS_SampleLoad(
-		true,
-		file->buffer->data(),
-		0,
-		static_cast<int>( file->buffer->size() ),
-		looped ? 1 : 32,
-		BASS_SAMPLE_OVER_VOL | (looped ? BASS_SAMPLE_LOOP : 0)
-	);
-
-	if( !sample_handle && BASS_IsStarted() )
+	if( buffer.loadFromMemory( file->buffer->data(), file->buffer->size() ) )
+	{
+		sound.setBuffer( buffer );
+		sound.setLoop( looped );
+	}
+	else
 	{
 		log_error( "Couldn't load the file : [{}]", original_filename );
 	}
-
-	channel_handle = BASS_SampleGetChannel( sample_handle, false );
 
 	return true;
 }

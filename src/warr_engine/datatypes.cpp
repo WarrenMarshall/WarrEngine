@@ -504,6 +504,14 @@ w_vec2 w_vec2::reflect_across_normal( const w_vec2& v, const w_vec2& n )
 	return w_vec2( rdir.x, rdir.y );
 }
 
+w_vec2 w_vec2::snap_to_pixel()
+{
+	x = ::snap_to_pixel( x );
+	y = ::snap_to_pixel( y );
+
+	return *this;
+}
+
 // returns a w_vec2 representing the uv tiling factors needed to tile "texture"
 // inside of "rc" a natural number of times in both the U and V directions.
 

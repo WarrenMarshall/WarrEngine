@@ -13,5 +13,6 @@
 #include "layer_anim_texture.h"
 #include "layer_particles.h"
 #include "layer_entity_picking.h"
+#include "layer_sound_board.h"
 
 #include "layer_main_menu.h"

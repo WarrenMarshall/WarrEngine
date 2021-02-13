@@ -71,9 +71,6 @@
 	// Box2D - physics
 	#include "box2d-master/include/box2d/box2d.h"
 
-	// BASS - sound and music library
-	#include "bass24/c/bass.h"
-
 	// cute headers - collision detection
 	// (https://github.com/RandyGaul/cute_headers)
 	#include "cute_headers/cute_c2.h"
@@ -90,6 +87,9 @@
 	// PugiXML
 	#define PUGIXML_HEADER_ONLY
 	#include "pugixml-1.10/src/pugixml.hpp"
+
+	// SMFL
+	#include <SFML/Audio.hpp>
 
 #pragma warning(pop)	// turn warnings back on
 
@@ -176,6 +176,7 @@ const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 #include "logfile.h"
 
 #include "accum_value.h"
+#include "coord.h"
 #include "parser.h"
 #include "tokenizer.h"
 

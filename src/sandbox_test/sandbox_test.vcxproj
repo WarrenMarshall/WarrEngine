@@ -121,9 +121,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;APP_NAME=sandbox_test;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;SFML_STATIC;APP_NAME=sandbox_test;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external;c:\WarrenDev\src\warr_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external;$(SolutionDir)..\external\SFML\include;c:\WarrenDev\src\warr_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -136,8 +136,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;bass.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\SFML\lib;$(SolutionDir)..\external\box2d-master\build\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -147,9 +147,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;APP_NAME=sandbox_test;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;SFML_STATIC;APP_NAME=sandbox_test;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\external;c:\WarrenDev\src\warr_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external;$(SolutionDir)..\external\SFML\include;c:\WarrenDev\src\warr_engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -163,8 +163,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;bass.lib;box2d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\SFML\lib;$(SolutionDir)..\external\box2d-master\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -173,6 +173,7 @@
     <ClCompile Include="layer_entity_picking.cpp" />
     <ClCompile Include="layer_main_menu.cpp" />
     <ClCompile Include="layer_particles.cpp" />
+    <ClCompile Include="layer_sound_board.cpp" />
     <ClCompile Include="layer_ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sandbox_test.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="layer_entity_picking.h" />
     <ClInclude Include="layer_main_menu.h" />
     <ClInclude Include="layer_particles.h" />
+    <ClInclude Include="layer_sound_board.h" />
     <ClInclude Include="layer_ui.h" />
     <ClInclude Include="sandbox_test.h" />
   </ItemGroup>

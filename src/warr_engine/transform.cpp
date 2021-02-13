@@ -95,9 +95,3 @@ w_vec2 w_transform::transform_dir( const w_vec2& dir )
 	auto v = matrix_dir.m * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
 	return w_vec2( v.x, v.y );
 }
-
-w_vec2 w_transform::inv_transform_dir( const w_vec2& dir )
-{
-	auto v = glm::inverse( matrix_dir.m ) * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
-	return w_vec2( v.x, v.y );
-}

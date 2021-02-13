@@ -33,24 +33,19 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	engine->input->mouse_window_pos.y = glm::round( static_cast<float>( ypos ) );
 
 	// convert the window space mouse position into a position on the virtual screen.
-	float vratio = ( v_window_w / engine->window->viewport_pos_sz.w );
-	float vx = ( (float)xpos - engine->window->viewport_pos_sz.x ) * vratio;
-	float vy = ( (float)ypos - engine->window->viewport_pos_sz.y ) * vratio;
+	w_vec2 vpos = w_coord::window_pos_to_virtual_pos( { (float)xpos, (float)ypos } );
 
 	// compute movement delta in virtual window space
-	engine->input->vmouse_move_delta.x += vx - last_vmouse_pos.x;
-	engine->input->vmouse_move_delta.y += vy - last_vmouse_pos.y;
+	engine->input->vmouse_move_delta.x += vpos.x - last_vmouse_pos.x;
+	engine->input->vmouse_move_delta.y += vpos.y - last_vmouse_pos.y;
 
-	last_vmouse_pos = w_vec2( vx, vy );
+	last_vmouse_pos = vpos;
 
 	// only update the position if the mouse is moving over the virtual window itself
-	if( vx >= 0 && vx <= v_window_w && vy >= 0 && vy <= v_window_h )
+	if( vpos.x >= 0 && vpos.x <= v_window_w && vpos.y >= 0 && vpos.y <= v_window_h )
 	{
-		engine->input->mouse_vwindow_pos.x = glm::round( static_cast<float>( vx ) );
-		engine->input->mouse_vwindow_pos.y = glm::round( static_cast<float>( vy ) );
-
-		engine->input->mouse_uiwindow_pos.x = glm::round( engine->input->mouse_vwindow_pos.x / ui_window_scale );
-		engine->input->mouse_uiwindow_pos.y = glm::round( engine->input->mouse_vwindow_pos.y / ui_window_scale );
+		engine->input->mouse_vwindow_pos = vpos.snap_to_pixel();
+		engine->input->mouse_uiwindow_pos = w_coord::virtual_pos_to_ui_pos( engine->input->mouse_vwindow_pos ).snap_to_pixel();
 	}
 }
 

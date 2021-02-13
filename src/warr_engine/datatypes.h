@@ -211,6 +211,8 @@ struct w_vec2
 	_NODISCARD static w_vec2 dir_from_angle( float angle );
 	_NODISCARD static float angle_from_dir( const w_vec2& dir );
 	_NODISCARD static w_vec2 reflect_across_normal( const w_vec2& v, const w_vec2& n );
+
+	w_vec2 snap_to_pixel();
 };
 
 // ----------------------------------------------------------------------------

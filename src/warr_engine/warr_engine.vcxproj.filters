@@ -220,6 +220,9 @@
     <ClCompile Include="accum_value.cpp">
       <Filter>src\math</Filter>
     </ClCompile>
+    <ClCompile Include="coord.cpp">
+      <Filter>src\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -445,6 +448,9 @@
       <Filter>include\math</Filter>
     </ClInclude>
     <ClInclude Include="accum_value.h">
+      <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="coord.h">
       <Filter>include\math</Filter>
     </ClInclude>
   </ItemGroup>

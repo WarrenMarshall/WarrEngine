@@ -1,8 +1,25 @@
 
-# SFX
+{
+	"type" "sound"
+	"tag" "sfx_01"
+	"filename" "sfx/snd_01.wav"
+}
 
-# {
-# 	"type" "sound"
-# 	"tag" "name_of_asset"
-# 	"filename" "sfx/filename.wav"
-# }
+{
+	"type" "sound"
+	"tag" "sfx_02"
+	"filename" "sfx/snd_02.wav"
+}
+
+{
+	"type" "sound"
+	"tag" "sfx_doom"
+	"filename" "sfx/doom.wav"
+}
+
+{
+	"type" "sound"
+	"tag" "music_01"
+	"looped" "true"
+	"filename" "sfx/music_01.wav"
+}

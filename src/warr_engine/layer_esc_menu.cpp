@@ -55,7 +55,7 @@ bool layer_esc_menu_ui_callback::on_input_pressed( const w_input_event* evt )
 		case input_id::key_esc:
 		{
 			engine->layer_mgr->pop();
-			break;
+			return true;
 		}
 	}
 
@@ -87,7 +87,7 @@ void layer_esc_menu::draw_ui()
 {
 	w_layer::draw_ui();
 
-	a_texture* tiling_background = a_texture::find( "engine_tile_background_stripe" );
+	a_texture* tiling_background = a_texture::find( "engine_white" );
 	w_rect rc = w_rect( 0, 0, ui_window_w, ui_window_h );
 
 	w_render_state_opt rso;

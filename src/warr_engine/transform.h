@@ -31,7 +31,6 @@ struct w_transform
 	_NODISCARD w_vec2 transform_pos( const w_vec2& vtx );
 	_NODISCARD w_vec2 inv_transform_pos( const w_vec2& vtx );
 	_NODISCARD w_vec2 transform_dir( const w_vec2& dir );
-	_NODISCARD w_vec2 inv_transform_dir( const w_vec2& dir );
 
 	w_matrix matrix;
 	w_matrix matrix_dir;

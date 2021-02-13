@@ -18,6 +18,9 @@
     <ClCompile Include="layer_entity_picking.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="layer_sound_board.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layer_anim_texture.h">
@@ -35,6 +38,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="layer_entity_picking.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_sound_board.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

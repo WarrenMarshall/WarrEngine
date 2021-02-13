@@ -15,8 +15,6 @@ struct layer_main_menu : w_layer
 
 	layer_main_menu_ui_callback imgui_callback;
 
-	float glow_intensity = 0.0f;
-
 	layer_main_menu();
 
 	virtual void push() override;

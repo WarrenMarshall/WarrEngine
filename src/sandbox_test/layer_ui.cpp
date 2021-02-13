@@ -58,15 +58,7 @@ void layer_ui::push()
 void layer_ui::draw()
 {
 	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h ) );
-
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "UI Controls", { ui_window_w / 2.0f, 16.0f } );
-	)
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 
@@ -136,9 +128,15 @@ void layer_ui::draw_ui()
 
 	RENDER_BLOCK
 	(
+		RS->align = align::centered;
+		RS->scale = 2.0f;
 		RS->color = w_color::white;
+		RENDER->draw_string( "UI Controls", { ui_window_w / 2.0f, 16.0f } );
+
+		RS->scale = 1.0f;
+		RS->color = w_color::light_grey;
 		RS->align = align::hcenter;
-		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( v_window_hw, 200.0f ) );
+		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
 	)
 }
 

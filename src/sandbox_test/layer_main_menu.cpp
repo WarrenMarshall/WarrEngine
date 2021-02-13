@@ -40,6 +40,14 @@ void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& contro
 
 			break;
 		}
+
+		case H( "button_sound_board" ):
+		{
+			LAYER_MGR->pop();
+			LAYER_MGR->push<layer_sound_board>();
+
+			break;
+		}
 	}
 }
 
@@ -96,8 +104,8 @@ void layer_main_menu::draw_ui()
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
-	IMGUI->do_push_button( H( "follow_cam" ) )
-		->set_text( "Follow Camera" )
+	IMGUI->do_push_button( H( "button_sound_board" ) )
+		->set_text( "Sound Board" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 

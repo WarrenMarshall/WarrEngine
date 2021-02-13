@@ -77,14 +77,6 @@ void w_engine::launch( int argc, char* argv [] )
 		RENDER->init();
 	}
 
-	{	// AUDIO
-		log( "Initializing audio" );
-		if( !BASS_Init( -1, 44100, BASS_DEVICE_LATENCY | BASS_DEVICE_MONO, nullptr, nullptr ) )
-		{
-			log_warning( "BASS : Audio init failed!" );
-		}
-	}
-
 	{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
 
 #ifdef USE_THREADED_ASSET_LOADING
@@ -271,9 +263,6 @@ void w_engine::shutdown()
 
 	log( "Shutting down GLFW" );
 	glfwTerminate();
-
-	log( "Shutting down Audio" );
-	BASS_Free();
 
 	log( "Shutting down input" );
 	input->deinit();

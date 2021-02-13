@@ -21,9 +21,8 @@ void layer_default::draw()
 {
 	w_layer::draw();
 
-	RENDER
-		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) )
-		->push_scale( *scale_tween )
-		->push_angle( *tilt_tween )
-		->draw_sprite( tex_hello_world, { v_window_hw + *movement_tween, v_window_hh } );
+	RENDER->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+	RS->scale = *scale_tween;
+	RS->angle = *tilt_tween;
+	RENDER->draw_sprite( tex_hello_world, { v_window_hw + *movement_tween, v_window_hh } );
 }

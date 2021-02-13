@@ -56,7 +56,7 @@ void layer_particles::push()
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::filled_circle, 5.0f );
+			ec->init( primitive_shape::circle, 5.0f );
 			ec->rs_opt.color = w_color::light_green;
 			ec->rs_opt.color->a = 0.25f;
 		}
@@ -73,24 +73,16 @@ void layer_particles::update()
 	{
 		// #refactor - this should get moved into a function that can convert between various coordinate spaces
 		//			   in this case, vwindow -> camera
-		w_vec2 world_pos = get_camera()->get_transform()->inv_transform_pos( INPUT->mouse_vwindow_pos );
+		auto pos = w_coord::virtual_pos_to_camera_pos( INPUT->mouse_vwindow_pos, get_camera() );
 
-		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( world_pos );
+		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( pos );
 	}
 }
 
 void layer_particles::draw()
 {
 	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h ) );
-
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
-	)
+	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 
@@ -103,10 +95,16 @@ void layer_particles::draw_ui()
 
 	RENDER_BLOCK
 	(
+		RS->align = align::centered;
+		RS->scale = 2.0f;
 		RS->color = w_color::white;
+		RENDER->draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
+
+		RS->scale = 1.0f;
 		RS->align = align::hcenter;
-		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( v_window_hw, 200.0f ) );
-		RENDER->draw_string( "F - toggle follow mode for fire ball", w_pos( v_window_hw, 208.0f ) );
+		RS->color = w_color::light_grey;
+		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+		RENDER->draw_string( "F - toggle follow mode for fire ball", w_pos( ui_window_hw, 208.0f ) );
 	)
 }
 
