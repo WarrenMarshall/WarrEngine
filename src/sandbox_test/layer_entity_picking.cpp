@@ -14,7 +14,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_camera();
-		//e->get_transform()->set_pos( { ui_window_hw, ui_window_hh } );
+		e->get_transform()->set_pos( { ui_window_hw, ui_window_hh } );
 	}
 
 	{

@@ -60,6 +60,7 @@ struct w_input
 	void deinit();
 	void queue_presses();
 	void queue_motion();
+	void update_axis_delta( e_input_id input_id );
 	void update();
 
 	void update_button_state( e_input_id input_id, int glfw_state );

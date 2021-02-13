@@ -212,6 +212,8 @@ void w_input::queue_motion()
 	// NOTE	- mouse motion deltas are sent once per update, not for each message from the OS
 	//		- this is done to prevent tons of little messages from clogging up the works
 
+	// window
+
 	if( !fequals( mouse_move_delta.x + mouse_move_delta.y, 0.0f ) )
 	{
 		w_input_event evt;
@@ -223,6 +225,8 @@ void w_input::queue_motion()
 
 		mouse_move_delta = w_vec2::zero;
 	}
+
+	// virtual window
 
 	w_vec2 vmouse_move_delta_rounded = { glm::floor( vmouse_move_delta.x ), glm::floor( vmouse_move_delta.y ) };
 	if( !fequals( vmouse_move_delta_rounded.x + vmouse_move_delta_rounded.y, 0.0f ) )
@@ -237,6 +241,8 @@ void w_input::queue_motion()
 		vmouse_move_delta -= vmouse_move_delta_rounded;
 	}
 
+	// mouse wheel
+
 	if( !fequals( mouse_wheel_delta.x + mouse_wheel_delta.y, 0.0f ) )
 	{
 		w_input_event evt;
@@ -249,26 +255,11 @@ void w_input::queue_motion()
 		mouse_wheel_delta = w_vec2::zero;
 	}
 
-	// update game controller states
+	// game controller
 
 	if( gamepad )
 	{
 		gamepad->update();
-
-		auto update_axis_delta = [] ( e_input_id input_id )
-		{
-			w_vec2 delta = engine->input->get_axis_state( input_id );
-
-			if( !delta.is_zero() )
-			{
-				w_input_event evt;
-				evt.event_id = event_id::input_motion;
-				evt.input_id = input_id;
-				evt.delta = delta;
-
-				engine->input->event_queue.emplace_back( std::move( evt ) );
-			}
-		};
 
 		update_axis_delta( input_id::gamepad_left_stick );
 		update_axis_delta( input_id::gamepad_right_stick );
@@ -276,6 +267,22 @@ void w_input::queue_motion()
 		update_axis_delta( input_id::gamepad_right_trigger );
 	}
 }
+
+void w_input::update_axis_delta( e_input_id input_id )
+{
+	w_vec2 delta = engine->input->get_axis_state( input_id );
+
+	if( !delta.is_zero() )
+	{
+		w_input_event evt;
+		evt.event_id = event_id::input_motion;
+		evt.input_id = input_id;
+		evt.delta = delta;
+
+		engine->input->event_queue.emplace_back( std::move( evt ) );
+	}
+}
+
 
 void w_input::update()
 {
