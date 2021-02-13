@@ -4,6 +4,15 @@
 
 w_imgui_control_data w_imgui_callback::get_data_for_control(const w_imgui_control& control)
 {
+	switch( control.type )
+	{
+		case imgui_control_type::check_box:
+			return w_imgui_control_data( false );
+
+		case imgui_control_type::edit_box:
+			return w_imgui_control_data( "" );
+	}
+
 	return w_imgui_control_data( 0.0f );
 }
 
@@ -12,12 +21,10 @@ a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& co
 	auto control_data = IMGUI->get_control_data( control.tag );
 	auto checked = std::get<bool>( control_data ? control_data->data : get_data_for_control( control ).data );
 
-	if( checked )
-	{
-		return a_texture::find( "ui_checkbox_on" );
-	}
-
-	return a_texture::find( "ui_checkbox_off" );
+	return
+		checked
+		? a_texture::find( "ui_checkbox_on" )
+		: a_texture::find( "ui_checkbox_off" );
 }
 
 void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
