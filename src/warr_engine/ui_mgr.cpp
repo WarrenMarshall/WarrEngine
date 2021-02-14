@@ -14,17 +14,18 @@ void w_ui_mgr::draw_topmost()
 
 	if( mouse_cursor && engine->window->mouse_mode == mouse_mode::custom )
 	{
-		RENDER_BLOCK
-		(
+		{
+			scoped_render_push_pop;
+
 			RENDER->set_z_depth( zdepth_topmost );
-			RS->scale = ui_window_scale;
-			RENDER->draw( mouse_cursor->texture,
+			render_state.scale = ui_window_scale;
+			w_render::draw( mouse_cursor->texture,
 				w_rect(
-					( engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x ),
-					( engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y )
-				)
+				( engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x ),
+				( engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y )
+			)
 			);
-		)
+		}
 	}
 }
 

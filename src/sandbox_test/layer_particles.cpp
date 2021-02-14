@@ -81,31 +81,44 @@ void layer_particles::update()
 
 void layer_particles::draw()
 {
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	render_state =
+	{
+		.color = w_color::dark_teal
+	};
+
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 
-	RENDER->draw_world_axis();
+	w_render::draw_world_axis();
 }
 
 void layer_particles::draw_ui()
 {
 	w_layer::draw_ui();
 
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
+	{
+		scoped_render_push_pop;
 
-		RS->scale = 1.0f;
-		RS->align = align::hcenter;
-		RS->color = w_color::light_grey;
-		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
-		RENDER->draw_string( "F - toggle follow mode for fire ball", w_pos( ui_window_hw, 208.0f ) );
-	)
+		render_state =
+		{
+			.align = align::centered,
+			.color = w_color::white,
+			.scale = 2.0f
+		};
+
+		w_render::draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
+
+		render_state =
+		{
+			.align = align::hcenter,
+			.color = w_color::light_grey,
+			.scale = 1.0f
+		};
+
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+		w_render::draw_string( "F - toggle follow mode for fire ball", w_pos( ui_window_hw, 208.0f ) );
+	}
 }
 
 bool layer_particles::on_input_pressed( const w_input_event* evt )

@@ -57,12 +57,16 @@ void layer_ui::push()
 
 void layer_ui::draw()
 {
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	render_state = {
+		.color = w_color::dark_teal
+	};
+
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+
 
 	w_layer::draw();
 
-	RENDER->draw_world_axis();
+	w_render::draw_world_axis();
 }
 
 void layer_ui::draw_ui()
@@ -126,18 +130,25 @@ void layer_ui::draw_ui()
 		->do_edit_box( H( "edit_text_02" ) )
 		->finalize( &imgui_callback.edit_text_02_data );
 
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "UI Controls", { ui_window_w / 2.0f, 16.0f } );
+	{
+		scoped_render_push_pop;
 
-		RS->scale = 1.0f;
-		RS->color = w_color::light_grey;
-		RS->align = align::hcenter;
-		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
-	)
+		render_state = {
+			.align = align::centered,
+			.color = w_color::white,
+			.scale = 2.0f
+		};
+
+		w_render::draw_string( "UI Controls", { ui_window_w / 2.0f, 16.0f } );
+
+		render_state = {
+			.align = align::hcenter,
+			.color = w_color::light_grey,
+			.scale = 1.0f
+		};
+
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+	}
 }
 
 w_imgui_callback* layer_ui::get_imgui_callback()

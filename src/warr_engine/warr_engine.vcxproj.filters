@@ -223,6 +223,9 @@
     <ClCompile Include="coord.cpp">
       <Filter>src\math</Filter>
     </ClCompile>
+    <ClCompile Include="scoped_vars.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -452,6 +455,9 @@
     </ClInclude>
     <ClInclude Include="coord.h">
       <Filter>include\math</Filter>
+    </ClInclude>
+    <ClInclude Include="scoped_vars.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

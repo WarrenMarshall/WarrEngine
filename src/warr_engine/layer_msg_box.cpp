@@ -56,11 +56,12 @@ void layer_msg_box::draw_ui()
 	rso.color = w_color::pal( 0 );
 	rso.color->a = 0.75f;
 
-	RENDER_BLOCK
-	(
-		RS->set_from_opt( rso );
-		RENDER->draw_tiled( tiling_background, rc );
-	)
+	{
+		scoped_render_push_pop;
+
+		render_state.set_from_opt( rso );
+		w_render::draw_tiled( tiling_background, rc );
+	}
 
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_pos( { 0.0f, ui_window_hh - 32.0f } )

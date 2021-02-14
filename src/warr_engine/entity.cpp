@@ -61,14 +61,12 @@ void w_entity::update_components()
 
 	for( const auto& component : components )
 	{
-		OPENGL
-			->push()
-			->add_transform( component->tform );
+		{
+			scoped_opengl_push_pop;
+			OPENGL->top()->add_transform( component->tform );
 
-		component->update();
-
-		OPENGL
-			->pop();
+			component->update();
+		}
 	}
 }
 
@@ -76,21 +74,20 @@ void w_entity::draw()
 {
 	for( const auto& component : components )
 	{
-		OPENGL
-			->push()
-			->add_transform( component->tform );
+		{
+			scoped_opengl_push_pop;
+			OPENGL->top()->add_transform( component->tform );
 
-		RENDER->nudge_z_depth();
+			RENDER->nudge_z_depth();
 
-		RENDER_BLOCK
-		(
-			RS->set_from_opt( rs_opt );
-			RS->pick_id = pick_id;
-			component->draw();
-		)
+			{
+				scoped_render_push_pop;
 
-		OPENGL
-			->pop();
+				render_state.set_from_opt( rs_opt );
+				render_state.pick_id = pick_id;
+				component->draw();
+			}
+		}
 	}
 }
 

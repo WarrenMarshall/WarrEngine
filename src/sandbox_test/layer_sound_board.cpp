@@ -58,12 +58,16 @@ void layer_sound_board::draw()
 {
 	w_layer::draw();
 
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	render_state =
+	{
+		.color = w_color::dark_teal
+	};
+
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 
-	RENDER->draw_world_axis();
+	w_render::draw_world_axis();
 }
 
 void layer_sound_board::draw_ui()
@@ -97,20 +101,22 @@ void layer_sound_board::draw_ui()
 		->set_text( "Stop" )
 		->finalize();
 
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "Sound Board", { ui_window_w / 2.0f, 16.0f } );
-	)
+	{
+		scoped_render_push_pop;
+
+		render_state = {
+			.align = align::centered,
+			.color = w_color::white,
+			.scale = 2.0f
+		};
+
+		w_render::draw_string( "Sound Board", { ui_window_w / 2.0f, 16.0f } );
+	}
 }
 
 void layer_sound_board::pop()
 {
 	a_sound::find( "music_01" )->stop();
-
-	// #todo - should probably stop all sounds from playing, but too lazy right now
 
 	w_layer::pop();
 }

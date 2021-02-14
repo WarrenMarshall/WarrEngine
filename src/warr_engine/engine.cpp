@@ -315,7 +315,7 @@ void w_engine::main_loop()
 			process_collision_queue();
 
 			update();
-			render->stats.update();
+			engine->stats->update();
 			base_game->update();
 		}
 
@@ -343,12 +343,13 @@ void w_engine::main_loop()
 
 			OPENGL->init_projection_matrix();
 			OPENGL->init_view_matrix_identity();
-			OPENGL->push();
 
-			// layers and entities
-			layer_mgr->draw();
+			{
+				scoped_opengl_push_pop;
 
-			OPENGL->pop();
+				// layers and entities
+				layer_mgr->draw();
+			}
 
 			// engine specific things, like pause borders
 			draw();
@@ -374,12 +375,12 @@ void w_engine::main_loop()
 		glDisable( GL_DEPTH_TEST );
 
 		OPENGL->init_view_matrix_identity();
-		blur_frame_buffers[0]->bind();
+		blur_frame_buffers[ 0 ]->bind();
 		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
-		RENDER->draw( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
+		w_render::draw( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
-		blur_frame_buffers[0]->unbind();
+		blur_frame_buffers[ 0 ]->unbind();
 
 		// pingpong back and forth between the 2 blur frame buffers, blurring
 		// them into each other, for a set amount of passes.
@@ -391,7 +392,7 @@ void w_engine::main_loop()
 		{
 			blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
-			RENDER->draw( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
+			w_render::draw( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
 
@@ -402,29 +403,29 @@ void w_engine::main_loop()
 		// draw the base/bloom frame buffers into the compositing frame buffer
 		// ----------------------------------------------------------------------------
 
-		RENDER_BLOCK
-		(
+		{
+			scoped_render_push_pop;
+
 			composite_frame_buffer->bind();
 
 			// draw game frame buffer
 
 			OPENGL->shaders[ "base" ].bind();
 
-			RENDER->draw( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
+			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			// draw glow frame buffer on top with blending
 
 			OPENGL->set_blend( opengl_blend::add );
 
-			//RS->color.a = 0.5f;
-			RENDER->draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
+			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			OPENGL->set_blend( opengl_blend::alpha );
 
 			composite_frame_buffer->unbind();
-		)
+		}
 
 		// ----------------------------------------------------------------------------
 		// draw the compositing frame buffer to the default frame buffer
@@ -442,7 +443,7 @@ void w_engine::main_loop()
 			(int)window->viewport_pos_sz.h
 		);
 
-		RENDER->draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
+		w_render::draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0, 0, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
 	#if 0
@@ -459,54 +460,58 @@ void w_engine::main_loop()
 		float h = v_window_h / 4.0f;
 		w_rect rc = { 0.0f, v_window_h - h, w, h };
 
-		#if 0
-			// main
-			RENDER_BLOCK
-			(
-				RENDER->draw( frame_buffer->color_attachments[ 0 ].texture, rc );
-				RS->scale = 0.5f;
-				RENDER->draw_string( "(base)", { rc.x, rc.y } );
-				RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-				rc.x += w;
-			)
-		#endif
+	#if 0
+		// main
+		{
+			scoped_render_push_pop;
 
-		#if 1
-			// glow
-			RENDER_BLOCK
-			(
-				RENDER->draw( frame_buffer->color_attachments[ 1 ].texture, rc );
-				RS->scale = 0.5f;
-				RENDER->draw_string( "(glow)", { rc.x, rc.y } );
-				RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-				rc.x += w;
-			)
-		#endif
-
-		#if 0
-			// pick
-			RENDER_BLOCK
-			(
-				RENDER->draw( frame_buffer->color_attachments[ 2 ].texture, rc );
-				RS->scale = 0.5f;
-				RENDER->draw_string( "(pick)", { rc.x, rc.y } );
-				RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
-				rc.x += w;
-			)
-		#endif
-
-		#if 1
-		// blurred glow
-		RENDER_BLOCK
-		(
-			RENDER->draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, rc );
-			RS->scale = 0.5f;
-			RENDER->draw_string( "(blur)", { rc.x, rc.y } );
+			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, rc );
+			render_state.scale = 0.5f;
+			w_render::draw_string( "(base)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
-		)
+		}
 	#endif
-#endif
+
+	#if 1
+		// glow
+		{
+			scoped_render_push_pop;
+
+			w_render::draw( frame_buffer->color_attachments[ 1 ].texture, rc );
+			render_state.scale = 0.5f;
+			w_render::draw_string( "(glow)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		}
+	#endif
+
+	#if 0
+		// pick
+		{
+			scoped_render_push_pop;
+
+			w_render::draw( frame_buffer->color_attachments[ 2 ].texture, rc );
+			render_state.scale = 0.5f;
+			w_render::draw_string( "(pick)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		}
+	#endif
+
+	#if 1
+		// blurred glow
+		{
+			scoped_render_push_pop;
+
+			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, rc );
+			render_state.scale = 0.5f;
+			w_render::draw_string( "(blur)", { rc.x, rc.y } );
+			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			rc.x += w;
+		}
+	#endif
+	#endif
 
 		// ----------------------------------------------------------------------------
 		// everything has been drawn the default frame buffer, so let's swap
@@ -560,7 +565,7 @@ float w_engine::find_float_from_symbol( std::string_view symbol, float def_value
 		sval = fmt::format( "{}", def_value );
 	}
 
-	return static_cast<float>( strtof( std::string(*sval).data(), ( char** ) nullptr ) );
+	return static_cast<float>( strtof( std::string( *sval ).data(), ( char** ) nullptr ) );
 }
 
 w_color w_engine::find_color_from_symbol( std::string_view symbol, const w_color& def_value )
@@ -616,11 +621,11 @@ void w_engine::new_physics_world()
 		| b2Draw::e_centerOfMassBit		// center of mass frame
 	);
 
-	#ifdef _DEBUG
-		RENDER->show_physics_debug = true;
-	#else
-		RENDER->show_physics_debug = false;
-	#endif
+#ifdef _DEBUG
+	RENDER->show_physics_debug = true;
+#else
+	RENDER->show_physics_debug = false;
+#endif
 }
 
 // called ONCE, as the engine is starting up
@@ -644,6 +649,7 @@ void w_engine::init()
 	opengl = std::make_unique<w_opengl>();
 	config_vars = std::make_unique<w_keyvalues>();
 	random = std::make_unique<w_random>();
+	stats = std::make_unique<w_render_stats>();
 
 	fs->init();
 }
@@ -676,8 +682,9 @@ void w_engine::draw()
 		w_vec2 v0, v1, v2, v3;
 		float w, h;
 
-		RENDER_BLOCK
-		(
+		{
+			scoped_render_push_pop;
+
 			RENDER->set_z_depth( zdepth_topmost );
 
 			w = ui_window_w;
@@ -688,34 +695,34 @@ void w_engine::draw()
 			v2 = w_vec2( w - 1, h - 1 );
 			v3 = w_vec2( 0.0f, h - 1 );
 
-			RS->color = w_color::black;
-			RENDER->draw_line( v0, v1 );
-			RENDER->draw_line( v1, v2 );
-			RENDER->draw_line( v2, v3 );
-			RENDER->draw_line( v3, v0 );
+			render_state.color = w_color::black;
+			w_render::draw_line( v0, v1 );
+			w_render::draw_line( v1, v2 );
+			w_render::draw_line( v2, v3 );
+			w_render::draw_line( v3, v0 );
 
 			v0 = w_vec2( 1, 1 );
 			v1 = w_vec2( w - 2, 1.0f );
 			v2 = w_vec2( w - 2, h - 2 );
 			v3 = w_vec2( 1.0f, h - 2 );
 
-			RS->color = w_color::orange;
-			RENDER->draw_line( v0, v1 );
-			RENDER->draw_line( v1, v2 );
-			RENDER->draw_line( v2, v3 );
-			RENDER->draw_line( v3, v0 );
+			render_state.color = w_color::orange;
+			w_render::draw_line( v0, v1 );
+			w_render::draw_line( v1, v2 );
+			w_render::draw_line( v2, v3 );
+			w_render::draw_line( v3, v0 );
 
 			v0 = w_vec2( 2.0f, 2.0f );
 			v1 = w_vec2( w - 3, 2.0f );
 			v2 = w_vec2( w - 3, h - 3 );
 			v3 = w_vec2( 2.0f, h - 3 );
 
-			RS->color = w_color::black;
-			RENDER->draw_line( v0, v1 );
-			RENDER->draw_line( v1, v2 );
-			RENDER->draw_line( v2, v3 );
-			RENDER->draw_line( v3, v0 );
-		)
+			render_state.color = w_color::black;
+			w_render::draw_line( v0, v1 );
+			w_render::draw_line( v1, v2 );
+			w_render::draw_line( v2, v3 );
+			w_render::draw_line( v3, v0 );
+		}
 	}
 }
 

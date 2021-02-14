@@ -103,8 +103,9 @@ void w_layer_mgr::draw()
 		// DRAW
 		// ----------------------------------------------------------------------------
 
-		RENDER_BLOCK
-		(
+		{
+			scoped_render_push_pop;
+
 			for( auto x = starting_layer_idx; x >= 0; --x )
 			{
 				auto layer = layer_stack[ x ].get();
@@ -126,14 +127,15 @@ void w_layer_mgr::draw()
 					RENDER->draw_and_reset_all_batches();
 				}
 			}
-		)
+		}
 
 		// ----------------------------------------------------------------------------
 		// UI
 		// ----------------------------------------------------------------------------
 
-		RENDER_BLOCK
-		(
+		{
+			scoped_render_push_pop;
+
 			RENDER->set_z_depth( zdepth_clear_window );
 
 			OPENGL->init_view_matrix_identity_ui();
@@ -154,24 +156,26 @@ void w_layer_mgr::draw()
 					// the screen is always 0,0.
 
 					RENDER->nudge_z_depth();
-					OPENGL->push();
 
-					IMGUI->current_layer = layer;
-					layer->draw_ui();
-					IMGUI->current_layer = nullptr;
-
-					// when the final layer has been drawn, add anything on top that
-					// we need to - like a mouse cursor - to contain it within the same draw call.
-					if( !x )
 					{
-						UI->draw_topmost();
+						scoped_opengl_push_pop;
+
+						IMGUI->current_layer = layer;
+						layer->draw_ui();
+						IMGUI->current_layer = nullptr;
+
+						// when the final layer has been drawn, add anything on top that
+						// we need to - like a mouse cursor - to contain it within the same draw call.
+						if( !x )
+						{
+							UI->draw_topmost();
+						}
 					}
 
-					OPENGL->pop();
 					RENDER->draw_and_reset_all_batches();
 				}
 			}
-		)
+		}
 	}
 }
 

@@ -132,11 +132,12 @@ void ec_sprite::draw()
 		->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
-	RENDER_BLOCK
-	(
-		RS->set_from_opt( rs_opt );
-		RENDER->draw_sprite( texture, tform.pos );
-	)
+	{
+		scoped_render_push_pop;
+
+		render_state.set_from_opt( rs_opt );
+		w_render::draw_sprite( texture, tform.pos );
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -176,43 +177,44 @@ void ec_primitive_shape::draw()
 		return;
 	}
 
-	RENDER_BLOCK
-	(
-		RS->set_from_opt( rs_opt );
+	{
+		scoped_render_push_pop;
+
+		render_state.set_from_opt( rs_opt );
 
 		switch( prim_shape )
 		{
 			case primitive_shape::filled_rectangle:
 			{
-				RENDER->draw_filled_rectangle( rc );
+				w_render::draw_filled_rectangle( rc );
 				break;
 			}
 
 			case primitive_shape::rectangle:
 			{
-				RENDER->draw_rectangle( rc );
+				w_render::draw_rectangle( rc );
 				break;
 			}
 
 			case primitive_shape::circle:
 			{
-				RENDER->draw_circle( w_vec2( 0, 0 ), radius );
+				w_render::draw_circle( w_vec2( 0, 0 ), radius );
 				break;
 			}
 
 			case primitive_shape::filled_circle:
 			{
-				RENDER->draw_filled_circle( w_vec2( 0, 0 ), radius );
+				w_render::draw_filled_circle( w_vec2( 0, 0 ), radius );
 				break;
 			}
 
 			case primitive_shape::point:
 			{
-				RENDER->draw_point( w_vec2( 0, 0 ) );
+				w_render::draw_point( w_vec2( 0, 0 ) );
 				break;
 			}
 		}
-	)
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -233,14 +235,15 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 		// particle warm ups require the parent and component transforms to be applied
 		// so the warmed up particles spawn at the right position in the world.
 
-		OPENGL
-			->push()
-			->add_transform( *( parent_entity->get_transform() ) )
-			->add_transform( tform );
+		{
+			scoped_opengl_push_pop;
 
-		emitter->warm_up();
+			OPENGL->top()
+				->add_transform( *( parent_entity->get_transform() ) )
+				->add_transform( tform );
 
-		OPENGL->pop();
+			emitter->warm_up();
+		}
 	}
 	else
 	{
@@ -274,13 +277,13 @@ void ec_emitter::draw()
 	// particles live in world space, so remove any entity and
 	// component level transforms before drawing the particle pool
 
-	OPENGL->push_identity();
-	RENDER_BLOCK
-	(
-		RS->set_from_opt( rs_opt );
+	{
+		scoped_opengl_identity_push_pop;
+		scoped_render_push_pop;
+
+		render_state.set_from_opt( rs_opt );
 		emitter->particle_pool->draw();
-	)
-	OPENGL->pop();
+	}
 
 }
 
@@ -459,8 +462,8 @@ void ec_b2d_body::init_body()
 		body_definition.angle = 0.0f;
 	}
 
-	body = engine->box2d_world->CreateBody(&body_definition);
-	body->m_userData.pointer = (uintptr_t) this;
+	body = engine->box2d_world->CreateBody( &body_definition );
+	body->m_userData.pointer = (uintptr_t)this;
 }
 
 // rc - the top left of the box (relative to body) and the w/h
@@ -497,7 +500,7 @@ b2Fixture* ec_b2d_body::add_fixture_box( const char* id, w_vec2 pos, float w, fl
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
-		fixture.userData.pointer = (uintptr_t) id;
+		fixture.userData.pointer = (uintptr_t)id;
 	}
 
 	return body->CreateFixture( &fixture );
@@ -523,7 +526,7 @@ b2Fixture* ec_b2d_body::add_fixture_circle( const char* id, w_vec2 pos, float ra
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
-		fixture.userData.pointer = (uintptr_t) id;
+		fixture.userData.pointer = (uintptr_t)id;
 	}
 
 	return body->CreateFixture( &fixture );
@@ -558,7 +561,7 @@ b2Fixture* ec_b2d_body::add_fixture_line( const char* id, w_vec2 pos, w_vec2 sta
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
-		fixture.userData.pointer = (uintptr_t) id;
+		fixture.userData.pointer = (uintptr_t)id;
 	}
 
 	return body->CreateFixture( &fixture );
@@ -600,7 +603,7 @@ b2Fixture* ec_b2d_body::add_fixture_line_loop( const char* id, w_vec2 pos, const
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
-		fixture.userData.pointer = (uintptr_t) id;
+		fixture.userData.pointer = (uintptr_t)id;
 	}
 
 	return body->CreateFixture( &fixture );
@@ -634,7 +637,7 @@ b2Fixture* ec_b2d_body::add_fixture_polygon( const char* id, w_vec2 pos, const s
 		fixture.restitution = 0.0f;
 		fixture.filter.categoryBits = static_cast<uint16>( ecp->collision_layer );
 		fixture.filter.maskBits = static_cast<uint16>( ecp->collides_with );
-		fixture.userData.pointer = (uintptr_t) id;
+		fixture.userData.pointer = (uintptr_t)id;
 	}
 
 	return body->CreateFixture( &fixture );
@@ -692,9 +695,10 @@ w_entity_component* ec_tilemap::init()
 
 void ec_tilemap::draw()
 {
-	RENDER_BLOCK
-	(
-		RS->set_from_opt( rs_opt );
+	{
+		scoped_render_push_pop;
+
+		render_state.set_from_opt( rs_opt );
 
 		for( auto& tmlayer : tile_layers )
 		{
@@ -703,18 +707,18 @@ void ec_tilemap::draw()
 			{
 				if( tile.flipped_horizontally || tile.flipped_vertically )
 				{
-					RS->scale = w_vec2( tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f );
+					render_state.scale = w_vec2( tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f );
 				}
 
-				RENDER->draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
+				w_render::draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
 
 				if( tile.flipped_horizontally || tile.flipped_vertically )
 				{
-					RS->scale = w_vec2( tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f );
+					render_state.scale = w_vec2( tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f );
 				}
 			}
 		}
-	)
+	}
 }
 
 const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
@@ -801,7 +805,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 							if( idx > 0 )
 							{
 								int y = xy_idx / width;
-								int x = xy_idx - (y * width);
+								int x = xy_idx - ( y * width );
 
 								auto tile = ec_tilemap_tile( idx - 1, w_pos( x * tile_width, y * tile_height ), texture_tiles[ idx - 1 ] );
 								tile.flipped_horizontally = flipped_horizontally;
@@ -846,11 +850,12 @@ void ec_mesh::draw()
 		return;
 	}
 
-	RENDER_BLOCK
-	(
-		RS->set_from_opt( rs_opt );
-		RENDER->draw_mesh( mesh );
-	)
+	{
+		scoped_render_push_pop;
+
+		render_state.set_from_opt( rs_opt );
+		w_render::draw_mesh( mesh );
+	}
 }
 
 // ----------------------------------------------------------------------------

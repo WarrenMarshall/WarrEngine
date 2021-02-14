@@ -75,16 +75,15 @@ void w_layer::update()
 
 	for( auto& entity : entities )
 	{
-		OPENGL
-			->push()
-			->add_transform( *( entity->get_transform() ) );
+		{
+			scoped_opengl_push_pop;
 
-		entity->update();
-		entity->update_components();
-		entity->update_from_physics();
+			OPENGL->top()->add_transform( *( entity->get_transform() ) );
 
-		OPENGL
-			->pop();
+			entity->update();
+			entity->update_components();
+			entity->update_from_physics();
+		}
 	}
 }
 
@@ -92,16 +91,15 @@ void w_layer::draw()
 {
 	for( const auto& entity : entities )
 	{
-		RENDER->stats.entities++;
+		engine->stats->entities++;
 
-		OPENGL
-			->push()
-			->add_transform( *entity->get_transform() );
+		{
+			scoped_opengl_push_pop;
 
-		entity->draw();
+			OPENGL->top()->add_transform( *entity->get_transform() );
 
-		OPENGL
-			->pop();
+			entity->draw();
+		}
 	}
 }
 

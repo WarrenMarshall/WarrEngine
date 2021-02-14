@@ -61,6 +61,8 @@ bool w_render_batch::is_empty()
 
 void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& render_vert )
 {
+	auto rs_ptr = render_state_ptr;
+
 	// multiply the current modelview matrix against the vertex being rendered.
 	//
 	// until this point, the vertex has been in model coordinate space. this
@@ -70,7 +72,7 @@ void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& 
 
 	// snap to pixel position
 
-	if( RS->snap_to_pixel )
+	if( rs_ptr->snap_to_pixel )
 	{
 		vtx.x = snap_to_pixel( vtx.x );
 		vtx.y = snap_to_pixel( vtx.y );
@@ -85,7 +87,7 @@ void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& 
 	// find a texture slot for the requested texture
 	rv.texture_id = static_cast<float>( vertex_array_object->assign_texture_slot( texture ) );
 
-	rv.pick_id = RS->pick_id;
+	rv.pick_id = rs_ptr->pick_id;
 
 	// add the render_vert to the vertex list
 	vertex_array_object->vertex_buffer->vertices.emplace_back( std::move( rv ) );

@@ -362,6 +362,12 @@ w_vec2::w_vec2( const b2Vec2& b2v2 )
 {
 }
 
+w_vec2::w_vec2( float v )
+	: x( v ), y( v )
+{
+
+}
+
 b2Vec2 w_vec2::as_b2Vec2() const
 {
 	return b2Vec2( x, y );
@@ -515,7 +521,7 @@ w_vec2 w_vec2::snap_to_pixel()
 // returns a w_vec2 representing the uv tiling factors needed to tile "texture"
 // inside of "rc" a natural number of times in both the U and V directions.
 
-w_vec2 w_vec2::get_uv_tiling( const a_texture* texture, const w_rect& rc )
+w_vec2 w_vec2::compute_uv_tiling( const a_texture* texture, const w_rect& rc )
 {
 	return w_vec2( rc.w / texture->rc.w, rc.h / texture->rc.h );
 }

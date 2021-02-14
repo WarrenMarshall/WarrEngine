@@ -157,14 +157,12 @@ const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 // ----------------------------------------------------------------------------
 
-#define RENDER_BLOCK( code )\
-{\
-	RENDER->push();\
+#define RENDER_STATE( code )\
+	auto rs = ( &( engine->render->render_states.back() ) );\
 	{\
-		code\
-	}\
-	RENDER->pop();\
-}
+		*rs = code\
+	}
+
 
 // ----------------------------------------------------------------------------
 
@@ -247,6 +245,8 @@ constexpr float from_b2d( float v )
 #define OPENGL (engine->opengl)
 #define RENDER (engine->render)
 #define RS (&(engine->render->render_states.back()))
+#define render_state (engine->render->render_states.back())
+#define render_state_ptr (&(engine->render->render_states.back()))
 #define UI (engine->ui)
 #define IMGUI (engine->ui->imgui)
 #define INPUT (engine->input)
@@ -270,3 +270,8 @@ using b_show_in_debug_frame_buffer = bool;
 #define ADD_QUOTES_HELPER(s) #s
 #define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)
 
+// ----------------------------------------------------------------------------
+// scoped variable helpers
+
+#define scoped_var(type, line_num) type scoped_var_##line_num## = {}
+#define scoped_decl(type, line_num) scoped_var(type, line_num)

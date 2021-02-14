@@ -180,10 +180,11 @@ struct w_vec2
 	w_vec2();
 	w_vec2( int x, int y );
 	w_vec2( float x, float y );
+	w_vec2( float v );
 	w_vec2( std::string_view str );
 	w_vec2( const b2Vec2& b2v2 );
 
-	static w_vec2 get_uv_tiling( const a_texture* texture, const w_rect& rc );
+	static w_vec2 compute_uv_tiling( const a_texture* texture, const w_rect& rc );
 	w_vec2 normalize();
 
 	_NODISCARD b2Vec2 as_b2Vec2() const;

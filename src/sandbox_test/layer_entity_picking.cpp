@@ -59,30 +59,42 @@ void layer_entity_picking::push()
 
 void layer_entity_picking::draw()
 {
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -v_window_hw, -v_window_hh, v_window_w, v_window_h ) );
+	render_state =
+	{
+		.color = w_color::dark_teal
+	};
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -v_window_hw, -v_window_hh, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 
-	RENDER->draw_world_axis();
+	w_render::draw_world_axis();
 }
 
 void layer_entity_picking::draw_ui()
 {
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "Entity Picking", { ui_window_hw, 16.0f } );
+	{
+		scoped_render_push_pop;
 
-		RS->scale = 1.0f;
-		RS->color = w_color::light_grey;
-		RS->align = align::hcenter;
-		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
-		RENDER->draw_string( "L_CLICK - select entity", w_pos( ui_window_hw, 208.0f ) );
-		RENDER->draw_string( "L_DRAG - move entity", w_pos( ui_window_hw, 216.0f ) );
-	)
+		render_state =
+		{
+			.align = align::centered,
+			.color = w_color::white,
+			.scale = 2.0f
+		};
+
+		w_render::draw_string( "Entity Picking", { ui_window_hw, 16.0f } );
+
+		render_state =
+		{
+			.align = align::hcenter,
+			.color = w_color::light_grey,
+			.scale = 1.0f
+		};
+
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+		w_render::draw_string( "L_CLICK - select entity", w_pos( ui_window_hw, 208.0f ) );
+		w_render::draw_string( "L_DRAG - move entity", w_pos( ui_window_hw, 216.0f ) );
+	}
 
 	w_layer::draw_ui();
 }

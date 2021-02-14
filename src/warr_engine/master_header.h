@@ -95,6 +95,7 @@ extern float ui_window_h;
 
 #define ui_window_scale (v_window_w / ui_window_w)
 
+#include "scoped_vars.h"
 #include "filesystem.h"
 #include "datatypes.h"
 
@@ -147,11 +148,11 @@ extern float ui_window_h;
 #include "ui_imgui_result.h"
 #include "ui_imgui.h"
 #include "ui_mgr.h"
+#include "render_stats.h"
 
 extern std::unique_ptr<w_game> base_game;
 #include "engine.h"
 
-#include "render_stats.h"
 #include "render.h"
 #include "window.h"
 #include "cache_assets.h"

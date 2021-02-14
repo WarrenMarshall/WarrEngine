@@ -53,12 +53,16 @@ void layer_anim_texture::push()
 
 void layer_anim_texture::draw()
 {
-	RS->color = w_color::dark_teal;
-	RENDER->draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	render_state =
+	{
+		.color = w_color::dark_teal
+	};
+
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 
 	w_layer::draw();
 
-	RENDER->draw_world_axis();
+	w_render::draw_world_axis();
 }
 
 void layer_anim_texture::draw_ui()
@@ -79,24 +83,37 @@ void layer_anim_texture::draw_ui()
 		->set_size( { 128.0f, 48.0f } )
 		->finalize();
 
-	RS->color = w_color::white;
-	RENDER->draw_sprite( animtex_01->get_texture( 0.0f ), { 48.0f, 64.0f } );
-	RENDER->draw_sprite( animtex_coin_01->get_texture( 0.0f ), { 128.0f, 64.0f } );
-	RENDER->draw_sprite( animtex_coin_01->get_texture( 0.3f ), { 160.0f, 64.0f } );
-	RENDER->draw_sprite( animtex_coin_01->get_texture( 0.6f ), { 192.0f, 64.0f } );
+	render_state =
+	{
+		.color = w_color::white
+	};
 
-	RENDER_BLOCK
-	(
-		RS->align = align::centered;
-		RS->scale = 2.0f;
-		RS->color = w_color::white;
-		RENDER->draw_string( "Animated Textures", { ui_window_w / 2.0f, 16.0f } );
+	w_render::draw_sprite( animtex_01->get_texture( 0.0f ), { 48.0f, 64.0f } );
+	w_render::draw_sprite( animtex_coin_01->get_texture( 0.0f ), { 128.0f, 64.0f } );
+	w_render::draw_sprite( animtex_coin_01->get_texture( 0.3f ), { 160.0f, 64.0f } );
+	w_render::draw_sprite( animtex_coin_01->get_texture( 0.6f ), { 192.0f, 64.0f } );
 
-		RS->scale = 1.0f;
-		RS->color = w_color::light_grey;
-		RS->align = align::hcenter;
-		RENDER->draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
-	)
+	{
+		scoped_render_push_pop;
+
+		render_state =
+		{
+			.align = align::centered,
+			.color = w_color::white,
+			.scale = 2.0f
+		};
+
+		w_render::draw_string( "Animated Textures", { ui_window_w / 2.0f, 16.0f } );
+
+		render_state =
+		{
+			.align = align::hcenter,
+			.color = w_color::light_grey,
+			.scale = 1.0f
+		};
+
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+	}
 }
 
 w_imgui_callback* layer_anim_texture::get_imgui_callback()

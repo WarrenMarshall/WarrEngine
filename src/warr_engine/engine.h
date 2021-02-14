@@ -75,6 +75,8 @@ struct w_engine
 	std::vector<w_pending_collision> begin_contact_queue;
 	std::vector<w_pending_collision> end_contact_queue;
 
+	std::unique_ptr<w_render_stats> stats = nullptr;
+
 	void new_physics_world();
 
 	virtual ~w_engine() = default;

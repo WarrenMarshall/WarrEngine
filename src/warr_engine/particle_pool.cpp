@@ -49,26 +49,17 @@ void w_particle_pool::draw()
 			// scale
 			particle.params->t_scale.get_value( pct_of_life, &scale );
 
-			// angle
-			RS->angle = RENDER->calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec );
-
 			// position
 			interp_pos.x = RENDER->calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) );
 			interp_pos.y = RENDER->calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) );
 
-			// the particle system issues a LOT of draw calls and these values
-			// are changing for every particle. it doesn't make sense to go
-			// through the render_state stack calls to set these so we just set
-			// them here directly.
-			//
-			// the call to RENDER->end() at the end of the function resets the
-			// render_state stacks so there's no harm done here. it's just a
-			// faster way of telling the renderer what each particle wants.
+			render_state = {
+				.angle = RENDER->calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec ),
+				.color = color,
+				.scale = particle.base_scale * scale
+			};
 
-			RS->color = color;
-			RS->scale = particle.base_scale * scale;
-
-			RENDER->draw_sprite( particle.params->texture, interp_pos );
+			w_render::draw_sprite( particle.params->texture, interp_pos );
 		}
 	}
 }
