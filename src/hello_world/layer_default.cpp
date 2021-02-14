@@ -23,7 +23,7 @@ void layer_default::draw()
 
 	w_render::draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
 
-	render_state =
+	*rs_ptr =
 	{
 		.angle = *tilt_tween,
 		.scale = *scale_tween

@@ -59,7 +59,7 @@ void layer_entity_picking::push()
 
 void layer_entity_picking::draw()
 {
-	render_state =
+	*rs_ptr =
 	{
 		.color = w_color::dark_teal
 	};
@@ -75,7 +75,7 @@ void layer_entity_picking::draw_ui()
 	{
 		scoped_render_push_pop;
 
-		render_state =
+		*rs_ptr =
 		{
 			.align = align::centered,
 			.color = w_color::white,
@@ -84,7 +84,7 @@ void layer_entity_picking::draw_ui()
 
 		w_render::draw_string( "Entity Picking", { ui_window_hw, 16.0f } );
 
-		render_state =
+		*rs_ptr =
 		{
 			.align = align::hcenter,
 			.color = w_color::light_grey,
@@ -104,7 +104,7 @@ bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
 	if( evt->input_id == input_id::mouse_button_left )
 	{
 		w_vec2 click_pos = INPUT->mouse_vwindow_pos;
-		auto pick_id = RENDER->sample_pick_id_at( click_pos );
+		auto pick_id = w_render::sample_pick_id_at( click_pos );
 
 		deselect_all();
 		select_by_pick_id( pick_id );

@@ -14,6 +14,7 @@ struct i_asset
 	virtual void finalize_after_loading();
 
 	virtual void update() {};
+	virtual void adjust_for_time_dilation() {}
 };
 
 // ----------------------------------------------------------------------------

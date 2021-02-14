@@ -18,4 +18,5 @@ struct a_sound : i_asset
 	void stop();
 	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
+	virtual void adjust_for_time_dilation() override;
 };

@@ -18,11 +18,11 @@ void w_ui_mgr::draw_topmost()
 			scoped_render_push_pop;
 
 			RENDER->set_z_depth( zdepth_topmost );
-			render_state.scale = ui_window_scale;
+
 			w_render::draw( mouse_cursor->texture,
 				w_rect(
-				( engine->input->mouse_vwindow_pos.x - mouse_cursor->hotspot_offset.x ),
-				( engine->input->mouse_vwindow_pos.y - mouse_cursor->hotspot_offset.y )
+				( engine->input->mouse_uiwindow_pos.x - mouse_cursor->hotspot_offset.x ),
+				( engine->input->mouse_uiwindow_pos.y - mouse_cursor->hotspot_offset.y )
 			)
 			);
 		}

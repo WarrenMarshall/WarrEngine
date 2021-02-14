@@ -53,7 +53,7 @@ void w_particle_pool::draw()
 			interp_pos.x = RENDER->calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) );
 			interp_pos.y = RENDER->calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) );
 
-			render_state = {
+			*rs_ptr = {
 				.angle = RENDER->calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec ),
 				.color = color,
 				.scale = particle.base_scale * scale

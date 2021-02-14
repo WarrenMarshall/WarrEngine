@@ -55,8 +55,9 @@ void w_render::init()
 w_render* w_render::push()
 {
 	// duplicates the render_state at the top of the stack
-	auto rs = *RS;
+	auto rs = *rs_ptr;
 	render_states.emplace_back( std::move( rs ) );
+	top_render_state = &( render_states.back() );
 
 	assert( render_states.size() < max_render_states );
 
@@ -68,6 +69,7 @@ w_render* w_render::pop()
 	assert( render_states.size() > 1 );
 
 	render_states.pop_back();
+	top_render_state = &( render_states.back() );
 
 	return this;
 }
@@ -110,7 +112,7 @@ bool w_render::batches_are_empty()
 			&& batch_triangles->is_empty()
 			&& batch_lines->is_empty()
 			&& batch_points->is_empty()
-		);
+			);
 }
 
 void w_render::draw_and_reset_all_batches()
@@ -141,6 +143,7 @@ void w_render::clear_render_state_stack()
 
 	w_render_state rs;
 	render_states.emplace_back( std::move( rs ) );
+	top_render_state = &( render_states.back() );
 }
 
 void w_render::draw_mesh( a_mesh* mesh )
@@ -149,21 +152,21 @@ void w_render::draw_mesh( a_mesh* mesh )
 
 	for(auto & render_vert : mesh->render_verts)
 	{
-		render_vert.r = render_state.color.r;
-		render_vert.g = render_state.color.g;
-		render_vert.b = render_state.color.b;
-		render_vert.a = render_state.color.a;
+		render_vert.r = rs_ptr->color.r;
+		render_vert.g = rs_ptr->color.g;
+		render_vert.b = rs_ptr->color.b;
+		render_vert.a = rs_ptr->color.a;
 
-		render_vert.glow = render_state.glow;
-		render_vert.pick_id = render_state.pick_id;
+		render_vert.glow = rs_ptr->glow;
+		render_vert.pick_id = rs_ptr->pick_id;
 	}
 
 	{
 		scoped_opengl_push_pop;
 
 		OPENGL->top()
-			->rotate( render_state.angle )
-			->scale( render_state.scale.x, render_state.scale.y );
+			->rotate( rs_ptr->angle )
+			->scale( rs_ptr->scale.x, rs_ptr->scale.y );
 
 		for( size_t x = 0 ; x < mesh->render_verts.size() ; x += 3 )
 		{
@@ -184,8 +187,6 @@ void w_render::draw_mesh( a_mesh* mesh )
 
 void w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 {
-	auto rs_ptr = render_state_ptr;
-
 	float w = texture->rc.w;
 	float h = texture->rc.h;
 
@@ -214,8 +215,6 @@ void w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 
 void w_render::draw( const a_texture* texture, const w_rect& dst )
 {
-	auto rs_ptr = render_state_ptr;
-
 	float w = dst.w ? dst.w : texture->rc.w;
 	float h = dst.h ? dst.h : texture->rc.h;
 
@@ -241,7 +240,7 @@ void w_render::draw_tiled( const a_texture* texture, const w_rect& dst )
 	{
 		scoped_render_push_pop;
 
-		render_state.uv_tiling = w_vec2::compute_uv_tiling( texture, dst );
+		rs_ptr->uv_tiling = w_vec2::compute_uv_tiling( texture, dst );
 
 		w_render::draw( texture, dst );
 	}
@@ -257,8 +256,6 @@ void w_render::draw_string( const std::string_view text, const w_pos& pos )
 
 void w_render::draw_string( a_font* font, const std::string_view text, const w_pos& pos )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
 	if( rs_ptr->align & align::hcenter )
@@ -358,8 +355,6 @@ void w_render::end_frame()
 
 void w_render::draw_world_axis()
 {
-	auto rs_ptr = render_state_ptr;
-
 	rs_ptr->color = { 1.0f, 0.0f, 0.0f };
 	w_render::draw_line( w_vec2::zero, w_vec2( 5000, 0 ) );
 
@@ -417,8 +412,8 @@ void w_render::draw_stats()
 			{
 				scoped_render_push_pop;
 
-				render_state.color = w_color::pal( 0 );
-				render_state.color.a = 0.75f;
+				rs_ptr->color = w_color::pal( 0 );
+				rs_ptr->color.a = 0.75f;
 				w_render::draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_window_w,
 					engine->pixel_font->font_def->max_height * stat_lines.size() ) );
 			}
@@ -428,7 +423,7 @@ void w_render::draw_stats()
 
 				RENDER->nudge_z_depth();
 
-				render_state = {
+				*rs_ptr = {
 					.align = align::hcenter,
 					.color = w_color::white
 				};
@@ -446,7 +441,7 @@ void w_render::draw_stats()
 			{
 				scoped_render_push_pop;
 
-				render_state.align = align::right;
+				rs_ptr->align = align::right;
 				w_render::draw_string(
 					fmt::format( "{} FPS ({:.2f} ms)", f_commas( engine->stats->frame_count.value ), engine->stats->frame_times_ms.value ),
 					{ ui_window_w, 0.0f } );
@@ -458,8 +453,6 @@ void w_render::draw_stats()
 
 void w_render::draw_filled_rectangle( const w_rect& dst )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_render_vertex v0(
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
@@ -497,8 +490,6 @@ void w_render::draw_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& 
 
 void w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_render_vertex rv0(
 		w_vec2( v0.x, v0.y ),
 		w_uv( 0, 0 ),
@@ -545,15 +536,13 @@ void w_render::draw_rectangle( const w_rect& dst )
 
 void w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
 	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
 
 	{
 		scoped_render_push_pop;
 
-		render_state.snap_to_pixel = false;
+		rs_ptr->snap_to_pixel = false;
 
 		for( auto x = 0; x < circle_sample_points_max; ++x )
 		{
@@ -570,8 +559,6 @@ void w_render::draw_circle( const w_vec2& origin, float radius )
 
 void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_render_vertex v0( origin, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
 	w_render_vertex v1 = v0;
 	w_render_vertex v2 = v0;
@@ -579,7 +566,7 @@ void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 	{
 		scoped_render_push_pop;
 
-		render_state.snap_to_pixel = false;
+		rs_ptr->snap_to_pixel = false;
 
 		for( auto x = 0; x < circle_sample_points_max; ++x )
 		{
@@ -596,8 +583,6 @@ void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 
 void w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_render_vertex v0( start, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
 	w_render_vertex v1( end, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
 
@@ -612,14 +597,12 @@ void w_render::draw_line( const w_vec2& start, const w_vec2& end )
 
 void w_render::draw_point( const w_vec2& pos )
 {
-	auto rs_ptr = render_state_ptr;
-
 	w_render_vertex v0( pos, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
 
 	{
 		scoped_render_push_pop;
 
-		render_state.snap_to_pixel = false;
+		rs_ptr->snap_to_pixel = false;
 
 		engine->render->batch_points->add_primitive(
 			engine->tex_white,
@@ -694,7 +677,7 @@ float w_render::calc_interpolated_per_sec_value( float current_value, float step
 // samples the "pick" frame buffer at click_pos and returns the pick_id found
 // there.
 
-int w_render::sample_pick_id_at( w_vec2 click_pos ) const
+int w_render::sample_pick_id_at( w_vec2 click_pos )
 {
 	engine->frame_buffer->bind();
 	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );

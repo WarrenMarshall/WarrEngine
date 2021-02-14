@@ -111,9 +111,10 @@ struct w_render
 	// ----------------------------------------------------------------------------
 
 	std::vector<w_render_state> render_states;
+	w_render_state* top_render_state = nullptr;
 
 	w_render* push();
 	w_render* pop();
 
-	int sample_pick_id_at( w_vec2 click_pos ) const;
+	static int sample_pick_id_at( w_vec2 click_pos );
 };

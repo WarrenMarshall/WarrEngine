@@ -61,8 +61,6 @@ bool w_render_batch::is_empty()
 
 void w_render_batch::add_vert( const a_texture* texture, const w_render_vertex& render_vert )
 {
-	auto rs_ptr = render_state_ptr;
-
 	// multiply the current modelview matrix against the vertex being rendered.
 	//
 	// until this point, the vertex has been in model coordinate space. this

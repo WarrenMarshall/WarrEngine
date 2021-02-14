@@ -466,7 +466,7 @@ void w_engine::main_loop()
 			scoped_render_push_pop;
 
 			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, rc );
-			render_state.scale = 0.5f;
+			rs_ptr->scale = 0.5f;
 			w_render::draw_string( "(base)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
@@ -479,7 +479,7 @@ void w_engine::main_loop()
 			scoped_render_push_pop;
 
 			w_render::draw( frame_buffer->color_attachments[ 1 ].texture, rc );
-			render_state.scale = 0.5f;
+			rs_ptr->scale = 0.5f;
 			w_render::draw_string( "(glow)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
@@ -492,7 +492,7 @@ void w_engine::main_loop()
 			scoped_render_push_pop;
 
 			w_render::draw( frame_buffer->color_attachments[ 2 ].texture, rc );
-			render_state.scale = 0.5f;
+			rs_ptr->scale = 0.5f;
 			w_render::draw_string( "(pick)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
@@ -505,7 +505,7 @@ void w_engine::main_loop()
 			scoped_render_push_pop;
 
 			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, rc );
-			render_state.scale = 0.5f;
+			rs_ptr->scale = 0.5f;
 			w_render::draw_string( "(blur)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
@@ -695,7 +695,7 @@ void w_engine::draw()
 			v2 = w_vec2( w - 1, h - 1 );
 			v3 = w_vec2( 0.0f, h - 1 );
 
-			render_state.color = w_color::black;
+			rs_ptr->color = w_color::black;
 			w_render::draw_line( v0, v1 );
 			w_render::draw_line( v1, v2 );
 			w_render::draw_line( v2, v3 );
@@ -706,7 +706,7 @@ void w_engine::draw()
 			v2 = w_vec2( w - 2, h - 2 );
 			v3 = w_vec2( 1.0f, h - 2 );
 
-			render_state.color = w_color::orange;
+			rs_ptr->color = w_color::orange;
 			w_render::draw_line( v0, v1 );
 			w_render::draw_line( v1, v2 );
 			w_render::draw_line( v2, v3 );
@@ -717,7 +717,7 @@ void w_engine::draw()
 			v2 = w_vec2( w - 3, h - 3 );
 			v3 = w_vec2( 2.0f, h - 3 );
 
-			render_state.color = w_color::black;
+			rs_ptr->color = w_color::black;
 			w_render::draw_line( v0, v1 );
 			w_render::draw_line( v1, v2 );
 			w_render::draw_line( v2, v3 );
@@ -879,6 +879,8 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 				time->dilation = 1.0f;
 			}
 
+			adjust_assets_for_time_dilation();
+
 			return true;
 		}
 
@@ -891,6 +893,8 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 			{
 				time->dilation = 5.0f;
 			}
+
+			adjust_assets_for_time_dilation();
 
 			return true;
 		}
@@ -997,4 +1001,16 @@ void w_engine::process_collision_queue()
 	}
 
 	end_contact_queue.clear();
+}
+
+// loop through every cached sound and music file and if they are currently
+// playing, set their pitch to match the current tile dilation.
+
+void w_engine::adjust_assets_for_time_dilation()
+{
+	for( auto& iter : asset_cache->cache )
+	{
+		auto asset = iter.second.get();
+		asset->adjust_for_time_dilation();
+	}
 }

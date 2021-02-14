@@ -127,4 +127,5 @@ struct w_engine
 	std::unique_ptr<w_random> random = nullptr;
 
 	void process_collision_queue();
+	void adjust_assets_for_time_dilation();
 };

@@ -81,7 +81,7 @@ void layer_particles::update()
 
 void layer_particles::draw()
 {
-	render_state =
+	*rs_ptr =
 	{
 		.color = w_color::dark_teal
 	};
@@ -100,7 +100,7 @@ void layer_particles::draw_ui()
 	{
 		scoped_render_push_pop;
 
-		render_state =
+		*rs_ptr =
 		{
 			.align = align::centered,
 			.color = w_color::white,
@@ -109,7 +109,7 @@ void layer_particles::draw_ui()
 
 		w_render::draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
 
-		render_state =
+		*rs_ptr =
 		{
 			.align = align::hcenter,
 			.color = w_color::light_grey,
