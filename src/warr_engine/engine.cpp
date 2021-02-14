@@ -871,31 +871,14 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		// slow down game clock
 		case input_id::key_left_bracket:
 		{
-			time->dilation -= 0.1f;
-			time->dilation = glm::max( time->dilation, 0.1f );
-
-			if( engine->input->is_shift_down() )
-			{
-				time->dilation = 1.0f;
-			}
-
-			adjust_assets_for_time_dilation();
-
+			set_time_dilation( engine->input->is_shift_down() ? 1.0f : time->dilation - 0.1f );
 			return true;
 		}
 
 		// speed up game clock
 		case input_id::key_right_bracket:
 		{
-			time->dilation += 0.1f;
-
-			if( engine->input->is_shift_down() )
-			{
-				time->dilation = 5.0f;
-			}
-
-			adjust_assets_for_time_dilation();
-
+			set_time_dilation( engine->input->is_shift_down() ? 5.0f : time->dilation + 0.1f );
 			return true;
 		}
 
@@ -1001,6 +984,12 @@ void w_engine::process_collision_queue()
 	}
 
 	end_contact_queue.clear();
+}
+
+void w_engine::set_time_dilation( float dilation )
+{
+	time->dilation = glm::clamp( dilation, 0.1f, 5.0f );
+	adjust_assets_for_time_dilation();
 }
 
 // loop through every cached sound and music file and if they are currently
