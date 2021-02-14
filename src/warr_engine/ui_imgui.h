@@ -16,7 +16,8 @@ struct w_imgui
 
 	// the current control being set up or drawn
 	w_pos flow_right_pos, flow_down_pos;
-	w_rect last_rc_win, last_rc_client;
+	std::optional<w_rect> last_rc_win = std::nullopt;
+	w_rect last_rc_client;
 	w_imgui_control current_control = {};
 
 	// the results from the last control processed
@@ -37,7 +38,7 @@ struct w_imgui
 	w_imgui* do_slider( hash tag = hash_none );
 	w_imgui* do_edit_box( hash tag = hash_none );
 
-	w_imgui* set_text( const std::string& text );
+	w_imgui* set_text( std::string text );
 	w_imgui* set_text_align( e_align align );
 	w_imgui* set_slice_def( const std::string& tag );
 	w_imgui* set_pos( const w_pos& pos );

@@ -11,7 +11,8 @@ void w_imgui::reset()
 {
 	im_automatic_id = 0;
 	containing_layer_is_topmost = false;
-	last_rc_win = last_rc_client = w_rect::zero;
+	last_rc_win = std::nullopt;
+	last_rc_client = w_rect::zero;
 	hash_to_control_data.clear();
 }
 
@@ -127,7 +128,7 @@ w_imgui* w_imgui::do_edit_box( hash tag )
 	return this;
 }
 
-w_imgui* w_imgui::set_text( const std::string& text )
+w_imgui* w_imgui::set_text( std::string text )
 {
 	current_control.text = text;
 	return this;
@@ -155,7 +156,10 @@ w_imgui* w_imgui::set_slice_def( const std::string& tag )
 
 w_imgui* w_imgui::set_pos( const w_pos& pos )
 {
-	current_control.rc_win = last_rc_win;
+	if( last_rc_win.has_value() )
+	{
+		current_control.rc_win = *last_rc_win;
+	}
 
 	current_control.rc_win.x = pos.x;
 	current_control.rc_win.y = pos.y;
@@ -168,8 +172,11 @@ w_imgui* w_imgui::set_pos( const w_pos& pos )
 
 w_imgui* w_imgui::set_pos( e_imgui_flow flow )
 {
-	current_control.rc_win.x = last_rc_win.x;
-	current_control.rc_win.y = last_rc_win.y;
+	if( last_rc_win.has_value() )
+	{
+		current_control.rc_win.x = last_rc_win->x;
+		current_control.rc_win.y = last_rc_win->y;
+	}
 
 	if( flow & imgui_flow::right )
 	{
@@ -270,6 +277,10 @@ w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 	if( !current_control.set_pos_called )
 	{
 		set_pos( imgui_flow::down );
+	}
+	else
+	{
+		compute_clientrect_from_rect();
 	}
 
 	if( current_control.is_active )
@@ -636,8 +647,8 @@ void w_imgui::set_last_control( w_imgui_control control )
 	last_rc_win = control.rc_win;
 	last_rc_client = control.rc_client;
 
-	flow_right_pos = { last_rc_win.x + last_rc_win.w + current_layer->get_imgui_callback()->get_control_margin(), last_rc_win.y };
-	flow_down_pos = { last_rc_win.x, last_rc_win.y + last_rc_win.h + current_layer->get_imgui_callback()->get_control_margin() };
+	flow_right_pos = { last_rc_win->x + last_rc_win->w + current_layer->get_imgui_callback()->get_control_margin(), last_rc_win->y };
+	flow_down_pos = { last_rc_win->x, last_rc_win->y + last_rc_win->h + current_layer->get_imgui_callback()->get_control_margin() };
 }
 
 // a control with the mouse button held down on it will offset slightly

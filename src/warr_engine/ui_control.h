@@ -4,7 +4,7 @@ struct w_imgui_control
 {
 	e_imgui_control_type type = imgui_control_type::none;
 	hash tag;
-	std::string_view text;
+	std::string text;
 	e_align text_align = align::hcenter | align::vcenter;
 	a_9slice_def* slice_def = nullptr;
 	e_align texture_align = align::fill;
