@@ -26,13 +26,6 @@ void layer_entity_picking::push()
 			ec->init( primitive_shape::filled_rectangle, w_rect( -16, -16, 32, 32 ) );
 			ec->rs_opt.color = w_color::orange;
 		}
-// 		{
-// 			auto ec = e->add_component<ec_mesh>();
-// 			ec->init( "mesh_sphere_01" );
-// 			ec->rs_opt = {
-// 				.color = w_color::light_green
-// 			};
-// 		}
 	}
 
 	{

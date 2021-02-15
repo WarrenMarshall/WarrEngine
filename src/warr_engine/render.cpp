@@ -307,6 +307,7 @@ void w_render::begin_frame()
 	// clear specific color attachments
 	engine->frame_buffer->color_attachments[ 0 ].clear();	// main
 	engine->frame_buffer->color_attachments[ 1 ].clear();	// glow
+	engine->frame_buffer->color_attachments[ 2 ].clear();	// pick
 }
 
 // called at end of each frame to finalize and render all buffers

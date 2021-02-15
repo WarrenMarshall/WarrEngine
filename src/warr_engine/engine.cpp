@@ -446,7 +446,7 @@ void w_engine::main_loop()
 		w_render::draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
-	#if 0
+	#if 1
 		// ---------------------------------------------------------------------------
 		// debug helper
 		//
@@ -466,7 +466,7 @@ void w_engine::main_loop()
 			scoped_render_push_pop;
 
 			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, rc );
-			rs_ptr->scale = 0.5f;
+			render_state.scale = 0.5f;
 			w_render::draw_string( "(base)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
@@ -479,33 +479,33 @@ void w_engine::main_loop()
 			scoped_render_push_pop;
 
 			w_render::draw( frame_buffer->color_attachments[ 1 ].texture, rc );
-			rs_ptr->scale = 0.5f;
+			render_state.scale = 0.5f;
 			w_render::draw_string( "(glow)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		}
 	#endif
 
-	#if 0
+	#if 1
 		// pick
 		{
 			scoped_render_push_pop;
 
 			w_render::draw( frame_buffer->color_attachments[ 2 ].texture, rc );
-			rs_ptr->scale = 0.5f;
+			render_state.scale = 0.5f;
 			w_render::draw_string( "(pick)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		}
 	#endif
 
-	#if 1
+	#if 0
 		// blurred glow
 		{
 			scoped_render_push_pop;
 
 			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, rc );
-			rs_ptr->scale = 0.5f;
+			render_state.scale = 0.5f;
 			w_render::draw_string( "(blur)", { rc.x, rc.y } );
 			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
