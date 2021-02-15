@@ -55,7 +55,7 @@ struct w_engine
 	{
 		// if pause_toggle is true or pause_ref_count > 0, the engine is paused
 		bool toggle = false;
-		short ref_count = 0;
+		int16 ref_count = 0;
 	} pause_state;
 
 	void toggle_pause();

@@ -10,7 +10,7 @@ bool a_mesh::create_internals()
 
 	auto file = engine->fs->load_text_file( original_filename );
 
-	render_verts.clear();
+	mesh_verts.clear();
 
 	std::vector<w_vec3> vertex_list;
 	std::vector<w_uv> uv_list;
@@ -61,21 +61,76 @@ bool a_mesh::create_internals()
 
 			tok.get_next_token();	// eat "f "
 
-			for( auto x = 0 ; x < 3 ; ++x )
-			{
-				w_tokenizer tok2( *( tok.get_next_token() ), '/' );
+			//if( tok.tokens.size() >= 4 )
+			//{
+			//	log_error( "mesh loading only supports triangulated meshes." );
+			//}
 
+			// each face is broken down as if it's a triangle fan
+			//
+			// the first vertex read is the anchor point
+
+			int vidx[ 3 ] = {};
+			int uvidx[ 3 ] = {};
+
+			for( auto x = 0 ; x < tok.tokens.size() - 1 ; ++x )
+			{
+				if( x == 0 )
+				{
+					w_tokenizer tok2( *( tok.get_next_token() ), '/' );
+
+					// first vertex
+					vidx[ 0 ] = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					uvidx[ 0 ] = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+				}
+				else if( x == 1 )
+				{
+					w_tokenizer tok2( *( tok.get_next_token() ), '/' );
+
+					vidx[ 1 ] = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					uvidx[ 1 ] = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+				}
+				else
+				{
+					w_tokenizer tok2( *( tok.get_next_token() ), '/' );
+
+					vidx[ 2 ] = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					uvidx[ 2 ] = w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+
+					// save this vertex info somewhere
+
+					for( auto mvi = 0 ; mvi < 3 ; ++mvi )
+					{
+						a_mesh_vertex mv;
+						mv.pos = vertex_list[ vidx[ mvi ] ];
+						mv.uv = uv_list[ uvidx[ mvi ] ];
+						mesh_verts.emplace_back( std::move( mv ) );
+					}
+
+					// set up for the next triangle by shifting the third vert
+					// into the second verts position
+					vidx[ 1 ] = vidx[ 2 ];
+					uvidx[ 1 ] = uvidx[ 2 ];
+
+					vidx[ 2 ] = -1;
+					uvidx[ 2 ] = -1;
+				}
+
+				/*
 				size_t vidx = (size_t) w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 				size_t uvidx = (size_t) w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 
+				w_render_vertex rbv( vertex_list[ vidx[ 0 ] ], uv_list[ uvidx[ 0 ] ], w_color::white, 0.0f );
+				w_render_vertex rbv( vertex_list[ vidx[ 1 ] ], uv_list[ uvidx[ 1 ] ], w_color::white, 0.0f );
 				w_render_vertex rbv( vertex_list[ vidx ], uv_list[ uvidx ], w_color::white, 0.0f );
-				render_verts.emplace_back( std::move( rbv ) );
+				render_verts.emplace_back( rbv );
+				*/
 			}
 		}
 	}
 
 	// make sure we have triplets of vertices so it's all triangles
-	assert( ( render_verts.size() % 3 ) == 0 );
+	assert( ( mesh_verts.size() % 3 ) == 0 );
 
 	return true;
 }

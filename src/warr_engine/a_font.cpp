@@ -27,12 +27,12 @@ bool a_font_def::create_internals()
 			w = w_parser::int_from_str( w_parser::key_from_str( line, "width=" ) );
 			h = w_parser::int_from_str( w_parser::key_from_str( line, "height=" ) );
 
-			fch->xoffset = (short)w_parser::int_from_str( w_parser::key_from_str( line, "xoffset=" ) );
-			fch->yoffset = (short)w_parser::int_from_str( w_parser::key_from_str( line, "yoffset=" ) );
-			fch->xadvance = (short)w_parser::int_from_str( w_parser::key_from_str( line, "xadvance=" ) );
+			fch->xoffset = (int16)w_parser::int_from_str( w_parser::key_from_str( line, "xoffset=" ) );
+			fch->yoffset = (int16)w_parser::int_from_str( w_parser::key_from_str( line, "yoffset=" ) );
+			fch->xadvance = (int16)w_parser::int_from_str( w_parser::key_from_str( line, "xadvance=" ) );
 
-			fch->w = (short)w;
-			fch->h = (short)h;
+			fch->w = (int16)w;
+			fch->h = (int16)h;
 
 			fch->glyph_texture = std::make_unique<a_texture>( src_texture->tag, w_rect( x, y, w, h ) );
 
@@ -59,7 +59,7 @@ w_vec2 a_font::get_string_extents( const std::string_view text ) const
 		pxch = &( font_def->char_map[ (int)ch ] );
 
 		bounds.x += pxch->xadvance;
-		bounds.y = (float)glm::max<int>( bounds.y, (int)( pxch->h + pxch->yoffset ) );
+		bounds.y = glm::max( bounds.y, (float)( pxch->h + pxch->yoffset ) );
 	}
 
 	return bounds;

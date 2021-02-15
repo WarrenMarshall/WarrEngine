@@ -4,15 +4,6 @@
 
 implement_find_func( a_gradient )
 
-a_gradient::~a_gradient()
-{
-	a_gradient::clean_up_internals();
-}
-
-void a_gradient::clean_up_internals()
-{
-}
-
 bool a_gradient::create_internals()
 {
 	// gradients are 1x? or ?x1 textures

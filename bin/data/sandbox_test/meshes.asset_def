@@ -1,0 +1,11 @@
+
+# ---------------------------------------------------------
+# meshes
+# ---------------------------------------------------------
+
+{
+	"type" "mesh"
+	"tag" "mesh_sphere_01"
+	"texture_tag" "engine_white"
+	"filename" "meshes/sphere_mesh.obj"
+}

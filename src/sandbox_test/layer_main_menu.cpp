@@ -33,6 +33,14 @@ void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& contro
 			break;
 		}
 
+		case H( "button_meshes" ):
+		{
+			LAYER_MGR->pop();
+			LAYER_MGR->push<layer_meshes>();
+
+			break;
+		}
+
 		case H( "button_entity_picking" ):
 		{
 			LAYER_MGR->pop();
@@ -96,6 +104,11 @@ void layer_main_menu::draw_ui()
 
 	IMGUI->do_push_button( H( "button_particles" ) )
 		->set_text( "Particles" )
+		->set_size( { 100.0f, w_vec2::ignore } )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_meshes" ) )
+		->set_text( "Meshes" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 

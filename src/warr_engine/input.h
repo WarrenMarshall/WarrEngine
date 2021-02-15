@@ -9,7 +9,7 @@ struct w_input_event
 	e_input_id input_id = input_id::invalid;
 
 	// the char representation of the key that was pressed
-	char ch;
+	char ch = 0;
 
 	// a place for various events to store the deltas. used for mouse and controllers.
 	w_vec2 delta = w_vec2::zero;

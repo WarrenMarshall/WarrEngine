@@ -13,7 +13,7 @@ struct a_texture : i_asset
 	a_src_texture* src_texture = nullptr;
 
 	// the rectangle on the raw_image that defines this texture
-	w_rect rc = { 0,0,0,0 };
+	w_rect rc = {};
 
 	// the uv coordinates that define this image within the raw_image
 	w_uv uv00 = w_uv( 0, 0 );

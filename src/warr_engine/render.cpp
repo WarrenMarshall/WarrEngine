@@ -126,22 +126,8 @@ void w_render::clear_render_state_stack()
 	top_render_state = &( render_states.back() );
 }
 
-// #const - this is such an unholy mess - would love to make "mesh" a const, but can't
 void w_render::draw_mesh( a_mesh* mesh )
 {
-	// copy the render state into each vertex on the mesh before rendering.
-
-	for( auto& render_vert : mesh->render_verts )
-	{
-		render_vert.r = render_state.color.r;
-		render_vert.g = render_state.color.g;
-		render_vert.b = render_state.color.b;
-		render_vert.a = render_state.color.a;
-
-		render_vert.glow = render_state.glow;
-		render_vert.pick_id = render_state.pick_id;
-	}
-
 	{
 		scoped_opengl_push_pop;
 
@@ -149,15 +135,42 @@ void w_render::draw_mesh( a_mesh* mesh )
 			->rotate( render_state.angle )
 			->scale( render_state.scale.x, render_state.scale.y );
 
-		for( size_t x = 0 ; x < mesh->render_verts.size() ; x += 3 )
+		a_mesh_vertex* amv = {};
+
+		for( int mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
 		{
-			engine->render->batch_triangles->add_primitive(
-				mesh->tex,
-				mesh->render_verts[ x ],
-				mesh->render_verts[ x + 1 ],
-				mesh->render_verts[ x + 2 ]
-			);
+			amv = &( mesh->mesh_verts[ mv + 0 ] );
+			w_render_vertex v0( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+			amv = &( mesh->mesh_verts[ mv + 1 ] );
+			w_render_vertex v1( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+			amv = &( mesh->mesh_verts[ mv + 2 ] );
+			w_render_vertex v2( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+			engine->render->batch_triangles->add_primitive( mesh->tex, v0, v1, v2 );
 		}
+
+	#if 1
+		render_state.color = w_color::black;
+		render_state.z += zdepth_nudge;
+
+		for( int mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
+		{
+			amv = &( mesh->mesh_verts[ mv + 0 ] );
+			w_render_vertex v0( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+			amv = &( mesh->mesh_verts[ mv + 1 ] );
+			w_render_vertex v1( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+			amv = &( mesh->mesh_verts[ mv + 2 ] );
+			w_render_vertex v2( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+			engine->render->batch_lines->add_primitive( mesh->tex, v0, v1 );
+			engine->render->batch_lines->add_primitive( mesh->tex, v1, v2 );
+			engine->render->batch_lines->add_primitive( mesh->tex, v2, v0 );
+		}
+	#endif
 	}
 }
 
@@ -351,34 +364,35 @@ void w_render::draw_world_axis()
 
 // draws useful stats at the top of the screen
 
+static std::vector<std::string> draw_stat_line_buffer;
+
 void w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
 	{
 		scoped_render_push_pop;
 
-		std::vector<std::string> stat_lines;
-
+		draw_stat_line_buffer.clear();
 		render_state.z = zdepth_stats;
 
 		if( engine->render->show_stats )
 		{
-			stat_lines.clear();
-			stat_lines.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
+			draw_stat_line_buffer.clear();
+			draw_stat_line_buffer.emplace_back( fmt::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
 				f_commas( engine->stats->frame_count.value ),
 				engine->stats->frame_times_ms.value,
 				fixed_time_step::frames_per_second ) );
-			stat_lines.emplace_back( fmt::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
+			draw_stat_line_buffer.emplace_back( fmt::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
 				f_commas( engine->stats->draw_calls.value ),
 				f_commas( engine->stats->quads.value ),
 				f_commas( engine->stats->triangles.value ),
 				f_commas( engine->stats->lines.value ),
 				f_commas( engine->stats->points.value ) )
 			);
-			stat_lines.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
-			stat_lines.emplace_back( fmt::format( "Entities : {}", f_commas( engine->stats->entities.value ) ) );
-			stat_lines.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
-			stat_lines.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
+			draw_stat_line_buffer.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
+			draw_stat_line_buffer.emplace_back( fmt::format( "Entities : {}", f_commas( engine->stats->entities.value ) ) );
+			draw_stat_line_buffer.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
+			draw_stat_line_buffer.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
 				engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y,
 				engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y,
 				engine->input->mouse_uiwindow_pos.x, engine->input->mouse_uiwindow_pos.y )
@@ -386,7 +400,7 @@ void w_render::draw_stats()
 
 			if( engine->stats->stat_custom_string.length() )
 			{
-				stat_lines.emplace_back( engine->stats->stat_custom_string );
+				draw_stat_line_buffer.emplace_back( engine->stats->stat_custom_string );
 				engine->stats->stat_custom_string = "";
 			}
 
@@ -395,8 +409,10 @@ void w_render::draw_stats()
 
 				render_state.color = w_color::pal( 0 );
 				render_state.color.a = 0.75f;
-				w_render::draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_window_w,
-					engine->pixel_font->font_def->max_height * stat_lines.size() ) );
+				w_render::draw_filled_rectangle(
+					w_rect( 0.0f, 0.0f,
+					ui_window_w, (float)( engine->pixel_font->font_def->max_height * draw_stat_line_buffer.size() ) )
+				);
 			}
 
 			{
@@ -410,7 +426,7 @@ void w_render::draw_stats()
 				};
 
 				auto ypos = 0.0f;
-				for( const auto& iter : stat_lines )
+				for( const auto& iter : draw_stat_line_buffer )
 				{
 					w_render::draw_string( iter, { ui_window_hw, ypos } );
 					ypos += engine->pixel_font->font_def->max_height;
@@ -441,8 +457,8 @@ void w_render::draw_filled_rectangle( const w_rect& dst )
 		render_state.glow
 	);
 	w_render_vertex v1(
-		w_vec2( dst.x + dst.w, dst.y ),
-		w_uv( 1, 0 ),
+		w_vec2( dst.x, dst.y + dst.h ),
+		w_uv( 0, 1 ),
 		render_state.color,
 		render_state.glow
 	);
@@ -453,8 +469,8 @@ void w_render::draw_filled_rectangle( const w_rect& dst )
 		render_state.glow
 	);
 	w_render_vertex v3(
-		w_vec2( dst.x, dst.y + dst.h ),
-		w_uv( 0, 1 ),
+		w_vec2( dst.x + dst.w, dst.y ),
+		w_uv( 1, 0 ),
 		render_state.color,
 		render_state.glow
 	);

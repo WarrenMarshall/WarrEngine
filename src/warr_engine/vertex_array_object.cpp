@@ -126,6 +126,7 @@ void w_vertex_array_object::draw_and_reset()
 {
 	if( !vertex_buffer->vertices.empty() )
 	{
+	#ifndef _FINALRELEASE
 		// update stats and clean up
 		engine->stats->draw_calls++;
 
@@ -134,12 +135,11 @@ void w_vertex_array_object::draw_and_reset()
 		else if( render_prim == render_prim::line ) { engine->stats->lines += vertex_buffer->vertices.size() / 2.0f; }
 		else if( render_prim == render_prim::point ) { engine->stats->points += vertex_buffer->vertices.size() / 1.0f; }
 
-#ifndef _FINALRELEASE
 		// frame debugger
 		{
 			if( RENDER->single_frame_debugger )
 			{
-				std::string prim_type_desc = "quads";
+				const char* prim_type_desc = "quads";
 				if( render_prim == render_prim::triangle )		prim_type_desc = "triangles";
 				else if( render_prim == render_prim::line )		prim_type_desc = "lines";
 				else if( render_prim == render_prim::point )	prim_type_desc = "points";

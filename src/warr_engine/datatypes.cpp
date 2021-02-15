@@ -96,7 +96,7 @@ w_rect::w_rect( int x, int y, int w, int h )
 {
 }
 
-w_rect::w_rect( short x, short y, short w, short h )
+w_rect::w_rect( int16 x, int16 y, int16 w, int16 h )
 	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
 {
 }

@@ -130,7 +130,7 @@ namespace fixed_time_step
 static struct_name* find( const std::string_view name, const bool silent = false );
 
 #define implement_find_func( struct_name )\
-struct_name* struct_name::find( const std::string_view name, bool silent )\
+struct_name* struct_name::find( std::string_view name, bool silent )\
 {\
 	return engine->find_asset<struct_name>( name, silent );\
 }
