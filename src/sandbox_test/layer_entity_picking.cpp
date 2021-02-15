@@ -59,7 +59,7 @@ void layer_entity_picking::push()
 
 void layer_entity_picking::draw()
 {
-	*rs_ptr =
+	render_state =
 	{
 		.color = w_color::dark_teal
 	};
@@ -75,7 +75,7 @@ void layer_entity_picking::draw_ui()
 	{
 		scoped_render_push_pop;
 
-		*rs_ptr =
+		render_state =
 		{
 			.align = align::centered,
 			.color = w_color::white,
@@ -84,7 +84,7 @@ void layer_entity_picking::draw_ui()
 
 		w_render::draw_string( "Entity Picking", { ui_window_hw, 16.0f } );
 
-		*rs_ptr =
+		render_state =
 		{
 			.align = align::hcenter,
 			.color = w_color::light_grey,

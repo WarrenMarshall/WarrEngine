@@ -22,7 +22,6 @@ struct w_input
 {
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
-	//const size_t event_queue_max_size = 8;
 	std::vector<w_input_event> event_queue;
 	std::unique_ptr<w_timer> timer_repeat = nullptr;
 
@@ -39,12 +38,6 @@ struct w_input
 
 	std::unique_ptr<w_gamepad> gamepad = nullptr;
 
-	// this is set in real time, as input is collected. we need to know this so
-	// we don't rumble a controller that isn't actively being used to play the
-	// game.
-
-	bool game_controller_being_used = false;
-
 	std::array<bool, input_id::max> button_states = {};
 	std::array<bool, input_id::max> button_states_last_frame = {};
 
@@ -60,10 +53,10 @@ struct w_input
 	void deinit();
 	void queue_presses();
 	void queue_motion();
-	void update_axis_delta( e_input_id input_id );
+	void update_axis_delta( e_input_id input_id ) const;
 	void update();
 
 	void update_button_state( e_input_id input_id, int glfw_state );
-	void play_rumble( e_rumble_effect effect );
+	void play_rumble( e_rumble_effect effect ) const;
 	void refresh_connected_gamepads();
 };

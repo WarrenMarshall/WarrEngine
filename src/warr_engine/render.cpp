@@ -55,7 +55,7 @@ void w_render::init()
 w_render* w_render::push()
 {
 	// duplicates the render_state at the top of the stack
-	auto rs = *rs_ptr;
+	auto rs = render_state;
 	render_states.emplace_back( std::move( rs ) );
 	top_render_state = &( render_states.back() );
 
@@ -152,21 +152,21 @@ void w_render::draw_mesh( a_mesh* mesh )
 
 	for(auto & render_vert : mesh->render_verts)
 	{
-		render_vert.r = rs_ptr->color.r;
-		render_vert.g = rs_ptr->color.g;
-		render_vert.b = rs_ptr->color.b;
-		render_vert.a = rs_ptr->color.a;
+		render_vert.r = render_state.color.r;
+		render_vert.g = render_state.color.g;
+		render_vert.b = render_state.color.b;
+		render_vert.a = render_state.color.a;
 
-		render_vert.glow = rs_ptr->glow;
-		render_vert.pick_id = rs_ptr->pick_id;
+		render_vert.glow = render_state.glow;
+		render_vert.pick_id = render_state.pick_id;
 	}
 
 	{
 		scoped_opengl_push_pop;
 
 		OPENGL->top()
-			->rotate( rs_ptr->angle )
-			->scale( rs_ptr->scale.x, rs_ptr->scale.y );
+			->rotate( render_state.angle )
+			->scale( render_state.scale.x, render_state.scale.y );
 
 		for( size_t x = 0 ; x < mesh->render_verts.size() ; x += 3 )
 		{
@@ -190,22 +190,22 @@ void w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	float w = texture->rc.w;
 	float h = texture->rc.h;
 
-	w *= rs_ptr->scale.x;
-	h *= rs_ptr->scale.y;
+	w *= render_state.scale.x;
+	h *= render_state.scale.y;
 
 	float hw = w / 2.0f;
 	float hh = h / 2.0f;
 
-	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u * rs_ptr->uv_tiling.u, texture->uv00.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u * rs_ptr->uv_tiling.u, texture->uv00.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u * rs_ptr->uv_tiling.u, texture->uv11.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u * rs_ptr->uv_tiling.u, texture->uv11.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
+	w_render_vertex v0( w_vec2( -hw, hh ), w_vec2( texture->uv00.u * render_state.uv_tiling.u, texture->uv00.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+	w_render_vertex v1( w_vec2( hw, hh ), w_vec2( texture->uv11.u * render_state.uv_tiling.u, texture->uv00.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+	w_render_vertex v2( w_vec2( hw, -hh ), w_vec2( texture->uv11.u * render_state.uv_tiling.u, texture->uv11.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u * render_state.uv_tiling.u, texture->uv11.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
 	{
 		scoped_opengl_push_pop;
 		OPENGL->top()
 			->translate( { dst.x, dst.y } )
-			->rotate( rs_ptr->angle );
+			->rotate( render_state.angle );
 
 		engine->render->batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 	}
@@ -218,13 +218,13 @@ void w_render::draw( const a_texture* texture, const w_rect& dst )
 	float w = dst.w ? dst.w : texture->rc.w;
 	float h = dst.h ? dst.h : texture->rc.h;
 
-	w *= rs_ptr->scale.x;
-	h *= rs_ptr->scale.y;
+	w *= render_state.scale.x;
+	h *= render_state.scale.y;
 
-	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u * rs_ptr->uv_tiling.u, texture->uv00.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u * rs_ptr->uv_tiling.u, texture->uv00.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u * rs_ptr->uv_tiling.u, texture->uv11.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * rs_ptr->uv_tiling.u, texture->uv11.v * rs_ptr->uv_tiling.v ), rs_ptr->color, rs_ptr->glow );
+	w_render_vertex v0( w_vec2( 0.0f, h ), w_vec2( texture->uv00.u * render_state.uv_tiling.u, texture->uv00.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+	w_render_vertex v1( w_vec2( w, h ), w_vec2( texture->uv11.u * render_state.uv_tiling.u, texture->uv00.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+	w_render_vertex v2( w_vec2( w, 0.0f ), w_vec2( texture->uv11.u * render_state.uv_tiling.u, texture->uv11.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * render_state.uv_tiling.u, texture->uv11.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
 	{
 		scoped_opengl_push_pop;
@@ -240,7 +240,7 @@ void w_render::draw_tiled( const a_texture* texture, const w_rect& dst )
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->uv_tiling = w_vec2::compute_uv_tiling( texture, dst );
+		render_state.uv_tiling = w_vec2::compute_uv_tiling( texture, dst );
 
 		w_render::draw( texture, dst );
 	}
@@ -258,21 +258,21 @@ void w_render::draw_string( a_font* font, const std::string_view text, const w_p
 {
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 
-	if( rs_ptr->align & align::hcenter )
+	if( render_state.align & align::hcenter )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs_ptr->scale.x;
+		w_vec2 extents = font->get_string_extents( text ) * render_state.scale.x;
 		alignment_pos_adjustment.x -= extents.x / 2.0f;
 	}
 
-	if( rs_ptr->align & align::right )
+	if( render_state.align & align::right )
 	{
-		w_vec2 extents = font->get_string_extents( text ) * rs_ptr->scale.x;
+		w_vec2 extents = font->get_string_extents( text ) * render_state.scale.x;
 		alignment_pos_adjustment.x -= extents.x;
 	}
 
-	if( rs_ptr->align & align::vcenter )
+	if( render_state.align & align::vcenter )
 	{
-		alignment_pos_adjustment.y -= ( font->font_def->max_height * rs_ptr->scale.y ) / 2.0f;
+		alignment_pos_adjustment.y -= ( font->font_def->max_height * render_state.scale.y ) / 2.0f;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -289,11 +289,11 @@ void w_render::draw_string( a_font* font, const std::string_view text, const w_p
 		{
 			w_render::draw(
 				fch->glyph_texture.get(),
-				w_rect( xpos + ( fch->xoffset * rs_ptr->scale.x ), ypos + ( fch->yoffset * rs_ptr->scale.y ) )
+				w_rect( xpos + ( fch->xoffset * render_state.scale.x ), ypos + ( fch->yoffset * render_state.scale.y ) )
 			);
 		}
 
-		xpos += ( fch->xadvance * rs_ptr->scale.x);
+		xpos += ( fch->xadvance * render_state.scale.x);
 	}
 }
 
@@ -355,16 +355,16 @@ void w_render::end_frame()
 
 void w_render::draw_world_axis()
 {
-	rs_ptr->color = { 1.0f, 0.0f, 0.0f };
+	render_state.color = { 1.0f, 0.0f, 0.0f };
 	w_render::draw_line( w_vec2::zero, w_vec2( 5000, 0 ) );
 
-	rs_ptr->color = { 0.5f, 0.0f, 0.0f };
+	render_state.color = { 0.5f, 0.0f, 0.0f };
 	w_render::draw_line( w_vec2::zero, w_vec2( -5000, 0 ) );
 
-	rs_ptr->color = { 0.0f, 1.0f, 0.0f };
+	render_state.color = { 0.0f, 1.0f, 0.0f };
 	w_render::draw_line( w_vec2::zero, w_vec2( 0, 5000 ) );
 
-	rs_ptr->color = { 0.0f, 0.5f, 0.0f };
+	render_state.color = { 0.0f, 0.5f, 0.0f };
 	w_render::draw_line( w_vec2::zero, w_vec2( 0, -5000 ) );
 }
 
@@ -412,8 +412,8 @@ void w_render::draw_stats()
 			{
 				scoped_render_push_pop;
 
-				rs_ptr->color = w_color::pal( 0 );
-				rs_ptr->color.a = 0.75f;
+				render_state.color = w_color::pal( 0 );
+				render_state.color.a = 0.75f;
 				w_render::draw_filled_rectangle( w_rect( 0.0f, 0.0f, ui_window_w,
 					engine->pixel_font->font_def->max_height * stat_lines.size() ) );
 			}
@@ -423,7 +423,7 @@ void w_render::draw_stats()
 
 				RENDER->nudge_z_depth();
 
-				*rs_ptr = {
+				render_state = {
 					.align = align::hcenter,
 					.color = w_color::white
 				};
@@ -441,7 +441,7 @@ void w_render::draw_stats()
 			{
 				scoped_render_push_pop;
 
-				rs_ptr->align = align::right;
+				render_state.align = align::right;
 				w_render::draw_string(
 					fmt::format( "{} FPS ({:.2f} ms)", f_commas( engine->stats->frame_count.value ), engine->stats->frame_times_ms.value ),
 					{ ui_window_w, 0.0f } );
@@ -456,26 +456,26 @@ void w_render::draw_filled_rectangle( const w_rect& dst )
 	w_render_vertex v0(
 		w_vec2( dst.x, dst.y ),
 		w_uv( 0, 0 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 	w_render_vertex v1(
 		w_vec2( dst.x + dst.w, dst.y ),
 		w_uv( 1, 0 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 	w_render_vertex v2(
 		w_vec2( dst.x + dst.w, dst.y + dst.h ),
 		w_uv( 1, 1 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 	w_render_vertex v3(
 		w_vec2( dst.x, dst.y + dst.h ),
 		w_uv( 0, 1 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 
 	engine->render->batch_quads->add_primitive( engine->tex_white, v0, v1, v2, v3 );
@@ -493,20 +493,20 @@ void w_render::draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w
 	w_render_vertex rv0(
 		w_vec2( v0.x, v0.y ),
 		w_uv( 0, 0 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 	w_render_vertex rv1(
 		w_vec2( v1.x, v1.y ),
 		w_uv( 1, 0 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 	w_render_vertex rv2(
 		w_vec2( v2.x, v2.y ),
 		w_uv( 1, 1 ),
-		rs_ptr->color,
-		rs_ptr->glow
+		render_state.color,
+		render_state.glow
 	);
 
 	engine->render->batch_triangles->add_primitive( engine->tex_white, rv0, rv1, rv2 );
@@ -536,13 +536,13 @@ void w_render::draw_rectangle( const w_rect& dst )
 
 void w_render::draw_circle( const w_vec2& origin, float radius )
 {
-	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
+	w_render_vertex v0( w_vec2::zero, w_uv( 0, 0 ), render_state.color, render_state.glow );
+	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), render_state.color, render_state.glow );
 
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->snap_to_pixel = false;
+		render_state.snap_to_pixel = false;
 
 		for( auto x = 0; x < circle_sample_points_max; ++x )
 		{
@@ -559,14 +559,14 @@ void w_render::draw_circle( const w_vec2& origin, float radius )
 
 void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 {
-	w_render_vertex v0( origin, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
+	w_render_vertex v0( origin, w_uv( 0, 0 ), render_state.color, render_state.glow );
 	w_render_vertex v1 = v0;
 	w_render_vertex v2 = v0;
 
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->snap_to_pixel = false;
+		render_state.snap_to_pixel = false;
 
 		for( auto x = 0; x < circle_sample_points_max; ++x )
 		{
@@ -583,10 +583,10 @@ void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 
 void w_render::draw_line( const w_vec2& start, const w_vec2& end )
 {
-	w_render_vertex v0( start, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
-	w_render_vertex v1( end, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
+	w_render_vertex v0( start, w_uv( 0, 0 ), render_state.color, render_state.glow );
+	w_render_vertex v1( end, w_uv( 0, 0 ), render_state.color, render_state.glow );
 
-	rs_ptr->snap_to_pixel = false;
+	render_state.snap_to_pixel = false;
 
 	engine->render->batch_lines->add_primitive(
 		engine->tex_white,
@@ -597,12 +597,12 @@ void w_render::draw_line( const w_vec2& start, const w_vec2& end )
 
 void w_render::draw_point( const w_vec2& pos )
 {
-	w_render_vertex v0( pos, w_uv( 0, 0 ), rs_ptr->color, rs_ptr->glow );
+	w_render_vertex v0( pos, w_uv( 0, 0 ), render_state.color, render_state.glow );
 
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->snap_to_pixel = false;
+		render_state.snap_to_pixel = false;
 
 		engine->render->batch_points->add_primitive(
 			engine->tex_white,

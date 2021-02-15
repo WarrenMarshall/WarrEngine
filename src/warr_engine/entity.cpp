@@ -83,8 +83,8 @@ void w_entity::draw()
 			{
 				scoped_render_push_pop;
 
-				rs_ptr->set_from_opt( rs_opt );
-				rs_ptr->pick_id = pick_id;
+				render_state.set_from_opt( rs_opt );
+				render_state.pick_id = pick_id;
 				component->draw();
 			}
 		}

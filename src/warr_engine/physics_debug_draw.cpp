@@ -8,7 +8,7 @@ void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCoun
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->color = w_color( color.r, color.g, color.b, color.a );
+		render_state.color = w_color( color.r, color.g, color.b, color.a );
 
 		for( auto v = 0 ; v < vertexCount ; ++v )
 		{
@@ -26,7 +26,7 @@ void w_physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 verte
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->color = w_color( color.r, color.g, color.b, 0.5f );
+		render_state.color = w_color( color.r, color.g, color.b, 0.5f );
 
 		assert( vertexCount > 2 );
 
@@ -55,7 +55,7 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 		{
 			scoped_render_push_pop;
 
-			rs_ptr->color = w_color( color.r, color.g, color.b, color.a );
+			render_state.color = w_color( color.r, color.g, color.b, color.a );
 			w_render::draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) );
 		}
 	}
@@ -73,7 +73,7 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 		{
 			scoped_render_push_pop;
 
-			rs_ptr->color = w_color( color.r, color.g, color.b, 0.5f );
+			render_state.color = w_color( color.r, color.g, color.b, 0.5f );
 			w_render::draw_filled_circle( { 0.0f, 0.0f }, from_b2d( radius ) );
 		}
 	}
@@ -88,7 +88,7 @@ void w_physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, cons
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->color = w_color( color.r, color.g, color.b, color.a );
+		render_state.color = w_color( color.r, color.g, color.b, color.a );
 		w_render::draw_line( start, end );
 	}
 }
@@ -110,13 +110,13 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 	{
 		scoped_render_push_pop;
 
-		*rs_ptr = {
+		render_state = {
 			.color = w_color( 192, 0, 0 ),
 			.snap_to_pixel = false
 		};
 		w_render::draw_line( v, x_axis );
 
-		rs_ptr->color = w_color( 0, 192, 0 );
+		render_state.color = w_color( 0, 192, 0 );
 		w_render::draw_line( v, y_axis );
 	}
 }
@@ -129,7 +129,7 @@ void w_physics_debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->color = w_color( color.r, color.g, color.b, color.a );
+		render_state.color = w_color( color.r, color.g, color.b, color.a );
 		w_render::draw_point( v );
 	}
 }

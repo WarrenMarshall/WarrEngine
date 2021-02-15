@@ -135,7 +135,7 @@ void ec_sprite::draw()
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->set_from_opt( rs_opt );
+		render_state.set_from_opt( rs_opt );
 		w_render::draw_sprite( texture, tform.pos );
 	}
 }
@@ -180,7 +180,7 @@ void ec_primitive_shape::draw()
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->set_from_opt( rs_opt );
+		render_state.set_from_opt( rs_opt );
 
 		switch( prim_shape )
 		{
@@ -281,7 +281,7 @@ void ec_emitter::draw()
 		scoped_opengl_identity_push_pop;
 		scoped_render_push_pop;
 
-		rs_ptr->set_from_opt( rs_opt );
+		render_state.set_from_opt( rs_opt );
 		emitter->particle_pool->draw();
 	}
 
@@ -698,7 +698,7 @@ void ec_tilemap::draw()
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->set_from_opt( rs_opt );
+		render_state.set_from_opt( rs_opt );
 
 		for( auto& tmlayer : tile_layers )
 		{
@@ -707,14 +707,14 @@ void ec_tilemap::draw()
 			{
 				if( tile.flipped_horizontally || tile.flipped_vertically )
 				{
-					rs_ptr->scale = w_vec2( tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f );
+					render_state.scale = w_vec2( tile.flipped_horizontally ? -1.0f : 1.0f, tile.flipped_vertically ? -1.0f : 1.0f );
 				}
 
 				w_render::draw_sprite( tile.texture, w_vec2( tile.pos.x + 8.0f, tile.pos.y + 8.0f ) );
 
 				if( tile.flipped_horizontally || tile.flipped_vertically )
 				{
-					rs_ptr->scale = w_vec2( tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f );
+					render_state.scale = w_vec2( tile.flipped_horizontally ? 1.0f : 1.0f, tile.flipped_vertically ? 1.0f : 1.0f );
 				}
 			}
 		}
@@ -853,7 +853,7 @@ void ec_mesh::draw()
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->set_from_opt( rs_opt );
+		render_state.set_from_opt( rs_opt );
 		w_render::draw_mesh( mesh );
 	}
 }

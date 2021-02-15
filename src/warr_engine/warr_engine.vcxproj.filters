@@ -31,9 +31,6 @@
     <ClCompile Include="impl_header_only.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="keyvalues.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -50,9 +47,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="parser.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="input_gamepad.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="w_time.cpp">
@@ -226,6 +220,12 @@
     <ClCompile Include="scoped_vars.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>src\input</Filter>
+    </ClCompile>
+    <ClCompile Include="input_gamepad.cpp">
+      <Filter>src\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -252,9 +252,6 @@
     <ClInclude Include="game.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="i_life_cycle.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -277,9 +274,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="parser.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="input_gamepad.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="w_time.h">
@@ -459,6 +453,12 @@
     <ClInclude Include="scoped_vars.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>include\input</Filter>
+    </ClInclude>
+    <ClInclude Include="input_gamepad.h">
+      <Filter>include\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -526,6 +526,12 @@
     </Filter>
     <Filter Include="src\math">
       <UniqueIdentifier>{756d839e-b63e-43b4-8ab1-0dd223bf5eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\input">
+      <UniqueIdentifier>{cfdf1e4e-db2a-4346-8d2b-f99d25168904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\input">
+      <UniqueIdentifier>{5de7850e-38aa-4745-a154-f5fef18a3abd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

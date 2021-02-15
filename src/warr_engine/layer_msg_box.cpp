@@ -59,7 +59,7 @@ void layer_msg_box::draw_ui()
 	{
 		scoped_render_push_pop;
 
-		rs_ptr->set_from_opt( rso );
+		render_state.set_from_opt( rso );
 		w_render::draw_tiled( tiling_background, rc );
 	}
 

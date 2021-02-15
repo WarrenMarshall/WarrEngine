@@ -57,7 +57,7 @@ void layer_ui::push()
 
 void layer_ui::draw()
 {
-	*rs_ptr = {
+	render_state = {
 		.color = w_color::dark_teal
 	};
 
@@ -133,7 +133,7 @@ void layer_ui::draw_ui()
 	{
 		scoped_render_push_pop;
 
-		*rs_ptr = {
+		render_state = {
 			.align = align::centered,
 			.color = w_color::white,
 			.scale = 2.0f
@@ -141,7 +141,7 @@ void layer_ui::draw_ui()
 
 		w_render::draw_string( "UI Controls", { ui_window_w / 2.0f, 16.0f } );
 
-		*rs_ptr = {
+		render_state = {
 			.align = align::hcenter,
 			.color = w_color::light_grey,
 			.scale = 1.0f

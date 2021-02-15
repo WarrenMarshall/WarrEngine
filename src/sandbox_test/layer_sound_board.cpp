@@ -58,7 +58,7 @@ void layer_sound_board::draw()
 {
 	w_layer::draw();
 
-	*rs_ptr =
+	render_state =
 	{
 		.color = w_color::dark_teal
 	};
@@ -104,7 +104,7 @@ void layer_sound_board::draw_ui()
 	{
 		scoped_render_push_pop;
 
-		*rs_ptr = {
+		render_state = {
 			.align = align::centered,
 			.color = w_color::white,
 			.scale = 2.0f

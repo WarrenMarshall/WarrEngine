@@ -263,7 +263,7 @@ void w_input::queue_motion()
 	}
 }
 
-void w_input::update_axis_delta( e_input_id input_id )
+void w_input::update_axis_delta( e_input_id input_id ) const
 {
 	w_vec2 delta = engine->input->get_axis_state( input_id );
 
@@ -409,7 +409,7 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 	}
 }
 
-void w_input::play_rumble( e_rumble_effect effect )
+void w_input::play_rumble( e_rumble_effect effect ) const
 {
 	if( !gamepad || !gamepad->is_being_used )
 	{
