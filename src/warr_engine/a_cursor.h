@@ -1,5 +1,7 @@
 #pragma once
 
+// this class exists because cursors need to know where their hot spot is.
+
 struct a_cursor : i_asset
 {
 	declare_find_func( a_cursor )

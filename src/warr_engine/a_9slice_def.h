@@ -6,8 +6,8 @@ struct a_9slice_def : i_asset
 
 	std::array<a_texture*, 9> patches = {};
 
-	float get_left_slice_sz();
-	float get_right_slice_sz();
-	float get_top_slice_sz();
-	float get_bottom_slice_sz();
+	float get_left_slice_sz() const;
+	float get_right_slice_sz() const;
+	float get_top_slice_sz() const;
+	float get_bottom_slice_sz() const;
 };

@@ -14,7 +14,7 @@ struct w_font_char
 	// cache with an a_texture for every glyph in a font.
 	//
 	// nobody else will ever need to reference this texture, so we
-	// keep it to ourselves.
+	// allocate and store it ourselves.
 
 	std::unique_ptr<a_texture> glyph_texture = nullptr;
 };

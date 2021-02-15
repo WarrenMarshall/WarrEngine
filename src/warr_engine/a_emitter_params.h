@@ -4,7 +4,6 @@ struct a_emitter_params : i_asset
 {
 	declare_find_func( a_emitter_params )
 
-	// texture to draw for this particle
 	a_texture* texture = nullptr;
 	w_timeline t_color = w_timeline( timeline_type::color_type );
 	w_timeline t_alpha = w_timeline( timeline_type::float_type );

@@ -127,7 +127,7 @@ namespace fixed_time_step
 // ----------------------------------------------------------------------------
 
 #define declare_find_func( struct_name )\
-static struct_name* find( const std::string_view name, bool silent = false );
+static struct_name* find( const std::string_view name, const bool silent = false );
 
 #define implement_find_func( struct_name )\
 struct_name* struct_name::find( const std::string_view name, bool silent )\

@@ -6,7 +6,7 @@ struct a_gradient : a_src_texture
 
 	virtual ~a_gradient() override;
 
-	std::vector<float> colors;
+	std::vector<float> colors = {};
 	e_align alignment = align::horizontal;
 
 	virtual void clean_up_internals() override;
