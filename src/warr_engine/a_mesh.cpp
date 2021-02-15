@@ -61,14 +61,7 @@ bool a_mesh::create_internals()
 
 			tok.get_next_token();	// eat "f "
 
-			//if( tok.tokens.size() >= 4 )
-			//{
-			//	log_error( "mesh loading only supports triangulated meshes." );
-			//}
-
 			// each face is broken down as if it's a triangle fan
-			//
-			// the first vertex read is the anchor point
 
 			int vidx[ 3 ] = {};
 			int uvidx[ 3 ] = {};
@@ -115,16 +108,6 @@ bool a_mesh::create_internals()
 					vidx[ 2 ] = -1;
 					uvidx[ 2 ] = -1;
 				}
-
-				/*
-				size_t vidx = (size_t) w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
-				size_t uvidx = (size_t) w_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
-
-				w_render_vertex rbv( vertex_list[ vidx[ 0 ] ], uv_list[ uvidx[ 0 ] ], w_color::white, 0.0f );
-				w_render_vertex rbv( vertex_list[ vidx[ 1 ] ], uv_list[ uvidx[ 1 ] ], w_color::white, 0.0f );
-				w_render_vertex rbv( vertex_list[ vidx ], uv_list[ uvidx ], w_color::white, 0.0f );
-				render_verts.emplace_back( rbv );
-				*/
 			}
 		}
 	}

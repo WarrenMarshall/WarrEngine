@@ -24,7 +24,7 @@ void layer_meshes::push()
 			mec = e->add_component<ec_mesh>();
 			mec->init( "mesh_sphere_01" );
 			mec->rs_opt = {
-				.color = w_color::white
+				.color = w_color::light_green
 			};
 		}
 	}

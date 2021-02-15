@@ -151,7 +151,7 @@ void w_render::draw_mesh( a_mesh* mesh )
 			engine->render->batch_triangles->add_primitive( mesh->tex, v0, v1, v2 );
 		}
 
-	#if 1
+	#if 0
 		render_state.color = w_color::black;
 		render_state.z += zdepth_nudge;
 
@@ -567,11 +567,11 @@ void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 
 		for( auto x = 0; x < circle_sample_points_max; ++x )
 		{
-			v1.x = origin.x + ( engine->render->circle_sample_points[ x ].x * radius );
-			v1.y = origin.y + ( engine->render->circle_sample_points[ x ].y * radius );
+			v1.x = origin.x + ( engine->render->circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+			v1.y = origin.y + ( engine->render->circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-			v2.x = origin.x + ( engine->render->circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-			v2.y = origin.y + ( engine->render->circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+			v2.x = origin.x + ( engine->render->circle_sample_points[ x ].x * radius );
+			v2.y = origin.y + ( engine->render->circle_sample_points[ x ].y * radius );
 
 			engine->render->batch_triangles->add_primitive( engine->tex_white, v0, v1, v2 );
 		}

@@ -15,7 +15,6 @@ struct a_mesh : i_asset
 	a_texture* tex = nullptr;
 
 	std::vector<a_mesh_vertex> mesh_verts;
-	//std::vector<w_render_vertex> render_verts;		// triangles, so in groups of 3
 
 	virtual bool create_internals() override;
 };
