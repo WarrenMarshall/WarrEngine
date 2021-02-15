@@ -91,6 +91,16 @@ w_rect::w_rect( float x, float y, float w, float h )
 {
 }
 
+w_rect::w_rect( int x, int y, int w, int h )
+	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
+{
+}
+
+w_rect::w_rect( short x, short y, short w, short h )
+	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
+{
+}
+
 w_rect::w_rect( const w_vec2& top_left, const w_vec2& bottom_right )
 	: x( top_left.x ), y( top_left.y ), w( bottom_right.x - top_left.x ), h( bottom_right.y - top_left.y )
 {

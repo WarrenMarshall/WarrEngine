@@ -64,7 +64,7 @@ w_rect w_window::compute_max_window_size_for_desktop()
 	window_pos.x = ( vidmode->width - window_pos.w ) / 2;
 	window_pos.y = ( vidmode->height - window_pos.h ) / 2;
 
-	viewport_pos_sz = w_rect( 0, 0, window_pos.w, window_pos.h );
+	viewport_pos_sz = w_rect( 0.0f, 0.0f, window_pos.w, window_pos.h );
 
 	return window_pos;
 }

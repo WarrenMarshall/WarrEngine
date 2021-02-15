@@ -21,7 +21,7 @@ void layer_default::draw()
 {
 	w_layer::draw();
 
-	w_render::draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+	w_render::draw( gradient, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 
 	render_state =
 	{

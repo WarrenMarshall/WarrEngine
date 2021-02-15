@@ -88,7 +88,7 @@ void layer_esc_menu::draw_ui()
 	w_layer::draw_ui();
 
 	a_texture* tiling_background = a_texture::find( "engine_white" );
-	w_rect rc = w_rect( 0, 0, ui_window_w, ui_window_h );
+	w_rect rc = w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h );
 
 	w_render_state_opt rso;
 	rso.color = w_color::pal( 0 );

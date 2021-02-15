@@ -10,27 +10,29 @@ bool a_font_def::create_internals()
 
 	auto file = engine->fs->load_text_file( original_filename );
 
-	float x, y, w, h;
+	int x, y, w, h;
+	int char_id;
+	w_font_char* fch;
 
 	for( const auto& line : *( file->lines.get() ) )
 	{
 		if( line.substr( 0, 5 ) == "char " )
 		{
 			// parse a char definition
-			int char_id = w_parser::int_from_str( w_parser::key_from_str( line, "id=" ) );
-			w_font_char* fch = &( char_map[ char_id ] );
+			char_id = w_parser::int_from_str( w_parser::key_from_str( line, "id=" ) );
+			fch = &( char_map[ char_id ] );
 
-			x = w_parser::float_from_str( w_parser::key_from_str( line, "x=" ) );
-			y = w_parser::float_from_str( w_parser::key_from_str( line, "y=" ) );
-			w = w_parser::float_from_str( w_parser::key_from_str( line, "width=" ) );
-			h = w_parser::float_from_str( w_parser::key_from_str( line, "height=" ) );
+			x = w_parser::int_from_str( w_parser::key_from_str( line, "x=" ) );
+			y = w_parser::int_from_str( w_parser::key_from_str( line, "y=" ) );
+			w = w_parser::int_from_str( w_parser::key_from_str( line, "width=" ) );
+			h = w_parser::int_from_str( w_parser::key_from_str( line, "height=" ) );
 
-			fch->xoffset = w_parser::float_from_str( w_parser::key_from_str( line, "xoffset=" ) );
-			fch->yoffset = w_parser::float_from_str( w_parser::key_from_str( line, "yoffset=" ) );
-			fch->xadvance = w_parser::float_from_str( w_parser::key_from_str( line, "xadvance=" ) );
+			fch->xoffset = (short)w_parser::int_from_str( w_parser::key_from_str( line, "xoffset=" ) );
+			fch->yoffset = (short)w_parser::int_from_str( w_parser::key_from_str( line, "yoffset=" ) );
+			fch->xadvance = (short)w_parser::int_from_str( w_parser::key_from_str( line, "xadvance=" ) );
 
-			fch->w = w;
-			fch->h = h;
+			fch->w = (short)w;
+			fch->h = (short)h;
 
 			fch->glyph_texture = std::make_unique<a_texture>( src_texture->tag, w_rect( x, y, w, h ) );
 
@@ -57,7 +59,7 @@ w_vec2 a_font::get_string_extents( const std::string_view text ) const
 		pxch = &( font_def->char_map[ (int)ch ] );
 
 		bounds.x += pxch->xadvance;
-		bounds.y = glm::max( bounds.y, pxch->h + pxch->yoffset );
+		bounds.y = (float)glm::max<int>( bounds.y, (int)( pxch->h + pxch->yoffset ) );
 	}
 
 	return bounds;

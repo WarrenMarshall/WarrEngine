@@ -117,6 +117,8 @@ struct w_rect
 	w_rect() = default;
 	w_rect( float x, float y );
 	w_rect( float x, float y, float w, float h );
+	w_rect( int x, int y, int w, int h );
+	w_rect( short x, short y, short w, short h );
 	w_rect( const w_vec2& top_left, const w_vec2& bottom_right );
 
 	w_vec2 extents() const;

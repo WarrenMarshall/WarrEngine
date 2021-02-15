@@ -70,7 +70,7 @@ void layer_main_menu::draw()
 	w_layer::draw();
 
 	RENDER
-		->draw( gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
+		->draw( gradient, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 }
 
 void layer_main_menu::draw_ui()

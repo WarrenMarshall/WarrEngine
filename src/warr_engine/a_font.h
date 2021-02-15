@@ -4,11 +4,11 @@
 
 struct w_font_char
 {
-	float w = 0.0f;
-	float h = 0.0f;
-	float xoffset = 0.0f;
-	float yoffset = 0.0f;
-	float xadvance = 0.0f;
+	short w = 0;
+	short h = 0;
+	short xoffset = 0;
+	short yoffset = 0;
+	short xadvance = 0;
 
 	// this is not cached as it would be inefficient to flood the asset
 	// cache with an a_texture for every glyph in a font.
@@ -32,7 +32,7 @@ struct a_font_def : i_asset
 
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.
-	float max_height = 0.0f;
+	short max_height = 0;
 
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.

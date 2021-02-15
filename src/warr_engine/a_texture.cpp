@@ -8,7 +8,7 @@ a_texture::a_texture( const std::string_view src_texture_tag )
 {
 	src_texture = engine->asset_cache->find_src_texture_for_tag( src_texture_tag );
 
-	rc = { 0, 0, src_texture->w, src_texture->h };
+	rc = { 0.0f, 0.0f, src_texture->w, src_texture->h };
 
 #ifndef _FINALRELEASE
 	if( ( rc.x + rc.w ) > src_texture->w || ( rc.y + rc.h ) > src_texture->h )
