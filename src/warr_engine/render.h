@@ -12,6 +12,7 @@ struct w_render_state
 	w_vec2 scale = { 1.0f, 1.0f };
 	bool snap_to_pixel = true;
 	w_vec2 uv_tiling = { 1.0f, 1.0f };
+	float z = 0.0f;
 
 	void set_from_opt( w_render_state_opt& rso );
 };
@@ -26,6 +27,7 @@ struct w_render_state_opt
 	std::optional<w_vec2> scale = std::nullopt;
 	std::optional<bool> snap_to_pixel = std::nullopt;
 	std::optional<w_vec2> uv_tiling = std::nullopt;
+	std::optional<float> z = std::nullopt;
 };
 
 // making sure that these are small enough to fit into the cache nicely and
@@ -66,14 +68,8 @@ struct w_render
 
 	void clear_render_state_stack();
 
-	float rs_z_depth = 0.0f;
-	float rs_z_depth_nudge_accum = 0.0f;
-
 	bool single_frame_debugger = false;
 	bool show_physics_debug = true;
-
-	w_render* set_z_depth( const float depth );
-	w_render* nudge_z_depth( const float nudge = zdepth_nudge );
 
 	// ----------------------------------------------------------------------------
 

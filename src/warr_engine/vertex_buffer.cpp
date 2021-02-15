@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------
 
 w_render_vertex::w_render_vertex( const w_vec2& pos, const w_uv& uv, const w_color& color, const float glow )
-	: x( pos.x ), y( pos.y ), z( RENDER->rs_z_depth ),
+	: x( pos.x ), y( pos.y ), z( render_state.z ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	glow( glow )
@@ -13,7 +13,7 @@ w_render_vertex::w_render_vertex( const w_vec2& pos, const w_uv& uv, const w_col
 }
 
 w_render_vertex::w_render_vertex( const w_vec3& pos, const w_uv& uv, const w_color& color, const float glow )
-	: x( pos.x ), y( pos.y ), z( pos.z + RENDER->rs_z_depth ),
+	: x( pos.x ), y( pos.y ), z( render_state.z ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	glow( glow )

@@ -78,7 +78,7 @@ void w_entity::draw()
 			scoped_opengl_push_pop;
 			OPENGL->top()->add_transform( component->tform );
 
-			RENDER->nudge_z_depth();
+			render_state.z += zdepth_nudge;
 
 			{
 				scoped_render_push_pop;

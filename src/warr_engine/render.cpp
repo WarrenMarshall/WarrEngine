@@ -74,26 +74,6 @@ w_render* w_render::pop()
 	return this;
 }
 
-w_render* w_render::set_z_depth( const float depth )
-{
-	rs_z_depth = depth;
-	rs_z_depth_nudge_accum = 0.0f;
-
-	return this;
-}
-
-// adds/subtracts a value from the current depth. makes it easier
-// to, for example, nudge something in front of something else without
-// having to know the current depth
-
-w_render* w_render::nudge_z_depth( const float nudge )
-{
-	rs_z_depth += nudge;
-	rs_z_depth_nudge_accum += nudge;
-
-	return this;
-}
-
 w_color w_render::get_palette_color_from_idx( int idx )
 {
 	if( !palette )
@@ -378,7 +358,7 @@ void w_render::draw_stats()
 
 		std::vector<std::string> stat_lines;
 
-		RENDER->set_z_depth( zdepth_stats );
+		render_state.z = zdepth_stats;
 
 		if( engine->render->show_stats )
 		{
@@ -421,7 +401,7 @@ void w_render::draw_stats()
 			{
 				scoped_render_push_pop;
 
-				RENDER->nudge_z_depth();
+				render_state.z += zdepth_nudge;
 
 				render_state = {
 					.align = align::hcenter,

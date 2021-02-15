@@ -112,7 +112,7 @@ void w_layer_mgr::draw()
 
 				if( layer->ilc_is_alive() )
 				{
-					RENDER->set_z_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+					render_state.z = zdepth_layers - ( zdepth_layer_step * x );
 					OPENGL->init_view_matrix( layer->get_camera() );
 
 					layer->draw();
@@ -120,7 +120,7 @@ void w_layer_mgr::draw()
 					// draw any debug information that lives in world space.
 					if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
 					{
-						RENDER->nudge_z_depth();
+						render_state.z += zdepth_nudge;
 						engine->box2d_world->DebugDraw();
 					}
 
@@ -136,7 +136,7 @@ void w_layer_mgr::draw()
 		{
 			scoped_render_push_pop;
 
-			RENDER->set_z_depth( zdepth_clear_window );
+			render_state.z = zdepth_clear_window;
 
 			OPENGL->init_view_matrix_identity_ui();
 
@@ -149,13 +149,13 @@ void w_layer_mgr::draw()
 
 				if( layer->ilc_is_alive() )
 				{
-					RENDER->set_z_depth( zdepth_layers - ( zdepth_layer_step * x ) );
+					render_state.z = zdepth_layers - ( zdepth_layer_step * x );
 
 					// draw any screen space items, like UI. these are
 					// drawn with an identity matrix so the top left of
 					// the screen is always 0,0.
 
-					RENDER->nudge_z_depth();
+					render_state.z += zdepth_nudge;
 
 					{
 						scoped_opengl_push_pop;

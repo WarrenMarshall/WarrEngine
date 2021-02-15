@@ -658,6 +658,8 @@ void w_engine::deinit()
 {
 	asset_definition_file_cache = nullptr;
 
+	// this block seems unnecessary and I believe can be the source of a
+	// shutdown crash if enabled. tread lightly.
 	/*
 	time = nullptr;
 	asset_cache = nullptr;
@@ -685,7 +687,7 @@ void w_engine::draw()
 		{
 			scoped_render_push_pop;
 
-			RENDER->set_z_depth( zdepth_topmost );
+			render_state.z = zdepth_topmost;
 
 			w = ui_window_w;
 			h = ui_window_h;

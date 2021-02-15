@@ -17,7 +17,7 @@ void w_ui_mgr::draw_topmost()
 		{
 			scoped_render_push_pop;
 
-			RENDER->set_z_depth( zdepth_topmost );
+			render_state.z = zdepth_topmost;
 
 			w_render::draw( mouse_cursor->texture,
 				w_rect(
