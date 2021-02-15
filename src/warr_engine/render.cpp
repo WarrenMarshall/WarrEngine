@@ -126,11 +126,12 @@ void w_render::clear_render_state_stack()
 	top_render_state = &( render_states.back() );
 }
 
+// #const - this is such an unholy mess - would love to make "mesh" a const, but can't
 void w_render::draw_mesh( a_mesh* mesh )
 {
 	// copy the render state into each vertex on the mesh before rendering.
 
-	for(auto & render_vert : mesh->render_verts)
+	for( auto& render_vert : mesh->render_verts )
 	{
 		render_vert.r = render_state.color.r;
 		render_vert.g = render_state.color.g;
@@ -234,7 +235,7 @@ void w_render::draw_string( const std::string_view text, const w_pos& pos )
 	w_render::draw_string( engine->pixel_font, text, pos );
 }
 
-void w_render::draw_string( a_font* font, const std::string_view text, const w_pos& pos )
+void w_render::draw_string( const a_font* font, const std::string_view text, const w_pos& pos )
 {
 	w_vec2 alignment_pos_adjustment( 0.0f, 0.0f );
 

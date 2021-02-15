@@ -82,8 +82,8 @@ struct w_render
 	void init();
 
 	static void draw( const a_texture* texture, const w_rect& dst );
-	static void draw_circle( const w_vec2& origin, float radius );
-	static void draw_filled_circle( const w_vec2& origin, float radius );
+	static void draw_circle( const w_vec2& origin, const float radius );
+	static void draw_filled_circle( const w_vec2& origin, const float radius );
 	static void draw_filled_rectangle( const w_rect& dst );
 	static void draw_filled_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 );
 	static void draw_line( const w_vec2& start, const w_vec2& end );
@@ -93,7 +93,7 @@ struct w_render
 	static void draw_sliced( const a_9slice_def* slice_def, const w_rect& dst );
 	static void draw_sprite( const a_texture* texture, const w_vec2& dst );
 	static void draw_stats();
-	static void draw_string( a_font* font, const std::string_view text, const w_pos& pos );
+	static void draw_string( const a_font* font, const std::string_view text, const w_pos& pos );
 	static void draw_string( const std::string_view text, const w_pos& pos );
 	static void draw_tiled( const a_texture* texture, const w_rect& dst );
 	static void draw_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 );
