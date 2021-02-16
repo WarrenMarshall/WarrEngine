@@ -147,10 +147,11 @@ void w_render::draw_mesh( a_mesh* mesh )
 			amv++;
 			w_render_vertex v2( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
-			engine->render->batch_triangles->add_primitive( mesh->tex, v0, v1, v2 );
+			engine->render->batch_triangles->add_primitive( amv->texture, v0, v1, v2 );
 		}
 
-	#if 1	// wireframe
+	#if 0
+		// wireframe overlay
 
 		render_state.color = w_color::white;
 		render_state.z += zdepth_nudge;

@@ -34,3 +34,4 @@ AsmSandbox/AsmSandbox.vcxproj.filters
 AsmSandbox/AsmSandbox.vcxproj.user
 AsmSandbox
 *.tmp
+*.mtl

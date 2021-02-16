@@ -430,13 +430,11 @@ void w_asset_definition_file::precache_font( const w_keyvalues& key_values_for_a
 void w_asset_definition_file::precache_mesh( const w_keyvalues& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
-	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
 
 	auto filename = fmt::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
 	auto asset_ptr = engine->asset_cache->add( std::make_unique<a_mesh>(), tag.data(), filename );
 
-	asset_ptr->tex = a_texture::find( key_values_for_asset_def.find_value( "texture_tag" ) );
 	asset_ptr->original_filename = filename;
 
 	asset_ptr->clean_up_internals();
