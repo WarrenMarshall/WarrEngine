@@ -9,3 +9,17 @@
 	"texture_tag" "engine_white"
 	"filename" "meshes/sphere_mesh.obj"
 }
+
+{
+	"type" "mesh"
+	"tag" "mesh_mario_jump"
+	"texture_tag" "player_jump_1"
+	"filename" "meshes/mario_jump.obj"
+}
+
+{
+	"type" "mesh"
+	"tag" "mesh_crate"
+	"texture_tag" "tex_crate_01"
+	"filename" "meshes/crate.obj"
+}

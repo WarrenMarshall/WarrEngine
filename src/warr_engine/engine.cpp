@@ -446,7 +446,7 @@ void w_engine::main_loop()
 		w_render::draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
-	#if 1
+	#if 0
 		// ---------------------------------------------------------------------------
 		// debug helper
 		//

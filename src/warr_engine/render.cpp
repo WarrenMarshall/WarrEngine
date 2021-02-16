@@ -130,12 +130,13 @@ void w_render::draw_mesh( a_mesh* mesh )
 {
 	{
 		scoped_opengl_push_pop;
+		a_mesh_vertex* amv = nullptr;
+
+	#if 1	// textured
 
 		OPENGL->top()
 			->rotate( render_state.angle )
 			->scale( render_state.scale.x, render_state.scale.y );
-
-		a_mesh_vertex* amv = {};
 
 		for( int mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
 		{
@@ -151,8 +152,9 @@ void w_render::draw_mesh( a_mesh* mesh )
 			engine->render->batch_triangles->add_primitive( mesh->tex, v0, v1, v2 );
 		}
 
-	#if 0
-		render_state.color = w_color::black;
+	#else	// wireframe
+
+		render_state.color = w_color::white;
 		render_state.z += zdepth_nudge;
 
 		for( int mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
@@ -160,10 +162,10 @@ void w_render::draw_mesh( a_mesh* mesh )
 			amv = &( mesh->mesh_verts[ mv + 0 ] );
 			w_render_vertex v0( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
-			amv = &( mesh->mesh_verts[ mv + 1 ] );
+			amv++;
 			w_render_vertex v1( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
-			amv = &( mesh->mesh_verts[ mv + 2 ] );
+			amv++;
 			w_render_vertex v2( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
 			engine->render->batch_lines->add_primitive( mesh->tex, v0, v1 );

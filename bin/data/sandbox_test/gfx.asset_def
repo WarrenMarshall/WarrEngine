@@ -5,6 +5,6 @@
 
 {
 	"type" "src_texture"
-	"tag" "tex_hello_world"
-	"filename" "gfx/hello_world.png"
+	"tag" "tex_crate_01"
+	"filename" "gfx/crate_01.png"
 }
