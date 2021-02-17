@@ -104,7 +104,7 @@ void w_layer_mgr::draw()
 		// ----------------------------------------------------------------------------
 
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			for( auto x = starting_layer_idx; x >= 0; --x )
 			{
@@ -134,7 +134,7 @@ void w_layer_mgr::draw()
 		// ----------------------------------------------------------------------------
 
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			render_state.z = zdepth_clear_window;
 
@@ -158,7 +158,7 @@ void w_layer_mgr::draw()
 					render_state.z += zdepth_nudge;
 
 					{
-						scoped_opengl_push_pop;
+						scoped_opengl;
 
 						IMGUI->current_layer = layer;
 						layer->draw_ui();

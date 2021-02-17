@@ -15,7 +15,7 @@ void w_ui_mgr::draw_topmost()
 	if( mouse_cursor && engine->window->mouse_mode == mouse_mode::custom )
 	{
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			render_state.z = zdepth_topmost;
 

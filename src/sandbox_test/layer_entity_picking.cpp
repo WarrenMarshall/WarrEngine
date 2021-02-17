@@ -73,7 +73,7 @@ void layer_entity_picking::draw()
 void layer_entity_picking::draw_ui()
 {
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state =
 		{

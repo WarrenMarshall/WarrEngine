@@ -76,7 +76,7 @@ void w_layer::update()
 	for( auto& entity : entities )
 	{
 		{
-			scoped_opengl_push_pop;
+			scoped_opengl;
 
 			OPENGL->top()->add_transform( *( entity->get_transform() ) );
 
@@ -94,7 +94,7 @@ void w_layer::draw()
 		engine->stats->entities++;
 
 		{
-			scoped_opengl_push_pop;
+			scoped_opengl;
 
 			OPENGL->top()->add_transform( *entity->get_transform() );
 

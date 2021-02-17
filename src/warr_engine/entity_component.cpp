@@ -133,7 +133,7 @@ void ec_sprite::draw()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.set_from_opt( rs_opt );
 		w_render::draw_sprite( texture, tform.pos );
@@ -178,7 +178,7 @@ void ec_primitive_shape::draw()
 	}
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.set_from_opt( rs_opt );
 
@@ -236,7 +236,7 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 		// so the warmed up particles spawn at the right position in the world.
 
 		{
-			scoped_opengl_push_pop;
+			scoped_opengl;
 
 			OPENGL->top()
 				->add_transform( *( parent_entity->get_transform() ) )
@@ -278,8 +278,8 @@ void ec_emitter::draw()
 	// component level transforms before drawing the particle pool
 
 	{
-		scoped_opengl_identity_push_pop;
-		scoped_render_push_pop;
+		scoped_opengl_identity;
+		scoped_render_state;
 
 		render_state.set_from_opt( rs_opt );
 		emitter->particle_pool->draw();
@@ -696,7 +696,7 @@ w_entity_component* ec_tilemap::init()
 void ec_tilemap::draw()
 {
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.set_from_opt( rs_opt );
 
@@ -851,7 +851,7 @@ void ec_mesh::draw()
 	}
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.set_from_opt( rs_opt );
 		w_render::draw_mesh( mesh );

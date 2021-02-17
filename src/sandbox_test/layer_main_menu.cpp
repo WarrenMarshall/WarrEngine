@@ -102,6 +102,11 @@ void layer_main_menu::draw_ui()
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
+	IMGUI->do_push_button( H( "button_gradients" ) )
+		->set_text( "Gradients" )
+		->set_size( { 100.0f, w_vec2::ignore } )
+		->finalize();
+
 	IMGUI->do_push_button( H( "button_particles" ) )
 		->set_text( "Particles" )
 		->set_size( { 100.0f, w_vec2::ignore } )
@@ -119,6 +124,11 @@ void layer_main_menu::draw_ui()
 
 	IMGUI->do_push_button( H( "button_sound_board" ) )
 		->set_text( "Sound Board" )
+		->set_size( { 100.0f, w_vec2::ignore } )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_tween" ) )
+		->set_text( "Tweens" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 

@@ -273,3 +273,6 @@ using b_show_in_debug_frame_buffer = bool;
 
 #define scoped_var(type, line_num) type scoped_var_##line_num## = {}
 #define scoped_decl(type, line_num) scoped_var(type, line_num)
+
+#define scoped_var_arg0(type, arg0, line_num) type scoped_var_##line_num## ( ##arg0## )
+#define scoped_decl_arg0(type, arg0, line_num) scoped_var_arg0(type, arg0, line_num)

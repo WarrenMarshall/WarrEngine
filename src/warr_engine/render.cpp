@@ -129,7 +129,7 @@ void w_render::clear_render_state_stack()
 void w_render::draw_mesh( a_mesh* mesh )
 {
 	{
-		scoped_opengl_push_pop;
+		scoped_opengl;
 		a_mesh_vertex* amv = nullptr;
 
 		OPENGL->top()
@@ -197,7 +197,7 @@ void w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 	w_render_vertex v3( w_vec2( -hw, -hh ), w_vec2( texture->uv00.u * render_state.uv_tiling.u, texture->uv11.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
 	{
-		scoped_opengl_push_pop;
+		scoped_opengl;
 		OPENGL->top()
 			->translate( { dst.x, dst.y } )
 			->rotate( render_state.angle );
@@ -222,7 +222,7 @@ void w_render::draw( const a_texture* texture, const w_rect& dst )
 	w_render_vertex v3( w_vec2( 0.0f, 0.0f ), w_vec2( texture->uv00.u * render_state.uv_tiling.u, texture->uv11.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
 	{
-		scoped_opengl_push_pop;
+		scoped_opengl;
 
 		OPENGL->top()->translate( { dst.x, dst.y } );
 
@@ -233,7 +233,7 @@ void w_render::draw( const a_texture* texture, const w_rect& dst )
 void w_render::draw_tiled( const a_texture* texture, const w_rect& dst )
 {
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.uv_tiling = w_vec2::compute_uv_tiling( texture, dst );
 
@@ -372,7 +372,7 @@ void w_render::draw_stats()
 {
 #if !defined(_FINALRELEASE)
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		draw_stat_line_buffer.clear();
 		render_state.z = zdepth_stats;
@@ -407,7 +407,7 @@ void w_render::draw_stats()
 			}
 
 			{
-				scoped_render_push_pop;
+				scoped_render_state;
 
 				render_state.color = w_color::pal( 0 );
 				render_state.color.a = 0.75f;
@@ -418,7 +418,7 @@ void w_render::draw_stats()
 			}
 
 			{
-				scoped_render_push_pop;
+				scoped_render_state;
 
 				render_state.z += zdepth_nudge;
 
@@ -438,7 +438,7 @@ void w_render::draw_stats()
 		else
 		{
 			{
-				scoped_render_push_pop;
+				scoped_render_state;
 
 				render_state.align = align::right;
 				w_render::draw_string(
@@ -539,7 +539,7 @@ void w_render::draw_circle( const w_vec2& origin, float radius )
 	w_render_vertex v1( w_vec2::zero, w_uv( 0, 0 ), render_state.color, render_state.glow );
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.snap_to_pixel = false;
 
@@ -563,7 +563,7 @@ void w_render::draw_filled_circle( const w_vec2& origin, float radius )
 	w_render_vertex v2 = v0;
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.snap_to_pixel = false;
 
@@ -599,7 +599,7 @@ void w_render::draw_point( const w_vec2& pos )
 	w_render_vertex v0( pos, w_uv( 0, 0 ), render_state.color, render_state.glow );
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.snap_to_pixel = false;
 

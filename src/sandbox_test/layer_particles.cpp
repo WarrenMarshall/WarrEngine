@@ -98,7 +98,7 @@ void layer_particles::draw_ui()
 	w_layer::draw_ui();
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state =
 		{

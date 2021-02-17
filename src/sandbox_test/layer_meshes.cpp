@@ -44,7 +44,7 @@ void layer_meshes::push()
 void layer_meshes::draw()
 {
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state =
 		{
@@ -62,7 +62,7 @@ void layer_meshes::draw_ui()
 	w_layer::draw_ui();
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state =
 		{

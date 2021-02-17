@@ -20,6 +20,8 @@ struct w_imgui
 	w_rect last_rc_client;
 	w_imgui_control current_control = {};
 
+	w_vec2 pivot;		// a location offset to add to every position passed in
+
 	// the results from the last control processed
 	w_imgui_result result = {};
 
@@ -28,6 +30,8 @@ struct w_imgui
 	w_imgui();
 
 	void reset();
+	void add_pivot( const w_vec2& v );
+	void subtract_pivot( const w_vec2& v );
 
 	w_imgui* do_panel( hash tag = hash_none );
 	w_imgui* do_push_button( hash tag = hash_none );
@@ -49,7 +53,7 @@ struct w_imgui
 
 	void compute_clientrect_from_rect();
 	w_imgui_result* finalize( w_imgui_control_data* data = nullptr );
-	w_imgui_control_data* get_control_data( hash tag );
+	w_imgui_control_data* get_control_data( const hash tag );
 
 private:
 	void set_last_control( w_imgui_control control );

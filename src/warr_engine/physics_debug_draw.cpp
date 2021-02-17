@@ -6,7 +6,7 @@
 void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.color = w_color( color.r, color.g, color.b, color.a );
 
@@ -24,7 +24,7 @@ void w_physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCoun
 void w_physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.color = w_color( color.r, color.g, color.b, 0.5f );
 
@@ -49,11 +49,11 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 	w_vec2 position = w_vec2( center ).from_b2d();
 
 	{
-		scoped_opengl_push_pop;
+		scoped_opengl;
 		OPENGL->top()->translate( { position.x, position.y } );
 
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			render_state.color = w_color( color.r, color.g, color.b, color.a );
 			w_render::draw_circle( { 0.0f, 0.0f }, from_b2d( radius ) );
@@ -67,11 +67,11 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 	w_vec2 position = w_vec2( center ).from_b2d();
 
 	{
-		scoped_opengl_push_pop;
+		scoped_opengl;
 
 		OPENGL->top()->translate( { position.x, position.y } );
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			render_state.color = w_color( color.r, color.g, color.b, 0.5f );
 			w_render::draw_filled_circle( { 0.0f, 0.0f }, from_b2d( radius ) );
@@ -86,7 +86,7 @@ void w_physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, cons
 	w_vec2 end = w_vec2( p2 ).from_b2d();
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.color = w_color( color.r, color.g, color.b, color.a );
 		w_render::draw_line( start, end );
@@ -108,7 +108,7 @@ void w_physics_debug_draw::DrawTransform( const b2Transform& xf )
 	w_vec2 y_axis = v + mtx.transform( w_vec2( 0.0f, debug_line_length ) );
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state = {
 			.color = w_color( 192, 0, 0 ),
@@ -127,7 +127,7 @@ void w_physics_debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color
 	w_vec2 v = w_vec2( p ).from_b2d();
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.color = w_color( color.r, color.g, color.b, color.a );
 		w_render::draw_point( v );

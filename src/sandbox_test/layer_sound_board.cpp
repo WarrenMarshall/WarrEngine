@@ -102,7 +102,7 @@ void layer_sound_board::draw_ui()
 		->finalize();
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state = {
 			.align = align::centered,

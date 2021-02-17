@@ -3,38 +3,52 @@
 
 // ----------------------------------------------------------------------------
 
-render_push_pop::render_push_pop()
+s_render_state::s_render_state()
 {
 	RENDER->push();
 }
 
-render_push_pop::~render_push_pop()
+s_render_state::~s_render_state()
 {
 	RENDER->pop();
 }
 
 // ----------------------------------------------------------------------------
 
-opengl_push_pop::opengl_push_pop()
+s_opengl::s_opengl()
 {
 	OPENGL->push();
 }
 
-opengl_push_pop::~opengl_push_pop()
+s_opengl::~s_opengl()
 {
 	OPENGL->pop();
 }
 
 // ----------------------------------------------------------------------------
 
-opengl_identity_push_pop::opengl_identity_push_pop()
+s_opengl_identity::s_opengl_identity()
 {
 	OPENGL->push_identity();
 }
 
-opengl_identity_push_pop::~opengl_identity_push_pop()
+s_opengl_identity::~s_opengl_identity()
 {
 	OPENGL->pop();
 }
 
 // ----------------------------------------------------------------------------
+
+s_imgui_pivot::s_imgui_pivot( const w_vec2& pivot )
+	: pivot( pivot )
+{
+	IMGUI->add_pivot( pivot );
+}
+
+s_imgui_pivot::~s_imgui_pivot()
+{
+	IMGUI->subtract_pivot( pivot );
+}
+
+// ----------------------------------------------------------------------------
+

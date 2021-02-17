@@ -95,9 +95,9 @@ extern float ui_window_h;
 
 #define ui_window_scale (v_window_w / ui_window_w)
 
-#include "scoped_vars.h"
 #include "filesystem.h"
 #include "datatypes.h"
+#include "scoped_vars.h"
 
 #include "bit_flag_generator.h"
 #include "coord.h"

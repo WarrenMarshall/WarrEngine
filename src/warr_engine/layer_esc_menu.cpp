@@ -95,7 +95,7 @@ void layer_esc_menu::draw_ui()
 	rso.color->a = 0.75f;
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state.set_from_opt( rso );
 		w_render::draw_tiled( tiling_background, rc );

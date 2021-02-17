@@ -16,6 +16,16 @@ void w_imgui::reset()
 	hash_to_control_data.clear();
 }
 
+void w_imgui::add_pivot( const w_vec2& v )
+{
+	pivot += v;
+}
+
+void w_imgui::subtract_pivot( const w_vec2& v )
+{
+	pivot -= v;
+}
+
 w_imgui* w_imgui::do_panel( hash tag )
 {
 	current_control = {};
@@ -332,13 +342,10 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 		control.rc_win.h = current_layer->get_imgui_callback()->get_default_height( control.type );
 	}
 
-	//assert( control.rc_win.w );
-	//assert( control.rc_win.h );
-
 	result.code = im_result::none;
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win );
+	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win );	// #pivot
 
 	if( mouse_is_inside )
 	{
@@ -389,6 +396,7 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	if( result.code == im_result::left_clicked || control.sticky_hover )
 	{
 		// convert mouse location to client rect position inside control
+		// #pivot
 		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
 		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y;
 
@@ -417,15 +425,15 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	w_vec2 clicked_offset = get_click_offset( is_hovered, is_hot );
 
 	w_rect rc_win_offset = control.rc_win;
-	rc_win_offset.x += clicked_offset.x;
-	rc_win_offset.y += clicked_offset.y;
+	rc_win_offset.x += pivot.x + clicked_offset.x;
+	rc_win_offset.y += pivot.y + clicked_offset.y;
 
 	w_rect rc_client_offset = control.rc_client;
-	rc_client_offset.x += clicked_offset.x;
-	rc_client_offset.y += clicked_offset.y;
+	rc_client_offset.x += pivot.x + clicked_offset.x;
+	rc_client_offset.y += pivot.y + clicked_offset.y;
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		auto control_data = get_control_data( control.tag );
 
@@ -445,11 +453,11 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				{
 					// caption area starts out as matching the client rect,
 					// then gets shrunk to match the font height.
-					w_rect rc = control.rc_client;
+					w_rect rc = rc_client_offset;
 					rc.h = engine->pixel_font->font_def->max_height;
 
 					// background bar that sits behind the caption text
-					w_rect rc_label_background( control.rc_client );
+					w_rect rc_label_background( rc_client_offset );
 					rc_label_background.h = engine->pixel_font->font_def->max_height + current_layer->get_imgui_callback()->get_control_margin();
 
 					render_state.color = w_color::pal( 0 );
@@ -634,7 +642,7 @@ w_color w_imgui::get_adjusted_color( const w_color& base_color, bool is_hovered,
 	return color;
 }
 
-w_imgui_control_data* w_imgui::get_control_data( hash tag )
+w_imgui_control_data* w_imgui::get_control_data( const hash tag )
 {
 	w_imgui_control_data* control_data = nullptr;
 

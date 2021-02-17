@@ -131,7 +131,7 @@ void layer_ui::draw_ui()
 		->finalize( &imgui_callback.edit_text_02_data );
 
 	{
-		scoped_render_push_pop;
+		scoped_render_state;
 
 		render_state = {
 			.align = align::centered,

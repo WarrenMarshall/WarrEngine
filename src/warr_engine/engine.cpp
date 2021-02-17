@@ -345,7 +345,7 @@ void w_engine::main_loop()
 			OPENGL->init_view_matrix_identity();
 
 			{
-				scoped_opengl_push_pop;
+				scoped_opengl;
 
 				// layers and entities
 				layer_mgr->draw();
@@ -404,7 +404,7 @@ void w_engine::main_loop()
 		// ----------------------------------------------------------------------------
 
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			composite_frame_buffer->bind();
 
@@ -685,7 +685,7 @@ void w_engine::draw()
 		float w, h;
 
 		{
-			scoped_render_push_pop;
+			scoped_render_state;
 
 			render_state.z = zdepth_topmost;
 
