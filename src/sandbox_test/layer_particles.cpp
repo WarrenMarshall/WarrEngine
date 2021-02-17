@@ -56,7 +56,7 @@ void layer_particles::push()
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::circle, 5.0f );
+			ec->init( primitive_shape::filled_circle, 5.0f );
 			ec->rs_opt.color = w_color::light_green;
 			ec->rs_opt.color->a = 0.25f;
 		}
