@@ -39,15 +39,15 @@ s_opengl_identity::~s_opengl_identity()
 
 // ----------------------------------------------------------------------------
 
-s_imgui_pivot::s_imgui_pivot( const w_vec2& pivot )
+s_imgui_location_offset::s_imgui_location_offset( const w_vec2& pivot )
 	: pivot( pivot )
 {
-	IMGUI->add_pivot( pivot );
+	IMGUI->add_location_offset( pivot );
 }
 
-s_imgui_pivot::~s_imgui_pivot()
+s_imgui_location_offset::~s_imgui_location_offset()
 {
-	IMGUI->subtract_pivot( pivot );
+	IMGUI->subtract_location_offset( pivot );
 }
 
 // ----------------------------------------------------------------------------

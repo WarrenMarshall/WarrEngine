@@ -129,9 +129,11 @@ struct w_rect
 
 	bool operator==( const w_rect& rhs ) const;
 	w_rect operator+( const w_vec2& v ) const;
+	w_rect operator+=( const w_vec2& v );
+	w_rect operator-( const w_vec2& v ) const;
+	w_rect operator-=( const w_vec2& v );
 	w_rect operator+( const w_rect& rhs ) const;
 	w_rect operator-( const w_rect& rhs ) const;
-	w_rect operator+=( const w_vec2& v );
 	w_rect operator*( float v ) const;
 	w_rect operator*=( float v );
 

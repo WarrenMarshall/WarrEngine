@@ -32,15 +32,15 @@ struct s_opengl_identity
 
 // ----------------------------------------------------------------------------
 
-struct s_imgui_pivot
+struct s_imgui_location_offset
 {
 	w_vec2 pivot;
 
-	s_imgui_pivot() = default;
-	s_imgui_pivot( const w_vec2& pivot );
-	~s_imgui_pivot();
+	s_imgui_location_offset() = default;
+	s_imgui_location_offset( const w_vec2& pivot );
+	~s_imgui_location_offset();
 };
 
-#define scoped_imgui_pivot(arg1)	scoped_decl_arg1( s_imgui_pivot, arg1, __LINE__)
+#define scoped_imgui_location_offset(arg1)	scoped_decl_arg1( s_imgui_location_offset, arg1, __LINE__)
 
 // ----------------------------------------------------------------------------

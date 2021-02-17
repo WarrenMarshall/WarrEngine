@@ -20,7 +20,10 @@ struct w_imgui
 	w_rect last_rc_client;
 	w_imgui_control current_control = {};
 
-	w_vec2 pivot;		// a location offset to add to every position passed in
+	// allows for UI elements to be arranged at 0,0 but when actually drawn to
+	// the screen are offset to a specific location. this makes laying things
+	// out easier since you don't have to work in the final positional space.
+	w_vec2 location_offset;
 
 	// the results from the last control processed
 	w_imgui_result result = {};
@@ -30,8 +33,8 @@ struct w_imgui
 	w_imgui();
 
 	void reset();
-	void add_pivot( const w_vec2& v );
-	void subtract_pivot( const w_vec2& v );
+	void add_location_offset( const w_vec2& v );
+	void subtract_location_offset( const w_vec2& v );
 
 	w_imgui* do_panel( hash tag = hash_none );
 	w_imgui* do_push_button( hash tag = hash_none );

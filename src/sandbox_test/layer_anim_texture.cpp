@@ -70,31 +70,29 @@ void layer_anim_texture::draw_ui()
 	w_layer::draw_ui();
 
 	{
-		scoped_imgui_pivot( w_vec2( 40.0f, 0.0f ) );
+		//scoped_imgui_location_offset( w_vec2( 56.0f, 32.0f ) );
 
-		IMGUI
-			->do_panel()
-			->set_text( "Simple" )
-			->set_pos( { 16.0f, 32.0f } )
-			->set_size( { 64.0f, 48.0f } )
-			->finalize();
+		IMGUI->do_panel();
+		IMGUI->set_text( "Simple" );
+		IMGUI->set_size( { 64.0f, 48.0f } );
+		IMGUI->finalize();
 
-		IMGUI
-			->do_panel()
-			->set_text( "Offsets" )
-			->set_pos( { 96.0f, 32.0f } )
-			->set_size( { 128.0f, 48.0f } )
-			->finalize();
+// 		IMGUI
+// 			->do_panel()
+// 			->set_text( "Offsets" )
+// 			->set_pos( { 40.0f, w_pos::ignore } )
+// 			->set_size( { 128.0f, 48.0f } )
+// 			->finalize();
 
-		render_state =
-		{
-			.color = w_color::white
-		};
-
-		w_render::draw_sprite( animtex_01->get_texture( 0.0f ), IMGUI->pivot + w_vec2( 48.0f, 64.0f ) );
-		w_render::draw_sprite( animtex_coin_01->get_texture( 0.0f ), IMGUI->pivot + w_vec2( 128.0f, 64.0f ) );
-		w_render::draw_sprite( animtex_coin_01->get_texture( 0.3f ), IMGUI->pivot + w_vec2( 160.0f, 64.0f ) );
-		w_render::draw_sprite( animtex_coin_01->get_texture( 0.6f ), IMGUI->pivot + w_vec2( 192.0f, 64.0f ) );
+// 		render_state =
+// 		{
+// 			.color = w_color::white
+// 		};
+//
+// 		w_render::draw_sprite( animtex_01->get_texture( 0.0f ), IMGUI->location_offset + w_vec2( 48.0f, 64.0f ) );
+// 		w_render::draw_sprite( animtex_coin_01->get_texture( 0.0f ), IMGUI->location_offset + w_vec2( 128.0f, 64.0f ) );
+// 		w_render::draw_sprite( animtex_coin_01->get_texture( 0.3f ), IMGUI->location_offset + w_vec2( 160.0f, 64.0f ) );
+// 		w_render::draw_sprite( animtex_coin_01->get_texture( 0.6f ), IMGUI->location_offset + w_vec2( 192.0f, 64.0f ) );
 	}
 
 	{

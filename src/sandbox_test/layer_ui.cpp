@@ -74,7 +74,7 @@ void layer_ui::draw_ui()
 	w_layer::draw_ui();
 
 	{
-		scoped_imgui_pivot( w_vec2( 64.0f, 16.0f ) );
+		scoped_imgui_location_offset( w_vec2( 64.0f, 16.0f ) );
 
 		IMGUI
 			->do_panel( H( "main_panel" ) )

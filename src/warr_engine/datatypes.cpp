@@ -171,6 +171,17 @@ w_rect w_rect::operator+=( const w_vec2& v )
 	return *this;
 }
 
+w_rect w_rect::operator-( const w_vec2& v ) const
+{
+	return w_rect( this->x - v.x, this->y - v.y, this->w, this->h );
+}
+
+w_rect w_rect::operator-=( const w_vec2& v )
+{
+	*this = *this - v;
+	return *this;
+}
+
 w_rect w_rect::operator+( const w_rect& rhs ) const
 {
 	return w_rect( x + rhs.x, y + rhs.y, w + rhs.w, h + rhs.h );
