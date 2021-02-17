@@ -345,7 +345,7 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	result.code = im_result::none;
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win );	// #pivot
+	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win + pivot );
 
 	if( mouse_is_inside )
 	{
@@ -397,8 +397,8 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	{
 		// convert mouse location to client rect position inside control
 		// #pivot
-		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
-		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y;
+		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x - pivot.x;
+		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y - pivot.y;
 
 		result.click_pct.x = result.click_pos.x / current_control.rc_win.w;
 		result.click_pos.y = result.click_pos.y / current_control.rc_win.h;
@@ -536,7 +536,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				{
 					auto tex_tick = a_texture::find( "ui_slider_tick" );
 
-					w_pos tick_pos = w_pos( rc_client_offset.x, control.rc_win.y + 4 );
+					w_pos tick_pos = w_pos( rc_client_offset.x, rc_win_offset.y + 4 );
 					auto steps = (int)( 1.0f / control.interval );
 					auto stride = rc_client_offset.w * control.interval;
 

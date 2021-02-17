@@ -41,6 +41,6 @@ struct s_imgui_pivot
 	~s_imgui_pivot();
 };
 
-#define scoped_imgui_pivot(arg0)	scoped_decl_arg0( s_imgui_pivot, arg0, __LINE__)
+#define scoped_imgui_pivot(arg1)	scoped_decl_arg1( s_imgui_pivot, arg1, __LINE__)
 
 // ----------------------------------------------------------------------------
