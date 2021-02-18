@@ -176,6 +176,7 @@
     <ClCompile Include="layer_meshes.cpp" />
     <ClCompile Include="layer_particles.cpp" />
     <ClCompile Include="layer_sound_board.cpp" />
+    <ClCompile Include="layer_tweens.cpp" />
     <ClCompile Include="layer_ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sandbox_test.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="layer_meshes.h" />
     <ClInclude Include="layer_particles.h" />
     <ClInclude Include="layer_sound_board.h" />
+    <ClInclude Include="layer_tweens.h" />
     <ClInclude Include="layer_ui.h" />
     <ClInclude Include="sandbox_test.h" />
   </ItemGroup>
