@@ -95,21 +95,30 @@ void layer_coords::draw_ui()
 
 		auto vpos = w_coord::window_to_virtual( mouse_pos );
 		w_render::draw_string(
-			fmt::format( ">> Virtual: {}, {}", (int)vpos.x, (int)vpos.y ),
+			fmt::format( "window_to_virtual: {}, {}", (int)vpos.x, (int)vpos.y ),
 			{ xpos, ypos += engine->pixel_font->font_def->max_height }
 		);
 
 		auto uipos = w_coord::virtual_to_ui( vpos );
 		w_render::draw_string(
-			fmt::format( ">> UI: {}, {}", (int)uipos.x, (int)uipos.y ),
+			fmt::format( "virtual_to_ui: {}, {}", (int)uipos.x, (int)uipos.y ),
 			{ xpos, ypos += engine->pixel_font->font_def->max_height }
 		);
 
 		auto wpos = w_coord::virtual_to_world( vpos, get_camera() );
 		w_render::draw_string(
-			fmt::format( ">> World: {}, {}", (int)wpos.x, (int)wpos.y ),
+			fmt::format( "virtual_to_world: {}, {}", (int)wpos.x, (int)wpos.y ),
 			{ xpos, ypos += engine->pixel_font->font_def->max_height }
 		);
+
+		ypos += engine->pixel_font->font_def->max_height;
+
+		vpos = w_coord::world_to_virtual( wpos, get_camera() );
+		w_render::draw_string(
+			fmt::format( "world_to_virtual: {}, {}", (int)vpos.x, (int)vpos.y ),
+			{ xpos, ypos += engine->pixel_font->font_def->max_height }
+		);
+
 	}
 
 	{

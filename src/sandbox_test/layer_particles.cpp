@@ -70,9 +70,8 @@ void layer_particles::update()
 
 	if( follow_mouse )
 	{
-		//auto pos = w_coord::virtual_to_world( INPUT->mouse_vwindow_pos, get_camera() );
-
-		//find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( pos );
+		auto wpos = w_coord::virtual_to_world( INPUT->mouse_vwindow_pos, get_camera() );
+		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( wpos );
 	}
 }
 
@@ -119,10 +118,7 @@ void layer_particles::draw_ui()
 
 	// compute where the torch is in UI space and draw a label there
 	w_vec2 label_pos = find_entity( H( "mouse_torch" ) )->get_transform()->pos;
-
-	//label_pos = w_coord::world_to_virtual( label_pos );
-	label_pos = w_coord::window_to_virtual( label_pos );
-	label_pos = w_coord::virtual_to_ui( label_pos );
+	label_pos = w_coord::world_to_ui( label_pos, get_camera() );
 
 	render_state =
 	{
