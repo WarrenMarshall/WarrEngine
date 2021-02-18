@@ -126,8 +126,9 @@ void layer_coords::draw_ui()
 		);
 
 		render_state.color = w_color::yellow;
-		auto info_string = fmt::format( "World: {},{}", (int)wpos.x, (int)wpos.y );
-		w_render::draw_string( info_string, uipos + w_vec2( 8, 2 ) );
+		w_render::draw_string( fmt::format( "W: {},{}", (int)wpos.x, (int)wpos.y ), uipos + w_vec2( 8, 2 ) );
+		w_render::draw_string( fmt::format( "V: {},{}", (int)vpos.x, (int)vpos.y ), uipos + w_vec2( 8, 10 ) );
+		w_render::draw_string( fmt::format( "U: {},{}", (int)uipos.x, (int)uipos.y ), uipos + w_vec2( 8, 18 ) );
 	}
 
 	{
