@@ -74,7 +74,7 @@ void layer_coords::draw_ui()
 			.color = w_color( 0.0f, 0.0f, 0.0f, 0.25f )
 		};
 
-		w_render::draw_filled_rectangle( { 8, 32, 128, 80 } );
+		w_render::draw_filled_rectangle( { 8, 32, 168, 104 } );
 
 		render_state =
 		{
@@ -119,6 +119,15 @@ void layer_coords::draw_ui()
 			{ xpos, ypos += engine->pixel_font->font_def->max_height }
 		);
 
+		uipos = w_coord::world_to_ui( wpos, get_camera() );
+		w_render::draw_string(
+			fmt::format( "world_to_ui: {}, {}", (int)uipos.x, (int)uipos.y ),
+			{ xpos, ypos += engine->pixel_font->font_def->max_height }
+		);
+
+		render_state.color = w_color::yellow;
+		auto info_string = fmt::format( "World: {},{}", (int)wpos.x, (int)wpos.y );
+		w_render::draw_string( info_string, uipos + w_vec2( 8, 2 ) );
 	}
 
 	{
