@@ -15,5 +15,6 @@
 #include "layer_meshes.h"
 #include "layer_entity_picking.h"
 #include "layer_sound_board.h"
+#include "layer_coords.h"
 
 #include "layer_main_menu.h"

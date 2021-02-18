@@ -24,6 +24,9 @@
     <ClCompile Include="layer_meshes.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="layer_coords.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layer_anim_texture.h">
@@ -47,6 +50,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="layer_meshes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_coords.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

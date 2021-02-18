@@ -25,6 +25,14 @@ void layer_main_menu_ui_callback::on_left_clicked( const w_imgui_control& contro
 			break;
 		}
 
+		case H( "button_coordinates" ):
+		{
+			LAYER_MGR->pop();
+			LAYER_MGR->push<layer_coords>();
+
+			break;
+		}
+
 		case H( "button_particles" ):
 		{
 			LAYER_MGR->pop();
@@ -102,8 +110,8 @@ void layer_main_menu::draw_ui()
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_gradients" ) )
-		->set_text( "Gradients" )
+	IMGUI->do_push_button( H( "button_coordinates" ) )
+		->set_text( "Coordinates" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 

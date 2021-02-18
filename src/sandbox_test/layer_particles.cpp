@@ -70,11 +70,9 @@ void layer_particles::update()
 
 	if( follow_mouse )
 	{
-		// #refactor - this should get moved into a function that can convert between various coordinate spaces
-		//			   in this case, vwindow -> camera
-		auto pos = w_coord::virtual_to_camera( INPUT->mouse_vwindow_pos, get_camera() );
+		//auto pos = w_coord::virtual_to_world( INPUT->mouse_vwindow_pos, get_camera() );
 
-		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( pos );
+		//find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( pos );
 	}
 }
 

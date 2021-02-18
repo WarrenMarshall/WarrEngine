@@ -5,6 +5,8 @@
 static w_vec2 last_mouse_pos( 0, 0 );
 static w_vec2 last_vmouse_pos( 0, 0 );
 
+// ----------------------------------------------------------------------------
+
 void character_callback( GLFWwindow* window, unsigned int key_code )
 {
 	w_input_event evt;
@@ -14,11 +16,15 @@ void character_callback( GLFWwindow* window, unsigned int key_code )
 	engine->input->event_queue.emplace_back( std::move( evt ) );
 }
 
+// ----------------------------------------------------------------------------
+
 void mouse_wheel_callback( GLFWwindow* window, double xoffset, double yoffset )
 {
 	engine->input->mouse_wheel_delta.x += static_cast<float>( xoffset );
 	engine->input->mouse_wheel_delta.y += static_cast<float>( yoffset );
 }
+
+// ----------------------------------------------------------------------------
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
@@ -48,6 +54,8 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 		engine->input->mouse_uiwindow_pos = w_coord::virtual_to_ui( engine->input->mouse_vwindow_pos ).snap_to_pixel();
 	}
 }
+
+// ----------------------------------------------------------------------------
 
 void joystick_callback( int jid, int event )
 {
