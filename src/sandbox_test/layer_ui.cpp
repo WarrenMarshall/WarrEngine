@@ -74,12 +74,11 @@ void layer_ui::draw_ui()
 	w_layer::draw_ui();
 
 	{
-		scoped_imgui_location_offset( w_vec2( 64.0f, 16.0f ) );
+		scoped_imgui_location_offset( w_vec2( ( ui_window_w - 146.0f ) / 2.0f, ui_window_hh - 85.0f ) );
 
 		IMGUI
 			->do_panel( H( "main_panel" ) )
 			->set_text( "SAMPLE CONTROLS" )
-			->set_pos( { ui_window_hw - 73.0f, ui_window_hh - 85.0f } )
 			->set_size( { 146.0f, 200.0f } )
 			->finalize();
 

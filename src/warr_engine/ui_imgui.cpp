@@ -273,8 +273,8 @@ void w_imgui::compute_clientrect_from_rect()
 
 w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 {
-	//current_control.rc_win += location_offset;
-	//current_control.rc_client += location_offset;
+// 	current_control.rc_win += location_offset;
+// 	current_control.rc_client += location_offset;
 
 	if( current_control.tag != hash_none && data )
 	{
@@ -331,8 +331,8 @@ w_imgui_result* w_imgui::finalize( w_imgui_control_data* data )
 		draw( current_control, false, false );
 	}
 
-	//current_control.rc_win -= location_offset;
-	//current_control.rc_client -= location_offset;
+// 	current_control.rc_win -= location_offset;
+// 	current_control.rc_client -= location_offset;
 
 	set_last_control( current_control );
 
@@ -353,7 +353,7 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	result.code = im_result::none;
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win );
+	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win + location_offset );
 
 	if( mouse_is_inside )
 	{
@@ -404,8 +404,8 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	if( result.code == im_result::left_clicked || control.sticky_hover )
 	{
 		// convert mouse location to client rect position inside control
-		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x;
-		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y;
+		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x - location_offset.x;
+		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y - location_offset.y;
 
 		result.click_pct.x = result.click_pos.x / current_control.rc_win.w;
 		result.click_pos.y = result.click_pos.y / current_control.rc_win.h;
@@ -432,12 +432,12 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	w_vec2 clicked_offset = get_click_offset( is_hovered, is_hot );
 
 	w_rect rc_win_offset = control.rc_win;
-	rc_win_offset.x += clicked_offset.x;
-	rc_win_offset.y += clicked_offset.y;
+	rc_win_offset.x += clicked_offset.x + location_offset.x;
+	rc_win_offset.y += clicked_offset.y + location_offset.y;
 
 	w_rect rc_client_offset = control.rc_client;
-	rc_client_offset.x += clicked_offset.x;
-	rc_client_offset.y += clicked_offset.y;
+	rc_client_offset.x += clicked_offset.x + location_offset.x;
+	rc_client_offset.y += clicked_offset.y + location_offset.y;
 
 	{
 		scoped_render_state;
