@@ -19,5 +19,5 @@ struct a_anim_texture : a_src_texture
 	void add_frame( const a_texture* texture );
 	void randomize();
 
-	_NODISCARD const a_texture* get_texture( const float anim_offset );
+	[[nodiscard]] const a_texture* get_texture( const float anim_offset );
 };

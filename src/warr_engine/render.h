@@ -99,10 +99,10 @@ struct w_render
 	static void draw_triangle( const w_vec2& v0, const w_vec2& v1, const w_vec2& v2 );
 	static void draw_world_axis();
 
-	void begin_frame();
+	void begin_frame() const;
 	void end_frame();
 
-	_NODISCARD float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
+	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
 
 	// ----------------------------------------------------------------------------
 
@@ -112,5 +112,5 @@ struct w_render
 	w_render* push();
 	w_render* pop();
 
-	static int sample_pick_id_at( w_vec2 click_pos );
+	[[nodiscard]] static int sample_pick_id_at( w_vec2 click_pos );
 };

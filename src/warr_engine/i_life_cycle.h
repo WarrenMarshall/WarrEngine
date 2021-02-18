@@ -6,9 +6,9 @@ struct i_life_cycle
 {
 	virtual void ilc_set( e_life_cycle life_cycle );
 
-	_NODISCARD bool ilc_is_alive();
-	_NODISCARD bool ilc_is_dying();
-	_NODISCARD bool ilc_is_dead();
+	[[nodiscard]] bool ilc_is_alive();
+	[[nodiscard]] bool ilc_is_dying();
+	[[nodiscard]] bool ilc_is_dead();
 
 	// setting this to more than zero means that even if
 	// this entity is dead in every way, it can't be deleted

@@ -13,8 +13,8 @@ struct w_matrix
 	w_matrix* scale( const float x, const float y );
 	w_matrix* rotate( const float v );
 
-	_NODISCARD w_vec2 transform( const w_vec2& v ) const;
-	_NODISCARD w_vec2 inverse_transform( const w_vec2& v ) const;
+	[[nodiscard]] w_vec2 transform( const w_vec2& v ) const;
+	[[nodiscard]] w_vec2 inverse_transform( const w_vec2& v ) const;
 private:
 	glm::mat4 m = glm::mat4( 1 );
 

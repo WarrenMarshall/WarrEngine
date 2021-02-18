@@ -67,8 +67,8 @@ struct w_layer : i_life_cycle
 		return new_entity;
 	}
 
-	_NODISCARD bool is_topmost_layer() const;
-	_NODISCARD w_entity* find_entity( hash tag );
+	[[nodiscard]] bool is_topmost_layer() const;
+	[[nodiscard]] w_entity* find_entity( hash tag );
 
 	virtual void new_game();
 	virtual w_imgui_callback* get_imgui_callback();

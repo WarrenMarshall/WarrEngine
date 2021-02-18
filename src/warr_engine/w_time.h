@@ -30,8 +30,8 @@ struct w_time
 	w_time();
 	void init();
 	void update();
-	_NODISCARD time_ms now() const;
+	[[nodiscard]] time_ms now() const;
 
 private:
-	_NODISCARD time_ms get_ticks();
+	[[nodiscard]] time_ms get_ticks();
 };

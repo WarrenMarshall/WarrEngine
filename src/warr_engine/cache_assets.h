@@ -33,10 +33,10 @@ struct w_cache_assets
 		return return_ptr;
 	}
 
-	_NODISCARD a_src_texture* find_src_texture_for_tag( const std::string_view tag );
+	[[nodiscard]] a_src_texture* find_src_texture_for_tag( const std::string_view tag );
 
 	template<typename T>
-	_NODISCARD T* find( const std::string_view tag, bool silent )
+	[[nodiscard]] T* find( const std::string_view tag, bool silent )
 	{
 		std::string full_tag = std::string( tag );
 

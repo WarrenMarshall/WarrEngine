@@ -20,7 +20,7 @@ struct w_entity : i_life_cycle
 	std::vector<std::unique_ptr<w_entity_component>> components;
 
 	virtual void ilc_set( e_life_cycle life_cycle ) override;
-	_NODISCARD virtual bool can_be_deleted();
+	[[nodiscard]] virtual bool can_be_deleted();
 
 	void update_from_physics();
 	virtual void update();
@@ -40,13 +40,13 @@ struct w_entity : i_life_cycle
 	}
 
 	// returns the first component it finds that matches the type bit mask.
-	_NODISCARD w_entity_component* get_component( hash tag = 0 ) const
+	[[nodiscard]] w_entity_component* get_component( hash tag = 0 ) const
 	{
 		return get_component<w_entity_component>( tag );
 	}
 
 	template<typename T>
-	_NODISCARD T* get_component( hash tag = 0 ) const
+	[[nodiscard]] T* get_component( hash tag = 0 ) const
 	{
 		for( auto& ec : components )
 		{

@@ -8,9 +8,9 @@ struct w_random
 
 	w_random();
 
-	_NODISCARD float getf();
-	_NODISCARD bool getb();
-	_NODISCARD float getf_range( float min, float max );
-	_NODISCARD int geti_range( int min, int max );
-	_NODISCARD w_vec2 get_random_unit_circle();
+	[[nodiscard]] float getf();
+	[[nodiscard]] bool getb();
+	[[nodiscard]] float getf_range( float min, float max );
+	[[nodiscard]] int geti_range( int min, int max );
+	[[nodiscard]] w_vec2 get_random_unit_circle();
 };

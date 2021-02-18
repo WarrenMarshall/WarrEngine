@@ -66,8 +66,8 @@ private:
 	void draw_slice_def( const w_imgui_control& control, const w_rect& rc_win, bool is_hovered, bool is_hot );
 	void draw_texture( const w_imgui_control& control, const w_rect& rc, const a_texture* texture, bool is_hovered, bool is_hot );
 	void draw_text( const w_imgui_control& control, const w_rect& rc_client, const w_color& color, bool is_hovered, bool is_hot );
-	_NODISCARD w_offset get_click_offset( bool is_hovered, bool is_hot );
-	_NODISCARD w_color get_adjusted_color( const w_color& base_color, bool is_hovered, bool is_hot );
+	[[nodiscard]] w_offset get_click_offset( bool is_hovered, bool is_hot );
+	[[nodiscard]] w_color get_adjusted_color( const w_color& base_color, bool is_hovered, bool is_hot );
 
 	int im_automatic_id = 0;
 	w_tween caret_blink_tween;

@@ -77,7 +77,7 @@ bool w_entity_component::is_permanent()
 	return false;
 }
 
-_NODISCARD w_transform* w_entity_component::get_transform()
+[[nodiscard]] w_transform* w_entity_component::get_transform()
 {
 	return &tform;
 }

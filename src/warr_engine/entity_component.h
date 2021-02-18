@@ -15,7 +15,7 @@ struct w_entity_component : i_life_cycle
 	w_entity_component( w_entity* parent_entity );
 	virtual ~w_entity_component() = default;
 
-	_NODISCARD virtual bool is_fully_dead();
+	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw();
 	virtual void update();
 	virtual void play();
@@ -23,8 +23,8 @@ struct w_entity_component : i_life_cycle
 
 	virtual void set_life_timer( int life_in_ms );
 
-	_NODISCARD virtual bool is_permanent();
-	_NODISCARD w_transform* get_transform();
+	[[nodiscard]] virtual bool is_permanent();
+	[[nodiscard]] w_transform* get_transform();
 };
 
 // ----------------------------------------------------------------------------
@@ -37,8 +37,8 @@ struct w_entity_component_permanent : w_entity_component
 {
 	w_entity_component_permanent( w_entity* parent_entity );
 
-	_NODISCARD virtual bool is_fully_dead() override;
-	_NODISCARD virtual bool is_permanent() override;
+	[[nodiscard]] virtual bool is_fully_dead() override;
+	[[nodiscard]] virtual bool is_permanent() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ struct ec_emitter : w_entity_component
 
 	w_entity_component* init( const std::string_view params_tag );
 	virtual void ilc_set( e_life_cycle life_cycle ) override;
-	_NODISCARD virtual bool is_fully_dead() override;
+	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
 };
@@ -156,7 +156,7 @@ struct ec_physics : w_entity_component
 	void set_collision_flags( int collision_layer, int collides_with );
 	void clear_collision_flags();
 
-	_NODISCARD ec_b2d_body* get_primary_body();
+	[[nodiscard]] ec_b2d_body* get_primary_body();
 
 	void set_friction( float friction );
 	void set_restitution( float restitution );

@@ -10,7 +10,7 @@ struct w_tween
 	w_tween();
 	w_tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via );
 
-	_NODISCARD float operator*();
+	[[nodiscard]] float operator*();
 
 	void restart();
 	void randomize();

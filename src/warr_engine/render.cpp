@@ -294,7 +294,7 @@ void w_render::draw_string( const a_font* font, const std::string_view text, con
 
 // called at the start of each frame to set up and clear the screen
 
-void w_render::begin_frame()
+void w_render::begin_frame() const
 {
 	// ----------------------------------------------------------------------------
 	// set up the viewport for a new frame

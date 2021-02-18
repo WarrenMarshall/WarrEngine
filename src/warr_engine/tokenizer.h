@@ -18,5 +18,5 @@ struct w_tokenizer
 	std::vector<std::string_view> tokens;
 
 	std::optional<std::string_view> get_next_token();
-	_NODISCARD bool is_eos();
+	[[nodiscard]] bool is_eos();
 };
