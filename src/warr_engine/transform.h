@@ -28,9 +28,8 @@ struct w_transform
 
 	void rebuild_matrix();
 
-	_NODISCARD w_vec2 transform_pos( const w_vec2& vtx );
-	_NODISCARD w_vec2 inv_transform_pos( const w_vec2& vtx );
-	_NODISCARD w_vec2 transform_dir( const w_vec2& dir );
+	_NODISCARD w_vec2 transform( const w_vec2& vtx );
+	_NODISCARD w_vec2 inverse_transform( const w_vec2& vtx );
 
 	w_matrix matrix;
 	w_matrix matrix_dir;

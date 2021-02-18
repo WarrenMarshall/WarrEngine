@@ -13,7 +13,6 @@ void layer_particles::push()
 	// camera
 	{
 		auto e = add_camera();
-		//e->get_transform()->set_angle( 15.0f );
 	}
 
 	// background emitters
@@ -73,7 +72,7 @@ void layer_particles::update()
 	{
 		// #refactor - this should get moved into a function that can convert between various coordinate spaces
 		//			   in this case, vwindow -> camera
-		auto pos = w_coord::virtual_pos_to_camera_pos( INPUT->mouse_vwindow_pos, get_camera() );
+		auto pos = w_coord::virtual_to_camera( INPUT->mouse_vwindow_pos, get_camera() );
 
 		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( pos );
 	}
@@ -119,6 +118,22 @@ void layer_particles::draw_ui()
 		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
 		w_render::draw_string( "F - toggle follow mode for fire ball", w_pos( ui_window_hw, 208.0f ) );
 	}
+
+	// compute where the torch is in UI space and draw a label there
+	w_vec2 label_pos = find_entity( H( "mouse_torch" ) )->get_transform()->pos;
+
+	//label_pos = w_coord::world_to_virtual( label_pos );
+	label_pos = w_coord::window_to_virtual( label_pos );
+	label_pos = w_coord::virtual_to_ui( label_pos );
+
+	render_state =
+	{
+		.align = align::left,
+		.color = w_color::black,
+		.scale = 1.0f
+	};
+
+	w_render::draw_string( "My Light In The Dark", label_pos );
 }
 
 bool layer_particles::on_input_pressed( const w_input_event* evt )

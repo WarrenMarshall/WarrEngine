@@ -126,13 +126,13 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
 		{
-			w_vec2 cvdelta = get_camera()->get_transform()->transform_dir( evt->vdelta );
+			w_vec2 cvdelta = get_camera()->get_transform()->inverse_transform( evt->vdelta );
 			log( "{},{} = {},{}", evt->vdelta.x, evt->vdelta.y, cvdelta.x, cvdelta.y );
 
-			std::vector<w_entity*> sels;
-			get_selected( sels );
+			std::vector<w_entity*> selected_entities;
+			get_selected( selected_entities );
 
-			for( auto& e : sels )
+			for( auto& e : selected_entities )
 			{
 				e->get_transform()->add_pos_delta( cvdelta );
 			}

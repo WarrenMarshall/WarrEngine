@@ -1,7 +1,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-w_vec2 w_coord::window_pos_to_virtual_pos( const w_vec2& v )
+w_vec2 w_coord::window_to_virtual( const w_vec2& v )
 {
 	float ratio = ( v_window_w / engine->window->viewport_pos_sz.w );
 
@@ -12,7 +12,7 @@ w_vec2 w_coord::window_pos_to_virtual_pos( const w_vec2& v )
 	};
 }
 
-w_vec2 w_coord::virtual_pos_to_ui_pos( const w_vec2& v )
+w_vec2 w_coord::virtual_to_ui( const w_vec2& v )
 {
 	return
 	{
@@ -21,7 +21,7 @@ w_vec2 w_coord::virtual_pos_to_ui_pos( const w_vec2& v )
 	};
 }
 
-w_vec2 w_coord::virtual_pos_to_camera_pos( const w_vec2& v, w_entity* camera )
+w_vec2 w_coord::virtual_to_camera( const w_vec2& v, const w_entity* camera )
 {
-	return camera->get_transform()->inv_transform_pos( v );
+	return camera->get_transform()->inverse_transform( v );
 }

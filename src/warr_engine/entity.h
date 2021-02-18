@@ -4,6 +4,8 @@
 
 struct w_entity : i_life_cycle
 {
+	w_matrix xform;
+
 	hash tag;
 	float pick_id = 0.0f;
 	bool is_selected;
@@ -38,13 +40,13 @@ struct w_entity : i_life_cycle
 	}
 
 	// returns the first component it finds that matches the type bit mask.
-	_NODISCARD w_entity_component* get_component( hash tag = 0 )
+	_NODISCARD w_entity_component* get_component( hash tag = 0 ) const
 	{
 		return get_component<w_entity_component>( tag );
 	}
 
 	template<typename T>
-	_NODISCARD T* get_component( hash tag = 0 )
+	_NODISCARD T* get_component( hash tag = 0 ) const
 	{
 		for( auto& ec : components )
 		{
@@ -60,7 +62,7 @@ struct w_entity : i_life_cycle
 	// fills a vector with all the components it finds that match the class "T"
 
 	template<typename T>
-	void get_components( std::vector<T*>& ecs, hash tag = 0 )
+	void get_components( std::vector<T*>& ecs, hash tag = 0 ) const
 	{
 		// make sure the vector can handle at least 10 items - most get_* calls
 		// will result in fewer than that so this saves unnecessary
@@ -99,7 +101,7 @@ struct w_entity : i_life_cycle
 	virtual void on_collision_begin( w_pending_collision& coll, w_entity* other );
 	virtual void on_collision_end( w_pending_collision& coll, w_entity* other );
 
-	w_transform* get_transform();
+	w_transform* get_transform() const;
 };
 
 // ----------------------------------------------------------------------------

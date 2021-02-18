@@ -33,7 +33,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	engine->input->mouse_window_pos.y = glm::round( static_cast<float>( ypos ) );
 
 	// convert the window space mouse position into a position on the virtual screen.
-	w_vec2 vpos = w_coord::window_pos_to_virtual_pos( { (float)xpos, (float)ypos } );
+	w_vec2 vpos = w_coord::window_to_virtual( { (float)xpos, (float)ypos } );
 
 	// compute movement delta in virtual window space
 	engine->input->vmouse_move_delta.x += vpos.x - last_vmouse_pos.x;
@@ -45,7 +45,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	if( vpos.x >= 0 && vpos.x <= v_window_w && vpos.y >= 0 && vpos.y <= v_window_h )
 	{
 		engine->input->mouse_vwindow_pos = vpos.snap_to_pixel();
-		engine->input->mouse_uiwindow_pos = w_coord::virtual_pos_to_ui_pos( engine->input->mouse_vwindow_pos ).snap_to_pixel();
+		engine->input->mouse_uiwindow_pos = w_coord::virtual_to_ui( engine->input->mouse_vwindow_pos ).snap_to_pixel();
 	}
 }
 

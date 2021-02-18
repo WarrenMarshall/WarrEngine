@@ -146,7 +146,7 @@ void w_entity::on_collision_end( w_pending_collision& coll, w_entity* other )
 {
 }
 
-w_transform* w_entity::get_transform()
+w_transform* w_entity::get_transform() const
 {
 	return &( get_component<ec_transform>()->tform );
 }

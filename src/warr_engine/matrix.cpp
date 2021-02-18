@@ -77,8 +77,14 @@ w_matrix* w_matrix::rotate( float v )
 	return this;
 }
 
-w_vec2 w_matrix::transform( const w_vec2& v )
+w_vec2 w_matrix::transform( const w_vec2& v ) const
 {
 	auto new_v = m * glm::vec4( v.x, v.y, 0.0f, 1.0f );
+	return w_vec2( new_v.x, new_v.y );
+}
+
+w_vec2 w_matrix::inverse_transform( const w_vec2& v ) const
+{
+	auto new_v = glm::inverse( m ) * glm::vec4( v.x, v.y, 0.0f, 1.0f );
 	return w_vec2( new_v.x, new_v.y );
 }

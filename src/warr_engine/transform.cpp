@@ -76,22 +76,12 @@ void w_transform::rebuild_matrix()
 
 // "pos" represents a position, not a direction
 
-w_vec2 w_transform::transform_pos( const w_vec2& pos )
+w_vec2 w_transform::transform( const w_vec2& pos )
 {
-	auto v = matrix.m * glm::vec4( pos.x, pos.y, 0.0f, 1.0f );
-	return w_vec2( v.x, v.y );
+	return matrix.transform( pos );
 }
 
-w_vec2 w_transform::inv_transform_pos( const w_vec2& pos )
+w_vec2 w_transform::inverse_transform( const w_vec2& pos )
 {
-	auto v = glm::inverse( matrix.m ) * glm::vec4( pos.x, pos.y, 0.0f, 1.0f );
-	return w_vec2( v.x, v.y );
-}
-
-// "dir" represents a direction, not a position
-
-w_vec2 w_transform::transform_dir( const w_vec2& dir )
-{
-	auto v = matrix_dir.m * glm::vec4( dir.x, dir.y, 0.0f, 1.0f );
-	return w_vec2( v.x, v.y );
+	return matrix.inverse_transform( pos );
 }
