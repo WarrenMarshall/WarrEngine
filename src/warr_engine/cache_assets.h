@@ -2,7 +2,7 @@
 
 struct w_cache_assets
 {
-	std::unordered_map<std::string, std::unique_ptr<i_asset>> cache;
+	std::map<std::string, std::unique_ptr<i_asset>> cache;
 
 	w_cache_assets();
 

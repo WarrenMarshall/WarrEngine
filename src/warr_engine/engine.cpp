@@ -79,16 +79,10 @@ void w_engine::launch( int argc, char* argv [] )
 
 	{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
 
-#ifdef USE_THREADED_ASSET_LOADING
-		log( "Using threaded asset loading" );
-#endif
-
 		// read asset definitions and cache them
 		log( "Caching asset definitions (*.asset_def)..." );
 		engine->cache_asset_definition_files( "data/warr_engine" );
 		engine->cache_asset_definition_files( fmt::format( "data/{}", base_game->name ) );
-
-		engine->wait_for_thread_pool_to_finish();
 
 		// this feels like an odd dance, but the idea is that we:
 		//
@@ -758,13 +752,6 @@ bool w_engine::is_paused()
 	return pause_state.toggle || pause_state.ref_count > 0;
 }
 
-#ifdef USE_THREADED_ASSET_LOADING
-static void t_load_asset_def_file( std::string filename )
-{
-	engine->asset_definition_file_cache->add( filename );
-}
-#endif
-
 // loads and caches every "*.asset_def" file it sees in the "asset_def" folder
 
 void w_engine::cache_asset_definition_files( const std::string_view folder_name )
@@ -774,11 +761,7 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 
 	for( const auto& iter : filenames )
 	{
-#ifdef USE_THREADED_ASSET_LOADING
-		engine->threads.push_back( std::async( std::launch::async, t_load_asset_def_file, std::string( iter ) ) );
-#else
 		engine->asset_definition_file_cache->add( iter );
-#endif
 	}
 }
 
@@ -820,25 +803,12 @@ void w_engine::parse_config_file( std::string_view filename )
 //
 // things like texture files, sound files, etc.
 
-#ifdef USE_THREADED_ASSET_LOADING
-static void t_precache_asset_resources( int pass, w_asset_definition_file* asset_def_file )
-{
-	asset_def_file->precache_asset_resources( pass );
-}
-#endif
-
 void w_engine::precache_asset_resources( int pass )
 {
 	for( auto& iter : engine->asset_definition_file_cache->cache )
 	{
-#ifdef USE_THREADED_ASSET_LOADING
-		engine->threads.push_back( std::async( std::launch::async, t_precache_asset_resources, pass, &iter ) );
-#else
 		iter.precache_asset_resources( pass );
-#endif
 	}
-
-	wait_for_thread_pool_to_finish();
 
 	log( "Pass: {} / {} total assets precached", pass, f_commas( static_cast<float>( engine->asset_cache->cache.size() ) ) );
 }

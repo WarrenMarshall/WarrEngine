@@ -119,13 +119,6 @@ namespace fixed_time_step
 
 // ----------------------------------------------------------------------------
 
-// comment this line out if start up is crashing and you want to rule out the
-// threaded asset loading code.
-
-#define USE_THREADED_ASSET_LOADING
-
-// ----------------------------------------------------------------------------
-
 #define declare_find_func( struct_name )\
 static struct_name* find( const std::string_view name, const bool silent = false );
 

@@ -106,7 +106,7 @@ void layer_tweens::draw_ui()
 
 		render_state.color = w_color::black;
 		render_state.color.a = 0.15f;
-		w_render::draw_filled_rectangle( w_rect( 0.0f, ypos - 5.0f, ui_window_w, 10.0f ) );
+		w_render::draw_filled_rectangle( w_rect( 0.0f, ypos - 7.0f, ui_window_w, 14.0f ) );
 
 		render_state.color = w_color::teal;
 		render_state.color.a = 1.0f;
