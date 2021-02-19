@@ -404,7 +404,7 @@ void w_input::update_button_state( e_input_id input_id, int glfw_state )
 
 		case button_state::held:
 		{
-			if( timer_repeat->get_elapsed_count() )
+			if( timer_repeat->get_elapsed() )
 			{
 				w_input_event evt;
 				evt.event_id = event_id::input_held;

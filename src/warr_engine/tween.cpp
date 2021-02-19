@@ -25,7 +25,8 @@ float w_tween::operator*()
 	time_ms delta = engine->time->now() - time_last;
 	time_last = engine->time->now();
 
-	return glm::clamp( tween.step( static_cast<int>( delta ) ), start, end );
+	return tween.step( static_cast<int>( delta ) );
+	//return glm::clamp( tween.step( static_cast<int>( delta ) ), start, end );
 }
 
 void w_tween::restart()
