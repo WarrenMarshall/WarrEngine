@@ -3,12 +3,13 @@
 struct w_layer_mgr
 {
 	// the layers are stored front-to-back so this means that the topmost layer
-	// on the screen is first in the vector.
+	// on the screen is first in the vector. meaning, new layers are inserted at
+	// the front.
 	//
-	// therefore, iterating forwards through this vector is drilling downwards
+	// therefore, iterating forwards through layer_stack is drilling downwards
 	// into the screen.
 
-	std::vector<std::unique_ptr<w_layer>> layer_stack;
+	std::deque<std::unique_ptr<w_layer>> layer_stack;
 
 	template<typename T>
 	void push()
@@ -34,7 +35,7 @@ struct w_layer_mgr
 		new_layer->push();
 		new_layer->becoming_top_layer();
 
-		layer_stack.insert( layer_stack.begin(), std::move( new_layer ) );
+		layer_stack.push_front( std::move( new_layer ) );
 	}
 
 	void clear_stack();
