@@ -226,11 +226,10 @@ ec_emitter::ec_emitter( w_entity* parent_entity )
 
 w_entity_component* ec_emitter::init( const std::string_view params_tag )
 {
-	emitter = std::make_unique<w_particle_emitter>();
-	emitter->set_params( a_emitter_params::find( params_tag ) );
-	emitter->parent_component = this;
+	emitter.set_params( a_emitter_params::find( params_tag ) );
+	emitter.parent_component = this;
 
-	if( emitter->params->needs_warm_up )
+	if( emitter.params->needs_warm_up )
 	{
 		// particle warm ups require the parent and component transforms to be applied
 		// so the warmed up particles spawn at the right position in the world.
@@ -242,13 +241,13 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 				->add_transform( *( parent_entity->get_transform() ) )
 				->add_transform( tform );
 
-			emitter->warm_up();
+			emitter.warm_up();
 		}
 	}
 	else
 	{
 		// the pool needs at least one update pass or it gets crashy
-		emitter->particle_pool->update();
+		emitter.particle_pool->update();
 	}
 
 	return this;
@@ -258,7 +257,7 @@ bool ec_emitter::is_fully_dead()
 {
 	if( w_entity_component::is_fully_dead() )
 	{
-		if( ilc_is_dying() && emitter->particle_pool->num_alive == 0 )
+		if( ilc_is_dying() && emitter.particle_pool->num_alive == 0 )
 		{
 			return true;
 		}
@@ -282,7 +281,7 @@ void ec_emitter::draw()
 		scoped_render_state;
 
 		render_state.set_from_opt( rs_opt );
-		emitter->particle_pool->draw();
+		emitter.particle_pool->draw();
 	}
 
 }
@@ -296,8 +295,8 @@ void ec_emitter::update()
 		return;
 	}
 
-	emitter->update();
-	emitter->particle_pool->update();
+	emitter.update();
+	emitter.particle_pool->update();
 }
 
 void ec_emitter::ilc_set( e_life_cycle life_cycle )
@@ -307,7 +306,7 @@ void ec_emitter::ilc_set( e_life_cycle life_cycle )
 	if( ilc_is_dying() )
 	{
 		// setting the max to zero will cause the emitter to stop spawning new particles.
-		emitter->max_particles_alive = 0;
+		emitter.max_particles_alive = 0;
 	}
 }
 
