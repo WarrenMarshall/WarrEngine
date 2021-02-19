@@ -9,15 +9,6 @@ a_anim_texture::a_anim_texture( e_tween_type tween_type, int frames_per_second )
 {
 }
 
-a_anim_texture::~a_anim_texture()
-{
-	a_anim_texture::clean_up_internals();
-}
-
-void a_anim_texture::clean_up_internals()
-{
-}
-
 bool a_anim_texture::create_internals()
 {
 	auto duration_ms = ( 1000 / frames_per_second ) * frames.size();
@@ -35,8 +26,6 @@ void a_anim_texture::add_frame( const a_texture* frame )
 
 void a_anim_texture::randomize()
 {
-	assert( !frames.empty() );	// did you forget to call "add_frame"?
-
 	frame_tween.randomize();
 }
 
@@ -44,12 +33,10 @@ const a_texture* a_anim_texture::get_texture( float anim_offset )
  {
 	assert( !frames.empty() );	// did you forget to call "add_frame"?
 
-	auto idx = (int)( *frame_tween );
+	// use the tween to get the animation frame index, clamped to the value range
+	auto idx = (size_t)( glm::clamp<float>( ( *frame_tween ), 0.0f, (float)frames.size() ) );
 
-	if( !fequals( anim_offset, 0.0f ) )
-	{
-		idx += (size_t)( anim_offset * frames.size() );
-	}
+	idx += (size_t)( anim_offset * frames.size() );
 
 	idx = idx % frames.size();
 

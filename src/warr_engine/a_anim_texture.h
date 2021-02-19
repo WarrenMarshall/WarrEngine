@@ -12,9 +12,7 @@ struct a_anim_texture : a_src_texture
 
 	a_anim_texture() = delete;
 	a_anim_texture( const e_tween_type tween_type, const int frames_per_second );
-	virtual ~a_anim_texture() override;
 
-	virtual void clean_up_internals() override;
 	virtual bool create_internals() override;
 	void add_frame( const a_texture* texture );
 	void randomize();
