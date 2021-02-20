@@ -12,6 +12,18 @@ w_vec2 w_coord::window_to_virtual( const w_vec2& wpos )
 	};
 }
 
+w_vec2 w_coord::window_to_ui( const w_vec2& wpos )
+{
+	auto vpos = window_to_virtual( wpos );
+	return virtual_to_ui( vpos );
+}
+
+w_vec2 w_coord::window_to_world( const w_vec2& wpos, const w_entity* camera )
+{
+	auto vpos = window_to_virtual( wpos );
+	return virtual_to_world( vpos, camera );
+}
+
 w_vec2 w_coord::virtual_to_ui( const w_vec2& vpos )
 {
 	return

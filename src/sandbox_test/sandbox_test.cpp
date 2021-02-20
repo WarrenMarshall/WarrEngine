@@ -26,13 +26,3 @@ void sandbox_test_app::reset_layer_stack_to_main_menu()
 
 	engine->layer_mgr->push<layer_main_menu>();
 }
-
-void sandbox_test_app::new_game()
-{
-	w_game::new_game();
-}
-
-void sandbox_test_app::update()
-{
-	w_game::update();
-}

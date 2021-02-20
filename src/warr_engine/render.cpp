@@ -394,10 +394,10 @@ void w_render::draw_stats()
 			draw_stat_line_buffer.emplace_back( fmt::format( "Layers : {}", engine->layer_mgr->layer_stack.size() ) );
 			draw_stat_line_buffer.emplace_back( fmt::format( "Entities : {}", f_commas( engine->stats->entities.value ) ) );
 			draw_stat_line_buffer.emplace_back( fmt::format( "Time Dilation: {:.2f}", engine->time->dilation ) );
-			draw_stat_line_buffer.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f} / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
-				engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y,
-				engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y,
-				engine->input->mouse_uiwindow_pos.x, engine->input->mouse_uiwindow_pos.y )
+			draw_stat_line_buffer.emplace_back( fmt::format( "Mouse: W:{:.0f}, {:.0f}",// / V:{:.0f}, {:.0f} / U:{:.0f}, {:.0f}",
+				engine->input->mouse_window_pos.x, engine->input->mouse_window_pos.y )
+				//engine->input->mouse_vwindow_pos.x, engine->input->mouse_vwindow_pos.y,
+				//engine->input->mouse_uiwindow_pos.x, engine->input->mouse_uiwindow_pos.y )
 			);
 
 			if( engine->stats->stat_custom_string.length() )

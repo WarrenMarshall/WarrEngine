@@ -2,6 +2,7 @@
 #pragma once
 
 extern std::unique_ptr<w_logfile> logfile;
+extern std::unique_ptr<w_game> base_game;
 
 // ----------------------------------------------------------------------------
 // attempts to make logging things easier
@@ -119,8 +120,6 @@ extern float ui_window_h;
 #include "keyvalues.h"
 #include "config.h"
 
-#undef min	// fixes dumb compile problem
-#undef max	// fixes dumb compile problem
 #include "transform.h"
 #include "asset.h"
 #include "a_palette.h"
@@ -150,7 +149,6 @@ extern float ui_window_h;
 #include "ui_mgr.h"
 #include "render_stats.h"
 
-extern std::unique_ptr<w_game> base_game;
 #include "engine.h"
 
 #include "render.h"
@@ -176,10 +174,4 @@ extern std::unique_ptr<w_game> base_game;
 #include "file_disk.h"
 
 #include "game.h"
-
-// ----------------------------------------------------------------------------
-// globals for all to enjoy - don't judge
-// ----------------------------------------------------------------------------
-
 extern std::unique_ptr<w_engine> engine;
-//extern std::unique_ptr<w_game> base_game;

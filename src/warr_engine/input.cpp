@@ -3,7 +3,6 @@
 #include "master_header.h"
 
 static w_vec2 last_mouse_pos( 0, 0 );
-static w_vec2 last_vmouse_pos( 0, 0 );
 
 // ----------------------------------------------------------------------------
 
@@ -40,19 +39,6 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 	// convert the window space mouse position into a position on the virtual screen.
 	w_vec2 vpos = w_coord::window_to_virtual( { (float)xpos, (float)ypos } );
-
-	// compute movement delta in virtual window space
-	engine->input->vmouse_move_delta.x += vpos.x - last_vmouse_pos.x;
-	engine->input->vmouse_move_delta.y += vpos.y - last_vmouse_pos.y;
-
-	last_vmouse_pos = vpos;
-
-	// only update the position if the mouse is moving over the virtual window itself
-	if( vpos.x >= 0 && vpos.x <= v_window_w && vpos.y >= 0 && vpos.y <= v_window_h )
-	{
-		engine->input->mouse_vwindow_pos = vpos.snap_to_pixel();
-		engine->input->mouse_uiwindow_pos = w_coord::virtual_to_ui( engine->input->mouse_vwindow_pos ).snap_to_pixel();
-	}
 }
 
 // ----------------------------------------------------------------------------
@@ -231,7 +217,8 @@ void w_input::queue_motion()
 
 	// virtual window
 
-	w_vec2 vmouse_move_delta_rounded = { glm::floor( vmouse_move_delta.x ), glm::floor( vmouse_move_delta.y ) };
+	/*
+	w_vec2 vmouse_move_delta_rounded = { glm::floor( w_coord vmouse_move_delta.x ), glm::floor( vmouse_move_delta.y ) };
 	if( !fequals( vmouse_move_delta_rounded.x + vmouse_move_delta_rounded.y, 0.0f ) )
 	{
 		w_input_event evt;
@@ -243,6 +230,7 @@ void w_input::queue_motion()
 
 		vmouse_move_delta -= vmouse_move_delta_rounded;
 	}
+	*/
 
 	// mouse wheel
 

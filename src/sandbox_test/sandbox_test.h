@@ -13,6 +13,4 @@ struct sandbox_test_app : w_game
 
 	virtual void init() override;
 	virtual void reset_layer_stack_to_main_menu() override;
-	virtual void new_game() override;
-	virtual void update() override;
 };

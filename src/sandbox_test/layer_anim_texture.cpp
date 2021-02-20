@@ -129,14 +129,14 @@ bool layer_anim_texture::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_pos_delta( evt->vdelta );
+			get_camera()->get_transform()->add_pos_delta( w_coord::window_to_virtual( evt->delta ) );
 
 			return true;
 		}
 
 		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_angle_delta( evt->vdelta.x );
+			get_camera()->get_transform()->add_angle_delta( w_coord::window_to_virtual( evt->delta ).x );
 
 			return true;
 		}

@@ -404,8 +404,10 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	if( result.code == im_result::left_clicked || control.sticky_hover )
 	{
 		// convert mouse location to client rect position inside control
-		result.click_pos.x = engine->input->mouse_uiwindow_pos.x - current_control.rc_win.x - location_offset.x;
-		result.click_pos.y = engine->input->mouse_uiwindow_pos.y - current_control.rc_win.y - location_offset.y;
+		result.click_pos =
+			w_coord::window_to_ui( engine->input->mouse_window_pos )
+			- w_vec2( current_control.rc_win.x, current_control.rc_win.y )
+			- location_offset;
 
 		result.click_pct.x = result.click_pos.x / current_control.rc_win.w;
 		result.click_pos.y = result.click_pos.y / current_control.rc_win.h;
