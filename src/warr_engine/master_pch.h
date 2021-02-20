@@ -200,6 +200,11 @@ constexpr float zdepth_topmost = 14750.0f;
 
 [[nodiscard]] constexpr bool fequals( float a, float b )
 {
+	// if (a - b) is smaller than FLT_EPSILON, return true.
+	//
+	// this allows float values to be compared with some slack for accuracy
+	// drift.
+
 	return ( ( (a) -( b ) ) < FLT_EPSILON && ( (a) -( b ) ) > -FLT_EPSILON );
 }
 

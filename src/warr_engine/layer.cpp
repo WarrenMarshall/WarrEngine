@@ -124,12 +124,23 @@ bool w_layer::is_topmost_layer() const
 
 w_entity* w_layer::find_entity( hash tag )
 {
-	for( auto& iter : entities )
-	{
-		if( iter->tag == tag )
+	// look for an entity with a matching tag
+	auto iter = std::find_if(
+		entities.begin(),
+		entities.end(),
+		[&] ( std::unique_ptr<w_entity>& entity )
 		{
-			return iter.get();
+			return entity->tag == tag;
 		}
+	);
+
+	if( iter != entities.end() )
+	{
+		// move any found entity to the front of the entity list for faster
+		// lookup next time
+		std::iter_swap( entities.begin(), iter );
+
+		return ( *iter ).get();
 	}
 
 	return nullptr;

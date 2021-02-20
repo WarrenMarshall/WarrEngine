@@ -12,12 +12,6 @@ layer_meshes::layer_meshes()
 
 void layer_meshes::push()
 {
-	// camera
-	{
-		auto e = add_camera();
-		e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
-	}
-
 	{
 		auto e = add_entity<w_entity>();
 		e->get_transform()->set_pos( { -96.0f, 0.0f } );
@@ -36,6 +30,12 @@ void layer_meshes::push()
 			ec->init( "mesh_crate" );
 			ec->get_transform()->set_scale( 3.0f );
 		}
+	}
+
+	// camera
+	{
+		auto e = add_camera();
+		e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
 	}
 
 	engine->window->set_mouse_mode( mouse_mode::os );
