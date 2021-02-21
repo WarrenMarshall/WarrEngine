@@ -91,7 +91,7 @@ void w_engine::launch( int argc, char* argv [] )
 		// 3. parse the asset_def files again, for the rest of the passes (pass 1+)
 		//
 		// this ordering is important because step 2 may want to use symbols
-		// like "true" or "false" or "v_window_h" in the INI files.
+		// like "true" or "false" or "viewport_h" in the INI files.
 		//
 		// by the time we get to step 3, we have all the symbols from the
 		// preproc and the INI files loaded, and the asset_def files can use any
@@ -123,23 +123,23 @@ void w_engine::launch( int argc, char* argv [] )
 
 		w_tokenizer tok;
 
-		tok.init( engine->config_vars->find_value_opt( "v_window_res", "320x240" ), 'x' );
-		v_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
-		v_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-		engine->_symbol_to_value[ "v_window_w" ] = fmt::format( "{}", v_window_w );
-		engine->_symbol_to_value[ "v_window_h" ] = fmt::format( "{}", v_window_h );
-		engine->_symbol_to_value[ "v_window_hw" ] = fmt::format( "{}", v_window_hw );
-		engine->_symbol_to_value[ "v_window_hh" ] = fmt::format( "{}", v_window_hh );
-		log( "V Window Res: {}x{}", (int) v_window_w, (int) v_window_h );
+		tok.init( engine->config_vars->find_value_opt( "viewport_res", "320x240" ), 'x' );
+		viewport_w = w_parser::float_from_str( tok.tokens[ 0 ] );
+		viewport_h = w_parser::float_from_str( tok.tokens[ 1 ] );
+		engine->_symbol_to_value[ "viewport_w" ] = fmt::format( "{}", viewport_w );
+		engine->_symbol_to_value[ "viewport_h" ] = fmt::format( "{}", viewport_h );
+		engine->_symbol_to_value[ "viewport_hw" ] = fmt::format( "{}", viewport_hw );
+		engine->_symbol_to_value[ "viewport_hh" ] = fmt::format( "{}", viewport_hh );
+		log( "V Window Res: {}x{}", (int) viewport_w, (int) viewport_h );
 
-		tok.init( engine->config_vars->find_value_opt( "ui_window_res", "640x480" ), 'x' );
-		ui_window_w = w_parser::float_from_str( tok.tokens[ 0 ] );
-		ui_window_h = w_parser::float_from_str( tok.tokens[ 1 ] );
-		engine->_symbol_to_value[ "ui_window_w" ] = fmt::format( "{}", ui_window_w );
-		engine->_symbol_to_value[ "ui_window_h" ] = fmt::format( "{}", ui_window_h );
-		engine->_symbol_to_value[ "ui_window_hw" ] = fmt::format( "{}", ui_window_hw );
-		engine->_symbol_to_value[ "ui_window_hh" ] = fmt::format( "{}", ui_window_hh );
-		log( "UI Window Res: {}x{}", (int) ui_window_w, (int) ui_window_h );
+		tok.init( engine->config_vars->find_value_opt( "ui_res", "640x480" ), 'x' );
+		ui_w = w_parser::float_from_str( tok.tokens[ 0 ] );
+		ui_h = w_parser::float_from_str( tok.tokens[ 1 ] );
+		engine->_symbol_to_value[ "ui_w" ] = fmt::format( "{}", ui_w );
+		engine->_symbol_to_value[ "ui_h" ] = fmt::format( "{}", ui_h );
+		engine->_symbol_to_value[ "ui_hw" ] = fmt::format( "{}", ui_hw );
+		engine->_symbol_to_value[ "ui_hh" ] = fmt::format( "{}", ui_hh );
+		log( "UI Window Res: {}x{}", (int) ui_w, (int) ui_h );
 
 		RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
 
@@ -148,14 +148,14 @@ void w_engine::launch( int argc, char* argv [] )
 		glfwSetWindowSize( engine->window->glfw_window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
 		glfwSetWindowAspectRatio( engine->window->glfw_window,
 									100,
-									static_cast<int>( ( v_window_h / v_window_w ) * 100 ) );
+									static_cast<int>( ( viewport_h / viewport_w ) * 100 ) );
 
 		bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
 		log( "VSync: {}", vsync ? "true" : "false" );
 		glfwSwapInterval( vsync ? 1 : 0 );
 		engine->window->set_title( engine->config_vars->find_value_opt( "app_title", "Game Engine" ) );
 		glfwSetWindowAttrib( engine->window->glfw_window, GLFW_FLOATING, w_parser::bool_from_str( engine->config_vars->find_value_opt( "always_on_top", "false" ) ) );
-		engine->window->v_window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "v_window_clear_color", "64,64,64" ) );
+		engine->window->viewport_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "viewport_clear_color", "64,64,64" ) );
 		engine->window->window_clear_color = w_parser::color_from_str( engine->config_vars->find_value_opt( "window_clear_color", "32,32,32" ) );
 	}
 
@@ -372,7 +372,7 @@ void w_engine::main_loop()
 		blur_frame_buffers[ 0 ]->bind();
 		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
-		w_render::draw( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+		w_render::draw( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 		blur_frame_buffers[ 0 ]->unbind();
 
@@ -386,7 +386,7 @@ void w_engine::main_loop()
 		{
 			blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
-			w_render::draw( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+			w_render::draw( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
 
@@ -406,14 +406,14 @@ void w_engine::main_loop()
 
 			OPENGL->shaders[ "base" ].bind();
 
-			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			// draw glow frame buffer on top with blending
 
 			OPENGL->set_blend( opengl_blend::add );
 
-			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			OPENGL->set_blend( opengl_blend::alpha );
@@ -437,7 +437,7 @@ void w_engine::main_loop()
 			(int)window->viewport_pos_sz.h
 		);
 
-		w_render::draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+		w_render::draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
 	#if 0
@@ -450,9 +450,9 @@ void w_engine::main_loop()
 
 		OPENGL->shaders[ "base" ].bind();
 
-		float w = v_window_w / 4.0f;
-		float h = v_window_h / 4.0f;
-		w_rect rc = { 0.0f, v_window_h - h, w, h };
+		float w = viewport_w / 4.0f;
+		float h = viewport_h / 4.0f;
+		w_rect rc = { 0.0f, viewport_h - h, w, h };
 
 	#if 0
 		// main
@@ -683,8 +683,8 @@ void w_engine::draw()
 
 			render_state.z = zdepth_topmost;
 
-			w = ui_window_w;
-			h = ui_window_h;
+			w = ui_w;
+			h = ui_h;
 
 			v0 = w_vec2::zero;
 			v1 = w_vec2( w - 1, 0.0f );

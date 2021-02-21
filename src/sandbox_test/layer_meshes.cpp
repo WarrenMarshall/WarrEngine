@@ -35,7 +35,7 @@ void layer_meshes::push()
 	// camera
 	{
 		auto e = add_camera();
-		e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
+		e->get_transform()->set_pos( { viewport_hw, viewport_hh } );
 	}
 
 	engine->window->set_mouse_mode( mouse_mode::os );
@@ -50,7 +50,7 @@ void layer_meshes::draw()
 		{
 			.color = w_color::dark_teal
 		};
-		w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -v_window_hw, -v_window_hh, v_window_w, v_window_h ) );
+		w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
 	w_layer::draw();
@@ -71,7 +71,7 @@ void layer_meshes::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "Meshes", { ui_window_w / 2.0f, 16.0f } );
+		w_render::draw_string( "Meshes", { ui_w / 2.0f, 16.0f } );
 
 		render_state =
 		{
@@ -80,7 +80,7 @@ void layer_meshes::draw_ui()
 			.scale = 1.0f
 		};
 
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
 	}
 }
 

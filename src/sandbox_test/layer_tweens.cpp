@@ -72,7 +72,7 @@ void layer_tweens::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -93,7 +93,7 @@ void layer_tweens::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "Tweens / Timers", { ui_window_w / 2.0f, 16.0f } );
+		w_render::draw_string( "Tweens / Timers", { ui_w / 2.0f, 16.0f } );
 	}
 
 	// ----------------------------------------------------------------------------
@@ -106,7 +106,7 @@ void layer_tweens::draw_ui()
 
 		render_state.color = w_color::black;
 		render_state.color.a = 0.15f;
-		w_render::draw_filled_rectangle( w_rect( 0.0f, ypos - 7.0f, ui_window_w, 14.0f ) );
+		w_render::draw_filled_rectangle( w_rect( 0.0f, ypos - 7.0f, ui_w, 14.0f ) );
 
 		render_state.color = w_color::teal;
 		render_state.color.a = 1.0f;
@@ -139,8 +139,8 @@ void layer_tweens::draw_ui()
 		l_draw_tweener( "Quintic:", ypos, tween_quintic );
 	}
 
-	w_render::draw_string( fmt::format( "Timer (will toggle in 5.0 seconds): {}", timer_01.is_elapsed() ), { 16.0f, ui_window_h - 12.0f } );
-	w_render::draw_string( fmt::format( "Repeating Timer (2.5 second interval): {}", timer_02.get_elapsed() % 2 ? "ON" : "OFF" ), { 16.0f, ui_window_h - 24.0f } );
+	w_render::draw_string( fmt::format( "Timer (will toggle in 5.0 seconds): {}", timer_01.is_elapsed() ), { 16.0f, ui_h - 12.0f } );
+	w_render::draw_string( fmt::format( "Repeating Timer (2.5 second interval): {}", timer_02.get_elapsed() % 2 ? "ON" : "OFF" ), { 16.0f, ui_h - 24.0f } );
 }
 
 w_imgui_callback* layer_tweens::get_imgui_callback()

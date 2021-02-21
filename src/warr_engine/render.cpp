@@ -300,7 +300,7 @@ void w_render::begin_frame() const
 	// set up the viewport for a new frame
 	// ----------------------------------------------------------------------------
 
-	glViewport( 0, 0, (int)v_window_w, (int)v_window_h );
+	glViewport( 0, 0, (int)viewport_w, (int)viewport_h );
 
 	// clear for depth only
 	glClear( GL_DEPTH_BUFFER_BIT );
@@ -417,7 +417,7 @@ void w_render::draw_stats()
 				render_state.color.a = 0.75f;
 				w_render::draw_filled_rectangle(
 					w_rect( 0.0f, 0.0f,
-					ui_window_w, (float)( engine->pixel_font->font_def->max_height * draw_stat_line_buffer.size() ) )
+					ui_w, (float)( engine->pixel_font->font_def->max_height * draw_stat_line_buffer.size() ) )
 				);
 			}
 
@@ -434,7 +434,7 @@ void w_render::draw_stats()
 				auto ypos = 0.0f;
 				for( const auto& iter : draw_stat_line_buffer )
 				{
-					w_render::draw_string( iter, { ui_window_hw, ypos } );
+					w_render::draw_string( iter, { ui_hw, ypos } );
 					ypos += engine->pixel_font->font_def->max_height;
 				}
 			}
@@ -447,7 +447,7 @@ void w_render::draw_stats()
 				render_state.align = align::right;
 				w_render::draw_string(
 					fmt::format( "{} FPS ({:.2f} ms)", f_commas( engine->stats->frame_count.value ), engine->stats->frame_times_ms.value ),
-					{ ui_window_w, 0.0f } );
+					{ ui_w, 0.0f } );
 			}
 		}
 	}
@@ -686,7 +686,7 @@ int w_render::sample_pick_id_at( w_vec2 click_pos )
 	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
 
 	// texture is flipped vertically from screen space
-	click_pos.y = v_window_h - click_pos.y;
+	click_pos.y = viewport_h - click_pos.y;
 
 	// read single pixel back from texture to see what was at click_pos
 	float pixel[ 4 ];

@@ -208,7 +208,7 @@ void w_opengl::init_projection_matrix() const
 {
 	glm::mat4 projection = glm::mat4( 1.0f );
 	projection = glm::ortho<float>(
-		0, v_window_w, v_window_h, 0,
+		0, viewport_w, viewport_h, 0,
 		-20000.0f, 20000.0f );
 
 	for( auto& iter : OPENGL->shaders )
@@ -245,8 +245,8 @@ void w_opengl::init_view_matrix( w_entity* camera ) const
 	else
 	{
 		view = glm::translate( view, glm::vec3(
-			v_window_hw,
-			v_window_hh,
+			viewport_hw,
+			viewport_hh,
 			0.0f ) );
 	}
 
@@ -279,7 +279,7 @@ void w_opengl::init_view_matrix_identity_ui() const
 	assert( RENDER->batches_are_empty() );
 
 	glm::mat4 view = glm::mat4( 1.0f );
-	view *= glm::scale( view, glm::vec3( ui_window_scale, ui_window_scale, 1.0f ) );
+	view *= glm::scale( view, glm::vec3( ui_scale, ui_scale, 1.0f ) );
 
 	for( auto& iter : OPENGL->shaders )
 	{

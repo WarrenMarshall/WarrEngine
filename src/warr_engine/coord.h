@@ -15,3 +15,4 @@ struct w_coord
 	[[nodiscard]] static w_vec2 ui_to_world( const w_vec2& uipos, const w_entity* camera );
 	[[nodiscard]] static w_vec2 world_to_ui( const w_vec2& wpos, const w_entity* camera );
 };
+

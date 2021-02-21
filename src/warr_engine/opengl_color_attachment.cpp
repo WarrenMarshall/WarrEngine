@@ -12,14 +12,14 @@ w_opengl_color_attachment::w_opengl_color_attachment( w_opengl_framebuffer* fb_o
 	// create the internal texture
 	engine->asset_cache->add( std::make_unique<a_src_texture>(), tex_name, "" );
 	texture = engine->asset_cache->add( std::make_unique<a_texture>( tex_name ), "fb_" + tex_name, "" );
-	texture->src_texture->w = v_window_w;
-	texture->src_texture->h = v_window_h;
+	texture->src_texture->w = viewport_w;
+	texture->src_texture->h = viewport_h;
 
 	// create the opengl texture
 	glCreateTextures( GL_TEXTURE_2D, 1, &texture->src_texture->gl_id );
 	glBindTextureUnit( 0, texture->src_texture->gl_id );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA16F, (int)v_window_w, (int)v_window_h, 0, GL_RGBA, GL_FLOAT, nullptr );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA16F, (int)viewport_w, (int)viewport_h, 0, GL_RGBA, GL_FLOAT, nullptr );
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );

@@ -95,7 +95,7 @@ void layer_main_menu::draw()
 	w_layer::draw();
 
 	RENDER
-		->draw( gradient, w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+		->draw( gradient, w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 }
 
 void layer_main_menu::draw_ui()
@@ -105,22 +105,22 @@ void layer_main_menu::draw_ui()
 	IMGUI->do_panel( H( "main_panel" ) )
 		->set_text( "Test Cases" )
 		->set_pos( { 4.0f, 4.0f } )
-		->set_size( { ui_window_w - 8, ui_window_h - 8 } )
+		->set_size( { ui_w - 8, ui_h - 8 } )
+		->finalize();
+
+	IMGUI->do_push_button( H( "button_coordinates" ) )
+		->set_text( "Coordinates" )
+		->set_pos( imgui_flow::last_crc_topleft )
+		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_ui" ) )
 		->set_text( "UI Controls" )
-		->set_pos( imgui_flow::last_crc_topleft )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_anim_texture" ) )
 		->set_text( "Anim Texture" )
-		->set_size( { 100.0f, w_vec2::ignore } )
-		->finalize();
-
-	IMGUI->do_push_button( H( "button_coordinates" ) )
-		->set_text( "Coordinates" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 

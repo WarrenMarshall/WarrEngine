@@ -26,7 +26,7 @@ void layer_default::draw()
 	w_layer::draw();
 	w_render::draw_world_axis();
 
-	w_render::draw( gradient, w_rect( -v_window_hw, -v_window_hh, v_window_w, v_window_h ) );
+	w_render::draw( gradient, w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	render_state =
 	{
@@ -34,6 +34,6 @@ void layer_default::draw()
 		.scale = *scale_tween
 	};
 
-	//w_render::draw_sprite( tex_hello_world, { v_window_hw + *movement_tween, v_window_hh } );
+	//w_render::draw_sprite( tex_hello_world, { viewport_hw + *movement_tween, viewport_hh } );
 	w_render::draw_sprite( tex_hello_world, { 0.0f, 0.0f } );
 }

@@ -16,22 +16,22 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 	// - figure out how wide and high the viewport should be to fill the real window
 	// - figures out how far to offset it on either X or Y to center it within the window
 	//
-	// This allows us to work with a set size screen (v_window) and not have to worry about
+	// This allows us to work with a set size screen (viewport) and not have to worry about
 	// the user changing the window to some weird size.
 
 	engine->window->viewport_pos_sz = w_rect( 0.0f, 0.0f, static_cast<float>( width ), static_cast<float>( height ) );
 
-	float w_ratio = width / v_window_w;
-	float h_ratio = height / v_window_h;
+	float w_ratio = width / viewport_w;
+	float h_ratio = height / viewport_h;
 
 	if( w_ratio > h_ratio )
 	{
-		engine->window->viewport_pos_sz.w = v_window_w * h_ratio;
+		engine->window->viewport_pos_sz.w = viewport_w * h_ratio;
 		engine->window->viewport_pos_sz.x = ( width - engine->window->viewport_pos_sz.w ) / 2.0f;
 	}
 	else
 	{
-		engine->window->viewport_pos_sz.h = v_window_h * w_ratio;
+		engine->window->viewport_pos_sz.h = viewport_h * w_ratio;
 		engine->window->viewport_pos_sz.y = ( height - engine->window->viewport_pos_sz.h ) / 2.0f;
 	}
 
@@ -50,17 +50,17 @@ void focus_change_callback( GLFWwindow* window, int focused )
 
 w_rect w_window::compute_max_window_size_for_desktop()
 {
-	float desktop_w = vidmode->width - v_window_hw;
-	float desktop_h = vidmode->height - v_window_hh;
+	float desktop_w = vidmode->width - viewport_hw;
+	float desktop_h = vidmode->height - viewport_hh;
 
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.
 
-	auto wdiv = static_cast<int>( std::floorf( desktop_w / static_cast<float>( v_window_w ) ) );
-	auto hdiv = static_cast<int>( std::floorf( desktop_h / static_cast<float>( v_window_h ) ) );
+	auto wdiv = static_cast<int>( std::floorf( desktop_w / static_cast<float>( viewport_w ) ) );
+	auto hdiv = static_cast<int>( std::floorf( desktop_h / static_cast<float>( viewport_h ) ) );
 	int div = glm::min( wdiv, hdiv );
 
-	w_rect window_pos( 0.0f, 0.0f, v_window_w * div, v_window_h * div );
+	w_rect window_pos( 0.0f, 0.0f, viewport_w * div, viewport_h * div );
 	window_pos.x = ( vidmode->width - window_pos.w ) / 2;
 	window_pos.y = ( vidmode->height - window_pos.h ) / 2;
 

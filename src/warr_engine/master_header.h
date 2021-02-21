@@ -78,23 +78,23 @@ constexpr static hash hash_none = 0;
 #endif
 
 // ----------------------------------------------------------------------------
-// the size of the virtual screen. all rendering is done on the assumption of
+// the size of the viewport. all rendering is done on the assumption of
 // these dimensions. the renderer handles scaling this up to the actual game
 // window the player sees. this makes a lot of things simpler.
 
-extern float v_window_w;
-extern float v_window_h;
+extern float viewport_w;
+extern float viewport_h;
 
-#define v_window_hw (v_window_w * 0.5f)
-#define v_window_hh (v_window_h * 0.5f)
+#define viewport_hw (viewport_w * 0.5f)
+#define viewport_hh (viewport_h * 0.5f)
 
-extern float ui_window_w;
-extern float ui_window_h;
+extern float ui_w;
+extern float ui_h;
 
-#define ui_window_hw (ui_window_w * 0.5f)
-#define ui_window_hh (ui_window_h * 0.5f)
+#define ui_hw (ui_w * 0.5f)
+#define ui_hh (ui_h * 0.5f)
 
-#define ui_window_scale (v_window_w / ui_window_w)
+#define ui_scale (viewport_w / ui_w)
 
 #include "filesystem.h"
 #include "datatypes.h"

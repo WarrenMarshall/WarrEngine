@@ -19,27 +19,27 @@ void layer_particles::push()
 	{
 		auto e = add_entity<w_entity>();
 
-		e->get_transform()->set_pos( { v_window_hw, v_window_h } );
+		e->get_transform()->set_pos( { viewport_hw, viewport_h } );
 		{
 			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_fire_upwards" );
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::filled_rectangle, w_rect( -v_window_hw, -2.0f, v_window_w, 4.0f ) );
+			ec->init( primitive_shape::filled_rectangle, w_rect( -viewport_hw, -2.0f, viewport_w, 4.0f ) );
 			ec->rs_opt.color = w_color::light_green;
 			ec->rs_opt.color->a = 0.25f;
 		}
 		{
 			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_stars" );
-			ec->get_transform()->set_pos( { 0.0f, -v_window_hh } );
+			ec->get_transform()->set_pos( { 0.0f, -viewport_hh } );
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::point, 3.0f );
 			ec->rs_opt.color = w_color::light_green;
-			ec->get_transform()->set_pos( { 0.0f, -v_window_hh } );
+			ec->get_transform()->set_pos( { 0.0f, -viewport_hh } );
 		}
 	}
 
@@ -47,7 +47,7 @@ void layer_particles::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->tag = H( "mouse_torch" );
-		e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
+		e->get_transform()->set_pos( { viewport_hw, viewport_hh } );
 
 		{
 			auto ec = e->add_component<ec_emitter>();
@@ -82,7 +82,7 @@ void layer_particles::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -103,7 +103,7 @@ void layer_particles::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "Particles", { ui_window_w / 2.0f, 16.0f } );
+		w_render::draw_string( "Particles", { ui_w / 2.0f, 16.0f } );
 
 		render_state =
 		{
@@ -112,8 +112,8 @@ void layer_particles::draw_ui()
 			.scale = 1.0f
 		};
 
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
-		w_render::draw_string( "F - toggle follow mode for fire ball", w_pos( ui_window_hw, 208.0f ) );
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
+		w_render::draw_string( "F - toggle follow mode for fire ball", w_pos( ui_hw, 208.0f ) );
 	}
 
 	// compute where the torch is in UI space and draw a label there

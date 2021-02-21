@@ -50,7 +50,7 @@ void layer_msg_box::draw_ui()
 	w_layer::draw_ui();
 
 	a_texture* tiling_background = a_texture::find( "engine_white" );
-	w_rect rc = w_rect( 0.0f, 0.0f, ui_window_w, ui_window_h );
+	w_rect rc = w_rect( 0.0f, 0.0f, ui_w, ui_h );
 
 	w_render_state_opt rso;
 	rso.color = w_color::pal( 0 );
@@ -64,8 +64,8 @@ void layer_msg_box::draw_ui()
 	}
 
 	IMGUI->do_panel( H( "main_panel" ) )
-		->set_pos( { 0.0f, ui_window_hh - 32.0f } )
-		->set_size( { ui_window_w, 68.0f } )
+		->set_pos( { 0.0f, ui_hh - 32.0f } )
+		->set_size( { ui_w, 68.0f } )
 		->finalize();
 
 	w_rect rc_client_main_panel = IMGUI->last_rc_client;

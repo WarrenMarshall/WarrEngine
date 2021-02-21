@@ -14,7 +14,7 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_camera();
-		e->get_transform()->set_pos( { v_window_hw, v_window_hh } );
+		e->get_transform()->set_pos( { viewport_hw, viewport_hh } );
 	}
 
 	{
@@ -63,7 +63,7 @@ void layer_entity_picking::draw()
 	{
 		.color = w_color::dark_teal
 	};
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -v_window_hw, -v_window_hh, v_window_w, v_window_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -82,7 +82,7 @@ void layer_entity_picking::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "Entity Picking", { ui_window_hw, 16.0f } );
+		w_render::draw_string( "Entity Picking", { ui_hw, 16.0f } );
 
 		render_state =
 		{
@@ -91,9 +91,9 @@ void layer_entity_picking::draw_ui()
 			.scale = 1.0f
 		};
 
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
-		w_render::draw_string( "L_CLICK - select entity", w_pos( ui_window_hw, 208.0f ) );
-		w_render::draw_string( "L_DRAG - move entity", w_pos( ui_window_hw, 216.0f ) );
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
+		w_render::draw_string( "L_CLICK - select entity", w_pos( ui_hw, 208.0f ) );
+		w_render::draw_string( "L_DRAG - move entity", w_pos( ui_hw, 216.0f ) );
 	}
 
 	w_layer::draw_ui();

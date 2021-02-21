@@ -596,3 +596,10 @@ void w_bbox::reset()
 	min.x = min.y = std::numeric_limits<float>::max();
 	max.x = max.y = std::numeric_limits<float>::min();
 }
+
+// ----------------------------------------------------------------------------
+
+w_coord_helper* w_coord_helper::done()
+{
+	return this;
+}

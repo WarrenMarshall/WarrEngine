@@ -50,14 +50,12 @@ void layer_coords::push()
 
 void layer_coords::draw()
 {
-/*
-	render_state =
 	{
-		.color = w_color::dark_teal
-	};
+		scoped_render_state;
+		render_state.color = w_color::dark_teal;
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
-*/
+		w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	}
 
 	w_layer::draw();
 
@@ -146,7 +144,7 @@ void layer_coords::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "Coordinate Systems", { ui_window_w / 2.0f, 16.0f } );
+		w_render::draw_string( "Coordinate Systems", { ui_w / 2.0f, 16.0f } );
 
 		render_state =
 		{
@@ -155,7 +153,7 @@ void layer_coords::draw_ui()
 			.scale = 1.0f
 		};
 
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
 	}
 */
 }

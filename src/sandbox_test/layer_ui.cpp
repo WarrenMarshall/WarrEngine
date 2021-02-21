@@ -60,7 +60,7 @@ void layer_ui::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 
 
 	w_layer::draw();
@@ -73,7 +73,7 @@ void layer_ui::draw_ui()
 	w_layer::draw_ui();
 
 	{
-		scoped_imgui_location_offset( w_vec2( ( ui_window_w - 146.0f ) / 2.0f, ui_window_hh - 85.0f ) );
+		scoped_imgui_location_offset( w_vec2( ( ui_w - 146.0f ) / 2.0f, ui_hh - 85.0f ) );
 
 		IMGUI
 			->do_panel( H( "main_panel" ) )
@@ -137,7 +137,7 @@ void layer_ui::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "UI Controls", { ui_window_w / 2.0f, 16.0f } );
+		w_render::draw_string( "UI Controls", { ui_w / 2.0f, 16.0f } );
 
 		render_state = {
 			.align = align::hcenter,
@@ -145,7 +145,7 @@ void layer_ui::draw_ui()
 			.scale = 1.0f
 		};
 
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
+		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
 	}
 }
 

@@ -265,12 +265,3 @@ using b_show_in_debug_frame_buffer = bool;
 
 #define ADD_QUOTES_HELPER(s) #s
 #define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)
-
-// ----------------------------------------------------------------------------
-// scoped variable helpers
-
-#define scoped_var(type, line_num) type scoped_var_##line_num## = {}
-#define scoped_decl(type, line_num) scoped_var(type, line_num)
-
-#define scoped_var_arg1(type, arg1, line_num) type scoped_var_##line_num## ( ##arg1## )
-#define scoped_decl_arg1(type, arg1, line_num) scoped_var_arg1(type, arg1, line_num)

@@ -63,7 +63,7 @@ void layer_sound_board::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -110,7 +110,7 @@ void layer_sound_board::draw_ui()
 			.scale = 2.0f
 		};
 
-		w_render::draw_string( "Sound Board", { ui_window_w / 2.0f, 16.0f } );
+		w_render::draw_string( "Sound Board", { ui_w / 2.0f, 16.0f } );
 	}
 }
 

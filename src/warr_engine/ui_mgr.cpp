@@ -33,8 +33,8 @@ void w_ui_mgr::draw_topmost()
 
 bool w_ui_mgr::is_mouse_inside( const w_rect& rc ) const
 {
-	// note : because we apply the ui_window_scale, this is only usable for UI based rectangles
-	w_rect rc_scaled = rc * ui_window_scale;
+	// note : because we apply the ui_scale, this is only usable for UI based rectangles
+	w_rect rc_scaled = rc * ui_scale;
 
 	// note : all ui interactions are reduced to checking the mouse position inside of an AABB
 	auto vpos = w_coord::window_to_virtual( engine->input->mouse_window_pos );
