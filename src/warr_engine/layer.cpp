@@ -109,7 +109,9 @@ void w_layer::draw_ui()
 
 w_entity* w_layer::add_camera()
 {
-	return add_entity<e_camera>();
+	auto camera = add_entity<e_camera>();
+	camera->get_transform()->set_pos( { v_window_hw, v_window_hh } );
+	return camera;
 }
 
 w_entity* w_layer::get_camera()

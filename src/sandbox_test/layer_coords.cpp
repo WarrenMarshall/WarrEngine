@@ -50,12 +50,14 @@ void layer_coords::push()
 
 void layer_coords::draw()
 {
+/*
 	render_state =
 	{
 		.color = w_color::dark_teal
 	};
 
 	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, v_window_w, v_window_h ) );
+*/
 
 	w_layer::draw();
 
@@ -66,6 +68,7 @@ void layer_coords::draw_ui()
 {
 	w_layer::draw_ui();
 
+/*
 	{
 		scoped_render_state;
 
@@ -130,7 +133,9 @@ void layer_coords::draw_ui()
 		w_render::draw_string( fmt::format( "V: {},{}", (int)vpos.x, (int)vpos.y ), uipos + w_vec2( 8, 10 ) );
 		w_render::draw_string( fmt::format( "U: {},{}", (int)uipos.x, (int)uipos.y ), uipos + w_vec2( 8, 18 ) );
 	}
+*/
 
+/*
 	{
 		scoped_render_state;
 
@@ -152,6 +157,7 @@ void layer_coords::draw_ui()
 
 		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_window_hw, 200.0f ) );
 	}
+*/
 }
 
 w_imgui_callback* layer_coords::get_imgui_callback()
@@ -165,14 +171,14 @@ bool layer_coords::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_pos_delta( w_coord::window_to_virtual( evt->delta ) );
+			//get_camera()->get_transform()->add_pos_delta( w_coord::window_to_virtual( evt->delta ) );
 
 			return true;
 		}
 
 		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_angle_delta( w_coord::window_to_virtual( evt->delta ).x );
+			//get_camera()->get_transform()->add_angle_delta( w_coord::window_to_virtual( evt->delta ).x );
 
 			return true;
 		}

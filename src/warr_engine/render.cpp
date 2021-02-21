@@ -351,17 +351,21 @@ void w_render::end_frame()
 
 void w_render::draw_world_axis()
 {
-	render_state.color = { 1.0f, 0.0f, 0.0f };
-	w_render::draw_line( w_vec2::zero, w_vec2( 5000, 0 ) );
+	{
+		scoped_render_state;
 
-	render_state.color = { 0.5f, 0.0f, 0.0f };
-	w_render::draw_line( w_vec2::zero, w_vec2( -5000, 0 ) );
+		render_state.color = { 1.0f, 0.0f, 0.0f };
+		w_render::draw_line( w_vec2::zero, w_vec2( 5000, 0 ) );
 
-	render_state.color = { 0.0f, 1.0f, 0.0f };
-	w_render::draw_line( w_vec2::zero, w_vec2( 0, 5000 ) );
+		render_state.color = { 0.5f, 0.0f, 0.0f };
+		w_render::draw_line( w_vec2::zero, w_vec2( -5000, 0 ) );
 
-	render_state.color = { 0.0f, 0.5f, 0.0f };
-	w_render::draw_line( w_vec2::zero, w_vec2( 0, -5000 ) );
+		render_state.color = { 0.0f, 1.0f, 0.0f };
+		w_render::draw_line( w_vec2::zero, w_vec2( 0, 5000 ) );
+
+		render_state.color = { 0.0f, 0.5f, 0.0f };
+		w_render::draw_line( w_vec2::zero, w_vec2( 0, -5000 ) );
+	}
 }
 
 // draws useful stats at the top of the screen
