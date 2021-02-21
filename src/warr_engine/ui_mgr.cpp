@@ -19,8 +19,8 @@ void w_ui_mgr::draw_topmost()
 
 			render_state.z = zdepth_topmost;
 
-			auto viewport_pos = w_coord::window_to_viewport( engine->input->mouse_window_pos );
-			auto ui_pos = w_coord::viewport_to_ui( viewport_pos );
+			auto viewport_pos = w_coord::window_to_viewport_pos( engine->input->mouse_window_pos );
+			auto ui_pos = w_coord::viewport_to_ui_pos( viewport_pos );
 
 			w_render::draw( mouse_cursor->texture,
 				w_rect(
@@ -38,7 +38,7 @@ bool w_ui_mgr::is_mouse_inside( const w_rect& rc ) const
 	w_rect rc_scaled = rc * ui_scale;
 
 	// note : all ui interactions are reduced to checking the mouse position inside of an AABB
-	auto viewport_pos = w_coord::window_to_viewport( engine->input->mouse_window_pos );
+	auto viewport_pos = w_coord::window_to_viewport_pos( engine->input->mouse_window_pos );
 	return c2AABBtoPoint( rc_scaled.as_c2AABB(), viewport_pos.as_c2v() );
 }
 

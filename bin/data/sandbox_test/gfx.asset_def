@@ -8,3 +8,10 @@
 	"tag" "tex_crate_01"
 	"filename" "gfx/crate_01.png"
 }
+
+{
+	"type" "src_texture"
+	"tag" "tex_crosshair"
+	"filename" "gfx/crosshair.png"
+}
+

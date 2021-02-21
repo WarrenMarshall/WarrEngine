@@ -2,7 +2,14 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-static w_vec2 last_mouse_pos( 0, 0 );
+// ----------------------------------------------------------------------------
+
+w_input_event::w_input_event()
+{
+	shift_down = engine->input->is_shift_down();
+	control_down = engine->input->is_control_down();
+	alt_down = engine->input->is_alt_down();
+}
 
 // ----------------------------------------------------------------------------
 
@@ -24,6 +31,8 @@ void mouse_wheel_callback( GLFWwindow* window, double xoffset, double yoffset )
 }
 
 // ----------------------------------------------------------------------------
+
+static w_vec2 last_mouse_pos = w_vec2::zero;
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {

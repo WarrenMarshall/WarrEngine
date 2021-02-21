@@ -142,7 +142,7 @@ w_entity* w_layer::find_entity( hash tag )
 		// lookup next time
 		std::iter_swap( entities.begin(), iter );
 
-		return ( *iter ).get();
+		return ( *entities.begin() ).get();
 	}
 
 	return nullptr;

@@ -2,6 +2,8 @@
 
 struct w_input_event
 {
+	w_input_event();
+
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = event_id::invalid;
 
@@ -13,6 +15,11 @@ struct w_input_event
 
 	// a place for various events to store the deltas. used for mouse and controllers.
 	w_vec2 delta = w_vec2::zero;
+
+	// modifier keys
+	bool shift_down = false;
+	bool control_down = false;
+	bool alt_down = false;
 };
 
 // ----------------------------------------------------------------------------
