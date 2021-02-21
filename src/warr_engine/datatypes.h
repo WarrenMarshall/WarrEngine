@@ -245,34 +245,3 @@ struct w_bbox
 	void add( const w_vec2& vtx );
 	void reset();
 };
-
-// ----------------------------------------------------------------------------
-
-// feed this coordinates in any space and it will automatically fill out the
-// others
-
-struct w_coord_helper
-{
-	w_entity* camera = nullptr;
-	w_vec2 ui_pos = w_vec2::zero;
-	w_vec2 viewport_pos = w_vec2::zero;
-	w_vec2 window_pos = w_vec2::zero;
-	w_vec2 world_pos = w_vec2::zero;
-
-	[[nodiscard]] w_coord_helper* done();
-};
-
-struct w_mouse_pos : w_pos
-{
-
-};
-
-struct w_world_pos : w_pos
-{
-
-};
-
-struct w_ui_pos : w_pos
-{
-
-};

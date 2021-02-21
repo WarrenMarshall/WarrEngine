@@ -41,7 +41,7 @@ layer_coords::layer_coords()
 
 void layer_coords::push()
 {
-	engine->window->set_mouse_mode( mouse_mode::os );
+	engine->window->set_mouse_mode( mouse_mode::custom );
 
 	{
 		add_camera();

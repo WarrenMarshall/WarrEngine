@@ -70,8 +70,8 @@ void layer_particles::update()
 
 	if( follow_mouse )
 	{
-		auto wpos = w_coord::window_to_world( INPUT->mouse_window_pos, get_camera() );
-		find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( wpos );
+		//auto wpos = w_coord::window_to_world( INPUT->mouse_window_pos, get_camera() );
+		//find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( wpos );
 	}
 }
 
@@ -117,6 +117,7 @@ void layer_particles::draw_ui()
 	}
 
 	// compute where the torch is in UI space and draw a label there
+/*
 	w_vec2 label_pos = find_entity( H( "mouse_torch" ) )->get_transform()->pos;
 	label_pos = w_coord::world_to_ui( label_pos, get_camera() );
 
@@ -128,6 +129,7 @@ void layer_particles::draw_ui()
 	};
 
 	w_render::draw_string( "My Light In The Dark", label_pos );
+*/
 }
 
 bool layer_particles::on_input_pressed( const w_input_event* evt )
@@ -148,15 +150,11 @@ bool layer_particles::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_pos_delta( w_coord::window_to_virtual( evt->delta ) );
-
 			return true;
 		}
 
 		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_angle_delta( w_coord::window_to_virtual( evt->delta ).x );
-
 			return true;
 		}
 	}

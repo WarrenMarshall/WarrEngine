@@ -160,16 +160,14 @@ bool layer_ui::on_input_motion( const w_input_event* evt )
 	{
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			auto delta = w_coord::window_to_virtual( evt->delta );
-			get_camera()->get_transform()->add_pos_delta( evt->delta );
+			//auto delta = w_coord::window_to_virtual( evt->delta );
+			//get_camera()->get_transform()->add_pos_delta( evt->delta );
 
 			return true;
 		}
 
 		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_angle_delta( evt->delta.x );
-
 			return true;
 		}
 	}

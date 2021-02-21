@@ -103,6 +103,7 @@ bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse_button_left )
 	{
+/*
 		w_vec2 click_pos = w_coord::window_to_virtual( INPUT->mouse_window_pos );
 		auto pick_id = w_render::sample_pick_id_at( click_pos );
 
@@ -113,6 +114,7 @@ bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
 		{
 			e->rs_opt.glow = e->is_selected ? 0.25f : 0.0f;
 		}
+*/
 
 		return true;
 	}
@@ -144,15 +146,11 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_pos_delta( w_coord::window_to_virtual( evt->delta ) );
-
 			return true;
 		}
 
 		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
 		{
-			get_camera()->get_transform()->add_angle_delta( w_coord::window_to_virtual( evt->delta ).x );
-
 			return true;
 		}
 	}

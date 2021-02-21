@@ -26,7 +26,6 @@ struct w_input
 
 	// tracks the mouse movement delta since the last call to Update()
 	w_vec2 mouse_move_delta = w_vec2::zero;
-
 	w_vec2 mouse_wheel_delta = w_vec2::zero;
 
 	// where the mouse currently sits in the window

@@ -36,9 +36,6 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	// save the window space position of the mouse
 	engine->input->mouse_window_pos.x = glm::round( static_cast<float>( xpos ) );
 	engine->input->mouse_window_pos.y = glm::round( static_cast<float>( ypos ) );
-
-	// convert the window space mouse position into a position on the virtual screen.
-	w_vec2 vpos = w_coord::window_to_virtual( { (float)xpos, (float)ypos } );
 }
 
 // ----------------------------------------------------------------------------
