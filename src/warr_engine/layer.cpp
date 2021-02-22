@@ -126,6 +126,8 @@ bool w_layer::is_topmost_layer() const
 
 w_entity* w_layer::find_entity( hash tag )
 {
+	w_entity* entity = nullptr;
+
 	// look for an entity with a matching tag
 	auto iter = std::find_if(
 		entities.begin(),
@@ -142,10 +144,10 @@ w_entity* w_layer::find_entity( hash tag )
 		// lookup next time
 		std::iter_swap( entities.begin(), iter );
 
-		return ( *entities.begin() ).get();
+		entity = ( *entities.begin() ).get();
 	}
 
-	return nullptr;
+	return entity;
 }
 
 void w_layer::new_game()
