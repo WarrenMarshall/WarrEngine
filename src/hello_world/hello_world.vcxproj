@@ -132,6 +132,7 @@
       <FloatingPointModel>Precise</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,6 +158,7 @@
       <StringPooling>true</StringPooling>
       <FloatingPointModel>Precise</FloatingPointModel>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

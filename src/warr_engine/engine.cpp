@@ -372,7 +372,7 @@ void w_engine::main_loop()
 		blur_frame_buffers[ 0 ]->bind();
 		OPENGL->shaders[ "blur" ].bind();
 		OPENGL->set_uniform( "horizontal", false );
-		w_render::draw( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+		w_render::draw_quad( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 		blur_frame_buffers[ 0 ]->unbind();
 
@@ -386,7 +386,7 @@ void w_engine::main_loop()
 		{
 			blur_frame_buffers[ pingpong ]->bind();
 			OPENGL->set_uniform( "horizontal", pingpong );
-			w_render::draw( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+			w_render::draw_quad( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
 
@@ -406,14 +406,14 @@ void w_engine::main_loop()
 
 			OPENGL->shaders[ "base" ].bind();
 
-			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+			w_render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			// draw glow frame buffer on top with blending
 
 			OPENGL->set_blend( opengl_blend::add );
 
-			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+			w_render::draw_quad( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 			RENDER->batch_quads->draw_and_reset_internal();
 
 			OPENGL->set_blend( opengl_blend::alpha );
@@ -437,7 +437,7 @@ void w_engine::main_loop()
 			(int)window->viewport_pos_sz.h
 		);
 
-		w_render::draw( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+		w_render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
 		RENDER->batch_quads->draw_and_reset_internal();
 
 	#if 0

@@ -103,6 +103,7 @@
       <FloatingPointModel>Precise</FloatingPointModel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +138,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <StringPooling>true</StringPooling>
       <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -173,6 +175,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <StringPooling>true</StringPooling>
       <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

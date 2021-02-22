@@ -138,13 +138,12 @@ w_entity* w_layer::find_entity( hash tag )
 		}
 	);
 
+	// #todo - this could benefit from an MRU type cache where the most
+	// frequently searched entities and their tags are found quickly
+
 	if( iter != entities.end() )
 	{
-		// move any found entity to the front of the entity list for faster
-		// lookup next time
-		std::iter_swap( entities.begin(), iter );
-
-		entity = ( *entities.begin() ).get();
+		entity = ( *iter ).get();
 	}
 
 	return entity;

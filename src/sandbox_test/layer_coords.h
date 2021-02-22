@@ -21,6 +21,5 @@ struct layer_coords : w_layer
 	virtual void draw_ui() override;
 	virtual w_imgui_callback* get_imgui_callback() override;
 
-	virtual bool on_input_pressed( const w_input_event* evt ) override;
 	virtual bool on_input_motion( const w_input_event* evt ) override;
 };

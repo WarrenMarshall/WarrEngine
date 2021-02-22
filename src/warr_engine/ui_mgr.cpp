@@ -22,7 +22,7 @@ void w_ui_mgr::draw_topmost()
 			auto viewport_pos = w_coord::window_to_viewport_pos( engine->input->mouse_window_pos );
 			auto ui_pos = w_coord::viewport_to_ui_pos( viewport_pos );
 
-			w_render::draw( mouse_cursor->texture,
+			w_render::draw_quad( mouse_cursor->texture,
 				w_rect(
 				( ui_pos.x - mouse_cursor->hotspot_offset.x ),
 				( ui_pos.y - mouse_cursor->hotspot_offset.y )

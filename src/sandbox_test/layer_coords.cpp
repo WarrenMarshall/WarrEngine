@@ -162,6 +162,20 @@ void layer_coords::draw_ui()
 
 		w_render::draw_string( "R_DRAG - move/rotate camera", w_pos( ui_hw, ui_h - 12.0f ) );
 	}
+
+	// label next to the crosshair
+	{
+		auto e = find_entity( H( "crosshair" ) );
+
+		auto vpos = w_coord::world_to_viewport_pos( e->get_transform()->pos, get_camera() );
+		auto uipos = w_coord::viewport_to_ui_pos( vpos );
+
+		scoped_render_state;
+		render_state.align = align::vcenter;
+		render_state.color = w_color::orange;
+		render_state.color.a = 0.75f;
+		w_render::draw_string( "<< Your crosshair", uipos + w_vec2( 8.0f, 0.0f ) );
+	}
 }
 
 w_imgui_callback* layer_coords::get_imgui_callback()
@@ -169,26 +183,26 @@ w_imgui_callback* layer_coords::get_imgui_callback()
 	return &imgui_callback;
 }
 
-bool layer_coords::on_input_pressed( const w_input_event* evt )
-{
-	if( evt->input_id == input_id::mouse_button_left )
-	{
-		auto e = find_entity( H( "crosshair" ) );
-
-		auto viewport_pos = w_coord::window_to_viewport_pos( engine->input->mouse_window_pos );
-		auto world_pos = w_coord::viewport_to_world_pos( viewport_pos, get_camera() );
-		e->get_transform()->set_pos( world_pos );
-
-		return true;
-	}
-
-	return false;
-}
-
 bool layer_coords::on_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
+		if( INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
+		{
+			auto e = find_entity( H( "crosshair" ) );
+
+			if( evt->control_down )
+			{
+				e->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
+			}
+			else
+			{
+				auto viewport_pos = w_coord::window_to_viewport_pos( engine->input->mouse_window_pos );
+				auto world_pos = w_coord::viewport_to_world_pos( viewport_pos, get_camera() );
+				e->get_transform()->set_pos( world_pos );
+			}
+		}
+
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			if( evt->control_down )

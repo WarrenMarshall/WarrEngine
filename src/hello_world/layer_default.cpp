@@ -26,7 +26,7 @@ void layer_default::draw()
 	w_layer::draw();
 	w_render::draw_world_axis();
 
-	w_render::draw( gradient, w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	w_render::draw_quad( gradient, w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	render_state =
 	{

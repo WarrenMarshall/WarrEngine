@@ -81,7 +81,7 @@ struct w_render
 
 	void init();
 
-	static void draw( const a_texture* texture, const w_rect& dst );
+	static void draw_quad( const a_texture* texture, const w_rect& dst );
 	static void draw_circle( const w_vec2& origin, const float radius );
 	static void draw_filled_circle( const w_vec2& origin, const float radius );
 	static void draw_filled_rectangle( const w_rect& dst );

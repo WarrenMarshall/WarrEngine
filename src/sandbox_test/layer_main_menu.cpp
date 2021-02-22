@@ -95,7 +95,7 @@ void layer_main_menu::draw()
 	w_layer::draw();
 
 	RENDER
-		->draw( gradient, w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		->draw_quad( gradient, w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 }
 
 void layer_main_menu::draw_ui()

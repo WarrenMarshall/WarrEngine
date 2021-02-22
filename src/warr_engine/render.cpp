@@ -208,7 +208,7 @@ void w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 
 // draws a textured quad
 
-void w_render::draw( const a_texture* texture, const w_rect& dst )
+void w_render::draw_quad( const a_texture* texture, const w_rect& dst )
 {
 	float w = dst.w ? dst.w : texture->rc.w;
 	float h = dst.h ? dst.h : texture->rc.h;
@@ -237,7 +237,7 @@ void w_render::draw_tiled( const a_texture* texture, const w_rect& dst )
 
 		render_state.uv_tiling = w_vec2::compute_uv_tiling( texture, dst );
 
-		w_render::draw( texture, dst );
+		w_render::draw_quad( texture, dst );
 	}
 }
 
@@ -282,7 +282,7 @@ void w_render::draw_string( const a_font* font, const std::string_view text, con
 		// small optimization to skip drawing completely blank characters
 		if( fch->w > 0 )
 		{
-			w_render::draw(
+			w_render::draw_quad(
 				fch->glyph_texture.get(),
 				w_rect( xpos + ( fch->xoffset * render_state.scale.x ), ypos + ( fch->yoffset * render_state.scale.y ) )
 			);
@@ -637,37 +637,37 @@ void w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )
 
 	// top row
 
-	draw( p_00, w_rect( xpos, ypos, p_00->rc.w, p_00->rc.h ) );
+	draw_quad( p_00, w_rect( xpos, ypos, p_00->rc.w, p_00->rc.h ) );
 
 	xpos += p_00->rc.w;
-	draw( p_10, w_rect( xpos, ypos, inner_w, p_10->rc.h ) );
+	draw_quad( p_10, w_rect( xpos, ypos, inner_w, p_10->rc.h ) );
 
 	xpos += inner_w;
-	draw( p_20, w_rect( xpos, ypos, p_20->rc.w, p_20->rc.h ) );
+	draw_quad( p_20, w_rect( xpos, ypos, p_20->rc.w, p_20->rc.h ) );
 
 	// middle row
 
 	xpos = dst.x;
 	ypos += p_00->rc.h;
-	draw( p_01, w_rect( xpos, ypos, p_01->rc.w, inner_h ) );
+	draw_quad( p_01, w_rect( xpos, ypos, p_01->rc.w, inner_h ) );
 
 	xpos += p_01->rc.w;
-	draw( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
+	draw_quad( p_11, w_rect( xpos, ypos, inner_w, inner_h ) );
 
 	xpos += inner_w;
-	draw( p_21, w_rect( xpos, ypos, p_21->rc.w, inner_h ) );
+	draw_quad( p_21, w_rect( xpos, ypos, p_21->rc.w, inner_h ) );
 
 	// bottom row
 
 	xpos = dst.x;
 	ypos += inner_h;
-	draw( p_02, w_rect( xpos, ypos, p_02->rc.w, p_02->rc.h ) );
+	draw_quad( p_02, w_rect( xpos, ypos, p_02->rc.w, p_02->rc.h ) );
 
 	xpos += p_02->rc.w;
-	draw( p_12, w_rect( xpos, ypos, inner_w, p_12->rc.h ) );
+	draw_quad( p_12, w_rect( xpos, ypos, inner_w, p_12->rc.h ) );
 
 	xpos += inner_w;
-	draw( p_22, w_rect( xpos, ypos, p_22->rc.w, p_22->rc.h ) );
+	draw_quad( p_22, w_rect( xpos, ypos, p_22->rc.w, p_22->rc.h ) );
 }
 
 // call this function to figure out a new value based on the frame interpolation percentage.
