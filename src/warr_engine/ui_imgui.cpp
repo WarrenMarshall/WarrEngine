@@ -403,11 +403,10 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 
 	if( result.code == im_result::left_clicked || control.sticky_hover )
 	{
-		// #coord
-/*
 		// convert mouse location to client rect position inside control
+
 		result.click_pos =
-			w_coord::window_to_ui( engine->input->mouse_window_pos )
+			w_coord::window_to_ui_pos( engine->input->mouse_window_pos )
 			- w_vec2( current_control.rc_win.x, current_control.rc_win.y )
 			- location_offset;
 
@@ -416,7 +415,6 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 
 		result.click_pct.x = glm::clamp( result.click_pct.x, 0.0f, 1.0f );
 		result.click_pct.y = glm::clamp( result.click_pct.y, 0.0f, 1.0f );
-*/
 	}
 }
 
