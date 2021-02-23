@@ -4,8 +4,11 @@
 
 struct layer_meshes : w_layer
 {
-	ec_mesh* mec;
+	ec_mesh* mesh_mario;
+	ec_mesh* mesh_crate;
+
 	w_tween mesh_rotator;
+	w_tween mesh_scaler;
 
 	layer_meshes();
 

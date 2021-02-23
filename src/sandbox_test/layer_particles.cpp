@@ -1,8 +1,6 @@
 
 #include "app_header.h"
 
-// ----------------------------------------------------------------------------
-
 layer_particles::layer_particles()
 {
 	draws_completely_solid = true;
@@ -19,7 +17,7 @@ void layer_particles::push()
 	{
 		auto e = add_entity<w_entity>();
 
-		e->get_transform()->set_pos( { viewport_hw, viewport_h } );
+		e->get_transform()->set_pos( { 0.0f, viewport_hh } );
 		{
 			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_fire_upwards" );
@@ -47,7 +45,6 @@ void layer_particles::push()
 	{
 		auto e = add_entity<w_entity>();
 		e->tag = H( "mouse_torch" );
-		e->get_transform()->set_pos( { viewport_hw, viewport_hh } );
 
 		{
 			auto ec = e->add_component<ec_emitter>();
@@ -55,7 +52,7 @@ void layer_particles::push()
 		}
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->init( primitive_shape::filled_circle, 5.0f );
+			ec->init( primitive_shape::filled_circle, 10.0f );
 			ec->rs_opt.color = w_color::light_green;
 			ec->rs_opt.color->a = 0.25f;
 		}
@@ -68,11 +65,6 @@ void layer_particles::update()
 {
 	w_layer::update();
 
-	if( follow_mouse )
-	{
-		//auto wpos = w_coord::window_to_world( INPUT->mouse_window_pos, get_camera() );
-		//find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( wpos );
-	}
 }
 
 void layer_particles::draw()
@@ -82,7 +74,7 @@ void layer_particles::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -104,57 +96,45 @@ void layer_particles::draw_ui()
 		};
 
 		w_render::draw_string( "Particles", { ui_w / 2.0f, 16.0f } );
-
-		render_state =
-		{
-			.align = align::hcenter,
-			.color = w_color::light_grey,
-			.scale = 1.0f
-		};
-
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
-		w_render::draw_string( "F - toggle follow mode for fire ball", w_pos( ui_hw, 208.0f ) );
 	}
 
 	// compute where the torch is in UI space and draw a label there
-/*
+
 	w_vec2 label_pos = find_entity( H( "mouse_torch" ) )->get_transform()->pos;
-	label_pos = w_coord::world_to_ui( label_pos, get_camera() );
+	label_pos = w_coord::world_to_ui_pos( label_pos, get_camera() );
+	label_pos += w_vec2( 8.0f, 0.0f );
 
 	render_state =
 	{
-		.align = align::left,
-		.color = w_color::black,
-		.scale = 1.0f
+		.align = align::left | align::vcenter,
+		.color = w_color::orange
 	};
 
 	w_render::draw_string( "My Light In The Dark", label_pos );
-*/
-}
-
-bool layer_particles::on_input_pressed( const w_input_event* evt )
-{
-	if( evt->input_id == input_id::key_f )
-	{
-		follow_mouse = !follow_mouse;
-
-		return true;
-	}
-
-	return false;
 }
 
 bool layer_particles::on_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
-		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		if( INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
 		{
-			return true;
+			auto wpos = w_coord::window_to_world_pos( evt->mouse_pos, get_camera() );
+			find_entity( H( "mouse_torch" ) )->get_transform()->set_pos( wpos );
 		}
 
-		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
+		// camera control
+		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
+			if( evt->control_down )
+			{
+				get_camera()->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
+			}
+			else
+			{
+				get_camera()->get_transform()->add_pos_delta( w_coord::window_to_viewport_vec( evt->delta ) );
+			}
+
 			return true;
 		}
 	}

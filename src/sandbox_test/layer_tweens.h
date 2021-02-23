@@ -1,19 +1,7 @@
 #pragma once
 
-// ----------------------------------------------------------------------------
-
-struct layer_tweens_callback : w_imgui_callback
-{
-	virtual void on_left_clicked( const w_imgui_control& control, const w_imgui_result& result ) override;
-	virtual void on_motion( const w_imgui_control& control, const w_imgui_result& result ) override;
-};
-
-// ----------------------------------------------------------------------------
-
 struct layer_tweens : w_layer
 {
-	layer_tweens_callback imgui_callback;
-
 	a_texture* tween_tex = nullptr;
 
 	w_tween tween_linear;
@@ -36,5 +24,6 @@ struct layer_tweens : w_layer
 	virtual void push() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;
-	virtual w_imgui_callback* get_imgui_callback() override;
+
+	virtual bool on_input_motion( const w_input_event* evt ) override;
 };

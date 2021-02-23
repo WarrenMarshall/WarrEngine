@@ -75,6 +75,14 @@ w_vec2 w_coord::window_to_ui_pos( const w_vec2& window_pos )
 	return ui_pos;
 }
 
+w_vec2 w_coord::world_to_ui_pos( const w_vec2& world_pos, const w_entity* camera )
+{
+	auto viewport_pos = w_coord::world_to_viewport_pos( world_pos, camera );
+	auto ui_pos = w_coord::viewport_to_ui_pos( viewport_pos );
+
+	return ui_pos;
+}
+
 // ----------------------------------------------------------------------------
 
 w_vec2 w_coord::window_to_viewport_vec( const w_vec2& window_delta )

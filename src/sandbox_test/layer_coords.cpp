@@ -54,15 +54,6 @@ void layer_coords::draw_ui()
 		};
 
 		w_render::draw_string( "Coordinate Systems", { ui_w / 2.0f, 16.0f } );
-
-		render_state =
-		{
-			.align = align::hcenter,
-			.color = w_color::light_grey,
-			.scale = 1.0f
-		};
-
-		w_render::draw_string( "R_DRAG - move/rotate camera", w_pos( ui_hw, ui_h - 12.0f ) );
 	}
 
 	// label next to the crosshair
@@ -94,12 +85,13 @@ bool layer_coords::on_input_motion( const w_input_event* evt )
 			}
 			else
 			{
-				e->get_transform()->add_pos_delta( w_coord::window_to_world_vec( evt->delta, get_camera() ) );
+				e->get_transform()->set_pos( w_coord::window_to_world_pos( evt->mouse_pos, get_camera() ) );
 			}
 
 			return true;
 		}
 
+		// camera control
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			if( evt->control_down )

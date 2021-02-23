@@ -18,6 +18,7 @@ struct w_coord
 
 	[[nodiscard]] static w_vec2 window_to_world_pos( const w_vec2& window_pos, const w_entity* camera );
 	[[nodiscard]] static w_vec2 window_to_ui_pos( const w_vec2& window_pos );
+	[[nodiscard]] static w_vec2 world_to_ui_pos( const w_vec2& world_pos, const w_entity* camera );
 
 	// ----------------------------------------------------------------------------
 	// vector transforms (directions/deltas)

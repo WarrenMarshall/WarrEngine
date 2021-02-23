@@ -60,8 +60,7 @@ void layer_ui::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
-
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -138,14 +137,6 @@ void layer_ui::draw_ui()
 		};
 
 		w_render::draw_string( "UI Controls", { ui_w / 2.0f, 16.0f } );
-
-		render_state = {
-			.align = align::hcenter,
-			.color = w_color::light_grey,
-			.scale = 1.0f
-		};
-
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
 	}
 }
 
@@ -158,16 +149,18 @@ bool layer_ui::on_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
+		// camera control
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			//auto delta = w_coord::window_to_virtual( evt->delta );
-			//get_camera()->get_transform()->add_pos_delta( evt->delta );
+			if( evt->control_down )
+			{
+				get_camera()->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
+			}
+			else
+			{
+				get_camera()->get_transform()->add_pos_delta( w_coord::window_to_viewport_vec( evt->delta ) );
+			}
 
-			return true;
-		}
-
-		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
-		{
 			return true;
 		}
 	}

@@ -63,7 +63,7 @@ void layer_sound_board::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 

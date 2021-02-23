@@ -13,6 +13,9 @@ struct w_input_event
 	// the char representation of the key that was pressed
 	char ch = 0;
 
+	// current mouse position, in window coordinates
+	w_vec2 mouse_pos = w_vec2::zero;
+
 	// a place for various events to store the deltas. used for mouse and controllers.
 	w_vec2 delta = w_vec2::zero;
 
@@ -21,6 +24,8 @@ struct w_input_event
 	bool control_down = false;
 	bool alt_down = false;
 };
+
+static_assert( sizeof( w_input_event ) <= 64 );
 
 // ----------------------------------------------------------------------------
 

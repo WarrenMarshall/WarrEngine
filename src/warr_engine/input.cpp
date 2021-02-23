@@ -9,6 +9,8 @@ w_input_event::w_input_event()
 	shift_down = engine->input->is_shift_down();
 	control_down = engine->input->is_control_down();
 	alt_down = engine->input->is_alt_down();
+
+	mouse_pos = engine->input->mouse_window_pos;
 }
 
 // ----------------------------------------------------------------------------

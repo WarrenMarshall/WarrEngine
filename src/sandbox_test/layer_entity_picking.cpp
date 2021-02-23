@@ -83,17 +83,6 @@ void layer_entity_picking::draw_ui()
 		};
 
 		w_render::draw_string( "Entity Picking", { ui_hw, 16.0f } );
-
-		render_state =
-		{
-			.align = align::hcenter,
-			.color = w_color::light_grey,
-			.scale = 1.0f
-		};
-
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
-		w_render::draw_string( "L_CLICK - select entity", w_pos( ui_hw, 208.0f ) );
-		w_render::draw_string( "L_DRAG - move entity", w_pos( ui_hw, 216.0f ) );
 	}
 
 	w_layer::draw_ui();

@@ -1,39 +1,6 @@
 
 #include "app_header.h"
 
-// ----------------------------------------------------------------------------
-
-void layer_anim_texture_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
-{
-	w_imgui_callback::on_left_clicked( control, result );
-
-// 	switch( control.tag )
-// 	{
-// 		case H( "push_button_01" ):
-// 		{
-// 			UI->show_msg_box( "You clicked the button!" );
-// 		}
-// 		break;
-// 	}
-}
-
-void layer_anim_texture_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
-{
-	w_imgui_callback::on_motion( control, result );
-
-	auto layer = static_cast<layer_anim_texture*>( IMGUI->current_layer );
-
-// 	switch( control.tag )
-// 	{
-// 		case H( "slider_01" ):
-// 		{
-// 		}
-// 		break;
-// 	}
-}
-
-// ----------------------------------------------------------------------------
-
 layer_anim_texture::layer_anim_texture()
 {
 	draws_completely_solid = true;
@@ -58,7 +25,7 @@ void layer_anim_texture::draw()
 		.color = w_color::dark_teal
 	};
 
-	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
+	w_render::draw_tiled( a_texture::find( "engine_tile_background_stripe" ), w_rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
 	w_layer::draw();
 
@@ -106,34 +73,25 @@ void layer_anim_texture::draw_ui()
 		};
 
 		w_render::draw_string( "Animated Textures", { ui_w / 2.0f, 16.0f } );
-
-		render_state =
-		{
-			.align = align::hcenter,
-			.color = w_color::light_grey,
-			.scale = 1.0f
-		};
-
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
 	}
-}
-
-w_imgui_callback* layer_anim_texture::get_imgui_callback()
-{
-	return &imgui_callback;
 }
 
 bool layer_anim_texture::on_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
+		// camera control
 		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
-			return true;
-		}
+			if( evt->control_down )
+			{
+				get_camera()->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
+			}
+			else
+			{
+				get_camera()->get_transform()->add_pos_delta( w_coord::window_to_viewport_vec( evt->delta ) );
+			}
 
-		if( INPUT->get_button_state( input_id::mouse_button_middle ) == button_state::held )
-		{
 			return true;
 		}
 	}
