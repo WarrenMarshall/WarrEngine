@@ -729,7 +729,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 {
 	auto b2d_static = parent_entity->get_component<ec_b2d_static>();
 
-	auto file = engine->fs->load_text_file( level_filename );
+	auto file = FS->load_text_file( level_filename );
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer ) );
 

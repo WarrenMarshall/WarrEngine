@@ -8,7 +8,7 @@ bool a_mesh::create_internals()
 {
 	assert( !original_filename.empty() );
 
-	auto file = engine->fs->load_text_file( original_filename );
+	auto file = FS->load_text_file( original_filename );
 
 	mesh_verts.clear();
 

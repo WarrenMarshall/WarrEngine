@@ -4,7 +4,7 @@
 // loaded from the disk. this is what gets uploaded to opengl
 // and assigned an id.
 //
-// these are NEVER sent to the renderer, they exist solely
+// these are NEVER sent to w_render, they exist solely
 // to represent the raw texture data.
 //
 // games should never interact direcly with this class.

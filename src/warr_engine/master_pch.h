@@ -150,15 +150,6 @@ const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 // ----------------------------------------------------------------------------
 
-#define RENDER_STATE( code )\
-	auto rs = ( &( engine->render->render_states.back() ) );\
-	{\
-		*rs = code\
-	}
-
-
-// ----------------------------------------------------------------------------
-
 #include "master_enum.h"
 
 #include "util_string.h"
@@ -242,6 +233,7 @@ constexpr float from_b2d( float v )
 
 #define OPENGL (engine->opengl)
 #define RENDER (engine->render)
+#define FS (engine->fs)
 #define render_state (*(engine->render->top_render_state))
 #define UI (engine->ui)
 #define IMGUI (engine->ui->imgui)

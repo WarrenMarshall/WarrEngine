@@ -226,6 +226,12 @@
     <ClCompile Include="input_gamepad.cpp">
       <Filter>src\input</Filter>
     </ClCompile>
+    <ClCompile Include="cmd_line.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="physics_pending_collision.cpp">
+      <Filter>src\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -458,6 +464,12 @@
     </ClInclude>
     <ClInclude Include="input_gamepad.h">
       <Filter>include\input</Filter>
+    </ClInclude>
+    <ClInclude Include="cmd_line.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_pending_collision.h">
+      <Filter>include\physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

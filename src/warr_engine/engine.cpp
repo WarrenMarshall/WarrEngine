@@ -757,7 +757,7 @@ bool w_engine::is_paused()
 void w_engine::cache_asset_definition_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	engine->fs->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".asset_def" );
+	FS->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".asset_def" );
 
 	for( const auto& iter : filenames )
 	{
@@ -768,7 +768,7 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 void w_engine::parse_config_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	engine->fs->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".ini" );
+	FS->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".ini" );
 
 	for( const auto& iter : filenames )
 	{
@@ -778,7 +778,7 @@ void w_engine::parse_config_files( const std::string_view folder_name )
 
 void w_engine::parse_config_file( std::string_view filename )
 {
-	auto file = engine->fs->load_text_file( filename );
+	auto file = FS->load_text_file( filename );
 
 	for( const auto& line : *( file->lines.get() ) )
 	{

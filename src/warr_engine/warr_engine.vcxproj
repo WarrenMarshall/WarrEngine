@@ -207,6 +207,7 @@
     <ClCompile Include="bit_flag_generator.cpp" />
     <ClCompile Include="cache_assets.cpp" />
     <ClCompile Include="asset_definition_file_cache.cpp" />
+    <ClCompile Include="cmd_line.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="coord.cpp" />
     <ClCompile Include="entity_component.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
+    <ClCompile Include="physics_pending_collision.cpp" />
     <ClCompile Include="physics_query.cpp" />
     <ClCompile Include="physics_query_callbacks.cpp" />
     <ClCompile Include="physics_debug_draw.cpp" />
@@ -288,6 +290,7 @@
     <ClInclude Include="bit_flag_generator.h" />
     <ClInclude Include="cache_assets.h" />
     <ClInclude Include="asset_definition_file_cache.h" />
+    <ClInclude Include="cmd_line.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="coord.h" />
     <ClInclude Include="entity_component.h" />
@@ -298,6 +301,7 @@
     <ClInclude Include="opengl_color_attachment.h" />
     <ClInclude Include="physics_contact_listener.h" />
     <ClInclude Include="index_buffer.h" />
+    <ClInclude Include="physics_pending_collision.h" />
     <ClInclude Include="render_stats.h" />
     <ClInclude Include="scoped_vars.h" />
     <ClInclude Include="transform.h" />

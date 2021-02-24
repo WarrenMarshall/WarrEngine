@@ -37,7 +37,7 @@ struct w_file_system
 	{
 		// look on hard drive
 
-		if( file_exists_on_disk( filename ) )
+		if( w_file_system::file_exists_on_disk( filename ) )
 		{
 			// file found, load it
 
@@ -47,6 +47,7 @@ struct w_file_system
 
 			std::unique_ptr<T> mem_file = std::make_unique<T>( static_cast<int>( size ) );
 			file.read( &( *mem_file->buffer )[ 0 ], size );
+
 			return std::move( mem_file );
 		}
 		else
@@ -59,18 +60,13 @@ struct w_file_system
 				// file not found in a ZIP file either - ERROR!
 				log_error( "File not found on disk OR in a zip file : [{}]", filename );
 			}
-			else
-			{
-				// file found in table of contents, load it from ZIP
 
-				auto mem_file = std::make_unique<T>( toc_entry->size );
-				mem_file->buffer = zip_io->get_data_for_filename( filename );
-				return std::move( mem_file );
-			}
+			// file found in table of contents, load it from ZIP
+
+			auto mem_file = std::make_unique<T>( toc_entry->size );
+			mem_file->buffer = zip_io->get_data_for_filename( filename );
+
+			return std::move( mem_file );
 		}
-
-		// making the compiler happy, but we should never get here
-		assert( false );
-		return nullptr;
 	}
 };

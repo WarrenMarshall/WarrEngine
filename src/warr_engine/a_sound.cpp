@@ -33,26 +33,18 @@ void a_sound::stop()
 
 bool a_sound::create_internals()
 {
-	bool file_exists = engine->fs->file_exists_on_disk_or_in_zip( original_filename );
-
-	if( !file_exists )
-	{
-		log_error( "Couldn't find the file : [{}]", tag );
-	}
-
-	auto file = engine->fs->load_binary_file( original_filename );
+	auto file = FS->load_binary_file( original_filename );
 
 	if( buffer.loadFromMemory( file->buffer->data(), file->buffer->size() ) )
 	{
 		sound.setBuffer( buffer );
 		sound.setLoop( looped );
-	}
-	else
-	{
-		log_error( "Couldn't load the file : [{}]", original_filename );
+
+		return true;
 	}
 
-	return true;
+	log_error( "Couldn't load the file : [{}]", original_filename );
+	return false;
 }
 
 void a_sound::adjust_for_time_dilation()

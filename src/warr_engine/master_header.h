@@ -96,7 +96,14 @@ extern float ui_h;
 
 #define ui_scale (viewport_w / ui_w)
 
+#include "cmd_line.h"
+
 #include "filesystem.h"
+
+#include "file_mem.h"
+#include "file_zip.h"
+#include "file_disk.h"
+
 #include "datatypes.h"
 #include "scoped_vars.h"
 
@@ -159,6 +166,7 @@ extern float ui_h;
 #include "physics_query_callbacks.h"
 #include "physics_query.h"
 #include "physics_debug_draw.h"
+#include "physics_pending_collision.h"
 
 #include "entity_component.h"
 #include "entity.h"
@@ -168,10 +176,6 @@ extern float ui_h;
 
 #include "layer_esc_menu.h"
 #include "layer_msg_box.h"
-
-#include "file_mem.h"
-#include "file_zip.h"
-#include "file_disk.h"
 
 #include "game.h"
 extern std::unique_ptr<w_engine> engine;

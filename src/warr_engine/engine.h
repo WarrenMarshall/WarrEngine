@@ -2,33 +2,6 @@
 
 #include "cache_assets.h"
 
-// ----------------------------------------------------------------------------
-
-struct w_pending_collision
-{
-	w_entity* entity_a;
-	b2Fixture* fixture_a;
-	w_entity* entity_b;
-	b2Fixture* fixture_b;
-	b2Manifold manifold;
-	b2WorldManifold wmanifold;
-};
-
-// ----------------------------------------------------------------------------
-
-struct w_cmdline_args
-{
-	// "-verbose" to set TRUE
-	//		* enables optional log messages that are marked using "log_verbose"
-	bool verbose = false;
-
-	// "-nobatch" to set TRUE
-	//		* pretend like the video card has a single texture unit
-	bool nobatch = false;
-};
-
-// ----------------------------------------------------------------------------
-
 struct w_engine
 {
 	// the function that all games/apps call to get the engine up and running
@@ -72,8 +45,8 @@ struct w_engine
 	std::unique_ptr<w_physics_debug_draw> physics_debug_draw = nullptr;
 	std::unique_ptr<b2World> box2d_world = nullptr;
 	std::unique_ptr<w_physics_contact_listener> physics_responder = nullptr;
-	std::vector<w_pending_collision> begin_contact_queue;
-	std::vector<w_pending_collision> end_contact_queue;
+	std::vector<w_physics_pending_collision> begin_contact_queue;
+	std::vector<w_physics_pending_collision> end_contact_queue;
 
 	std::unique_ptr<w_render_stats> stats = nullptr;
 

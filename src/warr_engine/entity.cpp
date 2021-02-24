@@ -136,13 +136,13 @@ void w_entity::set_angle_deep( float angle )
 
 // entities are starting to collide
 
-void w_entity::on_collision_begin( w_pending_collision& coll, w_entity* other )
+void w_entity::on_collision_begin( w_physics_pending_collision& coll, w_entity* other )
 {
 }
 
 // entities are no longer colliding
 
-void w_entity::on_collision_end( w_pending_collision& coll, w_entity* other )
+void w_entity::on_collision_end( w_physics_pending_collision& coll, w_entity* other )
 {
 }
 

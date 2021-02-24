@@ -22,7 +22,7 @@ bool a_src_texture::create_internals()
 {
 	assert( !original_filename.empty() );
 
-	auto file = engine->fs->load_binary_file( original_filename );
+	auto file = FS->load_binary_file( original_filename );
 	image = std::make_unique<sf::Image>();
 	if( !image->loadFromMemory( file->buffer->data(), file->buffer->size() ) )
 	{
@@ -41,6 +41,8 @@ bool a_src_texture::create_internals()
 
 void a_src_texture::finalize_after_loading()
 {
+	assert( image );
+
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
@@ -58,13 +60,10 @@ void a_src_texture::finalize_after_loading()
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 	}
 
-	if( image )
-	{
-		glTexImage2D(
-			GL_TEXTURE_2D, 0, GL_RGBA8,
-			static_cast<int>( w ), static_cast<int>( h ),
-			0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)( image->getPixelsPtr() ) );
-	}
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGBA8,
+		static_cast<int>( w ), static_cast<int>( h ),
+		0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)( image->getPixelsPtr() ) );
 
 	// free the source data now that it's been uploaded to opengl
 	image = nullptr;

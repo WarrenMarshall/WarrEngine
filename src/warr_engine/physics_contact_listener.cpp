@@ -7,7 +7,7 @@ void w_physics_contact_listener::BeginContact( b2Contact* contact )
 	this->contact = contact;
 	manifold = contact->GetManifold();
 
-	w_pending_collision pc;
+	w_physics_pending_collision pc;
 
 	pc.entity_a = ( (w_entity_component*) ( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (w_entity_component*) ( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
@@ -20,7 +20,7 @@ void w_physics_contact_listener::BeginContact( b2Contact* contact )
 
 void w_physics_contact_listener::EndContact( b2Contact* contact )
 {
-	w_pending_collision pc;
+	w_physics_pending_collision pc;
 	pc.fixture_b = contact->GetFixtureB();
 
 	this->contact = contact;

@@ -18,6 +18,7 @@ struct w_opengl_framebuffer;
 struct w_particle_pool;
 struct w_physics_debug_draw;
 struct w_physics_contact_listener;
+struct w_physics_pending_collision;
 struct w_range;
 struct w_rect;
 struct w_render;

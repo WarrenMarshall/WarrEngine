@@ -10,8 +10,8 @@ w_file_mem::w_file_mem( int size )
 // ----------------------------------------------------------------------------
 
 w_file_mem_text::w_file_mem_text( int size )
-	: w_file_mem( size )
 {
+	buffer = std::make_unique<std::vector<char>>( size );
 	lines = std::make_unique<std::vector<std::string>>();
 }
 
