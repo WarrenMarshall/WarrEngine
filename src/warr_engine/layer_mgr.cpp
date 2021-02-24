@@ -118,7 +118,7 @@ void w_layer_mgr::draw()
 					layer->draw();
 
 					// draw any debug information that lives in world space.
-					if( RENDER->show_physics_debug && layer->is_debug_physics_layer )
+					if( RENDER->show_extra_debug && layer->is_debug_physics_layer )
 					{
 						render_state.z += zdepth_nudge;
 						engine->box2d_world->DebugDraw();

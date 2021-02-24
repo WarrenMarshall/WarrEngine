@@ -616,9 +616,9 @@ void w_engine::new_physics_world()
 	);
 
 #ifdef _DEBUG
-	RENDER->show_physics_debug = true;
+	RENDER->show_extra_debug = true;
 #else
-	RENDER->show_physics_debug = false;
+	RENDER->show_extra_debug = false;
 #endif
 }
 
@@ -869,7 +869,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		// toggle debug physics drawing
 		case input_id::key_f5:
 		{
-			RENDER->show_physics_debug = !RENDER->show_physics_debug;
+			RENDER->show_extra_debug = !RENDER->show_extra_debug;
 
 			return true;
 		}

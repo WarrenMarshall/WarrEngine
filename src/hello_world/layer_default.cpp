@@ -10,9 +10,9 @@ void layer_default::push()
 {
 	gradient = a_texture::find( "background_gradient" );
 	tex_hello_world = a_texture::find( "tex_hello_world" );
-	//movement_tween = w_tween( -175, 175, 2000, tween_type::pingpong, tween_via::sinusoidal );
+	movement_tween = w_tween( -175, 175, 2000, tween_type::pingpong, tween_via::sinusoidal );
 	scale_tween = w_tween( 1.0f, 5.0f, 4750, tween_type::pingpong, tween_via::back );
-	//tilt_tween = w_tween( -25.0f, 25.0f, 10000, tween_type::pingpong, tween_via::cubic );
+	tilt_tween = w_tween( -25.0f, 25.0f, 10000, tween_type::pingpong, tween_via::cubic );
 
 	{
 		auto entity = add_camera();
@@ -30,10 +30,9 @@ void layer_default::draw()
 
 	render_state =
 	{
-		/*.angle = *tilt_tween,*/
+		.angle = *tilt_tween,
 		.scale = *scale_tween
 	};
 
-	//w_render::draw_sprite( tex_hello_world, { viewport_hw + *movement_tween, viewport_hh } );
-	w_render::draw_sprite( tex_hello_world, { 0.0f, 0.0f } );
+	w_render::draw_sprite( tex_hello_world, { *movement_tween, 0.0f } );
 }

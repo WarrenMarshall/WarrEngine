@@ -14,13 +14,13 @@ void layer_entity_picking::push()
 
 	{
 		auto e = add_camera();
-		e->get_transform()->set_pos( { viewport_hw, viewport_hh } );
 	}
 
 	{
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
 		e->get_transform()->set_pos( { -100.0f, -75.0f } );
+		e->get_transform()->set_scale( 2.0f );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_rectangle, w_rect( -16, -16, 32, 32 ) );
@@ -32,6 +32,7 @@ void layer_entity_picking::push()
 		auto e = add_entity<w_entity>();
 		e->make_pickable();
 		e->get_transform()->set_pos( { 0.0f, 0.0f } );
+		e->get_transform()->set_scale( 2.0f );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::filled_circle, 16.0f );
@@ -44,6 +45,7 @@ void layer_entity_picking::push()
 		e->make_pickable();
 		e->get_transform()->set_angle( 15.0f );
 		e->get_transform()->set_pos( { +100.0f, +75.0f } );
+		e->get_transform()->set_scale( 2.0f );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->init( primitive_shape::rectangle, w_rect( -32, -16, 64, 32 ) );

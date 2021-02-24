@@ -69,7 +69,7 @@ struct w_render
 	void clear_render_state_stack();
 
 	bool single_frame_debugger = false;
-	bool show_physics_debug = true;
+	bool show_extra_debug = true;
 
 	// ----------------------------------------------------------------------------
 

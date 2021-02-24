@@ -150,28 +150,29 @@ void w_render::draw_mesh( a_mesh* mesh )
 			engine->render->batch_triangles->add_primitive( amv->texture, v0, v1, v2 );
 		}
 
-	#if 0
-		// wireframe overlay
-
-		render_state.color = w_color::white;
-		render_state.z += zdepth_nudge;
-
-		for( size_t mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
+		if( engine->render->show_extra_debug )
 		{
-			amv = &( mesh->mesh_verts[ mv ] );
-			w_render_vertex v0( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+			// wireframe overlay
 
-			amv++;
-			w_render_vertex v1( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+			render_state.color = w_color::white;
+			render_state.z += zdepth_nudge;
 
-			amv++;
-			w_render_vertex v2( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+			for( size_t mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
+			{
+				amv = &( mesh->mesh_verts[ mv ] );
+				w_render_vertex v0( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
 
-			engine->render->batch_lines->add_primitive( a_texture::find( "engine_white" ), v0, v1 );
-			engine->render->batch_lines->add_primitive( a_texture::find( "engine_white" ), v1, v2 );
-			engine->render->batch_lines->add_primitive( a_texture::find( "engine_white" ), v2, v0 );
+				amv++;
+				w_render_vertex v1( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+				amv++;
+				w_render_vertex v2( amv->pos, w_vec2( amv->uv.u * render_state.uv_tiling.u, amv->uv.v * render_state.uv_tiling.v ), render_state.color, render_state.glow );
+
+				engine->render->batch_lines->add_primitive( a_texture::find( "engine_white" ), v0, v1 );
+				engine->render->batch_lines->add_primitive( a_texture::find( "engine_white" ), v1, v2 );
+				engine->render->batch_lines->add_primitive( a_texture::find( "engine_white" ), v2, v0 );
+			}
 		}
-	#endif
 	}
 }
 

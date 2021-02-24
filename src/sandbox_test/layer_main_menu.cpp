@@ -156,7 +156,7 @@ void layer_main_menu::draw_ui()
 		->finalize();
 
 	IMGUI->do_push_button( H( "button_controller" ) )
-		->set_text( "Game Controller" )
+		->set_text( "Controller" )
 		->set_size( { 100.0f, w_vec2::ignore } )
 		->finalize();
 }

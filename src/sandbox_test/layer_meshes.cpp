@@ -7,15 +7,15 @@ layer_meshes::layer_meshes()
 {
 	draws_completely_solid = true;
 
-	mesh_rotator = w_tween( 0, 360, 5000, tween_type::pingpong, tween_via::sinusoidal );
-	mesh_scaler = w_tween( 1.0f, 2.5f, 2500, tween_type::pingpong, tween_via::elastic );
+	mesh_rotator = w_tween( 0, 360, 5000, tween_type::pingpong, tween_via::bounce );
+	mesh_scaler = w_tween( 1.0f, 3.5f, 3000, tween_type::pingpong, tween_via::elastic );
 }
 
 void layer_meshes::push()
 {
 	{
 		auto e = add_entity<w_entity>();
-		e->get_transform()->set_pos( { -96.0f, 0.0f } );
+		e->get_transform()->set_pos( { -112.0f, 0.0f } );
 		{
 			mesh_mario = e->add_component<ec_mesh>();
 			mesh_mario->init( "mesh_mario_jump" );
@@ -25,7 +25,7 @@ void layer_meshes::push()
 
 	{
 		auto e = add_entity<w_entity>();
-		e->get_transform()->set_pos( { 96.0f, 0.0f } );
+		e->get_transform()->set_pos( { 112.0f, 0.0f } );
 		{
 			mesh_crate = e->add_component<ec_mesh>();
 			mesh_crate->init( "mesh_crate" );
@@ -72,15 +72,6 @@ void layer_meshes::draw_ui()
 		};
 
 		w_render::draw_string( "Meshes", { ui_w / 2.0f, 16.0f } );
-
-		render_state =
-		{
-			.align = align::hcenter,
-			.color = w_color::light_grey,
-			.scale = 1.0f
-		};
-
-		w_render::draw_string( "R_DRAG / M_DRAG - move/rotate camera", w_pos( ui_hw, 200.0f ) );
 	}
 }
 
