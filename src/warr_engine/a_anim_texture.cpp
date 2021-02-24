@@ -17,6 +17,11 @@ bool a_anim_texture::create_internals()
 	return true;
 }
 
+void a_anim_texture::finalize_after_loading()
+{
+	// do nothing and don't call base class
+}
+
 void a_anim_texture::add_frame( const a_texture* frame )
 {
 	frames.emplace_back( frame );

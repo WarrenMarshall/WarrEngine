@@ -73,38 +73,52 @@ void layer_coords::draw_ui()
 
 bool layer_coords::on_input_motion( const w_input_event* evt )
 {
-	if( evt->input_id == input_id::mouse )
+	switch( evt->input_id )
 	{
-		if( INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
+		case input_id::mouse:
 		{
-			auto e = find_entity( H( "crosshair" ) );
-
-			if( evt->control_down )
+			if( engine->input->get_button_state( input_id::mouse_button_left ) == button_state::held )
 			{
-				e->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
-			}
-			else
-			{
-				e->get_transform()->set_pos( w_coord::window_to_world_pos( evt->mouse_pos, get_camera() ) );
+				auto e = find_entity( H( "crosshair" ) );
+
+				if( evt->control_down )
+				{
+					e->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
+				}
+				else
+				{
+					e->get_transform()->set_pos( w_coord::window_to_world_pos( evt->mouse_pos, get_camera() ) );
+				}
+
+				return true;
 			}
 
-			return true;
+			// camera control
+			if( engine->input->get_button_state( input_id::mouse_button_right ) == button_state::held )
+			{
+				if( evt->control_down )
+				{
+					get_camera()->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
+				}
+				else if( evt->alt_down )
+				{
+					get_camera()->get_transform()->add_scale_delta( w_coord::window_to_viewport_vec( evt->delta ).x * 0.1f );
+				}
+				else
+				{
+					get_camera()->get_transform()->add_pos_delta( w_coord::window_to_viewport_vec( evt->delta ) );
+				}
+
+				return true;
+			}
 		}
+		break;
 
-		// camera control
-		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		case input_id::mouse_wheel:
 		{
-			if( evt->control_down )
-			{
-				get_camera()->get_transform()->add_angle_delta( w_coord::window_to_viewport_vec( evt->delta ).x );
-			}
-			else
-			{
-				get_camera()->get_transform()->add_pos_delta( w_coord::window_to_viewport_vec( evt->delta ) );
-			}
-
-			return true;
+			get_camera()->get_transform()->add_scale_delta( w_coord::window_to_viewport_vec( evt->delta ).y * 0.1f );
 		}
+		break;
 	}
 
 	return false;

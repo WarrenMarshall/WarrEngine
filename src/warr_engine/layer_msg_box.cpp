@@ -63,30 +63,30 @@ void layer_msg_box::draw_ui()
 		w_render::draw_tiled( tiling_background, rc );
 	}
 
-	IMGUI->do_panel( H( "main_panel" ) )
+	engine->ui->imgui->do_panel( H( "main_panel" ) )
 		->set_pos( { 0.0f, ui_hh - 32.0f } )
 		->set_size( { ui_w, 68.0f } )
 		->finalize();
 
-	w_rect rc_client_main_panel = IMGUI->last_rc_client;
+	w_rect rc_client_main_panel = engine->ui->imgui->last_rc_client;
 
-	IMGUI
+	engine->ui->imgui
 		->do_spacer()
 		->set_pos( imgui_flow::last_crc_topleft )
 		->finalize();
 
-	IMGUI
+	engine->ui->imgui
 		->do_label()
 		->set_size( { rc_client_main_panel.w, w_sz::ignore } )
-		->set_text( UI->msg_box.msg )
+		->set_text( engine->ui->msg_box.msg )
 		->set_text_align( align::hcenter )
 		->finalize();
 
-	IMGUI
+	engine->ui->imgui
 		->do_spacer()
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_OK" ) )
+	engine->ui->imgui->do_push_button( H( "button_OK" ) )
 		->set_text( "OK" )
 		->set_align( rc_client_main_panel, align::hcenter )
 		->finalize();

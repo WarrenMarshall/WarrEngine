@@ -27,7 +27,7 @@ bool w_file_disk::read_glob( void* write_ptr, size_t size )
 
 void w_file_disk::open_for_write( std::string_view filename )
 {
-	FS->create_path_if_not_exist( filename );
+	engine->fs->create_path_if_not_exist( filename );
 
 	fopen_s( &file_handle, filename.data(), "wb" );
 

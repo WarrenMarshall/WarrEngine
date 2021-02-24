@@ -18,6 +18,7 @@ void w_render_state::set_from_opt( w_render_state_opt& rso )
 
 // used to manage the potential allocations for the render_states vector
 constexpr size_t max_render_states = 15;
+w_render_state* w_render::top_render_state = nullptr;
 
 void w_render::init()
 {
@@ -32,7 +33,7 @@ void w_render::init()
 	// first element in the stack and should be the only matrix remaining when
 	// the frame finishes rendering.
 
-	OPENGL->push_identity();
+	engine->opengl->push_identity();
 
 	// initialize render state stacks
 
@@ -97,10 +98,10 @@ bool w_render::batches_are_empty()
 
 void w_render::draw_and_reset_all_batches()
 {
-	RENDER->batch_quads->draw_and_reset();
-	RENDER->batch_triangles->draw_and_reset();
-	RENDER->batch_lines->draw_and_reset();
-	RENDER->batch_points->draw_and_reset();
+	engine->render->batch_quads->draw_and_reset();
+	engine->render->batch_triangles->draw_and_reset();
+	engine->render->batch_lines->draw_and_reset();
+	engine->render->batch_points->draw_and_reset();
 }
 
 w_color w_render::pal_color_from_idx( size_t idx )
@@ -132,7 +133,7 @@ void w_render::draw_mesh( a_mesh* mesh )
 		scoped_opengl;
 		a_mesh_vertex* amv = nullptr;
 
-		OPENGL->top()
+		engine->opengl->top()
 			->rotate( render_state.angle )
 			->scale( render_state.scale.x, render_state.scale.y );
 
@@ -199,7 +200,7 @@ void w_render::draw_sprite( const a_texture* texture, const w_vec2& dst )
 
 	{
 		scoped_opengl;
-		OPENGL->top()
+		engine->opengl->top()
 			->translate( { dst.x, dst.y } )
 			->rotate( render_state.angle );
 
@@ -225,7 +226,7 @@ void w_render::draw_quad( const a_texture* texture, const w_rect& dst )
 	{
 		scoped_opengl;
 
-		OPENGL->top()->translate( { dst.x, dst.y } );
+		engine->opengl->top()->translate( { dst.x, dst.y } );
 
 		engine->render->batch_quads->add_primitive( texture, v0, v1, v2, v3 );
 	}
@@ -289,7 +290,7 @@ void w_render::draw_string( const a_font* font, const std::string_view text, con
 			);
 		}
 
-		xpos += ( fch->xadvance * render_state.scale.x);
+		xpos += ( fch->xadvance * render_state.scale.x );
 	}
 }
 
@@ -316,7 +317,7 @@ void w_render::begin_frame() const
 
 void w_render::end_frame()
 {
-	OPENGL->init_view_matrix_identity_ui();
+	engine->opengl->init_view_matrix_identity_ui();
 
 	// stats
 
@@ -337,7 +338,7 @@ void w_render::end_frame()
 	// other number, then there is an uneven push/pop combo somewhere in the
 	// code.
 
-	assert( OPENGL->modelview_stack.size() == 1 );
+	assert( engine->opengl->modelview_stack.size() == 1 );
 
 #ifndef _FINALRELEASE
 	single_frame_debugger = false;
@@ -675,7 +676,7 @@ void w_render::draw_sliced( const a_9slice_def* slice_def, const w_rect& dst )
 
 float w_render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const
 {
-	return current_value + ( ( step_per_second * fixed_time_step::per_second_scaler ) * RENDER->frame_interpolate_pct );
+	return current_value + ( ( step_per_second * fixed_time_step::per_second_scaler ) * engine->render->frame_interpolate_pct );
 }
 
 // samples the "pick" frame buffer at click_pos and returns the pick_id found

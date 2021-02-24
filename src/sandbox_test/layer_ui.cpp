@@ -17,7 +17,7 @@ void layer_ui_callback::on_left_clicked( const w_imgui_control& control, const w
 	{
 		case H( "push_button_01" ):
 		{
-			UI->show_msg_box( "You clicked the button!" );
+			engine->ui->show_msg_box( "You clicked the button!" );
 
 			break;
 		}
@@ -74,55 +74,55 @@ void layer_ui::draw_ui()
 	{
 		scoped_imgui_location_offset( w_vec2( ( ui_w - 146.0f ) / 2.0f, ui_hh - 85.0f ) );
 
-		IMGUI
+		engine->ui->imgui
 			->do_panel( H( "main_panel" ) )
 			->set_text( "SAMPLE CONTROLS" )
 			->set_size( { 146.0f, 146.0f } )
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_push_button( H( "push_button_01" ) )
 			->set_text( "Push Button" )
 			->set_pos( imgui_flow::last_crc_topleft )
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_checkbox( H( "checkbox_01" ) )
 			->set_text( "Custom Cursor" )
 			->finalize( &imgui_callback.checkbox_data );
 
-		IMGUI
+		engine->ui->imgui
 			->do_divider()
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_label()
 			->set_text( fmt::format( "Slider Value : {:.0f}%", std::get<float>( imgui_callback.slider_01_value.data ) * 100.0f ) )
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_slider( H( "slider_01" ) )
 			->finalize( &imgui_callback.slider_01_value );
 
-		IMGUI
+		engine->ui->imgui
 			->do_divider()
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_label()
 			->set_text( "Fixed Interval Slider" )
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_slider( H( "slider_02" ) )
 			->set_interval( 0.2f )
 			->finalize( &imgui_callback.slider_02_value );
 
-		IMGUI
+		engine->ui->imgui
 			->do_divider()
 			->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_edit_box( H( "edit_text_01" ) )
 			->finalize( &imgui_callback.edit_text_01_data );
 	}
@@ -150,7 +150,7 @@ bool layer_ui::on_input_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::mouse )
 	{
 		// camera control
-		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		if( engine->input->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			if( evt->control_down )
 			{

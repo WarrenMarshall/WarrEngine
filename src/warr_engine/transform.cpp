@@ -39,7 +39,7 @@ w_transform* w_transform::set_angle( float angle )
 
 w_transform* w_transform::set_scale( float scale )
 {
-	this->scale = scale;
+	this->scale = glm::max( scale, 0.1f );
 
 	rebuild_matrix();
 

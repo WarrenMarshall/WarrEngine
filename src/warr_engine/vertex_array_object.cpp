@@ -137,7 +137,7 @@ void w_vertex_array_object::draw_and_reset()
 
 		// frame debugger
 		{
-			if( RENDER->single_frame_debugger )
+			if( engine->render->single_frame_debugger )
 			{
 				const char* prim_type_desc = "quads";
 				if( render_prim == render_prim::triangle )		prim_type_desc = "triangles";
@@ -146,7 +146,7 @@ void w_vertex_array_object::draw_and_reset()
 
 				log( ">> draw call >> \"{}\"", prim_type_desc );
 
-				for( int x = 0 ; x < OPENGL->max_texture_image_units ; ++x )
+				for( int x = 0 ; x < engine->opengl->max_texture_image_units ; ++x )
 				{
 					if( vertex_buffer->texture_slots[ x ] )
 					{

@@ -74,30 +74,30 @@ void layer_sound_board::draw_ui()
 {
 	w_layer::draw_ui();
 
-	IMGUI->do_push_button( H( "button_sfx_01" ) )
+	engine->ui->imgui->do_push_button( H( "button_sfx_01" ) )
 		->set_text( "Sound : Coin" )
 		->set_pos( { 16.0f, 32.0f } )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_sfx_02" ) )
+	engine->ui->imgui->do_push_button( H( "button_sfx_02" ) )
 		->set_text( "Sound : Jump" )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_sfx_doom" ) )
+	engine->ui->imgui->do_push_button( H( "button_sfx_doom" ) )
 		->set_text( "Sound : Doom" )
 		->finalize();
 
-	IMGUI->do_divider()->finalize();
+	engine->ui->imgui->do_divider()->finalize();
 
-	IMGUI->do_push_button( H( "button_start_music" ) )
+	engine->ui->imgui->do_push_button( H( "button_start_music" ) )
 		->set_text( "Start Music" )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_pause_music" ) )
+	engine->ui->imgui->do_push_button( H( "button_pause_music" ) )
 		->set_text( "Pause" )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_stop_music" ) )
+	engine->ui->imgui->do_push_button( H( "button_stop_music" ) )
 		->set_text( "Stop" )
 		->finalize();
 

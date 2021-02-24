@@ -9,7 +9,7 @@ w_cache_assets::w_cache_assets()
 
 a_src_texture* w_cache_assets::find_src_texture_for_tag( const std::string_view tag )
 {
-	a_src_texture* src_texture = a_src_texture::find( tag, b_silent( true ) );
+	a_src_texture* src_texture = a_src_texture::find( tag, true );
 
 	if( !src_texture )
 	{

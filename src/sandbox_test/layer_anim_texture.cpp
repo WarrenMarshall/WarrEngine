@@ -39,12 +39,12 @@ void layer_anim_texture::draw_ui()
 	{
 		scoped_imgui_location_offset( w_vec2( 64.0f, 32.0f ) );
 
-		IMGUI->do_panel();
-		IMGUI->set_text( "Simple" );
-		IMGUI->set_size( { 64.0f, 48.0f } );
-		IMGUI->finalize();
+		engine->ui->imgui->do_panel();
+		engine->ui->imgui->set_text( "Simple" );
+		engine->ui->imgui->set_size( { 64.0f, 48.0f } );
+		engine->ui->imgui->finalize();
 
-		IMGUI
+		engine->ui->imgui
 			->do_panel()
 			->set_text( "Offsets" )
 			->set_pos( imgui_flow::right )
@@ -56,10 +56,10 @@ void layer_anim_texture::draw_ui()
 			.color = w_color::white
 		};
 
-		w_render::draw_sprite( animtex_01->get_texture( 0.0f ), w_vec2( 32.0f, 32.0f ) + IMGUI->location_offset );
-		w_render::draw_sprite( animtex_coin_01->get_texture( 0.0f ), w_vec2( 96.0f, 32.0f ) + IMGUI->location_offset );
-		w_render::draw_sprite( animtex_coin_01->get_texture( 0.3f ), w_vec2( 128.0f, 32.0f ) + IMGUI->location_offset );
-		w_render::draw_sprite( animtex_coin_01->get_texture( 0.6f ), w_vec2( 160.0f, 32.0f ) + IMGUI->location_offset );
+		w_render::draw_sprite( animtex_01->get_texture( 0.0f ), w_vec2( 32.0f, 32.0f ) + engine->ui->imgui->location_offset );
+		w_render::draw_sprite( animtex_coin_01->get_texture( 0.0f ), w_vec2( 96.0f, 32.0f ) + engine->ui->imgui->location_offset );
+		w_render::draw_sprite( animtex_coin_01->get_texture( 0.3f ), w_vec2( 128.0f, 32.0f ) + engine->ui->imgui->location_offset );
+		w_render::draw_sprite( animtex_coin_01->get_texture( 0.6f ), w_vec2( 160.0f, 32.0f ) + engine->ui->imgui->location_offset );
 	}
 
 	{
@@ -81,7 +81,7 @@ bool layer_anim_texture::on_input_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::mouse )
 	{
 		// camera control
-		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		if( engine->input->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			if( evt->control_down )
 			{

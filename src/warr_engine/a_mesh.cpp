@@ -8,7 +8,7 @@ bool a_mesh::create_internals()
 {
 	assert( !original_filename.empty() );
 
-	auto file = FS->load_text_file( original_filename );
+	auto file = engine->fs->load_text_file( original_filename );
 
 	mesh_verts.clear();
 
@@ -92,7 +92,7 @@ bool a_mesh::create_internals()
 						a_mesh_vertex mv;
 						mv.pos = vertex_list[ vidx[ mvi ] ];
 						mv.uv = uv_list[ uvidx[ mvi ] ];
-						mv.texture = current_texture ? current_texture : a_texture::find( "engine_white", b_silent( true ) );
+						mv.texture = current_texture ? current_texture : a_texture::find( "engine_white", true );
 
 						mesh_verts.emplace_back( std::move( mv ) );
 					}

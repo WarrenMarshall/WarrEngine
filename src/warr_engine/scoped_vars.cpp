@@ -5,36 +5,36 @@
 
 s_render_state::s_render_state()
 {
-	RENDER->push();
+	engine->render->push();
 }
 
 s_render_state::~s_render_state()
 {
-	RENDER->pop();
+	engine->render->pop();
 }
 
 // ----------------------------------------------------------------------------
 
 s_opengl::s_opengl()
 {
-	OPENGL->push();
+	engine->opengl->push();
 }
 
 s_opengl::~s_opengl()
 {
-	OPENGL->pop();
+	engine->opengl->pop();
 }
 
 // ----------------------------------------------------------------------------
 
 s_opengl_identity::s_opengl_identity()
 {
-	OPENGL->push_identity();
+	engine->opengl->push_identity();
 }
 
 s_opengl_identity::~s_opengl_identity()
 {
-	OPENGL->pop();
+	engine->opengl->pop();
 }
 
 // ----------------------------------------------------------------------------
@@ -42,12 +42,12 @@ s_opengl_identity::~s_opengl_identity()
 s_imgui_location_offset::s_imgui_location_offset( const w_vec2& pivot )
 	: pivot( pivot )
 {
-	IMGUI->add_location_offset( pivot );
+	engine->ui->imgui->add_location_offset( pivot );
 }
 
 s_imgui_location_offset::~s_imgui_location_offset()
 {
-	IMGUI->subtract_location_offset( pivot );
+	engine->ui->imgui->subtract_location_offset( pivot );
 }
 
 // ----------------------------------------------------------------------------

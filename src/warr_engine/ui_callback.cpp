@@ -18,7 +18,7 @@ w_imgui_control_data w_imgui_callback::get_data_for_control(const w_imgui_contro
 
 a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& control )
 {
-	auto control_data = IMGUI->get_control_data( control.tag );
+	auto control_data = engine->ui->imgui->get_control_data( control.tag );
 	auto checked = std::get<bool>( control_data ? control_data->data : get_data_for_control( control ).data );
 
 	return
@@ -29,7 +29,7 @@ a_texture* w_imgui_callback::get_texture_for_checkbox( const w_imgui_control& co
 
 void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_imgui_result& result )
 {
-	auto control_data = IMGUI->get_control_data( control.tag );
+	auto control_data = engine->ui->imgui->get_control_data( control.tag );
 
 	if( !control_data )
 	{
@@ -59,7 +59,7 @@ void w_imgui_callback::on_left_clicked( const w_imgui_control& control, const w_
 
 void w_imgui_callback::on_motion( const w_imgui_control& control, const w_imgui_result& result )
 {
-	auto control_data = IMGUI->get_control_data( control.tag );
+	auto control_data = engine->ui->imgui->get_control_data( control.tag );
 
 	switch( control.type )
 	{
@@ -205,7 +205,7 @@ bool w_imgui_callback::on_input_motion( const w_input_event* evt )
 
 bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 {
-	auto control_data = IMGUI->get_control_data( UI->tag_focus );
+	auto control_data = engine->ui->imgui->get_control_data( engine->ui->tag_focus );
 	assert( control_data );	// a control has focus but isn't in the tag/data map?
 
 	if( control_data->control_type == imgui_control_type::edit_box )
@@ -276,7 +276,7 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 			case input_id::key_esc:
 			case input_id::key_enter:
 			{
-				UI->tag_focus = hash_none;
+				engine->ui->tag_focus = hash_none;
 				return true;
 			}
 		}
@@ -287,9 +287,9 @@ bool w_imgui_callback::handle_editing_key( const w_input_event* evt )
 
 bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 {
-	if( UI->tag_focus != hash_none )
+	if( engine->ui->tag_focus != hash_none )
 	{
-		auto control_data = IMGUI->get_control_data( UI->tag_focus );
+		auto control_data = engine->ui->imgui->get_control_data( engine->ui->tag_focus );
 
 		if( control_data )
 		{
@@ -308,9 +308,9 @@ bool w_imgui_callback::on_input_pressed( const w_input_event* evt )
 
 bool w_imgui_callback::on_input_held( const w_input_event* evt )
 {
-	if( UI->tag_focus != hash_none )
+	if( engine->ui->tag_focus != hash_none )
 	{
-		auto control_data = IMGUI->get_control_data( UI->tag_focus );
+		auto control_data = engine->ui->imgui->get_control_data( engine->ui->tag_focus );
 
 		if( control_data )
 		{
@@ -334,9 +334,9 @@ bool w_imgui_callback::on_input_released( const w_input_event* evt )
 
 bool w_imgui_callback::on_input_key( const w_input_event* evt )
 {
-	if( UI->tag_focus != hash_none )
+	if( engine->ui->tag_focus != hash_none )
 	{
-		auto control_data = IMGUI->get_control_data( UI->tag_focus );
+		auto control_data = engine->ui->imgui->get_control_data( engine->ui->tag_focus );
 		assert( control_data );	// a control has focus but isn't in the tag/data map?
 
 		// ----------------------------------------------------------------------------
@@ -348,7 +348,7 @@ bool w_imgui_callback::on_input_key( const w_input_event* evt )
 			new_str.insert( new_str.begin() + control_data->caret_pos, evt->ch );
 			auto new_data = w_imgui_control_data( new_str );
 
-			if( validate_value_change( UI->tag_focus, *control_data, new_data ) )
+			if( validate_value_change( engine->ui->tag_focus, *control_data, new_data ) )
 			{
 				control_data->data = new_data.data;
 				control_data->caret_pos++;

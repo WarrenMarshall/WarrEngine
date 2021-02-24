@@ -92,7 +92,7 @@ void w_particle_emitter::spawn_particle()
 
 	// apply the current transform (entity+component) to move the particle
 	// position into world space
-	p->pos = OPENGL->top()->transform( p->pos );
+	p->pos = engine->opengl->top()->transform( p->pos );
 
 	switch( static_cast<e_particle_spawn_dir>( params->a_dir ) )
 	{

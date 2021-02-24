@@ -63,7 +63,7 @@ void w_entity::update_components()
 	{
 		{
 			scoped_opengl;
-			OPENGL->top()->add_transform( component->tform );
+			engine->opengl->top()->add_transform( component->tform );
 
 			component->update();
 		}
@@ -76,7 +76,7 @@ void w_entity::draw()
 	{
 		{
 			scoped_opengl;
-			OPENGL->top()->add_transform( component->tform );
+			engine->opengl->top()->add_transform( component->tform );
 
 			render_state.z += zdepth_nudge;
 

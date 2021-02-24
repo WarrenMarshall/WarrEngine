@@ -342,7 +342,7 @@ void w_color::scale( w_color& color, float s )
 
 w_color w_color::pal( int idx )
 {
-	return RENDER->get_palette_color_from_idx( idx );
+	return engine->render->get_palette_color_from_idx( idx );
 }
 
 // ----------------------------------------------------------------------------

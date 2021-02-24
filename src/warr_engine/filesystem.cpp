@@ -107,8 +107,3 @@ void w_file_system::create_path_if_not_exist( std::string_view path )
 		std::filesystem::create_directories( wk_path );
 	}
 }
-
-std::string w_file_system::prepend_data_path( std::string_view base_path )
-{
-	return fmt::format( "data/{}/{}", base_game->get_game_name(), base_path );
-}

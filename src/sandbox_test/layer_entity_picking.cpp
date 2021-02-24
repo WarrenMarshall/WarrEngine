@@ -94,7 +94,7 @@ bool layer_entity_picking::on_input_pressed( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse_button_left )
 	{
-		w_vec2 click_pos = w_coord::window_to_viewport_pos( INPUT->mouse_window_pos );
+		w_vec2 click_pos = w_coord::window_to_viewport_pos( engine->input->mouse_window_pos );
 		auto pick_id = w_render::sample_pick_id_at( click_pos );
 
 		deselect_all();
@@ -115,7 +115,7 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
-		if( INPUT->get_button_state( input_id::mouse_button_left ) == button_state::held )
+		if( engine->input->get_button_state( input_id::mouse_button_left ) == button_state::held )
 		{
 			w_vec2 delta = w_coord::window_to_world_vec( evt->delta, get_camera() );
 
@@ -130,7 +130,7 @@ bool layer_entity_picking::on_input_motion( const w_input_event* evt )
 			return true;
 		}
 
-		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		if( engine->input->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			if( evt->control_down )
 			{

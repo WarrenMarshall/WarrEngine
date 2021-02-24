@@ -28,7 +28,7 @@ w_vertex_buffer::w_vertex_buffer( w_vertex_array_object* vertex_array_object, in
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
-	texture_slots.resize( OPENGL->max_texture_image_units );
+	texture_slots.resize( engine->opengl->max_texture_image_units );
 	total_texture_slots_used = 0;
 	preallocate_vertices( max_elements_per_render_batch * verts_per_element );
 	set_up_vertex_attribs();
@@ -101,7 +101,7 @@ int w_vertex_buffer::assign_texture_slot( const a_texture* texture )
 	}
 
 	// we are out of texture slots, so draw the batch and reset
-	if( total_texture_slots_used == OPENGL->max_texture_image_units )
+	if( total_texture_slots_used == engine->opengl->max_texture_image_units )
 	{
 		vertex_array_object->draw_and_reset();
 	}
@@ -125,7 +125,7 @@ void w_vertex_buffer::bind_texture_units()
 		if( texture_slots[ x ] )
 		{
 #ifndef _FINALRELEASE
-			if( RENDER->single_frame_debugger )
+			if( engine->render->single_frame_debugger )
 			{
 				log_verbose( "TU: {} bound to \"{}\"", x, texture_slots[ x ]->src_texture->tag );
 			}

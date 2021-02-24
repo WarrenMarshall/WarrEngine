@@ -211,7 +211,7 @@ void w_opengl::init_projection_matrix() const
 		0, viewport_w, viewport_h, 0,
 		-20000.0f, 20000.0f );
 
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_projection_matrix" ), 1, GL_FALSE, glm::value_ptr( projection ) );
@@ -222,7 +222,7 @@ void w_opengl::init_projection_matrix() const
 
 void w_opengl::init_view_matrix( w_entity* camera ) const
 {
-	assert( RENDER->batches_are_empty() );
+	assert( engine->render->batches_are_empty() );
 
 	// default to identity matrix
 	glm::mat4 view = glm::mat4( 1.0f );
@@ -240,7 +240,10 @@ void w_opengl::init_view_matrix( w_entity* camera ) const
 			0.0f ) );
 
 		// apply the camera rotation
-		view = glm::rotate( view, glm::radians( tf->angle ), glm::vec3(0,0,1) );
+		view = glm::rotate( view, glm::radians( tf->angle ), glm::vec3( 0, 0, 1 ) );
+
+		// apply the camera scale (equates to camera zoom)
+		view = glm::scale( view, glm::vec3( tf->scale, tf->scale, tf->scale ) );
 	}
 	else
 	{
@@ -250,7 +253,7 @@ void w_opengl::init_view_matrix( w_entity* camera ) const
 			0.0f ) );
 	}
 
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
@@ -263,11 +266,11 @@ void w_opengl::init_view_matrix( w_entity* camera ) const
 
 void w_opengl::init_view_matrix_identity() const
 {
-	assert( RENDER->batches_are_empty() );
+	assert( engine->render->batches_are_empty() );
 
 	glm::mat4 view = glm::mat4( 1.0f );
 
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
@@ -276,12 +279,12 @@ void w_opengl::init_view_matrix_identity() const
 
 void w_opengl::init_view_matrix_identity_ui() const
 {
-	assert( RENDER->batches_are_empty() );
+	assert( engine->render->batches_are_empty() );
 
 	glm::mat4 view = glm::mat4( 1.0f );
 	view *= glm::scale( view, glm::vec3( ui_scale, ui_scale, 1.0f ) );
 
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniformMatrix4fv( shader.id, glGetUniformLocation( shader.id, "u_view_matrix" ), 1, GL_FALSE, glm::value_ptr( view ) );
@@ -290,7 +293,7 @@ void w_opengl::init_view_matrix_identity_ui() const
 
 void w_opengl::set_uniform( std::string_view name, float value )
 {
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniform1f( shader.id, glGetUniformLocation( shader.id, name.data() ), value );
@@ -299,7 +302,7 @@ void w_opengl::set_uniform( std::string_view name, float value )
 
 void w_opengl::set_uniform( std::string_view name, bool value )
 {
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniform1i( shader.id, glGetUniformLocation( shader.id, name.data() ), value );
@@ -308,7 +311,7 @@ void w_opengl::set_uniform( std::string_view name, bool value )
 
 void w_opengl::set_uniform( std::string_view name, const w_color& value )
 {
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniform4f( shader.id, glGetUniformLocation( shader.id, name.data() ), value.r, value.g, value.b, value.a );
@@ -317,7 +320,7 @@ void w_opengl::set_uniform( std::string_view name, const w_color& value )
 
 void w_opengl::set_uniform_array( std::string_view name, int* value, int count )
 {
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glProgramUniform1iv(

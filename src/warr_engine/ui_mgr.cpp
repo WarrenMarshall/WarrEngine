@@ -5,7 +5,7 @@
 void w_ui_mgr::init()
 {
 	imgui = std::make_unique<w_imgui>();
-	mouse_cursor = a_cursor::find( "mouse_cursor_default", b_silent( true ) );
+	mouse_cursor = a_cursor::find( "mouse_cursor_default", true );
 }
 
 void w_ui_mgr::draw_topmost()
@@ -45,5 +45,5 @@ bool w_ui_mgr::is_mouse_inside( const w_rect& rc ) const
 void w_ui_mgr::show_msg_box( const std::string& msg )
 {
 	msg_box.msg = msg;
-	LAYER_MGR->push<layer_msg_box>();
+	engine->layer_mgr->push<layer_msg_box>();
 }

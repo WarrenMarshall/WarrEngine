@@ -50,7 +50,7 @@ void w_physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const
 
 	{
 		scoped_opengl;
-		OPENGL->top()->translate( { position.x, position.y } );
+		engine->opengl->top()->translate( { position.x, position.y } );
 
 		{
 			scoped_render_state;
@@ -69,7 +69,7 @@ void w_physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, 
 	{
 		scoped_opengl;
 
-		OPENGL->top()->translate( { position.x, position.y } );
+		engine->opengl->top()->translate( { position.x, position.y } );
 		{
 			scoped_render_state;
 

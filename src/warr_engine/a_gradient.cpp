@@ -20,13 +20,16 @@ bool a_gradient::create_internals()
 
 void a_gradient::finalize_after_loading()
 {
+	assert( colors.size() == w * h * 4 );
+
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, ( alignment == align::horizontal ) ? GL_REPEAT : GL_CLAMP_TO_EDGE );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, ( alignment == align::vertical ) ? GL_REPEAT : GL_CLAMP_TO_EDGE );
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, (GLsizei) w, (GLsizei) h, 0, GL_RGBA, GL_FLOAT, colors.data() );
 }

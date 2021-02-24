@@ -22,7 +22,7 @@ bool a_src_texture::create_internals()
 {
 	assert( !original_filename.empty() );
 
-	auto file = FS->load_binary_file( original_filename );
+	auto file = engine->fs->load_binary_file( original_filename );
 	image = std::make_unique<sf::Image>();
 	if( !image->loadFromMemory( file->buffer->data(), file->buffer->size() ) )
 	{

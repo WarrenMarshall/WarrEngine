@@ -14,6 +14,7 @@ struct a_anim_texture : a_src_texture
 	a_anim_texture( const e_tween_type tween_type, const int frames_per_second );
 
 	virtual bool create_internals() override;
+	virtual void finalize_after_loading() override;
 	void add_frame( const a_texture* texture );
 	void randomize();
 

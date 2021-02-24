@@ -113,18 +113,18 @@ void w_layer_mgr::draw()
 				if( layer->ilc_is_alive() )
 				{
 					render_state.z = zdepth_layers - ( zdepth_layer_step * x );
-					OPENGL->init_view_matrix( layer->get_camera() );
+					engine->opengl->init_view_matrix( layer->get_camera() );
 
 					layer->draw();
 
 					// draw any debug information that lives in world space.
-					if( RENDER->show_extra_debug && layer->is_debug_physics_layer )
+					if( engine->render->show_extra_debug && layer->is_debug_physics_layer )
 					{
 						render_state.z += zdepth_nudge;
 						engine->box2d_world->DebugDraw();
 					}
 
-					RENDER->draw_and_reset_all_batches();
+					engine->render->draw_and_reset_all_batches();
 				}
 			}
 		}
@@ -138,14 +138,14 @@ void w_layer_mgr::draw()
 
 			render_state.z = zdepth_clear_window;
 
-			OPENGL->init_view_matrix_identity_ui();
+			engine->opengl->init_view_matrix_identity_ui();
 
 			for( auto x = starting_layer_idx; x >= 0; --x )
 			{
 				auto layer = layer_stack[ x ].get();
 
 				// Only UI elements on the topmost layer respond to user input
-				IMGUI->containing_layer_is_topmost = !x;
+				engine->ui->imgui->containing_layer_is_topmost = !x;
 
 				if( layer->ilc_is_alive() )
 				{
@@ -160,19 +160,19 @@ void w_layer_mgr::draw()
 					{
 						scoped_opengl;
 
-						IMGUI->current_layer = layer;
+						engine->ui->imgui->current_layer = layer;
 						layer->draw_ui();
-						IMGUI->current_layer = nullptr;
+						engine->ui->imgui->current_layer = nullptr;
 
 						// when the final layer has been drawn, add anything on top that
 						// we need to - like a mouse cursor - to contain it within the same draw call.
 						if( !x )
 						{
-							UI->draw_topmost();
+							engine->ui->draw_topmost();
 						}
 					}
 
-					RENDER->draw_and_reset_all_batches();
+					engine->render->draw_and_reset_all_batches();
 				}
 			}
 		}

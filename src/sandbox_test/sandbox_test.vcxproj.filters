@@ -30,6 +30,9 @@
     <ClCompile Include="layer_tweens.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="layer_box2d.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layer_anim_texture.h">
@@ -59,6 +62,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="layer_tweens.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="layer_box2d.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

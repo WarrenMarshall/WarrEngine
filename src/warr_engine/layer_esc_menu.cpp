@@ -124,13 +124,13 @@ void layer_esc_menu::draw_ui()
 		+ slice_def->get_bottom_slice_sz()
 		+ 12.0f;
 
-	IMGUI->do_panel( H( "main_panel" ) )
+	engine->ui->imgui->do_panel( H( "main_panel" ) )
 		->set_text( "PAUSE MENU" )
 		->set_pos( { ui_hw - ( panel_w / 2.0f ), ui_hh - ( panel_h / 2.0f ) } )
 		->set_size( { panel_w, panel_h } )
 		->finalize();
 
-	IMGUI->do_push_button( H( "button_resume" ) )
+	engine->ui->imgui->do_push_button( H( "button_resume" ) )
 		->set_text( "Resume" )
 		->set_pos( imgui_flow::last_crc_topleft )
 		->set_size( { w_sz::ignore, button_h } )
@@ -138,19 +138,19 @@ void layer_esc_menu::draw_ui()
 
 	if( base_game->has_main_menu )
 	{
-		IMGUI->do_push_button( H( "button_main_menu" ) )
+		engine->ui->imgui->do_push_button( H( "button_main_menu" ) )
 			->set_text( "Main Menu" )
 			->finalize();
 	}
 
-	IMGUI->do_push_button( H( "button_exit" ) )
+	engine->ui->imgui->do_push_button( H( "button_exit" ) )
 		->set_text( "Exit To Windows" )
 		->finalize();
 
-	IMGUI->do_divider()
+	engine->ui->imgui->do_divider()
 		->finalize();
 
-	IMGUI->do_checkbox( H( "option_fullscreen" ) )
+	engine->ui->imgui->do_checkbox( H( "option_fullscreen" ) )
 		->set_text( "Full Screen?" )
 		->finalize();
 }

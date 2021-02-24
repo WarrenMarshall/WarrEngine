@@ -107,7 +107,7 @@ struct w_render
 	// ----------------------------------------------------------------------------
 
 	std::vector<w_render_state> render_states;
-	w_render_state* top_render_state = nullptr;
+	static w_render_state* top_render_state;
 
 	w_render* push();
 	w_render* pop();

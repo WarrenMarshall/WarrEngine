@@ -11,14 +11,13 @@ struct w_file_system
 	w_file_system();
 	void init();
 
-	static bool file_exists_on_disk( const std::string_view filename );
+	[[nodiscard]] static bool file_exists_on_disk( const std::string_view filename );
 	static void create_path_if_not_exist( std::string_view path );
 
 	[[nodiscard]] bool file_exists_on_disk_or_in_zip( const std::string_view filename );
 	[[nodiscard]] std::unique_ptr<w_file_mem> load_binary_file( const std::string_view filename );
 	[[nodiscard]] std::unique_ptr<w_file_mem_text> load_text_file( std::string_view filename );
 	void scan_folder_for_ext( std::vector<std::string>* filenames, const std::string_view folder, const std::string_view extension );
-	[[nodiscard]] std::string prepend_data_path( std::string_view base_path );
 
 	// loads a file into memory, contained in a w_mem_file object. the lifetime of
 	// this object will be managed by the caller.

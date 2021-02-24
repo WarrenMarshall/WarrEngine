@@ -39,7 +39,7 @@ void w_particle_pool::draw()
 		if( particle.is_alive )
 		{
 			// lifetime
-			interp_life_span = RENDER->calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
+			interp_life_span = engine->render->calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
 			pct_of_life = glm::abs( 1.0f - ( interp_life_span / particle.life_span_save ) );
 
 			// color + alpha
@@ -50,11 +50,11 @@ void w_particle_pool::draw()
 			particle.params->t_scale.get_value( pct_of_life, &scale );
 
 			// position
-			interp_pos.x = RENDER->calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) );
-			interp_pos.y = RENDER->calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) );
+			interp_pos.x = engine->render->calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) );
+			interp_pos.y = engine->render->calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) );
 
 			render_state = {
-				.angle = RENDER->calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec ),
+				.angle = engine->render->calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec ),
 				.color = color,
 				.scale = particle.base_scale * scale
 			};

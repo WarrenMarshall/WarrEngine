@@ -17,5 +17,6 @@
 #include "layer_sound_board.h"
 #include "layer_coords.h"
 #include "layer_tweens.h"
+#include "layer_box2d.h"
 
 #include "layer_main_menu.h"

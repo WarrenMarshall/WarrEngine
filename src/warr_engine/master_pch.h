@@ -186,9 +186,8 @@ constexpr float zdepth_stats = 14500.0f;
 constexpr float zdepth_topmost = 14750.0f;
 
 // ----------------------------------------------------------------------------
-// quickly compare 2 floats to see if they are equal within the epsilon tolerance
-// ----------------------------------------------------------------------------
 
+// quickly compare 2 floats to see if they are equal within the epsilon tolerance
 [[nodiscard]] constexpr bool fequals( float a, float b )
 {
 	// if (a - b) is smaller than FLT_EPSILON, return true.
@@ -228,32 +227,7 @@ constexpr float from_b2d( float v )
 }
 
 // ----------------------------------------------------------------------------
-// handy definitions
+// handy macros
 // ----------------------------------------------------------------------------
 
-#define OPENGL (engine->opengl)
-#define RENDER (engine->render)
-#define FS (engine->fs)
-#define render_state (*(engine->render->top_render_state))
-#define UI (engine->ui)
-#define IMGUI (engine->ui->imgui)
-#define INPUT (engine->input)
-#define LAYER (engine->layer_mgr->get_top())
-#define LAYER_MGR (engine->layer_mgr)
-
-// ----------------------------------------------------------------------------
-
-using b_silent = bool;
-using b_sensor = bool;
-using b_ignore_dead_zone = bool;
-using b_parse_bracket_sets = bool;
-using b_set_current = bool;
-using b_reset_velocity = bool;
-using b_one_shot = bool;
-using b_auto_play = bool;
-using b_show_in_debug_frame_buffer = bool;
-
-// ----------------------------------------------------------------------------
-
-#define ADD_QUOTES_HELPER(s) #s
-#define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)
+#define render_state (*w_render::top_render_state)

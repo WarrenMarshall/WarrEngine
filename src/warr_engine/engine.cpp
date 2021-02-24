@@ -68,13 +68,13 @@ void w_engine::launch( int argc, char* argv [] )
 	{	// OPENGL
 
 		log( "Initializing OpenGL" );
-		OPENGL->init();
+		engine->opengl->init();
 	}
 
 	{	// RENDERER
 
 		log( "Initializing renderer" );
-		RENDER->init();
+		engine->render->init();
 	}
 
 	{	// "ASSET DEFINITION & INI" FILES AND PRECACHING
@@ -141,14 +141,14 @@ void w_engine::launch( int argc, char* argv [] )
 		engine->_symbol_to_value[ "ui_hh" ] = fmt::format( "{}", ui_hh );
 		log( "UI Window Res: {}x{}", (int) ui_w, (int) ui_h );
 
-		RENDER->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
+		engine->render->palette = a_palette::find( engine->config_vars->find_value_opt( "palette_tag", "pal_default" ) );
 
 		w_rect rc = engine->window->compute_max_window_size_for_desktop();
 		glfwSetWindowPos( engine->window->glfw_window, static_cast<int>( rc.x ), static_cast<int>( rc.y ) );
 		glfwSetWindowSize( engine->window->glfw_window, static_cast<int>( rc.w ), static_cast<int>( rc.h ) );
 		glfwSetWindowAspectRatio( engine->window->glfw_window,
-									100,
-									static_cast<int>( ( viewport_h / viewport_w ) * 100 ) );
+			100,
+			static_cast<int>( ( viewport_h / viewport_w ) * 100 ) );
 
 		bool vsync = w_parser::bool_from_str( engine->config_vars->find_value_opt( "v_sync", "false" ) );
 		log( "VSync: {}", vsync ? "true" : "false" );
@@ -251,7 +251,7 @@ void w_engine::shutdown()
 	glfwTerminate();
 
 	log( "Shutting down OpenGL" );
-	for( auto& iter : OPENGL->shaders )
+	for( auto& iter : engine->opengl->shaders )
 	{
 		auto& shader = iter.second;
 		glDeleteProgram( shader.id );
@@ -275,14 +275,14 @@ void w_engine::main_loop()
 		// update core engine stuff - time, timers, etc
 
 		time->update();
-		IMGUI->reset();
+		engine->ui->imgui->reset();
 
 		// whatever remaining ms are left in time->fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction
 		//
 		// it is passed a percentage for easier use : 0.0f-1.0f
 
-		RENDER->frame_interpolate_pct = time->fts_accum_ms / (float)fixed_time_step::ms_per_step;
+		engine->render->frame_interpolate_pct = time->fts_accum_ms / (float)fixed_time_step::ms_per_step;
 
 		// queue up inputs for processing later in the loop
 		input->queue_presses();
@@ -314,7 +314,7 @@ void w_engine::main_loop()
 		}
 
 		// update shader parameters
-		OPENGL->set_uniform( "u_current_time", (float) time->now() / 1000.f );
+		engine->opengl->set_uniform( "u_current_time", (float)time->now() / 1000.f );
 
 		// ----------------------------------------------------------------------------
 		// draw the scene to the engine frame buffer
@@ -327,16 +327,16 @@ void w_engine::main_loop()
 		glEnable( GL_DEPTH_TEST );
 		frame_buffer->bind();
 
-		OPENGL->shaders[ "base_with_glow" ].bind();
+		engine->opengl->shaders[ "base_with_glow" ].bind();
 
-		RENDER->begin_frame();
+		engine->render->begin_frame();
 		{
 			// ----------------------------------------------------------------------------
 			// render the game frame
 			// ----------------------------------------------------------------------------
 
-			OPENGL->init_projection_matrix();
-			OPENGL->init_view_matrix_identity();
+			engine->opengl->init_projection_matrix();
+			engine->opengl->init_view_matrix_identity();
 
 			{
 				scoped_opengl;
@@ -347,9 +347,9 @@ void w_engine::main_loop()
 
 			// engine specific things, like pause borders
 			draw();
-			RENDER->draw_and_reset_all_batches();
+			engine->render->draw_and_reset_all_batches();
 		}
-		RENDER->end_frame();
+		engine->render->end_frame();
 		frame_buffer->unbind();
 
 		// process the input that queued earlier AFTER the rendering has taken place
@@ -368,12 +368,12 @@ void w_engine::main_loop()
 
 		glDisable( GL_DEPTH_TEST );
 
-		OPENGL->init_view_matrix_identity();
+		engine->opengl->init_view_matrix_identity();
 		blur_frame_buffers[ 0 ]->bind();
-		OPENGL->shaders[ "blur" ].bind();
-		OPENGL->set_uniform( "horizontal", false );
+		engine->opengl->shaders[ "blur" ].bind();
+		engine->opengl->set_uniform( "horizontal", false );
 		w_render::draw_quad( frame_buffer->color_attachments[ 1 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
-		RENDER->batch_quads->draw_and_reset_internal();
+		engine->render->batch_quads->draw_and_reset_internal();
 		blur_frame_buffers[ 0 ]->unbind();
 
 		// pingpong back and forth between the 2 blur frame buffers, blurring
@@ -385,9 +385,9 @@ void w_engine::main_loop()
 		for( int x = 0 ; x < blur_passes ; ++x )
 		{
 			blur_frame_buffers[ pingpong ]->bind();
-			OPENGL->set_uniform( "horizontal", pingpong );
+			engine->opengl->set_uniform( "horizontal", pingpong );
 			w_render::draw_quad( blur_frame_buffers[ !pingpong ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
-			RENDER->batch_quads->draw_and_reset_internal();
+			engine->render->batch_quads->draw_and_reset_internal();
 			blur_frame_buffers[ pingpong ]->unbind();
 
 			pingpong = !pingpong;
@@ -404,19 +404,19 @@ void w_engine::main_loop()
 
 			// draw game frame buffer
 
-			OPENGL->shaders[ "base" ].bind();
+			engine->opengl->shaders[ "base" ].bind();
 
 			w_render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
-			RENDER->batch_quads->draw_and_reset_internal();
+			engine->render->batch_quads->draw_and_reset_internal();
 
 			// draw glow frame buffer on top with blending
 
-			OPENGL->set_blend( opengl_blend::add );
+			engine->opengl->set_blend( opengl_blend::add );
 
 			w_render::draw_quad( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
-			RENDER->batch_quads->draw_and_reset_internal();
+			engine->render->batch_quads->draw_and_reset_internal();
 
-			OPENGL->set_blend( opengl_blend::alpha );
+			engine->opengl->set_blend( opengl_blend::alpha );
 
 			composite_frame_buffer->unbind();
 		}
@@ -426,8 +426,8 @@ void w_engine::main_loop()
 		// applying any screen based post process effects.
 		// ----------------------------------------------------------------------------
 
-		OPENGL->shaders[ "post_process" ].bind();
-		OPENGL->init_view_matrix_identity();
+		engine->opengl->shaders[ "post_process" ].bind();
+		engine->opengl->init_view_matrix_identity();
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
@@ -438,7 +438,7 @@ void w_engine::main_loop()
 		);
 
 		w_render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, w_rect( 0.0f, 0.0f, viewport_w, viewport_h ) );
-		RENDER->batch_quads->draw_and_reset_internal();
+		engine->render->batch_quads->draw_and_reset_internal();
 
 	#if 0
 		// ---------------------------------------------------------------------------
@@ -448,7 +448,7 @@ void w_engine::main_loop()
 		// window
 		// ----------------------------------------------------------------------------
 
-		OPENGL->shaders[ "base" ].bind();
+		engine->opengl->shaders[ "base" ].bind();
 
 		float w = viewport_w / 4.0f;
 		float h = viewport_h / 4.0f;
@@ -462,7 +462,7 @@ void w_engine::main_loop()
 			w_render::draw( frame_buffer->color_attachments[ 0 ].texture, rc );
 			render_state.scale = 0.5f;
 			w_render::draw_string( "(base)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			engine->render->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		}
 	#endif
@@ -475,7 +475,7 @@ void w_engine::main_loop()
 			w_render::draw( frame_buffer->color_attachments[ 1 ].texture, rc );
 			render_state.scale = 0.5f;
 			w_render::draw_string( "(glow)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			engine->render->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		}
 	#endif
@@ -488,7 +488,7 @@ void w_engine::main_loop()
 			w_render::draw( frame_buffer->color_attachments[ 2 ].texture, rc );
 			render_state.scale = 0.5f;
 			w_render::draw_string( "(pick)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			engine->render->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		}
 	#endif
@@ -501,7 +501,7 @@ void w_engine::main_loop()
 			w_render::draw( blur_frame_buffers[ 0 ]->color_attachments[ 0 ].texture, rc );
 			render_state.scale = 0.5f;
 			w_render::draw_string( "(blur)", { rc.x, rc.y } );
-			RENDER->batch_quads->vertex_array_object->draw_and_reset_internal();
+			engine->render->batch_quads->vertex_array_object->draw_and_reset_internal();
 			rc.x += w;
 		}
 	#endif
@@ -616,9 +616,9 @@ void w_engine::new_physics_world()
 	);
 
 #ifdef _DEBUG
-	RENDER->show_extra_debug = true;
+	engine->render->show_extra_debug = true;
 #else
-	RENDER->show_extra_debug = false;
+	engine->render->show_extra_debug = false;
 #endif
 }
 
@@ -757,7 +757,7 @@ bool w_engine::is_paused()
 void w_engine::cache_asset_definition_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	FS->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".asset_def" );
+	engine->fs->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".asset_def" );
 
 	for( const auto& iter : filenames )
 	{
@@ -768,7 +768,7 @@ void w_engine::cache_asset_definition_files( const std::string_view folder_name 
 void w_engine::parse_config_files( const std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	FS->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".ini" );
+	engine->fs->scan_folder_for_ext( &filenames, fmt::format( "{}", folder_name ), ".ini" );
 
 	for( const auto& iter : filenames )
 	{
@@ -778,7 +778,7 @@ void w_engine::parse_config_files( const std::string_view folder_name )
 
 void w_engine::parse_config_file( std::string_view filename )
 {
-	auto file = FS->load_text_file( filename );
+	auto file = engine->fs->load_text_file( filename );
 
 	for( const auto& line : *( file->lines.get() ) )
 	{
@@ -858,7 +858,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		// frame debugger
 		case input_id::key_f10:
 		{
-			RENDER->single_frame_debugger = true;
+			engine->render->single_frame_debugger = true;
 			log_div();
 			log( "-- Single Frame Debugger" );
 			log_div();
@@ -869,7 +869,7 @@ bool w_engine::on_input_pressed( const w_input_event* evt )
 		// toggle debug physics drawing
 		case input_id::key_f5:
 		{
-			RENDER->show_extra_debug = !RENDER->show_extra_debug;
+			engine->render->show_extra_debug = !engine->render->show_extra_debug;
 
 			return true;
 		}

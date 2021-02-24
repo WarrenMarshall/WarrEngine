@@ -353,48 +353,48 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 	result.code = im_result::none;
 
 	e_button_state bs_left = engine->input->get_button_state( input_id::mouse_button_left );
-	bool mouse_is_inside = UI->is_mouse_inside( control.rc_win + location_offset );
+	bool mouse_is_inside = engine->ui->is_mouse_inside( control.rc_win + location_offset );
 
 	if( mouse_is_inside )
 	{
-		if( bs_left == button_state::up || ( bs_left == button_state::held && IMGUI->hot_id == id ) )
+		if( bs_left == button_state::up || ( bs_left == button_state::held && engine->ui->imgui->hot_id == id ) )
 		{
-			IMGUI->hover_id = id;
+			engine->ui->imgui->hover_id = id;
 		}
 		else if( bs_left == button_state::pressed )
 		{
-			IMGUI->hot_id = id;
+			engine->ui->imgui->hot_id = id;
 		}
 		else if( bs_left == button_state::released )
 		{
-			if( IMGUI->hot_id == id && IMGUI->hover_id == id )
+			if( engine->ui->imgui->hot_id == id && engine->ui->imgui->hover_id == id )
 			{
 				result.code |= im_result::left_clicked;
 			}
-			IMGUI->hover_id = IMGUI->hot_id = -1;
+			engine->ui->imgui->hover_id = engine->ui->imgui->hot_id = -1;
 		}
 	}
 	else
 	{
-		if( IMGUI->hover_id == id && control.sticky_hover == false )
+		if( engine->ui->imgui->hover_id == id && control.sticky_hover == false )
 		{
-			if( IMGUI->hover_id == id )
+			if( engine->ui->imgui->hover_id == id )
 			{
-				IMGUI->hover_id = -1;
+				engine->ui->imgui->hover_id = -1;
 			}
 		}
 
-		if( bs_left == button_state::released && IMGUI->hot_id == id )
+		if( bs_left == button_state::released && engine->ui->imgui->hot_id == id )
 		{
-			IMGUI->hot_id = -1;
+			engine->ui->imgui->hot_id = -1;
 		}
 	}
 
-	if( IMGUI->hover_id == id )
+	if( engine->ui->imgui->hover_id == id )
 	{
 		result.code |= im_result::hovered;
 	}
-	if( IMGUI->hot_id == id )
+	if( engine->ui->imgui->hot_id == id )
 	{
 		result.code |= im_result::hot;
 	}
@@ -420,7 +420,7 @@ void w_imgui::update_im_state( int id, w_imgui_control& control, bool is_hovered
 
 void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 {
-	if( control.can_retain_focus && UI->tag_focus == control.tag )
+	if( control.can_retain_focus && engine->ui->tag_focus == control.tag )
 	{
 		is_hot = true;
 	}
@@ -428,7 +428,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 	{
 		if( is_hot )
 		{
-			UI->tag_focus = hash_none;
+			engine->ui->tag_focus = hash_none;
 		}
 	}
 
@@ -573,7 +573,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 				control.text = std::get<std::string>( control_data->data );
 				draw_text( control, rc_client_offset - w_rect( 0, 1, 0, 0 ), w_color::pal( 2 ), is_hovered, is_hot );
 
-				if( UI->tag_focus == control.tag )
+				if( engine->ui->tag_focus == control.tag )
 				{
 					if( *caret_blink_tween < 0.5f )
 					{
@@ -597,7 +597,7 @@ void w_imgui::draw( w_imgui_control& control, bool is_hovered, bool is_hot )
 
 	if( is_hot && control.can_retain_focus )
 	{
-		UI->tag_focus = control.tag;
+		engine->ui->tag_focus = control.tag;
 	}
 }
 

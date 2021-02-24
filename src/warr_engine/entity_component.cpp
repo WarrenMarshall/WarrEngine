@@ -128,8 +128,7 @@ void ec_sprite::draw()
 		return;
 	}
 
-	OPENGL
-		->top()
+	engine->opengl->top()
 		->scale( flip_x ? -1.0f : 1.0f, flip_y ? -1.0f : 1.0f );
 
 	{
@@ -237,7 +236,7 @@ w_entity_component* ec_emitter::init( const std::string_view params_tag )
 		{
 			scoped_opengl;
 
-			OPENGL->top()
+			engine->opengl->top()
 				->add_transform( *( parent_entity->get_transform() ) )
 				->add_transform( tform );
 
@@ -729,7 +728,7 @@ void ec_tilemap::load_from_disk( const char* tag, const std::vector<a_texture*>&
 {
 	auto b2d_static = parent_entity->get_component<ec_b2d_static>();
 
-	auto file = FS->load_text_file( level_filename );
+	auto file = engine->fs->load_text_file( level_filename );
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_buffer( file->buffer->data(), std::size( *file->buffer ) );
 

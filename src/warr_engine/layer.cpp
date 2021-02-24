@@ -78,7 +78,7 @@ void w_layer::update()
 		{
 			scoped_opengl;
 
-			OPENGL->top()->add_transform( *( entity->get_transform() ) );
+			engine->opengl->top()->add_transform( *( entity->get_transform() ) );
 
 			entity->update();
 			entity->update_components();
@@ -96,7 +96,7 @@ void w_layer::draw()
 		{
 			scoped_opengl;
 
-			OPENGL->top()->add_transform( *entity->get_transform() );
+			engine->opengl->top()->add_transform( *entity->get_transform() );
 
 			entity->draw();
 		}
@@ -121,7 +121,7 @@ w_entity* w_layer::get_camera()
 
 bool w_layer::is_topmost_layer() const
 {
-	return ( LAYER == this );
+	return ( engine->layer_mgr->get_top() == this );
 }
 
 w_entity* w_layer::find_entity( hash tag )
@@ -156,7 +156,7 @@ void w_layer::new_game()
 
 w_imgui_callback* w_layer::get_imgui_callback()
 {
-	return &( IMGUI->default_callback );
+	return &( engine->ui->imgui->default_callback );
 }
 
 bool w_layer::on_input_motion( const w_input_event* evt )
@@ -166,7 +166,7 @@ bool w_layer::on_input_motion( const w_input_event* evt )
 
 bool w_layer::on_input_pressed( const w_input_event* evt )
 {
-	if( LAYER == this )
+	if( engine->layer_mgr->get_top() == this )
 	{
 		auto callback = get_imgui_callback();
 
@@ -175,7 +175,7 @@ bool w_layer::on_input_pressed( const w_input_event* evt )
 			return true;
 		}
 
-		UI->tag_focus = hash_none;
+		engine->ui->tag_focus = hash_none;
 	}
 
 	return false;
@@ -183,7 +183,7 @@ bool w_layer::on_input_pressed( const w_input_event* evt )
 
 bool w_layer::on_input_held( const w_input_event* evt )
 {
-	if( LAYER == this )
+	if( engine->layer_mgr->get_top() == this )
 	{
 		if( get_imgui_callback()->on_input_held( evt ) )
 		{
@@ -196,7 +196,7 @@ bool w_layer::on_input_held( const w_input_event* evt )
 
 bool w_layer::on_input_released( const w_input_event* evt )
 {
-	if( LAYER == this )
+	if( engine->layer_mgr->get_top() == this )
 	{
 		if( get_imgui_callback()->on_input_released( evt ) )
 		{
@@ -209,7 +209,7 @@ bool w_layer::on_input_released( const w_input_event* evt )
 
 bool w_layer::on_input_key( const w_input_event* evt )
 {
-	if( LAYER == this )
+	if( engine->layer_mgr->get_top() == this )
 	{
 		if( get_imgui_callback()->on_input_key( evt ) )
 		{

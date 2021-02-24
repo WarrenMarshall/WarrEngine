@@ -88,7 +88,7 @@ bool layer_meshes::on_input_motion( const w_input_event* evt )
 	if( evt->input_id == input_id::mouse )
 	{
 		// camera control
-		if( INPUT->get_button_state( input_id::mouse_button_right ) == button_state::held )
+		if( engine->input->get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			if( evt->control_down )
 			{

@@ -33,7 +33,7 @@ void a_sound::stop()
 
 bool a_sound::create_internals()
 {
-	auto file = FS->load_binary_file( original_filename );
+	auto file = engine->fs->load_binary_file( original_filename );
 
 	if( buffer.loadFromMemory( file->buffer->data(), file->buffer->size() ) )
 	{
