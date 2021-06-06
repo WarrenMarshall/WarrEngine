@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DRelease|x64">
+      <Configuration>DRelease</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{BF24BDDA-A452-42BA-84D2-A6BBDA169BF4}</ProjectGuid>
+    <RootNamespace>warr_engine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>warr_engine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>r:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>r:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>r:\intermediate_delete_me\$(ProjectName)\$(Configuration)\</IntDir>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SFML_STATIC;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\;$(SolutionDir)..\external\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
+      <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;sfml-graphics-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>MSVCRT;LIBCMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SFML_STATIC;_DRELEASE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\;$(SolutionDir)..\external\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SFML_STATIC;NDEBUG;_FINAL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\external\;$(SolutionDir)..\external\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>master_pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DisableSpecificWarnings>4201;4100;4458</DisableSpecificWarnings>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\external\glfw-3.3.2.bin.WIN64\lib-vc2019;$(SolutionDir)..\external\glew-2.1.0\lib\Release\x64;$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="asset.cpp" />
+    <ClCompile Include="asset_file_definition.cpp" />
+    <ClCompile Include="object_pool.cpp" />
+    <ClCompile Include="scene_post_process.cpp" />
+    <ClCompile Include="slice_def_asset.cpp" />
+    <ClCompile Include="cursor_asset.cpp" />
+    <ClCompile Include="emitter_parameters_asset.cpp" />
+    <ClCompile Include="font_asset.cpp" />
+    <ClCompile Include="gradient_source_asset.cpp" />
+    <ClCompile Include="mesh_asset.cpp" />
+    <ClCompile Include="palette_asset.cpp" />
+    <ClCompile Include="sound_asset.cpp" />
+    <ClCompile Include="texture_asset.cpp" />
+    <ClCompile Include="texture_source_asset.cpp" />
+    <ClCompile Include="texture_source_base.cpp" />
+    <ClCompile Include="tile_map_asset.cpp" />
+    <ClCompile Include="tile_set_asset.cpp" />
+    <ClCompile Include="bit_flag_generator.cpp" />
+    <ClCompile Include="asset_cache_mgr.cpp" />
+    <ClCompile Include="cmd_line.cpp" />
+    <ClCompile Include="coord.cpp" />
+    <ClCompile Include="entity_component.cpp" />
+    <ClCompile Include="datatypes.cpp" />
+    <ClCompile Include="file_system.cpp" />
+    <ClCompile Include="file_disk.cpp" />
+    <ClCompile Include="file_mem.cpp" />
+    <ClCompile Include="fx.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="impl_header_only.cpp" />
+    <ClCompile Include="input_gamepad.cpp" />
+    <ClCompile Include="render_vertex.cpp" />
+    <ClCompile Include="scene_controller_required.cpp" />
+    <ClCompile Include="scene_esc_menu.cpp" />
+    <ClCompile Include="scene_msg_box.cpp" />
+    <ClCompile Include="master_header.cpp" />
+    <ClCompile Include="master_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="file_zip.cpp" />
+    <ClCompile Include="life_cycle_mgr.cpp" />
+    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="noise.cpp" />
+    <ClCompile Include="opengl_color_attachment.cpp" />
+    <ClCompile Include="value_accumulator.cpp" />
+    <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="opengl.cpp" />
+    <ClCompile Include="opengl_framebuffer.cpp" />
+    <ClCompile Include="parser.cpp" />
+    <ClCompile Include="particle_pool.cpp" />
+    <ClCompile Include="particle_spawner.cpp" />
+    <ClCompile Include="physics_pending_collision.cpp" />
+    <ClCompile Include="physics_query.cpp" />
+    <ClCompile Include="physics_query_callbacks.cpp" />
+    <ClCompile Include="physics_debug_draw.cpp" />
+    <ClCompile Include="physics_contact_listener.cpp" />
+    <ClCompile Include="index_buffer.cpp" />
+    <ClCompile Include="render_state.cpp" />
+    <ClCompile Include="render_stats.cpp" />
+    <ClCompile Include="scoped_vars.cpp" />
+    <ClCompile Include="transform.cpp" />
+    <ClCompile Include="ui_control_data.cpp" />
+    <ClCompile Include="ui_result.cpp" />
+    <ClCompile Include="vertex_array_object.cpp" />
+    <ClCompile Include="vertex_buffer.cpp" />
+    <ClCompile Include="ui_control.cpp" />
+    <ClCompile Include="ui_callback.cpp" />
+    <ClCompile Include="ui_mgr.cpp" />
+    <ClCompile Include="clock.cpp" />
+    <ClCompile Include="tokenizer.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="logfile.cpp" />
+    <ClCompile Include="random.cpp" />
+    <ClCompile Include="render.cpp" />
+    <ClCompile Include="scene_mgr.cpp" />
+    <ClCompile Include="util_string.cpp" />
+    <ClCompile Include="tween.cpp" />
+    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="particle_emitter.cpp" />
+    <ClCompile Include="window.cpp" />
+    <ClCompile Include="render_batch.cpp" />
+    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="keyvalues.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="asset.h" />
+    <ClInclude Include="asset_file_definition.h" />
+    <ClInclude Include="object_pool.h" />
+    <ClInclude Include="scene_post_process.h" />
+    <ClInclude Include="slice_def_asset.h" />
+    <ClInclude Include="cursor_asset.h" />
+    <ClInclude Include="emitter_parameters_asset.h" />
+    <ClInclude Include="font_asset.h" />
+    <ClInclude Include="gradient_source_asset.h" />
+    <ClInclude Include="mesh_asset.h" />
+    <ClInclude Include="palette_asset.h" />
+    <ClInclude Include="sound_asset.h" />
+    <ClInclude Include="texture_asset.h" />
+    <ClInclude Include="texture_source_asset.h" />
+    <ClInclude Include="texture_source_base.h" />
+    <ClInclude Include="tile_map_asset.h" />
+    <ClInclude Include="tile_set_asset.h" />
+    <ClInclude Include="bit_flag_generator.h" />
+    <ClInclude Include="asset_cache_mgr.h" />
+    <ClInclude Include="cmd_line.h" />
+    <ClInclude Include="coord.h" />
+    <ClInclude Include="entity_component.h" />
+    <ClInclude Include="file_system.h" />
+    <ClInclude Include="file_disk.h" />
+    <ClInclude Include="file_mem.h" />
+    <ClInclude Include="fx.h" />
+    <ClInclude Include="render_vertex.h" />
+    <ClInclude Include="scene_controller_required.h" />
+    <ClInclude Include="scene_msg_box.h" />
+    <ClInclude Include="noise.h" />
+    <ClInclude Include="opengl_color_attachment.h" />
+    <ClInclude Include="physics_contact_listener.h" />
+    <ClInclude Include="index_buffer.h" />
+    <ClInclude Include="physics_pending_collision.h" />
+    <ClInclude Include="render_state.h" />
+    <ClInclude Include="render_stats.h" />
+    <ClInclude Include="scoped_vars.h" />
+    <ClInclude Include="transform.h" />
+    <ClInclude Include="ui_control_data.h" />
+    <ClInclude Include="ui_result.h" />
+    <ClInclude Include="vertex_array_object.h" />
+    <ClInclude Include="vertex_buffer.h" />
+    <ClInclude Include="ui_control.h" />
+    <ClInclude Include="ui_callback.h" />
+    <ClInclude Include="warr_engine.h" />
+    <ClInclude Include="input_gamepad.h" />
+    <ClInclude Include="file_zip.h" />
+    <ClInclude Include="scene_esc_menu.h" />
+    <ClInclude Include="master_fwd_decl.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="life_cycle_mgr.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="datatypes.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="master_enum.h" />
+    <ClInclude Include="master_pch.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="opengl.h" />
+    <ClInclude Include="opengl_framebuffer.h" />
+    <ClInclude Include="parser.h" />
+    <ClInclude Include="particle_pool.h" />
+    <ClInclude Include="particle_spawner.h" />
+    <ClInclude Include="physics_query.h" />
+    <ClInclude Include="physics_query_callbacks.h" />
+    <ClInclude Include="physics_debug_draw.h" />
+    <ClInclude Include="ui_mgr.h" />
+    <ClInclude Include="clock.h" />
+    <ClInclude Include="tokenizer.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="logfile.h" />
+    <ClInclude Include="master_header.h" />
+    <ClInclude Include="value_accumulator.h" />
+    <ClInclude Include="random.h" />
+    <ClInclude Include="render.h" />
+    <ClInclude Include="scene_mgr.h" />
+    <ClInclude Include="util_string.h" />
+    <ClInclude Include="tween.h" />
+    <ClInclude Include="particle.h" />
+    <ClInclude Include="particle_emitter.h" />
+    <ClInclude Include="window.h" />
+    <ClInclude Include="render_batch.h" />
+    <ClInclude Include="shader.h" />
+    <ClInclude Include="keyvalues.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bin\data\warr_engine\shaders\simple.frag" />
+    <None Include="..\..\bin\data\warr_engine\shaders\simple.vert" />
+    <None Include="..\..\bin\data\warr_engine\shaders\compositing_pass.frag" />
+    <None Include="..\..\bin\data\warr_engine\shaders\base_pass.frag" />
+    <None Include="..\..\bin\data\warr_engine\shaders\blur_box.frag" />
+    <None Include="..\..\bin\data\warr_engine\shaders\blur_gaussian.frag" />
+    <None Include="..\..\bin\data\warr_engine\shaders\inc\get_sample_from_texture.frag" />
+    <None Include="..\..\bin\data\warr_engine\shaders\final_pass.frag" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

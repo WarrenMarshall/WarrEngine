@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="sandbox_test.cpp" />
+    <ClCompile Include="scene_main_menu.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_ui.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_particles.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_entity_picking.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_sound_board.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_meshes.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_coords.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tweens.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_box2d.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_box2d_entities.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_controller.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_textures.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_palette.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_tilemap.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_wrapped_text.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_noise.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="scene_main_menu.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_ui.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="app_header.h" />
+    <ClInclude Include="sandbox_test.h" />
+    <ClInclude Include="scene_particles.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_entity_picking.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_sound_board.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_meshes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_coords.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_tweens.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_box2d.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_box2d_entities.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_controller.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_textures.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_palette.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_tilemap.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_wrapped_text.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_noise.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{da6c1f70-7fe3-4f0e-9649-86612795895b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{1cb16a9d-2c27-4eda-b303-75fc57218422}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
