@@ -1,5 +1,5 @@
 
-#include <warr_engine.h>
+#include <warrengine.h>
 
 static war::bit_flag_generator collision_bits( 1 );
 
