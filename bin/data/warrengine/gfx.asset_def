@@ -13,5 +13,16 @@
 	"type" "src_texture"
 	"tag" "engine_tile_background_stripe"
 	"filename" "gfx/tile_background_stripe.png"
-	"tiling" "tiling.repeat"
+}
+
+{
+	"type" "src_texture"
+	"tag" "engine_game_controller"
+	"filename" "gfx/game_controller.png"
+}
+
+{
+	"type" "src_texture"
+	"tag" "tex_color_test"
+	"filename" "gfx/game_controller.png"
 }

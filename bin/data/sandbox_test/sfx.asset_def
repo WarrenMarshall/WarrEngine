@@ -23,3 +23,15 @@
 	"looped" "true"
 	"filename" "sfx/music_01.wav"
 }
+
+{
+	"type" "sound"
+	"tag" "sfx_bump"
+	"filename" "sfx/bump.wav"
+}
+
+{
+	"type" "sound"
+	"tag" "sfx_entity_delete"
+	"filename" "sfx/entity_delete.wav"
+}

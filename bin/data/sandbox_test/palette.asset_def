@@ -14,3 +14,39 @@
 		$eaf0d8\
 	"
 }
+
+{
+	"type" "palette"
+	"tag" "pal_lumpy"
+	"colors" "\
+		$36253b,\
+		$5b4b61,\
+		$816166,\
+		$bca67e,\
+		$eadd96\
+	"
+}
+
+{
+	"type" "palette"
+	"tag" "pal_azul5"
+	"colors" "\
+		$15263a,\
+		$305881,\
+		$68aed4,\
+		$cbe3f1,\
+		$fafdff\
+	"
+}
+
+{
+	"type" "palette"
+	"tag" "pal_poison"
+	"colors" "\
+		$2a2a2b,\
+		$454a4d,\
+		$2f7571,\
+		$5a9470,\
+		$81b071\
+	"
+}

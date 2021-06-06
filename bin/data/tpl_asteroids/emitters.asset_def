@@ -1,0 +1,26 @@
+
+{
+	"type" "src_texture"
+	"tag" "tex_particle_01"
+	"filename" "gfx/particle_01.png"
+}
+
+{
+	"type" "emitter_params"
+	"tag" "em_starfield"
+	"texture_tag" "tex_particle_01"
+	"spawner_type" "spawner_type.box,viewport_w,viewport_h"
+
+	"s_spawn_rate" "10"
+	"s_max_alive" "15"
+	"b_needs_warm_up" "true"
+	"a_dir" "away_from_owner"
+	"r_scale_spawn" "1.0, 1.0"
+	"t_scale" "0.0,1.0, 1.0,1.0"
+	"r_lifespan" "4000,16000"
+	"r_velocity_spawn" "2,4"
+	"t_color" "0,color.grey, 1.0,color.dark_grey"
+	"r_spin_spawn" "0,0"
+	"r_spin_per_sec" "0,0"
+	"t_alpha" "0,0, 0.25,.5, 1,0"
+}

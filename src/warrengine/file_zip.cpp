@@ -17,7 +17,7 @@ namespace war
 // 3. the ZIP file must have "data" at the root of it's file structure. this
 //    directly mimics the file structure used during development.
 //
-// 	i.e. data/warr_engine/filename.asset_def data/my_game/gfx/filename.png
+// 	i.e. data/warrengine/filename.asset_def data/my_game/gfx/filename.png
 // 	...etc...
 // ----------------------------------------------------------------------------
 

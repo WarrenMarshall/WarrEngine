@@ -140,22 +140,22 @@ void engine::launch_init_frame_buffers()
 
 	// color
 	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h }, g_engine->window.window_clear_color );
-	
+
 	// glow
 	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
-	
+
 	// pick_ids
 	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
-	
+
 	// blur
 	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
-	
+
 	// composite
 	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
-	
+
 	// final
 	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
-	
+
 	g_engine->frame_buffer->finalize();
 
 	g_engine->blur_frame_buffer = std::make_unique<opengl_framebuffer>( "blur" );
@@ -191,7 +191,7 @@ void engine::launch_precache()
 {
 	// read asset definitions and cache them
 	log( "Caching asset definitions (*.asset_def)..." );
-	g_engine->cache_asset_definition_files( "data/warr_engine" );
+	g_engine->cache_asset_definition_files( "data/warrengine" );
 	g_engine->cache_asset_definition_files( std::format( "data/{}", g_base_game->name ) );
 
 	// this feels like an odd dance, but the idea is that we:
@@ -217,7 +217,7 @@ void engine::launch_precache()
 	// preprocessor symbols
 
 	log( "Caching configuration (*.ini)..." );
-	g_engine->parse_config_files( "data/warr_engine" );
+	g_engine->parse_config_files( "data/warrengine" );
 	g_engine->parse_config_files( std::format( "data/{}", g_base_game->name ) );
 
 	// put the k/v pairs from the INI files into the global symbol table so

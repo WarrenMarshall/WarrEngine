@@ -14,8 +14,8 @@
 	# -----------------------------------------------------
 	# emitter specific
 
-	"inherit_from_parent" "-1"
-	"away_from_center" "-2"
+	"inherit_from_owner" "-1"
+	"away_from_owner" "-2"
 
 	# -----------------------------------------------------
 	# opengl blending options
@@ -28,6 +28,7 @@
 	# -----------------------------------------------------
 	# alignment options
 
+	"align.fill" "0"
 	"align.left" "1"
 	"align.right" "2"
 	"align.top" "4"
@@ -36,26 +37,36 @@
 	"align.vcenter" "32"
 	"align.horizontal" "64"
 	"align.vertical" "128"
-	"align.fill" "256"
 
 	# -----------------------------------------------------
-	# colors
+	# color presets
 
 	"color.white"		"1.0, 1.0, 1.0"
 	"color.black"		"0.0, 0.0, 0.0"
+
+	"color.dark_red"	"0.5, 0.0, 0.0"
 	"color.red"			"1.0, 0.0, 0.0"
+	"color.light_red"	"1.0, 0.5, 0.5"
+
+	"color.dark_green"	"0.25, 0.5, 0.25"
 	"color.green"		"0.0, 1.0, 0.0"
+	"color.light_green"	"0.5, 1.0, 0.5"
+
+	"color.dark_blue"	"0.0, 0.0, 0.5"
 	"color.blue"		"0.0, 0.0, 1.0"
 	"color.light_blue"	"0.5, 0.5, 1.0"
+
 	"color.orange"		"1.0, 0.5, 0.0"
+
 	"color.yellow"		"1.0, 1.0, 0.0"
-	"color.teal"		"0.3, 0.8, 1.0"
+
 	"color.dark_teal"	"0.2, 0.4, 0.5"
+	"color.teal"		"0.3, 0.8, 1.0"
+
 	"color.dark_grey"	"0.25, 0.25, 0.25"
 	"color.grey"		"0.5, 0.5, 0.5"
 	"color.light_grey"	"0.75, 0.75, 0.75"
-	"color.light_green"	"0.5, 1.0, 0.5"
-	"color.dark_green"	"0.25, 0.5, 0.25"
+
 	"color.magenta"		"0.96, 0.32, 0.65"
 
 	# -----------------------------------------------------
@@ -66,7 +77,6 @@
 	"tween.pingpong"	"2"
 
 	# -----------------------------------------------------
-	# particle spawner types
 
 	"tween_via.linear"			"0"
 	"tween_via.quadratic"		"1"
@@ -103,9 +113,10 @@
 	# -----------------------------------------------------
 	# particle spawner types
 
-	"spawner_type.point"	"1"
-	"spawner_type.box"		"2"
-	"spawner_type.circle"	"3"
+	"spawner_type.point"		"1"
+	"spawner_type.box"			"2"
+	"spawner_type.in_circle"	"3"
+	"spawner_type.on_circle"	"4"
 
 	# -----------------------------------------------------
 	# texture tiling

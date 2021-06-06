@@ -6,6 +6,7 @@
 {
 	"type" "src_texture"
 	"tag" "tex_crate_01"
+	"tiling" "tiling.repeat"
 	"filename" "gfx/crate_01.png"
 }
 
@@ -13,5 +14,62 @@
 	"type" "src_texture"
 	"tag" "tex_crosshair"
 	"filename" "gfx/crosshair.png"
+}
+
+{
+	"type" "src_texture"
+	"tag" "emoji_faces_sheet"
+	"filename" "gfx/emoji_faces.png"
+	"texture_tags" "\
+		emoji_1, 0, 0, 16, 16,\
+		emoji_2, 16, 0, 16, 16,\
+		emoji_3, 32, 0, 16, 16,\
+		emoji_4, 48, 0, 16, 16,\
+		emoji_5, 64, 0, 16, 16\
+	"
+}
+
+{
+	"type" "src_texture"
+	"tag" "game_controller_sheet"
+	"filename" "gfx/controller_sheet.png"
+	"texture_tags" "\
+		gc_dpad_up, 0, 0, 50, 50,\
+		gc_stick_click, 50, 0, 50, 50,\
+		gc_stick_up, 100, 0, 50, 50,\
+		gc_start, 150, 0, 50, 50,\
+		gc_back, 200, 0, 50, 50,\
+		\
+		gc_controller, 0, 50, 50, 50,\
+		gc_controller_1, 50, 50, 50, 50,\
+		gc_controller_2, 100, 50, 50, 50,\
+		gc_controller_3, 150, 50, 50, 50,\
+		gc_controller_5, 200, 50, 50, 50,\
+		\
+		gc_button_y, 0, 100, 50, 50,\
+		gc_button_x, 50, 100, 50, 50,\
+		gc_button_a, 100, 100, 50, 50,\
+		gc_button_b, 150, 100, 50, 50,\
+		\
+		gc_button_r0, 0, 150, 50, 50,\
+		gc_button_r1, 50, 150, 50, 50,\
+		gc_button_r2, 100, 150, 50, 50,\
+		\
+		gc_button_l0, 0, 200, 50, 50,\
+		gc_button_l1, 50, 200, 50, 50,\
+		gc_button_l2, 100, 200, 50, 50\
+	"
+}
+
+{
+	"type" "src_texture"
+	"tag" "tex_swirl"
+	"filename" "gfx/swirl.psd"
+}
+
+{
+	"type" "src_texture"
+	"tag" "tex_color_test"
+	"filename" "gfx/color_test.png"
 }
 

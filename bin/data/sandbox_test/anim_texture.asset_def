@@ -1,3 +1,4 @@
+
 {
 	"type" "src_texture"
 	"tag" "main_sprite_sheet"
@@ -19,7 +20,7 @@
 	"tag" "anim_player_run"
 	"frames_per_sec" "10"
 	"tween" "tween.loop"
-	"frame_texture_tags" "player_run_1,player_run_2,player_run_3,player_run_4"
+	"frame_tags" "player_run_1,player_run_2,player_run_3,player_run_4"
 }
 
 {
@@ -27,5 +28,5 @@
 	"tag" "anim_coin"
 	"frames_per_sec" "6"
 	"tween" "tween.loop"
-	"frame_texture_tags" "coin_1,coin_2,coin_3,coin_4"
+	"frame_tags" "coin_1,coin_2,coin_3,coin_4"
 }

@@ -36,7 +36,7 @@
 	};
 
 // ----------------------------------------------------------------------------
-// note : needs to match values in data/warr_engine/preproc.asset_def
+// note : needs to match values in data/warrengine/preproc.asset_def
 
 enum_begin( align )
 	fill		= 0b00000000,
@@ -53,7 +53,7 @@ enum_begin( align )
 enum_end
 
 // ----------------------------------------------------------------------------
-// note : needs to match values in data/warr_engine/preproc.asset_def
+// note : needs to match values in data/warrengine/preproc.asset_def
 
 enum_begin( color_preset )
 	white = 1,
@@ -191,7 +191,7 @@ enum_begin( event_id )
 enum_end
 
 // ----------------------------------------------------------------------------
-// note : needs to match values in data/warr_engine/preproc.asset_def
+// note : needs to match values in data/warrengine/preproc.asset_def
 
 enum_begin( tween_type )
 	invalid = -1,
@@ -268,7 +268,7 @@ enum_begin( opengl_blend )
 enum_end
 
 // ----------------------------------------------------------------------------
-// note : needs to match values in data/warr_engine/preproc.asset_def
+// note : needs to match values in data/warrengine/preproc.asset_def
 
 enum_begin( particle_spawn_dir )
 	inherit_from_owner = -1,
