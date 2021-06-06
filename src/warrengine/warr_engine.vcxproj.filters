@@ -264,7 +264,7 @@
     <ClInclude Include="window.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="warr_engine.h">
+    <ClInclude Include="warrengine.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="tokenizer.h">
