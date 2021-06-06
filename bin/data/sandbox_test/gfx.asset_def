@@ -66,10 +66,3 @@
 	"tag" "tex_swirl"
 	"filename" "gfx/swirl.psd"
 }
-
-{
-	"type" "src_texture"
-	"tag" "tex_color_test"
-	"filename" "gfx/color_test.png"
-}
-
