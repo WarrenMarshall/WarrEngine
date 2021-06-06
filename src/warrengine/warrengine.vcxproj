@@ -17,9 +17,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{BF24BDDA-A452-42BA-84D2-A6BBDA169BF4}</ProjectGuid>
-    <RootNamespace>warr_engine</RootNamespace>
+    <RootNamespace>warrengine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>warr_engine</ProjectName>
+    <ProjectName>warrengine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -324,7 +324,7 @@
     <ClInclude Include="vertex_buffer.h" />
     <ClInclude Include="ui_control.h" />
     <ClInclude Include="ui_callback.h" />
-    <ClInclude Include="warr_engine.h" />
+    <ClInclude Include="warrengine.h" />
     <ClInclude Include="input_gamepad.h" />
     <ClInclude Include="file_zip.h" />
     <ClInclude Include="scene_esc_menu.h" />
@@ -367,14 +367,14 @@
     <ClInclude Include="keyvalues.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\bin\data\warr_engine\shaders\simple.frag" />
-    <None Include="..\..\bin\data\warr_engine\shaders\simple.vert" />
-    <None Include="..\..\bin\data\warr_engine\shaders\compositing_pass.frag" />
-    <None Include="..\..\bin\data\warr_engine\shaders\base_pass.frag" />
-    <None Include="..\..\bin\data\warr_engine\shaders\blur_box.frag" />
-    <None Include="..\..\bin\data\warr_engine\shaders\blur_gaussian.frag" />
-    <None Include="..\..\bin\data\warr_engine\shaders\inc\get_sample_from_texture.frag" />
-    <None Include="..\..\bin\data\warr_engine\shaders\final_pass.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\simple.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\simple.vert" />
+    <None Include="..\..\bin\data\warrengine\shaders\compositing_pass.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\base_pass.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\blur_box.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\blur_gaussian.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\inc\get_sample_from_texture.frag" />
+    <None Include="..\..\bin\data\warrengine\shaders\final_pass.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

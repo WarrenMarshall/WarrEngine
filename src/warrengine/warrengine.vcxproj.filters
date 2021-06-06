@@ -279,7 +279,7 @@
     <ClInclude Include="window.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="warr_engine.h">
+    <ClInclude Include="warrengine.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="tokenizer.h">
@@ -595,28 +595,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\bin\data\warr_engine\shaders\simple.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\simple.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\simple.vert">
+    <None Include="..\..\bin\data\warrengine\shaders\simple.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\compositing_pass.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\compositing_pass.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\base_pass.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\base_pass.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\blur_box.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\blur_box.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\blur_gaussian.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\blur_gaussian.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\final_pass.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\final_pass.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\..\bin\data\warr_engine\shaders\inc\get_sample_from_texture.frag">
+    <None Include="..\..\bin\data\warrengine\shaders\inc\get_sample_from_texture.frag">
       <Filter>shaders\inc</Filter>
     </None>
   </ItemGroup>
