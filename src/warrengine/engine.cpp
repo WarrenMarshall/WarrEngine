@@ -138,32 +138,37 @@ void engine::launch_init_frame_buffers()
 {
 	g_engine->frame_buffer = std::make_unique<opengl_framebuffer>( "game" );
 
+	vec2 viewport_sz = { viewport_w, viewport_h };
+
 	// color
-	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h }, g_engine->window.window_clear_color );
+	g_engine->frame_buffer->add_color_attachment( viewport_sz, g_engine->window.window_clear_color );
 
 	// glow
-	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->frame_buffer->add_color_attachment( viewport_sz );
 
 	// pick_ids
-	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->frame_buffer->add_color_attachment( viewport_sz );
 
 	// blur
-	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->frame_buffer->add_color_attachment( viewport_sz );
 
 	// composite
-	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->frame_buffer->add_color_attachment( viewport_sz );
 
 	// final
-	g_engine->frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->frame_buffer->add_color_attachment( viewport_sz );
+
+	// depth/stencil buffer
+	g_engine->frame_buffer->add_depth_attachment( viewport_sz );
 
 	g_engine->frame_buffer->finalize();
 
 	g_engine->blur_frame_buffer = std::make_unique<opengl_framebuffer>( "blur" );
-	g_engine->blur_frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->blur_frame_buffer->add_color_attachment( viewport_sz );
 	g_engine->blur_frame_buffer->finalize();
 
 	g_engine->composite_frame_buffer = std::make_unique<opengl_framebuffer>( "composite" );
-	g_engine->composite_frame_buffer->add_color_attachment( { viewport_w, viewport_h } );
+	g_engine->composite_frame_buffer->add_color_attachment( viewport_sz );
 	g_engine->composite_frame_buffer->finalize();
 }
 
@@ -487,7 +492,7 @@ void engine::main_loop()
 			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
 		}
 
-	#if 1
+	#if 0
 		// ---------------------------------------------------------------------------
 		// debug helper
 		//

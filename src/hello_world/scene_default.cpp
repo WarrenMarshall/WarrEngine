@@ -25,10 +25,19 @@ void scene_default::draw()
 
 
 	//render::draw_world_axis();
-	render::draw_quad( gradient, rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	//render::draw_quad( gradient, rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 
-	render::state->angle = *tilt_tween;
-	render::state->scale = *scale_tween;
-	render::state->glow = 1.5f;
-	render::draw_sprite( tex_hello_world, vec2( *movement_tween, 0.f ) );
+	//render::state->angle = *tilt_tween;
+	//render::state->scale = *scale_tween;
+	//render::state->glow = 1.5f;
+	//render::draw_sprite( tex_hello_world, vec2( *movement_tween, 0.f ) );
+
+	scoped_render_state;
+
+	render::state->color = make_color( color::red );
+	render::draw_sprite( tex_hello_world, vec2( 0.f, 0.f ) );
+
+	render::state->z += zdepth_nudge;
+	render::state->color = make_color( color::green );
+	render::draw_sprite( tex_hello_world, vec2( 16.f, 32.f ) );
 }

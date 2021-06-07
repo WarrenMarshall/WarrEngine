@@ -193,7 +193,7 @@ void opengl::set_projection_matrix() const
 		viewport_h,
 		0.f,
 		-zdepth_max,
-		0.f );
+		zdepth_max );
 
 	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
 	{
