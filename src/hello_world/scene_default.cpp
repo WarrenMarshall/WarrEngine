@@ -17,6 +17,7 @@ void scene_default::pushed()
 	tilt_tween = tween( -25.f, 25.f, 20000, tween_type::pingpong, tween_via::cubic );
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
+
 }
 
 void scene_default::draw()
@@ -25,7 +26,9 @@ void scene_default::draw()
 
 
 	//render::draw_world_axis();
-	//render::draw_quad( gradient, rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	render::state->z -= 500.f;
+	render::draw_quad( gradient, rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	render::state->z += 500.f;
 
 	//render::state->angle = *tilt_tween;
 	//render::state->scale = *scale_tween;
@@ -37,7 +40,7 @@ void scene_default::draw()
 	render::state->color = make_color( color::red );
 	render::draw_sprite( tex_hello_world, vec2( 0.f, 0.f ) );
 
-	render::state->z += zdepth_nudge;
+	render::state->z -= zdepth_nudge;
 	render::state->color = make_color( color::green );
 	render::draw_sprite( tex_hello_world, vec2( 16.f, 32.f ) );
 }
