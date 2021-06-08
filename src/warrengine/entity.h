@@ -33,9 +33,6 @@ struct entity
 	bool is_selected = false;
 	render_state_optional rs_opt;
 
-	entity() = default;
-	~entity() = default;
-
 	void make_pickable();
 
 	// entity components

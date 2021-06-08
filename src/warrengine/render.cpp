@@ -240,6 +240,11 @@ void render::draw_tiled( texture_asset* texture, const rect& dst )
 
 vec2 render::draw_string( std::string_view text, const vec2& pos )
 {
+	// #warren
+	render::state->scale.x = 1.0f;
+	render::state->scale.y = 1.0f;
+	// #warren
+
 	auto extents = render::state->font->get_string_extents( text );
 
 	vec2 alignment_pos_adjustment( 0.f, 0.f );
@@ -429,7 +434,7 @@ std::vector<std::string> render::wrap_string_to_width( std::string_view text, fl
 
 void render::begin_frame()
 {
-	// reset glviewport to the default size
+	// reset glviewport
 	glViewport( 0, 0, (int)viewport_w, (int)viewport_h );
 
 	// clear color attachments

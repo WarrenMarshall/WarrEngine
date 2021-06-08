@@ -20,15 +20,19 @@ void scene_default::pushed()
 
 }
 
+constexpr void render_nudge()
+{
+	render::state->z += zdepth_nudge;
+}
+
 void scene_default::draw()
 {
 	scene::draw();
 
 
 	//render::draw_world_axis();
-	render::state->z -= 500.f;
 	render::draw_quad( gradient, rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
-	render::state->z += 500.f;
+	render_nudge();
 
 	//render::state->angle = *tilt_tween;
 	//render::state->scale = *scale_tween;

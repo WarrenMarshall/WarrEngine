@@ -152,14 +152,14 @@ constexpr float byte_color_to_float = 1.f / 255.f;
 // positive because of the projection flip.
 // ----------------------------------------------------------------------------
 
-constexpr float zdepth_nudge = 1.0f;
+constexpr float zdepth_nudge = 10.0f;
 
-constexpr float zdepth_background = 10.f;
-constexpr float zdepth_scene_start = 100.f;
-constexpr float zdepth_scene_step = 50.f;
-constexpr float zdepth_stats = 4500.f;
-constexpr float zdepth_topmost = 5000.f;
-constexpr float zdepth_max = 5000.f;
+constexpr float zdepth_background = 100.f;
+constexpr float zdepth_scene_start = 1000.f;
+constexpr float zdepth_scene_step = 500.f;
+constexpr float zdepth_stats = 45000.f;
+constexpr float zdepth_topmost = 50000.f;
+constexpr float zdepth_max = 50000.f;
 
 // ----------------------------------------------------------------------------
 // if (a - b) is smaller than epsilon, return true.

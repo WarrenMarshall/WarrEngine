@@ -21,6 +21,7 @@ void opengl_framebuffer::add_color_attachment( vec2 sz, const color& clear_color
 void opengl_framebuffer::add_depth_attachment( vec2 sz )
 {
 	// depth/stencil buffer
+	// #warren - can this be change into a texture, like the color attachments?  then we could draw it for debugging.
 
 	glCreateRenderbuffers( 1, &rbo_id );
 	glBindRenderbuffer( GL_RENDERBUFFER, rbo_id );
