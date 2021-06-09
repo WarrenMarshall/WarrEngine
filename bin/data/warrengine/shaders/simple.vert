@@ -30,8 +30,12 @@ void main()
 
 	// snap verts to pixel positions
 	//
-	//fs_pos.x = floor( fs_pos.x + 0.5 );
-	//fs_pos.y = floor( fs_pos.y + 0.5 );
+	// note : without this you will have problems with things drawing at
+	// sizes that are slightly off and text not aligning and such. leave this
+	// enabled or face the demons.
+
+	fs_pos.x = floor( fs_pos.x + 0.5 );
+	fs_pos.y = floor( fs_pos.y + 0.5 );
 
 	gl_Position = u_projection_matrix * u_viewport_pivot_matrix * u_view_matrix * vec4( fs_pos, 1.0 );
 

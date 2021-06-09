@@ -11,8 +11,8 @@ bool font_def_asset::create()
 
 	auto file = file_system::load_text_file( original_filename );
 
-	int x, y, w, h;
-	int char_id;
+	uint8 x, y, w, h;
+	uint8 char_id;
 	glyph* fch;
 
 	for( const auto& line : file->lines )
@@ -20,20 +20,20 @@ bool font_def_asset::create()
 		if( line.substr( 0, 5 ) == "char " )
 		{
 			// parse a char definition
-			char_id = text_parser::int_from_str( text_parser::key_from_str( line, "id=" ) );
+			char_id = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "id=" ) );
 			fch = &( char_map[ char_id ] );
 
-			x = text_parser::int_from_str( text_parser::key_from_str( line, "x=" ) );
-			y = text_parser::int_from_str( text_parser::key_from_str( line, "y=" ) );
-			w = text_parser::int_from_str( text_parser::key_from_str( line, "width=" ) );
-			h = text_parser::int_from_str( text_parser::key_from_str( line, "height=" ) );
+			x = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "x=" ) );
+			y = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "y=" ) );
+			w = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "width=" ) );
+			h = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "height=" ) );
 
-			fch->xoffset = (int16)text_parser::int_from_str( text_parser::key_from_str( line, "xoffset=" ) );
-			fch->yoffset = (int16)text_parser::int_from_str( text_parser::key_from_str( line, "yoffset=" ) );
-			fch->xadvance = (int16)text_parser::int_from_str( text_parser::key_from_str( line, "xadvance=" ) );
+			fch->xoffset = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "xoffset=" ) );
+			fch->yoffset = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "yoffset=" ) );
+			fch->xadvance = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "xadvance=" ) );
 
-			fch->w = (int16)w;
-			fch->h = (int16)h;
+			fch->w = (uint8)w;
+			fch->h = (uint8)h;
 
 			fch->glyph_texture = texture_asset( src_texture->tag, rect( x, y, w, h ) );
 
