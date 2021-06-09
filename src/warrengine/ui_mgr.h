@@ -118,8 +118,8 @@ public:
 	[[nodiscard]] vec2 get_click_offset( bool is_hovered, bool is_hot );
 	[[nodiscard]] color get_adjusted_color( const color& base_color, bool is_hovered, bool is_hot );
 
-	ui_mgr* layout_clear();
-	ui_mgr* layout_clear( rect rc );
+	ui_mgr* layout_init();
+	ui_mgr* layout_init( rect rc );
 	ui_mgr* layout_push();
 	ui_mgr* layout_push( rect rc );
 	ui_mgr* layout_pop();

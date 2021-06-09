@@ -27,7 +27,7 @@ void scene_palette::draw_ui()
 
 	rect rc_panel = { 0.f, 0.f, ui_w, ui_h };
 	rc_panel.shrink( 32.f );
-	g_ui->layout_clear( rc_panel );
+	g_ui->layout_init( rc_panel );
 
 	{
 		scoped_render_state;

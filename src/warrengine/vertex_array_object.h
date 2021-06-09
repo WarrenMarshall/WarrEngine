@@ -22,7 +22,6 @@ struct vertex_array_object
 
 	void bind();
 	void unbind();
-	//int assign_texture_slot( const texture_asset* texture );
 	void maybe_flush_and_reset();
 	void update_stats();
 	void flush_and_reset();

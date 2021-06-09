@@ -48,3 +48,12 @@ void scene_default::draw()
 	render::state->color = make_color( color::green );
 	render::draw_sprite( tex_hello_world, vec2( 16.f, 32.f ) );
 }
+
+void scene_default::draw_ui()
+{
+	g_ui->layout_init();
+
+	g_ui->button_control( H( "button_resume" ) )
+		->set_text( "Resume" )
+		->end();
+}

@@ -159,7 +159,7 @@ void scene_post_process::draw_ui()
 
 	auto rc_layout = rect( 8.f, 30.f, ui_hw, ui_h );
 
-	g_ui->layout_clear( rc_layout );
+	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
 	// vignette
@@ -325,7 +325,7 @@ void scene_post_process::draw_ui()
 
 	rc_layout = rect( ui_hw + 8.0f, 30.f, ui_hw, ui_h );
 
-	g_ui->layout_clear( rc_layout );
+	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
 	// sepia

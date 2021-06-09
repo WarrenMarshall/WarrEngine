@@ -88,7 +88,7 @@ void scene_esc_menu::draw_ui()
 		+ slice_def->get_bottom_slice_sz()
 		+ 12.f;
 
-	g_ui->layout_clear( rect( 0.f, 0.f, panel_w, panel_h ) );
+	g_ui->layout_init( rect( 0.f, 0.f, panel_w, panel_h ) );
 
 	g_ui->panel_control( H( "main_panel" ) )
 		->center_control_on_screen()

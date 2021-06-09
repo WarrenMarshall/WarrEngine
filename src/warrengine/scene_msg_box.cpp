@@ -63,7 +63,7 @@ void scene_msg_box::draw_ui()
 	panel_h += msg.size() * render::state->font->get_max_height();
 
 	rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
-	g_ui->layout_clear( rc_panel );
+	g_ui->layout_init( rc_panel );
 
 	g_ui
 		->panel_control()

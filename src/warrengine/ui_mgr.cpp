@@ -120,7 +120,7 @@ ui_mgr* ui_mgr::adjust_layout_to_client_area()
 
 	// #layout : NOTE : this doesn't allow for panels within panels since this clears the
 	// stack entirely but that can be added in the future if needed
-	layout_clear( current_control->rc_client );
+	layout_init( current_control->rc_client );
 
 	return this;
 }
@@ -478,15 +478,16 @@ color ui_mgr::get_adjusted_color( const color& base_color, bool is_hovered, bool
 	return color;
 }
 
-ui_mgr* ui_mgr::layout_clear()
+ui_mgr* ui_mgr::layout_init()
 {
 	layout_stack.clear();
+	layout_push( { 0.f, 0.f, ui_w, ui_h } );
 	return this;
 }
 
-ui_mgr* ui_mgr::layout_clear( rect rc )
+ui_mgr* ui_mgr::layout_init( rect rc )
 {
-	layout_clear();
+	layout_stack.clear();
 	layout_push( rc );
 
 	return this;

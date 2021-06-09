@@ -44,7 +44,7 @@ void scene_main_menu::draw_ui()
 	auto button_h = 12.f;
 
 	auto rc_panel = rect( border_sz, border_sz, ui_w - ( border_sz * 2.f ), ui_h - ( border_sz * 2.f ) );
-	g_ui->layout_clear( rc_panel );
+	g_ui->layout_init( rc_panel );
 
 	g_ui->panel_control( H( "main_panel" ) )
 		->set_rect( rc_panel )

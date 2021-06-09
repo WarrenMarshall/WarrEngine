@@ -21,4 +21,20 @@ render_vertex::render_vertex( const vec3& pos, const vec2& uv, const color& colo
 {
 }
 
+render_vertex::render_vertex( const render_vertex& other )
+{
+	x = other.x;
+	y = other.y;
+	z = other.z;
+	u = other.u;
+	v = other.v;
+	r = other.r;
+	g = other.g;
+	b = other.b;
+	a = other.a;
+	glow = other.glow;
+	texture_id = other.texture_id;
+	pick_id = other.pick_id;
+}
+
 }

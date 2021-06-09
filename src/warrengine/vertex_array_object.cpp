@@ -120,13 +120,6 @@ void vertex_array_object::unbind()
 	ib->unbind();
 }
 
-/*
-int vertex_array_object::assign_texture_slot( const texture_asset* texture )
-{
-	return vb->assign_texture_slot( texture );
-}
-*/
-
 void vertex_array_object::maybe_flush_and_reset()
 {
 	if( vb->vertices.size() >= render_batch::max_elements_per_draw_call )

@@ -137,7 +137,7 @@ void scene_ui::draw_ui()
 	float panel_h = 196.f;
 
 	rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
-	g_ui->layout_clear( rc_panel );
+	g_ui->layout_init( rc_panel );
 
 	g_ui->panel_control()
 		->set_rect( rc_panel )

@@ -97,7 +97,7 @@ void scene_wrapped_text::draw_ui()
 	}
 
 	rect rc_panel = { 8.f, 150.f, 100.f, 56.f };
-	g_ui->layout_clear( rc_panel );
+	g_ui->layout_init( rc_panel );
 
 	g_ui
 		->panel_control()
