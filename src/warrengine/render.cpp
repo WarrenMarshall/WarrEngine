@@ -107,7 +107,7 @@ void render::draw_mesh( mesh_asset* mesh )
 				render::state->glow
 			);
 
-			render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( amv->texture )->get_frame( render::state->anim_offset ), v0, v1, v2 );
+			render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( amv->texture )->get_frame( render::state->anim_offset ), &v0, &v1, &v2 );
 		}
 
 	#ifndef _FINAL_RELEASE
@@ -129,9 +129,9 @@ void render::draw_mesh( mesh_asset* mesh )
 				amv++;
 				render_vertex v2( amv->pos, vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ), render::state->color, render::state->glow );
 
-				render::state->batch_render_target->add_primitive( g_engine->tex_white, v0, v1 );
-				render::state->batch_render_target->add_primitive( g_engine->tex_white, v1, v2 );
-				render::state->batch_render_target->add_primitive( g_engine->tex_white, v2, v0 );
+				render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1 );
+				render::state->batch_render_target->add_primitive( g_engine->tex_white, &v1, &v2 );
+				render::state->batch_render_target->add_primitive( g_engine->tex_white, &v2, &v0 );
 			}
 		}
 	#endif
@@ -174,7 +174,7 @@ void render::draw_sprite( texture_asset* texture, const vec2& dst )
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, render::state->angle, render::state->scale );
 
-		render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( frame ), v0, v1, v2, v3 );
+		render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( frame ), &v0, &v1, &v2, &v3 );
 	}
 }
 
@@ -218,7 +218,7 @@ void render::draw_quad( texture_asset* texture, const rect& dst )
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, render::state->angle, render::state->scale );
 
-		render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( frame ), v0, v1, v2, v3 );
+		render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( frame ), &v0, &v1, &v2, &v3 );
 	}
 }
 
@@ -559,7 +559,7 @@ void render::draw_filled_rect( const rect& dst )
 		render::state->glow
 	);
 
-	render::state->batch_render_target->add_primitive( g_engine->tex_white, v0, v1, v2, v3 );
+	render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1, &v2, &v3 );
 }
 
 void render::draw_triangle( const vec2& v0, const vec2& v1, const vec2& v2 )
@@ -684,7 +684,7 @@ void render::draw_filled_triangle( const vec2& v0, const vec2& v1, const vec2& v
 		render::state->glow
 	);
 
-	render::state->batch_render_target->add_primitive( g_engine->tex_white, rv0, rv1, rv2 );
+	render::state->batch_render_target->add_primitive( g_engine->tex_white, &rv0, &rv1, &rv2 );
 }
 
 auto render::get_circle_start_end_indices( e_corner corner )
@@ -750,7 +750,7 @@ void render::draw_circle( const vec2& origin, float radius, e_corner corner )
 			v1.x = origin.x + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 			v1.y = origin.y + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-			render::state->batch_render_target->add_primitive( g_engine->tex_white, v0, v1 );
+			render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1 );
 		}
 	}
 }
@@ -758,8 +758,8 @@ void render::draw_circle( const vec2& origin, float radius, e_corner corner )
 void render::draw_filled_circle( const vec2& origin, float radius, e_corner corner )
 {
 	render_vertex v0( origin, vec2( 0, 0 ), render::state->color, render::state->glow );
-	render_vertex v1 = v0;
-	render_vertex v2 = v0;
+	render_vertex v1( v0 );
+	render_vertex v2( v0 );
 
 	{
 		scoped_render_state;
@@ -774,7 +774,7 @@ void render::draw_filled_circle( const vec2& origin, float radius, e_corner corn
 			v2.x = origin.x + ( g_engine->renderer.circle_sample_points[ x ].x * radius );
 			v2.y = origin.y + ( g_engine->renderer.circle_sample_points[ x ].y * radius );
 
-			render::state->batch_render_target->add_primitive( g_engine->tex_white, v0, v1, v2 );
+			render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1, &v2 );
 		}
 	}
 }
@@ -788,8 +788,8 @@ void render::draw_line( const vec2& start, const vec2& end )
 
 	render::state->batch_render_target->add_primitive(
 		g_engine->tex_white,
-		v0,
-		v1
+		&v0,
+		&v1
 	);
 }
 
@@ -818,9 +818,9 @@ void render::draw_line_loop( const rect& rc )
 	render::draw_line_loop(
 		{
 			{ left, top },
-		{ right, top },
-		{ right, bottom },
-		{ left, bottom }
+			{ right, top },
+			{ right, bottom },
+			{ left, bottom }
 		}
 	);
 }
@@ -841,7 +841,7 @@ void render::draw_point( const vec2& pos )
 	{
 		scoped_render_state;
 
-		render::state->batch_render_target->add_primitive( g_engine->tex_white, v0 );
+		render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0 );
 	}
 }
 

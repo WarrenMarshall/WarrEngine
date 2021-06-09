@@ -30,19 +30,19 @@ bool render_batch::is_empty()
 	return vao.vb->vertices.empty();
 }
 
-void render_batch::add_vert( texture_asset* texture, render_vertex render_vert )
+void render_batch::add_vert( texture_asset* texture, const render_vertex* render_vert )
 {
 	// get a new render_vertex from the pool
 
 	render_vertex* rvtx = vao.vb->vertices.get_next();
-	*rvtx = render_vert;
+	*rvtx = *render_vert;
 
 	// multiply the current modelview matrix against the vertex being rendered.
 	//
 	// until this point, the vertex has been in object space. this
 	// moves it into world space.
 
-	auto transformed_vtx = g_engine->render_api.top_matrix->transform_vec2( vec2( render_vert.x, render_vert.y ) );
+	auto transformed_vtx = g_engine->render_api.top_matrix->transform_vec2( vec2( rvtx->x, rvtx->y ) );
 
 	// update the position to the transformed position
 
@@ -97,22 +97,22 @@ void render_batch_collection::flush_and_reset_internal()
 	}
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex& v0, const render_vertex& v1, const render_vertex& v2, const render_vertex& v3 )
+void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
 {
 	batches[ render_prim::quad ].add_primitive( texture, v0, v1, v2, v3 );
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex& v0, const render_vertex& v1, const render_vertex& v2 )
+void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
 {
 	batches[ render_prim::triangle ].add_primitive( texture, v0, v1, v2 );
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex& v0, const render_vertex& v1 )
+void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
 {
 	batches[ render_prim::line ].add_primitive( texture, v0, v1 );
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex& v0 )
+void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0 )
 {
 	batches[ render_prim::point ].add_primitive( texture, v0 );
 }

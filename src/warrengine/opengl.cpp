@@ -56,6 +56,9 @@ void opengl::init()
 	shaders[ "compositing_pass" ] = shader( "simple.vert", "compositing_pass.frag" );
 	shaders[ "final_pass" ] = shader( "simple.vert", "final_pass.frag" );
 
+	// we only have to do this one time, so a local array is created, filled,
+	// uploaded, and left for dead
+
 	std::vector<int> texture_slots( max_texture_image_units );
 	for( int x = 0 ; x < max_texture_image_units ; ++x )
 	{
@@ -63,10 +66,10 @@ void opengl::init()
 	}
 	set_uniform_array( "u_textures", texture_slots.data(), max_texture_image_units );
 
+	// set up opengl states
+
 	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
 	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-
 	glEnable( GL_TEXTURE_2D );
 
 	// NOTE : we have to use a depth buffer because we are rendering in batches.

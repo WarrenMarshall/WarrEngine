@@ -11,11 +11,10 @@ vertex_buffer::vertex_buffer( vertex_array_object* vao, int verts_per_element )
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
-	texture_slots.resize( g_engine->render_api.max_texture_image_units );
-	total_texture_slots_used = 0;
 	g_engine->render_api.allocate_vertex_buffer_on_gpu( render_batch::max_elements_per_draw_call * verts_per_element, false );
 	set_up_vertex_attribs();
 	vertices.init_to_size( (size_t)( render_batch::max_elements_per_draw_call * verts_per_element ) );
+	reset();
 
 	unbind();
 }
@@ -33,10 +32,8 @@ void vertex_buffer::bind()
 
 void vertex_buffer::reset()
 {
-	for( auto& iter : texture_slots )
-	{
-		iter = nullptr;
-	}
+	texture_slots.clear();
+	texture_slots.resize( g_engine->render_api.max_texture_image_units );
 
 	total_texture_slots_used = 0;
 
