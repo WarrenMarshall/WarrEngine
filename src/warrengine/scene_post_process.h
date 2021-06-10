@@ -40,7 +40,7 @@ struct scene_post_process_ui_callback : ui_callback
 
 struct scene_post_process : scene
 {
-	float background_alpha = 0.25f;
+	float background_alpha = 0.5f;
 	texture_asset* tex_color_test = nullptr;
 
 	scene_post_process();

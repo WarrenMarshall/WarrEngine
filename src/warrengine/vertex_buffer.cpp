@@ -37,6 +37,9 @@ void vertex_buffer::reset()
 
 	total_texture_slots_used = 0;
 
+	texture_slot_mru.texture = nullptr;
+	texture_slot_mru.idx = -1;
+
 	vertices.reset();
 }
 
@@ -59,6 +62,14 @@ void vertex_buffer::set_up_vertex_attribs()
 
 int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 {
+	// if this is the same texture as the last time this function was called,
+	// just return that same idx
+
+	if( texture_slot_mru.texture == texture )
+	{
+		return texture_slot_mru.idx;
+	}
+
 	// if this texture is already in the slot list, return that index
 
 	for( int x = 0 ; x < total_texture_slots_used ; ++x )
@@ -69,8 +80,10 @@ int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 		}
 	}
 
-	// check if all texture slots are currently in use. if so, flush and reset
-	// the vertex array.
+	// if we get here, this is a previously unseen texture.
+	//
+	// if all texture slots are currently in use, flush and reset the vertex
+	// array.
 
 	if( total_texture_slots_used == g_engine->render_api.max_texture_image_units )
 	{
@@ -81,6 +94,9 @@ int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 
 	texture_slots[ total_texture_slots_used ] = texture;
 	total_texture_slots_used++;
+
+	texture_slot_mru.texture = texture;
+	texture_slot_mru.idx = total_texture_slots_used - 1;
 
 	return total_texture_slots_used - 1;
 }
@@ -96,13 +112,6 @@ void vertex_buffer::bind_texture_units()
 	{
 		if( texture_slots[ x ] )
 		{
-		#ifndef _FINAL_RELEASE
-			if( g_engine->renderer.debug.is_single_frame_logging() )
-			{
-				log_verbose( "TU: {} bound to \"{}\"", x, texture_slots[ x ]->get_src_texture()->tag );
-			}
-		#endif
-
 			glBindTextureUnit( x, texture_slots[ x ]->get_src_texture()->gl_id );
 		}
 	}

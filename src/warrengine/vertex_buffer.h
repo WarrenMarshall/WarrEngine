@@ -9,6 +9,11 @@ struct vertex_buffer
 	// pool of contiguous vertex data
 	object_pool<render_vertex> vertices;
 	std::vector<const texture_asset*> texture_slots;
+	struct
+	{
+		const texture_asset* texture = nullptr;
+		int idx = -1;
+	} texture_slot_mru;
 	int total_texture_slots_used = 0;
 
 	// how many vertices make up a single element.
