@@ -357,25 +357,25 @@ void engine::main_loop()
 			g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
 			post_process.film_grain_amount += 0.01f;
 			g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
-		}
 
-		// if we have fixed time steps to perform, walk through them one at a time
+			// if we have fixed time steps to perform, walk through them one at a time
 
-		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
-		{
-			// queue up inputs for processing later in the loop
-			input.queue_motion();
+			for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
+			{
+				// queue up inputs for processing later in the loop
+				input.queue_motion();
 
-			box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
+				box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
+
+				pre_update();
+				update();
+				post_update();
+
+				g_engine->stats.update();
+				g_base_game->update();
+			}
 
 			process_collision_queue();
-
-			pre_update();
-			update();
-			post_update();
-
-			g_engine->stats.update();
-			g_base_game->update();
 		}
 
 		// ----------------------------------------------------------------------------
@@ -984,8 +984,11 @@ void engine::process_collision_queue()
 			continue;
 		}
 
-		iter.entity_a->on_collision_end( iter, iter.entity_b );
-		iter.entity_b->on_collision_end( iter, iter.entity_a );
+		if( iter.entity_a and iter.entity_b )
+		{
+			iter.entity_a->on_collision_end( iter, iter.entity_b );
+			iter.entity_b->on_collision_end( iter, iter.entity_a );
+		}
 	}
 
 	end_contact_queue.clear();

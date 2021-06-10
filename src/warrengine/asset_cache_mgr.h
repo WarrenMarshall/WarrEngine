@@ -33,20 +33,19 @@ struct asset_cache_mgr
 	template<typename T>
 	[[nodiscard]] std::string generate_full_asset_tag( std::string_view tag )
 	{
-		std::string full_tag = std::string( tag );
-
 		// if the tag being searched for is NOT already decorated with the
 		// type name, add the type name as a prefix.
+
 		if( tag.find_first_of( ':', 0 ) == std::string::npos )
 		{
 			// this is compiler dependent, but since MSVC returns an unmangled name for
 			// the type - I'm using it. MSVC will return type names like "struct name"
 			// so we just have to strip off the "struct " prefix and we're good to go.
-			std::string tag_prefix = typeid( T ).name();
-			full_tag = std::format( "{}::{}", tag_prefix.substr( 7, std::string::npos ), tag );
+			std::string_view tag_prefix = typeid( T ).name();
+			return std::format( "{}::{}", tag_prefix.substr( 7, std::string::npos ), tag );
 		}
 
-		return full_tag;
+		return tag.data();
 	}
 
 
