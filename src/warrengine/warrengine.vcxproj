@@ -282,6 +282,7 @@
   <ItemGroup>
     <ClInclude Include="asset.h" />
     <ClInclude Include="asset_file_definition.h" />
+    <ClInclude Include="cache.h" />
     <ClInclude Include="object_pool.h" />
     <ClInclude Include="scene_post_process.h" />
     <ClInclude Include="slice_def_asset.h" />

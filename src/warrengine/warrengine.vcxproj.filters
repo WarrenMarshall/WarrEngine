@@ -507,6 +507,9 @@
     <ClInclude Include="scene_post_process.h">
       <Filter>include\scenes</Filter>
     </ClInclude>
+    <ClInclude Include="cache.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

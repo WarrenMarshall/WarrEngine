@@ -107,7 +107,7 @@ void render::draw_mesh( mesh_asset* mesh )
 				render::state->glow
 			);
 
-			render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( amv->texture )->get_frame( render::state->anim_offset ), &v0, &v1, &v2 );
+			render::state->batch_render_target->add_primitive( amv->texture->get_frame( render::state->anim_offset ), &v0, &v1, &v2 );
 		}
 
 	#ifndef _FINAL_RELEASE
@@ -174,7 +174,7 @@ void render::draw_sprite( texture_asset* texture, const vec2& dst )
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, render::state->angle, render::state->scale );
 
-		render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( frame ), &v0, &v1, &v2, &v3 );
+		render::state->batch_render_target->add_primitive( frame, &v0, &v1, &v2, &v3 );
 	}
 }
 
@@ -218,7 +218,7 @@ void render::draw_quad( texture_asset* texture, const rect& dst )
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, render::state->angle, render::state->scale );
 
-		render::state->batch_render_target->add_primitive( const_cast<texture_asset*>( frame ), &v0, &v1, &v2, &v3 );
+		render::state->batch_render_target->add_primitive( frame, &v0, &v1, &v2, &v3 );
 	}
 }
 

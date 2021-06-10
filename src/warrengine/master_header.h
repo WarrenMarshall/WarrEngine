@@ -1,4 +1,6 @@
 
+#include "cache.h"
+
 #include "cmd_line.h"
 #include "object_pool.h"
 

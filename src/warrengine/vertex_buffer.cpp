@@ -37,8 +37,7 @@ void vertex_buffer::reset()
 
 	total_texture_slots_used = 0;
 
-	texture_slot_mru.texture = nullptr;
-	texture_slot_mru.idx = -1;
+	cached_texture_slot.clear();
 
 	vertices.reset();
 }
@@ -65,9 +64,9 @@ int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 	// if this is the same texture as the last time this function was called,
 	// just return that same idx
 
-	if( texture_slot_mru.texture == texture )
+	if( auto idx = cached_texture_slot.get( texture ) ; idx )
 	{
-		return texture_slot_mru.idx;
+		return *idx;
 	}
 
 	// if this texture is already in the slot list, return that index
@@ -95,8 +94,10 @@ int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 	texture_slots[ total_texture_slots_used ] = texture;
 	total_texture_slots_used++;
 
-	texture_slot_mru.texture = texture;
-	texture_slot_mru.idx = total_texture_slots_used - 1;
+	if( texture )
+	{
+		cached_texture_slot.set( texture, total_texture_slots_used - 1 );
+	}
 
 	return total_texture_slots_used - 1;
 }
