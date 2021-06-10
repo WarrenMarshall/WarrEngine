@@ -26,7 +26,9 @@ struct render_batch
 	template <typename... Ts>
 	void add_primitive( texture_asset* texture, Ts... render_verts )
 	{
+	#if 0	// #render_perf
 		vao.maybe_flush_and_reset();
+	#endif
 
 		std::reference_wrapper<const render_vertex*> values [] = { render_verts... };
 		for( auto v : values )

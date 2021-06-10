@@ -22,7 +22,9 @@ struct vertex_array_object
 
 	void bind();
 	void unbind();
+#if 0	// #render_perf
 	void maybe_flush_and_reset();
+#endif
 	void update_stats();
 	void flush_and_reset();
 	void upload_vertices_to_gpu();

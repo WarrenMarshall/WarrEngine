@@ -120,13 +120,16 @@ void vertex_array_object::unbind()
 	ib->unbind();
 }
 
+#if 0	// #render_perf
 void vertex_array_object::maybe_flush_and_reset()
 {
 	if( vb->vertices.size() >= render_batch::max_elements_per_draw_call )
 	{
 		flush_and_reset();
 	}
+
 }
+#endif
 
 void vertex_array_object::update_stats()
 {
