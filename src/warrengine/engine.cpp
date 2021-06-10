@@ -371,10 +371,10 @@ void engine::main_loop()
 				update();
 				post_update();
 
-				g_engine->stats.update();
 				g_base_game->update();
 			}
 
+			g_engine->stats.update();
 			process_collision_queue();
 		}
 
@@ -984,11 +984,8 @@ void engine::process_collision_queue()
 			continue;
 		}
 
-		if( iter.entity_a and iter.entity_b )
-		{
-			iter.entity_a->on_collision_end( iter, iter.entity_b );
-			iter.entity_b->on_collision_end( iter, iter.entity_a );
-		}
+		iter.entity_a->on_collision_end( iter, iter.entity_b );
+		iter.entity_b->on_collision_end( iter, iter.entity_a );
 	}
 
 	end_contact_queue.clear();

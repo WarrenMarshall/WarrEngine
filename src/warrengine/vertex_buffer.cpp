@@ -71,9 +71,11 @@ int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 
 	// if this texture is already in the slot list, return that index
 
+	auto texture_gl_id = texture->get_src_texture()->gl_id;
+
 	for( int x = 0 ; x < total_texture_slots_used ; ++x )
 	{
-		if( texture_slots[ x ]->get_src_texture()->gl_id == texture->get_src_texture()->gl_id )
+		if( texture_slots[ x ]->get_src_texture()->gl_id == texture_gl_id )
 		{
 			return x;
 		}
