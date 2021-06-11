@@ -177,8 +177,6 @@ int scene_mgr::find_first_fully_opaque_scene()
 
 void scene_mgr::draw_scene( int starting_scene_idx )
 {
-	g_engine->render_api.clear_depth_buffer();
-
 	scoped_render_state;
 
 	for( auto x = starting_scene_idx; x >= 0; --x )
@@ -189,7 +187,8 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 		{
 			current_scene = scene;
 
-			render::state->z = zdepth_scene_start - ( zdepth_scene_step * x );
+			g_engine->render_api.clear_depth_buffer();
+			render::state->z = zdepth_scene_start;
 
 			g_engine->render_api.set_view_matrix_identity();
 
@@ -216,7 +215,6 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 
 void scene_mgr::draw_scene_ui( int starting_scene_idx )
 {
-	g_engine->render_api.clear_depth_buffer();
 	g_engine->render_api.set_view_matrix_identity_ui();
 
 	scoped_render_state;
@@ -227,18 +225,14 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 
 		if( scene->life_cycle.is_alive() )
 		{
-			render::state->z = zdepth_scene_start - ( zdepth_scene_step * x );
+			current_scene = scene;
 
-			// draw any screen space items, like UI. these are
-			// drawn with an identity matrix so the top left of
-			// the screen is always 0,0.
-
-			render::state->z += zdepth_nudge;
+			g_engine->render_api.clear_depth_buffer();
+			render::state->z = zdepth_scene_start;
 
 			{
 				scoped_opengl;
 
-				current_scene = scene;
 				g_ui->current_callback = scene->get_ui_callback();
 
 				{

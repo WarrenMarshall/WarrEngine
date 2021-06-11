@@ -156,7 +156,6 @@ constexpr float zdepth_nudge = 10.0f;
 
 constexpr float zdepth_background = 100.f;
 constexpr float zdepth_scene_start = 1000.f;
-constexpr float zdepth_scene_step = 500.f;
 constexpr float zdepth_stats = 45000.f;
 constexpr float zdepth_topmost = 50000.f;
 constexpr float zdepth_max = 50000.f;

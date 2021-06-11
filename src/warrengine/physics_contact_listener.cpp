@@ -18,6 +18,9 @@ void physics_contact_listener::BeginContact( b2Contact* contact )
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
 
+	assert( pc.entity_a->get_life_cycle()->is_alive() );
+	assert( pc.entity_b->get_life_cycle()->is_alive() );
+
 	g_engine->begin_contact_queue.emplace_back( std::move( pc ) );
 }
 
@@ -33,6 +36,9 @@ void physics_contact_listener::EndContact( b2Contact* contact )
 	pc.fixture_a = contact->GetFixtureA();
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
+
+	assert( pc.entity_a->get_life_cycle()->is_alive() );
+	assert( pc.entity_b->get_life_cycle()->is_alive() );
 
 	g_engine->end_contact_queue.emplace_back( pc );
 }
