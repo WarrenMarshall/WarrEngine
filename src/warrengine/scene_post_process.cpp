@@ -21,8 +21,8 @@ void update_shader_uniforms( scene_post_process_ui_callback* cb )
 	g_engine->render_api.set_uniform( "u_crt_tint_intensity", cb->u_crt_tint_intensity.float_value() );
 	g_engine->render_api.set_uniform( "ub_film_grain", cb->ub_film_grain.bool_value() );
 	g_engine->render_api.set_uniform( "u_film_grain_intensity", cb->u_film_grain_intensity.float_value() );
-	g_engine->render_api.set_uniform( "ub_chromatic_abberation", cb->ub_chromatic_abberation.bool_value() );
-	g_engine->render_api.set_uniform( "u_chromatic_abberation_amount", cb->u_chromatic_abberation_amount.float_value() );
+	g_engine->render_api.set_uniform( "ub_chromatic_aberration", cb->ub_chromatic_aberration.bool_value() );
+	g_engine->render_api.set_uniform( "u_chromatic_aberration_amount", cb->u_chromatic_aberration_amount.float_value() );
 	g_engine->render_api.set_uniform( "ub_crt_scanlines", cb->ub_crt_scanlines.bool_value() );
 	g_engine->render_api.set_uniform( "u_crt_scanlines_intensity", cb->u_crt_scanlines_intensity.float_value() );
 	g_engine->render_api.set_uniform( "ub_desaturation", cb->ub_desaturation.bool_value() );
@@ -42,7 +42,7 @@ scene_post_process_ui_callback::scene_post_process_ui_callback()
 	u_vignette_rounding.slider_range = range( 8.f, 16.f );
 	u_crt_tint_scaling.slider_range = range( 0.25f, 4.f );
 	u_film_grain_intensity.slider_range = range( 0.f, 2.f );
-	u_chromatic_abberation_amount.slider_range = range( 0.0f, 0.01f );
+	u_chromatic_aberration_amount.slider_range = range( 0.0f, 0.01f );
 	u_crt_scanlines_intensity.slider_range = range( 0.0f, 0.1f );
 	u_crt_warp_bend.slider_range = range( 2.0f, 12.f );
 	u_pixelate_factor.slider_range = range( 1.0f, 32.f );
@@ -61,8 +61,8 @@ scene_post_process_ui_callback::scene_post_process_ui_callback()
 	u_crt_tint_intensity.set_float_value( g_engine->render_api.get_uniform_float( "u_crt_tint_intensity" ) );
 	ub_film_grain.set_bool_value( g_engine->render_api.get_uniform_float( "ub_film_grain" ) );
 	u_film_grain_intensity.set_float_value( g_engine->render_api.get_uniform_float( "u_film_grain_intensity" ) );
-	ub_chromatic_abberation.set_bool_value( g_engine->render_api.get_uniform_float( "ub_chromatic_abberation" ) );
-	u_chromatic_abberation_amount.set_float_value( g_engine->render_api.get_uniform_float( "u_chromatic_abberation_amount" ) );
+	ub_chromatic_aberration.set_bool_value( g_engine->render_api.get_uniform_float( "ub_chromatic_aberration" ) );
+	u_chromatic_aberration_amount.set_float_value( g_engine->render_api.get_uniform_float( "u_chromatic_aberration_amount" ) );
 	ub_crt_scanlines.set_bool_value( g_engine->render_api.get_uniform_float( "ub_crt_scanlines" ) );
 	u_crt_scanlines_intensity.set_float_value( g_engine->render_api.get_uniform_float( "u_crt_scanlines_intensity" ) );
 	ub_desaturation.set_bool_value( g_engine->render_api.get_uniform_float( "ub_desaturation" ) );
@@ -91,8 +91,8 @@ ui_control_data* scene_post_process_ui_callback::get_data( hash tag )
 		case H( "slider_crt_tint_intensity" ):			return &u_crt_tint_intensity;
 		case H( "check_film_grain" ):					return &ub_film_grain;
 		case H( "slider_film_grain_intensity" ):		return &u_film_grain_intensity;
-		case H( "check_chromatic_abberation" ):			return &ub_chromatic_abberation;
-		case H( "slider_chromatic_abberation_amount" ):	return &u_chromatic_abberation_amount;
+		case H( "check_chromatic_aberration" ):			return &ub_chromatic_aberration;
+		case H( "slider_chromatic_aberration_amount" ):	return &u_chromatic_aberration_amount;
 		case H( "check_crt_scanlines" ):				return &ub_crt_scanlines;
 		case H( "slider_crt_scanlines_intensity" ):		return &u_crt_scanlines_intensity;
 		case H( "check_desaturation" ):					return &ub_desaturation;
@@ -220,13 +220,13 @@ void scene_post_process::draw_ui()
 	}
 
 	// ----------------------------------------------------------------------------
-	// chromatic_abberation
+	// chromatic_aberration
 
-	g_ui->check_control( H( "check_chromatic_abberation" ) )
-		->set_text( "Chromatic Abberation" )
+	g_ui->check_control( H( "check_chromatic_aberration" ) )
+		->set_text( "Chromatic Aberration" )
 		->end();
 
-	if( cb->ub_chromatic_abberation.bool_value() )
+	if( cb->ub_chromatic_aberration.bool_value() )
 	{
 		float height = ui_label_control::get_default_height();
 
@@ -235,11 +235,11 @@ void scene_post_process::draw_ui()
 
 			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->end();
-			g_ui->slider_control( H( "slider_chromatic_abberation_amount" ) )->cut_left( 48.f )->end();
+			g_ui->slider_control( H( "slider_chromatic_aberration_amount" ) )->cut_left( 48.f )->end();
 			g_ui->spacer_control()->cut_left()->end();
 
 			g_ui->label_control()
-				->set_text( std::format( "{:.4f}", cb->u_chromatic_abberation_amount.float_value() ) )
+				->set_text( std::format( "{:.4f}", cb->u_chromatic_aberration_amount.float_value() ) )
 				->cut_left( 32.f )
 				->end();
 		}

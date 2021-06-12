@@ -20,8 +20,8 @@ struct scene_post_process_ui_callback : ui_callback
 	ui_slider_control_data u_crt_tint_intensity;
 	ui_control_data ub_film_grain;
 	ui_slider_control_data u_film_grain_intensity;
-	ui_control_data ub_chromatic_abberation;
-	ui_slider_control_data u_chromatic_abberation_amount;
+	ui_control_data ub_chromatic_aberration;
+	ui_slider_control_data u_chromatic_aberration_amount;
 	ui_control_data ub_crt_scanlines;
 	ui_slider_control_data u_crt_scanlines_intensity;
 	ui_control_data ub_desaturation;

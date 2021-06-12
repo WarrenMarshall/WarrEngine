@@ -14,7 +14,7 @@ void tpl_asteroids_game::init()
 	g_engine->render_api.set_uniform( "ub_vignette", true );
 	g_engine->render_api.set_uniform( "ub_crt_warp", true );
 	g_engine->render_api.set_uniform( "ub_crt_tint", true );
-	g_engine->render_api.set_uniform( "ub_chromatic_abberation", true );
+	g_engine->render_api.set_uniform( "ub_chromatic_aberration", true );
 	g_engine->render_api.set_uniform( "ub_greyscale", true );
 	g_engine->render_api.set_uniform( "u_color_overlay", make_color( color::green, 0.1f ) );
 	g_engine->render_api.set_uniform( "ub_film_grain", true );

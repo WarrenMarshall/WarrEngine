@@ -14,7 +14,7 @@ void sandbox_test_app::init()
 #if 0
 	//g_engine->render_api.set_uniform( "ub_vignette", true );
 
-	//g_engine->render_api.set_uniform( "ub_chromatic_abberation", true );
+	//g_engine->render_api.set_uniform( "ub_chromatic_aberration", true );
 	//g_engine->render_api.set_uniform( "ub_film_grain", true );
 	//g_engine->render_api.set_uniform( "ub_crt_warp", true );
 	//g_engine->render_api.set_uniform( "ub_crt_scanlines", true );

@@ -10,11 +10,6 @@
 // ----------------------------------------------------------------------------
 
 layout (location = 0) out vec4 out_color_buffer;
-layout (location = 1) out vec4 out_glow_buffer;
-layout (location = 2) out vec4 out_pick_ids_buffer;
-layout (location = 3) out vec4 out_blur_buffer;
-layout (location = 4) out vec4 out_composite_buffer;
-layout (location = 5) out vec4 out_final_buffer;
 
 in vec3 fs_pos;
 in vec2 fs_tex_coord;

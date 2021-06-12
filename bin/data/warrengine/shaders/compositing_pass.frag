@@ -14,11 +14,6 @@
 // ----------------------------------------------------------------------------
 
 layout (location = 0) out vec4 out_color_buffer;
-layout (location = 1) out vec4 out_glow_buffer;
-layout (location = 2) out vec4 out_pick_ids_buffer;
-layout (location = 3) out vec4 out_blur_buffer;
-layout (location = 4) out vec4 out_composite_buffer;
-layout (location = 5) out vec4 out_final_buffer;
 
 in vec3 fs_pos;
 in vec2 fs_tex_coord;
@@ -36,18 +31,18 @@ uniform float u_viewport_h = 240.0;
 float PI = 3.14159;
 
 // ----------------------------------------------------------------------------
-// > chromatic abberation
+// > chromatic aberration
 // ----------------------------------------------------------------------------
 
-uniform bool ub_chromatic_abberation = false;
-uniform float u_chromatic_abberation_amount = 0.0035f;
+uniform bool ub_chromatic_aberration = false;
+uniform float u_chromatic_aberration_amount = 0.0035f;
 
-vec4 fx_chromatic_abberation( vec4 output_color )
+vec4 fx_chromatic_aberration( vec4 output_color )
 {
-	if( ub_chromatic_abberation )
+	if( ub_chromatic_aberration )
 	{
-		output_color.r = get_sample_from_texture( fs_texture_id, vec2(fs_tex_coord.x - u_chromatic_abberation_amount, fs_tex_coord.y - u_chromatic_abberation_amount)).r;
-		output_color.b = get_sample_from_texture( fs_texture_id, vec2(fs_tex_coord.x + u_chromatic_abberation_amount, fs_tex_coord.y + u_chromatic_abberation_amount)).b;
+		output_color.r = get_sample_from_texture( fs_texture_id, vec2(fs_tex_coord.x - u_chromatic_aberration_amount, fs_tex_coord.y - u_chromatic_aberration_amount)).r;
+		output_color.b = get_sample_from_texture( fs_texture_id, vec2(fs_tex_coord.x + u_chromatic_aberration_amount, fs_tex_coord.y + u_chromatic_aberration_amount)).b;
 	}
 
 	return output_color;
@@ -283,7 +278,7 @@ void main()
 
 	// post process stack
 
-	out_color_buffer = fx_chromatic_abberation( out_color_buffer );
+	out_color_buffer = fx_chromatic_aberration( out_color_buffer );
 	out_color_buffer = fx_desaturation( out_color_buffer );
 	out_color_buffer = fx_sepia( out_color_buffer );
 	out_color_buffer = fx_greyscale( out_color_buffer );
