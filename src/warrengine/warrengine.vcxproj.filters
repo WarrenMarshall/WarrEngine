@@ -250,6 +250,9 @@
     <ClCompile Include="scene_post_process.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>src\collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -510,6 +513,9 @@
     <ClInclude Include="cache.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>include\collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -595,6 +601,12 @@
     </Filter>
     <Filter Include="shaders\inc">
       <UniqueIdentifier>{31d337ca-a8ae-448a-a988-bb09c0251cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\collision">
+      <UniqueIdentifier>{598adf6d-cdce-4c7c-ae51-120dc8b81736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\collision">
+      <UniqueIdentifier>{2620941b-1db6-44bd-8ed1-741fd6453bd0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

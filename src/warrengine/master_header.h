@@ -69,6 +69,8 @@
 #include "render_state.h"
 #include "render.h"
 
+#include "collision.h"
+
 #include "physics_contact_listener.h"
 #include "physics_query_callbacks.h"
 #include "physics_query.h"

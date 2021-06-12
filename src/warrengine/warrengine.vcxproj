@@ -193,6 +193,7 @@
   <ItemGroup>
     <ClCompile Include="asset.cpp" />
     <ClCompile Include="asset_file_definition.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="object_pool.cpp" />
     <ClCompile Include="scene_post_process.cpp" />
     <ClCompile Include="slice_def_asset.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="asset.h" />
     <ClInclude Include="asset_file_definition.h" />
     <ClInclude Include="cache.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="object_pool.h" />
     <ClInclude Include="scene_post_process.h" />
     <ClInclude Include="slice_def_asset.h" />

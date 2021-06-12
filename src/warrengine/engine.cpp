@@ -492,7 +492,7 @@ void engine::main_loop()
 			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
 		}
 
-	#if 0
+	#if 1
 		// ---------------------------------------------------------------------------
 		// debug helper
 		//

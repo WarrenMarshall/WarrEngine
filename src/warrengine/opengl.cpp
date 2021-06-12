@@ -38,6 +38,16 @@ void opengl::init()
 
 	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", max_texture_image_units );
 
+	// how many color attachments can be added to a frame buffer object
+	GLint max_color_attachments = 0;
+	glGetIntegerv( GL_MAX_COLOR_ATTACHMENTS, &max_color_attachments );
+	log( "GL_MAX_COLOR_ATTACHMENTS : {} (per frame buffer object)", max_color_attachments );
+
+	// the maximum number of buffers that can be written to at once from a fragment shader
+	GLint max_draw_buffers = 0;
+	glGetIntegerv( GL_MAX_DRAW_BUFFERS, &max_draw_buffers );
+	log( "GL_MAX_DRAW_BUFFERS : {}", max_draw_buffers );
+
 	// front facing triangles are wound counter clockwise
 	glFrontFace( GL_CCW );
 
