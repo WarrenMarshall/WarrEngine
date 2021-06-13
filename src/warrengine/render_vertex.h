@@ -27,4 +27,12 @@ struct render_triangle
 	render_triangle( const render_vertex& v0, const render_vertex& v1, const render_vertex& v2, const color& color, float glow );
 };
 
+// ----------------------------------------------------------------------------
+
+struct render_line
+{
+	std::array<render_vertex, 2> verts;
+	render_line( const render_vertex& v0, const render_vertex& v1, const color& color, float glow );
+};
+
 }

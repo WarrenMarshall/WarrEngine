@@ -23,6 +23,32 @@ void render_batch::draw()
 	vao.draw();
 }
 
+void render_batch::add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
+{
+	add_vert( texture, v0 );
+	add_vert( texture, v1 );
+	add_vert( texture, v2 );
+	add_vert( texture, v3 );
+}
+
+void render_batch::add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
+{
+	add_vert( texture, v0 );
+	add_vert( texture, v1 );
+	add_vert( texture, v2 );
+}
+
+void render_batch::add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
+{
+	add_vert( texture, v0 );
+	add_vert( texture, v1 );
+}
+
+void render_batch::add_point( texture_asset* texture, const render_vertex* v0 )
+{
+	add_vert( texture, v0 );
+}
+
 bool render_batch::is_empty()
 {
 	assert( vao.vb );
@@ -97,9 +123,9 @@ void render_batch_collection::flush_and_reset_internal()
 	}
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
+void render_batch_collection::add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
 {
-	batches[ render_prim::quad ].add_primitive( texture, v0, v1, v2, v3 );
+	batches[ render_prim::quad ].add_quad( texture, v0, v1, v2, v3 );
 }
 
 void render_batch_collection::add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
@@ -107,14 +133,14 @@ void render_batch_collection::add_triangle( texture_asset* texture, const render
 	batches[ render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
+void render_batch_collection::add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
 {
-	batches[ render_prim::line ].add_primitive( texture, v0, v1 );
+	batches[ render_prim::line ].add_line( texture, v0, v1 );
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0 )
+void render_batch_collection::add_point( texture_asset* texture, const render_vertex* v0 )
 {
-	batches[ render_prim::point ].add_primitive( texture, v0 );
+	batches[ render_prim::point ].add_point( texture, v0 );
 }
 
 }

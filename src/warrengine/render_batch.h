@@ -18,27 +18,10 @@ struct render_batch
 
 	void draw();
 
-	// adds render vertices into the batch. you can pass up any number of
-	// w_render_vertex references at a time and they will all be added.
-	//
-	// so 1 vert for a point, 4 verts for a quad, etc.
-
-	template <typename... Ts>
-	void add_primitive( texture_asset* texture, Ts... render_verts )
-	{
-		std::reference_wrapper<const render_vertex*> values [] = { render_verts... };
-		for( auto v : values )
-		{
-			add_vert( texture, v.get() );
-		}
-	}
-
-	void add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
-	{
-		add_vert( texture, v0 );
-		add_vert( texture, v1 );
-		add_vert( texture, v2 );
-	}
+	void add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 );
+	void add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 );
+	void add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 );
+	void add_point( texture_asset* texture, const render_vertex* v0 );
 
 	bool is_empty();
 
@@ -59,10 +42,10 @@ struct render_batch_collection
 	void flush_and_reset();
 	void flush_and_reset_internal();
 
-	void add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 );
+	void add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 );
 	void add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 );
-	void add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 );
-	void add_primitive( texture_asset* texture, const render_vertex* v0 );
+	void add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 );
+	void add_point( texture_asset* texture, const render_vertex* v0 );
 };
 
 }

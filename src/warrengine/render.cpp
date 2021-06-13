@@ -124,9 +124,9 @@ void render::draw_mesh( mesh_asset* mesh )
 					render_vertex v1( vec3( tri.verts[ 1 ].x, tri.verts[ 1 ].y, tri.verts[ 1 ].z ), vec2( 0.f, 0.f ), render::state->color, render::state->glow );
 					render_vertex v2( vec3( tri.verts[ 2 ].x, tri.verts[ 2 ].y, tri.verts[ 2 ].z ), vec2( 0.f, 0.f ), render::state->color, render::state->glow );
 
-					render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1 );
-					render::state->batch_render_target->add_primitive( g_engine->tex_white, &v1, &v2 );
-					render::state->batch_render_target->add_primitive( g_engine->tex_white, &v2, &v0 );
+					render::state->batch_render_target->add_line( g_engine->tex_white, &v0, &v1 );
+					render::state->batch_render_target->add_line( g_engine->tex_white, &v1, &v2 );
+					render::state->batch_render_target->add_line( g_engine->tex_white, &v2, &v0 );
 
 				}
 			}
@@ -171,7 +171,7 @@ void render::draw_sprite( texture_asset* texture, const vec2& dst )
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, render::state->angle, render::state->scale );
 
-		render::state->batch_render_target->add_primitive( frame, &v0, &v1, &v2, &v3 );
+		render::state->batch_render_target->add_quad( frame, &v0, &v1, &v2, &v3 );
 	}
 }
 
@@ -215,7 +215,7 @@ void render::draw_quad( texture_asset* texture, const rect& dst )
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, render::state->angle, render::state->scale );
 
-		render::state->batch_render_target->add_primitive( frame, &v0, &v1, &v2, &v3 );
+		render::state->batch_render_target->add_quad( frame, &v0, &v1, &v2, &v3 );
 	}
 }
 
@@ -556,7 +556,7 @@ void render::draw_filled_rect( const rect& dst )
 		render::state->glow
 	);
 
-	render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1, &v2, &v3 );
+	render::state->batch_render_target->add_quad( g_engine->tex_white, &v0, &v1, &v2, &v3 );
 }
 
 void render::draw_triangle( const vec2& v0, const vec2& v1, const vec2& v2 )
@@ -730,7 +730,7 @@ void render::draw_circle( const vec2& origin, float radius, e_corner corner )
 			v1.x = origin.x + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
 			v1.y = origin.y + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-			render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1 );
+			render::state->batch_render_target->add_line( g_engine->tex_white, &v0, &v1 );
 		}
 	}
 }
@@ -766,7 +766,7 @@ void render::draw_line( const vec2& start, const vec2& end )
 	render_vertex v0( start, vec2( 0, 0 ), render::state->color, render::state->glow );
 	render_vertex v1( end, vec2( 0, 0 ), render::state->color, render::state->glow );
 
-	render::state->batch_render_target->add_primitive(
+	render::state->batch_render_target->add_line(
 		g_engine->tex_white,
 		&v0,
 		&v1
@@ -821,7 +821,7 @@ void render::draw_point( const vec2& pos )
 	{
 		scoped_render_state;
 
-		render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0 );
+		render::state->batch_render_target->add_point( g_engine->tex_white, &v0 );
 	}
 }
 
