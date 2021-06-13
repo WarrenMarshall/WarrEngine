@@ -6,7 +6,9 @@ struct render_vertex
 {
 	render_vertex() = default;
 	render_vertex( const vec2& pos, const vec2& uv, const color& color, float glow );
+	render_vertex( const vec2& pos );
 	render_vertex( const vec3& pos, const vec2& uv, const color& color, float glow );
+	render_vertex( const vec3& pos );
 	render_vertex( const render_vertex& other );
 
 	float x = 0.f, y = 0.f, z = 0.f;
@@ -15,6 +17,14 @@ struct render_vertex
 	float glow = 0.f;
 	int texture_id = -1;
 	int pick_id = 1;
+};
+
+// ----------------------------------------------------------------------------
+
+struct render_triangle
+{
+	std::array<render_vertex,3> verts;
+	render_triangle( const render_vertex& v0, const render_vertex& v1, const render_vertex& v2, const color& color, float glow );
 };
 
 }

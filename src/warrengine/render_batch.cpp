@@ -102,9 +102,9 @@ void render_batch_collection::add_primitive( texture_asset* texture, const rende
 	batches[ render_prim::quad ].add_primitive( texture, v0, v1, v2, v3 );
 }
 
-void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
+void render_batch_collection::add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
 {
-	batches[ render_prim::triangle ].add_primitive( texture, v0, v1, v2 );
+	batches[ render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
 }
 
 void render_batch_collection::add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )

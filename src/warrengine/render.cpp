@@ -79,35 +79,33 @@ void render::draw_mesh( mesh_asset* mesh )
 	{
 		scoped_opengl;
 
-		mesh_asset::vertex* amv = nullptr;
-
-		for( size_t mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
+		for( auto& [ texture, triangle_list ] : mesh->texture_to_triangles )
 		{
-			amv = &( mesh->mesh_verts[ mv ] );
-			render_vertex v0(
-				amv->pos,
-				vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ),
-				render::state->color,
-				render::state->glow
-			);
+			auto tex = texture->get_frame( render::state->anim_offset );
 
-			amv++;
-			render_vertex v1(
-				amv->pos,
-				vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ),
-				render::state->color,
-				render::state->glow
-			);
+			for( auto& tri : triangle_list )
+			{
+				render_vertex v0(
+					vec3( tri.verts[0].x, tri.verts[ 0 ].y, tri.verts[ 0 ].z ),
+					vec2( tri.verts[0].u * render::state->uv_tiling.u, tri.verts[0].v * render::state->uv_tiling.v ),
+					render::state->color,
+					render::state->glow
+				);
+				render_vertex v1(
+					vec3( tri.verts[ 1 ].x, tri.verts[ 1 ].y, tri.verts[ 1 ].z ),
+					vec2( tri.verts[ 1 ].u * render::state->uv_tiling.u, tri.verts[ 1 ].v * render::state->uv_tiling.v ),
+					render::state->color,
+					render::state->glow
+				);
+				render_vertex v2(
+					vec3( tri.verts[ 2 ].x, tri.verts[ 2 ].y, tri.verts[ 2 ].z ),
+					vec2( tri.verts[ 2 ].u * render::state->uv_tiling.u, tri.verts[ 2 ].v * render::state->uv_tiling.v ),
+					render::state->color,
+					render::state->glow
+				);
 
-			amv++;
-			render_vertex v2(
-				amv->pos,
-				vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ),
-				render::state->color,
-				render::state->glow
-			);
-
-			render::state->batch_render_target->add_primitive( amv->texture->get_frame( render::state->anim_offset ), &v0, &v1, &v2 );
+				render::state->batch_render_target->add_triangle( tex, &v0, &v1, &v2 );
+			}
 		}
 
 	#ifndef _FINAL_RELEASE
@@ -118,20 +116,19 @@ void render::draw_mesh( mesh_asset* mesh )
 			render::state->color = color::grey;
 			render::state->z += zdepth_nudge;
 
-			for( size_t mv = 0 ; mv < mesh->mesh_verts.size() ; mv += 3 )
+			for( auto& [texture, triangle_list] : mesh->texture_to_triangles )
 			{
-				amv = &( mesh->mesh_verts[ mv ] );
-				render_vertex v0( amv->pos, vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ), render::state->color, render::state->glow );
+				for( auto& tri : triangle_list )
+				{
+					render_vertex v0( vec3( tri.verts[ 0 ].x, tri.verts[ 0 ].y, tri.verts[ 0 ].z ), vec2( 0.f, 0.f ), render::state->color, render::state->glow );
+					render_vertex v1( vec3( tri.verts[ 1 ].x, tri.verts[ 1 ].y, tri.verts[ 1 ].z ), vec2( 0.f, 0.f ), render::state->color, render::state->glow );
+					render_vertex v2( vec3( tri.verts[ 2 ].x, tri.verts[ 2 ].y, tri.verts[ 2 ].z ), vec2( 0.f, 0.f ), render::state->color, render::state->glow );
 
-				amv++;
-				render_vertex v1( amv->pos, vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ), render::state->color, render::state->glow );
+					render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1 );
+					render::state->batch_render_target->add_primitive( g_engine->tex_white, &v1, &v2 );
+					render::state->batch_render_target->add_primitive( g_engine->tex_white, &v2, &v0 );
 
-				amv++;
-				render_vertex v2( amv->pos, vec2( amv->uv.u * render::state->uv_tiling.u, amv->uv.v * render::state->uv_tiling.v ), render::state->color, render::state->glow );
-
-				render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1 );
-				render::state->batch_render_target->add_primitive( g_engine->tex_white, &v1, &v2 );
-				render::state->batch_render_target->add_primitive( g_engine->tex_white, &v2, &v0 );
+				}
 			}
 		}
 	#endif
@@ -663,26 +660,11 @@ void render::draw_crosshair( vec2 pos )
 
 void render::draw_filled_triangle( const vec2& v0, const vec2& v1, const vec2& v2 )
 {
-	render_vertex rv0(
-		vec2( v0.x, v0.y ),
-		vec2( 0, 0 ),
-		render::state->color,
-		render::state->glow
-	);
-	render_vertex rv1(
-		vec2( v1.x, v1.y ),
-		vec2( 1, 0 ),
-		render::state->color,
-		render::state->glow
-	);
-	render_vertex rv2(
-		vec2( v2.x, v2.y ),
-		vec2( 1, 1 ),
-		render::state->color,
-		render::state->glow
-	);
+	render_vertex rv0( v0 );
+	render_vertex rv1( v1 );
+	render_vertex rv2( v2 );
 
-	render::state->batch_render_target->add_primitive( g_engine->tex_white, &rv0, &rv1, &rv2 );
+	render::state->batch_render_target->add_triangle( g_engine->tex_white, &rv0, &rv1, &rv2 );
 }
 
 auto render::get_circle_start_end_indices( e_corner corner )
@@ -772,7 +754,7 @@ void render::draw_filled_circle( const vec2& origin, float radius, e_corner corn
 			v2.x = origin.x + ( g_engine->renderer.circle_sample_points[ x ].x * radius );
 			v2.y = origin.y + ( g_engine->renderer.circle_sample_points[ x ].y * radius );
 
-			render::state->batch_render_target->add_primitive( g_engine->tex_white, &v0, &v1, &v2 );
+			render::state->batch_render_target->add_triangle( g_engine->tex_white, &v0, &v1, &v2 );
 		}
 	}
 }

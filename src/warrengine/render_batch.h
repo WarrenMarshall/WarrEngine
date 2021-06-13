@@ -26,15 +26,18 @@ struct render_batch
 	template <typename... Ts>
 	void add_primitive( texture_asset* texture, Ts... render_verts )
 	{
-	#if 0	// #render_perf
-		vao.maybe_flush_and_reset();
-	#endif
-
 		std::reference_wrapper<const render_vertex*> values [] = { render_verts... };
 		for( auto v : values )
 		{
 			add_vert( texture, v.get() );
 		}
+	}
+
+	void add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
+	{
+		add_vert( texture, v0 );
+		add_vert( texture, v1 );
+		add_vert( texture, v2 );
 	}
 
 	bool is_empty();
@@ -57,7 +60,7 @@ struct render_batch_collection
 	void flush_and_reset_internal();
 
 	void add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 );
-	void add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 );
+	void add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 );
 	void add_primitive( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 );
 	void add_primitive( texture_asset* texture, const render_vertex* v0 );
 };
