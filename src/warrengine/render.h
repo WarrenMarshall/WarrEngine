@@ -41,7 +41,7 @@ struct render
 #endif
 
 	// circle sample points are stored in a unit circle
-	constexpr static int circle_sample_points_max = 32;
+	constexpr static int circle_sample_points_max = 16;
 	std::vector<vec2> circle_sample_points;
 
 	void init();

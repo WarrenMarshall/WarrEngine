@@ -22,13 +22,11 @@ void scene_coords::pushed()
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->init( "tex_swirl" );
-			ec->finalize();
 		}
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->init( "tex_crosshair" );
 			ec->rs_opt.color = color::white;
-			ec->finalize();
 		}
 	}
 }

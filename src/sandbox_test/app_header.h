@@ -5,14 +5,6 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static bit_flag_generator collision_bits( 1 );
-
-static const unsigned scene_box2d_all = collision_bits.next();
-static const unsigned scene_box2d_world = collision_bits.next();
-static const unsigned scene_box2d_ball = collision_bits.next();
-
-// ----------------------------------------------------------------------------
-
 static void draw_tiled_background()
 {
 	scoped_render_state;
@@ -55,6 +47,7 @@ static void draw_title( std::string_view title )
 #include "scene_sound_board.h"
 #include "scene_tweens.h"
 #include "scene_box2d.h"
+#include "scene_simple_collision.h"
 #include "scene_controller.h"
 #include "scene_tilemap.h"
 #include "scene_wrapped_text.h"

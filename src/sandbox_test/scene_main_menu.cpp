@@ -80,7 +80,7 @@ void scene_main_menu::draw_ui()
 			do_menu_button<scene_tweens>( H( "button_tweens" ), "Tweens / Timers" );
 			do_menu_button<scene_sound_board>( H( "button_sound_board" ), "Sound Board" );
 			do_menu_button<scene_box2d>( H( "button_box2d" ), "Box2D" );
-			do_menu_button<scene_noise>( H( "button_cute" ), "Simple Collision" );
+			do_menu_button<scene_simple_collision>( H( "button_simple_collision" ), "Simple Collision" );
 			do_menu_button<scene_controller>( H( "button_controller" ), "Game Controller" );
 			do_menu_button<scene_noise>( H( "button_noise" ), "Noise" );
 		}

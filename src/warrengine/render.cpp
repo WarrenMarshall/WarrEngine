@@ -644,18 +644,16 @@ void render::draw_crosshair( vec2 pos )
 {
 	scoped_render_state;
 
-	const float sz = 8.f;
+	const float sz = 7.f;
 	const float hsz = sz / 2.f;
 	const float spoke_sz = sz / 3.f;
-
-	render::state->color = color::yellow;
-	render::draw_circle( pos, sz );
 
 	auto l_draw_spoke = [&] ( vec2 offset )
 	{
 		render::draw_line( pos + offset, pos + ( offset * spoke_sz ) );
 	};
 
+	render::state->color = color::yellow;
 	l_draw_spoke( { hsz, 0.f } );
 	l_draw_spoke( { -hsz, 0.f } );
 	l_draw_spoke( { 0.f, hsz } );

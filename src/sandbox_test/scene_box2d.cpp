@@ -3,6 +3,16 @@
 
 using namespace war;
 
+// ----------------------------------------------------------------------------
+
+static bit_flag_generator collision_bits( 1 );
+
+static const unsigned scene_box2d_all = collision_bits.next();
+static const unsigned scene_box2d_world = collision_bits.next();
+static const unsigned scene_box2d_ball = collision_bits.next();
+
+// ----------------------------------------------------------------------------
+
 scene_box2d::scene_box2d()
 {
 	draws_completely_solid = true;
@@ -92,7 +102,6 @@ void scene_box2d::spawn_ball_at( vec2 world_pos )
 			auto ec = e->add_component<dynamic_physics_body_component>();
 			ec->is_primary_body = true;
 			ec->add_fixture_circle( hash_none, vec2::zero, random_radius );
-			ec->finalize();
 			ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball | scene_box2d_world );
 			e->get_component<physics_component>()->set_restitution( random::getf_range( 0.f, 1.f ) );
 		}
@@ -101,7 +110,6 @@ void scene_box2d::spawn_ball_at( vec2 world_pos )
 			ec->init( std::format( "emoji_{}", random::geti_range( 1, 5 ) ) );
 			ec->get_transform()->set_scale( random_radius / 8.f );
 			ec->rs_opt.glow = random::getb() ? random::getf_range( 0.f, 2.0f ) : 0.f;
-			ec->finalize();
 		}
 	}
 }

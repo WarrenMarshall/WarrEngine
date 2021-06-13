@@ -20,6 +20,14 @@ struct entity_component
 
 	std::optional<timer> life_timer = std::nullopt;
 
+	// some components have things they want to do as a last construction step.
+	// checking this value at the top of their Update() functions gives them the
+	// chance to do that.
+	//
+	// i.e. particle systems that want to warm up
+
+	bool was_finalized = false;
+
 	entity_component() = delete;
 	entity_component( entity* parent_entity );
 	virtual ~entity_component() = default;
@@ -29,7 +37,6 @@ struct entity_component
 	virtual void update();
 	virtual void play();
 	virtual void stop();
-	virtual void finalize();
 
 	virtual void set_life_timer( int life_in_ms );
 };
@@ -87,7 +94,6 @@ struct emitter_component : entity_component
 	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
-	virtual void finalize() override;
 };
 
 // ----------------------------------------------------------------------------

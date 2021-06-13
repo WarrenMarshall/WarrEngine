@@ -33,7 +33,6 @@ void scene_entity_picking::pushed()
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->init( "anim_player_run" );
-			ec->finalize();
 		}
 	}
 

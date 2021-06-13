@@ -71,13 +71,6 @@ void entity_component::stop()
 {
 }
 
-// let's a component do anything it needs to wait until it's entirely set up to
-// do. like emitter warm_up routines.
-
-void entity_component::finalize()
-{
-}
-
 void entity_component::set_life_timer( int life_in_ms )
 {
 	assert( !life_timer.has_value() );
@@ -253,31 +246,33 @@ void emitter_component::update()
 {
 	entity_component::update();
 
-	emitter.pool.update();
-	emitter.update();
-}
-
-void emitter_component::finalize()
-{
-	if( emitter.params->needs_warm_up )
+	if( !was_finalized )
 	{
-		// particle warm ups require the parent and component transforms to be applied
-		// so the warmed up particles spawn at the right position in the world.
+		was_finalized = true;
 
+		if( emitter.params->needs_warm_up )
 		{
-			scoped_opengl_identity;
+			// particle warm ups require the parent and component transforms to be applied
+			// so the warmed up particles spawn at the right position in the world.
 
-			g_engine->render_api.top_matrix->apply_transform( *parent_entity->get_transform() );
-			g_engine->render_api.top_matrix->apply_transform( *get_transform() );
+			{
+				scoped_opengl_identity;
 
-			emitter.warm_up();
+				g_engine->render_api.top_matrix->apply_transform( *parent_entity->get_transform() );
+				g_engine->render_api.top_matrix->apply_transform( *get_transform() );
+
+				emitter.warm_up();
+			}
+		}
+		else
+		{
+			// the pool needs at least one update pass or it gets crashy
+			emitter.pool.update();
 		}
 	}
-	else
-	{
-		// the pool needs at least one update pass or it gets crashy
-		emitter.pool.update();
-	}
+
+	emitter.pool.update();
+	emitter.update();
 }
 
 void emitter_component::set_life_cycle( e_life_cycle lc )
