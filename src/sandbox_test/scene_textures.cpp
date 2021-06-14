@@ -5,7 +5,7 @@ using namespace war;
 
 scene_textures::scene_textures()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_textures::pushed()

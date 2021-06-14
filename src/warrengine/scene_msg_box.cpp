@@ -33,7 +33,7 @@ void scene_msg_box::pushed()
 {
 	scene::pushed();
 
-	blocks_further_input = true;
+	flags.blocks_further_input = true;
 }
 
 void scene_msg_box::popped()

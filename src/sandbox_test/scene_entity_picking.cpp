@@ -5,7 +5,7 @@ using namespace war;
 
 scene_entity_picking::scene_entity_picking()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_entity_picking::pushed()

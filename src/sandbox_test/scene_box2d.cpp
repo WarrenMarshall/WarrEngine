@@ -15,8 +15,8 @@ static const unsigned scene_box2d_ball = ++collision_bits;
 
 scene_box2d::scene_box2d()
 {
-	draws_completely_solid = true;
-	is_debug_physics_scene = true;
+	flags.draws_completely_solid = true;
+	flags.is_debug_physics_scene = true;
 }
 
 void scene_box2d::pushed()

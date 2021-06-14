@@ -83,7 +83,7 @@ void scene_mgr::pre_update()
 	{
 		iter->pre_update();
 
-		if( iter->blocks_further_update )
+		if( iter->flags.blocks_further_update )
 		{
 			return;
 		}
@@ -96,7 +96,7 @@ void scene_mgr::update()
 	{
 		iter->update();
 
-		if( iter->blocks_further_update )
+		if( iter->flags.blocks_further_update )
 		{
 			return;
 		}
@@ -117,7 +117,7 @@ void scene_mgr::post_update()
 	{
 		iter->post_update();
 
-		if( iter->blocks_further_update )
+		if( iter->flags.blocks_further_update )
 		{
 			return;
 		}
@@ -160,7 +160,7 @@ int scene_mgr::find_first_fully_opaque_scene()
 	{
 		idx++;
 
-		if( iter->draws_completely_solid )
+		if( iter->flags.draws_completely_solid )
 		{
 			break;
 		}
@@ -201,7 +201,7 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 
 		#ifndef _FINAL_RELEASE
 			// draw any debug information that lives in world space.
-			if( scene->is_debug_physics_scene and g_engine->renderer.debug.is_drawing_debug_info() )
+			if( scene->flags.is_debug_physics_scene and g_engine->renderer.debug.is_drawing_debug_info() )
 			{
 				render::state->z += zdepth_nudge;
 				g_engine->box2d_world->DebugDraw();
@@ -240,7 +240,7 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 					scene->draw_ui();
 				}
 
-				scene->clear_expanded_tag_this_frame = false;
+				scene->flags.clear_expanded_tag_this_frame = false;
 
 				current_scene = get_top();
 				g_ui->current_callback = nullptr;
@@ -287,7 +287,7 @@ bool scene_mgr::on_input_motion( const input_event* evt )
 			return true;
 		}
 
-		if( iter->blocks_further_input )
+		if( iter->flags.blocks_further_input )
 		{
 			return true;
 		}
@@ -305,7 +305,7 @@ bool scene_mgr::on_input_pressed( const input_event* evt )
 			return true;
 		}
 
-		if( iter->blocks_further_input )
+		if( iter->flags.blocks_further_input )
 		{
 			return true;
 		}
@@ -323,7 +323,7 @@ bool scene_mgr::on_input_held( const input_event* evt )
 			return true;
 		}
 
-		if( iter->blocks_further_input )
+		if( iter->flags.blocks_further_input )
 		{
 			return true;
 		}
@@ -341,7 +341,7 @@ bool scene_mgr::on_input_released( const input_event* evt )
 			return true;
 		}
 
-		if( iter->blocks_further_input )
+		if( iter->flags.blocks_further_input )
 		{
 			return true;
 		}
@@ -359,7 +359,7 @@ bool scene_mgr::on_input_key( const input_event* evt )
 			return true;
 		}
 
-		if( iter->blocks_further_input )
+		if( iter->flags.blocks_further_input )
 		{
 			return true;
 		}

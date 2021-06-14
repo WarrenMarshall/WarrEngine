@@ -27,7 +27,7 @@ scene_wrapped_text::scene_wrapped_text()
 {
 	ui_callback = std::make_unique<scene_wrapped_text_ui_callback>();
 
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_wrapped_text::pushed()

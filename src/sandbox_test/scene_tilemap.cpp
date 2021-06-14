@@ -5,7 +5,7 @@ using namespace war;
 
 scene_tilemap::scene_tilemap()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_tilemap::pushed()

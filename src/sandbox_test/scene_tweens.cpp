@@ -5,7 +5,7 @@ using namespace war;
 
 scene_tweens::scene_tweens()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_tweens::pushed()

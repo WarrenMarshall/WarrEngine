@@ -5,7 +5,7 @@ using namespace war;
 
 scene_main_menu::scene_main_menu()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_main_menu::pushed()

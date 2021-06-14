@@ -7,10 +7,10 @@ namespace war
 
 scene::scene()
 {
-	draws_completely_solid = false;
-	blocks_further_input = false;
-	is_debug_physics_scene = false;
-	blocks_further_update = false;
+	flags.draws_completely_solid = false;
+	flags.blocks_further_input = false;
+	flags.is_debug_physics_scene = false;
+	flags.blocks_further_update = false;
 }
 
 // ----------------------------------------------------------------------------
@@ -296,7 +296,7 @@ vec2 scene::get_viewport_pivot()
 void scene::force_close_expanded_controls()
 {
 	ui_expanded_tag_begin = ui_expanded_tag_end = hash_none;
-	clear_expanded_tag_this_frame = true;
+	flags.clear_expanded_tag_this_frame = true;
 }
 
 }

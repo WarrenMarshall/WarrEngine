@@ -5,7 +5,7 @@ using namespace war;
 
 scene_starfield::scene_starfield()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_starfield::pushed()

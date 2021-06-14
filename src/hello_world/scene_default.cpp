@@ -5,7 +5,7 @@ using namespace war;
 
 scene_default::scene_default()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_default::pushed()

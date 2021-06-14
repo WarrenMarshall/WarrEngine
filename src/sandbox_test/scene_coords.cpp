@@ -7,7 +7,7 @@ using namespace war;
 
 scene_coords::scene_coords()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_coords::pushed()

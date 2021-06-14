@@ -438,7 +438,7 @@ void ui_mgr::draw( ui_control* control, bool is_hovered, bool is_hot )
 
 		// if the expanded tag is being cleared, then force all control data to
 		// be unexpanded before drawing this frame.
-		if( g_engine->scenes.current_scene->clear_expanded_tag_this_frame )
+		if( g_engine->scenes.current_scene->flags.clear_expanded_tag_this_frame )
 		{
 			control_data->set_expanded( false );
 		}

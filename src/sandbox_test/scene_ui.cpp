@@ -95,7 +95,7 @@ void scene_ui_callback::on_value_changed( hash tag )
 scene_ui::scene_ui()
 {
 	ui_callback = std::make_unique<scene_ui_callback>();
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_ui::pushed()

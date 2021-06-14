@@ -14,7 +14,7 @@ void scene_controller_required::pushed()
 
 	save_mouse_mode();
 	g_engine->window.set_mouse_mode( mouse_mode::os );
-	blocks_further_update = true;
+	flags.blocks_further_update = true;
 }
 
 void scene_controller_required::popped()

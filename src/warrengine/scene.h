@@ -32,27 +32,32 @@ struct scene
 	hash ui_expanded_tag_begin = hash_none;
 	hash ui_expanded_tag_end = hash_none;
 
-	// set this flag to true, by calling force_close_expanded_controls(), to collapse
-	// any expanded UI controls that are waiting for the user to do something.
-	// this is a handy way to close out things like dropdown controls without
-	// having to actually click on them.
-
-	bool clear_expanded_tag_this_frame = false;
 	void force_close_expanded_controls();
 
-	// if true, this scene completely covers and obscures the scenes below it in the stack.
-	bool draws_completely_solid = false;
+	struct
+	{
+		// if true, this scene completely covers and obscures the scenes below it in the stack.
+		bool draws_completely_solid : 1 = false;
 
-	// if true, the scenes below this one can't receive user input
-	bool blocks_further_input = false;
+		// if true, the scenes below this one can't receive user input
+		bool blocks_further_input : 1 = false;
 
-	// if true, layers below this one will NOT get their Update() functions called
-	bool blocks_further_update = false;
+		// if true, layers below this one will NOT get their Update() functions called
+		bool blocks_further_update : 1 = false;
 
-	// if true, this is the scene where the box2d entities live. as a rule, entities
-	// using the physics engine live on the same scene. the engine needs a way of
-	// knowing which scene that is so it can draw the debug information correctly.
-	bool is_debug_physics_scene = false;
+		// if true, this is the scene where the box2d entities live. as a rule, entities
+		// using the physics engine live on the same scene. the engine needs a way of
+		// knowing which scene that is so it can draw the debug information correctly.
+		bool is_debug_physics_scene : 1 = false;
+
+		// set this flag to true, by calling force_close_expanded_controls(), to collapse
+		// any expanded UI controls that are waiting for the user to do something.
+		// this is a handy way to close out things like dropdown controls without
+		// having to actually click on them.
+
+		bool clear_expanded_tag_this_frame : 1 = false;
+
+	} flags;
 
 	scene();
 	virtual ~scene() = default;

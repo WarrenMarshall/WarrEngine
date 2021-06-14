@@ -5,7 +5,7 @@ using namespace war;
 
 scene_gameplay::scene_gameplay()
 {
-	is_debug_physics_scene = true;
+	flags.is_debug_physics_scene = true;
 
 	ship_power_progress.draw_percentage_as_text = false;
 

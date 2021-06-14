@@ -5,7 +5,7 @@ using namespace war;
 
 scene_palette::scene_palette()
 {
-	draws_completely_solid = true;
+	flags.draws_completely_solid = true;
 }
 
 void scene_palette::pushed()
