@@ -5,11 +5,11 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static bit_flag_generator collision_bits( 1 );
+static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_box2d_all = collision_bits.next();
-static const unsigned scene_box2d_world = collision_bits.next();
-static const unsigned scene_box2d_ball = collision_bits.next();
+static const unsigned scene_box2d_all = ++collision_bits;
+static const unsigned scene_box2d_world = ++collision_bits;
+static const unsigned scene_box2d_ball = ++collision_bits;
 
 // ----------------------------------------------------------------------------
 
