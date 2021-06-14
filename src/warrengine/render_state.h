@@ -15,7 +15,7 @@ struct render_state
 	vec2 uv_tiling = { 1.f, 1.f };
 	float z = zdepth_background;
 	float anim_offset = 0.f;
-	render_batch_collection* batch_render_target = nullptr;
+	render_batch_group* batch_render_target = nullptr;
 	font_asset* font = nullptr;		// set in ctor
 
 	void set_from_opt( render_state_optional& rso );

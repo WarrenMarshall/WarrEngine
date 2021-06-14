@@ -8,7 +8,7 @@ struct render
 
 	// rendering batches that are recreated every frame. the bulk of the
 	// rendered geo goes through these batches.
-	render_batch_collection dynamic_batches;
+	render_batch_group dynamic_batches;
 
 	// a value from 0.0-1.0 that represents how near we are to the NEXT update
 	// tick. this is used to interpolate/predict rendering for smooth movement

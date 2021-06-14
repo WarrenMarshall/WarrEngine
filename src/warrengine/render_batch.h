@@ -31,7 +31,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-struct render_batch_collection
+struct render_batch_group
 {
 	std::array<render_batch, 4> batches;
 

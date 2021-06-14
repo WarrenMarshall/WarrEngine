@@ -34,8 +34,8 @@ void scene_simple_collision::pushed()
 			ec->init( "anim_player_run" );
 		}
 		{
-			auto ec = e->add_component<sprite_component>();
-			ec->init( "anim_player_run" );
+			auto ec = e->add_component<simple_collision_component>();
+			ec->init( 32.f, 16.f );
 		}
 	}
 
@@ -98,7 +98,7 @@ void scene_simple_collision::draw()
 	}
 
 	scene::draw();
-	render::draw_world_axis();
+	//render::draw_world_axis();
 }
 
 void scene_simple_collision::draw_ui()

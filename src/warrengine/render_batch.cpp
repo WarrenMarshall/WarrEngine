@@ -82,11 +82,11 @@ void render_batch::add_vert( texture_asset* texture, const render_vertex* render
 }
 
 // ----------------------------------------------------------------------------
-// a collection of 4 render_batch objects, one for each kind of primitive the
+// a group of 4 render_batch objects, one for each kind of primitive the
 // engine can draw. this is a convenience as it allows you to throw primitives
 // at the renderer and it handles the details for you.
 
-void render_batch_collection::init()
+void render_batch_group::init()
 {
 	batches[ render_prim::quad ].init( render_prim::quad );
 	batches[ render_prim::triangle ].init( render_prim::triangle );
@@ -94,7 +94,7 @@ void render_batch_collection::init()
 	batches[ render_prim::point ].init( render_prim::point );
 }
 
-bool render_batch_collection::is_empty()
+bool render_batch_group::is_empty()
 {
 	for( auto& b : batches )
 	{
@@ -107,7 +107,7 @@ bool render_batch_collection::is_empty()
 	return true;
 }
 
-void render_batch_collection::flush_and_reset()
+void render_batch_group::flush_and_reset()
 {
 	for( auto& b : batches )
 	{
@@ -115,7 +115,7 @@ void render_batch_collection::flush_and_reset()
 	}
 }
 
-void render_batch_collection::flush_and_reset_internal()
+void render_batch_group::flush_and_reset_internal()
 {
 	for( auto& b : batches )
 	{
@@ -123,22 +123,22 @@ void render_batch_collection::flush_and_reset_internal()
 	}
 }
 
-void render_batch_collection::add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
+void render_batch_group::add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
 {
 	batches[ render_prim::quad ].add_quad( texture, v0, v1, v2, v3 );
 }
 
-void render_batch_collection::add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
+void render_batch_group::add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
 {
 	batches[ render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
 }
 
-void render_batch_collection::add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
+void render_batch_group::add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
 {
 	batches[ render_prim::line ].add_line( texture, v0, v1 );
 }
 
-void render_batch_collection::add_point( texture_asset* texture, const render_vertex* v0 )
+void render_batch_group::add_point( texture_asset* texture, const render_vertex* v0 )
 {
 	batches[ render_prim::point ].add_point( texture, v0 );
 }

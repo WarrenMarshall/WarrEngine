@@ -233,4 +233,18 @@ struct mesh_component : entity_component
 	virtual void draw() override;
 };
 
+// ----------------------------------------------------------------------------
+
+struct simple_collision_component : entity_component
+{
+	simple_collision_component() = delete;
+	simple_collision_component( entity* parent_entity );
+
+	rect aabb;
+
+	entity_component* init( float w, float h );
+	virtual void draw() override;
+	void set_as_box( float w, float h );
+};
+
 }
