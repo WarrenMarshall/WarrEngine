@@ -33,7 +33,6 @@ void draw_controller_true( ui_control* control, const rect& rc_ui )
 	scoped_render_state;
 
 	render::state->color = make_color( color::green, 1.0f );
-	render::state->scale = 1.5f;
 	render::state->angle = -10.f + ( 20.f * *anim_tween );
 
 	render::draw_sprite( control->image, rc_ui.get_midpoint() );
@@ -60,92 +59,81 @@ void scene_controller_required::draw_ui()
 {
 	scene::draw_ui();
 
-	/*
-		{
-			scoped_render_state;
+	{
+		scoped_render_state;
 
-			w_render::state->color = make_color( 0, 0.75f );
-			w_render::draw_tiled( g_engine->find_asset_in_cache<texture_asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+		render::state->color = make_color( 0, 0.75f );
+		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+	}
+
+	float panel_w = ( ui_w / 3.f ) * 2.f;
+	float panel_h = 64.f;
+
+	if( g_engine->input.gamepad )
+	{
+		if( msg_true.empty() )
+		{
+			msg_true = render::wrap_string_to_width(
+				"Game controller detected!\n\nPress any button to continue...",
+				panel_w );
 		}
 
-		float panel_w = ( viewport_w / 3.f ) * 2.f;
-		float panel_h = 80.f;
-
-		if( engine->input->gamepad )
+		panel_h += msg_true.size() * render::state->font->get_max_height();
+	}
+	else
+	{
+		if( msg_false.empty() )
 		{
-			if( msg_true.empty() )
-			{
-				msg_true = w_render::wrap_string_to_width(
-					"Game controller detected!\n\nPress any button to continue...",
-					panel_w );
-			}
-
-			panel_h += msg_true.size() * w_render::state->font->get_max_height();
-		}
-		else
-		{
-			if( msg_false.empty() )
-			{
-				msg_false = w_render::wrap_string_to_width(
-					"This game requires a game controller but one was not detected.\n\nPlease connect one to continue.",
-					panel_w );
-			}
-
-			panel_h += msg_false.size() * w_render::state->font->get_max_height();
+			msg_false = render::wrap_string_to_width(
+				"This game requires a game controller but one was not detected.\n\nPlease connect one to continue.",
+				panel_w );
 		}
 
-		ui->do_control<ui_panel_control>( H( "main_panel" ) )
-			->set_text( engine->input->gamepad ? "CONTROLLER FOUND!" : "CONTROLLER REQUIRED" )
-			->set_rect( { ui_hw - ( panel_w / 2.f ), ui_hh - ( panel_h / 2.f ), panel_w, panel_h } )
-			->finalize();
+		panel_h += msg_false.size() * render::state->font->get_max_height();
+	}
 
-		w_render::state->z += zdepth_nudge;
+	rect rc_panel = { ui_hw - ( panel_w / 2.f ), ui_hh - ( panel_h / 2.f ), panel_w, panel_h };
+	g_ui->layout_init( rc_panel );
 
-		if( engine->input->gamepad )
+	g_ui->panel_control( H( "main_panel" ) )
+		->set_text( g_engine->input.gamepad ? "CONTROLLER FOUND!" : "CONTROLLER REQUIRED" )
+		->set_rect( { ui_hw - ( panel_w / 2.f ), ui_hh - ( panel_h / 2.f ), panel_w, panel_h } )
+		->done();
+
+	if( g_engine->input.gamepad )
+	{
+		g_ui->image_control()
+			->set_image( tex_game_controller )
+			->cut_top( tex_game_controller->rc.h )
+			->set_func_draw( draw_controller_true )
+			->done();
+
+		for( auto& str : msg_true )
 		{
-			ui->do_control<ui_image_control>()
-				->set_image( tex_game_controller )
-				->set_size( { w_sz::ignored, tex_game_controller->rc.h } )
-				->set_func_draw( draw_controller_true )
-				->finalize();
-
-			float xpos = ui->current_control->rc_client.x;
-			float ypos = ui->current_control->rc_client.y + ui->current_control->rc_client.h;
-
-			for( auto& str : msg_true )
-			{
-				ui->do_control<ui_label_control>()
-					->set_text( str )
-					->set_pos( { xpos, ypos } )
-					->set_text_align( align::hcenter )
-					->finalize();
-
-				ypos += w_render::state->font->get_max_height();
-			}
+			g_ui->label_control ( )
+				->set_text( str )
+				->cut_top( render::state->font->get_max_height() )
+				->set_text_align( align::hcenter )
+				->done();
 		}
-		else
+	}
+	else
+	{
+		g_ui->image_control()
+			->set_image( tex_game_controller )
+			->cut_top( tex_game_controller->rc.h )
+			->set_func_draw( draw_controller_false )
+			->done();
+
+		for( auto& str : msg_false )
 		{
-			ui->do_control<ui_image_control>()
-				->set_image( tex_game_controller )
-				->set_size( { w_sz::ignored, tex_game_controller->rc.h } )
-				->set_func_draw( draw_controller_false )
-				->finalize();
-
-			float xpos = ui->current_control->rc_client.x;
-			float ypos = ui->current_control->rc_client.y + ui->current_control->rc_client.h;
-
-			for( auto& str : msg_false )
-			{
-				ui->do_control<ui_label_control>()
-					->set_text( str )
-					->set_pos( { xpos, ypos } )
-					->set_text_align( align::hcenter )
-					->finalize();
-
-				ypos += w_render::state->font->get_max_height();
-			}
+			g_ui->label_control()
+				->set_text( str )
+				->cut_top( render::state->font->get_max_height() )
+				->set_text_align( align::hcenter )
+				->done();
 		}
-	*/
+	}
 }
 
 bool scene_controller_required::on_input_pressed( const input_event* evt )

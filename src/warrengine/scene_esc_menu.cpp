@@ -93,21 +93,21 @@ void scene_esc_menu::draw_ui()
 	g_ui->panel_control( H( "main_panel" ) )
 		->center_control_on_screen()
 		->adjust_layout_to_client_area()
-		->end();
+		->done();
 
 	{
 		render::state->z += zdepth_nudge;
 
 		g_ui->caption_control()
 			->set_text( "PAUSE MENU" )
-			->end();
+			->done();
 
 		g_ui->spacer_control()
-			->end();
+			->done();
 
 		if( g_ui->button_control( H( "button_resume" ) )
 			->set_text( "Resume" )
-			->end() )
+			->done() )
 		{
 			g_engine->scenes.pop();
 		}
@@ -116,7 +116,7 @@ void scene_esc_menu::draw_ui()
 		{
 			if( g_ui->button_control( H( "button_main_menu" ) )
 				->set_text( "Main Menu" )
-				->end() )
+				->done() )
 			{
 				g_engine->scenes.pop();
 				g_base_game->reset_scene_stack_to_main_menu();
@@ -125,17 +125,17 @@ void scene_esc_menu::draw_ui()
 
 		if( g_ui->button_control( H( "button_exit" ) )
 			->set_text( "Exit To Desktop" )
-			->end() )
+			->done() )
 		{
 			g_engine->is_running = false;
 		}
 
 		g_ui->divider_control()
-			->end();
+			->done();
 
 		if( g_ui->check_control( H( "check_fullscreen" ) )
 			->set_text( "Full Screen?" )
-			->end() )
+			->done() )
 		{
 			g_engine->window.toggle_fullscreen();
 		}

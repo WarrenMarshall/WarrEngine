@@ -143,13 +143,13 @@ void scene_ui::draw_ui()
 		->set_rect( rc_panel )
 		->center_control_on_screen()
 		->adjust_layout_to_client_area()
-		->end();
+		->done();
 
 	g_ui->caption_control()
 		->set_text( "User Interface Controls" )
-		->end();
+		->done();
 
-	g_ui->spacer_control()->end();
+	g_ui->spacer_control()->done();
 
 	rect rc = g_ui->layout_top();
 
@@ -160,52 +160,52 @@ void scene_ui::draw_ui()
 		rc_left.w -= 4.0f;
 		scoped_ui_layout( rc_left );
 
-		if( g_ui->button_control()->set_text( "push_button" )->end() )
+		if( g_ui->button_control()->set_text( "push_button" )->done() )
 		{
 			g_engine->show_msg_box( "You clicked the button! This is the built-in engine message box." );
 		}
 
 		g_ui->check_control( H("check_box") )
 			->set_text( "check_box" )
-			->end();
+			->done();
 
-		g_ui->divider_control()->end();
+		g_ui->divider_control()->done();
 
 		cb->progress_data.set_float_value( cb->slider_01_data.float_value() );
 
 		g_ui->progress_control( H( "progress_bar_01" ) )
-			->end();
+			->done();
 
 		g_ui->slider_control( H( "slider_01" ) )
-			->end();
+			->done();
 
-		g_ui->divider_control()->end();
+		g_ui->divider_control()->done();
 
 		g_ui->label_control()
 			->set_text( "label" )
-			->end();
+			->done();
 
 		g_ui->slider_control( H( "slider_02" ) )
 			->set_size( { half_panel_w, vec2::ignored } )
 			->set_interval( 0.2f )
-			->end();
+			->done();
 
-		g_ui->divider_control()->end();
+		g_ui->divider_control()->done();
 
 		g_ui->radio_control( H( "radio_button_01" ) )
 			->set_text( "radio_button : 0" )
 			->set_idx( 0 )
-			->end();
+			->done();
 
 		g_ui->radio_control( H( "radio_button_02" ) )
 			->set_text( "radio_button : 1" )
 			->set_idx( 1 )
-			->end();
+			->done();
 
 		g_ui->radio_control( H( "radio_button_03" ) )
 			->set_text( "radio_button : 2" )
 			->set_idx( 2 )
-			->end();
+			->done();
 	}
 
 	// right side
@@ -216,27 +216,27 @@ void scene_ui::draw_ui()
 		g_ui
 			->text_control( H( "edit_text" ) )
 			->set_text( "type here" )
-			->end();
+			->done();
 
-		g_ui->divider_control()->end();
+		g_ui->divider_control()->done();
 
 		g_ui
 			->list_control( H( "list_01" ) )
 			->cut_top( render::state->font->get_max_height() * 6 )
-			->end();
+			->done();
 
 		g_ui
 			->dropdown_control( H( "dropdown_01" ) )
 			->set_text( "drop-down" )
-			->end();
+			->done();
 
-		g_ui->divider_control()->end();
+		g_ui->divider_control()->done();
 
 		g_ui
 			->image_control()
 			->set_image( "anim_player_run" )
 			->cut_top( g_ui->current_control->image->height() * 3.0f )
 			->set_func_draw( draw_control_mario )
-			->end();
+			->done();
 	}
 }

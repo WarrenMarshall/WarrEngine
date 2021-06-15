@@ -108,7 +108,7 @@ public:
 	ui_mgr* set_idx( int idx );
 
 	rect compute_client_rect_from_ui_rect( rect rc_ui );
-	bool end();
+	bool done();
 	void end_static_control();
 	void end_active_control();
 

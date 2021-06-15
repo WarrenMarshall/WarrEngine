@@ -70,11 +70,11 @@ void scene_msg_box::draw_ui()
 		->set_rect( rc_panel )
 		->center_control_on_screen()
 		->adjust_layout_to_client_area()
-		->end();
+		->done();
 
 	g_ui
 		->spacer_control()
-		->end();
+		->done();
 
 	for( auto& str : msg )
 	{
@@ -82,17 +82,17 @@ void scene_msg_box::draw_ui()
 			->label_control()
 			->set_text( str )
 			->set_text_align( align::hcenter )
-			->end();
+			->done();
 	}
 
 	g_ui
 		->spacer_control()
-		->end();
+		->done();
 
 	if( g_ui
 		->button_control()
 		->set_text( "OK" )
-		->end() )
+		->done() )
 	{
 		g_engine->scenes.pop();
 	}

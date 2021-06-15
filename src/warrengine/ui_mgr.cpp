@@ -236,7 +236,7 @@ rect ui_mgr::compute_client_rect_from_ui_rect( rect rc_ui )
 	return result;
 }
 
-bool ui_mgr::end()
+bool ui_mgr::done()
 {
 	result = {};
 

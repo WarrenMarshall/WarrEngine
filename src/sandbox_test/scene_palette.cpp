@@ -34,28 +34,28 @@ void scene_palette::draw_ui()
 
 		if( g_ui->button_control()
 			->set_text( "Ink" )
-			->end() )
+			->done() )
 		{
 			g_engine->renderer.palette = *( g_engine->find_asset<palette_asset>( "pal_ink" ) );
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Lumpy" )
-			->end() )
+			->done() )
 		{
 			g_engine->renderer.palette = *( g_engine->find_asset<palette_asset>( "pal_lumpy" ) );
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Azul 5" )
-			->end() )
+			->done() )
 		{
 			g_engine->renderer.palette = *( g_engine->find_asset<palette_asset>( "pal_azul5" ) );
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Poison" )
-			->end() )
+			->done() )
 		{
 			g_engine->renderer.palette = *( g_engine->find_asset<palette_asset>( "pal_poison" ) );
 		}

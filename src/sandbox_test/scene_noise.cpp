@@ -99,7 +99,7 @@ void scene_noise::draw_ui()
 
 		if( g_ui->button_control()
 			->set_text( "Refresh" )
-			->end() )
+			->done() )
 		{
 			generate_noise_samples();
 		}

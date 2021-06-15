@@ -55,5 +55,5 @@ void scene_default::draw_ui()
 
 	g_ui->button_control( H( "button_resume" ) )
 		->set_text( "Resume" )
-		->end();
+		->done();
 }

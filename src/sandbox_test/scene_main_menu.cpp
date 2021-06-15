@@ -29,7 +29,7 @@ void do_menu_button( hash tag, const char* text )
 		->set_slice_def( "" )
 		->set_text( text )
 		->cut_top( 12.f )
-		->end() )
+		->done() )
 	{
 		g_engine->scenes.pop();
 		g_engine->scenes.push<T>();
@@ -50,23 +50,23 @@ void scene_main_menu::draw_ui()
 		->set_rect( rc_panel )
 		->center_control_on_screen()
 		->adjust_layout_to_client_area()
-		->end();
+		->done();
 
 	{
 		g_ui->caption_control()
 			->set_text( "Test Scenes Available" )
-			->end();
+			->done();
 
 		{
 			scoped_ui_layout( g_ui->layout_top().cut_left( 0.5f ) );
 
 			do_menu_button<scene_palette>( H( "button_palettes" ), "Palettes" );
-			g_ui->divider_control()->end();
+			g_ui->divider_control()->done();
 			do_menu_button<scene_coords>( H( "button_coords" ), "Coords" );
-			g_ui->divider_control()->end();
+			g_ui->divider_control()->done();
 			do_menu_button<scene_ui>( H( "button_ui" ), "UI Controls" );
 			do_menu_button<scene_wrapped_text>( H( "button_wrapped_text" ), "Wrapped Text" );
-			g_ui->divider_control()->end();
+			g_ui->divider_control()->done();
 			do_menu_button<scene_textures>( H( "button_textures" ), "Textures" );
 			do_menu_button<scene_meshes>( H( "button_meshes" ), "Meshes" );
 			do_menu_button<scene_particles>( H( "button_particles" ), "Particles" );

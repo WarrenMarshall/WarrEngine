@@ -27,27 +27,27 @@ void scene_sound_board::draw_ui()
 
 		if( g_ui->button_control()
 			->set_text( "Coin" )
-			->end() )
+			->done() )
 		{
 			g_engine->find_asset<sound_asset>( "sfx_01" )->play();
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Jump" )
-			->end() )
+			->done() )
 		{
 			g_engine->find_asset<sound_asset>( "sfx_02" )->play();
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Doom" )
-			->end() )
+			->done() )
 		{
 			g_engine->find_asset<sound_asset>( "sfx_doom" )->play();
 		}
 
 		g_ui->divider_control()
-			->end();
+			->done();
 
 		{
 			scoped_ui_layout( g_ui->layout_top().cut_top( 24.f ) );
@@ -59,7 +59,7 @@ void scene_sound_board::draw_ui()
 			if( g_ui->button_control()
 				->set_text( "Play" )
 				->cut_left( button_width )
-				->end() )
+				->done() )
 			{
 				g_engine->find_asset<sound_asset>( "music_01" )->play();
 			}
@@ -67,7 +67,7 @@ void scene_sound_board::draw_ui()
 			if( g_ui->button_control()
 				->set_text( "Pause" )
 				->cut_left( button_width )
-				->end() )
+				->done() )
 			{
 				g_engine->find_asset<sound_asset>( "music_01" )->pause();
 			}
@@ -75,7 +75,7 @@ void scene_sound_board::draw_ui()
 			if( g_ui->button_control()
 				->set_text( "Stop" )
 				->cut_left( button_width )
-				->end() )
+				->done() )
 			{
 				g_engine->find_asset<sound_asset>( "music_01" )->stop();
 			}

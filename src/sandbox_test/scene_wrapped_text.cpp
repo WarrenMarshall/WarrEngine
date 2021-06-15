@@ -103,24 +103,24 @@ void scene_wrapped_text::draw_ui()
 		->panel_control()
 		->set_rect( rc_panel )
 		->adjust_layout_to_client_area()
-		->end();
+		->done();
 
 	g_ui
 		->radio_control( H( "rb_align_left" ) )
 		->set_text( "Left" )
 		->set_idx( 0 )
-		->end();
+		->done();
 
 	g_ui
 		->radio_control( H( "rb_align_center" ) )
 		->set_text( "Center" )
 		->set_idx( 1 )
-		->end();
+		->done();
 
 
 	g_ui
 		->radio_control( H( "rb_align_right" ) )
 		->set_text( "Right" )
 		->set_idx( 2 )
-		->end();
+		->done();
 }

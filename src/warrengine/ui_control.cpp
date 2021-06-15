@@ -565,7 +565,7 @@ void ui_list_control::draw( const rect& rc_ui, const rect& rc_client, bool is_ho
 				->set_text( item_str.data() )
 				->set_text_align( align::left | align::vcenter )
 				->set_idx( idx )
-				->end() )
+				->done() )
 			{
 				// if the item was clicked, that index becomes the current one
 				control_data->set_int_value( idx );
@@ -694,7 +694,7 @@ void ui_dropdown_control::draw( const rect& rc_ui, const rect& rc_client, bool i
 					->set_text( item_str.data() )
 					->set_text_align( align::left | align::vcenter )
 					->set_idx( idx )
-					->end() )
+					->done() )
 				{
 					// if the item was clicked, that index becomes the current one
 					control_data->set_int_value( idx );

@@ -76,7 +76,7 @@ void scene_controller::draw_ui()
 				->progress_control( H("progress_l2") )
 				->set_pos( { 190.f, 116.f } )
 				->set_size( { 46.f, 12.f } )
-				->end();
+				->done();
 
 			render::state->color.a = 0.25f + g_engine->input.get_axis_state( input_id::gamepad_left_trigger ).y;
 			render::draw_quad( g_engine->find_asset<texture_asset>( "gc_button_l2" ), vec2( 188.f, 73.f ) );
@@ -86,7 +86,7 @@ void scene_controller::draw_ui()
 				->progress_control( H( "progress_r2" ) )
 				->set_pos( { 240.f, 116.f } )
 				->set_size( { 46.f, 12.f } )
-				->end();
+				->done();
 
 			render::state->color.a = 0.25f + g_engine->input.get_axis_state( input_id::gamepad_right_trigger ).y;
 			render::draw_quad( g_engine->find_asset<texture_asset>( "gc_button_r2" ), vec2( 238.f, 73.f ) );
