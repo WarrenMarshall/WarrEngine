@@ -4,6 +4,7 @@
 
 namespace war
 {
+constexpr float alpha_scale = 0.5f;
 
 // Draw a closed polygon provided in CCW order.
 void physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
@@ -11,7 +12,7 @@ void physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount,
 	{
 		scoped_render_state;
 
-		render::state->color = war::color( color.r, color.g, color.b, color.a );
+		render::state->color = war::color( color.r, color.g, color.b, color.a * alpha_scale );
 
 		for( auto v = 0 ; v < vertexCount ; ++v )
 		{
@@ -29,7 +30,7 @@ void physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexC
 	{
 		scoped_render_state;
 
-		render::state->color = war::color( color.r, color.g, color.b, 0.5f );
+		render::state->color = war::color( color.r, color.g, color.b, color.a * alpha_scale );
 
 		assert( vertexCount > 2 );
 
@@ -58,7 +59,7 @@ void physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const b
 		{
 			scoped_render_state;
 
-			render::state->color = war::color( color.r, color.g, color.b, color.a );
+			render::state->color = war::color( color.r, color.g, color.b, color.a * alpha_scale );
 			render::draw_circle( { 0.f, 0.f }, from_box2d( radius ) );
 		}
 	}
@@ -76,7 +77,7 @@ void physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, co
 		{
 			scoped_render_state;
 
-			render::state->color = war::color( color.r, color.g, color.b, 0.5f );
+			render::state->color = war::color( color.r, color.g, color.b, 0.25f );
 			render::draw_filled_circle( { 0.f, 0.f }, from_box2d( radius ) );
 		}
 	}
@@ -91,7 +92,7 @@ void physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const 
 	{
 		scoped_render_state;
 
-		render::state->color = war::color( color.r, color.g, color.b, color.a );
+		render::state->color = war::color( color.r, color.g, color.b, color.a * alpha_scale );
 		render::draw_line( start, end );
 	}
 }
@@ -130,7 +131,7 @@ void physics_debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color& 
 	{
 		scoped_render_state;
 
-		render::state->color = war::color( color.r, color.g, color.b, color.a );
+		render::state->color = war::color( color.r, color.g, color.b, color.a * alpha_scale );
 		render::draw_point( v );
 	}
 }

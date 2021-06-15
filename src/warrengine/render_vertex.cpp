@@ -16,8 +16,8 @@ render_vertex::render_vertex( const vec2& pos, const vec2& uv, const color& colo
 render_vertex::render_vertex( const vec2& pos )
 	: x( pos.x ), y( pos.y ), z( render::state->z ),
 	u( 0.f ), v( 0.f ),
-	r( 1.f ), g( 1.f ), b( 1.f ), a( 1.f ),
-	glow( 0.f )
+	r( render::state->color.r ), g( render::state->color.g ), b( render::state->color.b ), a( render::state->color.a ),
+	glow( render::state->glow )
 {
 }
 
