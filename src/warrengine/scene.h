@@ -37,7 +37,7 @@ struct scene
 	struct
 	{
 		// if true, this scene completely covers and obscures the scenes below it in the stack.
-		bool draws_completely_solid : 1 = false;
+		bool blocks_further_drawing : 1 = false;
 
 		// if true, the scenes below this one can't receive user input
 		bool blocks_further_input : 1 = false;
@@ -57,6 +57,11 @@ struct scene
 
 		bool clear_expanded_tag_this_frame : 1 = false;
 
+		// if true, this game requires a controller to play. if a controller is
+		// not connected, the "controller required" scene will be displayed
+		// automatically whenever the engine can't find a connected controller.
+
+		bool requires_controller : 1 = false;
 	} flags;
 
 	scene();

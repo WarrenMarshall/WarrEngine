@@ -26,8 +26,6 @@ void tpl_asteroids_game::init()
 	g_engine->scenes.push<scene_starfield>();
 	g_engine->scenes.push<scene_gameplay>();
 
-	//flags.requires_controller = true;
-
 	// generate vertices for each of the ship levels
 
 	int sides = 3;

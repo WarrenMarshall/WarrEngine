@@ -105,7 +105,7 @@ void scene_mgr::update()
 	// if the game requires a game controller and one is not detected, put up
 	// the dialog that waits for one to get connected.
 
-	if( g_base_game->flags.requires_controller and !g_engine->input.gamepad )
+	if( g_engine->scenes.current_scene->flags.requires_controller and !g_engine->input.gamepad )
 	{
 		g_engine->scenes.push<scene_controller_required>();
 	}
@@ -160,7 +160,7 @@ int scene_mgr::find_first_fully_opaque_scene()
 	{
 		idx++;
 
-		if( iter->flags.draws_completely_solid )
+		if( iter->flags.blocks_further_drawing )
 		{
 			break;
 		}
@@ -195,22 +195,24 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 			{
 				scoped_render_state;
 				scene->draw();
+
+
+				#ifndef _FINAL_RELEASE
+					// draw any debug information that lives in world space.
+					if( scene->flags.is_debug_physics_scene && g_engine->renderer.debug.is_drawing_debug_info() )
+					{
+						render::state->z += 500;
+						g_engine->box2d_world->DebugDraw();
+					}
+				#endif
 			}
 
 			current_scene = get_top();
-
-		#ifndef _FINAL_RELEASE
-			// draw any debug information that lives in world space.
-			if( scene->flags.is_debug_physics_scene and g_engine->renderer.debug.is_drawing_debug_info() )
-			{
-				render::state->z += zdepth_nudge;
-				g_engine->box2d_world->DebugDraw();
-			}
-		#endif
-
 			g_engine->renderer.dynamic_batches.flush_and_reset();
 		}
 	}
+
+
 }
 
 void scene_mgr::draw_scene_ui( int starting_scene_idx )

@@ -7,7 +7,7 @@ namespace war
 
 scene::scene()
 {
-	flags.draws_completely_solid = false;
+	flags.blocks_further_drawing = false;
 	flags.blocks_further_input = false;
 	flags.is_debug_physics_scene = false;
 	flags.blocks_further_update = false;

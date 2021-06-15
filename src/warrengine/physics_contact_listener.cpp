@@ -14,14 +14,18 @@ void physics_contact_listener::BeginContact( b2Contact* contact )
 
 	pc.entity_a = ( (entity_component*)( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
+
+	// either entity is dying, don't add this contact to the list.
+	if( !pc.entity_a->get_life_cycle()->is_alive() or !pc.entity_b->get_life_cycle()->is_alive() )
+	{
+		return;
+	}
+
 	pc.fixture_a = contact->GetFixtureA();
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
 
-	assert( pc.entity_a->get_life_cycle()->is_alive() );
-	assert( pc.entity_b->get_life_cycle()->is_alive() );
-
-	g_engine->begin_contact_queue.emplace_back( std::move( pc ) );
+	g_engine->begin_contact_queue.emplace_back( pc );
 }
 
 void physics_contact_listener::EndContact( b2Contact* contact )
@@ -33,12 +37,16 @@ void physics_contact_listener::EndContact( b2Contact* contact )
 
 	pc.entity_a = ( (entity_component*)( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
+
+	// either entity is dying, don't add this contact to the list.
+	if( !pc.entity_a->get_life_cycle()->is_alive() or !pc.entity_b->get_life_cycle()->is_alive() )
+	{
+		return;
+	}
+
 	pc.fixture_a = contact->GetFixtureA();
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
-
-	assert( pc.entity_a->get_life_cycle()->is_alive() );
-	assert( pc.entity_b->get_life_cycle()->is_alive() );
 
 	g_engine->end_contact_queue.emplace_back( pc );
 }

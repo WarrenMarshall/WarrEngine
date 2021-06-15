@@ -15,7 +15,8 @@ static const unsigned scene_simple_ball = ++collision_bits;
 
 scene_simple_collision::scene_simple_collision()
 {
-	flags.draws_completely_solid = true;
+	flags.blocks_further_drawing = true;
+	flags.requires_controller = true;
 	flags.is_debug_physics_scene = true;
 }
 

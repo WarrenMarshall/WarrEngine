@@ -3,7 +3,7 @@
 
 scene_sound_board::scene_sound_board()
 {
-	flags.draws_completely_solid = true;
+	flags.blocks_further_drawing = true;
 }
 
 void scene_sound_board::draw()

@@ -5,7 +5,7 @@ using namespace war;
 
 scene_noise::scene_noise()
 {
-	flags.draws_completely_solid = true;
+	flags.blocks_further_drawing = true;
 
 	memset( &perlin_samples[ 0 ], 0, sizeof( float ) * 64 );
 	memset( &simplex_samples[ 0 ], 0, sizeof( float ) * 64 );

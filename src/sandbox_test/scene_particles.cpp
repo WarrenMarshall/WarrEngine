@@ -5,7 +5,7 @@ using namespace war;
 
 scene_particles::scene_particles()
 {
-	flags.draws_completely_solid = true;
+	flags.blocks_further_drawing = true;
 }
 
 void scene_particles::pushed()

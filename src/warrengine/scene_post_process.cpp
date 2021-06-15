@@ -134,7 +134,7 @@ scene_post_process::scene_post_process()
 
 	tex_color_test = g_engine->find_asset<texture_asset>( "tex_color_test" );
 
-	flags.draws_completely_solid = false;
+	flags.blocks_further_drawing = false;
 }
 
 void scene_post_process::pushed()

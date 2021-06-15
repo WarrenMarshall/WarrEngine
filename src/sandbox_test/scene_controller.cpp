@@ -26,7 +26,7 @@ ui_control_data* scene_controller_callback::get_data( hash tag )
 scene_controller::scene_controller()
 {
 	ui_callback = std::make_unique<scene_controller_callback>();
-	flags.draws_completely_solid = true;
+	flags.blocks_further_drawing = true;
 }
 
 void scene_controller::pushed()

@@ -20,12 +20,7 @@ struct game
 	{
 		// if true, this game has a main menu and wants the "Main Menu" option
 		// to appear on the ESC menu.
-		bool has_main_menu = false;
-
-		// if true, this game requires a controller to play. if a controller is
-		// not connected, the "controller required" scene will be displayed
-		// automatically whenever the engine can't find a connected controller.
-		bool requires_controller = false;
+		bool has_main_menu : 1 = false;
 
 	} flags;
 };

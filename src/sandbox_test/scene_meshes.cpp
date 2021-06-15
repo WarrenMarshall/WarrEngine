@@ -5,7 +5,7 @@ using namespace war;
 
 scene_meshes::scene_meshes()
 {
-	flags.draws_completely_solid = true;
+	flags.blocks_further_drawing = true;
 
 	mesh_rotator = tween( 0, 360, 5000, tween_type::pingpong, tween_via::bounce );
 	mesh_scaler = tween( 1.f, 2.f, 3000, tween_type::pingpong, tween_via::sinusoidal );
