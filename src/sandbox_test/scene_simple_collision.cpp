@@ -24,11 +24,11 @@ void scene_simple_collision::pushed()
 {
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
+	// MARIO
 	{
 		auto e = add_entity<entity>();
-		e->tag = H( "player_mario" );
-		e->make_pickable();
-		e->transform_set_pos( { 0.f, 0.f } );
+		e->tag = H( "mario" );
+		e->transform_set_pos( { -32.f, 0.f } );
 		e->transform_set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
@@ -36,57 +36,29 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->init( 32.f, 16.f );
+			ec->init( 16.f, 16.f );
 		}
+
+		mario = e;
 	}
 
-	// entity 1
-/*
+	// SKULL
 	{
 		auto e = add_entity<entity>();
-		e->tag = H( "main_ball" );
+		e->tag = H( "skull" );
+		e->transform_set_pos( { 32.f, 0.f } );
+		e->transform_set_scale( 3.f );
 		{
-			{
-				auto ec = e->add_component<kinematic_physics_body_component>();
-				ec->add_fixture_circle( hash_none, { 0.f, 0.f }, 32.f );
-				ec->set_collision_flags( scene_simple_world, scene_simple_ball );
-			}
-			{
-				auto ec = e->add_component<primitive_shape_component>();
-				ec->add_shape( primitive_shape::filled_circle, 32.f );
-				ec->rs_opt.color = make_color( pal::brighter );
-				ec->rs_opt.glow = 1.f;
-			}
+			auto ec = e->add_component<sprite_component>();
+			ec->init( "tex_skull" );
 		}
-	}
-*/
+		{
+			auto ec = e->add_component<simple_collision_component>();
+			ec->init( 16.f, 16.f );
+		}
 
-	// static world geometry
-/*
-	{
-		auto e = add_entity<entity>();
-		e->tag = H( "world" );
-		{
-			rect rc_floor = { -viewport_hw, 0.f, viewport_w, 4.f };
-			rect rc_left_wall = { -viewport_hw, -viewport_hh * 6.f, 8.f, viewport_hh * 6.f };
-			rect rc_right_wall = { viewport_hw - 8.f, -viewport_hh * 6.f, 8.f, viewport_hh * 6.f };
-			{
-				auto ec = e->add_component<static_physics_body_component>();
-				ec->add_fixture_box( hash_none, rc_floor );
-				ec->add_fixture_box( hash_none, rc_left_wall );
-				ec->add_fixture_box( hash_none, rc_right_wall );
-				e->get_component<physics_component>()->set_collision_flags( scene_simple_world, scene_simple_ball );
-			}
-			{
-				auto ec = e->add_component<primitive_shape_component>();
-				ec->add_shape( primitive_shape::filled_rect, rc_floor );
-				ec->add_shape( primitive_shape::filled_rect, rc_left_wall );
-				ec->add_shape( primitive_shape::filled_rect, rc_right_wall );
-				ec->rs_opt.color = make_color( pal::brighter );
-			}
-		}
+		skull = e;
 	}
-*/
 }
 
 void scene_simple_collision::draw()
@@ -117,8 +89,15 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::mouse:
+		case input_id::gamepad_left_stick:
 		{
+			mario->transform_delta_pos( evt->delta * 2.f );
+		}
+		break;
+
+		case input_id::gamepad_right_stick:
+		{
+			skull->transform_delta_pos( evt->delta * 2.f );
 		}
 		break;
 	}

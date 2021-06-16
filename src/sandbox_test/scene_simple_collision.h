@@ -5,6 +5,9 @@ struct scene_simple_collision : scene
 {
 	scene_simple_collision();
 
+	entity* mario = nullptr;
+	entity* skull = nullptr;
+
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;

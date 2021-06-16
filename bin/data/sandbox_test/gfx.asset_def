@@ -66,3 +66,9 @@
 	"tag" "tex_swirl"
 	"filename" "gfx/swirl.psd"
 }
+
+{
+	"type" "src_texture"
+	"tag" "tex_skull"
+	"filename" "gfx/skull.png"
+}
