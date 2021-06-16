@@ -47,7 +47,7 @@ void draw_controller_false( ui_control* control, const rect& rc_ui )
 	scoped_render_state;
 
 	render::state->color = make_color( color::grey, 0.25f + ( *anim_tween * 0.5f ) );
-	render::state->scale = 1.0f + ( *anim_tween * 0.25f );
+	render::state->scale = 1.0f + ( *anim_tween * 0.15f );
 
 	render::draw_sprite( control->image, rc_ui.get_midpoint() );
 }
@@ -67,7 +67,7 @@ void scene_controller_required::draw_ui()
 	}
 
 	float panel_w = ( ui_w / 3.f ) * 2.f;
-	float panel_h = 64.f;
+	float panel_h = 80.f;	// the height of the panel without the text lines. the text height is added below.
 
 	if( g_engine->input.gamepad )
 	{
@@ -96,8 +96,11 @@ void scene_controller_required::draw_ui()
 	g_ui->layout_init( rc_panel );
 
 	g_ui->panel_control( H( "main_panel" ) )
-		->set_text( g_engine->input.gamepad ? "CONTROLLER FOUND!" : "CONTROLLER REQUIRED" )
-		->set_rect( { ui_hw - ( panel_w / 2.f ), ui_hh - ( panel_h / 2.f ), panel_w, panel_h } )
+		->set_rect( rc_panel )
+		->done();
+
+	g_ui->caption_control()
+		->set_text( g_engine->input.gamepad ? "Controller Found!" : "Controller Required" )
 		->done();
 
 	if( g_engine->input.gamepad )
@@ -119,6 +122,8 @@ void scene_controller_required::draw_ui()
 	}
 	else
 	{
+		g_ui->spacer_control()->done();
+
 		g_ui->image_control()
 			->set_image( tex_game_controller )
 			->cut_top( tex_game_controller->rc.h )
