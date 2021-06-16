@@ -7,9 +7,8 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_all = ++collision_bits;
-static const unsigned scene_simple_world = ++collision_bits;
-static const unsigned scene_simple_ball = ++collision_bits;
+static const unsigned scene_simple_coll_mario = ++collision_bits;
+static const unsigned scene_simple_coll_skull = ++collision_bits;
 
 // ----------------------------------------------------------------------------
 
@@ -32,11 +31,13 @@ void scene_simple_collision::pushed()
 		e->transform_set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
+			ec->rs_opt.color = make_color( color::white, 0.25f );
 			ec->init( "anim_player_run" );
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
 			ec->init( 16.f, 16.f );
+			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
 		mario = e;
@@ -50,11 +51,13 @@ void scene_simple_collision::pushed()
 		e->transform_set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
+			ec->rs_opt.color = make_color( color::white, 0.25f );
 			ec->init( "tex_skull" );
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
 			ec->init( 16.f, 16.f );
+			ec->set_collision_flags( scene_simple_coll_skull, scene_simple_coll_mario );
 		}
 
 		skull = e;
@@ -67,6 +70,12 @@ void scene_simple_collision::draw()
 		scoped_render_state;
 
 		render::state->color = make_color( pal::darker );
+
+		if( collision_is_happening )
+		{
+			render::state->color = make_color( color::red );
+		}
+
 		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ), rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 

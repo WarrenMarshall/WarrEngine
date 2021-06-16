@@ -39,6 +39,15 @@ struct entity_component
 	virtual void stop();
 
 	virtual void set_life_timer( int life_in_ms );
+
+	// which collision mask(s) this entity is a part of
+	int collision_mask = 0;
+
+	// which collision mask(s) this entity will collide WITH
+	int collides_with_mask = 0;
+
+	virtual void set_collision_flags( int collision_mask, int collides_with );
+	virtual void clear_collision_flags();
 };
 
 // ----------------------------------------------------------------------------
@@ -142,20 +151,14 @@ struct physics_component : entity_component
 	physics_component() = delete;
 	physics_component( entity* parent_entity );
 
-	// which collision mask(s) this entity is a part of
-	int collision_mask = 0;
-
-	// which collision mask(s) this entity will collide WITH
-	int collides_with_mask = 0;
-
-	void set_collision_flags( int collision_mask, int collides_with );
-	void clear_collision_flags();
-
 	[[nodiscard]] physics_body_component* get_primary_body();
 
 	void set_friction( float friction );
 	void set_restitution( float restitution );
 	void set_density( float density );
+
+	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
+	virtual void clear_collision_flags() override;
 };
 
 // ----------------------------------------------------------------------------
@@ -191,7 +194,8 @@ struct physics_body_component : entity_component
 	b2Fixture* add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts );
 
 	void add_physics_component_if_needed();
-	void set_collision_flags( int collision_mask, int collides_with );
+
+	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
 };
 
 // ----------------------------------------------------------------------------

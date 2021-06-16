@@ -78,6 +78,17 @@ void entity_component::set_life_timer( int life_in_ms )
 	life_timer = timer( life_in_ms );
 }
 
+void entity_component::set_collision_flags( int collision_mask, int collides_with )
+{
+	this->collision_mask = collision_mask;
+	this->collides_with_mask = collides_with;
+}
+
+void entity_component::clear_collision_flags()
+{
+	collision_mask = collides_with_mask = 0;
+}
+
 // ----------------------------------------------------------------------------
 
 sprite_component::sprite_component( entity* parent_entity )
@@ -340,8 +351,7 @@ physics_component::physics_component( entity* parent_entity )
 
 void physics_component::set_collision_flags( int collision_mask, int collides_with )
 {
-	this->collision_mask = collision_mask;
-	this->collides_with_mask = collides_with;
+	entity_component::set_collision_flags( collision_mask, collides_with );
 
 	// update all attached bodies to have matching flags
 

@@ -55,6 +55,11 @@ vec2 physics_contact_listener::calc_hit_normal( b2Body* body_colliding )
 {
 	vec2 hit_normal = vec2::zero;
 
+	// this handles the case where a circle collides with another circle. this,
+	// for some reason, crashes if I try to compute it the same as I compute a
+	// collision normal with a box. box2d does something in that case that I
+	// don't understand.
+
 	if( manifold->type == 0 )	// circle
 	{
 		hit_normal = vec2( body_colliding->GetWorldCenter() ) - vec2( manifold->localPoint );
