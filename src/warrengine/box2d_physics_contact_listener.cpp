@@ -15,7 +15,7 @@ void contact_listener::BeginContact( b2Contact* contact )
 	pc.entity_a = ( (entity_component*)( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
 
-	// either entity is dying, don't add this contact to the list.
+	// if either entity is dying, don't add this contact to the list.
 	if( !pc.entity_a->get_life_cycle()->is_alive() or !pc.entity_b->get_life_cycle()->is_alive() )
 	{
 		return;
@@ -25,7 +25,7 @@ void contact_listener::BeginContact( b2Contact* contact )
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
 
-	g_engine->begin_contact_queue.emplace_back( pc );
+	g_engine->box2d.begin_contact_queue.emplace_back( pc );
 }
 
 void contact_listener::EndContact( b2Contact* contact )
@@ -38,7 +38,7 @@ void contact_listener::EndContact( b2Contact* contact )
 	pc.entity_a = ( (entity_component*)( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
 
-	// either entity is dying, don't add this contact to the list.
+	// if either entity is dying, don't add this contact to the list.
 	if( !pc.entity_a->get_life_cycle()->is_alive() or !pc.entity_b->get_life_cycle()->is_alive() )
 	{
 		return;
@@ -48,7 +48,7 @@ void contact_listener::EndContact( b2Contact* contact )
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
 
-	g_engine->end_contact_queue.emplace_back( pc );
+	g_engine->box2d.end_contact_queue.emplace_back( pc );
 }
 
 vec2 contact_listener::calc_hit_normal( b2Body* body_colliding )

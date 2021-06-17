@@ -202,7 +202,7 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 					if( scene->flags.is_debug_physics_scene && g_engine->renderer.debug.is_drawing_debug_info() )
 					{
 						render::state->z += 500;
-						g_engine->box2d_world->DebugDraw();
+						g_engine->box2d.world->DebugDraw();
 					}
 				#endif
 			}

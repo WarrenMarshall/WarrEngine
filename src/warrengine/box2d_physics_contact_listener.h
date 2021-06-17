@@ -2,6 +2,8 @@
 namespace war::box2d_physics
 {
 
+// called by box2d when collisions begin or end between bodies
+
 struct contact_listener : b2ContactListener
 {
 	b2Contact* contact = nullptr;

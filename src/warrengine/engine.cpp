@@ -352,7 +352,7 @@ void engine::main_loop()
 				// queue up inputs for processing later in the loop
 				input.queue_motion();
 
-				box2d_world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
+				box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
 
 				pre_update();
 				update();
@@ -604,12 +604,12 @@ vec2 engine::find_vec2_from_symbol( std::string_view symbol, const vec2& def_val
 
 void engine::new_physics_world()
 {
-	g_engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
-	g_engine->physics_responder = std::make_unique<box2d_physics::contact_listener>();
-	g_engine->box2d_world->SetContactListener( g_engine->physics_responder.get() );
+	g_engine->box2d.world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
+	g_engine->box2d.listener = std::make_unique<box2d_physics::contact_listener>();
+	g_engine->box2d.world->SetContactListener( g_engine->box2d.listener.get() );
 
 	g_engine->box2d.debug_draw = std::make_unique<war::box2d_physics::debug_draw>();
-	g_engine->box2d_world->SetDebugDraw( g_engine->box2d.debug_draw.get() );
+	g_engine->box2d.world->SetDebugDraw( g_engine->box2d.debug_draw.get() );
 	g_engine->box2d.debug_draw->SetFlags(
 		0
 		| b2Draw::e_shapeBit			// shapes
@@ -949,17 +949,17 @@ void engine::process_collision_queue()
 {
 	// begin contact
 
-	for( auto& iter : begin_contact_queue )
+	for( auto& iter : box2d.begin_contact_queue )
 	{
 		iter.entity_a->on_collision_begin( iter, iter.entity_b );
 		iter.entity_b->on_collision_begin( iter, iter.entity_a );
 	}
 
-	begin_contact_queue.clear();
+	box2d.begin_contact_queue.clear();
 
 	// end contact
 
-	for( auto& iter : end_contact_queue )
+	for( auto& iter : box2d.end_contact_queue )
 	{
 		// sometimes we get garbage entities/fixtures in this iterator when
 		// shutting down the world. i think checking the restitution value like
@@ -975,7 +975,7 @@ void engine::process_collision_queue()
 		iter.entity_b->on_collision_end( iter, iter.entity_a );
 	}
 
-	end_contact_queue.clear();
+	box2d.end_contact_queue.clear();
 }
 
 void engine::set_time_dilation( float dilation )

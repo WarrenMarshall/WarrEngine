@@ -442,7 +442,7 @@ box2d_physics_body_component::~box2d_physics_body_component()
 
 		// destroy the body itself
 
-		g_engine->box2d_world->DestroyBody( body );
+		g_engine->box2d.world->DestroyBody( body );
 		body = nullptr;
 	}
 }
@@ -456,7 +456,7 @@ void box2d_physics_body_component::init_body()
 		body_definition.angle = 0.f;
 	}
 
-	body = g_engine->box2d_world->CreateBody( &body_definition );
+	body = g_engine->box2d.world->CreateBody( &body_definition );
 	body->m_userData.pointer = (uintptr_t)this;
 }
 

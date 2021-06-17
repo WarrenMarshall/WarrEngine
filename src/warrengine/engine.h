@@ -59,15 +59,14 @@ struct engine
 
 	struct
 	{
+		std::unique_ptr<b2World> world = nullptr;
 		std::unique_ptr<box2d_physics::debug_draw> debug_draw = nullptr;
 
+		std::unique_ptr<box2d_physics::contact_listener> listener = nullptr;
+
+		std::vector<box2d_physics::pending_collision> begin_contact_queue;
+		std::vector<box2d_physics::pending_collision> end_contact_queue;
 	} box2d;
-
-	std::unique_ptr<b2World> box2d_world = nullptr;
-	std::unique_ptr<box2d_physics::contact_listener> physics_responder = nullptr;
-
-	std::vector<box2d_physics::pending_collision> begin_contact_queue;
-	std::vector<box2d_physics::pending_collision> end_contact_queue;
 
 	render_stats stats;
 
