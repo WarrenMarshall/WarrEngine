@@ -153,12 +153,14 @@ void scene::post_update()
 						c2Manifold m;
 						c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
 
-						//scoped_render_state;
-						//render::state->color = make_color( color::red );
-						//render::state->z += 500;
-						//render::draw_line( scc_a->parent_entity->get_transform()->pos, vec2( m.n.x, m.n.y ) * 150.f );
+						// add the collision to the pending collision list
+						simple_collision::pending_collision collision;
 
-						log( "{}, {}/{}", m.count, m.n.x, m.n.y );
+						collision.entity_a = scc_a->parent_entity;
+						collision.entity_b = scc_b->parent_entity;
+						collision.manifold = m;
+
+						g_engine->simple_collision.queue.emplace_back( collision );
 					}
 				}
 			}

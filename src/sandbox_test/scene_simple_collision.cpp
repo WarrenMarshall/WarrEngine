@@ -48,7 +48,7 @@ void scene_simple_collision::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "skull" );
 		e->transform_set_pos( { 0.f, 0.f } );
-		//e->transform_set_scale( 3.f );
+		e->transform_set_scale( 2.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );

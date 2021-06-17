@@ -63,10 +63,14 @@ struct engine
 		std::unique_ptr<box2d_physics::debug_draw> debug_draw = nullptr;
 
 		std::unique_ptr<box2d_physics::contact_listener> listener = nullptr;
-
 		std::vector<box2d_physics::pending_collision> begin_contact_queue;
 		std::vector<box2d_physics::pending_collision> end_contact_queue;
 	} box2d;
+
+	struct
+	{
+		std::vector<simple_collision::pending_collision> queue;
+	} simple_collision;
 
 	render_stats stats;
 

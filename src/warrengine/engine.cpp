@@ -947,12 +947,15 @@ bool engine::on_input_released( const input_event* evt )
 
 void engine::process_collision_queue()
 {
+	// ----------------------------------------------------------------------------
+	// box2d
+
 	// begin contact
 
 	for( auto& iter : box2d.begin_contact_queue )
 	{
-		iter.entity_a->on_collision_begin( iter, iter.entity_b );
-		iter.entity_b->on_collision_begin( iter, iter.entity_a );
+		iter.entity_a->on_box2d_collision_begin( iter, iter.entity_b );
+		iter.entity_b->on_box2d_collision_begin( iter, iter.entity_a );
 	}
 
 	box2d.begin_contact_queue.clear();
@@ -971,11 +974,21 @@ void engine::process_collision_queue()
 			continue;
 		}
 
-		iter.entity_a->on_collision_end( iter, iter.entity_b );
-		iter.entity_b->on_collision_end( iter, iter.entity_a );
+		iter.entity_a->on_box2d_collision_end( iter, iter.entity_b );
+		iter.entity_b->on_box2d_collision_end( iter, iter.entity_a );
 	}
 
 	box2d.end_contact_queue.clear();
+
+	// ----------------------------------------------------------------------------
+	// simple
+
+	for( auto& iter : simple_collision.queue )
+	{
+		iter.entity_a->on_simple_collision( iter, iter.entity_b );
+	}
+
+	simple_collision.queue.clear();
 }
 
 void engine::set_time_dilation( float dilation )

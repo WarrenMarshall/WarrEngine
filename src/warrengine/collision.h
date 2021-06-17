@@ -1,20 +1,15 @@
 #pragma once
 
 
-namespace war
+namespace war::simple_collision
 {
 
-// #warren - delete this cpp/h combo?
-/*
-struct collision_primitive
+struct pending_collision
 {
+	entity* entity_a;	// entity that is being touched
+	entity* entity_b;	// entity doing the touching
 
+	c2Manifold manifold;
 };
 
-struct collision_primitive_aabb : collision_primitive
-{
-	c2AABB bbox;
-};
-
-*/
 }

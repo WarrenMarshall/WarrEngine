@@ -217,14 +217,21 @@ transform* entity::transform_delta_scale( const float delta )
 
 // entities are starting to collide
 
-void entity::on_collision_begin( box2d_physics::pending_collision& coll, entity* other )
+void entity::on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by )
 {
 }
 
 // entities are no longer colliding
 
-void entity::on_collision_end( box2d_physics::pending_collision& coll, entity* other )
+void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by )
 {
+}
+
+// entities have hit each other using simple collision checks
+
+void entity::on_simple_collision( simple_collision::pending_collision& coll, entity* touched_by )
+{
+	touched_by->set_life_cycle( life_cycle::dying );
 }
 
 bool entity::can_be_deleted()
