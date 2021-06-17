@@ -287,11 +287,7 @@ rect rect::operator*=( float v )
 
 c2AABB rect::to_c2AABB() const
 {
-	c2AABB bb = {};
-	bb.min = { x, y };
-	bb.max = { x + w, y + h };
-
-	return bb;
+	return { { x, y }, { x + w, y + h } };
 }
 
 // ----------------------------------------------------------------------------

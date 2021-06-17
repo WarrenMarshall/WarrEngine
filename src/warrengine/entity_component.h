@@ -245,9 +245,11 @@ struct simple_collision_component : entity_component
 	simple_collision_component( entity* parent_entity );
 
 	rect aabb;
+	rect aabb_ws;
 
 	entity_component* init( float w, float h );
 	virtual void draw() override;
+	virtual void update() override;
 	void set_as_box( float w, float h );
 };
 

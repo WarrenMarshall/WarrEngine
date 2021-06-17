@@ -85,11 +85,6 @@ void entity::draw()
 	}
 }
 
-const transform* entity::get_transform()
-{
-	return &_tform;
-}
-
 // called whenever the transform for an entity is changed. if there are physics
 // components attached, they are updated to match the entity transform.
 //

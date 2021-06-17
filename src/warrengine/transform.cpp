@@ -46,6 +46,11 @@ transform* transform::add_scale( float delta )
 	return set_scale( this->scale + delta );
 }
 
+transform* transform::multiply_scale( float delta )
+{
+	return set_scale( this->scale * delta );
+}
+
 // ----------------------------------------------------------------------------
 // transforms positions, not directions.
 

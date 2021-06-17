@@ -788,6 +788,36 @@ void simple_collision_component::draw()
 	}
 }
 
+void simple_collision_component::update()
+{
+	entity_component::update();
+
+	// transform the local space bounding box into worldspace coordinates. this
+	// makes checking for collisions later on a lot simpler.
+
+	transform pos_tform;
+	pos_tform.add_pos( parent_entity->get_transform()->pos );
+	pos_tform.add_pos( get_transform()->pos );
+	auto pos_mtx = pos_tform.to_matrix();
+
+	vec2 v;
+	v = pos_mtx.transform_vec2( { aabb.x, aabb.y } );
+	aabb_ws.x = v.x;
+	aabb_ws.y = v.y;
+
+	transform scale_tform;
+	scale_tform.add_scale( parent_entity->get_transform()->scale );
+	scale_tform.multiply_scale( get_transform()->scale );
+	auto scale_mtx = scale_tform.to_matrix();
+
+	v = scale_mtx.transform_vec2( { aabb.w, aabb.h } );
+	aabb_ws.w = v.w;
+	aabb_ws.h = v.h;
+
+	aabb_ws.x -= aabb_ws.w / 2.0f;
+	aabb_ws.y -= aabb_ws.h / 2.0f;
+}
+
 // sets the dimensions of the collision box, centered around the components position.
 
 void simple_collision_component::set_as_box( float w, float h )

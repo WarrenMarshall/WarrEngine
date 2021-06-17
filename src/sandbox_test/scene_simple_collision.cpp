@@ -27,7 +27,7 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
-		e->transform_set_pos( { -32.f, 0.f } );
+		e->transform_set_pos( { -80.f, 0.f } );
 		e->transform_set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
@@ -47,8 +47,8 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "skull" );
-		e->transform_set_pos( { 32.f, 0.f } );
-		e->transform_set_scale( 3.f );
+		e->transform_set_pos( { 0.f, 0.f } );
+		//e->transform_set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -57,7 +57,7 @@ void scene_simple_collision::pushed()
 		{
 			auto ec = e->add_component<simple_collision_component>();
 			ec->init( 16.f, 16.f );
-			ec->set_collision_flags( scene_simple_coll_skull, scene_simple_coll_mario );
+			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 		}
 
 		skull = e;
@@ -80,7 +80,7 @@ void scene_simple_collision::draw()
 	}
 
 	scene::draw();
-	//render::draw_world_axis();
+	render::draw_world_axis();
 }
 
 void scene_simple_collision::draw_ui()

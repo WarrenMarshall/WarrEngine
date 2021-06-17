@@ -6,10 +6,12 @@ struct entity
 {
 	transform _tform;
 
-	const transform* get_transform();
-
-	void update_physics_components_to_match_transform();
-	void update_transform_to_match_physics_components();
+	// this is a read-only pointer. to change the transform, use the
+	// "transform_" functions below.
+	[[nodiscard]] const transform* get_transform()
+	{
+		return &_tform;
+	}
 
 	// direct transforms
 
@@ -23,6 +25,11 @@ struct entity
 	transform* transform_delta_pos( const vec2& delta );
 	transform* transform_delta_angle( const float delta );
 	transform* transform_delta_scale( const float delta );
+
+	// ----------------------------------------------------------------------------
+
+	void update_physics_components_to_match_transform();
+	void update_transform_to_match_physics_components();
 
 	virtual void set_life_cycle( e_life_cycle lc );
 	const life_cycle_mgr* get_life_cycle();

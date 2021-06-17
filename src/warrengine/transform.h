@@ -20,6 +20,7 @@ struct transform
 	transform* add_pos( vec2 delta );
 	transform* add_angle( float delta );
 	transform* add_scale( float delta );
+	transform* multiply_scale( float delta );
 
 	// builds a matrix from the current transform values
 

@@ -103,6 +103,8 @@ void scene::pre_update()
 
 void scene::update()
 {
+	simple_collision_components.clear();
+
 	// update entities and components
 
 	for( auto& entity : entities )
@@ -116,12 +118,40 @@ void scene::update()
 			entity->update();
 			entity->update_components();
 			entity->update_from_physics();
+
+			// gather a list of all simple collision components that exist on
+			// this entity
+
+			auto scc = entity->get_component<simple_collision_component>();
+			if( scc )
+			{
+				simple_collision_components.emplace_back( scc );
+			}
 		}
 	}
 }
 
 void scene::post_update()
 {
+	// process simple collisions
+
+	for( auto scc_a : simple_collision_components )
+	{
+		for( auto scc_b : simple_collision_components )
+		{
+			if( scc_a->parent_entity != scc_b->parent_entity )
+			{
+				if( scc_a->collides_with_mask & scc_b->collision_mask )
+				{
+					if( c2AABBtoAABB( scc_a->aabb_ws.to_c2AABB(), scc_b->aabb_ws.to_c2AABB() ) )
+					{
+						log( "colliding!" );
+					}
+				}
+			}
+		}
+	}
+
 	// update entities and components, after physics have run
 
 	for( auto& entity : entities )

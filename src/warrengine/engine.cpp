@@ -334,18 +334,18 @@ void engine::main_loop()
 			input.update();
 		}
 
-		// if there will be a fixed time step happening, update the real time
-		// shader uniforms. this is better perf than updating them every single
-		// render frame.
 
 		if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
 		{
-			// update shader parameters
+			// if there will be a fixed time step happening, update the real time
+			// shader uniforms. this is better perf than updating them every single
+			// render frame.
+
 			g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
 			post_process.film_grain_amount += 0.01f;
 			g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
 
-			// if we have fixed time steps to perform, walk through them one at a time
+			// walk through each pending fixed time step, one at a time
 
 			for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
 			{
