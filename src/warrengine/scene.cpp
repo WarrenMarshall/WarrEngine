@@ -143,9 +143,22 @@ void scene::post_update()
 			{
 				if( scc_a->collides_with_mask & scc_b->collision_mask )
 				{
-					if( c2AABBtoAABB( scc_a->aabb_ws.to_c2AABB(), scc_b->aabb_ws.to_c2AABB() ) )
+					auto aabb_ws_a = scc_a->aabb_ws.to_c2AABB();
+					auto aabb_ws_b = scc_b->aabb_ws.to_c2AABB();
+
+					// quick boolean check
+					if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
 					{
-						log( "colliding!" );
+						// more complex check
+						c2Manifold m;
+						c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+
+						//scoped_render_state;
+						//render::state->color = make_color( color::red );
+						//render::state->z += 500;
+						//render::draw_line( scc_a->parent_entity->get_transform()->pos, vec2( m.n.x, m.n.y ) * 150.f );
+
+						log( "{}, {}/{}", m.count, m.n.x, m.n.y );
 					}
 				}
 			}

@@ -806,7 +806,7 @@ void simple_collision_component::update()
 	aabb_ws.y = v.y;
 
 	transform scale_tform;
-	scale_tform.add_scale( parent_entity->get_transform()->scale );
+	scale_tform.set_scale( parent_entity->get_transform()->scale );
 	scale_tform.multiply_scale( get_transform()->scale );
 	auto scale_mtx = scale_tform.to_matrix();
 
