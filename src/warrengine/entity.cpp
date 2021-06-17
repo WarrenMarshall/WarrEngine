@@ -94,11 +94,11 @@ void entity::draw()
 
 void entity::update_physics_components_to_match_transform()
 {
-	if( has_component<physics_component>() )
+	if( has_component<box2d_physics_component>() )
 	{
-		std::vector<physics_body_component*> ecs;
-		get_components<physics_body_component, dynamic_physics_body_component>( ecs );
-		get_components<physics_body_component, kinematic_physics_body_component>( ecs );
+		std::vector<box2d_physics_body_component*> ecs;
+		get_components<box2d_physics_body_component, box2d_dynamic_physics_body_component>( ecs );
+		get_components<box2d_physics_body_component, box2d_kinematic_physics_body_component>( ecs );
 
 		for( auto ec : ecs )
 		{
@@ -122,9 +122,9 @@ void entity::update_transform_to_match_physics_components()
 	// to an entity so it is assumed that once we find and
 	// process that one, we're done.
 
-	std::vector<physics_body_component*> ecs;
-	get_components<physics_body_component, dynamic_physics_body_component>( ecs );
-	get_components<physics_body_component, kinematic_physics_body_component>( ecs );
+	std::vector<box2d_physics_body_component*> ecs;
+	get_components<box2d_physics_body_component, box2d_dynamic_physics_body_component>( ecs );
+	get_components<box2d_physics_body_component, box2d_kinematic_physics_body_component>( ecs );
 
 	for( auto& ec : ecs )
 	{
@@ -171,7 +171,7 @@ transform* entity::transform_set_scale( const float scale )
 {
 	_tform.set_scale( scale );
 
-	if( has_component<physics_component>() )
+	if( has_component<box2d_physics_component>() )
 	{
 		// scaling an entity with physics components isn't encouraged as we
 		// don't have a way to scale the physics components at the same time. so
@@ -203,7 +203,7 @@ transform* entity::transform_delta_scale( const float delta )
 	_tform.add_scale( delta );
 
 
-	if( has_component<physics_component>() )
+	if( has_component<box2d_physics_component>() )
 	{
 		// scaling an entity with physics components isn't encouraged as we
 		// don't have a way to scale the physics components at the same time. so
@@ -217,13 +217,13 @@ transform* entity::transform_delta_scale( const float delta )
 
 // entities are starting to collide
 
-void entity::on_collision_begin( physics_pending_collision& coll, entity* other )
+void entity::on_collision_begin( box2d_physics::pending_collision& coll, entity* other )
 {
 }
 
 // entities are no longer colliding
 
-void entity::on_collision_end( physics_pending_collision& coll, entity* other )
+void entity::on_collision_end( box2d_physics::pending_collision& coll, entity* other )
 {
 }
 
@@ -275,7 +275,7 @@ void entity::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
-	auto ecp = get_component<physics_component>();
+	auto ecp = get_component<box2d_physics_component>();
 	if( ecp and !life_cycle.is_alive() )
 	{
 		ecp->clear_collision_flags();

@@ -1,5 +1,5 @@
 
-namespace war
+namespace war::box2d_physics
 {
 
 struct raycast_hit

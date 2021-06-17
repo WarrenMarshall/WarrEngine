@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war
+namespace war::box2d_physics
 {
 
 // ----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ float raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, c
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<physics_component>();
+		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -52,7 +52,7 @@ float raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, co
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<physics_component>();
+		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -75,7 +75,7 @@ float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<physics_component>();
+		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{

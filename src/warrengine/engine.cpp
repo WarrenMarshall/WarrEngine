@@ -605,12 +605,12 @@ vec2 engine::find_vec2_from_symbol( std::string_view symbol, const vec2& def_val
 void engine::new_physics_world()
 {
 	g_engine->box2d_world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
-	g_engine->physics_responder = std::make_unique<physics_contact_listener>();
+	g_engine->physics_responder = std::make_unique<box2d_physics::contact_listener>();
 	g_engine->box2d_world->SetContactListener( g_engine->physics_responder.get() );
 
-	g_engine->physics_debug_draw = std::make_unique<war::physics_debug_draw>();
-	g_engine->box2d_world->SetDebugDraw( g_engine->physics_debug_draw.get() );
-	g_engine->physics_debug_draw->SetFlags(
+	g_engine->box2d.debug_draw = std::make_unique<war::box2d_physics::debug_draw>();
+	g_engine->box2d_world->SetDebugDraw( g_engine->box2d.debug_draw.get() );
+	g_engine->box2d.debug_draw->SetFlags(
 		0
 		| b2Draw::e_shapeBit			// shapes
 		| b2Draw::e_jointBit			// joint connections

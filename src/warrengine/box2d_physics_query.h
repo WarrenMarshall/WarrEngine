@@ -1,8 +1,8 @@
 
-namespace war
+namespace war::box2d_physics
 {
 
-struct physics_query
+struct query
 {
 	[[nodiscard]] static bool trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask );
 	[[nodiscard]] static bool trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_simple* hit_result );

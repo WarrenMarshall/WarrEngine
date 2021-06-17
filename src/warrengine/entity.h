@@ -132,8 +132,8 @@ struct entity
 		}
 	}
 
-	virtual void on_collision_begin( physics_pending_collision& coll, entity* other );
-	virtual void on_collision_end( physics_pending_collision& coll, entity* other );
+	virtual void on_collision_begin( box2d_physics::pending_collision& coll, entity* other );
+	virtual void on_collision_end( box2d_physics::pending_collision& coll, entity* other );
 
 private:
 

@@ -2,15 +2,15 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war
+namespace war::box2d_physics
 {
 
-void physics_contact_listener::BeginContact( b2Contact* contact )
+void contact_listener::BeginContact( b2Contact* contact )
 {
 	this->contact = contact;
 	manifold = contact->GetManifold();
 
-	physics_pending_collision pc;
+	box2d_physics::pending_collision pc;
 
 	pc.entity_a = ( (entity_component*)( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
@@ -28,9 +28,9 @@ void physics_contact_listener::BeginContact( b2Contact* contact )
 	g_engine->begin_contact_queue.emplace_back( pc );
 }
 
-void physics_contact_listener::EndContact( b2Contact* contact )
+void contact_listener::EndContact( b2Contact* contact )
 {
-	physics_pending_collision pc;
+	box2d_physics::pending_collision pc;
 
 	this->contact = contact;
 	manifold = contact->GetManifold();
@@ -51,7 +51,7 @@ void physics_contact_listener::EndContact( b2Contact* contact )
 	g_engine->end_contact_queue.emplace_back( pc );
 }
 
-vec2 physics_contact_listener::calc_hit_normal( b2Body* body_colliding )
+vec2 contact_listener::calc_hit_normal( b2Body* body_colliding )
 {
 	vec2 hit_normal = vec2::zero;
 

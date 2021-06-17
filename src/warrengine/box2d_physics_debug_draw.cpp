@@ -2,12 +2,12 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war
+namespace war::box2d_physics
 {
 constexpr float alpha_scale = 0.5f;
 
 // Draw a closed polygon provided in CCW order.
-void physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
+void debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
 	{
 		scoped_render_state;
@@ -25,7 +25,7 @@ void physics_debug_draw::DrawPolygon( const b2Vec2* vertices, int32 vertexCount,
 }
 
 // Draw a solid closed polygon provided in CCW order.
-void physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
+void debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color )
 {
 	{
 		scoped_render_state;
@@ -48,7 +48,7 @@ void physics_debug_draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexC
 }
 
 // Draw a circle.
-void physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const b2Color& color )
+void debug_draw::DrawCircle( const b2Vec2& center, float radius, const b2Color& color )
 {
 	vec2 position = vec2( center ).from_box2d();
 
@@ -66,7 +66,7 @@ void physics_debug_draw::DrawCircle( const b2Vec2& center, float radius, const b
 }
 
 // Draw a solid circle.
-void physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color )
+void debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color )
 {
 	vec2 position = vec2( center ).from_box2d();
 
@@ -84,7 +84,7 @@ void physics_debug_draw::DrawSolidCircle( const b2Vec2& center, float radius, co
 }
 
 // Draw a line segment.
-void physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const b2Color& color )
+void debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const b2Color& color )
 {
 	vec2 start = vec2( p1 ).from_box2d();
 	vec2 end = vec2( p2 ).from_box2d();
@@ -99,7 +99,7 @@ void physics_debug_draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const 
 
 // Draw a transform. Choose your own length scale.
 // @param xf a transform.
-void physics_debug_draw::DrawTransform( const b2Transform& xf )
+void debug_draw::DrawTransform( const b2Transform& xf )
 {
 	constexpr float debug_line_length = 10.f;
 
@@ -124,7 +124,7 @@ void physics_debug_draw::DrawTransform( const b2Transform& xf )
 }
 
 // Draw a point.
-void physics_debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color& color )
+void debug_draw::DrawPoint( const b2Vec2& p, float size, const b2Color& color )
 {
 	vec2 v = vec2( p ).from_box2d();
 

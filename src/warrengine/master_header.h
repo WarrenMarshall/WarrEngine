@@ -71,11 +71,11 @@
 
 #include "collision.h"
 
-#include "physics_contact_listener.h"
-#include "physics_query_callbacks.h"
-#include "physics_query.h"
-#include "physics_debug_draw.h"
-#include "physics_pending_collision.h"
+#include "box2d_physics_contact_listener.h"
+#include "box2d_physics_query_callbacks.h"
+#include "box2d_physics_query.h"
+#include "box2d_physics_debug_draw.h"
+#include "box2d_physics_pending_collision.h"
 
 #include "engine.h"
 

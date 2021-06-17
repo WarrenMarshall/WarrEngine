@@ -343,19 +343,19 @@ void sound_component::stop()
 
 // ----------------------------------------------------------------------------
 
-physics_component::physics_component( entity* parent_entity )
+box2d_physics_component::box2d_physics_component( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 
 }
 
-void physics_component::set_collision_flags( int collision_mask, int collides_with )
+void box2d_physics_component::set_collision_flags( int collision_mask, int collides_with )
 {
 	entity_component::set_collision_flags( collision_mask, collides_with );
 
 	// update all attached bodies to have matching flags
 
-	auto ecs = parent_entity->get_components<physics_body_component>();
+	auto ecs = parent_entity->get_components<box2d_physics_body_component>();
 
 	for( auto ec : ecs )
 	{
@@ -363,17 +363,17 @@ void physics_component::set_collision_flags( int collision_mask, int collides_wi
 	}
 }
 
-void physics_component::clear_collision_flags()
+void box2d_physics_component::clear_collision_flags()
 {
 	collision_mask = 0;
 	collides_with_mask = 0;
 }
 
-physics_body_component* physics_component::get_primary_body()
+box2d_physics_body_component* box2d_physics_component::get_primary_body()
 {
-	std::vector<physics_body_component*> ecs;
-	parent_entity->get_components<physics_body_component, dynamic_physics_body_component>( ecs );
-	parent_entity->get_components<physics_body_component, kinematic_physics_body_component>( ecs );
+	std::vector<box2d_physics_body_component*> ecs;
+	parent_entity->get_components<box2d_physics_body_component, box2d_dynamic_physics_body_component>( ecs );
+	parent_entity->get_components<box2d_physics_body_component, box2d_kinematic_physics_body_component>( ecs );
 
 	for( auto& ec : ecs )
 	{
@@ -388,7 +388,7 @@ physics_body_component* physics_component::get_primary_body()
 }
 
 // friction : 0 - slide, 1 - stick
-void physics_component::set_friction( float friction )
+void box2d_physics_component::set_friction( float friction )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -397,7 +397,7 @@ void physics_component::set_friction( float friction )
 }
 
 // restitution : 0 = no bounce, 1 = full bounce
-void physics_component::set_restitution( float restitution )
+void box2d_physics_component::set_restitution( float restitution )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -406,7 +406,7 @@ void physics_component::set_restitution( float restitution )
 }
 
 // density : 0 = no density, 1 = full density
-void physics_component::set_density( float density )
+void box2d_physics_component::set_density( float density )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -416,12 +416,12 @@ void physics_component::set_density( float density )
 
 // ----------------------------------------------------------------------------
 
-physics_body_component::physics_body_component( entity* parent_entity )
+box2d_physics_body_component::box2d_physics_body_component( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-physics_body_component::~physics_body_component()
+box2d_physics_body_component::~box2d_physics_body_component()
 {
 	if( body )
 	{
@@ -447,7 +447,7 @@ physics_body_component::~physics_body_component()
 	}
 }
 
-void physics_body_component::init_body()
+void box2d_physics_body_component::init_body()
 {
 	b2BodyDef body_definition;
 	{
@@ -460,7 +460,7 @@ void physics_body_component::init_body()
 	body->m_userData.pointer = (uintptr_t)this;
 }
 
-b2Fixture* physics_body_component::add_fixture_box( hash tag, const rect& rc )
+b2Fixture* box2d_physics_body_component::add_fixture_box( hash tag, const rect& rc )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -476,7 +476,7 @@ b2Fixture* physics_body_component::add_fixture_box( hash tag, const rect& rc )
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<physics_component>();
+		auto ecp = parent_entity->get_component<box2d_physics_component>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -494,12 +494,12 @@ b2Fixture* physics_body_component::add_fixture_box( hash tag, const rect& rc )
 
 // pos - middle of box, relative to body
 // w/h - size of box
-b2Fixture* physics_body_component::add_fixture_box( hash tag, vec2 pos, float w, float h )
+b2Fixture* box2d_physics_body_component::add_fixture_box( hash tag, vec2 pos, float w, float h )
 {
 	return add_fixture_box( tag, { pos.x, pos.y, w, h } );
 }
 
-b2Fixture* physics_body_component::add_fixture_circle( hash tag, vec2 pos, float radius )
+b2Fixture* box2d_physics_body_component::add_fixture_circle( hash tag, vec2 pos, float radius )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -511,7 +511,7 @@ b2Fixture* physics_body_component::add_fixture_circle( hash tag, vec2 pos, float
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<physics_component>();
+		auto ecp = parent_entity->get_component<box2d_physics_component>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -527,7 +527,7 @@ b2Fixture* physics_body_component::add_fixture_circle( hash tag, vec2 pos, float
 	return fixture;
 }
 
-b2Fixture* physics_body_component::add_fixture_line( hash tag, vec2 pos, vec2 start, vec2 end )
+b2Fixture* box2d_physics_body_component::add_fixture_line( hash tag, vec2 pos, vec2 start, vec2 end )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -548,7 +548,7 @@ b2Fixture* physics_body_component::add_fixture_line( hash tag, vec2 pos, vec2 st
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<physics_component>();
+		auto ecp = parent_entity->get_component<box2d_physics_component>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -564,7 +564,7 @@ b2Fixture* physics_body_component::add_fixture_line( hash tag, vec2 pos, vec2 st
 	return fixture;
 }
 
-b2Fixture* physics_body_component::add_fixture_line_loop( hash tag, vec2 pos, const std::vector<vec2>& verts )
+b2Fixture* box2d_physics_body_component::add_fixture_line_loop( hash tag, vec2 pos, const std::vector<vec2>& verts )
 {
 	// Box2D requirement
 	assert( verts.size() >= 3 );
@@ -592,7 +592,7 @@ b2Fixture* physics_body_component::add_fixture_line_loop( hash tag, vec2 pos, co
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<physics_component>();
+		auto ecp = parent_entity->get_component<box2d_physics_component>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -608,7 +608,7 @@ b2Fixture* physics_body_component::add_fixture_line_loop( hash tag, vec2 pos, co
 	return fixture;
 }
 
-b2Fixture* physics_body_component::add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts )
+b2Fixture* box2d_physics_body_component::add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -628,7 +628,7 @@ b2Fixture* physics_body_component::add_fixture_polygon( hash tag, vec2 pos, cons
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<physics_component>();
+		auto ecp = parent_entity->get_component<box2d_physics_component>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -647,15 +647,15 @@ b2Fixture* physics_body_component::add_fixture_polygon( hash tag, vec2 pos, cons
 // checks to see if the parent entity has a physics component, and adds one if
 // it doesn't.
 
-void physics_body_component::add_physics_component_if_needed()
+void box2d_physics_body_component::add_physics_component_if_needed()
 {
-	if( !parent_entity->has_component<physics_component>() )
+	if( !parent_entity->has_component<box2d_physics_component>() )
 	{
-		parent_entity->add_component<physics_component>();
+		parent_entity->add_component<box2d_physics_component>();
 	}
 }
 
-void physics_body_component::set_collision_flags( int collision_mask, int collides_with )
+void box2d_physics_body_component::set_collision_flags( int collision_mask, int collides_with )
 {
 	std::vector<b2Fixture*> existing_fixtures;
 
@@ -707,8 +707,8 @@ void physics_body_component::set_collision_flags( int collision_mask, int collid
 
 // ----------------------------------------------------------------------------
 
-static_physics_body_component::static_physics_body_component( entity* parent_entity )
-	: physics_body_component( parent_entity )
+box2d_static_physics_body_component::box2d_static_physics_body_component( entity* parent_entity )
+	: box2d_physics_body_component( parent_entity )
 {
 	add_physics_component_if_needed();
 
@@ -719,8 +719,8 @@ static_physics_body_component::static_physics_body_component( entity* parent_ent
 
 // ----------------------------------------------------------------------------
 
-dynamic_physics_body_component::dynamic_physics_body_component( entity* parent_entity )
-	: physics_body_component( parent_entity )
+box2d_dynamic_physics_body_component::box2d_dynamic_physics_body_component( entity* parent_entity )
+	: box2d_physics_body_component( parent_entity )
 {
 	add_physics_component_if_needed();
 
@@ -731,8 +731,8 @@ dynamic_physics_body_component::dynamic_physics_body_component( entity* parent_e
 
 // ----------------------------------------------------------------------------
 
-kinematic_physics_body_component::kinematic_physics_body_component( entity* parent_entity )
-	: physics_body_component( parent_entity )
+box2d_kinematic_physics_body_component::box2d_kinematic_physics_body_component( entity* parent_entity )
+	: box2d_physics_body_component( parent_entity )
 {
 	add_physics_component_if_needed();
 

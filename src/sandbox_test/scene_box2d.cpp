@@ -29,7 +29,7 @@ void scene_box2d::pushed()
 		e->tag = H( "main_ball" );
 		{
 			{
-				auto ec = e->add_component<kinematic_physics_body_component>();
+				auto ec = e->add_component<box2d_kinematic_physics_body_component>();
 				ec->add_fixture_circle( hash_none, { 0.f, 0.f }, 32.f );
 				ec->set_collision_flags( scene_box2d_world, scene_box2d_ball );
 			}
@@ -51,11 +51,11 @@ void scene_box2d::pushed()
 			rect rc_left_wall = { -viewport_hw, -viewport_hh * 6.f, 8.f, viewport_hh * 6.f };
 			rect rc_right_wall = { viewport_hw - 8.f, -viewport_hh * 6.f, 8.f, viewport_hh * 6.f };
 			{
-				auto ec = e->add_component<static_physics_body_component>();
+				auto ec = e->add_component<box2d_static_physics_body_component>();
 				ec->add_fixture_box( hash_none, rc_floor );
 				ec->add_fixture_box( hash_none, rc_left_wall );
 				ec->add_fixture_box( hash_none, rc_right_wall );
-				e->get_component<physics_component>()->set_collision_flags( scene_box2d_world, scene_box2d_ball );
+				e->get_component<box2d_physics_component>()->set_collision_flags( scene_box2d_world, scene_box2d_ball );
 			}
 			{
 				auto ec = e->add_component<primitive_shape_component>();
@@ -99,11 +99,11 @@ void scene_box2d::spawn_ball_at( vec2 world_pos )
 		float random_radius = random::getf_range( 16.f, 32.f );
 
 		{
-			auto ec = e->add_component<dynamic_physics_body_component>();
+			auto ec = e->add_component<box2d_dynamic_physics_body_component>();
 			ec->is_primary_body = true;
 			ec->add_fixture_circle( hash_none, vec2::zero, random_radius );
 			ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball | scene_box2d_world );
-			e->get_component<physics_component>()->set_restitution( random::getf_range( 0.f, 1.f ) );
+			e->get_component<box2d_physics_component>()->set_restitution( random::getf_range( 0.f, 1.f ) );
 		}
 		{
 			auto ec = e->add_component<sprite_component>();
@@ -130,11 +130,11 @@ void scene_box2d::spawn_box_at( vec2 world_pos )
 		float random_radius = random::getf_range( 16.f, 32.f );
 
 		{
-			auto ec = e->add_component<dynamic_physics_body_component>();
+			auto ec = e->add_component<box2d_dynamic_physics_body_component>();
 			ec->is_primary_body = true;
 			ec->add_fixture_box( hash_none, rc_box );
 			ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball | scene_box2d_world );
-			e->get_component<physics_component>()->set_restitution( random::getf_range( 0.f, 1.f ) );
+			e->get_component<box2d_physics_component>()->set_restitution( random::getf_range( 0.f, 1.f ) );
 		}
 		rc_box.grow( 1.0f );
 		{

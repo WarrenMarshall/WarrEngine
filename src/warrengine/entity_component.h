@@ -146,12 +146,12 @@ struct sound_component : entity_component
 // physics
 //
 
-struct physics_component : entity_component
+struct box2d_physics_component : entity_component
 {
-	physics_component() = delete;
-	physics_component( entity* parent_entity );
+	box2d_physics_component() = delete;
+	box2d_physics_component( entity* parent_entity );
 
-	[[nodiscard]] physics_body_component* get_primary_body();
+	[[nodiscard]] box2d_physics_body_component* get_primary_body();
 
 	void set_friction( float friction );
 	void set_restitution( float restitution );
@@ -164,7 +164,7 @@ struct physics_component : entity_component
 // ----------------------------------------------------------------------------
 // physics bodies
 
-struct physics_body_component : entity_component
+struct box2d_physics_body_component : entity_component
 {
 	b2BodyType body_type = b2_staticBody;
 	b2Body* body = nullptr;
@@ -175,9 +175,9 @@ struct physics_body_component : entity_component
 	// it's transform to each update.
 	bool is_primary_body = false;
 
-	physics_body_component() = delete;
-	physics_body_component( entity* parent_entity );
-	virtual ~physics_body_component() override;
+	box2d_physics_body_component() = delete;
+	box2d_physics_body_component( entity* parent_entity );
+	virtual ~box2d_physics_body_component() override;
 
 	void init_body();
 
@@ -200,28 +200,28 @@ struct physics_body_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct static_physics_body_component : physics_body_component
+struct box2d_static_physics_body_component : box2d_physics_body_component
 {
-	static_physics_body_component() = delete;
-	static_physics_body_component( entity* parent_entity );
+	box2d_static_physics_body_component() = delete;
+	box2d_static_physics_body_component( entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
 
-struct dynamic_physics_body_component : physics_body_component
+struct box2d_dynamic_physics_body_component : box2d_physics_body_component
 {
-	dynamic_physics_body_component() = delete;
-	dynamic_physics_body_component( entity* parent_entity );
+	box2d_dynamic_physics_body_component() = delete;
+	box2d_dynamic_physics_body_component( entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
-struct kinematic_physics_body_component : physics_body_component
+struct box2d_kinematic_physics_body_component : box2d_physics_body_component
 {
-	kinematic_physics_body_component() = delete;
-	kinematic_physics_body_component( entity* parent_entity );
+	box2d_kinematic_physics_body_component() = delete;
+	box2d_kinematic_physics_body_component( entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------

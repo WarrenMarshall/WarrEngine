@@ -1,8 +1,8 @@
 
-namespace war
+namespace war::box2d_physics
 {
 
-struct physics_contact_listener : b2ContactListener
+struct contact_listener : b2ContactListener
 {
 	b2Contact* contact = nullptr;
 	b2Manifold* manifold = nullptr;

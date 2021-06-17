@@ -49,17 +49,17 @@
     <ClCompile Include="clock.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="physics_contact_listener.cpp">
-      <Filter>src\physics</Filter>
+    <ClCompile Include="box2d_physics_contact_listener.cpp">
+      <Filter>src\box2d_physics_</Filter>
     </ClCompile>
-    <ClCompile Include="physics_debug_draw.cpp">
-      <Filter>src\physics</Filter>
+    <ClCompile Include="box2d_physics_debug_draw.cpp">
+      <Filter>src\box2d_physics_</Filter>
     </ClCompile>
-    <ClCompile Include="physics_query.cpp">
-      <Filter>src\physics</Filter>
+    <ClCompile Include="box2d_physics_query.cpp">
+      <Filter>src\box2d_physics_</Filter>
     </ClCompile>
-    <ClCompile Include="physics_query_callbacks.cpp">
-      <Filter>src\physics</Filter>
+    <ClCompile Include="box2d_physics_query_callbacks.cpp">
+      <Filter>src\box2d_physics_</Filter>
     </ClCompile>
     <ClCompile Include="slice_def_asset.cpp">
       <Filter>src\assets</Filter>
@@ -217,8 +217,8 @@
     <ClCompile Include="cmd_line.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="physics_pending_collision.cpp">
-      <Filter>src\physics</Filter>
+    <ClCompile Include="box2d_physics_pending_collision.cpp">
+      <Filter>src\box2d_physics_</Filter>
     </ClCompile>
     <ClCompile Include="tile_set_asset.cpp">
       <Filter>src\assets</Filter>
@@ -303,17 +303,17 @@
     <ClInclude Include="clock.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="physics_contact_listener.h">
-      <Filter>include\physics</Filter>
+    <ClInclude Include="box2d_physics_contact_listener.h">
+      <Filter>include\box2d_physics</Filter>
     </ClInclude>
-    <ClInclude Include="physics_debug_draw.h">
-      <Filter>include\physics</Filter>
+    <ClInclude Include="box2d_physics_debug_draw.h">
+      <Filter>include\box2d_physics</Filter>
     </ClInclude>
-    <ClInclude Include="physics_query.h">
-      <Filter>include\physics</Filter>
+    <ClInclude Include="box2d_physics_query.h">
+      <Filter>include\box2d_physics</Filter>
     </ClInclude>
-    <ClInclude Include="physics_query_callbacks.h">
-      <Filter>include\physics</Filter>
+    <ClInclude Include="box2d_physics_query_callbacks.h">
+      <Filter>include\box2d_physics</Filter>
     </ClInclude>
     <ClInclude Include="slice_def_asset.h">
       <Filter>include\assets</Filter>
@@ -477,8 +477,8 @@
     <ClInclude Include="cmd_line.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="physics_pending_collision.h">
-      <Filter>include\physics</Filter>
+    <ClInclude Include="box2d_physics_pending_collision.h">
+      <Filter>include\box2d_physics</Filter>
     </ClInclude>
     <ClInclude Include="tile_set_asset.h">
       <Filter>include\assets</Filter>
@@ -523,12 +523,6 @@
     </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{690e9b02-c416-473e-a16d-e17157428bb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\physics">
-      <UniqueIdentifier>{1b958ab6-60f9-4358-badf-36887469900d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\physics">
-      <UniqueIdentifier>{6282214e-3b5d-435f-aa91-11b740e74b75}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\assets">
       <UniqueIdentifier>{c9730713-cf76-4773-a9ed-26a85acb33bf}</UniqueIdentifier>
@@ -607,6 +601,12 @@
     </Filter>
     <Filter Include="src\collision">
       <UniqueIdentifier>{2620941b-1db6-44bd-8ed1-741fd6453bd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\box2d_physics">
+      <UniqueIdentifier>{1b958ab6-60f9-4358-badf-36887469900d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\box2d_physics_">
+      <UniqueIdentifier>{6282214e-3b5d-435f-aa91-11b740e74b75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
