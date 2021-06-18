@@ -19,6 +19,7 @@ struct matrix
 	void invert();
 
 	[[nodiscard]] vec2 transform_vec2( const vec2& v ) const;
+	void transform_vec2( vec2* v ) const;
 
 	matrix operator*( matrix& mtx ) const;
 	matrix operator*=( matrix& mtx );

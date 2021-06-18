@@ -146,6 +146,11 @@ void scene::post_update()
 					auto aabb_ws_a = scc_a->aabb_ws.to_c2AABB();
 					auto aabb_ws_b = scc_b->aabb_ws.to_c2AABB();
 
+					//transform scale_tform;
+					//scale_tform.set_scale( scc_b->parent_entity->get_transform()->scale );
+					//scale_tform.multiply_scale( scc_b->get_transform()->scale );
+					//auto scale_mtx = scale_tform.to_matrix();
+
 					// quick boolean check
 					if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
 					{
@@ -159,6 +164,11 @@ void scene::post_update()
 						collision.entity_a = scc_a->parent_entity;
 						collision.entity_b = scc_b->parent_entity;
 						collision.manifold = m;
+
+						collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+						collision.normal = { m.n.x, m.n.y };
+						collision.depth = m.depths[ 0 ];
+						//scale_mtx.transform_vec2( &collision.contact_point );
 
 						g_engine->simple_collision.queue.emplace_back( collision );
 					}

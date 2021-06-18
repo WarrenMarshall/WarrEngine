@@ -247,10 +247,10 @@ struct simple_collision_component : entity_component
 	rect aabb;
 	rect aabb_ws;
 
-	entity_component* init( float w, float h );
 	virtual void draw() override;
 	virtual void update() override;
 	void set_as_box( float w, float h );
+	void set_as_centered_box( float w, float h );
 };
 
 }

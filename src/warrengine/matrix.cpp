@@ -80,6 +80,12 @@ vec2 matrix::transform_vec2( const vec2& v ) const
 	return vec2( new_v.x, new_v.y );
 }
 
+void matrix::transform_vec2( vec2* v ) const
+{
+	auto new_v = m * glm::vec4( v->x, v->y, 0.f, 1.f );
+	*v = vec2( new_v.x, new_v.y );
+}
+
 // ----------------------------------------------------------------------------
 
 matrix matrix::operator*( matrix& mtx ) const

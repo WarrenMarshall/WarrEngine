@@ -28,7 +28,7 @@ void scene_simple_collision::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
 		e->transform_set_pos( { -80.f, 0.f } );
-		e->transform_set_scale( 3.f );
+		//e->transform_set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -36,8 +36,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->init( 16.f, 16.f );
-			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
+			ec->set_as_box( 64.f, 64.f );
+			ec->set_collision_flags( scene_simple_coll_mario, 0 );
 		}
 
 		mario = e;
@@ -47,8 +47,8 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "skull" );
-		e->transform_set_pos( { 0.f, 0.f } );
-		e->transform_set_scale( 2.f );
+		e->transform_set_pos( { 80.f, 0.f } );
+		//e->transform_set_scale( 2.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -56,8 +56,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->init( 16.f, 16.f );
-			ec->set_collision_flags( scene_simple_coll_skull, 0 );
+			ec->set_as_centered_box( 32.f, 32.f );
+			ec->set_collision_flags( scene_simple_coll_skull, scene_simple_coll_mario );
 		}
 
 		skull = e;
@@ -78,9 +78,16 @@ void scene_simple_collision::draw()
 	if( b_last_collision )
 	{
 		scoped_render_state;
+
+		render::state->z += 5.f;
+		render::state->color = make_color( color::green );
+		auto start = last_collision.closest_point;// last_collision.entity_b->get_transform()->pos;
+		auto end = start + ( last_collision.normal * ( last_collision.depth * -1.f ) );
+		render::draw_line( start, end );
+
 		render::state->color = make_color( color::red );
-		render::state->z += 500.f;
-		render::draw_point( { last_collision.manifold.contact_points[ 0 ].x, last_collision.manifold.contact_points[ 0 ].y } );
+		render::state->z += 5.f;
+		render::draw_point( last_collision.closest_point );
 	}
 }
 
@@ -88,6 +95,19 @@ void scene_simple_collision::draw_ui()
 {
 	scene::draw_ui();
 	draw_title( "Simple Collisions" );
+
+	if( b_last_collision )
+	{
+		render::state->color = color::light_green;
+		auto ypos = 32.f;
+		render::draw_string( std::format( "count  : {}", last_collision.manifold.count ), vec2( 4.f, ypos ) );
+		ypos += 10.f;
+		render::draw_string( std::format( "closest: {}, {}", last_collision.closest_point.x, last_collision.closest_point.y ), vec2( 4.f, ypos ) );
+		ypos += 10.f;
+		render::draw_string( std::format( "depth  : {}", last_collision.manifold.depths[0] ), vec2( 4.f, ypos ) );
+		ypos += 10.f;
+		render::draw_string( std::format( "normal : {},{}", last_collision.manifold.n.x, last_collision.manifold.n.y ), vec2( 4.f, ypos ) );
+	}
 }
 
 bool scene_simple_collision::on_input_pressed( const input_event* evt )
@@ -110,6 +130,14 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 			skull->transform_delta_pos( evt->delta * 2.f );
 		}
 		break;
+
+/*
+		case input_id::mouse:
+		{
+			mario->transform_delta_pos( evt->delta );
+		}
+		break;
+*/
 	}
 
 	return false;

@@ -771,13 +771,6 @@ simple_collision_component::simple_collision_component( entity* parent_entity )
 {
 }
 
-entity_component* simple_collision_component::init( float w, float h )
-{
-	set_as_box( w, h );
-
-	return this;
-}
-
 void simple_collision_component::draw()
 {
 	{
@@ -806,26 +799,35 @@ void simple_collision_component::update()
 	aabb_ws.y = v.y;
 
 	transform scale_tform;
-	scale_tform.set_scale( parent_entity->get_transform()->scale );
-	scale_tform.multiply_scale( get_transform()->scale );
+	//scale_tform.set_scale( parent_entity->get_transform()->scale );
+	//scale_tform.multiply_scale( get_transform()->scale );
 	auto scale_mtx = scale_tform.to_matrix();
 
 	v = scale_mtx.transform_vec2( { aabb.w, aabb.h } );
 	aabb_ws.w = v.w;
 	aabb_ws.h = v.h;
 
-	aabb_ws.x -= aabb_ws.w / 2.0f;
-	aabb_ws.y -= aabb_ws.h / 2.0f;
+	//aabb_ws.x -= aabb_ws.w / 2.0f;
+	//aabb_ws.y -= aabb_ws.h / 2.0f;
+}
+
+// sets the dimensions of the collision box, with the component position being the top left corner..
+
+void simple_collision_component::set_as_box( float w, float h )
+{
+	aabb.x = 0.f;
+	aabb.y = 0.f;
+	aabb.w = w;
+	aabb.h = h;
 }
 
 // sets the dimensions of the collision box, centered around the components position.
 
-void simple_collision_component::set_as_box( float w, float h )
+void simple_collision_component::set_as_centered_box( float w, float h )
 {
 	aabb.x = -w / 2.f;
 	aabb.y = -h / 2.f;
 	aabb.w = w;
 	aabb.h = h;
 }
-
 }

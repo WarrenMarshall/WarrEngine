@@ -130,7 +130,7 @@ void particle_emitter::spawn_particle()
 	// ...then apply the current transform (entity+component) to move the particle
 	// position into world space
 	auto save_particle_position_at_origin = p->pos;
-	p->pos = g_engine->render_api.top_matrix->transform_vec2( p->pos );
+	g_engine->render_api.top_matrix->transform_vec2( &p->pos );
 
 	switch( (e_particle_spawn_dir)( params->a_dir ) )
 	{
