@@ -62,14 +62,14 @@
 #include "ui_mgr.h"
 #include "render_stats.h"
 
+#include "collision.h"
+
 #include "asset_cache_mgr.h"
 #include "window.h"
 #include "scene.h"
 #include "scene_mgr.h"
 #include "render_state.h"
 #include "render.h"
-
-#include "collision.h"
 
 #include "box2d_physics_contact_listener.h"
 #include "box2d_physics_query_callbacks.h"

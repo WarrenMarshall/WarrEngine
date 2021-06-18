@@ -21,7 +21,6 @@ struct particle_pool;
 struct box2d_physics_body_component;
 struct contact_listener;
 struct debug_draw;
-struct pending_collision;
 struct rect;
 struct render;
 struct render_batch;

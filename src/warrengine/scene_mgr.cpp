@@ -211,8 +211,6 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 			g_engine->renderer.dynamic_batches.flush_and_reset();
 		}
 	}
-
-
 }
 
 void scene_mgr::draw_scene_ui( int starting_scene_idx )

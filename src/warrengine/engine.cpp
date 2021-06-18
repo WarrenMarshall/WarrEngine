@@ -983,8 +983,12 @@ void engine::process_collision_queue()
 	// ----------------------------------------------------------------------------
 	// simple
 
+	scenes.current_scene->b_last_collision = false;
+
 	for( auto& iter : simple_collision.queue )
 	{
+		scenes.current_scene->b_last_collision = true;
+		scenes.current_scene->last_collision = iter;
 		iter.entity_a->on_simple_collision( iter, iter.entity_b );
 	}
 

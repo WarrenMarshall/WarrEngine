@@ -224,7 +224,7 @@ void opengl::set_projection_matrix() const
 
 void opengl::set_view_matrix_identity()
 {
-	assert( g_engine->renderer.dynamic_batches.is_empty() );
+	//assert( g_engine->renderer.dynamic_batches.is_empty() );
 
 	// identity
 
@@ -265,7 +265,7 @@ void opengl::set_view_matrix_identity()
 
 void opengl::set_view_matrix_identity_no_camera()
 {
-	assert( g_engine->renderer.dynamic_batches.is_empty() );
+	//assert( g_engine->renderer.dynamic_batches.is_empty() );
 
 	// identity
 
@@ -299,7 +299,7 @@ void opengl::set_view_matrix_identity_no_camera()
 
 void opengl::set_view_matrix_identity_ui()
 {
-	assert( g_engine->renderer.dynamic_batches.is_empty() );
+	//assert( g_engine->renderer.dynamic_batches.is_empty() );
 
 	// identity
 

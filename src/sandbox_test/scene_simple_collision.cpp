@@ -68,19 +68,20 @@ void scene_simple_collision::draw()
 {
 	{
 		scoped_render_state;
-
 		render::state->color = make_color( pal::darker );
-
-		if( collision_is_happening )
-		{
-			render::state->color = make_color( color::red );
-		}
-
 		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ), rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
 	scene::draw();
-	render::draw_world_axis();
+	//render::draw_world_axis();
+
+	if( b_last_collision )
+	{
+		scoped_render_state;
+		render::state->color = make_color( color::red );
+		render::state->z += 500.f;
+		render::draw_point( { last_collision.manifold.contact_points[ 0 ].x, last_collision.manifold.contact_points[ 0 ].y } );
+	}
 }
 
 void scene_simple_collision::draw_ui()
