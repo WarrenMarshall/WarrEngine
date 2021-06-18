@@ -37,8 +37,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 24.f, 24.f );
-			//ec->set_as_circle( 24.f );
+			//ec->set_as_centered_box( 24.f, 24.f );
+			ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
@@ -59,8 +59,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 32.f, 32.f );
-			//ec->set_as_circle( 24.f );
+			//ec->set_as_centered_box( 24.f, 24.f );
+			ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 		}
 
@@ -77,7 +77,7 @@ void scene_simple_collision::draw()
 	}
 
 	scene::draw();
-	//render::draw_world_axis();
+	render::draw_world_axis();
 
 	if( b_last_collision )
 	{
@@ -85,7 +85,7 @@ void scene_simple_collision::draw()
 
 		render::state->z += 5.f;
 		render::state->color = make_color( color::green );
-		auto start = last_collision.closest_point;
+		auto start = last_collision.entity_a->get_transform()->pos;// last_collision.closest_point;
 		auto end = start + ( last_collision.normal * last_collision.depth );
 		render::draw_line( start, end );
 
@@ -116,6 +116,14 @@ void scene_simple_collision::draw_ui()
 
 bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
+	if( evt->input_id == input_id::key_space )
+	{
+		if( b_last_collision )
+		{
+			last_collision.entity_a->transform_delta_pos( last_collision.normal * last_collision.depth );
+		}
+	}
+
 	return false;
 }
 

@@ -152,8 +152,6 @@ void scene::post_update()
 				continue;
 			}
 
-			float normal_modifier = -1.0f;
-
 			auto aabb_ws_a = scc_a->aabb_ws.to_c2AABB();
 			auto aabb_ws_b = scc_b->aabb_ws.to_c2AABB();
 
@@ -191,8 +189,9 @@ void scene::post_update()
 				if( c2CircletoAABB( circle_b, aabb_ws_a ) )
 				{
 					collision_was_found = true;
-					normal_modifier = 1.0f;
 					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+					m.n.x *= -1.f;
+					m.n.y *= -1.f;
 				}
 			}
 			else if( a_is_circle and !b_is_circle )
@@ -210,11 +209,10 @@ void scene::post_update()
 			{
 				// aabb to aabb
 
-				if( c2AABBtoAABB( aabb_ws_b, aabb_ws_a ) )
+				if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
 				{
 					collision_was_found = true;
-					normal_modifier = 1.0f;
-					c2AABBtoAABBManifold( aabb_ws_b, aabb_ws_a, &m );
+					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
 				}
 			}
 
@@ -228,10 +226,13 @@ void scene::post_update()
 				collision.manifold = m;
 
 				collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
-				collision.normal = vec2( m.n.x, m.n.y ) * normal_modifier;
+				//collision.normal = vec2( m.n.x * normal_modifier.x, m.n.y * normal_modifier.y );
+				collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 				collision.depth = m.depths[ 0 ];
 
 				g_engine->simple_collision.queue.emplace_back( collision );
+
+				collision.entity_a->transform_delta_pos( collision.normal * collision.depth );
 			}
 		}
 	}
