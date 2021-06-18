@@ -27,6 +27,7 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
+		e->debug_name = "MARIO";
 		e->transform_set_pos( { -80.f, 0.f } );
 		//e->transform_set_scale( 3.f );
 		{
@@ -36,9 +37,9 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_box( 64.f, 64.f );
-			ec->set_as_circle( 24.f );
-			ec->set_collision_flags( scene_simple_coll_mario, 0 );
+			ec->set_as_centered_box( 24.f, 24.f );
+			//ec->set_as_circle( 24.f );
+			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
 		mario = e;
@@ -48,6 +49,7 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "skull" );
+		e->debug_name = "SKULL";
 		e->transform_set_pos( { 80.f, 0.f } );
 		//e->transform_set_scale( 2.f );
 		{
@@ -57,9 +59,9 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 32.f, 32.f );
-			ec->set_as_circle( 32.f );
-			ec->set_collision_flags( scene_simple_coll_skull, scene_simple_coll_mario );
+			ec->set_as_centered_box( 32.f, 32.f );
+			//ec->set_as_circle( 24.f );
+			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 		}
 
 		skull = e;
@@ -83,8 +85,8 @@ void scene_simple_collision::draw()
 
 		render::state->z += 5.f;
 		render::state->color = make_color( color::green );
-		auto start = last_collision.closest_point;// last_collision.entity_b->get_transform()->pos;
-		auto end = start + ( last_collision.normal * ( last_collision.depth * -1.f ) );
+		auto start = last_collision.closest_point;
+		auto end = start + ( last_collision.normal * last_collision.depth );
 		render::draw_line( start, end );
 
 		render::state->color = make_color( color::red );

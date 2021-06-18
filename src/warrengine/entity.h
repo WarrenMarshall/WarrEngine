@@ -4,6 +4,11 @@ namespace war
 
 struct entity
 {
+#ifdef _DEBUG
+	// a handy string to throw info or a name into during debug to make looking at entity pointers easier
+	std::string debug_name;
+#endif
+
 	transform _tform;
 
 	// this is a read-only pointer. to change the transform, use the
