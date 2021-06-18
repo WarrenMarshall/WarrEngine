@@ -793,7 +793,7 @@ void render::draw_line_loop( const rect& rc )
 	auto left = rc.x;
 	auto top = rc.y;
 	auto right = rc.x + rc.w;
-	auto bottom = rc.x + rc.h;
+	auto bottom = rc.y + rc.h;
 
 	render::draw_line_loop(
 		{

@@ -27,7 +27,9 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
+	#ifdef _DEBUG
 		e->debug_name = "MARIO";
+	#endif
 		e->transform_set_pos( { -80.f, 0.f } );
 		//e->transform_set_scale( 3.f );
 		{
@@ -37,8 +39,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 24.f, 24.f );
-			ec->set_as_circle( 24.f );
+			ec->set_as_centered_box( 24.f, 48.f );
+			//ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
@@ -49,7 +51,9 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "skull" );
+	#ifdef _DEBUG
 		e->debug_name = "SKULL";
+	#endif
 		e->transform_set_pos( { 80.f, 0.f } );
 		//e->transform_set_scale( 2.f );
 		{
@@ -59,8 +63,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 24.f, 24.f );
-			ec->set_as_circle( 24.f );
+			ec->set_as_centered_box( 24.f, 24.f );
+			//ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 		}
 
