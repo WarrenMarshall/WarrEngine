@@ -244,13 +244,21 @@ struct simple_collision_component : entity_component
 	simple_collision_component() = delete;
 	simple_collision_component( entity* parent_entity );
 
-	rect aabb;
-	rect aabb_ws;
+	e_simple_collision_type type = simple_collision_type::circle;
+
+	// box
+	rect aabb = {};
+	rect aabb_ws = {};
+
+	// circle
+	float radius = 0.f;
+	float radius_ws = 0.f;
 
 	virtual void draw() override;
 	virtual void update() override;
 	void set_as_box( float w, float h );
 	void set_as_centered_box( float w, float h );
+	void set_as_circle( float r );
 };
 
 }

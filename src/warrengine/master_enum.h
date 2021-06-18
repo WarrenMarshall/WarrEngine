@@ -457,3 +457,10 @@ enum_begin( framebuffer )
 	final,
 	max,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( simple_collision_type )
+	aabb = 0,
+	circle,
+enum_end

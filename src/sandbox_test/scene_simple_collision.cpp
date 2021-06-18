@@ -36,7 +36,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_box( 64.f, 64.f );
+			//ec->set_as_box( 64.f, 64.f );
+			ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_mario, 0 );
 		}
 
@@ -56,7 +57,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 32.f, 32.f );
+			//ec->set_as_centered_box( 32.f, 32.f );
+			ec->set_as_circle( 32.f );
 			ec->set_collision_flags( scene_simple_coll_skull, scene_simple_coll_mario );
 		}
 
@@ -130,14 +132,6 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 			skull->transform_delta_pos( evt->delta * 2.f );
 		}
 		break;
-
-/*
-		case input_id::mouse:
-		{
-			mario->transform_delta_pos( evt->delta );
-		}
-		break;
-*/
 	}
 
 	return false;

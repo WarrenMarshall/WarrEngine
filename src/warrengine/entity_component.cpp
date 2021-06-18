@@ -777,13 +777,26 @@ void simple_collision_component::draw()
 		scoped_render_state;
 
 		render::state->set_from_opt( rs_opt );
-		render::draw_rect( aabb );
+
+		switch( type )
+		{
+			case simple_collision_type::aabb:
+				render::draw_rect( aabb );
+				break;
+
+			case simple_collision_type::circle:
+				render::draw_circle( { 0.f, 0.f }, radius );
+				break;
+		}
 	}
 }
 
 void simple_collision_component::update()
 {
 	entity_component::update();
+
+	// ----------------------------------------------------------------------------
+	// aabb
 
 	// transform the local space bounding box into worldspace coordinates. this
 	// makes checking for collisions later on a lot simpler.
@@ -807,14 +820,17 @@ void simple_collision_component::update()
 	aabb_ws.w = v.w;
 	aabb_ws.h = v.h;
 
-	//aabb_ws.x -= aabb_ws.w / 2.0f;
-	//aabb_ws.y -= aabb_ws.h / 2.0f;
+	// ----------------------------------------------------------------------------
+	// circle
+
+	radius_ws = radius;
 }
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
 
 void simple_collision_component::set_as_box( float w, float h )
 {
+	type = simple_collision_type::aabb;
 	aabb.x = 0.f;
 	aabb.y = 0.f;
 	aabb.w = w;
@@ -825,9 +841,17 @@ void simple_collision_component::set_as_box( float w, float h )
 
 void simple_collision_component::set_as_centered_box( float w, float h )
 {
+	type = simple_collision_type::aabb;
 	aabb.x = -w / 2.f;
 	aabb.y = -h / 2.f;
 	aabb.w = w;
 	aabb.h = h;
 }
+
+void simple_collision_component::set_as_circle( float r )
+{
+	type = simple_collision_type::circle;
+	radius = r;
+}
+
 }

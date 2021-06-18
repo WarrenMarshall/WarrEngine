@@ -122,10 +122,11 @@ void scene::update()
 			// gather a list of all simple collision components that exist on
 			// this entity
 
-			auto scc = entity->get_component<simple_collision_component>();
-			if( scc )
+			auto scc = entity->get_components<simple_collision_component>();
+
+			for( auto iter : scc )
 			{
-				simple_collision_components.emplace_back( scc );
+				simple_collision_components.emplace_back( iter );
 			}
 		}
 	}
@@ -146,32 +147,95 @@ void scene::post_update()
 					auto aabb_ws_a = scc_a->aabb_ws.to_c2AABB();
 					auto aabb_ws_b = scc_b->aabb_ws.to_c2AABB();
 
-					//transform scale_tform;
-					//scale_tform.set_scale( scc_b->parent_entity->get_transform()->scale );
-					//scale_tform.multiply_scale( scc_b->get_transform()->scale );
-					//auto scale_mtx = scale_tform.to_matrix();
+					c2Circle circle_a;
+					circle_a.p.x = scc_a->parent_entity->get_transform()->pos.x;
+					circle_a.p.y = scc_a->parent_entity->get_transform()->pos.y;
+					circle_a.r = scc_a->radius_ws;
 
-					// quick boolean check
-					if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+					c2Circle circle_b;
+					circle_b.p.x = scc_b->parent_entity->get_transform()->pos.x;
+					circle_b.p.y = scc_b->parent_entity->get_transform()->pos.y;
+					circle_b.r = scc_b->radius_ws;
+
+					bool a_is_circle = scc_a->type == simple_collision_type::circle;
+					bool b_is_circle = scc_b->type == simple_collision_type::circle;
+
+					if( a_is_circle and b_is_circle )
 					{
-						// more complex check
-						c2Manifold m;
-						c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+						// circle to circle
 
-						// add the collision to the pending collision list
-						simple_collision::pending_collision collision;
+						if( c2CircletoCircle( circle_b, circle_b ) )
+						{
+							c2Manifold m;
+							c2CircletoCircleManifold( circle_b, circle_a, &m );
 
-						collision.entity_a = scc_a->parent_entity;
-						collision.entity_b = scc_b->parent_entity;
-						collision.manifold = m;
+							// add the collision to the pending collision list
+							simple_collision::pending_collision collision;
 
-						collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
-						collision.normal = { m.n.x, m.n.y };
-						collision.depth = m.depths[ 0 ];
-						//scale_mtx.transform_vec2( &collision.contact_point );
+							collision.entity_a = scc_a->parent_entity;
+							collision.entity_b = scc_b->parent_entity;
+							collision.manifold = m;
 
-						g_engine->simple_collision.queue.emplace_back( collision );
+							collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+							collision.normal = { m.n.x, m.n.y };
+							collision.depth = m.depths[ 0 ];
+
+							g_engine->simple_collision.queue.emplace_back( collision );
+						}
 					}
+					else if( !a_is_circle and b_is_circle )
+					{
+						// aabb to circle
+
+
+						if( c2CircletoAABB( circle_b, aabb_ws_a ) )
+						{
+							c2Manifold m;
+							c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+
+							// add the collision to the pending collision list
+							simple_collision::pending_collision collision;
+
+							collision.entity_a = scc_a->parent_entity;
+							collision.entity_b = scc_b->parent_entity;
+							collision.manifold = m;
+
+							collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+							collision.normal = { m.n.x, m.n.y };
+							collision.depth = m.depths[ 0 ];
+
+							g_engine->simple_collision.queue.emplace_back( collision );
+						}
+					}
+					else if( a_is_circle and !b_is_circle )
+					{
+						// circle to aabb
+
+					}
+					else if( !a_is_circle and !b_is_circle )
+					{
+						// aabb to aabb
+
+						if( c2AABBtoAABB( aabb_ws_b, aabb_ws_a ) )
+						{
+							c2Manifold m;
+							c2AABBtoAABBManifold( aabb_ws_b, aabb_ws_a, &m );
+
+							// add the collision to the pending collision list
+							simple_collision::pending_collision collision;
+
+							collision.entity_a = scc_a->parent_entity;
+							collision.entity_b = scc_b->parent_entity;
+							collision.manifold = m;
+
+							collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+							collision.normal = { m.n.x, m.n.y };
+							collision.depth = m.depths[ 0 ];
+
+							g_engine->simple_collision.queue.emplace_back( collision );
+						}
+					}
+
 				}
 			}
 		}
