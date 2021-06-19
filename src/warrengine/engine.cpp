@@ -331,7 +331,7 @@ void engine::main_loop()
 
 		if( is_paused() )
 		{
-			input.update();
+			input.dispatch_event_queue();
 		}
 
 
@@ -403,7 +403,7 @@ void engine::main_loop()
 		// so that the ui code has a chance to respond. the ui has to be drawn
 		// before it can react to input.
 
-		input.update();
+		input.dispatch_event_queue();
 
 		// ----------------------------------------------------------------------------
 		// the engine frame buffer now contains the color texture and the glow

@@ -38,15 +38,7 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 40.f, 40.f );
-			ec->set_as_circle( 16.f );
-			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
-		}
-		{
-			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 40.f, 40.f );
-			ec->set_as_circle( 24.f );
-			ec->get_transform()->set_pos( { 0.f, 32.f } );
+			ec->set_as_centered_box( 32.f, 32.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
@@ -61,7 +53,6 @@ void scene_simple_collision::pushed()
 		e->debug_name = "SKULL";
 	#endif
 		e->transform_set_pos( { 80.f, 0.f } );
-		e->transform_set_scale( 2.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -69,15 +60,7 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 128.f, 8.f );
-			//ec->set_as_circle( 24.f );
-			ec->set_collision_flags( scene_simple_coll_skull, 0 );
-		}
-		{
-			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 32.f, 16.f );
-			ec->set_as_circle( 24.f );
-			ec->get_transform()->set_pos( { 0.f, 16.f } );
+			ec->set_as_centered_box( 48.f, 48.f );
 			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 		}
 
@@ -131,19 +114,6 @@ void scene_simple_collision::draw_ui()
 		ypos += 10.f;
 		render::draw_string( std::format( "normal : {},{}", last_collision.manifold.n.x, last_collision.manifold.n.y ), vec2( 4.f, ypos ) );
 	}
-}
-
-bool scene_simple_collision::on_input_pressed( const input_event* evt )
-{
-	if( evt->input_id == input_id::key_space )
-	{
-		if( b_last_collision )
-		{
-			last_collision.entity_a->transform_delta_pos( last_collision.normal * last_collision.depth );
-		}
-	}
-
-	return false;
 }
 
 bool scene_simple_collision::on_input_motion( const input_event* evt )

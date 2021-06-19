@@ -274,7 +274,7 @@ void input_mgr::update_axis_delta( e_input_id input_id ) const
 	}
 }
 
-void input_mgr::update()
+void input_mgr::dispatch_event_queue()
 {
 	// send all queued messages down the virtual function call chain,
 	// and then empty the queue.

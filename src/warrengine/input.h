@@ -63,7 +63,7 @@ struct input_mgr
 	void queue_presses();
 	void queue_motion();
 	void update_axis_delta( e_input_id input_id ) const;
-	void update();
+	void dispatch_event_queue();
 
 	void update_button_state( e_input_id input_id, int glfw_state );
 	void play_rumble( e_rumble_effect effect ) const;
