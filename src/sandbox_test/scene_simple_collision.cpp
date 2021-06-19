@@ -31,7 +31,7 @@ void scene_simple_collision::pushed()
 		e->debug_name = "MARIO";
 	#endif
 		e->transform_set_pos( { -80.f, 0.f } );
-		//e->transform_set_scale( 0.5f );
+		e->transform_set_scale( 0.5f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -67,6 +67,7 @@ void scene_simple_collision::pushed()
 			ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 			ec->get_transform()->set_pos( { 32.f, 8.f } );
+			ec->get_transform()->set_scale( 2.f );
 		}
 
 		skull = e;

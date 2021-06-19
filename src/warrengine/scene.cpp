@@ -152,24 +152,16 @@ void scene::post_update()
 				continue;
 			}
 
-			auto aabb_ws_a = scc_a->aabb_ws.to_c2AABB();
-			auto aabb_ws_b = scc_b->aabb_ws.to_c2AABB();
-
-			auto entity_tform_a = scc_a->parent_entity->get_transform();
-			auto entity_tform_b = scc_b->parent_entity->get_transform();
-
-			auto scc_tform_a = scc_a->get_transform();
-			auto scc_tform_b = scc_b->get_transform();
+			auto aabb_ws_a = scc_a->ws.aabb.to_c2AABB();
+			auto aabb_ws_b = scc_b->ws.aabb.to_c2AABB();
 
 			c2Circle circle_a = {};
-			circle_a.p.x = scc_a->radius_pos_ws.x;// ( entity_tform_a->pos.x + scc_tform_a->pos.x )* ( entity_tform_a->scale * scc_tform_a->scale );
-			circle_a.p.y = scc_a->radius_pos_ws.y;// ( entity_tform_a->pos.y + scc_tform_a->pos.y )* ( entity_tform_a->scale * scc_tform_a->scale );
-			circle_a.r = scc_a->radius_ws;
+			circle_a.p = { scc_a->ws.pos.x, scc_a->ws.pos.y };
+			circle_a.r = scc_a->ws.radius;
 
 			c2Circle circle_b = {};
-			circle_b.p.x = scc_b->radius_pos_ws.x;// ( entity_tform_b->pos.x + scc_tform_b->pos.x )* ( entity_tform_b->scale * scc_tform_b->scale );
-			circle_b.p.y = scc_b->radius_pos_ws.y;// ( entity_tform_b->pos.y + scc_tform_b->pos.y )* ( entity_tform_b->scale * scc_tform_b->scale );
-			circle_b.r = scc_b->radius_ws;
+			circle_b.p = { scc_b->ws.pos.x, scc_b->ws.pos.y };
+			circle_b.r = scc_b->ws.radius;
 
 			bool a_is_circle = scc_a->type == simple_collision_type::circle;
 			bool b_is_circle = scc_b->type == simple_collision_type::circle;

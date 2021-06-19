@@ -773,6 +773,34 @@ simple_collision_component::simple_collision_component( entity* parent_entity )
 
 void simple_collision_component::draw()
 {
+	// since the matrices are all set up to move things into worldspace at the
+	// time of drawing, it makes sense to leverage that to figure out the
+	// positioning and sizes of our collision internals.
+
+	auto scale = ( parent_entity->get_transform()->scale * get_transform()->scale );
+
+	switch( type )
+	{
+		case simple_collision_type::circle:
+		{
+			ws.pos = g_engine->render_api.top_matrix->transform_vec2( vec2( 0.0f, 0.0f ) );
+			ws.radius = radius * scale;
+		}
+		break;
+
+		case simple_collision_type::aabb:
+		{
+			auto v = g_engine->render_api.top_matrix->transform_vec2( vec2( aabb.x, aabb.y ) );
+			ws.aabb.x = v.x;
+			ws.aabb.y = v.y;
+			ws.aabb.w = aabb.w * scale;
+			ws.aabb.h = aabb.h * scale;
+		}
+		break;
+	}
+
+	// optional debug mode drawing
+
 	if( g_engine->renderer.debug.draw_debug_info )
 	{
 		scoped_render_state;
@@ -781,55 +809,16 @@ void simple_collision_component::draw()
 
 		switch( type )
 		{
-			case simple_collision_type::aabb:
-				render::draw_rect( aabb );
-				break;
-
 			case simple_collision_type::circle:
 				render::draw_circle( { 0.f, 0.f }, radius );
 				break;
+
+			case simple_collision_type::aabb:
+				render::draw_rect( aabb );
+				break;
 		}
 	}
-}
 
-void simple_collision_component::update()
-{
-	entity_component::update();
-
-	// ----------------------------------------------------------------------------
-	// aabb
-
-	// transform the local space bounding box into worldspace coordinates. this
-	// makes checking for collisions later on a lot simpler.
-
-	transform pos_tform;
-	pos_tform.add_pos( parent_entity->get_transform()->pos );
-	pos_tform.add_pos( get_transform()->pos );
-	auto pos_mtx = pos_tform.to_matrix();
-
-	transform scale_tform;
-	scale_tform.set_scale( parent_entity->get_transform()->scale );
-	scale_tform.multiply_scale( get_transform()->scale );
-	auto scale_mtx = scale_tform.to_matrix();
-
-	vec2 v = { aabb.x, aabb.y };
-	scale_mtx.transform_vec2( &v );
-	pos_mtx.transform_vec2( &v );
-	aabb_ws.x = v.x;
-	aabb_ws.y = v.y;
-
-	v = scale_mtx.transform_vec2( { aabb.w, aabb.h } );
-	aabb_ws.w = v.w;
-	aabb_ws.h = v.h;
-
-	// ----------------------------------------------------------------------------
-	// circle
-
-	radius_pos_ws = {};
-	scale_mtx.transform_vec2( &radius_pos_ws );
-	pos_mtx.transform_vec2( &radius_pos_ws );
-
-	radius_ws = radius * ( parent_entity->get_transform()->scale * get_transform()->scale );
 }
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
