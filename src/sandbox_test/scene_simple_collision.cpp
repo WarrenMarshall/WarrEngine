@@ -38,7 +38,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 32.f, 32.f );
+			//ec->set_as_centered_box( 32.f, 32.f );
+			ec->set_as_circle( 16.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
@@ -92,13 +93,15 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			mario->transform_delta_pos( evt->delta * 4.f );
+			mario->transform_delta_pos( evt->delta * 150.f * fixed_time_step::per_second_scaler );
+			return true;
 		}
 		break;
 
 		case input_id::gamepad_right_stick:
 		{
-			skull->transform_delta_pos( evt->delta * 4.f );
+			skull->transform_delta_pos( evt->delta * 150.f * fixed_time_step::per_second_scaler );
+			return true;
 		}
 		break;
 	}

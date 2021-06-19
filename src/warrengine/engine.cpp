@@ -869,11 +869,14 @@ bool engine::on_input_released( const input_event* evt )
 	return false;
 }
 
-void engine::process_collision_queue()
+void engine::dispatch_collision_queue()
 {
-	// ----------------------------------------------------------------------------
-	// box2d
+	dispatch_box2d_collisions();
+	dispatch_simple_collisions();
+}
 
+void engine::dispatch_box2d_collisions()
+{
 	// begin contact
 
 	for( auto& iter : box2d.begin_contact_queue )
@@ -903,10 +906,11 @@ void engine::process_collision_queue()
 	}
 
 	box2d.end_contact_queue.clear();
+}
 
-	// ----------------------------------------------------------------------------
-	// simple
-
+void engine::dispatch_simple_collisions()
+{
+	//log( "{} collisions", simple_collision.queue.size() );
 	for( auto& iter : simple_collision.queue )
 	{
 		iter.entity_a->on_simple_collision( iter, iter.entity_b );
@@ -972,9 +976,6 @@ void engine::do_fixed_time_step()
 {
 	if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
 	{
-		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
-		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
-
 		// walk through each pending fixed time step, one at a time
 
 		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
@@ -982,6 +983,7 @@ void engine::do_fixed_time_step()
 			post_process.film_grain_amount += 0.01f;
 
 			box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
+
 
 			input.queue_presses();
 			input.queue_motion();
@@ -991,13 +993,15 @@ void engine::do_fixed_time_step()
 			scenes.update();
 			scenes.post_update();
 
-			process_collision_queue();
+			dispatch_collision_queue();
 
 			g_base_game->update();
 		}
 
-
 		g_engine->stats.update();
+
+		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
+		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
 	}
 }
 

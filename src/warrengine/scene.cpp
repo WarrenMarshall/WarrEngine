@@ -73,10 +73,6 @@ std::vector<entity*> scene::get_selected()
 
 void scene::pre_update()
 {
-	// update entities and components, before the delete logic runs and before
-	// the regular update happens
-
-
 	for( auto& entity : entities )
 	{
 		{
@@ -89,8 +85,12 @@ void scene::pre_update()
 		}
 	}
 
-	// look for dead entities and remove them
+	remove_dead_entities();
+	gather_simple_collision_components();
+}
 
+void scene::remove_dead_entities()
+{
 	for( auto iter = entities.begin(); iter != entities.end(); iter++ )
 	{
 		if( iter->get()->can_be_deleted() )
@@ -100,9 +100,10 @@ void scene::pre_update()
 			break;
 		}
 	}
+}
 
-	// gather up a list of the simple collision components in the scene
-
+void scene::gather_simple_collision_components()
+{
 	simple_collision_components.clear();
 
 	for( auto& entity : entities )
@@ -133,13 +134,10 @@ void scene::update()
 			entity->update_from_physics();
 		}
 	}
-
-	queue_simple_collisions();
 }
 
 void scene::post_update()
 {
-
 	// update entities and components, after physics have run
 
 	for( auto& entity : entities )
@@ -153,7 +151,12 @@ void scene::post_update()
 			entity->post_update();
 		}
 	}
+
+	queue_simple_collisions();
 }
+
+// fills the simple collision queue with all the collisions that are currently
+// taking place.
 
 void scene::queue_simple_collisions()
 {
@@ -190,68 +193,66 @@ void scene::queue_simple_collisions()
 			bool b_is_circle = scc_b->type == simple_collision_type::circle;
 
 			c2Manifold m = {};
-			bool collision_was_found = false;
 
 			if( a_is_circle and b_is_circle )
 			{
 				// circle to circle
 
-				if( c2CircletoCircle( circle_a, circle_b ) )
+				if( !c2CircletoCircle( circle_a, circle_b ) )
 				{
-					collision_was_found = true;
-					c2CircletoCircleManifold( circle_a, circle_b, &m );
+					return;
 				}
+
+				c2CircletoCircleManifold( circle_a, circle_b, &m );
 			}
 			else if( !a_is_circle and b_is_circle )
 			{
 				// aabb to circle
 
-
-				if( c2CircletoAABB( circle_b, aabb_ws_a ) )
+				if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
 				{
-					collision_was_found = true;
-					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
-					m.n.x *= -1.f;
-					m.n.y *= -1.f;
+					return;
 				}
+
+				c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+				m.n.x *= -1.f;
+				m.n.y *= -1.f;
 			}
 			else if( a_is_circle and !b_is_circle )
 			{
 				// circle to aabb
 
-
-				if( c2CircletoAABB( circle_a, aabb_ws_b ) )
+				if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
 				{
-					collision_was_found = true;
-					c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+					return;
 				}
+
+				c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
 			}
 			else if( !a_is_circle and !b_is_circle )
 			{
 				// aabb to aabb
 
-				if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+				if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
 				{
-					collision_was_found = true;
-					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+					return;
 				}
+
+				c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
 			}
 
-			if( collision_was_found )
-			{
-				// add the collision to the pending collision list
-				simple_collision::pending_collision collision;
+			// add the collision to the pending collision list
+			simple_collision::pending_collision collision;
 
-				collision.entity_a = scc_a->parent_entity;
-				collision.entity_b = scc_b->parent_entity;
-				collision.manifold = m;
+			collision.entity_a = scc_a->parent_entity;
+			collision.entity_b = scc_b->parent_entity;
+			collision.manifold = m;
 
-				collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
-				collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
-				collision.depth = m.depths[ 0 ];
+			collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+			collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
+			collision.depth = m.depths[ 0 ];
 
-				g_engine->simple_collision.queue.emplace_back( collision );
-			}
+			g_engine->simple_collision.queue.emplace_back( collision );
 		}
 	}
 }

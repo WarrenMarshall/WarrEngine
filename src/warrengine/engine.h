@@ -138,7 +138,9 @@ struct engine
 	opengl render_api;
 	key_values config_vars;
 
-	void process_collision_queue();
+	void dispatch_collision_queue();
+	void dispatch_simple_collisions();
+	void dispatch_box2d_collisions();
 
 	void set_time_dilation( float dilation );
 

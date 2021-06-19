@@ -21,24 +21,11 @@ void entity::update()
 
 void entity::update_components()
 {
-	// clear out dead components
-	// NOTE : uses standard 'for' loop because it manipulates the vector as it runs.
-
-	for( size_t x = 0; x < components.size(); ++x )
-	{
-		entity_component* ec = components[ x ].get();
-
-		if( ec->is_fully_dead() )
-		{
-			components.erase( components.begin() + x );
-			x--;
-		}
-	}
-
-	// update remaining components
+	remove_dead_components();
 
 	for( const auto& component : components )
 	{
+		// #task - is this necessary? it feels like "remove_dead_components();" above would have killed these
 		if( component->life_cycle.is_dead() )
 		{
 			continue;
@@ -297,6 +284,20 @@ void entity::set_life_cycle( e_life_cycle lc )
 const life_cycle_mgr* entity::get_life_cycle()
 {
 	return &life_cycle;
+}
+
+void entity::remove_dead_components()
+{
+	for( size_t x = 0; x < components.size(); ++x )
+	{
+		entity_component* ec = components[ x ].get();
+
+		if( ec->is_fully_dead() )
+		{
+			components.erase( components.begin() + x );
+			x--;
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------

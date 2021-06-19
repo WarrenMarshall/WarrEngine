@@ -110,6 +110,11 @@ struct scene
 	}
 
 	virtual void pre_update();
+
+	void remove_dead_entities();
+
+	void gather_simple_collision_components();
+
 	virtual void update();
 	virtual void post_update();
 

@@ -51,6 +51,9 @@ struct scene_mgr
 	[[nodiscard]] scene* get_top();
 
 	void pre_update();
+
+	void remove_dead_scenes();
+
 	void update();
 	void post_update();
 

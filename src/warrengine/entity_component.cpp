@@ -801,7 +801,7 @@ void simple_collision_component::draw()
 
 	// optional debug mode drawing
 
-	if( g_engine->renderer.debug.draw_debug_info )
+	//if( g_engine->renderer.debug.draw_debug_info )
 	{
 		scoped_render_state;
 
@@ -818,7 +818,6 @@ void simple_collision_component::draw()
 				break;
 		}
 	}
-
 }
 
 // sets the dimensions of the collision box, with the component position being the top left corner..

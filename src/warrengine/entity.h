@@ -57,6 +57,9 @@ struct entity
 	virtual void update();
 	virtual void post_update();
 	virtual void update_components();
+
+	void remove_dead_components();
+
 	virtual void draw();
 
 	template<typename T> T* add_component()
