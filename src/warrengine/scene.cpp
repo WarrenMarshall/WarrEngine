@@ -76,15 +76,16 @@ void scene::pre_update()
 	// update entities and components, before the delete logic runs and before
 	// the regular update happens
 
-	for( auto& e : entities )
+
+	for( auto& entity : entities )
 	{
 		{
 			scoped_opengl;
 
-			auto tform = e->get_transform();
+			auto tform = entity->get_transform();
 			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
-			e->pre_update();
+			entity->pre_update();
 		}
 	}
 
@@ -99,12 +100,24 @@ void scene::pre_update()
 			break;
 		}
 	}
+
+	// gather up a list of the simple collision components in the scene
+
+	simple_collision_components.clear();
+
+	for( auto& entity : entities )
+	{
+		auto scc = entity->get_components<simple_collision_component>();
+
+		for( auto iter : scc )
+		{
+			simple_collision_components.emplace_back( iter );
+		}
+	}
 }
 
 void scene::update()
 {
-	simple_collision_components.clear();
-
 	// update entities and components
 
 	for( auto& entity : entities )
@@ -118,21 +131,31 @@ void scene::update()
 			entity->update();
 			entity->update_components();
 			entity->update_from_physics();
+		}
+	}
 
-			// gather a list of all simple collision components that exist on
-			// this entity
+	queue_simple_collisions();
+}
 
-			auto scc = entity->get_components<simple_collision_component>();
+void scene::post_update()
+{
 
-			for( auto iter : scc )
-			{
-				simple_collision_components.emplace_back( iter );
-			}
+	// update entities and components, after physics have run
+
+	for( auto& entity : entities )
+	{
+		{
+			scoped_opengl;
+
+			auto tform = entity->get_transform();
+			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+
+			entity->post_update();
 		}
 	}
 }
 
-void scene::post_update()
+void scene::queue_simple_collisions()
 {
 	// process simple collisions
 
@@ -228,24 +251,7 @@ void scene::post_update()
 				collision.depth = m.depths[ 0 ];
 
 				g_engine->simple_collision.queue.emplace_back( collision );
-
-				// #simple - move this to some sort of "collision reaction" handler
-				collision.entity_a->transform_delta_pos( collision.normal * collision.depth );
 			}
-		}
-	}
-
-	// update entities and components, after physics have run
-
-	for( auto& entity : entities )
-	{
-		{
-			scoped_opengl;
-
-			auto tform = entity->get_transform();
-			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
-
-			entity->post_update();
 		}
 	}
 }

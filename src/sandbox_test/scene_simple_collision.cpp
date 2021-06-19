@@ -78,42 +78,12 @@ void scene_simple_collision::draw()
 
 	scene::draw();
 	render::draw_world_axis();
-
-	/*
-	if( b_last_collision )
-	{
-		scoped_render_state;
-
-		render::state->z += 5.f;
-		render::state->color = make_color( color::green );
-		auto start = last_collision.entity_a->get_transform()->pos;// last_collision.closest_point;
-		auto end = start + ( last_collision.normal * last_collision.depth );
-		render::draw_line( start, end );
-
-		render::state->color = make_color( color::red );
-		render::state->z += 5.f;
-		render::draw_point( last_collision.closest_point );
-	}
-	*/
 }
 
 void scene_simple_collision::draw_ui()
 {
 	scene::draw_ui();
 	draw_title( "Simple Collisions" );
-
-	if( b_last_collision )
-	{
-		render::state->color = color::light_green;
-		auto ypos = 32.f;
-		render::draw_string( std::format( "count  : {}", last_collision.manifold.count ), vec2( 4.f, ypos ) );
-		ypos += 10.f;
-		render::draw_string( std::format( "closest: {}, {}", last_collision.closest_point.x, last_collision.closest_point.y ), vec2( 4.f, ypos ) );
-		ypos += 10.f;
-		render::draw_string( std::format( "depth  : {}", last_collision.manifold.depths[0] ), vec2( 4.f, ypos ) );
-		ypos += 10.f;
-		render::draw_string( std::format( "normal : {},{}", last_collision.manifold.n.x, last_collision.manifold.n.y ), vec2( 4.f, ypos ) );
-	}
 }
 
 bool scene_simple_collision::on_input_motion( const input_event* evt )
@@ -122,13 +92,13 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			mario->transform_delta_pos( evt->delta * 2.f );
+			mario->transform_delta_pos( evt->delta * 4.f );
 		}
 		break;
 
 		case input_id::gamepad_right_stick:
 		{
-			skull->transform_delta_pos( evt->delta * 2.f );
+			skull->transform_delta_pos( evt->delta * 4.f );
 		}
 		break;
 	}

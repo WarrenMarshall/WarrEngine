@@ -133,7 +133,6 @@ void entity::update_transform_to_match_physics_components()
 			vec2 position = vec2( ec->body->GetPosition() ).from_box2d();
 			float angle = ec->body->GetAngle();
 
-
 			_tform.set_pos( { position.x, position.y } );
 			_tform.set_angle( glm::degrees( angle ) );
 			break;
@@ -231,6 +230,8 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 
 void entity::on_simple_collision( simple_collision::pending_collision& coll, entity* touched_by )
 {
+	// push outside of the entity we collided with
+	transform_delta_pos( coll.normal * coll.depth );
 }
 
 bool entity::can_be_deleted()

@@ -311,10 +311,10 @@ void engine::main_loop()
 		start_frame();
 
 		do_fixed_time_step();
-		input.dispatch_event_queue();
-		do_draw_frame();
 
+		do_draw_frame();
 		do_draw_finished_frame();
+
 		debug_draw_buffers();
 
 		end_frame();
@@ -907,12 +907,8 @@ void engine::process_collision_queue()
 	// ----------------------------------------------------------------------------
 	// simple
 
-	scenes.current_scene->b_last_collision = false;
-
 	for( auto& iter : simple_collision.queue )
 	{
-		scenes.current_scene->b_last_collision = true;
-		scenes.current_scene->last_collision = iter;
 		iter.entity_a->on_simple_collision( iter, iter.entity_b );
 	}
 
@@ -979,9 +975,6 @@ void engine::do_fixed_time_step()
 		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
 		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
 
-		input.queue_presses();
-		input.queue_motion();
-
 		// walk through each pending fixed time step, one at a time
 
 		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
@@ -990,15 +983,21 @@ void engine::do_fixed_time_step()
 
 			box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
 
+			input.queue_presses();
+			input.queue_motion();
+			input.dispatch_event_queue();
+
 			scenes.pre_update();
 			scenes.update();
 			scenes.post_update();
 
+			process_collision_queue();
+
 			g_base_game->update();
 		}
 
+
 		g_engine->stats.update();
-		process_collision_queue();
 	}
 }
 

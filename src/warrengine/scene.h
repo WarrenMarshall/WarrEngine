@@ -15,13 +15,6 @@ struct scene
 	transform* get_transform();
 	transform camera_transform;
 
-	// debug
-	// debug
-	bool b_last_collision = false;
-	simple_collision::pending_collision last_collision;
-	// debug
-	// debug
-
 	// rendering starts in the top left corner of the screen by default. this
 	// provides a way to move that anywhere within the viewport using a simple
 	// offset.
@@ -119,6 +112,8 @@ struct scene
 	virtual void pre_update();
 	virtual void update();
 	virtual void post_update();
+
+	void queue_simple_collisions();
 
 	virtual void draw();
 	virtual void draw_ui();
