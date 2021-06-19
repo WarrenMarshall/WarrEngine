@@ -87,9 +87,6 @@ struct engine
 	void init();
 	void deinit();
 	void draw();
-	void pre_update();
-	void update();
-	void post_update();
 	void cache_asset_definition_files( std::string_view folder_name );
 	void precache_asset_resources( int pass );
 	void wait_for_thread_pool_to_finish();

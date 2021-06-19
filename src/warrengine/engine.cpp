@@ -616,21 +616,6 @@ void engine::draw()
 	}
 }
 
-void engine::pre_update()
-{
-	scenes.pre_update();
-}
-
-void engine::update()
-{
-	scenes.update();
-}
-
-void engine::post_update()
-{
-	scenes.post_update();
-}
-
 void engine::toggle_pause()
 {
 	toggle_bool( pause_state.toggle );
@@ -1007,33 +992,30 @@ void engine::do_fixed_time_step()
 {
 	if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
 	{
-		// if there will be a fixed time step happening, update the real time
-		// shader uniforms. this is better perf than updating them every single
-		// render frame.
-
 		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
-		post_process.film_grain_amount += 0.01f;
 		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
 
 		// walk through each pending fixed time step, one at a time
 
 		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
 		{
+			post_process.film_grain_amount += 0.01f;
+
 			// queue up inputs for processing later in the loop
 			input.queue_motion();
 
 			box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
 
-			pre_update();
-			update();
-			post_update();
+			scenes.pre_update();
+			scenes.update();
+			scenes.post_update();
 
 			g_base_game->update();
-	}
+		}
 
 		g_engine->stats.update();
 		process_collision_queue();
-}
+	}
 }
 
 }
