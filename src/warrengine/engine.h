@@ -22,6 +22,9 @@ struct engine
 
 	void main_loop();
 
+	void start_frame();
+	void end_frame();
+
 	void do_fixed_time_step();
 	void do_draw_frame();
 	void do_draw_finished_frame();

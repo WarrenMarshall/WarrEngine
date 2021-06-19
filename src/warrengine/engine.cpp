@@ -308,17 +308,7 @@ void engine::main_loop()
 {
 	while( is_running and !glfwWindowShouldClose( window.glfw_window ) )
 	{
-		// update core engine stuff - time, timers, etc
-
-		time.update();
-		g_ui->reset();
-
-		// whatever remaining ms are left in time.fts_accum_ms should be passed
-		// to the render functions for interpolation/prediction
-		//
-		// it is passed a percentage for easier use : 0.f-1.f
-
-		g_engine->renderer.frame_interpolate_pct = time.fts_accum_ms / (float)fixed_time_step::ms_per_step;
+		start_frame();
 
 		// queue up inputs for processing later in the loop
 		input.queue_presses();
@@ -343,13 +333,29 @@ void engine::main_loop()
 		do_draw_finished_frame();
 		debug_draw_buffers();
 
-		// ----------------------------------------------------------------------------
-		// everything has been drawn the default frame buffer, so let's swap
-		// ----------------------------------------------------------------------------
-
-		glfwSwapBuffers( window.glfw_window );
-		glfwPollEvents();
+		end_frame();
 	}
+}
+
+void engine::start_frame()
+{
+	// update core engine stuff - time, timers, etc
+
+	time.update();
+	g_ui->reset();
+
+	// whatever remaining ms are left in time.fts_accum_ms should be passed
+	// to the render functions for interpolation/prediction
+	//
+	// it is passed a percentage for easier use : 0.f-1.f
+
+	g_engine->renderer.frame_interpolate_pct = time.fts_accum_ms / (float)fixed_time_step::ms_per_step;
+}
+
+void engine::end_frame()
+{
+	glfwSwapBuffers( window.glfw_window );
+	glfwPollEvents();
 }
 
 void engine::do_draw_frame()
