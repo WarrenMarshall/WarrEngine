@@ -306,9 +306,6 @@ void engine::shutdown()
 
 void engine::main_loop()
 {
-	auto blur_shader_name = std::format( "blur_{}", g_engine->config_vars.find_value_or( "blur_method", "gaussian" ) );
-	auto blur_kernel_size = war::text_parser::float_from_str( g_engine->config_vars.find_value_or( "blur_kernel_size", "5" ) );
-
 	while( is_running and !glfwWindowShouldClose( window.glfw_window ) )
 	{
 		// update core engine stuff - time, timers, etc
@@ -334,70 +331,8 @@ void engine::main_loop()
 			input.dispatch_event_queue();
 		}
 
-
-		if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
-		{
-			// if there will be a fixed time step happening, update the real time
-			// shader uniforms. this is better perf than updating them every single
-			// render frame.
-
-			g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
-			post_process.film_grain_amount += 0.01f;
-			g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
-
-			// walk through each pending fixed time step, one at a time
-
-			for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
-			{
-				// queue up inputs for processing later in the loop
-				input.queue_motion();
-
-				box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
-
-				pre_update();
-				update();
-				post_update();
-
-				g_base_game->update();
-			}
-
-			g_engine->stats.update();
-			process_collision_queue();
-		}
-
-		// ----------------------------------------------------------------------------
-		// draw the scene to the engine frame buffer
-		//
-		// this draws several versions of the scene at once:
-		//
-		// 1. the scene as normal
-		// 2. same as #1 but only contains the brightest pixels (used for glow effects)
-		// 3. entity pick ids
-
-		g_engine->render_api.clear_depth_buffer();
-		frame_buffer->bind();
-		g_engine->render_api.shaders[ "base_pass" ].bind();
-		g_engine->renderer.begin_frame();
-		{
-			// ----------------------------------------------------------------------------
-			// render the game frame
-			// ----------------------------------------------------------------------------
-
-			g_engine->render_api.set_projection_matrix();
-
-			{
-				scoped_opengl;
-
-				// scenes and entities
-				scenes.draw();
-			}
-
-			// engine specific things, like pause borders
-			draw();
-			g_engine->renderer.dynamic_batches.flush_and_reset();
-		}
-		g_engine->renderer.end_frame();
-		frame_buffer->unbind();
+		do_fixed_time_step();
+		do_draw_frame();
 
 		// process the input that queued earlier AFTER the rendering has taken place
 		// so that the ui code has a chance to respond. the ui has to be drawn
@@ -405,111 +340,8 @@ void engine::main_loop()
 
 		input.dispatch_event_queue();
 
-		// ----------------------------------------------------------------------------
-		// the engine frame buffer now contains the color texture and the glow
-		// texture. draw the glow texture into the blur frame buffer, using the
-		// blur shader.
-		// ----------------------------------------------------------------------------
-
-		g_engine->render_api.set_view_matrix_identity_no_camera();
-		blur_frame_buffer->bind();
-
-		g_engine->render_api.shaders[ blur_shader_name ].bind();
-
-		g_engine->render_api.set_uniform( "u_kernel_size", blur_kernel_size );
-
-		g_engine->render_api.set_uniform( "u_viewport_w", viewport_w );
-		g_engine->render_api.set_uniform( "u_viewport_h", viewport_h );
-
-		render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-		g_engine->renderer.dynamic_batches.flush_and_reset_internal();
-		blur_frame_buffer->unbind();
-
-		{
-			composite_frame_buffer->bind();
-
-			// ----------------------------------------------------------------------------
-			// draw the base frame buffer into the compositing frame buffer
-			// ----------------------------------------------------------------------------
-
-			{
-				scoped_render_state;
-
-				g_engine->render_api.shaders[ "compositing_pass" ].bind();
-
-				render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-				g_engine->renderer.dynamic_batches.flush_and_reset_internal();
-			}
-
-			// ----------------------------------------------------------------------------
-			// overlay the glow frame buffer on top of the compositing frame buffer
-			// ----------------------------------------------------------------------------
-
-			{
-				g_engine->render_api.shaders[ "simple" ].bind();
-				g_engine->render_api.set_blend( opengl_blend::glow );
-
-				render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-				g_engine->renderer.dynamic_batches.flush_and_reset_internal();
-
-				g_engine->render_api.set_blend( opengl_blend::alpha );
-			}
-
-			composite_frame_buffer->unbind();
-		}
-
-		// ----------------------------------------------------------------------------
-		// draw the compositing frame buffer to the default/final frame buffer
-		// applying any screen based post process effects.
-		// ----------------------------------------------------------------------------
-
-		{
-			g_engine->render_api.shaders[ "final_pass" ].bind();
-			g_engine->render_api.set_view_matrix_identity_no_camera();
-
-			// reset the viewport to the size of the actual window size
-			glViewport(
-				(int)window.viewport_pos_sz.x,
-				(int)window.viewport_pos_sz.y,
-				(int)window.viewport_pos_sz.w,
-				(int)window.viewport_pos_sz.h
-			);
-
-			render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
-		}
-
-	#if 0
-		// ---------------------------------------------------------------------------
-		// debug helper
-		//
-		// draw all the color attachments in quads at the bottom of the viewport
-		// ----------------------------------------------------------------------------
-
-		g_engine->render_api.shaders[ "simple" ].bind();
-
-		auto num_color_attachments = frame_buffer->color_attachments.size();
-		float scale_factor = 1.f / (float)num_color_attachments;
-		float w = viewport_w * scale_factor;
-		float h = viewport_h * scale_factor;
-		rect rc = { 0.f, viewport_h - h, w, h };
-
-		std::array<const char*, framebuffer::max> names = { "color", "glow", "pick", "blur", "comp", "final" };
-
-		{
-			scoped_render_state;
-
-			for( int x = 0 ; x < num_color_attachments ; ++x )
-			{
-				render::draw_quad( frame_buffer->color_attachments[ x ].texture, rc );
-				render::draw_string( names[ x ], { rc.x, rc.y } );
-				rc.x += w;
-			}
-
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
-		}
-
-	#endif
+		do_draw_finished_frame();
+		debug_draw_buffers();
 
 		// ----------------------------------------------------------------------------
 		// everything has been drawn the default frame buffer, so let's swap
@@ -517,6 +349,123 @@ void engine::main_loop()
 
 		glfwSwapBuffers( window.glfw_window );
 		glfwPollEvents();
+	}
+}
+
+void engine::do_draw_frame()
+{
+	// ----------------------------------------------------------------------------
+	// draw the scene to the engine frame buffer
+	//
+	// this draws several versions of the scene at once:
+	//
+	// 1. the scene as normal
+	// 2. same as #1 but only contains the brightest pixels (used for glow effects)
+	// 3. entity pick ids
+
+	g_engine->render_api.clear_depth_buffer();
+	frame_buffer->bind();
+	g_engine->render_api.shaders[ "base_pass" ].bind();
+	g_engine->renderer.begin_frame();
+	{
+		// ----------------------------------------------------------------------------
+		// render the game frame
+		// ----------------------------------------------------------------------------
+
+		g_engine->render_api.set_projection_matrix();
+
+		{
+			scoped_opengl;
+
+			// scenes and entities
+			scenes.draw();
+		}
+
+		// engine specific things, like pause borders
+		draw();
+		g_engine->renderer.dynamic_batches.flush_and_reset();
+	}
+	g_engine->renderer.end_frame();
+	frame_buffer->unbind();
+}
+
+void engine::do_draw_finished_frame()
+{
+	static auto blur_shader_name = std::format( "blur_{}", g_engine->config_vars.find_value_or( "blur_method", "gaussian" ) );
+	static auto blur_kernel_size = war::text_parser::float_from_str( g_engine->config_vars.find_value_or( "blur_kernel_size", "5" ) );
+
+	// ----------------------------------------------------------------------------
+	// the engine frame buffer now contains the color texture and the glow
+	// texture. draw the glow texture into the blur frame buffer, using the
+	// blur shader.
+	// ----------------------------------------------------------------------------
+
+	g_engine->render_api.set_view_matrix_identity_no_camera();
+	blur_frame_buffer->bind();
+
+	g_engine->render_api.shaders[ blur_shader_name ].bind();
+
+	g_engine->render_api.set_uniform( "u_kernel_size", blur_kernel_size );
+
+	g_engine->render_api.set_uniform( "u_viewport_w", viewport_w );
+	g_engine->render_api.set_uniform( "u_viewport_h", viewport_h );
+
+	render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+	g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+	blur_frame_buffer->unbind();
+
+	{
+		composite_frame_buffer->bind();
+
+		// ----------------------------------------------------------------------------
+		// draw the base frame buffer into the compositing frame buffer
+		// ----------------------------------------------------------------------------
+
+		{
+			scoped_render_state;
+
+			g_engine->render_api.shaders[ "compositing_pass" ].bind();
+
+			render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+		}
+
+		// ----------------------------------------------------------------------------
+		// overlay the glow frame buffer on top of the compositing frame buffer
+		// ----------------------------------------------------------------------------
+
+		{
+			g_engine->render_api.shaders[ "simple" ].bind();
+			g_engine->render_api.set_blend( opengl_blend::glow );
+
+			render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+
+			g_engine->render_api.set_blend( opengl_blend::alpha );
+		}
+
+		composite_frame_buffer->unbind();
+	}
+
+	// ----------------------------------------------------------------------------
+	// draw the compositing frame buffer to the default/final frame buffer
+	// applying any screen based post process effects.
+	// ----------------------------------------------------------------------------
+
+	{
+		g_engine->render_api.shaders[ "final_pass" ].bind();
+		g_engine->render_api.set_view_matrix_identity_no_camera();
+
+		// reset the viewport to the size of the actual window size
+		glViewport(
+			(int)window.viewport_pos_sz.x,
+			(int)window.viewport_pos_sz.y,
+			(int)window.viewport_pos_sz.w,
+			(int)window.viewport_pos_sz.h
+		);
+
+		render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+		g_engine->renderer.dynamic_batches.flush_and_reset_internal();
 	}
 }
 
@@ -1011,6 +960,74 @@ void engine::show_msg_box( std::string_view msg )
 {
 	msg_box.msg = msg;
 	g_engine->scenes.push<scene_msg_box>();
+}
+
+void engine::debug_draw_buffers()
+{
+#if 0
+	// ---------------------------------------------------------------------------
+	// debug helper
+	//
+	// draw all the color attachments in quads at the bottom of the viewport
+	// ----------------------------------------------------------------------------
+
+	g_engine->render_api.shaders[ "simple" ].bind();
+
+	auto num_color_attachments = frame_buffer->color_attachments.size();
+	float scale_factor = 1.f / (float)num_color_attachments;
+	float w = viewport_w * scale_factor;
+	float h = viewport_h * scale_factor;
+	rect rc = { 0.f, viewport_h - h, w, h };
+
+	std::array<const char*, framebuffer::max> names = { "color", "glow", "pick", "blur", "comp", "final" };
+
+	{
+		scoped_render_state;
+
+		for( int x = 0 ; x < num_color_attachments ; ++x )
+		{
+			render::draw_quad( frame_buffer->color_attachments[ x ].texture, rc );
+			render::draw_string( names[ x ], { rc.x, rc.y } );
+			rc.x += w;
+		}
+
+		g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+	}
+
+#endif
+}
+
+void engine::do_fixed_time_step()
+{
+	if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
+	{
+		// if there will be a fixed time step happening, update the real time
+		// shader uniforms. this is better perf than updating them every single
+		// render frame.
+
+		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
+		post_process.film_grain_amount += 0.01f;
+		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
+
+		// walk through each pending fixed time step, one at a time
+
+		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
+		{
+			// queue up inputs for processing later in the loop
+			input.queue_motion();
+
+			box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
+
+			pre_update();
+			update();
+			post_update();
+
+			g_base_game->update();
+	}
+
+		g_engine->stats.update();
+		process_collision_queue();
+}
 }
 
 }

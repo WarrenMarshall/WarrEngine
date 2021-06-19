@@ -21,6 +21,11 @@ struct engine
 	static void launch_apply_config_settings();
 
 	void main_loop();
+
+	void do_fixed_time_step();
+	void do_draw_frame();
+	void do_draw_finished_frame();
+
 	void shutdown();
 
 	// things that need to be updated each frame so the post process shader has
@@ -86,6 +91,8 @@ struct engine
 	void precache_asset_resources( int pass );
 	void wait_for_thread_pool_to_finish();
 
+	void debug_draw_buffers();
+
 	template<typename T>
 	[[nodiscard]] T* find_asset( std::string_view name )
 	{
@@ -146,3 +153,4 @@ struct engine
 };
 
 }
+
