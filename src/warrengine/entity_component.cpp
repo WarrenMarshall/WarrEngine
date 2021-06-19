@@ -773,11 +773,13 @@ simple_collision_component::simple_collision_component( entity* parent_entity )
 
 void simple_collision_component::draw()
 {
+	if( g_engine->renderer.debug.draw_debug_info )
 	{
 		scoped_render_state;
 
 		render::state->set_from_opt( rs_opt );
 
+		// #simple - these won't work with any sort of entity component position offset
 		switch( type )
 		{
 			case simple_collision_type::aabb:
@@ -806,15 +808,16 @@ void simple_collision_component::update()
 	pos_tform.add_pos( get_transform()->pos );
 	auto pos_mtx = pos_tform.to_matrix();
 
-	vec2 v;
-	v = pos_mtx.transform_vec2( { aabb.x, aabb.y } );
+	transform scale_tform;
+	scale_tform.set_scale( parent_entity->get_transform()->scale );
+	scale_tform.multiply_scale( get_transform()->scale );
+	auto scale_mtx = scale_tform.to_matrix();
+
+	vec2 v = { aabb.x, aabb.y };
+	scale_mtx.transform_vec2( &v );
+	pos_mtx.transform_vec2( &v );
 	aabb_ws.x = v.x;
 	aabb_ws.y = v.y;
-
-	transform scale_tform;
-	//scale_tform.set_scale( parent_entity->get_transform()->scale );
-	//scale_tform.multiply_scale( get_transform()->scale );
-	auto scale_mtx = scale_tform.to_matrix();
 
 	v = scale_mtx.transform_vec2( { aabb.w, aabb.h } );
 	aabb_ws.w = v.w;
@@ -823,7 +826,7 @@ void simple_collision_component::update()
 	// ----------------------------------------------------------------------------
 	// circle
 
-	radius_ws = radius;
+	radius_ws = radius * ( parent_entity->get_transform()->scale * get_transform()->scale );
 }
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
