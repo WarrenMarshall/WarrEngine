@@ -779,7 +779,6 @@ void simple_collision_component::draw()
 
 		render::state->set_from_opt( rs_opt );
 
-		// #simple - these won't work with any sort of entity component position offset
 		switch( type )
 		{
 			case simple_collision_type::aabb:
@@ -825,6 +824,10 @@ void simple_collision_component::update()
 
 	// ----------------------------------------------------------------------------
 	// circle
+
+	radius_pos_ws = {};
+	scale_mtx.transform_vec2( &radius_pos_ws );
+	pos_mtx.transform_vec2( &radius_pos_ws );
 
 	radius_ws = radius * ( parent_entity->get_transform()->scale * get_transform()->scale );
 }

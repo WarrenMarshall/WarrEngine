@@ -155,14 +155,20 @@ void scene::post_update()
 			auto aabb_ws_a = scc_a->aabb_ws.to_c2AABB();
 			auto aabb_ws_b = scc_b->aabb_ws.to_c2AABB();
 
+			auto entity_tform_a = scc_a->parent_entity->get_transform();
+			auto entity_tform_b = scc_b->parent_entity->get_transform();
+
+			auto scc_tform_a = scc_a->get_transform();
+			auto scc_tform_b = scc_b->get_transform();
+
 			c2Circle circle_a = {};
-			circle_a.p.x = scc_a->parent_entity->get_transform()->pos.x;
-			circle_a.p.y = scc_a->parent_entity->get_transform()->pos.y;
+			circle_a.p.x = scc_a->radius_pos_ws.x;// ( entity_tform_a->pos.x + scc_tform_a->pos.x )* ( entity_tform_a->scale * scc_tform_a->scale );
+			circle_a.p.y = scc_a->radius_pos_ws.y;// ( entity_tform_a->pos.y + scc_tform_a->pos.y )* ( entity_tform_a->scale * scc_tform_a->scale );
 			circle_a.r = scc_a->radius_ws;
 
 			c2Circle circle_b = {};
-			circle_b.p.x = scc_b->parent_entity->get_transform()->pos.x;
-			circle_b.p.y = scc_b->parent_entity->get_transform()->pos.y;
+			circle_b.p.x = scc_b->radius_pos_ws.x;// ( entity_tform_b->pos.x + scc_tform_b->pos.x )* ( entity_tform_b->scale * scc_tform_b->scale );
+			circle_b.p.y = scc_b->radius_pos_ws.y;// ( entity_tform_b->pos.y + scc_tform_b->pos.y )* ( entity_tform_b->scale * scc_tform_b->scale );
 			circle_b.r = scc_b->radius_ws;
 
 			bool a_is_circle = scc_a->type == simple_collision_type::circle;
@@ -226,12 +232,12 @@ void scene::post_update()
 				collision.manifold = m;
 
 				collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
-				//collision.normal = vec2( m.n.x * normal_modifier.x, m.n.y * normal_modifier.y );
 				collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 				collision.depth = m.depths[ 0 ];
 
 				g_engine->simple_collision.queue.emplace_back( collision );
 
+				// #simple - move this to some sort of "collision reaction" handler
 				collision.entity_a->transform_delta_pos( collision.normal * collision.depth );
 			}
 		}

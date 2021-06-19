@@ -252,6 +252,7 @@ struct simple_collision_component : entity_component
 
 	// circle
 	float radius = 0.f;
+	vec2 radius_pos_ws = {};
 	float radius_ws = 0.f;
 
 	virtual void draw() override;
