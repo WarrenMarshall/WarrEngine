@@ -41,6 +41,7 @@ bool scene_esc_menu_ui_callback::on_input_pressed( const input_event* evt )
 scene_esc_menu::scene_esc_menu()
 {
 	ui_callback = std::make_unique<scene_esc_menu_ui_callback>();
+	flags.blocks_further_input = true;
 }
 
 void scene_esc_menu::pushed()
@@ -49,8 +50,6 @@ void scene_esc_menu::pushed()
 
 	save_mouse_mode();
 	g_engine->window.set_mouse_mode( mouse_mode::os );
-
-	g_engine->pause();
 }
 
 void scene_esc_menu::popped()
@@ -58,7 +57,6 @@ void scene_esc_menu::popped()
 	scene::popped();
 
 	restore_mouse_mode();
-	g_engine->resume();
 }
 
 void scene_esc_menu::draw_ui()
