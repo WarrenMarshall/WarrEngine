@@ -31,7 +31,6 @@ void scene_simple_collision::pushed()
 		e->debug_name = "MARIO";
 	#endif
 		e->transform_set_pos( { -80.f, 0.f } );
-		e->transform_set_scale( 0.5f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -39,8 +38,15 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_box( 24.f, 48.f );
+			//ec->set_as_centered_box( 40.f, 40.f );
 			ec->set_as_circle( 16.f );
+			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
+		}
+		{
+			auto ec = e->add_component<simple_collision_component>();
+			//ec->set_as_centered_box( 40.f, 40.f );
+			ec->set_as_circle( 24.f );
+			ec->get_transform()->set_pos( { 0.f, 32.f } );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
 		}
 
@@ -55,7 +61,7 @@ void scene_simple_collision::pushed()
 		e->debug_name = "SKULL";
 	#endif
 		e->transform_set_pos( { 80.f, 0.f } );
-		//e->transform_set_scale( 2.f );
+		e->transform_set_scale( 2.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 0.25f );
@@ -63,11 +69,16 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 64.f, 12.f );
-			ec->set_as_circle( 24.f );
+			ec->set_as_centered_box( 128.f, 8.f );
+			//ec->set_as_circle( 24.f );
 			ec->set_collision_flags( scene_simple_coll_skull, 0 );
-			ec->get_transform()->set_pos( { 32.f, 8.f } );
-			ec->get_transform()->set_scale( 2.f );
+		}
+		{
+			auto ec = e->add_component<simple_collision_component>();
+			//ec->set_as_centered_box( 32.f, 16.f );
+			ec->set_as_circle( 24.f );
+			ec->get_transform()->set_pos( { 0.f, 16.f } );
+			ec->set_collision_flags( scene_simple_coll_skull, 0 );
 		}
 
 		skull = e;
