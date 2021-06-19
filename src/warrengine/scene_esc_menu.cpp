@@ -42,6 +42,7 @@ scene_esc_menu::scene_esc_menu()
 {
 	ui_callback = std::make_unique<scene_esc_menu_ui_callback>();
 	flags.blocks_further_input = true;
+	flags.blocks_further_update = true;
 }
 
 void scene_esc_menu::pushed()
