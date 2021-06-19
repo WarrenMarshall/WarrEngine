@@ -310,25 +310,9 @@ void engine::main_loop()
 	{
 		start_frame();
 
-		// queue up inputs for processing later in the loop
-		input.queue_presses();
-
-		// if the engine is paused, we need to continue processing user input so
-		// that the ESC menu and engine can respond to keypresses
-
-		if( is_paused() )
-		{
-			input.dispatch_event_queue();
-		}
-
 		do_fixed_time_step();
-		do_draw_frame();
-
-		// process the input that queued earlier AFTER the rendering has taken place
-		// so that the ui code has a chance to respond. the ui has to be drawn
-		// before it can react to input.
-
 		input.dispatch_event_queue();
+		do_draw_frame();
 
 		do_draw_finished_frame();
 		debug_draw_buffers();
@@ -995,14 +979,14 @@ void engine::do_fixed_time_step()
 		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
 		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
 
+		input.queue_presses();
+		input.queue_motion();
+
 		// walk through each pending fixed time step, one at a time
 
 		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
 		{
 			post_process.film_grain_amount += 0.01f;
-
-			// queue up inputs for processing later in the loop
-			input.queue_motion();
 
 			box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
 
