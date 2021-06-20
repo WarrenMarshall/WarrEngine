@@ -308,75 +308,90 @@ void engine::main_loop()
 {
 	while( is_running and !glfwWindowShouldClose( window.glfw_window ) )
 	{
-		start_frame();
+		// update core engine stuff - time, timers, etc
 
-		do_fixed_time_step();
+		time.update();
+		g_ui->reset();
 
-		do_draw_frame();
+		// whatever remaining ms are left in time.fts_accum_ms should be passed
+		// to the render functions for interpolation/prediction
+		//
+		// it is passed a percentage for easier use : 0.f-1.f
+
+		g_engine->renderer.frame_interpolate_pct = time.fts_accum_ms / (float)fixed_time_step::ms_per_step;
+
+		if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
+		{
+			// walk through each pending fixed time step, one at a time
+
+			for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
+			{
+				post_process.film_grain_amount += 0.01f;
+
+				box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
+
+
+				input.queue_motion();
+
+				scenes.pre_update();
+				scenes.update();
+				scenes.post_update();
+
+				dispatch_collision_queue();
+
+				g_base_game->update();
+			}
+
+			g_engine->stats.update();
+
+			g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
+			g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
+		}
+
+		// ----------------------------------------------------------------------------
+		// draw the scene to the engine frame buffer
+		//
+		// this draws several versions of the scene at once:
+		//
+		// 1. the scene as normal
+		// 2. same as #1 but only contains the brightest pixels (used for glow effects)
+		// 3. entity pick ids
+
+		input.queue_presses();
+		input.dispatch_event_queue();
+
+		g_engine->render_api.clear_depth_buffer();
+		frame_buffer->bind();
+		g_engine->render_api.shaders[ "base_pass" ].bind();
+		g_engine->renderer.begin_frame();
+		{
+			// ----------------------------------------------------------------------------
+			// render the game frame
+			// ----------------------------------------------------------------------------
+
+			g_engine->render_api.set_projection_matrix();
+
+			{
+				scoped_opengl;
+
+				// scenes and entities
+				scenes.draw();
+			}
+
+			// engine specific things, like pause borders
+			draw();
+			g_engine->renderer.dynamic_batches.flush_and_reset();
+		}
+		g_engine->renderer.end_frame();
+		frame_buffer->unbind();
+
 		do_draw_finished_frame();
 
 		debug_draw_buffers();
 
-		end_frame();
+		glfwSwapBuffers( window.glfw_window );
+		glfwPollEvents();
 	}
-}
-
-void engine::start_frame()
-{
-	// update core engine stuff - time, timers, etc
-
-	time.update();
-	g_ui->reset();
-
-	// whatever remaining ms are left in time.fts_accum_ms should be passed
-	// to the render functions for interpolation/prediction
-	//
-	// it is passed a percentage for easier use : 0.f-1.f
-
-	g_engine->renderer.frame_interpolate_pct = time.fts_accum_ms / (float)fixed_time_step::ms_per_step;
-}
-
-void engine::end_frame()
-{
-	glfwSwapBuffers( window.glfw_window );
-	glfwPollEvents();
-}
-
-void engine::do_draw_frame()
-{
-	// ----------------------------------------------------------------------------
-	// draw the scene to the engine frame buffer
-	//
-	// this draws several versions of the scene at once:
-	//
-	// 1. the scene as normal
-	// 2. same as #1 but only contains the brightest pixels (used for glow effects)
-	// 3. entity pick ids
-
-	g_engine->render_api.clear_depth_buffer();
-	frame_buffer->bind();
-	g_engine->render_api.shaders[ "base_pass" ].bind();
-	g_engine->renderer.begin_frame();
-	{
-		// ----------------------------------------------------------------------------
-		// render the game frame
-		// ----------------------------------------------------------------------------
-
-		g_engine->render_api.set_projection_matrix();
-
-		{
-			scoped_opengl;
-
-			// scenes and entities
-			scenes.draw();
-		}
-
-		// engine specific things, like pause borders
-		draw();
-		g_engine->renderer.dynamic_batches.flush_and_reset();
-	}
-	g_engine->renderer.end_frame();
-	frame_buffer->unbind();
 }
 
 void engine::do_draw_finished_frame()
@@ -969,39 +984,6 @@ void engine::debug_draw_buffers()
 	}
 
 #endif
-}
-
-void engine::do_fixed_time_step()
-{
-	if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
-	{
-		// walk through each pending fixed time step, one at a time
-
-		for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
-		{
-			post_process.film_grain_amount += 0.01f;
-
-			box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
-
-
-			input.queue_presses();
-			input.queue_motion();
-			input.dispatch_event_queue();
-
-			scenes.pre_update();
-			scenes.update();
-			scenes.post_update();
-
-			dispatch_collision_queue();
-
-			g_base_game->update();
-		}
-
-		g_engine->stats.update();
-
-		g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
-		g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
-	}
 }
 
 }
