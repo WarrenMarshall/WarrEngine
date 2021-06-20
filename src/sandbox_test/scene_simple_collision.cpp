@@ -8,7 +8,7 @@ using namespace war;
 static bit_flag_generator collision_bits = 1;
 
 static const unsigned scene_simple_coll_mario = ++collision_bits;
-static const unsigned scene_simple_coll_skull = ++collision_bits;
+static const unsigned scene_simple_coll_geo = ++collision_bits;
 
 // ----------------------------------------------------------------------------
 
@@ -27,9 +27,6 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
-	#ifdef _DEBUG
-		e->debug_name = "MARIO";
-	#endif
 		e->transform_set_pos( { -80.f, 0.f } );
 		{
 			auto ec = e->add_component<sprite_component>();
@@ -40,32 +37,27 @@ void scene_simple_collision::pushed()
 			auto ec = e->add_component<simple_collision_component>();
 			//ec->set_as_centered_box( 32.f, 32.f );
 			ec->set_as_circle( 16.f );
-			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_skull );
+			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
 		}
 
 		mario = e;
 	}
 
-	// SKULL
+	// generate random things for mario to collide with
+
 	{
 		auto e = add_entity<entity>();
-		e->tag = H( "skull" );
-	#ifdef _DEBUG
-		e->debug_name = "SKULL";
-	#endif
-		e->transform_set_pos( { 80.f, 0.f } );
-		{
-			auto ec = e->add_component<sprite_component>();
-			ec->rs_opt.color = make_color( color::white, 0.25f );
-			ec->init( "tex_skull" );
-		}
-		{
-			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 48.f, 48.f );
-			ec->set_collision_flags( scene_simple_coll_skull, 0 );
-		}
+		e->tag = H( "world_geo" );
 
-		skull = e;
+		for( int total_colliders = 0 ; total_colliders < 2 ; ++total_colliders )
+		{
+			{
+				auto ec = e->add_component<simple_collision_component>();
+				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
+				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
+				ec->set_collision_flags( scene_simple_coll_geo, 0 );
+			}
+		}
 	}
 }
 
@@ -100,7 +92,6 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 
 		case input_id::gamepad_right_stick:
 		{
-			skull->transform_delta_pos( evt->delta * 150.f * fixed_time_step::per_second_scaler );
 			return true;
 		}
 		break;
