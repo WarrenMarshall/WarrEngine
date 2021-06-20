@@ -27,6 +27,7 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
+		//e->debug_name = "MARIO";
 		e->transform_set_pos( { -80.f, 0.f } );
 		{
 			auto ec = e->add_component<sprite_component>();
@@ -38,6 +39,7 @@ void scene_simple_collision::pushed()
 			//ec->set_as_centered_box( 32.f, 32.f );
 			ec->set_as_circle( 16.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
+			ec->rs_opt.color = make_color( color::light_blue );
 		}
 
 		mario = e;
@@ -48,14 +50,33 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
+		//e->debug_name = "WORLD_GEO";
 
-		for( int total_colliders = 0 ; total_colliders < 2 ; ++total_colliders )
+		for( int x = 0 ; x < 24 ; ++x )
 		{
 			{
 				auto ec = e->add_component<simple_collision_component>();
 				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
 				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
+				ec->rs_opt.color = make_color( color::dark_teal );
+			}
+		}
+	}
+
+	{
+		auto e = add_entity<entity>();
+		e->tag = H( "world_geo2" );
+		//e->debug_name = "WORLD_GEO2";
+
+		for( int x = 0 ; x < 24 ; ++x )
+		{
+			{
+				auto ec = e->add_component<simple_collision_component>();
+				ec->set_as_circle( random::getf_range( 8.f, 40.f ) );
+				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
+				ec->set_collision_flags( scene_simple_coll_geo, 0 );
+				ec->rs_opt.color = make_color( color::teal );
 			}
 		}
 	}

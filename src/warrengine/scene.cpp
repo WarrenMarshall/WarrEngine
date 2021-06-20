@@ -200,7 +200,7 @@ void scene::queue_simple_collisions()
 
 				if( !c2CircletoCircle( circle_a, circle_b ) )
 				{
-					return;
+					continue;
 				}
 
 				c2CircletoCircleManifold( circle_a, circle_b, &m );
@@ -211,7 +211,7 @@ void scene::queue_simple_collisions()
 
 				if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
 				{
-					return;
+					continue;
 				}
 
 				c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
@@ -224,7 +224,7 @@ void scene::queue_simple_collisions()
 
 				if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
 				{
-					return;
+					continue;
 				}
 
 				c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
@@ -235,7 +235,7 @@ void scene::queue_simple_collisions()
 
 				if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
 				{
-					return;
+					continue;
 				}
 
 				c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );

@@ -910,7 +910,6 @@ void engine::dispatch_box2d_collisions()
 
 void engine::dispatch_simple_collisions()
 {
-	//log( "{} collisions", simple_collision.queue.size() );
 	for( auto& iter : simple_collision.queue )
 	{
 		iter.entity_a->on_simple_collision( iter, iter.entity_b );
