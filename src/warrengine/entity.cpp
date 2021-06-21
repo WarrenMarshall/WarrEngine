@@ -157,15 +157,11 @@ transform* entity::transform_set_scale( const float scale )
 {
 	_tform.set_scale( scale );
 
-	if( has_component<box2d_physics_component>() )
-	{
-		// scaling an entity with physics components isn't encouraged as we
-		// don't have a way to scale the physics components at the same time. so
-		// collision will remain the original size which is likely not what you
-		// want.
-		assert( false );
-	}
-
+	// scaling an entity with physics components isn't encouraged as we
+	// don't have a way to scale the physics components at the same time. so
+	// collision will remain the original size which is likely not what you
+	// want.
+	assert( !has_component<box2d_physics_component>() );
 
 	return &_tform;
 }
@@ -189,14 +185,11 @@ transform* entity::transform_delta_scale( const float delta )
 	_tform.add_scale( delta );
 
 
-	if( has_component<box2d_physics_component>() )
-	{
-		// scaling an entity with physics components isn't encouraged as we
-		// don't have a way to scale the physics components at the same time. so
-		// collision will remain the original size which is likely not what you
-		// want.
-		assert( false );
-	}
+	// scaling an entity with physics components isn't encouraged as we
+	// don't have a way to scale the physics components at the same time. so
+	// collision will remain the original size which is likely not what you
+	// want.
+	assert( !has_component<box2d_physics_component>() );
 
 	return &_tform;
 }

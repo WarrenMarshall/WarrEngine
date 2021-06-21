@@ -1,7 +1,8 @@
 
-namespace war::box2d_physics
+namespace war::simple_collision
 {
 
+/*
 struct raycast_hit
 {
 	// how far along the ray did the hit occur?
@@ -59,27 +60,37 @@ struct raycast_all final : b2RayCastCallback
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 		const b2Vec2& normal, float fraction ) override;
 };
+*/
+
+/*
+// ----------------------------------------------------------------------------
+
+struct simple_collision_query_callback
+{
+	virtual ~simple_collision_query_callback() {}
+
+	virtual bool report_component( simple_collision_component* component ) = 0;
+};
 
 // ----------------------------------------------------------------------------
 // builds a list of all the fixtures that intersect with the AABB being queried
 
-class touching_all final : public b2QueryCallback
+struct touching_all final : simple_collision_query_callback
 {
-public:
-	std::vector<b2Fixture*> fixtures;
+	std::vector<simple_collision_component*> components;
 
-	virtual bool ReportFixture( b2Fixture* fixture ) override;
+	virtual bool report_component( simple_collision_component* component ) override;
 };
 
 // ----------------------------------------------------------------------------
 // stops after finding the first fixture that intersects with the AABB being queried
 
-class touching_first final : public b2QueryCallback
+struct touching_first final : simple_collision_query_callback
 {
-public:
-	b2Fixture* fixture;
+	simple_collision_component* component;
 
-	virtual bool ReportFixture( b2Fixture* fixture ) override;
+	virtual bool report_component( simple_collision_component* component ) override;
 };
+*/
 
 }

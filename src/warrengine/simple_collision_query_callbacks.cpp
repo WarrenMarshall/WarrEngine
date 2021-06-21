@@ -2,13 +2,11 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war::box2d_physics
+namespace war::simple_collision
 {
 
 // ----------------------------------------------------------------------------
-// these raycast_callback functions filter hit results from a Box2D raycast.
-//
-// details on how this works : http://www.iforce2d.net/b2dtut/world-querying
+// these raycast_callback functions filter hit results from a raycast.
 //
 // in short, it depends on what you want to do:
 //
@@ -25,6 +23,7 @@ namespace war::box2d_physics
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
+/*
 float raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
 	if( collision_mask > 0 )
@@ -94,19 +93,22 @@ float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const
 
 	return 1.f;
 }
+*/
 
+/*
 // ----------------------------------------------------------------------------
 
-bool touching_all::ReportFixture( b2Fixture* fixture )
+bool touching_all::report_component( simple_collision_component* component )
 {
-	this->fixtures.push_back( fixture );
+	components.push_back( component );
 	return true;
 }
 
-bool touching_first::ReportFixture( b2Fixture* fixture )
+bool touching_first::report_component( simple_collision_component* component )
 {
-	this->fixture = fixture;
+	this->component = component;
 	return false;
 }
+*/
 
 }
