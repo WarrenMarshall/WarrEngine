@@ -329,8 +329,7 @@ void engine::main_loop()
 			{
 				post_process.film_grain_amount += 0.01f;
 
-				box2d.world->Step( fixed_time_step::per_second_scaler, b2d_velocity_iterations, b2d_pos_iterations );
-
+				box2d.world->Step( fixed_time_step::per_second( 1.0f ), b2d_velocity_iterations, b2d_pos_iterations );
 
 				input.queue_motion();
 

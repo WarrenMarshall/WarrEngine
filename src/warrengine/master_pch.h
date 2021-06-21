@@ -69,31 +69,31 @@ namespace war
 
 namespace fixed_time_step
 {
-// #physics - physics needs to run at 60 FPS, but other stuff could run less often
-//       - should we add a second fixed time step?
+	// #physics - physics needs to run at 60 FPS, but other stuff could run less often
+	//       - should we add a second fixed time step?
 
-// how many fixed time steps, per second
-constexpr int frames_per_second = 60;
+	// how many fixed time steps, per second
+	constexpr int frames_per_second = 60;
 
-// how many milliseconds will have passed each time a fixed time step update
-// occurs
-constexpr int ms_per_step = (int)( 1000.f / (float)frames_per_second );
+	// how many milliseconds will have passed each time a fixed time step update
+	// occurs
+	constexpr int ms_per_step = (int)( 1000.f / (float)frames_per_second );
 
-// any value you want to update as a "per second" value in an update
-// function should be multiplied against this constant.
-//
-// i.e. if you want to rotate something 15 degrees per second, then in your
-// update function, increase your angle value with something like:
-//
-// angle += 15.f * fixed_time_step::per_second_scaler;
+	// any value you want to update as a "per second" value in an update
+	// function should be multiplied against this constant.
+	//
+	// i.e. if you want to rotate something 15 degrees per second, then in your
+	// update function, increase your angle value with something like:
+	//
+	// angle += 15.f * fixed_time_step::per_second_scaler;
 
-constexpr float per_second_scaler = 1.0f / (float)frames_per_second;
+	constexpr float _per_second_scaler = 1.0f / (float)frames_per_second;
 
-template<typename T>
-constexpr T per_second( T val )
-{
-	return val * per_second_scaler;
-}
+	template<typename T>
+	constexpr T per_second( T val )
+	{
+		return val * _per_second_scaler;
+	}
 }
 
 // ----------------------------------------------------------------------------

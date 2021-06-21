@@ -100,13 +100,27 @@ void scene_simple_collision::draw_ui()
 	draw_title( "Simple Collisions" );
 }
 
+bool scene_simple_collision::on_input_pressed( const input_event* evt )
+{
+	switch( evt->input_id )
+	{
+		case input_id::gamepad_button_y:
+		{
+			int warren = 5;
+		}
+		break;
+	}
+
+	return false;
+}
+
 bool scene_simple_collision::on_input_motion( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			mario->transform_delta_pos( evt->delta * 150.f * fixed_time_step::per_second_scaler );
+			mario->transform_delta_pos( fixed_time_step::per_second( evt->delta * 150.f ) );
 			return true;
 		}
 		break;
