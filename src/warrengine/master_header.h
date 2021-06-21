@@ -62,7 +62,7 @@
 #include "ui_mgr.h"
 #include "render_stats.h"
 
-#include "collision.h"
+#include "pending_collision.h"
 
 #include "asset_cache_mgr.h"
 #include "window.h"

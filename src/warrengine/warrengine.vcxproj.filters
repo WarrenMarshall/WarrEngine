@@ -250,7 +250,7 @@
     <ClCompile Include="scene_post_process.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="collision.cpp">
+    <ClCompile Include="pending_collision.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
   </ItemGroup>
@@ -513,7 +513,7 @@
     <ClInclude Include="cache.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="collision.h">
+    <ClInclude Include="pending_collision.h">
       <Filter>include\collision</Filter>
     </ClInclude>
   </ItemGroup>

@@ -277,6 +277,7 @@ void engine::shutdown()
 	log( "Shutting down..." );
 
 	log( "Shutting down scene manager" );
+
 	// note : this needs to be done before the audio or windowing systems, to
 	// give the scenes a chance to clean up first.
 	scenes.clear_stack();
