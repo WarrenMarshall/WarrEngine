@@ -57,7 +57,7 @@ render_vertex::render_vertex( const render_vertex& other )
 
 render_triangle::render_triangle( const render_vertex& v0, const render_vertex& v1, const render_vertex& v2, const color& color, float glow )
 {
-	auto l_copy_render_vert = [&] ( int idx, const render_vertex& rv )
+	auto l_copy_render_vert = [&] ( size_t idx, const render_vertex& rv )
 	{
 		verts[ idx ] = rv;
 		verts[ idx ].r = color.r;
@@ -77,7 +77,7 @@ render_triangle::render_triangle( const render_vertex& v0, const render_vertex& 
 
 render_line::render_line( const render_vertex& v0, const render_vertex& v1, const color& color, float glow )
 {
-	auto l_copy_render_vert = [&] ( int idx, const render_vertex& rv )
+	auto l_copy_render_vert = [&] ( size_t idx, const render_vertex& rv )
 	{
 		verts[ idx ] = rv;
 		verts[ idx ].r = color.r;

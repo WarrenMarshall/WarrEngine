@@ -59,7 +59,7 @@ void vertex_buffer::set_up_vertex_attribs()
 	glVertexAttribIPointer( 5, 1, GL_INT, sizeof( render_vertex ), (const void*)offsetof( render_vertex, pick_id ) );
 }
 
-int vertex_buffer::assign_texture_slot( const texture_asset* texture )
+size_t vertex_buffer::assign_texture_slot( const texture_asset* texture )
 {
 	// if this is the same texture as the last time this function was called,
 	// just return that same idx
@@ -73,7 +73,7 @@ int vertex_buffer::assign_texture_slot( const texture_asset* texture )
 
 	auto texture_gl_id = texture->get_src_texture()->gl_id;
 
-	for( int x = 0 ; x < total_texture_slots_used ; ++x )
+	for( size_t x = 0 ; x < total_texture_slots_used ; ++x )
 	{
 		if( texture_slots[ x ]->get_src_texture()->gl_id == texture_gl_id )
 		{

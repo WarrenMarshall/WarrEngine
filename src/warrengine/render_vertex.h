@@ -15,7 +15,7 @@ struct render_vertex
 	float u = 0.f, v = 0.f;
 	float r = 1.f, g = 1.f, b = 1.f, a = 1.f;
 	float glow = 0.f;
-	int texture_id = -1;
+	size_t texture_id = 0;
 	int pick_id = 1;
 };
 

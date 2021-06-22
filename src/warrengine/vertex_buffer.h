@@ -10,8 +10,8 @@ struct vertex_buffer
 	object_pool<render_vertex> vertices;
 	std::vector<const texture_asset*> texture_slots;
 
-	cache<const texture_asset*,int> cached_texture_slot;
-	int total_texture_slots_used = 0;
+	cache<const texture_asset*,size_t> cached_texture_slot;
+	size_t total_texture_slots_used = 0;
 
 	// how many vertices make up a single element.
 	// i.e. quad = 4, triangles = 3, line = 2, point = 1
@@ -31,7 +31,7 @@ struct vertex_buffer
 	virtual void reset();
 
 	void set_up_vertex_attribs();
-	int assign_texture_slot( const texture_asset* texture );
+	size_t assign_texture_slot( const texture_asset* texture );
 };
 
 }
