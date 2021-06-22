@@ -12,6 +12,10 @@ static const unsigned scene_simple_coll_geo = ++collision_bits;
 
 // ----------------------------------------------------------------------------
 
+constexpr float max_raycast_length = 250.f;
+
+// ----------------------------------------------------------------------------
+
 scene_simple_collision::scene_simple_collision()
 {
 	flags.blocks_further_drawing = true;
@@ -31,15 +35,15 @@ void scene_simple_collision::pushed()
 		e->transform_set_pos( { -80.f, 0.f } );
 		{
 			auto ec = e->add_component<sprite_component>();
-			ec->rs_opt.color = make_color( color::white, 0.25f );
+			ec->rs_opt.color = make_color( color::white, 1.f );
 			ec->init( "anim_player_run" );
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			//ec->set_as_centered_box( 32.f, 32.f );
-			ec->set_as_circle( 16.f );
+			ec->set_as_centered_box( 24.f, 24.f );
+			//ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
-			ec->rs_opt.color = make_color( color::light_blue );
+			ec->rs_opt.color = make_color( color::orange );
 		}
 
 		mario = e;
@@ -59,7 +63,7 @@ void scene_simple_collision::pushed()
 				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
 				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
-				ec->rs_opt.color = make_color( color::dark_teal );
+				ec->rs_opt.color = make_color( color::grey );
 			}
 		}
 	}
@@ -76,7 +80,7 @@ void scene_simple_collision::pushed()
 				ec->set_as_circle( random::getf_range( 8.f, 40.f ) );
 				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
-				ec->rs_opt.color = make_color( color::teal );
+				ec->rs_opt.color = make_color( color::grey );
 			}
 		}
 	}
@@ -91,7 +95,14 @@ void scene_simple_collision::draw()
 	}
 
 	scene::draw();
-	render::draw_world_axis();
+	//render::draw_world_axis();
+
+	if( b_show_ray )
+	{
+		render::state->color = make_color( color::orange );
+		auto start = mario->get_transform()->pos;
+		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
+	}
 }
 
 void scene_simple_collision::draw_ui()
@@ -100,13 +111,20 @@ void scene_simple_collision::draw_ui()
 	draw_title( "Simple Collisions" );
 }
 
+void scene_simple_collision::update()
+{
+	scene::update();
+
+	// show the raycast beam if the right stick is being pushed
+	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
+}
+
 bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
 		case input_id::gamepad_button_y:
 		{
-			int warren = 5;
 		}
 		break;
 	}
@@ -127,6 +145,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 
 		case input_id::gamepad_right_stick:
 		{
+			ray_dir = evt->delta;
 			return true;
 		}
 		break;

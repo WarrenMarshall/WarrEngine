@@ -61,23 +61,23 @@ struct raycast_all final : b2RayCastCallback
 };
 
 // ----------------------------------------------------------------------------
-// builds a list of all the fixtures that intersect with the AABB being queried
-
-class touching_all final : public b2QueryCallback
-{
-public:
-	std::vector<b2Fixture*> fixtures;
-
-	virtual bool ReportFixture( b2Fixture* fixture ) override;
-};
-
-// ----------------------------------------------------------------------------
 // stops after finding the first fixture that intersects with the AABB being queried
 
 class touching_first final : public b2QueryCallback
 {
 public:
 	b2Fixture* fixture;
+
+	virtual bool ReportFixture( b2Fixture* fixture ) override;
+};
+
+// ----------------------------------------------------------------------------
+// builds a list of all the fixtures that intersect with the AABB being queried
+
+class touching_all final : public b2QueryCallback
+{
+public:
+	std::vector<b2Fixture*> fixtures;
 
 	virtual bool ReportFixture( b2Fixture* fixture ) override;
 };

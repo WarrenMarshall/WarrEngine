@@ -97,16 +97,16 @@ float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const
 
 // ----------------------------------------------------------------------------
 
-bool touching_all::ReportFixture( b2Fixture* fixture )
-{
-	this->fixtures.push_back( fixture );
-	return true;
-}
-
 bool touching_first::ReportFixture( b2Fixture* fixture )
 {
 	this->fixture = fixture;
 	return false;
+}
+
+bool touching_all::ReportFixture( b2Fixture* fixture )
+{
+	this->fixtures.push_back( fixture );
+	return true;
 }
 
 }
