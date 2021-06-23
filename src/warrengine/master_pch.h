@@ -177,10 +177,11 @@ constexpr float zdepth_max = 50000.f;
 [[nodiscard]] float sin_from_angle( float angle_in_degrees );
 
 // ----------------------------------------------------------------------------
-// box2d constants and helpers
+// physics constants and helpers
 // ----------------------------------------------------------------------------
 
 constexpr float b2d_gravity_default = 9.81f;
+constexpr float simple_collision_gravity_default = 9.81f;
 constexpr float b2d_world_scale_factor = 100.f;
 
 // values yoinked from : https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_hello.html

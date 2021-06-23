@@ -259,6 +259,9 @@
     <ClCompile Include="simple_collision_query_callbacks.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
+    <ClCompile Include="simple_collision_world.cpp">
+      <Filter>src\collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -526,6 +529,9 @@
       <Filter>include\collision</Filter>
     </ClInclude>
     <ClInclude Include="simple_collision_query_callbacks.h">
+      <Filter>include\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_collision_world.h">
       <Filter>include\collision</Filter>
     </ClInclude>
   </ItemGroup>

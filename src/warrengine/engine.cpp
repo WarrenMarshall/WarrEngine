@@ -558,6 +558,8 @@ vec2 engine::find_vec2_from_symbol( std::string_view symbol, const vec2& def_val
 
 void engine::new_physics_world()
 {
+	// box2d
+
 	g_engine->box2d.world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
 	g_engine->box2d.listener = std::make_unique<box2d_physics::contact_listener>();
 	g_engine->box2d.world->SetContactListener( g_engine->box2d.listener.get() );
@@ -572,6 +574,10 @@ void engine::new_physics_world()
 		| b2Draw::e_pairBit				// broad-phase pairs
 		| b2Draw::e_centerOfMassBit		// center of mass frame
 	);
+
+	// simple collision
+
+	g_engine->simple_collision.world = std::make_unique<simple_collision::world>( vec2( 0.f, simple_collision_gravity_default ) );
 }
 
 // called ONCE, as the engine is starting up

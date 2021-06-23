@@ -2,7 +2,6 @@
 namespace war::simple_collision
 {
 
-/*
 struct raycast_hit
 {
 	// how far along the ray did the hit occur?
@@ -16,11 +15,19 @@ struct raycast_hit
 };
 
 // ----------------------------------------------------------------------------
+
+struct raycast_callback
+{
+	virtual float report_component( simple_collision_component* scc, const vec2& point, const vec2& normal, float fraction ) = 0;
+};
+
+/*
+// ----------------------------------------------------------------------------
 // finds the closest hit along the ray.
 //
 // "what's the closest hit along this ray?"
 
-struct raycast_closest final : b2RayCastCallback
+struct raycast_closest final : raycast_callback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
@@ -29,6 +36,7 @@ struct raycast_closest final : b2RayCastCallback
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 		const b2Vec2& normal, float fraction ) override;
 };
+*/
 
 // ----------------------------------------------------------------------------
 // finds the first hit along the ray, which may or may not be the closest.
@@ -36,22 +44,22 @@ struct raycast_closest final : b2RayCastCallback
 //
 // "is there anything to hit along this ray?"
 
-struct raycast_simple final : b2RayCastCallback
+struct raycast_simple final : raycast_callback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
 	raycast_hit result;
 
-	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float fraction ) override;
+	virtual float report_component( simple_collision_component* scc, const vec2& point, const vec2& normal, float fraction ) override;
 };
 
+/*
 // ----------------------------------------------------------------------------
 // generates a list of all the hit points along the ray.
 //
 // "what are all the hits along this ray?"
 
-struct raycast_all final : b2RayCastCallback
+struct raycast_all final : raycast_callback
 {
 	bool hit_something = false;
 	int collision_mask = 0;

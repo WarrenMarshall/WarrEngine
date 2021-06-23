@@ -65,6 +65,7 @@
 #include "simple_collision_query_callbacks.h"
 #include "simple_collision_query.h"
 #include "simple_collision_pending_collision.h"
+#include "simple_collision_world.h"
 
 #include "asset_cache_mgr.h"
 #include "window.h"

@@ -30,6 +30,7 @@ struct scene;
 struct scene_mgr;
 struct shader;
 struct simple_collision_component;
+struct world;
 struct texture_asset;
 struct timeline;
 struct transform;

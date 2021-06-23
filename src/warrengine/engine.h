@@ -72,6 +72,8 @@ struct engine
 
 	struct
 	{
+		std::unique_ptr<simple_collision::world> world = nullptr;
+
 		std::vector<simple_collision::pending_collision> queue;
 	} simple_collision;
 

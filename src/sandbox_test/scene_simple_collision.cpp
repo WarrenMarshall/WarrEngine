@@ -123,8 +123,11 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::gamepad_button_y:
+		case input_id::gamepad_button_dpad_up:
 		{
+			auto start = mario->get_transform()->pos;
+			auto end = start + ( ray_dir * max_raycast_length );
+			g_engine->simple_collision.world->ray_cast( nullptr, start, end );
 		}
 		break;
 	}

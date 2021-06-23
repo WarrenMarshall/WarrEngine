@@ -44,11 +44,13 @@ float raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, c
 
 	return fraction;
 }
+*/
 
 // ----------------------------------------------------------------------------
 
-float raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float raycast_simple::report_component( simple_collision_component* scc, const vec2& point, const vec2& normal, float fraction )
 {
+	/*
 	if( collision_mask > 0 )
 	{
 		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
@@ -64,12 +66,14 @@ float raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, co
 	result.fraction = fraction;
 	result.normal = vec2( normal.x, normal.y );
 	result.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
+	*/
 
 	return 0.f;
 }
 
 // ----------------------------------------------------------------------------
 
+/*
 float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
 	if( collision_mask > 0 )
