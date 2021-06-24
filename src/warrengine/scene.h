@@ -128,6 +128,7 @@ struct scene
 	{
 		entities.emplace_back( std::make_unique<T>() );
 		auto new_entity = static_cast<T*>( entities.back().get() );
+		new_entity->parent_scene = this;
 		return new_entity;
 	}
 

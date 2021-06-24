@@ -846,6 +846,23 @@ void simple_collision_component::set_as_circle( float r )
 {
 	type = simple_collision_type::circle;
 	radius = r;
+
+
+}
+
+c2Circle simple_collision_component::as_c2_circle()
+{
+	c2Circle circle = {};
+
+	circle.p = { ws.pos.x, ws.pos.y };
+	circle.r = ws.radius;
+
+	return circle;
+}
+
+c2AABB simple_collision_component::as_c2_aabb()
+{
+	return ws.aabb.to_c2AABB();
 }
 
 }

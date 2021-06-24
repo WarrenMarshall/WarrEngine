@@ -127,7 +127,10 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		{
 			auto start = mario->get_transform()->pos;
 			auto end = start + ( ray_dir * max_raycast_length );
-			g_engine->simple_collision.world->ray_cast( nullptr, start, end );
+			if( g_engine->simple_collision.world->ray_cast( nullptr, mario, start, end ) )
+			{
+				log( "HIT SOMETHING" );
+			}
 		}
 		break;
 	}

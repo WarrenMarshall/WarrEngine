@@ -18,6 +18,9 @@ struct raycast_hit
 
 struct raycast_callback
 {
+	bool hit_something = false;
+	int collision_mask = 0;
+
 	virtual float report_component( simple_collision_component* scc, const vec2& point, const vec2& normal, float fraction ) = 0;
 };
 
@@ -29,8 +32,6 @@ struct raycast_callback
 
 struct raycast_closest final : raycast_callback
 {
-	bool hit_something = false;
-	int collision_mask = 0;
 	raycast_hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
@@ -46,8 +47,6 @@ struct raycast_closest final : raycast_callback
 
 struct raycast_simple final : raycast_callback
 {
-	bool hit_something = false;
-	int collision_mask = 0;
 	raycast_hit result;
 
 	virtual float report_component( simple_collision_component* scc, const vec2& point, const vec2& normal, float fraction ) override;

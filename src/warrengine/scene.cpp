@@ -166,6 +166,11 @@ void scene::queue_simple_collisions()
 	{
 		for( auto scc_b : simple_collision_components )
 		{
+			if( scc_a == scc_b )
+			{
+				continue;
+			}
+
 			// don't collide with self
 			if( scc_a->parent_entity == scc_b->parent_entity )
 			{
@@ -178,16 +183,11 @@ void scene::queue_simple_collisions()
 				continue;
 			}
 
-			auto aabb_ws_a = scc_a->ws.aabb.to_c2AABB();
-			auto aabb_ws_b = scc_b->ws.aabb.to_c2AABB();
+			auto aabb_ws_a = scc_a->as_c2_aabb();
+			auto aabb_ws_b = scc_b->as_c2_aabb();
 
-			c2Circle circle_a = {};
-			circle_a.p = { scc_a->ws.pos.x, scc_a->ws.pos.y };
-			circle_a.r = scc_a->ws.radius;
-
-			c2Circle circle_b = {};
-			circle_b.p = { scc_b->ws.pos.x, scc_b->ws.pos.y };
-			circle_b.r = scc_b->ws.radius;
+			c2Circle circle_a = scc_a->as_c2_circle();
+			c2Circle circle_b = scc_b->as_c2_circle();
 
 			bool a_is_circle = scc_a->type == simple_collision_type::circle;
 			bool b_is_circle = scc_b->type == simple_collision_type::circle;

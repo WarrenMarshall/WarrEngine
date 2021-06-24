@@ -47,7 +47,6 @@ struct entity
 
 	void make_pickable();
 
-	// entity components
 	std::deque<std::unique_ptr<entity_component>> components;
 
 	[[nodiscard]] virtual bool can_be_deleted();
@@ -143,6 +142,8 @@ struct entity
 	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_simple_collision( simple_collision::pending_collision& coll, entity* touched_by );
+
+	scene* parent_scene = nullptr;
 
 private:
 
