@@ -5,6 +5,7 @@
 namespace war::simple_collision
 {
 
+// #comment - this comment needs to be updated once all the simple ray casting is working
 // ----------------------------------------------------------------------------
 // these raycast_callback functions filter hit results from a raycast.
 //
@@ -23,85 +24,70 @@ namespace war::simple_collision
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-/*
-float raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float raycast_closest::report_component( const entity* entity, const c2Ray& ray, simple_collision_component* scc, const c2Raycast& raycast )
 {
-	if( collision_mask > 0 )
-	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
-
-		if( ( ecp->collision_mask & collision_mask ) == 0 )
-		{
-			return -1.f;
-		}
-	}
-
 	hit_something = true;
 
-	result.fraction = fraction;
-	result.normal = vec2( normal.x, normal.y );
-	result.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
+	auto start_of_trace = vec2( ray.p.x, ray.p.y );
+	auto trace_normal = vec2( ray.d.x, ray.d.y );
 
-	return fraction;
+	if( raycast.t < result.dist )
+	{
+		raycast_hit hit;
+		hit.normal.x = raycast.n.x;
+		hit.normal.y = raycast.n.y;
+		hit.ray_normal.x = ray.d.x;
+		hit.ray_normal.y = ray.d.y;
+		hit.dist = raycast.t;
+		hit.pos = start_of_trace + ( trace_normal * hit.dist );
+		hit.entity = entity;
+		hit.scc = scc;
+
+		result = hit;
+	}
+
+	// a raycast_all always returns 1 because we want a complete list of everything that got hit
+	return 1.f;
 }
-*/
 
 // ----------------------------------------------------------------------------
 
-float raycast_simple::report_component( simple_collision_component* scc, const vec2& point, const vec2& normal, float fraction )
+float raycast_quick::report_component( const entity* entity, const c2Ray& ray, simple_collision_component* scc, const c2Raycast& raycast )
 {
-	/*
-	if( collision_mask > 0 )
-	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
-
-		if( ( ecp->collision_mask & collision_mask ) == 0 )
-		{
-			return -1.f;
-		}
-	}
-
 	hit_something = true;
 
-	result.fraction = fraction;
-	result.normal = vec2( normal.x, normal.y );
-	result.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
-	*/
-
+	// a raycast_simple always returns zero because we only care if we DID collide, not any of the specifics
 	return 0.f;
 }
 
 // ----------------------------------------------------------------------------
 
-/*
-float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float raycast_all::report_component( const entity* entity, const c2Ray& ray, simple_collision_component* scc, const c2Raycast& raycast )
 {
-	if( collision_mask > 0 )
-	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<box2d_physics_component>();
-
-		if( ( ecp->collision_mask & collision_mask ) == 0 )
-		{
-			return -1.f;
-		}
-	}
-
 	hit_something = true;
 
+	auto start_of_trace = vec2( ray.p.x, ray.p.y );
+	auto trace_normal = vec2( ray.d.x, ray.d.y );
+
 	raycast_hit hit;
-	hit.fraction = fraction;
-	hit.normal = vec2( normal.x, normal.y );
-	hit.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
+	hit.normal.x = raycast.n.x;
+	hit.normal.y = raycast.n.y;
+	hit.ray_normal.x = ray.d.x;
+	hit.ray_normal.y = ray.d.y;
+	hit.dist = raycast.t;
+	hit.pos = start_of_trace + ( trace_normal * hit.dist );
+	hit.entity = entity;
+	hit.scc = scc;
 
-	results.push_back( std::move( hit ) );
+	results.push_back( hit );
 
+	// a raycast_all always returns 1 because we want a complete list of everything that got hit
 	return 1.f;
 }
-*/
 
-/*
 // ----------------------------------------------------------------------------
 
+/*
 bool touching_all::report_component( simple_collision_component* component )
 {
 	components.push_back( component );

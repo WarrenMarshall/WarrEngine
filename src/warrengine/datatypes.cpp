@@ -287,7 +287,27 @@ rect rect::operator*=( float v )
 
 c2AABB rect::to_c2AABB() const
 {
-	return { { x, y }, { x + w, y + h } };
+	c2AABB aabb = {};
+
+	aabb.min.x = x;
+	aabb.min.y = y;
+	aabb.max.x = x + w;
+	aabb.max.y = y + h;
+
+	return aabb;
+}
+
+rect rect::create_centered( float sz )
+{
+	return rect::create_centered( sz, sz );
+}
+
+rect rect::create_centered( float w, float h )
+{
+	auto hw = w / 2.f;
+	auto hh = h / 2.f;
+
+	return rect( -hw, -hh, w, h );
 }
 
 // ----------------------------------------------------------------------------

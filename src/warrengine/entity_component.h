@@ -75,6 +75,7 @@ struct primitive_shape_component : entity_component
 		e_primitive_shape prim_shape = primitive_shape::rect;
 		rect rc = {};
 		float radius = 0.f;
+		vec2 pos_offset = {};
 	};
 
 	std::vector<shape_def> shapes;
@@ -82,9 +83,9 @@ struct primitive_shape_component : entity_component
 	primitive_shape_component() = delete;
 	primitive_shape_component( entity* parent_entity );
 
-	entity_component* add_shape( const e_primitive_shape prim_shape, const rect& rc );
-	entity_component* add_shape( const e_primitive_shape prim_shape, float radius );
-	entity_component* add_shape( const e_primitive_shape prim_shape );
+	entity_component* add_shape( const e_primitive_shape prim_shape, const rect& rc, const vec2& pos_offset = vec2::zero );
+	entity_component* add_shape( const e_primitive_shape prim_shape, float radius, const vec2& pos_offset = vec2::zero );
+	entity_component* add_shape( const e_primitive_shape prim_shape, const vec2& pos_offset = vec2::zero );
 
 	virtual void draw() override;
 };

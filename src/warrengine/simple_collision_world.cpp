@@ -11,23 +11,18 @@ world::world( vec2 gravity )
 
 }
 
-/*
-CUTE_C2_API int c2RaytoCircle(c2Ray A, c2Circle B, c2Raycast* out);
-CUTE_C2_API int c2RaytoAABB(c2Ray A, c2AABB B, c2Raycast* out);
-*/
-
-// #raycast - should this be changed to start,normal,dist instead of start,end ? which is more useful?
-bool world::ray_cast( raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const
+void world::ray_cast( raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const
 {
-	bool hit_something = false;
-
 	auto delta = ( end - start );
 	auto ray_normal = delta.normalize();
 	auto ray_length = delta.get_size_squared();
 
-	c2Ray ray( { start.x, start.y }, { ray_normal.x, ray_normal.y }, ray_length );
-
-	log( "-- ray casting --" );
+	c2Ray ray = {};
+	ray.p.x = start.x;
+	ray.p.y = start.y;
+	ray.d.x = ray_normal.x;
+	ray.d.y = ray_normal.y;
+	ray.t = ray_length;
 
 	for( auto scc : entity->parent_scene->simple_collision_components )
 	{
@@ -38,51 +33,40 @@ bool world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 		}
 
 		// if collision mask don't match, skip
-		if ( callback )
+		if( callback->collision_mask > 0 and ( scc->collides_with_mask & callback->collision_mask ) )
 		{
-			if( callback->collision_mask == 0 or ( scc->collides_with_mask & callback->collision_mask ) )
-			{
-				continue;
-			}
+			continue;
 		}
 
-		c2Raycast rc = {};
+		c2Raycast raycast = {};
 
 		switch( scc->type )
 		{
 			case simple_collision_type::circle:
 			{
-				if( c2RaytoCircle( ray, scc->as_c2_circle(), &rc ) )
+				if( c2RaytoCircle( ray, scc->as_c2_circle(), &raycast ) )
 				{
-					hit_something = true;
-					if( callback )
+					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
-						callback->hit_something = true;
+						return;
 					}
-					log( "hit circle : {},{} : {}", rc.n.x, rc.n.y, rc.t );
 				}
 			}
 			break;
 
 			case simple_collision_type::aabb:
 			{
-				if( c2RaytoAABB( ray, scc->as_c2_aabb(), &rc ) )
+				if( c2RaytoAABB( ray, scc->as_c2_aabb(), &raycast ) )
 				{
-					hit_something = true;
-					if( callback )
+					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
-						callback->hit_something = true;
+						return;
 					}
-					log( "hit aabb : {},{} : {}", rc.n.x, rc.n.y, rc.t );
 				}
 			}
 			break;
 		}
 	}
-
-	log( "-- ----------- --" );
-
-	return hit_something;
 }
 
 }

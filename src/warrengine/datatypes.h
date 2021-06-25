@@ -186,6 +186,9 @@ struct rect
 	rect operator*=( float v );
 
 	c2AABB to_c2AABB() const;
+
+	static rect create_centered( float sz );
+	static rect create_centered( float w, float h );
 };
 
 // ----------------------------------------------------------------------------

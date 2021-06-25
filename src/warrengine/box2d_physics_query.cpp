@@ -5,7 +5,7 @@
 namespace war::box2d_physics
 {
 
-bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask )
+bool query::trace_quick( const vec2& start, const vec2& normal, float dist, int collision_mask )
 {
 	raycast_simple callback;
 	callback.collision_mask = collision_mask;
@@ -14,7 +14,7 @@ bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int
 	return callback.hit_something;
 }
 
-bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_simple* hit_result )
+bool query::trace_quick( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_simple* hit_result )
 {
 	hit_result->collision_mask = collision_mask;
 	g_engine->box2d.world->RayCast( hit_result, start.to_box2d().to_b2Vec2(), ( start + ( normal * dist ) ).to_box2d().to_b2Vec2() );

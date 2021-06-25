@@ -6,6 +6,8 @@ struct scene_simple_collision : scene
 	scene_simple_collision();
 
 	entity* mario = nullptr;
+	entity* hit_marker = nullptr;
+
 	bool b_show_ray = false;
 	vec2 ray_dir = {};
 

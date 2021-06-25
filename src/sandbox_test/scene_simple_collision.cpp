@@ -40,13 +40,29 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<simple_collision_component>();
-			ec->set_as_centered_box( 24.f, 24.f );
-			//ec->set_as_circle( 12.f );
+			//ec->set_as_centered_box( 24.f, 24.f );
+			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
 			ec->rs_opt.color = make_color( color::orange );
 		}
 
 		mario = e;
+	}
+
+	// HIT MARKER
+	{
+		auto e = add_entity<entity>();
+		e->tag = H( "hit_marker" );
+		e->transform_set_pos( { 0.f, 0.f } );
+		{
+			auto ec = e->add_component<primitive_shape_component>();
+			ec->rs_opt.color = make_color( color::yellow );
+			ec->add_shape( primitive_shape::point );
+			ec->add_shape( primitive_shape::rect, rect::create_centered( 8 ) );
+		}
+
+		hit_marker = e;
+
 	}
 
 	// generate random things for mario to collide with
@@ -95,7 +111,7 @@ void scene_simple_collision::draw()
 	}
 
 	scene::draw();
-	//render::draw_world_axis();
+	render::draw_world_axis();
 
 	if( b_show_ray )
 	{
@@ -123,13 +139,61 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
+		// QUICK
+
 		case input_id::gamepad_button_dpad_up:
 		{
 			auto start = mario->get_transform()->pos;
 			auto end = start + ( ray_dir * max_raycast_length );
-			if( g_engine->simple_collision.world->ray_cast( nullptr, mario, start, end ) )
+
+			simple_collision::raycast_quick callback;
+			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
+
+			if( callback.hit_something )
 			{
-				log( "HIT SOMETHING" );
+				log( "WE HIT SOMETHING" );
+			}
+		}
+		break;
+
+		// ALL
+
+		case input_id::gamepad_button_dpad_down:
+		{
+			auto start = mario->get_transform()->pos;
+			auto end = start + ( ray_dir * max_raycast_length );
+
+			simple_collision::raycast_all callback;
+			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
+
+			if( callback.hit_something )
+			{
+				auto ec = hit_marker->get_component<primitive_shape_component>();
+				ec->shapes.clear();
+
+				for( auto& hit : callback.results )
+				{
+					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
+				}
+			}
+		}
+		break;
+
+		// CLOSEST
+
+		case input_id::gamepad_button_dpad_left:
+		{
+			auto start = mario->get_transform()->pos;
+			auto end = start + ( ray_dir * max_raycast_length );
+
+			simple_collision::raycast_closest callback;
+			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
+
+			if( callback.hit_something )
+			{
+				auto ec = hit_marker->get_component<primitive_shape_component>();
+				ec->shapes.clear();
+				ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), callback.result.pos );
 			}
 		}
 		break;

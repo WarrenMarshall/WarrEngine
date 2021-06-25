@@ -1,4 +1,9 @@
 
+namespace war::simple_collision
+{
+struct raycast_callback;
+}
+
 namespace war
 {
 

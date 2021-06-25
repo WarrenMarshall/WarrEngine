@@ -127,35 +127,38 @@ primitive_shape_component::primitive_shape_component( entity* parent_entity )
 	shapes.clear();
 }
 
-entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, const rect& rc )
+entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, const rect& rc, const vec2& pos_offset )
 {
 	shape_def shape;
 
 	shape.prim_shape = prim_shape;
 	shape.rc = rc;
+	shape.pos_offset = pos_offset;
 
 	shapes.emplace_back( shape );
 
 	return this;
 }
 
-entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, float radius )
+entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, float radius, const vec2& pos_offset )
 {
 	shape_def shape;
 
 	shape.prim_shape = prim_shape;
 	shape.radius = radius;
+	shape.pos_offset = pos_offset;
 
 	shapes.emplace_back( shape );
 
 	return this;
 }
 
-entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape )
+entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, const vec2& pos_offset )
 {
 	shape_def shape;
 
 	shape.prim_shape = prim_shape;
+	shape.pos_offset = pos_offset;
 
 	shapes.emplace_back( shape );
 
@@ -175,31 +178,31 @@ void primitive_shape_component::draw()
 			{
 				case primitive_shape::filled_rect:
 				{
-					render::draw_filled_rect( shape.rc );
+					render::draw_filled_rect( shape.rc + shape.pos_offset );
 					break;
 				}
 
 				case primitive_shape::rect:
 				{
-					render::draw_rect( shape.rc );
+					render::draw_rect( shape.rc + shape.pos_offset );
 					break;
 				}
 
 				case primitive_shape::circle:
 				{
-					render::draw_circle( vec2( 0, 0 ), shape.radius );
+					render::draw_circle( shape.pos_offset, shape.radius );
 					break;
 				}
 
 				case primitive_shape::filled_circle:
 				{
-					render::draw_filled_circle( vec2( 0, 0 ), shape.radius );
+					render::draw_filled_circle( shape.pos_offset, shape.radius );
 					break;
 				}
 
 				case primitive_shape::point:
 				{
-					render::draw_point( vec2( 0, 0 ) );
+					render::draw_point( shape.pos_offset );
 					break;
 				}
 			}

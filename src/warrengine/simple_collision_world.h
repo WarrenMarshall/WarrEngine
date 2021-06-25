@@ -8,7 +8,7 @@ struct world
 
 	world() = default;
 	world( vec2 gravity );
-	bool ray_cast( raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const;
+	void ray_cast( raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const;
 };
 
 }
