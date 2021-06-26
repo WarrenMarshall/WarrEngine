@@ -77,7 +77,12 @@ void scene_simple_collision::pushed()
 			{
 				auto ec = e->add_component<simple_collision_component>();
 				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
-				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
+				ec->get_transform()->set_pos(
+					{
+						random::getf_range( -viewport_hw, viewport_hw ),
+						random::getf_range( -viewport_hh, viewport_hh )
+					}
+				);
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 				ec->rs_opt.color = make_color( color::grey );
 			}
@@ -94,7 +99,12 @@ void scene_simple_collision::pushed()
 			{
 				auto ec = e->add_component<simple_collision_component>();
 				ec->set_as_circle( random::getf_range( 8.f, 40.f ) );
-				ec->get_transform()->set_pos( { random::getf_range( -viewport_hw, viewport_hw ), random::getf_range( -viewport_hh, viewport_hh ) } );
+				ec->get_transform()->set_pos(
+					{
+						random::getf_range( -viewport_hw, viewport_hw ),
+						random::getf_range( -viewport_hh, viewport_hh )
+					}
+				);
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 				ec->rs_opt.color = make_color( color::grey );
 			}
@@ -107,7 +117,8 @@ void scene_simple_collision::draw()
 	{
 		scoped_render_state;
 		render::state->color = make_color( pal::darker );
-		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ), rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ),
+			rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
 	scene::draw();
