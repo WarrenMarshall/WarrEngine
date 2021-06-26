@@ -709,8 +709,8 @@ void ui_dropdown_control::draw( const rect& rc_ui, const rect& rc_client, bool i
 					render::state->z -= zdepth_nudge;
 					render::state->color = make_color( pal::darker );
 					rect rc = g_ui->current_control->rc_client;
-					rc.x -= interior_margin.x - 1.f;
-					rc.w -= interior_margin.x;
+					rc.x -= interior_margin.x * 2.f;
+					rc.w -= interior_margin.x * 4.f;
 					render::draw_filled_rect( rc );
 					render::state->z += zdepth_nudge;
 				}
