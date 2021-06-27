@@ -48,6 +48,7 @@ static void draw_title( std::string_view title )
 #include "scene_tweens.h"
 #include "scene_box2d.h"
 #include "scene_simple_collision.h"
+#include "scene_spatial_map.h"
 #include "scene_controller.h"
 #include "scene_tilemap.h"
 #include "scene_wrapped_text.h"

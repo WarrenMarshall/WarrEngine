@@ -13,23 +13,20 @@ struct entity
 
 	// this is a read-only pointer. to change the transform, use the
 	// "transform_" functions below.
-	[[nodiscard]] const transform* get_transform()
-	{
-		return &_tform;
-	}
+	[[nodiscard]] const transform* get_transform();
 
 	// direct transforms
 
-	transform* transform_set( const vec2& pos, const float angle, const float scale );
-	transform* transform_set_pos( const vec2& pos );
-	transform* transform_set_angle( const float angle );
-	transform* transform_set_scale( const float scale );
+	transform* set_pos_angle_scale( const vec2& pos, const float angle, const float scale );
+	transform* set_pos( const vec2& pos );
+	transform* set_angle( const float angle );
+	transform* set_scale( const float scale );
 
 	// delta transforms
 
-	transform* transform_delta_pos( const vec2& delta );
-	transform* transform_delta_angle( const float delta );
-	transform* transform_delta_scale( const float delta );
+	transform* add_delta_pos( const vec2& delta );
+	transform* add_delta_angle( const float delta );
+	transform* add_delta_scale( const float delta );
 
 	// ----------------------------------------------------------------------------
 

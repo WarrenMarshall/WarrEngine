@@ -48,6 +48,10 @@ void entity::post_update()
 
 void entity::draw()
 {
+	// super hacky way to indicate a selected entity. it just pumps up the glow
+	// on it. we need a nicer system for this eventually.
+	rs_opt.glow = is_selected * 2.0f;
+
 	for( const auto& component : components )
 	{
 		if( component->life_cycle.is_dead() )
@@ -127,16 +131,21 @@ void entity::update_transform_to_match_physics_components()
 	}
 }
 
-transform* entity::transform_set( const vec2& pos, const float angle, const float scale )
+const war::transform* entity::get_transform()
 {
-	transform_set_pos( pos );
-	transform_set_angle( angle );
-	transform_set_scale( scale );
+	return &_tform;
+}
+
+transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, const float scale )
+{
+	set_pos( pos );
+	set_angle( angle );
+	set_scale( scale );
 
 	return &_tform;
 }
 
-transform* entity::transform_set_pos( const vec2& pos )
+transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
 
@@ -145,7 +154,7 @@ transform* entity::transform_set_pos( const vec2& pos )
 	return &_tform;
 }
 
-transform* entity::transform_set_angle( const float angle )
+transform* entity::set_angle( const float angle )
 {
 	_tform.set_angle( angle );
 	update_physics_components_to_match_transform();
@@ -153,7 +162,7 @@ transform* entity::transform_set_angle( const float angle )
 	return &_tform;
 }
 
-transform* entity::transform_set_scale( const float scale )
+transform* entity::set_scale( const float scale )
 {
 	_tform.set_scale( scale );
 
@@ -166,21 +175,21 @@ transform* entity::transform_set_scale( const float scale )
 	return &_tform;
 }
 
-transform* entity::transform_delta_pos( const vec2& delta )
+transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
 	update_physics_components_to_match_transform();
 	return &_tform;
 }
 
-transform* entity::transform_delta_angle( const float delta )
+transform* entity::add_delta_angle( const float delta )
 {
 	_tform.add_angle( delta );
 	update_physics_components_to_match_transform();
 	return &_tform;
 }
 
-transform* entity::transform_delta_scale( const float delta )
+transform* entity::add_delta_scale( const float delta )
 {
 	_tform.add_scale( delta );
 
@@ -211,7 +220,7 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 void entity::on_simple_collision( simple_collision::pending_collision& coll, entity* touched_by )
 {
 	// push outside of the entity we collided with
-	transform_delta_pos( coll.normal * coll.depth );
+	add_delta_pos( coll.normal * coll.depth );
 }
 
 bool entity::can_be_deleted()

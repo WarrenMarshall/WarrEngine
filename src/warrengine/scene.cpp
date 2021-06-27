@@ -274,6 +274,8 @@ void scene::draw()
 			entity->draw();
 		}
 	}
+
+	spatial_map.draw();
 }
 
 void scene::draw_ui()

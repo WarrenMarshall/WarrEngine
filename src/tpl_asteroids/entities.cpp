@@ -70,8 +70,8 @@ void e_player_ship::fire()
 
 		auto dir = vec2::dir_from_angle( get_transform()->angle + angle );
 
-		e->transform_set_pos( get_transform()->pos + ( dir * my_game->ship_radius ) );
-		e->transform_set_angle( get_transform()->angle + angle );
+		e->set_pos( get_transform()->pos + ( dir * my_game->ship_radius ) );
+		e->set_angle( get_transform()->angle + angle );
 
 		angle += angle_step;
 	}
@@ -92,7 +92,7 @@ void e_player_ship::update()
 
 	float rotation_speed = my_game->ship_base_rotation_speed + ( my_game->ship_per_level_rotation_speed * my_game->ship_power_level );
 
-	transform_delta_angle( fixed_time_step::per_second( rotation_speed ) );
+	add_delta_angle( fixed_time_step::per_second( rotation_speed ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -114,7 +114,7 @@ void e_player_bullet::update()
 	{
 		// move bullet forward along facing vector
 		vec2 dir = vec2::dir_from_angle( get_transform()->angle );
-		transform_delta_pos( fixed_time_step::per_second( dir * movement_speed ) );
+		add_delta_pos( fixed_time_step::per_second( dir * movement_speed ) );
 
 
 		rect rc_playfield { -viewport_hw, -viewport_hh, viewport_w, viewport_h };

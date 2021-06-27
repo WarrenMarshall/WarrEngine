@@ -15,8 +15,8 @@ void scene_entity_picking::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->make_pickable();
-		e->transform_set_pos( { 100.f, 75.f } );
-		e->transform_set_scale( 2.f );
+		e->set_pos( { 100.f, 75.f } );
+		e->set_scale( 2.f );
 		{
 			auto ec = e->add_component<primitive_shape_component>();
 			ec->add_shape( primitive_shape::filled_rect, rect( -16, -16, 32, 32 ) );
@@ -28,8 +28,8 @@ void scene_entity_picking::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "player_mario" );
 		e->make_pickable();
-		e->transform_set_pos( { 64.f, 64.f } );
-		e->transform_set_scale( 3.f );
+		e->set_pos( { 64.f, 64.f } );
+		e->set_scale( 3.f );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->init( "anim_player_run" );
@@ -39,7 +39,7 @@ void scene_entity_picking::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->make_pickable();
-		e->transform_set( { 150.f, 200.f }, 15.f, 2.f );
+		e->set_pos_angle_scale( { 150.f, 200.f }, 15.f, 2.f );
 		{
 			auto ec = e->add_component<primitive_shape_component>();
 			ec->add_shape( primitive_shape::filled_rect, rect( -32, -16, 64, 32 ) );
@@ -110,7 +110,7 @@ bool scene_entity_picking::on_input_motion( const input_event* evt )
 
 			for( auto& e : selected_entities )
 			{
-				e->transform_delta_pos( delta );
+				e->add_delta_pos( delta );
 			}
 
 			return true;

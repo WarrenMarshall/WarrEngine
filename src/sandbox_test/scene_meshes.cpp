@@ -16,7 +16,7 @@ void scene_meshes::pushed()
 	// mario
 	{
 		auto e = add_entity<entity>();
-		e->transform_set_pos( { -128.f, 0.f } );
+		e->set_pos( { -128.f, 0.f } );
 		{
 			mesh_mario = e->add_component<mesh_component>();
 			mesh_mario->init( "mesh_mario_jump" );
@@ -27,7 +27,7 @@ void scene_meshes::pushed()
 	// crate
 	{
 		auto e = add_entity<entity>();
-		e->transform_set_pos( { 128.f, 0.f } );
+		e->set_pos( { 128.f, 0.f } );
 		{
 			mesh_crate = e->add_component<mesh_component>();
 			mesh_crate->init( "mesh_crate" );

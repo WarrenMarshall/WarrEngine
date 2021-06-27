@@ -58,7 +58,7 @@ void scene_box2d::pushed()
 				ec->rs_opt.glow = 1.f;
 			}
 		}
-		e->transform_set_pos( { 0.f, -100.f } );
+		e->set_pos( { 0.f, -100.f } );
 	}
 
 	// static world geometry
@@ -111,7 +111,7 @@ void scene_box2d::draw_ui()
 void scene_box2d::spawn_ball_at( vec2 world_pos )
 {
 	auto e = add_entity<e_emoji_ball>();
-	e->transform_set_pos( world_pos );
+	e->set_pos( world_pos );
 	e->rs_opt.color = color( random::getf(), random::getf(), random::getf() );
 	e->make_pickable();
 	{
@@ -143,7 +143,7 @@ void scene_box2d::spawn_box_at( vec2 world_pos )
 	rect rc_box = { 0.f, 0.f, w, h };
 
 	auto e = add_entity<entity>();
-	e->transform_set_pos( world_pos );
+	e->set_pos( world_pos );
 	e->make_pickable();
 	{
 		float random_radius = random::getf_range( 16.f, 32.f );
@@ -240,7 +240,7 @@ bool scene_box2d::on_input_motion( const input_event* evt )
 					auto world_pos = coord_system::window_to_world_pos( evt->mouse_pos );
 
 					auto e = find_entity( H( "main_ball" ) );
-					e->transform_set_pos( world_pos );
+					e->set_pos( world_pos );
 
 					return true;
 				}

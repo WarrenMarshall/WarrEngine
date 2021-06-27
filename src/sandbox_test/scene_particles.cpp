@@ -14,7 +14,7 @@ void scene_particles::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "stars" );
-		e->transform_set_pos( { -150.f, -100.f } );
+		e->set_pos( { -150.f, -100.f } );
 
 		{
 			auto ec = e->add_component<emitter_component>();
@@ -30,7 +30,7 @@ void scene_particles::pushed()
 	// jumping coins
 	{
 		auto e = add_entity<entity>();
-		e->transform_set_pos( { 0.f, viewport_hh } );
+		e->set_pos( { 0.f, viewport_hh } );
 
 		{
 			auto ec = e->add_component<emitter_component>();
@@ -46,7 +46,7 @@ void scene_particles::pushed()
 	// torch emitter attached to mouse cursor
 	{
 		auto e = add_entity<entity>();
-		e->transform_set_pos( { 50.f, -100.f } );
+		e->set_pos( { 50.f, -100.f } );
 		e->tag = H( "mouse_torch" );
 
 		{
@@ -98,13 +98,13 @@ bool scene_particles::on_input_motion( const input_event* evt )
 		if( g_engine->input.get_button_state( input_id::mouse_button_left ) == button_state::held )
 		{
 			auto wpos = coord_system::window_to_world_pos( evt->mouse_pos );
-			find_entity( H( "mouse_torch" ) )->transform_set_pos( wpos );
+			find_entity( H( "mouse_torch" ) )->set_pos( wpos );
 		}
 
 		if( g_engine->input.get_button_state( input_id::mouse_button_right ) == button_state::held )
 		{
 			auto wpos = coord_system::window_to_world_pos( evt->mouse_pos );
-			find_entity( H( "stars" ) )->transform_set_pos( wpos );
+			find_entity( H( "stars" ) )->set_pos( wpos );
 		}
 	}
 

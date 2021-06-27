@@ -31,8 +31,7 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
-		//e->debug_name = "MARIO";
-		e->transform_set_pos( { -80.f, 0.f } );
+		e->set_pos( { -80.f, 0.f } );
 		{
 			auto ec = e->add_component<sprite_component>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -53,7 +52,7 @@ void scene_simple_collision::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "hit_marker" );
-		e->transform_set_pos( { 0.f, 0.f } );
+		e->set_pos( { 0.f, 0.f } );
 		{
 			auto ec = e->add_component<primitive_shape_component>();
 			ec->rs_opt.color = make_color( color::yellow );
@@ -231,7 +230,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			mario->transform_delta_pos( fixed_time_step::per_second( evt->delta * 150.f ) );
+			mario->add_delta_pos( fixed_time_step::per_second( evt->delta * 150.f ) );
 			return true;
 		}
 		break;

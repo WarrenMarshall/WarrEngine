@@ -71,7 +71,7 @@ void scene_gameplay::update()
 		new_player_pos.y -= viewport_h;
 	}
 
-	player->transform_set_pos( new_player_pos );
+	player->set_pos( new_player_pos );
 
 	vec2 offset_positions [] =
 	{
@@ -82,7 +82,7 @@ void scene_gameplay::update()
 
 	for( auto idx = 0 ; idx < 9 ; ++idx )
 	{
-		player->satellite_ships[ idx ]->transform_set_pos(
+		player->satellite_ships[ idx ]->set_pos(
 			player->get_transform()->pos + ( offset_positions[ idx ] * viewport_w )
 		);
 	}

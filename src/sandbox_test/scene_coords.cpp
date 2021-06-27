@@ -17,7 +17,7 @@ void scene_coords::pushed()
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "crosshair" );
-		e->transform_set_pos( { 0.f, 0.f } );
+		e->set_pos( { 0.f, 0.f } );
 		e->rs_opt.color = make_color( pal::brighter );
 		{
 			auto ec = e->add_component<sprite_component>();
@@ -146,7 +146,7 @@ bool scene_coords::on_input_motion( const input_event* evt )
 					auto viewport_pos = coord_system::window_to_viewport_pos( evt->mouse_pos );
 					auto world_pos = coord_system::viewport_to_world_pos( viewport_pos );
 
-					e->transform_set_pos( world_pos );
+					e->set_pos( world_pos );
 				}
 
 				return true;
@@ -160,7 +160,7 @@ bool scene_coords::on_input_motion( const input_event* evt )
 			{
 				// scale crosshair
 				auto e = find_entity( H( "crosshair" ) );
-				e->transform_delta_scale( evt->delta.y * 0.1f );
+				e->add_delta_scale( evt->delta.y * 0.1f );
 				return true;
 			}
 		}

@@ -24,6 +24,7 @@ struct scene
 	vec2 get_viewport_pivot();
 	vec2 viewport_pivot = { viewport_hw - 1.f, viewport_hh - 1.f };
 
+	spatial_map spatial_map;
 	std::deque<std::unique_ptr<entity>> entities;
 
 	std::vector<simple_collision_component*> simple_collision_components;
