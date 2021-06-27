@@ -57,20 +57,17 @@ void scene_simple_collision::pushed()
 		{
 			auto ec = e->add_component<primitive_shape_component>();
 			ec->rs_opt.color = make_color( color::yellow );
-			ec->add_shape( primitive_shape::point );
-			ec->add_shape( primitive_shape::rect, rect::create_centered( 8 ) );
 		}
 
 		hit_marker = e;
 
 	}
 
-	// generate random things for mario to collide with
+	// static geo
 
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		//e->debug_name = "WORLD_GEO";
 
 		for( int x = 0 ; x < 24 ; ++x )
 		{
@@ -84,15 +81,9 @@ void scene_simple_collision::pushed()
 					}
 				);
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
-				ec->rs_opt.color = make_color( color::grey );
+				ec->rs_opt.color = make_color( color::dark_teal );
 			}
 		}
-	}
-
-	{
-		auto e = add_entity<entity>();
-		e->tag = H( "world_geo2" );
-		//e->debug_name = "WORLD_GEO2";
 
 		for( int x = 0 ; x < 24 ; ++x )
 		{
@@ -106,9 +97,11 @@ void scene_simple_collision::pushed()
 					}
 				);
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
-				ec->rs_opt.color = make_color( color::grey );
+				ec->rs_opt.color = make_color( color::dark_teal );
 			}
 		}
+
+		world_geo = e;
 	}
 }
 
@@ -146,6 +139,16 @@ void scene_simple_collision::update()
 	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
 }
 
+void scene_simple_collision::reset_collision_trace_results()
+{
+	hit_marker->get_component<primitive_shape_component>()->shapes.clear();
+
+	for( auto& iter : world_geo->get_components<simple_collision_component>() )
+	{
+		iter->rs_opt.color = make_color( color::dark_teal );
+	}
+}
+
 bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
@@ -154,6 +157,8 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 		case input_id::gamepad_button_dpad_up:
 		{
+			reset_collision_trace_results();
+
 			auto start = mario->get_transform()->pos;
 			auto end = start + ( ray_dir * max_raycast_length );
 
@@ -171,6 +176,8 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 		case input_id::gamepad_button_dpad_down:
 		{
+			reset_collision_trace_results();
+
 			auto start = mario->get_transform()->pos;
 			auto end = start + ( ray_dir * max_raycast_length );
 
@@ -185,6 +192,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 				for( auto& hit : callback.results )
 				{
 					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
+					hit.scc->rs_opt.color = make_color( color::teal );
 				}
 			}
 		}
@@ -194,6 +202,8 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 		case input_id::gamepad_button_dpad_left:
 		{
+			reset_collision_trace_results();
+
 			auto start = mario->get_transform()->pos;
 			auto end = start + ( ray_dir * max_raycast_length );
 
@@ -205,6 +215,8 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 				auto ec = hit_marker->get_component<primitive_shape_component>();
 				ec->shapes.clear();
 				ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), callback.result.pos );
+
+				callback.result.scc->rs_opt.color = make_color( color::teal );
 			}
 		}
 		break;
