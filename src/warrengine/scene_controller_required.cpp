@@ -148,12 +148,6 @@ bool scene_controller_required::on_input_pressed( const input_event* evt )
 		return true;
 	}
 
-	// don't allow exiting to the ESC menu from here
-	if( evt->input_id == input_id::key_esc )
-	{
-		return true;
-	}
-
 	// any input from the controller will dismiss this screen
 	if( evt->input_id == input_id::gamepad_button_a
 		or evt->input_id == input_id::gamepad_button_b
