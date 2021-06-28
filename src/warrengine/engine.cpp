@@ -732,7 +732,7 @@ bool engine::on_input_motion( const input_event* evt )
 		case input_id::mouse:
 		{
 			// camera control
-			if( g_engine->input.get_button_state( input_id::mouse_button_middle ) == button_state::held )
+			if( g_engine->input.is_button_held( input_id::mouse_button_middle ) )
 			{
 				if( evt->control_down )
 				{

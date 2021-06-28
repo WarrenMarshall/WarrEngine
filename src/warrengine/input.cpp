@@ -458,6 +458,12 @@ bool input_mgr::is_button_down( e_input_id input_id )
 	return ( bs == button_state::pressed or bs == button_state::held );
 }
 
+bool input_mgr::is_button_held( e_input_id input_id )
+{
+	e_button_state bs = get_button_state( input_id );
+	return ( bs == button_state::held );
+}
+
 bool input_mgr::is_shift_down()
 {
 	e_button_state bs_left = get_button_state( input_id::key_shift_left );

@@ -233,7 +233,7 @@ bool scene_box2d::on_input_motion( const input_event* evt )
 	{
 		case input_id::mouse:
 		{
-			if( g_engine->input.get_button_state( input_id::mouse_button_left ) == button_state::held )
+			if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
 			{
 				if( !evt->shift_down and !evt->control_down )
 				{

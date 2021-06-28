@@ -102,7 +102,7 @@ bool scene_entity_picking::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
-		if( g_engine->input.get_button_state( input_id::mouse_button_left ) == button_state::held )
+		if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
 		{
 			vec2 delta = coord_system::window_to_world_vec( evt->delta );
 

@@ -95,13 +95,13 @@ bool scene_particles::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
-		if( g_engine->input.get_button_state( input_id::mouse_button_left ) == button_state::held )
+		if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
 		{
 			auto wpos = coord_system::window_to_world_pos( evt->mouse_pos );
 			find_entity( H( "mouse_torch" ) )->set_pos( wpos );
 		}
 
-		if( g_engine->input.get_button_state( input_id::mouse_button_right ) == button_state::held )
+		if( g_engine->input.is_button_held( input_id::mouse_button_right ) )
 		{
 			auto wpos = coord_system::window_to_world_pos( evt->mouse_pos );
 			find_entity( H( "stars" ) )->set_pos( wpos );

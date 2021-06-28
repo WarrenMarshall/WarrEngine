@@ -51,6 +51,7 @@ struct input_mgr
 	std::array<bool, input_id::max> button_states_last_frame = {};
 
 	[[nodiscard]] bool is_button_down( e_input_id input_id );
+	[[nodiscard]] bool is_button_held( e_input_id input_id );
 	[[nodiscard]] bool is_shift_down();
 	[[nodiscard]] bool is_control_down();
 	[[nodiscard]] bool is_alt_down();
