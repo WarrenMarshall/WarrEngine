@@ -343,9 +343,9 @@ void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot 
 			if( g_ui->hot_tag == control->tag and g_ui->hover_tag == control->tag )
 			{
 				result.code |= im_result::left_clicked;
+				current_callback->on_control_left_clicked( control->tag, result );
 			}
 			g_ui->hover_tag = g_ui->hot_tag = hash_none;
-			current_callback->on_control_left_clicked( control->tag, result );
 		}
 	}
 	else
