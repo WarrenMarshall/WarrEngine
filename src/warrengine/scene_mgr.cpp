@@ -290,6 +290,10 @@ bool scene_mgr::on_input_motion( const input_event* evt )
 
 bool scene_mgr::on_input_pressed( const input_event* evt )
 {
+	if( evt->input_id == input_id::key_esc )
+	{
+		int warren = 5;
+	}
 	for( const auto& iter : scene_stack )
 	{
 		if( iter->on_input_pressed( evt ) )

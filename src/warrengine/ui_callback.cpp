@@ -273,8 +273,13 @@ bool ui_callback::on_input_pressed( const input_event* evt )
 			return true;
 		}
 
-		// if a ui control has focus, we want to eat all of these events regardless
-		return true;
+		// if a text control has focus, we want to eat all of these events
+		// regardless. otherwise each time we press a key the input control
+		// gives up it's focused state.
+		if( g_ui->focused.type == ui_control_type::text )
+		{
+			return true;
+		}
 	}
 
 	return false;
