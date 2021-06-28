@@ -193,7 +193,6 @@
   <ItemGroup>
     <ClCompile Include="asset.cpp" />
     <ClCompile Include="asset_file_definition.cpp" />
-    <ClCompile Include="spatial_map.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
     <ClCompile Include="simple_collision_query.cpp" />
     <ClCompile Include="simple_collision_pending_collision.cpp" />
@@ -288,7 +287,6 @@
     <ClInclude Include="asset.h" />
     <ClInclude Include="asset_file_definition.h" />
     <ClInclude Include="cache.h" />
-    <ClInclude Include="spatial_map.h" />
     <ClInclude Include="simple_collision_world.h" />
     <ClInclude Include="simple_collision_query.h" />
     <ClInclude Include="simple_collision_pending_collision.h" />

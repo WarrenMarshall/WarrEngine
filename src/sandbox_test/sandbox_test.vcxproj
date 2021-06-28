@@ -181,7 +181,6 @@
     <ClCompile Include="scene_palette.cpp" />
     <ClCompile Include="scene_particles.cpp" />
     <ClCompile Include="scene_noise.cpp" />
-    <ClCompile Include="scene_spatial_map.cpp" />
     <ClCompile Include="scene_simple_collision.cpp" />
     <ClCompile Include="scene_sound_board.cpp" />
     <ClCompile Include="scene_textures.cpp" />
@@ -204,7 +203,6 @@
     <ClInclude Include="scene_palette.h" />
     <ClInclude Include="scene_particles.h" />
     <ClInclude Include="scene_noise.h" />
-    <ClInclude Include="scene_spatial_map.h" />
     <ClInclude Include="scene_simple_collision.h" />
     <ClInclude Include="scene_sound_board.h" />
     <ClInclude Include="scene_textures.h" />

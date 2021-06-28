@@ -262,9 +262,6 @@
     <ClCompile Include="simple_collision_world.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
-    <ClCompile Include="spatial_map.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -536,9 +533,6 @@
     </ClInclude>
     <ClInclude Include="simple_collision_world.h">
       <Filter>include\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="spatial_map.h">
-      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

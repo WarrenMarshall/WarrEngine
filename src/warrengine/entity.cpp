@@ -138,9 +138,11 @@ const war::transform* entity::get_transform()
 
 transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, const float scale )
 {
-	set_pos( pos );
-	set_angle( angle );
-	set_scale( scale );
+	_tform.set_pos( pos );
+	_tform.set_angle( angle );
+	_tform.set_scale( scale );
+
+	update_physics_components_to_match_transform();
 
 	return &_tform;
 }
@@ -178,14 +180,18 @@ transform* entity::set_scale( const float scale )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
+
 	update_physics_components_to_match_transform();
+
 	return &_tform;
 }
 
 transform* entity::add_delta_angle( const float delta )
 {
 	_tform.add_angle( delta );
+
 	update_physics_components_to_match_transform();
+
 	return &_tform;
 }
 
