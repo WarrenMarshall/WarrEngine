@@ -29,13 +29,6 @@ struct ui_control
 	// deciding whether or not to use default sizes.
 	bool set_pos_called : 1 = false;
 
-	// indicates that a control, once hot, won't release it's hover state until
-	// the mouse button is actually released.
-	//
-	// used for controls that want continuous feedback, like sliders, so they
-	// don't hop around between hover states as you drag.
-	bool sticky_hover : 1 = false;
-
 	// does this control do a position offset when it's made hot / clicked?
 	bool uses_click_offset : 1 = true;
 

@@ -303,7 +303,6 @@ ui_slider_control::ui_slider_control( hash tag )
 	is_active = true;
 	text_align = align::left | align::vcenter;
 	slice_def = g_engine->find_asset<slice_def_asset>( "simple_ui_slider_body" );
-	sticky_hover = true;
 	uses_click_offset = false;
 }
 

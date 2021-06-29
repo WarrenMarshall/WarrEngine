@@ -295,7 +295,7 @@ void ui_mgr::end_active_control()
 
 			draw( current_control.get(), is_hovered, is_hot );
 
-			if( is_hot and current_control->sticky_hover )
+			if( is_hot )
 			{
 				current_callback->on_motion( current_control->tag, result );
 			}
@@ -326,11 +326,16 @@ void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot 
 	result.code = im_result::none;
 
 	e_button_state bs_left = g_engine->input.get_button_state( input_id::mouse_button_left );
+	e_button_state bs_middle = g_engine->input.get_button_state( input_id::mouse_button_middle );
+	e_button_state bs_right = g_engine->input.get_button_state( input_id::mouse_button_right );
 
 	auto rc_ui_offset = control->rc_ui;
 	if( is_mouse_inside( rc_ui_offset ) )
 	{
-		if( bs_left == button_state::up or ( bs_left == button_state::held and g_ui->hot_tag == control->tag ) )
+		if(
+			( bs_left == button_state::up and bs_middle == button_state::up && bs_right == button_state::up )
+			or ( bs_left == button_state::held and g_ui->hot_tag == control->tag )
+		)
 		{
 			g_ui->hover_tag = control->tag;
 		}
@@ -350,7 +355,7 @@ void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot 
 	}
 	else
 	{
-		if( g_ui->hover_tag == control->tag and control->sticky_hover == false )
+		if( g_ui->hover_tag == control->tag )
 		{
 			if( g_ui->hover_tag == control->tag )
 			{
@@ -375,7 +380,7 @@ void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot 
 
 	// client rect position of mouse cursor
 
-	if( result.code & im_result::left_clicked or control->sticky_hover )
+	if( result.code & im_result::left_clicked or control->type == ui_control_type::slider )
 	{
 		// convert mouse location to client rect position inside control
 
