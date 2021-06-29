@@ -211,11 +211,11 @@ std::vector<color> text_parser::color_list_from_str( std::string_view str )
 			composited_color += ",";
 			composited_color += *tok.get_next_token();
 
-			wk_values.emplace_back( composited_color );
+			wk_values.push_back( composited_color );
 		}
 		else
 		{
-			wk_values.emplace_back( std::string( *val ) );
+			wk_values.emplace_back( *val );
 		}
 	}
 
@@ -237,7 +237,7 @@ std::vector<color> text_parser::color_list_from_str( std::string_view str )
 
 		while( repeat_count > 0 )
 		{
-			color_values.emplace_back( color_value );
+			color_values.push_back( color_value );
 			repeat_count--;
 		}
 	}
@@ -251,7 +251,7 @@ std::vector<color> text_parser::color_list_from_str( std::string_view str )
 			iter = *g_engine->find_string_from_symbol( iter );
 		}
 
-		color_list.emplace_back( color( iter ) );
+		color_list.emplace_back( iter );
 	}
 
 	return color_list;

@@ -39,7 +39,7 @@ void tokenizer::preprocess()
 		{
 			if( end > start )
 			{
-				tokens.emplace_back( string_buffer.substr( start, end - start ) );
+				tokens.push_back( string_buffer.substr( start, end - start ) );
 			}
 
 			start = end + 1;
@@ -58,7 +58,7 @@ void tokenizer::preprocess()
 
 	if( end > start )
 	{
-		tokens.emplace_back( string_buffer.substr( start, end - start ) );
+		tokens.push_back( string_buffer.substr( start, end - start ) );
 	}
 }
 

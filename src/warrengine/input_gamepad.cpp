@@ -24,7 +24,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 		evt.event_id = event_id::input_pressed;
 		evt.input_id = input_id;
 
-		g_engine->input.event_queue.emplace_back( std::move( evt ) );
+		g_engine->input.event_queue.push_back( evt );
 
 		is_being_used = true;
 	}
@@ -34,7 +34,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 		evt.event_id = event_id::input_released;
 		evt.input_id = input_id;
 
-		g_engine->input.event_queue.emplace_back( std::move( evt ) );
+		g_engine->input.event_queue.push_back( evt );
 	}
 	else if( last_state and current_state )
 	{
@@ -44,7 +44,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 			evt.event_id = event_id::input_held;
 			evt.input_id = input_id;
 
-			g_engine->input.event_queue.emplace_back( std::move( evt ) );
+			g_engine->input.event_queue.push_back( evt );
 		}
 	}
 }

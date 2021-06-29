@@ -106,7 +106,7 @@ bool tile_set_asset::create()
 					rect( x * tile_width, y * tile_height, tile_width, tile_height )
 				);
 
-			tiles.emplace_back( std::move( tile ) );
+			tiles.push_back( tile );
 		}
 	}
 

@@ -655,7 +655,7 @@ void engine::cache_asset_definition_files( std::string_view folder_name )
 
 		if( asset_def_file.create_internals() )
 		{
-			asset_def_file_cache.emplace_back( std::move( asset_def_file ) );
+			asset_def_file_cache.push_back( asset_def_file );
 		}
 	}
 }

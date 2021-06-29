@@ -7,7 +7,7 @@ namespace war
 s_render_state::s_render_state()
 {
 	// duplicates the render_state at the top of the stack and makes it current
-	g_engine->renderer.render_states.emplace_back( *render::state );
+	g_engine->renderer.render_states.push_back( *render::state );
 	render::state = &g_engine->renderer.render_states.back();
 }
 

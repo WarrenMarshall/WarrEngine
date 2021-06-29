@@ -90,7 +90,7 @@ float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const
 	hit.normal = vec2( normal.x, normal.y );
 	hit.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
 
-	results.push_back( std::move( hit ) );
+	results.push_back( hit );
 
 	return 1.f;
 }

@@ -24,7 +24,7 @@ void character_callback( GLFWwindow* window, unsigned int key_code )
 	evt.event_id = event_id::input_key;
 	evt.ch = (unsigned char)key_code;
 
-	g_engine->input.event_queue.emplace_back( std::move( evt ) );
+	g_engine->input.event_queue.push_back( evt );
 }
 
 // ----------------------------------------------------------------------------
@@ -227,7 +227,7 @@ void input_mgr::queue_motion()
 		evt.input_id = input_id::mouse;
 		evt.delta = mouse_move_delta;
 
-		event_queue.emplace_back( std::move( evt ) );
+		event_queue.push_back( evt );
 
 		mouse_move_delta = vec2::zero;
 	}
@@ -241,7 +241,7 @@ void input_mgr::queue_motion()
 		evt.input_id = input_id::mouse_wheel;
 		evt.delta = mouse_wheel_delta;
 
-		event_queue.emplace_back( std::move( evt ) );
+		event_queue.push_back( evt );
 
 		mouse_wheel_delta = vec2::zero;
 	}
@@ -270,7 +270,7 @@ void input_mgr::update_axis_delta( e_input_id input_id ) const
 		evt.input_id = input_id;
 		evt.delta = delta;
 
-		g_engine->input.event_queue.emplace_back( std::move( evt ) );
+		g_engine->input.event_queue.push_back( evt );
 	}
 }
 
@@ -371,7 +371,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 			evt.event_id = event_id::input_pressed;
 			evt.input_id = input_id;
 
-			g_engine->input.event_queue.emplace_back( std::move( evt ) );
+			g_engine->input.event_queue.push_back( evt );
 
 			timer_repeat->restart();
 			break;
@@ -383,7 +383,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 			evt.event_id = event_id::input_released;
 			evt.input_id = input_id;
 
-			g_engine->input.event_queue.emplace_back( std::move( evt ) );
+			g_engine->input.event_queue.push_back( evt );
 			break;
 		}
 
@@ -395,7 +395,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 				evt.event_id = event_id::input_held;
 				evt.input_id = input_id;
 
-				g_engine->input.event_queue.emplace_back( std::move( evt ) );
+				g_engine->input.event_queue.push_back( evt );
 
 				timer_repeat->restart();
 				g_ui->caret_blink_tween.restart();

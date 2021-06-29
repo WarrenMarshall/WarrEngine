@@ -320,7 +320,7 @@ void asset_file_definition::precache_anim_texture( const key_values& key_values_
 	tokenizer tok( frames, "," );
 	while( !tok.is_eos() )
 	{
-		anim_frames.emplace_back( g_engine->find_asset<texture_asset>( *tok.get_next_token() ) );
+		anim_frames.push_back( g_engine->find_asset<texture_asset>( *tok.get_next_token() ) );
 	}
 
 	auto asset_ptr = g_engine->asset_cache.add(
@@ -519,7 +519,7 @@ bool asset_file_definition::create_internals()
 		// a "}" marks the end of the current asset definition
 		else if( line[ 0 ] == '}' )
 		{
-			asset_definitions.emplace_back( std::move( current_asset_definition ) );
+			asset_definitions.push_back( current_asset_definition );
 			current_asset_definition = {};
 		}
 		// parse each line into a key/value pair for the current asset definition

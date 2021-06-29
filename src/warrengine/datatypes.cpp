@@ -33,7 +33,7 @@ timeline* timeline::clear_key_frames()
 
 timeline* timeline::add_key_frame( const timeline_key_frame& kf )
 {
-	key_frames.emplace_back( kf );
+	key_frames.push_back( kf );
 	return this;
 }
 

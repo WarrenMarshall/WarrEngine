@@ -25,7 +25,7 @@ void contact_listener::BeginContact( b2Contact* contact )
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
 
-	g_engine->box2d.begin_contact_queue.emplace_back( pc );
+	g_engine->box2d.begin_contact_queue.push_back( pc );
 }
 
 void contact_listener::EndContact( b2Contact* contact )
@@ -48,7 +48,7 @@ void contact_listener::EndContact( b2Contact* contact )
 	pc.fixture_b = contact->GetFixtureB();
 	pc.manifold = *contact->GetManifold();
 
-	g_engine->box2d.end_contact_queue.emplace_back( pc );
+	g_engine->box2d.end_contact_queue.push_back( pc );
 }
 
 vec2 contact_listener::calc_hit_normal( b2Body* body_colliding )

@@ -57,7 +57,7 @@ void render::init_generate_circle_sample_points()
 
 	for( auto x = 0 ; x < circle_sample_points_max ; ++x )
 	{
-		circle_sample_points.emplace_back( vec2::dir_from_angle( angle ) );
+		circle_sample_points.push_back( vec2::dir_from_angle( angle ) );
 		angle += angle_step;
 	}
 }
@@ -70,7 +70,7 @@ void render::clear_render_state_stack()
 
 	render_state rs;
 	rs.batch_render_target = &dynamic_batches;
-	render_states.emplace_back( std::move( rs ) );
+	render_states.push_back( rs );
 	render::state = &render_states.back();
 }
 
@@ -352,13 +352,13 @@ std::vector<std::string> render::wrap_string_to_width( std::string_view text, fl
 				{
 					if( start == idx )
 					{
-						new_tokens.emplace_back( token.substr( start, 1 ) );
+						new_tokens.push_back( token.substr( start, 1 ) );
 						start++;
 					}
 					else
 					{
-						new_tokens.emplace_back( token.substr( start, idx - start ) );
-						new_tokens.emplace_back( token.substr( idx, 1 ) );
+						new_tokens.push_back( token.substr( start, idx - start ) );
+						new_tokens.push_back( token.substr( idx, 1 ) );
 						start = idx + 1;
 					}
 
@@ -368,12 +368,12 @@ std::vector<std::string> render::wrap_string_to_width( std::string_view text, fl
 			// catch the last word in the token
 			if( start != idx )
 			{
-				new_tokens.emplace_back( token.substr( start, idx - start ) );
+				new_tokens.push_back( token.substr( start, idx - start ) );
 			}
 		}
 		else
 		{
-			new_tokens.emplace_back( token );
+			new_tokens.push_back( token );
 		}
 	}
 
@@ -390,7 +390,7 @@ std::vector<std::string> render::wrap_string_to_width( std::string_view text, fl
 
 		if( is_newline or line_width + space_char_extents.x + word_extents.x > width )
 		{
-			wrapped_lines.emplace_back( std::move( wk_line ) );
+			wrapped_lines.push_back( wk_line );
 
 			if( is_newline )
 			{
@@ -417,7 +417,7 @@ std::vector<std::string> render::wrap_string_to_width( std::string_view text, fl
 
 	// add the final line into the list
 
-	wrapped_lines.emplace_back( std::move( wk_line ) );
+	wrapped_lines.push_back( wk_line );
 
 	return wrapped_lines;
 }

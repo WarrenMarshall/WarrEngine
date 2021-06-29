@@ -135,7 +135,7 @@ entity_component* primitive_shape_component::add_shape( const e_primitive_shape 
 	shape.rc = rc;
 	shape.pos_offset = pos_offset;
 
-	shapes.emplace_back( shape );
+	shapes.push_back( shape );
 
 	return this;
 }
@@ -148,7 +148,7 @@ entity_component* primitive_shape_component::add_shape( const e_primitive_shape 
 	shape.radius = radius;
 	shape.pos_offset = pos_offset;
 
-	shapes.emplace_back( shape );
+	shapes.push_back( shape );
 
 	return this;
 }
@@ -160,7 +160,7 @@ entity_component* primitive_shape_component::add_shape( const e_primitive_shape 
 	shape.prim_shape = prim_shape;
 	shape.pos_offset = pos_offset;
 
-	shapes.emplace_back( shape );
+	shapes.push_back( shape );
 
 	return this;
 }

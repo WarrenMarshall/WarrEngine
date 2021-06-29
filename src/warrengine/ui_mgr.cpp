@@ -501,14 +501,14 @@ ui_mgr* ui_mgr::layout_init( rect rc )
 ui_mgr* ui_mgr::layout_push()
 {
 	rect layout = { 0.f, 0.f, ui_w, ui_h };
-	layout_stack.emplace_back( layout );
+	layout_stack.push_back( layout );
 
 	return this;
 }
 
 ui_mgr* ui_mgr::layout_push( rect rc )
 {
-	layout_stack.emplace_back( rc );
+	layout_stack.push_back( rc );
 	return this;
 }
 

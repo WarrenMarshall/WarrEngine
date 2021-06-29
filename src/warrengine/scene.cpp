@@ -62,7 +62,7 @@ std::vector<entity*> scene::get_selected()
 	{
 		if( e->is_selected )
 		{
-			selections.emplace_back( e.get() );
+			selections.push_back( e.get() );
 		}
 	}
 
@@ -112,7 +112,7 @@ void scene::gather_simple_collision_components()
 
 		for( auto iter : scc )
 		{
-			simple_collision_components.emplace_back( iter );
+			simple_collision_components.push_back( iter );
 		}
 	}
 }
@@ -252,7 +252,7 @@ void scene::queue_simple_collisions()
 			collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 			collision.depth = m.depths[ 0 ];
 
-			g_engine->simple_collision.queue.emplace_back( collision );
+			g_engine->simple_collision.queue.push_back( collision );
 		}
 	}
 }

@@ -81,7 +81,7 @@ void file_mem_text::preprocess()
 
 		if( !currently_splicing )
 		{
-			lines.emplace_back( std::move( line ) );
+			lines.emplace_back( line );
 		}
 	}
 
@@ -99,7 +99,7 @@ void file_mem_text::preprocess_raw()
 	while( !tok.is_eos() )
 	{
 		auto next_token = tok.get_next_token();
-		auto line = *next_token;
+		auto& line = *next_token;
 
 		// skip blank lines
 		if( line.length() == 0 )
@@ -107,7 +107,7 @@ void file_mem_text::preprocess_raw()
 			continue;
 		}
 
-		lines.emplace_back( std::move( line ) );
+		lines.emplace_back( line );
 	}
 
 	buffer.clear();

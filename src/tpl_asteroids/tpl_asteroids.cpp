@@ -37,7 +37,7 @@ void tpl_asteroids_game::init()
 
 		for( auto x = 0 ; x < sides ; ++x )
 		{
-			ship_geo[ shape_idx ].verts.emplace_back( vec2::dir_from_angle( angle ) * my_game->ship_radius );
+			ship_geo[ shape_idx ].verts.push_back( vec2::dir_from_angle( angle ) * my_game->ship_radius );
 			angle += angle_step;
 		}
 

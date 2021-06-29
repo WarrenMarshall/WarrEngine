@@ -43,26 +43,26 @@ void render_stats::draw()
 		if( draw_verbose )
 		{
 			stat_strings.clear();
-			stat_strings.emplace_back( std::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
+			stat_strings.push_back( std::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
 				f_commas( frame_count.value ),
 				frame_times_ms.value,
 				fixed_time_step::frames_per_second ) );
-			stat_strings.emplace_back( std::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
+			stat_strings.push_back( std::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
 				f_commas( draw_calls.value ),
 				f_commas( quads.value ),
 				f_commas( triangles.value ),
 				f_commas( lines.value ),
 				f_commas( points.value ) )
 			);
-			stat_strings.emplace_back( std::format( "Scenes : {}, Entities : {}", g_engine->scenes.scene_stack.size(), f_commas( entities.value ) ) );
-			stat_strings.emplace_back( std::format( "Time Dilation: {:.2f}", g_engine->time.dilation ) );
+			stat_strings.push_back( std::format( "Scenes : {}, Entities : {}", g_engine->scenes.scene_stack.size(), f_commas( entities.value ) ) );
+			stat_strings.push_back( std::format( "Time Dilation: {:.2f}", g_engine->time.dilation ) );
 
 			auto window_pos = g_engine->input.mouse_window_pos;
 			auto viewport_pos = coord_system::window_to_viewport_pos( window_pos );
 			auto world_pos = coord_system::viewport_to_world_pos( viewport_pos );
 			auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
 
-			stat_strings.emplace_back( std::format( "wn:{:.0f}/{:.0f} | wd:{:.0f}/{:.0f} | vp:{:.0f}/{:.0f} | ui:{:.0f}/{:.0f}",
+			stat_strings.push_back( std::format( "wn:{:.0f}/{:.0f} | wd:{:.0f}/{:.0f} | vp:{:.0f}/{:.0f} | ui:{:.0f}/{:.0f}",
 				window_pos.x, window_pos.y,
 				world_pos.x, world_pos.y,
 				viewport_pos.x, viewport_pos.y,
@@ -70,13 +70,13 @@ void render_stats::draw()
 			);
 
 			auto cam_transform = g_engine->scenes.get_transform();
-			stat_strings.emplace_back( std::format( "cam: {:.0f}/{:.0f} | {:.1f} d | {:.2f} s",
+			stat_strings.push_back( std::format( "cam: {:.0f}/{:.0f} | {:.1f} d | {:.2f} s",
 				cam_transform->pos.x, cam_transform->pos.y, cam_transform->angle, cam_transform->scale )
 			);
 
 			if( stat_custom_string.length() )
 			{
-				stat_strings.emplace_back( stat_custom_string );
+				stat_strings.push_back( stat_custom_string );
 				stat_custom_string.clear();
 			}
 

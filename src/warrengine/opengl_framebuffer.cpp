@@ -15,7 +15,7 @@ opengl_framebuffer::opengl_framebuffer( std::string_view base_name )
 
 void opengl_framebuffer::add_color_attachment( vec2 sz, const color& clear_color )
 {
-	color_attachments.emplace_back( opengl_color_attachment( this, sz, clear_color ) );
+	color_attachments.emplace_back( this, sz, clear_color );
 }
 
 void opengl_framebuffer::add_depth_attachment( vec2 sz )

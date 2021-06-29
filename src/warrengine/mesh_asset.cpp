@@ -30,7 +30,7 @@ bool mesh_asset::create()
 			v.y = text_parser::float_from_str( *( tok.get_next_token() ) );
 			v.z = text_parser::float_from_str( *( tok.get_next_token() ) );
 
-			vertex_list.emplace_back( std::move( v ) );
+			vertex_list.push_back( v );
 		}
 		else if( line.substr( 0, 3 ) == "vt " )
 		{
@@ -42,7 +42,7 @@ bool mesh_asset::create()
 			v.u = text_parser::float_from_str( *( tok.get_next_token() ) );
 			v.v = text_parser::float_from_str( *( tok.get_next_token() ) );
 
-			uv_list.emplace_back( std::move( v ) );
+			uv_list.push_back( v );
 		}
 		else if( line.substr( 0, 7 ) == "usemtl " )
 		{
@@ -113,7 +113,7 @@ bool mesh_asset::create()
 						texture_to_triangles.insert( std::make_pair( texture, std::vector<render_triangle>() ) );
 					}
 
-					texture_to_triangles[ texture ].emplace_back( rtri );
+					texture_to_triangles[ texture ].push_back( rtri );
 
 					// set up for the next triangle by shifting the third vert
 					// into the second verts position

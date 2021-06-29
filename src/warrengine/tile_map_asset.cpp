@@ -90,7 +90,7 @@ bool tile_map_asset::create()
 
 				idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
 
-				current_layer->tiles.emplace_back( tile( idx, flags ) );
+				current_layer->tiles.emplace_back( idx, flags );
 			}
 
 			data_block_y++;
@@ -127,7 +127,7 @@ bool tile_map_asset::create()
 		}
 		else if( line.starts_with( "</layer>" ) )
 		{
-			layers.emplace_back( *current_layer );
+			layers.push_back( *current_layer );
 			current_layer = std::nullopt;
 		}
 	}
