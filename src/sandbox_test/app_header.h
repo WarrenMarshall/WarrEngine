@@ -38,6 +38,7 @@ static void draw_title( std::string_view title )
 #include "scene_box2d_entities.h"
 
 #include "scene_palette.h"
+#include "scene_angle_dirs.h"
 #include "scene_coords.h"
 #include "scene_ui.h"
 #include "scene_textures.h"

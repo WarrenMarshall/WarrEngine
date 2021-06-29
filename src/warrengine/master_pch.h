@@ -67,10 +67,11 @@ namespace war
 // ----------------------------------------------------------------------------
 // fixed-time stepping constants
 
+// #fixed_time_step - physics needs to run at 60 FPS, but other stuff could run less often
+//       - should we add a second fixed time step?
+
 namespace fixed_time_step
 {
-	// #physics - physics needs to run at 60 FPS, but other stuff could run less often
-	//       - should we add a second fixed time step?
 
 	// how many fixed time steps, per second
 	constexpr int frames_per_second = 60;

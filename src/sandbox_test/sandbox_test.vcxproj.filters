@@ -54,6 +54,9 @@
     <ClCompile Include="scene_simple_collision.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="scene_angle_dirs.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene_main_menu.h">
@@ -107,6 +110,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_collision.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_angle_dirs.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

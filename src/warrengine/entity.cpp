@@ -25,18 +25,10 @@ void entity::update_components()
 
 	for( const auto& component : components )
 	{
-		// #task - is this necessary? it feels like "remove_dead_components();" above would have killed these
-		if( component->life_cycle.is_dead() )
-		{
-			continue;
-		}
+		scoped_opengl;
+		g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
 
-		{
-			scoped_opengl;
-			g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
-
-			component->update();
-		}
+		component->update();
 	}
 }
 
@@ -95,7 +87,8 @@ void entity::update_physics_components_to_match_transform()
 		{
 			ec->body->SetTransform( _tform.pos.to_box2d().to_b2Vec2(), glm::radians( _tform.angle ) );
 
-			// reset velocity - #physics : might want to make this an option somehow
+			// reset velocity
+			// #physics : might want to make this an option somehow
 			ec->body->SetLinearVelocity( { 0, 0 } );
 			ec->body->SetAngularVelocity( 0 );
 
