@@ -10,7 +10,6 @@
 
 	// GLM - math library
 
-	//#define GLM_FORCE_RADIANS
 	#include <glm/glm/glm.hpp>
 	#include <glm/glm/gtc/matrix_transform.hpp>
 	#include <glm/glm/gtc/type_ptr.hpp>
@@ -19,7 +18,6 @@
 	#include <glm/glm/gtc/noise.hpp>
 
 	// stl
-	#include <random>
 	#include <string>
 	#include <string_view>
 	#include <vector>

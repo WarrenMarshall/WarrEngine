@@ -7,8 +7,7 @@ namespace war
 
 void random::seed()
 {
-	std::random_device rd;
-	std::srand( rd() );
+	std::srand( (unsigned)std::time( nullptr ) );
 }
 
 // returns a float value between 0.0 and 1.0
