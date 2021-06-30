@@ -604,7 +604,7 @@ ui_dropdown_control::ui_dropdown_control( hash tag )
 	is_active = true;
 	slice_def = g_engine->find_asset<slice_def_asset>( "simple_ui_button" );
 	text_align = align::left | align::vcenter;
-	uses_click_offset = false;
+	uses_click_offset = true;
 }
 
 void ui_dropdown_control::draw( const rect& rc_ui, const rect& rc_client, bool is_hovered, bool is_hot )

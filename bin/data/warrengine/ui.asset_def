@@ -22,10 +22,11 @@
 		ui_text_caret, 33, 53, 3, 10,\
 		ui_list, 30, 39, 12, 12,\
 		ui_dropdown_list, 30, 43, 12, 8,\
-		ui_dropdown_arrow, 46, 29, 15, 10,\
+		ui_dropdown_arrow, 49, 30, 11, 8,\
 		ui_slider_body, 15, 39, 12, 6,\
 		ui_slider_thumb, 3, 42, 10, 12,\
-		ui_slider_tick, 5, 55, 7, 7\
+		ui_slider_tick, 5, 55, 7, 7,\
+		ui_tab, 42, 51, 16, 12\
 		"
 }
 
@@ -105,4 +106,13 @@
 	"texture_tag" "ui_dropdown_list"
 	"x_slices" "4, 4"
 	"y_slices" "1, 4"
+}
+
+# tab
+{
+	"type" "slice_def"
+	"tag" "simple_ui_tab"
+	"texture_tag" "ui_tab"
+	"x_slices" "4, 6"
+	"y_slices" "4, 1"
 }

@@ -70,7 +70,6 @@ namespace war
 
 namespace fixed_time_step
 {
-
 	// how many fixed time steps, per second
 	constexpr int frames_per_second = 60;
 
