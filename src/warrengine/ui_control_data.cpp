@@ -49,8 +49,11 @@ void ui_control_data::set_float_value( float value )
 // represent (like sliders). these values can be transformed into different
 // ranges for UI purposes but the internals remain the same 0-1 range.
 //
-// so if you want that 0-1 range, use the _internal functions. otherwise, call
-// the standard functions for getting/setting the float.
+// they're a level of abstraction that make working with weird ranges for
+// sliders pretty painless.
+//
+// if you really do want that 0-1 range, use the _internal functions. otherwise,
+// call the standard functions for getting/setting the float.
 
 float ui_control_data::float_value_internal()
 {
