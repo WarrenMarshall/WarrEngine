@@ -533,9 +533,6 @@ e_button_state input_mgr::get_button_state( e_input_id input_id )
 //
 // these values are updated once per frame.
 
-// #task - should be in the config INI file?
-constexpr float gamepad_dead_zone = 0.25f;
-
 vec2 input_mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 {
 	if( !gamepad )
@@ -543,6 +540,7 @@ vec2 input_mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 		return vec2::zero;
 	}
 
+	static float gamepad_dead_zone = war::text_parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
 	vec2 value;
 
 	switch( input_id )

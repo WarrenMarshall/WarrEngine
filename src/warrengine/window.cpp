@@ -81,6 +81,10 @@ bool os_window::init()
 
 	rect window_pos = compute_max_window_size_for_desktop();
 
+	//glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
+	//glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+	//glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+
 	glfw_window = glfwCreateWindow(
 		(int)( window_pos.w ), (int)( window_pos.h ),
 		"WarrEngine", nullptr, nullptr

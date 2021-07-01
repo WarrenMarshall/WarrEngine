@@ -11,6 +11,7 @@ struct ui_control
 	e_align text_align = align::hcenter | align::vcenter;
 	slice_def_asset* slice_def = nullptr;
 	int idx = -1;
+	size_t total = 0;
 	texture_asset* image = nullptr;
 	float image_scale = 1.0f;
 	f_draw_control func_draw_control = nullptr;
