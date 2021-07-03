@@ -22,64 +22,6 @@ void engine::launch( int argc, char* argv [] )
 	log( "Creating engine" );
 	g_engine = std::make_unique<engine>();
 
-#ifndef _FINAL_RELEASE
-	// #task - this should be a "scene_angles_dirs" or something in the sandbox
-#if 0
-	// debugging checks to verify that angles and directions are the way we
-	// expect. it tests the conversion from angle to direction, and back again.
-
-	// expected output:
-	//
-	// Angle: 0.0 // Dir : 0.0, -1.0
-	// Angle : 45.0 // Dir : 1.0, -1.0
-	// Angle : 90.0 // Dir : 1.0, 0.0
-	// Angle : 135.0 // Dir : 1.0, 1.0
-	// Angle : 180.0 // Dir : -0.0, 1.0
-	// Angle : 225.0 // Dir : -1.0, 1.0
-	// Angle : 270.0 // Dir : -1.0, -0.0
-	// Angle : 315.0 // Dir : -1.0, -1.0
-	// Dir : 0.0, -1.0 / Angle : 0.0
-	// Dir : 1.0, -1.0 / Angle : 45.0
-	// Dir : 1.0, 0.0 / Angle : 90.0
-	// Dir : 1.0, 1.0 / Angle : 135.0
-	// Dir : 0.0, 1.0 / Angle : 180.0
-	// Dir : -1.0, 1.0 / Angle : 225.0
-	// Dir : -1.0, 0.0 / Angle : 270.0
-	// Dir : -1.0, -1.0 / Angle : 315.0
-
-	auto l_angle_to_dir = [] ( float angle )
-	{
-		auto dir = vec2::dir_from_angle( angle );
-		log( "Angle : {} // Dir : {}, {}", angle, glm::round( dir.x ), glm::round( dir.y ) );
-	};
-
-	l_angle_to_dir( 0 );
-	l_angle_to_dir( 45 );
-	l_angle_to_dir( 90 );
-	l_angle_to_dir( 135 );
-	l_angle_to_dir( 180 );
-	l_angle_to_dir( 225 );
-	l_angle_to_dir( 270 );
-	l_angle_to_dir( 315 );
-
-	auto l_dir_to_angle = [] ( vec2 dir )
-	{
-		auto angle = vec2::angle_from_dir( dir.normalize() );
-		log( "Dir : {}, {} / Angle : {}", dir.x, dir.y, angle );
-	};
-
-	l_dir_to_angle( { +0, -1 } );
-	l_dir_to_angle( { +1, -1 } );
-	l_dir_to_angle( { +1, +0 } );
-	l_dir_to_angle( { +1, +1 } );
-	l_dir_to_angle( { +0, +1 } );
-	l_dir_to_angle( { -1, +1 } );
-	l_dir_to_angle( { -1, +0 } );
-	l_dir_to_angle( { -1, -1 } );
-#endif
-
-#endif
-
 	log( "Initializing engine" );
 	g_engine->init();
 

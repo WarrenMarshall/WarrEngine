@@ -285,6 +285,22 @@ vec2 render::draw_string( std::string_view text, const vec2& pos )
 // returns: the x,y position immediately following the last character that was
 // drawn on the last line.
 
+vec2 render::draw_string( const std::vector<std::string>& text, const vec2& pos )
+{
+	vec2 wk_pos = pos;
+
+	vec2 draw_pos;
+
+	for( auto& iter : text )
+	{
+		draw_pos = render::draw_string( iter, wk_pos );
+
+		wk_pos.y += render::state->font->get_max_height();
+	}
+
+	return draw_pos;
+}
+
 vec2 render::draw_string( const std::vector<std::string>& text, const rect& rc )
 {
 	vec2 wk_pos = { rc.x, rc.y };

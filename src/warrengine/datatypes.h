@@ -266,6 +266,7 @@ struct vec2
 	[[nodiscard]] static float get_distance_between( const vec2& a, const vec2& b );
 	[[nodiscard]] static vec2 dir_from_angle( float angle );
 	[[nodiscard]] static float angle_from_dir( const vec2& dir );
+	[[nodiscard]] static float clamped_angle_from_dir( const vec2& dir );
 	[[nodiscard]] static vec2 reflect_across_normal( const vec2& v, const vec2& n );
 };
 

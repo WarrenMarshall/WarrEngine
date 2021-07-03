@@ -617,14 +617,15 @@ vec2 vec2::dir_from_angle( float angle )
 
 float vec2::angle_from_dir( const vec2& dir )
 {
-	auto angle = glm::atan( dir.x, -dir.y ) * 180.f / glm::pi<float>();
+	return glm::atan( dir.x, -dir.y ) * 180.f / glm::pi<float>();
+}
 
-	// 5/2/2021 - uncomment this if values outside of 0-360 prove to be unusable
-	// for some reason. i like the purity of not having to do this.
+// call this function instead of angle_from_dir if you'd like the resulting
+// angle to be positive and clamped to be within 0-360.
 
-	// angle = glm::mod<float>( angle, 360.f );
-
-	return angle;
+float vec2::clamped_angle_from_dir( const vec2& dir )
+{
+	return glm::mod<float>( angle_from_dir( dir ), 360.f );
 }
 
 // computes the reflection angle of "v" across the normal "n"

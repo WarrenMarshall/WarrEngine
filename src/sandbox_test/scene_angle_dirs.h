@@ -5,7 +5,7 @@ struct scene_angle_dirs : scene
 {
 	scene_angle_dirs();
 
-	float glow_val = 0.0f;
+	vec2 marker_pos = vec2::zero;
 
 	virtual void pushed() override;
 	virtual void draw() override;

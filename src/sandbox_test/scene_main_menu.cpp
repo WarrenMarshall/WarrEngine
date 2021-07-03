@@ -62,6 +62,7 @@ void scene_main_menu::draw_ui()
 
 			do_menu_button<scene_palette>( H( "button_palettes" ), "Palettes" );
 			g_ui->divider_control()->done();
+			do_menu_button<scene_angle_dirs>( H( "angle_dirs" ), "Angles / Directions" );
 			do_menu_button<scene_coords>( H( "button_coords" ), "Coords" );
 			g_ui->divider_control()->done();
 			do_menu_button<scene_ui>( H( "button_ui" ), "UI Controls" );
