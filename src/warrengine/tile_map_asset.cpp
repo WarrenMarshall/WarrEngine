@@ -18,7 +18,8 @@ bool tile_map_asset::create()
 {
 	auto file = file_system::load_text_file( original_filename );
 
-	std::optional<layer> current_layer = std::nullopt;
+	layer* current_layer = nullptr;
+	object_group* current_object_group = nullptr;
 	bool inside_data_block = false;
 	int data_block_y = 0;
 
@@ -94,7 +95,8 @@ bool tile_map_asset::create()
 		}
 		else if( line.starts_with( "<layer" ) )
 		{
-			current_layer = layer();
+			layers.emplace_back();
+			current_layer = &layers.back();
 			current_layer->tiles.reserve( width * height );
 
 			tokenizer tok( line, " " );
@@ -118,18 +120,73 @@ bool tile_map_asset::create()
 					auto value = subtok.get_next_token();
 					assert( value.has_value() );
 
-					current_layer->is_visible = text_parser::int_from_str( *value );
+					current_layer->is_visible = text_parser::bool_from_str( *value );
 				}
 			}
 		}
 		else if( line.starts_with( "</layer>" ) )
 		{
-			layers.push_back( *current_layer );
-			current_layer = std::nullopt;
+			current_layer = nullptr;
+		}
+		else if( line.starts_with( "<objectgroup" ) )
+		{
+			object_groups.emplace_back();
+			current_object_group = &object_groups.back();
+		}
+		else if( line.starts_with( "</objectgroup" ) )
+		{
+			current_object_group = nullptr;
+		}
+		else if( line.starts_with( "<object " ) )
+		{
+			assert( current_object_group );
+			current_object_group->objects.emplace_back();
+			object* current_object = &current_object_group->objects.back();
+
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+
+				if( *key == "x" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.x = text_parser::float_from_str( value );
+				}
+				else if( *key == "y" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.y = text_parser::float_from_str( value );
+				}
+				else if( *key == "width" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.w = text_parser::float_from_str( value );
+				}
+				else if( *key == "height" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.h = text_parser::float_from_str( value );
+				}
+				else if( *key == "visible" )
+				{
+					auto value = subtok.get_next_token();
+					assert( value.has_value() );
+
+					current_layer->is_visible = text_parser::bool_from_str( *value );
+				}
+			}
+
+
 		}
 	}
-
-	assert( !current_layer.has_value() );
 
 	return true;
 }

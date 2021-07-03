@@ -881,6 +881,10 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 	tile_set = g_engine->find_asset<tile_set_asset>( tile_set_tag );
 	tile_map = g_engine->find_asset<tile_map_asset>( tile_map_tag );
 
+	// skim the layers, looking for things we need to take care of in code.
+
+
+
 }
 
 void tile_map_component::draw()

@@ -31,12 +31,27 @@ struct tile_map_asset final : asset
 		bool is_visible = true;
 	};
 
+	struct object
+	{
+		rect rc;
+	};
+
+	// object group
+
+	struct object_group
+	{
+		std::string tag;
+		std::vector<object> objects;
+		bool is_visible = true;
+	};
+
 	// global info about the tile map
 
 	size_t width = 0;
 	size_t height = 0;
 	size_t tile_sz = 0;
 	std::vector<layer> layers;
+	std::vector<object_group> object_groups;
 
 	virtual bool create() override;
 };

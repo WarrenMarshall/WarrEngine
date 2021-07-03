@@ -8,3 +8,5 @@
     - get it drawing correctly in normal and debug modes
 - create player entity
     - spawn player at proper spot
+
+! starfield doesn't move when I move the camera offset?
