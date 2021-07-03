@@ -12,13 +12,17 @@ constexpr unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
 struct tile_map_asset final : asset
 {
+	// a tile within a layer
+
 	struct tile
 	{
-		tile( int idx, e_tile_flags flags );
+		tile( size_t idx, e_tile_flags flags );
 
-		int idx;
+		size_t idx;
 		e_tile_flags flags;
 	};
+
+	// a layer of tiles
 
 	struct layer
 	{
@@ -27,10 +31,11 @@ struct tile_map_asset final : asset
 		bool is_visible = true;
 	};
 
-	int width = 0;
-	int height = 0;
-	int tile_width = 0;
-	int tile_height = 0;
+	// global info about the tile map
+
+	size_t width = 0;
+	size_t height = 0;
+	size_t tile_sz = 0;
 	std::vector<layer> layers;
 
 	virtual bool create() override;

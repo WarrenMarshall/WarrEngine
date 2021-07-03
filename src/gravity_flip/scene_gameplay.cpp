@@ -14,13 +14,35 @@ void scene_gameplay::draw_ui()
 
 }
 
+void scene_gameplay::draw()
+{
+	scene::draw();
+
+	render::draw_world_axis();
+}
+
 void scene_gameplay::pushed()
 {
 	viewport_pivot = { viewport_hw, viewport_hh };
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	player = add_entity<entity>();
+	// player
+
+	{
+		player = add_entity<entity>();
+	}
+
+	// world
+
+	{
+		world = add_entity<entity>();
+
+		{
+			auto ec = world->add_component<tile_map_component>();
+			ec->init( "ts_neon", "tm_level_01" );
+		}
+	}
 }
 
 void scene_gameplay::update()

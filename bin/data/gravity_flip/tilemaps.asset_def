@@ -5,8 +5,8 @@
 
 {
 	"type" "src_texture"
-	"tag" "rpg_sheet"
-	"filename" "gfx/rpg_sheet.png"
+	"tag" "tex_tile_set_master"
+	"filename" "gfx/neon_tile_set.png"
 }
 
 # ---------------------------------------------------------
@@ -15,8 +15,8 @@
 
 {
 	"type" "tile_set"
-	"tag" "ts_ultima"
-	"texture_tag" "rpg_sheet"
+	"tag" "ts_neon"
+	"texture_tag" "tex_tile_set_master"
 	"tile_sz" "16"
 }
 
@@ -26,6 +26,6 @@
 
 {
 	"type" "tile_map"
-	"tag" "tm_overworld"
-	"filename" "tilemaps/rpg_tilemap.tmx"
+	"tag" "tm_level_01"
+	"filename" "levels/level_01.tmx"
 }

@@ -269,4 +269,18 @@ struct simple_collision_component : entity_component
 	c2AABB as_c2_aabb();
 };
 
+// ----------------------------------------------------------------------------
+
+struct tile_map_component : entity_component
+{
+	tile_map_component() = delete;
+	tile_map_component( entity* parent_entity );
+
+	tile_set_asset* tile_set = nullptr;
+	tile_map_asset* tile_map = nullptr;
+
+	void init( std::string_view tile_set_name, std::string_view tile_map_name );
+	virtual void draw() override;
+};
+
 }

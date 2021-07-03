@@ -640,8 +640,8 @@ void render::draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, 
 
 				vec2 tile_pos =
 				{
-					pos.x + ( x * tile_map->tile_width ) + ( tile_map->tile_width / 2.f ),
-					pos.y + ( y * tile_map->tile_height ) + ( tile_map->tile_height / 2.f )
+					pos.x + ( x * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f ),
+					pos.y + ( y * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
 				};
 
 				texture_asset* tile_set_texture = &tile_set->tiles[ tile->idx - 1 ];

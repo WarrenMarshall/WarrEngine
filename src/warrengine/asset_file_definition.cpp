@@ -471,13 +471,14 @@ void asset_file_definition::precache_cursor( const key_values& key_values_for_as
 
 void asset_file_definition::precache_tile_set( const key_values& key_values_for_asset_def, std::string_view tag )
 {
-	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
+	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
+	assert( key_values_for_asset_def.does_key_exist( "tile_sz" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<tile_set_asset>(), tag.data(), filename );
-
-	asset_ptr->original_filename = filename;
+	asset_ptr->texture = g_engine->find_asset<texture_asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	asset_ptr->tile_sz = text_parser::int_from_str( key_values_for_asset_def.find_value( "tile_sz" ) );
 
 	asset_ptr->create();
 }

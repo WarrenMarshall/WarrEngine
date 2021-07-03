@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-tile_map_asset::tile::tile( int idx, e_tile_flags flags )
+tile_map_asset::tile::tile( size_t idx, e_tile_flags flags )
 	: idx( idx ), flags( flags )
 {
 }
@@ -53,17 +53,14 @@ bool tile_map_asset::create()
 					}
 					else if( key == "tilewidth" )
 					{
-						tile_width = text_parser::int_from_str( value_str );
-					}
-					else if( key == "tileheight" )
-					{
-						tile_height = text_parser::int_from_str( value_str );
+						tile_sz = text_parser::int_from_str( value_str );
 					}
 				}
 			}
 
 			assert( width );
 			assert( height );
+			assert( tile_sz );
 		}
 		else if( line.starts_with( "<data" ) )
 		{
@@ -98,7 +95,7 @@ bool tile_map_asset::create()
 		else if( line.starts_with( "<layer" ) )
 		{
 			current_layer = layer();
-			current_layer->tiles.reserve( size_t( width * height ) );
+			current_layer->tiles.reserve( width * height );
 
 			tokenizer tok( line, " " );
 

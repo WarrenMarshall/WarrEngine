@@ -1,0 +1,10 @@
+
+* create super simple tileset in Aseprite
+* get tile set loading into engine
+* get tile map loading into engine
+* create test level in tiled
+* get test level loading into engine
+    - will be creating simple collision prims
+    - get it drawing correctly in normal and debug modes
+- create player entity
+    - spawn player at proper spot

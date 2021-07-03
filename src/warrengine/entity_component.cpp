@@ -868,4 +868,26 @@ c2AABB simple_collision_component::as_c2_aabb()
 	return ws.aabb.to_c2AABB();
 }
 
+// ----------------------------------------------------------------------------
+
+tile_map_component::tile_map_component( entity* parent_entity )
+	: entity_component( parent_entity )
+{
+
+}
+
+void tile_map_component::init( std::string_view tile_set_tag, std::string_view tile_map_tag )
+{
+	tile_set = g_engine->find_asset<tile_set_asset>( tile_set_tag );
+	tile_map = g_engine->find_asset<tile_map_asset>( tile_map_tag );
+
+}
+
+void tile_map_component::draw()
+{
+	scoped_render_state;
+
+	render::draw_tile_map( tile_set, tile_map, vec2( 0.f, 0.f ) );
+}
+
 }

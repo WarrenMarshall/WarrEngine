@@ -3,11 +3,13 @@ using namespace war;
 
 struct scene_gameplay : scene
 {
+	entity* world = nullptr;
 	entity* player = nullptr;
 
 	scene_gameplay();
 
 	virtual void draw_ui() override;
+	virtual void draw() override;
 	virtual void pushed() override;
 	virtual void update() override;
 
