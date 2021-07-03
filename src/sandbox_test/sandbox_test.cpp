@@ -3,8 +3,8 @@
 
 using namespace war;
 
-sandbox_test_app::sandbox_test_app( std::string name )
-	: game( name )
+sandbox_test_app::sandbox_test_app()
+	: game( "sandbox_test" )
 {
 	flags.has_main_menu = true;
 }

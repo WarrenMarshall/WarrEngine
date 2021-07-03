@@ -8,7 +8,7 @@ struct engine
 	template<typename T>
 	static void go( int argc, char* argv [] )
 	{
-		g_base_game = std::make_unique<T>( T::get_custom_name() );
+		g_base_game = std::make_unique<T>();
 
 		launch( argc, argv );
 	}

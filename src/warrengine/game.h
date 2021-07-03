@@ -4,7 +4,7 @@ namespace war
 
 struct game
 {
-	game( std::string name );
+	game( std::string internal_name );
 	virtual ~game() = default;
 
 	virtual void init();
@@ -12,9 +12,8 @@ struct game
 	virtual void update();
 	virtual void reset_scene_stack_to_main_menu();
 
-	const char* get_game_name();
-
-	std::string name;
+	// the name of the data folder for the current game.
+	std::string internal_name;
 
 	struct
 	{

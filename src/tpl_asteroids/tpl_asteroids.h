@@ -16,12 +16,7 @@ constexpr int max_ship_power_level = 11;
 
 struct tpl_asteroids_game : game
 {
-	static std::string get_custom_name()
-	{
-		return "tpl_asteroids";
-	}
-
-	tpl_asteroids_game( std::string name );
+	tpl_asteroids_game();
 
 	virtual void init() override;
 	virtual void new_game() override;

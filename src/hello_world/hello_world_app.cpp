@@ -3,8 +3,8 @@
 
 using namespace war;
 
-hello_world_app::hello_world_app( std::string name )
-	: game( name )
+hello_world_app::hello_world_app()
+	: game( "hello_world" )
 {
 }
 

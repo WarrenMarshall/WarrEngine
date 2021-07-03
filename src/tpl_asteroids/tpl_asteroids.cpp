@@ -3,8 +3,8 @@
 
 using namespace war;
 
-tpl_asteroids_game::tpl_asteroids_game( std::string name )
-	: game( name )
+tpl_asteroids_game::tpl_asteroids_game()
+	: game( "tpl_asteroids" )
 {
 }
 

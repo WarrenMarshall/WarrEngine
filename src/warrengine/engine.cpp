@@ -16,7 +16,7 @@ void engine::launch( int argc, char* argv [] )
 	// get the log file running so we can immediately start writing into it
 
 	g_logfile = std::make_unique<log_file>();
-	g_logfile->init( g_base_game->name );
+	g_logfile->init( g_base_game->internal_name );
 	log( "Logging started" );
 
 	log( "Creating engine" );
@@ -184,7 +184,7 @@ void engine::launch_precache()
 {
 	log( "Caching asset definitions (*.asset_def)..." );
 	g_engine->cache_asset_definition_files( "data/warrengine" );
-	g_engine->cache_asset_definition_files( std::format( "data/{}", g_base_game->name ) );
+	g_engine->cache_asset_definition_files( std::format( "data/{}", g_base_game->internal_name ) );
 
 	// this feels like an odd dance, but the idea is that we:
 	//
@@ -210,7 +210,7 @@ void engine::launch_precache()
 
 	log( "Caching configuration (*.ini)..." );
 	g_engine->parse_config_files( "data/warrengine" );
-	g_engine->parse_config_files( std::format( "data/{}", g_base_game->name ) );
+	g_engine->parse_config_files( std::format( "data/{}", g_base_game->internal_name ) );
 
 	// put the k/v pairs from the INI files into the global symbol table so
 	// they can be referenced by assets in the asset_def files

@@ -3,6 +3,7 @@
 
 // ----------------------------------------------------------------------------
 
+/*
 player_ship_component::player_ship_component( entity* parent_entity )
 	: entity_component( parent_entity )
 {
@@ -29,9 +30,11 @@ void player_ship_component::draw()
 		render::draw_point( vtx );
 	}
 }
+*/
 
 // ----------------------------------------------------------------------------
 
+/*
 player_bullet_component::player_bullet_component( entity* parent_entity )
 	: entity_component( parent_entity )
 {
@@ -52,3 +55,4 @@ void player_bullet_component::draw()
 	render::state->color.a = 1.0f;
 	render::draw_point( { 0.f, -3.f } );
 }
+*/

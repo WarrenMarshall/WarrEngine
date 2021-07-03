@@ -5,9 +5,9 @@
 namespace war
 {
 
-game::game( std::string name )
+game::game( std::string internal_name )
 {
-	this->name = name;
+	this->internal_name = internal_name;
 }
 
 void game::init()
@@ -34,11 +34,6 @@ void game::update()
 
 void game::reset_scene_stack_to_main_menu()
 {
-}
-
-const char* game::get_game_name()
-{
-	return name.c_str();
 }
 
 }
