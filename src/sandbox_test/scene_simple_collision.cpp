@@ -7,8 +7,8 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_coll_mario = ++collision_bits;
-static const unsigned scene_simple_coll_geo = ++collision_bits;
+static const unsigned scene_simple_coll_mario = collision_bits.get();
+static const unsigned scene_simple_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ constexpr float max_raycast_length = 250.f;
 scene_simple_collision::scene_simple_collision()
 {
 	flags.blocks_further_drawing = true;
-	flags.requires_controller = true;
+	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
@@ -155,6 +155,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		// QUICK
 
 		case input_id::gamepad_button_dpad_up:
+		case input_id::key_q:
 		{
 			reset_collision_trace_results();
 
@@ -174,6 +175,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		// ALL
 
 		case input_id::gamepad_button_dpad_down:
+		case input_id::key_a:
 		{
 			reset_collision_trace_results();
 
@@ -200,6 +202,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		// CLOSEST
 
 		case input_id::gamepad_button_dpad_left:
+		case input_id::key_c:
 		{
 			reset_collision_trace_results();
 
@@ -217,6 +220,27 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 				callback.result.scc->rs_opt.color = make_color( color::teal );
 			}
+		}
+		break;
+	}
+
+	return false;
+}
+
+bool scene_simple_collision::on_input_held( const input_event* evt )
+{
+
+	switch( evt->input_id )
+	{
+		case input_id::key_left:
+		{
+			mario->add_delta_pos( vec2( fixed_time_step::per_second( -600.f ), 0.f ) );
+		}
+		break;
+
+		case input_id::key_right:
+		{
+			mario->add_delta_pos( vec2( fixed_time_step::per_second( 600.f ), 0.f ) );
 		}
 		break;
 	}

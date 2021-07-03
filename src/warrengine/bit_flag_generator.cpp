@@ -10,16 +10,16 @@ bit_flag_generator::bit_flag_generator( uint16 start_bit )
 	bit = start_bit;
 }
 
-uint16 bit_flag_generator::operator++()
+// returns current value
+uint16 bit_flag_generator::get()
 {
-	bit = bit << 1;
 	return bit;
 }
 
-uint16 bit_flag_generator::operator++( int )
+// bit shifts to the next value, then returns it
+uint16 bit_flag_generator::next()
 {
-	uint16 val = bit;
-	++( *this );
-	return val;
+	bit = bit << 1;
+	return bit;
 }
 }
