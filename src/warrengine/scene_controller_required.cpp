@@ -26,7 +26,8 @@ void scene_controller_required::popped()
 
 // ----------------------------------------------------------------------------
 
-void draw_controller_true( ui_control* control, const rect& rc_ui )
+
+f_decl_draw_control( draw_controller_true )
 {
 	auto& anim_tween = ( (scene_controller_required*)g_engine->scenes.current_scene )->anim_tween;
 
@@ -40,7 +41,7 @@ void draw_controller_true( ui_control* control, const rect& rc_ui )
 
 // ----------------------------------------------------------------------------
 
-void draw_controller_false( ui_control* control, const rect& rc_ui )
+f_decl_draw_control( draw_controller_false )
 {
 	auto& anim_tween = ( (scene_controller_required*)g_engine->scenes.current_scene )->anim_tween;
 

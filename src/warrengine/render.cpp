@@ -595,7 +595,7 @@ void render::draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, 
 			{
 				auto tile = &( layer.tiles[ ( y * tile_map->width ) + x ] );
 
-				if( !tile->idx )
+				if( tile->idx == tile_map_asset::tile::empty )
 				{
 					continue;
 				}
@@ -644,7 +644,7 @@ void render::draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, 
 					pos.y + ( y * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
 				};
 
-				texture_asset* tile_set_texture = &tile_set->tiles[ tile->idx - 1 ];
+				texture_asset* tile_set_texture = &tile_set->tiles[ tile->idx ];
 				render::draw_sprite( tile_set_texture, tile_pos );
 			}
 		}

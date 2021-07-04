@@ -113,7 +113,7 @@ void scene_ui::draw()
 
 // ----------------------------------------------------------------------------
 
-void draw_control_mario( ui_control* control, const rect& rc_ui )
+f_decl_draw_control( draw_control_mario )
 {
 	scoped_render_state;
 

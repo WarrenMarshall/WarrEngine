@@ -931,6 +931,26 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 
 }
 
+// loops through any layer with the name "entities" and calls the callback
+// function with that index so the layer in question can spawn it
+
+void tile_map_component::spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback )
+{
+	for( auto& layer : tile_map->layers )
+	{
+		if( layer.tag == "entities" )
+		{
+			for( auto& tile : layer.tiles )
+			{
+				if( tile.idx != tile_map_asset::tile::empty )
+				{
+					func_callback( scene, &tile );
+				}
+			}
+		}
+	}
+}
+
 void tile_map_component::draw()
 {
 	scoped_render_state;

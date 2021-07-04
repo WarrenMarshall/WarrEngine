@@ -16,9 +16,12 @@ struct tile_map_asset final : asset
 
 	struct tile
 	{
-		tile( size_t idx, e_tile_flags flags );
+		static const int empty = -1;
 
-		size_t idx;
+		tile( int idx, int x_idx, int y_idx, e_tile_flags flags );
+
+		int idx;
+		int x_idx, y_idx;		// coordinates from the top left of the tile map
 		e_tile_flags flags;
 	};
 
@@ -49,9 +52,9 @@ struct tile_map_asset final : asset
 
 	// global info about the tile map
 
-	size_t width = 0;
-	size_t height = 0;
-	size_t tile_sz = 0;
+	int width = 0;
+	int height = 0;
+	int tile_sz = 0;
 	std::vector<layer> layers;
 	std::vector<object_group> object_groups;
 

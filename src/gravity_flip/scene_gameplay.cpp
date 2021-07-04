@@ -21,17 +21,39 @@ void scene_gameplay::draw()
 	render::draw_world_axis();
 }
 
+f_decl_tile_map_spawn_entity( spawn_entity )
+{
+	auto gameplay_scene = (scene_gameplay*)scene;
+
+	switch( tile->idx )
+	{
+		case 15:
+		{
+			auto tmc = gameplay_scene->world->get_component<tile_map_component>();
+
+			auto e = scene->add_entity<entity>();
+			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
+			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+
+			{
+				auto ec = e->add_component<sprite_component>();
+				ec->init( "anim_player_run" );
+			}
+
+			gameplay_scene->player = e;
+
+			tile->idx = tile_map_asset::tile::empty;
+
+		}
+		break;
+	}
+}
+
 void scene_gameplay::pushed()
 {
 	viewport_pivot = { viewport_hw, viewport_hh };
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
-
-	// player
-
-	{
-		player = add_entity<entity>();
-	}
 
 	// world
 
@@ -41,6 +63,7 @@ void scene_gameplay::pushed()
 		{
 			auto ec = world->add_component<tile_map_component>();
 			ec->init( "ts_neon", "tm_level_01" );
+			ec->spawn_entities( this, spawn_entity );
 		}
 	}
 }

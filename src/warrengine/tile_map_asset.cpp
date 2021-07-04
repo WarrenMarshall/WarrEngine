@@ -7,8 +7,8 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-tile_map_asset::tile::tile( size_t idx, e_tile_flags flags )
-	: idx( idx ), flags( flags )
+tile_map_asset::tile::tile( int idx, int x_idx, int y_idx, e_tile_flags flags )
+	: idx( idx ), x_idx( x_idx ), y_idx( y_idx ), flags( flags )
 {
 }
 
@@ -89,7 +89,7 @@ bool tile_map_asset::create()
 
 				idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
 
-				current_layer->tiles.emplace_back( idx, flags );
+				current_layer->tiles.emplace_back( idx - 1, x, data_block_y, flags );
 			}
 
 			data_block_y++;

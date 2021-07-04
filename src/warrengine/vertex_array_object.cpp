@@ -233,7 +233,7 @@ void vertex_array_object::draw()
 
 	if( gl_prim_type == GL_LINES or gl_prim_type == GL_POINTS )
 	{
-		float line_width = 2.0f;
+		float line_width = 1.0f;
 		float point_sz = 2.0f;
 
 		if( g_engine->render_api.using_camera )

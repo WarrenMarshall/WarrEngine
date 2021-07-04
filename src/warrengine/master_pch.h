@@ -98,8 +98,6 @@ namespace fixed_time_step
 
 using time_ms = uint64;
 
-using f_draw_control = std::function<void( ui_control* control, const rect& rc_ui )>;
-
 // ----------------------------------------------------------------------------
 // strings to validate text input against
 
