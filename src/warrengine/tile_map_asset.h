@@ -33,7 +33,9 @@ struct tile_map_asset final : asset
 
 	struct object
 	{
-		rect rc;
+		e_collision_type collision_type = collision_type::box;
+		rect rc = {};
+		float radius = 0.f;
 	};
 
 	// object group

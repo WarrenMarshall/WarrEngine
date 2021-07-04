@@ -465,3 +465,10 @@ enum_begin( simple_collision_type )
 	aabb = 0,
 	circle,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( collision_type )
+	box = 0,
+	circle,
+enum_end

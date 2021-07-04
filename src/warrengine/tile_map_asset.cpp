@@ -20,6 +20,7 @@ bool tile_map_asset::create()
 
 	layer* current_layer = nullptr;
 	object_group* current_object_group = nullptr;
+	object* current_object = nullptr;
 	bool inside_data_block = false;
 	int data_block_y = 0;
 
@@ -132,6 +133,23 @@ bool tile_map_asset::create()
 		{
 			object_groups.emplace_back();
 			current_object_group = &object_groups.back();
+
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+
+				if( *key == "name" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					string_util::erase_char( value, '>' );
+					current_object_group->tag = value;
+				}
+			}
 		}
 		else if( line.starts_with( "</objectgroup" ) )
 		{
@@ -141,7 +159,7 @@ bool tile_map_asset::create()
 		{
 			assert( current_object_group );
 			current_object_group->objects.emplace_back();
-			object* current_object = &current_object_group->objects.back();
+			current_object = &current_object_group->objects.back();
 
 			tokenizer tok( line, " " );
 
@@ -183,8 +201,17 @@ bool tile_map_asset::create()
 					current_layer->is_visible = text_parser::bool_from_str( *value );
 				}
 			}
+		}
+		else if( line.starts_with( "<ellipse" ) )
+		{
+			assert( current_object );
 
-
+			current_object->collision_type = collision_type::circle;
+			current_object->radius = current_object->rc.w / 2.0f;
+		}
+		else if( line.starts_with( "</object" ) )
+		{
+			current_object = nullptr;
 		}
 	}
 

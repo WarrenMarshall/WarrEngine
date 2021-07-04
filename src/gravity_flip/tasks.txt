@@ -1,12 +1,9 @@
 
-* create super simple tileset in Aseprite
-* get tile set loading into engine
-* get tile map loading into engine
-* create test level in tiled
-* get test level loading into engine
-    - will be creating simple collision prims
-    - get it drawing correctly in normal and debug modes
+- complete litter swap
+- trash/recycling to curb
+
+- create collision primitives for tile map
 - create player entity
     - spawn player at proper spot
 
-! starfield doesn't move when I move the camera offset?
+* computer maintenance

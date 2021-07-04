@@ -804,7 +804,7 @@ void simple_collision_component::draw()
 
 	// optional debug mode drawing
 
-	//if( g_engine->renderer.debug.draw_debug_info )
+	if( g_engine->renderer.debug.draw_debug_info )
 	{
 		scoped_render_state;
 
@@ -873,7 +873,6 @@ c2AABB simple_collision_component::as_c2_aabb()
 tile_map_component::tile_map_component( entity* parent_entity )
 	: entity_component( parent_entity )
 {
-
 }
 
 void tile_map_component::init( std::string_view tile_set_tag, std::string_view tile_map_tag )
@@ -881,8 +880,53 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 	tile_set = g_engine->find_asset<tile_set_asset>( tile_set_tag );
 	tile_map = g_engine->find_asset<tile_map_asset>( tile_map_tag );
 
-	// skim the layers, looking for things we need to take care of in code.
+	// remove any existing collision components
 
+	auto existing_components = parent_entity->get_components<simple_collision_component>();
+
+	for( auto& component : existing_components )
+	{
+		component->set_life_cycle( life_cycle::dying );
+	}
+
+	// create new collision components based on any objects attached to the tile map
+
+	for( auto& og : tile_map->object_groups )
+	{
+		if( og.tag == "simple_collision" )
+		{
+			for( auto& obj : og.objects )
+			{
+				switch( obj.collision_type )
+				{
+					case collision_type::box:
+					{
+						auto ec = parent_entity->add_component<simple_collision_component>();
+						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+						ec->set_as_box( obj.rc.w, obj.rc.h );
+					}
+					break;
+
+					case collision_type::circle:
+					{
+						auto ec = parent_entity->add_component<simple_collision_component>();
+						ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
+						ec->set_as_circle( obj.radius );
+					}
+					break;
+				}
+			}
+		}
+		else if( og.tag == "box2d_collision" )
+		{
+			assert( false );	// #task - write this
+		}
+		else
+		{
+			// unknown collision type
+			assert( false );
+		}
+	}
 
 
 }
