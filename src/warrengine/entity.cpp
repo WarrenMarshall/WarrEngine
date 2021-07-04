@@ -220,6 +220,11 @@ void entity::on_simple_collision( simple_collision::pending_collision& coll, ent
 {
 	// push outside of the entity we collided with
 	add_delta_pos( coll.normal * coll.depth );
+
+	if( coll.depth != 0.f )
+	{
+		log( "depth : {}", coll.depth );
+	}
 }
 
 bool entity::can_be_deleted()

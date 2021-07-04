@@ -372,4 +372,12 @@ void scene_mgr::remove_dead_scenes()
 	}
 }
 
+void scene_mgr::dispatch_simple_collisions()
+{
+	for( auto& scene : scene_stack )
+	{
+		scene->dispatch_simple_collisions();
+	}
+}
+
 }

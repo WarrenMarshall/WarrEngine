@@ -77,6 +77,9 @@ void game_controller::update()
 
 void game_controller::play_rumble( e_rumble_effect effect )
 {
+	return;
+
+	/*
 	int rumble_max = 65535;
 	int intensity = 65535;
 	int duration_ms = 600;
@@ -113,6 +116,7 @@ void game_controller::play_rumble( e_rumble_effect effect )
 	}
 
 	play_rumble( intensity, duration_ms );
+	*/
 }
 
 void game_controller::play_rumble( int intensity, int ms )

@@ -279,9 +279,10 @@ struct tile_map_component : entity_component
 	tile_set_asset* tile_set = nullptr;
 	tile_map_asset* tile_map = nullptr;
 
+	virtual void draw() override;
+
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
 	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
-	virtual void draw() override;
 };
 
 }

@@ -26,7 +26,15 @@ struct scene
 
 	std::deque<std::unique_ptr<entity>> entities;
 
-	std::vector<simple_collision_component*> simple_collision_components;
+	struct
+	{
+		std::unique_ptr<simple_collision::world> world = nullptr;
+
+		std::vector<simple_collision_component*> components;
+		std::vector<simple_collision::pending_collision> queue;
+	} simple_collision;
+
+	void dispatch_simple_collisions();
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls

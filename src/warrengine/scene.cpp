@@ -75,14 +75,12 @@ void scene::pre_update()
 {
 	for( auto& entity : entities )
 	{
-		{
-			scoped_opengl;
+		scoped_opengl;
 
-			auto tform = entity->get_transform();
-			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+		auto tform = entity->get_transform();
+		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
-			entity->pre_update();
-		}
+		entity->pre_update();
 	}
 
 	remove_dead_entities();
@@ -104,16 +102,15 @@ void scene::remove_dead_entities()
 
 void scene::gather_simple_collision_components()
 {
-	simple_collision_components.clear();
+	simple_collision.components.clear();
 
 	for( auto& entity : entities )
 	{
 		auto scc = entity->get_components<simple_collision_component>();
-
-		for( auto iter : scc )
-		{
-			simple_collision_components.push_back( iter );
-		}
+		simple_collision.components.insert(
+			simple_collision.components.end(),
+			scc.begin(), scc.end()
+		);
 	}
 }
 
@@ -123,16 +120,14 @@ void scene::update()
 
 	for( auto& entity : entities )
 	{
-		{
-			scoped_opengl;
+		scoped_opengl;
 
-			auto tform = entity->get_transform();
-			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+		auto tform = entity->get_transform();
+		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
-			entity->update();
-			entity->update_components();
-			entity->update_from_physics();
-		}
+		entity->update();
+		entity->update_components();
+		entity->update_from_physics();
 	}
 }
 
@@ -142,14 +137,12 @@ void scene::post_update()
 
 	for( auto& entity : entities )
 	{
-		{
-			scoped_opengl;
+		scoped_opengl;
 
-			auto tform = entity->get_transform();
-			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+		auto tform = entity->get_transform();
+		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
-			entity->post_update();
-		}
+		entity->post_update();
 	}
 
 	queue_simple_collisions();
@@ -162,9 +155,9 @@ void scene::queue_simple_collisions()
 {
 	// process simple collisions
 
-	for( auto scc_a : simple_collision_components )
+	for( auto scc_a : simple_collision.components )
 	{
-		for( auto scc_b : simple_collision_components )
+		for( auto scc_b : simple_collision.components )
 		{
 			if( scc_a == scc_b )
 			{
@@ -252,7 +245,7 @@ void scene::queue_simple_collisions()
 			collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 			collision.depth = m.depths[ 0 ];
 
-			g_engine->simple_collision.queue.push_back( collision );
+			simple_collision.queue.push_back( collision );
 		}
 	}
 }
@@ -417,6 +410,16 @@ void scene::force_close_expanded_controls()
 {
 	ui_expanded_tag_begin = ui_expanded_tag_end = hash_none;
 	flags.clear_expanded_tag_this_frame = true;
+}
+
+void scene::dispatch_simple_collisions()
+{
+	for( auto& iter : simple_collision.queue )
+	{
+		iter.entity_a->on_simple_collision( iter, iter.entity_b );
+	}
+
+	simple_collision.queue.clear();
 }
 
 }

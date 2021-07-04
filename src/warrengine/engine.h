@@ -73,8 +73,6 @@ struct engine
 	struct
 	{
 		std::unique_ptr<simple_collision::world> world = nullptr;
-
-		std::vector<simple_collision::pending_collision> queue;
 	} simple_collision;
 
 	render_stats stats;
@@ -136,7 +134,6 @@ struct engine
 	key_values config_vars;
 
 	void dispatch_collision_queue();
-	void dispatch_simple_collisions();
 	void dispatch_box2d_collisions();
 
 	void set_time_dilation( float dilation );

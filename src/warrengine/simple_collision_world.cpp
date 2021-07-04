@@ -24,7 +24,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 	ray.d.y = ray_normal.y;
 	ray.t = ray_length;
 
-	for( auto scc : entity->parent_scene->simple_collision_components )
+	for( auto scc : entity->parent_scene->simple_collision.components )
 	{
 		// don't trace against self
 		if( scc->parent_entity == entity )

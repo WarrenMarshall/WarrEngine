@@ -263,26 +263,33 @@ void engine::main_loop()
 
 		g_engine->renderer.frame_interpolate_pct = time.fts_accum_ms / (float)fixed_time_step::ms_per_step;
 
+		// if due for a fixed time step ...
+
 		if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
 		{
-			// walk through each pending fixed time step, one at a time
+			int num_time_steps = 0;
 
-			for( ; time.fts_accum_ms >= fixed_time_step::ms_per_step ; time.fts_accum_ms -= fixed_time_step::ms_per_step )
+			while( time.fts_accum_ms >= fixed_time_step::ms_per_step )
 			{
-				post_process.film_grain_amount += 0.01f;
-
-				box2d.world->Step( fixed_time_step::per_second( 1.0f ), b2d_velocity_iterations, b2d_pos_iterations );
-
-				input.queue_motion();
-
-				scenes.pre_update();
-				scenes.update();
-				scenes.post_update();
-
-				dispatch_collision_queue();
-
-				g_base_game->update();
+				time.fts_accum_ms -= fixed_time_step::ms_per_step;
+				num_time_steps++;
 			}
+
+			post_process.film_grain_amount += 0.01f;
+
+			input.queue_presses();
+			input.queue_motion();
+			input.dispatch_event_queue();
+
+			box2d.world->Step( fixed_time_step::per_second( 1.0f ) * num_time_steps, b2d_velocity_iterations, b2d_pos_iterations );
+
+			scenes.pre_update();
+			scenes.update();
+			scenes.post_update();
+
+			g_base_game->update();
+
+			dispatch_collision_queue();
 
 			g_engine->stats.update();
 
@@ -298,9 +305,6 @@ void engine::main_loop()
 		// 1. the scene as normal
 		// 2. same as #1 but only contains the brightest pixels (used for glow effects)
 		// 3. entity pick ids
-
-		input.queue_presses();
-		input.dispatch_event_queue();
 
 		g_engine->render_api.clear_depth_buffer();
 		frame_buffer->bind();
@@ -835,7 +839,7 @@ bool engine::on_input_released( const input_event* evt )
 void engine::dispatch_collision_queue()
 {
 	dispatch_box2d_collisions();
-	dispatch_simple_collisions();
+	scenes.dispatch_simple_collisions();
 }
 
 void engine::dispatch_box2d_collisions()
@@ -869,16 +873,6 @@ void engine::dispatch_box2d_collisions()
 	}
 
 	box2d.end_contact_queue.clear();
-}
-
-void engine::dispatch_simple_collisions()
-{
-	for( auto& iter : simple_collision.queue )
-	{
-		iter.entity_a->on_simple_collision( iter, iter.entity_b );
-	}
-
-	simple_collision.queue.clear();
 }
 
 void engine::set_time_dilation( float dilation )
