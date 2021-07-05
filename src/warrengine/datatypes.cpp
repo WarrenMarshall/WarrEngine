@@ -636,6 +636,11 @@ vec2 vec2::reflect_across_normal( const vec2& v, const vec2& n )
 	return vec2( rdir.x, rdir.y );
 }
 
+vec2 vec2::snap_to_int( const vec2& v )
+{
+	return vec2( war::snap_to_int( v.x ), war::snap_to_int( v.y ) );
+}
+
 // returns a w_uv representing the uv tiling factors needed to tile "texture"
 // inside of "rc" a natural number of times in both the U and V directions.
 

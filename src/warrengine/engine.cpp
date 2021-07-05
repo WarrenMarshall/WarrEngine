@@ -265,7 +265,9 @@ void engine::main_loop()
 
 		// if due for a fixed time step ...
 
-		if( time.fts_accum_ms >= fixed_time_step::ms_per_step )
+		bool fixed_time_step_due = ( time.fts_accum_ms >= fixed_time_step::ms_per_step );
+
+		if( fixed_time_step_due )
 		{
 			int num_time_steps = 0;
 
@@ -279,6 +281,7 @@ void engine::main_loop()
 
 			input.queue_presses();
 			input.queue_motion();
+
 			input.dispatch_event_queue();
 
 			box2d.world->Step( fixed_time_step::per_second( 1.0f ) * num_time_steps, b2d_velocity_iterations, b2d_pos_iterations );
@@ -288,8 +291,6 @@ void engine::main_loop()
 			scenes.post_update();
 
 			g_base_game->update();
-
-			dispatch_collision_queue();
 
 			g_engine->stats.update();
 
@@ -322,6 +323,7 @@ void engine::main_loop()
 
 				// scenes and entities
 				scenes.draw();
+
 			}
 
 			// engine specific things, like pause borders
@@ -336,6 +338,7 @@ void engine::main_loop()
 		debug_draw_buffers();
 
 		glfwSwapBuffers( window.glfw_window );
+
 		glfwPollEvents();
 	}
 }
@@ -839,7 +842,7 @@ bool engine::on_input_released( const input_event* evt )
 void engine::dispatch_collision_queue()
 {
 	dispatch_box2d_collisions();
-	scenes.dispatch_simple_collisions();
+	//scenes.dispatch_simple_collisions();
 }
 
 void engine::dispatch_box2d_collisions()

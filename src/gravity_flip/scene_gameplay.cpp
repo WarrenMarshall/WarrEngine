@@ -13,6 +13,7 @@ void scene_gameplay::draw_ui()
 {
 	scene::draw_ui();
 
+	render::draw_string( std::format( "{:.1f}, {:.1f}", player->get_transform()->pos.x, player->get_transform()->pos.y ), vec2( 16.f, 32.f ) );
 }
 
 void scene_gameplay::draw()
@@ -42,8 +43,8 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			}
 			{
 				auto ec = e->add_component<simple_collision_component>();
-				//ec->set_as_centered_box( 24.f, 24.f );
-				ec->set_as_circle( 8.f );
+				//ec->set_as_centered_box( 15.f, 15.f );
+				ec->set_as_circle( 7.5f );
 				ec->set_collision_flags( coll_player, coll_world );
 				ec->rs_opt.color = make_color( color::orange );
 			}
@@ -59,7 +60,8 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 
 void scene_gameplay::pushed()
 {
-	viewport_pivot = { viewport_hw, viewport_hh };
+	viewport_pivot = vec2::zero;
+	//viewport_pivot = { viewport_hw, viewport_hh };
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
@@ -79,6 +81,7 @@ void scene_gameplay::pushed()
 
 void scene_gameplay::update()
 {
+
 	scene::update();
 
 }
@@ -87,7 +90,11 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
-		player->add_linear_force( evt->delta * fixed_time_step::per_second( 150.f ) );
+		auto pos_a = player->get_transform()->pos;
+		player->add_linear_force( evt->delta * fixed_time_step::per_second( 75.f ) );
+		auto pos_b = player->get_transform()->pos;
+
+		assert( pos_a == pos_b );
 	}
 
 	return false;
@@ -97,6 +104,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a )
 	{
+		log( "{:.1f}, {:.1f}", player->get_transform()->pos.x, player->get_transform()->pos.y );
 		//player->fire();
 		return true;
 	}

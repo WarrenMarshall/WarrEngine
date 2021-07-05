@@ -17,7 +17,6 @@ struct entity
 
 	std::vector<linear_force> forces;
 	void add_linear_force( vec2 force );
-	bool can_add_delta_pos( vec2 delta );
 
 	vec2 linear_force_accum = vec2::zero;
 
@@ -64,7 +63,9 @@ struct entity
 	virtual void pre_update();
 	virtual void update();
 	virtual void post_update();
+	virtual void pre_update_components();
 	virtual void update_components();
+	virtual void post_update_components();
 
 	void remove_dead_components();
 

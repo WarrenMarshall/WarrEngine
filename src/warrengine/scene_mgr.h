@@ -70,7 +70,6 @@ struct scene_mgr
 	bool on_input_held( const input_event* evt );
 	bool on_input_released( const input_event* evt );
 	bool on_input_key( const input_event* evt );
-	void dispatch_simple_collisions();
 };
 
 }

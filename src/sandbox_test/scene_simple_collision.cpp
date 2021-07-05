@@ -222,6 +222,12 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 			}
 		}
 		break;
+
+		case input_id::gamepad_button_y:
+		{
+			process_simple_collisions();
+		}
+		break;
 	}
 
 	return false;
@@ -254,9 +260,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			//mario->add_delta_pos( fixed_time_step::per_second( evt->delta * 150.f ) );
-			//mario->add_delta_pos( evt->delta );
-			//mario->add_linear_force( evt->delta, fixed_time_step::per_second( 10.f ) );
+			mario->add_linear_force( evt->delta * fixed_time_step::per_second( 150.f ) );
 
 			return true;
 		}

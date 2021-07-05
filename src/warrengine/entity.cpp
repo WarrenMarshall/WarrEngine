@@ -19,6 +19,17 @@ void entity::update()
 {
 }
 
+void entity::pre_update_components()
+{
+	for( const auto& component : components )
+	{
+		scoped_opengl;
+		g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
+
+		component->pre_update();
+	}
+}
+
 void entity::update_components()
 {
 	remove_dead_components();
@@ -32,6 +43,17 @@ void entity::update_components()
 	}
 }
 
+void entity::post_update_components()
+{
+	for( const auto& component : components )
+	{
+		scoped_opengl;
+		g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
+
+		component->post_update();
+	}
+}
+
 void entity::post_update()
 {
 	auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
@@ -40,14 +62,12 @@ void entity::post_update()
 
 	if( int_force.x or int_force.y )
 	{
+		//log( "---------------" );
+		//log( "1 : {:.1f}, {:.1f}", get_transform()->pos.x, get_transform()->pos.y );
+
 		// apply the linear force to the entity position
 		add_delta_pos( int_force );
-
-		// snap the entity position to an integer
-		vec2 snapped_pos = get_transform()->pos;
-		snapped_pos.x = snap_to_int( snapped_pos.x );
-		snapped_pos.y = snap_to_int( snapped_pos.y );
-		set_pos( snapped_pos );
+		//log( "2 : {:.1f}, {:.1f}", get_transform()->pos.x, get_transform()->pos.y );
 
 		// reduce the linear force by the amount we moved
 		linear_force_accum -= int_force;
@@ -146,91 +166,7 @@ void entity::add_linear_force( vec2 force )
 {
 	linear_force_accum += force;
 
-	log( "linear_force_accum : {:.2f}, {:.2f}", linear_force_accum.x, linear_force_accum.y );
-}
-
-bool entity::can_add_delta_pos( vec2 delta )
-{
-	auto my_sccs = get_components<simple_collision_component>();
-
-	for( auto scc_a : my_sccs )
-	{
-		auto local_ws = scc_a->ws;
-		local_ws.pos += delta;
-
-		for( auto scc_b : parent_scene->simple_collision.components )
-		{
-			if( scc_a == scc_b )
-			{
-				continue;
-			}
-
-			// don't collide with self
-			if( scc_a->parent_entity == scc_b->parent_entity )
-			{
-				continue;
-			}
-
-			// if collision masks don't match, skip
-			if( !( scc_a->collides_with_mask & scc_b->collision_mask ) )
-			{
-				continue;
-			}
-
-			auto aabb_ws_a = local_ws.aabb.to_c2AABB();
-			auto aabb_ws_b = scc_b->as_c2_aabb();
-
-			c2Circle circle_a = {};
-			circle_a.p = { local_ws.pos.x, local_ws.pos.y };
-			circle_a.r = local_ws.radius;
-
-			c2Circle circle_b = scc_b->as_c2_circle();
-
-			bool a_is_circle = scc_a->type == simple_collision_type::circle;
-			bool b_is_circle = scc_b->type == simple_collision_type::circle;
-
-			c2Manifold m = {};
-
-			if( a_is_circle and b_is_circle )
-			{
-				// circle to circle
-
-				if( c2CircletoCircle( circle_a, circle_b ) )
-				{
-					return false;
-				}
-			}
-			else if( !a_is_circle and b_is_circle )
-			{
-				// aabb to circle
-
-				if( c2CircletoAABB( circle_b, aabb_ws_a ) )
-				{
-					return false;
-				}
-			}
-			else if( a_is_circle and !b_is_circle )
-			{
-				// circle to aabb
-
-				if( c2CircletoAABB( circle_a, aabb_ws_b ) )
-				{
-					return false;
-				}
-			}
-			else if( !a_is_circle and !b_is_circle )
-			{
-				// aabb to aabb
-
-				if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
-				{
-					return false;
-				}
-			}
-		}
-	}
-
-	return true;
+	//log( "linear_force_accum : {:.2f}, {:.2f}", linear_force_accum.x, linear_force_accum.y );
 }
 
 const war::transform* entity::get_transform()
@@ -252,6 +188,7 @@ transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, cons
 transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
+	_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -282,6 +219,7 @@ transform* entity::set_scale( const float scale )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
+	_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -329,11 +267,6 @@ void entity::on_simple_collision( simple_collision::pending_collision& coll, ent
 {
 	// push outside of the entity we collided with
 	add_delta_pos( coll.normal * coll.depth );
-
-	if( coll.depth != 0.f )
-	{
-		log( "depth : {}", coll.depth );
-	}
 }
 
 bool entity::can_be_deleted()

@@ -34,8 +34,6 @@ struct scene
 		std::vector<simple_collision::pending_collision> queue;
 	} simple_collision;
 
-	void dispatch_simple_collisions();
-
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
 	// while that expanded state is active.
@@ -121,12 +119,10 @@ struct scene
 
 	void remove_dead_entities();
 
-	void gather_simple_collision_components();
-
 	virtual void update();
 	virtual void post_update();
 
-	void queue_simple_collisions();
+	void process_simple_collisions();
 
 	virtual void draw();
 	virtual void draw_ui();

@@ -81,10 +81,10 @@ void scene::pre_update()
 		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 		entity->pre_update();
+		entity->pre_update_components();
 	}
 
 	remove_dead_entities();
-	gather_simple_collision_components();
 }
 
 void scene::remove_dead_entities()
@@ -97,20 +97,6 @@ void scene::remove_dead_entities()
 			entities.erase( iter );
 			break;
 		}
-	}
-}
-
-void scene::gather_simple_collision_components()
-{
-	simple_collision.components.clear();
-
-	for( auto& entity : entities )
-	{
-		auto scc = entity->get_components<simple_collision_component>();
-		simple_collision.components.insert(
-			simple_collision.components.end(),
-			scc.begin(), scc.end()
-		);
 	}
 }
 
@@ -143,34 +129,54 @@ void scene::post_update()
 		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 		entity->post_update();
+		entity->post_update_components();
 	}
 
-	queue_simple_collisions();
+	// all entities are in their desired positions. check for and respond to collisions.
+
+	process_simple_collisions();
 }
 
 // fills the simple collision queue with all the collisions that are currently
 // taking place.
 
-void scene::queue_simple_collisions()
+void scene::process_simple_collisions()
 {
-	// process simple collisions
+	// get a list of all the simple_collision_components in this scene
+
+	simple_collision.components.clear();
+
+	for( auto& entity : entities )
+	{
+		auto scc = entity->get_components<simple_collision_component>();
+		simple_collision.components.insert(
+			simple_collision.components.end(),
+			scc.begin(), scc.end()
+		);
+	}
+
+	// process all the simple_collision_components against each other, and add
+	// any collisions and associated info into the collision queue
+
+	simple_collision.queue.clear();
 
 	for( auto scc_a : simple_collision.components )
 	{
 		for( auto scc_b : simple_collision.components )
 		{
+			// simple_collision_components can't collide with themselves
 			if( scc_a == scc_b )
 			{
 				continue;
 			}
 
-			// don't collide with self
+			// entities can't collide with themselves
 			if( scc_a->parent_entity == scc_b->parent_entity )
 			{
 				continue;
 			}
 
-			// if collision masks don't match, skip
+			// if collision masks don't intersect, skip
 			if( !( scc_a->collides_with_mask & scc_b->collision_mask ) )
 			{
 				continue;
@@ -247,6 +253,13 @@ void scene::queue_simple_collisions()
 
 			simple_collision.queue.push_back( collision );
 		}
+	}
+
+	// for each collision that was recorded, react to it...
+
+	for( auto& iter : simple_collision.queue )
+	{
+		iter.entity_a->on_simple_collision( iter, iter.entity_b );
 	}
 }
 
@@ -410,16 +423,6 @@ void scene::force_close_expanded_controls()
 {
 	ui_expanded_tag_begin = ui_expanded_tag_end = hash_none;
 	flags.clear_expanded_tag_this_frame = true;
-}
-
-void scene::dispatch_simple_collisions()
-{
-	for( auto& iter : simple_collision.queue )
-	{
-		iter.entity_a->on_simple_collision( iter, iter.entity_b );
-	}
-
-	simple_collision.queue.clear();
 }
 
 }
