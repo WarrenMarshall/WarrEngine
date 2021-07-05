@@ -34,6 +34,24 @@ void entity::update_components()
 
 void entity::post_update()
 {
+	auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
+
+	// if the linear force has exceeded a whole unit on either axis...
+
+	if( int_force.x or int_force.y )
+	{
+		// apply the linear force to the entity position
+		add_delta_pos( int_force );
+
+		// snap the entity position to an integer
+		vec2 snapped_pos = get_transform()->pos;
+		snapped_pos.x = snap_to_int( snapped_pos.x );
+		snapped_pos.y = snap_to_int( snapped_pos.y );
+		set_pos( snapped_pos );
+
+		// reduce the linear force by the amount we moved
+		linear_force_accum -= int_force;
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -122,6 +140,97 @@ void entity::update_transform_to_match_physics_components()
 			break;
 		}
 	}
+}
+
+void entity::add_linear_force( vec2 force )
+{
+	linear_force_accum += force;
+
+	log( "linear_force_accum : {:.2f}, {:.2f}", linear_force_accum.x, linear_force_accum.y );
+}
+
+bool entity::can_add_delta_pos( vec2 delta )
+{
+	auto my_sccs = get_components<simple_collision_component>();
+
+	for( auto scc_a : my_sccs )
+	{
+		auto local_ws = scc_a->ws;
+		local_ws.pos += delta;
+
+		for( auto scc_b : parent_scene->simple_collision.components )
+		{
+			if( scc_a == scc_b )
+			{
+				continue;
+			}
+
+			// don't collide with self
+			if( scc_a->parent_entity == scc_b->parent_entity )
+			{
+				continue;
+			}
+
+			// if collision masks don't match, skip
+			if( !( scc_a->collides_with_mask & scc_b->collision_mask ) )
+			{
+				continue;
+			}
+
+			auto aabb_ws_a = local_ws.aabb.to_c2AABB();
+			auto aabb_ws_b = scc_b->as_c2_aabb();
+
+			c2Circle circle_a = {};
+			circle_a.p = { local_ws.pos.x, local_ws.pos.y };
+			circle_a.r = local_ws.radius;
+
+			c2Circle circle_b = scc_b->as_c2_circle();
+
+			bool a_is_circle = scc_a->type == simple_collision_type::circle;
+			bool b_is_circle = scc_b->type == simple_collision_type::circle;
+
+			c2Manifold m = {};
+
+			if( a_is_circle and b_is_circle )
+			{
+				// circle to circle
+
+				if( c2CircletoCircle( circle_a, circle_b ) )
+				{
+					return false;
+				}
+			}
+			else if( !a_is_circle and b_is_circle )
+			{
+				// aabb to circle
+
+				if( c2CircletoAABB( circle_b, aabb_ws_a ) )
+				{
+					return false;
+				}
+			}
+			else if( a_is_circle and !b_is_circle )
+			{
+				// circle to aabb
+
+				if( c2CircletoAABB( circle_a, aabb_ws_b ) )
+				{
+					return false;
+				}
+			}
+			else if( !a_is_circle and !b_is_circle )
+			{
+				// aabb to aabb
+
+				if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;
 }
 
 const war::transform* entity::get_transform()

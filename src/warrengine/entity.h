@@ -2,12 +2,24 @@
 namespace war
 {
 
+struct linear_force
+{
+	vec2 dir;
+	float strength;
+};
+
 struct entity
 {
 #ifdef _DEBUG
 	// a handy string to throw info or a name into during debug to make looking at entity pointers easier
 	std::string debug_name;
 #endif
+
+	std::vector<linear_force> forces;
+	void add_linear_force( vec2 force );
+	bool can_add_delta_pos( vec2 delta );
+
+	vec2 linear_force_accum = vec2::zero;
 
 	transform _tform;
 

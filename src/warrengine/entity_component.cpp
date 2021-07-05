@@ -809,7 +809,6 @@ void simple_collision_component::draw()
 		scoped_render_state;
 
 		render::state->set_from_opt( rs_opt );
-
 		switch( type )
 		{
 			case simple_collision_type::circle:
@@ -904,6 +903,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 						auto ec = parent_entity->add_component<simple_collision_component>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 						ec->set_as_box( obj.rc.w, obj.rc.h );
+						ec->set_collision_flags( collision_mask, collides_with_mask );
 					}
 					break;
 
@@ -912,6 +912,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 						auto ec = parent_entity->add_component<simple_collision_component>();
 						ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
 						ec->set_as_circle( obj.radius );
+						ec->set_collision_flags( collision_mask, collides_with_mask );
 					}
 					break;
 				}

@@ -6,6 +6,7 @@ using namespace war;
 scene_gameplay::scene_gameplay()
 {
 	flags.is_debug_physics_scene = true;
+	flags.requires_controller = true;
 }
 
 void scene_gameplay::draw_ui()
@@ -39,6 +40,13 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 				auto ec = e->add_component<sprite_component>();
 				ec->init( "anim_player_run" );
 			}
+			{
+				auto ec = e->add_component<simple_collision_component>();
+				//ec->set_as_centered_box( 24.f, 24.f );
+				ec->set_as_circle( 8.f );
+				ec->set_collision_flags( coll_player, coll_world );
+				ec->rs_opt.color = make_color( color::orange );
+			}
 
 			gameplay_scene->player = e;
 
@@ -62,6 +70,7 @@ void scene_gameplay::pushed()
 
 		{
 			auto ec = world->add_component<tile_map_component>();
+			ec->set_collision_flags( coll_world, 0 );
 			ec->init( "ts_neon", "tm_level_01" );
 			ec->spawn_entities( this, spawn_entity );
 		}
@@ -72,6 +81,16 @@ void scene_gameplay::update()
 {
 	scene::update();
 
+}
+
+bool scene_gameplay::on_input_motion( const input_event* evt )
+{
+	if( evt->input_id == input_id::gamepad_left_stick )
+	{
+		player->add_linear_force( evt->delta * fixed_time_step::per_second( 150.f ) );
+	}
+
+	return false;
 }
 
 bool scene_gameplay::on_input_pressed( const input_event* evt )

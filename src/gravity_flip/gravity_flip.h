@@ -5,6 +5,13 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
+static bit_flag_generator collision_bits = 1;
+
+static const unsigned coll_player = collision_bits.get();
+static const unsigned coll_world = collision_bits.next();
+
+// ----------------------------------------------------------------------------
+
 struct gravity_flip_game : game
 {
 	gravity_flip_game();

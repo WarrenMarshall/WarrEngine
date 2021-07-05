@@ -236,12 +236,12 @@ void vertex_array_object::draw()
 		float line_width = 1.0f;
 		float point_sz = 2.0f;
 
-		if( g_engine->render_api.using_camera )
-		{
-			float scale = g_engine->scenes.get_transform()->scale;
-			line_width *= scale;
-			point_sz *= scale;
-		}
+		//if( g_engine->render_api.using_camera )
+		//{
+		//	float scale = g_engine->scenes.get_transform()->scale;
+		//	line_width *= scale;
+		//	point_sz *= scale;
+		//}
 
 		glLineWidth( line_width );
 		glPointSize( point_sz );

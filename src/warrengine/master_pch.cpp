@@ -4,14 +4,14 @@
 namespace war
 {
 
+float snap_to_int( float val )
+{
+	return glm::floor( val + 0.5f );
+}
+
 float sign_of( float val )
 {
 	return glm::sign( val );
-}
-
-float sin_from_angle( float angle_in_degrees )
-{
-	return glm::sin( glm::radians( angle_in_degrees ) );
 }
 
 }

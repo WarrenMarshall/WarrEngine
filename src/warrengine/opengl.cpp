@@ -114,7 +114,7 @@ void opengl::init()
 	glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
 	glHint( GL_POINT_SMOOTH_HINT, GL_NICEST );
 
-	glLineWidth( 2.f );
+	glLineWidth( 1.f );
 	glPointSize( 2.f );
 
 	glClampColor( GL_CLAMP_READ_COLOR, GL_FALSE );

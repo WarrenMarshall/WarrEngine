@@ -51,16 +51,15 @@
 
 namespace war
 {
-// ----------------------------------------------------------------------------
-// callback function typedefs and declaration macros
+	// ----------------------------------------------------------------------------
+	// callback function typedefs and declaration macros
 
-using f_draw_control = std::function<void( ui_control* control, const rect& rc_ui )>;
-#define f_decl_draw_control( func_name ) void func_name ( ui_control* control, const rect& rc_ui )
+	using f_draw_control = std::function<void( ui_control* control, const rect& rc_ui )>;
+	#define f_decl_draw_control( func_name ) void func_name ( ui_control* control, const rect& rc_ui )
 
-using f_tile_map_spawn_entity = std::function<void( scene* scene, tile_map_asset::tile* tile )>;
-#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( scene* scene, tile_map_asset::tile* tile )
+	using f_tile_map_spawn_entity = std::function<void( scene* scene, tile_map_asset::tile* tile )>;
+	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( scene* scene, tile_map_asset::tile* tile )
 }
-
 
 #include "cursor_asset.h"
 #include "slice_def_asset.h"

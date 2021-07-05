@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="24">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="30">
  <tileset firstgid="1" source="neon.tsx"/>
  <layer id="1" name="world" width="20" height="15">
   <data encoding="csv">
-2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,
-2,1,2,1,1,1,2,2,2,0,0,0,0,0,0,6,6,6,6,0,
-2,1,1,1,1,1,1,2,2,0,0,0,0,0,0,6,6,6,6,6,
-2,1,1,1,1,1,1,2,2,0,0,0,0,0,0,0,0,0,0,0,
-2,1,1,1,1,1,1,1,2,0,0,0,0,0,0,0,0,0,0,0,
-2,2,1,1,1,2,1,1,2,0,0,0,0,0,0,0,0,0,0,0,
-2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,0,
+0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -24,7 +24,7 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -40,25 +40,8 @@
 </data>
  </layer>
  <objectgroup id="3" name="simple_collision">
-  <object id="2" x="128" y="0" width="16" height="112"/>
-  <object id="19" x="128" y="0" width="16" height="112"/>
-  <object id="3" x="0" y="0" width="16" height="112"/>
-  <object id="18" x="0" y="0" width="16" height="112"/>
-  <object id="4" x="16" y="96" width="112" height="16"/>
-  <object id="17" x="16" y="96" width="112" height="16"/>
-  <object id="5" x="16" y="0" width="112" height="16"/>
-  <object id="16" x="16" y="0" width="112" height="16"/>
-  <object id="6" x="32" y="16" width="16" height="16"/>
-  <object id="15" x="32" y="16" width="16" height="16"/>
-  <object id="7" x="96" y="16" width="16" height="16"/>
-  <object id="14" x="96" y="16" width="16" height="16"/>
-  <object id="8" x="112" y="16" width="16" height="48"/>
-  <object id="13" x="112" y="16" width="16" height="48"/>
-  <object id="9" x="80" y="80" width="16" height="16"/>
-  <object id="12" x="80" y="80" width="16" height="16"/>
-  <object id="10" x="16" y="80" width="16" height="16"/>
-  <object id="11" x="16" y="80" width="16" height="16"/>
-  <object id="22" x="56" y="0" width="32" height="32">
+  <object id="25" x="64" y="32" width="16" height="16"/>
+  <object id="28" x="-16" y="-16" width="32" height="32">
    <ellipse/>
   </object>
  </objectgroup>

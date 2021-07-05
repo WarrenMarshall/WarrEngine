@@ -168,8 +168,8 @@ constexpr float zdepth_max = 50000.f;
 	return ( diff < epsilon && diff > -epsilon );
 }
 
+[[nodiscard]] float snap_to_int( float val );
 [[nodiscard]] float sign_of( float val );
-[[nodiscard]] float sin_from_angle( float angle_in_degrees );
 
 // ----------------------------------------------------------------------------
 // physics constants and helpers
