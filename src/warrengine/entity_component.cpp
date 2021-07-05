@@ -42,6 +42,11 @@ void entity_component::draw()
 {
 }
 
+void entity_component::pre_update()
+{
+
+}
+
 void entity_component::update()
 {
 	if( life_timer.has_value() )
@@ -61,6 +66,11 @@ void entity_component::update()
 	{
 		life_cycle.set( life_cycle::dead );
 	}
+}
+
+void entity_component::post_update()
+{
+
 }
 
 void entity_component::play()
@@ -318,6 +328,8 @@ entity_component* sound_component::init( std::string_view snd_tag, bool one_shot
 
 void sound_component::update()
 {
+	entity_component::update();
+
 	if( auto_play )
 	{
 		auto_play = false;
@@ -776,11 +788,40 @@ simple_collision_component::simple_collision_component( entity* parent_entity )
 
 void simple_collision_component::draw()
 {
-	// since the matrices are all set up to move things into worldspace at the
-	// time of drawing, it makes sense to leverage that to figure out the
-	// positioning and sizes of our collision internals.
+	// optional debug mode drawing
+
+	if( g_engine->renderer.debug.draw_debug_info )
+	{
+		scoped_render_state;
+
+		render::state->set_from_opt( rs_opt );
+		switch( type )
+		{
+			case simple_collision_type::circle:
+				render::draw_circle( { 0.f, 0.f }, radius );
+				break;
+
+			case simple_collision_type::aabb:
+				render::draw_rect( aabb );
+				break;
+		}
+	}
+}
+
+void simple_collision_component::post_update()
+{
+	entity_component::post_update();
 
 	auto scale = ( parent_entity->get_transform()->scale * get_transform()->scale );
+
+	scoped_opengl;
+
+	g_engine->render_api.top_matrix->identity();
+
+	auto tform = parent_entity->get_transform();
+	g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+	tform = get_transform();
+	g_engine->render_api.top_matrix->apply_transform( tform->pos, 0.f, tform->scale );
 
 	switch( type )
 	{
@@ -800,25 +841,6 @@ void simple_collision_component::draw()
 			ws.aabb.h = aabb.h * scale;
 		}
 		break;
-	}
-
-	// optional debug mode drawing
-
-	if( g_engine->renderer.debug.draw_debug_info )
-	{
-		scoped_render_state;
-
-		render::state->set_from_opt( rs_opt );
-		switch( type )
-		{
-			case simple_collision_type::circle:
-				render::draw_circle( { 0.f, 0.f }, radius );
-				break;
-
-			case simple_collision_type::aabb:
-				render::draw_rect( aabb );
-				break;
-		}
 	}
 }
 

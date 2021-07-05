@@ -34,7 +34,9 @@ struct entity_component
 
 	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw();
+	virtual void pre_update();
 	virtual void update();
+	virtual void post_update();
 	virtual void play();
 	virtual void stop();
 
@@ -261,6 +263,7 @@ struct simple_collision_component : entity_component
 	} ws;
 
 	virtual void draw() override;
+	virtual void post_update() override;
 	void set_as_box( float w, float h );
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
