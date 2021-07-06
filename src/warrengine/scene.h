@@ -29,9 +29,7 @@ struct scene
 	struct
 	{
 		std::unique_ptr<simple_collision::world> world = nullptr;
-
 		std::vector<simple_collision_component*> components;
-		std::vector<simple_collision::pending_collision> queue;
 	} simple_collision;
 
 	// if set to anything other than hash_none, some control is in it's expanded

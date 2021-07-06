@@ -263,10 +263,13 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 
 // entities have hit each other using simple collision checks
 
-void entity::on_simple_collision( simple_collision::pending_collision& coll, entity* touched_by )
+void entity::process_simple_collisions()
 {
-	// push outside of the entity we collided with (default behavior)
-	add_delta_pos( coll.normal * coll.depth );
+	for( auto& pc : pending_collisions )
+	{
+		// push outside of the entity we collided with (default behavior)
+		add_delta_pos( pc.normal * pc.depth );
+	}
 }
 
 bool entity::can_be_deleted()

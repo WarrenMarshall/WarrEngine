@@ -73,6 +73,8 @@ std::vector<entity*> scene::get_selected()
 
 void scene::pre_update()
 {
+	simple_collision.components.clear();
+
 	for( auto& entity : entities )
 	{
 		scoped_opengl;
@@ -82,6 +84,17 @@ void scene::pre_update()
 
 		entity->pre_update();
 		entity->pre_update_components();
+
+		// clear simple collisions and add all simple_collision_components for
+		// this entity into the list for later
+
+		entity->pending_collisions.clear();
+
+		auto scc = entity->get_components<simple_collision_component>();
+		simple_collision.components.insert(
+			simple_collision.components.end(),
+			scc.begin(), scc.end()
+		);
 	}
 
 	remove_dead_entities();
@@ -142,23 +155,10 @@ void scene::post_update()
 
 void scene::process_simple_collisions()
 {
-	// get a list of all the simple_collision_components in this scene
-
-	simple_collision.components.clear();
-
-	for( auto& entity : entities )
-	{
-		auto scc = entity->get_components<simple_collision_component>();
-		simple_collision.components.insert(
-			simple_collision.components.end(),
-			scc.begin(), scc.end()
-		);
-	}
+	std::set<entity*> entities_that_have_collisions;
 
 	// process all the simple_collision_components against each other, and add
 	// any collisions and associated info into the collision queue
-
-	simple_collision.queue.clear();
 
 	for( auto scc_a : simple_collision.components )
 	{
@@ -251,21 +251,16 @@ void scene::process_simple_collisions()
 			collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 			collision.depth = m.depths[ 0 ];
 
-			simple_collision.queue.push_back( collision );
+			entities_that_have_collisions.insert( collision.entity_a );
+			collision.entity_a->pending_collisions.push_back( collision );
 		}
 	}
 
-	// for each collision that was recorded, react to it...
+	// handle pending collisions
 
-	if( simple_collision.queue.size() > 1 )
+	for( auto& entity : entities_that_have_collisions )
 	{
-		// #next - what to do with multiple collisions?
-		int warren = 5;
-	}
-
-	for( auto& iter : simple_collision.queue )
-	{
-		iter.entity_a->on_simple_collision( iter, iter.entity_b );
+		entity->process_simple_collisions();
 	}
 }
 
