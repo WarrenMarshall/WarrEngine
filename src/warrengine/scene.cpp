@@ -257,6 +257,12 @@ void scene::process_simple_collisions()
 
 	// for each collision that was recorded, react to it...
 
+	if( simple_collision.queue.size() > 1 )
+	{
+		// #next - what to do with multiple collisions?
+		int warren = 5;
+	}
+
 	for( auto& iter : simple_collision.queue )
 	{
 		iter.entity_a->on_simple_collision( iter, iter.entity_b );

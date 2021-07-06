@@ -817,7 +817,6 @@ void simple_collision_component::post_update()
 	scoped_opengl;
 
 	g_engine->render_api.top_matrix->identity();
-
 	auto tform = parent_entity->get_transform();
 	g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 	tform = get_transform();

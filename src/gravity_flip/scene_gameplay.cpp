@@ -61,7 +61,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 void scene_gameplay::pushed()
 {
 	viewport_pivot = vec2::zero;
-	//viewport_pivot = { viewport_hw, viewport_hh };
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
@@ -91,7 +90,7 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		auto pos_a = player->get_transform()->pos;
-		player->add_linear_force( evt->delta * fixed_time_step::per_second( 75.f ) );
+		player->add_linear_force( evt->delta * fixed_time_step::per_second( 100.f ) );
 		auto pos_b = player->get_transform()->pos;
 
 		assert( pos_a == pos_b );

@@ -265,7 +265,7 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 
 void entity::on_simple_collision( simple_collision::pending_collision& coll, entity* touched_by )
 {
-	// push outside of the entity we collided with
+	// push outside of the entity we collided with (default behavior)
 	add_delta_pos( coll.normal * coll.depth );
 }
 
