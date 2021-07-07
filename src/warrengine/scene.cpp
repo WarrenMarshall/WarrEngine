@@ -251,16 +251,14 @@ void scene::process_simple_collisions()
 			collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 			collision.depth = m.depths[ 0 ];
 
-			entities_that_have_collisions.insert( collision.entity_a );
 			collision.entity_a->pending_collisions.push_back( collision );
+			entities_that_have_collisions.insert( collision.entity_a );
 		}
 	}
 
-	// handle pending collisions
-
-	for( auto& entity : entities_that_have_collisions )
+	for( auto& e : entities_that_have_collisions )
 	{
-		entity->process_simple_collisions();
+		e->process_simple_collisions();
 	}
 }
 

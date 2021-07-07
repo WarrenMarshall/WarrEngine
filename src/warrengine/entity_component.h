@@ -264,6 +264,7 @@ struct simple_collision_component : entity_component
 
 	virtual void draw() override;
 	virtual void post_update() override;
+	void update_to_match_parent_transform();
 	void set_as_box( float w, float h );
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );

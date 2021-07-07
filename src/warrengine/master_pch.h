@@ -64,9 +64,6 @@ namespace war
 // ----------------------------------------------------------------------------
 // fixed-time stepping constants
 
-// #fixed_time_step - physics needs to run at 60 FPS, but other stuff could run less often
-//       - should we add a second fixed time step?
-
 namespace fixed_time_step
 {
 	// how many fixed time steps, per second
@@ -169,7 +166,6 @@ constexpr float zdepth_max = 50000.f;
 }
 
 [[nodiscard]] float snap_to_int( float val );
-[[nodiscard]] float sign_of( float val );
 
 // ----------------------------------------------------------------------------
 // physics constants and helpers

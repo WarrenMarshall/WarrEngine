@@ -44,7 +44,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			{
 				auto ec = e->add_component<simple_collision_component>();
 				//ec->set_as_centered_box( 15.f, 15.f );
-				ec->set_as_circle( 7.5f );
+				ec->set_as_circle( 8.0f );
 				ec->set_collision_flags( coll_player, coll_world );
 				ec->rs_opt.color = make_color( color::orange );
 			}

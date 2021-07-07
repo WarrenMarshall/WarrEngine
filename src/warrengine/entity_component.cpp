@@ -811,7 +811,11 @@ void simple_collision_component::draw()
 void simple_collision_component::post_update()
 {
 	entity_component::post_update();
+	update_to_match_parent_transform();
+}
 
+void simple_collision_component::update_to_match_parent_transform()
+{
 	auto scale = ( parent_entity->get_transform()->scale * get_transform()->scale );
 
 	scoped_opengl;

@@ -62,16 +62,11 @@ void entity::post_update()
 
 	if( int_force.x or int_force.y )
 	{
-		//log( "---------------" );
-		//log( "1 : {:.1f}, {:.1f}", get_transform()->pos.x, get_transform()->pos.y );
-
-		// apply the linear force to the entity position
 		add_delta_pos( int_force );
-		//log( "2 : {:.1f}, {:.1f}", get_transform()->pos.x, get_transform()->pos.y );
-
-		// reduce the linear force by the amount we moved
 		linear_force_accum -= int_force;
 	}
+
+	_tform.pos = vec2::snap_to_int( _tform.pos );
 }
 
 // ----------------------------------------------------------------------------
@@ -115,6 +110,8 @@ void entity::draw()
 
 void entity::update_physics_components_to_match_transform()
 {
+	// physics
+
 	if( has_component<box2d_physics_component>() )
 	{
 		std::vector<box2d_physics_body_component*> ecs;
@@ -126,13 +123,24 @@ void entity::update_physics_components_to_match_transform()
 			ec->body->SetTransform( _tform.pos.to_box2d().to_b2Vec2(), glm::radians( _tform.angle ) );
 
 			// reset velocity
-			// #physics : might want to make this an option somehow
 			ec->body->SetLinearVelocity( { 0, 0 } );
 			ec->body->SetAngularVelocity( 0 );
 
 			ec->body->SetAwake( true );
 		}
 	}
+
+	// simple collision primitives
+
+/*
+	if( has_component<simple_collision_component>() )
+	{
+		for( auto& iter : get_components<simple_collision_component>() )
+		{
+			iter->update_to_match_parent_transform();
+		}
+	}
+*/
 }
 
 void entity::update_transform_to_match_physics_components()
@@ -165,8 +173,6 @@ void entity::update_transform_to_match_physics_components()
 void entity::add_linear_force( vec2 force )
 {
 	linear_force_accum += force;
-
-	//log( "linear_force_accum : {:.2f}, {:.2f}", linear_force_accum.x, linear_force_accum.y );
 }
 
 const war::transform* entity::get_transform()
@@ -188,7 +194,7 @@ transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, cons
 transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
-	_tform.pos = vec2::snap_to_int( _tform.pos );
+	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -219,7 +225,7 @@ transform* entity::set_scale( const float scale )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
-	_tform.pos = vec2::snap_to_int( _tform.pos );
+	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -265,11 +271,74 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 
 void entity::process_simple_collisions()
 {
+
+#if 0
+
+	// average final position
+
+	vec2 new_pos = {};
+
+	for( auto& pc : pending_collisions )
+	{
+		// push outside of the entity we collided with (default behavior)
+		new_pos += get_transform()->pos + ( pc.normal * pc.depth );
+	}
+
+	new_pos /= (float)pending_collisions.size();
+
+	set_pos( new_pos );
+
+#endif
+
+#if 0
+
+	// avg normal direction with max depth
+
+	vec2 normal = {};
+	float max_depth = 0;
+
+	for( auto& pc : pending_collisions )
+	{
+		normal += pc.normal * pc.depth;
+		max_depth = glm::max( max_depth, pc.depth );
+	}
+
+	normal = normal.normalize();
+
+	add_delta_pos( normal * max_depth );
+
+#endif
+
+#if 0
+
+	vec2 delta = {};
+
+	for( auto& pc : pending_collisions )
+	{
+		delta += pc.normal * pc.depth;
+	}
+
+	//delta /= (float)pending_collisions.size();
+
+	add_delta_pos( delta );
+
+#endif
+
+#if 1
 	for( auto& pc : pending_collisions )
 	{
 		// push outside of the entity we collided with (default behavior)
 		add_delta_pos( pc.normal * pc.depth );
+
+		for( auto& iter : get_components<simple_collision_component>() )
+		{
+			iter->update_to_match_parent_transform();
+		}
 	}
+
+	pending_collisions.clear();
+#endif
+
 }
 
 bool entity::can_be_deleted()
