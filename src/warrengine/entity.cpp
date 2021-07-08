@@ -329,6 +329,9 @@ void entity::process_simple_collisions()
 	{
 		// push outside of the entity we collided with (default behavior)
 		add_delta_pos( pc.normal * pc.depth );
+		linear_force_accum = pc.normal;
+		//linear_force_accum.x *= 1.0f - pc.normal.x;
+		//linear_force_accum.y *= 1.0f - pc.normal.y;
 
 		for( auto& iter : get_components<simple_collision_component>() )
 		{
