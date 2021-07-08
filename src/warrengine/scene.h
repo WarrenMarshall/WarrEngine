@@ -121,6 +121,7 @@ struct scene
 	virtual void post_update();
 
 	void process_simple_collisions();
+	bool can_fit( entity* entity, vec2 desired_pos );
 
 	virtual void draw();
 	virtual void draw_ui();

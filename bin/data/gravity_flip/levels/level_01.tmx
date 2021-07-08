@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="54">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="56">
  <tileset firstgid="1" source="neon.tsx"/>
  <layer id="1" name="world" width="20" height="15">
   <data encoding="csv">
@@ -39,7 +39,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="simple_collision">
+ <objectgroup id="3" name="simple_collision" visible="0">
   <object id="28" x="64" y="184" width="32" height="32">
    <ellipse/>
   </object>
@@ -54,7 +54,6 @@
   <object id="35" x="64" y="32" width="160" height="16"/>
   <object id="39" x="16" y="0" width="64" height="16"/>
   <object id="36" x="80" y="64" width="32" height="32"/>
-  <object id="53" x="80" y="80" width="16" height="16"/>
   <object id="40" x="208" y="48" width="32" height="16"/>
   <object id="48" x="80" y="64" width="16" height="64"/>
   <object id="49" x="144" y="112" width="16" height="16"/>
@@ -64,5 +63,9 @@
   <object id="44" x="0" y="192" width="160" height="16"/>
   <object id="47" x="144" y="160" width="80" height="16"/>
   <object id="41" x="16" y="80" width="32" height="16"/>
+  <object id="54" x="0" y="80" width="32" height="16"/>
+ </objectgroup>
+ <objectgroup id="5" name="simple_collision">
+  <object id="55" x="64" y="32" width="48" height="16"/>
  </objectgroup>
 </map>

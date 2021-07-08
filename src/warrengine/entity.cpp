@@ -64,9 +64,8 @@ void entity::post_update()
 	{
 		add_delta_pos( int_force );
 		linear_force_accum -= int_force;
+		//_tform.pos = vec2::snap_to_int( _tform.pos );
 	}
-
-	_tform.pos = vec2::snap_to_int( _tform.pos );
 }
 
 // ----------------------------------------------------------------------------
@@ -132,15 +131,10 @@ void entity::update_physics_components_to_match_transform()
 
 	// simple collision primitives
 
-/*
-	if( has_component<simple_collision_component>() )
+	for( auto& iter : get_components<simple_collision_component>() )
 	{
-		for( auto& iter : get_components<simple_collision_component>() )
-		{
-			iter->update_to_match_parent_transform();
-		}
+		iter->update_to_match_parent_transform();
 	}
-*/
 }
 
 void entity::update_transform_to_match_physics_components()
@@ -191,16 +185,6 @@ transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, cons
 	return &_tform;
 }
 
-transform* entity::set_pos( const vec2& pos )
-{
-	_tform.set_pos( pos );
-	//_tform.pos = vec2::snap_to_int( _tform.pos );
-
-	update_physics_components_to_match_transform();
-
-	return &_tform;
-}
-
 transform* entity::set_angle( const float angle )
 {
 	_tform.set_angle( angle );
@@ -222,10 +206,20 @@ transform* entity::set_scale( const float scale )
 	return &_tform;
 }
 
+transform* entity::set_pos( const vec2& pos )
+{
+	_tform.set_pos( pos );
+	_tform.pos = vec2::snap_to_int( _tform.pos );
+
+	update_physics_components_to_match_transform();
+
+	return &_tform;
+}
+
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
-	//_tform.pos = vec2::snap_to_int( _tform.pos );
+	_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -271,28 +265,10 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 
 void entity::process_simple_collisions()
 {
-
-#if 0
-
-	// average final position
-
-	vec2 new_pos = {};
-
-	for( auto& pc : pending_collisions )
-	{
-		// push outside of the entity we collided with (default behavior)
-		new_pos += get_transform()->pos + ( pc.normal * pc.depth );
-	}
-
-	new_pos /= (float)pending_collisions.size();
-
-	set_pos( new_pos );
-
-#endif
-
 #if 0
 
 	// avg normal direction with max depth
+	// BEST for gravity game
 
 	vec2 normal = {};
 	float max_depth = 0;
@@ -305,42 +281,64 @@ void entity::process_simple_collisions()
 
 	normal = normal.normalize();
 
-	add_delta_pos( normal * max_depth );
+	vec2 desired_pos = get_transform()->pos + ( normal * max_depth );
+
+	if( parent_scene->can_fit( this, desired_pos ) )
+	{
+		set_pos( desired_pos );
+
+		if( normal.x )	linear_force_accum.x = linear_force_accum.y;
+		if( normal.y )	linear_force_accum.y = linear_force_accum.x;
+	}
+
 
 #endif
 
 #if 0
 
-	vec2 delta = {};
+	// average final position
+
+	vec2 new_pos = {};
+	vec2 normal = {};
 
 	for( auto& pc : pending_collisions )
 	{
-		delta += pc.normal * pc.depth;
+		// push outside of the entity we collided with (default behavior)
+		new_pos += get_transform()->pos + ( pc.normal * pc.depth );
+		normal += pc.normal;
 	}
 
-	//delta /= (float)pending_collisions.size();
+	new_pos /= (float)pending_collisions.size();
+	normal /= (float)pending_collisions.size();
 
-	add_delta_pos( delta );
+	if( normal.x )	linear_force_accum.x = -linear_force_accum.y;
+	if( normal.y )	linear_force_accum.y = -linear_force_accum.x;
+
+	if( parent_scene->can_fit( this, new_pos ) )
+	{
+		set_pos( new_pos );
+	}
 
 #endif
+
 
 #if 1
 	for( auto& pc : pending_collisions )
 	{
-		// push outside of the entity we collided with (default behavior)
-		add_delta_pos( pc.normal * pc.depth );
-		linear_force_accum = pc.normal;
-		//linear_force_accum.x *= 1.0f - pc.normal.x;
-		//linear_force_accum.y *= 1.0f - pc.normal.y;
-
-		for( auto& iter : get_components<simple_collision_component>() )
+		vec2 desired_pos = get_transform()->pos + ( pc.normal * pc.depth );
+		if( parent_scene->can_fit( this, desired_pos ) )
 		{
-			iter->update_to_match_parent_transform();
+			// push outside of the entity we collided with (default behavior)
+			add_delta_pos( pc.normal * pc.depth );
+
+			if( pc.normal.x )	linear_force_accum.x = linear_force_accum.y;
+			if( pc.normal.y )	linear_force_accum.y = linear_force_accum.x;
 		}
+
 	}
+#endif
 
 	pending_collisions.clear();
-#endif
 
 }
 

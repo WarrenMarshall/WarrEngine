@@ -149,6 +149,13 @@ bool tile_map_asset::create()
 					string_util::erase_char( value, '>' );
 					current_object_group->tag = value;
 				}
+				else if( *key == "visible" )
+				{
+					auto value = subtok.get_next_token();
+					assert( value.has_value() );
+
+					current_object_group->is_visible = text_parser::bool_from_str( *value );
+				}
 			}
 		}
 		else if( line.starts_with( "</objectgroup" ) )

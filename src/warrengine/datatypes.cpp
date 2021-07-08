@@ -546,14 +546,31 @@ vec2 vec2::operator-=( const vec2& v )
 	return *this;
 }
 
+vec2 vec2::operator-() const
+{
+	return *this * -1.f;
+}
+
 vec2 vec2::operator*( float v ) const
 {
 	return vec2( this->x * v, this->y * v );
 }
 
+vec2 vec2::operator*( vec2 v ) const
+{
+	return vec2( x * v.x, y * v.y );
+}
+
 vec2 vec2::operator*=( float v )
 {
 	*this = *this * v;
+	return *this;
+}
+
+vec2 vec2::operator*=( vec2 v )
+{
+	this->x *= v.x;
+	this->y *= v.y;
 	return *this;
 }
 

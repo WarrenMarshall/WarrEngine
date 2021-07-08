@@ -262,6 +262,96 @@ void scene::process_simple_collisions()
 	}
 }
 
+// checks if "entity" can fit at "desired_pos" using quick collision checking
+
+bool scene::can_fit( entity* entity, vec2 desired_pos )
+{
+	for( auto scc_a : entity->get_components<simple_collision_component>() )
+	{
+		// the delta between where the entity IS and where it wants to GO
+		vec2 ws_delta = entity->get_transform()->pos - desired_pos;
+
+		for( auto scc_b : simple_collision.components )
+		{
+			// simple_collision_components can't collide with themselves
+			if( scc_a == scc_b )
+			{
+				continue;
+			}
+
+			// entities can't collide with themselves
+			if( scc_a->parent_entity == scc_b->parent_entity )
+			{
+				continue;
+			}
+
+			// if collision masks don't intersect, skip
+			if( !( scc_a->collides_with_mask & scc_b->collision_mask ) )
+			{
+				continue;
+			}
+
+			auto aabb_ws_a = scc_a->as_c2_aabb();
+			aabb_ws_a.min.x += ws_delta.x;
+			aabb_ws_a.max.x += ws_delta.x;
+			aabb_ws_a.min.y += ws_delta.y;
+			aabb_ws_a.max.y += ws_delta.y;
+
+			auto aabb_ws_b = scc_b->as_c2_aabb();
+
+			c2Circle circle_a = scc_a->as_c2_circle();
+			circle_a.p.x += ws_delta.x;
+			circle_a.p.y += ws_delta.y;
+
+			c2Circle circle_b = scc_b->as_c2_circle();
+
+			bool a_is_circle = scc_a->type == simple_collision_type::circle;
+			bool b_is_circle = scc_b->type == simple_collision_type::circle;
+
+			c2Manifold m = {};
+
+			if( a_is_circle and b_is_circle )
+			{
+				// circle to circle
+
+				if( c2CircletoCircle( circle_a, circle_b ) )
+				{
+					return false;
+				}
+			}
+			else if( !a_is_circle and b_is_circle )
+			{
+				// aabb to circle
+
+				if( c2CircletoAABB( circle_b, aabb_ws_a ) )
+				{
+					return false;
+				}
+			}
+			else if( a_is_circle and !b_is_circle )
+			{
+				// circle to aabb
+
+				if( c2CircletoAABB( circle_a, aabb_ws_b ) )
+				{
+					return false;
+				}
+			}
+			else if( !a_is_circle and !b_is_circle )
+			{
+				// aabb to aabb
+
+				if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
 // ----------------------------------------------------------------------------
 
 void scene::draw()

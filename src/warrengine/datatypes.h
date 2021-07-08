@@ -254,12 +254,15 @@ struct vec2
 	[[nodiscard]] bool operator!=( const vec2& v ) const;
 	[[nodiscard]] vec2 operator+( const vec2& v ) const;
 	[[nodiscard]] vec2 operator-( const vec2& v ) const;
+	[[nodiscard]] vec2 operator-() const;
 	[[nodiscard]] vec2 operator*( float v ) const;
+	[[nodiscard]] vec2 operator*( vec2 v ) const;
 	[[nodiscard]] vec2 operator/( float v ) const;
 
 	vec2 operator+=( const vec2& v );
 	vec2 operator-=( const vec2& v );
 	vec2 operator*=( float v );
+	vec2 operator*=( vec2 v );
 	vec2 operator/=( float v );
 	void operator=( const float& v );
 

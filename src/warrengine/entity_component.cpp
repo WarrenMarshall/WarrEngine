@@ -917,6 +917,11 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 
 	for( auto& og : tile_map->object_groups )
 	{
+		if( !og.is_visible )
+		{
+			continue;
+		}
+
 		if( og.tag == "simple_collision" )
 		{
 			for( auto& obj : og.objects )
