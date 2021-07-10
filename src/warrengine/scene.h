@@ -31,6 +31,7 @@ struct scene
 		std::unique_ptr<simple_collision::world> world = nullptr;
 		std::vector<simple_collision_component*> bodies;
 		std::vector<simple_collision::pending_collision> pending_queue;
+		std::set<entity*> unique_entities_with_collisions;
 	} simple_collision;
 
 	// if set to anything other than hash_none, some control is in it's expanded
@@ -123,7 +124,6 @@ struct scene
 
 	void add_simple_collisions_to_pending_queue();
 	void resolve_pending_simple_collisions();
-	std::set<entity*> unique_entities_with_collisions;
 
 	virtual void draw();
 	virtual void draw_ui();

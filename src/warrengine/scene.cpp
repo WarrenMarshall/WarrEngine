@@ -281,14 +281,14 @@ void scene::add_simple_collisions_to_pending_queue()
 			collision.depth = m.depths[ 0 ];
 
 			simple_collision.pending_queue.push_back( collision );
-			unique_entities_with_collisions.insert( collision.entity_a );
+			simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
 		}
 	}
 }
 
 void scene::resolve_pending_simple_collisions()
 {
-	for( auto& entity : unique_entities_with_collisions )
+	for( auto& entity : simple_collision.unique_entities_with_collisions )
 	{
 		vec2 avg_delta = vec2::zero;
 
@@ -301,6 +301,8 @@ void scene::resolve_pending_simple_collisions()
 
 		entity->add_delta_pos( avg_delta );
 	}
+
+	simple_collision.unique_entities_with_collisions.clear();
 }
 
 // ----------------------------------------------------------------------------
