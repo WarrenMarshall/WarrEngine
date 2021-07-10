@@ -610,12 +610,9 @@ float vec2::get_distance_between( const vec2& a, const vec2& b )
 	return ( a - b ).get_size_squared();
 }
 
-// normalizes the vec2 in place, and returns itself in case the caller
-// wants to handle it as a return value instead
-
-vec2 vec2::normalize()
+vec2 vec2::normalize( const vec2& v )
 {
-	return *this / get_size_squared();
+	return v / v.get_size_squared();
 }
 
 // takes an angle, in degrees, and returns a unit vector for it

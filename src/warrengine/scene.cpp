@@ -73,8 +73,6 @@ std::vector<entity*> scene::get_selected()
 
 void scene::pre_update()
 {
-	simple_collision.components.clear();
-
 	for( auto& entity : entities )
 	{
 		scoped_opengl;
@@ -84,17 +82,6 @@ void scene::pre_update()
 
 		entity->pre_update();
 		entity->pre_update_components();
-
-		// clear simple collisions and add all simple_collision_components for
-		// this entity into the list for later
-
-		entity->pending_collisions.clear();
-
-		auto scc = entity->get_components<simple_collision_component>();
-		simple_collision.components.insert(
-			simple_collision.components.end(),
-			scc.begin(), scc.end()
-		);
 	}
 
 	remove_dead_entities();
@@ -115,6 +102,8 @@ void scene::remove_dead_entities()
 
 void scene::update()
 {
+	simple_collision.bodies.clear();
+
 	// update entities and components
 
 	for( auto& entity : entities )
@@ -127,6 +116,13 @@ void scene::update()
 		entity->update();
 		entity->update_components();
 		entity->update_from_physics();
+
+		// collect the simple collision bodies active in the scene
+		auto sccs = entity->get_components<simple_collision_component>();
+		simple_collision.bodies.insert(
+			simple_collision.bodies.end(),
+			sccs.begin(), sccs.end()
+		);
 	}
 }
 
@@ -145,9 +141,188 @@ void scene::post_update()
 		entity->post_update_components();
 	}
 
-	// all entities are in their desired positions. check for and respond to collisions.
+	int iteration_counter = 5;
 
-	process_simple_collisions();
+	while( iteration_counter > 0 )
+	{
+		for( auto& scc : simple_collision.bodies )
+		{
+			scc->update_to_match_parent_transform();
+		}
+
+		// collision detection
+
+		add_simple_collisions_to_pending_queue();
+
+		// If nothing is intersecting anymore, we can abort the rest of the iterations
+
+		if( simple_collision.pending_queue.empty() )
+		{
+			iteration_counter = 0;
+			continue;
+		}
+
+		// collision resolution
+
+		resolve_pending_simple_collisions();
+
+		iteration_counter--;
+	}
+
+}
+
+void scene::add_simple_collisions_to_pending_queue()
+{
+	simple_collision.pending_queue.clear();
+
+	// process all the simple_collision_components against each other, and add
+	// any collisions and associated info into the collision queue
+
+	for( auto scc_a : simple_collision.bodies )
+	{
+		for( auto scc_b : simple_collision.bodies )
+		{
+			// simple_collision_components can't collide with themselves
+			if( scc_a == scc_b )
+			{
+				continue;
+			}
+
+			// entities can't collide with themselves
+			if( scc_a->parent_entity == scc_b->parent_entity )
+			{
+				continue;
+			}
+
+			// if collision masks don't intersect, skip
+			if( !( scc_a->collides_with_mask & scc_b->collision_mask ) )
+			{
+				continue;
+			}
+
+			auto aabb_ws_a = scc_a->as_c2_aabb();
+			auto aabb_ws_b = scc_b->as_c2_aabb();
+
+			c2Circle circle_a = scc_a->as_c2_circle();
+			c2Circle circle_b = scc_b->as_c2_circle();
+
+			bool a_is_circle = scc_a->type == simple_collision_type::circle;
+			bool b_is_circle = scc_b->type == simple_collision_type::circle;
+
+			c2Manifold m = {};
+
+			if( a_is_circle )
+			{
+				if( b_is_circle )
+				{
+					// circle to circle
+
+					if( !c2CircletoCircle( circle_a, circle_b ) )
+					{
+						continue;
+					}
+
+					c2CircletoCircleManifold( circle_a, circle_b, &m );
+				}
+				else
+				{
+					// circle to aabb
+
+					if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
+					{
+						continue;
+					}
+
+					c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+				}
+			}
+			else
+			{
+				if( b_is_circle )
+				{
+					assert( false );
+					// aabb to circle
+
+					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
+					{
+						continue;
+					}
+
+					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+				}
+				else
+				{
+					assert( false );
+					// aabb to aabb
+
+					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+					{
+						continue;
+					}
+
+					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+				}
+			}
+
+			// add the collision to the pending collision list
+			simple_collision::pending_collision collision;
+
+			collision.entity_a = scc_a->parent_entity;
+			collision.entity_b = scc_b->parent_entity;
+			collision.manifold = m;
+
+			collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+			collision.normal = vec2( m.n.x, m.n.y );
+			collision.depth = m.depths[ 0 ];
+
+			simple_collision.pending_queue.push_back( collision );
+		}
+	}
+}
+
+void scene::resolve_pending_simple_collisions()
+{
+	std::set<entity*> unique_entities_with_collisions;
+
+
+	for( auto& pc : simple_collision.pending_queue )
+	{
+		unique_entities_with_collisions.insert( pc.entity_a );
+	}
+
+#if 1	// avg movement delta
+	for( auto& entity : unique_entities_with_collisions )
+	{
+		vec2 avg_delta = vec2::zero;
+
+		for( auto& pc : simple_collision.pending_queue )
+		{
+			avg_delta += -pc.normal * pc.depth;
+		}
+
+		avg_delta /= (float)simple_collision.pending_queue.size();
+
+		entity->add_delta_pos( avg_delta );
+	}
+#endif
+
+#if 0	// avg normal with max_depth
+	for( auto& entity : unique_entities_with_collisions )
+	{
+		vec2 avg_normal = vec2::zero;
+		float max_depth = 0.f;
+
+		for( auto& pc : simple_collision.pending_queue )
+		{
+			avg_normal += pc.normal;
+			max_depth = glm::max( max_depth, pc.depth );
+		}
+
+		avg_normal = vec2::normalize( avg_normal );
+
+		entity->add_delta_pos( -avg_normal * max_depth );
+	}
+#endif
 }
 
 // fills the simple collision queue with all the collisions that are currently
@@ -155,14 +330,16 @@ void scene::post_update()
 
 void scene::process_simple_collisions()
 {
+	assert( false );
+#if 0
 	std::set<entity*> entities_that_have_collisions;
 
 	// process all the simple_collision_components against each other, and add
 	// any collisions and associated info into the collision queue
 
-	for( auto scc_a : simple_collision.components )
+	for( auto scc_a : simple_collision.bodies )
 	{
-		for( auto scc_b : simple_collision.components )
+		for( auto scc_b : simple_collision.bodies )
 		{
 			// simple_collision_components can't collide with themselves
 			if( scc_a == scc_b )
@@ -257,7 +434,7 @@ void scene::process_simple_collisions()
 			collision.normal = vec2( m.n.x * -1.f, m.n.y * -1.f );
 			collision.depth = m.depths[ 0 ];
 
-			collision.entity_a->pending_collisions.push_back( collision );
+			collision.entity_a->pending_co.push_back( collision );
 			entities_that_have_collisions.insert( collision.entity_a );
 		}
 	}
@@ -267,18 +444,21 @@ void scene::process_simple_collisions()
 		e->process_simple_collisions();
 		e->apply_linear_forces();
 	}
+#endif
 }
 
 // checks if "entity" can fit at "desired_pos" using quick collision checking
 
 bool scene::can_fit( entity* entity, vec2 desired_pos )
 {
+	assert( false );
+
 	for( auto scc_a : entity->get_components<simple_collision_component>() )
 	{
 		// the delta between where the entity IS and where it wants to GO
 		vec2 ws_delta = entity->get_transform()->pos - desired_pos;
 
-		for( auto scc_b : simple_collision.components )
+		for( auto scc_b : simple_collision.bodies )
 		{
 			// simple_collision_components can't collide with themselves
 			if( scc_a == scc_b )

@@ -29,7 +29,8 @@ struct scene
 	struct
 	{
 		std::unique_ptr<simple_collision::world> world = nullptr;
-		std::vector<simple_collision_component*> components;
+		std::vector<simple_collision_component*> bodies;
+		std::vector<simple_collision::pending_collision> pending_queue;
 	} simple_collision;
 
 	// if set to anything other than hash_none, some control is in it's expanded
@@ -120,6 +121,8 @@ struct scene
 	virtual void update();
 	virtual void post_update();
 
+	void add_simple_collisions_to_pending_queue();
+	void resolve_pending_simple_collisions();
 	void process_simple_collisions();
 	bool can_fit( entity* entity, vec2 desired_pos );
 

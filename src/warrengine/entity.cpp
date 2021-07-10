@@ -61,6 +61,38 @@ void entity::post_update()
 
 void entity::apply_linear_forces()
 {
+#if 1
+	for( auto& lf : linear_forces )
+	{
+		linear_force_accum += lf;
+		auto signs = vec2( glm::sign( linear_force_accum.x ), glm::sign( linear_force_accum.y ) );
+		auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
+
+		linear_force_accum -= int_force;
+
+		while( int_force.x )
+		{
+			auto desired_pos = get_transform()->pos + vec2( signs.x, 0.f );
+			//if( parent_scene->can_fit( this, desired_pos ) )
+			{
+				set_pos( desired_pos );
+			}
+			int_force.x -= 1.0f * signs.x;
+		}
+
+		while( int_force.y )
+		{
+			auto desired_pos = get_transform()->pos + vec2( 0.f, signs.y );
+			//if( parent_scene->can_fit( this, desired_pos ) )
+			{
+				set_pos( desired_pos );
+			}
+			int_force.y -= 1.0f * signs.y;
+		}
+	}
+
+	linear_forces.clear();
+#else
 	for( auto& lf : linear_forces )
 	{
 		linear_force_accum += lf;
@@ -74,6 +106,7 @@ void entity::apply_linear_forces()
 	}
 
 	linear_forces.clear();
+#endif
 }
 
 // ----------------------------------------------------------------------------
@@ -217,7 +250,7 @@ transform* entity::set_scale( const float scale )
 transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
-	//_tform.pos = vec2::snap_to_int( _tform.pos );
+	_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -227,7 +260,7 @@ transform* entity::set_pos( const vec2& pos )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
-	//_tform.pos = vec2::snap_to_int( _tform.pos );
+	_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -273,6 +306,7 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 
 void entity::process_simple_collisions()
 {
+	assert( false );
 #if 0
 
 	// avg normal direction with max depth
@@ -287,7 +321,7 @@ void entity::process_simple_collisions()
 		max_depth = glm::max( max_depth, pc.depth );
 	}
 
-	normal = normal.normalize();
+	normal = vec2::normalize( normal );
 
 	vec2 desired_pos = get_transform()->pos + ( normal * max_depth );
 
@@ -330,15 +364,17 @@ void entity::process_simple_collisions()
 #endif
 
 
+	/*
 #if 1
-	for( auto& pc : pending_collisions )
+	for( auto& pc : simple_collision.pend )
 	{
 		vec2 desired_pos = get_transform()->pos + ( pc.normal * pc.depth );
 		add_linear_force( pc.normal * pc.depth );
 	}
 #endif
 
-	pending_collisions.clear();
+	simple_collision.pending_queue.clear();
+	*/
 
 }
 

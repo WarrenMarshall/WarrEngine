@@ -69,7 +69,7 @@ vec2 contact_listener::calc_hit_normal( b2Body* body_colliding )
 		hit_normal = vec2( manifold->localNormal.x, manifold->localNormal.y );
 	}
 
-	return hit_normal.normalize();
+	return vec2::normalize( hit_normal );
 }
 
 }

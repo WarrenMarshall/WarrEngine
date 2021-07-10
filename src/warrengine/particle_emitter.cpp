@@ -144,7 +144,7 @@ void particle_emitter::spawn_particle()
 
 		case particle_spawn_dir::away_from_owner:
 		{
-			p->v_dir = ( save_particle_position_at_origin ).normalize();
+			p->v_dir = vec2::normalize( save_particle_position_at_origin );
 			break;
 		}
 

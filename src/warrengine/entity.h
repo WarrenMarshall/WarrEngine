@@ -146,8 +146,6 @@ struct entity
 		}
 	}
 
-	std::vector<simple_collision::pending_collision> pending_collisions;
-
 	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
 	void process_simple_collisions();

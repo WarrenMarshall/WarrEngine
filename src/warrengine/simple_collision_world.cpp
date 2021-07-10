@@ -14,7 +14,7 @@ world::world( vec2 gravity )
 void world::ray_cast( raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const
 {
 	auto delta = ( end - start );
-	auto ray_normal = delta.normalize();
+	auto ray_normal = vec2::normalize( delta );
 	auto ray_length = delta.get_size_squared();
 
 	c2Ray ray = {};
@@ -24,7 +24,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 	ray.d.y = ray_normal.y;
 	ray.t = ray_length;
 
-	for( auto scc : entity->parent_scene->simple_collision.components )
+	for( auto scc : entity->parent_scene->simple_collision.bodies )
 	{
 		// don't trace against self
 		if( scc->parent_entity == entity )

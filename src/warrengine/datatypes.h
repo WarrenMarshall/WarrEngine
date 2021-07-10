@@ -240,7 +240,7 @@ struct vec2
 	vec2( const b2Vec2& b2v2 );
 
 	[[nodiscard]] static vec2 compute_uv_tiling( const texture_asset* texture, const rect& rc );
-	vec2 normalize();
+	[[nodiscard]] static vec2 normalize( const vec2& v );
 
 	[[nodiscard]] b2Vec2 to_b2Vec2() const;
 	[[nodiscard]] c2v to_c2v() const;
