@@ -597,7 +597,7 @@ float vec2::get_size_fast() const
 
 bool vec2::is_zero() const
 {
-	return fequals( x + y, 0.f );
+	return fequals( x, 0.f ) and fequals( y, 0.f );
 }
 
 void vec2::operator=( const float& v )
