@@ -240,7 +240,6 @@ void scene::add_simple_collisions_to_pending_queue()
 			{
 				if( b_is_circle )
 				{
-					assert( false );
 					// aabb to circle
 
 					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
@@ -249,10 +248,16 @@ void scene::add_simple_collisions_to_pending_queue()
 					}
 
 					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+
+					// this is a weird cute_c2 thing, but since there's no
+					// c2AABBToCircle function, we have to do the test in
+					// reverse and then flip the normal in the manifold.
+
+					m.n.x *= -1.f;
+					m.n.y *= -1.f;
 				}
 				else
 				{
-					assert( false );
 					// aabb to aabb
 
 					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )

@@ -250,7 +250,7 @@ transform* entity::set_scale( const float scale )
 transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
-	_tform.pos = vec2::snap_to_int( _tform.pos );
+	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -260,7 +260,7 @@ transform* entity::set_pos( const vec2& pos )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
-	_tform.pos = vec2::snap_to_int( _tform.pos );
+	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
