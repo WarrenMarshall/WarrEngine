@@ -193,6 +193,14 @@ constexpr int32 b2d_pos_iterations = 3;
 	return ( v * b2d_world_scale_factor );
 }
 
+// ----------------------------------------------------------------------------
+// simple collision constants and helpers
+// ----------------------------------------------------------------------------
+
+constexpr float simple_collision_pos_iterations = 6.f;
+
+// ----------------------------------------------------------------------------
+
 extern std::unique_ptr<war::log_file> g_logfile;
 extern std::unique_ptr<game> g_base_game;
 

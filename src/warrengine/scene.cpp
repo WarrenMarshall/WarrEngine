@@ -141,9 +141,7 @@ void scene::post_update()
 		entity->post_update_components();
 	}
 
-	int iteration_counter = 5;
-
-	while( iteration_counter > 0 )
+	for( auto iteration_counter = 0 ; iteration_counter < simple_collision_pos_iterations ; ++iteration_counter )
 	{
 		for( auto& scc : simple_collision.bodies )
 		{
@@ -158,15 +156,12 @@ void scene::post_update()
 
 		if( simple_collision.unique_entities_with_collisions.empty() )
 		{
-			iteration_counter = 0;
-			continue;
+			break;
 		}
 
 		// collision resolution
 
 		resolve_pending_simple_collisions();
-
-		iteration_counter--;
 	}
 
 }
