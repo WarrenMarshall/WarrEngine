@@ -193,51 +193,57 @@ void scene::process_simple_collisions()
 
 			c2Manifold m = {};
 
-			if( a_is_circle and b_is_circle )
+			if( a_is_circle )
 			{
-				// circle to circle
-
-				if( !c2CircletoCircle( circle_a, circle_b ) )
+				if( b_is_circle )
 				{
-					continue;
-				}
+					// circle to circle
 
-				c2CircletoCircleManifold( circle_a, circle_b, &m );
+					if( !c2CircletoCircle( circle_a, circle_b ) )
+					{
+						continue;
+					}
+
+					c2CircletoCircleManifold( circle_a, circle_b, &m );
+				}
+				else
+				{
+					// circle to aabb
+
+					if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
+					{
+						continue;
+					}
+
+					c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+				}
 			}
-			else if( !a_is_circle and b_is_circle )
+			else
 			{
-				// aabb to circle
-
-				if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
+				if( b_is_circle )
 				{
-					continue;
+					// aabb to circle
+
+					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
+					{
+						continue;
+					}
+
+					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+					m.n.x *= -1.f;
+					m.n.y *= -1.f;
 				}
-
-				c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
-				m.n.x *= -1.f;
-				m.n.y *= -1.f;
-			}
-			else if( a_is_circle and !b_is_circle )
-			{
-				// circle to aabb
-
-				if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
+				else
 				{
-					continue;
+					// aabb to aabb
+
+					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+					{
+						continue;
+					}
+
+					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
 				}
-
-				c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
-			}
-			else if( !a_is_circle and !b_is_circle )
-			{
-				// aabb to aabb
-
-				if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
-				{
-					continue;
-				}
-
-				c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
 			}
 
 			// add the collision to the pending collision list
@@ -311,40 +317,47 @@ bool scene::can_fit( entity* entity, vec2 desired_pos )
 
 			c2Manifold m = {};
 
-			if( a_is_circle and b_is_circle )
+			if( a_is_circle )
 			{
-				// circle to circle
-
-				if( c2CircletoCircle( circle_a, circle_b ) )
+				if( b_is_circle )
 				{
-					return false;
+					// circle to circle
+
+					if( c2CircletoCircle( circle_a, circle_b ) )
+					{
+						return false;
+					}
 				}
-			}
-			else if( !a_is_circle and b_is_circle )
-			{
-				// aabb to circle
-
-				if( c2CircletoAABB( circle_b, aabb_ws_a ) )
+				else
 				{
-					return false;
+					// circle to aabb
+
+					if( c2CircletoAABB( circle_a, aabb_ws_b ) )
+					{
+						return false;
+					}
 				}
-			}
-			else if( a_is_circle and !b_is_circle )
-			{
-				// circle to aabb
 
-				if( c2CircletoAABB( circle_a, aabb_ws_b ) )
+			}
+			else
+			{
+				if( b_is_circle )
 				{
-					return false;
+					// aabb to circle
+
+					if( c2CircletoAABB( circle_b, aabb_ws_a ) )
+					{
+						return false;
+					}
 				}
-			}
-			else if( !a_is_circle and !b_is_circle )
-			{
-				// aabb to aabb
-
-				if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+				else
 				{
-					return false;
+					// aabb to aabb
+
+					if( c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+					{
+						return false;
+					}
 				}
 			}
 		}
