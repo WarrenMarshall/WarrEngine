@@ -259,6 +259,7 @@ void scene::process_simple_collisions()
 	for( auto& e : entities_that_have_collisions )
 	{
 		e->process_simple_collisions();
+		e->apply_linear_forces();
 	}
 }
 

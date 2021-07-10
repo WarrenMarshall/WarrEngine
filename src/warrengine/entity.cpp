@@ -56,16 +56,24 @@ void entity::post_update_components()
 
 void entity::post_update()
 {
-	auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
+	apply_linear_forces();
+}
 
-	// if the linear force has exceeded a whole unit on either axis...
-
-	if( int_force.x or int_force.y )
+void entity::apply_linear_forces()
+{
+	for( auto& lf : linear_forces )
 	{
-		add_delta_pos( int_force );
-		linear_force_accum -= int_force;
-		//_tform.pos = vec2::snap_to_int( _tform.pos );
+		linear_force_accum += lf;
+		auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
+
+		if( int_force.x or int_force.y )
+		{
+			add_delta_pos( int_force );
+			linear_force_accum -= int_force;
+		}
 	}
+
+	linear_forces.clear();
 }
 
 // ----------------------------------------------------------------------------
@@ -166,7 +174,7 @@ void entity::update_transform_to_match_physics_components()
 
 void entity::add_linear_force( vec2 force )
 {
-	linear_force_accum += force;
+	linear_forces.push_back( force );
 }
 
 const war::transform* entity::get_transform()
@@ -209,7 +217,7 @@ transform* entity::set_scale( const float scale )
 transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
-	_tform.pos = vec2::snap_to_int( _tform.pos );
+	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -219,7 +227,7 @@ transform* entity::set_pos( const vec2& pos )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
-	_tform.pos = vec2::snap_to_int( _tform.pos );
+	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -326,15 +334,7 @@ void entity::process_simple_collisions()
 	for( auto& pc : pending_collisions )
 	{
 		vec2 desired_pos = get_transform()->pos + ( pc.normal * pc.depth );
-		if( parent_scene->can_fit( this, desired_pos ) )
-		{
-			// push outside of the entity we collided with (default behavior)
-			add_delta_pos( pc.normal * pc.depth );
-
-			if( pc.normal.x )	linear_force_accum.x = linear_force_accum.y;
-			if( pc.normal.y )	linear_force_accum.y = linear_force_accum.x;
-		}
-
+		add_linear_force( pc.normal * pc.depth );
 	}
 #endif
 

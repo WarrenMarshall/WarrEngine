@@ -2,12 +2,6 @@
 namespace war
 {
 
-struct linear_force
-{
-	vec2 dir;
-	float strength;
-};
-
 struct entity
 {
 #ifdef _DEBUG
@@ -15,9 +9,9 @@ struct entity
 	std::string debug_name;
 #endif
 
-	std::vector<linear_force> forces;
+	// the forces that have been added to the entity since the last time it was moved
+	std::vector<vec2> linear_forces;
 	void add_linear_force( vec2 force );
-
 	vec2 linear_force_accum = vec2::zero;
 
 	transform _tform;
@@ -63,6 +57,9 @@ struct entity
 	virtual void pre_update();
 	virtual void update();
 	virtual void post_update();
+
+	void apply_linear_forces();
+
 	virtual void pre_update_components();
 	virtual void update_components();
 	virtual void post_update_components();
