@@ -156,7 +156,7 @@ void scene::post_update()
 
 		// If nothing is intersecting anymore, we can abort the rest of the iterations
 
-		if( simple_collision.pending_queue.empty() )
+		if( simple_collision.unique_entities_with_collisions.empty() )
 		{
 			iteration_counter = 0;
 			continue;
@@ -173,8 +173,6 @@ void scene::post_update()
 
 void scene::add_simple_collisions_to_pending_queue()
 {
-	simple_collision.pending_queue.clear();
-
 	// process all the simple_collision_components against each other, and add
 	// any collisions and associated info into the collision queue
 
@@ -280,8 +278,8 @@ void scene::add_simple_collisions_to_pending_queue()
 			collision.normal = vec2( m.n.x, m.n.y );
 			collision.depth = m.depths[ 0 ];
 
-			simple_collision.pending_queue.push_back( collision );
 			simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
+			collision.entity_a->simple_collision.pending_queue.push_back( collision );
 		}
 	}
 }
@@ -292,14 +290,15 @@ void scene::resolve_pending_simple_collisions()
 	{
 		vec2 avg_delta = vec2::zero;
 
-		for( auto& pc : simple_collision.pending_queue )
+		for( auto& pc : entity->simple_collision.pending_queue )
 		{
 			avg_delta += -pc.normal * pc.depth;
 		}
 
-		avg_delta /= (float)simple_collision.pending_queue.size();
+		avg_delta /= (float)entity->simple_collision.pending_queue.size();
 
 		entity->add_delta_pos( avg_delta );
+		entity->simple_collision.pending_queue.clear();
 	}
 
 	simple_collision.unique_entities_with_collisions.clear();

@@ -152,6 +152,11 @@ struct entity
 	// the scene where this entity was spawned
 	scene* parent_scene = nullptr;
 
+	struct
+	{
+		std::vector<simple_collision::pending_collision> pending_queue;
+	} simple_collision;
+
 private:
 
 	life_cycle_mgr life_cycle;

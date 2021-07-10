@@ -30,7 +30,6 @@ struct scene
 	{
 		std::unique_ptr<simple_collision::world> world = nullptr;
 		std::vector<simple_collision_component*> bodies;
-		std::vector<simple_collision::pending_collision> pending_queue;
 		std::set<entity*> unique_entities_with_collisions;
 	} simple_collision;
 
