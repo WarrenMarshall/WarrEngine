@@ -169,13 +169,6 @@ void entity::update_physics_components_to_match_transform()
 			ec->body->SetAwake( true );
 		}
 	}
-
-	// simple collision primitives
-
-	for( auto& iter : get_components<simple_collision_component>() )
-	{
-		iter->update_to_match_parent_transform();
-	}
 }
 
 void entity::update_transform_to_match_physics_components()
@@ -250,7 +243,6 @@ transform* entity::set_scale( const float scale )
 transform* entity::set_pos( const vec2& pos )
 {
 	_tform.set_pos( pos );
-	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -260,7 +252,6 @@ transform* entity::set_pos( const vec2& pos )
 transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
-	//_tform.pos = vec2::snap_to_int( _tform.pos );
 
 	update_physics_components_to_match_transform();
 
@@ -300,82 +291,6 @@ void entity::on_box2d_collision_begin( box2d_physics::pending_collision& coll, e
 
 void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by )
 {
-}
-
-// entities have hit each other using simple collision checks
-
-void entity::process_simple_collisions()
-{
-	assert( false );
-#if 0
-
-	// avg normal direction with max depth
-	// BEST for gravity game
-
-	vec2 normal = {};
-	float max_depth = 0;
-
-	for( auto& pc : pending_collisions )
-	{
-		normal += pc.normal * pc.depth;
-		max_depth = glm::max( max_depth, pc.depth );
-	}
-
-	normal = vec2::normalize( normal );
-
-	vec2 desired_pos = get_transform()->pos + ( normal * max_depth );
-
-	if( parent_scene->can_fit( this, desired_pos ) )
-	{
-		set_pos( desired_pos );
-
-		if( normal.x )	linear_force_accum.x = linear_force_accum.y;
-		if( normal.y )	linear_force_accum.y = linear_force_accum.x;
-	}
-
-
-#endif
-
-#if 0
-
-	// average final position
-
-	vec2 new_pos = {};
-	vec2 normal = {};
-
-	for( auto& pc : pending_collisions )
-	{
-		// push outside of the entity we collided with (default behavior)
-		new_pos += get_transform()->pos + ( pc.normal * pc.depth );
-		normal += pc.normal;
-	}
-
-	new_pos /= (float)pending_collisions.size();
-	normal /= (float)pending_collisions.size();
-
-	if( normal.x )	linear_force_accum.x = -linear_force_accum.y;
-	if( normal.y )	linear_force_accum.y = -linear_force_accum.x;
-
-	if( parent_scene->can_fit( this, new_pos ) )
-	{
-		set_pos( new_pos );
-	}
-
-#endif
-
-
-	/*
-#if 1
-	for( auto& pc : simple_collision.pend )
-	{
-		vec2 desired_pos = get_transform()->pos + ( pc.normal * pc.depth );
-		add_linear_force( pc.normal * pc.depth );
-	}
-#endif
-
-	simple_collision.pending_queue.clear();
-	*/
-
 }
 
 bool entity::can_be_deleted()

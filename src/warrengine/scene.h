@@ -123,8 +123,7 @@ struct scene
 
 	void add_simple_collisions_to_pending_queue();
 	void resolve_pending_simple_collisions();
-	void process_simple_collisions();
-	bool can_fit( entity* entity, vec2 desired_pos );
+	std::set<entity*> unique_entities_with_collisions;
 
 	virtual void draw();
 	virtual void draw_ui();

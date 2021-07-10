@@ -148,7 +148,6 @@ struct entity
 
 	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
-	void process_simple_collisions();
 
 	// the scene where this entity was spawned
 	scene* parent_scene = nullptr;
