@@ -249,6 +249,8 @@ bool tile_map_asset::create()
 				}
 				else if( *key == "visible" )
 				{
+					assert( current_layer );
+
 					auto value = subtok.get_next_token();
 					assert( value.has_value() );
 
