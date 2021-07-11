@@ -871,7 +871,7 @@ void simple_collision_component::set_as_circle( float r )
 
 }
 
-c2Circle simple_collision_component::as_c2_circle()
+c2Circle simple_collision_component::as_simple_circle()
 {
 	c2Circle circle = {};
 
@@ -881,7 +881,7 @@ c2Circle simple_collision_component::as_c2_circle()
 	return circle;
 }
 
-c2AABB simple_collision_component::as_c2_aabb()
+c2AABB simple_collision_component::as_simple_aabb()
 {
 	return ws.aabb.to_c2AABB();
 }

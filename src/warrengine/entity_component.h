@@ -268,8 +268,8 @@ struct simple_collision_component : entity_component
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
 
-	c2Circle as_c2_circle();
-	c2AABB as_c2_aabb();
+	c2Circle as_simple_circle();
+	c2AABB as_simple_aabb();
 };
 
 // ----------------------------------------------------------------------------

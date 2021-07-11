@@ -193,11 +193,11 @@ void scene::add_simple_collisions_to_pending_queue()
 				continue;
 			}
 
-			auto aabb_ws_a = scc_a->as_c2_aabb();
-			auto aabb_ws_b = scc_b->as_c2_aabb();
+			auto aabb_ws_a = scc_a->as_simple_aabb();
+			auto aabb_ws_b = scc_b->as_simple_aabb();
 
-			c2Circle circle_a = scc_a->as_c2_circle();
-			c2Circle circle_b = scc_b->as_c2_circle();
+			c2Circle circle_a = scc_a->as_simple_circle();
+			c2Circle circle_b = scc_b->as_simple_circle();
 
 			bool a_is_circle = scc_a->type == simple_collision_type::circle;
 			bool b_is_circle = scc_b->type == simple_collision_type::circle;
@@ -269,9 +269,9 @@ void scene::add_simple_collisions_to_pending_queue()
 			collision.entity_b = scc_b->parent_entity;
 			collision.manifold = m;
 
-			collision.closest_point = { m.contact_points[ 0 ].x, m.contact_points[ 0 ].y };
+			collision.closest_point = vec2( m.contact_points[ 0 ].x, m.contact_points[ 0 ].y ).from_simple();
 			collision.normal = vec2( m.n.x, m.n.y );
-			collision.depth = m.depths[ 0 ];
+			collision.depth = from_simple( m.depths[ 0 ] );
 
 			simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
 			collision.entity_a->simple_collision.pending_queue.push_back( collision );

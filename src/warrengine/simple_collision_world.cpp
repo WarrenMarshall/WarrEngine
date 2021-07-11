@@ -8,7 +8,6 @@ namespace war::simple_collision
 world::world( vec2 gravity )
 	: gravity( gravity )
 {
-
 }
 
 void world::ray_cast( raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const
@@ -44,7 +43,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 		{
 			case simple_collision_type::circle:
 			{
-				if( c2RaytoCircle( ray, scc->as_c2_circle(), &raycast ) )
+				if( c2RaytoCircle( ray, scc->as_simple_circle(), &raycast ) )
 				{
 					raycast.t = from_simple( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
@@ -57,7 +56,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 
 			case simple_collision_type::aabb:
 			{
-				if( c2RaytoAABB( ray, scc->as_c2_aabb(), &raycast ) )
+				if( c2RaytoAABB( ray, scc->as_simple_aabb(), &raycast ) )
 				{
 					raycast.t = from_simple( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
