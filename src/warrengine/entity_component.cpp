@@ -893,15 +893,6 @@ void simple_collision_body_component::set_as_polygon( std::vector<vec2> vs )
 
 bool simple_collision_body_component::collides_with( simple_collision_body_component* scc, simple_collision::pending_collision& collision )
 {
-	c2AABB aabb_ws_a = as_simple_aabb();
-	c2AABB aabb_ws_b = scc->as_simple_aabb();
-
-	c2Circle circle_a = as_simple_circle();
-	c2Circle circle_b = scc->as_simple_circle();
-
-	c2Poly poly_a = as_simple_poly();
-	c2Poly poly_b = scc->as_simple_poly();
-
 	c2Manifold m = {};
 
 	switch( type )
@@ -913,6 +904,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				case simple_collision_type::circle:
 				{
 					// circle to circle
+
+					c2Circle circle_a = as_simple_circle();
+					c2Circle circle_b = scc->as_simple_circle();
 
 					if( !c2CircletoCircle( circle_a, circle_b ) )
 					{
@@ -927,6 +921,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				{
 					// circle to aabb
 
+					c2Circle circle_a = as_simple_circle();
+					c2AABB aabb_ws_b = scc->as_simple_aabb();
+
 					if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
 					{
 						return false;
@@ -939,6 +936,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				case simple_collision_type::polygon:
 				{
 					// circle to polygon
+
+					c2Circle circle_a = as_simple_circle();
+					c2Poly poly_b = scc->as_simple_poly();
 
 					if( !c2CircletoPoly( circle_a, &poly_b, nullptr ) )
 					{
@@ -960,6 +960,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				{
 					// aabb to circle
 
+					c2Circle circle_b = scc->as_simple_circle();
+					c2AABB aabb_ws_a = as_simple_aabb();
+
 					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
 					{
 						return false;
@@ -976,6 +979,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				{
 					// aabb to aabb
 
+					c2AABB aabb_ws_a = as_simple_aabb();
+					c2AABB aabb_ws_b = scc->as_simple_aabb();
+
 					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
 					{
 						return false;
@@ -988,6 +994,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				case simple_collision_type::polygon:
 				{
 					// aabb to polygon
+
+					c2AABB aabb_ws_a = as_simple_aabb();
+					c2Poly poly_b = scc->as_simple_poly();
 
 					if( !c2AABBtoPoly( aabb_ws_a, &poly_b, nullptr ) )
 					{
@@ -1009,6 +1018,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				{
 					// polygon to circle
 
+					c2Circle circle_b = scc->as_simple_circle();
+					c2Poly poly_a = as_simple_poly();
+
 					if( !c2CircletoPoly( circle_b, &poly_a, nullptr ) )
 					{
 						return false;
@@ -1025,6 +1037,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				{
 					// polygon to aabb
 
+					c2AABB aabb_ws_b = scc->as_simple_aabb();
+					c2Poly poly_a = as_simple_poly();
+
 					if( !c2AABBtoPoly( aabb_ws_b, &poly_a, nullptr ) )
 					{
 						return false;
@@ -1040,6 +1055,9 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 				case simple_collision_type::polygon:
 				{
 					// polygon to polygon
+
+					c2Poly poly_a = as_simple_poly();
+					c2Poly poly_b = scc->as_simple_poly();
 
 					if( !c2PolytoPoly( &poly_a, nullptr, &poly_b, nullptr ) )
 					{
