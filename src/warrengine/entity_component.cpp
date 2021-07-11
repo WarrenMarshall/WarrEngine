@@ -871,6 +871,90 @@ void simple_collision_component::set_as_circle( float r )
 
 }
 
+bool simple_collision_component::collides_with( simple_collision_component* scc, simple_collision::pending_collision& collision )
+{
+	auto aabb_ws_a = as_simple_aabb();
+	auto aabb_ws_b = scc->as_simple_aabb();
+
+	c2Circle circle_a = as_simple_circle();
+	c2Circle circle_b = scc->as_simple_circle();
+
+	bool a_is_circle = type == simple_collision_type::circle;
+	bool b_is_circle = scc->type == simple_collision_type::circle;
+
+	c2Manifold m = {};
+
+	if( a_is_circle )
+	{
+		if( b_is_circle )
+		{
+			// circle to circle
+
+			if( !c2CircletoCircle( circle_a, circle_b ) )
+			{
+				return false;
+			}
+
+			c2CircletoCircleManifold( circle_a, circle_b, &m );
+		}
+		else
+		{
+			// circle to aabb
+
+			if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
+			{
+				return false;
+			}
+
+			c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+		}
+	}
+	else
+	{
+		if( b_is_circle )
+		{
+			// aabb to circle
+
+			if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
+			{
+				return false;
+			}
+
+			c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+
+			// this is a weird cute_c2 thing, but since there's no
+			// c2AABBToCircle function, we have to do the test in
+			// reverse and then flip the normal in the manifold.
+
+			m.n.x *= -1.f;
+			m.n.y *= -1.f;
+		}
+		else
+		{
+			// aabb to aabb
+
+			if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+			{
+				return false;
+			}
+
+			c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+		}
+	}
+
+	// fill out the collision structure and return a positive result
+
+	collision.entity_a = parent_entity;
+	collision.entity_b = scc->parent_entity;
+	collision.manifold = m;
+
+	collision.closest_point = vec2( m.contact_points[ 0 ].x, m.contact_points[ 0 ].y ).from_simple();
+	collision.normal = vec2( m.n.x, m.n.y );
+	collision.depth = from_simple( m.depths[ 0 ] );
+
+	return true;
+}
+
 c2Circle simple_collision_component::as_simple_circle()
 {
 	c2Circle circle = {};

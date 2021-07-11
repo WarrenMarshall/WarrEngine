@@ -102,6 +102,9 @@ void scene::remove_dead_entities()
 
 void scene::update()
 {
+	// this list can change between updates, so it needs to be recreated each
+	// time. entities get deleted, created, change their collision masks, etc.
+
 	simple_collision.bodies.clear();
 
 	// update entities and components
@@ -141,6 +144,7 @@ void scene::post_update()
 		entity->post_update_components();
 	}
 
+	// loop through the collision
 	for( auto iteration_counter = 0 ; iteration_counter < simple_collision_pos_iterations ; ++iteration_counter )
 	{
 		for( auto& scc : simple_collision.bodies )
@@ -193,88 +197,16 @@ void scene::add_simple_collisions_to_pending_queue()
 				continue;
 			}
 
-			auto aabb_ws_a = scc_a->as_simple_aabb();
-			auto aabb_ws_b = scc_b->as_simple_aabb();
+			// test the simple_collision_components against each other. if there
+			// is an intersection, add the entity and the collision info into
+			// the queue.
 
-			c2Circle circle_a = scc_a->as_simple_circle();
-			c2Circle circle_b = scc_b->as_simple_circle();
-
-			bool a_is_circle = scc_a->type == simple_collision_type::circle;
-			bool b_is_circle = scc_b->type == simple_collision_type::circle;
-
-			c2Manifold m = {};
-
-			if( a_is_circle )
-			{
-				if( b_is_circle )
-				{
-					// circle to circle
-
-					if( !c2CircletoCircle( circle_a, circle_b ) )
-					{
-						continue;
-					}
-
-					c2CircletoCircleManifold( circle_a, circle_b, &m );
-				}
-				else
-				{
-					// circle to aabb
-
-					if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
-					{
-						continue;
-					}
-
-					c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
-				}
-			}
-			else
-			{
-				if( b_is_circle )
-				{
-					// aabb to circle
-
-					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
-					{
-						continue;
-					}
-
-					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
-
-					// this is a weird cute_c2 thing, but since there's no
-					// c2AABBToCircle function, we have to do the test in
-					// reverse and then flip the normal in the manifold.
-
-					m.n.x *= -1.f;
-					m.n.y *= -1.f;
-				}
-				else
-				{
-					// aabb to aabb
-
-					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
-					{
-						continue;
-					}
-
-					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
-				}
-			}
-
-			// add the collision to the pending collision list
 			simple_collision::pending_collision collision;
-
-			collision.entity_a = scc_a->parent_entity;
-			collision.entity_b = scc_b->parent_entity;
-			collision.manifold = m;
-
-			collision.closest_point = vec2( m.contact_points[ 0 ].x, m.contact_points[ 0 ].y ).from_simple();
-			collision.normal = vec2( m.n.x, m.n.y );
-			collision.depth = from_simple( m.depths[ 0 ] );
-
-			simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
-			collision.entity_a->simple_collision.pending_queue.push_back( collision );
+			if( scc_a->collides_with( scc_b, collision ) )
+			{
+				simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
+				collision.entity_a->simple_collision.pending_queue.push_back( collision );
+			}
 		}
 	}
 }

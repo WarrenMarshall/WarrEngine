@@ -197,8 +197,9 @@ constexpr int32 b2d_pos_iterations = 3;
 // ----------------------------------------------------------------------------
 
 constexpr float simple_collision_gravity_default = 9.81f;
-constexpr float simple_collision_pos_iterations = 20.f;
-constexpr float simple_world_scale_factor = 100.f;
+constexpr float simple_world_scale_factor = 1000.f;
+
+constexpr float simple_collision_pos_iterations = 6.f;
 
 [[nodiscard]] constexpr float to_simple( float v )
 {
