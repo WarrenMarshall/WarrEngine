@@ -875,8 +875,8 @@ c2Circle simple_collision_component::as_c2_circle()
 {
 	c2Circle circle = {};
 
-	circle.p = { ws.pos.x, ws.pos.y };
-	circle.r = ws.radius;
+	circle.p = { to_simple( ws.pos.x ), to_simple( ws.pos.y ) };
+	circle.r = to_simple( ws.radius );
 
 	return circle;
 }

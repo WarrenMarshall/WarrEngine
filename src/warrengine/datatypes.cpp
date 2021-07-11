@@ -289,10 +289,10 @@ c2AABB rect::to_c2AABB() const
 {
 	c2AABB aabb = {};
 
-	aabb.min.x = x;
-	aabb.min.y = y;
-	aabb.max.x = x + w;
-	aabb.max.y = y + h;
+	aabb.min.x = to_simple( x );
+	aabb.min.y = to_simple( y );
+	aabb.max.x = to_simple( x + w );
+	aabb.max.y = to_simple( y + h  );
 
 	return aabb;
 }
@@ -490,7 +490,6 @@ vec2::vec2( const b2Vec2& b2v2 )
 vec2::vec2( float v )
 	: x( v ), y( v )
 {
-
 }
 
 b2Vec2 vec2::to_b2Vec2() const
@@ -500,7 +499,7 @@ b2Vec2 vec2::to_b2Vec2() const
 
 c2v vec2::to_c2v() const
 {
-	c2v v = { x, y };
+	c2v v = { war::to_simple( x ), war::to_simple( y ) };
 	return v;
 }
 
@@ -512,6 +511,16 @@ vec2 vec2::to_box2d() const
 vec2 vec2::from_box2d() const
 {
 	return vec2( war::from_box2d( x ), war::from_box2d( y ) );
+}
+
+vec2 vec2::to_simple() const
+{
+	return vec2( war::to_simple( x ), war::to_simple( y ) );
+}
+
+vec2 vec2::from_simple() const
+{
+	return vec2( war::from_simple( x ), war::from_simple( y ) );
 }
 
 bool vec2::operator==( const vec2& v ) const

@@ -172,7 +172,6 @@ constexpr float zdepth_max = 50000.f;
 // ----------------------------------------------------------------------------
 
 constexpr float b2d_gravity_default = 9.81f;
-constexpr float simple_collision_gravity_default = 9.81f;
 constexpr float b2d_world_scale_factor = 100.f;
 
 // values yoinked from : https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_hello.html
@@ -197,7 +196,19 @@ constexpr int32 b2d_pos_iterations = 3;
 // simple collision constants and helpers
 // ----------------------------------------------------------------------------
 
-constexpr float simple_collision_pos_iterations = 6.f;
+constexpr float simple_collision_gravity_default = 9.81f;
+constexpr float simple_collision_pos_iterations = 20.f;
+constexpr float simple_world_scale_factor = 100.f;
+
+[[nodiscard]] constexpr float to_simple( float v )
+{
+	return ( v / simple_world_scale_factor );
+}
+
+[[nodiscard]] constexpr float from_simple( float v )
+{
+	return ( v * simple_world_scale_factor );
+}
 
 // ----------------------------------------------------------------------------
 

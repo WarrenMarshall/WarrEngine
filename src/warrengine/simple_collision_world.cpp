@@ -18,11 +18,11 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 	auto ray_length = delta.get_size_squared();
 
 	c2Ray ray = {};
-	ray.p.x = start.x;
-	ray.p.y = start.y;
+	ray.p.x = to_simple( start.x );
+	ray.p.y = to_simple( start.y );
 	ray.d.x = ray_normal.x;
 	ray.d.y = ray_normal.y;
-	ray.t = ray_length;
+	ray.t = to_simple( ray_length );
 
 	for( auto scc : entity->parent_scene->simple_collision.bodies )
 	{
@@ -46,6 +46,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 			{
 				if( c2RaytoCircle( ray, scc->as_c2_circle(), &raycast ) )
 				{
+					raycast.t = from_simple( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
 						return;
@@ -58,6 +59,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 			{
 				if( c2RaytoAABB( ray, scc->as_c2_aabb(), &raycast ) )
 				{
+					raycast.t = from_simple( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
 						return;

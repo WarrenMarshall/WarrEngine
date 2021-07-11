@@ -613,7 +613,6 @@ bool ui_mgr::is_mouse_inside( rect& rc )
 	auto viewport_pos = coord_system::window_to_viewport_pos( g_engine->input.mouse_window_pos );
 	auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
 
-	//return c2AABBtoPoint( rc.to_c2AABB(), ui_pos.to_c2v() );
 	return rc.contains_point( ui_pos );
 }
 

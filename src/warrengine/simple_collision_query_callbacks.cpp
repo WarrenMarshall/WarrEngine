@@ -28,7 +28,7 @@ float raycast_closest::report_component( const entity* entity, const c2Ray& ray,
 {
 	hit_something = true;
 
-	auto start_of_trace = vec2( ray.p.x, ray.p.y );
+	auto start_of_trace = vec2( ray.p.x, ray.p.y ).from_simple();
 	auto trace_normal = vec2( ray.d.x, ray.d.y );
 
 	if( raycast.t < result.dist )
@@ -66,7 +66,7 @@ float raycast_all::report_component( const entity* entity, const c2Ray& ray, sim
 {
 	hit_something = true;
 
-	auto start_of_trace = vec2( ray.p.x, ray.p.y );
+	auto start_of_trace = vec2( ray.p.x, ray.p.y ).from_simple();;
 	auto trace_normal = vec2( ray.d.x, ray.d.y );
 
 	raycast_hit hit;
@@ -79,6 +79,9 @@ float raycast_all::report_component( const entity* entity, const c2Ray& ray, sim
 	hit.entity = entity;
 	hit.scc = scc;
 
+	// convert back to normal space
+
+	//hit.pos = hit.pos.from_simple();
 	results.push_back( hit );
 
 	// a raycast_all always returns 1 because we want a complete list of everything that got hit
