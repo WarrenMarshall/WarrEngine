@@ -9,10 +9,12 @@ struct entity
 	std::string debug_name;
 #endif
 
-	// the forces that have been added to the entity since the last time it was moved
-	std::vector<vec2> linear_forces;
-	void add_linear_force( vec2 force );
-	vec2 linear_force_accum = vec2::zero;
+	vec2 velocity = vec2::zero;
+	bool in_air = false;
+	void add_force( vec2 force );
+	void set_force_x( float force );
+	void set_force_y( float force );
+	bool affected_by_gravity = false;
 
 	transform _tform;
 
@@ -58,7 +60,7 @@ struct entity
 	virtual void update();
 	virtual void post_update();
 
-	void apply_linear_forces();
+	void apply_forces();
 
 	virtual void pre_update_components();
 	virtual void update_components();

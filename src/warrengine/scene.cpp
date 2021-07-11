@@ -211,6 +211,12 @@ void scene::add_simple_collisions_to_pending_queue()
 	}
 }
 
+add sensor to player and see if you can detect the ground
+add sensor to playerand see if you can detect the ground
+add sensor to playerand see if you can detect the ground
+add sensor to playerand see if you can detect the ground
+add sensor to playerand see if you can detect the ground
+
 void scene::resolve_pending_simple_collisions()
 {
 	for( auto& entity : simple_collision.unique_entities_with_collisions )
@@ -220,6 +226,15 @@ void scene::resolve_pending_simple_collisions()
 		for( auto& pc : entity->simple_collision.pending_queue )
 		{
 			avg_delta += -pc.normal * pc.depth;
+
+			// when landing on the ground, kill any velocity on the Y axis. this
+			// stops it from accruing to the maximum as you run around on flat
+			// geo.
+
+			if( glm::abs( pc.normal.y ) > 0.75f )
+			{
+				entity->velocity.y = 0.0f;
+			}
 		}
 
 		avg_delta /= (float)entity->simple_collision.pending_queue.size();

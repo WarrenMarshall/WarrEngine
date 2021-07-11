@@ -166,6 +166,7 @@ constexpr float zdepth_max = 50000.f;
 }
 
 [[nodiscard]] float snap_to_int( float val );
+[[nodiscard]] float lerp( float a, float b, float lerp_factor );
 
 // ----------------------------------------------------------------------------
 // physics constants and helpers

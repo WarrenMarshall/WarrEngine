@@ -17,6 +17,12 @@ void entity::pre_update()
 
 void entity::update()
 {
+	if( affected_by_gravity )
+	{
+		add_force( { 0.f, fixed_time_step::per_second( simple_collision_gravity_default ) } );
+	}
+
+	apply_forces();
 }
 
 void entity::pre_update_components()
@@ -56,57 +62,53 @@ void entity::post_update_components()
 
 void entity::post_update()
 {
-	apply_linear_forces();
+//	apply_forces();
 }
 
-void entity::apply_linear_forces()
+constexpr float max_impulse_x = 1.5f;
+constexpr float max_impulse_y = 10.f;
+
+void entity::add_force( vec2 force )
+{
+	velocity += force;
+	//velocity.x = glm::clamp( velocity.x, -max_impulse_x, max_impulse_x );
+	velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
+}
+
+void entity::set_force_x( float force )
+{
+	velocity.x = force;
+}
+
+void entity::set_force_y( float force )
+{
+	velocity.y = force;
+}
+
+void entity::apply_forces()
 {
 #if 1
-	for( auto& lf : linear_forces )
-	{
-		linear_force_accum += lf;
-		auto signs = vec2( glm::sign( linear_force_accum.x ), glm::sign( linear_force_accum.y ) );
-		auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
-
-		linear_force_accum -= int_force;
-
-		while( int_force.x )
-		{
-			auto desired_pos = get_transform()->pos + vec2( signs.x, 0.f );
-			//if( parent_scene->can_fit( this, desired_pos ) )
-			{
-				set_pos( desired_pos );
-			}
-			int_force.x -= 1.0f * signs.x;
-		}
-
-		while( int_force.y )
-		{
-			auto desired_pos = get_transform()->pos + vec2( 0.f, signs.y );
-			//if( parent_scene->can_fit( this, desired_pos ) )
-			{
-				set_pos( desired_pos );
-			}
-			int_force.y -= 1.0f * signs.y;
-		}
-	}
-
-	linear_forces.clear();
+	add_delta_pos( velocity );
 #else
-	for( auto& lf : linear_forces )
-	{
-		linear_force_accum += lf;
-		auto int_force = vec2( (int)linear_force_accum.x, (int)linear_force_accum.y );
+	vec2 int_impulse = { (int)velocity.x, (int)velocity.y };
+	vec2 signs = { glm::sign( int_impulse.x ), glm::sign( int_impulse.y ) };
 
-		if( int_force.x or int_force.y )
-		{
-			add_delta_pos( int_force );
-			linear_force_accum -= int_force;
-		}
+	while( int_impulse.x )
+	{
+		add_delta_pos( { signs.x, 0.0f } );
+		int_impulse.x -= signs.x;
 	}
 
-	linear_forces.clear();
+	while( int_impulse.y )
+	{
+		add_delta_pos( { 0.0f, signs.y } );
+		int_impulse.y -= signs.y;
+	}
+
 #endif
+
+	velocity.x = lerp( velocity.x, 0.0f, 0.3f );
+	//velocity.y = lerp( velocity.y, 0.0f, 0.1f );
 }
 
 // ----------------------------------------------------------------------------
@@ -196,11 +198,6 @@ void entity::update_transform_to_match_physics_components()
 			break;
 		}
 	}
-}
-
-void entity::add_linear_force( vec2 force )
-{
-	linear_forces.push_back( force );
 }
 
 const war::transform* entity::get_transform()

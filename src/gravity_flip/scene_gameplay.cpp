@@ -13,7 +13,9 @@ void scene_gameplay::draw_ui()
 {
 	scene::draw_ui();
 
-	render::draw_string( std::format( "{:.1f}, {:.1f}", player->get_transform()->pos.x, player->get_transform()->pos.y ), vec2( 16.f, 32.f ) );
+	render::draw_string( std::format( "{:.1f}, {:.1f}",
+		player->velocity.x, player->velocity.y ), vec2( 8.f, 8.f ) );
+	render::draw_string( std::format( "In air : {}", player->in_air ), vec2( 8.f, 18.f ) );
 }
 
 void scene_gameplay::draw()
@@ -36,6 +38,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			auto e = scene->add_entity<entity>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+			e->affected_by_gravity = true;
 
 			{
 				auto ec = e->add_component<sprite_component>();
@@ -43,8 +46,8 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			}
 			{
 				auto ec = e->add_component<simple_collision_body_component>();
-				ec->set_as_centered_box( 16.f, 16.f );
-				//ec->set_as_circle( 8.0f );
+				//ec->set_as_centered_box( 16.f, 16.f );
+				ec->set_as_circle( 8.0f );
 /*
 				ec->set_as_polygon(
 					{
@@ -102,7 +105,7 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
 		auto pos_a = player->get_transform()->pos;
-		player->add_linear_force( evt->delta * fixed_time_step::per_second( 100.f ) );
+		player->set_force_x( evt->delta.x * 2.0f );
 		auto pos_b = player->get_transform()->pos;
 
 		assert( pos_a == pos_b );
@@ -115,8 +118,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a )
 	{
-		log( "{:.1f}, {:.1f}", player->get_transform()->pos.x, player->get_transform()->pos.y );
-		//player->fire();
+		player->add_force( { 0.f, -4.0f } );
 		return true;
 	}
 
