@@ -271,7 +271,7 @@ struct simple_collision_body_component : entity_component
 	void set_as_box( float w, float h );
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
-	void set_as_polygon( std::vector<vec2>& verts );
+	void set_as_polygon( std::vector<vec2> verts );
 
 	bool collides_with( simple_collision_body_component* scc, simple_collision::pending_collision& collision );
 

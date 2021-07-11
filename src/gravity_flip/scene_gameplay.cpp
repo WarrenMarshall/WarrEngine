@@ -44,7 +44,17 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			{
 				auto ec = e->add_component<simple_collision_body_component>();
 				//ec->set_as_centered_box( 16.f, 16.f );
-				ec->set_as_circle( 8.0f );
+				//ec->set_as_circle( 8.0f );
+				ec->set_as_polygon(
+					{
+						vec2( -8.f, -8.f ),
+						vec2( +4.f, -8.f ),
+						vec2( +12.f, 0.f ),
+						vec2( +4.f, +8.f ),
+						vec2( -8.f, +8.f ),
+						vec2( -16.f, 0.f )
+					}
+				);
 				ec->set_collision_flags( coll_player, coll_world | coll_player );
 				ec->rs_opt.color = make_color( color::orange );
 			}

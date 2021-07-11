@@ -884,7 +884,7 @@ void simple_collision_body_component::set_as_circle( float r )
 	radius = r;
 }
 
-void simple_collision_body_component::set_as_polygon( std::vector<vec2>& vs )
+void simple_collision_body_component::set_as_polygon( std::vector<vec2> vs )
 {
 	type = simple_collision_type::polygon;
 	verts.reserve( verts.size() );
@@ -912,6 +912,8 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 			{
 				case simple_collision_type::circle:
 				{
+					// circle to circle
+
 					if( !c2CircletoCircle( circle_a, circle_b ) )
 					{
 						return false;
@@ -965,10 +967,6 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 
 					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
 
-					// this is a weird cute_c2 thing, but since there's no
-					// c2AABBToCircle function, we have to do the test in
-					// reverse and then flip the normal in the manifold.
-
 					m.n.x *= -1.f;
 					m.n.y *= -1.f;
 				}
@@ -989,6 +987,14 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 
 				case simple_collision_type::polygon:
 				{
+					// aabb to polygon
+
+					if( !c2AABBtoPoly( aabb_ws_a, &poly_b, nullptr ) )
+					{
+						return false;
+					}
+
+					c2AABBtoPolyManifold( aabb_ws_a, &poly_b, nullptr, &m );
 				}
 				break;
 			}
@@ -1001,16 +1007,46 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 			{
 				case simple_collision_type::circle:
 				{
+					// polygon to circle
+
+					if( !c2CircletoPoly( circle_b, &poly_a, nullptr ) )
+					{
+						return false;
+					}
+
+					c2CircletoPolyManifold( circle_b, &poly_a, nullptr, &m );
+
+					m.n.x *= -1.f;
+					m.n.y *= -1.f;
 				}
 				break;
 
 				case simple_collision_type::aabb:
 				{
+					// polygon to aabb
+
+					if( !c2AABBtoPoly( aabb_ws_b, &poly_a, nullptr ) )
+					{
+						return false;
+					}
+
+					c2AABBtoPolyManifold( aabb_ws_b, &poly_a, nullptr, &m );
+
+					m.n.x *= -1.f;
+					m.n.y *= -1.f;
 				}
 				break;
 
 				case simple_collision_type::polygon:
 				{
+					// polygon to polygon
+
+					if( !c2PolytoPoly( &poly_a, nullptr, &poly_b, nullptr ) )
+					{
+						return false;
+					}
+
+					c2PolytoPolyManifold( &poly_a, nullptr, &poly_b, nullptr, &m );
 				}
 				break;
 			}
