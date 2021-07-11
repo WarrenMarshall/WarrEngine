@@ -34,7 +34,7 @@ struct render_state_optional;
 struct scene;
 struct scene_mgr;
 struct shader;
-struct simple_collision_component;
+struct simple_collision_body_component;
 struct world;
 struct texture_asset;
 struct timeline;

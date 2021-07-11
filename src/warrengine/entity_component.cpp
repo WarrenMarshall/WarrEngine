@@ -781,12 +781,12 @@ void mesh_component::draw()
 
 // ----------------------------------------------------------------------------
 
-simple_collision_component::simple_collision_component( entity* parent_entity )
+simple_collision_body_component::simple_collision_body_component( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-void simple_collision_component::draw()
+void simple_collision_body_component::draw()
 {
 	// optional debug mode drawing
 
@@ -804,11 +804,15 @@ void simple_collision_component::draw()
 			case simple_collision_type::aabb:
 				render::draw_rect( aabb );
 				break;
+
+			case simple_collision_type::polygon:
+				render::draw_lines( verts );
+				break;
 		}
 	}
 }
 
-void simple_collision_component::update_to_match_parent_transform()
+void simple_collision_body_component::update_to_match_parent_transform()
 {
 	auto scale = ( parent_entity->get_transform()->scale * get_transform()->scale );
 
@@ -838,12 +842,23 @@ void simple_collision_component::update_to_match_parent_transform()
 			ws.aabb.h = aabb.h * scale;
 		}
 		break;
+
+		case simple_collision_type::polygon:
+		{
+			ws.verts.clear();
+			for( auto& v : verts )
+			{
+				auto ws_v = g_engine->render_api.top_matrix->transform_vec2( v );
+				ws.verts.push_back( ws_v * scale );
+			}
+		}
+		break;
 	}
 }
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
 
-void simple_collision_component::set_as_box( float w, float h )
+void simple_collision_body_component::set_as_box( float w, float h )
 {
 	type = simple_collision_type::aabb;
 	aabb.x = 0.f;
@@ -854,7 +869,7 @@ void simple_collision_component::set_as_box( float w, float h )
 
 // sets the dimensions of the collision box, centered around the components position.
 
-void simple_collision_component::set_as_centered_box( float w, float h )
+void simple_collision_body_component::set_as_centered_box( float w, float h )
 {
 	type = simple_collision_type::aabb;
 	aabb.x = -w / 2.f;
@@ -863,83 +878,148 @@ void simple_collision_component::set_as_centered_box( float w, float h )
 	aabb.h = h;
 }
 
-void simple_collision_component::set_as_circle( float r )
+void simple_collision_body_component::set_as_circle( float r )
 {
 	type = simple_collision_type::circle;
 	radius = r;
-
-
 }
 
-bool simple_collision_component::collides_with( simple_collision_component* scc, simple_collision::pending_collision& collision )
+void simple_collision_body_component::set_as_polygon( std::vector<vec2>& vs )
 {
-	auto aabb_ws_a = as_simple_aabb();
-	auto aabb_ws_b = scc->as_simple_aabb();
+	type = simple_collision_type::polygon;
+	verts.reserve( verts.size() );
+	verts.insert( verts.end(), vs.begin(), vs.end() );
+}
+
+bool simple_collision_body_component::collides_with( simple_collision_body_component* scc, simple_collision::pending_collision& collision )
+{
+	c2AABB aabb_ws_a = as_simple_aabb();
+	c2AABB aabb_ws_b = scc->as_simple_aabb();
 
 	c2Circle circle_a = as_simple_circle();
 	c2Circle circle_b = scc->as_simple_circle();
 
-	bool a_is_circle = type == simple_collision_type::circle;
-	bool b_is_circle = scc->type == simple_collision_type::circle;
+	c2Poly poly_a = as_simple_poly();
+	c2Poly poly_b = scc->as_simple_poly();
 
 	c2Manifold m = {};
 
-	if( a_is_circle )
+	switch( type )
 	{
-		if( b_is_circle )
+		case simple_collision_type::circle:
 		{
-			// circle to circle
-
-			if( !c2CircletoCircle( circle_a, circle_b ) )
+			switch( scc->type )
 			{
-				return false;
-			}
+				case simple_collision_type::circle:
+				{
+					if( !c2CircletoCircle( circle_a, circle_b ) )
+					{
+						return false;
+					}
 
-			c2CircletoCircleManifold( circle_a, circle_b, &m );
+					c2CircletoCircleManifold( circle_a, circle_b, &m );
+				}
+				break;
+
+				case simple_collision_type::aabb:
+				{
+					// circle to aabb
+
+					if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
+					{
+						return false;
+					}
+
+					c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+				}
+				break;
+
+				case simple_collision_type::polygon:
+				{
+					// circle to polygon
+
+					if( !c2CircletoPoly( circle_a, &poly_b, nullptr ) )
+					{
+						return false;
+					}
+
+					c2CircletoPolyManifold( circle_a, &poly_b, nullptr, &m );
+				}
+				break;
+			}
 		}
-		else
+		break;
+
+		case simple_collision_type::aabb:
 		{
-			// circle to aabb
-
-			if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
+			switch( scc->type )
 			{
-				return false;
-			}
+				case simple_collision_type::circle:
+				{
+					// aabb to circle
 
-			c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
+					{
+						return false;
+					}
+
+					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
+
+					// this is a weird cute_c2 thing, but since there's no
+					// c2AABBToCircle function, we have to do the test in
+					// reverse and then flip the normal in the manifold.
+
+					m.n.x *= -1.f;
+					m.n.y *= -1.f;
+				}
+				break;
+
+				case simple_collision_type::aabb:
+				{
+					// aabb to aabb
+
+					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
+					{
+						return false;
+					}
+
+					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+				}
+				break;
+
+				case simple_collision_type::polygon:
+				{
+				}
+				break;
+			}
 		}
-	}
-	else
-	{
-		if( b_is_circle )
+		break;
+
+		case simple_collision_type::polygon:
 		{
-			// aabb to circle
-
-			if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
+			switch( scc->type )
 			{
-				return false;
+				case simple_collision_type::circle:
+				{
+				}
+				break;
+
+				case simple_collision_type::aabb:
+				{
+				}
+				break;
+
+				case simple_collision_type::polygon:
+				{
+				}
+				break;
 			}
-
-			c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
-
-			// this is a weird cute_c2 thing, but since there's no
-			// c2AABBToCircle function, we have to do the test in
-			// reverse and then flip the normal in the manifold.
-
-			m.n.x *= -1.f;
-			m.n.y *= -1.f;
 		}
-		else
-		{
-			// aabb to aabb
+		break;
 
-			if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
-			{
-				return false;
-			}
-
-			c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
-		}
+		default:
+			assert( false );
+			break;
 	}
 
 	// fill out the collision structure and return a positive result
@@ -955,7 +1035,7 @@ bool simple_collision_component::collides_with( simple_collision_component* scc,
 	return true;
 }
 
-c2Circle simple_collision_component::as_simple_circle()
+c2Circle simple_collision_body_component::as_simple_circle()
 {
 	c2Circle circle = {};
 
@@ -965,9 +1045,24 @@ c2Circle simple_collision_component::as_simple_circle()
 	return circle;
 }
 
-c2AABB simple_collision_component::as_simple_aabb()
+c2AABB simple_collision_body_component::as_simple_aabb()
 {
 	return ws.aabb.to_c2AABB();
+}
+
+c2Poly simple_collision_body_component::as_simple_poly()
+{
+	c2Poly poly = {};
+	poly.count = (int)ws.verts.size();
+
+	for( auto x = 0 ; x < ws.verts.size() ; ++x )
+	{
+		poly.verts[ x ] = { to_simple( ws.verts[ x ].x ), to_simple( ws.verts[ x ].y ) };
+	}
+
+	c2MakePoly( &poly );
+
+	return poly;
 }
 
 // ----------------------------------------------------------------------------
@@ -984,7 +1079,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 
 	// remove any existing collision components
 
-	auto existing_components = parent_entity->get_components<simple_collision_component>();
+	auto existing_components = parent_entity->get_components<simple_collision_body_component>();
 
 	for( auto& component : existing_components )
 	{
@@ -1006,20 +1101,29 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 			{
 				switch( obj.collision_type )
 				{
-					case collision_type::box:
+					case simple_collision_type::aabb:
 					{
-						auto ec = parent_entity->add_component<simple_collision_component>();
+						auto ec = parent_entity->add_component<simple_collision_body_component>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 						ec->set_as_box( obj.rc.w, obj.rc.h );
 						ec->set_collision_flags( collision_mask, collides_with_mask );
 					}
 					break;
 
-					case collision_type::circle:
+					case simple_collision_type::circle:
 					{
-						auto ec = parent_entity->add_component<simple_collision_component>();
+						auto ec = parent_entity->add_component<simple_collision_body_component>();
 						ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
 						ec->set_as_circle( obj.radius );
+						ec->set_collision_flags( collision_mask, collides_with_mask );
+					}
+					break;
+
+					case simple_collision_type::polygon:
+					{
+						auto ec = parent_entity->add_component<simple_collision_body_component>();
+						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+						ec->set_as_polygon( obj.vertices );
 						ec->set_collision_flags( collision_mask, collides_with_mask );
 					}
 					break;

@@ -29,7 +29,7 @@ struct scene
 	struct
 	{
 		std::unique_ptr<simple_collision::world> world = nullptr;
-		std::vector<simple_collision_component*> bodies;
+		std::vector<simple_collision_body_component*> bodies;
 		std::set<entity*> unique_entities_with_collisions;
 	} simple_collision;
 

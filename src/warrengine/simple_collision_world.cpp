@@ -66,6 +66,20 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 				}
 			}
 			break;
+
+			case simple_collision_type::polygon:
+			{
+				auto poly = scc->as_simple_poly();
+				if( c2RaytoPoly( ray, &poly, nullptr, &raycast ) )
+				{
+					raycast.t = from_simple( raycast.t );
+					if( !callback->report_component( entity, ray, scc, raycast ) )
+					{
+						return;
+					}
+				}
+			}
+			break;
 		}
 	}
 }

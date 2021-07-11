@@ -242,10 +242,10 @@ struct mesh_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct simple_collision_component : entity_component
+struct simple_collision_body_component : entity_component
 {
-	simple_collision_component() = delete;
-	simple_collision_component( entity* parent_entity );
+	simple_collision_body_component() = delete;
+	simple_collision_body_component( entity* parent_entity );
 
 	e_simple_collision_type type = simple_collision_type::circle;
 
@@ -255,11 +255,15 @@ struct simple_collision_component : entity_component
 	// circle
 	float radius = 0.f;
 
+	// verts
+	std::vector<vec2> verts;
+
 	struct
 	{
 		rect aabb = {};
 		vec2 pos = {};
 		float radius = 0.f;
+		std::vector<vec2> verts;
 	} ws;
 
 	virtual void draw() override;
@@ -267,11 +271,13 @@ struct simple_collision_component : entity_component
 	void set_as_box( float w, float h );
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
+	void set_as_polygon( std::vector<vec2>& verts );
 
-	bool collides_with( simple_collision_component* scc, simple_collision::pending_collision& collision );
+	bool collides_with( simple_collision_body_component* scc, simple_collision::pending_collision& collision );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
+	c2Poly as_simple_poly();
 };
 
 // ----------------------------------------------------------------------------

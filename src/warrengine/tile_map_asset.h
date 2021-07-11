@@ -36,9 +36,10 @@ struct tile_map_asset final : asset
 
 	struct object
 	{
-		e_collision_type collision_type = collision_type::box;
+		e_simple_collision_type collision_type = simple_collision_type::aabb;
 		rect rc = {};
 		float radius = 0.f;
+		std::vector<vec2> vertices;
 	};
 
 	// object group

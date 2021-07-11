@@ -209,11 +209,106 @@ bool tile_map_asset::create()
 				}
 			}
 		}
+		else if( line.starts_with( "<object " ) )
+		{
+			assert( current_object_group );
+			current_object_group->objects.emplace_back();
+			current_object = &current_object_group->objects.back();
+
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+
+				if( *key == "x" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.x = text_parser::float_from_str( value );
+				}
+				else if( *key == "y" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.y = text_parser::float_from_str( value );
+				}
+				else if( *key == "width" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.w = text_parser::float_from_str( value );
+				}
+				else if( *key == "height" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.h = text_parser::float_from_str( value );
+				}
+				else if( *key == "visible" )
+				{
+					auto value = subtok.get_next_token();
+					assert( value.has_value() );
+
+					current_layer->is_visible = text_parser::bool_from_str( *value );
+				}
+			}
+		}
+		else if( line.starts_with( "<polygon " ) )
+		{
+			assert( current_object_group );
+			assert( current_object );
+
+			current_object->collision_type = simple_collision_type::polygon;
+
+			tokenizer tok( line, " ", true );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+
+				if( *key == "points" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					value = value.substr( 1, value.size() - 4 );
+
+					tokenizer vert_tok( value, " " );
+
+					while( !vert_tok.is_eos() )
+					{
+						tokenizer xy_tok( *vert_tok.get_next_token(), "," );
+
+						auto x = string_util::to_float( std::string( *xy_tok.get_next_token() ) );
+						auto y = string_util::to_float( std::string( *xy_tok.get_next_token() ) );
+
+						current_object->vertices.emplace_back( vec2( x, y ) );
+					}
+
+				#ifdef _DEBUG
+					if( current_object->vertices.size() > C2_MAX_POLYGON_VERTS )
+					{
+						// there is a polygon collision objects in the tile map
+						// with more vertuces than the simple collision system
+						// is configured to handle. either increase
+						// C2_MAX_POLYGON_VERTS or edit the collider to be
+						// within limits.
+
+						log_warning( "too many vertices in polygon shape : {} (max: {})",
+							current_object->vertices.size(), C2_MAX_POLYGON_VERTS );
+					}
+				#endif
+				}
+			}
+		}
 		else if( line.starts_with( "<ellipse" ) )
 		{
 			assert( current_object );
 
-			current_object->collision_type = collision_type::circle;
+			current_object->collision_type = simple_collision_type::circle;
 			current_object->radius = current_object->rc.w / 2.0f;
 		}
 		else if( line.starts_with( "</object" ) )

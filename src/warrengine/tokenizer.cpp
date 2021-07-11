@@ -5,8 +5,10 @@
 namespace war
 {
 
-tokenizer::tokenizer( std::string_view string_buffer, std::string_view delim )
+tokenizer::tokenizer( std::string_view string_buffer, std::string_view delim, bool keep_quoted_strings )
+	: keep_quoted_strings( keep_quoted_strings )
 {
+
 	init( string_buffer, delim );
 }
 
@@ -22,12 +24,15 @@ void tokenizer::init( std::string_view string_buffer, std::string_view delim )
 // breaks up the original string buffer into a set of delimited
 // string views for easy access later.
 //
-// NOTE : text inside of a bracket set "[]" is kept whole as a single token.
+// - text inside of a bracket set "[]" is kept whole as a single token.
+// - if NOT delimiting on quotation marks, then keep text inside of quotation marks as a single token.
 
 void tokenizer::preprocess()
 {
 	size_t start = 0, end = 0;
 	auto bracket_depth = 0;
+
+	bool inside_quotation_marks = false;
 
 	tokens.clear();
 
@@ -35,7 +40,10 @@ void tokenizer::preprocess()
 	{
 		auto pos = delim.find_first_of( ch );
 
-		if( pos != std::string::npos and bracket_depth == 0 )
+		if( pos != std::string::npos
+			and bracket_depth == 0
+			and ( !keep_quoted_strings or ( keep_quoted_strings and !inside_quotation_marks ) )
+			)
 		{
 			if( end > start )
 			{
@@ -43,6 +51,10 @@ void tokenizer::preprocess()
 			}
 
 			start = end + 1;
+		}
+		else if( ch == '"' )
+		{
+			inside_quotation_marks = !inside_quotation_marks;
 		}
 		else if( ch == '[' )
 		{

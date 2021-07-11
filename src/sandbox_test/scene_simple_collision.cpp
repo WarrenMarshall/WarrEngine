@@ -38,7 +38,7 @@ void scene_simple_collision::pushed()
 			ec->init( "anim_player_run" );
 		}
 		{
-			auto ec = e->add_component<simple_collision_component>();
+			auto ec = e->add_component<simple_collision_body_component>();
 			//ec->set_as_centered_box( 24.f, 24.f );
 			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
@@ -71,7 +71,7 @@ void scene_simple_collision::pushed()
 		for( int x = 0 ; x < 24 ; ++x )
 		{
 			{
-				auto ec = e->add_component<simple_collision_component>();
+				auto ec = e->add_component<simple_collision_body_component>();
 				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
 				ec->get_transform()->set_pos(
 					{
@@ -87,7 +87,7 @@ void scene_simple_collision::pushed()
 		for( int x = 0 ; x < 24 ; ++x )
 		{
 			{
-				auto ec = e->add_component<simple_collision_component>();
+				auto ec = e->add_component<simple_collision_body_component>();
 				ec->set_as_circle( random::getf_range( 8.f, 40.f ) );
 				ec->get_transform()->set_pos(
 					{
@@ -142,7 +142,7 @@ void scene_simple_collision::reset_collision_trace_results()
 {
 	hit_marker->get_component<primitive_shape_component>()->shapes.clear();
 
-	for( auto& iter : world_geo->get_components<simple_collision_component>() )
+	for( auto& iter : world_geo->get_components<simple_collision_body_component>() )
 	{
 		iter->rs_opt.color = make_color( color::dark_teal );
 	}

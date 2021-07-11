@@ -121,7 +121,7 @@ void scene::update()
 		entity->update_from_physics();
 
 		// collect the simple collision bodies active in the scene
-		auto sccs = entity->get_components<simple_collision_component>();
+		auto sccs = entity->get_components<simple_collision_body_component>();
 		simple_collision.bodies.insert(
 			simple_collision.bodies.end(),
 			sccs.begin(), sccs.end()
