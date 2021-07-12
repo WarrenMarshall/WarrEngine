@@ -466,3 +466,11 @@ enum_begin( simple_collision_type )
 	circle,
 	polygon,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( simple_collider_type )
+	solid = 0,
+	sensor,
+enum_end
+

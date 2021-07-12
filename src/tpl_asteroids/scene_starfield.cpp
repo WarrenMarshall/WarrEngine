@@ -18,7 +18,7 @@ void scene_starfield::pushed()
 		auto e = add_entity<entity>();
 
 		{
-			auto ec = e->add_component<emitter_component>();
+			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_starfield" );
 		}
 	}

@@ -20,11 +20,11 @@ void scene_coords::pushed()
 		e->set_pos( { 0.f, 0.f } );
 		e->rs_opt.color = make_color( pal::brighter );
 		{
-			auto ec = e->add_component<sprite_component>();
+			auto ec = e->add_component<ec_sprite>();
 			ec->init( "tex_swirl" );
 		}
 		{
-			auto ec = e->add_component<sprite_component>();
+			auto ec = e->add_component<ec_sprite>();
 			ec->init( "tex_crosshair" );
 			ec->rs_opt.color = color::white;
 		}

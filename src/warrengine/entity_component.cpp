@@ -101,19 +101,19 @@ void entity_component::clear_collision_flags()
 
 // ----------------------------------------------------------------------------
 
-sprite_component::sprite_component( entity* parent_entity )
+ec_sprite::ec_sprite( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 	anim_offset = random::getf();
 }
 
-entity_component* sprite_component::init( std::string_view tex_tag )
+entity_component* ec_sprite::init( std::string_view tex_tag )
 {
 	texture = g_engine->find_asset<texture_asset>( tex_tag );
 	return this;
 }
 
-void sprite_component::draw()
+void ec_sprite::draw()
 {
 	{
 		scoped_opengl;
@@ -131,13 +131,13 @@ void sprite_component::draw()
 
 // ----------------------------------------------------------------------------
 
-primitive_shape_component::primitive_shape_component( entity* parent_entity )
+ec_primitive_shape::ec_primitive_shape( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 	shapes.clear();
 }
 
-entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, const rect& rc, const vec2& pos_offset )
+entity_component* ec_primitive_shape::add_shape( const e_primitive_shape prim_shape, const rect& rc, const vec2& pos_offset )
 {
 	shape_def shape;
 
@@ -150,7 +150,7 @@ entity_component* primitive_shape_component::add_shape( const e_primitive_shape 
 	return this;
 }
 
-entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, float radius, const vec2& pos_offset )
+entity_component* ec_primitive_shape::add_shape( const e_primitive_shape prim_shape, float radius, const vec2& pos_offset )
 {
 	shape_def shape;
 
@@ -163,7 +163,7 @@ entity_component* primitive_shape_component::add_shape( const e_primitive_shape 
 	return this;
 }
 
-entity_component* primitive_shape_component::add_shape( const e_primitive_shape prim_shape, const vec2& pos_offset )
+entity_component* ec_primitive_shape::add_shape( const e_primitive_shape prim_shape, const vec2& pos_offset )
 {
 	shape_def shape;
 
@@ -175,7 +175,7 @@ entity_component* primitive_shape_component::add_shape( const e_primitive_shape 
 	return this;
 }
 
-void primitive_shape_component::draw()
+void ec_primitive_shape::draw()
 {
 	{
 		scoped_render_state;
@@ -222,12 +222,12 @@ void primitive_shape_component::draw()
 
 // ----------------------------------------------------------------------------
 
-emitter_component::emitter_component( entity* parent_entity )
+ec_emitter::ec_emitter( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-entity_component* emitter_component::init( std::string_view params_tag )
+entity_component* ec_emitter::init( std::string_view params_tag )
 {
 	emitter.set_params( g_engine->find_asset<emitter_parameters_asset>( params_tag ) );
 	emitter.parent_component = this;
@@ -235,7 +235,7 @@ entity_component* emitter_component::init( std::string_view params_tag )
 	return this;
 }
 
-bool emitter_component::is_fully_dead()
+bool ec_emitter::is_fully_dead()
 {
 	if( entity_component::is_fully_dead() )
 	{
@@ -248,7 +248,7 @@ bool emitter_component::is_fully_dead()
 	return false;
 }
 
-void emitter_component::draw()
+void ec_emitter::draw()
 {
 	{
 		// particles live in world space, so remove any entity and component
@@ -266,7 +266,7 @@ void emitter_component::draw()
 
 }
 
-void emitter_component::update()
+void ec_emitter::update()
 {
 	entity_component::update();
 
@@ -299,7 +299,7 @@ void emitter_component::update()
 	emitter.update();
 }
 
-void emitter_component::set_life_cycle( e_life_cycle lc )
+void ec_emitter::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
@@ -312,12 +312,12 @@ void emitter_component::set_life_cycle( e_life_cycle lc )
 
 // ----------------------------------------------------------------------------
 
-sound_component::sound_component( entity* parent_entity )
+ec_sound::ec_sound( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-entity_component* sound_component::init( std::string_view snd_tag, bool one_shot, bool auto_play )
+entity_component* ec_sound::init( std::string_view snd_tag, bool one_shot, bool auto_play )
 {
 	snd = g_engine->find_asset<sound_asset>( snd_tag );
 	this->one_shot = one_shot;
@@ -326,7 +326,7 @@ entity_component* sound_component::init( std::string_view snd_tag, bool one_shot
 	return this;
 }
 
-void sound_component::update()
+void ec_sound::update()
 {
 	entity_component::update();
 
@@ -337,7 +337,7 @@ void sound_component::update()
 	}
 }
 
-void sound_component::play()
+void ec_sound::play()
 {
 	assert( snd );
 
@@ -349,7 +349,7 @@ void sound_component::play()
 	}
 }
 
-void sound_component::stop()
+void ec_sound::stop()
 {
 	assert( snd );
 
@@ -358,19 +358,19 @@ void sound_component::stop()
 
 // ----------------------------------------------------------------------------
 
-box2d_physics_component::box2d_physics_component( entity* parent_entity )
+ec_box2d_physics::ec_box2d_physics( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 
 }
 
-void box2d_physics_component::set_collision_flags( int collision_mask, int collides_with )
+void ec_box2d_physics::set_collision_flags( int collision_mask, int collides_with )
 {
 	entity_component::set_collision_flags( collision_mask, collides_with );
 
 	// update all attached bodies to have matching flags
 
-	auto ecs = parent_entity->get_components<box2d_physics_body_component>();
+	auto ecs = parent_entity->get_components<ec_box2d_physics_body>();
 
 	for( auto ec : ecs )
 	{
@@ -378,17 +378,17 @@ void box2d_physics_component::set_collision_flags( int collision_mask, int colli
 	}
 }
 
-void box2d_physics_component::clear_collision_flags()
+void ec_box2d_physics::clear_collision_flags()
 {
 	collision_mask = 0;
 	collides_with_mask = 0;
 }
 
-box2d_physics_body_component* box2d_physics_component::get_primary_body()
+ec_box2d_physics_body* ec_box2d_physics::get_primary_body()
 {
-	std::vector<box2d_physics_body_component*> ecs;
-	parent_entity->get_components<box2d_physics_body_component, box2d_dynamic_physics_body_component>( ecs );
-	parent_entity->get_components<box2d_physics_body_component, box2d_kinematic_physics_body_component>( ecs );
+	std::vector<ec_box2d_physics_body*> ecs;
+	parent_entity->get_components<ec_box2d_physics_body, ec_box2d_dynamic_physics_body>( ecs );
+	parent_entity->get_components<ec_box2d_physics_body, ec_box2d_kinematic_physics_body>( ecs );
 
 	for( auto& ec : ecs )
 	{
@@ -403,7 +403,7 @@ box2d_physics_body_component* box2d_physics_component::get_primary_body()
 }
 
 // friction : 0 - slide, 1 - stick
-void box2d_physics_component::set_friction( float friction )
+void ec_box2d_physics::set_friction( float friction )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -412,7 +412,7 @@ void box2d_physics_component::set_friction( float friction )
 }
 
 // restitution : 0 = no bounce, 1 = full bounce
-void box2d_physics_component::set_restitution( float restitution )
+void ec_box2d_physics::set_restitution( float restitution )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -421,7 +421,7 @@ void box2d_physics_component::set_restitution( float restitution )
 }
 
 // density : 0 = no density, 1 = full density
-void box2d_physics_component::set_density( float density )
+void ec_box2d_physics::set_density( float density )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -431,12 +431,12 @@ void box2d_physics_component::set_density( float density )
 
 // ----------------------------------------------------------------------------
 
-box2d_physics_body_component::box2d_physics_body_component( entity* parent_entity )
+ec_box2d_physics_body::ec_box2d_physics_body( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-box2d_physics_body_component::~box2d_physics_body_component()
+ec_box2d_physics_body::~ec_box2d_physics_body()
 {
 	if( body )
 	{
@@ -462,7 +462,7 @@ box2d_physics_body_component::~box2d_physics_body_component()
 	}
 }
 
-void box2d_physics_body_component::init_body()
+void ec_box2d_physics_body::init_body()
 {
 	b2BodyDef body_definition;
 	{
@@ -475,7 +475,7 @@ void box2d_physics_body_component::init_body()
 	body->m_userData.pointer = (uintptr_t)this;
 }
 
-b2Fixture* box2d_physics_body_component::add_fixture_box( hash tag, const rect& rc )
+b2Fixture* ec_box2d_physics_body::add_fixture_box( hash tag, const rect& rc )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -491,7 +491,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_box( hash tag, const rect& 
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<box2d_physics_component>();
+		auto ecp = parent_entity->get_component<ec_box2d_physics>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -509,12 +509,12 @@ b2Fixture* box2d_physics_body_component::add_fixture_box( hash tag, const rect& 
 
 // pos - middle of box, relative to body
 // w/h - size of box
-b2Fixture* box2d_physics_body_component::add_fixture_box( hash tag, vec2 pos, float w, float h )
+b2Fixture* ec_box2d_physics_body::add_fixture_box( hash tag, vec2 pos, float w, float h )
 {
 	return add_fixture_box( tag, { pos.x, pos.y, w, h } );
 }
 
-b2Fixture* box2d_physics_body_component::add_fixture_circle( hash tag, vec2 pos, float radius )
+b2Fixture* ec_box2d_physics_body::add_fixture_circle( hash tag, vec2 pos, float radius )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -526,7 +526,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_circle( hash tag, vec2 pos,
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<box2d_physics_component>();
+		auto ecp = parent_entity->get_component<ec_box2d_physics>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -542,7 +542,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_circle( hash tag, vec2 pos,
 	return fixture;
 }
 
-b2Fixture* box2d_physics_body_component::add_fixture_line( hash tag, vec2 pos, vec2 start, vec2 end )
+b2Fixture* ec_box2d_physics_body::add_fixture_line( hash tag, vec2 pos, vec2 start, vec2 end )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -563,7 +563,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_line( hash tag, vec2 pos, v
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<box2d_physics_component>();
+		auto ecp = parent_entity->get_component<ec_box2d_physics>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -579,7 +579,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_line( hash tag, vec2 pos, v
 	return fixture;
 }
 
-b2Fixture* box2d_physics_body_component::add_fixture_line_loop( hash tag, vec2 pos, const std::vector<vec2>& verts )
+b2Fixture* ec_box2d_physics_body::add_fixture_line_loop( hash tag, vec2 pos, const std::vector<vec2>& verts )
 {
 	// Box2D requirement
 	assert( verts.size() >= 3 );
@@ -607,7 +607,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_line_loop( hash tag, vec2 p
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<box2d_physics_component>();
+		auto ecp = parent_entity->get_component<ec_box2d_physics>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -623,7 +623,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_line_loop( hash tag, vec2 p
 	return fixture;
 }
 
-b2Fixture* box2d_physics_body_component::add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts )
+b2Fixture* ec_box2d_physics_body::add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts )
 {
 	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
 
@@ -643,7 +643,7 @@ b2Fixture* box2d_physics_body_component::add_fixture_polygon( hash tag, vec2 pos
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<box2d_physics_component>();
+		auto ecp = parent_entity->get_component<ec_box2d_physics>();
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -662,15 +662,15 @@ b2Fixture* box2d_physics_body_component::add_fixture_polygon( hash tag, vec2 pos
 // checks to see if the parent entity has a physics component, and adds one if
 // it doesn't.
 
-void box2d_physics_body_component::add_physics_component_if_needed()
+void ec_box2d_physics_body::add_physics_component_if_needed()
 {
-	if( !parent_entity->has_component<box2d_physics_component>() )
+	if( !parent_entity->has_component<ec_box2d_physics>() )
 	{
-		parent_entity->add_component<box2d_physics_component>();
+		parent_entity->add_component<ec_box2d_physics>();
 	}
 }
 
-void box2d_physics_body_component::set_collision_flags( int collision_mask, int collides_with )
+void ec_box2d_physics_body::set_collision_flags( int collision_mask, int collides_with )
 {
 	std::vector<b2Fixture*> existing_fixtures;
 
@@ -722,8 +722,8 @@ void box2d_physics_body_component::set_collision_flags( int collision_mask, int 
 
 // ----------------------------------------------------------------------------
 
-box2d_static_physics_body_component::box2d_static_physics_body_component( entity* parent_entity )
-	: box2d_physics_body_component( parent_entity )
+ec_box2d_static_physics_body::ec_box2d_static_physics_body( entity* parent_entity )
+	: ec_box2d_physics_body( parent_entity )
 {
 	add_physics_component_if_needed();
 
@@ -734,8 +734,8 @@ box2d_static_physics_body_component::box2d_static_physics_body_component( entity
 
 // ----------------------------------------------------------------------------
 
-box2d_dynamic_physics_body_component::box2d_dynamic_physics_body_component( entity* parent_entity )
-	: box2d_physics_body_component( parent_entity )
+ec_box2d_dynamic_physics_body::ec_box2d_dynamic_physics_body( entity* parent_entity )
+	: ec_box2d_physics_body( parent_entity )
 {
 	add_physics_component_if_needed();
 
@@ -746,8 +746,8 @@ box2d_dynamic_physics_body_component::box2d_dynamic_physics_body_component( enti
 
 // ----------------------------------------------------------------------------
 
-box2d_kinematic_physics_body_component::box2d_kinematic_physics_body_component( entity* parent_entity )
-	: box2d_physics_body_component( parent_entity )
+ec_box2d_kinematic_physics_body::ec_box2d_kinematic_physics_body( entity* parent_entity )
+	: ec_box2d_physics_body( parent_entity )
 {
 	add_physics_component_if_needed();
 
@@ -758,18 +758,18 @@ box2d_kinematic_physics_body_component::box2d_kinematic_physics_body_component( 
 
 // ----------------------------------------------------------------------------
 
-mesh_component::mesh_component( entity* parent_entity )
+ec_mesh::ec_mesh( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-entity_component* mesh_component::init( std::string_view mesh_tag )
+entity_component* ec_mesh::init( std::string_view mesh_tag )
 {
 	mesh = g_engine->find_asset<mesh_asset>( mesh_tag );
 	return this;
 }
 
-void mesh_component::draw()
+void ec_mesh::draw()
 {
 	{
 		scoped_render_state;
@@ -781,12 +781,12 @@ void mesh_component::draw()
 
 // ----------------------------------------------------------------------------
 
-simple_collision_body_component::simple_collision_body_component( entity* parent_entity )
+ec_simple_collision_body::ec_simple_collision_body( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-void simple_collision_body_component::draw()
+void ec_simple_collision_body::draw()
 {
 	// optional debug mode drawing
 
@@ -795,24 +795,47 @@ void simple_collision_body_component::draw()
 		scoped_render_state;
 
 		render::state->set_from_opt( rs_opt );
+
+		switch( collider_type )
+		{
+			case simple_collider_type::solid:
+			{
+				render::state->color = make_color( color::light_green );
+			}
+			break;
+
+			case simple_collider_type::sensor:
+			{
+				render::state->color = make_color( color::light_blue );
+			}
+			break;
+		}
+
 		switch( type )
 		{
 			case simple_collision_type::circle:
+			{
 				render::draw_circle( { 0.f, 0.f }, radius );
-				break;
+			}
+			break;
 
 			case simple_collision_type::aabb:
+			{
 				render::draw_rect( aabb );
-				break;
+			}
+			break;
 
 			case simple_collision_type::polygon:
+			{
 				render::draw_lines( verts );
-				break;
+			}
+			break;
+
 		}
 	}
 }
 
-void simple_collision_body_component::update_to_match_parent_transform()
+void ec_simple_collision_body::update_to_match_parent_transform()
 {
 	auto scale = ( parent_entity->get_transform()->scale * get_transform()->scale );
 
@@ -858,7 +881,7 @@ void simple_collision_body_component::update_to_match_parent_transform()
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
 
-void simple_collision_body_component::set_as_box( float w, float h )
+void ec_simple_collision_body::set_as_box( float w, float h )
 {
 	type = simple_collision_type::aabb;
 	aabb.x = 0.f;
@@ -869,7 +892,7 @@ void simple_collision_body_component::set_as_box( float w, float h )
 
 // sets the dimensions of the collision box, centered around the components position.
 
-void simple_collision_body_component::set_as_centered_box( float w, float h )
+void ec_simple_collision_body::set_as_centered_box( float w, float h )
 {
 	type = simple_collision_type::aabb;
 	aabb.x = -w / 2.f;
@@ -878,20 +901,25 @@ void simple_collision_body_component::set_as_centered_box( float w, float h )
 	aabb.h = h;
 }
 
-void simple_collision_body_component::set_as_circle( float r )
+void ec_simple_collision_body::set_as_circle( float r )
 {
 	type = simple_collision_type::circle;
 	radius = r;
 }
 
-void simple_collision_body_component::set_as_polygon( std::vector<vec2> vs )
+void ec_simple_collision_body::set_as_polygon( std::vector<vec2> vs )
 {
 	type = simple_collision_type::polygon;
 	verts.reserve( verts.size() );
 	verts.insert( verts.end(), vs.begin(), vs.end() );
 }
 
-bool simple_collision_body_component::collides_with( simple_collision_body_component* scc, simple_collision::pending_collision& collision )
+void ec_simple_collision_body::set_collider_type( e_simple_collider_type collider_type )
+{
+	this->collider_type = collider_type;
+}
+
+bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, simple_collision::pending_collision& collision )
 {
 	c2Manifold m = {};
 
@@ -1079,7 +1107,11 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 	// fill out the collision structure and return a positive result
 
 	collision.entity_a = parent_entity;
+	collision.body_a = this;
+
 	collision.entity_b = scc->parent_entity;
+	collision.body_b = scc;
+
 	collision.manifold = m;
 
 	collision.closest_point = vec2( m.contact_points[ 0 ].x, m.contact_points[ 0 ].y ).from_simple();
@@ -1089,7 +1121,7 @@ bool simple_collision_body_component::collides_with( simple_collision_body_compo
 	return true;
 }
 
-c2Circle simple_collision_body_component::as_simple_circle()
+c2Circle ec_simple_collision_body::as_simple_circle()
 {
 	c2Circle circle = {};
 
@@ -1099,12 +1131,12 @@ c2Circle simple_collision_body_component::as_simple_circle()
 	return circle;
 }
 
-c2AABB simple_collision_body_component::as_simple_aabb()
+c2AABB ec_simple_collision_body::as_simple_aabb()
 {
 	return ws.aabb.to_c2AABB();
 }
 
-c2Poly simple_collision_body_component::as_simple_poly()
+c2Poly ec_simple_collision_body::as_simple_poly()
 {
 	c2Poly poly = {};
 	poly.count = (int)ws.verts.size();
@@ -1121,19 +1153,19 @@ c2Poly simple_collision_body_component::as_simple_poly()
 
 // ----------------------------------------------------------------------------
 
-tile_map_component::tile_map_component( entity* parent_entity )
+ec_tile_map::ec_tile_map( entity* parent_entity )
 	: entity_component( parent_entity )
 {
 }
 
-void tile_map_component::init( std::string_view tile_set_tag, std::string_view tile_map_tag )
+void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map_tag )
 {
 	tile_set = g_engine->find_asset<tile_set_asset>( tile_set_tag );
 	tile_map = g_engine->find_asset<tile_map_asset>( tile_map_tag );
 
 	// remove any existing collision components
 
-	auto existing_components = parent_entity->get_components<simple_collision_body_component>();
+	auto existing_components = parent_entity->get_components<ec_simple_collision_body>();
 
 	for( auto& component : existing_components )
 	{
@@ -1157,7 +1189,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 				{
 					case simple_collision_type::aabb:
 					{
-						auto ec = parent_entity->add_component<simple_collision_body_component>();
+						auto ec = parent_entity->add_component<ec_simple_collision_body>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 						ec->set_as_box( obj.rc.w, obj.rc.h );
 						ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1166,7 +1198,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 
 					case simple_collision_type::circle:
 					{
-						auto ec = parent_entity->add_component<simple_collision_body_component>();
+						auto ec = parent_entity->add_component<ec_simple_collision_body>();
 						ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
 						ec->set_as_circle( obj.radius );
 						ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1175,7 +1207,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 
 					case simple_collision_type::polygon:
 					{
-						auto ec = parent_entity->add_component<simple_collision_body_component>();
+						auto ec = parent_entity->add_component<ec_simple_collision_body>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 						ec->set_as_polygon( obj.vertices );
 						ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1201,7 +1233,7 @@ void tile_map_component::init( std::string_view tile_set_tag, std::string_view t
 // loops through any layer with the name "entities" and calls the callback
 // function with that index so the layer in question can spawn it
 
-void tile_map_component::spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback )
+void ec_tile_map::spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback )
 {
 	for( auto& layer : tile_map->layers )
 	{
@@ -1218,7 +1250,7 @@ void tile_map_component::spawn_entities( scene* scene, f_tile_map_spawn_entity f
 	}
 }
 
-void tile_map_component::draw()
+void ec_tile_map::draw()
 {
 	scoped_render_state;
 

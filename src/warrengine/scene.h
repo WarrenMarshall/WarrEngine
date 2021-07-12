@@ -29,8 +29,9 @@ struct scene
 	struct
 	{
 		std::unique_ptr<simple_collision::world> world = nullptr;
-		std::vector<simple_collision_body_component*> bodies;
+		std::vector<ec_simple_collision_body*> bodies;
 		std::set<entity*> unique_entities_with_collisions;
+		bool need_another_iteration = false;
 	} simple_collision;
 
 	// if set to anything other than hash_none, some control is in it's expanded

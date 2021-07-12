@@ -4,7 +4,7 @@ namespace war
 
 struct particle_emitter
 {
-	emitter_component* parent_component = nullptr;
+	ec_emitter* parent_component = nullptr;
 
 	emitter_parameters_asset* params = nullptr;
 	particle_pool pool;

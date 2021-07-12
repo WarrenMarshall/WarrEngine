@@ -156,7 +156,8 @@ struct entity
 
 	struct
 	{
-		std::vector<simple_collision::pending_collision> pending_queue;
+		std::vector<simple_collision::pending_collision> colliding_queue;
+		std::vector<simple_collision::pending_collision> touching_queue;
 	} simple_collision;
 
 private:

@@ -16,6 +16,8 @@ void scene_gameplay::draw_ui()
 	render::draw_string( std::format( "{:.1f}, {:.1f}",
 		player->velocity.x, player->velocity.y ), vec2( 8.f, 8.f ) );
 	render::draw_string( std::format( "In air : {}", player->in_air ), vec2( 8.f, 18.f ) );
+	render::draw_string( std::format( "{:.1f}, {:.1f}",
+		player->get_transform()->pos.x, player->get_transform()->pos.y ), vec2( 8.f, 28.f ) );
 }
 
 void scene_gameplay::draw()
@@ -33,7 +35,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 	{
 		case 15:
 		{
-			auto tmc = gameplay_scene->world->get_component<tile_map_component>();
+			auto tmc = gameplay_scene->world->get_component<ec_tile_map>();
 
 			auto e = scene->add_entity<entity>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
@@ -41,28 +43,27 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			e->affected_by_gravity = true;
 
 			{
-				auto ec = e->add_component<sprite_component>();
+				auto ec = e->add_component<ec_sprite>();
 				ec->init( "anim_player_run" );
 			}
 			{
-				auto ec = e->add_component<simple_collision_body_component>();
+				auto ec = e->add_component<ec_simple_collision_body>();
+				ec->set_collider_type( simple_collider_type::solid );
 				//ec->set_as_centered_box( 16.f, 16.f );
 				ec->set_as_circle( 8.0f );
-/*
-				ec->set_as_polygon(
-					{
-						vec2( -8.f, -8.f ),
-						vec2( +4.f, -8.f ),
-						vec2( +12.f, 0.f ),
-						vec2( +4.f, +8.f ),
-						vec2( -8.f, +8.f ),
-						vec2( -16.f, 0.f )
-					}
-				);
-*/
-				ec->set_collision_flags( coll_player, coll_world | coll_player );
-				ec->rs_opt.color = make_color( color::orange );
+
+				ec->set_collision_flags( coll_player, coll_world );
 			}
+		#if 1
+			{
+				auto ec = e->add_component<ec_simple_collision_body>();
+				ec->set_collider_type( simple_collider_type::sensor );
+				ec->set_as_circle( 4.0f );
+				ec->get_transform()->set_pos( { 0.f, 8.f } );
+
+				ec->set_collision_flags( coll_player, coll_world );
+			}
+		#endif
 
 			gameplay_scene->player = e;
 
@@ -85,7 +86,7 @@ void scene_gameplay::pushed()
 		world = add_entity<entity>();
 
 		{
-			auto ec = world->add_component<tile_map_component>();
+			auto ec = world->add_component<ec_tile_map>();
 			ec->set_collision_flags( coll_world, 0 );
 			ec->init( "ts_neon", "tm_level_01" );
 			ec->spawn_entities( this, spawn_entity );
@@ -104,11 +105,10 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
-		auto pos_a = player->get_transform()->pos;
-		player->set_force_x( evt->delta.x * 2.0f );
-		auto pos_b = player->get_transform()->pos;
+		float force = 2.0f;
+		vec2 delta = evt->delta;
 
-		assert( pos_a == pos_b );
+		player->set_force_x( delta.x * force );
 	}
 
 	return false;
@@ -118,8 +118,11 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a )
 	{
-		player->add_force( { 0.f, -4.0f } );
-		return true;
+		if( !player->in_air )
+		{
+			player->add_force( { 0.f, -4.0f } );
+			return true;
+		}
 	}
 
 	return false;

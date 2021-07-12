@@ -17,11 +17,11 @@ void scene_particles::pushed()
 		e->set_pos( { -150.f, -100.f } );
 
 		{
-			auto ec = e->add_component<emitter_component>();
+			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_stars" );
 		}
 		{
-			auto ec = e->add_component<primitive_shape_component>();
+			auto ec = e->add_component<ec_primitive_shape>();
 			ec->add_shape( primitive_shape::circle, 30.f );
 			ec->rs_opt.color = make_color( pal::brightest );
 		}
@@ -33,11 +33,11 @@ void scene_particles::pushed()
 		e->set_pos( { 0.f, viewport_hh } );
 
 		{
-			auto ec = e->add_component<emitter_component>();
+			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_coin_fountain" );
 		}
 		{
-			auto ec = e->add_component<primitive_shape_component>();
+			auto ec = e->add_component<ec_primitive_shape>();
 			ec->add_shape( primitive_shape::filled_rect, rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
 			ec->rs_opt.color = make_color( 4, 0.25f );
 		}
@@ -50,15 +50,15 @@ void scene_particles::pushed()
 		e->tag = H( "mouse_torch" );
 
 		{
-			auto ec = e->add_component<emitter_component>();
+			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_torch" );
 		}
 		{
-			auto ec = e->add_component<emitter_component>();
+			auto ec = e->add_component<ec_emitter>();
 			ec->init( "em_torch_embers" );
 		}
 		{
-			auto ec = e->add_component<primitive_shape_component>();
+			auto ec = e->add_component<ec_primitive_shape>();
 			ec->add_shape( primitive_shape::filled_circle, 10.f );
 			ec->rs_opt.color = make_color( pal::brightest );
 			ec->rs_opt.color->a = 0.25f;

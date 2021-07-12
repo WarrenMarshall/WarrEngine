@@ -154,11 +154,11 @@ void entity::update_physics_components_to_match_transform()
 {
 	// physics
 
-	if( has_component<box2d_physics_component>() )
+	if( has_component<ec_box2d_physics>() )
 	{
-		std::vector<box2d_physics_body_component*> ecs;
-		get_components<box2d_physics_body_component, box2d_dynamic_physics_body_component>( ecs );
-		get_components<box2d_physics_body_component, box2d_kinematic_physics_body_component>( ecs );
+		std::vector<ec_box2d_physics_body*> ecs;
+		get_components<ec_box2d_physics_body, ec_box2d_dynamic_physics_body>( ecs );
+		get_components<ec_box2d_physics_body, ec_box2d_kinematic_physics_body>( ecs );
 
 		for( auto ec : ecs )
 		{
@@ -182,9 +182,9 @@ void entity::update_transform_to_match_physics_components()
 	// to an entity so it is assumed that once we find and
 	// process that one, we're done.
 
-	std::vector<box2d_physics_body_component*> ecs;
-	get_components<box2d_physics_body_component, box2d_dynamic_physics_body_component>( ecs );
-	get_components<box2d_physics_body_component, box2d_kinematic_physics_body_component>( ecs );
+	std::vector<ec_box2d_physics_body*> ecs;
+	get_components<ec_box2d_physics_body, ec_box2d_dynamic_physics_body>( ecs );
+	get_components<ec_box2d_physics_body, ec_box2d_kinematic_physics_body>( ecs );
 
 	for( auto& ec : ecs )
 	{
@@ -232,7 +232,7 @@ transform* entity::set_scale( const float scale )
 	// don't have a way to scale the physics components at the same time. so
 	// collision will remain the original size which is likely not what you
 	// want.
-	assert( !has_component<box2d_physics_component>() );
+	assert( !has_component<ec_box2d_physics>() );
 
 	return &_tform;
 }
@@ -273,7 +273,7 @@ transform* entity::add_delta_scale( const float delta )
 	// don't have a way to scale the physics components at the same time. so
 	// collision will remain the original size which is likely not what you
 	// want.
-	assert( !has_component<box2d_physics_component>() );
+	assert( !has_component<ec_box2d_physics>() );
 
 	return &_tform;
 }
@@ -338,7 +338,7 @@ void entity::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
-	auto ecp = get_component<box2d_physics_component>();
+	auto ecp = get_component<ec_box2d_physics>();
 	if( ecp and !life_cycle.is_alive() )
 	{
 		ecp->clear_collision_flags();

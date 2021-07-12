@@ -8,7 +8,7 @@ namespace war
 {
 
 struct color;
-struct emitter_component;
+struct ec_emitter;
 struct emitter_parameters_asset;
 struct entity;
 struct file_mem;
@@ -23,7 +23,7 @@ struct opengl_framebuffer;
 struct os_window;
 struct particle_emitter;
 struct particle_pool;
-struct box2d_physics_body_component;
+struct ec_box2d_physics_body;
 struct contact_listener;
 struct debug_draw;
 struct rect;
@@ -34,7 +34,7 @@ struct render_state_optional;
 struct scene;
 struct scene_mgr;
 struct shader;
-struct simple_collision_body_component;
+struct ec_simple_collision_body;
 struct world;
 struct texture_asset;
 struct timeline;

@@ -24,7 +24,7 @@ struct raycast_hit
 
 	// the collision component that was hit by the ray. this belongs to the
 	// entity that was hit, not the one doing the tracing.
-	simple_collision_body_component* scc = nullptr;
+	ec_simple_collision_body* scc = nullptr;
 };
 
 // ----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ struct raycast_callback
 	bool hit_something = false;
 	int collision_mask = 0;
 
-	virtual float report_component( const entity* entity, const c2Ray& ray, simple_collision_body_component* scc, const c2Raycast& raycast ) = 0;
+	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ struct raycast_closest final : raycast_callback
 {
 	raycast_hit result;
 
-	virtual float report_component( const entity* entity, const c2Ray& ray, simple_collision_body_component* scc, const c2Raycast& raycast ) override;
+	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ struct raycast_closest final : raycast_callback
 
 struct raycast_quick final : raycast_callback
 {
-	virtual float report_component( const entity* entity, const c2Ray& ray, simple_collision_body_component* scc, const c2Raycast& raycast ) override;
+	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ struct raycast_all final : raycast_callback
 {
 	std::vector<raycast_hit> results;
 
-	virtual float report_component( const entity* entity, const c2Ray& ray, simple_collision_body_component* scc, const c2Raycast& raycast ) override;
+	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
 };
 
 /*

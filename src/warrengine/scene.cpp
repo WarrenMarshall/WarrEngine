@@ -121,7 +121,7 @@ void scene::update()
 		entity->update_from_physics();
 
 		// collect the simple collision bodies active in the scene
-		auto sccs = entity->get_components<simple_collision_body_component>();
+		auto sccs = entity->get_components<ec_simple_collision_body>();
 		simple_collision.bodies.insert(
 			simple_collision.bodies.end(),
 			sccs.begin(), sccs.end()
@@ -142,9 +142,16 @@ void scene::post_update()
 
 		entity->post_update();
 		entity->post_update_components();
+
+		entity->in_air = true;
 	}
 
 	// loop through the collision
+	//
+	// we allow for a few iterations here to do our best to free colliders from
+	// other colliders. if this ends up being slow, adjust
+	// "simple_collision_pos_iterations" downwards.
+
 	for( auto iteration_counter = 0 ; iteration_counter < simple_collision_pos_iterations ; ++iteration_counter )
 	{
 		for( auto& scc : simple_collision.bodies )
@@ -153,21 +160,18 @@ void scene::post_update()
 		}
 
 		// collision detection
-
+		simple_collision.need_another_iteration = false;
 		add_simple_collisions_to_pending_queue();
 
-		// If nothing is intersecting anymore, we can abort the rest of the iterations
+		// collision resolution
+		resolve_pending_simple_collisions();
 
-		if( simple_collision.unique_entities_with_collisions.empty() )
+		// If nothing is intersecting anymore, we can abort the rest of the iterations
+		if( !simple_collision.need_another_iteration )
 		{
 			break;
 		}
-
-		// collision resolution
-
-		resolve_pending_simple_collisions();
 	}
-
 }
 
 void scene::add_simple_collisions_to_pending_queue()
@@ -202,45 +206,82 @@ void scene::add_simple_collisions_to_pending_queue()
 			// the queue.
 
 			simple_collision::pending_collision collision;
-			if( scc_a->collides_with( scc_b, collision ) )
+			if( scc_a->intersects_with( scc_b, collision ) )
 			{
 				simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
-				collision.entity_a->simple_collision.pending_queue.push_back( collision );
+
+				switch( collision.body_a->collider_type )
+				{
+					case simple_collider_type::solid:
+					{
+						collision.entity_a->simple_collision.colliding_queue.push_back( collision );
+					}
+					break;
+
+					case simple_collider_type::sensor:
+					{
+						collision.entity_a->simple_collision.touching_queue.push_back( collision );
+						collision.entity_a->in_air = false;
+					}
+					break;
+				}
 			}
 		}
 	}
 }
 
-add sensor to player and see if you can detect the ground
-add sensor to playerand see if you can detect the ground
-add sensor to playerand see if you can detect the ground
-add sensor to playerand see if you can detect the ground
-add sensor to playerand see if you can detect the ground
-
 void scene::resolve_pending_simple_collisions()
 {
 	for( auto& entity : simple_collision.unique_entities_with_collisions )
 	{
-		vec2 avg_delta = vec2::zero;
+		// ----------------------------------------------------------------------------
+		// solid
 
-		for( auto& pc : entity->simple_collision.pending_queue )
+		if( entity->simple_collision.colliding_queue.size() )
 		{
-			avg_delta += -pc.normal * pc.depth;
+			vec2 avg_delta = vec2::zero;
 
-			// when landing on the ground, kill any velocity on the Y axis. this
-			// stops it from accruing to the maximum as you run around on flat
-			// geo.
-
-			if( glm::abs( pc.normal.y ) > 0.75f )
+			for( auto& iter : entity->simple_collision.colliding_queue )
 			{
-				entity->velocity.y = 0.0f;
+				avg_delta += -iter.normal * iter.depth;
+
+				// when landing on the ground, kill any velocity on the Y axis. this
+				// stops it from accruing to the maximum as you run around on flat
+				// geo.
+
+				if( iter.normal.y > 0.7f )
+				{
+					entity->velocity.y = 0.0f;
+				}
+
+				// hitting the ceiling kills vertical velocity
+				if( iter.normal.y < -0.85f )
+				{
+					entity->velocity.y = 0.0f;
+				}
+
+				// hitting a wall kills horizontal velocity
+				if( iter.normal.x < -0.75f or iter.normal.x > 0.75f )
+				{
+					entity->velocity.x = 0.0f;
+				}
 			}
+
+			avg_delta /= (float)entity->simple_collision.colliding_queue.size();
+
+			entity->add_delta_pos( avg_delta );
+			entity->simple_collision.colliding_queue.clear();
 		}
 
-		avg_delta /= (float)entity->simple_collision.pending_queue.size();
+		// ----------------------------------------------------------------------------
+		// sensor
 
-		entity->add_delta_pos( avg_delta );
-		entity->simple_collision.pending_queue.clear();
+		entity->in_air = true;
+		if( entity->simple_collision.touching_queue.size() )
+		{
+			entity->in_air = false;
+			entity->simple_collision.touching_queue.clear();
+		}
 	}
 
 	simple_collision.unique_entities_with_collisions.clear();

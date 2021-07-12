@@ -33,12 +33,12 @@ void scene_simple_collision::pushed()
 		e->tag = H( "mario" );
 		e->set_pos( { -80.f, 0.f } );
 		{
-			auto ec = e->add_component<sprite_component>();
+			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
 			ec->init( "anim_player_run" );
 		}
 		{
-			auto ec = e->add_component<simple_collision_body_component>();
+			auto ec = e->add_component<ec_simple_collision_body>();
 			//ec->set_as_centered_box( 24.f, 24.f );
 			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
@@ -54,7 +54,7 @@ void scene_simple_collision::pushed()
 		e->tag = H( "hit_marker" );
 		e->set_pos( { 0.f, 0.f } );
 		{
-			auto ec = e->add_component<primitive_shape_component>();
+			auto ec = e->add_component<ec_primitive_shape>();
 			ec->rs_opt.color = make_color( color::yellow );
 		}
 
@@ -71,7 +71,7 @@ void scene_simple_collision::pushed()
 		for( int x = 0 ; x < 24 ; ++x )
 		{
 			{
-				auto ec = e->add_component<simple_collision_body_component>();
+				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
 				ec->get_transform()->set_pos(
 					{
@@ -87,7 +87,7 @@ void scene_simple_collision::pushed()
 		for( int x = 0 ; x < 24 ; ++x )
 		{
 			{
-				auto ec = e->add_component<simple_collision_body_component>();
+				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->set_as_circle( random::getf_range( 8.f, 40.f ) );
 				ec->get_transform()->set_pos(
 					{
@@ -140,9 +140,9 @@ void scene_simple_collision::update()
 
 void scene_simple_collision::reset_collision_trace_results()
 {
-	hit_marker->get_component<primitive_shape_component>()->shapes.clear();
+	hit_marker->get_component<ec_primitive_shape>()->shapes.clear();
 
-	for( auto& iter : world_geo->get_components<simple_collision_body_component>() )
+	for( auto& iter : world_geo->get_components<ec_simple_collision_body>() )
 	{
 		iter->rs_opt.color = make_color( color::dark_teal );
 	}
@@ -187,7 +187,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<primitive_shape_component>();
+				auto ec = hit_marker->get_component<ec_primitive_shape>();
 				ec->shapes.clear();
 
 				for( auto& hit : callback.results )
@@ -214,7 +214,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<primitive_shape_component>();
+				auto ec = hit_marker->get_component<ec_primitive_shape>();
 				ec->shapes.clear();
 				ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), callback.result.pos );
 

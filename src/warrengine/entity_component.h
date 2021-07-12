@@ -54,15 +54,15 @@ struct entity_component
 
 // ----------------------------------------------------------------------------
 
-struct sprite_component : entity_component
+struct ec_sprite : entity_component
 {
 	texture_asset* texture = nullptr;
 	float anim_offset = 0.f;
 	bool flip_x = false;
 	bool flip_y = false;
 
-	sprite_component() = delete;
-	sprite_component( entity* parent_entity );
+	ec_sprite() = delete;
+	ec_sprite( entity* parent_entity );
 
 	entity_component* init( std::string_view tex_tag );
 	virtual void draw() override;
@@ -70,7 +70,7 @@ struct sprite_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct primitive_shape_component : entity_component
+struct ec_primitive_shape : entity_component
 {
 	struct shape_def
 	{
@@ -82,8 +82,8 @@ struct primitive_shape_component : entity_component
 
 	std::vector<shape_def> shapes;
 
-	primitive_shape_component() = delete;
-	primitive_shape_component( entity* parent_entity );
+	ec_primitive_shape() = delete;
+	ec_primitive_shape( entity* parent_entity );
 
 	entity_component* add_shape( const e_primitive_shape prim_shape, const rect& rc, const vec2& pos_offset = vec2::zero );
 	entity_component* add_shape( const e_primitive_shape prim_shape, float radius, const vec2& pos_offset = vec2::zero );
@@ -94,10 +94,10 @@ struct primitive_shape_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct emitter_component : entity_component
+struct ec_emitter : entity_component
 {
-	emitter_component() = default;
-	emitter_component( entity* parent_entity );
+	ec_emitter() = default;
+	ec_emitter( entity* parent_entity );
 
 	particle_emitter emitter = {};
 
@@ -110,7 +110,7 @@ struct emitter_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct sound_component : entity_component
+struct ec_sound : entity_component
 {
 	sound_asset* snd = nullptr;
 
@@ -136,8 +136,8 @@ struct sound_component : entity_component
 	// time the "update" function is called
 	bool auto_play = false;
 
-	sound_component() = delete;
-	sound_component( entity* parent_entity );
+	ec_sound() = delete;
+	ec_sound( entity* parent_entity );
 
 	entity_component* init( std::string_view snd_tag, bool one_shot, bool auto_play );
 	virtual void update() override;
@@ -149,12 +149,12 @@ struct sound_component : entity_component
 // physics
 //
 
-struct box2d_physics_component : entity_component
+struct ec_box2d_physics : entity_component
 {
-	box2d_physics_component() = delete;
-	box2d_physics_component( entity* parent_entity );
+	ec_box2d_physics() = delete;
+	ec_box2d_physics( entity* parent_entity );
 
-	[[nodiscard]] box2d_physics_body_component* get_primary_body();
+	[[nodiscard]] ec_box2d_physics_body* get_primary_body();
 
 	void set_friction( float friction );
 	void set_restitution( float restitution );
@@ -167,7 +167,7 @@ struct box2d_physics_component : entity_component
 // ----------------------------------------------------------------------------
 // physics bodies
 
-struct box2d_physics_body_component : entity_component
+struct ec_box2d_physics_body : entity_component
 {
 	b2BodyType body_type = b2_staticBody;
 	b2Body* body = nullptr;
@@ -178,9 +178,9 @@ struct box2d_physics_body_component : entity_component
 	// it's transform to each update.
 	bool is_primary_body = false;
 
-	box2d_physics_body_component() = delete;
-	box2d_physics_body_component( entity* parent_entity );
-	virtual ~box2d_physics_body_component() override;
+	ec_box2d_physics_body() = delete;
+	ec_box2d_physics_body( entity* parent_entity );
+	virtual ~ec_box2d_physics_body() override;
 
 	void init_body();
 
@@ -203,38 +203,38 @@ struct box2d_physics_body_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct box2d_static_physics_body_component : box2d_physics_body_component
+struct ec_box2d_static_physics_body : ec_box2d_physics_body
 {
-	box2d_static_physics_body_component() = delete;
-	box2d_static_physics_body_component( entity* parent_entity );
+	ec_box2d_static_physics_body() = delete;
+	ec_box2d_static_physics_body( entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
 
-struct box2d_dynamic_physics_body_component : box2d_physics_body_component
+struct ec_box2d_dynamic_physics_body : ec_box2d_physics_body
 {
-	box2d_dynamic_physics_body_component() = delete;
-	box2d_dynamic_physics_body_component( entity* parent_entity );
+	ec_box2d_dynamic_physics_body() = delete;
+	ec_box2d_dynamic_physics_body( entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
-struct box2d_kinematic_physics_body_component : box2d_physics_body_component
+struct ec_box2d_kinematic_physics_body : ec_box2d_physics_body
 {
-	box2d_kinematic_physics_body_component() = delete;
-	box2d_kinematic_physics_body_component( entity* parent_entity );
+	ec_box2d_kinematic_physics_body() = delete;
+	ec_box2d_kinematic_physics_body( entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------
 
-struct mesh_component : entity_component
+struct ec_mesh : entity_component
 {
 	mesh_asset* mesh = nullptr;
 
-	mesh_component() = delete;
-	mesh_component( entity* parent_entity );
+	ec_mesh() = delete;
+	ec_mesh( entity* parent_entity );
 
 	entity_component* init( std::string_view mesh_tag );
 	virtual void draw() override;
@@ -242,10 +242,10 @@ struct mesh_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct simple_collision_body_component : entity_component
+struct ec_simple_collision_body : entity_component
 {
-	simple_collision_body_component() = delete;
-	simple_collision_body_component( entity* parent_entity );
+	ec_simple_collision_body() = delete;
+	ec_simple_collision_body( entity* parent_entity );
 
 	e_simple_collision_type type = simple_collision_type::circle;
 
@@ -256,7 +256,9 @@ struct simple_collision_body_component : entity_component
 	float radius = 0.f;
 
 	// verts
-	std::vector<vec2> verts;
+	std::vector<vec2> verts = {};
+
+	e_simple_collider_type collider_type = simple_collider_type::solid;;
 
 	struct
 	{
@@ -272,8 +274,9 @@ struct simple_collision_body_component : entity_component
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
 	void set_as_polygon( std::vector<vec2> verts );
+	void set_collider_type( e_simple_collider_type collider_type );
 
-	bool collides_with( simple_collision_body_component* scc, simple_collision::pending_collision& collision );
+	bool intersects_with( ec_simple_collision_body* scc, simple_collision::pending_collision& collision );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
@@ -282,10 +285,10 @@ struct simple_collision_body_component : entity_component
 
 // ----------------------------------------------------------------------------
 
-struct tile_map_component : entity_component
+struct ec_tile_map : entity_component
 {
-	tile_map_component() = delete;
-	tile_map_component( entity* parent_entity );
+	ec_tile_map() = delete;
+	ec_tile_map( entity* parent_entity );
 
 	tile_set_asset* tile_set = nullptr;
 	tile_map_asset* tile_map = nullptr;
