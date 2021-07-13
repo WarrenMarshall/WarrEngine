@@ -62,16 +62,15 @@ void entity::post_update_components()
 
 void entity::post_update()
 {
-//	apply_forces();
 }
 
-constexpr float max_impulse_x = 1.5f;
-constexpr float max_impulse_y = 10.f;
+// #gametype
+constexpr float max_impulse_y = 20.f;
 
 void entity::add_force( vec2 force )
 {
 	velocity += force;
-	//velocity.x = glm::clamp( velocity.x, -max_impulse_x, max_impulse_x );
+
 	velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
 }
 
@@ -87,28 +86,10 @@ void entity::set_force_y( float force )
 
 void entity::apply_forces()
 {
-#if 1
 	add_delta_pos( velocity );
-#else
-	vec2 int_impulse = { (int)velocity.x, (int)velocity.y };
-	vec2 signs = { glm::sign( int_impulse.x ), glm::sign( int_impulse.y ) };
 
-	while( int_impulse.x )
-	{
-		add_delta_pos( { signs.x, 0.0f } );
-		int_impulse.x -= signs.x;
-	}
-
-	while( int_impulse.y )
-	{
-		add_delta_pos( { 0.0f, signs.y } );
-		int_impulse.y -= signs.y;
-	}
-
-#endif
-
+	// #gametype
 	velocity.x = lerp( velocity.x, 0.0f, 0.3f );
-	//velocity.y = lerp( velocity.y, 0.0f, 0.1f );
 }
 
 // ----------------------------------------------------------------------------

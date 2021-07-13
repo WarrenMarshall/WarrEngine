@@ -48,22 +48,21 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			}
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
+				ec->tag = H( "player_body" );
 				ec->set_collider_type( simple_collider_type::solid );
-				//ec->set_as_centered_box( 16.f, 16.f );
 				ec->set_as_circle( 8.0f );
 
 				ec->set_collision_flags( coll_player, coll_world );
 			}
-		#if 1
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
+				ec->tag = H( "ground_sensor" );
 				ec->set_collider_type( simple_collider_type::sensor );
 				ec->set_as_circle( 4.0f );
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
 
 				ec->set_collision_flags( coll_player, coll_world );
 			}
-		#endif
 
 			gameplay_scene->player = e;
 
@@ -105,6 +104,7 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
+		// #gametype
 		float force = 2.0f;
 		vec2 delta = evt->delta;
 
@@ -120,7 +120,8 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 	{
 		if( !player->in_air )
 		{
-			player->add_force( { 0.f, -4.0f } );
+			// #gametype
+			player->add_force( { 0.f, -3.5f } );
 			return true;
 		}
 	}
