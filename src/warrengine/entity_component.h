@@ -147,7 +147,6 @@ struct ec_sound : entity_component
 
 // ----------------------------------------------------------------------------
 // physics
-//
 
 struct ec_box2d_physics : entity_component
 {
@@ -297,6 +296,25 @@ struct ec_tile_map : entity_component
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
 	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
+};
+
+// ----------------------------------------------------------------------------
+// simple physics responder
+
+struct ec_simple_collision_responder : entity_component
+{
+	ec_simple_collision_responder() = delete;
+	ec_simple_collision_responder( entity* parent_entity );
+
+	virtual vec2 get_max_impulse();
+};
+
+// ----------------------------------------------------------------------------
+
+struct ec_scr_platformer : ec_simple_collision_responder
+{
+	ec_scr_platformer() = delete;
+	ec_scr_platformer( entity* parent_entity );
 };
 
 }

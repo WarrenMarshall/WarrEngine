@@ -32,6 +32,8 @@ void scene_simple_collision::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
 		e->set_pos( { -80.f, 0.f } );
+		e->simple_collision.horizontal_damping = 0.1f;
+		e->simple_collision.vertical_damping = 0.1f;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -42,7 +44,6 @@ void scene_simple_collision::pushed()
 			//ec->set_as_centered_box( 24.f, 24.f );
 			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
-			ec->rs_opt.color = make_color( color::orange );
 		}
 
 		mario = e;
@@ -53,6 +54,7 @@ void scene_simple_collision::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "hit_marker" );
 		e->set_pos( { 0.f, 0.f } );
+		e->rs_opt.z_bias = zdepth_debug_bias;
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->rs_opt.color = make_color( color::yellow );
@@ -84,6 +86,11 @@ void scene_simple_collision::pushed()
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
+				ec->rs_opt.color = make_color( pal::darker );
+			}
+			{
+				auto ec = e->add_component<ec_primitive_shape>();
+				ec->add_shape( primitive_shape::rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
 		}
@@ -103,6 +110,13 @@ void scene_simple_collision::pushed()
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_circle, r );
+				ec->get_transform()->set_pos( { x, y } );
+				ec->rs_opt.color = make_color( pal::darker );
+			}
+			{
+
+				auto ec = e->add_component<ec_primitive_shape>();
+				ec->add_shape( primitive_shape::circle, r );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
@@ -202,6 +216,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 				{
 					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
 					hit.scc->rs_opt.color = make_color( color::teal );
+					hit.scc->rs_opt.glow = 2.0f;
 				}
 			}
 		}

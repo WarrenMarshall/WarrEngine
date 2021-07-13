@@ -9,6 +9,17 @@ struct entity
 	std::string debug_name;
 #endif
 
+	// when an entity goes through it's first update cycle, it will attempt to
+	// fill out these convenience pointers so they don't need to be looked up
+	// again and again, every frame.
+
+	struct
+	{
+		ec_simple_collision_responder* simple_collision_responder = nullptr;
+
+		bool initialized : 1 = false;
+	} component_cache;
+
 	scene* parent_scene = nullptr;
 	vec2 velocity = vec2::zero;
 	void add_force( vec2 force );
@@ -153,8 +164,11 @@ struct entity
 
 	struct
 	{
-		bool in_air = false;
-		bool affected_by_gravity = false;
+		bool in_air : 1 = false;
+		bool affected_by_gravity : 1 = false;
+
+		float horizontal_damping = 30.0f;
+		float vertical_damping = 30.0f;
 
 		std::vector<simple_collision::pending_collision> colliding_queue;
 		std::vector<simple_collision::pending_collision> touching_queue;

@@ -14,6 +14,7 @@ struct render_state
 	vec2 scale = { 1.f, 1.f };
 	vec2 uv_tiling = { 1.f, 1.f };
 	float z = zdepth_background;
+	float z_bias = 0;
 	float anim_offset = 0.f;
 	render_batch_group* batch_render_target = nullptr;
 	font_asset* font = nullptr;		// set in ctor
@@ -31,6 +32,7 @@ struct render_state_optional
 	std::optional<vec2> scale = std::nullopt;
 	std::optional<vec2> uv_tiling = std::nullopt;
 	std::optional<float> z = std::nullopt;
+	std::optional<float> z_bias = std::nullopt;
 	std::optional<font_asset*> font = std::nullopt;
 };
 

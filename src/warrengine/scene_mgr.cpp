@@ -193,7 +193,7 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 					// draw any debug information that lives in world space.
 					if( scene->flags.is_debug_physics_scene && g_engine->renderer.debug.is_drawing_debug_info() )
 					{
-						render::state->z += 500;
+						render::state->z += zdepth_debug_bias;
 						g_engine->box2d.world->DebugDraw();
 					}
 				#endif

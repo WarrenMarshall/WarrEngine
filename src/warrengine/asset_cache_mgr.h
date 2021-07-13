@@ -4,13 +4,7 @@ namespace war
 
 struct asset_cache_mgr
 {
-	// this uses std::map because the cache is front loaded as the app starts
-	// up, so we only eat the sorting cost at the beginning. from then on, it
-	// benefits us with faster look ups using the b-tree.
-	//
-	// switching to std::unordered_map loses that search time advantage.
-
-	std::map<std::string, std::unique_ptr<asset>> cache;
+	std::unordered_map<std::string, std::unique_ptr<asset>> cache;
 
 	template<typename T>
 	T* add( std::unique_ptr<T> asset, std::string_view tag, std::string_view filename )

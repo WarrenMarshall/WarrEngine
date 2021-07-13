@@ -215,6 +215,7 @@ void scene::add_simple_collisions_to_pending_queue()
 					case simple_collider_type::solid:
 					{
 						collision.entity_a->simple_collision.colliding_queue.push_back( collision );
+						simple_collision.need_another_iteration = true;
 					}
 					break;
 
@@ -239,31 +240,10 @@ void scene::resolve_pending_simple_collisions()
 
 		if( !entity->simple_collision.colliding_queue.empty() )
 		{
-			// ----------------------------------------------------------------------------
-			// #gametype
-			//
-			// the default thing that happens is we push the entities outside of
-			// each other but that's not always what you want. this needs to be
-			// abstracted.
-			// ----------------------------------------------------------------------------
-
-
 			vec2 avg_delta = vec2::zero;
 			for( auto& iter : entity->simple_collision.colliding_queue )
 			{
 				avg_delta += -iter.normal * iter.depth;
-
-				// ----------------------------------------------------------------------------
-				// #gametype
-				//
-				// this is all great for a platformer but this can't live in
-				// engine like this. there needs to be some sort of gametype
-				// class, or entity virtual functions, or a collision resolver
-				// class - something that can take the results of a collision
-				// and react accordingly.
-				//
-				// apply platformer rules, or bounce off of walls, or whatever
-				// ----------------------------------------------------------------------------
 
 				// when landing on the ground, kill any velocity on the Y axis. this
 				// stops it from accruing to the maximum as you run around on flat

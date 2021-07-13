@@ -1257,4 +1257,24 @@ void ec_tile_map::draw()
 	render::draw_tile_map( tile_set, tile_map, vec2( 0.f, 0.f ) );
 }
 
+
+// ----------------------------------------------------------------------------
+
+ec_simple_collision_responder::ec_simple_collision_responder( entity* parent_entity )
+	: entity_component( parent_entity )
+{
+}
+
+vec2 ec_simple_collision_responder::get_max_impulse()
+{
+	return vec2( { 100.f, 20.f } );
+}
+
+// ----------------------------------------------------------------------------
+
+ec_scr_platformer::ec_scr_platformer( entity* parent_entity )
+	: ec_simple_collision_responder( parent_entity )
+{
+}
+
 }

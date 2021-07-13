@@ -12,17 +12,25 @@ void entity::update_from_physics()
 
 void entity::pre_update()
 {
-	life_cycle.pre_update();
-}
+	if( !component_cache.initialized )
+	{
+		component_cache.initialized = true;
+		component_cache.simple_collision_responder =
+			(ec_simple_collision_responder*)get_component<entity_component>( H( "simple_collision_responder" ) );
+	}
 
-void entity::update()
-{
+	life_cycle.pre_update();
+
 	if( simple_collision.affected_by_gravity )
 	{
 		add_force( { 0.f, fixed_time_step::per_second( simple_collision_gravity_default ) } );
 	}
 
 	apply_forces();
+}
+
+void entity::update()
+{
 }
 
 void entity::pre_update_components()
@@ -64,13 +72,11 @@ void entity::post_update()
 {
 }
 
-// #gametype
-constexpr float max_impulse_y = 20.f;
-
 void entity::add_force( vec2 force )
 {
 	velocity += force;
 
+	auto max_impulse_y = component_cache.simple_collision_responder->get_max_impulse().y;
 	velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
 }
 
@@ -94,8 +100,12 @@ void entity::apply_forces()
 {
 	add_delta_pos( velocity );
 
-	// #gametype
-	velocity.x = lerp( velocity.x, 0.0f, 0.3f );
+	velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( simple_collision.horizontal_damping ) );
+
+	if( !simple_collision.affected_by_gravity )
+	{
+		velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( simple_collision.vertical_damping ) );
+	}
 }
 
 // ----------------------------------------------------------------------------

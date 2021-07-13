@@ -51,6 +51,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 				ec->tag = H( "player_body" );
 				ec->set_collider_type( simple_collider_type::solid );
 				ec->set_as_circle( 8.0f );
+				//ec->set_as_centered_box( 16.0f, 16.0f );
 
 				ec->set_collision_flags( coll_player, coll_world );
 			}
@@ -62,6 +63,10 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
 
 				ec->set_collision_flags( coll_player, coll_world );
+			}
+			{
+				auto ec = e->add_component<ec_scr_platformer>();
+				ec->tag = H( "simple_collision_responder" );
 			}
 
 			gameplay_scene->player = e;

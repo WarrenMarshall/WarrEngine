@@ -152,11 +152,12 @@ constexpr float zdepth_stats = 45000.f;
 constexpr float zdepth_topmost = 50000.f;
 constexpr float zdepth_max = 50000.f;
 
+constexpr float zdepth_debug_bias = 1000.f;
+
 // ----------------------------------------------------------------------------
 // if (a - b) is smaller than epsilon, return true.
 //
-// this allows float values to be compared with some slack for accuracy
-// drift.
+// this allows float values to be compared with some slack for accuracy drift.
 
 [[nodiscard]] constexpr bool fequals( float a, float b )
 {

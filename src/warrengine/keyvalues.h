@@ -8,7 +8,7 @@ struct key_values
 	[[nodiscard]] std::string_view find_value( std::string_view key ) const;
 	[[nodiscard]] std::string_view find_value_or( std::string_view key, std::string_view default_value = "" ) const;
 
-	std::map<std::string, std::string> kv;
+	std::unordered_map<std::string, std::string> kv;
 };
 
 }

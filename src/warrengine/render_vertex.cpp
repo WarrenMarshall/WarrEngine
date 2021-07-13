@@ -6,7 +6,7 @@ namespace war
 {
 
 render_vertex::render_vertex( const vec2& pos, const vec2& uv, const color& color, float glow )
-	: x( pos.x ), y( pos.y ), z( render::state->z ),
+	: x( pos.x ), y( pos.y ), z( render::state->z + render::state->z_bias ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	glow( glow )
@@ -14,7 +14,7 @@ render_vertex::render_vertex( const vec2& pos, const vec2& uv, const color& colo
 }
 
 render_vertex::render_vertex( const vec2& pos )
-	: x( pos.x ), y( pos.y ), z( render::state->z ),
+	: x( pos.x ), y( pos.y ), z( render::state->z + render::state->z_bias ),
 	u( 0.f ), v( 0.f ),
 	r( render::state->color.r ), g( render::state->color.g ), b( render::state->color.b ), a( render::state->color.a ),
 	glow( render::state->glow )
@@ -22,7 +22,7 @@ render_vertex::render_vertex( const vec2& pos )
 }
 
 render_vertex::render_vertex( const vec3& pos, const vec2& uv, const color& color, float glow )
-	: x( pos.x ), y( pos.y ), z( pos.z + render::state->z ),
+	: x( pos.x ), y( pos.y ), z( pos.z + render::state->z + render::state->z_bias ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	glow( glow )
@@ -30,7 +30,7 @@ render_vertex::render_vertex( const vec3& pos, const vec2& uv, const color& colo
 }
 
 render_vertex::render_vertex( const vec3& pos )
-	: x( pos.x ), y( pos.y ), z( pos.z + render::state->z ),
+	: x( pos.x ), y( pos.y ), z( pos.z + render::state->z + render::state->z_bias ),
 	u( 0.f ), v( 0.f ),
 	r( 1.f ), g( 1.f ), b( 1.f ), a( 1.f ),
 	glow( 0.f )
