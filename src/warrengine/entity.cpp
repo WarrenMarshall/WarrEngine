@@ -17,7 +17,7 @@ void entity::pre_update()
 
 void entity::update()
 {
-	if( affected_by_gravity )
+	if( simple_collision.affected_by_gravity )
 	{
 		add_force( { 0.f, fixed_time_step::per_second( simple_collision_gravity_default ) } );
 	}
@@ -72,6 +72,12 @@ void entity::add_force( vec2 force )
 	velocity += force;
 
 	velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
+}
+
+void entity::set_force( const vec2& force )
+{
+	set_force_x( force.x );
+	set_force_y( force.y );
 }
 
 void entity::set_force_x( float force )

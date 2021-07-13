@@ -62,41 +62,49 @@ void scene_simple_collision::pushed()
 
 	}
 
-	// static geo
+	// WORLD GEO
 
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
 
-		for( int x = 0 ; x < 24 ; ++x )
+		for( int i = 0 ; i < 24 ; ++i )
 		{
+			auto x = random::getf_range( -viewport_hw, viewport_hw );
+			auto y = random::getf_range( -viewport_hw, viewport_hw );
+			auto w = random::getf_range( 16.f, 80.f );
+			auto h = random::getf_range( 16.f, 80.f );
+
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
-				ec->set_as_centered_box( random::getf_range( 16.f, 80.f ), random::getf_range( 16.f, 80.f ) );
-				ec->get_transform()->set_pos(
-					{
-						random::getf_range( -viewport_hw, viewport_hw ),
-						random::getf_range( -viewport_hh, viewport_hh )
-					}
-				);
+				ec->set_as_centered_box( w, h );
+				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
-				ec->rs_opt.color = make_color( color::dark_teal );
+			}
+			{
+				auto ec = e->add_component<ec_primitive_shape>();
+				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
+				ec->rs_opt.color = make_color( pal::middle );
 			}
 		}
 
-		for( int x = 0 ; x < 24 ; ++x )
+		for( int i = 0 ; i < 24 ; ++i )
 		{
+			auto x = random::getf_range( -viewport_hw, viewport_hw );
+			auto y = random::getf_range( -viewport_hw, viewport_hw );
+			auto r = random::getf_range( 8.f, 40.f );
+
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
-				ec->set_as_circle( random::getf_range( 8.f, 40.f ) );
-				ec->get_transform()->set_pos(
-					{
-						random::getf_range( -viewport_hw, viewport_hw ),
-						random::getf_range( -viewport_hh, viewport_hh )
-					}
-				);
+				ec->set_as_circle( r );
+				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
-				ec->rs_opt.color = make_color( color::dark_teal );
+			}
+			{
+				auto ec = e->add_component<ec_primitive_shape>();
+				ec->add_shape( primitive_shape::filled_circle, r );
+				ec->get_transform()->set_pos( { x, y } );
+				ec->rs_opt.color = make_color( pal::middle );
 			}
 		}
 
@@ -230,6 +238,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 bool scene_simple_collision::on_input_held( const input_event* evt )
 {
 
+/*
 	switch( evt->input_id )
 	{
 		case input_id::key_left:
@@ -244,6 +253,7 @@ bool scene_simple_collision::on_input_held( const input_event* evt )
 		}
 		break;
 	}
+*/
 
 	return false;
 }
@@ -254,8 +264,10 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			mario->add_force( evt->delta * fixed_time_step::per_second( 150.f ) );
-			//mario->add_velocity( evt->delta * fixed_time_step::per_second( 150.f ) );
+			float force = 2.0f;
+			vec2 delta = evt->delta;
+
+			mario->set_force( evt->delta * 2.0f );
 
 			return true;
 		}

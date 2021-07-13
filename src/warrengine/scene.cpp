@@ -143,7 +143,7 @@ void scene::post_update()
 		entity->post_update();
 		entity->post_update_components();
 
-		entity->in_air = true;
+		entity->simple_collision.in_air = true;
 	}
 
 	// loop through the collision
@@ -221,7 +221,7 @@ void scene::add_simple_collisions_to_pending_queue()
 					case simple_collider_type::sensor:
 					{
 						collision.entity_a->simple_collision.touching_queue.push_back( collision );
-						collision.entity_a->in_air = false;
+						collision.entity_a->simple_collision.in_air = false;
 					}
 					break;
 				}
@@ -237,7 +237,7 @@ void scene::resolve_pending_simple_collisions()
 		// ----------------------------------------------------------------------------
 		// solid
 
-		if( entity->simple_collision.colliding_queue.size() )
+		if( !entity->simple_collision.colliding_queue.empty() )
 		{
 			// ----------------------------------------------------------------------------
 			// #gametype
@@ -249,7 +249,6 @@ void scene::resolve_pending_simple_collisions()
 
 
 			vec2 avg_delta = vec2::zero;
-
 			for( auto& iter : entity->simple_collision.colliding_queue )
 			{
 				avg_delta += -iter.normal * iter.depth;
@@ -297,12 +296,14 @@ void scene::resolve_pending_simple_collisions()
 		// ----------------------------------------------------------------------------
 		// sensor
 
-		entity->in_air = true;
-		if( entity->simple_collision.touching_queue.size() )
+		entity->simple_collision.in_air = true;
+
+		if( !entity->simple_collision.touching_queue.empty() )
 		{
-			entity->in_air = false;
-			entity->simple_collision.touching_queue.clear();
+			entity->simple_collision.in_air = false;
 		}
+
+		entity->simple_collision.touching_queue.clear();
 	}
 
 	simple_collision.unique_entities_with_collisions.clear();

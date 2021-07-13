@@ -9,12 +9,12 @@ struct entity
 	std::string debug_name;
 #endif
 
+	scene* parent_scene = nullptr;
 	vec2 velocity = vec2::zero;
-	bool in_air = false;
 	void add_force( vec2 force );
+	void set_force( const vec2& force );
 	void set_force_x( float force );
 	void set_force_y( float force );
-	bool affected_by_gravity = false;
 
 	transform _tform;
 
@@ -151,11 +151,11 @@ struct entity
 	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
 
-	// the scene where this entity was spawned
-	scene* parent_scene = nullptr;
-
 	struct
 	{
+		bool in_air = false;
+		bool affected_by_gravity = false;
+
 		std::vector<simple_collision::pending_collision> colliding_queue;
 		std::vector<simple_collision::pending_collision> touching_queue;
 	} simple_collision;
