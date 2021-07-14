@@ -233,7 +233,6 @@ void opengl::set_view_matrix_identity()
 	// viewport pivot
 
 	matrix viewport_pivot_mtx;
-	// #maybe - do we need to explictly specify which scene we need the pivot from?
 	viewport_pivot_mtx.translate( g_engine->scenes.get_viewport_pivot() );
 
 	// camera

@@ -99,6 +99,7 @@ void entity::set_force_y( float force )
 void entity::apply_forces()
 {
 	add_delta_pos( velocity );
+/*
 
 	velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( simple_collision.horizontal_damping ) );
 
@@ -106,6 +107,7 @@ void entity::apply_forces()
 	{
 		velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( simple_collision.vertical_damping ) );
 	}
+*/
 }
 
 // ----------------------------------------------------------------------------
@@ -247,7 +249,12 @@ transform* entity::add_delta_pos( const vec2& delta )
 {
 	_tform.add_pos( delta );
 
-	update_physics_components_to_match_transform();
+	// note : without this check, box2d bodies stop reacting to gravity - not
+	// sure why, but for now, leave this alone.
+	if( !delta.is_zero() )
+	{
+		update_physics_components_to_match_transform();
+	}
 
 	return &_tform;
 }

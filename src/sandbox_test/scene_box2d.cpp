@@ -42,6 +42,7 @@ void scene_box2d::pushed()
 		}
 	}
 
+/*
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "secondary_ball" );
@@ -60,6 +61,7 @@ void scene_box2d::pushed()
 		}
 		e->set_pos( { 0.f, -100.f } );
 	}
+*/
 
 	// static world geometry
 	{
