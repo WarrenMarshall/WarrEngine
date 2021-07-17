@@ -12,13 +12,6 @@ void entity::update_from_physics()
 
 void entity::pre_update()
 {
-	if( !component_cache.initialized )
-	{
-		component_cache.initialized = true;
-		component_cache.simple_collision_responder =
-			(ec_simple_collision_responder*)get_component<entity_component>( H( "simple_collision_responder" ) );
-	}
-
 	life_cycle.pre_update();
 
 	if( simple_collision.affected_by_gravity )
@@ -74,9 +67,11 @@ void entity::post_update()
 
 void entity::add_force( vec2 force )
 {
+	auto scr = get_component<ec_simple_collision_responder>();
+
 	velocity += force;
 
-	auto max_impulse_y = component_cache.simple_collision_responder->get_max_impulse().y;
+	auto max_impulse_y = scr->get_max_impulse().y;
 	velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
 }
 
@@ -99,7 +94,6 @@ void entity::set_force_y( float force )
 void entity::apply_forces()
 {
 	add_delta_pos( velocity );
-/*
 
 	velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( simple_collision.horizontal_damping ) );
 
@@ -107,7 +101,6 @@ void entity::apply_forces()
 	{
 		velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( simple_collision.vertical_damping ) );
 	}
-*/
 }
 
 // ----------------------------------------------------------------------------

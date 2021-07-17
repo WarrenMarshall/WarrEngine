@@ -45,23 +45,11 @@ void scene_simple_collision::pushed()
 			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
 		}
-
-		mario = e;
-	}
-
-	// HIT MARKER
-	{
-		auto e = add_entity<entity>();
-		e->tag = H( "hit_marker" );
-		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.z_bias = zdepth_debug_bias;
 		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::yellow );
+			auto ec = e->add_component<ec_scr_push_outside>();
 		}
 
-		hit_marker = e;
-
+		mario = e;
 	}
 
 	// WORLD GEO
@@ -86,7 +74,7 @@ void scene_simple_collision::pushed()
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::darker );
+				ec->rs_opt.color = make_color( pal::darker, 0.5f );
 			}
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
@@ -111,7 +99,7 @@ void scene_simple_collision::pushed()
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_circle, r );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::darker );
+				ec->rs_opt.color = make_color( pal::darker, 0.5f );
 			}
 			{
 
@@ -124,6 +112,22 @@ void scene_simple_collision::pushed()
 
 		world_geo = e;
 	}
+
+	// HIT MARKER
+	{
+		auto e = add_entity<entity>();
+		e->tag = H( "hit_marker" );
+		e->set_pos( { 0.f, 0.f } );
+		e->rs_opt.z_bias = zdepth_debug_bias;
+		{
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->rs_opt.color = make_color( color::yellow );
+		}
+
+		hit_marker = e;
+
+	}
+
 }
 
 void scene_simple_collision::draw()

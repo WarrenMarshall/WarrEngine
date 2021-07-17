@@ -40,7 +40,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			auto e = scene->add_entity<entity>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
-			e->simple_collision.affected_by_gravity = true;
+			e->simple_collision.affected_by_gravity = false;
 
 			{
 				auto ec = e->add_component<ec_sprite>();
@@ -65,8 +65,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 				ec->set_collision_flags( coll_player, coll_world );
 			}
 			{
-				auto ec = e->add_component<ec_scr_platformer>();
-				ec->tag = H( "simple_collision_responder" );
+				auto ec = e->add_component<ec_scr_push_outside>();
 			}
 
 			gameplay_scene->player = e;

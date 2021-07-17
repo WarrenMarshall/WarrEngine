@@ -1265,6 +1265,22 @@ ec_simple_collision_responder::ec_simple_collision_responder( entity* parent_ent
 {
 }
 
+void ec_simple_collision_responder::begin()
+{
+}
+
+void ec_simple_collision_responder::end()
+{
+}
+
+void ec_simple_collision_responder::on_collided( simple_collision::pending_collision& coll )
+{
+}
+
+void ec_simple_collision_responder::on_touched( simple_collision::pending_collision& coll )
+{
+}
+
 vec2 ec_simple_collision_responder::get_max_impulse()
 {
 	return vec2( { 100.f, 20.f } );
@@ -1272,9 +1288,53 @@ vec2 ec_simple_collision_responder::get_max_impulse()
 
 // ----------------------------------------------------------------------------
 
-ec_scr_platformer::ec_scr_platformer( entity* parent_entity )
+ec_scr_push_outside::ec_scr_push_outside( entity* parent_entity )
 	: ec_simple_collision_responder( parent_entity )
 {
+
+}
+
+void ec_scr_push_outside::begin()
+{
+	deltas.clear();
+
+}
+
+void ec_scr_push_outside::end()
+{
+	vec2 avg_delta = vec2::zero;
+	for( auto& iter : deltas )
+	{
+		avg_delta += iter;
+	}
+
+	parent_entity->add_delta_pos( avg_delta / (float)deltas.size() );
+}
+
+void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll )
+{
+	deltas.emplace_back( -coll.normal * coll.depth );
+
+	// when landing on the ground, kill any velocity on the Y axis. this
+	// stops it from accruing to the maximum as you run around on flat
+	// geo.
+
+	if( coll.normal.y > 0.7f )
+	{
+		parent_entity->velocity.y = 0.0f;
+	}
+
+	// hitting the ceiling kills vertical velocity
+	if( coll.normal.y < -0.85f )
+	{
+		parent_entity->velocity.y = 0.0f;
+	}
+
+	// hitting a wall kills horizontal velocity
+	if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+	{
+		parent_entity->velocity.x = 0.0f;
+	}
 }
 
 }

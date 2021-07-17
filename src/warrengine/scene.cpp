@@ -164,7 +164,7 @@ void scene::post_update()
 		add_simple_collisions_to_pending_queue();
 
 		// collision resolution
-		resolve_pending_simple_collisions();
+		respond_to_pending_simple_collisions();
 
 		// If nothing is intersecting anymore, we can abort the rest of the iterations
 		if( !simple_collision.need_another_iteration )
@@ -231,7 +231,7 @@ void scene::add_simple_collisions_to_pending_queue()
 	}
 }
 
-void scene::resolve_pending_simple_collisions()
+void scene::respond_to_pending_simple_collisions()
 {
 	for( auto& entity : simple_collision.unique_entities_with_collisions )
 	{
@@ -240,36 +240,20 @@ void scene::resolve_pending_simple_collisions()
 
 		if( !entity->simple_collision.colliding_queue.empty() )
 		{
-			vec2 avg_delta = vec2::zero;
-			for( auto& iter : entity->simple_collision.colliding_queue )
+			auto scr = entity->get_component<ec_simple_collision_responder>();
+
+			if( scr )
 			{
-				avg_delta += -iter.normal * iter.depth;
+				scr->begin();
 
-				// when landing on the ground, kill any velocity on the Y axis. this
-				// stops it from accruing to the maximum as you run around on flat
-				// geo.
-
-				if( iter.normal.y > 0.7f )
+				for( auto& iter : entity->simple_collision.colliding_queue )
 				{
-					entity->velocity.y = 0.0f;
+					scr->on_collided( iter );
 				}
 
-				// hitting the ceiling kills vertical velocity
-				if( iter.normal.y < -0.85f )
-				{
-					entity->velocity.y = 0.0f;
-				}
-
-				// hitting a wall kills horizontal velocity
-				if( iter.normal.x < -0.75f or iter.normal.x > 0.75f )
-				{
-					entity->velocity.x = 0.0f;
-				}
+				scr->end();
 			}
 
-			avg_delta /= (float)entity->simple_collision.colliding_queue.size();
-
-			entity->add_delta_pos( avg_delta );
 			entity->simple_collision.colliding_queue.clear();
 		}
 

@@ -29,6 +29,7 @@
 	#include <variant>
 	#include <future>
 	#include <format>
+	#include <numeric>
 
 	// SMFL
 	#include <SFML/Audio.hpp>		// sound/music playing

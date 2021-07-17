@@ -123,7 +123,7 @@ struct scene
 	virtual void post_update();
 
 	void add_simple_collisions_to_pending_queue();
-	void resolve_pending_simple_collisions();
+	void respond_to_pending_simple_collisions();
 
 	virtual void draw();
 	virtual void draw_ui();
