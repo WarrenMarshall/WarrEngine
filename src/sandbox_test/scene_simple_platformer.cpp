@@ -7,33 +7,33 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_coll_mario = collision_bits.get();
-static const unsigned scene_simple_coll_geo = collision_bits.next();
+static const unsigned scene_simple_platformer_coll_mario = collision_bits.get();
+static const unsigned scene_simple_platformer_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-constexpr float max_raycast_length = 350.f;
+constexpr float max_raycast_length = 250.f;
 
 // ----------------------------------------------------------------------------
 
-scene_simple_collision::scene_simple_collision()
+scene_simple_platformer::scene_simple_platformer()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-void scene_simple_collision::pushed()
+void scene_simple_platformer::pushed()
 {
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// MARIO
 	{
-		auto radius = 12.f;
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
 		e->set_pos( { -80.f, 0.f } );
-		e->set_scale( 1.5f );
+		e->simple_collision.horizontal_damping = 0.1f;
+		e->simple_collision.vertical_damping = 0.1f;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -41,14 +41,9 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
-			//ec->set_as_centered_box( radius * 2.f, radius * 2.f );
-			ec->set_as_circle( radius );
-			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
-		}
-		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::green, 0.25f );
-			ec->add_shape( primitive_shape::filled_circle, radius );
+			//ec->set_as_centered_box( 24.f, 24.f );
+			ec->set_as_circle( 12.f );
+			ec->set_collision_flags( scene_simple_platformer_coll_mario, scene_simple_platformer_coll_geo );
 		}
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
@@ -89,7 +84,7 @@ void scene_simple_collision::pushed()
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->set_collision_flags( scene_simple_coll_geo, 0 );
+				ec->set_collision_flags( scene_simple_platformer_coll_geo, 0 );
 			}
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
@@ -113,7 +108,7 @@ void scene_simple_collision::pushed()
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->set_collision_flags( scene_simple_coll_geo, 0 );
+				ec->set_collision_flags( scene_simple_platformer_coll_geo, 0 );
 			}
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
@@ -134,7 +129,7 @@ void scene_simple_collision::pushed()
 	}
 }
 
-void scene_simple_collision::draw()
+void scene_simple_platformer::draw()
 {
 	{
 		scoped_render_state;
@@ -154,13 +149,13 @@ void scene_simple_collision::draw()
 	}
 }
 
-void scene_simple_collision::draw_ui()
+void scene_simple_platformer::draw_ui()
 {
 	scene::draw_ui();
-	draw_title( "Simple Collisions" );
+	draw_title( "Simple Platformer" );
 }
 
-void scene_simple_collision::update()
+void scene_simple_platformer::update()
 {
 	scene::update();
 
@@ -168,7 +163,7 @@ void scene_simple_collision::update()
 	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
 }
 
-void scene_simple_collision::reset_collision_trace_results()
+void scene_simple_platformer::reset_collision_trace_results()
 {
 	hit_marker->get_component<ec_primitive_shape>()->shapes.clear();
 
@@ -178,13 +173,33 @@ void scene_simple_collision::reset_collision_trace_results()
 	}
 }
 
-bool scene_simple_collision::on_input_pressed( const input_event* evt )
+bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
+		// QUICK
+
+		case input_id::gamepad_button_dpad_up:
+		case input_id::key_q:
+		{
+			reset_collision_trace_results();
+
+			auto start = mario->get_transform()->pos;
+			auto end = start + ( ray_dir * max_raycast_length );
+
+			simple_collision::raycast_quick callback;
+			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
+
+			if( callback.hit_something )
+			{
+				log( "WE HIT SOMETHING" );
+			}
+		}
+		break;
+
 		// ALL
 
-		case input_id::gamepad_button_left_shoulder:
+		case input_id::gamepad_button_dpad_down:
 		case input_id::key_a:
 		{
 			reset_collision_trace_results();
@@ -212,7 +227,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 
 		// CLOSEST
 
-		case input_id::gamepad_button_right_shoulder:
+		case input_id::gamepad_button_dpad_left:
 		case input_id::key_c:
 		{
 			reset_collision_trace_results();
@@ -238,7 +253,30 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene_simple_collision::on_input_motion( const input_event* evt )
+bool scene_simple_platformer::on_input_held( const input_event* evt )
+{
+
+/*
+	switch( evt->input_id )
+	{
+		case input_id::key_left:
+		{
+			mario->add_delta_pos( vec2( fixed_time_step::per_second( -600.f ), 0.f ) );
+		}
+		break;
+
+		case input_id::key_right:
+		{
+			mario->add_delta_pos( vec2( fixed_time_step::per_second( 600.f ), 0.f ) );
+		}
+		break;
+	}
+*/
+
+	return false;
+}
+
+bool scene_simple_platformer::on_input_motion( const input_event* evt )
 {
 	switch( evt->input_id )
 	{

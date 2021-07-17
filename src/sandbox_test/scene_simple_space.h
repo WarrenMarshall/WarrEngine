@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_simple_collision : scene
+struct scene_simple_space : scene
 {
-	scene_simple_collision();
+	scene_simple_space();
 
 	entity* mario = nullptr;
 	entity* hit_marker = nullptr;
@@ -20,5 +20,6 @@ struct scene_simple_collision : scene
 	void reset_collision_trace_results();
 
 	virtual bool on_input_pressed( const input_event* evt ) override;
+	virtual bool on_input_held( const input_event* evt ) override;
 	virtual bool on_input_motion( const input_event* evt ) override;
 };

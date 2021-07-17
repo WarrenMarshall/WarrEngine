@@ -223,12 +223,9 @@ void vertex_array_object::draw( e_draw_call draw_call )
 		float line_width = 1.0f;
 		float point_sz = 2.0f;
 
-		if( g_engine->render_api.using_camera )
-		{
-			float scale = g_engine->scenes.get_transform()->scale;
-			line_width *= scale;
-			point_sz *= scale;
-		}
+		float scale = g_engine->scenes.get_transform()->scale;
+		line_width *= 1.0f + ( scale * g_engine->render_api.using_camera );
+		point_sz *= 1.0f + ( scale * g_engine->render_api.using_camera );
 
 		glLineWidth( line_width );
 		glPointSize( point_sz );
@@ -241,7 +238,7 @@ void vertex_array_object::draw( e_draw_call draw_call )
 	bind();
 
 	// only write to the depth buffer for opaque primitives
-	glDepthMask( !draw_call );
+	glDepthMask( draw_call == draw_call::opaque );
 
 	glDrawElements( get_gl_prim_type(), index_count, GL_UNSIGNED_INT, nullptr );
 

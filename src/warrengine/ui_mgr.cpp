@@ -131,6 +131,18 @@ ui_mgr* ui_mgr::set_text_align( e_align align )
 	return this;
 }
 
+ui_mgr* ui_mgr::set_text_color( color color )
+{
+	current_control->text_color = color;
+	return this;
+}
+
+ui_mgr* ui_mgr::set_color( color color )
+{
+	current_control->primary_color = color;
+	return this;
+}
+
 ui_mgr* ui_mgr::set_image( std::string_view tex_tag )
 {
 	return set_image( g_engine->find_asset<texture_asset>( tex_tag ) );

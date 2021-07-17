@@ -138,7 +138,7 @@ vec4 fx_sepia( vec4 output_color )
 // ----------------------------------------------------------------------------
 
 uniform bool ub_film_grain = false;
-uniform float u_film_grain_intensity = 0.025f;
+uniform float u_film_grain_intensity = 0.05f;
 uniform float u_film_grain_amount = 0.0f;		// updated by the engine each frame
 
 float fx_film_grain_random( vec2 p )

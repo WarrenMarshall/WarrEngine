@@ -27,5 +27,11 @@
 {
 	"type" "tile_map"
 	"tag" "tm_overworld"
-	"filename" "tilemaps/rpg_tilemap.tmx"
+	"filename" "tilemaps/tile_map_test.tmx"
+}
+
+{
+	"type" "tile_map"
+	"tag" "tm_simple_rpg"
+	"filename" "tilemaps/simple_rpg.tmx"
 }

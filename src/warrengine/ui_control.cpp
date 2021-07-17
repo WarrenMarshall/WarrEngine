@@ -8,6 +8,8 @@ namespace war
 ui_control::ui_control( hash tag )
 	: tag( tag )
 {
+	text_color = make_color( pal::middle );
+	primary_color = make_color( pal::middle );
 }
 
 void ui_control::draw_slice_def( const rect& rc_ui, bool is_hovered, bool is_hot )
@@ -88,18 +90,19 @@ ui_caption_control::ui_caption_control( hash tag )
 {
 	type = ui_control_type::caption;
 	text_align = align::hcenter | align::vcenter;
+	primary_color = make_color( pal::darkest );
 }
 
 void ui_caption_control::draw( const rect& rc_ui, const rect& rc_client, bool is_hovered, bool is_hot )
 {
 	// background color bar
 
-	render::state->color = make_color( pal::darkest );
+	render::state->color = primary_color;
 	render::draw_filled_rect( rc_ui );
 
 	// caption text
 
-	draw_text( rc_client, make_color( pal::brighter ), is_hovered, is_hot, text );
+	draw_text( rc_client, text_color, is_hovered, is_hot, text );
 }
 
 
@@ -128,7 +131,7 @@ ui_button_control::ui_button_control( hash tag )
 void ui_button_control::draw( const rect& rc_ui, const rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
-	draw_text( rc_client, make_color( pal::middle ), is_hovered, is_hot, text );
+	draw_text( rc_client, text_color, is_hovered, is_hot, text );
 }
 
 float ui_button_control::get_default_width()
@@ -175,7 +178,7 @@ void ui_check_control::draw( const rect& rc_ui, const rect& rc_client, bool is_h
 			rc_client.h
 		);
 
-	draw_text( rc_text, make_color( pal::middle ), is_hovered, is_hot, text );
+	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
 float ui_check_control::get_default_width()
@@ -281,7 +284,7 @@ ui_label_control::ui_label_control( hash tag )
 void ui_label_control::draw( const rect& rc_ui, const rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, false, false );
-	draw_text( rc_client, make_color( pal::middle ), false, false, text );
+	draw_text( rc_client, text_color, false, false, text );
 }
 
 float ui_label_control::get_default_width()
@@ -396,12 +399,12 @@ void ui_text_control::draw( const rect& rc_ui, const rect& rc_client, bool is_ho
 	if( text_from_data.length() )
 	{
 		text_being_used = text_from_data;
-		draw_text( rc_client + rect( 0, -1, 0, 0 ), make_color( pal::middle ), is_hovered, is_hot, text_from_data );
+		draw_text( rc_client + rect( 0, -1, 0, 0 ), text_color, is_hovered, is_hot, text_from_data );
 	}
 	else
 	{
 		text_being_used = text;
-		draw_text( rc_client + rect( 0, -1, 0, 0 ), make_color( 2, 0.25f ), is_hovered, is_hot, text );
+		draw_text( rc_client + rect( 0, -1, 0, 0 ), make_color( text_color, 0.25f ), is_hovered, is_hot, text );
 	}
 
 	if( g_ui->focused.tag == tag )
@@ -465,7 +468,7 @@ void ui_radio_control::draw( const rect& rc_ui, const rect& rc_client, bool is_h
 		rc_client.h
 	};
 
-	draw_text( rc_text, make_color( pal::middle ), is_hovered, is_hot, text );
+	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
 float ui_radio_control::get_default_width()
@@ -620,7 +623,7 @@ void ui_dropdown_control::draw( const rect& rc_ui, const rect& rc_client, bool i
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 
 	auto str = g_ui->current_callback->get_item_for_idx( dropdown_control_tag, control_data->int_value() );
-	draw_text( rc_client, make_color( pal::middle ), is_hovered, is_hot, str );
+	draw_text( rc_client, text_color, is_hovered, is_hot, str );
 
 	auto tex = g_engine->find_asset<texture_asset>( "ui_dropdown_arrow" );
 

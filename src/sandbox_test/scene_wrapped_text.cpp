@@ -91,6 +91,7 @@ void scene_wrapped_text::draw_ui()
 		rc_big_text_block_01.shrink( 4.0f );
 		rc_big_text_block_02.shrink( 4.0f );
 
+		render::state->z += zdepth_nudge;
 		render::draw_string( wrapped_lines_01, rc_big_text_block_01 );
 		render::draw_string( wrapped_lines_02, rc_big_text_block_02 );
 

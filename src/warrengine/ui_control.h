@@ -9,6 +9,8 @@ struct ui_control
 	hash tag;
 	std::string text;
 	e_align text_align = align::hcenter | align::vcenter;
+	color text_color = color::white;
+	color primary_color = color::black;
 	slice_def_asset* slice_def = nullptr;
 	int idx = -1;
 	size_t total = 0;

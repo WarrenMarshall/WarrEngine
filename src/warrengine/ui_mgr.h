@@ -93,6 +93,8 @@ public:
 	ui_mgr* center_control_on_screen();
 	ui_mgr* adjust_layout_to_client_area();
 	ui_mgr* set_text_align( e_align align );
+	ui_mgr* set_text_color( color color );
+	ui_mgr* set_color( color color );
 	ui_mgr* set_image( std::string_view tex_tag );
 	ui_mgr* set_image( texture_asset* tex );
 	ui_mgr* set_func_draw( f_draw_control func_draw_control );

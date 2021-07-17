@@ -61,12 +61,15 @@ void scene_main_menu::draw_ui()
 			scoped_ui_layout( g_ui->layout_top().cut_left( 0.5f ) );
 
 			do_menu_button<scene_palette>( H( "button_palettes" ), "Palettes" );
+
 			g_ui->divider_control()->done();
 			do_menu_button<scene_angle_dirs>( H( "angle_dirs" ), "Angles / Directions" );
 			do_menu_button<scene_coords>( H( "button_coords" ), "Coords" );
+
 			g_ui->divider_control()->done();
 			do_menu_button<scene_ui>( H( "button_ui" ), "UI Controls" );
 			do_menu_button<scene_wrapped_text>( H( "button_wrapped_text" ), "Wrapped Text" );
+
 			g_ui->divider_control()->done();
 			do_menu_button<scene_textures>( H( "button_textures" ), "Textures" );
 			do_menu_button<scene_meshes>( H( "button_meshes" ), "Meshes" );
@@ -80,15 +83,19 @@ void scene_main_menu::draw_ui()
 			do_menu_button<scene_entity_picking>( H( "button_entity_picking" ), "Entity Picking" );
 			do_menu_button<scene_tweens>( H( "button_tweens" ), "Tweens / Timers" );
 			do_menu_button<scene_sound_board>( H( "button_sound_board" ), "Sound Board" );
+
+			g_ui->divider_control()->done();
 			do_menu_button<scene_box2d>( H( "button_box2d" ), "Box2D" );
-			g_ui->divider_control()->done();
 			do_menu_button<scene_simple_collision>( H( "button_simple_collision" ), "Simple Collision" );
-			do_menu_button<scene_simple_collision>( H( "button_simple_rpg" ), "Simple RPG" );
-			do_menu_button<scene_simple_collision>( H( "button_simple_pachinko" ), "Simple Pachinko" );
-			do_menu_button<scene_simple_collision>( H( "button_simple_breakout" ), "Simple Break Out" );
-			do_menu_button<scene_simple_collision>( H( "button_simple_platformer" ), "Simple Platformer" );
+
 			g_ui->divider_control()->done();
-			//do_menu_button<scene_spatial_map>( H( "button_spatial_map" ), "Spatial Map" );
+			do_menu_button<scene_simple_space>( H( "button_simple_space" ), "Space Drifter" );
+			do_menu_button<scene_simple_rpg>( H( "button_simple_rpg" ), "RPG" );
+			do_menu_button<scene_simple_pachinko>( H( "button_simple_pachinko" ), "Pachinko" );
+			do_menu_button<scene_simple_breakout>( H( "button_simple_breakout" ), "Break Out" );
+			do_menu_button<scene_simple_platformer>( H( "button_simple_platformer" ), "Platformer" );
+
+			g_ui->divider_control()->done();
 			do_menu_button<scene_controller>( H( "button_controller" ), "Game Controller" );
 			do_menu_button<scene_noise>( H( "button_noise" ), "Noise" );
 		}
