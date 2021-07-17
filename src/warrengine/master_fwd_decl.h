@@ -28,7 +28,7 @@ struct contact_listener;
 struct debug_draw;
 struct rect;
 struct render;
-struct render_batch;
+struct primitive_batch;
 struct render_state;
 struct render_state_optional;
 struct scene;

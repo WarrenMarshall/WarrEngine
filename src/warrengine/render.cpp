@@ -466,7 +466,8 @@ void render::end_frame()
 
 	// flush the final batches
 
-	dynamic_batches.flush_and_reset_internal();
+	dynamic_batches.flush_and_reset_internal( draw_call::opaque );
+	dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 
 	// there should be a single model matrix left on the stack (the identity
 	// matrix we created at renderer start up). If there is any other number,

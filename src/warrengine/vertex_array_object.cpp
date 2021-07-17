@@ -4,13 +4,13 @@
 namespace war
 {
 
-vertex_array_object::vertex_array_object( render_batch* batch, e_render_prim render_prim )
+vertex_array_object::vertex_array_object( primitive_batch* batch, e_render_prim render_prim )
 	: render_prim( render_prim ), batch( batch )
 {
 	init( batch, render_prim );
 }
 
-void vertex_array_object::init( render_batch* batch, e_render_prim render_prim )
+void vertex_array_object::init( primitive_batch* batch, e_render_prim render_prim )
 {
 	this->batch = batch;
 	this->render_prim = render_prim;
@@ -116,17 +116,6 @@ void vertex_array_object::unbind()
 	ib->unbind();
 }
 
-#if 0	// #render_perf
-void vertex_array_object::maybe_flush_and_reset()
-{
-	if( vb->vertices.size() >= render_batch::max_elements_per_draw_call )
-	{
-		flush_and_reset();
-	}
-
-}
-#endif
-
 void vertex_array_object::update_stats()
 {
 #ifndef _FINAL_RELEASE
@@ -184,12 +173,12 @@ void vertex_array_object::update_stats()
 #endif
 }
 
-void vertex_array_object::flush_and_reset()
+void vertex_array_object::flush_and_reset( e_draw_call draw_call )
 {
 	if( !vb->vertices.empty() )
 	{
 		update_stats();
-		flush_and_reset_internal();
+		flush_and_reset_internal( draw_call );
 	}
 }
 
@@ -204,20 +193,21 @@ void vertex_array_object::upload_vertices_to_gpu()
 	}
 }
 
-void vertex_array_object::flush_and_reset_internal()
+void vertex_array_object::flush_and_reset_internal( e_draw_call draw_call )
 {
 	auto index_count = (int)( vb->vertices.size() * indices_to_verts_factor );
 
 	if( index_count )
 	{
 		upload_vertices_to_gpu();
-		draw();
+
+		draw( draw_call );
 
 		reset();
 	}
 }
 
-void vertex_array_object::draw()
+void vertex_array_object::draw( e_draw_call draw_call )
 {
 	auto index_count = (int)( vb->vertices.size() * indices_to_verts_factor );
 	if( !index_count )
@@ -250,7 +240,9 @@ void vertex_array_object::draw()
 
 	bind();
 
-	// draw
+	// only write to the depth buffer for opaque primitives
+	glDepthMask( !draw_call );
+
 	glDrawElements( get_gl_prim_type(), index_count, GL_UNSIGNED_INT, nullptr );
 
 	unbind();

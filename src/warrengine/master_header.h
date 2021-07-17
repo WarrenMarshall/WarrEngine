@@ -24,7 +24,7 @@
 #include "index_buffer.h"
 #include "vertex_buffer.h"
 #include "vertex_array_object.h"
-#include "render_batch.h"
+#include "primitive_batch.h"
 
 #include "life_cycle_mgr.h"
 #include "clock.h"

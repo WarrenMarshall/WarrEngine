@@ -97,6 +97,8 @@ void scene_tweens::draw_ui()
 	{
 		scoped_render_state;
 
+		render::state->z += zdepth_nudge;
+
 		l_draw_marker( ypos, tween_linear );
 		l_draw_marker( ypos, tween_sin );
 		l_draw_marker( ypos, tween_quad );

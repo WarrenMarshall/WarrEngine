@@ -148,7 +148,7 @@
     <ClCompile Include="index_buffer.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
-    <ClCompile Include="render_batch.cpp">
+    <ClCompile Include="primitive_batch.cpp">
       <Filter>src\render</Filter>
     </ClCompile>
     <ClCompile Include="render_stats.cpp">
@@ -420,7 +420,7 @@
     <ClInclude Include="render.h">
       <Filter>include\render</Filter>
     </ClInclude>
-    <ClInclude Include="render_batch.h">
+    <ClInclude Include="primitive_batch.h">
       <Filter>include\render</Filter>
     </ClInclude>
     <ClInclude Include="render_stats.h">

@@ -328,7 +328,9 @@ void engine::main_loop()
 
 			// engine specific things, like pause borders
 			draw();
-			g_engine->renderer.dynamic_batches.flush_and_reset();
+
+			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::opaque );
+			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::transparent );
 		}
 		g_engine->renderer.end_frame();
 		frame_buffer->unbind();
@@ -365,7 +367,8 @@ void engine::do_draw_finished_frame()
 	g_engine->render_api.set_uniform( "u_viewport_h", viewport_h );
 
 	render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-	g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
+	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 	blur_frame_buffer->unbind();
 
 	{
@@ -381,7 +384,8 @@ void engine::do_draw_finished_frame()
 			g_engine->render_api.shaders[ "compositing_pass" ].bind();
 
 			render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
+			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 		}
 
 		// ----------------------------------------------------------------------------
@@ -393,7 +397,8 @@ void engine::do_draw_finished_frame()
 			g_engine->render_api.set_blend( opengl_blend::glow );
 
 			render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
+			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 
 			g_engine->render_api.set_blend( opengl_blend::alpha );
 		}
@@ -419,7 +424,8 @@ void engine::do_draw_finished_frame()
 		);
 
 		render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
-		g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
+		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 	}
 }
 

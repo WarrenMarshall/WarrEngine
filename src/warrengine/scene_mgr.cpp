@@ -170,6 +170,7 @@ int scene_mgr::find_first_fully_opaque_scene()
 void scene_mgr::draw_scene( int starting_scene_idx )
 {
 	scoped_render_state;
+	auto scene_depth_start = 0.f;
 
 	for( auto x = starting_scene_idx; x >= 0; --x )
 	{
@@ -180,7 +181,8 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 			current_scene = scene;
 
 			g_engine->render_api.clear_depth_buffer();
-			render::state->z = zdepth_scene_start;
+			scene_depth_start += zdepth_scene_start;
+			render::state->z = scene_depth_start;
 
 			g_engine->render_api.set_view_matrix_identity();
 
@@ -200,7 +202,9 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 			}
 
 			current_scene = get_top();
-			g_engine->renderer.dynamic_batches.flush_and_reset();
+
+			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::opaque );
+			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::transparent );
 		}
 	}
 }
@@ -210,6 +214,7 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 	g_engine->render_api.set_view_matrix_identity_ui();
 
 	scoped_render_state;
+	auto scene_depth_start = 0.f;
 
 	for( auto x = starting_scene_idx; x >= 0; --x )
 	{
@@ -220,7 +225,8 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 			current_scene = scene;
 
 			g_engine->render_api.clear_depth_buffer();
-			render::state->z = zdepth_scene_start;
+			scene_depth_start += zdepth_scene_start;
+			render::state->z = scene_depth_start;
 
 			{
 				scoped_opengl;
@@ -254,7 +260,8 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 			#endif
 			}
 
-			g_engine->renderer.dynamic_batches.flush_and_reset();
+			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::opaque );
+			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::transparent );
 		}
 	}
 }

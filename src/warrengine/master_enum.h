@@ -476,7 +476,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( batch_type )
+enum_begin( draw_call )
 	opaque = 0,
 	transparent,
 	max,

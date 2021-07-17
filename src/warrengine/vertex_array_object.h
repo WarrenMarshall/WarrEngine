@@ -6,7 +6,7 @@ struct vertex_array_object
 {
 	e_render_prim render_prim = render_prim::quad;
 	GLuint gl_id = 0;
-	render_batch* batch = nullptr;
+	primitive_batch* batch = nullptr;
 
 	float indices_to_verts_factor = 0.f;
 
@@ -15,22 +15,19 @@ struct vertex_array_object
 
 	vertex_array_object() = default;
 	vertex_array_object( vertex_array_object& ) = delete;
-	vertex_array_object( render_batch* batch, e_render_prim render_prim );
-	void init( render_batch* batch, e_render_prim render_prim );
+	vertex_array_object( primitive_batch* batch, e_render_prim render_prim );
+	void init( primitive_batch* batch, e_render_prim render_prim );
 	~vertex_array_object();
 
 	void bind();
 	void unbind();
-#if 0	// #render_perf
-	void maybe_flush_and_reset();
-#endif
 	void update_stats();
-	void flush_and_reset();
+	void flush_and_reset( e_draw_call draw_call );
 	void upload_vertices_to_gpu();
-	void flush_and_reset_internal();
+	void flush_and_reset_internal( e_draw_call draw_call );
 	void reset();
 	GLenum get_gl_prim_type();
-	void draw();
+	void draw( e_draw_call draw_call );
 };
 
 }
