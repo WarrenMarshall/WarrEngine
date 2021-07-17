@@ -6,7 +6,6 @@ struct vertex_array_object
 {
 	e_render_prim render_prim = render_prim::quad;
 	GLuint gl_id = 0;
-	GLenum gl_prim_type = GL_TRIANGLES;
 	render_batch* batch = nullptr;
 
 	float indices_to_verts_factor = 0.f;
@@ -30,6 +29,7 @@ struct vertex_array_object
 	void upload_vertices_to_gpu();
 	void flush_and_reset_internal();
 	void reset();
+	GLenum get_gl_prim_type();
 	void draw();
 };
 

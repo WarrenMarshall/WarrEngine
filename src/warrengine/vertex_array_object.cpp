@@ -33,7 +33,6 @@ void vertex_array_object::init( render_batch* batch, e_render_prim render_prim )
 			// use a larger data type.
 
 			indices_to_verts_factor = 1.5f;
-			gl_prim_type = GL_TRIANGLES;
 
 			vb = std::make_unique<vertex_buffer>( this, 4 );
 			ib = g_engine->render_api.ib_quads.get();
@@ -51,7 +50,6 @@ void vertex_array_object::init( render_batch* batch, e_render_prim render_prim )
 			// use a larger data type.
 
 			indices_to_verts_factor = 1.f;
-			gl_prim_type = GL_TRIANGLES;
 
 			vb = std::make_unique<vertex_buffer>( this, 3 );
 			ib = g_engine->render_api.ib_tris.get();
@@ -69,7 +67,6 @@ void vertex_array_object::init( render_batch* batch, e_render_prim render_prim )
 			// use a larger data type.
 
 			indices_to_verts_factor = 1.f;
-			gl_prim_type = GL_LINES;
 
 			vb = std::make_unique<vertex_buffer>( this, 2 );
 			ib = g_engine->render_api.ib_lines.get();
@@ -87,7 +84,6 @@ void vertex_array_object::init( render_batch* batch, e_render_prim render_prim )
 			// use a larger data type.
 
 			indices_to_verts_factor = 1.f;
-			gl_prim_type = GL_POINTS;
 
 			vb = std::make_unique<vertex_buffer>( this, 1 );
 			ib = g_engine->render_api.ib_points.get();
@@ -231,6 +227,7 @@ void vertex_array_object::draw()
 
 	// lines and points change their size/thickness dynamically based on the level of viewport zoom
 
+	auto gl_prim_type = get_gl_prim_type();
 	if( gl_prim_type == GL_LINES or gl_prim_type == GL_POINTS )
 	{
 		float line_width = 1.0f;
@@ -254,7 +251,7 @@ void vertex_array_object::draw()
 	bind();
 
 	// draw
-	glDrawElements( gl_prim_type, index_count, GL_UNSIGNED_INT, nullptr );
+	glDrawElements( get_gl_prim_type(), index_count, GL_UNSIGNED_INT, nullptr );
 
 	unbind();
 }
@@ -262,6 +259,16 @@ void vertex_array_object::draw()
 void vertex_array_object::reset()
 {
 	vb->reset();
+}
+
+GLenum vertex_array_object::get_gl_prim_type()
+{
+	return (
+		( ( render_prim == render_prim::line ) * GL_LINES )
+		+ ( ( render_prim == render_prim::point ) * GL_POINTS )
+		+ ( ( render_prim == render_prim::triangle ) * GL_TRIANGLES )
+		+ ( ( render_prim == render_prim::quad ) * GL_TRIANGLES )
+		);
 }
 
 }

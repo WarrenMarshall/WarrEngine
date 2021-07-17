@@ -52,6 +52,21 @@ void scene_simple_collision::pushed()
 		mario = e;
 	}
 
+	// HIT MARKER
+	{
+		auto e = add_entity<entity>();
+		e->tag = H( "hit_marker" );
+		e->set_pos( { 0.f, 0.f } );
+		e->rs_opt.z_bias = zdepth_debug_bias;
+		{
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->rs_opt.color = make_color( color::yellow );
+		}
+
+		hit_marker = e;
+
+	}
+
 	// WORLD GEO
 
 	{
@@ -112,22 +127,6 @@ void scene_simple_collision::pushed()
 
 		world_geo = e;
 	}
-
-	// HIT MARKER
-	{
-		auto e = add_entity<entity>();
-		e->tag = H( "hit_marker" );
-		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.z_bias = zdepth_debug_bias;
-		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::yellow );
-		}
-
-		hit_marker = e;
-
-	}
-
 }
 
 void scene_simple_collision::draw()

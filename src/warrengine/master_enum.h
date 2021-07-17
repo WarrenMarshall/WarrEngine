@@ -474,3 +474,11 @@ enum_begin( simple_collider_type )
 	sensor,
 enum_end
 
+// ----------------------------------------------------------------------------
+
+enum_begin( batch_type )
+	opaque = 0,
+	transparent,
+	max,
+enum_end
+
