@@ -110,7 +110,7 @@ void scene_coords::draw_ui()
 	{
 		auto e = find_entity( H( "crosshair" ) );
 
-		auto viewport_pos = coord_system::world_to_viewport_pos( e->get_transform()->pos );
+		auto viewport_pos = coord_system::world_to_viewport_pos( e->get_pos() );
 		auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos + vec2( 32.f, 0.f ) );
 
 		scoped_render_state;

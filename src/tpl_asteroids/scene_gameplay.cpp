@@ -52,7 +52,7 @@ void scene_gameplay::update()
 
 	auto lstick = g_engine->input.get_axis_state( input_id::gamepad_left_stick, true );
 
-	vec2 new_player_pos = player->get_transform()->pos + ( fixed_time_step::per_second( lstick * my_game->ship_base_movement_speed ) );
+	vec2 new_player_pos = player->get_pos() + ( fixed_time_step::per_second( lstick * my_game->ship_base_movement_speed ) );
 
 	if( new_player_pos.x < -viewport_hw )
 	{
@@ -83,7 +83,7 @@ void scene_gameplay::update()
 	for( auto idx = 0 ; idx < 9 ; ++idx )
 	{
 		player->satellite_ships[ idx ]->set_pos(
-			player->get_transform()->pos + ( offset_positions[ idx ] * viewport_w )
+			player->get_pos() + ( offset_positions[ idx ] * viewport_w )
 		);
 	}
 

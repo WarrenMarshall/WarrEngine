@@ -82,7 +82,7 @@ void scene_particles::draw_ui()
 
 	// compute where the torch is in UI space and draw a label there
 
-	auto viewport_pos = coord_system::world_to_viewport_pos( find_entity( H( "mouse_torch" ) )->get_transform()->pos );
+	auto viewport_pos = coord_system::world_to_viewport_pos( find_entity( H( "mouse_torch" ) )->get_pos() );
 	viewport_pos += { 24.f, 0.f };
 	auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
 

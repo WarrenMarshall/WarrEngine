@@ -223,7 +223,7 @@ void vertex_array_object::draw( e_draw_call draw_call )
 		float line_width = 1.0f;
 		float point_sz = 2.0f;
 
-		float scale = g_engine->scenes.get_transform()->scale;
+		float scale = g_engine->scenes.get_scale();
 		line_width *= 1.0f + ( scale * g_engine->render_api.using_camera );
 		point_sz *= 1.0f + ( scale * g_engine->render_api.using_camera );
 

@@ -144,7 +144,7 @@ void scene_simple_platformer::draw()
 	if( b_show_ray )
 	{
 		render::state->color = make_color( color::orange );
-		auto start = mario->get_transform()->pos;
+		auto start = mario->get_pos();
 		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
 	}
 }
@@ -184,7 +184,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		{
 			reset_collision_trace_results();
 
-			auto start = mario->get_transform()->pos;
+			auto start = mario->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_quick callback;
@@ -204,7 +204,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		{
 			reset_collision_trace_results();
 
-			auto start = mario->get_transform()->pos;
+			auto start = mario->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_all callback;
@@ -232,7 +232,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		{
 			reset_collision_trace_results();
 
-			auto start = mario->get_transform()->pos;
+			auto start = mario->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_closest callback;

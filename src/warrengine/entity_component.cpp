@@ -125,7 +125,7 @@ void ec_sprite::draw()
 		scoped_render_state;
 
 		render::state->set_from_opt( rs_opt );
-		render::draw_sprite( texture, get_transform()->pos );
+		render::draw_sprite( texture, get_pos() );
 	}
 }
 
@@ -467,7 +467,7 @@ void ec_box2d_physics_body::init_body()
 	b2BodyDef body_definition;
 	{
 		body_definition.type = body_type;
-		body_definition.position.Set( to_box2d( get_transform()->pos.x ), to_box2d( get_transform()->pos.y ) );
+		body_definition.position.Set( to_box2d( get_pos().x ), to_box2d( get_pos().y ) );
 		body_definition.angle = 0.f;
 	}
 
@@ -477,7 +477,7 @@ void ec_box2d_physics_body::init_body()
 
 b2Fixture* ec_box2d_physics_body::add_fixture_box( hash tag, const rect& rc )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
+	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
 	b2PolygonShape shape;
 	{
@@ -516,7 +516,7 @@ b2Fixture* ec_box2d_physics_body::add_fixture_box( hash tag, vec2 pos, float w, 
 
 b2Fixture* ec_box2d_physics_body::add_fixture_circle( hash tag, vec2 pos, float radius )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
+	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
 	b2CircleShape shape;
 	{
@@ -544,7 +544,7 @@ b2Fixture* ec_box2d_physics_body::add_fixture_circle( hash tag, vec2 pos, float 
 
 b2Fixture* ec_box2d_physics_body::add_fixture_line( hash tag, vec2 pos, vec2 start, vec2 end )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
+	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
 	b2EdgeShape shape;
 	{
@@ -584,7 +584,7 @@ b2Fixture* ec_box2d_physics_body::add_fixture_line_loop( hash tag, vec2 pos, con
 	// Box2D requirement
 	assert( verts.size() >= 3 );
 
-	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
+	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -625,7 +625,7 @@ b2Fixture* ec_box2d_physics_body::add_fixture_line_loop( hash tag, vec2 pos, con
 
 b2Fixture* ec_box2d_physics_body::add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts )
 {
-	body->SetTransform( parent_entity->get_transform()->pos.to_box2d().to_b2Vec2(), 0.f );
+	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
 	// convert the vertex list into a box2d friendly format
 	std::vector<b2Vec2> b2verts;
@@ -837,7 +837,7 @@ void ec_simple_collision_body::draw()
 
 void ec_simple_collision_body::update_to_match_parent_transform()
 {
-	auto scale = ( parent_entity->get_transform()->scale * get_transform()->scale );
+	auto scale = ( parent_entity->get_scale() * get_scale() );
 
 	scoped_opengl;
 

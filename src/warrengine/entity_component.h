@@ -14,6 +14,19 @@ struct entity_component
 		return &_tform;
 	}
 
+	[[nodiscard]] vec2 get_pos()
+	{
+		return get_transform()->pos;
+	}
+	[[nodiscard]] float get_angle()
+	{
+		return get_transform()->angle;
+	}
+	[[nodiscard]] float get_scale()
+	{
+		return get_transform()->scale;
+	}
+
 	entity* parent_entity = nullptr;
 	hash tag = hash_none;
 	render_state_optional rs_opt;

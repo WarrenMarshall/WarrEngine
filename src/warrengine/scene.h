@@ -12,7 +12,23 @@ struct scene
 
 	// scenes can have a camera attached to them. this is applied against the
 	// view matrix.
-	transform* get_transform();
+	[[nodiscard]] transform* get_transform()
+	{
+		return &camera_transform;
+	}
+
+	[[nodiscard]] vec2 get_pos()
+	{
+		return get_transform()->pos;
+	}
+	[[nodiscard]] float get_angle()
+	{
+		return get_transform()->angle;
+	}
+	[[nodiscard]] float get_scale()
+	{
+		return get_transform()->scale;
+	}
 	transform camera_transform;
 
 	// rendering starts in the top left corner of the screen by default. this

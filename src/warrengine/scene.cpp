@@ -415,11 +415,6 @@ bool scene::on_input_key( const input_event* evt )
 	return false;
 }
 
-transform* scene::get_transform()
-{
-	return &camera_transform;
-}
-
 vec2 scene::get_viewport_pivot()
 {
 	return viewport_pivot;

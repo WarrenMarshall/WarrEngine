@@ -71,8 +71,11 @@ void entity::add_force( vec2 force )
 
 	velocity += force;
 
-	auto max_impulse_y = scr->get_max_impulse().y;
-	velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
+	if( scr )
+	{
+		auto max_impulse_y = scr->get_max_impulse().y;
+		velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
+	}
 }
 
 void entity::set_force( const vec2& force )
@@ -120,7 +123,7 @@ void entity::draw()
 
 		{
 			scoped_opengl;
-			g_engine->render_api.top_matrix->apply_transform( component->get_transform()->pos, component->get_transform()->angle, component->get_transform()->scale );
+			g_engine->render_api.top_matrix->apply_transform( component->get_pos(), component->get_angle(), component->get_scale() );
 
 			render::state->z += zdepth_nudge;
 
@@ -227,6 +230,21 @@ transform* entity::set_scale( const float scale )
 	assert( !has_component<ec_box2d_physics>() );
 
 	return &_tform;
+}
+
+vec2 entity::get_pos()
+{
+	return get_transform()->pos;
+}
+
+float entity::get_angle()
+{
+	return get_transform()->angle;
+}
+
+float entity::get_scale()
+{
+	return get_transform()->scale;
 }
 
 transform* entity::set_pos( const vec2& pos )

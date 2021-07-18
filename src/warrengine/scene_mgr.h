@@ -11,7 +11,6 @@ struct scene_mgr
 	// therefore, iterating forwards through scene_stack is drilling downwards
 	// into the screen.
 
-	// #warren - can we kill the unique_ptr here? deque is already using the heap.
 	std::deque<std::unique_ptr<scene>> scene_stack;
 
 	// holds a pointer to the current scene being drawn. this is needed to
@@ -19,7 +18,24 @@ struct scene_mgr
 	// layered on top of each other.
 	scene* current_scene = nullptr;
 
-	transform* get_transform();
+	[[nodiscard]] transform* get_transform()
+	{
+		return current_scene->get_transform();
+	}
+
+	[[nodiscard]] vec2 get_pos()
+	{
+		return get_transform()->pos;
+	}
+	[[nodiscard]] float get_angle()
+	{
+		return get_transform()->angle;
+	}
+	[[nodiscard]] float get_scale()
+	{
+		return get_transform()->scale;
+	}
+
 	vec2 get_viewport_pivot();
 
 	template<typename T>

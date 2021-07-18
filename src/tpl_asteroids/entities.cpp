@@ -68,10 +68,10 @@ void e_player_ship::fire()
 	{
 		auto e = g_engine->scenes.get_top()->add_entity<e_player_bullet>();
 
-		auto dir = vec2::dir_from_angle( get_transform()->angle + angle );
+		auto dir = vec2::dir_from_angle( get_angle() + angle );
 
-		e->set_pos( get_transform()->pos + ( dir * my_game->ship_radius ) );
-		e->set_angle( get_transform()->angle + angle );
+		e->set_pos( get_pos() + ( dir * my_game->ship_radius ) );
+		e->set_angle( get_angle() + angle );
 
 		angle += angle_step;
 	}
@@ -83,7 +83,7 @@ bool e_player_ship::is_outside_playfield()
 	rect rc_playfield { -viewport_hw, -viewport_hh, viewport_w, viewport_h };
 	rc_playfield.grow( 32.f );
 
-	return !rc_playfield.contains_point( get_transform()->pos );
+	return !rc_playfield.contains_point( get_pos() );
 }
 
 void e_player_ship::update()
@@ -113,7 +113,7 @@ void e_player_bullet::update()
 	if( get_life_cycle()->is_alive() )
 	{
 		// move bullet forward along facing vector
-		vec2 dir = vec2::dir_from_angle( get_transform()->angle );
+		vec2 dir = vec2::dir_from_angle( get_angle() );
 		add_delta_pos( fixed_time_step::per_second( dir * movement_speed ) );
 
 
@@ -121,7 +121,7 @@ void e_player_bullet::update()
 		rc_playfield.grow( 8.f );
 
 		// if bullet is outside the play area, delete it
-		if( !rc_playfield.contains_point( get_transform()->pos ) )
+		if( !rc_playfield.contains_point( get_pos() ) )
 		{
 			set_life_cycle( life_cycle::dying );
 		}

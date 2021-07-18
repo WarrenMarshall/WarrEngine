@@ -17,7 +17,7 @@ void scene_gameplay::draw_ui()
 		player->velocity.x, player->velocity.y ), vec2( 8.f, 8.f ) );
 	render::draw_string( std::format( "In air : {}", player->simple_collision.in_air ), vec2( 8.f, 18.f ) );
 	render::draw_string( std::format( "{:.1f}, {:.1f}",
-		player->get_transform()->pos.x, player->get_transform()->pos.y ), vec2( 8.f, 28.f ) );
+		player->get_pos().x, player->get_pos().y ), vec2( 8.f, 28.f ) );
 }
 
 void scene_gameplay::draw()

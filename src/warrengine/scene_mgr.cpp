@@ -5,11 +5,6 @@
 namespace war
 {
 
-transform* scene_mgr::get_transform()
-{
-	return current_scene->get_transform();
-}
-
 vec2 scene_mgr::get_viewport_pivot()
 {
 	return current_scene->get_viewport_pivot();

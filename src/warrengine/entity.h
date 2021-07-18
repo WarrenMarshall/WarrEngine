@@ -30,6 +30,10 @@ struct entity
 	transform* set_angle( const float angle );
 	transform* set_scale( const float scale );
 
+	[[nodiscard]] vec2 get_pos();
+	[[nodiscard]] float get_angle();
+	[[nodiscard]] float get_scale();
+
 	// delta transforms
 
 	transform* add_delta_pos( const vec2& delta );
