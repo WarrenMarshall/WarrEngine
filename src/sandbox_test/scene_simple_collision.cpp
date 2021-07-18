@@ -34,8 +34,6 @@ void scene_simple_collision::pushed()
 		e->tag = H( "mario" );
 		e->set_pos( { -80.f, 0.f } );
 		e->set_scale( 1.5f );
-		e->simple_collision.horizontal_damping = damping::asphalt;
-		e->simple_collision.vertical_damping = damping::asphalt;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -54,6 +52,9 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
+		}
+		{
+			auto ec = e->add_component<ec_movement_controller>();
 		}
 
 		mario = e;

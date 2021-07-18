@@ -29,8 +29,6 @@ void scene_simple_space::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
 		e->set_pos( { -80.f, 0.f } );
-		e->simple_collision.horizontal_damping = 0.1f;
-		e->simple_collision.vertical_damping = 0.1f;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -48,6 +46,10 @@ void scene_simple_space::pushed()
 		}
 		{
 			//auto ec = e->add_component<ec_scr_push_outside>();
+		}
+		{
+			auto ec = e->add_component<ec_movement_controller>();
+			ec->set_damping( damping::outer_space );
 		}
 
 		mario = e;
@@ -140,10 +142,14 @@ void scene_simple_space::update()
 {
 	scene::update();
 
+	// wrap player around the edges of the screen
+
 	auto pos = mario->get_pos();
 
 	if( pos.x < -viewport_hw )		pos.x = viewport_hw;
-	if( pos.x > viewport_hh )		pos.x = -viewport_hw;
+	if( pos.x > viewport_hw )		pos.x = -viewport_hw;
+	if( pos.y < -viewport_hh )		pos.y = viewport_hh;
+	if( pos.y > viewport_hh )		pos.y = -viewport_hh;
 
 	mario->set_pos( pos );
 }
@@ -165,7 +171,7 @@ bool scene_simple_space::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			auto force = 0.1f;
+			auto force = 0.05f;
 			vec2 delta = evt->delta;
 
 			mario->add_force( evt->delta * force );

@@ -32,8 +32,6 @@ void scene_simple_pachinko::pushed()
 		auto e = add_entity<entity>();
 		e->tag = H( "mario" );
 		e->set_pos( { -80.f, 0.f } );
-		e->simple_collision.horizontal_damping = 0.1f;
-		e->simple_collision.vertical_damping = 0.1f;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -47,6 +45,9 @@ void scene_simple_pachinko::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
+		}
+		{
+			auto ec = e->add_component<ec_movement_controller>();
 		}
 
 		mario = e;

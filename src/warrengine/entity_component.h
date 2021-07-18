@@ -341,4 +341,20 @@ struct ec_scr_push_outside : ec_simple_collision_responder
 	virtual void on_collided( simple_collision::pending_collision& coll ) override;
 };
 
+// ----------------------------------------------------------------------------
+// movement controller
+//
+// controls how the entity responds to movement events and queries.
+
+struct ec_movement_controller : entity_component
+{
+	ec_movement_controller() = delete;
+	ec_movement_controller( entity* parent_entity );
+
+	float horizontal_damping = damping::asphalt;
+	float vertical_damping = damping::asphalt;
+
+	void set_damping( float damping );
+};
+
 }

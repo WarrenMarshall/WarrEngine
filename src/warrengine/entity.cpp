@@ -67,11 +67,9 @@ void entity::post_update()
 
 void entity::add_force( vec2 force )
 {
-	auto scr = get_component<ec_simple_collision_responder>();
-
 	velocity += force;
 
-	if( scr )
+	if( auto scr = get_component<ec_simple_collision_responder>() ; scr )
 	{
 		auto max_impulse_y = scr->get_max_impulse().y;
 		velocity.y = glm::clamp( velocity.y, -max_impulse_y, max_impulse_y );
@@ -98,11 +96,14 @@ void entity::apply_forces()
 {
 	add_delta_pos( velocity );
 
-	velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( simple_collision.horizontal_damping ) );
-
-	if( !simple_collision.affected_by_gravity )
+	if( auto mc = get_component<ec_movement_controller>() ; mc )
 	{
-		velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( simple_collision.vertical_damping ) );
+		velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( mc->horizontal_damping ) );
+
+		if( !simple_collision.affected_by_gravity )
+		{
+			velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( mc->vertical_damping ) );
+		}
 	}
 }
 
@@ -353,10 +354,9 @@ void entity::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
-	auto ecp = get_component<ec_box2d_physics>();
-	if( ecp and !life_cycle.is_alive() )
+	if( auto ec = get_component<ec_box2d_physics>() ; ec and !life_cycle.is_alive() )
 	{
-		ecp->clear_collision_flags();
+		ec->clear_collision_flags();
 	}
 
 	for( const auto& iter : components )

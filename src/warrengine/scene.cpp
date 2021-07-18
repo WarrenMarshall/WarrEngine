@@ -240,9 +240,7 @@ void scene::respond_to_pending_simple_collisions()
 
 		if( !entity->simple_collision.colliding_queue.empty() )
 		{
-			auto scr = entity->get_component<ec_simple_collision_responder>();
-
-			if( scr )
+			if( auto scr = entity->get_component<ec_simple_collision_responder>() ; scr )
 			{
 				scr->begin();
 

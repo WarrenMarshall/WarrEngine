@@ -1337,4 +1337,16 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 	}
 }
 
+// ----------------------------------------------------------------------------
+
+ec_movement_controller::ec_movement_controller( entity* parent_entity )
+	: entity_component( parent_entity )
+{
+}
+
+void ec_movement_controller::set_damping( float damping )
+{
+	horizontal_damping = vertical_damping = damping;
+}
+
 }
