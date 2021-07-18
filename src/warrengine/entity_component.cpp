@@ -1297,7 +1297,6 @@ ec_scr_push_outside::ec_scr_push_outside( entity* parent_entity )
 void ec_scr_push_outside::begin()
 {
 	deltas.clear();
-
 }
 
 void ec_scr_push_outside::end()
@@ -1313,7 +1312,7 @@ void ec_scr_push_outside::end()
 
 void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll )
 {
-	deltas.emplace_back( -coll.normal * coll.depth );
+	deltas.emplace_back( -coll.normal * ( coll.depth * 1.1f ) );
 
 	// when landing on the ground, kill any velocity on the Y axis. this
 	// stops it from accruing to the maximum as you run around on flat
@@ -1335,6 +1334,44 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 	{
 		parent_entity->velocity.x = 0.0f;
 	}
+}
+
+// ----------------------------------------------------------------------------
+
+ec_scr_bounce_off::ec_scr_bounce_off( entity* parent_entity )
+	: ec_scr_push_outside( parent_entity )
+{
+
+}
+
+void ec_scr_bounce_off::begin()
+{
+	ec_scr_push_outside::begin();
+
+	reflection_vectors.clear();
+}
+
+void ec_scr_bounce_off::end()
+{
+	ec_scr_push_outside::end();
+
+	vec2 avg_delta = vec2::zero;
+	for( auto& iter : reflection_vectors )
+	{
+		avg_delta += iter;
+	}
+
+	parent_entity->set_force( avg_delta / (float)reflection_vectors.size() );
+}
+
+void ec_scr_bounce_off::on_collided( simple_collision::pending_collision& coll )
+{
+	//ec_scr_push_outside::on_collided( coll );
+
+	ec_scr_push_outside::deltas.emplace_back( -coll.normal * ( coll.depth * 1.1f ) );
+
+	auto reflection = vec2::reflect_across_normal( parent_entity->velocity, coll.normal );
+	reflection_vectors.push_back( reflection );
 }
 
 // ----------------------------------------------------------------------------

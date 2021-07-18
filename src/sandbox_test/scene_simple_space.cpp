@@ -45,7 +45,7 @@ void scene_simple_space::pushed()
 			ec->add_shape( primitive_shape::filled_circle, radius );
 		}
 		{
-			//auto ec = e->add_component<ec_scr_push_outside>();
+			auto ec = e->add_component<ec_scr_bounce_off>();
 		}
 		{
 			auto ec = e->add_component<ec_movement_controller>();
@@ -55,7 +55,6 @@ void scene_simple_space::pushed()
 		mario = e;
 	}
 
-/*
 	// WORLD GEO
 
 	{
@@ -116,7 +115,6 @@ void scene_simple_space::pushed()
 
 		world_geo = e;
 	}
-*/
 }
 
 void scene_simple_space::draw()
