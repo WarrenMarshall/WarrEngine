@@ -354,6 +354,12 @@ struct ec_movement_controller : entity_component
 	float horizontal_damping = damping::asphalt;
 	float vertical_damping = damping::asphalt;
 
+	// is this entity in the air?
+	bool in_air : 1 = false;
+
+	// is this entity pulled by gravity?
+	bool affected_by_gravity : 1 = false;
+
 	void set_damping( float damping );
 };
 

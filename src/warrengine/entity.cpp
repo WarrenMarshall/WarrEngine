@@ -14,9 +14,12 @@ void entity::pre_update()
 {
 	life_cycle.pre_update();
 
-	if( simple_collision.affected_by_gravity )
+	if( auto mc = get_component<ec_movement_controller>() ; mc )
 	{
-		add_force( { 0.f, fixed_time_step::per_second( simple_collision_gravity_default ) } );
+		if( mc->affected_by_gravity )
+		{
+			add_force( { 0.f, fixed_time_step::per_second( simple_collision_gravity_default ) } );
+		}
 	}
 
 	apply_forces();
@@ -100,7 +103,7 @@ void entity::apply_forces()
 	{
 		velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( mc->horizontal_damping ) );
 
-		if( !simple_collision.affected_by_gravity )
+		if( !mc->affected_by_gravity )
 		{
 			velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( mc->vertical_damping ) );
 		}

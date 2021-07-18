@@ -143,7 +143,10 @@ void scene::post_update()
 		entity->post_update();
 		entity->post_update_components();
 
-		entity->simple_collision.in_air = true;
+		if( auto mc = entity->get_component<ec_movement_controller>() ; mc )
+		{
+			mc->in_air = true;
+		}
 	}
 
 	// loop through the collision
@@ -222,7 +225,11 @@ void scene::add_simple_collisions_to_pending_queue()
 					case simple_collider_type::sensor:
 					{
 						collision.entity_a->simple_collision.touching_queue.push_back( collision );
-						collision.entity_a->simple_collision.in_air = false;
+
+						if( auto mc = collision.entity_a->get_component<ec_movement_controller>() ; mc )
+						{
+							mc->in_air = false;
+						}
 					}
 					break;
 				}
@@ -258,11 +265,9 @@ void scene::respond_to_pending_simple_collisions()
 		// ----------------------------------------------------------------------------
 		// sensor
 
-		entity->simple_collision.in_air = true;
-
-		if( !entity->simple_collision.touching_queue.empty() )
+		if( auto mc = entity->get_component<ec_movement_controller>() ; mc )
 		{
-			entity->simple_collision.in_air = false;
+			mc->in_air = entity->simple_collision.touching_queue.empty();
 		}
 
 		entity->simple_collision.touching_queue.clear();

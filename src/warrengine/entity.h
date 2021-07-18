@@ -158,9 +158,6 @@ struct entity
 
 	struct
 	{
-		bool in_air : 1 = false;
-		bool affected_by_gravity : 1 = false;
-
 		std::vector<simple_collision::pending_collision> colliding_queue;
 		std::vector<simple_collision::pending_collision> touching_queue;
 

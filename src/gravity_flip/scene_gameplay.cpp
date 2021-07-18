@@ -15,7 +15,10 @@ void scene_gameplay::draw_ui()
 
 	render::draw_string( std::format( "{:.1f}, {:.1f}",
 		player->velocity.x, player->velocity.y ), vec2( 8.f, 8.f ) );
-	render::draw_string( std::format( "In air : {}", player->simple_collision.in_air ), vec2( 8.f, 18.f ) );
+	if( auto mc = player->get_component<ec_movement_controller>() ; mc )
+	{
+		render::draw_string( std::format( "In air : {}", mc->in_air ), vec2( 8.f, 18.f ) );
+	}
 	render::draw_string( std::format( "{:.1f}, {:.1f}",
 		player->get_pos().x, player->get_pos().y ), vec2( 8.f, 28.f ) );
 }
@@ -40,7 +43,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			auto e = scene->add_entity<entity>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
-			e->simple_collision.affected_by_gravity = false;
 
 			{
 				auto ec = e->add_component<ec_sprite>();
@@ -66,6 +68,10 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			}
 			{
 				auto ec = e->add_component<ec_scr_push_outside>();
+			}
+			{
+				auto ec = e->add_component<ec_movement_controller>();
+				ec->affected_by_gravity = true;
 			}
 
 			gameplay_scene->player = e;
@@ -122,11 +128,14 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a )
 	{
-		if( !player->simple_collision.in_air )
+		if( auto mc = player->get_component<ec_movement_controller>() ; mc )
 		{
-			// #gametype
-			player->add_force( { 0.f, -3.5f } );
-			return true;
+			if( !mc->in_air )
+			{
+				// #gametype
+				player->add_force( { 0.f, -3.5f } );
+				return true;
+			}
 		}
 	}
 
