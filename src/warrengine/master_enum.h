@@ -482,3 +482,12 @@ enum_begin( draw_call )
 	max,
 enum_end
 
+// ----------------------------------------------------------------------------
+
+enum_begin( damping )
+	outer_space = 0,	// never dampens
+	ice = 1,			// very slippery
+	wood_floor = 5,		// slide slide
+	asphalt = 20,		// dampens immediately
+enum_end
+

@@ -157,8 +157,9 @@ struct entity
 		bool in_air : 1 = false;
 		bool affected_by_gravity : 1 = false;
 
-		float horizontal_damping = 30.0f;
-		float vertical_damping = 30.0f;
+		// values range from 0-60 : 0 = ice, 20 = asphalt
+		float horizontal_damping = 20.0f;
+		float vertical_damping = 20.0f;
 
 		std::vector<simple_collision::pending_collision> colliding_queue;
 		std::vector<simple_collision::pending_collision> touching_queue;
