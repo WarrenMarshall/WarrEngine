@@ -2,6 +2,12 @@
 namespace war
 {
 
+struct force
+{
+	vec2 n = vec2::zero;
+	float strength = 0.f;
+};
+
 struct entity
 {
 #ifdef _DEBUG
@@ -11,11 +17,21 @@ struct entity
 
 
 	scene* parent_scene = nullptr;
-	vec2 velocity = vec2::zero;
-	void add_force( vec2 force );
-	void set_force( const vec2& force );
-	void set_force_x( float force );
-	void set_force_y( float force );
+
+	struct
+	{
+		vec2 force = vec2::zero;
+	} velocity;
+
+	std::vector<force> pending_forces;
+	void add_force( vec2 dir, float strength );
+	void add_force_x( float strength );
+	void add_force_y( float strength );
+	void compile_velocity();
+	void limit_velocity();
+	void reset_force( vec2 dir, float strength );
+	void reset_force_x( float strength );
+	void reset_force_y( float strength );
 
 	transform _tform;
 

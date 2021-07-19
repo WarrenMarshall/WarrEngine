@@ -254,10 +254,9 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float force = 2.0f;
-			vec2 delta = evt->delta;
+			float strength = 2.0f;
 
-			mario->set_force( evt->delta * force );
+			mario->add_force( evt->delta, strength );
 
 			return true;
 		}

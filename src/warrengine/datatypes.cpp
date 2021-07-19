@@ -594,7 +594,7 @@ vec2 vec2::operator/=( float v )
 	return *this;
 }
 
-float vec2::get_size_squared() const
+float vec2::get_size() const
 {
 	return glm::sqrt( vec2::get_size_fast() );
 }
@@ -616,12 +616,12 @@ void vec2::operator=( const float& v )
 
 float vec2::get_distance_between( const vec2& a, const vec2& b )
 {
-	return ( a - b ).get_size_squared();
+	return ( a - b ).get_size();
 }
 
 vec2 vec2::normalize( const vec2& v )
 {
-	return v / v.get_size_squared();
+	return v / v.get_size();
 }
 
 // takes an angle, in degrees, and returns a unit vector for it

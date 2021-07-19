@@ -248,7 +248,7 @@ struct vec2
 	[[nodiscard]] vec2 from_box2d() const;
 	[[nodiscard]] vec2 to_simple() const;
 	[[nodiscard]] vec2 from_simple() const;
-	[[nodiscard]] float get_size_squared() const;
+	[[nodiscard]] float get_size() const;
 	[[nodiscard]] float get_size_fast() const;
 	[[nodiscard]] bool is_zero() const;
 

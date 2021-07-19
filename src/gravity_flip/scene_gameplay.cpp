@@ -13,14 +13,12 @@ void scene_gameplay::draw_ui()
 {
 	scene::draw_ui();
 
-	render::draw_string( std::format( "{:.1f}, {:.1f}",
-		player->velocity.x, player->velocity.y ), vec2( 8.f, 8.f ) );
+	render::draw_string( std::format( "VDir : {:.1f}, {:.1f}",
+		player->velocity.force.x, player->velocity.force.y ), vec2( 8.f, 8.f ) );
 	if( auto mc = player->get_component<ec_movement_controller>() ; mc )
 	{
 		render::draw_string( std::format( "In air : {}", mc->in_air ), vec2( 8.f, 18.f ) );
 	}
-	render::draw_string( std::format( "{:.1f}, {:.1f}",
-		player->get_pos().x, player->get_pos().y ), vec2( 8.f, 28.f ) );
 }
 
 void scene_gameplay::draw()
@@ -72,6 +70,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			{
 				auto ec = e->add_component<ec_movement_controller>();
 				ec->affected_by_gravity = true;
+				ec->set_damping( damping::wood_floor );
 			}
 
 			gameplay_scene->player = e;
@@ -114,11 +113,9 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
-		// #gametype
-		float force = 2.0f;
-		vec2 delta = evt->delta;
+		float force = 12.0f;
 
-		player->set_force_x( delta.x * force );
+		player->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
 	}
 
 	return false;
@@ -132,8 +129,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 		{
 			if( !mc->in_air )
 			{
-				// #gametype
-				player->add_force( { 0.f, -3.5f } );
+				player->add_force_y( 3.5f );
 				return true;
 			}
 		}

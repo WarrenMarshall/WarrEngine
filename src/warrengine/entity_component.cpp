@@ -551,7 +551,7 @@ b2Fixture* ec_box2d_physics_body::add_fixture_line( hash tag, vec2 pos, vec2 sta
 		start += pos;
 		end += pos;
 
-		float length = ( end - start ).get_size_squared() / 2.f;
+		float length = ( end - start ).get_size() / 2.f;
 
 		shape.SetOneSided(
 			( start + vec2( -length, length ) ).to_box2d().to_b2Vec2(),
@@ -1320,19 +1320,19 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 
 	if( coll.normal.y > 0.7f )
 	{
-		parent_entity->velocity.y = 0.0f;
+		parent_entity->velocity.force.y = 0.0f;
 	}
 
 	// hitting the ceiling kills vertical velocity
 	if( coll.normal.y < -0.85f )
 	{
-		parent_entity->velocity.y = 0.0f;
+		parent_entity->velocity.force.y = 0.0f;
 	}
 
 	// hitting a wall kills horizontal velocity
 	if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
 	{
-		parent_entity->velocity.x = 0.0f;
+		parent_entity->velocity.force.x = 0.0f;
 	}
 }
 
@@ -1361,7 +1361,12 @@ void ec_scr_bounce_off::end()
 		avg_delta += iter;
 	}
 
-	parent_entity->set_force( avg_delta / (float)reflection_vectors.size() );
+	avg_delta /= (float)reflection_vectors.size();
+
+	auto n = vec2::normalize( avg_delta );
+	auto strength = avg_delta.get_size();
+
+	parent_entity->reset_force( n, strength );
 }
 
 void ec_scr_bounce_off::on_collided( simple_collision::pending_collision& coll )
@@ -1370,7 +1375,7 @@ void ec_scr_bounce_off::on_collided( simple_collision::pending_collision& coll )
 
 	ec_scr_push_outside::deltas.emplace_back( -coll.normal * ( coll.depth * 1.1f ) );
 
-	auto reflection = vec2::reflect_across_normal( parent_entity->velocity, coll.normal );
+	auto reflection = vec2::reflect_across_normal( parent_entity->velocity.force, coll.normal );
 	reflection_vectors.push_back( reflection );
 }
 

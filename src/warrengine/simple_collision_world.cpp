@@ -14,7 +14,7 @@ void world::ray_cast( raycast_callback* callback, const entity* entity, const ve
 {
 	auto delta = ( end - start );
 	auto ray_normal = vec2::normalize( delta );
-	auto ray_length = delta.get_size_squared();
+	auto ray_length = delta.get_size();
 
 	c2Ray ray = {};
 	ray.p.x = to_simple( start.x );

@@ -552,7 +552,7 @@ vec2 input_mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 
 			if( use_dead_zone )
 			{
-				auto dist = glm::abs( value.get_size_squared() );
+				auto dist = glm::abs( value.get_size() );
 				if( dist < gamepad_dead_zone )
 				{
 					value.x = value.y = 0.f;
@@ -568,7 +568,7 @@ vec2 input_mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 
 			if( use_dead_zone )
 			{
-				auto dist = glm::abs( value.get_size_squared() );
+				auto dist = glm::abs( value.get_size() );
 				if( dist < gamepad_dead_zone )
 				{
 					value.x = value.y = 0.f;

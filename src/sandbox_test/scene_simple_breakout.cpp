@@ -279,26 +279,5 @@ bool scene_simple_breakout::on_input_held( const input_event* evt )
 
 bool scene_simple_breakout::on_input_motion( const input_event* evt )
 {
-	switch( evt->input_id )
-	{
-		case input_id::gamepad_left_stick:
-		{
-			float force = 2.0f;
-			vec2 delta = evt->delta;
-
-			mario->set_force( evt->delta * 2.0f );
-
-			return true;
-		}
-		break;
-
-		case input_id::gamepad_right_stick:
-		{
-			ray_dir = evt->delta;
-			return true;
-		}
-		break;
-	}
-
 	return false;
 }

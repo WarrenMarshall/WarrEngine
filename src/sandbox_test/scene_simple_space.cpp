@@ -170,9 +170,9 @@ bool scene_simple_space::on_input_motion( const input_event* evt )
 		case input_id::gamepad_left_stick:
 		{
 			auto force = 0.05f;
-			vec2 delta = evt->delta;
+			//vec2 delta = evt->delta;
 
-			mario->add_force( evt->delta * force );
+			mario->add_force( evt->delta, force );
 
 			return true;
 		}
