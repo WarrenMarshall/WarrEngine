@@ -63,10 +63,9 @@ entity* scene_simple_space::spawn_player()
 
 		if( first_time )
 		{
-			//ec->set_damping( damping::wood_floor );
-			ec->set_damping( damping::ice );
+			ec->set_damping( damping::wood_floor );
+			//ec->set_damping( damping::ice );
 		}
-
 	}
 
 	e->add_force( random::get_random_on_circle( 1.f ), 2.0f );
@@ -86,6 +85,7 @@ void scene_simple_space::pushed()
 	// WORLD GEO
 
 	{
+		/*
 		int num_colliders = 10;
 
 		auto e = add_entity<entity>();
@@ -142,6 +142,36 @@ void scene_simple_space::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
+		}
+		*/
+
+		auto e = add_entity<entity>();
+		e->tag = H( "world_geo" );
+		e->is_static = true;
+
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_space_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_space_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_space_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_space_coll_geo, 0 );
 		}
 
 		world_geo = e;

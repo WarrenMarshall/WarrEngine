@@ -17,7 +17,6 @@ struct entity
 
 	bool is_static = false;
 
-
 	scene* parent_scene = nullptr;
 
 	vec2 velocity = vec2::zero;
