@@ -19,49 +19,80 @@ scene_simple_space::scene_simple_space()
 	flags.is_debug_physics_scene = true;
 }
 
+entity* scene_simple_space::spawn_player()
+{
+	auto radius = 12.f;
+	auto e = add_entity<entity>();
+	e->tag = H( "mario" );
+	e->set_pos( { 0.f, 0.f } );
+	if( first_time )
+	{
+		e->set_scale( 2.f );
+	}
+	{
+		auto ec = e->add_component<ec_sprite>();
+		ec->rs_opt.color = make_color( color::white, 1.f );
+		ec->init( "anim_player_run" );
+	}
+	{
+		auto ec = e->add_component<ec_simple_collision_body>();
+
+		if( first_time )
+			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+		else
+			if( random::getb() )
+				ec->set_as_circle( radius );
+			else
+				ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+
+		ec->set_collision_flags( scene_simple_space_coll_mario, scene_simple_space_coll_geo | scene_simple_space_coll_mario );
+	}
+	{
+		auto ec = e->add_component<ec_primitive_shape>();
+		ec->rs_opt.color = make_color( color::green, 0.25f );
+		ec->add_shape( primitive_shape::filled_circle, radius );
+	}
+	{
+		auto ec = e->add_component<ec_scr_bounce_off>();
+		//auto ec = e->add_component<ec_scr_push_outside>();
+	}
+	{
+		auto ec = e->add_component<ec_movement_controller>();
+		ec->set_damping( damping::outer_space );
+		ec->set_max_velocity( 2.0f );
+
+		if( first_time )
+		{
+			//ec->set_damping( damping::wood_floor );
+			ec->set_damping( damping::ice );
+		}
+
+	}
+
+	e->add_force( random::get_random_on_circle( 1.f ), 2.0f );
+
+	first_time = false;
+
+	return e;
+}
+
 void scene_simple_space::pushed()
 {
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// MARIO
-	{
-		auto radius = 12.f;
-		auto e = add_entity<entity>();
-		e->tag = H( "mario" );
-		e->set_pos( { -80.f, 0.f } );
-		{
-			auto ec = e->add_component<ec_sprite>();
-			ec->rs_opt.color = make_color( color::white, 1.f );
-			ec->init( "anim_player_run" );
-		}
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->set_as_circle( radius );
-			ec->set_collision_flags( scene_simple_space_coll_mario, scene_simple_space_coll_geo );
-		}
-		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::green, 0.25f );
-			ec->add_shape( primitive_shape::filled_circle, radius );
-		}
-		{
-			auto ec = e->add_component<ec_scr_bounce_off>();
-		}
-		{
-			auto ec = e->add_component<ec_movement_controller>();
-			ec->set_damping( damping::outer_space );
-		}
-
-		mario = e;
-	}
+	mario = spawn_player();
 
 	// WORLD GEO
 
 	{
+		int num_colliders = 10;
+
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
+		e->is_static = true;
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_colliders ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -86,7 +117,7 @@ void scene_simple_space::pushed()
 			}
 		}
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_colliders ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -133,32 +164,39 @@ void scene_simple_space::draw()
 void scene_simple_space::draw_ui()
 {
 	scene::draw_ui();
-	draw_title( "Simple Space Drifter" );
+	draw_title( "Space Drifter" );
+
+	render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
+		mario->velocity.x, mario->velocity.y ), vec2( 8.f, 24.f ) );
 }
 
-void scene_simple_space::update()
+void scene_simple_space::post_update()
 {
-	scene::update();
+	scene::post_update();
 
-	// wrap player around the edges of the screen
+	for( auto& e : entities )
+	{
+		auto pos = e->get_pos();
 
-	auto pos = mario->get_pos();
+		if( pos.x < -viewport_hw )		pos.x = viewport_hw;
+		if( pos.x > viewport_hw )		pos.x = -viewport_hw;
+		if( pos.y < -viewport_hh )		pos.y = viewport_hh;
+		if( pos.y > viewport_hh )		pos.y = -viewport_hh;
 
-	if( pos.x < -viewport_hw )		pos.x = viewport_hw;
-	if( pos.x > viewport_hw )		pos.x = -viewport_hw;
-	if( pos.y < -viewport_hh )		pos.y = viewport_hh;
-	if( pos.y > viewport_hh )		pos.y = -viewport_hh;
-
-	mario->set_pos( pos );
+		e->set_pos( pos );
+	}
 }
 
 bool scene_simple_space::on_input_pressed( const input_event* evt )
 {
-/*
 	switch( evt->input_id )
 	{
+		case input_id::key_space:
+		{
+			spawn_player();
+		}
+		break;
 	}
-*/
 
 	return false;
 }
@@ -170,8 +208,6 @@ bool scene_simple_space::on_input_motion( const input_event* evt )
 		case input_id::gamepad_left_stick:
 		{
 			auto force = 0.05f;
-			//vec2 delta = evt->delta;
-
 			mario->add_force( evt->delta, force );
 
 			return true;

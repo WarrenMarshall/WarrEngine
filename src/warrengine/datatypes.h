@@ -251,6 +251,7 @@ struct vec2
 	[[nodiscard]] float get_size() const;
 	[[nodiscard]] float get_size_fast() const;
 	[[nodiscard]] bool is_zero() const;
+	[[nodiscard]] bool is_nan() const;
 
 	[[nodiscard]] bool operator==( const vec2& v ) const;
 	[[nodiscard]] bool operator!=( const vec2& v ) const;

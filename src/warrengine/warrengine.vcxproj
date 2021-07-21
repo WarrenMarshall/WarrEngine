@@ -221,7 +221,6 @@
     <ClCompile Include="file_system.cpp" />
     <ClCompile Include="file_disk.cpp" />
     <ClCompile Include="file_mem.cpp" />
-    <ClCompile Include="fx.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="impl_header_only.cpp" />
     <ClCompile Include="input_gamepad.cpp" />
@@ -314,7 +313,6 @@
     <ClInclude Include="file_system.h" />
     <ClInclude Include="file_disk.h" />
     <ClInclude Include="file_mem.h" />
-    <ClInclude Include="fx.h" />
     <ClInclude Include="render_vertex.h" />
     <ClInclude Include="scene_controller_required.h" />
     <ClInclude Include="scene_msg_box.h" />

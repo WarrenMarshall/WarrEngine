@@ -6,6 +6,8 @@
 
 #pragma warning( push, 0 )	// turn off all warnings for external libraries
 
+	#include <cmath>
+
 	#define WIN32_LEAN_AND_MEAN
 
 	// GLM - math library
@@ -201,6 +203,11 @@ constexpr int32 b2d_pos_iterations = 3;
 
 constexpr float simple_collision_gravity_default = 9.81f;
 constexpr float simple_world_scale_factor = 100.f;
+
+// collisions do better if you can add a little padding between collision bodies
+// after resolution. 1.0 would be exactly snug against each other. Anything
+// above 1.0 represents the skin thickness we are adding.
+constexpr float simple_collision_skin_thickness = 1.1f;
 
 constexpr float simple_collision_pos_iterations = 8.f;
 

@@ -1104,6 +1104,14 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 			break;
 	}
 
+	// sometimes we get nan values back from the collision code. not sure why
+	// yet, but this prevents those from getting added into the collision queue.
+
+	if( isnan( m.depths[ 0 ] ) or isnan( m.n.x ) or isnan( m.n.y ) )
+	{
+		return false;
+	}
+
 	// fill out the collision structure and return a positive result
 
 	collision.entity_a = parent_entity;
@@ -1281,11 +1289,6 @@ void ec_simple_collision_responder::on_touched( simple_collision::pending_collis
 {
 }
 
-vec2 ec_simple_collision_responder::get_max_impulse()
-{
-	return vec2( { 100.f, 20.f } );
-}
-
 // ----------------------------------------------------------------------------
 
 ec_scr_push_outside::ec_scr_push_outside( entity* parent_entity )
@@ -1312,7 +1315,13 @@ void ec_scr_push_outside::end()
 
 void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll )
 {
-	deltas.emplace_back( -coll.normal * ( coll.depth * 1.1f ) );
+	// #crash_prevention
+	if( fequals( coll.depth, 0.f ) )
+	{
+		return;
+	}
+
+	deltas.emplace_back( -coll.normal * ( coll.depth * simple_collision_skin_thickness ) );
 
 	// when landing on the ground, kill any velocity on the Y axis. this
 	// stops it from accruing to the maximum as you run around on flat
@@ -1320,19 +1329,19 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 
 	if( coll.normal.y > 0.7f )
 	{
-		parent_entity->velocity.force.y = 0.0f;
+		parent_entity->velocity.y = 0.0f;
 	}
 
 	// hitting the ceiling kills vertical velocity
 	if( coll.normal.y < -0.85f )
 	{
-		parent_entity->velocity.force.y = 0.0f;
+		parent_entity->velocity.y = 0.0f;
 	}
 
 	// hitting a wall kills horizontal velocity
 	if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
 	{
-		parent_entity->velocity.force.x = 0.0f;
+		parent_entity->velocity.x = 0.0f;
 	}
 }
 
@@ -1348,35 +1357,44 @@ void ec_scr_bounce_off::begin()
 {
 	ec_scr_push_outside::begin();
 
-	reflection_vectors.clear();
+	bounce_vectors.clear();
 }
 
 void ec_scr_bounce_off::end()
 {
-	ec_scr_push_outside::end();
-
 	vec2 avg_delta = vec2::zero;
-	for( auto& iter : reflection_vectors )
+	for( auto& iter : bounce_vectors )
 	{
-		avg_delta += iter;
+		if( !iter.is_zero() )
+		{
+			avg_delta += iter;
+		}
 	}
-
-	avg_delta /= (float)reflection_vectors.size();
 
 	auto n = vec2::normalize( avg_delta );
 	auto strength = avg_delta.get_size();
 
-	parent_entity->reset_force( n, strength );
+	assert( !isnan( n.x ) );
+	assert( !isnan( n.y ) );
+	assert( !isnan( strength ) );
+
+	//parent_entity->reset_force( n, strength );
+	parent_entity->reset_force( n, parent_entity->velocity.get_size() );
+
+	ec_scr_push_outside::end();
 }
 
 void ec_scr_bounce_off::on_collided( simple_collision::pending_collision& coll )
 {
-	//ec_scr_push_outside::on_collided( coll );
+	if( fequals( coll.depth, 0.f ) )
+	{
+		return;
+	}
 
-	ec_scr_push_outside::deltas.emplace_back( -coll.normal * ( coll.depth * 1.1f ) );
+	ec_scr_push_outside::deltas.emplace_back( -coll.normal * ( coll.depth * simple_collision_skin_thickness ) );
 
-	auto reflection = vec2::reflect_across_normal( parent_entity->velocity.force, coll.normal );
-	reflection_vectors.push_back( reflection );
+	auto reflection = vec2::reflect_across_normal( parent_entity->velocity, coll.normal );
+	bounce_vectors.push_back( reflection );
 }
 
 // ----------------------------------------------------------------------------
@@ -1384,11 +1402,37 @@ void ec_scr_bounce_off::on_collided( simple_collision::pending_collision& coll )
 ec_movement_controller::ec_movement_controller( entity* parent_entity )
 	: entity_component( parent_entity )
 {
+	max_velocity = { 5.f, 5.f };
 }
 
 void ec_movement_controller::set_damping( float damping )
 {
 	horizontal_damping = vertical_damping = damping;
+}
+
+void ec_movement_controller::set_max_velocity( float max )
+{
+	max_velocity = { max, max };
+}
+
+void ec_movement_controller::set_max_velocity( vec2 max )
+{
+	max_velocity = max;
+}
+
+vec2 ec_movement_controller::get_max_velocity()
+{
+	return max_velocity;
+}
+
+vec2 ec_movement_controller::clamp_velocity( vec2 v )
+{
+	vec2 ret;
+
+	ret.x = glm::clamp<float>( v.x, -max_velocity.x, max_velocity.x );
+	ret.y = glm::clamp<float>( v.y, -max_velocity.y, max_velocity.y );
+
+	return ret;
 }
 
 }

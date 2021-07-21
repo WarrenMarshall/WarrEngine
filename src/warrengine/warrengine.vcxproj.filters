@@ -238,9 +238,6 @@
     <ClCompile Include="scene_controller_required.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="fx.cpp">
-      <Filter>src\fx</Filter>
-    </ClCompile>
     <ClCompile Include="texture_source_base.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
@@ -507,9 +504,6 @@
     <ClInclude Include="scene_controller_required.h">
       <Filter>include\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="fx.h">
-      <Filter>include\fx</Filter>
-    </ClInclude>
     <ClInclude Include="texture_source_base.h">
       <Filter>include\assets</Filter>
     </ClInclude>
@@ -601,12 +595,6 @@
     </Filter>
     <Filter Include="src\scenes">
       <UniqueIdentifier>{4d16d5ad-e751-47cb-acb4-3d28945b232f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\fx">
-      <UniqueIdentifier>{caaa8067-5ac7-42c5-b3cb-c9d956d09980}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\fx">
-      <UniqueIdentifier>{10a7c94b-0f23-4204-b9dc-8845e281e11e}</UniqueIdentifier>
     </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{e2166101-0fe3-4d6b-bd75-fbfd996b4f56}</UniqueIdentifier>

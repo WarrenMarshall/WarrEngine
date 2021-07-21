@@ -95,8 +95,6 @@ namespace war
 
 #include "engine.h"
 
-#include "fx.h"
-
 #include "entity_component.h"
 #include "entity.h"
 

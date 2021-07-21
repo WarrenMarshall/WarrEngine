@@ -323,7 +323,6 @@ struct ec_simple_collision_responder : entity_component
 	virtual void end();
 	virtual void on_collided( simple_collision::pending_collision& coll );
 	virtual void on_touched( simple_collision::pending_collision& coll );
-	virtual vec2 get_max_impulse();
 };
 
 // pushes the entity outside of whatever solid bodies are intersecting with it
@@ -345,7 +344,7 @@ struct ec_scr_push_outside : ec_simple_collision_responder
 
 struct ec_scr_bounce_off : ec_scr_push_outside
 {
-	std::vector<vec2> reflection_vectors;
+	std::vector<vec2> bounce_vectors;
 
 	ec_scr_bounce_off() = delete;
 	ec_scr_bounce_off( entity* parent_entity );
@@ -376,6 +375,12 @@ struct ec_movement_controller : entity_component
 	bool affected_by_gravity : 1 = false;
 
 	void set_damping( float damping );
+	void set_max_velocity( float max );
+	void set_max_velocity( vec2 max );
+
+	vec2 max_velocity = vec2::zero;
+	vec2 get_max_velocity();
+	vec2 clamp_velocity( vec2 v );
 };
 
 }

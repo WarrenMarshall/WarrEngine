@@ -15,13 +15,12 @@ struct entity
 	std::string debug_name;
 #endif
 
+	bool is_static = false;
+
 
 	scene* parent_scene = nullptr;
 
-	struct
-	{
-		vec2 force = vec2::zero;
-	} velocity;
+	vec2 velocity = vec2::zero;
 
 	std::vector<force> pending_forces;
 	void add_force( vec2 dir, float strength );

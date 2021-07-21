@@ -609,6 +609,11 @@ bool vec2::is_zero() const
 	return fequals( x, 0.f ) and fequals( y, 0.f );
 }
 
+bool vec2::is_nan() const
+{
+	return isnan( x ) or isnan( y );
+}
+
 void vec2::operator=( const float& v )
 {
 	x = y = v;
@@ -621,7 +626,9 @@ float vec2::get_distance_between( const vec2& a, const vec2& b )
 
 vec2 vec2::normalize( const vec2& v )
 {
-	return v / v.get_size();
+	auto sz = v.get_size();
+
+	return v / ( sz ? sz : 1.0f );
 }
 
 // takes an angle, in degrees, and returns a unit vector for it

@@ -87,7 +87,7 @@ void entity::compile_velocity()
 {
 	for( auto& f : pending_forces )
 	{
-		velocity.force += f.n * f.strength;
+		velocity += f.n * f.strength;
 	}
 
 	pending_forces.clear();
@@ -97,17 +97,16 @@ void entity::compile_velocity()
 
 void entity::limit_velocity()
 {
-	if( auto scr = get_component<ec_simple_collision_responder>() ; scr )
+	if( auto mc = get_component<ec_movement_controller>() ; mc )
 	{
-		auto max_impulse_y = scr->get_max_impulse().y;
-		velocity.force.y = glm::clamp( velocity.force.y, -max_impulse_y, max_impulse_y );
+		velocity = mc->clamp_velocity( velocity );
 	}
 }
 
 void entity::reset_force( vec2 force, float strength )
 {
 	// reverse out the current velocity first
-	add_force( vec2::normalize( velocity.force ), -( velocity.force.get_size() ) );
+	add_force( vec2::normalize( velocity ), -( velocity.get_size() ) );
 	// then add the new velocity
 	add_force( force, strength );
 }
@@ -135,15 +134,15 @@ void entity::reset_force_y( float strength )
 void entity::apply_forces()
 {
 	compile_velocity();
-	add_delta_pos( velocity.force );
+	add_delta_pos( velocity );
 
 	if( auto mc = get_component<ec_movement_controller>() ; mc )
 	{
-		velocity.force.x = lerp( velocity.force.x, 0.0f, fixed_time_step::per_second( mc->horizontal_damping ) );
+		velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( mc->horizontal_damping ) );
 
 		if( !mc->affected_by_gravity )
 		{
-			velocity.force.y = lerp( velocity.force.y, 0.0f, fixed_time_step::per_second( mc->vertical_damping ) );
+			velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( mc->vertical_damping ) );
 		}
 	}
 }

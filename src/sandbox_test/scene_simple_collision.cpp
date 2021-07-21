@@ -41,8 +41,8 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
-			//ec->set_as_centered_box( radius * 2.f, radius * 2.f );
-			ec->set_as_circle( radius );
+			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+			//ec->set_as_circle( radius );
 			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
 		}
 		{
@@ -55,6 +55,7 @@ void scene_simple_collision::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_movement_controller>();
+			ec->set_damping( damping::wood_floor );
 		}
 
 		mario = e;
@@ -254,9 +255,10 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float strength = 2.0f;
+			float force = 20.0f;
 
-			mario->add_force( evt->delta, strength );
+			mario->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
+			mario->add_force_y( evt->delta.y * -fixed_time_step::per_second( force ) );
 
 			return true;
 		}
