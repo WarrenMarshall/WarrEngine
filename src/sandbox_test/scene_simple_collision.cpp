@@ -23,43 +23,48 @@ scene_simple_collision::scene_simple_collision()
 	flags.is_debug_physics_scene = true;
 }
 
+entity* scene_simple_collision::spawn_player()
+{
+	auto radius = 12.f;
+	auto e = add_entity<entity>();
+	e->set_pos( { 0.f, 0.f } );
+	e->set_scale( 1.5f );
+	{
+		auto ec = e->add_component<ec_sprite>();
+		ec->rs_opt.color = make_color( color::white, 1.f );
+		ec->init( "anim_player_run" );
+	}
+	{
+		auto ec = e->add_component<ec_simple_collision_body>();
+		ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+		//ec->set_as_circle( radius );
+		ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
+	}
+	{
+		auto ec = e->add_component<ec_primitive_shape>();
+		ec->rs_opt.color = make_color( color::green, 0.25f );
+		ec->add_shape( primitive_shape::filled_circle, radius );
+	}
+	{
+		auto ec = e->add_component<ec_scr_push_outside>();
+	}
+	{
+		auto ec = e->add_component<ec_movement_controller>();
+		ec->set_damping( damping::wood_floor );
+	}
+
+	first_player = false;
+
+	return e;
+}
+
+
 void scene_simple_collision::pushed()
 {
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// MARIO
-	{
-		auto radius = 12.f;
-		auto e = add_entity<entity>();
-		e->tag = H( "mario" );
-		e->set_pos( { -80.f, 0.f } );
-		e->set_scale( 1.5f );
-		{
-			auto ec = e->add_component<ec_sprite>();
-			ec->rs_opt.color = make_color( color::white, 1.f );
-			ec->init( "anim_player_run" );
-		}
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
-			//ec->set_as_circle( radius );
-			ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
-		}
-		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::green, 0.25f );
-			ec->add_shape( primitive_shape::filled_circle, radius );
-		}
-		{
-			auto ec = e->add_component<ec_scr_push_outside>();
-		}
-		{
-			auto ec = e->add_component<ec_movement_controller>();
-			ec->set_damping( damping::wood_floor );
-		}
-
-		mario = e;
-	}
+	player = spawn_player();
 
 	// HIT MARKER
 	{
@@ -79,10 +84,12 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
+		int num_primitives = 2;
+
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_primitives ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -107,7 +114,7 @@ void scene_simple_collision::pushed()
 			}
 		}
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_primitives ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -153,7 +160,7 @@ void scene_simple_collision::draw()
 	if( b_show_ray )
 	{
 		render::state->color = make_color( color::green, 0.25f );
-		auto start = mario->get_pos();
+		auto start = player->get_pos();
 		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
 	}
 }
@@ -161,7 +168,10 @@ void scene_simple_collision::draw()
 void scene_simple_collision::draw_ui()
 {
 	scene::draw_ui();
-	draw_title( "Simple Collisions" );
+	//draw_title( "Simple Collisions" );
+
+	render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
+		player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
 }
 
 void scene_simple_collision::update()
@@ -186,10 +196,16 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
+		case input_id::gamepad_button_y:
+		{
+			spawn_player();
+		}
+		break;
+
 		case input_id::mouse_button_right:
 		{
 			auto pos = coord_system::window_to_world_pos( evt->mouse_pos );
-			mario->set_pos( pos );
+			player->set_pos( pos );
 		}
 		break;
 
@@ -200,11 +216,11 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		{
 			reset_collision_trace_results();
 
-			auto start = mario->get_pos();
+			auto start = player->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_all callback;
-			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
+			g_engine->simple_collision.world->ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
@@ -228,11 +244,11 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		{
 			reset_collision_trace_results();
 
-			auto start = mario->get_pos();
+			auto start = player->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_closest callback;
-			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
+			g_engine->simple_collision.world->ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
@@ -257,8 +273,8 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 		{
 			float force = 20.0f;
 
-			mario->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
-			mario->add_force_y( evt->delta.y * -fixed_time_step::per_second( force ) );
+			player->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
+			player->add_force_y( evt->delta.y * -fixed_time_step::per_second( force ) );
 
 			return true;
 		}
