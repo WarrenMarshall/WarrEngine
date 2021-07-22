@@ -13,6 +13,7 @@ static const unsigned scene_simple_coll_geo = collision_bits.next();
 // ----------------------------------------------------------------------------
 
 constexpr float max_raycast_length = 350.f;
+constexpr auto player_radius = 12.f;
 
 // ----------------------------------------------------------------------------
 
@@ -25,7 +26,6 @@ scene_simple_collision::scene_simple_collision()
 
 entity* scene_simple_collision::spawn_player()
 {
-	auto radius = 12.f;
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
@@ -36,17 +36,18 @@ entity* scene_simple_collision::spawn_player()
 	}
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
-		ec->set_as_centered_box( radius * 2.f, radius * 2.f );
-		//ec->set_as_circle( radius );
-		ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo );
+		ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
+		//ec->set_as_circle( player_radius );
+		ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo | scene_simple_coll_mario );
 	}
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
 		ec->rs_opt.color = make_color( color::green, 0.25f );
-		ec->add_shape( primitive_shape::filled_circle, radius );
+		ec->add_shape( primitive_shape::filled_circle, player_radius );
 	}
 	{
 		auto ec = e->add_component<ec_scr_push_outside>();
+		//auto ec = e->add_component<ec_scr_bounce_off>();
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();
@@ -84,7 +85,7 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 2;
+		int num_primitives = 8;
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
@@ -196,6 +197,34 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
+		case input_id::key_1:
+		{
+			auto ec = player->get_component<ec_simple_collision_body>();
+			ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
+		}
+		break;
+
+		case input_id::key_2:
+		{
+			auto ec = player->get_component<ec_simple_collision_body>();
+			ec->set_as_circle( player_radius );
+		}
+		break;
+
+		case input_id::key_3:
+		{
+			auto ec = player->get_component<ec_simple_collision_body>();
+			ec->set_as_polygon(
+				{
+					{ -player_radius, -player_radius },
+					{ player_radius, -player_radius },
+					{ player_radius, player_radius },
+					{ -player_radius, player_radius }
+				}
+			);
+		}
+		break;
+
 		case input_id::gamepad_button_y:
 		{
 			spawn_player();

@@ -155,7 +155,7 @@ void scene::post_update()
 	// other colliders. if this ends up being slow, adjust
 	// "simple_collision_pos_iterations" downwards.
 
-	for( auto iteration_counter = 0 ; iteration_counter < simple_collision_pos_iterations ; ++iteration_counter )
+	for( auto iter_counter = 0 ; iter_counter < simple_collision_pos_iterations ; ++iter_counter )
 	{
 		for( auto& scc : simple_collision.bodies )
 		{
@@ -164,7 +164,7 @@ void scene::post_update()
 
 		// collision detection
 		simple_collision.need_another_iteration = false;
-		add_simple_collisions_to_pending_queue();
+		generate_colliding_bodies_set();
 
 		// collision resolution
 		respond_to_pending_simple_collisions();
@@ -177,11 +177,68 @@ void scene::post_update()
 	}
 }
 
-void scene::add_simple_collisions_to_pending_queue()
-{
-	// process all the simple_collision_components against each other, and add
-	// any collisions and associated info into the collision queue
+// loop through all collision bodies that are available for collision and check
+// them against each other. for each unique set that collides, add them into the
+// queue for response processing later.
 
+void scene::generate_colliding_bodies_set()
+{
+	colliding_bodies_set.clear();
+
+	// broad phase
+
+	for( auto scc_a : simple_collision.bodies )
+	{
+		for( auto scc_b : simple_collision.bodies )
+		{
+			if( scc_a->intersects_with( scc_b ) )
+			{
+				// the bodies are touching so add them into the contact list if the pair is unique
+
+				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
+				simple_collision.need_another_iteration = true;
+			}
+		}
+	}
+
+	// generate detailed information about the collisions
+
+	pending_collisions.clear();
+
+	for( auto& [body_a, body_b] : colliding_bodies_set )
+	{
+		pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
+	}
+
+	/*
+	simple_collision::pending_collision collision;
+
+	simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
+
+	switch( collision.body_a->collider_type )
+	{
+		case simple_collider_type::solid:
+		{
+			collision.entity_a->simple_collision.colliding_queue.push_back( collision );
+			simple_collision.need_another_iteration = true;
+		}
+		break;
+
+		case simple_collider_type::sensor:
+		{
+			collision.entity_a->simple_collision.touching_queue.push_back( collision );
+
+			if( auto mc = collision.entity_a->get_component<ec_movement_controller>() ; mc )
+			{
+				mc->in_air = false;
+			}
+		}
+		break;
+	}
+	*/
+}
+
+/*
 	for( auto scc_a : simple_collision.bodies )
 	{
 		for( auto scc_b : simple_collision.bodies )
@@ -236,10 +293,21 @@ void scene::add_simple_collisions_to_pending_queue()
 			}
 		}
 	}
-}
+*/
 
 void scene::respond_to_pending_simple_collisions()
 {
+	for( auto& coll : pending_collisions )
+	{
+		if( auto scr = coll.entity_a->get_component<ec_simple_collision_responder>() ; scr )
+		{
+			scr->begin();
+			scr->on_collided( coll );
+			scr->end();
+		}
+	}
+
+	/*
 	for( auto& entity : simple_collision.unique_entities_with_collisions )
 	{
 		// ----------------------------------------------------------------------------
@@ -274,6 +342,7 @@ void scene::respond_to_pending_simple_collisions()
 	}
 
 	simple_collision.unique_entities_with_collisions.clear();
+	*/
 }
 
 // ----------------------------------------------------------------------------

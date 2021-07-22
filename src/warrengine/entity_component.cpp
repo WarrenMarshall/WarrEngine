@@ -919,9 +919,29 @@ void ec_simple_collision_body::set_collider_type( e_simple_collider_type collide
 	this->collider_type = collider_type;
 }
 
-bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, simple_collision::pending_collision& collision )
+// does a broad phase check against "scc" to see if these bodies are intersecting
+
+bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 {
-	c2Manifold m = {};
+	// simple_collision_components can't collide with themselves
+	if( this == scc )
+	{
+		return false;
+	}
+
+	// entities can't collide with themselves
+	if( this->parent_entity == scc->parent_entity )
+	{
+		return false;
+	}
+
+	// if collision masks don't intersect, skip the check
+	if( !( this->collides_with_mask & scc->collision_mask ) )
+	{
+		return false;
+	}
+
+	// perform different checks based on body types
 
 	switch( type )
 	{
@@ -936,12 +956,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2Circle circle_a = as_simple_circle();
 					c2Circle circle_b = scc->as_simple_circle();
 
-					if( !c2CircletoCircle( circle_a, circle_b ) )
-					{
-						return false;
-					}
-
-					c2CircletoCircleManifold( circle_a, circle_b, &m );
+					return c2CircletoCircle( circle_a, circle_b );
 				}
 				break;
 
@@ -952,12 +967,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2Circle circle_a = as_simple_circle();
 					c2AABB aabb_ws_b = scc->as_simple_aabb();
 
-					if( !c2CircletoAABB( circle_a, aabb_ws_b ) )
-					{
-						return false;
-					}
-
-					c2CircletoAABBManifold( circle_a, aabb_ws_b, &m );
+					return c2CircletoAABB( circle_a, aabb_ws_b );
 				}
 				break;
 
@@ -968,12 +978,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2Circle circle_a = as_simple_circle();
 					c2Poly poly_b = scc->as_simple_poly();
 
-					if( !c2CircletoPoly( circle_a, &poly_b, nullptr ) )
-					{
-						return false;
-					}
-
-					c2CircletoPolyManifold( circle_a, &poly_b, nullptr, &m );
+					return c2CircletoPoly( circle_a, &poly_b, nullptr );
 				}
 				break;
 			}
@@ -991,15 +996,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2Circle circle_b = scc->as_simple_circle();
 					c2AABB aabb_ws_a = as_simple_aabb();
 
-					if( !c2CircletoAABB( circle_b, aabb_ws_a ) )
-					{
-						return false;
-					}
-
-					c2CircletoAABBManifold( circle_b, aabb_ws_a, &m );
-
-					m.n.x *= -1.f;
-					m.n.y *= -1.f;
+					return c2CircletoAABB( circle_b, aabb_ws_a );
 				}
 				break;
 
@@ -1010,12 +1007,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2AABB aabb_ws_a = as_simple_aabb();
 					c2AABB aabb_ws_b = scc->as_simple_aabb();
 
-					if( !c2AABBtoAABB( aabb_ws_a, aabb_ws_b ) )
-					{
-						return false;
-					}
-
-					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &m );
+					return c2AABBtoAABB( aabb_ws_a, aabb_ws_b );
 				}
 				break;
 
@@ -1026,12 +1018,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2AABB aabb_ws_a = as_simple_aabb();
 					c2Poly poly_b = scc->as_simple_poly();
 
-					if( !c2AABBtoPoly( aabb_ws_a, &poly_b, nullptr ) )
-					{
-						return false;
-					}
-
-					c2AABBtoPolyManifold( aabb_ws_a, &poly_b, nullptr, &m );
+					return c2AABBtoPoly( aabb_ws_a, &poly_b, nullptr );
 				}
 				break;
 			}
@@ -1049,15 +1036,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2Circle circle_b = scc->as_simple_circle();
 					c2Poly poly_a = as_simple_poly();
 
-					if( !c2CircletoPoly( circle_b, &poly_a, nullptr ) )
-					{
-						return false;
-					}
-
-					c2CircletoPolyManifold( circle_b, &poly_a, nullptr, &m );
-
-					m.n.x *= -1.f;
-					m.n.y *= -1.f;
+					return c2CircletoPoly( circle_b, &poly_a, nullptr );
 				}
 				break;
 
@@ -1068,15 +1047,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2AABB aabb_ws_b = scc->as_simple_aabb();
 					c2Poly poly_a = as_simple_poly();
 
-					if( !c2AABBtoPoly( aabb_ws_b, &poly_a, nullptr ) )
-					{
-						return false;
-					}
-
-					c2AABBtoPolyManifold( aabb_ws_b, &poly_a, nullptr, &m );
-
-					m.n.x *= -1.f;
-					m.n.y *= -1.f;
+					return c2AABBtoPoly( aabb_ws_b, &poly_a, nullptr );
 				}
 				break;
 
@@ -1087,12 +1058,149 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 					c2Poly poly_a = as_simple_poly();
 					c2Poly poly_b = scc->as_simple_poly();
 
-					if( !c2PolytoPoly( &poly_a, nullptr, &poly_b, nullptr ) )
-					{
-						return false;
-					}
+					return c2PolytoPoly( &poly_a, nullptr, &poly_b, nullptr );
+				}
+				break;
+			}
+		}
+		break;
+	}
 
-					c2PolytoPolyManifold( &poly_a, nullptr, &poly_b, nullptr, &m );
+	return false;
+
+}
+
+// NOTE : this function assumes that this body and "other_body" ARE colliding.
+
+simple_collision::pending_collision ec_simple_collision_body::intersects_with_manifold( ec_simple_collision_body* other_body )
+{
+	simple_collision::pending_collision collision;
+
+	switch( type )
+	{
+		case simple_collision_type::circle:
+		{
+			switch( other_body->type )
+			{
+				case simple_collision_type::circle:
+				{
+					// circle to circle
+
+					c2Circle circle_a = as_simple_circle();
+					c2Circle circle_b = other_body->as_simple_circle();
+
+					c2CircletoCircleManifold( circle_a, circle_b, &collision.manifold );
+				}
+				break;
+
+				case simple_collision_type::aabb:
+				{
+					// circle to aabb
+
+					c2Circle circle_a = as_simple_circle();
+					c2AABB aabb_ws_b = other_body->as_simple_aabb();
+
+					c2CircletoAABBManifold( circle_a, aabb_ws_b, &collision.manifold );
+				}
+				break;
+
+				case simple_collision_type::polygon:
+				{
+					// circle to polygon
+
+					c2Circle circle_a = as_simple_circle();
+					c2Poly poly_b = other_body->as_simple_poly();
+
+					c2CircletoPolyManifold( circle_a, &poly_b, nullptr, &collision.manifold );
+				}
+				break;
+			}
+		}
+		break;
+
+		case simple_collision_type::aabb:
+		{
+			switch( other_body->type )
+			{
+				case simple_collision_type::circle:
+				{
+					// aabb to circle
+
+					c2Circle circle_b = other_body->as_simple_circle();
+					c2AABB aabb_ws_a = as_simple_aabb();
+
+					c2CircletoAABBManifold( circle_b, aabb_ws_a, &collision.manifold );
+
+					collision.manifold.n.x *= -1.f;
+					collision.manifold.n.y *= -1.f;
+				}
+				break;
+
+				case simple_collision_type::aabb:
+				{
+					// aabb to aabb
+
+					c2AABB aabb_ws_a = as_simple_aabb();
+					c2AABB aabb_ws_b = other_body->as_simple_aabb();
+
+					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &collision.manifold );
+				}
+				break;
+
+				case simple_collision_type::polygon:
+				{
+					// aabb to polygon
+
+					c2AABB aabb_ws_a = as_simple_aabb();
+					c2Poly poly_b = other_body->as_simple_poly();
+
+					c2AABBtoPolyManifold( aabb_ws_a, &poly_b, nullptr, &collision.manifold );
+				}
+				break;
+			}
+		}
+		break;
+
+		case simple_collision_type::polygon:
+		{
+			switch( other_body->type )
+			{
+				case simple_collision_type::circle:
+				{
+					// polygon to circle
+
+					c2Circle circle_b = other_body->as_simple_circle();
+					c2Poly poly_a = as_simple_poly();
+
+					c2CircletoPolyManifold( circle_b, &poly_a, nullptr, &collision.manifold );
+
+					collision.manifold.n.x *= -1.f;
+					collision.manifold.n.y *= -1.f;
+				}
+				break;
+
+				case simple_collision_type::aabb:
+				{
+					// polygon to aabb
+
+					c2AABB aabb_ws_b = other_body->as_simple_aabb();
+					c2Poly poly_a = as_simple_poly();
+
+					c2AABBtoPolyManifold( aabb_ws_b, &poly_a, nullptr, &collision.manifold );
+
+					collision.manifold.n.x *= -1.f;
+					collision.manifold.n.y *= -1.f;
+				}
+				break;
+
+				case simple_collision_type::polygon:
+				{
+					// polygon to polygon
+
+					c2Poly poly_a = as_simple_poly();
+					c2Poly poly_b = other_body->as_simple_poly();
+
+					c2PolytoPolyManifold( &poly_a, nullptr, &poly_b, nullptr, &collision.manifold );
 				}
 				break;
 			}
@@ -1104,29 +1212,25 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc, s
 			break;
 	}
 
-	// sometimes we get nan values back from the collision code. not sure why
-	// yet, but this prevents those from getting added into the collision queue.
-
-	if( isnan( m.depths[ 0 ] ) or isnan( m.n.x ) or isnan( m.n.y ) )
-	{
-		return false;
-	}
+	// if any of these assert, something weird is happening
+	assert( !isnan( collision.manifold.depths[ 0 ] ) );
+	assert( !isnan( collision.manifold.n.x ) );
+	assert( !isnan( collision.manifold.n.y ) );
 
 	// fill out the collision structure and return a positive result
 
 	collision.entity_a = parent_entity;
 	collision.body_a = this;
 
-	collision.entity_b = scc->parent_entity;
-	collision.body_b = scc;
+	collision.entity_b = other_body->parent_entity;
+	collision.body_b = other_body;
 
-	collision.manifold = m;
+	collision.closest_point =
+		vec2( collision.manifold.contact_points[ 0 ].x, collision.manifold.contact_points[ 0 ].y ).from_simple();
+	collision.normal = vec2( collision.manifold.n.x, collision.manifold.n.y );
+	collision.depth = from_simple( collision.manifold.depths[ 0 ] );
 
-	collision.closest_point = vec2( m.contact_points[ 0 ].x, m.contact_points[ 0 ].y ).from_simple();
-	collision.normal = vec2( m.n.x, m.n.y );
-	collision.depth = from_simple( m.depths[ 0 ] );
-
-	return true;
+	return collision;
 }
 
 c2Circle ec_simple_collision_body::as_simple_circle()
@@ -1332,8 +1436,8 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 		parent_entity->velocity.y = 0.0f;
 	}
 
-	// hitting the ceiling kills vertical velocity
-	if( coll.normal.y < -0.85f )
+	// hitting the ceiling/floor kills vertical velocity
+	if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
 	{
 		parent_entity->velocity.y = 0.0f;
 	}

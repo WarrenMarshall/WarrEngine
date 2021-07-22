@@ -59,6 +59,8 @@ namespace war
 
 	using f_tile_map_spawn_entity = std::function<void( scene* scene, tile_map_asset::tile* tile )>;
 	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( scene* scene, tile_map_asset::tile* tile )
+
+	using ec_simple_body_pair = std::pair<ec_simple_collision_body*, ec_simple_collision_body*>;
 }
 
 #include "cursor_asset.h"

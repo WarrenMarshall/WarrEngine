@@ -49,6 +49,8 @@ struct scene
 		std::set<entity*> unique_entities_with_collisions;
 		bool need_another_iteration = false;
 	} simple_collision;
+	std::set<ec_simple_body_pair> colliding_bodies_set;
+	std::vector<simple_collision::pending_collision> pending_collisions;
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
@@ -138,7 +140,7 @@ struct scene
 	virtual void update();
 	virtual void post_update();
 
-	void add_simple_collisions_to_pending_queue();
+	void generate_colliding_bodies_set();
 	void respond_to_pending_simple_collisions();
 
 	virtual void draw();
