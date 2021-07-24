@@ -21,6 +21,7 @@ bool tile_map_asset::create()
 	layer* current_layer = nullptr;
 	object_group* current_object_group = nullptr;
 	object* current_object = nullptr;
+	float current_object_rotation = 0.f;
 	bool inside_data_block = false;
 	int data_block_y = 0;
 
@@ -200,57 +201,33 @@ bool tile_map_asset::create()
 					string_util::erase_char( value, '\"' );
 					current_object->rc.h = text_parser::float_from_str( value );
 				}
-				else if( *key == "visible" )
-				{
-					auto value = subtok.get_next_token();
-					assert( value.has_value() );
-
-					current_layer->is_visible = text_parser::bool_from_str( *value );
-				}
-			}
-		}
-		else if( line.starts_with( "<object " ) )
-		{
-			assert( current_object_group );
-			current_object_group->objects.emplace_back();
-			current_object = &current_object_group->objects.back();
-
-			tokenizer tok( line, " " );
-
-			while( !tok.is_eos() )
-			{
-				tokenizer subtok( *tok.get_next_token(), "=" );
-
-				auto key = subtok.get_next_token();
-
-				if( *key == "x" )
+				else if( *key == "rotation" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
 					string_util::erase_char( value, '\"' );
-					current_object->rc.x = text_parser::float_from_str( value );
-				}
-				else if( *key == "y" )
-				{
-					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.y = text_parser::float_from_str( value );
-				}
-				else if( *key == "width" )
-				{
-					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.w = text_parser::float_from_str( value );
-				}
-				else if( *key == "height" )
-				{
-					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.h = text_parser::float_from_str( value );
+					current_object_rotation = text_parser::float_from_str( value );
+
+					if( !fequals( current_object_rotation, 0.f) )
+					{
+						// if a shape has rotation, it needs to be turned into a
+						// polygonal shape for collision to work properly. AABBs
+						// can't be rotated, obviously.
+
+						current_object->collision_type = simple_collision_type::polygon;
+
+						auto w = current_object->rc.w;
+						auto h = current_object->rc.h;
+
+						current_object->vertices.emplace_back( vec2( 0.f, 0.f ) );
+						current_object->vertices.emplace_back( vec2( w, 0.f ) );
+						current_object->vertices.emplace_back( vec2( w, h ) );
+						current_object->vertices.emplace_back( vec2( 0.f, h ) );
+
+						current_object->rotate_vertices( current_object_rotation );
+					}
 				}
 				else if( *key == "visible" )
 				{
-					assert( current_layer );
-
 					auto value = subtok.get_next_token();
 					assert( value.has_value() );
 
@@ -264,6 +241,7 @@ bool tile_map_asset::create()
 			assert( current_object );
 
 			current_object->collision_type = simple_collision_type::polygon;
+			current_object->vertices.clear();
 
 			tokenizer tok( line, " ", true );
 
@@ -315,7 +293,9 @@ bool tile_map_asset::create()
 		}
 		else if( line.starts_with( "</object" ) )
 		{
+			current_object->rotate_vertices( current_object_rotation );
 			current_object = nullptr;
+			current_object_rotation = 0.f;
 		}
 	}
 

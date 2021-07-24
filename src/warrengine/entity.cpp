@@ -358,13 +358,6 @@ void entity::on_collided( simple_collision::pending_collision& coll )
 
 void entity::on_touched( simple_collision::pending_collision& coll )
 {
-	if( auto scr = get_component<ec_simple_collision_responder>() ; scr )
-	{
-		if( auto mc = get_component<ec_movement_controller>() ; mc )
-		{
-			mc->in_air = false;
-		}
-	}
 }
 
 bool entity::can_be_deleted()

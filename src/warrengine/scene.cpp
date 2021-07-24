@@ -142,18 +142,9 @@ void scene::post_update()
 
 		entity->post_update();
 		entity->post_update_components();
-
-		if( auto mc = entity->get_component<ec_movement_controller>() ; mc )
-		{
-			mc->in_air = true;
-		}
 	}
 
 	// loop through the collision
-	//
-	// we allow for a few iterations here to do our best to free colliders from
-	// other colliders. if this ends up being slow, adjust
-	// "simple_collision_pos_iterations" downwards.
 
 	for( auto iter_counter = 0 ; iter_counter < simple_collision_pos_iterations ; ++iter_counter )
 	{

@@ -3,35 +3,10 @@
 
 using namespace war;
 
-// ----------------------------------------------------------------------------
-
-/*
-e_player::e_player()
+void e_player::on_touched( simple_collision::pending_collision& coll )
 {
-	gun_timer = timer( 1500 );
-}
-
-void e_player::fire()
-{
-	for( auto& ship : satellite_ships )
+	if( auto mc = get_component<ec_movement_controller>() ; mc )
 	{
-		ship->fire();
+		mc->on_touched( coll );
 	}
 }
-
-void e_player::update()
-{
-	entity::update();
-
-	// when it's time to fire the weapon, fire it and then reset the timer to
-	// match whatever the players current ship power level is.
-	//
-	// a more powerful ship = faster firing rate
-
-	if( gun_timer.get_elapsed() )
-	{
-		fire();
-		gun_timer = timer( 1500 - (50 * my_game->ship_power_level ) );
-	}
-}
-*/

@@ -38,7 +38,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 		{
 			auto tmc = gameplay_scene->world->get_component<ec_tile_map>();
 
-			auto e = scene->add_entity<entity>();
+			auto e = scene->add_entity<e_player>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 

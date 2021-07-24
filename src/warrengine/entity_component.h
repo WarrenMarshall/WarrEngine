@@ -382,6 +382,9 @@ struct ec_movement_controller : entity_component
 	vec2 max_velocity = vec2::zero;
 	vec2 get_max_velocity();
 	vec2 clamp_velocity( vec2 v );
+
+	virtual void pre_update() override;
+	virtual void on_touched( simple_collision::pending_collision& coll );
 };
 
 }

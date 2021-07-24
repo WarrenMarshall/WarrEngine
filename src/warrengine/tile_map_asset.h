@@ -40,6 +40,17 @@ struct tile_map_asset final : asset
 		rect rc = {};
 		float radius = 0.f;
 		std::vector<vec2> vertices;
+
+		void rotate_vertices( float angle )
+		{
+			matrix mtx;
+			mtx.rotate( angle );
+
+			for( auto& v : vertices )
+			{
+				v = mtx.transform_vec2( v );
+			}
+		}
 	};
 
 	// object group

@@ -1538,4 +1538,14 @@ vec2 ec_movement_controller::clamp_velocity( vec2 v )
 	return ret;
 }
 
+void ec_movement_controller::pre_update()
+{
+	in_air = true;
+}
+
+void ec_movement_controller::on_touched( simple_collision::pending_collision& coll )
+{
+	in_air = false;
+}
+
 }
