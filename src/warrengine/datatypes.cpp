@@ -165,12 +165,12 @@ bool rect::contains_point( vec2 pos )
 	return c2AABBtoPoint( to_c2AABB(), pos.to_c2v() );
 }
 
-// NOTE : passing in a sz of < 1.0f is translated as passing in a percentage of
+// NOTE : passing in a sz of < 1.f is translated as passing in a percentage of
 // the existing width or height.
 
 rect rect::cut_left( float sz )
 {
-	if( sz < 1.0f )
+	if( sz < 1.f )
 	{
 		sz = w * sz;
 	}
@@ -185,7 +185,7 @@ rect rect::cut_left( float sz )
 
 rect rect::cut_right( float sz )
 {
-	if( sz < 1.0f )
+	if( sz < 1.f )
 	{
 		sz = w * sz;
 	}
@@ -199,7 +199,7 @@ rect rect::cut_right( float sz )
 
 rect rect::cut_top( float sz )
 {
-	if( sz < 1.0f )
+	if( sz < 1.f )
 	{
 		sz = h * sz;
 	}
@@ -214,7 +214,7 @@ rect rect::cut_top( float sz )
 
 rect rect::cut_bottom( float sz )
 {
-	if( sz < 1.0f )
+	if( sz < 1.f )
 	{
 		sz = h * sz;
 	}
@@ -628,7 +628,7 @@ vec2 vec2::normalize( const vec2& v )
 {
 	auto sz = v.get_size();
 
-	return v / ( sz ? sz : 1.0f );
+	return v / ( sz ? sz : 1.f );
 }
 
 // takes an angle, in degrees, and returns a unit vector for it

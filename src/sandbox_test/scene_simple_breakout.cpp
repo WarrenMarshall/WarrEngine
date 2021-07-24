@@ -220,7 +220,7 @@ bool scene_simple_breakout::on_input_pressed( const input_event* evt )
 				{
 					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
 					hit.scc->rs_opt.color = make_color( color::teal );
-					hit.scc->rs_opt.glow = 2.0f;
+					hit.scc->rs_opt.glow = 2.f;
 				}
 			}
 		}

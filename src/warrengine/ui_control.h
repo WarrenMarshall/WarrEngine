@@ -15,7 +15,7 @@ struct ui_control
 	int idx = -1;
 	size_t total = 0;
 	texture_asset* image = nullptr;
-	float image_scale = 1.0f;
+	float image_scale = 1.f;
 	f_draw_control func_draw_control = nullptr;
 
 	// expressed as a 0-1 percentage.  So 0.2 would be 5 intervals, 0.1 would be 10, etc.

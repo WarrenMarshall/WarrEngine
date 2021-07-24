@@ -46,11 +46,11 @@ void scene_textures::draw_ui()
 		auto l_draw_info_box = [] ( std::string_view caption, const rect& rc )
 		{
 			render::state->color = make_color( color::black, 0.25f );
-			render::draw_rounded_filled_rect( rc, 6.0f );
+			render::draw_rounded_filled_rect( rc, 6.f );
 
 			render::state->color = make_color( color::white, 0.75f );
 			render::state->align = align::centered;
-			render::draw_string( caption, vec2( rc.x + ( rc.w / 2.f ), rc.y + 9.0f ) );
+			render::draw_string( caption, vec2( rc.x + ( rc.w / 2.f ), rc.y + 9.f ) );
 		};
 
 		l_draw_info_box( "quads", { 6.f, 32.f, 84.f, 92.f } );

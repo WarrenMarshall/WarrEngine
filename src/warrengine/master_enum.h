@@ -486,8 +486,9 @@ enum_end
 
 enum_begin( damping )
 	outer_space = 0,	// never dampens
-	ice = 1,			// very slippery
-	wood_floor = 5,		// slide slide
-	asphalt = 20,		// dampens immediately
+	ice = 1,
+	polished_floor = 5,
+	wood_floor = 5,
+	asphalt = 20,
 enum_end
 

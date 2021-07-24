@@ -7,8 +7,9 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_coll_mario = collision_bits.get();
+static const unsigned scene_simple_coll_player = collision_bits.get();
 static const unsigned scene_simple_coll_geo = collision_bits.next();
+static const unsigned scene_simple_coll_npc = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ entity* scene_simple_collision::spawn_player()
 		auto ec = e->add_component<ec_simple_collision_body>();
 		ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
 		//ec->set_as_circle( player_radius );
-		ec->set_collision_flags( scene_simple_coll_mario, scene_simple_coll_geo | scene_simple_coll_mario );
+		ec->set_collision_flags( scene_simple_coll_player, scene_simple_coll_geo | scene_simple_coll_player );
 	}
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
@@ -46,12 +47,12 @@ entity* scene_simple_collision::spawn_player()
 		ec->add_shape( primitive_shape::filled_circle, player_radius );
 	}
 	{
-		auto ec = e->add_component<ec_scr_push_outside>();
-		//auto ec = e->add_component<ec_scr_bounce_off>();
+		//auto ec = e->add_component<ec_scr_push_outside>();
+		auto ec = e->add_component<ec_scr_bounce_off>();
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();
-		ec->set_damping( damping::wood_floor );
+		ec->set_friction( 1.0f );
 	}
 
 	first_player = false;
@@ -260,7 +261,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 				{
 					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
 					hit.scc->rs_opt.color = make_color( color::teal );
-					hit.scc->rs_opt.glow = 2.0f;
+					hit.scc->rs_opt.glow = 2.f;
 				}
 			}
 		}
@@ -300,7 +301,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float force = 20.0f;
+			float force = 40.f;
 
 			player->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
 			player->add_force_y( evt->delta.y * -fixed_time_step::per_second( force ) );

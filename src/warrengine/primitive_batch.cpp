@@ -24,7 +24,7 @@ void primitive_batch::init( e_render_prim render_prim )
 void primitive_batch::add_quad( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2, const render_vertex* v3 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a + v3->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 4.0f ) );
+	auto draw_call = ( draw_call::transparent * ( alpha != 4.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -35,7 +35,7 @@ void primitive_batch::add_quad( texture_asset* texture, const render_vertex* v0,
 void primitive_batch::add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 3.0f ) );
+	auto draw_call = ( draw_call::transparent * ( alpha != 3.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -45,7 +45,7 @@ void primitive_batch::add_triangle( texture_asset* texture, const render_vertex*
 void primitive_batch::add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 )
 {
 	auto alpha = ( v0->a + v1->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 2.0f ) );
+	auto draw_call = ( draw_call::transparent * ( alpha != 2.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -54,7 +54,7 @@ void primitive_batch::add_line( texture_asset* texture, const render_vertex* v0,
 void primitive_batch::add_point( texture_asset* texture, const render_vertex* v0 )
 {
 	auto alpha = ( v0->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 1.0f ) );
+	auto draw_call = ( draw_call::transparent * ( alpha != 1.f ) );
 
 	add_vert( draw_call, texture, v0 );
 }

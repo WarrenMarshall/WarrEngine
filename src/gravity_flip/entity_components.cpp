@@ -19,12 +19,12 @@ void player_ship_component::draw()
 
 	auto player = static_cast<e_player_ship*>( parent_entity );
 
-	render::state->glow = 2.0f;
+	render::state->glow = 2.f;
 	render::state->color.a = 0.25f;
 	render::draw_lines( my_game->ship_geo[ my_game->ship_power_level ].verts );
 
-	render::state->glow = 4.0f;
-	render::state->color.a = 1.0f;
+	render::state->glow = 4.f;
+	render::state->color.a = 1.f;
 	for( auto& vtx : my_game->ship_geo[ my_game->ship_power_level ].verts )
 	{
 		render::draw_point( vtx );
@@ -52,7 +52,7 @@ void player_bullet_component::draw()
 
 	render::draw_line( { 0.f, -3.f }, { 0.f, +3.f } );
 
-	render::state->color.a = 1.0f;
+	render::state->color.a = 1.f;
 	render::draw_point( { 0.f, -3.f } );
 }
 */

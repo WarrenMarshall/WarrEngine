@@ -138,11 +138,11 @@ void entity::apply_forces()
 
 	if( auto mc = get_component<ec_movement_controller>() ; mc )
 	{
-		velocity.x = lerp( velocity.x, 0.0f, fixed_time_step::per_second( mc->horizontal_damping ) );
+		velocity.x = lerp( velocity.x, 0.f, fixed_time_step::per_second( mc->horizontal_damping * simple_collision_max_friction ) );
 
 		if( !mc->affected_by_gravity )
 		{
-			velocity.y = lerp( velocity.y, 0.0f, fixed_time_step::per_second( mc->vertical_damping ) );
+			velocity.y = lerp( velocity.y, 0.f, fixed_time_step::per_second( mc->vertical_damping * simple_collision_max_friction ) );
 		}
 	}
 }
@@ -153,7 +153,7 @@ void entity::draw()
 {
 	// super hacky way to indicate a selected entity. it just pumps up the glow
 	// on it. we need a nicer system for this eventually.
-	rs_opt.glow = is_selected * 2.0f;
+	rs_opt.glow = is_selected * 2.f;
 
 	for( const auto& component : components )
 	{
@@ -344,6 +344,27 @@ void entity::on_box2d_collision_begin( box2d_physics::pending_collision& coll, e
 
 void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by )
 {
+}
+
+void entity::on_collided( simple_collision::pending_collision& coll )
+{
+	if( auto scr = get_component<ec_simple_collision_responder>() ; scr )
+	{
+		scr->begin();
+		scr->on_collided( coll );
+		scr->end();
+	}
+}
+
+void entity::on_touched( simple_collision::pending_collision& coll )
+{
+	if( auto scr = get_component<ec_simple_collision_responder>() ; scr )
+	{
+		if( auto mc = get_component<ec_movement_controller>() ; mc )
+		{
+			mc->in_air = false;
+		}
+	}
 }
 
 bool entity::can_be_deleted()

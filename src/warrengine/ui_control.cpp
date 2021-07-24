@@ -234,7 +234,7 @@ void ui_spacer_control::draw( const rect& rc_ui, const rect& rc_client, bool is_
 
 float ui_spacer_control::get_default_width()
 {
-	return 4.0f;
+	return 4.f;
 }
 
 float ui_spacer_control::get_default_height()

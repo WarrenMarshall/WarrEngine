@@ -42,10 +42,10 @@ scene_post_process_ui_callback::scene_post_process_ui_callback()
 	u_vignette_rounding.slider_range = range( 8.f, 16.f );
 	u_crt_tint_scaling.slider_range = range( 0.25f, 4.f );
 	u_film_grain_intensity.slider_range = range( 0.f, 2.f );
-	u_chromatic_aberration_amount.slider_range = range( 0.0f, 0.01f );
-	u_crt_scanlines_intensity.slider_range = range( 0.0f, 0.1f );
-	u_crt_warp_bend.slider_range = range( 2.0f, 12.f );
-	u_pixelate_factor.slider_range = range( 1.0f, 32.f );
+	u_chromatic_aberration_amount.slider_range = range( 0.f, 0.01f );
+	u_crt_scanlines_intensity.slider_range = range( 0.f, 0.1f );
+	u_crt_warp_bend.slider_range = range( 2.f, 12.f );
+	u_pixelate_factor.slider_range = range( 1.f, 32.f );
 
 	ub_vignette.set_bool_value( g_engine->render_api.get_uniform_float( "ub_vignette" ) );
 
@@ -323,7 +323,7 @@ void scene_post_process::draw_ui()
 		}
 	}
 
-	rc_layout = rect( ui_hw + 8.0f, 30.f, ui_hw, ui_h );
+	rc_layout = rect( ui_hw + 8.f, 30.f, ui_hw, ui_h );
 
 	g_ui->layout_init( rc_layout );
 

@@ -10,7 +10,7 @@ void scene_controller_required::pushed()
 	scene::pushed();
 
 	tex_game_controller = g_engine->find_asset<texture_asset>( "engine_game_controller" );
-	anim_tween = tween( 0.0f, 1.0f, 500, tween_type::pingpong, tween_via::sinusoidal );
+	anim_tween = tween( 0.f, 1.f, 500, tween_type::pingpong, tween_via::sinusoidal );
 
 	save_mouse_mode();
 	g_engine->window.set_mouse_mode( mouse_mode::os );
@@ -33,7 +33,7 @@ f_decl_draw_control( draw_controller_true )
 
 	scoped_render_state;
 
-	render::state->color = make_color( color::green, 1.0f );
+	render::state->color = make_color( color::green, 1.f );
 	render::state->angle = -10.f + ( 20.f * *anim_tween );
 
 	render::draw_sprite( control->image, rc_ui.get_midpoint() );
@@ -48,7 +48,7 @@ f_decl_draw_control( draw_controller_false )
 	scoped_render_state;
 
 	render::state->color = make_color( color::grey, 0.25f + ( *anim_tween * 0.5f ) );
-	render::state->scale = 1.0f + ( *anim_tween * 0.15f );
+	render::state->scale = 1.f + ( *anim_tween * 0.15f );
 
 	render::draw_sprite( control->image, rc_ui.get_midpoint() );
 }

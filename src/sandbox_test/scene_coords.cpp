@@ -47,9 +47,9 @@ void scene_coords::draw_ui()
 		scoped_render_state;
 
 		render::state->color = make_color( color::black, 0.5f );
-		render::draw_rounded_filled_rect( rect( 4.f, 30.f, 75.f, 52.f ), 8.0f );
-		render::state->color = make_color( color::black, 1.0f );
-		render::draw_rounded_rect( rect( 4.f, 30.f, 75.f, 52.f ), 8.0f );
+		render::draw_rounded_filled_rect( rect( 4.f, 30.f, 75.f, 52.f ), 8.f );
+		render::state->color = make_color( color::black, 1.f );
+		render::draw_rounded_rect( rect( 4.f, 30.f, 75.f, 52.f ), 8.f );
 
 		render::state->color = make_color( color::white, 0.5f );
 		render::state->scale = 0.5f;
@@ -115,7 +115,7 @@ void scene_coords::draw_ui()
 
 		scoped_render_state;
 		render::state->align = align::vcenter;
-		render::state->color = make_color( color( 1.0f, 0.5f, 0.f ) );
+		render::state->color = make_color( color( 1.f, 0.5f, 0.f ) );
 		render::state->glow = glow_val;
 		g_engine->render_api.set_uniform( "u_pixelate_factor", glow_val );
 
@@ -137,7 +137,7 @@ bool scene_coords::on_input_motion( const input_event* evt )
 				{
 					// rotate crosshair
 					glow_val += evt->delta.x / 100.f;
-					glow_val = glm::clamp<float>( glow_val, 0.0f, 100.0f );
+					glow_val = glm::clamp<float>( glow_val, 0.f, 100.f );
 
 				}
 				else

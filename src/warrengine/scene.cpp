@@ -196,7 +196,6 @@ void scene::generate_colliding_bodies_set()
 				// the bodies are touching so add them into the contact list if the pair is unique
 
 				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
-				simple_collision.need_another_iteration = true;
 			}
 		}
 	}
@@ -204,145 +203,39 @@ void scene::generate_colliding_bodies_set()
 	// generate detailed information about the collisions
 
 	pending_collisions.clear();
+	pending_touches.clear();
 
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
-		pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
-	}
-
-	/*
-	simple_collision::pending_collision collision;
-
-	simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
-
-	switch( collision.body_a->collider_type )
-	{
-		case simple_collider_type::solid:
+		switch( body_a->collider_type )
 		{
-			collision.entity_a->simple_collision.colliding_queue.push_back( collision );
-			simple_collision.need_another_iteration = true;
-		}
-		break;
-
-		case simple_collider_type::sensor:
-		{
-			collision.entity_a->simple_collision.touching_queue.push_back( collision );
-
-			if( auto mc = collision.entity_a->get_component<ec_movement_controller>() ; mc )
+			case simple_collider_type::solid:
 			{
-				mc->in_air = false;
+				pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
+				simple_collision.need_another_iteration = true;
 			}
+			break;
+
+			case simple_collider_type::sensor:
+			{
+				pending_touches.push_back( body_a->intersects_with_manifold( body_b ) );
+			}
+			break;
 		}
-		break;
 	}
-	*/
 }
-
-/*
-	for( auto scc_a : simple_collision.bodies )
-	{
-		for( auto scc_b : simple_collision.bodies )
-		{
-			// simple_collision_components can't collide with themselves
-			if( scc_a == scc_b )
-			{
-				continue;
-			}
-
-			// entities can't collide with themselves
-			if( scc_a->parent_entity == scc_b->parent_entity )
-			{
-				continue;
-			}
-
-			// if collision masks don't intersect, skip
-			if( !( scc_a->collides_with_mask & scc_b->collision_mask ) )
-			{
-				continue;
-			}
-
-			// test the simple_collision_components against each other. if there
-			// is an intersection, add the entity and the collision info into
-			// the queue.
-
-			simple_collision::pending_collision collision;
-			if( scc_a->intersects_with( scc_b, collision ) )
-			{
-				simple_collision.unique_entities_with_collisions.insert( collision.entity_a );
-
-				switch( collision.body_a->collider_type )
-				{
-					case simple_collider_type::solid:
-					{
-						collision.entity_a->simple_collision.colliding_queue.push_back( collision );
-						simple_collision.need_another_iteration = true;
-					}
-					break;
-
-					case simple_collider_type::sensor:
-					{
-						collision.entity_a->simple_collision.touching_queue.push_back( collision );
-
-						if( auto mc = collision.entity_a->get_component<ec_movement_controller>() ; mc )
-						{
-							mc->in_air = false;
-						}
-					}
-					break;
-				}
-			}
-		}
-	}
-*/
 
 void scene::respond_to_pending_simple_collisions()
 {
 	for( auto& coll : pending_collisions )
 	{
-		if( auto scr = coll.entity_a->get_component<ec_simple_collision_responder>() ; scr )
-		{
-			scr->begin();
-			scr->on_collided( coll );
-			scr->end();
-		}
+		coll.entity_a->on_collided( coll );
 	}
 
-	/*
-	for( auto& entity : simple_collision.unique_entities_with_collisions )
+	for( auto& coll : pending_touches )
 	{
-		// ----------------------------------------------------------------------------
-		// solid
-
-		if( !entity->simple_collision.colliding_queue.empty() )
-		{
-			if( auto scr = entity->get_component<ec_simple_collision_responder>() ; scr )
-			{
-				scr->begin();
-
-				for( auto& iter : entity->simple_collision.colliding_queue )
-				{
-					scr->on_collided( iter );
-				}
-
-				scr->end();
-			}
-
-			entity->simple_collision.colliding_queue.clear();
-		}
-
-		// ----------------------------------------------------------------------------
-		// sensor
-
-		if( auto mc = entity->get_component<ec_movement_controller>() ; mc )
-		{
-			mc->in_air = entity->simple_collision.touching_queue.empty();
-		}
-
-		entity->simple_collision.touching_queue.clear();
+		coll.entity_a->on_touched( coll );
 	}
-
-	simple_collision.unique_entities_with_collisions.clear();
-	*/
 }
 
 // ----------------------------------------------------------------------------

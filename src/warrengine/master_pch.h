@@ -84,7 +84,7 @@ namespace fixed_time_step
 	//
 	// angle += 15.f * fixed_time_step::per_second_scaler;
 
-	constexpr float _per_second_scaler = 1.0f / (float)frames_per_second;
+	constexpr float _per_second_scaler = 1.f / (float)frames_per_second;
 
 	template<typename T>
 	constexpr T per_second( T val )
@@ -147,7 +147,7 @@ constexpr float byte_color_to_float = 1.f / 255.f;
 // positive because of the projection flip.
 // ----------------------------------------------------------------------------
 
-constexpr float zdepth_nudge = 10.0f;
+constexpr float zdepth_nudge = 10.f;
 
 constexpr float zdepth_background = 100.f;
 constexpr float zdepth_scene_start = 1000.f;
@@ -176,16 +176,16 @@ constexpr float zdepth_debug_bias = 1000.f;
 // physics constants and helpers
 // ----------------------------------------------------------------------------
 
-constexpr float b2d_gravity_default = 9.81f;
-constexpr float b2d_world_scale_factor = 100.f;
+constexpr auto b2d_gravity_default = 9.81f;
+constexpr auto b2d_world_scale_factor = 100.f;
 
 // values yoinked from : https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_hello.html
 //
 // simple sims need values like : [6, 2]
 // more complex sims need : [8, 3]
 
-constexpr int32 b2d_velocity_iterations = 8;
-constexpr int32 b2d_pos_iterations = 3;
+constexpr auto b2d_velocity_iterations = 8;
+constexpr auto b2d_pos_iterations = 3;
 
 [[nodiscard]] constexpr float to_box2d( float v )
 {
@@ -201,15 +201,17 @@ constexpr int32 b2d_pos_iterations = 3;
 // simple collision constants and helpers
 // ----------------------------------------------------------------------------
 
-constexpr float simple_collision_gravity_default = 9.81f;
-constexpr float simple_world_scale_factor = 100.f;
+constexpr auto simple_collision_gravity_default = 9.81f;
+constexpr auto simple_world_scale_factor = 100.f;
 
 // collisions do better if you can add a little padding between collision bodies
 // after resolution. 1.0 would be exactly snug against each other. Anything
 // above 1.0 represents the skin thickness we are adding.
-constexpr float simple_collision_skin_thickness = 1.1f;
+constexpr auto simple_collision_skin_thickness = 1.1f;
 
-constexpr float simple_collision_pos_iterations = 8.f;
+constexpr auto simple_collision_max_friction = 20.f;
+
+constexpr auto simple_collision_pos_iterations = 8;
 
 [[nodiscard]] constexpr float to_simple( float v )
 {

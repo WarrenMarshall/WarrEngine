@@ -184,33 +184,30 @@ void vertex_array_object::flush_and_reset( e_draw_call draw_call )
 
 void vertex_array_object::upload_vertices_to_gpu()
 {
-	auto index_count = (int)( vb->vertices.size() * indices_to_verts_factor );
-
-	if( index_count )
+	if( vb->vertices.empty() )
 	{
-		bind();
-		vb->upload_vertices_to_gpu();
+		return;
 	}
+
+	bind();
+	vb->upload_vertices_to_gpu();
 }
 
 void vertex_array_object::flush_and_reset_internal( e_draw_call draw_call )
 {
-	auto index_count = (int)( vb->vertices.size() * indices_to_verts_factor );
-
-	if( index_count )
+	if( vb->vertices.empty() )
 	{
-		upload_vertices_to_gpu();
-
-		draw( draw_call );
-
-		reset();
+		return;
 	}
+
+	upload_vertices_to_gpu();
+	draw( draw_call );
+	reset();
 }
 
 void vertex_array_object::draw( e_draw_call draw_call )
 {
-	auto index_count = (int)( vb->vertices.size() * indices_to_verts_factor );
-	if( !index_count )
+	if( vb->vertices.empty() )
 	{
 		return;
 	}
@@ -220,12 +217,12 @@ void vertex_array_object::draw( e_draw_call draw_call )
 	auto gl_prim_type = get_gl_prim_type();
 	if( gl_prim_type == GL_LINES or gl_prim_type == GL_POINTS )
 	{
-		float line_width = 1.0f;
-		float point_sz = 2.0f;
+		float line_width = 1.f;
+		float point_sz = 2.f;
 
 		float scale = g_engine->scenes.get_scale();
-		line_width *= 1.0f + ( scale * g_engine->render_api.using_camera );
-		point_sz *= 1.0f + ( scale * g_engine->render_api.using_camera );
+		line_width *= 1.f + ( scale * g_engine->render_api.using_camera );
+		point_sz *= 1.f + ( scale * g_engine->render_api.using_camera );
 
 		glLineWidth( line_width );
 		glPointSize( point_sz );
@@ -240,7 +237,7 @@ void vertex_array_object::draw( e_draw_call draw_call )
 	// only write to the depth buffer for opaque primitives
 	glDepthMask( draw_call == draw_call::opaque );
 
-	glDrawElements( get_gl_prim_type(), index_count, GL_UNSIGNED_INT, nullptr );
+	glDrawElements( get_gl_prim_type(), (int)( vb->vertices.size() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 
 	unbind();
 }

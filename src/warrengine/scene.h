@@ -51,6 +51,7 @@ struct scene
 	} simple_collision;
 	std::set<ec_simple_body_pair> colliding_bodies_set;
 	std::vector<simple_collision::pending_collision> pending_collisions;
+	std::vector<simple_collision::pending_collision> pending_touches;
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls

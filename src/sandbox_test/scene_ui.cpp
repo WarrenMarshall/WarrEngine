@@ -119,7 +119,7 @@ f_decl_draw_control( draw_control_mario )
 
 	render::state->z += zdepth_nudge;
 	render::state->color = make_color( color::white );
-	render::state->scale = 2.0f;
+	render::state->scale = 2.f;
 
 	render::draw_sprite( control->image, rc_ui.get_midpoint() );
 }
@@ -157,7 +157,7 @@ void scene_ui::draw_ui()
 
 	{
 		auto rc_left = rc.cut_left( 0.5f );
-		rc_left.w -= 4.0f;
+		rc_left.w -= 4.f;
 		scoped_ui_layout( rc_left );
 
 		if( g_ui->button_control()->set_text( "push_button" )->done() )
@@ -235,7 +235,7 @@ void scene_ui::draw_ui()
 		g_ui
 			->image_control()
 			->set_image( "anim_player_run" )
-			->cut_top( g_ui->current_control->image->height() * 3.0f )
+			->cut_top( g_ui->current_control->image->height() * 3.f )
 			->set_func_draw( draw_control_mario )
 			->done();
 	}

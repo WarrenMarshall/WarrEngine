@@ -58,17 +58,16 @@ entity* scene_simple_space::spawn_player()
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();
-		ec->set_damping( damping::outer_space );
-		ec->set_max_velocity( 2.0f );
+		ec->set_friction( 0.f );
+		ec->set_max_velocity( 2.f );
 
 		if( first_time )
 		{
-			ec->set_damping( damping::wood_floor );
-			//ec->set_damping( damping::ice );
+			ec->set_friction( 0.3f );
 		}
 	}
 
-	e->add_force( random::get_random_on_circle( 1.f ), 2.0f );
+	e->add_force( random::get_random_on_circle( 1.f ), 2.f );
 
 	first_time = false;
 

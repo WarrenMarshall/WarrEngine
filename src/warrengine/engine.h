@@ -30,7 +30,7 @@ struct engine
 	// all the info it needs
 	struct
 	{
-		float film_grain_amount = 0.0f;
+		float film_grain_amount = 0.f;
 	} post_process;
 
 	std::vector<asset_file_definition> asset_def_file_cache;

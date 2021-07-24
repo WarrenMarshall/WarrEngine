@@ -851,7 +851,7 @@ void ec_simple_collision_body::update_to_match_parent_transform()
 	{
 		case simple_collision_type::circle:
 		{
-			ws.pos = g_engine->render_api.top_matrix->transform_vec2( vec2( 0.0f, 0.0f ) );
+			ws.pos = g_engine->render_api.top_matrix->transform_vec2( vec2( 0.f, 0.f ) );
 			ws.radius = radius * scale;
 		}
 		break;
@@ -1419,7 +1419,6 @@ void ec_scr_push_outside::end()
 
 void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll )
 {
-	// #crash_prevention
 	if( fequals( coll.depth, 0.f ) )
 	{
 		return;
@@ -1433,19 +1432,19 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 
 	if( coll.normal.y > 0.7f )
 	{
-		parent_entity->velocity.y = 0.0f;
+		parent_entity->velocity.y = 0.f;
 	}
 
 	// hitting the ceiling/floor kills vertical velocity
 	if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
 	{
-		parent_entity->velocity.y = 0.0f;
+		parent_entity->velocity.y = 0.f;
 	}
 
 	// hitting a wall kills horizontal velocity
 	if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
 	{
-		parent_entity->velocity.x = 0.0f;
+		parent_entity->velocity.x = 0.f;
 	}
 }
 
@@ -1482,8 +1481,8 @@ void ec_scr_bounce_off::end()
 	assert( !isnan( n.y ) );
 	assert( !isnan( strength ) );
 
-	//parent_entity->reset_force( n, strength );
-	parent_entity->reset_force( n, parent_entity->velocity.get_size() );
+	parent_entity->reset_force( n, strength );
+	//parent_entity->reset_force( n, parent_entity->velocity.get_size() );
 
 	ec_scr_push_outside::end();
 }
@@ -1509,9 +1508,9 @@ ec_movement_controller::ec_movement_controller( entity* parent_entity )
 	max_velocity = { 5.f, 5.f };
 }
 
-void ec_movement_controller::set_damping( float damping )
+void ec_movement_controller::set_friction( float friction )
 {
-	horizontal_damping = vertical_damping = damping;
+	horizontal_damping = vertical_damping = friction;
 }
 
 void ec_movement_controller::set_max_velocity( float max )

@@ -47,7 +47,7 @@ struct ui_slider_control_data : ui_control_data
 	[[nodiscard]] virtual float float_value() override;
 	virtual void set_float_value( float value ) override;
 
-	range<float> slider_range = { 0.f, 1.0f };
+	range<float> slider_range = { 0.f, 1.f };
 };
 
 // ----------------------------------------------------------------------------

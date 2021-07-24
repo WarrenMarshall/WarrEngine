@@ -270,7 +270,7 @@ struct ec_simple_collision_body : entity_component
 	// verts
 	std::vector<vec2> verts = {};
 
-	e_simple_collider_type collider_type = simple_collider_type::solid;;
+	e_simple_collider_type collider_type = simple_collider_type::solid;
 
 	struct
 	{
@@ -366,8 +366,8 @@ struct ec_movement_controller : entity_component
 	ec_movement_controller() = delete;
 	ec_movement_controller( entity* parent_entity );
 
-	float horizontal_damping = damping::asphalt;
-	float vertical_damping = damping::asphalt;
+	float horizontal_damping = 0.3f;
+	float vertical_damping = 0.3f;
 
 	// is this entity in the air?
 	bool in_air : 1 = false;
@@ -375,7 +375,7 @@ struct ec_movement_controller : entity_component
 	// is this entity pulled by gravity?
 	bool affected_by_gravity : 1 = false;
 
-	void set_damping( float damping );
+	void set_friction( float friction );
 	void set_max_velocity( float max );
 	void set_max_velocity( vec2 max );
 

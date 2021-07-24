@@ -311,7 +311,7 @@ bool tile_map_asset::create()
 			assert( current_object );
 
 			current_object->collision_type = simple_collision_type::circle;
-			current_object->radius = current_object->rc.w / 2.0f;
+			current_object->radius = current_object->rc.w / 2.f;
 		}
 		else if( line.starts_with( "</object" ) )
 		{

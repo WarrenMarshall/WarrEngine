@@ -69,27 +69,27 @@ void scene_wrapped_text::draw_ui()
 	{
 		scoped_render_state;
 
-		rc_big_text_block_01.grow( 4.0f );
-		rc_big_text_block_02.grow( 4.0f );
+		rc_big_text_block_01.grow( 4.f );
+		rc_big_text_block_02.grow( 4.f );
 
 
 		render::state->color = make_color( 0, 0.5f );
-		render::draw_rounded_filled_rect( rc_big_text_block_01, 4.0f );
+		render::draw_rounded_filled_rect( rc_big_text_block_01, 4.f );
 		render::state->color = make_color( 0, 0.75f );
-		render::draw_rounded_rect( rc_big_text_block_01, 4.0f );
+		render::draw_rounded_rect( rc_big_text_block_01, 4.f );
 
 		render::state->color = make_color( 0, 0.5f );
-		render::draw_rounded_filled_rect( rc_big_text_block_02, 4.0f );
+		render::draw_rounded_filled_rect( rc_big_text_block_02, 4.f );
 		render::state->color = make_color( 0, 0.75f );
-		render::draw_rounded_rect( rc_big_text_block_02, 4.0f );
+		render::draw_rounded_rect( rc_big_text_block_02, 4.f );
 
 		render::state->color = make_color( pal::brighter );
 
 		std::array<e_align, 3> alignments = { align::left, align::hcenter, align::right };
 		render::state->align = alignments[ cb->radio_alignment_data.int_value() ];
 
-		rc_big_text_block_01.shrink( 4.0f );
-		rc_big_text_block_02.shrink( 4.0f );
+		rc_big_text_block_01.shrink( 4.f );
+		rc_big_text_block_02.shrink( 4.f );
 
 		render::state->z += zdepth_nudge;
 		render::draw_string( wrapped_lines_01, rc_big_text_block_01 );

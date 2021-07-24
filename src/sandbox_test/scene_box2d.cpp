@@ -130,7 +130,7 @@ void scene_box2d::spawn_ball_at( vec2 world_pos )
 			auto ec = e->add_component<ec_sprite>();
 			ec->init( std::format( "emoji_{}", random::geti_range( 1, 5 ) ) );
 			ec->get_transform()->set_scale( random_radius / 8.f );
-			ec->rs_opt.glow = random::getb() ? random::getf_range( 0.f, 2.0f ) : 0.f;
+			ec->rs_opt.glow = random::getb() ? random::getf_range( 0.f, 2.f ) : 0.f;
 		}
 	}
 }
@@ -157,13 +157,13 @@ void scene_box2d::spawn_box_at( vec2 world_pos )
 			ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball | scene_box2d_world );
 			e->get_component<ec_box2d_physics>()->set_restitution( random::getf_range( 0.f, 1.f ) );
 		}
-		rc_box.grow( 1.0f );
+		rc_box.grow( 1.f );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->add_shape( primitive_shape::filled_rect, rc_box );
 			ec->rs_opt.color = make_color( pal::darker );
 		}
-		rc_box.shrink( 2.0f );
+		rc_box.shrink( 2.f );
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
 			ec->add_shape( primitive_shape::filled_rect, rc_box );

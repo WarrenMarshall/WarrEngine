@@ -52,7 +52,7 @@ void scene_sound_board::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top().cut_top( 24.f ) );
 
-			auto button_width = g_ui->layout_top().w / 5.0f;
+			auto button_width = g_ui->layout_top().w / 5.f;
 
 			g_ui->cut_left( button_width );
 

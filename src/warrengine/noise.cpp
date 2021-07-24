@@ -36,7 +36,7 @@ float noise_simplex::get()
 
 float noise_random::get()
 {
-	return random::getf_range( -1.f, 1.0f );
+	return random::getf_range( -1.f, 1.f );
 }
 
 }

@@ -284,7 +284,7 @@ void engine::main_loop()
 
 			input.dispatch_event_queue();
 
-			box2d.world->Step( fixed_time_step::per_second( 1.0f ) * num_time_steps, b2d_velocity_iterations, b2d_pos_iterations );
+			box2d.world->Step( fixed_time_step::per_second( 1.f ) * num_time_steps, b2d_velocity_iterations, b2d_pos_iterations );
 
 			scenes.pre_update();
 			scenes.update();
@@ -565,11 +565,11 @@ void engine::draw()
 			render::state->color = make_color( pal::darker );
 			render::draw_line_loop( rc );
 
-			rc.shrink( 1.0f );
+			rc.shrink( 1.f );
 			render::state->color = make_color( pal::middle );
 			render::draw_line_loop( rc );
 
-			rc.shrink( 1.0f );
+			rc.shrink( 1.f );
 			render::state->color = make_color( pal::brighter );
 			render::draw_line_loop( rc );
 		}
