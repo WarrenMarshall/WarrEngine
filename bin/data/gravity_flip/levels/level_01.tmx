@@ -50,9 +50,8 @@
   <object id="98" x="112" y="144" width="80" height="16"/>
   <object id="101" x="160" y="80" width="80" height="16"/>
   <object id="120" x="256" y="160" width="85.282" height="45.8564" rotation="330"/>
-  <object id="122" x="126.726" y="69.4354" width="85.282" height="45.8564" rotation="112.857"/>
   <object id="109" x="0" y="0" width="48" height="16" rotation="270"/>
-  <object id="123" x="114.294" y="49.3539" width="48" height="16" rotation="194.315"/>
+  <object id="123" x="192" y="48" width="48" height="16" rotation="194.315"/>
   <object id="110" x="304" y="96" width="16" height="32"/>
   <object id="100" x="16" y="112" width="80" height="16"/>
   <object id="102" x="32" y="96" width="16" height="16"/>
@@ -62,13 +61,10 @@
   <object id="117" x="229.972" y="55.3479" rotation="53.0393">
    <polygon points="-4.28719,-71.4256 15.4256,-101.282 63.4256,-18.1436"/>
   </object>
-  <object id="121" x="210.664" y="137.14" rotation="195.896">
-   <polygon points="-4.28719,-71.4256 15.4256,-101.282 63.4256,-18.1436"/>
-  </object>
   <object id="118" x="336" y="-32" rotation="150">
    <polygon points="10.1436,-49.5692 29.8564,-19.7128 77.8564,-102.851"/>
   </object>
-  <object id="119" x="16" y="0" width="32" height="32">
+  <object id="119" x="16" y="32" width="32" height="32">
    <ellipse/>
   </object>
  </objectgroup>
