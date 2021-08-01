@@ -51,7 +51,7 @@ entity* scene_simple_collision::spawn_player()
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();
-		ec->set_friction( 1.0f );
+		ec->set_friction( 0.3f );
 	}
 
 	first_player = false;

@@ -25,10 +25,8 @@ entity* scene_simple_space::spawn_player()
 	auto e = add_entity<entity>();
 	e->tag = H( "mario" );
 	e->set_pos( { 0.f, 0.f } );
-	if( first_time )
-	{
-		e->set_scale( 2.f );
-	}
+	e->set_scale( 2.f );
+
 	{
 		auto ec = e->add_component<ec_sprite>();
 		ec->rs_opt.color = make_color( color::white, 1.f );
@@ -53,21 +51,23 @@ entity* scene_simple_space::spawn_player()
 		ec->add_shape( primitive_shape::filled_circle, radius );
 	}
 	{
-		auto ec = e->add_component<ec_scr_bounce_off>();
-		//auto ec = e->add_component<ec_scr_push_outside>();
+		auto ec = e->add_component<ec_scr_push_outside>();
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();
-		ec->set_friction( 0.f );
-		ec->set_max_velocity( 2.f );
+		ec->set_friction( 0.0f );
+		ec->set_max_velocity( 5.f );
 
 		if( first_time )
 		{
-			ec->set_friction( 0.3f );
+			ec->set_friction( 0.1f );
 		}
 	}
 
-	e->add_force( random::get_random_on_circle( 1.f ), 2.f );
+	if( !first_time )
+	{
+		e->add_force( random::get_random_on_circle( 1.f ), 2.f );
+	}
 
 	first_time = false;
 
