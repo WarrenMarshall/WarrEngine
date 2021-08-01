@@ -312,33 +312,19 @@ struct ec_tile_map : entity_component
 	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
 };
 
-// ----------------------------------------------------------------------------
-// simple physics responder
-
-struct ec_simple_collision_responder : entity_component
-{
-	ec_simple_collision_responder() = delete;
-	ec_simple_collision_responder( entity* parent_entity );
-
-	virtual void begin();
-	virtual void end();
-	virtual void on_collided( simple_collision::pending_collision& coll );
-	virtual void on_touched( simple_collision::pending_collision& coll );
-};
-
 // pushes the entity outside of whatever solid bodies are intersecting with it
 
-struct ec_scr_push_outside : ec_simple_collision_responder
+struct ec_scr_push_outside : entity_component
 {
 	std::vector<vec2> deltas;
 
 	ec_scr_push_outside() = delete;
 	ec_scr_push_outside( entity* parent_entity );
 
-	virtual void begin() override;
-	virtual void end() override;
+	void begin();
+	void end();
 
-	virtual void on_collided( simple_collision::pending_collision& coll ) override;
+	void on_collided( simple_collision::pending_collision& coll );
 };
 
 // ----------------------------------------------------------------------------

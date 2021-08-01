@@ -1372,31 +1372,8 @@ void ec_tile_map::draw()
 
 // ----------------------------------------------------------------------------
 
-ec_simple_collision_responder::ec_simple_collision_responder( entity* parent_entity )
-	: entity_component( parent_entity )
-{
-}
-
-void ec_simple_collision_responder::begin()
-{
-}
-
-void ec_simple_collision_responder::end()
-{
-}
-
-void ec_simple_collision_responder::on_collided( simple_collision::pending_collision& coll )
-{
-}
-
-void ec_simple_collision_responder::on_touched( simple_collision::pending_collision& coll )
-{
-}
-
-// ----------------------------------------------------------------------------
-
 ec_scr_push_outside::ec_scr_push_outside( entity* parent_entity )
-	: ec_simple_collision_responder( parent_entity )
+	: entity_component( parent_entity )
 {
 
 }
