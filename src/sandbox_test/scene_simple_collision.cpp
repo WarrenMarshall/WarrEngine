@@ -47,11 +47,12 @@ entity* scene_simple_collision::spawn_player()
 		ec->add_shape( primitive_shape::filled_circle, player_radius );
 	}
 	{
-		auto ec = e->add_component<ec_scr_push_outside>();
+		//auto ec = e->add_component<ec_scr_push_outside>();
+		auto ec = e->add_component<ec_scr_bounce_off>();
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();
-		ec->set_friction( 0.3f );
+		ec->set_friction( 1.0f );
 	}
 
 	first_player = false;

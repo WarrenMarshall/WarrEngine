@@ -1450,6 +1450,58 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 
 // ----------------------------------------------------------------------------
 
+ec_scr_bounce_off::ec_scr_bounce_off( entity* parent_entity )
+	: ec_scr_push_outside( parent_entity )
+{
+
+}
+
+void ec_scr_bounce_off::begin()
+{
+	ec_scr_push_outside::begin();
+
+	bounce_vectors.clear();
+}
+
+void ec_scr_bounce_off::end()
+{
+	vec2 avg_delta = vec2::zero;
+	for( auto& iter : bounce_vectors )
+	{
+		if( !iter.is_zero() )
+		{
+			avg_delta += iter;
+		}
+	}
+
+	auto n = vec2::normalize( avg_delta );
+	auto strength = avg_delta.get_size();
+
+	assert( !isnan( n.x ) );
+	assert( !isnan( n.y ) );
+	assert( !isnan( strength ) );
+
+	parent_entity->reset_force( n, strength );
+	//parent_entity->reset_force( n, parent_entity->velocity.get_size() );
+
+	ec_scr_push_outside::end();
+}
+
+void ec_scr_bounce_off::on_collided( simple_collision::pending_collision& coll )
+{
+	if( fequals( coll.depth, 0.f ) )
+	{
+		return;
+	}
+
+	ec_scr_push_outside::deltas.emplace_back( -coll.normal * ( coll.depth * simple_collision_skin_thickness ) );
+
+	auto reflection = vec2::reflect_across_normal( parent_entity->velocity, coll.normal );
+	bounce_vectors.push_back( reflection );
+}
+
+// ----------------------------------------------------------------------------
+
 ec_movement_controller::ec_movement_controller( entity* parent_entity )
 	: entity_component( parent_entity )
 {

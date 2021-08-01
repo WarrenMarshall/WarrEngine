@@ -53,7 +53,8 @@ entity* scene_simple_space::spawn_player()
 		ec->add_shape( primitive_shape::filled_circle, radius );
 	}
 	{
-		auto ec = e->add_component<ec_scr_push_outside>();
+		auto ec = e->add_component<ec_scr_bounce_off>();
+		//auto ec = e->add_component<ec_scr_push_outside>();
 	}
 	{
 		auto ec = e->add_component<ec_movement_controller>();

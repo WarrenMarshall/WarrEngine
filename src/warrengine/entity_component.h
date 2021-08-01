@@ -341,6 +341,21 @@ struct ec_scr_push_outside : ec_simple_collision_responder
 	virtual void on_collided( simple_collision::pending_collision& coll ) override;
 };
 
+// bounces the entity off the solid it collided with, reflected across the collision normal
+
+struct ec_scr_bounce_off : ec_scr_push_outside
+{
+	std::vector<vec2> bounce_vectors;
+
+	ec_scr_bounce_off() = delete;
+	ec_scr_bounce_off( entity* parent_entity );
+
+	virtual void begin() override;
+	virtual void end() override;
+
+	virtual void on_collided( simple_collision::pending_collision& coll ) override;
+};
+
 // ----------------------------------------------------------------------------
 // movement controller
 //
