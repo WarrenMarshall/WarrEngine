@@ -62,6 +62,8 @@ entity* scene_simple_collision::spawn_player()
 
 void scene_simple_collision::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// MARIO
@@ -249,7 +251,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_all callback;
-			g_engine->simple_collision.world->ray_cast( &callback, player, start, end );
+			sc_world->ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
@@ -277,7 +279,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::raycast_closest callback;
-			g_engine->simple_collision.world->ray_cast( &callback, player, start, end );
+			sc_world->ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
@@ -300,7 +302,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float force = 40.f;
+			float force = 20.f;
 
 			player->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
 			player->add_force_y( evt->delta.y * -fixed_time_step::per_second( force ) );

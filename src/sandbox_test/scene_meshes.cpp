@@ -13,6 +13,8 @@ scene_meshes::scene_meshes()
 
 void scene_meshes::pushed()
 {
+	scene::pushed();
+
 	// mario
 	{
 		auto e = add_entity<entity>();

@@ -139,6 +139,8 @@ scene_post_process::scene_post_process()
 
 void scene_post_process::pushed()
 {
+	scene::pushed();
+
 	viewport_pivot = vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::custom );
 }

@@ -76,6 +76,8 @@ entity* scene_simple_space::spawn_player()
 
 void scene_simple_space::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// MARIO

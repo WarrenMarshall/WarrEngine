@@ -24,6 +24,8 @@ scene_simple_rpg::scene_simple_rpg()
 
 void scene_simple_rpg::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// world

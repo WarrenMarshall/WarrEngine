@@ -14,6 +14,8 @@ scene_noise::scene_noise()
 
 void scene_noise::pushed()
 {
+	scene::pushed();
+
 	viewport_pivot = vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::custom );
 

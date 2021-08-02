@@ -100,6 +100,8 @@ scene_ui::scene_ui()
 
 void scene_ui::pushed()
 {
+	scene::pushed();
+
 	viewport_pivot = vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 }

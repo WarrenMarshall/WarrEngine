@@ -69,10 +69,29 @@ std::vector<entity*> scene::get_selected()
 	return selections;
 }
 
+void scene::pushed()
+{
+	sc_world = std::make_unique<simple_collision_world>( this );
+}
+
+void scene::popped()
+{
+}
+
+void scene::becoming_top_scene()
+{
+}
+
+void scene::getting_covered()
+{
+}
+
 // ----------------------------------------------------------------------------
 
 void scene::pre_update()
 {
+	sc_world->pre_update();
+
 	for( auto& entity : entities )
 	{
 		scoped_opengl;
@@ -84,11 +103,8 @@ void scene::pre_update()
 		entity->pre_update_components();
 	}
 
-	remove_dead_entities();
-}
+	// remove dead entities
 
-void scene::remove_dead_entities()
-{
 	for( auto iter = entities.begin(); iter != entities.end(); iter++ )
 	{
 		if( iter->get()->can_be_deleted() )
@@ -102,11 +118,6 @@ void scene::remove_dead_entities()
 
 void scene::update()
 {
-	// this list can change between updates, so it needs to be recreated each
-	// time. entities get deleted, created, change their collision masks, etc.
-
-	simple_collision.bodies.clear();
-
 	// update entities and components
 
 	for( auto& entity : entities )
@@ -122,8 +133,8 @@ void scene::update()
 
 		// collect the simple collision bodies active in the scene
 		auto sccs = entity->get_components<ec_simple_collision_body>();
-		simple_collision.bodies.insert(
-			simple_collision.bodies.end(),
+		sc_world->bodies.insert(
+			sc_world->bodies.end(),
 			sccs.begin(), sccs.end()
 		);
 	}
@@ -131,24 +142,11 @@ void scene::update()
 
 void scene::post_update()
 {
-	// update entities and components, after physics have run
-
-	for( auto& entity : entities )
-	{
-		scoped_opengl;
-
-		auto tform = entity->get_transform();
-		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
-
-		entity->post_update();
-		entity->post_update_components();
-	}
-
 	// loop through the collision
 
 	for( auto iter_counter = 0 ; iter_counter < simple_collision_pos_iterations ; ++iter_counter )
 	{
-		for( auto& scc : simple_collision.bodies )
+		for( auto& scc : sc_world->bodies )
 		{
 			scc->update_to_match_parent_transform();
 		}
@@ -166,6 +164,19 @@ void scene::post_update()
 			break;
 		}
 	}
+
+	// update entities and components, after physics have run
+
+	for( auto& entity : entities )
+	{
+		scoped_opengl;
+
+		auto tform = entity->get_transform();
+		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+
+		entity->post_update();
+		entity->post_update_components();
+	}
 }
 
 // loop through all collision bodies that are available for collision and check
@@ -178,9 +189,9 @@ void scene::generate_colliding_bodies_set()
 
 	// broad phase
 
-	for( auto scc_a : simple_collision.bodies )
+	for( auto scc_a : sc_world->bodies )
 	{
-		for( auto scc_b : simple_collision.bodies )
+		for( auto scc_b : sc_world->bodies )
 		{
 			if( scc_a->intersects_with( scc_b ) )
 			{
@@ -193,8 +204,8 @@ void scene::generate_colliding_bodies_set()
 
 	// generate detailed information about the collisions
 
-	pending_collisions.clear();
-	pending_touches.clear();
+	sc_world->pending_collisions.clear();
+	sc_world->pending_touches.clear();
 
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
@@ -202,14 +213,14 @@ void scene::generate_colliding_bodies_set()
 		{
 			case simple_collider_type::solid:
 			{
-				pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
+				sc_world->pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
 				simple_collision.need_another_iteration = true;
 			}
 			break;
 
 			case simple_collider_type::sensor:
 			{
-				pending_touches.push_back( body_a->intersects_with_manifold( body_b ) );
+				sc_world->pending_touches.push_back( body_a->intersects_with_manifold( body_b ) );
 			}
 			break;
 		}
@@ -218,12 +229,12 @@ void scene::generate_colliding_bodies_set()
 
 void scene::respond_to_pending_simple_collisions()
 {
-	for( auto& coll : pending_collisions )
+	for( auto& coll : sc_world->pending_collisions )
 	{
 		coll.entity_a->on_collided( coll );
 	}
 
-	for( auto& coll : pending_touches )
+	for( auto& coll : sc_world->pending_touches )
 	{
 		coll.entity_a->on_touched( coll );
 	}

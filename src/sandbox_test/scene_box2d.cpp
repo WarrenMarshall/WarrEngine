@@ -21,6 +21,8 @@ scene_box2d::scene_box2d()
 
 void scene_box2d::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// kinematic circle

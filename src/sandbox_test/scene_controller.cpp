@@ -31,6 +31,8 @@ scene_controller::scene_controller()
 
 void scene_controller::pushed()
 {
+	scene::pushed();
+
 	viewport_pivot = vec2::zero;
 	fader = tween( 0.25f, 1.f, 1000, tween_type::pingpong, tween_via::sinusoidal );
 	g_engine->window.set_mouse_mode( mouse_mode::os );

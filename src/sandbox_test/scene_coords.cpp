@@ -12,6 +12,8 @@ scene_coords::scene_coords()
 
 void scene_coords::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	{

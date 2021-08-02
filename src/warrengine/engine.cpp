@@ -529,10 +529,6 @@ void engine::new_physics_world()
 		| b2Draw::e_pairBit				// broad-phase pairs
 		| b2Draw::e_centerOfMassBit		// center of mass frame
 	);
-
-	// simple collision
-
-	g_engine->simple_collision.world = std::make_unique<simple_collision::world>( vec2( 0.f, simple_collision_gravity_default ) );
 }
 
 // called ONCE, as the engine is starting up

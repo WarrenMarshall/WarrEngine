@@ -84,6 +84,8 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 
 void scene_gameplay::pushed()
 {
+	scene::pushed();
+
 	viewport_pivot = vec2::zero;
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );

@@ -10,6 +10,8 @@ scene_particles::scene_particles()
 
 void scene_particles::pushed()
 {
+	scene::pushed();
+
 	// stars
 	{
 		auto e = add_entity<entity>();

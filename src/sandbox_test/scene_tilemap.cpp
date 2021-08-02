@@ -10,6 +10,8 @@ scene_tilemap::scene_tilemap()
 
 void scene_tilemap::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	ts_ultima = g_engine->find_asset<tile_set_asset>( "ts_ultima" );

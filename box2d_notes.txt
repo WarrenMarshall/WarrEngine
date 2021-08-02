@@ -19,7 +19,7 @@ Bodies
 	- "For most games, dynamic bodies are used for the player and other actors in the scene, and static bodies are used for walls, floors and so on. Kinematic bodies came about to fill the need for a body which can move and rotate but doesn't get bumped around by the dynamic bodies. A perfect example is a moving platform in a platform game - it should always stay on its track no matter how it is jumped on or collided with."
 
 Fixtures
-	- contains the size, shape, and other tangigle characteristics
+	- contains the size, shape, and other tangible characteristics
 		- shape - a polygon or circle
 			- note : max of 8 verts per polygon
 			- polygons are wound counter-clockwise

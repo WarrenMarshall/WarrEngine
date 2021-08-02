@@ -12,6 +12,8 @@ scene_angle_dirs::scene_angle_dirs()
 
 void scene_angle_dirs::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 }
 

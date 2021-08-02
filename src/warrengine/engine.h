@@ -70,11 +70,6 @@ struct engine
 		std::vector<box2d_physics::pending_collision> end_contact_queue;
 	} box2d;
 
-	struct
-	{
-		std::unique_ptr<simple_collision::world> world = nullptr;
-	} simple_collision;
-
 	render_stats stats;
 
 	void new_physics_world();

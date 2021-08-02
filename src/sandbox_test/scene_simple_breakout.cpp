@@ -25,6 +25,8 @@ scene_simple_breakout::scene_simple_breakout()
 
 void scene_simple_breakout::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// MARIO
@@ -176,81 +178,6 @@ void scene_simple_breakout::reset_collision_trace_results()
 
 bool scene_simple_breakout::on_input_pressed( const input_event* evt )
 {
-	switch( evt->input_id )
-	{
-		// QUICK
-
-		case input_id::gamepad_button_dpad_up:
-		case input_id::key_q:
-		{
-			reset_collision_trace_results();
-
-			auto start = mario->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			simple_collision::raycast_quick callback;
-			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
-
-			if( callback.hit_something )
-			{
-				log( "WE HIT SOMETHING" );
-			}
-		}
-		break;
-
-		// ALL
-
-		case input_id::gamepad_button_dpad_down:
-		case input_id::key_a:
-		{
-			reset_collision_trace_results();
-
-			auto start = mario->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			simple_collision::raycast_all callback;
-			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
-
-			if( callback.hit_something )
-			{
-				auto ec = hit_marker->get_component<ec_primitive_shape>();
-				ec->shapes.clear();
-
-				for( auto& hit : callback.results )
-				{
-					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
-					hit.scc->rs_opt.color = make_color( color::teal );
-					hit.scc->rs_opt.glow = 2.f;
-				}
-			}
-		}
-		break;
-
-		// CLOSEST
-
-		case input_id::gamepad_button_dpad_left:
-		case input_id::key_c:
-		{
-			reset_collision_trace_results();
-
-			auto start = mario->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			simple_collision::raycast_closest callback;
-			g_engine->simple_collision.world->ray_cast( &callback, mario, start, end );
-
-			if( callback.hit_something )
-			{
-				auto ec = hit_marker->get_component<ec_primitive_shape>();
-				ec->shapes.clear();
-				ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), callback.result.pos );
-
-				callback.result.scc->rs_opt.color = make_color( color::teal );
-			}
-		}
-		break;
-	}
-
 	return false;
 }
 

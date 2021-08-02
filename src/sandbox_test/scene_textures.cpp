@@ -10,6 +10,8 @@ scene_textures::scene_textures()
 
 void scene_textures::pushed()
 {
+	scene::pushed();
+
 	tex_crate = g_engine->find_asset<texture_asset>( "tex_crate_01" );
 	grad_horizontal = g_engine->find_asset<texture_asset>( "gradient_horizontal" );
 	grad_vertical = g_engine->find_asset<texture_asset>( "gradient_vertical" );

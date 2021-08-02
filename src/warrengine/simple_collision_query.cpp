@@ -5,6 +5,7 @@
 namespace war::simple_collision
 {
 
+/*
 bool query::trace_simple( const entity* entity, const vec2& start, const vec2& normal, float dist, int collision_mask )
 {
 	raycast_quick callback;
@@ -14,7 +15,6 @@ bool query::trace_simple( const entity* entity, const vec2& start, const vec2& n
 	return callback.hit_something;
 }
 
-/*
 bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_simple* hit_result )
 {
 	hit_result->collision_mask = collision_mask;

@@ -4,8 +4,8 @@ namespace war::simple_collision
 
 struct query
 {
-	[[nodiscard]] static bool trace_simple( const entity* entity, const vec2& start, const vec2& normal, float dist, int collision_mask );
 	/*
+	[[nodiscard]] static bool trace_simple( const entity* entity, const vec2& start, const vec2& normal, float dist, int collision_mask );
 	[[nodiscard]] static bool trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_simple* hit_result );
 	[[nodiscard]] static bool trace_closest( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_closest* hit_result );
 	[[nodiscard]] static bool trace_all( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_all* hit_result );

@@ -10,6 +10,8 @@ scene_entity_picking::scene_entity_picking()
 
 void scene_entity_picking::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	{

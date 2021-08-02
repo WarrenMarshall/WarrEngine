@@ -42,16 +42,14 @@ struct scene
 
 	std::deque<std::unique_ptr<entity>> entities;
 
+	std::unique_ptr<simple_collision_world> sc_world = nullptr;
+
 	struct
 	{
-		std::unique_ptr<simple_collision::world> world = nullptr;
-		std::vector<ec_simple_collision_body*> bodies;
 		std::set<entity*> unique_entities_with_collisions;
 		bool need_another_iteration = false;
 	} simple_collision;
 	std::set<ec_simple_body_pair> colliding_bodies_set;
-	std::vector<simple_collision::pending_collision> pending_collisions;
-	std::vector<simple_collision::pending_collision> pending_touches;
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
@@ -108,15 +106,11 @@ struct scene
 	// good for setting state variables and making sure the state is ready to
 	// start updating/drawing
 
-	virtual void pushed()
-	{
-	}
+	virtual void pushed();
 
 	// called each time the scene is removed from the stack
 
-	virtual void popped()
-	{
-	}
+	virtual void popped();
 
 	// called when this scene is becoming the top scene.
 	//
@@ -124,20 +118,13 @@ struct scene
 	// - when the scene above it is popped off and this becomes the topmost
 	//   scene
 
-	virtual void becoming_top_scene()
-	{
-	}
+	virtual void becoming_top_scene();
 
 	// called when this scene is being getting_covered up by another scene
 
-	virtual void getting_covered()
-	{
-	}
+	virtual void getting_covered();
 
 	virtual void pre_update();
-
-	void remove_dead_entities();
-
 	virtual void update();
 	virtual void post_update();
 

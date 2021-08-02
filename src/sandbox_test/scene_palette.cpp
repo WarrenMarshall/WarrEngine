@@ -10,6 +10,8 @@ scene_palette::scene_palette()
 
 void scene_palette::pushed()
 {
+	scene::pushed();
+
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 }
 

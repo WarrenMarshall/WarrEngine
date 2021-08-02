@@ -10,6 +10,8 @@ scene_starfield::scene_starfield()
 
 void scene_starfield::pushed()
 {
+	scene::pushed();
+
 	viewport_pivot = { viewport_hw, viewport_hh };
 
 	gradient = g_engine->find_asset<texture_asset>( "background_gradient" );
