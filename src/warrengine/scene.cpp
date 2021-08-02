@@ -152,14 +152,14 @@ void scene::post_update()
 		}
 
 		// collision detection
-		simple_collision.need_another_iteration = false;
-		generate_colliding_bodies_set();
+		sc_world->need_another_iteration = false;
+		sc_world->generate_colliding_bodies_set();
 
 		// collision resolution
-		respond_to_pending_simple_collisions();
+		sc_world->respond_to_pending_simple_collisions();
 
 		// If nothing is intersecting anymore, we can abort the rest of the iterations
-		if( !simple_collision.need_another_iteration )
+		if( !sc_world->need_another_iteration )
 		{
 			break;
 		}
@@ -176,67 +176,6 @@ void scene::post_update()
 
 		entity->post_update();
 		entity->post_update_components();
-	}
-}
-
-// loop through all collision bodies that are available for collision and check
-// them against each other. for each unique set that collides, add them into the
-// queue for response processing later.
-
-void scene::generate_colliding_bodies_set()
-{
-	colliding_bodies_set.clear();
-
-	// broad phase
-
-	for( auto scc_a : sc_world->bodies )
-	{
-		for( auto scc_b : sc_world->bodies )
-		{
-			if( scc_a->intersects_with( scc_b ) )
-			{
-				// the bodies are touching so add them into the contact list if the pair is unique
-
-				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
-			}
-		}
-	}
-
-	// generate detailed information about the collisions
-
-	sc_world->pending_collisions.clear();
-	sc_world->pending_touches.clear();
-
-	for( auto& [body_a, body_b] : colliding_bodies_set )
-	{
-		switch( body_a->collider_type )
-		{
-			case simple_collider_type::solid:
-			{
-				sc_world->pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
-				simple_collision.need_another_iteration = true;
-			}
-			break;
-
-			case simple_collider_type::sensor:
-			{
-				sc_world->pending_touches.push_back( body_a->intersects_with_manifold( body_b ) );
-			}
-			break;
-		}
-	}
-}
-
-void scene::respond_to_pending_simple_collisions()
-{
-	for( auto& coll : sc_world->pending_collisions )
-	{
-		coll.entity_a->on_collided( coll );
-	}
-
-	for( auto& coll : sc_world->pending_touches )
-	{
-		coll.entity_a->on_touched( coll );
 	}
 }
 

@@ -44,13 +44,6 @@ struct scene
 
 	std::unique_ptr<simple_collision_world> sc_world = nullptr;
 
-	struct
-	{
-		std::set<entity*> unique_entities_with_collisions;
-		bool need_another_iteration = false;
-	} simple_collision;
-	std::set<ec_simple_body_pair> colliding_bodies_set;
-
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
 	// while that expanded state is active.
@@ -127,9 +120,6 @@ struct scene
 	virtual void pre_update();
 	virtual void update();
 	virtual void post_update();
-
-	void generate_colliding_bodies_set();
-	void respond_to_pending_simple_collisions();
 
 	virtual void draw();
 	virtual void draw_ui();

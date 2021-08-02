@@ -110,4 +110,66 @@ void simple_collision_world::update( )
 	}
 }
 
+// loop through all collision bodies that are available for collision and check
+// them against each other. for each unique set that collides, add them into the
+// queue for response processing later.
+
+void simple_collision_world::generate_colliding_bodies_set()
+{
+	colliding_bodies_set.clear();
+
+	// broad phase
+
+	for( auto scc_a : bodies )
+	{
+		for( auto scc_b : bodies )
+		{
+			if( scc_a->intersects_with( scc_b ) )
+			{
+				// the bodies are touching so add them into the contact list if the pair is unique
+
+				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
+			}
+		}
+	}
+
+	// generate detailed information about the collisions
+
+	pending_collisions.clear();
+	pending_touches.clear();
+
+	for( auto& [body_a, body_b] : colliding_bodies_set )
+	{
+		switch( body_a->collider_type )
+		{
+			case simple_collider_type::solid:
+			{
+				pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
+				need_another_iteration = true;
+			}
+			break;
+
+			case simple_collider_type::sensor:
+			{
+				pending_touches.push_back( body_a->intersects_with_manifold( body_b ) );
+			}
+			break;
+		}
+	}
+}
+
+void simple_collision_world::respond_to_pending_simple_collisions()
+{
+	for( auto& coll : pending_collisions )
+	{
+		coll.entity_a->on_collided( coll );
+	}
+
+	for( auto& coll : pending_touches )
+	{
+		coll.entity_a->on_touched( coll );
+	}
+}
+
+
 }
