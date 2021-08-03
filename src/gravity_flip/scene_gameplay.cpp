@@ -49,7 +49,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->tag = H( "player_body" );
-				ec->set_collider_type( simple_collider_type::solid );
 				ec->set_as_circle( 8.f );
 				//ec->set_as_centered_box( 16.f, 16.f );
 
@@ -58,7 +57,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->tag = H( "ground_sensor" );
-				ec->set_collider_type( simple_collider_type::sensor );
+				ec->set_body_collider_type( sc_body_collider_type::sensor );
 				ec->set_as_circle( 4.f );
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
 

@@ -798,13 +798,13 @@ void ec_simple_collision_body::draw()
 
 		switch( collider_type )
 		{
-			case simple_collider_type::solid:
+			case sc_body_collider_type::solid:
 			{
 				render::state->color = make_color( color::light_green );
 			}
 			break;
 
-			case simple_collider_type::sensor:
+			case sc_body_collider_type::sensor:
 			{
 				render::state->color = make_color( color::light_blue );
 			}
@@ -813,19 +813,19 @@ void ec_simple_collision_body::draw()
 
 		switch( type )
 		{
-			case simple_collision_type::circle:
+			case sc_prim_type::circle:
 			{
 				render::draw_circle( { 0.f, 0.f }, radius );
 			}
 			break;
 
-			case simple_collision_type::aabb:
+			case sc_prim_type::aabb:
 			{
 				render::draw_rect( aabb );
 			}
 			break;
 
-			case simple_collision_type::polygon:
+			case sc_prim_type::polygon:
 			{
 				render::draw_lines( verts );
 			}
@@ -849,14 +849,14 @@ void ec_simple_collision_body::update_to_match_parent_transform()
 
 	switch( type )
 	{
-		case simple_collision_type::circle:
+		case sc_prim_type::circle:
 		{
 			ws.pos = g_engine->render_api.top_matrix->transform_vec2( vec2( 0.f, 0.f ) );
 			ws.radius = radius * scale;
 		}
 		break;
 
-		case simple_collision_type::aabb:
+		case sc_prim_type::aabb:
 		{
 			auto v = g_engine->render_api.top_matrix->transform_vec2( vec2( aabb.x, aabb.y ) );
 			ws.aabb.x = v.x;
@@ -866,7 +866,7 @@ void ec_simple_collision_body::update_to_match_parent_transform()
 		}
 		break;
 
-		case simple_collision_type::polygon:
+		case sc_prim_type::polygon:
 		{
 			ws.verts.clear();
 			for( auto& v : verts )
@@ -883,7 +883,7 @@ void ec_simple_collision_body::update_to_match_parent_transform()
 
 void ec_simple_collision_body::set_as_box( float w, float h )
 {
-	type = simple_collision_type::aabb;
+	type = sc_prim_type::aabb;
 	aabb.x = 0.f;
 	aabb.y = 0.f;
 	aabb.w = w;
@@ -894,7 +894,7 @@ void ec_simple_collision_body::set_as_box( float w, float h )
 
 void ec_simple_collision_body::set_as_centered_box( float w, float h )
 {
-	type = simple_collision_type::aabb;
+	type = sc_prim_type::aabb;
 	aabb.x = -w / 2.f;
 	aabb.y = -h / 2.f;
 	aabb.w = w;
@@ -903,18 +903,18 @@ void ec_simple_collision_body::set_as_centered_box( float w, float h )
 
 void ec_simple_collision_body::set_as_circle( float r )
 {
-	type = simple_collision_type::circle;
+	type = sc_prim_type::circle;
 	radius = r;
 }
 
 void ec_simple_collision_body::set_as_polygon( std::vector<vec2> vs )
 {
-	type = simple_collision_type::polygon;
+	type = sc_prim_type::polygon;
 	verts.reserve( verts.size() );
 	verts.insert( verts.end(), vs.begin(), vs.end() );
 }
 
-void ec_simple_collision_body::set_collider_type( e_simple_collider_type collider_type )
+void ec_simple_collision_body::set_body_collider_type( e_sc_body_collider_type type )
 {
 	this->collider_type = collider_type;
 }
@@ -945,11 +945,11 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 
 	switch( type )
 	{
-		case simple_collision_type::circle:
+		case sc_prim_type::circle:
 		{
 			switch( scc->type )
 			{
-				case simple_collision_type::circle:
+				case sc_prim_type::circle:
 				{
 					// circle to circle
 
@@ -960,7 +960,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 				}
 				break;
 
-				case simple_collision_type::aabb:
+				case sc_prim_type::aabb:
 				{
 					// circle to aabb
 
@@ -971,7 +971,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 				}
 				break;
 
-				case simple_collision_type::polygon:
+				case sc_prim_type::polygon:
 				{
 					// circle to polygon
 
@@ -985,11 +985,11 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 		}
 		break;
 
-		case simple_collision_type::aabb:
+		case sc_prim_type::aabb:
 		{
 			switch( scc->type )
 			{
-				case simple_collision_type::circle:
+				case sc_prim_type::circle:
 				{
 					// aabb to circle
 
@@ -1000,7 +1000,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 				}
 				break;
 
-				case simple_collision_type::aabb:
+				case sc_prim_type::aabb:
 				{
 					// aabb to aabb
 
@@ -1011,7 +1011,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 				}
 				break;
 
-				case simple_collision_type::polygon:
+				case sc_prim_type::polygon:
 				{
 					// aabb to polygon
 
@@ -1025,11 +1025,11 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 		}
 		break;
 
-		case simple_collision_type::polygon:
+		case sc_prim_type::polygon:
 		{
 			switch( scc->type )
 			{
-				case simple_collision_type::circle:
+				case sc_prim_type::circle:
 				{
 					// polygon to circle
 
@@ -1040,7 +1040,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 				}
 				break;
 
-				case simple_collision_type::aabb:
+				case sc_prim_type::aabb:
 				{
 					// polygon to aabb
 
@@ -1051,7 +1051,7 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 				}
 				break;
 
-				case simple_collision_type::polygon:
+				case sc_prim_type::polygon:
 				{
 					// polygon to polygon
 
@@ -1072,17 +1072,17 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 
 // NOTE : this function assumes that this body and "other_body" ARE colliding.
 
-simple_collision::pending_collision ec_simple_collision_body::intersects_with_manifold( ec_simple_collision_body* other_body )
+std::optional<simple_collision::pending_collision> ec_simple_collision_body::intersects_with_manifold( ec_simple_collision_body* other_body )
 {
 	simple_collision::pending_collision collision;
 
 	switch( type )
 	{
-		case simple_collision_type::circle:
+		case sc_prim_type::circle:
 		{
 			switch( other_body->type )
 			{
-				case simple_collision_type::circle:
+				case sc_prim_type::circle:
 				{
 					// circle to circle
 
@@ -1093,7 +1093,7 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 				}
 				break;
 
-				case simple_collision_type::aabb:
+				case sc_prim_type::aabb:
 				{
 					// circle to aabb
 
@@ -1104,7 +1104,7 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 				}
 				break;
 
-				case simple_collision_type::polygon:
+				case sc_prim_type::polygon:
 				{
 					// circle to polygon
 
@@ -1118,11 +1118,11 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 		}
 		break;
 
-		case simple_collision_type::aabb:
+		case sc_prim_type::aabb:
 		{
 			switch( other_body->type )
 			{
-				case simple_collision_type::circle:
+				case sc_prim_type::circle:
 				{
 					// aabb to circle
 
@@ -1136,7 +1136,7 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 				}
 				break;
 
-				case simple_collision_type::aabb:
+				case sc_prim_type::aabb:
 				{
 					// aabb to aabb
 
@@ -1147,7 +1147,7 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 				}
 				break;
 
-				case simple_collision_type::polygon:
+				case sc_prim_type::polygon:
 				{
 					// aabb to polygon
 
@@ -1161,11 +1161,11 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 		}
 		break;
 
-		case simple_collision_type::polygon:
+		case sc_prim_type::polygon:
 		{
 			switch( other_body->type )
 			{
-				case simple_collision_type::circle:
+				case sc_prim_type::circle:
 				{
 					// polygon to circle
 
@@ -1179,7 +1179,7 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 				}
 				break;
 
-				case simple_collision_type::aabb:
+				case sc_prim_type::aabb:
 				{
 					// polygon to aabb
 
@@ -1193,7 +1193,7 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 				}
 				break;
 
-				case simple_collision_type::polygon:
+				case sc_prim_type::polygon:
 				{
 					// polygon to polygon
 
@@ -1208,12 +1208,19 @@ simple_collision::pending_collision ec_simple_collision_body::intersects_with_ma
 		break;
 
 		default:
-			assert( false );
-			break;
+		assert( false );
+		break;
+	}
+
+	// sometimes things go badly for reasons that are in the collision system
+	// and not my code. when that happens, pretend like the collision didn't
+	// happen because I don't see a better way to handle it.
+	if( isnan( collision.manifold.depths[ 0 ] ) )
+	{
+		return std::nullopt;
 	}
 
 	// if any of these assert, something weird is happening
-	assert( !isnan( collision.manifold.depths[ 0 ] ) );
 	assert( !isnan( collision.manifold.n.x ) );
 	assert( !isnan( collision.manifold.n.y ) );
 
@@ -1299,7 +1306,7 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 			{
 				switch( obj.collision_type )
 				{
-					case simple_collision_type::aabb:
+					case sc_prim_type::aabb:
 					{
 						auto ec = parent_entity->add_component<ec_simple_collision_body>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
@@ -1308,7 +1315,7 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 					}
 					break;
 
-					case simple_collision_type::circle:
+					case sc_prim_type::circle:
 					{
 						auto ec = parent_entity->add_component<ec_simple_collision_body>();
 						ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
@@ -1317,7 +1324,7 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 					}
 					break;
 
-					case simple_collision_type::polygon:
+					case sc_prim_type::polygon:
 					{
 						auto ec = parent_entity->add_component<ec_simple_collision_body>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
@@ -1401,30 +1408,46 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 		return;
 	}
 
+	auto sc_type_a = coll.entity_a->sc_type;
+	auto sc_type_b = coll.entity_b->sc_type;
+
 	deltas.emplace_back( -coll.normal * ( coll.depth * simple_collision_skin_thickness ) );
 
-	// when landing on the ground, kill any velocity on the Y axis. this
-	// stops it from accruing to the maximum as you run around on flat
-	// geo.
+	// dynamic->stationary - stop moving in the primary direction of contact
 
-	if( coll.normal.y > 0.7f )
+	if( sc_type_a == sc_type::dynamic and sc_type_b == sc_type::stationary )
 	{
-		parent_entity->velocity.y = 0.f;
+		// when landing on the ground, kill any velocity on the Y axis. this
+		// stops it from accruing to the maximum as you run around on flat
+		// geo.
+
+		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		{
+			parent_entity->velocity.y = 0.f;
+		}
+
+		// hitting a wall kills horizontal velocity
+		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+		{
+			parent_entity->velocity.x = 0.f;
+		}
 	}
 
-	// hitting the ceiling/floor kills vertical velocity
-	if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
-	{
-		parent_entity->velocity.y = 0.f;
-	}
+	// dynamic->dynamic - slow down movement
 
-	// hitting a wall kills horizontal velocity
-	if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+	if( sc_type_a == sc_type::dynamic and sc_type_b == sc_type::dynamic )
 	{
-		parent_entity->velocity.x = 0.f;
+		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		{
+			parent_entity->velocity.y *= 0.75f;
+		}
+
+		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+		{
+			parent_entity->velocity.x *= 0.75f;
+		}
 	}
 }
-
 // ----------------------------------------------------------------------------
 
 ec_movement_controller::ec_movement_controller( entity* parent_entity )

@@ -15,7 +15,7 @@ struct entity
 	std::string debug_name;
 #endif
 
-	bool is_static = false;
+	e_sc_type sc_type = sc_type::dynamic;
 
 	scene* parent_scene = nullptr;
 
@@ -172,13 +172,6 @@ struct entity
 
 	virtual void on_collided( simple_collision::pending_collision& coll );
 	virtual void on_touched( simple_collision::pending_collision& coll );
-
-	struct
-	{
-		//std::vector<simple_collision::pending_collision> colliding_queue;
-		//std::vector<simple_collision::pending_collision> touching_queue;
-
-	} simple_collision;
 
 private:
 

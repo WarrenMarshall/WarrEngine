@@ -259,7 +259,7 @@ struct ec_simple_collision_body : entity_component
 	ec_simple_collision_body() = delete;
 	ec_simple_collision_body( entity* parent_entity );
 
-	e_simple_collision_type type = simple_collision_type::circle;
+	e_sc_prim_type type = sc_prim_type::circle;
 
 	// box
 	rect aabb = {};
@@ -270,7 +270,7 @@ struct ec_simple_collision_body : entity_component
 	// verts
 	std::vector<vec2> verts = {};
 
-	e_simple_collider_type collider_type = simple_collider_type::solid;
+	e_sc_body_collider_type collider_type = sc_body_collider_type::solid;
 
 	struct
 	{
@@ -286,10 +286,10 @@ struct ec_simple_collision_body : entity_component
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
 	void set_as_polygon( std::vector<vec2> verts );
-	void set_collider_type( e_simple_collider_type collider_type );
+	void set_body_collider_type( e_sc_body_collider_type type );
 
 	bool intersects_with( ec_simple_collision_body* scc );
-	simple_collision::pending_collision intersects_with_manifold( ec_simple_collision_body* scc );
+	std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* scc );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();

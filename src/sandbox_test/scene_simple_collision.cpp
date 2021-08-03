@@ -68,6 +68,8 @@ void scene_simple_collision::pushed()
 
 	// MARIO
 	player = spawn_player();
+	player->add_delta_pos( { -32.f, 0.f } );
+	spawn_player();
 
 	// HIT MARKER
 	{
@@ -87,10 +89,11 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 8;
+		int num_primitives = 5;
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
+		e->sc_type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{

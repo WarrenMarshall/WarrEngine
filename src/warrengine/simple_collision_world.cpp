@@ -41,7 +41,7 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 
 		switch( scc->type )
 		{
-			case simple_collision_type::circle:
+			case sc_prim_type::circle:
 			{
 				if( c2RaytoCircle( ray, scc->as_simple_circle(), &raycast ) )
 				{
@@ -54,7 +54,7 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 			}
 			break;
 
-			case simple_collision_type::aabb:
+			case sc_prim_type::aabb:
 			{
 				if( c2RaytoAABB( ray, scc->as_simple_aabb(), &raycast ) )
 				{
@@ -67,7 +67,7 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 			}
 			break;
 
-			case simple_collision_type::polygon:
+			case sc_prim_type::polygon:
 			{
 				auto poly = scc->as_simple_poly();
 				if( c2RaytoPoly( ray, &poly, nullptr, &raycast ) )
@@ -142,16 +142,24 @@ void simple_collision_world::generate_colliding_bodies_set()
 	{
 		switch( body_a->collider_type )
 		{
-			case simple_collider_type::solid:
+			case sc_body_collider_type::solid:
 			{
-				pending_collisions.push_back( body_a->intersects_with_manifold( body_b ) );
-				need_another_iteration = true;
+				auto coll = body_a->intersects_with_manifold( body_b );
+				if( coll.has_value() )
+				{
+					pending_collisions.push_back( *coll );
+					need_another_iteration = true;
+				}
 			}
 			break;
 
-			case simple_collider_type::sensor:
+			case sc_body_collider_type::sensor:
 			{
-				pending_touches.push_back( body_a->intersects_with_manifold( body_b ) );
+				auto coll = body_a->intersects_with_manifold( body_b );
+				if( coll.has_value() )
+				{
+					pending_touches.push_back( *coll );
+				}
 			}
 			break;
 		}

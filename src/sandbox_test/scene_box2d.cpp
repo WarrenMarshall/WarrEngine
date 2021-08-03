@@ -44,27 +44,6 @@ void scene_box2d::pushed()
 		}
 	}
 
-/*
-	{
-		auto e = add_entity<entity>();
-		e->tag = H( "secondary_ball" );
-		{
-			{
-				auto ec = e->add_component<ec_box2d_kinematic_physics_body>();
-				ec->add_fixture_circle( hash_none, { 0.f, 0.f }, 24.f );
-				ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball );
-			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_circle, 24 );
-				ec->rs_opt.color = make_color( pal::middle );
-				ec->rs_opt.glow = 1.f;
-			}
-		}
-		e->set_pos( { 0.f, -100.f } );
-	}
-*/
-
 	// static world geometry
 	{
 		auto e = add_entity<entity>();

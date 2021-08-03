@@ -461,7 +461,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( simple_collision_type )
+enum_begin( sc_prim_type )
 	aabb = 0,
 	circle,
 	polygon,
@@ -469,9 +469,16 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( simple_collider_type )
+enum_begin( sc_body_collider_type )
 	solid = 0,
 	sensor,
+enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( sc_type )
+	dynamic = 0,
+	stationary,
 enum_end
 
 // ----------------------------------------------------------------------------
@@ -481,14 +488,3 @@ enum_begin( draw_call )
 	transparent,
 	max,
 enum_end
-
-// ----------------------------------------------------------------------------
-
-enum_begin( damping )
-	outer_space = 0,	// never dampens
-	ice = 1,
-	polished_floor = 5,
-	wood_floor = 5,
-	asphalt = 20,
-enum_end
-

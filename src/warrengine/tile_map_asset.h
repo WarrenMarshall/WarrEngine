@@ -36,7 +36,7 @@ struct tile_map_asset final : asset
 
 	struct object
 	{
-		e_simple_collision_type collision_type = simple_collision_type::aabb;
+		e_sc_prim_type collision_type = sc_prim_type::aabb;
 		rect rc = {};
 		float radius = 0.f;
 		std::vector<vec2> vertices;

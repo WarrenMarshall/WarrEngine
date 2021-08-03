@@ -91,7 +91,7 @@ void scene_simple_space::pushed()
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		e->is_static = true;
+		e->sc_type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_colliders ; ++i )
 		{
@@ -148,7 +148,7 @@ void scene_simple_space::pushed()
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		e->is_static = true;
+		e->sc_type = sc_type::stationary;
 
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
