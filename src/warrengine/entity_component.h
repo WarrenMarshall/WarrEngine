@@ -312,6 +312,7 @@ struct ec_tile_map : entity_component
 	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
 };
 
+/*
 // pushes the entity outside of whatever solid bodies are intersecting with it
 
 struct ec_scr_push_outside : entity_component
@@ -322,9 +323,9 @@ struct ec_scr_push_outside : entity_component
 	ec_scr_push_outside( entity* parent_entity );
 
 	void begin();
-	void end();
-
 	void on_collided( simple_collision::pending_collision& coll );
+	void end();
 };
+*/
 
 }

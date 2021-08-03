@@ -341,6 +341,7 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 {
 }
 
+/*
 void entity::on_collided( simple_collision::pending_collision& coll )
 {
 	if( auto scr = get_component<ec_scr_push_outside>() ; scr )
@@ -354,6 +355,7 @@ void entity::on_collided( simple_collision::pending_collision& coll )
 void entity::on_touched( simple_collision::pending_collision& coll )
 {
 }
+*/
 
 bool entity::can_be_deleted()
 {

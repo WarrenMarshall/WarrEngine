@@ -23,7 +23,7 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 	ray.d.y = ray_normal.y;
 	ray.t = to_simple( ray_length );
 
-	for( auto scc : bodies )
+	for( auto scc : active_bodies )
 	{
 		// don't trace against self
 		if( scc->parent_entity == entity )
@@ -84,45 +84,21 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 	}
 }
 
-void simple_collision_world::pre_update()
-{
-	// this list can change between updates, so it needs to be recreated each
-	// time. entities get deleted, created, change their collision masks, etc.
+// loop through all active bodies and check them against each other.
+//
+// each set of bodies that collides needs to:
+// - push themselves apart so they aren't colliding anymore
+// - react to the collision (changing direction, or whatever)
 
-	bodies.clear();
-}
-
-void simple_collision_world::update( )
-{
-	for( auto& entity : parent_scene->entities )
-	{
-		scoped_opengl;
-
-		auto tform = entity->get_transform();
-		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
-
-		// collect the simple collision bodies active in the scene
-		auto sccs = entity->get_components<ec_simple_collision_body>();
-		bodies.insert(
-			bodies.end(),
-			sccs.begin(), sccs.end()
-		);
-	}
-}
-
-// loop through all collision bodies that are available for collision and check
-// them against each other. for each unique set that collides, add them into the
-// queue for response processing later.
-
-void simple_collision_world::generate_colliding_bodies_set()
+void simple_collision_world::generate_collision_set()
 {
 	colliding_bodies_set.clear();
 
 	// broad phase
 
-	for( auto scc_a : bodies )
+	for( auto scc_a : active_bodies )
 	{
-		for( auto scc_b : bodies )
+		for( auto scc_b : active_bodies )
 		{
 			if( scc_a->intersects_with( scc_b ) )
 			{
@@ -135,8 +111,8 @@ void simple_collision_world::generate_colliding_bodies_set()
 
 	// generate detailed information about the collisions
 
-	pending_collisions.clear();
-	pending_touches.clear();
+	//pending_collisions.clear();
+	//pending_touches.clear();
 
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
@@ -147,8 +123,8 @@ void simple_collision_world::generate_colliding_bodies_set()
 				auto coll = body_a->intersects_with_manifold( body_b );
 				if( coll.has_value() )
 				{
-					pending_collisions.push_back( *coll );
-					need_another_iteration = true;
+					push_apart( *coll );
+					//need_another_iteration = true;
 				}
 			}
 			break;
@@ -158,7 +134,7 @@ void simple_collision_world::generate_colliding_bodies_set()
 				auto coll = body_a->intersects_with_manifold( body_b );
 				if( coll.has_value() )
 				{
-					pending_touches.push_back( *coll );
+					//pending_touches.push_back( *coll );
 				}
 			}
 			break;
@@ -166,18 +142,15 @@ void simple_collision_world::generate_colliding_bodies_set()
 	}
 }
 
-void simple_collision_world::respond_to_pending_simple_collisions()
+void simple_collision_world::push_apart( simple_collision::pending_collision& coll )
 {
-	for( auto& coll : pending_collisions )
-	{
-		coll.entity_a->on_collided( coll );
-	}
-
-	for( auto& coll : pending_touches )
-	{
-		coll.entity_a->on_touched( coll );
-	}
+	//coll.entity_b->add_delta_pos( { coll.normal * ( coll.depth * simple_collision_skin_thickness ) } );
+	coll.entity_a->add_force( -coll.normal, coll.depth * simple_collision_skin_thickness );
 }
 
+void simple_collision_world::resolve_collision( entity* a, entity* b )
+{
+
+}
 
 }

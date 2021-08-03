@@ -50,9 +50,11 @@ entity* scene_simple_space::spawn_player()
 		ec->rs_opt.color = make_color( color::green, 0.25f );
 		ec->add_shape( primitive_shape::filled_circle, radius );
 	}
+/*
 	{
 		auto ec = e->add_component<ec_scr_push_outside>();
 	}
+*/
 
 	if( !first_time )
 	{

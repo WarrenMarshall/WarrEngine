@@ -30,6 +30,7 @@ entity* scene_simple_collision::spawn_player()
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
+	e->set_mc_friction( 0.1f );
 	{
 		auto ec = e->add_component<ec_sprite>();
 		ec->rs_opt.color = make_color( color::white, 1.f );
@@ -46,9 +47,6 @@ entity* scene_simple_collision::spawn_player()
 		ec->rs_opt.color = make_color( color::green, 0.25f );
 		ec->add_shape( primitive_shape::filled_circle, player_radius );
 	}
-	{
-		auto ec = e->add_component<ec_scr_push_outside>();
-	}
 
 	first_player = false;
 
@@ -64,7 +62,7 @@ void scene_simple_collision::pushed()
 
 	// MARIO
 	player = spawn_player();
-	player->add_delta_pos( { -32.f, 0.f } );
+	player->add_delta_pos( { -40.f, 0.f } );
 	spawn_player();
 
 	// HIT MARKER
@@ -85,7 +83,7 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 5;
+		int num_primitives = 0;
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );

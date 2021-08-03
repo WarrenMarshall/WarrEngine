@@ -1379,6 +1379,7 @@ void ec_tile_map::draw()
 
 // ----------------------------------------------------------------------------
 
+/*
 ec_scr_push_outside::ec_scr_push_outside( entity* parent_entity )
 	: entity_component( parent_entity )
 {
@@ -1448,5 +1449,6 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 		}
 	}
 }
+*/
 
 }

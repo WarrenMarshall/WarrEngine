@@ -183,8 +183,10 @@ struct entity
 	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
 
+/*
 	virtual void on_collided( simple_collision::pending_collision& coll );
 	virtual void on_touched( simple_collision::pending_collision& coll );
+*/
 
 private:
 

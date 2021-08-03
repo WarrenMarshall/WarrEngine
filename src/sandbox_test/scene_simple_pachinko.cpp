@@ -45,9 +45,11 @@ void scene_simple_pachinko::pushed()
 			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_pachinko_mario, scene_simple_pachinko_geo );
 		}
+/*
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
 		}
+*/
 
 		mario = e;
 	}

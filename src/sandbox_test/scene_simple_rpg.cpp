@@ -57,9 +57,11 @@ void scene_simple_rpg::pushed()
 			ec->set_as_circle( 12.f );
 			ec->set_collision_flags( scene_simple_rpg_coll_mario, scene_simple_rpg_coll_geo );
 		}
+/*
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
 		}
+*/
 
 		mario = e;
 	}

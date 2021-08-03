@@ -60,9 +60,11 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 
 				ec->set_collision_flags( coll_player, coll_world );
 			}
+/*
 			{
 				auto ec = e->add_component<ec_scr_push_outside>();
 			}
+*/
 
 			gameplay_scene->player = e;
 

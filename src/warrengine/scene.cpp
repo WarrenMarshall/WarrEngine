@@ -90,8 +90,6 @@ void scene::getting_covered()
 
 void scene::pre_update()
 {
-	sc_world->pre_update();
-
 	for( auto& entity : entities )
 	{
 		scoped_opengl;
@@ -118,6 +116,8 @@ void scene::pre_update()
 
 void scene::update()
 {
+	sc_world->active_bodies.clear();
+
 	// update entities and components
 
 	for( auto& entity : entities )
@@ -133,8 +133,8 @@ void scene::update()
 
 		// collect the simple collision bodies active in the scene
 		auto sccs = entity->get_components<ec_simple_collision_body>();
-		sc_world->bodies.insert(
-			sc_world->bodies.end(),
+		sc_world->active_bodies.insert(
+			sc_world->active_bodies.end(),
 			sccs.begin(), sccs.end()
 		);
 	}
@@ -146,17 +146,14 @@ void scene::post_update()
 
 	for( auto iter_counter = 0 ; iter_counter < simple_collision_pos_iterations ; ++iter_counter )
 	{
-		for( auto& scc : sc_world->bodies )
+		for( auto& scc : sc_world->active_bodies )
 		{
 			scc->update_to_match_parent_transform();
 		}
 
 		// collision detection
 		sc_world->need_another_iteration = false;
-		sc_world->generate_colliding_bodies_set();
-
-		// collision resolution
-		sc_world->respond_to_pending_simple_collisions();
+		sc_world->generate_collision_set();
 
 		// If nothing is intersecting anymore, we can abort the rest of the iterations
 		if( !sc_world->need_another_iteration )
