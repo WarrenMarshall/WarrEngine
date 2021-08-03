@@ -14,12 +14,9 @@ void entity::pre_update()
 {
 	life_cycle.pre_update();
 
-	if( auto mc = get_component<ec_movement_controller>() ; mc )
+	if( mc_affected_by_gravity )
 	{
-		if( mc->affected_by_gravity )
-		{
-			add_force( vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) );
-		}
+		add_force( vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) );
 	}
 
 	apply_forces();
@@ -97,10 +94,7 @@ void entity::compile_velocity()
 
 void entity::limit_velocity()
 {
-	if( auto mc = get_component<ec_movement_controller>() ; mc )
-	{
-		velocity = mc->clamp_velocity( velocity );
-	}
+	velocity = clamp_mc_velocity( velocity );
 }
 
 void entity::reset_force( vec2 force, float strength )
@@ -136,14 +130,19 @@ void entity::apply_forces()
 	compile_velocity();
 	add_delta_pos( velocity );
 
-	if( auto mc = get_component<ec_movement_controller>() ; mc )
-	{
-		velocity.x = lerp( velocity.x, 0.f, fixed_time_step::per_second( mc->horizontal_damping * simple_collision_max_friction ) );
+	velocity.x = lerp(
+		velocity.x,
+		0.f,
+		fixed_time_step::per_second( mc_horizontal_damping * simple_collision_max_friction )
+	);
 
-		if( !mc->affected_by_gravity )
-		{
-			velocity.y = lerp( velocity.y, 0.f, fixed_time_step::per_second( mc->vertical_damping * simple_collision_max_friction ) );
-		}
+	if( !mc_affected_by_gravity )
+	{
+		velocity.y = lerp(
+			velocity.y,
+			0.f,
+			fixed_time_step::per_second( mc_vertical_damping * simple_collision_max_friction )
+		);
 	}
 }
 
@@ -162,20 +161,16 @@ void entity::draw()
 			continue;
 		}
 
-		{
-			scoped_opengl;
-			g_engine->render_api.top_matrix->apply_transform( component->get_pos(), component->get_angle(), component->get_scale() );
+		scoped_opengl;
+		g_engine->render_api.top_matrix->apply_transform( component->get_pos(), component->get_angle(), component->get_scale() );
 
-			render::state->z += zdepth_nudge;
+		render::state->z += zdepth_nudge;
 
-			{
-				scoped_render_state;
+		scoped_render_state;
 
-				render::state->set_from_opt( rs_opt );
-				render::state->pick_id = pick_id;
-				component->draw();
-			}
-		}
+		render::state->set_from_opt( rs_opt );
+		render::state->pick_id = pick_id;
+		component->draw();
 	}
 }
 
@@ -436,6 +431,36 @@ void entity::remove_dead_components()
 			x--;
 		}
 	}
+}
+
+void entity::set_mc_friction( float friction )
+{
+	mc_horizontal_damping = mc_vertical_damping = friction;
+}
+
+void entity::set_mc_max_velocity( float max )
+{
+	mc_max_velocity = { max, max };
+}
+
+void entity::set_mc_max_velocity( vec2 max )
+{
+	mc_max_velocity = max;
+}
+
+vec2 entity::get_mc_max_velocity()
+{
+	return mc_max_velocity;
+}
+
+vec2 entity::clamp_mc_velocity( vec2 v )
+{
+	vec2 ret;
+
+	ret.x = glm::clamp<float>( v.x, -mc_max_velocity.x, mc_max_velocity.x );
+	ret.y = glm::clamp<float>( v.y, -mc_max_velocity.y, mc_max_velocity.y );
+
+	return ret;
 }
 
 // ----------------------------------------------------------------------------

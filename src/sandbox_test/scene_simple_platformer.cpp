@@ -48,9 +48,6 @@ void scene_simple_platformer::pushed()
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
 		}
-		{
-			auto ec = e->add_component<ec_movement_controller>();
-		}
 
 		mario = e;
 	}

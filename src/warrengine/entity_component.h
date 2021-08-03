@@ -327,35 +327,4 @@ struct ec_scr_push_outside : entity_component
 	void on_collided( simple_collision::pending_collision& coll );
 };
 
-// ----------------------------------------------------------------------------
-// movement controller
-//
-// controls how the entity responds to movement events and queries.
-
-struct ec_movement_controller : entity_component
-{
-	ec_movement_controller() = delete;
-	ec_movement_controller( entity* parent_entity );
-
-	float horizontal_damping = 0.3f;
-	float vertical_damping = 0.3f;
-
-	// is this entity in the air?
-	bool in_air : 1 = false;
-
-	// is this entity pulled by gravity?
-	bool affected_by_gravity : 1 = false;
-
-	void set_friction( float friction );
-	void set_max_velocity( float max );
-	void set_max_velocity( vec2 max );
-
-	vec2 max_velocity = vec2::zero;
-	vec2 get_max_velocity();
-	vec2 clamp_velocity( vec2 v );
-
-	virtual void pre_update() override;
-	virtual void on_touched( simple_collision::pending_collision& coll );
-};
-
 }

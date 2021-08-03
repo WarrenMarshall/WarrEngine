@@ -1448,52 +1448,5 @@ void ec_scr_push_outside::on_collided( simple_collision::pending_collision& coll
 		}
 	}
 }
-// ----------------------------------------------------------------------------
-
-ec_movement_controller::ec_movement_controller( entity* parent_entity )
-	: entity_component( parent_entity )
-{
-	max_velocity = { 5.f, 5.f };
-}
-
-void ec_movement_controller::set_friction( float friction )
-{
-	horizontal_damping = vertical_damping = friction;
-}
-
-void ec_movement_controller::set_max_velocity( float max )
-{
-	max_velocity = { max, max };
-}
-
-void ec_movement_controller::set_max_velocity( vec2 max )
-{
-	max_velocity = max;
-}
-
-vec2 ec_movement_controller::get_max_velocity()
-{
-	return max_velocity;
-}
-
-vec2 ec_movement_controller::clamp_velocity( vec2 v )
-{
-	vec2 ret;
-
-	ret.x = glm::clamp<float>( v.x, -max_velocity.x, max_velocity.x );
-	ret.y = glm::clamp<float>( v.y, -max_velocity.y, max_velocity.y );
-
-	return ret;
-}
-
-void ec_movement_controller::pre_update()
-{
-	in_air = true;
-}
-
-void ec_movement_controller::on_touched( simple_collision::pending_collision& coll )
-{
-	in_air = false;
-}
 
 }

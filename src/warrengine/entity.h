@@ -17,6 +17,19 @@ struct entity
 
 	e_sc_type sc_type = sc_type::dynamic;
 
+	float mc_horizontal_damping = 0.3f;
+	float mc_vertical_damping = 0.3f;
+	bool mc_in_air : 1 = false;
+	bool mc_affected_by_gravity : 1 = false;
+	vec2 mc_max_velocity = { 5.f, 5.f };
+
+	void set_mc_friction( float friction );
+	void set_mc_max_velocity( float max );
+	void set_mc_max_velocity( vec2 max );
+
+	vec2 get_mc_max_velocity();
+	vec2 clamp_mc_velocity( vec2 v );
+
 	scene* parent_scene = nullptr;
 
 	vec2 velocity = vec2::zero;

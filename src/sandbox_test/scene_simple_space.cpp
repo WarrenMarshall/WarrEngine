@@ -53,16 +53,6 @@ entity* scene_simple_space::spawn_player()
 	{
 		auto ec = e->add_component<ec_scr_push_outside>();
 	}
-	{
-		auto ec = e->add_component<ec_movement_controller>();
-		ec->set_friction( 0.0f );
-		ec->set_max_velocity( 5.f );
-
-		if( first_time )
-		{
-			ec->set_friction( 0.1f );
-		}
-	}
 
 	if( !first_time )
 	{

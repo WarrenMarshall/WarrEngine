@@ -48,9 +48,6 @@ void scene_simple_breakout::pushed()
 		{
 			auto ec = e->add_component<ec_scr_push_outside>();
 		}
-		{
-			auto ec = e->add_component<ec_movement_controller>();
-		}
 
 		mario = e;
 	}
