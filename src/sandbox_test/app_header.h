@@ -51,7 +51,7 @@ static void draw_title( std::string_view title )
 #include "scene_simple_collision.h"
 #include "scene_simple_space.h"
 #include "scene_simple_rpg.h"
-#include "scene_simple_pachinko.h"
+#include "scene_simple_minigolf.h"
 #include "scene_simple_breakout.h"
 #include "scene_simple_platformer.h"
 #include "scene_controller.h"

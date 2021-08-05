@@ -105,6 +105,17 @@ void entity::reset_force( vec2 force, float strength )
 	add_force( force, strength );
 }
 
+void entity::change_dir( vec2 dir )
+{
+	auto strength = velocity.get_size();
+
+	// reverse out the current velocity first
+	add_force( vec2::normalize( velocity ), -( velocity.get_size() ) );
+
+	// then add the new velocity
+	add_force( dir, strength );
+}
+
 void entity::reset_force_x( float strength )
 {
 	for( auto& f : pending_forces )

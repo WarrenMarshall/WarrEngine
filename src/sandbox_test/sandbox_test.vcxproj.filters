@@ -60,7 +60,7 @@
     <ClCompile Include="scene_simple_breakout.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_pachinko.cpp">
+    <ClCompile Include="scene_simple_minigolf.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_simple_platformer.cpp">
@@ -133,7 +133,7 @@
     <ClInclude Include="scene_simple_breakout.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_pachinko.h">
+    <ClInclude Include="scene_simple_minigolf.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_platformer.h">

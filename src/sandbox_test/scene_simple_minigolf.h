@@ -1,25 +1,22 @@
 
 using namespace war;
 
-struct scene_simple_pachinko : scene
+struct scene_simple_minigolf : scene
 {
-	scene_simple_pachinko();
+	scene_simple_minigolf();
 
-	entity* mario = nullptr;
-	entity* hit_marker = nullptr;
+	entity* player = nullptr;
 	entity* world_geo = nullptr;
 
-	bool b_show_ray = false;
-	vec2 ray_dir = {};
+	bool b_is_aiming = false;
+	vec2 aim_dir = {};
+	float aim_force = 0.f;
 
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;
 	virtual void update() override;
 
-	void reset_collision_trace_results();
-
 	virtual bool on_input_pressed( const input_event* evt ) override;
-	virtual bool on_input_held( const input_event* evt ) override;
 	virtual bool on_input_motion( const input_event* evt ) override;
 };

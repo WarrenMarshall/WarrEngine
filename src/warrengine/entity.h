@@ -38,6 +38,7 @@ struct entity
 	void add_force( vec2 dir, float strength );
 	void add_force_x( float strength );
 	void add_force_y( float strength );
+	void change_dir( vec2 dir );
 	void compile_velocity();
 	void limit_velocity();
 	void reset_force( vec2 dir, float strength );

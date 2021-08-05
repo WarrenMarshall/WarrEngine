@@ -275,6 +275,7 @@ struct vec2
 	[[nodiscard]] static float clamped_angle_from_dir( const vec2& dir );
 	[[nodiscard]] static vec2 reflect_across_normal( const vec2& v, const vec2& n );
 	[[nodiscard]] static vec2 snap_to_int( const vec2& v );
+	[[nodiscard]] static float dot( const vec2& a, const vec2& b );
 };
 
 // ----------------------------------------------------------------------------

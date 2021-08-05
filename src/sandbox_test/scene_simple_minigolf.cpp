@@ -7,33 +7,31 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_pachinko_mario = collision_bits.get();
-static const unsigned scene_simple_pachinko_geo = collision_bits.next();
+static const unsigned scene_simple_minigolf_player = collision_bits.get();
+static const unsigned scene_simple_minigolf_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-constexpr float max_raycast_length = 250.f;
-
-// ----------------------------------------------------------------------------
-
-scene_simple_pachinko::scene_simple_pachinko()
+scene_simple_minigolf::scene_simple_minigolf()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-void scene_simple_pachinko::pushed()
+void scene_simple_minigolf::pushed()
 {
 	scene::pushed();
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	// MARIO
+	// PLAYER
 	{
 		auto e = add_entity<entity>();
-		e->tag = H( "mario" );
+		e->tag = H( "player" );
 		e->set_pos( { -80.f, 0.f } );
+		e->set_scale( 2.0f );
+		e->set_mc_friction( 0.1f );
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -41,41 +39,24 @@ void scene_simple_pachinko::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
-			//ec->set_as_centered_box( 24.f, 24.f );
 			ec->set_as_circle( 12.f );
-			ec->set_collision_flags( scene_simple_pachinko_mario, scene_simple_pachinko_geo );
-		}
-/*
-		{
-			auto ec = e->add_component<ec_scr_push_outside>();
-		}
-*/
-
-		mario = e;
-	}
-
-	// HIT MARKER
-	{
-		auto e = add_entity<entity>();
-		e->tag = H( "hit_marker" );
-		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.z_bias = zdepth_debug_bias;
-		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::yellow );
+			ec->set_collision_flags( scene_simple_minigolf_player, scene_simple_minigolf_geo );
 		}
 
-		hit_marker = e;
-
+		player = e;
 	}
 
 	// WORLD GEO
 
 	{
+		constexpr auto num_circles = 5;
+		constexpr auto num_boxes = 5;
+
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
+		e->sc_type = sc_type::stationary;
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_boxes ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -86,7 +67,7 @@ void scene_simple_pachinko::pushed()
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->set_collision_flags( scene_simple_pachinko_geo, 0 );
+				ec->set_collision_flags( scene_simple_minigolf_geo, 0 );
 			}
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
@@ -100,7 +81,7 @@ void scene_simple_pachinko::pushed()
 			}
 		}
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_circles ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -110,7 +91,7 @@ void scene_simple_pachinko::pushed()
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->set_collision_flags( scene_simple_pachinko_geo, 0 );
+				ec->set_collision_flags( scene_simple_minigolf_geo, 0 );
 			}
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
@@ -127,11 +108,37 @@ void scene_simple_pachinko::pushed()
 			}
 		}
 
+		// 4 walls
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_minigolf_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_minigolf_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_minigolf_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_minigolf_geo, 0 );
+		}
+
 		world_geo = e;
 	}
 }
 
-void scene_simple_pachinko::draw()
+void scene_simple_minigolf::draw()
 {
 	{
 		scoped_render_state;
@@ -143,67 +150,69 @@ void scene_simple_pachinko::draw()
 	scene::draw();
 	render::draw_world_axis();
 
-	if( b_show_ray )
+	if( b_is_aiming )
 	{
+		auto start = player->get_pos();
+
+		auto aim_dir_normalized = vec2::normalize( aim_dir );
+
+		render::state->color = make_color( color::grey );
+		render::draw_line( start, start + ( aim_dir_normalized * 64.f ) );
+
 		render::state->color = make_color( color::orange );
-		auto start = mario->get_pos();
-		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
+		render::draw_line( start, start + ( aim_dir_normalized * (64.f * aim_force ) ) );
 	}
 }
 
-void scene_simple_pachinko::draw_ui()
+void scene_simple_minigolf::draw_ui()
 {
 	scene::draw_ui();
-	draw_title( "Simple Pachinko" );
+	draw_title( "Mini Golf" );
 }
 
-void scene_simple_pachinko::update()
+void scene_simple_minigolf::update()
 {
 	scene::update();
 
-	// show the raycast beam if the right stick is being pushed
-	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
-}
+	b_is_aiming = false;
 
-void scene_simple_pachinko::reset_collision_trace_results()
-{
-	hit_marker->get_component<ec_primitive_shape>()->shapes.clear();
-
-	for( auto& iter : world_geo->get_components<ec_simple_collision_body>() )
+	if( player->velocity.get_size() < 1.f )
 	{
-		iter->rs_opt.color = make_color( color::dark_teal );
+		// show the aim beam if the left stick is being pushed
+		b_is_aiming = g_engine->input.get_axis_state( input_id::gamepad_left_stick ).get_size_fast() > 0.f;
 	}
 }
 
-bool scene_simple_pachinko::on_input_pressed( const input_event* evt )
+bool scene_simple_minigolf::on_input_pressed( const input_event* evt )
 {
-	return false;
-}
-
-bool scene_simple_pachinko::on_input_held( const input_event* evt )
-{
-
-/*
 	switch( evt->input_id )
 	{
-		case input_id::key_left:
+		case input_id::gamepad_button_a:
 		{
-			mario->add_delta_pos( vec2( fixed_time_step::per_second( -600.f ), 0.f ) );
-		}
-		break;
-
-		case input_id::key_right:
-		{
-			mario->add_delta_pos( vec2( fixed_time_step::per_second( 600.f ), 0.f ) );
+			if( b_is_aiming )
+			{
+				player->reset_force( -aim_dir, aim_force * 100.f );
+			}
+			return true;
 		}
 		break;
 	}
-*/
 
 	return false;
 }
 
-bool scene_simple_pachinko::on_input_motion( const input_event* evt )
+bool scene_simple_minigolf::on_input_motion( const input_event* evt )
 {
+	switch( evt->input_id )
+	{
+		case input_id::gamepad_left_stick:
+		{
+			aim_dir = evt->delta;
+			aim_force = aim_dir.get_size();
+			return true;
+		}
+		break;
+	}
+
 	return false;
 }

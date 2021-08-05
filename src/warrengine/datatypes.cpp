@@ -671,6 +671,12 @@ vec2 vec2::snap_to_int( const vec2& v )
 	return vec2( war::snap_to_int( v.x ), war::snap_to_int( v.y ) );
 }
 
+float vec2::dot( const vec2& a, const vec2& b )
+{
+	return ( ( a.x * b.x ) + ( a.y * b.y ) ) / ( a.get_size() * b.get_size() );
+	//return glm::dot( glm::vec3( a.x, a.y, 0.f ), glm::vec3( b.x, b.y, 0.f ) );
+}
+
 // returns a w_uv representing the uv tiling factors needed to tile "texture"
 // inside of "rc" a natural number of times in both the U and V directions.
 
