@@ -4,5 +4,4 @@
 
 namespace war::simple_collision
 {
-
 }

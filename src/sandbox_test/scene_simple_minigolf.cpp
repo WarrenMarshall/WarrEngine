@@ -39,7 +39,7 @@ void scene_simple_minigolf::pushed()
 		}
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->set_as_circle( 12.f );
+			ec->set_as_circle( 8.f );
 			ec->set_collision_flags( scene_simple_minigolf_player, scene_simple_minigolf_geo );
 		}
 
@@ -191,7 +191,7 @@ bool scene_simple_minigolf::on_input_pressed( const input_event* evt )
 		{
 			if( b_is_aiming )
 			{
-				player->reset_force( -aim_dir, aim_force * 100.f );
+				player->impulse_add( -aim_dir, aim_force * 500.f );
 			}
 			return true;
 		}

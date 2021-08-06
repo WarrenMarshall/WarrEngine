@@ -62,7 +62,7 @@ entity* scene_simple_space::spawn_player()
 		mario = e;
 	}
 
-	e->add_force( random::get_random_on_circle( 1.f ), 2.f );
+	e->impulse_add( random::get_random_on_circle( 1.f ), 150.f );
 
 	first_time = false;
 
@@ -237,7 +237,7 @@ bool scene_simple_space::on_input_motion( const input_event* evt )
 		case input_id::gamepad_left_stick:
 		{
 			auto force = 1.0f;
-			mario->add_force( evt->delta, force );
+			mario->force_add( evt->delta, force );
 
 			return true;
 		}

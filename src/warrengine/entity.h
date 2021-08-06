@@ -35,12 +35,9 @@ struct entity
 	vec2 velocity = vec2::zero;
 
 	std::vector<force> pending_forces;
-	void add_force( vec2 dir, float strength );
-	void add_force_x( float strength );
-	void add_force_y( float strength );
-	void change_dir( vec2 dir );
+	void force_add( vec2 dir, float strength );
+	void impulse_add( vec2 dir, float strength );
 	void compile_velocity();
-	void limit_velocity();
 	void reset_force( vec2 dir, float strength );
 	void reset_force_x( float strength );
 	void reset_force_y( float strength );
@@ -192,6 +189,8 @@ struct entity
 private:
 
 	life_cycle_mgr life_cycle;
+public:
+	void reflect_across( vec2 normal );
 };
 
 // ----------------------------------------------------------------------------

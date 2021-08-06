@@ -124,7 +124,8 @@ void simple_collision_world::generate_collision_set()
 				if( coll.has_value() )
 				{
 					push_apart( *coll );
-					//need_another_iteration = true;
+					resolve_collision( *coll );
+					need_another_iteration = true;
 				}
 			}
 			break;
@@ -142,70 +143,119 @@ void simple_collision_world::generate_collision_set()
 	}
 }
 
+// pushes two entities apart so they are no longer intersecting
+
 void simple_collision_world::push_apart( simple_collision::pending_collision& coll )
 {
+	if( glm::abs( coll.depth ) < 0.01f )
+	{
+		return;
+	}
+
+	log( "{}", coll.depth );
+	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
+	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
+
 	if( coll.entity_a->sc_type == sc_type::dynamic and coll.entity_b->sc_type == sc_type::dynamic )
 	{
-		auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
-		auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
-
 		if( a_is_circle and b_is_circle )
 		{
-			auto hit_normal = vec2( coll.body_a->ws.pos ) - vec2( coll.closest_point );
-			hit_normal = vec2::normalize( hit_normal );
-
-			auto dir_a = vec2::reflect_across_normal( coll.entity_a->velocity, hit_normal );
-			auto dir_b = vec2::reflect_across_normal( coll.entity_b->velocity, hit_normal );
-
-			// ----------------------------------------------------------------------------
-			// push apart
-
-			assert( coll.depth > 0.f );
-			coll.entity_a->add_force( -coll.normal, coll.depth * 1.0f );
-			coll.entity_b->add_force( coll.normal, coll.depth * 1.0f );
-
-		#if 0
-			// ----------------------------------------------------------------------------
-			// resolve collision
-
-			auto relative_velocity = coll.entity_b->velocity - coll.entity_a->velocity;
-			auto dot = vec2::dot( relative_velocity, coll.normal );
-			//auto dot = vec2::dot( vec2::normalize( coll.entity_b->velocity ), vec2::normalize( coll.entity_a->velocity ) );
-
-			log( "dot : {}", dot );
-			if( dot > 0.0f )
-			{
-
-				//auto e = 0.0f;
-				auto j = dot;
-
-				vec2 impulse = coll.normal * j;
-
-				//coll.entity_a->add_force( -coll.normal, 1.0f );
-				//coll.entity_b->add_force( coll.normal, 1.0f );
-				coll.entity_a->add_force( vec2::normalize( impulse ), impulse.get_size() );
-				coll.entity_b->add_force( -vec2::normalize( impulse ), impulse.get_size() );
-
-			}
-		#endif
+			assert( false );
+			coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
+			coll.entity_b->add_delta_pos( coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
 		}
 		else
 		{
-			coll.entity_a->reset_force( -coll.normal, coll.depth * 0.5f );
-			coll.entity_b->reset_force( coll.normal, coll.depth * 0.5f );
+			coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
+			coll.entity_b->add_delta_pos( coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
 		}
 	}
 	else
 	{
-		coll.entity_a->add_force( -coll.normal, coll.depth );
+		coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness ) );
+	}
+}
+
+// responds to a collision between 2 entities
+
+void simple_collision_world::resolve_collision( simple_collision::pending_collision& coll )
+{
+	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
+	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
+
+	if( coll.entity_a->sc_type == sc_type::dynamic and coll.entity_b->sc_type == sc_type::dynamic )
+	{
+		if( a_is_circle and b_is_circle )
+		{
+			assert( false );
+			coll.entity_a->reflect_across( coll.normal );
+			coll.entity_b->reflect_across( coll.normal );
+		}
+		else
+		{
+			//coll.entity_a->reflect_across( -coll.normal );
+			//coll.entity_b->reflect_across( coll.normal );
+		}
+	}
+	else
+	{
+		coll.entity_a->reflect_across( -coll.normal );
 	}
 
-	//coll.entity_b->add_delta_pos( { coll.normal * ( coll.depth * simple_collision_skin_thickness ) } );
+	if( coll.entity_a->sc_type == sc_type::dynamic and coll.entity_b->sc_type == sc_type::stationary )
+	{
+		// when landing on the ground, kill any velocity on the Y axis. this
+		// stops it from accruing to the maximum as you run around on flat
+		// geo.
+
+		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		{
+			coll.entity_a->velocity.y = 0.f;
+		}
+
+		// hitting a wall kills horizontal velocity
+		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+		{
+			coll.entity_a->velocity.x = 0.f;
+		}
+	}
+
 }
 
-void simple_collision_world::resolve_collision( entity* a, entity* b )
-{
-
 }
 
-}
+
+/*
+	if( sc_type_a == sc_type::dynamic and sc_type_b == sc_type::stationary )
+	{
+		// when landing on the ground, kill any velocity on the Y axis. this
+		// stops it from accruing to the maximum as you run around on flat
+		// geo.
+
+		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		{
+			parent_entity->velocity.y = 0.f;
+		}
+
+		// hitting a wall kills horizontal velocity
+		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+		{
+			parent_entity->velocity.x = 0.f;
+		}
+	}
+
+	// dynamic->dynamic - slow down movement
+
+	if( sc_type_a == sc_type::dynamic and sc_type_b == sc_type::dynamic )
+	{
+		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		{
+			parent_entity->velocity.y *= 0.75f;
+		}
+
+		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+		{
+			parent_entity->velocity.x *= 0.75f;
+		}
+	}
+*/

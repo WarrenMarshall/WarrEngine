@@ -16,7 +16,7 @@ void entity::pre_update()
 
 	if( mc_affected_by_gravity )
 	{
-		add_force( vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) );
+		force_add( vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) );
 	}
 
 	apply_forces();
@@ -65,20 +65,19 @@ void entity::post_update()
 {
 }
 
-void entity::add_force( vec2 force, float strength )
+// forces are gradual, and build up over time
+
+void entity::force_add( vec2 force, float strength )
+{
+	pending_forces.emplace_back( force, fixed_time_step::per_second( strength ) );
+}
+
+void entity::impulse_add( vec2 force, float strength )
 {
 	pending_forces.emplace_back( force, strength );
 }
 
-void entity::add_force_x( float strength )
-{
-	pending_forces.emplace_back( vec2::right, strength );
-}
-
-void entity::add_force_y( float strength )
-{
-	pending_forces.emplace_back( vec2::up, strength );
-}
+// impulses are immediate changes
 
 void entity::compile_velocity()
 {
@@ -89,31 +88,22 @@ void entity::compile_velocity()
 
 	pending_forces.clear();
 
-	limit_velocity();
-}
-
-void entity::limit_velocity()
-{
 	velocity = clamp_mc_velocity( velocity );
 }
 
 void entity::reset_force( vec2 force, float strength )
 {
 	// reverse out the current velocity first
-	add_force( vec2::normalize( velocity ), -( velocity.get_size() ) );
+	force_add( vec2::normalize( velocity ), -( velocity.get_size() ) );
 	// then add the new velocity
-	add_force( force, strength );
+	force_add( force, strength );
 }
 
-void entity::change_dir( vec2 dir )
+void entity::reflect_across( vec2 normal )
 {
-	auto strength = velocity.get_size();
-
-	// reverse out the current velocity first
-	add_force( vec2::normalize( velocity ), -( velocity.get_size() ) );
-
-	// then add the new velocity
-	add_force( dir, strength );
+	auto n = vec2::normalize( normal );
+	auto new_dir = vec2::reflect_across_normal( velocity, n );
+	reset_force( new_dir, velocity.get_size() );
 }
 
 void entity::reset_force_x( float strength )
@@ -123,7 +113,7 @@ void entity::reset_force_x( float strength )
 		f.n.x = 0.f;
 	}
 
-	add_force( vec2( 1.f, 0.f ), strength );
+	force_add( vec2( 1.f, 0.f ), strength );
 }
 
 void entity::reset_force_y( float strength )
@@ -133,7 +123,7 @@ void entity::reset_force_y( float strength )
 		f.n.y = 0.f;
 	}
 
-	add_force( vec2( 0.f, 1.f ), strength );
+	force_add( vec2( 0.f, 1.f ), strength );
 }
 
 void entity::apply_forces()

@@ -229,6 +229,8 @@ struct vec2
 	static const vec2 right;
 	static const vec2 up;
 	static const vec2 down;
+	static const vec2 x_axis;
+	static const vec2 y_axis;
 	static const float defaulted;
 	static const float ignored;
 

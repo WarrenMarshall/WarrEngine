@@ -456,6 +456,8 @@ const vec2 vec2::left = vec2( -1.f, 0.f );
 const vec2 vec2::right = vec2( 1.f, 0.f );
 const vec2 vec2::up = vec2( 0.f, -1.f );
 const vec2 vec2::down = vec2( 0.f, 1.f );
+const vec2 vec2::x_axis = vec2( 1.f, 0.f );
+const vec2 vec2::y_axis = vec2( 0.f, 1.f );
 const float vec2::defaulted = -1.f;
 const float vec2::ignored = -2.f;
 

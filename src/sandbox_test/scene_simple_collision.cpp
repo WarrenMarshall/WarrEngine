@@ -30,7 +30,7 @@ entity* scene_simple_collision::spawn_player()
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.25f );
-	e->set_mc_friction( 0.30f );
+	e->set_mc_friction( 0.70f );
 	//e->mc_affected_by_gravity = true;
 	{
 		auto ec = e->add_component<ec_sprite>();
@@ -64,7 +64,7 @@ void scene_simple_collision::pushed()
 	// MARIO
 	player = spawn_player();
 	player->add_delta_pos( { -40.f, 0.f } );
-	spawn_player();
+	//spawn_player();
 
 	// HIT MARKER
 	{
@@ -84,7 +84,7 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 30;
+		int num_primitives = 20;
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
@@ -140,6 +140,32 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
+		}
+
+		// 4 walls
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_coll_geo, 0 );
 		}
 
 		world_geo = e;
@@ -300,10 +326,9 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float force = 50.f;
+			float force = 25.f;
 
-			player->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
-			player->add_force_y( evt->delta.y * -fixed_time_step::per_second( force ) );
+			player->force_add( evt->delta, force );
 
 			return true;
 		}
@@ -319,3 +344,4 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 
 	return false;
 }
+

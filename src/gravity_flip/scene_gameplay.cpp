@@ -110,7 +110,7 @@ bool scene_gameplay::on_input_motion( const input_event* evt )
 	{
 		float force = 12.f;
 
-		player->add_force_x( evt->delta.x * fixed_time_step::per_second( force ) );
+		player->force_add( evt->delta * vec2::x_axis, force );
 	}
 
 	return false;
@@ -122,7 +122,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 	{
 		if( !player->mc_in_air )
 		{
-			player->add_force_y( 3.5f );
+			player->force_add( evt->delta * vec2::y_axis, 3.5f );
 			return true;
 		}
 	}
