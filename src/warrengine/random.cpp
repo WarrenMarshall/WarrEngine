@@ -54,4 +54,10 @@ vec2 random::get_random_on_circle( float radius )
 	return { result.x, result.y };
 }
 
+vec2 random::get_random_unit_vector()
+{
+	vec2 v = { random::getf(), random::getf() };
+	return vec2::normalize( v );
+}
+
 }

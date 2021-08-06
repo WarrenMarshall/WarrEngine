@@ -21,13 +21,11 @@ scene_simple_space::scene_simple_space()
 
 entity* scene_simple_space::spawn_player()
 {
-	auto radius = 12.f;
+	constexpr auto radius = 12.f;
 	auto e = add_entity<entity>();
-	e->tag = H( "mario" );
-	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( random::getf_range( 1.0f, 2.0f ) );
-	e->set_mc_friction( 0.0f );
-	e->set_mc_max_velocity( 1.0f );
+	e->set_mc_friction( 0.05f );
+	e->set_mc_max_velocity( 5.0f );
 
 	{
 		auto ec = e->add_component<ec_sprite>();
@@ -37,14 +35,11 @@ entity* scene_simple_space::spawn_player()
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
-	#if 0
-		if( first_time )
-			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+	#if 1
+		if( random::getb() )
+			ec->set_as_circle( radius );
 		else
-			if( random::getb() )
-				ec->set_as_circle( radius );
-			else
-				ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
 	#else
 		ec->set_as_circle( radius );
 	#endif
@@ -62,7 +57,7 @@ entity* scene_simple_space::spawn_player()
 		mario = e;
 	}
 
-	e->impulse_add( random::get_random_on_circle( 1.f ), 150.f );
+	e->impulse_add( random::get_random_unit_vector(), 500.f );
 
 	first_time = false;
 

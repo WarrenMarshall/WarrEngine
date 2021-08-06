@@ -152,7 +152,6 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 		return;
 	}
 
-	log( "{}", coll.depth );
 	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
 	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
 
@@ -160,7 +159,6 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 	{
 		if( a_is_circle and b_is_circle )
 		{
-			assert( false );
 			coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
 			coll.entity_b->add_delta_pos( coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
 		}
@@ -187,8 +185,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	{
 		if( a_is_circle and b_is_circle )
 		{
-			assert( false );
-			coll.entity_a->reflect_across( coll.normal );
+			coll.entity_a->reflect_across( -coll.normal );
 			coll.entity_b->reflect_across( coll.normal );
 		}
 		else

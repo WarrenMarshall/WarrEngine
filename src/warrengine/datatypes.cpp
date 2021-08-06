@@ -318,6 +318,8 @@ const color color::dark_red = color( 0.5f, 0.f, 0.f );
 const color color::red = color( 1.f, 0.f, 0.f );
 const color color::dark_green = color( 0.f, 0.5f, 0.f );
 const color color::green = color( 0.f, 1.f, 0.f );
+const color color::light_green = color( 0.5f, 1.f, 0.5f );
+const color color::dark_blue = color( 0.0f, 0.0f, 0.5f );
 const color color::blue = color( 0.f, 0.f, 1.f );
 const color color::light_blue = color( 0.5f, 0.5f, 1.f );
 const color color::orange = color( 1.f, 0.5f, 0.f );
@@ -327,7 +329,6 @@ const color color::teal = color( 0.3f, 0.8f, 1.f );
 const color color::dark_grey = color( 0.25f, 0.25f, 0.25f );
 const color color::grey = color( 0.5f, 0.5f, 0.5f );
 const color color::light_grey = color( 0.75f, 0.75f, 0.75f );
-const color color::light_green = color( 0.5f, 1.f, 0.5f );
 const color color::magenta = color( 0.96f, 0.32f, 0.65f );
 
 color::color( float r, float g, float b, float a )

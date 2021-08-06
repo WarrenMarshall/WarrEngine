@@ -12,6 +12,8 @@ struct color
 	static const color red;
 	static const color dark_green;
 	static const color green;
+	static const color light_green;
+	static const color dark_blue;
 	static const color blue;
 	static const color light_blue;
 	static const color orange;
@@ -21,7 +23,6 @@ struct color
 	static const color dark_grey;
 	static const color grey;
 	static const color light_grey;
-	static const color light_green;
 	static const color magenta;
 
 	color() = default;

@@ -4,6 +4,8 @@ namespace war
 
 struct force
 {
+	force( vec2 n, float strength );
+
 	vec2 n = vec2::zero;
 	float strength = 0.f;
 };

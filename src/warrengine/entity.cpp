@@ -5,6 +5,16 @@
 namespace war
 {
 
+// ----------------------------------------------------------------------------
+
+force::force( vec2 n, float strength )
+	: n( n ), strength( strength )
+{
+	assert( !n.is_zero() );
+}
+
+// ----------------------------------------------------------------------------
+
 void entity::update_from_physics()
 {
 	update_transform_to_match_physics_components();
@@ -69,6 +79,11 @@ void entity::post_update()
 
 void entity::force_add( vec2 force, float strength )
 {
+	if( velocity.get_size() < 0.01f )
+	{
+		return;
+	}
+
 	pending_forces.emplace_back( force, fixed_time_step::per_second( strength ) );
 }
 
@@ -93,6 +108,11 @@ void entity::compile_velocity()
 
 void entity::reset_force( vec2 force, float strength )
 {
+	if( velocity.get_size() < 0.01f )
+	{
+		return;
+	}
+
 	// reverse out the current velocity first
 	force_add( vec2::normalize( velocity ), -( velocity.get_size() ) );
 	// then add the new velocity
@@ -101,6 +121,11 @@ void entity::reset_force( vec2 force, float strength )
 
 void entity::reflect_across( vec2 normal )
 {
+	if( velocity.get_size() < 0.01f )
+	{
+		return;
+	}
+
 	auto n = vec2::normalize( normal );
 	auto new_dir = vec2::reflect_across_normal( velocity, n );
 	reset_force( new_dir, velocity.get_size() );
@@ -144,6 +169,11 @@ void entity::apply_forces()
 			0.f,
 			fixed_time_step::per_second( mc_vertical_damping * simple_collision_max_friction )
 		);
+	}
+
+	if( velocity.get_size() < 0.01f )
+	{
+		velocity = vec2::zero;
 	}
 }
 

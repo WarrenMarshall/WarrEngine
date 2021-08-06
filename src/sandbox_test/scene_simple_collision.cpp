@@ -326,7 +326,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float force = 25.f;
+			float force = 50.f;
 
 			player->force_add( evt->delta, force );
 
