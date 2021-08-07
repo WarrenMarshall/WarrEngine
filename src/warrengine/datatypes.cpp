@@ -455,8 +455,8 @@ color make_color( e_pal pal_idx, float alpha )
 const vec2 vec2::zero = vec2( 0.f, 0.f );
 const vec2 vec2::left = vec2( -1.f, 0.f );
 const vec2 vec2::right = vec2( 1.f, 0.f );
-const vec2 vec2::up = vec2( 0.f, -1.f );
-const vec2 vec2::down = vec2( 0.f, 1.f );
+const vec2 vec2::up = vec2( 0.f, 1.f );
+const vec2 vec2::down = vec2( 0.f, -1.f );
 const vec2 vec2::x_axis = vec2( 1.f, 0.f );
 const vec2 vec2::y_axis = vec2( 0.f, 1.f );
 const float vec2::defaulted = -1.f;
@@ -622,6 +622,12 @@ void vec2::operator=( const float& v )
 	x = y = v;
 }
 
+void vec2::operator=( const vec2& v )
+{
+	x = v.x;
+	y = v.y;
+}
+
 float vec2::get_distance_between( const vec2& a, const vec2& b )
 {
 	return ( a - b ).get_size();
@@ -633,6 +639,26 @@ vec2 vec2::normalize( const vec2& v )
 
 	return v / ( sz ? sz : 1.f );
 }
+
+vec2 vec2::normalize()
+{
+	*this = vec2::normalize( *this );
+	return *this;
+}
+
+vec2 vec2::normalize() const
+{
+	return vec2::normalize( *this );
+}
+
+vec2 vec2::clamp( float value )
+{
+	range r( value );
+	x = r.clamp_value( x );
+	y = r.clamp_value( y );
+	return *this;
+}
+
 
 // takes an angle, in degrees, and returns a unit vector for it
 

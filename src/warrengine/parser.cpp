@@ -103,9 +103,10 @@ range<float> text_parser::range_from_str( std::string_view str )
 
 	tokenizer tok( str, "," );
 
-	range<float> range;
-	range.start = text_parser::float_from_str( *tok.get_next_token() );
-	range.end = text_parser::float_from_str( *tok.get_next_token() );
+	range<float> range(
+		text_parser::float_from_str( *tok.get_next_token() ),
+		text_parser::float_from_str( *tok.get_next_token() )
+	);
 
 	return range;
 }

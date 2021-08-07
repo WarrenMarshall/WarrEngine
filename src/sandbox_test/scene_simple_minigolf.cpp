@@ -31,7 +31,7 @@ void scene_simple_minigolf::pushed()
 		e->tag = H( "player" );
 		e->set_pos( { -80.f, 0.f } );
 		e->set_scale( 2.0f );
-		e->set_mc_friction( 0.1f );
+		e->simple.damping = 0.1f;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -54,7 +54,7 @@ void scene_simple_minigolf::pushed()
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		e->sc_type = sc_type::stationary;
+		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_boxes ; ++i )
 		{
@@ -191,7 +191,7 @@ bool scene_simple_minigolf::on_input_pressed( const input_event* evt )
 		{
 			if( b_is_aiming )
 			{
-				player->impulse_add( -aim_dir, aim_force * 500.f );
+				player->apply_impulse( { -aim_dir, aim_force * 500.f } );
 			}
 			return true;
 		}

@@ -2,48 +2,64 @@
 namespace war
 {
 
-struct force
-{
-	force( vec2 n, float strength );
+// ----------------------------------------------------------------------------
 
-	vec2 n = vec2::zero;
+struct entity_simple_force
+{
+	entity_simple_force() = default;
+	entity_simple_force( vec2 dir, float strength );
+
+	vec2 dir = vec2::zero;
 	float strength = 0.f;
 };
 
+// ----------------------------------------------------------------------------
+
+struct entity_simple_collision
+{
+	e_sc_type type = sc_type::dynamic;
+
+	[[nodiscard]] bool is_dynamic()
+	{
+		return ( type == sc_type::dynamic );
+	}
+	[[nodiscard]] bool is_stationary()
+	{
+		return ( type == sc_type::stationary );
+	}
+
+	vec2 damping = vec2::zero;
+	float max_velocity = 5.f;
+	bool in_air : 1 = false;
+	bool affected_by_gravity : 1 = false;
+};
+
+// ----------------------------------------------------------------------------
+
 struct entity
 {
+	scene* parent_scene = nullptr;
+
 #ifdef _DEBUG
-	// a handy string to throw info or a name into during debug to make looking at entity pointers easier
+	// a handy string to throw info or a name in debug builds to make figuring
+	// out which entity you're looking at in the debugger easier
 	std::string debug_name;
 #endif
 
-	e_sc_type sc_type = sc_type::dynamic;
+	entity_simple_collision simple;
 
-	float mc_horizontal_damping = 0.3f;
-	float mc_vertical_damping = 0.3f;
-	bool mc_in_air : 1 = false;
-	bool mc_affected_by_gravity : 1 = false;
-	vec2 mc_max_velocity = { 5.f, 5.f };
-
-	void set_mc_friction( float friction );
-	void set_mc_max_velocity( float max );
-	void set_mc_max_velocity( vec2 max );
-
-	vec2 get_mc_max_velocity();
-	vec2 clamp_mc_velocity( vec2 v );
-
-	scene* parent_scene = nullptr;
-
+	// forces and impulses
 	vec2 velocity = vec2::zero;
+	std::vector<entity_simple_force> pending_forces;
 
-	std::vector<force> pending_forces;
-	void force_add( vec2 dir, float strength );
-	void impulse_add( vec2 dir, float strength );
-	void compile_velocity();
-	void reset_force( vec2 dir, float strength );
+	void apply_force( const entity_simple_force& force );
+	void apply_impulse( const entity_simple_force& force );
+	void reset_force( const entity_simple_force& force );
 	void reset_force_x( float strength );
 	void reset_force_y( float strength );
+	void compile_velocity();
 
+	// transforms
 	transform _tform;
 
 	// this is a read-only pointer. to change the transform, use the

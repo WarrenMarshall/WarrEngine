@@ -24,8 +24,8 @@ entity* scene_simple_space::spawn_player()
 	constexpr auto radius = 12.f;
 	auto e = add_entity<entity>();
 	e->set_scale( random::getf_range( 1.0f, 2.0f ) );
-	e->set_mc_friction( 0.05f );
-	e->set_mc_max_velocity( 5.0f );
+	e->simple.damping = 0.05f;
+	e->simple.max_velocity = 5.0f;
 
 	{
 		auto ec = e->add_component<ec_sprite>();
@@ -57,7 +57,7 @@ entity* scene_simple_space::spawn_player()
 		mario = e;
 	}
 
-	e->impulse_add( random::get_random_unit_vector(), 500.f );
+	e->apply_impulse( { random::get_random_unit_vector(), 500.f } );
 
 	first_time = false;
 
@@ -80,7 +80,7 @@ void scene_simple_space::pushed()
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		e->sc_type = sc_type::stationary;
+		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_colliders ; ++i )
 		{
@@ -136,7 +136,7 @@ void scene_simple_space::pushed()
 
 		e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		e->sc_type = sc_type::stationary;
+		e->simple.type = sc_type::stationary;
 
 		// 4 walls
 		{
@@ -231,8 +231,7 @@ bool scene_simple_space::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			auto force = 1.0f;
-			mario->force_add( evt->delta, force );
+			mario->apply_force( { evt->delta, 1.0f } );
 
 			return true;
 		}

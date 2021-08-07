@@ -7,10 +7,11 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-force::force( vec2 n, float strength )
-	: n( n ), strength( strength )
+entity_simple_force::entity_simple_force( vec2 dir, float strength )
+	: dir( dir ), strength( strength )
 {
-	assert( !n.is_zero() );
+	assert( !dir.is_zero() );
+	assert( !fequals( strength, 0.f ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -24,9 +25,9 @@ void entity::pre_update()
 {
 	life_cycle.pre_update();
 
-	if( mc_affected_by_gravity )
+	if( simple.affected_by_gravity )
 	{
-		force_add( vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) );
+		apply_force( { vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) } );
 	}
 
 	apply_forces();
@@ -77,78 +78,67 @@ void entity::post_update()
 
 // forces are gradual, and build up over time
 
-void entity::force_add( vec2 force, float strength )
+void entity::apply_force( const entity_simple_force& force )
 {
-	if( velocity.get_size() < 0.01f )
-	{
-		return;
-	}
-
-	pending_forces.emplace_back( force, fixed_time_step::per_second( strength ) );
-}
-
-void entity::impulse_add( vec2 force, float strength )
-{
-	pending_forces.emplace_back( force, strength );
+	pending_forces.push_back( force );
 }
 
 // impulses are immediate changes
+
+void entity::apply_impulse( const entity_simple_force& force )
+{
+	// #warren - this needs to do something different, doesn't it?  clear out existing forces and/or ... ??
+	pending_forces.push_back( force );
+}
 
 void entity::compile_velocity()
 {
 	for( auto& f : pending_forces )
 	{
-		velocity += f.n * f.strength;
+		velocity += f.dir * f.strength;
 	}
+	velocity.clamp( simple.max_velocity );
 
 	pending_forces.clear();
-
-	velocity = clamp_mc_velocity( velocity );
 }
 
-void entity::reset_force( vec2 force, float strength )
+void entity::reset_force( const entity_simple_force& force )
 {
-	if( velocity.get_size() < 0.01f )
-	{
-		return;
-	}
-
 	// reverse out the current velocity first
-	force_add( vec2::normalize( velocity ), -( velocity.get_size() ) );
+	apply_force( { vec2::normalize( velocity ), -( velocity.get_size() ) } );
+
 	// then add the new velocity
-	force_add( force, strength );
+	apply_force( force );
 }
 
 void entity::reflect_across( vec2 normal )
 {
-	if( velocity.get_size() < 0.01f )
-	{
-		return;
-	}
+	auto new_dir = vec2::reflect_across_normal( velocity, normal );
 
-	auto n = vec2::normalize( normal );
-	auto new_dir = vec2::reflect_across_normal( velocity, n );
-	reset_force( new_dir, velocity.get_size() );
+	if( !new_dir.is_zero() )
+	{
+		reset_force( { new_dir, velocity.get_size() } );
+	}
 }
 
 void entity::reset_force_x( float strength )
 {
 	for( auto& f : pending_forces )
 	{
-		f.n.x = 0.f;
+		f.dir.x = 0.f;
 	}
 
-	force_add( vec2( 1.f, 0.f ), strength );
+	apply_force( { vec2::x_axis, strength } );
 }
 
 void entity::reset_force_y( float strength )
 {
 	for( auto& f : pending_forces )
 	{
-		f.n.y = 0.f;
+		f.dir.y = 0.f;
 	}
 
-	force_add( vec2( 0.f, 1.f ), strength );
+	apply_force( { vec2::y_axis, strength } );
 }
 
 void entity::apply_forces()
@@ -159,15 +149,15 @@ void entity::apply_forces()
 	velocity.x = lerp(
 		velocity.x,
 		0.f,
-		fixed_time_step::per_second( mc_horizontal_damping * simple_collision_max_friction )
+		fixed_time_step::per_second( simple.damping.x * simple_collision_max_friction ) // #warren
 	);
 
-	if( !mc_affected_by_gravity )
+	if( !simple.affected_by_gravity )
 	{
 		velocity.y = lerp(
 			velocity.y,
 			0.f,
-			fixed_time_step::per_second( mc_vertical_damping * simple_collision_max_friction )
+			fixed_time_step::per_second( simple.damping.y * simple_collision_max_friction )
 		);
 	}
 
@@ -464,36 +454,6 @@ void entity::remove_dead_components()
 			x--;
 		}
 	}
-}
-
-void entity::set_mc_friction( float friction )
-{
-	mc_horizontal_damping = mc_vertical_damping = friction;
-}
-
-void entity::set_mc_max_velocity( float max )
-{
-	mc_max_velocity = { max, max };
-}
-
-void entity::set_mc_max_velocity( vec2 max )
-{
-	mc_max_velocity = max;
-}
-
-vec2 entity::get_mc_max_velocity()
-{
-	return mc_max_velocity;
-}
-
-vec2 entity::clamp_mc_velocity( vec2 v )
-{
-	vec2 ret;
-
-	ret.x = glm::clamp<float>( v.x, -mc_max_velocity.x, mc_max_velocity.x );
-	ret.y = glm::clamp<float>( v.y, -mc_max_velocity.y, mc_max_velocity.y );
-
-	return ret;
 }
 
 // ----------------------------------------------------------------------------

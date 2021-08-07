@@ -155,7 +155,7 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
 	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
 
-	if( coll.entity_a->sc_type == sc_type::dynamic and coll.entity_b->sc_type == sc_type::dynamic )
+	if( coll.entity_a->simple.is_dynamic() and coll.entity_b->simple.is_dynamic() )
 	{
 		if( a_is_circle and b_is_circle )
 		{
@@ -181,7 +181,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
 	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
 
-	if( coll.entity_a->sc_type == sc_type::dynamic and coll.entity_b->sc_type == sc_type::dynamic )
+	if( coll.entity_a->simple.is_dynamic() and coll.entity_b->simple.is_dynamic() )
 	{
 		if( a_is_circle and b_is_circle )
 		{
@@ -199,7 +199,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 		coll.entity_a->reflect_across( -coll.normal );
 	}
 
-	if( coll.entity_a->sc_type == sc_type::dynamic and coll.entity_b->sc_type == sc_type::stationary )
+	if( coll.entity_a->simple.is_dynamic() and coll.entity_b->simple.is_stationary() )
 	{
 		// when landing on the ground, kill any velocity on the Y axis. this
 		// stops it from accruing to the maximum as you run around on flat

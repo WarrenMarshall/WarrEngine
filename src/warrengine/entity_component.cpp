@@ -800,28 +800,13 @@ void ec_simple_collision_body::draw()
 		{
 			case sc_body_collider_type::solid:
 			{
-				if( parent_entity->velocity.is_zero() )
-				{
-					render::state->color = make_color( color::dark_green );
-				}
-				else
-				{
-					render::state->color = make_color( color::light_green );
-				}
+				render::state->color = make_color( color::light_green );
 			}
 			break;
 
 			case sc_body_collider_type::sensor:
 			{
-
-				if( parent_entity->velocity.is_zero() )
-				{
-					render::state->color = make_color( color::dark_blue );
-				}
-				else
-				{
-					render::state->color = make_color( color::light_blue );
-				}
+				render::state->color = make_color( color::light_blue );
 			}
 			break;
 		}

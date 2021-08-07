@@ -30,8 +30,7 @@ entity* scene_simple_collision::spawn_player()
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.25f );
-	e->set_mc_friction( 0.70f );
-	//e->mc_affected_by_gravity = true;
+	e->simple.damping = 0.20f;
 	{
 		auto ec = e->add_component<ec_sprite>();
 		ec->rs_opt.color = make_color( color::white, 1.f );
@@ -88,7 +87,7 @@ void scene_simple_collision::pushed()
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
-		e->sc_type = sc_type::stationary;
+		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{
@@ -326,9 +325,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			float force = 50.f;
-
-			player->force_add( evt->delta, force );
+			player->apply_force( { evt->delta, 1.f } );
 
 			return true;
 		}
