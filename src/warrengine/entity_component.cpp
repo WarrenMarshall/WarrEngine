@@ -872,7 +872,7 @@ void ec_simple_collision_body::update_to_match_parent_transform()
 			for( auto& v : verts )
 			{
 				auto ws_v = g_engine->render_api.top_matrix->transform_vec2( v );
-				ws.verts.push_back( ws_v * scale );
+				ws.verts.push_back( ws_v );
 			}
 		}
 		break;
