@@ -691,8 +691,10 @@ float vec2::clamped_angle_from_dir( const vec2& dir )
 
 vec2 vec2::reflect_across_normal( const vec2& v, const vec2& n )
 {
-	glm::vec3 rdir = glm::reflect( glm::vec3( v.x, v.y, 0.f ), glm::vec3( n.x, n.y, 0.f ) );
-	return vec2( rdir.x, rdir.y );
+	auto nn = n.normalize();
+
+	glm::vec3 reflected_dir = glm::reflect( glm::vec3( v.x, v.y, 0.f ), glm::vec3( nn.x, nn.y, 0.f ) );
+	return vec2( reflected_dir.x, reflected_dir.y );
 }
 
 vec2 vec2::snap_to_int( const vec2& v )

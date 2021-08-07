@@ -15,7 +15,7 @@ void scene_gameplay::draw_ui()
 
 	render::draw_string( std::format( "VDir : {:.1f}, {:.1f}",
 		player->velocity.x, player->velocity.y ), vec2( 8.f, 8.f ) );
-	render::draw_string( std::format( "In air : {}", player->simple.in_air ), vec2( 8.f, 18.f ) );
+	render::draw_string( std::format( "In air : {}", player->simple.is_in_air ), vec2( 8.f, 18.f ) );
 }
 
 void scene_gameplay::draw()
@@ -120,7 +120,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a )
 	{
-		if( !player->simple.in_air )
+		if( !player->simple.is_in_air )
 		{
 			player->apply_force( { evt->delta * vec2::y_axis, 3.5f } );
 			return true;

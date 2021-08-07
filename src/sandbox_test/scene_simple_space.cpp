@@ -24,8 +24,9 @@ entity* scene_simple_space::spawn_player()
 	constexpr auto radius = 12.f;
 	auto e = add_entity<entity>();
 	e->set_scale( random::getf_range( 1.0f, 2.0f ) );
-	e->simple.damping = 0.05f;
+	e->simple.friction = 0.0f;
 	e->simple.max_velocity = 5.0f;
+	e->simple.is_bouncy = true;
 
 	{
 		auto ec = e->add_component<ec_sprite>();
@@ -57,7 +58,7 @@ entity* scene_simple_space::spawn_player()
 		mario = e;
 	}
 
-	e->apply_impulse( { random::get_random_unit_vector(), 500.f } );
+	e->apply_impulse( { random::get_random_unit_vector(), 2.f } );
 
 	first_time = false;
 

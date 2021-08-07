@@ -31,7 +31,7 @@ void scene_simple_minigolf::pushed()
 		e->tag = H( "player" );
 		e->set_pos( { -80.f, 0.f } );
 		e->set_scale( 2.0f );
-		e->simple.damping = 0.1f;
+		e->simple.friction = 0.1f;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );

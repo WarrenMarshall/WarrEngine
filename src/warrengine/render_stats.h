@@ -19,7 +19,6 @@ struct render_stats
 	value_accumulator points;
 
 	std::string stat_custom_string;
-	// #opt - can these be string_views?
 	std::vector<std::string> stat_strings;
 	bool draw_verbose = false;
 

@@ -207,9 +207,7 @@ constexpr auto simple_world_scale_factor = 100.f;
 // collisions do better if you can add a little padding between collision bodies
 // after resolution. 1.0 would be exactly snug against each other. Anything
 // above 1.0 represents the skin thickness we are adding.
-constexpr auto simple_collision_skin_thickness = 1.0f;
-
-constexpr auto simple_collision_max_friction = 20.f;
+constexpr auto simple_collision_skin_thickness = 1.1f;
 
 // we allow for a few iterations here to do our best to free colliders from
 // other colliders. if this ends up being slow, adjust this value downwards.

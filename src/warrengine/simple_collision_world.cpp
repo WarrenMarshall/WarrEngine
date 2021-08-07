@@ -152,25 +152,28 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 		return;
 	}
 
+	auto ent_a = coll.entity_a;
+	auto ent_b = coll.entity_b;
+
 	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
 	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
 
-	if( coll.entity_a->simple.is_dynamic() and coll.entity_b->simple.is_dynamic() )
+	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
 		if( a_is_circle and b_is_circle )
 		{
-			coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
-			coll.entity_b->add_delta_pos( coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
+			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
 		}
 		else
 		{
-			coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
-			coll.entity_b->add_delta_pos( coll.normal * ( coll.depth * simple_collision_skin_thickness * 0.5f ) );
+			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
 		}
 	}
 	else
 	{
-		coll.entity_a->add_delta_pos( -coll.normal * ( coll.depth * simple_collision_skin_thickness ) );
+		ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness );
 	}
 }
 
@@ -178,81 +181,64 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 
 void simple_collision_world::resolve_collision( simple_collision::pending_collision& coll )
 {
-	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
-	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
+	auto ent_a = coll.entity_a;
+	auto ent_b = coll.entity_b;
 
-	if( coll.entity_a->simple.is_dynamic() and coll.entity_b->simple.is_dynamic() )
+	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
-		if( a_is_circle and b_is_circle )
+		// dynamic vs dynamic
+
+		if( ent_a->simple.is_bouncy )
 		{
-			coll.entity_a->reflect_across( -coll.normal );
-			coll.entity_b->reflect_across( coll.normal );
-		}
-		else
-		{
-			//coll.entity_a->reflect_across( -coll.normal );
-			//coll.entity_b->reflect_across( coll.normal );
+			auto relative_velocity = ent_b->velocity - ent_a->velocity;
+
+			auto dot = vec2::dot( vec2::normalize( relative_velocity ), vec2::normalize( coll.normal ) );
+
+			if( dot > 0.f )
+			{
+				return;
+			}
+
+			auto total_velocity = ent_a->velocity.get_size() + ent_b->velocity.get_size();
+
+			auto new_dir_a = vec2::reflect_across_normal( ent_a->velocity, coll.normal );
+			auto new_dir_b = ent_a->velocity;
+
+			ent_b->reset_force( { new_dir_b, total_velocity * 0.5f } );
+			ent_a->reset_force( { new_dir_a, total_velocity * 0.5f } );
 		}
 	}
 	else
 	{
-		coll.entity_a->reflect_across( -coll.normal );
+		if( ent_a->simple.is_bouncy )
+		{
+			// dynamic vs stationary
+			ent_a->reflect_across( coll.normal );
+		}
 	}
 
-	if( coll.entity_a->simple.is_dynamic() and coll.entity_b->simple.is_stationary() )
+#if 1
+	if( !ent_a->simple.is_bouncy )
 	{
-		// when landing on the ground, kill any velocity on the Y axis. this
-		// stops it from accruing to the maximum as you run around on flat
-		// geo.
-
-		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		if( ent_a->simple.is_dynamic() and ent_b->simple.is_stationary() )
 		{
-			coll.entity_a->velocity.y = 0.f;
-		}
+			// when landing on the ground, kill any velocity on the Y axis. this
+			// stops it from accruing to the maximum as you run around on flat
+			// geo.
 
-		// hitting a wall kills horizontal velocity
-		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
-		{
-			coll.entity_a->velocity.x = 0.f;
+			if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+			{
+				ent_a->velocity.y = 0.f;
+			}
+
+			// hitting a wall kills horizontal velocity
+			if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+			{
+				ent_a->velocity.x = 0.f;
+			}
 		}
 	}
-
+#endif
 }
 
 }
-
-
-/*
-	if( sc_type_a == sc_type::dynamic and sc_type_b == sc_type::stationary )
-	{
-		// when landing on the ground, kill any velocity on the Y axis. this
-		// stops it from accruing to the maximum as you run around on flat
-		// geo.
-
-		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
-		{
-			parent_entity->velocity.y = 0.f;
-		}
-
-		// hitting a wall kills horizontal velocity
-		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
-		{
-			parent_entity->velocity.x = 0.f;
-		}
-	}
-
-	// dynamic->dynamic - slow down movement
-
-	if( sc_type_a == sc_type::dynamic and sc_type_b == sc_type::dynamic )
-	{
-		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
-		{
-			parent_entity->velocity.y *= 0.75f;
-		}
-
-		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
-		{
-			parent_entity->velocity.x *= 0.75f;
-		}
-	}
-*/

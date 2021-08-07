@@ -7,9 +7,9 @@ namespace war
 struct entity_simple_force
 {
 	entity_simple_force() = default;
-	entity_simple_force( vec2 dir, float strength );
+	entity_simple_force( vec2 normal, float strength );
 
-	vec2 dir = vec2::zero;
+	vec2 normal = vec2::zero;
 	float strength = 0.f;
 };
 
@@ -28,10 +28,11 @@ struct entity_simple_collision
 		return ( type == sc_type::stationary );
 	}
 
-	vec2 damping = vec2::zero;
+	float friction = 1.0f;
 	float max_velocity = 5.f;
-	bool in_air : 1 = false;
-	bool affected_by_gravity : 1 = false;
+	bool is_in_air = false;
+	bool is_affected_by_gravity = false;
+	bool is_bouncy = false;
 };
 
 // ----------------------------------------------------------------------------
@@ -46,17 +47,21 @@ struct entity
 	std::string debug_name;
 #endif
 
+	//
 	entity_simple_collision simple;
 
 	// forces and impulses
+
 	vec2 velocity = vec2::zero;
+
+	vec2 velocity_dir = vec2::zero;
+	float velocity_strength = 0.f;
+
 	std::vector<entity_simple_force> pending_forces;
 
 	void apply_force( const entity_simple_force& force );
 	void apply_impulse( const entity_simple_force& force );
 	void reset_force( const entity_simple_force& force );
-	void reset_force_x( float strength );
-	void reset_force_y( float strength );
 	void compile_velocity();
 
 	// transforms

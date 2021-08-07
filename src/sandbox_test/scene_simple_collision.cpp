@@ -29,8 +29,10 @@ entity* scene_simple_collision::spawn_player()
 {
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
-	e->set_scale( 1.25f );
-	e->simple.damping = 0.20f;
+	e->set_scale( 2.0f );
+	e->simple.friction = 0.1f;
+	e->simple.max_velocity = 3.0f;
+	//e->simple.is_bouncy = true;
 	{
 		auto ec = e->add_component<ec_sprite>();
 		ec->rs_opt.color = make_color( color::white, 1.f );
@@ -38,8 +40,8 @@ entity* scene_simple_collision::spawn_player()
 	}
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
-		ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
-		//ec->set_as_circle( player_radius );
+		//ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
+		ec->set_as_circle( player_radius );
 		ec->set_collision_flags( scene_simple_coll_player, scene_simple_coll_geo | scene_simple_coll_player );
 	}
 	{
@@ -83,7 +85,7 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 20;
+		int num_primitives = 2;
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
@@ -102,6 +104,7 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 			}
+/*
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
@@ -112,6 +115,7 @@ void scene_simple_collision::pushed()
 				ec->add_shape( primitive_shape::rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
+*/
 		}
 
 		for( int i = 0 ; i < num_primitives ; ++i )
@@ -126,6 +130,7 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 			}
+/*
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_circle, r );
@@ -139,6 +144,7 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
+*/
 		}
 
 		// 4 walls
@@ -241,10 +247,10 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 			auto ec = player->get_component<ec_simple_collision_body>();
 			ec->set_as_polygon(
 				{
-					{ -player_radius, -player_radius },
-					{ player_radius, -player_radius },
-					{ player_radius, player_radius },
-					{ -player_radius, player_radius }
+					{ 0.f, -player_radius },
+					{ player_radius, 0.f },
+					{ 0.f, player_radius },
+					{ -player_radius, 0.f }
 				}
 			);
 		}
@@ -325,7 +331,7 @@ bool scene_simple_collision::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			player->apply_force( { evt->delta, 1.f } );
+			player->apply_force( { evt->delta, 10.f } );
 
 			return true;
 		}

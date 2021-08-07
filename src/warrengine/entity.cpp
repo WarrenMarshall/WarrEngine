@@ -7,11 +7,10 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-entity_simple_force::entity_simple_force( vec2 dir, float strength )
-	: dir( dir ), strength( strength )
+entity_simple_force::entity_simple_force( vec2 normal, float strength )
+	: strength( strength )
 {
-	assert( !dir.is_zero() );
-	assert( !fequals( strength, 0.f ) );
+	this->normal = vec2::normalize( normal );
 }
 
 // ----------------------------------------------------------------------------
@@ -25,7 +24,7 @@ void entity::pre_update()
 {
 	life_cycle.pre_update();
 
-	if( simple.affected_by_gravity )
+	if( simple.is_affected_by_gravity )
 	{
 		apply_force( { vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) } );
 	}
@@ -76,18 +75,15 @@ void entity::post_update()
 {
 }
 
-// forces are gradual, and build up over time
-
 void entity::apply_force( const entity_simple_force& force )
 {
-	pending_forces.push_back( force );
+	// forces are gradual, and build up over time
+	pending_forces.emplace_back( force.normal, fixed_time_step::per_second( force.strength ) );
 }
-
-// impulses are immediate changes
 
 void entity::apply_impulse( const entity_simple_force& force )
 {
-	// #warren - this needs to do something different, doesn't it?  clear out existing forces and/or ... ??
+	// impulses are immediate, full strength changes
 	pending_forces.push_back( force );
 }
 
@@ -95,8 +91,12 @@ void entity::compile_velocity()
 {
 	for( auto& f : pending_forces )
 	{
-		velocity += f.dir * f.strength;
+		velocity += f.normal * f.strength;
 	}
+
+	velocity_dir = vec2::normalize( velocity );
+	velocity_strength = velocity.get_size();
+
 	velocity.clamp( simple.max_velocity );
 
 	pending_forces.clear();
@@ -105,59 +105,44 @@ void entity::compile_velocity()
 void entity::reset_force( const entity_simple_force& force )
 {
 	// reverse out the current velocity first
-	apply_force( { vec2::normalize( velocity ), -( velocity.get_size() ) } );
+	//apply_impulse( { vec2::normalize( velocity ), -( velocity.get_size() ) } );
+	velocity = vec2::zero;
 
 	// then add the new velocity
-	apply_force( force );
+	apply_impulse( force );
 }
 
 void entity::reflect_across( vec2 normal )
 {
-	auto new_dir = vec2::reflect_across_normal( velocity, normal );
+	auto reflected_dir = vec2::reflect_across_normal( velocity, normal.normalize() );
 
-	if( !new_dir.is_zero() )
+	if( !reflected_dir.is_zero() )
 	{
-		reset_force( { new_dir, velocity.get_size() } );
+		reset_force( { reflected_dir, velocity.get_size() } );
 	}
-}
-
-void entity::reset_force_x( float strength )
-{
-	for( auto& f : pending_forces )
-	{
-		f.dir.x = 0.f;
-	}
-
-	apply_force( { vec2::x_axis, strength } );
-}
-
-void entity::reset_force_y( float strength )
-{
-	for( auto& f : pending_forces )
-	{
-		f.dir.y = 0.f;
-	}
-
-	apply_force( { vec2::y_axis, strength } );
 }
 
 void entity::apply_forces()
 {
+	// figure out where this entity should be moving
 	compile_velocity();
+
+	// move it
 	add_delta_pos( velocity );
 
+	// apply friction to the velocity
 	velocity.x = lerp(
 		velocity.x,
 		0.f,
-		fixed_time_step::per_second( simple.damping.x * simple_collision_max_friction ) // #warren
+		simple.friction
 	);
 
-	if( !simple.affected_by_gravity )
+	if( !simple.is_affected_by_gravity )
 	{
 		velocity.y = lerp(
 			velocity.y,
 			0.f,
-			fixed_time_step::per_second( simple.damping.y * simple_collision_max_friction )
+			simple.friction
 		);
 	}
 
