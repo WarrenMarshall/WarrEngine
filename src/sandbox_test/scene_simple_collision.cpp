@@ -29,32 +29,24 @@ entity* scene_simple_collision::spawn_player()
 {
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
-	e->set_scale( 2.0f );
+	e->set_scale( 1.5f );
 	e->simple.friction = 0.0f;
 	e->simple.max_velocity = 3.0f;
 	e->simple.is_bouncy = true;
 	{
-		auto ec = e->add_component<ec_sprite>();
-		ec->rs_opt.color = make_color( color::white, 1.f );
-		ec->init( "anim_player_run" );
-	}
-	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 		//ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
-		ec->set_as_circle( player_radius );
+		if( random::getb() )
+			ec->set_as_circle( player_radius * random::getf_range( 0.5f, 2.0f ) );
+		else
+			ec->set_as_centered_box( player_radius * random::getf_range( 0.5f, 3.0f ), player_radius * random::getf_range( 0.5f, 3.0f ) );
+
 		ec->set_collision_flags( scene_simple_coll_player, scene_simple_coll_geo | scene_simple_coll_player );
 	}
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
-		ec->rs_opt.color = make_color( color::green, 0.25f );
-		ec->add_shape( primitive_shape::filled_circle, player_radius );
-	}
-
-	e->debug_name = "OTHER";
-	if( first_player )
-	{
-		e->simple.mass = 9.0f;
-		e->debug_name = "PLAYER";
+		ec->rs_opt.color = make_color( color::white, 1.0f );
+		ec->add_shape( primitive_shape::point, 4.0f );
 	}
 
 	first_player = false;
@@ -92,10 +84,10 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 0;
+		int num_primitives = 4;
 
 		auto e = add_entity<entity>();
-		e->debug_name = "WORLD";
+		//e->debug_name = "WORLD";
 		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
@@ -111,7 +103,6 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 			}
-/*
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
 				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
@@ -122,7 +113,6 @@ void scene_simple_collision::pushed()
 				ec->add_shape( primitive_shape::rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
 				ec->rs_opt.color = make_color( pal::middle );
 			}
-*/
 		}
 
 		for( int i = 0 ; i < num_primitives ; ++i )

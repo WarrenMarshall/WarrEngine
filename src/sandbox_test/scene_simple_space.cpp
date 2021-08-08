@@ -36,11 +36,11 @@ entity* scene_simple_space::spawn_player()
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
-	#if 0
+	#if 1
 		if( random::getb() )
-			ec->set_as_circle( radius );
+			ec->set_as_circle( radius * random::getf_range( 0.5f, 3.0f ) );
 		else
-			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
+			ec->set_as_centered_box( radius * random::getf_range(0.5f, 3.0f), radius * random::getf_range( 0.5f, 3.0f ) );
 	#else
 		ec->set_as_circle( radius );
 		e->simple.mass = e->get_transform()->scale;
@@ -48,11 +48,13 @@ entity* scene_simple_space::spawn_player()
 
 		ec->set_collision_flags( scene_simple_space_coll_mario, scene_simple_space_coll_geo | scene_simple_space_coll_mario );
 	}
+/*
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
 		ec->rs_opt.color = make_color( color::green, 0.25f );
 		ec->add_shape( primitive_shape::filled_circle, radius );
 	}
+*/
 
 	if( first_time )
 	{
@@ -78,7 +80,7 @@ void scene_simple_space::pushed()
 	// WORLD GEO
 
 	{
-		int num_colliders = 10;
+		int num_colliders = 5;
 
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );

@@ -30,7 +30,6 @@ struct entity_simple_collision
 
 	float friction = 1.0f;
 	float max_velocity = 5.f;
-	float mass = 1.f;
 	bool is_in_air = false;
 	bool is_affected_by_gravity = false;
 	bool is_bouncy = false;

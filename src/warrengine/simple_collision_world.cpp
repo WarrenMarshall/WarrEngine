@@ -206,12 +206,6 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
-	auto total_mass = ent_a->simple.mass + ent_b->simple.mass;
-	auto mass_pct_a = ent_a->simple.mass / total_mass;
-
-	auto a_is_circle = coll.body_a->type == sc_prim_type::circle;
-	auto b_is_circle = coll.body_b->type == sc_prim_type::circle;
-
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
 		if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
@@ -219,35 +213,40 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			auto velocity_a = ent_a->velocity;
 			auto velocity_b = ent_b->velocity;
 
-			assert( !( velocity_a + velocity_b ).is_zero() );
-
-			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
-
-			auto sa = glm::sign( velocity_a.y );
-			auto sb = glm::sign( velocity_b.y );
-
-			if( sa == sb )
+			if( velocity_a.is_zero() and velocity_b.is_zero() )
 			{
-				if( a_is_circle && b_is_circle )
-				{
-					int warren = 5;
-				}
+				// #bug - this really shouldn't happen but I haven't figured it out yet. this is a band-aid.
+				return;
+			}
+
+			auto dot = vec2::dot( velocity_a, velocity_b );
+
+			if( dot > 0.f )
+			{
 				ent_a->reset_force( { velocity_b, velocity_b.get_size() } );
 				ent_b->reset_force( { velocity_a, velocity_a.get_size() } );
 
 				return;
 			}
 
-			if( velocity_a.is_zero() )	{ velocity_a = velocity_b * -1.f; }
-			if( velocity_b.is_zero() )	{ velocity_b = velocity_a * -1.f; }
+
+			if( velocity_a.is_zero() )
+			{
+				velocity_a = velocity_b * -1.f;
+			}
+			if( velocity_b.is_zero() )
+			{
+				velocity_b = velocity_a * -1.f;
+			}
 
 			auto relative_velocity = velocity_b - velocity_a;
 
 			auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
 			auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
 
-			ent_a->reset_force( { new_dir_a, total_velocity * ( 1.0f - mass_pct_a ) } );
-			ent_b->reset_force( { new_dir_b, total_velocity * mass_pct_a } );
+			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
+			ent_a->reset_force( { new_dir_a, total_velocity * 0.5f } );
+			ent_b->reset_force( { new_dir_b, total_velocity * 0.5f } );
 		}
 	}
 	else
