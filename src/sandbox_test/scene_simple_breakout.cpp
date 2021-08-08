@@ -7,12 +7,29 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_breakout_coll_mario = collision_bits.get();
+static const unsigned scene_simple_breakout_coll_ball = collision_bits.get();
+static const unsigned scene_simple_breakout_coll_paddle = collision_bits.get();
 static const unsigned scene_simple_breakout_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-constexpr float max_raycast_length = 250.f;
+void e_ball::on_collided( simple_collision::pending_collision& coll )
+{
+	if( coll.entity_b->tag == H( "THE_PADDLE" ) )
+	{
+		int warren = 5;
+	}
+}
+
+// ----------------------------------------------------------------------------
+
+void e_paddle::on_collided( simple_collision::pending_collision& coll )
+{
+	if( coll.entity_b->tag == H( "THE_BALL" ) )
+	{
+		int warren = 5;
+	}
+}
 
 // ----------------------------------------------------------------------------
 
@@ -29,53 +46,63 @@ void scene_simple_breakout::pushed()
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	// MARIO
+	// paddle
 	{
-		auto e = add_entity<entity>();
-		e->tag = H( "mario" );
-		e->set_pos( { -80.f, 0.f } );
+		auto e = add_entity<e_paddle>();
+		e->tag = H( "THE_PADDLE" );
+		e->debug_name = "THE_PADDLE";
+		e->set_pos( { 0.f, 0.f } );
+		e->simple.friction = 1.0;
+		e->simple.type = sc_type::kinematic;
+		auto paddle_w = 120.f;
+		auto paddle_h = 16.f;
 		{
-			auto ec = e->add_component<ec_sprite>();
-			ec->rs_opt.color = make_color( color::white, 1.f );
-			ec->init( "anim_player_run" );
+			auto ec = e->add_component<ec_primitive_shape>();
+			ec->rs_opt.color = make_color( color::white, 1.0f );
+			ec->add_shape( primitive_shape::filled_rect, rect( -paddle_w / 2.f, -paddle_h / 2.f, paddle_w, paddle_h ) );
 		}
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
-			//ec->set_as_centered_box( 24.f, 24.f );
-			ec->set_as_circle( 12.f );
-			ec->set_collision_flags( scene_simple_breakout_coll_mario, scene_simple_breakout_coll_geo );
+			ec->set_as_centered_box( paddle_w, paddle_h );
+			ec->set_collision_flags( scene_simple_breakout_coll_paddle, scene_simple_breakout_coll_ball );
 		}
-/*
-		{
-			auto ec = e->add_component<ec_scr_push_outside>();
-		}
-*/
 
-		mario = e;
+		paddle = e;
 	}
 
-	// HIT MARKER
+	// ball
 	{
-		auto e = add_entity<entity>();
-		e->tag = H( "hit_marker" );
-		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.z_bias = zdepth_debug_bias;
+		auto e = add_entity<e_ball>();
+		e->tag = H( "THE_BALL" );
+		e->debug_name = "THE_BALL";
+		e->set_pos( { 0.f, -64.f } );
+		e->simple.friction = 0.0;
+		e->simple.is_bouncy = true;
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::yellow );
+			ec->rs_opt.color = make_color( color::white, 1.0f );
+			ec->add_shape( primitive_shape::filled_circle, 12.f );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->set_as_circle( 12.f );
+			ec->set_collision_flags( scene_simple_breakout_coll_ball, scene_simple_breakout_coll_geo | scene_simple_breakout_coll_paddle );
 		}
 
-		hit_marker = e;
+		e->apply_impulse( { random::get_random_unit_vector(), 2.5f } );
 
+		ball = e;
 	}
 
 	// WORLD GEO
 
 	{
+		auto num_primitives = 2;
 		auto e = add_entity<entity>();
 		e->tag = H( "world_geo" );
+		e->simple.type = sc_type::stationary;
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_primitives ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -100,7 +127,7 @@ void scene_simple_breakout::pushed()
 			}
 		}
 
-		for( int i = 0 ; i < 24 ; ++i )
+		for( int i = 0 ; i < num_primitives ; ++i )
 		{
 			auto x = random::getf_range( -viewport_hw, viewport_hw );
 			auto y = random::getf_range( -viewport_hw, viewport_hw );
@@ -127,6 +154,32 @@ void scene_simple_breakout::pushed()
 			}
 		}
 
+		// 4 walls
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+		}
+		{
+			auto ec = e->add_component<ec_simple_collision_body>();
+			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+		}
+
 		world_geo = e;
 	}
 }
@@ -142,37 +195,16 @@ void scene_simple_breakout::draw()
 
 	scene::draw();
 	render::draw_world_axis();
-
-	if( b_show_ray )
-	{
-		render::state->color = make_color( color::orange );
-		auto start = mario->get_pos();
-		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
-	}
 }
 
 void scene_simple_breakout::draw_ui()
 {
 	scene::draw_ui();
-	draw_title( "Simple Break Out" );
 }
 
 void scene_simple_breakout::update()
 {
 	scene::update();
-
-	// show the raycast beam if the right stick is being pushed
-	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
-}
-
-void scene_simple_breakout::reset_collision_trace_results()
-{
-	hit_marker->get_component<ec_primitive_shape>()->shapes.clear();
-
-	for( auto& iter : world_geo->get_components<ec_simple_collision_body>() )
-	{
-		iter->rs_opt.color = make_color( color::dark_teal );
-	}
 }
 
 bool scene_simple_breakout::on_input_pressed( const input_event* evt )

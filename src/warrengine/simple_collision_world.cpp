@@ -172,25 +172,31 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
-	auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
-	auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
+	//auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
+	//auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
 
-	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
+	auto a_is_dynamic = ent_a->simple.is_dynamic();
+	auto a_is_kinematic = ent_a->simple.is_kinematic();
+	auto b_is_dynamic = ent_b->simple.is_dynamic();
+	auto b_is_kinematic = ent_b->simple.is_kinematic();
+
+	auto dynamic_count = a_is_dynamic + b_is_dynamic;
+	auto kinematic_count = a_is_kinematic + b_is_kinematic;;
+
+	if( dynamic_count == 2 )
 	{
-		if( a_is_circle and b_is_circle )
+		ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+		ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+	}
+	else if( dynamic_count == 1 and kinematic_count == 1 )
+	{
+		if( a_is_dynamic )
 		{
-			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
-			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness );
 		}
 		else
 		{
-			//auto dot = vec2::dot( ent_a->velocity, ent_b->velocity );
-			//log( "{}", dot );
-			//log( "{} : {}, {}", ent_a->debug_name, ent_a->velocity.x, ent_a->velocity.y );
-			//log( "{} : {}, {}", ent_b->debug_name, ent_b->velocity.x, ent_b->velocity.y );
-
-			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
-			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness );
 		}
 	}
 	else
@@ -205,6 +211,13 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 {
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
+
+	ent_a->on_collided( coll );
+
+	auto coll_b = coll;
+	std::swap( coll_b.entity_a, coll_b.entity_b );
+	std::swap( coll_b.body_a, coll_b.body_b );
+	ent_b->on_collided( coll_b );
 
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
@@ -284,6 +297,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 void simple_collision_world::resolve_touch( simple_collision::pending_collision& coll )
 {
 	coll.entity_a->simple.is_in_air = false;
+	coll.entity_a->on_touched( coll );
 }
 
 }

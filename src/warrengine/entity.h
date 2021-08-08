@@ -27,6 +27,10 @@ struct entity_simple_collision
 	{
 		return ( type == sc_type::stationary );
 	}
+	[[nodiscard]] bool is_kinematic()
+	{
+		return ( type == sc_type::kinematic );
+	}
 
 	float friction = 1.0f;
 	float max_velocity = 5.f;
@@ -204,10 +208,8 @@ struct entity
 	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
 	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
 
-/*
 	virtual void on_collided( simple_collision::pending_collision& coll );
 	virtual void on_touched( simple_collision::pending_collision& coll );
-*/
 
 private:
 

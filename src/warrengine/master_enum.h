@@ -479,6 +479,7 @@ enum_end
 enum_begin( sc_type )
 	dynamic = 0,
 	stationary,
+	kinematic,
 enum_end
 
 // ----------------------------------------------------------------------------
