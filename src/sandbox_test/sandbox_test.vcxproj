@@ -186,7 +186,6 @@
     <ClCompile Include="scene_simple_collision.cpp" />
     <ClCompile Include="scene_simple_minigolf.cpp" />
     <ClCompile Include="scene_simple_platformer.cpp" />
-    <ClCompile Include="scene_simple_rpg.cpp" />
     <ClCompile Include="scene_simple_space.cpp" />
     <ClCompile Include="scene_sound_board.cpp" />
     <ClCompile Include="scene_textures.cpp" />
@@ -214,7 +213,6 @@
     <ClInclude Include="scene_simple_collision.h" />
     <ClInclude Include="scene_simple_minigolf.h" />
     <ClInclude Include="scene_simple_platformer.h" />
-    <ClInclude Include="scene_simple_rpg.h" />
     <ClInclude Include="scene_simple_space.h" />
     <ClInclude Include="scene_sound_board.h" />
     <ClInclude Include="scene_textures.h" />

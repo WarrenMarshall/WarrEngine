@@ -66,7 +66,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			gameplay_scene->player = e;
 
 			tile->idx = tile_map_asset::tile::empty;
-
 		}
 		break;
 	}
@@ -120,7 +119,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 	{
 		if( !player->simple.is_in_air )
 		{
-			player->apply_impulse( { evt->delta * vec2::y_axis, 5.0f } );
+			player->apply_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
 			return true;
 		}
 	}

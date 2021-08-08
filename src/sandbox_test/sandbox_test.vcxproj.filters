@@ -66,9 +66,6 @@
     <ClCompile Include="scene_simple_platformer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_rpg.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="scene_simple_space.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -137,9 +134,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_platformer.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_simple_rpg.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_space.h">

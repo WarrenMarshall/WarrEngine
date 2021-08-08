@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "games", "games", "{DB7AE77A
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tpl_asteroids", "tpl_asteroids\tpl_asteroids.vcxproj", "{93D0999D-EF17-4335-84E1-07E16AF5381F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gravity_flip", "gravity_flip\gravity_flip.vcxproj", "{2572DF68-3AA9-4727-B83D-CFF9D66B7067}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -72,18 +70,6 @@ Global
 		{93D0999D-EF17-4335-84E1-07E16AF5381F}.Release|x64.Build.0 = Release|x64
 		{93D0999D-EF17-4335-84E1-07E16AF5381F}.Release|x86.ActiveCfg = Release|Win32
 		{93D0999D-EF17-4335-84E1-07E16AF5381F}.Release|x86.Build.0 = Release|Win32
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Debug|x64.ActiveCfg = Debug|x64
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Debug|x64.Build.0 = Debug|x64
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Debug|x86.ActiveCfg = Debug|Win32
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Debug|x86.Build.0 = Debug|Win32
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.DRelease|x64.ActiveCfg = Release|x64
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.DRelease|x64.Build.0 = Release|x64
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.DRelease|x86.ActiveCfg = Release|Win32
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.DRelease|x86.Build.0 = Release|Win32
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Release|x64.ActiveCfg = Release|x64
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Release|x64.Build.0 = Release|x64
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Release|x86.ActiveCfg = Release|Win32
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,7 +79,6 @@ Global
 		{FF3ABF50-2D5C-40DC-80C4-FE4D6321601D} = {1C4CD8F6-41B0-4B50-91CA-E3E3E5AF61AC}
 		{DB7AE77A-E49D-4BAD-9EF2-B3D86C8210EC} = {1C4CD8F6-41B0-4B50-91CA-E3E3E5AF61AC}
 		{93D0999D-EF17-4335-84E1-07E16AF5381F} = {DB7AE77A-E49D-4BAD-9EF2-B3D86C8210EC}
-		{2572DF68-3AA9-4727-B83D-CFF9D66B7067} = {DB7AE77A-E49D-4BAD-9EF2-B3D86C8210EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1078A662-EFEA-4450-B28B-9C22FD08C132}

@@ -92,7 +92,6 @@ void scene_main_menu::draw_ui()
 
 			g_ui->divider_control()->done();
 			do_menu_button<scene_simple_space>( H( "button_simple_space" ), "Space Drifter" );
-			do_menu_button<scene_simple_rpg>( H( "button_simple_rpg" ), "RPG" );
 			do_menu_button<scene_simple_minigolf>( H( "button_simple_minigolf" ), "Mini Golf" );
 			do_menu_button<scene_simple_breakout>( H( "button_simple_breakout" ), "Break Out" );
 			do_menu_button<scene_simple_platformer>( H( "button_simple_platformer" ), "Platformer" );

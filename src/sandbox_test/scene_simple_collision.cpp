@@ -30,12 +30,11 @@ entity* scene_simple_collision::spawn_player()
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
-	e->simple.friction = 0.0f;
-	e->simple.max_velocity = 3.0f;
-	e->simple.is_bouncy = true;
+	e->simple.friction = 0.05f;
+	e->simple.max_velocity = 5.0f;
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
-		//ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
+
 		if( random::getb() )
 			ec->set_as_circle( player_radius * random::getf_range( 0.5f, 2.0f ) );
 		else
@@ -46,7 +45,7 @@ entity* scene_simple_collision::spawn_player()
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
 		ec->rs_opt.color = make_color( color::white, 1.0f );
-		ec->add_shape( primitive_shape::point, 4.0f );
+		ec->add_shape( primitive_shape::point );
 	}
 
 	first_player = false;
@@ -254,6 +253,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		break;
 
 		case input_id::gamepad_button_y:
+		case input_id::key_space:
 		{
 			spawn_player();
 		}

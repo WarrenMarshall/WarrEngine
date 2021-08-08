@@ -46,7 +46,7 @@ entity* scene_simple_space::spawn_player()
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
 		ec->rs_opt.color = make_color( color::white, 1.0f );
-		ec->add_shape( primitive_shape::point, 4.0f );
+		ec->add_shape( primitive_shape::point );
 	}
 
 	if( first_time )

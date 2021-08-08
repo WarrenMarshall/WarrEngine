@@ -9,6 +9,12 @@
 	"filename" "gfx/rpg_sheet.png"
 }
 
+{
+	"type" "src_texture"
+	"tag" "tex_platformer_tile_set_master"
+	"filename" "gfx/platformer_tileset.png"
+}
+
 # ---------------------------------------------------------
 # tile sets
 # ---------------------------------------------------------
@@ -20,8 +26,16 @@
 	"tile_sz" "16"
 }
 
+{
+	"type" "tile_set"
+	"tag" "ts_platformer"
+	"texture_tag" "tex_platformer_tile_set_master"
+	"tile_sz" "16"
+}
+
 # ---------------------------------------------------------
 # tile maps
+
 # ---------------------------------------------------------
 
 {
@@ -34,4 +48,10 @@
 	"type" "tile_map"
 	"tag" "tm_simple_rpg"
 	"filename" "tilemaps/simple_rpg.tmx"
+}
+
+{
+	"type" "tile_map"
+	"tag" "tm_platformer_level_01"
+	"filename" "tilemaps/platformer.tmx"
 }
