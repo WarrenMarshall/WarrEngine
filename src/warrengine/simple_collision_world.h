@@ -17,6 +17,7 @@ struct simple_collision_world
 	void generate_collision_set();
 	void push_apart( simple_collision::pending_collision& coll );
 	void resolve_collision( simple_collision::pending_collision& coll );
+	void resolve_touch( simple_collision::pending_collision& coll );
 };
 
 }

@@ -24,9 +24,11 @@ void entity::pre_update()
 {
 	life_cycle.pre_update();
 
+	simple.is_in_air = true;
+
 	if( simple.is_affected_by_gravity )
 	{
-		apply_force( { vec2::down, fixed_time_step::per_second( simple_collision_gravity_default ) } );
+		apply_force( { vec2::y_axis, simple_collision_gravity_default } );
 	}
 
 	apply_forces();

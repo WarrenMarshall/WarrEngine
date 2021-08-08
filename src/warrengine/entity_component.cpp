@@ -801,6 +801,11 @@ void ec_simple_collision_body::draw()
 			case sc_body_collider_type::solid:
 			{
 				render::state->color = make_color( color::light_green );
+
+				if( parent_entity->simple.is_stationary() )
+				{
+					render::state->color = make_color( color::dark_green );
+				}
 			}
 			break;
 
@@ -916,7 +921,7 @@ void ec_simple_collision_body::set_as_polygon( std::vector<vec2> vs )
 
 void ec_simple_collision_body::set_body_collider_type( e_sc_body_collider_type type )
 {
-	this->collider_type = collider_type;
+	this->collider_type = type;
 }
 
 // does a broad phase check against "scc" to see if these bodies are intersecting

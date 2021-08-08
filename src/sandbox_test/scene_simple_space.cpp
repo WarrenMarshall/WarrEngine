@@ -29,11 +29,6 @@ entity* scene_simple_space::spawn_player()
 	e->simple.is_bouncy = true;
 
 	{
-		auto ec = e->add_component<ec_sprite>();
-		ec->rs_opt.color = make_color( color::white, 1.f );
-		ec->init( "anim_player_run" );
-	}
-	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
 	#if 1
@@ -48,13 +43,11 @@ entity* scene_simple_space::spawn_player()
 
 		ec->set_collision_flags( scene_simple_space_coll_mario, scene_simple_space_coll_geo | scene_simple_space_coll_mario );
 	}
-/*
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
-		ec->rs_opt.color = make_color( color::green, 0.25f );
-		ec->add_shape( primitive_shape::filled_circle, radius );
+		ec->rs_opt.color = make_color( color::white, 1.0f );
+		ec->add_shape( primitive_shape::point, 4.0f );
 	}
-*/
 
 	if( first_time )
 	{

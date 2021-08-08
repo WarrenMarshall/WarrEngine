@@ -152,7 +152,7 @@ void simple_collision_world::generate_collision_set()
 				auto coll = body_a->intersects_with_manifold( body_b );
 				if( coll.has_value() )
 				{
-					//pending_touches.push_back( *coll );
+					resolve_touch( *coll );
 				}
 			}
 			break;
@@ -259,7 +259,6 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 		}
 	}
 
-#if 1
 	if( !ent_a->simple.is_bouncy )
 	{
 		if( ent_a->simple.is_dynamic() and ent_b->simple.is_stationary() )
@@ -280,7 +279,11 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			}
 		}
 	}
-#endif
+}
+
+void simple_collision_world::resolve_touch( simple_collision::pending_collision& coll )
+{
+	coll.entity_a->simple.is_in_air = false;
 }
 
 }

@@ -22,7 +22,7 @@ void scene_gameplay::draw()
 {
 	scene::draw();
 
-	render::draw_world_axis();
+	//render::draw_world_axis();
 }
 
 f_decl_tile_map_spawn_entity( spawn_entity )
@@ -38,6 +38,8 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			auto e = scene->add_entity<e_player>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+			e->simple.is_affected_by_gravity = true;
+			e->simple.friction = 0.1f;
 
 			{
 				auto ec = e->add_component<ec_sprite>();
@@ -60,11 +62,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 
 				ec->set_collision_flags( coll_player, coll_world );
 			}
-/*
-			{
-				auto ec = e->add_component<ec_scr_push_outside>();
-			}
-*/
 
 			gameplay_scene->player = e;
 
@@ -87,6 +84,7 @@ void scene_gameplay::pushed()
 
 	{
 		world = add_entity<entity>();
+		world->simple.type = sc_type::stationary;
 
 		{
 			auto ec = world->add_component<ec_tile_map>();
@@ -122,7 +120,7 @@ bool scene_gameplay::on_input_pressed( const input_event* evt )
 	{
 		if( !player->simple.is_in_air )
 		{
-			player->apply_force( { evt->delta * vec2::y_axis, 3.5f } );
+			player->apply_impulse( { evt->delta * vec2::y_axis, 5.0f } );
 			return true;
 		}
 	}
