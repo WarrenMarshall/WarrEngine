@@ -348,12 +348,16 @@ void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, ent
 {
 }
 
-void entity::on_collided( simple_collision::pending_collision& coll )
+// returns TRUE if the collision was handled
+bool entity::on_collided( simple_collision::pending_collision& coll )
 {
+	return false;
 }
 
-void entity::on_touched( simple_collision::pending_collision& coll )
+// returns TRUE if the touch was handled
+bool entity::on_touched( simple_collision::pending_collision& coll )
 {
+	return false;
 }
 
 bool entity::can_be_deleted()

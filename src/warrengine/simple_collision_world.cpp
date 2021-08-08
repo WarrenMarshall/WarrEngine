@@ -212,12 +212,19 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
-	ent_a->on_collided( coll );
+	if( ent_a->on_collided( coll ) )
+	{
+		return;
+	}
 
 	auto coll_b = coll;
 	std::swap( coll_b.entity_a, coll_b.entity_b );
 	std::swap( coll_b.body_a, coll_b.body_b );
-	ent_b->on_collided( coll_b );
+
+	if( ent_b->on_collided( coll_b ) )
+	{
+		return;
+	}
 
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{

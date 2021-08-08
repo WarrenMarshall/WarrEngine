@@ -5,14 +5,14 @@ using namespace war;
 
 struct e_ball : entity
 {
-	virtual void on_collided( simple_collision::pending_collision& coll ) override;
+	virtual bool on_collided( simple_collision::pending_collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
 
 struct e_paddle : entity
 {
-	virtual void on_collided( simple_collision::pending_collision& coll ) override;
+	virtual bool on_collided( simple_collision::pending_collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------

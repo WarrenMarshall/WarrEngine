@@ -13,22 +13,28 @@ static const unsigned scene_simple_breakout_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-void e_ball::on_collided( simple_collision::pending_collision& coll )
+bool e_ball::on_collided( simple_collision::pending_collision& coll )
 {
 	if( coll.entity_b->tag == H( "THE_PADDLE" ) )
 	{
-		int warren = 5;
 	}
+
+	return false;
 }
 
 // ----------------------------------------------------------------------------
 
-void e_paddle::on_collided( simple_collision::pending_collision& coll )
+bool e_paddle::on_collided( simple_collision::pending_collision& coll )
 {
 	if( coll.entity_b->tag == H( "THE_BALL" ) )
 	{
-		int warren = 5;
+		auto dir_from_center = coll.entity_b->get_transform()->pos - get_transform()->pos;
+		coll.entity_b->reset_force( { dir_from_center, coll.entity_b->velocity.get_size() } );
+
+		return true;
 	}
+
+	return false;
 }
 
 // ----------------------------------------------------------------------------
