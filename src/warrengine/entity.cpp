@@ -105,7 +105,6 @@ void entity::compile_velocity()
 void entity::reset_force( const entity_simple_force& force )
 {
 	// reverse out the current velocity first
-	//apply_impulse( { vec2::normalize( velocity ), -( velocity.get_size() ) } );
 	velocity = vec2::zero;
 
 	// then add the new velocity

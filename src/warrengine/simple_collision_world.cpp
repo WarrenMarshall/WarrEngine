@@ -184,35 +184,84 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
+	auto a_is_circle = coll.body_a->type == sc_prim_type::circle;
+	auto b_is_circle = coll.body_b->type == sc_prim_type::circle;
+
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
-		// dynamic vs dynamic
-
-		if( ent_a->simple.is_bouncy )
+		if( a_is_circle && b_is_circle )
 		{
-			auto relative_velocity = ent_b->velocity - ent_a->velocity;
+			// circle to circle
 
-			auto dot = vec2::dot( vec2::normalize( relative_velocity ), vec2::normalize( coll.normal ) );
-
-			if( dot > 0.f )
+			if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
 			{
-				return;
+				auto velocity_a = ent_a->velocity;
+				auto velocity_b = ent_b->velocity;
+
+				if( ( velocity_a + velocity_b ).is_zero() )	{ return; }
+				if( velocity_a.is_zero() )	{ velocity_a = velocity_b * -1.f; }
+				if( velocity_b.is_zero() )	{ velocity_b = velocity_a * -1.f; }
+
+				auto relative_velocity = velocity_b - velocity_a;
+
+				auto dot = vec2::dot( vec2::normalize( relative_velocity ), vec2::normalize( coll.normal ) );
+
+				if( isnan( dot ) )
+				{
+					log_fatal( "damn it" );
+				}
+
+				auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
+				auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
+				auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
+
+				auto total_mass = ent_a->simple.mass + ent_b->simple.mass;
+				auto mass_pct_a = ent_a->simple.mass / total_mass;
+
+				ent_a->reset_force( { new_dir_a, total_velocity * ( 1.0f - mass_pct_a ) } );
+				ent_b->reset_force( { new_dir_b, total_velocity * mass_pct_a } );
 			}
+		}
+		else
+		{
+			// circle to box/polygon
 
-			auto total_velocity = ent_a->velocity.get_size() + ent_b->velocity.get_size();
+			if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
+			{
+				auto velocity_a = ent_a->velocity;
+				auto velocity_b = ent_b->velocity;
 
-			auto new_dir_a = vec2::reflect_across_normal( ent_a->velocity, coll.normal );
-			auto new_dir_b = ent_a->velocity;
+				if( ( velocity_a + velocity_b ).is_zero() )	{ return; }
+				if( velocity_a.is_zero() )	{ velocity_a = velocity_b * -1.f; }
+				if( velocity_b.is_zero() )	{ velocity_b = velocity_a * -1.f; }
 
-			ent_b->reset_force( { new_dir_b, total_velocity * 0.5f } );
-			ent_a->reset_force( { new_dir_a, total_velocity * 0.5f } );
+				auto relative_velocity = velocity_b - velocity_a;
+
+				auto dot = vec2::dot( vec2::normalize( relative_velocity ), vec2::normalize( coll.normal ) );
+
+				if( isnan( dot ) )
+				{
+					log_fatal( "damn it" );
+				}
+
+				auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
+				auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
+				auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
+
+				auto total_mass = ent_a->simple.mass + ent_b->simple.mass;
+				auto mass_pct_a = ent_a->simple.mass / total_mass;
+
+				ent_a->reset_force( { new_dir_a, total_velocity * ( 1.0f - mass_pct_a ) } );
+				ent_b->reset_force( { new_dir_b, total_velocity * mass_pct_a } );
+			}
 		}
 	}
 	else
 	{
-		if( ent_a->simple.is_bouncy )
+		// dynamic vs stationary
+
+		if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
 		{
-			// dynamic vs stationary
 			ent_a->reflect_across( coll.normal );
 		}
 	}

@@ -31,7 +31,8 @@ void scene_simple_minigolf::pushed()
 		e->tag = H( "player" );
 		e->set_pos( { -80.f, 0.f } );
 		e->set_scale( 2.0f );
-		e->simple.friction = 0.1f;
+		e->simple.friction = 0.005f;
+		e->simple.is_bouncy = true;
 		{
 			auto ec = e->add_component<ec_sprite>();
 			ec->rs_opt.color = make_color( color::white, 1.f );
@@ -176,7 +177,7 @@ void scene_simple_minigolf::update()
 
 	b_is_aiming = false;
 
-	if( player->velocity.get_size() < 1.f )
+	if( player->velocity.get_size() < 0.1f )
 	{
 		// show the aim beam if the left stick is being pushed
 		b_is_aiming = g_engine->input.get_axis_state( input_id::gamepad_left_stick ).get_size_fast() > 0.f;
@@ -191,7 +192,7 @@ bool scene_simple_minigolf::on_input_pressed( const input_event* evt )
 		{
 			if( b_is_aiming )
 			{
-				player->apply_impulse( { -aim_dir, aim_force * 500.f } );
+				player->apply_impulse( { aim_dir, aim_force * 500.f } );
 			}
 			return true;
 		}

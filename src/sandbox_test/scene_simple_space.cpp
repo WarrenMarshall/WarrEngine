@@ -23,7 +23,7 @@ entity* scene_simple_space::spawn_player()
 {
 	constexpr auto radius = 12.f;
 	auto e = add_entity<entity>();
-	e->set_scale( random::getf_range( 1.0f, 2.0f ) );
+	e->set_scale( random::getf_range( 0.5f, 3.0f ) );
 	e->simple.friction = 0.0f;
 	e->simple.max_velocity = 5.0f;
 	e->simple.is_bouncy = true;
@@ -36,13 +36,14 @@ entity* scene_simple_space::spawn_player()
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
-	#if 1
+	#if 0
 		if( random::getb() )
 			ec->set_as_circle( radius );
 		else
 			ec->set_as_centered_box( radius * 2.f, radius * 2.f );
 	#else
 		ec->set_as_circle( radius );
+		e->simple.mass = e->get_transform()->scale;
 	#endif
 
 		ec->set_collision_flags( scene_simple_space_coll_mario, scene_simple_space_coll_geo | scene_simple_space_coll_mario );

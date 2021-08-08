@@ -30,9 +30,9 @@ entity* scene_simple_collision::spawn_player()
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 2.0f );
-	e->simple.friction = 0.1f;
+	e->simple.friction = 0.0f;
 	e->simple.max_velocity = 3.0f;
-	//e->simple.is_bouncy = true;
+	e->simple.is_bouncy = true;
 	{
 		auto ec = e->add_component<ec_sprite>();
 		ec->rs_opt.color = make_color( color::white, 1.f );
@@ -48,6 +48,11 @@ entity* scene_simple_collision::spawn_player()
 		auto ec = e->add_component<ec_primitive_shape>();
 		ec->rs_opt.color = make_color( color::green, 0.25f );
 		ec->add_shape( primitive_shape::filled_circle, player_radius );
+	}
+
+	if( first_player )
+	{
+		e->simple.mass = 9.0f;
 	}
 
 	first_player = false;
@@ -231,7 +236,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 		case input_id::key_1:
 		{
 			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_centered_box( player_radius * 2.f, player_radius * 2.f );
+			ec->set_as_centered_box( player_radius * 8.f, player_radius * 0.5f );
 		}
 		break;
 
