@@ -599,7 +599,7 @@ vec2 vec2::operator/=( float v )
 
 float vec2::get_size() const
 {
-	return glm::sqrt( vec2::get_size_fast() );
+	return glm::length( glm::vec2( x, y ) );
 }
 
 float vec2::get_size_fast() const
@@ -628,16 +628,10 @@ void vec2::operator=( const vec2& v )
 	y = v.y;
 }
 
-float vec2::get_distance_between( const vec2& a, const vec2& b )
-{
-	return ( a - b ).get_size();
-}
-
 vec2 vec2::normalize( const vec2& v )
 {
-	auto sz = v.get_size();
-
-	return v / ( sz ? sz : 1.f );
+	auto nv = glm::normalize( glm::vec2( v.x, v.y ) );
+	return vec2( nv.x, nv.y );
 }
 
 vec2 vec2::normalize()
@@ -693,7 +687,7 @@ vec2 vec2::reflect_across_normal( const vec2& v, const vec2& n )
 {
 	auto nn = n.normalize();
 
-	glm::vec3 reflected_dir = glm::reflect( glm::vec3( v.x, v.y, 0.f ), glm::vec3( nn.x, nn.y, 0.f ) );
+	auto reflected_dir = glm::reflect( glm::vec2( v.x, v.y ), glm::vec2( nn.x, nn.y ) );
 	return vec2( reflected_dir.x, reflected_dir.y );
 }
 
@@ -711,8 +705,8 @@ vec2 vec2::cross( const vec2& a, const vec2& b)
 float vec2::dot( const vec2& a, const vec2& b )
 {
 	return glm::dot(
-		glm::normalize( glm::vec3( a.x, a.y, 0.f ) ),
-		glm::normalize( glm::vec3( b.x, b.y, 0.f ) )
+		glm::normalize( glm::vec2( a.x, a.y ) ),
+		glm::normalize( glm::vec2( b.x, b.y ) )
 	);
 }
 

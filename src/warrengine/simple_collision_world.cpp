@@ -102,9 +102,18 @@ void simple_collision_world::generate_collision_set()
 		{
 			if( scc_a->intersects_with( scc_b ) )
 			{
-				// the bodies are touching so add them into the contact list if the pair is unique
+				// if the bodies are touching and we haven't seen this pair
+				// before, add them into the set
+				//
+				// this prevents us from processing the same collision set twice
+				// every time. so basically avoids "A hit B" and then "B hit A"
+				// - we only care that "A hit B".
 
-				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
+				if( !colliding_bodies_set.contains( std::make_pair( scc_a, scc_b ) )
+					and !colliding_bodies_set.contains( std::make_pair( scc_b, scc_a ) ) )
+				{
+					colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
+				}
 			}
 		}
 	}
@@ -113,6 +122,14 @@ void simple_collision_world::generate_collision_set()
 
 	//pending_collisions.clear();
 	//pending_touches.clear();
+
+#if 0
+	if( colliding_bodies_set.size() )
+	{
+		log_div();
+		//log( "{} colliding bodies", colliding_bodies_set.size() );
+	}
+#endif
 
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
@@ -167,6 +184,11 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 		}
 		else
 		{
+			//auto dot = vec2::dot( ent_a->velocity, ent_b->velocity );
+			//log( "{}", dot );
+			//log( "{} : {}, {}", ent_a->debug_name, ent_a->velocity.x, ent_a->velocity.y );
+			//log( "{} : {}, {}", ent_b->debug_name, ent_b->velocity.x, ent_b->velocity.y );
+
 			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
 			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
 		}
@@ -184,76 +206,48 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
+	auto total_mass = ent_a->simple.mass + ent_b->simple.mass;
+	auto mass_pct_a = ent_a->simple.mass / total_mass;
+
 	auto a_is_circle = coll.body_a->type == sc_prim_type::circle;
 	auto b_is_circle = coll.body_b->type == sc_prim_type::circle;
 
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
-		if( a_is_circle && b_is_circle )
+		if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
 		{
-			// circle to circle
+			auto velocity_a = ent_a->velocity;
+			auto velocity_b = ent_b->velocity;
 
-			if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
+			assert( !( velocity_a + velocity_b ).is_zero() );
+
+			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
+
+			auto sa = glm::sign( velocity_a.y );
+			auto sb = glm::sign( velocity_b.y );
+
+			if( sa == sb )
 			{
-				auto velocity_a = ent_a->velocity;
-				auto velocity_b = ent_b->velocity;
-
-				if( ( velocity_a + velocity_b ).is_zero() )	{ return; }
-				if( velocity_a.is_zero() )	{ velocity_a = velocity_b * -1.f; }
-				if( velocity_b.is_zero() )	{ velocity_b = velocity_a * -1.f; }
-
-				auto relative_velocity = velocity_b - velocity_a;
-
-				auto dot = vec2::dot( vec2::normalize( relative_velocity ), vec2::normalize( coll.normal ) );
-
-				if( isnan( dot ) )
+				if( a_is_circle && b_is_circle )
 				{
-					log_fatal( "damn it" );
+					int warren = 5;
 				}
+				ent_a->reset_force( { velocity_b, velocity_b.get_size() } );
+				ent_b->reset_force( { velocity_a, velocity_a.get_size() } );
 
-				auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
-				auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
-				auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
-
-				auto total_mass = ent_a->simple.mass + ent_b->simple.mass;
-				auto mass_pct_a = ent_a->simple.mass / total_mass;
-
-				ent_a->reset_force( { new_dir_a, total_velocity * ( 1.0f - mass_pct_a ) } );
-				ent_b->reset_force( { new_dir_b, total_velocity * mass_pct_a } );
+				return;
 			}
-		}
-		else
-		{
-			// circle to box/polygon
 
-			if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
-			{
-				auto velocity_a = ent_a->velocity;
-				auto velocity_b = ent_b->velocity;
+			if( velocity_a.is_zero() )	{ velocity_a = velocity_b * -1.f; }
+			if( velocity_b.is_zero() )	{ velocity_b = velocity_a * -1.f; }
 
-				if( ( velocity_a + velocity_b ).is_zero() )	{ return; }
-				if( velocity_a.is_zero() )	{ velocity_a = velocity_b * -1.f; }
-				if( velocity_b.is_zero() )	{ velocity_b = velocity_a * -1.f; }
+			auto relative_velocity = velocity_b - velocity_a;
 
-				auto relative_velocity = velocity_b - velocity_a;
+			auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
+			auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
 
-				auto dot = vec2::dot( vec2::normalize( relative_velocity ), vec2::normalize( coll.normal ) );
-
-				if( isnan( dot ) )
-				{
-					log_fatal( "damn it" );
-				}
-
-				auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
-				auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
-				auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
-
-				auto total_mass = ent_a->simple.mass + ent_b->simple.mass;
-				auto mass_pct_a = ent_a->simple.mass / total_mass;
-
-				ent_a->reset_force( { new_dir_a, total_velocity * ( 1.0f - mass_pct_a ) } );
-				ent_b->reset_force( { new_dir_b, total_velocity * mass_pct_a } );
-			}
+			ent_a->reset_force( { new_dir_a, total_velocity * ( 1.0f - mass_pct_a ) } );
+			ent_b->reset_force( { new_dir_b, total_velocity * mass_pct_a } );
 		}
 	}
 	else

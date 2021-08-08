@@ -252,7 +252,6 @@ struct vec2
 
 	[[nodiscard]] static vec2 compute_uv_tiling( const texture_asset* texture, const rect& rc );
 	[[nodiscard]] static vec2 normalize( const vec2& v );
-	[[nodiscard]] static float get_distance_between( const vec2& a, const vec2& b );
 	[[nodiscard]] static vec2 dir_from_angle( float angle );
 	[[nodiscard]] static float angle_from_dir( const vec2& dir );
 	[[nodiscard]] static float clamped_angle_from_dir( const vec2& dir );

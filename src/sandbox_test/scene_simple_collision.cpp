@@ -50,9 +50,11 @@ entity* scene_simple_collision::spawn_player()
 		ec->add_shape( primitive_shape::filled_circle, player_radius );
 	}
 
+	e->debug_name = "OTHER";
 	if( first_player )
 	{
 		e->simple.mass = 9.0f;
+		e->debug_name = "PLAYER";
 	}
 
 	first_player = false;
@@ -69,8 +71,8 @@ void scene_simple_collision::pushed()
 
 	// MARIO
 	player = spawn_player();
-	player->add_delta_pos( { -40.f, 0.f } );
-	//spawn_player();
+	player->add_delta_pos( { 0.f, 80.f } );
+	spawn_player();
 
 	// HIT MARKER
 	{
@@ -90,10 +92,10 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		int num_primitives = 2;
+		int num_primitives = 0;
 
 		auto e = add_entity<entity>();
-		e->tag = H( "world_geo" );
+		e->debug_name = "WORLD";
 		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
