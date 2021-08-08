@@ -17,7 +17,7 @@ void engine::launch( int argc, char* argv [] )
 
 	g_logfile = std::make_unique<log_file>();
 	g_logfile->init( g_base_game->internal_name );
-	log( "Logging started" );
+	g_logfile->time_stamp( "Started" );
 
 	log( "Creating engine" );
 	g_engine = std::make_unique<engine>();

@@ -100,7 +100,8 @@ size_t vertex_buffer::assign_texture_slot( const texture_asset* texture )
 	texture_slots[ total_texture_slots_used ] = texture;
 	total_texture_slots_used++;
 
-	if( texture )
+	//if( texture )	// #check how could this ever be null? can we remove this branch? tread carefully tho ...
+	assert( texture );	// adding this for debug - if this never triggers, remove it and the branch on the line above
 	{
 		cached_texture_slot.set( texture, total_texture_slots_used - 1 );
 	}
