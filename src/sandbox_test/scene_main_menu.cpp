@@ -88,6 +88,7 @@ void scene_main_menu::draw_ui()
 
 			g_ui->divider_control()->done();
 			do_menu_button<scene_box2d>( H( "button_box2d" ), "Box2D Collision" );
+			do_menu_button<scene_simple_collision>( H( "button_simple_collision" ), "Simple Collision" );
 
 			g_ui->divider_control()->done();
 			do_menu_button<scene_simple_interact>( H( "button_simple_interact" ), "Simple Interaction" );

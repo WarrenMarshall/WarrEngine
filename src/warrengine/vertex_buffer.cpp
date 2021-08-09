@@ -86,14 +86,11 @@ size_t vertex_buffer::assign_texture_slot( const texture_asset* texture )
 	// if all texture slots are currently in use, flush and reset the vertex
 	// array.
 
-	#if 1 // #render_perf
-		assert( total_texture_slots_used < g_engine->render_api.max_texture_image_units );
-	#else
-		if( total_texture_slots_used == g_engine->render_api.max_texture_image_units )
-		{
-			vao->flush_and_reset();
-		}
-	#endif
+	if( total_texture_slots_used == g_engine->render_api.max_texture_image_units )
+	{
+		vao->flush_and_reset( draw_call::opaque );
+		vao->flush_and_reset( draw_call::transparent );
+	}
 
 	// add the new texture to the slot list
 

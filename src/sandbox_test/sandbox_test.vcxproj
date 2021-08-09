@@ -183,6 +183,7 @@
     <ClCompile Include="scene_particles.cpp" />
     <ClCompile Include="scene_noise.cpp" />
     <ClCompile Include="scene_simple_breakout.cpp" />
+    <ClCompile Include="scene_simple_collision.cpp" />
     <ClCompile Include="scene_simple_interact.cpp" />
     <ClCompile Include="scene_simple_platformer.cpp" />
     <ClCompile Include="scene_simple_drift.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="scene_particles.h" />
     <ClInclude Include="scene_noise.h" />
     <ClInclude Include="scene_simple_breakout.h" />
+    <ClInclude Include="scene_simple_collision.h" />
     <ClInclude Include="scene_simple_interact.h" />
     <ClInclude Include="scene_simple_platformer.h" />
     <ClInclude Include="scene_simple_drift.h" />
