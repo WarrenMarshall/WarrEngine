@@ -12,6 +12,7 @@
 #include "random.h"
 #include "datatypes.h"
 #include "scoped_vars.h"
+#include "util_geo.h"
 
 #include "bit_flag_generator.h"
 #include "coord.h"

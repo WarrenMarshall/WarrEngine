@@ -15,7 +15,7 @@ void scene_textures::pushed()
 	tex_crate = g_engine->find_asset<texture_asset>( "tex_crate_01" );
 	grad_horizontal = g_engine->find_asset<texture_asset>( "gradient_horizontal" );
 	grad_vertical = g_engine->find_asset<texture_asset>( "gradient_vertical" );
-	anim_mario = g_engine->find_asset<texture_asset>( "anim_player_run" );
+	anim_player = g_engine->find_asset<texture_asset>( "anim_player_run" );
 	anim_coin = g_engine->find_asset<texture_asset>( "anim_coin" );
 
 	anim_offsets[ 0 ] = random::getf();
@@ -90,11 +90,11 @@ void scene_textures::draw_ui()
 		origin = { 248.f, 52.f };
 		render::draw_quad( grad_vertical, rect( origin.x, origin.y, 48.f, 48.f ) );
 
-		// mario, animating
+		// player, animating
 
 		origin = { 200.f, 148.f };
 		render::state->scale = 2.f;
-		render::draw_quad( anim_mario, vec2( origin.x, origin.y ) );
+		render::draw_quad( anim_player, vec2( origin.x, origin.y ) );
 
 		// coins, showing animation offsets
 

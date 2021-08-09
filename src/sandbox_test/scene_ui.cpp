@@ -115,7 +115,7 @@ void scene_ui::draw()
 
 // ----------------------------------------------------------------------------
 
-f_decl_draw_control( draw_control_mario )
+f_decl_draw_control( draw_control_player )
 {
 	scoped_render_state;
 
@@ -238,7 +238,7 @@ void scene_ui::draw_ui()
 			->image_control()
 			->set_image( "anim_player_run" )
 			->cut_top( g_ui->current_control->image->height() * 3.f )
-			->set_func_draw( draw_control_mario )
+			->set_func_draw( draw_control_player )
 			->done();
 	}
 }

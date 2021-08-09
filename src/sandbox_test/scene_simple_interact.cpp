@@ -14,18 +14,18 @@ static const unsigned scene_simple_coll_npc = collision_bits.next();
 // ----------------------------------------------------------------------------
 
 constexpr float max_raycast_length = 350.f;
-constexpr auto player_radius = 12.f;
+constexpr auto radius = 12.f;
 
 // ----------------------------------------------------------------------------
 
-scene_simple_collision::scene_simple_collision()
+scene_simple_interact::scene_simple_interact()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-entity* scene_simple_collision::spawn_player()
+entity* scene_simple_interact::spawn_player()
 {
 	auto e = add_entity<entity>();
 	e->set_pos( { 0.f, 0.f } );
@@ -35,16 +35,33 @@ entity* scene_simple_collision::spawn_player()
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
-		if( random::getb() )
-			ec->set_as_circle( player_radius * random::getf_range( 0.5f, 2.0f ) );
-		else
-			ec->set_as_centered_box( player_radius * random::getf_range( 0.5f, 3.0f ), player_radius * random::getf_range( 0.5f, 3.0f ) );
+		switch( random::geti_range( 0, 2 ) )
+		{
+			case 0:
+			{
+				ec->set_as_centered_box( radius * random::getf_range( 0.5f, 3.0f ), radius * random::getf_range( 0.5f, 3.0f ) );
+			}
+			break;
+
+			case 1:
+			{
+				ec->set_as_circle( radius * random::getf_range( 0.5f, 2.0f ) );
+			}
+			break;
+
+			case 2:
+			{
+				auto s = random::geti_range( 3, 8 );
+				auto r = radius * random::getf_range( 0.5f, 3.0f );
+				ec->set_as_polygon( util_geo::generate_convex_shape( s, r ) );
+			}
+			break;
+		}
 
 		ec->set_collision_flags( scene_simple_coll_player, scene_simple_coll_geo | scene_simple_coll_player );
 	}
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
-		ec->rs_opt.color = make_color( color::white, 1.0f );
 		ec->add_shape( primitive_shape::point );
 	}
 
@@ -54,18 +71,21 @@ entity* scene_simple_collision::spawn_player()
 }
 
 
-void scene_simple_collision::pushed()
+void scene_simple_interact::pushed()
 {
 	scene::pushed();
 
+	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	// MARIO
+	// PLAYER
+
 	player = spawn_player();
 	player->add_delta_pos( { 0.f, 80.f } );
 	spawn_player();
 
 	// HIT MARKER
+
 	{
 		auto e = add_entity<entity>();
 		e->tag = H( "hit_marker" );
@@ -102,16 +122,6 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::darker, 0.5f );
-			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::middle );
-			}
 		}
 
 		for( int i = 0 ; i < num_primitives ; ++i )
@@ -126,21 +136,6 @@ void scene_simple_collision::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
 			}
-/*
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_circle, r );
-				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::darker, 0.5f );
-			}
-			{
-
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::circle, r );
-				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::middle );
-			}
-*/
 		}
 
 		// 4 walls
@@ -173,7 +168,7 @@ void scene_simple_collision::pushed()
 	}
 }
 
-void scene_simple_collision::draw()
+void scene_simple_interact::draw()
 {
 	{
 		scoped_render_state;
@@ -183,7 +178,7 @@ void scene_simple_collision::draw()
 	}
 
 	scene::draw();
-	render::draw_world_axis();
+	//render::draw_world_axis();
 
 	if( b_show_ray )
 	{
@@ -193,16 +188,16 @@ void scene_simple_collision::draw()
 	}
 }
 
-void scene_simple_collision::draw_ui()
+void scene_simple_interact::draw_ui()
 {
 	scene::draw_ui();
 	//draw_title( "Simple Collisions" );
 
-	render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
-		player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
+	//render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
+	//	player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
 }
 
-void scene_simple_collision::update()
+void scene_simple_interact::update()
 {
 	scene::update();
 
@@ -210,7 +205,7 @@ void scene_simple_collision::update()
 	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
 }
 
-void scene_simple_collision::reset_collision_trace_results()
+void scene_simple_interact::reset_collision_trace_results()
 {
 	hit_marker->get_component<ec_primitive_shape>()->shapes.clear();
 
@@ -220,35 +215,31 @@ void scene_simple_collision::reset_collision_trace_results()
 	}
 }
 
-bool scene_simple_collision::on_input_pressed( const input_event* evt )
+bool scene_simple_interact::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
 		case input_id::key_1:
 		{
 			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_centered_box( player_radius * 8.f, player_radius * 0.5f );
+			ec->set_as_centered_box( radius * random::getf_range( 0.5f, 3.0f ), radius * random::getf_range( 0.5f, 3.0f ) );
 		}
 		break;
 
 		case input_id::key_2:
 		{
 			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_circle( player_radius );
+			ec->set_as_circle( radius * random::getf_range( 0.5f, 2.0f ) );
 		}
 		break;
 
 		case input_id::key_3:
 		{
 			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_polygon(
-				{
-					{ 0.f, -player_radius },
-					{ player_radius, 0.f },
-					{ 0.f, player_radius },
-					{ -player_radius, 0.f }
-				}
-			);
+
+			auto s = random::geti_range( 3, 8 );
+			auto r = radius * random::getf_range( 0.5f, 3.0f );
+			ec->set_as_polygon( util_geo::generate_convex_shape( s, r ) );
 		}
 		break;
 
@@ -322,7 +313,7 @@ bool scene_simple_collision::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene_simple_collision::on_input_motion( const input_event* evt )
+bool scene_simple_interact::on_input_motion( const input_event* evt )
 {
 	switch( evt->input_id )
 	{

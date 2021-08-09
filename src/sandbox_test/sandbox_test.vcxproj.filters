@@ -51,7 +51,7 @@
     <ClCompile Include="scene_noise.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_collision.cpp">
+    <ClCompile Include="scene_simple_interact.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_angle_dirs.cpp">
@@ -60,13 +60,10 @@
     <ClCompile Include="scene_simple_breakout.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_minigolf.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="scene_simple_platformer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_space.cpp">
+    <ClCompile Include="scene_simple_drift.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -121,7 +118,7 @@
     <ClInclude Include="scene_noise.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_collision.h">
+    <ClInclude Include="scene_simple_interact.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_angle_dirs.h">
@@ -130,13 +127,10 @@
     <ClInclude Include="scene_simple_breakout.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_minigolf.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="scene_simple_platformer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_space.h">
+    <ClInclude Include="scene_simple_drift.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

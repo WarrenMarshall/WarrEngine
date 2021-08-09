@@ -26,7 +26,7 @@ bool e_ball::on_collided( simple_collision::pending_collision& coll )
 
 bool e_paddle::on_collided( simple_collision::pending_collision& coll )
 {
-	if( coll.entity_b->tag == H( "THE_BALL" ) )
+	if( coll.entity_b->tag == H( "BALL" ) )
 	{
 		auto dir_from_center = coll.entity_b->get_transform()->pos - get_transform()->pos;
 		coll.entity_b->reset_force( { dir_from_center, coll.entity_b->velocity.get_size() } );
@@ -46,26 +46,45 @@ scene_simple_breakout::scene_simple_breakout()
 	flags.is_debug_physics_scene = true;
 }
 
+void scene_simple_breakout::spawn_ball()
+{
+	auto e = add_entity<e_ball>();
+	e->tag = H( "BALL" );
+	e->set_pos( { 0.f, -64.f } );
+	e->simple.friction = 0.0;
+	e->simple.is_bouncy = true;
+	{
+		auto ec = e->add_component<ec_primitive_shape>();
+		ec->add_shape( primitive_shape::point );
+	}
+	{
+		auto ec = e->add_component<ec_simple_collision_body>();
+		ec->set_as_circle( 12.f );
+		ec->set_collision_flags( scene_simple_breakout_coll_ball, scene_simple_breakout_coll_geo | scene_simple_breakout_coll_paddle );
+	}
+
+	e->apply_impulse( { random::get_random_unit_vector(), 2.5f } );
+}
+
 void scene_simple_breakout::pushed()
 {
 	scene::pushed();
 
+	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// paddle
 	{
 		auto e = add_entity<e_paddle>();
 		e->tag = H( "THE_PADDLE" );
-		e->debug_name = "THE_PADDLE";
 		e->set_pos( { 0.f, 0.f } );
-		e->simple.friction = 1.0;
+		e->simple.friction = 0.5f;
 		e->simple.type = sc_type::kinematic;
-		auto paddle_w = 120.f;
+		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;
 		{
 			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::white, 1.0f );
-			ec->add_shape( primitive_shape::filled_rect, rect( -paddle_w / 2.f, -paddle_h / 2.f, paddle_w, paddle_h ) );
+			ec->add_shape( primitive_shape::point );
 		}
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
@@ -76,29 +95,9 @@ void scene_simple_breakout::pushed()
 		paddle = e;
 	}
 
-	// ball
-	{
-		auto e = add_entity<e_ball>();
-		e->tag = H( "THE_BALL" );
-		e->debug_name = "THE_BALL";
-		e->set_pos( { 0.f, -64.f } );
-		e->simple.friction = 0.0;
-		e->simple.is_bouncy = true;
-		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::white, 1.0f );
-			ec->add_shape( primitive_shape::filled_circle, 12.f );
-		}
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->set_as_circle( 12.f );
-			ec->set_collision_flags( scene_simple_breakout_coll_ball, scene_simple_breakout_coll_geo | scene_simple_breakout_coll_paddle );
-		}
+	// BALL
 
-		e->apply_impulse( { random::get_random_unit_vector(), 2.5f } );
-
-		ball = e;
-	}
+	spawn_ball();
 
 	// WORLD GEO
 
@@ -121,16 +120,6 @@ void scene_simple_breakout::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
 			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::darker, 0.5f );
-			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::middle );
-			}
 		}
 
 		for( int i = 0 ; i < num_primitives ; ++i )
@@ -144,19 +133,6 @@ void scene_simple_breakout::pushed()
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
-			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_circle, r );
-				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::darker, 0.5f );
-			}
-			{
-
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::circle, r );
-				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::middle );
 			}
 		}
 
@@ -200,7 +176,7 @@ void scene_simple_breakout::draw()
 	}
 
 	scene::draw();
-	render::draw_world_axis();
+	//render::draw_world_axis();
 }
 
 void scene_simple_breakout::draw_ui()
@@ -215,33 +191,37 @@ void scene_simple_breakout::update()
 
 bool scene_simple_breakout::on_input_pressed( const input_event* evt )
 {
+	switch( evt->input_id )
+	{
+		case input_id::gamepad_button_y:
+		case input_id::key_space:
+		{
+			spawn_ball();
+		}
+		break;
+	}
+
 	return false;
 }
 
 bool scene_simple_breakout::on_input_held( const input_event* evt )
 {
 
-/*
-	switch( evt->input_id )
-	{
-		case input_id::key_left:
-		{
-			mario->add_delta_pos( vec2( fixed_time_step::per_second( -600.f ), 0.f ) );
-		}
-		break;
-
-		case input_id::key_right:
-		{
-			mario->add_delta_pos( vec2( fixed_time_step::per_second( 600.f ), 0.f ) );
-		}
-		break;
-	}
-*/
-
 	return false;
 }
 
 bool scene_simple_breakout::on_input_motion( const input_event* evt )
 {
+	switch( evt->input_id )
+	{
+		case input_id::gamepad_left_stick:
+		{
+			paddle->apply_force( { evt->delta * vec2::x_axis, 150.f } );
+
+			return true;
+		}
+		break;
+	}
+
 	return false;
 }

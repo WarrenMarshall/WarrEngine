@@ -28,7 +28,7 @@ void scene_entity_picking::pushed()
 
 	{
 		auto e = add_entity<entity>();
-		e->tag = H( "player_mario" );
+		e->tag = H( "player" );
 		e->make_pickable();
 		e->set_pos( { 64.f, 64.f } );
 		e->set_scale( 3.f );
@@ -68,7 +68,7 @@ void scene_entity_picking::post_update()
 	scene::post_update();
 
 	{
-		auto e = find_entity( H( "player_mario" ) );
+		auto e = find_entity( H( "player" ) );
 		auto entity_tform = e->get_transform();
 		auto cam_transform = get_transform();
 

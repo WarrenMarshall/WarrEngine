@@ -1,21 +1,23 @@
 
 using namespace war;
 
-struct scene_simple_minigolf : scene
+struct scene_simple_drift : scene
 {
-	scene_simple_minigolf();
+	scene_simple_drift();
+
+	// debug
+	bool first_time = true;
+	// debug
 
 	entity* player = nullptr;
 	entity* world_geo = nullptr;
 
-	bool b_is_aiming = false;
-	vec2 aim_dir = {};
-	float aim_force = 0.f;
+	entity* spawn_player();
 
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;
-	virtual void update() override;
+	virtual void post_update() override;
 
 	virtual bool on_input_pressed( const input_event* evt ) override;
 	virtual bool on_input_motion( const input_event* evt ) override;

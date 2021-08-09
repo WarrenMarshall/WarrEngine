@@ -7,23 +7,23 @@ using namespace war;
 
 static bit_flag_generator collision_bits = 1;
 
-static const unsigned scene_simple_space_coll_mario = collision_bits.get();
+static const unsigned scene_simple_space_coll_player = collision_bits.get();
 static const unsigned scene_simple_space_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-scene_simple_space::scene_simple_space()
+scene_simple_drift::scene_simple_drift()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-entity* scene_simple_space::spawn_player()
+entity* scene_simple_drift::spawn_player()
 {
 	constexpr auto radius = 12.f;
 	auto e = add_entity<entity>();
-	e->set_scale( random::getf_range( 0.5f, 3.0f ) );
+	e->set_scale( random::getf_range( 1.0f, 2.0f ) );
 	e->simple.friction = 0.0f;
 	e->simple.max_velocity = 5.0f;
 	e->simple.is_bouncy = true;
@@ -31,17 +31,30 @@ entity* scene_simple_space::spawn_player()
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
-	#if 1
-		if( random::getb() )
-			ec->set_as_circle( radius * random::getf_range( 0.5f, 3.0f ) );
-		else
-			ec->set_as_centered_box( radius * random::getf_range(0.5f, 3.0f), radius * random::getf_range( 0.5f, 3.0f ) );
-	#else
-		ec->set_as_circle( radius );
-		e->simple.mass = e->get_transform()->scale;
-	#endif
+		switch( random::geti_range( 0, 2 ) )
+		{
+			case 0:
+			{
+				ec->set_as_centered_box( radius * random::getf_range( 0.5f, 3.0f ), radius * random::getf_range( 0.5f, 3.0f ) );
+			}
+			break;
 
-		ec->set_collision_flags( scene_simple_space_coll_mario, scene_simple_space_coll_geo | scene_simple_space_coll_mario );
+			case 1:
+			{
+				ec->set_as_circle( radius * random::getf_range( 0.5f, 2.0f ) );
+			}
+			break;
+
+			case 2:
+			{
+				auto s = random::geti_range( 3, 8 );
+				auto r = radius * random::getf_range( 0.5f, 3.0f );
+				ec->set_as_polygon( util_geo::generate_convex_shape( s, r ) );
+			}
+			break;
+		}
+
+		ec->set_collision_flags( scene_simple_space_coll_player, scene_simple_space_coll_geo | scene_simple_space_coll_player );
 	}
 	{
 		auto ec = e->add_component<ec_primitive_shape>();
@@ -51,7 +64,7 @@ entity* scene_simple_space::spawn_player()
 
 	if( first_time )
 	{
-		mario = e;
+		player = e;
 	}
 
 	e->apply_impulse( { random::get_random_unit_vector(), 2.f } );
@@ -61,14 +74,12 @@ entity* scene_simple_space::spawn_player()
 	return e;
 }
 
-void scene_simple_space::pushed()
+void scene_simple_drift::pushed()
 {
 	scene::pushed();
 
+	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
-
-	// MARIO
-	//mario = spawn_player();
 
 	// WORLD GEO
 
@@ -92,16 +103,6 @@ void scene_simple_space::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_space_coll_geo, 0 );
 			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::darker, 0.5f );
-			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::rect, { x - ( w / 2.f ), y - ( h / 2.f ), w, h } );
-				ec->rs_opt.color = make_color( pal::middle );
-			}
 		}
 
 		for( int i = 0 ; i < num_colliders ; ++i )
@@ -116,24 +117,7 @@ void scene_simple_space::pushed()
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_space_coll_geo, 0 );
 			}
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::filled_circle, r );
-				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::darker, 0.5f );
-			}
-			{
-
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::circle, r );
-				ec->get_transform()->set_pos( { x, y } );
-				ec->rs_opt.color = make_color( pal::middle );
-			}
 		}
-
-		e = add_entity<entity>();
-		e->tag = H( "world_geo" );
-		e->simple.type = sc_type::stationary;
 
 		// 4 walls
 		{
@@ -165,7 +149,7 @@ void scene_simple_space::pushed()
 	}
 }
 
-void scene_simple_space::draw()
+void scene_simple_drift::draw()
 {
 	{
 		scoped_render_state;
@@ -175,22 +159,22 @@ void scene_simple_space::draw()
 	}
 
 	scene::draw();
-	render::draw_world_axis();
+	//render::draw_world_axis();
 }
 
-void scene_simple_space::draw_ui()
+void scene_simple_drift::draw_ui()
 {
 	scene::draw_ui();
-	draw_title( "Space Drifter" );
+	//draw_title( "Space Drifter" );
 
-	if( mario )
-	{
-		render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
-			mario->velocity.x, mario->velocity.y ), vec2( 8.f, 24.f ) );
-	}
+	//if( player )
+	//{
+	//	render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
+	//		player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
+	//}
 }
 
-void scene_simple_space::post_update()
+void scene_simple_drift::post_update()
 {
 	scene::post_update();
 
@@ -207,7 +191,7 @@ void scene_simple_space::post_update()
 	}
 }
 
-bool scene_simple_space::on_input_pressed( const input_event* evt )
+bool scene_simple_drift::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -222,13 +206,13 @@ bool scene_simple_space::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene_simple_space::on_input_motion( const input_event* evt )
+bool scene_simple_drift::on_input_motion( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			mario->apply_force( { evt->delta, 1.0f } );
+			player->apply_force( { evt->delta, 1.0f } );
 
 			return true;
 		}

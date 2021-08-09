@@ -15,18 +15,20 @@ void scene_meshes::pushed()
 {
 	scene::pushed();
 
-	// mario
+	// PLAYER
+
 	{
 		auto e = add_entity<entity>();
 		e->set_pos( { -128.f, 0.f } );
 		{
-			mesh_mario = e->add_component<ec_mesh>();
-			mesh_mario->init( "mesh_mario_jump" );
-			mesh_mario->get_transform()->set_scale( 1.25f );
+			mesh_player = e->add_component<ec_mesh>();
+			mesh_player->init( "mesh_mario_jump" );
+			mesh_player->get_transform()->set_scale( 1.25f );
 		}
 	}
 
-	// crate
+	// CRATE
+
 	{
 		auto e = add_entity<entity>();
 		e->set_pos( { 128.f, 0.f } );
@@ -41,7 +43,7 @@ void scene_meshes::pushed()
 
 void scene_meshes::draw()
 {
-	mesh_mario->get_transform()->set_angle( *mesh_rotator );
+	mesh_player->get_transform()->set_angle( *mesh_rotator );
 	mesh_crate->get_transform()->set_scale( *mesh_scaler );
 
 	draw_tiled_background();

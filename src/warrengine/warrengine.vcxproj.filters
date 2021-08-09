@@ -259,6 +259,9 @@
     <ClCompile Include="simple_collision_world.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
+    <ClCompile Include="util_geo.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -527,6 +530,9 @@
     </ClInclude>
     <ClInclude Include="simple_collision_world.h">
       <Filter>include\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="util_geo.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

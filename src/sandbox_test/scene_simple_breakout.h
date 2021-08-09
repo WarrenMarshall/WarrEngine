@@ -20,10 +20,10 @@ struct scene_simple_breakout : scene
 {
 	scene_simple_breakout();
 
-	entity* ball = nullptr;
 	entity* paddle = nullptr;
 	entity* world_geo = nullptr;
 
+	void spawn_ball();
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;

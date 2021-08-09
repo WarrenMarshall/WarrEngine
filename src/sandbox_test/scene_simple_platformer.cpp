@@ -22,13 +22,20 @@ void scene_simple_platformer::draw_ui()
 {
 	scene::draw_ui();
 
-	render::draw_string( std::format( "Vel : {:.1f}, {:.1f} / In-Air : {}",
-		player->velocity.x, player->velocity.y, player->simple.is_in_air ),
-		vec2( 8.f, 8.f ) );
+	//render::draw_string( std::format( "Vel : {:.1f}, {:.1f} / In-Air : {}",
+	//	player->velocity.x, player->velocity.y, player->simple.is_in_air ),
+	//	vec2( 8.f, 8.f ) );
 }
 
 void scene_simple_platformer::draw()
 {
+	{
+		scoped_render_state;
+		render::state->color = make_color( pal::darker );
+		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ),
+			rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	}
+
 	scene::draw();
 
 	//render::draw_world_axis();
@@ -52,14 +59,13 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 
 			{
 				auto ec = e->add_component<ec_primitive_shape>();
-				ec->rs_opt.color = make_color( color::white, 1.0f );
-				ec->add_shape( primitive_shape::filled_circle, 8.f );
+				ec->add_shape( primitive_shape::point );
 			}
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->tag = H( "player_body" );
-				ec->set_as_circle( 8.f );
-				//ec->set_as_centered_box( 16.f, 16.f );
+				//ec->set_as_circle( 8.f );
+				ec->set_as_centered_box( 16.f, 16.f );
 
 				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
 			}
@@ -88,6 +94,7 @@ void scene_simple_platformer::pushed()
 	viewport_pivot = vec2::zero;
 	get_transform()->set_scale( 2.0f );
 
+	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// world

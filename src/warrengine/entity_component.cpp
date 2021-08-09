@@ -804,7 +804,12 @@ void ec_simple_collision_body::draw()
 
 				if( parent_entity->simple.is_stationary() )
 				{
-					render::state->color = make_color( color::dark_green );
+					render::state->color = make_color( color::grey );
+				}
+
+				if( parent_entity->simple.is_kinematic() )
+				{
+					render::state->color = make_color( color::teal );
 				}
 			}
 			break;
@@ -915,6 +920,7 @@ void ec_simple_collision_body::set_as_circle( float r )
 void ec_simple_collision_body::set_as_polygon( std::vector<vec2> vs )
 {
 	type = sc_prim_type::polygon;
+	verts.clear();
 	verts.reserve( verts.size() );
 	verts.insert( verts.end(), vs.begin(), vs.end() );
 }
