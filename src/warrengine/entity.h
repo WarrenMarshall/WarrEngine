@@ -33,10 +33,11 @@ struct entity_simple_collision
 	}
 
 	float friction = 1.0f;
+	float bounce_dampen = 0.75f;
 	float max_velocity = 5.f;
-	bool is_in_air = false;
-	bool is_affected_by_gravity = false;
-	bool is_bouncy = false;
+	bool is_in_air : 1= false;
+	bool is_affected_by_gravity : 1 = false;
+	bool is_bouncy : 1 = false;
 };
 
 // ----------------------------------------------------------------------------

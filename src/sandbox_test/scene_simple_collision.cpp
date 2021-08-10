@@ -9,7 +9,7 @@ static bit_flag_generator collision_bits = 1;
 
 static const unsigned scene_simple_coll_ball = collision_bits.get();
 static const unsigned scene_simple_coll_world = collision_bits.next();
-static const unsigned scene_simple_coll_dynamic_object = collision_bits.next();
+static const unsigned scene_simple_coll_dynamic_object = collision_bits.get();
 
 scene_simple_collision::scene_simple_collision()
 {
@@ -99,9 +99,9 @@ void scene_simple_collision::spawn_ball_at( vec2 world_pos )
 	e->set_pos( world_pos );
 	e->rs_opt.color = color( random::getf(), random::getf(), random::getf() );
 	e->make_pickable();
-	//e->simple.is_bouncy = true;
+	e->simple.is_bouncy = false;
+	e->simple.friction = 0.01f;
 	e->simple.is_affected_by_gravity = true;
-	e->simple.friction = 0.5f;
 	{
 		float random_radius = random::getf_range( 16.f, 32.f );
 

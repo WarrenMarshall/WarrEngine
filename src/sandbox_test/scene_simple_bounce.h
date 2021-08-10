@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_simple_drift : scene
+struct scene_simple_bounce : scene
 {
-	scene_simple_drift();
+	scene_simple_bounce();
 
 	// debug
 	bool first_time = true;

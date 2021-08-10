@@ -92,7 +92,7 @@ void scene_main_menu::draw_ui()
 
 			g_ui->divider_control()->done();
 			do_menu_button<scene_simple_interact>( H( "button_simple_interact" ), "Simple Interaction" );
-			do_menu_button<scene_simple_drift>( H( "button_simple_space" ), "Simple Bouncing" );
+			do_menu_button<scene_simple_bounce>( H( "button_simple_space" ), "Simple Bouncing" );
 			do_menu_button<scene_simple_breakout>( H( "button_simple_breakout" ), "Break Out" );
 			do_menu_button<scene_simple_platformer>( H( "button_simple_platformer" ), "Platformer" );
 

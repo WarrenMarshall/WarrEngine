@@ -12,14 +12,14 @@ static const unsigned scene_simple_space_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-scene_simple_drift::scene_simple_drift()
+scene_simple_bounce::scene_simple_bounce()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-entity* scene_simple_drift::spawn_player()
+entity* scene_simple_bounce::spawn_player()
 {
 	constexpr auto radius = 12.f;
 	auto e = add_entity<entity>();
@@ -74,7 +74,7 @@ entity* scene_simple_drift::spawn_player()
 	return e;
 }
 
-void scene_simple_drift::pushed()
+void scene_simple_bounce::pushed()
 {
 	scene::pushed();
 
@@ -149,7 +149,7 @@ void scene_simple_drift::pushed()
 	}
 }
 
-void scene_simple_drift::draw()
+void scene_simple_bounce::draw()
 {
 	{
 		scoped_render_state;
@@ -162,7 +162,7 @@ void scene_simple_drift::draw()
 	//render::draw_world_axis();
 }
 
-void scene_simple_drift::draw_ui()
+void scene_simple_bounce::draw_ui()
 {
 	scene::draw_ui();
 	//draw_title( "Space Drifter" );
@@ -174,7 +174,7 @@ void scene_simple_drift::draw_ui()
 	//}
 }
 
-void scene_simple_drift::post_update()
+void scene_simple_bounce::post_update()
 {
 	scene::post_update();
 
@@ -191,7 +191,7 @@ void scene_simple_drift::post_update()
 	}
 }
 
-bool scene_simple_drift::on_input_pressed( const input_event* evt )
+bool scene_simple_bounce::on_input_pressed( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -206,7 +206,7 @@ bool scene_simple_drift::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene_simple_drift::on_input_motion( const input_event* evt )
+bool scene_simple_bounce::on_input_motion( const input_event* evt )
 {
 	switch( evt->input_id )
 	{
