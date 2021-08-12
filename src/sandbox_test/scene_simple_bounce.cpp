@@ -25,7 +25,6 @@ entity* scene_simple_bounce::spawn_player()
 	auto e = add_entity<entity>();
 	e->set_scale( random::getf_range( 1.0f, 2.0f ) );
 	e->simple.friction = 0.0f;
-	e->simple.max_velocity = 5.0f;
 	e->simple.is_bouncy = true;
 
 	{

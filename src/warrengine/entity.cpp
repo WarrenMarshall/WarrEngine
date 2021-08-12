@@ -28,7 +28,16 @@ void entity::pre_update()
 
 	if( simple.is_affected_by_gravity )
 	{
-		apply_force( { vec2::y_axis, simple_collision_gravity_default } );
+		float accel = 1.0f;
+
+		// if entity is already falling downwards, accelerate the fall. this
+		// makes jumping feel better.
+		if( velocity.y > 0.f )
+		{
+			accel = 2.0f;
+		}
+
+		apply_force( { vec2::y_axis, simple_collision_gravity_default * accel } );
 	}
 
 	apply_forces();
@@ -96,10 +105,8 @@ void entity::compile_velocity()
 		velocity += f.normal * f.strength;
 	}
 
-	velocity_dir = vec2::normalize( velocity );
-	velocity_strength = velocity.get_size();
-
-	velocity.clamp( simple.max_velocity );
+	velocity.x = simple.max_velocity_x.clamp_value( velocity.x );
+	velocity.y = simple.max_velocity_y.clamp_value( velocity.y );
 
 	pending_forces.clear();
 }
@@ -125,19 +132,26 @@ void entity::reflect_across( vec2 normal )
 
 void entity::apply_forces()
 {
-	// figure out where this entity should be moving
 	compile_velocity();
 
-	// move it
+	// if the velocity has reached a point where it's so small we're just jittering, clear it out.
+/*
+	if( simple.is_dynamic() && velocity.get_size() < 0.025f )
+	{
+		velocity = vec2::zero;
+	}
+*/
+
 	add_delta_pos( velocity );
 
-	// apply friction to the velocity
+	// apply friction to the horizontal velocity
 	velocity.x = lerp(
 		velocity.x,
 		0.f,
 		simple.friction
 	);
 
+	// only apply friction to the vertical axis if we are not affected by gravity
 	if( !simple.is_affected_by_gravity )
 	{
 		velocity.y = lerp(
@@ -147,9 +161,17 @@ void entity::apply_forces()
 		);
 	}
 
-	if( velocity.get_size() < 0.01f )
+	// "bounce_needs_dampening" flag gets set when the entity is bouncy and it
+	// hit something last frame.
+	if( simple.bounce_needs_dampening )
 	{
-		velocity = vec2::zero;
+		simple.bounce_needs_dampening = false;
+
+		// only dampen the vertical velocity on the way up
+		if( velocity.y < 0.0f )
+		{
+			velocity.y *= 0.5f;
+		}
 	}
 }
 
@@ -159,7 +181,7 @@ void entity::draw()
 {
 	// super hacky way to indicate a selected entity. it just pumps up the glow
 	// on it. we need a nicer system for this eventually.
-	rs_opt.glow = is_selected * 2.f;
+	rs_opt.glow = rs_opt.glow.value_or( 0.f ) + ( is_selected * 2.f );
 
 	for( const auto& component : components )
 	{
@@ -436,6 +458,19 @@ void entity::remove_dead_components()
 			x--;
 		}
 	}
+}
+
+void entity::apply_movement_jump()
+{
+	if( !simple.is_in_air )
+	{
+		apply_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
+	}
+}
+
+void entity::apply_movement_walk( vec2 delta )
+{
+	apply_force( { delta * vec2::x_axis, 12.f } );
 }
 
 // ----------------------------------------------------------------------------

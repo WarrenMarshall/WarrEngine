@@ -172,9 +172,6 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
-	//auto a_is_circle = ( coll.body_a->type == sc_prim_type::circle );
-	//auto b_is_circle = ( coll.body_b->type == sc_prim_type::circle );
-
 	auto a_is_dynamic = ent_a->simple.is_dynamic();
 	auto a_is_kinematic = ent_a->simple.is_kinematic();
 	auto b_is_dynamic = ent_b->simple.is_dynamic();
@@ -279,7 +276,18 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 		}
 	}
 
-	if( !ent_a->simple.is_bouncy )
+	// if an entity is bouncy and it uses gravity, then we need to dampen it's
+	// vertical velocity each time we compiled the velocity, otherwise it'll
+	// just bounce forever at the same height.
+	if( ent_a->simple.is_bouncy and ent_a->simple.is_affected_by_gravity )
+	{
+		// hitting the ceiling or the floor means we need to dampen next update
+		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+		{
+			ent_a->simple.bounce_needs_dampening = true;
+		}
+	}
+	else
 	{
 		if( ent_a->simple.is_dynamic() and ent_b->simple.is_stationary() )
 		{

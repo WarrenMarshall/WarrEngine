@@ -274,10 +274,10 @@ struct ec_simple_collision_body : entity_component
 
 	struct
 	{
-		rect aabb = {};
 		vec2 pos = {};
-		float radius = 0.f;
-		std::vector<vec2> verts;
+		rect aabb = {};
+		float radius = {};
+		std::vector<vec2> verts = {};
 	} ws;
 
 	virtual void draw() override;

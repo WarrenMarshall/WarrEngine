@@ -34,10 +34,12 @@ struct entity_simple_collision
 
 	float friction = 1.0f;
 	float bounce_dampen = 0.75f;
-	float max_velocity = 5.f;
+	range<float> max_velocity_x = { -5.0f, 5.0f };
+	range<float> max_velocity_y = { -5.0f, 5.0f };
 	bool is_in_air : 1= false;
 	bool is_affected_by_gravity : 1 = false;
 	bool is_bouncy : 1 = false;
+	bool bounce_needs_dampening : 1 = false;
 };
 
 // ----------------------------------------------------------------------------
@@ -50,17 +52,19 @@ struct entity
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier
 	std::string debug_name;
+	void set_debug_name( const char* debug_name )
+	{
+		this->debug_name = debug_name;
+	}
+#else
+	void set_debug_name( const char* debug_name ) { }
 #endif
 
-	//
 	entity_simple_collision simple;
 
 	// forces and impulses
 
 	vec2 velocity = vec2::zero;
-
-	vec2 velocity_dir = vec2::zero;
-	float velocity_strength = 0.f;
 
 	std::vector<entity_simple_force> pending_forces;
 
@@ -212,11 +216,14 @@ struct entity
 	virtual bool on_collided( simple_collision::pending_collision& coll );
 	virtual bool on_touched( simple_collision::pending_collision& coll );
 
+	void reflect_across( vec2 normal );
+
+	virtual void apply_movement_jump();
+	virtual void apply_movement_walk( vec2 delta );
+
 private:
 
 	life_cycle_mgr life_cycle;
-public:
-	void reflect_across( vec2 normal );
 };
 
 // ----------------------------------------------------------------------------

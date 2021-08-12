@@ -31,7 +31,6 @@ entity* scene_simple_interact::spawn_player()
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
 	e->simple.friction = 0.05f;
-	e->simple.max_velocity = 5.0f;
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
@@ -82,6 +81,7 @@ void scene_simple_interact::pushed()
 
 	player = spawn_player();
 	player->add_delta_pos( { 0.f, 80.f } );
+	player->rs_opt.glow = 3.0f;	// player has a glow
 	spawn_player();
 
 	// HIT MARKER
@@ -106,7 +106,7 @@ void scene_simple_interact::pushed()
 		int num_primitives = 4;
 
 		auto e = add_entity<entity>();
-		//e->debug_name = "WORLD";
+		e->set_debug_name( "WORLD" );
 		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
@@ -279,7 +279,6 @@ bool scene_simple_interact::on_input_pressed( const input_event* evt )
 				{
 					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
 					hit.scc->rs_opt.color = make_color( color::teal );
-					hit.scc->rs_opt.glow = 2.f;
 				}
 			}
 		}

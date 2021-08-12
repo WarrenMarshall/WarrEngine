@@ -72,35 +72,4 @@ struct raycast_all final : raycast_callback
 	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
 };
 
-/*
-// ----------------------------------------------------------------------------
-
-struct simple_collision_query_callback
-{
-	virtual ~simple_collision_query_callback() {}
-
-	virtual bool report_component( simple_collision_component* component ) = 0;
-};
-
-// ----------------------------------------------------------------------------
-// builds a list of all the fixtures that intersect with the AABB being queried
-
-struct touching_all final : simple_collision_query_callback
-{
-	std::vector<simple_collision_component*> components;
-
-	virtual bool report_component( simple_collision_component* component ) override;
-};
-
-// ----------------------------------------------------------------------------
-// stops after finding the first fixture that intersects with the AABB being queried
-
-struct touching_first final : simple_collision_query_callback
-{
-	simple_collision_component* component;
-
-	virtual bool report_component( simple_collision_component* component ) override;
-};
-*/
-
 }

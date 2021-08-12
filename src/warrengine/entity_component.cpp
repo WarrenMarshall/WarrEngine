@@ -1350,6 +1350,30 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 		{
 			assert( false );	// #task - write this
 		}
+		else if( og.tag == "simple_platform_collision" )
+		{
+			for( auto& obj : og.objects )
+			{
+				switch( obj.collision_type )
+				{
+					case sc_prim_type::aabb:
+					{
+						auto ec = parent_entity->add_component<ec_simple_collision_body>();
+						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+						ec->set_as_box( obj.rc.w, obj.rc.h );
+						ec->set_collision_flags( collision_mask, collides_with_mask );
+					}
+					break;
+
+					case sc_prim_type::circle:
+					case sc_prim_type::polygon:
+					{
+						assert( false );	// can we support these types as platforms?
+					}
+					break;
+				}
+			}
+		}
 		else
 		{
 			// unknown collision type

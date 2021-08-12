@@ -55,6 +55,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.is_affected_by_gravity = true;
+			//e->simple.is_bouncy = true;
 			e->simple.friction = 0.1f;
 
 			{
@@ -122,7 +123,7 @@ bool scene_simple_platformer::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
-		player->apply_force( { evt->delta * vec2::x_axis, 12.f } );
+		player->apply_movement_walk( evt->delta );
 	}
 
 	return false;
@@ -132,11 +133,8 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a )
 	{
-		if( !player->simple.is_in_air )
-		{
-			player->apply_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
-			return true;
-		}
+		player->apply_movement_jump();
+		return true;
 	}
 
 	return false;

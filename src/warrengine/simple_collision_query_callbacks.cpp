@@ -46,7 +46,6 @@ float raycast_closest::report_component( const entity* entity, const c2Ray& ray,
 		result = hit;
 	}
 
-	// a raycast_all always returns 1 because we want a complete list of everything that got hit
 	return 1.f;
 }
 
@@ -56,7 +55,7 @@ float raycast_quick::report_component( const entity* entity, const c2Ray& ray, e
 {
 	hit_something = true;
 
-	// a raycast_simple always returns zero because we only care if we DID collide, not any of the specifics
+	// a raycast_quick always returns zero because we only care if we DID collide, not any of the specifics
 	return 0.f;
 }
 
@@ -81,27 +80,9 @@ float raycast_all::report_component( const entity* entity, const c2Ray& ray, ec_
 
 	// convert back to normal space
 
-	//hit.pos = hit.pos.from_simple();
 	results.push_back( hit );
 
-	// a raycast_all always returns 1 because we want a complete list of everything that got hit
 	return 1.f;
 }
-
-// ----------------------------------------------------------------------------
-
-/*
-bool touching_all::report_component( simple_collision_component* component )
-{
-	components.push_back( component );
-	return true;
-}
-
-bool touching_first::report_component( simple_collision_component* component )
-{
-	this->component = component;
-	return false;
-}
-*/
 
 }
