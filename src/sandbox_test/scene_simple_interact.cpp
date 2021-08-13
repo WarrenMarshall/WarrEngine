@@ -28,6 +28,7 @@ scene_simple_interact::scene_simple_interact()
 entity* scene_simple_interact::spawn_player()
 {
 	auto e = add_entity<entity>();
+	e->debug_name = "player";
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
 	e->simple.friction = 0.05f;
@@ -100,13 +101,12 @@ void scene_simple_interact::pushed()
 
 	}
 
-	// WORLD GEO
+	// ` GEO
 
 	{
 		int num_primitives = 4;
 
-		auto e = add_entity<entity>();
-		e->set_debug_name( "WORLD" );
+		auto e = add_entity<entity>( "world" );
 		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )

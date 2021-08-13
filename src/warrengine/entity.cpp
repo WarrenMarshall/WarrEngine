@@ -15,6 +15,17 @@ entity_simple_force::entity_simple_force( vec2 normal, float strength )
 
 // ----------------------------------------------------------------------------
 
+entity::entity()
+{
+}
+
+entity::entity( std::string debug_name )
+{
+#ifdef _DEBUG
+	this->debug_name = debug_name;
+#endif
+}
+
 void entity::update_from_physics()
 {
 	update_transform_to_match_physics_components();
@@ -80,21 +91,56 @@ void entity::post_update_components()
 
 		component->post_update();
 	}
+
+#ifndef _FINAL_RELEASE
+
+	if( g_engine->renderer.debug.is_entity_info_logging() )
+	{
+
+		auto tform = get_transform();
+		if( debug_name.length() )
+		{
+			log( "{}", debug_name );
+		}
+		log( "P : {:.2f}, {:.2f}", tform->pos.x, tform->pos.y );
+		log( "V : {:.2f}, {:.2f}", velocity.x, velocity.y );
+		log( "---" );
+	}
+#endif
 }
 
 void entity::post_update()
 {
 }
 
+// forces are gradual and build up over time.
+//
+// this is good for moving a character or applying things like gravity or wind.
 void entity::apply_force( const entity_simple_force& force )
 {
-	// forces are gradual, and build up over time
 	pending_forces.emplace_back( force.normal, fixed_time_step::per_second( force.strength ) );
 }
 
+// resets the velocity to zero, and applies an impulse of the requested force.
+// creates an immediate change in direction.
+void entity::set_force( const entity_simple_force& force )
+{
+	// kill the current velocity...
+	//
+	// #simple - do we really need to zero this out? if this can be removed,
+	// this entire function can be deleted and replaced with calls to
+	// apply_impulse instead.
+	velocity = vec2::zero;
+
+	// ...then add the new impulse
+	apply_impulse( force );
+}
+
+// impulses are immediate and applied at full strength.
+//
+// this is for things like jumping or bouncing off of things.
 void entity::apply_impulse( const entity_simple_force& force )
 {
-	// impulses are immediate, full strength changes
 	pending_forces.push_back( force );
 }
 
@@ -111,22 +157,13 @@ void entity::compile_velocity()
 	pending_forces.clear();
 }
 
-void entity::reset_force( const entity_simple_force& force )
-{
-	// reverse out the current velocity first
-	velocity = vec2::zero;
-
-	// then add the new velocity
-	apply_impulse( force );
-}
-
 void entity::reflect_across( vec2 normal )
 {
 	auto reflected_dir = vec2::reflect_across_normal( velocity, normal.normalize() );
 
 	if( !reflected_dir.is_zero() )
 	{
-		reset_force( { reflected_dir, velocity.get_size() } );
+		set_force( { reflected_dir, velocity.get_size() } );
 	}
 }
 

@@ -743,7 +743,16 @@ bool engine::on_input_pressed( const input_event* evt )
 		}
 
 	#ifndef _FINAL_RELEASE
-		// frame debugger
+		case input_id::key_f9:
+		{
+			g_engine->renderer.debug.entity_info_log = true;
+			log_div();
+			log( "-- Entity Info" );
+			log_div();
+
+			return true;
+		}
+
 		case input_id::key_f10:
 		{
 			g_engine->renderer.debug.single_frame_log = true;

@@ -24,6 +24,7 @@ struct render
 		// batching system and to get a look at how many draw calls we're using
 		// and what they are composed of.
 		bool single_frame_log = false;
+		bool entity_info_log = false;
 
 		// if true, draw the extra debug information like box2d primitives and mesh wireframes
 		bool draw_debug_info = false;
@@ -31,6 +32,11 @@ struct render
 		bool is_single_frame_logging()
 		{
 			return single_frame_log;
+		}
+
+		bool is_entity_info_logging()
+		{
+			return entity_info_log;;
 		}
 
 		bool is_drawing_debug_info()

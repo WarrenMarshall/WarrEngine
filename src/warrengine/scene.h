@@ -128,7 +128,16 @@ struct scene
 	T* add_entity()
 	{
 		entities.push_back( std::make_unique<T>() );
-		auto new_entity = static_cast<T*>( entities.back().get() );
+		T* new_entity = entities.back().get();
+		new_entity->parent_scene = this;
+		return new_entity;
+	}
+
+	template<typename T>
+	T* add_entity( std::string debug_name )
+	{
+		entities.push_back( std::make_unique<T>( debug_name ) );
+		T* new_entity = entities.back().get();
 		new_entity->parent_scene = this;
 		return new_entity;
 	}

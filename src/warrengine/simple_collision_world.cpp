@@ -217,23 +217,25 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	// if we're here, then the entities didn't fully handle the collision and we
 	// should resolve it using the default behaviors
 
+	// ----------------------------------------------------------------------------
+	// dynamic-to-dynamic
+
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
+
 		if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
 		{
 			auto velocity_a = ent_a->velocity;
 			auto velocity_b = ent_b->velocity;
 
-			if( velocity_a.is_zero() and velocity_b.is_zero() )
-			{
-				// #bug - this really shouldn't happen but I haven't figured it out yet. this is a band-aid.
-				return;
-			}
-
 			auto dot = vec2::dot( velocity_a, velocity_b );
 
 			if( dot > 0.f )
 			{
+				// entities are heading in the same direction, so swap their
+				// velocities and exit. this is a low impact way to resolve that
+				// situation.
+
 				ent_a->reset_force( { velocity_b, velocity_b.get_size() } );
 				ent_b->reset_force( { velocity_a, velocity_a.get_size() } );
 
@@ -241,6 +243,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			}
 
 
+/*
 			if( velocity_a.is_zero() )
 			{
 				velocity_a = velocity_b * -1.f;
@@ -249,6 +252,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			{
 				velocity_b = velocity_a * -1.f;
 			}
+*/
 
 			auto relative_velocity = velocity_b - velocity_a;
 
@@ -262,7 +266,8 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	}
 	else
 	{
-		// dynamic vs stationary
+		// ----------------------------------------------------------------------------
+		// dynamic-to-stationary
 
 		if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
 		{

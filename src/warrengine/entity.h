@@ -52,13 +52,10 @@ struct entity
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier
 	std::string debug_name;
-	void set_debug_name( const char* debug_name )
-	{
-		this->debug_name = debug_name;
-	}
-#else
-	void set_debug_name( const char* debug_name ) { }
 #endif
+
+	entity();
+	entity( std::string debug_name );
 
 	entity_simple_collision simple;
 
@@ -69,8 +66,8 @@ struct entity
 	std::vector<entity_simple_force> pending_forces;
 
 	void apply_force( const entity_simple_force& force );
+	void set_force( const entity_simple_force& force );
 	void apply_impulse( const entity_simple_force& force );
-	void reset_force( const entity_simple_force& force );
 	void compile_velocity();
 
 	// transforms

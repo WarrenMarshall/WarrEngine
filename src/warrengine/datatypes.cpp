@@ -704,10 +704,15 @@ vec2 vec2::cross( const vec2& a, const vec2& b)
 
 float vec2::dot( const vec2& a, const vec2& b )
 {
-	return glm::dot(
+	auto ret = glm::dot(
 		glm::normalize( glm::vec2( a.x, a.y ) ),
 		glm::normalize( glm::vec2( b.x, b.y ) )
 	);
+
+	// if either a or b is a zero vector, we can get a nan result so compensate
+	// for that and just return zero
+
+	return isnan( ret ) ? 0.f : ret;
 }
 
 // returns a w_uv representing the uv tiling factors needed to tile "texture"

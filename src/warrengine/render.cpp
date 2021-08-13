@@ -479,6 +479,7 @@ void render::end_frame()
 
 #ifndef _FINAL_RELEASE
 	g_engine->renderer.debug.single_frame_log = false;
+	g_engine->renderer.debug.entity_info_log = false;
 #endif
 }
 

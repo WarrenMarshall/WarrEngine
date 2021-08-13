@@ -44,9 +44,8 @@ void scene_simple_collision::pushed()
 	// WORLD GEO
 
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<entity>( "world" );
 		e->simple.type = sc_type::stationary;
-		e->set_debug_name( "world" );
 
 		{
 			auto ec = e->add_component<ec_simple_collision_body>();
@@ -96,8 +95,7 @@ void scene_simple_collision::update()
 
 void scene_simple_collision::spawn_ball_at( vec2 world_pos )
 {
-	auto e = add_entity<entity>();
-	e->set_debug_name( "ball" );
+	auto e = add_entity<entity>( "ball" );
 	e->set_pos( world_pos );
 	e->rs_opt.color = color( random::getf(), random::getf(), random::getf() );
 	e->make_pickable();
