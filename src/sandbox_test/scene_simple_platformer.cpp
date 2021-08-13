@@ -37,8 +37,6 @@ void scene_simple_platformer::draw()
 	}
 
 	scene::draw();
-
-	//render::draw_world_axis();
 }
 
 f_decl_tile_map_spawn_entity( spawn_entity )
@@ -55,7 +53,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.is_affected_by_gravity = true;
-			//e->simple.is_bouncy = true;
 			e->simple.friction = 0.1f;
 
 			{
@@ -66,7 +63,6 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( 8.f );
-				//ec->set_as_centered_box( 16.f, 16.f );
 
 				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
 			}

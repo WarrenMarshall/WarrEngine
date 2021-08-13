@@ -118,19 +118,6 @@ void simple_collision_world::generate_collision_set()
 		}
 	}
 
-	// generate detailed information about the collisions
-
-	//pending_collisions.clear();
-	//pending_touches.clear();
-
-#if 0
-	if( colliding_bodies_set.size() )
-	{
-		log_div();
-		//log( "{} colliding bodies", colliding_bodies_set.size() );
-	}
-#endif
-
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
 		switch( body_a->collider_type )
@@ -209,10 +196,14 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
+	// tell entity_a about the collision
+
 	if( ent_a->on_collided( coll ) )
 	{
 		return;
 	}
+
+	// swap the entity info, and then tell entityb about the collision
 
 	auto coll_b = coll;
 	std::swap( coll_b.entity_a, coll_b.entity_b );
@@ -222,6 +213,9 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	{
 		return;
 	}
+
+	// if we're here, then the entities didn't fully handle the collision and we
+	// should resolve it using the default behaviors
 
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
