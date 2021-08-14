@@ -48,7 +48,7 @@ struct entity
 {
 	scene* parent_scene = nullptr;
 
-#ifdef _DEBUG
+#ifndef _FINAL_RELEASE
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier
 	std::string debug_name;

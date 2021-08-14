@@ -250,7 +250,7 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 				// draw a circle so we can visualize the viewport offset location
 				if( g_engine->renderer.debug.is_drawing_debug_info() )
 				{
-					render::draw_crosshair( scene->viewport_pivot / ui_scale );
+					//render::draw_crosshair( scene->viewport_pivot / ui_scale );
 				}
 			#endif
 			}

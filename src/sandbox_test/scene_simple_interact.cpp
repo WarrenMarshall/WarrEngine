@@ -31,7 +31,7 @@ entity* scene_simple_interact::spawn_player()
 	e->debug_name = "player";
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
-	e->simple.friction = 0.05f;
+	e->simple.friction = 0.025f;
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
@@ -203,6 +203,18 @@ void scene_simple_interact::update()
 
 	// show the raycast beam if the right stick is being pushed
 	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
+
+	// follow cam
+
+	auto curent_cam = get_transform()->pos;
+	auto desired_cam = -player->get_pos();
+
+	auto lerp_factor = fixed_time_step::per_second( 2.f );
+
+	curent_cam.x = lerp( curent_cam.x, desired_cam.x, lerp_factor );
+	curent_cam.y = lerp( curent_cam.y, desired_cam.y, lerp_factor );
+
+	get_transform()->set_pos( curent_cam );
 }
 
 void scene_simple_interact::reset_collision_trace_results()

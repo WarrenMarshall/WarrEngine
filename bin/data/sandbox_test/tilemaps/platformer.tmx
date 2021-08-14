@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="125">
+<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="135">
  <tileset firstgid="1" source="platformer.tsx"/>
  <layer id="1" name="world" width="20" height="15">
   <data encoding="csv">
@@ -44,6 +44,15 @@
   <object id="46" x="304" y="0" width="16" height="224"/>
   <object id="44" x="0" y="224" width="320" height="16"/>
   <object id="94" x="144" y="48" width="48" height="16"/>
+  <object id="125" x="208" y="16" width="96" height="16"/>
+  <object id="126" x="80" y="-16" width="96" height="16"/>
+  <object id="127" x="192" y="-48" width="112" height="16"/>
+  <object id="128" x="128" y="-80" width="64" height="16"/>
+  <object id="131" x="16" y="-80" width="48" height="16"/>
+  <object id="132" x="-48" y="-112" width="48" height="16"/>
+  <object id="133" x="32" y="-144" width="48" height="16"/>
+  <object id="130" x="112" y="-144" width="64" height="16"/>
+  <object id="129" x="208" y="-112" width="96" height="16"/>
   <object id="97" x="224" y="176" width="80" height="16"/>
   <object id="106" x="16" y="192" width="80" height="32"/>
   <object id="108" x="144" y="208" width="32" height="16"/>
@@ -53,6 +62,7 @@
   <object id="102" x="32" y="96" width="16" height="16"/>
   <object id="103" x="80" y="64" width="32" height="16"/>
   <object id="104" x="16" y="32" width="32" height="16"/>
+  <object id="134" x="-144" y="16" width="144" height="16"/>
   <object id="99" x="224" y="112" width="80" height="16"/>
   <object id="118" x="224" y="80" rotation="30">
    <polygon points="47.4256,-45.8564 29.282,-109.282 85.282,-12.2872"/>

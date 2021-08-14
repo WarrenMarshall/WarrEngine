@@ -228,6 +228,12 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			auto velocity_a = ent_a->velocity;
 			auto velocity_b = ent_b->velocity;
 
+			if( velocity_a.is_zero() and velocity_b.is_zero() )
+			{
+				// #prevent_nan_town
+				return;
+			}
+
 			auto dot = vec2::dot( velocity_a, velocity_b );
 
 			if( dot > 0.f )
@@ -236,23 +242,23 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 				// velocities and exit. this is a low impact way to resolve that
 				// situation.
 
-				ent_a->reset_force( { velocity_b, velocity_b.get_size() } );
-				ent_b->reset_force( { velocity_a, velocity_a.get_size() } );
+				ent_a->set_force( { velocity_b, velocity_b.get_size() } );
+				ent_b->set_force( { velocity_a, velocity_a.get_size() } );
 
 				return;
 			}
 
 
-/*
 			if( velocity_a.is_zero() )
 			{
+				// #prevent_nan_town
 				velocity_a = velocity_b * -1.f;
 			}
 			if( velocity_b.is_zero() )
 			{
+				// #prevent_nan_town
 				velocity_b = velocity_a * -1.f;
 			}
-*/
 
 			auto relative_velocity = velocity_b - velocity_a;
 
@@ -260,8 +266,8 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
 
 			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
-			ent_a->reset_force( { new_dir_a, total_velocity * 0.5f } );
-			ent_b->reset_force( { new_dir_b, total_velocity * 0.5f } );
+			ent_a->set_force( { new_dir_a, total_velocity * 0.5f } );
+			ent_b->set_force( { new_dir_b, total_velocity * 0.5f } );
 		}
 	}
 	else

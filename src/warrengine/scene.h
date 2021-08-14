@@ -128,18 +128,18 @@ struct scene
 	T* add_entity()
 	{
 		entities.push_back( std::make_unique<T>() );
-		T* new_entity = entities.back().get();
-		new_entity->parent_scene = this;
-		return new_entity;
+		auto e = (T*)entities.back().get();
+		e->parent_scene = this;
+		return e;
 	}
 
 	template<typename T>
 	T* add_entity( std::string debug_name )
 	{
 		entities.push_back( std::make_unique<T>( debug_name ) );
-		T* new_entity = entities.back().get();
-		new_entity->parent_scene = this;
-		return new_entity;
+		auto e = (T*)entities.back().get();
+		e->parent_scene = this;
+		return e;
 	}
 
 	[[nodiscard]] bool is_topmost_scene() const;
