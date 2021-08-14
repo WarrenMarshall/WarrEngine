@@ -798,6 +798,7 @@ void ec_simple_collision_body::draw()
 
 		switch( collider_type )
 		{
+
 			case sc_body_collider_type::solid:
 			{
 				render::state->color = make_color( color::light_green );
@@ -810,6 +811,11 @@ void ec_simple_collision_body::draw()
 				if( parent_entity->simple.is_kinematic() )
 				{
 					render::state->color = make_color( color::teal );
+				}
+
+				if( is_platform )
+				{
+					render::state->color = make_color( color::magenta );
 				}
 			}
 			break;
@@ -1081,9 +1087,9 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 
 }
 
-// NOTE : this function assumes that this body and "other_body" ARE colliding.
+// NOTE : this function assumes that this body and "other" ARE colliding.
 
-std::optional<simple_collision::pending_collision> ec_simple_collision_body::intersects_with_manifold( ec_simple_collision_body* other_body )
+std::optional<war::simple_collision::pending_collision> ec_simple_collision_body::intersects_with_manifold( ec_simple_collision_body* other )
 {
 	simple_collision::pending_collision collision;
 
@@ -1091,14 +1097,14 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 	{
 		case sc_prim_type::circle:
 		{
-			switch( other_body->type )
+			switch( other->type )
 			{
 				case sc_prim_type::circle:
 				{
 					// circle to circle
 
 					c2Circle circle_a = as_simple_circle();
-					c2Circle circle_b = other_body->as_simple_circle();
+					c2Circle circle_b = other->as_simple_circle();
 
 					c2CircletoCircleManifold( circle_a, circle_b, &collision.manifold );
 				}
@@ -1109,7 +1115,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 					// circle to aabb
 
 					c2Circle circle_a = as_simple_circle();
-					c2AABB aabb_ws_b = other_body->as_simple_aabb();
+					c2AABB aabb_ws_b = other->as_simple_aabb();
 
 					c2CircletoAABBManifold( circle_a, aabb_ws_b, &collision.manifold );
 				}
@@ -1120,7 +1126,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 					// circle to polygon
 
 					c2Circle circle_a = as_simple_circle();
-					c2Poly poly_b = other_body->as_simple_poly();
+					c2Poly poly_b = other->as_simple_poly();
 
 					c2CircletoPolyManifold( circle_a, &poly_b, nullptr, &collision.manifold );
 				}
@@ -1131,13 +1137,13 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 
 		case sc_prim_type::aabb:
 		{
-			switch( other_body->type )
+			switch( other->type )
 			{
 				case sc_prim_type::circle:
 				{
 					// aabb to circle
 
-					c2Circle circle_b = other_body->as_simple_circle();
+					c2Circle circle_b = other->as_simple_circle();
 					c2AABB aabb_ws_a = as_simple_aabb();
 
 					c2CircletoAABBManifold( circle_b, aabb_ws_a, &collision.manifold );
@@ -1152,7 +1158,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 					// aabb to aabb
 
 					c2AABB aabb_ws_a = as_simple_aabb();
-					c2AABB aabb_ws_b = other_body->as_simple_aabb();
+					c2AABB aabb_ws_b = other->as_simple_aabb();
 
 					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &collision.manifold );
 				}
@@ -1163,7 +1169,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 					// aabb to polygon
 
 					c2AABB aabb_ws_a = as_simple_aabb();
-					c2Poly poly_b = other_body->as_simple_poly();
+					c2Poly poly_b = other->as_simple_poly();
 
 					c2AABBtoPolyManifold( aabb_ws_a, &poly_b, nullptr, &collision.manifold );
 				}
@@ -1174,13 +1180,13 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 
 		case sc_prim_type::polygon:
 		{
-			switch( other_body->type )
+			switch( other->type )
 			{
 				case sc_prim_type::circle:
 				{
 					// polygon to circle
 
-					c2Circle circle_b = other_body->as_simple_circle();
+					c2Circle circle_b = other->as_simple_circle();
 					c2Poly poly_a = as_simple_poly();
 
 					c2CircletoPolyManifold( circle_b, &poly_a, nullptr, &collision.manifold );
@@ -1194,7 +1200,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 				{
 					// polygon to aabb
 
-					c2AABB aabb_ws_b = other_body->as_simple_aabb();
+					c2AABB aabb_ws_b = other->as_simple_aabb();
 					c2Poly poly_a = as_simple_poly();
 
 					c2AABBtoPolyManifold( aabb_ws_b, &poly_a, nullptr, &collision.manifold );
@@ -1209,7 +1215,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 					// polygon to polygon
 
 					c2Poly poly_a = as_simple_poly();
-					c2Poly poly_b = other_body->as_simple_poly();
+					c2Poly poly_b = other->as_simple_poly();
 
 					c2PolytoPolyManifold( &poly_a, nullptr, &poly_b, nullptr, &collision.manifold );
 				}
@@ -1219,8 +1225,8 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 		break;
 
 		default:
-		assert( false );
-		break;
+			assert( false );
+			break;
 	}
 
 	// sometimes things go badly for reasons that are in the collision system
@@ -1232,6 +1238,7 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 	}
 
 	// if any of these assert, something weird is happening
+	// 8/14/2021 - #clean_up - if these haven't triggered in a long while, might as well delete them
 	assert( !isnan( collision.manifold.n.x ) );
 	assert( !isnan( collision.manifold.n.y ) );
 
@@ -1240,13 +1247,21 @@ std::optional<simple_collision::pending_collision> ec_simple_collision_body::int
 	collision.entity_a = parent_entity;
 	collision.body_a = this;
 
-	collision.entity_b = other_body->parent_entity;
-	collision.body_b = other_body;
+	collision.entity_b = other->parent_entity;
+	collision.body_b = other;
 
 	collision.closest_point =
 		vec2( collision.manifold.contact_points[ 0 ].x, collision.manifold.contact_points[ 0 ].y ).from_simple();
 	collision.normal = vec2( collision.manifold.n.x, collision.manifold.n.y );
 	collision.depth = from_simple( collision.manifold.depths[ 0 ] );
+
+	// ----------------------------------------------------------------------------
+	// platformer collision
+	// ----------------------------------------------------------------------------
+
+
+
+	// ----------------------------------------------------------------------------
 
 	return collision;
 }
@@ -1280,6 +1295,39 @@ c2Poly ec_simple_collision_body::as_simple_poly()
 
 	return poly;
 }
+
+// ----------------------------------------------------------------------------
+
+ec_simple_collision_body_platform::ec_simple_collision_body_platform( entity* parent_entity )
+	: ec_simple_collision_body( parent_entity )
+{
+	is_platform = true;
+}
+
+std::optional<war::simple_collision::pending_collision> ec_simple_collision_body_platform::intersects_with_manifold( ec_simple_collision_body* other )
+{
+	auto coll = ec_simple_collision_body::intersects_with_manifold( other );
+
+	if( coll->body_b->collider_type == sc_body_collider_type::sensor )
+	{
+		return coll;
+	}
+
+	auto oe = other->parent_entity;
+
+	// platforms have extra logic for rejecting collisions once they've been detected
+
+	if( oe->simple.is_dynamic() )
+	{
+		if( oe->velocity.y <= 0.0f )
+		{
+			return std::nullopt;
+		}
+	}
+
+	return coll;
+}
+
 
 // ----------------------------------------------------------------------------
 
@@ -1358,7 +1406,7 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 				{
 					case sc_prim_type::aabb:
 					{
-						auto ec = parent_entity->add_component<ec_simple_collision_body>();
+						auto ec = parent_entity->add_component<ec_simple_collision_body_platform>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 						ec->set_as_box( obj.rc.w, obj.rc.h );
 						ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1380,8 +1428,6 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 			assert( false );
 		}
 	}
-
-
 }
 
 // loops through any layer with the name "entities" and calls the callback
@@ -1410,5 +1456,7 @@ void ec_tile_map::draw()
 
 	render::draw_tile_map( tile_set, tile_map, vec2( 0.f, 0.f ) );
 }
+
+// ----------------------------------------------------------------------------
 
 }

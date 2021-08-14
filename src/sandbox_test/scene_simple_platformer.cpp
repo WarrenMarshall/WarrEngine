@@ -124,13 +124,24 @@ void scene_simple_platformer::update()
 	curent_cam.y = lerp( curent_cam.y, desired_cam.y, lerp_factor );
 
 	get_transform()->set_pos( curent_cam );
+
+	// keyboard input
+
+	if( g_engine->input.is_button_down( input_id::key_left ) )
+	{
+		player->apply_movement_walk( -vec2::x_axis, 150.f );
+	}
+	if( g_engine->input.is_button_down( input_id::key_right ) )
+	{
+		player->apply_movement_walk( vec2::x_axis, 150.f );
+	}
 }
 
 bool scene_simple_platformer::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
-		player->apply_movement_walk( evt->delta );
+		player->apply_movement_walk( evt->delta, 12.f );
 	}
 
 	return false;
@@ -138,10 +149,10 @@ bool scene_simple_platformer::on_input_motion( const input_event* evt )
 
 bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 {
-	if( evt->input_id == input_id::gamepad_button_a )
+	if( evt->input_id == input_id::gamepad_button_a
+		or evt->input_id == input_id::key_space )
 	{
 		player->apply_movement_jump();
-		return true;
 	}
 
 	return false;

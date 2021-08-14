@@ -471,6 +471,7 @@ enum_end
 
 enum_begin( sc_body_collider_type )
 	solid = 0,
+//	platform,
 	sensor,
 enum_end
 

@@ -217,7 +217,7 @@ struct entity
 	void reflect_across( vec2 normal );
 
 	virtual void apply_movement_jump();
-	virtual void apply_movement_walk( vec2 delta );
+	virtual void apply_movement_walk( vec2 delta, float speed );
 
 private:
 

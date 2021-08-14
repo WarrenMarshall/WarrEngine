@@ -507,7 +507,7 @@ void entity::apply_movement_jump()
 	}
 }
 
-void entity::apply_movement_walk( vec2 delta )
+void entity::apply_movement_walk( vec2 delta, float speed )
 {
 	add_force( { delta * vec2::x_axis, 12.f } );
 }

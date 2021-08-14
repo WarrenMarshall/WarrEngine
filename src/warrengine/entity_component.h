@@ -261,6 +261,8 @@ struct ec_simple_collision_body : entity_component
 
 	e_sc_prim_type type = sc_prim_type::circle;
 
+	bool is_platform = false;
+
 	// box
 	rect aabb = {};
 
@@ -289,11 +291,19 @@ struct ec_simple_collision_body : entity_component
 	void set_body_collider_type( e_sc_body_collider_type type );
 
 	bool intersects_with( ec_simple_collision_body* scc );
-	std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* scc );
+	virtual std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* other );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
 	c2Poly as_simple_poly();
+};
+
+struct ec_simple_collision_body_platform : ec_simple_collision_body
+{
+	ec_simple_collision_body_platform() = delete;
+	ec_simple_collision_body_platform( entity* parent_entity );
+
+	virtual std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* other ) override;
 };
 
 // ----------------------------------------------------------------------------

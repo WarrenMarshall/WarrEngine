@@ -120,29 +120,49 @@ void simple_collision_world::handle_collisions()
 
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
-		switch( body_a->collider_type )
+		if( body_a->is_platform )
 		{
-			case sc_body_collider_type::solid:
-			{
-				auto coll = body_a->intersects_with_manifold( body_b );
-				if( coll.has_value() )
-				{
-					push_apart( *coll );
-					resolve_collision( *coll );
-					need_another_iteration = true;
-				}
-			}
-			break;
+			assert( false );
+		}
 
-			case sc_body_collider_type::sensor:
+		if( body_b->is_platform )
+		{
+			auto coll = body_b->intersects_with_manifold( body_a );
+			if( !coll.has_value() )
 			{
-				auto coll = body_a->intersects_with_manifold( body_b );
-				if( coll.has_value() )
-				{
-					resolve_touch( *coll );
-				}
+				continue;
 			}
-			break;
+		}
+
+		{
+			switch( body_a->collider_type )
+			{
+				case sc_body_collider_type::solid:
+				{
+					auto coll = body_a->intersects_with_manifold( body_b );
+					if( coll.has_value() )
+					{
+						push_apart( *coll );
+						resolve_collision( *coll );
+						need_another_iteration = true;
+					}
+				}
+				break;
+
+				// #collision - it feels like sensors are going to have to do some
+				// sort of batching thing so we only fire them ONCE per update cycle
+				// and not every time through the collision iteration
+
+				case sc_body_collider_type::sensor:
+				{
+					auto coll = body_a->intersects_with_manifold( body_b );
+					if( coll.has_value() )
+					{
+						resolve_touch( *coll );
+					}
+				}
+				break;
+			}
 		}
 	}
 }
