@@ -796,9 +796,10 @@ void ec_simple_collision_body::draw()
 
 		render::state->set_from_opt( rs_opt );
 
+		// determine the color from the type
+
 		switch( collider_type )
 		{
-
 			case sc_body_collider_type::solid:
 			{
 				render::state->color = make_color( color::light_green );
@@ -827,6 +828,8 @@ void ec_simple_collision_body::draw()
 			break;
 		}
 
+		// draw the primitive
+
 		switch( type )
 		{
 			case sc_prim_type::circle:
@@ -846,7 +849,6 @@ void ec_simple_collision_body::draw()
 				render::draw_lines( verts );
 			}
 			break;
-
 		}
 	}
 }
@@ -1255,14 +1257,6 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 	collision.normal = vec2( collision.manifold.n.x, collision.manifold.n.y );
 	collision.depth = from_simple( collision.manifold.depths[ 0 ] );
 
-	// ----------------------------------------------------------------------------
-	// platformer collision
-	// ----------------------------------------------------------------------------
-
-
-
-	// ----------------------------------------------------------------------------
-
 	return collision;
 }
 
@@ -1296,6 +1290,54 @@ c2Poly ec_simple_collision_body::as_simple_poly()
 	return poly;
 }
 
+// looks at the bounds of this body and returns a bounding circle
+
+c2Circle ec_simple_collision_body::get_bounds_as_simple_circle()
+{
+	c2Circle circle = {};
+
+	switch( type )
+	{
+		case sc_prim_type::circle:
+		{
+			circle = as_simple_circle();
+		}
+		break;
+
+		case sc_prim_type::aabb:
+		{
+			assert( false );	// this has never been tested
+			auto aabb_ws = as_simple_aabb();
+
+			vec2 extents = { aabb_ws.max.x - aabb_ws.min.x, aabb_ws.max.y - aabb_ws.min.y };
+
+			circle.p = { extents.x / 2.f, extents.y / 2.f };
+			circle.r = glm::max( extents.x, extents.y );
+		}
+		break;
+
+		case sc_prim_type::polygon:
+		{
+			assert( false );	// this has never been tested
+
+			auto poly_ws = as_simple_poly();
+
+			bounding_box bbox;
+			for( int v = 0 ; v < poly_ws.count ; ++v )
+			{
+				bbox.add( { poly_ws.verts[ v ].x, poly_ws.verts[ v ].y } );
+			}
+
+			vec2 extents = { bbox.max.x - bbox.min.x, bbox.max.y - bbox.min.y };
+
+			circle.p = { extents.x / 2.f, extents.y / 2.f };
+			circle.r = glm::max( extents.x, extents.y );
+		}
+		break;
+	}
+	return circle;
+}
+
 // ----------------------------------------------------------------------------
 
 ec_simple_collision_body_platform::ec_simple_collision_body_platform( entity* parent_entity )
@@ -1308,6 +1350,8 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 {
 	auto coll = ec_simple_collision_body::intersects_with_manifold( other );
 
+	// sensors collide with platforms the same as they do regular bodies.
+
 	if( coll->body_b->collider_type == sc_body_collider_type::sensor )
 	{
 		return coll;
@@ -1315,17 +1359,37 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 
 	auto oe = other->parent_entity;
 
+	closest_point = coll->closest_point;
+
 	// platforms have extra logic for rejecting collisions once they've been detected
 
 	if( oe->simple.is_dynamic() )
 	{
-		if( oe->velocity.y <= 0.0f )
+		if( oe->velocity.y < 0.0f )
 		{
+			// the entity won't collide with the platform if it is currently
+			// moving upwards
+
 			return std::nullopt;
 		}
 	}
 
 	return coll;
+}
+
+void ec_simple_collision_body_platform::draw()
+{
+	ec_simple_collision_body::draw();
+
+	scoped_opengl;
+	g_engine->render_api.top_matrix->translate( { -get_transform()->pos.x, -get_transform()->pos.y } );
+
+	{
+		scoped_render_state;
+
+		render::state->color = color::yellow;
+		render::draw_point( closest_point );
+	}
 }
 
 
@@ -1406,6 +1470,8 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 				{
 					case sc_prim_type::aabb:
 					{
+						auto padding = 0.0f;
+
 						auto ec = parent_entity->add_component<ec_simple_collision_body_platform>();
 						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 						ec->set_as_box( obj.rc.w, obj.rc.h );
