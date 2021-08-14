@@ -153,7 +153,7 @@ void scene::post_update()
 
 		// collision detection
 		sc_world->need_another_iteration = false;
-		sc_world->generate_collision_set();
+		sc_world->handle_collisions();
 
 		// If nothing is intersecting anymore, we can abort the rest of the iterations
 		if( !sc_world->need_another_iteration )

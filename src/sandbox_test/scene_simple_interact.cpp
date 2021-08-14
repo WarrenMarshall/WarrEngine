@@ -31,7 +31,7 @@ entity* scene_simple_interact::spawn_player()
 	e->debug_name = "player";
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
-	e->simple.friction = 0.025f;
+	e->simple.friction = 0.1f;
 	{
 		auto ec = e->add_component<ec_simple_collision_body>();
 
@@ -330,7 +330,7 @@ bool scene_simple_interact::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			player->apply_force( { evt->delta, 10.f } );
+			player->add_force( { evt->delta, 10.f } );
 
 			return true;
 		}

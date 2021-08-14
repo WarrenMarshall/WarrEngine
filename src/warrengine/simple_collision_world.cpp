@@ -90,7 +90,7 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 // - push themselves apart so they aren't colliding anymore
 // - react to the collision (changing direction, or whatever)
 
-void simple_collision_world::generate_collision_set()
+void simple_collision_world::handle_collisions()
 {
 	colliding_bodies_set.clear();
 
@@ -217,55 +217,51 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	// if we're here, then the entities didn't fully handle the collision and we
 	// should resolve it using the default behaviors
 
-	// ----------------------------------------------------------------------------
-	// dynamic-to-dynamic
-
 	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
 	{
+		// ----------------------------------------------------------------------------
+		// dynamic-to-dynamic
 
 		if( ent_a->simple.is_bouncy or ent_b->simple.is_bouncy )
 		{
+			// ----------------------------------------------------------------------------
+			// bouncy
+
 			auto velocity_a = ent_a->velocity;
 			auto velocity_b = ent_b->velocity;
 
-			if( velocity_a.is_zero() and velocity_b.is_zero() )
-			{
-				// #prevent_nan_town
-				return;
-			}
+			// #prevent_nan_town
+			if( velocity_a.is_zero() or velocity_b.is_zero() ) { return; }
 
 			auto dot = vec2::dot( velocity_a, velocity_b );
 
+			// entities are heading in the same direction, so swap their
+			// velocities and exit. this is a cheap way to resolve that
+			// situation.
+
 			if( dot > 0.f )
 			{
-				// entities are heading in the same direction, so swap their
-				// velocities and exit. this is a low impact way to resolve that
-				// situation.
-
 				ent_a->set_force( { velocity_b, velocity_b.get_size() } );
 				ent_b->set_force( { velocity_a, velocity_a.get_size() } );
 
 				return;
 			}
 
+			{
+				// #prevent_nan_town
+				if( velocity_a.is_zero() ) { velocity_a = velocity_b * -1.f; }
+				if( velocity_b.is_zero() ) { velocity_b = velocity_a * -1.f; }
+			}
 
-			if( velocity_a.is_zero() )
-			{
-				// #prevent_nan_town
-				velocity_a = velocity_b * -1.f;
-			}
-			if( velocity_b.is_zero() )
-			{
-				// #prevent_nan_town
-				velocity_b = velocity_a * -1.f;
-			}
+			// if we've made it this far, the entities need their velocities
+			// mirrored around the collision normal and then each takes half the
+			// force of the impact
 
 			auto relative_velocity = velocity_b - velocity_a;
-
+			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
 			auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
 			auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
 
-			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
 			ent_a->set_force( { new_dir_a, total_velocity * 0.5f } );
 			ent_b->set_force( { new_dir_b, total_velocity * 0.5f } );
 		}

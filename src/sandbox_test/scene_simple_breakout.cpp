@@ -63,7 +63,7 @@ void scene_simple_breakout::spawn_ball()
 		ec->set_collision_flags( scene_simple_breakout_coll_ball, scene_simple_breakout_coll_geo | scene_simple_breakout_coll_paddle );
 	}
 
-	e->apply_impulse( { random::get_random_unit_vector(), 2.5f } );
+	e->add_impulse( { random::get_random_unit_vector(), 2.5f } );
 }
 
 void scene_simple_breakout::pushed()
@@ -216,7 +216,7 @@ bool scene_simple_breakout::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			paddle->apply_force( { evt->delta * vec2::x_axis, 150.f } );
+			paddle->add_force( { evt->delta * vec2::x_axis, 150.f } );
 
 			return true;
 		}

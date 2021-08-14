@@ -213,7 +213,7 @@ constexpr auto simple_collision_skin_thickness = 1.1f;
 // we allow for a few iterations here to do our best to free colliders from
 // other colliders. if this ends up being slow, adjust this value downwards.
 
-constexpr auto simple_collision_pos_iterations = 20;
+constexpr auto simple_collision_pos_iterations = 4;
 
 [[nodiscard]] constexpr float to_simple( float v )
 {

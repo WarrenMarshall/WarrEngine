@@ -42,13 +42,13 @@ void entity::pre_update()
 		float accel = 1.0f;
 
 		// if entity is already falling downwards, accelerate the fall. this
-		// makes jumping feel better.
+		// makes jumping feel tighter.
 		if( velocity.y > 0.f )
 		{
 			accel = 2.0f;
 		}
 
-		apply_force( { vec2::y_axis, simple_collision_gravity_default * accel } );
+		add_force( { vec2::y_axis, simple_collision_gravity_default * accel } );
 	}
 
 	apply_forces();
@@ -116,7 +116,7 @@ void entity::post_update()
 // forces are gradual and build up over time.
 //
 // this is good for moving a character or applying things like gravity or wind.
-void entity::apply_force( const entity_simple_force& force )
+void entity::add_force( const entity_simple_force& force )
 {
 	pending_forces.emplace_back( force.normal, fixed_time_step::per_second( force.strength ) );
 }
@@ -133,13 +133,13 @@ void entity::set_force( const entity_simple_force& force )
 	velocity = vec2::zero;
 
 	// ...then add the new impulse
-	apply_impulse( force );
+	add_impulse( force );
 }
 
 // impulses are immediate and applied at full strength.
 //
 // this is for things like jumping or bouncing off of things.
-void entity::apply_impulse( const entity_simple_force& force )
+void entity::add_impulse( const entity_simple_force& force )
 {
 	pending_forces.push_back( force );
 }
@@ -173,9 +173,10 @@ void entity::apply_forces()
 
 	// if the velocity has reached a point where it's so small we're just jittering, clear it out.
 /*
-	if( simple.is_dynamic() && velocity.get_size() < 0.025f )
+	if( simple.is_dynamic() && velocity.get_size() < 0.05f )
 	{
 		velocity = vec2::zero;
+		return;
 	}
 */
 
@@ -200,6 +201,7 @@ void entity::apply_forces()
 
 	// "bounce_needs_dampening" flag gets set when the entity is bouncy and it
 	// hit something last frame.
+
 	if( simple.bounce_needs_dampening )
 	{
 		simple.bounce_needs_dampening = false;
@@ -501,13 +503,13 @@ void entity::apply_movement_jump()
 {
 	if( !simple.is_in_air )
 	{
-		apply_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
+		add_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
 	}
 }
 
 void entity::apply_movement_walk( vec2 delta )
 {
-	apply_force( { delta * vec2::x_axis, 12.f } );
+	add_force( { delta * vec2::x_axis, 12.f } );
 }
 
 // ----------------------------------------------------------------------------

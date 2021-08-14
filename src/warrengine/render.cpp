@@ -668,7 +668,7 @@ void render::draw_crosshair( vec2 pos )
 		render::draw_line( pos + offset, pos + ( offset * spoke_sz ) );
 	};
 
-	render::state->color = color::grey;
+	render::state->color = make_color( color::grey, 0.25f );
 	l_draw_spoke( { hsz, 0.f } );
 	l_draw_spoke( { -hsz, 0.f } );
 	l_draw_spoke( { 0.f, hsz } );

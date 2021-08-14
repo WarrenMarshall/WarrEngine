@@ -65,9 +65,10 @@ struct entity
 
 	std::vector<entity_simple_force> pending_forces;
 
-	void apply_force( const entity_simple_force& force );
+	void add_force( const entity_simple_force& force );
 	void set_force( const entity_simple_force& force );
-	void apply_impulse( const entity_simple_force& force );
+	void add_impulse( const entity_simple_force& force );
+
 	void compile_velocity();
 
 	// transforms

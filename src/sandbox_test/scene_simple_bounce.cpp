@@ -66,7 +66,7 @@ entity* scene_simple_bounce::spawn_player()
 		player = e;
 	}
 
-	e->apply_impulse( { random::get_random_unit_vector(), 2.f } );
+	e->add_impulse( { random::get_random_unit_vector(), 2.f } );
 
 	first_time = false;
 
@@ -211,7 +211,7 @@ bool scene_simple_bounce::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			player->apply_force( { evt->delta, 1.0f } );
+			player->add_force( { evt->delta, 1.0f } );
 
 			return true;
 		}
