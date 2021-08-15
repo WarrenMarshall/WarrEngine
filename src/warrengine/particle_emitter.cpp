@@ -160,7 +160,7 @@ void particle_emitter::spawn_particle()
 	p->params = params;
 	p->life_span_save = p->life_span = params->r_lifespan.get_random_value();
 	p->velocity_per_sec = params->r_velocity_spawn.get_random_value();
-	p->base_scale = params->r_scale_spawn.get_random_value() * parent_component->parent_entity->get_scale();
+	p->base_scale = params->r_scale_spawn.get_random_value() * parent_component->get_scale() * parent_component->parent_entity->get_scale();
 	p->spin_per_sec = params->r_spin_per_sec.get_random_value();
 	p->spin = params->r_spin_spawn.get_random_value();
 	p->anim_offset = random::getf();

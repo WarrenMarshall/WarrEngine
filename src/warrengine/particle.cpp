@@ -13,8 +13,8 @@ void particle::update()
 
 	// #bug - this feels bad and looks janky - it's the right idea, wrong implementation
 	// if you slow down time to 0.1, you can see it really start struggling
-	gravity_accum += fixed_time_step::per_second( b2d_gravity_default );
-	pos.y += gravity_accum * params->uses_gravity;
+	gravity_accum += fixed_time_step::per_second( simple_collision_gravity_default ) * params->uses_gravity;
+	pos.y += gravity_accum;
 
 	spin += fixed_time_step::per_second( spin_per_sec );
 

@@ -75,6 +75,11 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 
 				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
 			}
+			{
+				auto ec = e->add_component<ec_emitter>();
+				ec->init( "em_stars" );
+				ec->get_transform()->set_scale( 0.25f );
+			}
 
 			gameplay_scene->player = e;
 
