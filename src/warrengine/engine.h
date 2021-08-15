@@ -38,6 +38,7 @@ struct engine
 	std::deque<std::future<void>> threads;
 
 	texture_asset* tex_white = nullptr;
+	texture_asset* tex_default_lut = nullptr;
 	font_asset* pixel_font = nullptr;
 
 	bool is_running = false;
@@ -101,6 +102,7 @@ struct engine
 	std::unordered_map<std::string, std::string> _symbol_to_value;
 	[[nodiscard]] bool is_symbol_in_map( std::string_view str );
 	[[nodiscard]] std::optional<std::string> find_string_from_symbol( std::string_view str );
+	[[nodiscard]] bool find_bool_from_symbol( std::string_view str, bool def_value = true );
 	[[nodiscard]] int find_int_from_symbol( std::string_view str, int def_value = 0 );
 	[[nodiscard]] float find_float_from_symbol( std::string_view str, float def_value = 0.f );
 	[[nodiscard]] color find_color_from_symbol( std::string_view str, const color& def_value = color::white );

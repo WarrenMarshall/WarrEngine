@@ -70,6 +70,7 @@ void engine::launch_init_engine_assets()
 {
 	// used for solid drawing
 	g_engine->tex_white = g_engine->find_asset<texture_asset>( "engine_white" );
+	g_engine->tex_default_lut = g_engine->find_asset<texture_asset>( "tex_default_lut" );
 
 	// there's a simple pixel font that always lives inside of engine so there
 	// is always a font available, regardless of ui theme settings.
@@ -423,6 +424,9 @@ void engine::do_draw_finished_frame()
 			(int)window.viewport_pos_sz.h
 		);
 
+		render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer->color_attachments[ 0 ].texture );
+		render::state->batch_render_target->assign_texture_slot_manual( g_engine->tex_default_lut );
+
 		render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
 		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
 		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
@@ -450,6 +454,18 @@ std::optional<std::string> engine::find_string_from_symbol( std::string_view sym
 // returns a value to the caller based on the contents of 'symbol'
 //
 // if no value is found for 'symbol', the default value is returned
+
+bool engine::find_bool_from_symbol( std::string_view symbol, bool def_value )
+{
+	auto sval = find_string_from_symbol( symbol );
+
+	if( !sval.has_value() )
+	{
+		sval = std::format( "{}", def_value );
+	}
+
+	return string_util::to_int( std::string( *sval ) );
+}
 
 int engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {

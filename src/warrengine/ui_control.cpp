@@ -253,8 +253,6 @@ ui_image_control::ui_image_control( hash tag )
 	: ui_control( tag )
 {
 	type = ui_control_type::image;
-
-	g_ui->set_size( { g_ui->current_control->rc_client.w, g_ui->current_control->rc_client.h } );
 }
 
 void ui_image_control::draw( const rect& rc_ui, const rect& rc_client, bool is_hovered, bool is_hot )

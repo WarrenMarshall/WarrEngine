@@ -29,7 +29,7 @@ bool texture_source_asset::create()
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
-	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR );
+	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, use_mipmaps ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST );
 	glTextureParameteri( gl_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
 	if( tiling == tiling::clamp )
@@ -48,9 +48,13 @@ bool texture_source_asset::create()
 		(int)( w ), (int)( h ),
 		0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)( image->getPixelsPtr() ) );
 
-	// even though we want chunky pixels, having mipmaps still looks better when
-	// scaling quads and sprites - not using mipmaps looks pretty bad
-	glGenerateMipmap( GL_TEXTURE_2D );
+	if( use_mipmaps )
+	{
+		// even though we want chunky pixels, having mipmaps still looks better when
+		// scaling quads and sprites - not using mipmaps looks pretty bad
+
+		glGenerateMipmap( GL_TEXTURE_2D );
+	}
 
 	return true;
 }

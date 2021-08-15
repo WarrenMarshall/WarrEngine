@@ -108,17 +108,4 @@ void main()
 	{
 		out_color_buffer = vec4(0,0,0,1);
 	}
-
-	// note : it is assumed that texture 1 is the LUT texture
-	//
-	// using the r,g,b values from the color buffer, look up the final color
-	// in the LUT texture.
-
-	vec3 lut = vec3(
-		texture( u_textures[ 1 ], vec2( out_color_buffer.r, 0.875 ) ).r,
-		texture( u_textures[ 1 ], vec2( out_color_buffer.g, 0.625 ) ).g,
-		texture( u_textures[ 1 ], vec2( out_color_buffer.b, 0.375 ) ).b
-	);
-
-	out_color_buffer.rgb = lut;
 }

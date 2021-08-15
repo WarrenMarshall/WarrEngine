@@ -10,6 +10,8 @@ scene_default::scene_default()
 
 void scene_default::pushed()
 {
+	scene::pushed();
+
 	gradient = g_engine->find_asset<texture_asset>( "background_gradient" );
 	tex_hello_world = g_engine->find_asset<texture_asset>( "tex_hello_world" );
 	movement_tween = tween( -175, 175, 4000, tween_type::pingpong, tween_via::quadratic );
@@ -20,40 +22,15 @@ void scene_default::pushed()
 
 }
 
-constexpr void render_nudge()
-{
-	render::state->z += zdepth_nudge;
-}
-
 void scene_default::draw()
 {
 	scene::draw();
 
 
-	//render::draw_world_axis();
 	render::draw_quad( gradient, rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
-	render_nudge();
+	render::state->z += zdepth_nudge;
 
-	//render::state->angle = *tilt_tween;
-	//render::state->scale = *scale_tween;
-	//render::state->glow = 1.5f;
-	//render::draw_sprite( tex_hello_world, vec2( *movement_tween, 0.f ) );
-
-	scoped_render_state;
-
-	render::state->color = make_color( color::red );
-	render::draw_sprite( tex_hello_world, vec2( 0.f, 0.f ) );
-
-	render::state->z -= zdepth_nudge;
-	render::state->color = make_color( color::green );
-	render::draw_sprite( tex_hello_world, vec2( 16.f, 32.f ) );
-}
-
-void scene_default::draw_ui()
-{
-	g_ui->layout_init();
-
-	g_ui->button_control( H( "button_resume" ) )
-		->set_text( "Resume" )
-		->done();
+	render::state->angle = *tilt_tween;
+	render::state->scale = *scale_tween;
+	render::draw_sprite( tex_hello_world, vec2( *movement_tween, 0.f ) );
 }

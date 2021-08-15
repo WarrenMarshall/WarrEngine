@@ -1086,7 +1086,6 @@ bool ec_simple_collision_body::intersects_with( ec_simple_collision_body* scc )
 	}
 
 	return false;
-
 }
 
 // NOTE : this function assumes that this body and "other" ARE colliding.
@@ -1253,7 +1252,10 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 	collision.body_b = other;
 
 	collision.closest_point =
-		vec2( collision.manifold.contact_points[ 0 ].x, collision.manifold.contact_points[ 0 ].y ).from_simple();
+		vec2(
+			collision.manifold.contact_points[ 0 ].x,
+			collision.manifold.contact_points[ 0 ].y
+		).from_simple();
 	collision.normal = vec2( collision.manifold.n.x, collision.manifold.n.y );
 	collision.depth = from_simple( collision.manifold.depths[ 0 ] );
 
@@ -1359,8 +1361,6 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 
 	auto oe = other->parent_entity;
 
-	//closest_point = coll->closest_point;
-
 	// platforms have extra logic for rejecting collisions once they've been detected
 
 	if( oe->simple.is_dynamic() )
@@ -1376,26 +1376,6 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 
 	return coll;
 }
-
-void ec_simple_collision_body_platform::draw()
-{
-	ec_simple_collision_body::draw();
-
-/*
-	{
-		scoped_opengl;
-		g_engine->render_api.top_matrix->translate( { -get_transform()->pos.x, -get_transform()->pos.y } );
-
-		{
-			scoped_render_state;
-
-			render::state->color = color::yellow;
-			render::draw_point( closest_point );
-		}
-	}
-*/
-}
-
 
 // ----------------------------------------------------------------------------
 
@@ -1474,7 +1454,8 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 		}
 		else if( og.tag == "box2d_collision" )
 		{
-			assert( false );	// #task - write this
+			// this doesn't exist yet - if you want it, we gotta write it!
+			assert( false );
 		}
 		else
 		{

@@ -305,9 +305,6 @@ struct ec_simple_collision_body_platform : ec_simple_collision_body
 	ec_simple_collision_body_platform( entity* parent_entity );
 
 	virtual std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* other ) override;
-
-	//vec2 closest_point;
-	virtual void draw() override;
 };
 
 // ----------------------------------------------------------------------------

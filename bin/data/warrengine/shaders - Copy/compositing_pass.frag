@@ -79,6 +79,61 @@ vec4 fx_colorize( vec4 output_color )
 }
 
 // ----------------------------------------------------------------------------
+// > invert
+// ----------------------------------------------------------------------------
+
+uniform bool ub_invert = false;
+
+vec4 fx_invert( vec4 output_color )
+{
+	if( ub_invert )
+	{
+		output_color = vec4( 1.0 - output_color.r, 1.0 - output_color.g, 1.0 - output_color.b, output_color.a );
+	}
+
+	return output_color;
+}
+
+// ----------------------------------------------------------------------------
+// > greyscale
+// ----------------------------------------------------------------------------
+
+uniform bool ub_greyscale = false;
+
+vec4 fx_greyscale( vec4 output_color )
+{
+	if( ub_greyscale )
+	{
+		// Constants represent human eye sensitivity to each colour.
+		float luminance = output_color.r * 0.3 + output_color.g * 0.59 + output_color.b * 0.11;
+
+		output_color = vec4( luminance, luminance, luminance, output_color.a );
+	}
+
+	return output_color;
+}
+
+// ----------------------------------------------------------------------------
+// > sepia
+// ----------------------------------------------------------------------------
+
+uniform bool ub_sepia = false;
+
+vec4 fx_sepia( vec4 output_color )
+{
+	if( ub_sepia )
+	{
+		float red = (output_color.r * .393) + (output_color.g *.769) + (output_color.b * .189);
+		float green = (output_color.r * .349) + (output_color.g *.686) + (output_color.b * .168);
+		float blue = (output_color.r * .272) + (output_color.g *.534) + (output_color.b * .131);
+
+		output_color = vec4( red, green, blue, output_color.a );
+	}
+
+	return output_color;
+}
+
+// ----------------------------------------------------------------------------
 // > film grain - random grainy noise
 // ----------------------------------------------------------------------------
 
@@ -225,6 +280,9 @@ void main()
 
 	out_color_buffer = fx_chromatic_aberration( out_color_buffer );
 	out_color_buffer = fx_desaturation( out_color_buffer );
+	out_color_buffer = fx_sepia( out_color_buffer );
+	out_color_buffer = fx_greyscale( out_color_buffer );
+	out_color_buffer = fx_invert( out_color_buffer );
 	out_color_buffer = fx_colorize( out_color_buffer );
 	out_color_buffer = fx_color_overlay( out_color_buffer );
 	out_color_buffer = fx_crt_tint_lines( out_color_buffer );

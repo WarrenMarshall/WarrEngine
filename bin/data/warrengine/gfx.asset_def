@@ -23,6 +23,8 @@
 
 {
 	"type" "src_texture"
-	"tag" "tex_color_test"
-	"filename" "gfx/color_test.png"
+	"tag" "tex_default_lut"
+	"filename" "gfx/lut_default.psd"
+	"tiling" "tiling.clamp"
+	"use_mipmaps" "false"
 }

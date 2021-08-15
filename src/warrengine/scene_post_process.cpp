@@ -13,9 +13,6 @@ void update_shader_uniforms( scene_post_process_ui_callback* cb )
 	g_engine->render_api.set_uniform( "u_vignette_smoothness", cb->u_vignette_smoothness.float_value() );
 	g_engine->render_api.set_uniform( "u_vignette_rounding", cb->u_vignette_rounding.float_value() );
 
-	g_engine->render_api.set_uniform( "ub_sepia", cb->ub_sepia.bool_value() );
-	g_engine->render_api.set_uniform( "ub_greyscale", cb->ub_greyscale.bool_value() );
-	g_engine->render_api.set_uniform( "ub_invert", cb->ub_invert.bool_value() );
 	g_engine->render_api.set_uniform( "ub_crt_tint", cb->ub_crt_tint.bool_value() );
 	g_engine->render_api.set_uniform( "u_crt_tint_scaling_factor", cb->u_crt_tint_scaling.float_value() );
 	g_engine->render_api.set_uniform( "u_crt_tint_intensity", cb->u_crt_tint_intensity.float_value() );
@@ -53,9 +50,6 @@ scene_post_process_ui_callback::scene_post_process_ui_callback()
 	u_vignette_smoothness.set_float_value( g_engine->render_api.get_uniform_float( "u_vignette_smoothness" ) );
 	u_vignette_rounding.set_float_value( g_engine->render_api.get_uniform_float( "u_vignette_rounding" ) );
 
-	ub_sepia.set_bool_value( g_engine->render_api.get_uniform_float( "ub_sepia" ) );
-	ub_greyscale.set_bool_value( g_engine->render_api.get_uniform_float( "ub_greyscale" ) );
-	ub_invert.set_bool_value( g_engine->render_api.get_uniform_float( "ub_invert" ) );
 	ub_crt_tint.set_bool_value( g_engine->render_api.get_uniform_float( "ub_crt_tint" ) );
 	u_crt_tint_scaling.set_float_value( g_engine->render_api.get_uniform_float( "u_crt_tint_scaling_factor" ) );
 	u_crt_tint_intensity.set_float_value( g_engine->render_api.get_uniform_float( "u_crt_tint_intensity" ) );
@@ -83,9 +77,6 @@ ui_control_data* scene_post_process_ui_callback::get_data( hash tag )
 		case H( "slider_vignette_size" ):				return &u_vignette_size;
 		case H( "slider_vignette_smooth" ):				return &u_vignette_smoothness;
 		case H( "slider_vignette_round" ):				return &u_vignette_rounding;
-		case H( "check_sepia" ):						return &ub_sepia;
-		case H( "check_greyscale" ):					return &ub_greyscale;
-		case H( "check_invert" ):						return &ub_invert;
 		case H( "check_crt_tint" ):						return &ub_crt_tint;
 		case H( "slider_crt_tint_scaling" ):			return &u_crt_tint_scaling;
 		case H( "slider_crt_tint_intensity" ):			return &u_crt_tint_intensity;
@@ -132,8 +123,6 @@ scene_post_process::scene_post_process()
 {
 	ui_callback = std::make_unique<scene_post_process_ui_callback>();
 
-	tex_color_test = g_engine->find_asset<texture_asset>( "tex_color_test" );
-
 	flags.blocks_further_drawing = false;
 }
 
@@ -159,8 +148,19 @@ void scene_post_process::draw_ui()
 
 	scene::draw_ui();
 
-	auto rc_layout = rect( 8.f, 30.f, ui_hw, ui_h );
+	auto rc_layout = rect( 8.f, 30.f, ui_w, ui_h );
+	g_ui->layout_init( rc_layout );
 
+	// ----------------------------------------------------------------------------
+	// default lut
+
+	g_ui->image_control()
+		->set_image( g_engine->tex_default_lut )
+		->cut_top( g_engine->tex_default_lut->height() )
+		->set_size( { viewport_w, g_engine->tex_default_lut->height() } )
+		->done();
+
+	rc_layout = rect( 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
 	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
@@ -325,30 +325,9 @@ void scene_post_process::draw_ui()
 		}
 	}
 
-	rc_layout = rect( ui_hw + 8.f, 30.f, ui_hw, ui_h );
+	rc_layout = rect( ui_hw + 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
 
 	g_ui->layout_init( rc_layout );
-
-	// ----------------------------------------------------------------------------
-	// sepia
-
-	g_ui->check_control( H( "check_sepia" ) )
-		->set_text( "Sepia Tone" )
-		->done();
-
-	// ----------------------------------------------------------------------------
-	// greyscale
-
-	g_ui->check_control( H( "check_greyscale" ) )
-		->set_text( "Greyscale" )
-		->done();
-
-	// ----------------------------------------------------------------------------
-	// invert
-
-	g_ui->check_control( H( "check_invert" ) )
-		->set_text( "Invert" )
-		->done();
 
 	// ----------------------------------------------------------------------------
 	// crt_tint
@@ -441,20 +420,6 @@ void scene_post_process::draw_ui()
 				->done();
 		}
 	}
-
-	// ----------------------------------------------------------------------------
-	// test image
-
-	{
-		scoped_render_state;
-		render::state->scale = 0.65f;
-
-		g_ui->image_control()
-			->set_image( tex_color_test )
-			->cut_top( tex_color_test->height() * render::state->scale.y )
-			->done();
-	}
-
 }
 
 bool scene_post_process::on_input_motion( const input_event* evt )

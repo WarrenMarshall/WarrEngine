@@ -12,9 +12,6 @@ struct scene_post_process_ui_callback : ui_callback
 	ui_slider_control_data u_vignette_size;
 	ui_slider_control_data u_vignette_smoothness;
 	ui_slider_control_data u_vignette_rounding;
-	ui_control_data ub_sepia;
-	ui_control_data ub_greyscale;
-	ui_control_data ub_invert;
 	ui_control_data ub_crt_tint;
 	ui_slider_control_data u_crt_tint_scaling;
 	ui_slider_control_data u_crt_tint_intensity;
@@ -41,7 +38,6 @@ struct scene_post_process_ui_callback : ui_callback
 struct scene_post_process : scene
 {
 	float background_alpha = 0.5f;
-	texture_asset* tex_color_test = nullptr;
 
 	scene_post_process();
 

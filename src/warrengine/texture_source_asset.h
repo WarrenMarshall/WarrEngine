@@ -14,7 +14,11 @@ namespace war
 
 struct texture_source_asset final : texture_source_base
 {
+	// how the edges of the texture are handled
 	e_tiling tiling = tiling::repeat;
+
+	// set to false if you never want this texture to generate mipmaps
+	bool use_mipmaps = true;
 
 	virtual bool create() override;
 };

@@ -9,5 +9,4 @@ struct scene_default : war::scene
 
 	virtual void pushed() override;
 	virtual void draw() override;
-	virtual void draw_ui() override;
 };

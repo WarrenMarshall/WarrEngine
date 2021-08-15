@@ -151,4 +151,20 @@ void render_batch_group::add_point( texture_asset* texture, const render_vertex*
 	batches[ render_prim::point ].add_point( texture, v0 );
 }
 
+// lets you get a texture slot for a specific texture without having to actually
+// draw anything. useful for when you want a shader to be able to access a
+// texture that isn't attached to geometry, like a LUT.
+
+size_t render_batch_group::assign_texture_slot_manual( texture_asset* texture )
+{
+	// this is making wild assumptions about which batch you're referring
+	// drawing from and which draw call pass. it's fine for now but this might
+	// need changing in the future.
+
+	return render::state->batch_render_target
+		->batches[ render_prim::quad ]
+		.vao[ draw_call::opaque ]
+		.vb->assign_texture_slot( texture );
+}
+
 }

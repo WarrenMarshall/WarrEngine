@@ -44,6 +44,7 @@ struct render_batch_group
 	void add_triangle( texture_asset* texture, const render_vertex* v0, const render_vertex* v1, const render_vertex* v2 );
 	void add_line( texture_asset* texture, const render_vertex* v0, const render_vertex* v1 );
 	void add_point( texture_asset* texture, const render_vertex* v0 );
+	size_t assign_texture_slot_manual( texture_asset* texture );
 };
 
 }
