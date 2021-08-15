@@ -152,7 +152,17 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 	if( evt->input_id == input_id::gamepad_button_a
 		or evt->input_id == input_id::key_space )
 	{
-		player->apply_movement_jump();
+
+		if( !player->simple.is_in_air
+			and g_engine->input.get_axis_state( input_id::gamepad_left_stick, true ).y > 0.5f )
+		{
+			player->add_delta_pos( vec2::y_axis * 8.f );
+			player->velocity.x = 0.f;
+		}
+		else
+		{
+			player->apply_movement_jump();
+		}
 	}
 
 	return false;

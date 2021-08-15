@@ -226,12 +226,13 @@ bool tile_map_asset::create()
 						current_object->rotate_vertices( current_object_rotation );
 					}
 				}
-				else if( *key == "visible" )
+				else if( *key == "type" )
 				{
 					auto value = subtok.get_next_token();
 					assert( value.has_value() );
 
-					current_layer->is_visible = text_parser::bool_from_str( *value );
+					current_object->type = *value;
+					string_util::erase_char( current_object->type, '\"' );
 				}
 			}
 		}

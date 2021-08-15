@@ -1359,7 +1359,7 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 
 	auto oe = other->parent_entity;
 
-	closest_point = coll->closest_point;
+	//closest_point = coll->closest_point;
 
 	// platforms have extra logic for rejecting collisions once they've been detected
 
@@ -1381,15 +1381,19 @@ void ec_simple_collision_body_platform::draw()
 {
 	ec_simple_collision_body::draw();
 
-	scoped_opengl;
-	g_engine->render_api.top_matrix->translate( { -get_transform()->pos.x, -get_transform()->pos.y } );
-
+/*
 	{
-		scoped_render_state;
+		scoped_opengl;
+		g_engine->render_api.top_matrix->translate( { -get_transform()->pos.x, -get_transform()->pos.y } );
 
-		render::state->color = color::yellow;
-		render::draw_point( closest_point );
+		{
+			scoped_render_state;
+
+			render::state->color = color::yellow;
+			render::draw_point( closest_point );
+		}
 	}
+*/
 }
 
 
@@ -1423,70 +1427,54 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 			continue;
 		}
 
-		if( og.tag == "simple_collision" )
+		if( og.tag == "collision" )
 		{
 			for( auto& obj : og.objects )
 			{
-				switch( obj.collision_type )
+				if( obj.type == "platform" )
 				{
-					case sc_prim_type::aabb:
+					auto ec = parent_entity->add_component<ec_simple_collision_body_platform>();
+					ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+					ec->set_as_box( obj.rc.w, 0.f );
+					ec->set_collision_flags( collision_mask, collides_with_mask );
+				}
+				else
+				{
+					switch( obj.collision_type )
 					{
-						auto ec = parent_entity->add_component<ec_simple_collision_body>();
-						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
-						ec->set_as_box( obj.rc.w, obj.rc.h );
-						ec->set_collision_flags( collision_mask, collides_with_mask );
-					}
-					break;
+						case sc_prim_type::aabb:
+						{
+							auto ec = parent_entity->add_component<ec_simple_collision_body>();
+							ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+							ec->set_as_box( obj.rc.w, obj.rc.h );
+							ec->set_collision_flags( collision_mask, collides_with_mask );
+						}
+						break;
 
-					case sc_prim_type::circle:
-					{
-						auto ec = parent_entity->add_component<ec_simple_collision_body>();
-						ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
-						ec->set_as_circle( obj.radius );
-						ec->set_collision_flags( collision_mask, collides_with_mask );
-					}
-					break;
+						case sc_prim_type::circle:
+						{
+							auto ec = parent_entity->add_component<ec_simple_collision_body>();
+							ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
+							ec->set_as_circle( obj.radius );
+							ec->set_collision_flags( collision_mask, collides_with_mask );
+						}
+						break;
 
-					case sc_prim_type::polygon:
-					{
-						auto ec = parent_entity->add_component<ec_simple_collision_body>();
-						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
-						ec->set_as_polygon( obj.vertices );
-						ec->set_collision_flags( collision_mask, collides_with_mask );
+						case sc_prim_type::polygon:
+						{
+							auto ec = parent_entity->add_component<ec_simple_collision_body>();
+							ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+							ec->set_as_polygon( obj.vertices );
+							ec->set_collision_flags( collision_mask, collides_with_mask );
+						}
+						break;
 					}
-					break;
 				}
 			}
 		}
 		else if( og.tag == "box2d_collision" )
 		{
 			assert( false );	// #task - write this
-		}
-		else if( og.tag == "simple_platform_collision" )
-		{
-			for( auto& obj : og.objects )
-			{
-				switch( obj.collision_type )
-				{
-					case sc_prim_type::aabb:
-					{
-						auto padding = 0.0f;
-
-						auto ec = parent_entity->add_component<ec_simple_collision_body_platform>();
-						ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
-						ec->set_as_box( obj.rc.w, obj.rc.h );
-						ec->set_collision_flags( collision_mask, collides_with_mask );
-					}
-					break;
-
-					case sc_prim_type::circle:
-					case sc_prim_type::polygon:
-					{
-						assert( false );	// can we support these types as platforms?
-					}
-					break;
-				}
-			}
 		}
 		else
 		{
