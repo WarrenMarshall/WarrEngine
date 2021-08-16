@@ -31,7 +31,6 @@ struct scene
 	{
 		return get_transform()->scale;
 	}
-	transform camera_transform;
 
 	// rendering starts in the top left corner of the screen by default. this
 	// provides a way to move that anywhere within the viewport using a simple
@@ -158,6 +157,10 @@ struct scene
 	virtual bool on_input_held( const input_event* evt );
 	virtual bool on_input_released( const input_event* evt );
 	virtual bool on_input_key( const input_event* evt );
+
+private:
+	transform camera_transform;
+
 };
 
 }

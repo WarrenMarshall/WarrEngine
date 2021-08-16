@@ -44,8 +44,9 @@ void te_transform_shake::update()
 
 	if( get_life_cycle()->is_alive() )
 	{
-		tform->pos.x += noise.get() * strength;
-		tform->pos.y += noise.get() * strength;
+		//tform->pos.x += noise.get() * strength;
+		//tform->pos.y += noise.get() * strength;
+		tform->angle += noise.get() * strength;
 	}
 }
 
