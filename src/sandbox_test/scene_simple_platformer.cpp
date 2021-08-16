@@ -170,5 +170,10 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		}
 	}
 
+	if( evt->input_id == input_id::gamepad_button_x )
+	{
+		fx_stack.add_effect<te_transform_shake>( 500, &camera_transform, 2.0f );
+	}
+
 	return false;
 }

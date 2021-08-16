@@ -138,6 +138,8 @@ void scene::update()
 			sccs.begin(), sccs.end()
 		);
 	}
+
+	fx_stack.update();
 }
 
 void scene::post_update()

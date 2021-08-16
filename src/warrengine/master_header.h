@@ -30,6 +30,8 @@
 #include "life_cycle_mgr.h"
 #include "clock.h"
 #include "noise.h"
+#include "effect.h"
+#include "effect_stack.h"
 #include "tween.h"
 #include "timer.h"
 #include "keyvalues.h"
