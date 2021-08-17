@@ -7,9 +7,6 @@
     <ClCompile Include="asset_cache_mgr.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="datatypes.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -268,15 +265,33 @@
     <ClCompile Include="effect_stack.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="range.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="timeline.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="color.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="vec2.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="vec3.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="rect.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="bounding_box.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="asset_cache_mgr.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="datatypes.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="engine.h">
@@ -546,6 +561,27 @@
     <ClInclude Include="effect_stack.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="range.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="timeline.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="vec2.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="vec3.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rect.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="bounding_box.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -631,6 +667,12 @@
     </Filter>
     <Filter Include="src\box2d_physics_">
       <UniqueIdentifier>{6282214e-3b5d-435f-aa91-11b740e74b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\core">
+      <UniqueIdentifier>{f687ebbe-080a-4f0a-b802-f7511f75988d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{9e9be2a0-fcf1-4899-932a-3b6beda3a849}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

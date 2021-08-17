@@ -10,7 +10,13 @@
 #include "file_disk.h"
 
 #include "random.h"
-#include "datatypes.h"
+#include "vec2.h"
+#include "vec3.h"
+#include "rect.h"
+#include "bounding_box.h"
+#include "range.h"
+#include "color.h"
+#include "timeline.h"
 #include "scoped_vars.h"
 #include "util_geo.h"
 
