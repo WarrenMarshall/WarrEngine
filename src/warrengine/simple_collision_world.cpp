@@ -122,7 +122,11 @@ void simple_collision_world::handle_collisions()
 	{
 		if( body_a->is_platform )
 		{
-			assert( false );
+			auto coll = body_a->intersects_with_manifold( body_b );
+			if( !coll.has_value() )
+			{
+				continue;
+			}
 		}
 
 		if( body_b->is_platform )

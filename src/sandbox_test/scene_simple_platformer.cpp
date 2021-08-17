@@ -93,7 +93,7 @@ void scene_simple_platformer::pushed()
 {
 	scene::pushed();
 
-	viewport_pivot = vec2::zero;
+	viewport_pivot = { viewport_hw, viewport_hh };
 	get_transform()->set_scale( 2.0f );
 
 	g_engine->renderer.debug.draw_debug_info = true;
@@ -121,7 +121,7 @@ void scene_simple_platformer::update()
 	// follow cam
 
 	auto curent_cam = get_transform()->pos;
-	auto desired_cam = -player->get_pos() + vec2( viewport_hw / 2.f, viewport_hh / 2.f );
+	auto desired_cam = -player->get_pos();
 
 	auto lerp_factor = fixed_time_step::per_second( 2.f );
 
@@ -172,7 +172,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 
 	if( evt->input_id == input_id::gamepad_button_x )
 	{
-		fx_stack.add_effect<te_transform_shake>( 500, get_transform(), 2.0f );
+		fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
 	}
 
 	return false;

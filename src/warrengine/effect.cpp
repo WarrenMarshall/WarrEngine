@@ -7,13 +7,19 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
+effect::effect( bool should_restore_state )
+	: should_restore_state( should_restore_state )
+{
+}
+
 void effect::update()
 {
 }
 
 // ----------------------------------------------------------------------------
 
-timed_effect::timed_effect( time_ms duration )
+timed_effect::timed_effect( bool should_restore_state, time_ms duration )
+	: effect( should_restore_state )
 {
 	time_finish = g_engine->time.current_frame_ms + duration;
 }
@@ -32,13 +38,14 @@ void timed_effect::update()
 
 // ----------------------------------------------------------------------------
 
-te_transform_shake::te_transform_shake( time_ms duration, transform* tform, float strength )
-	: timed_effect( duration ),
+te_transform_shake_angle::te_transform_shake_angle( bool should_restore_state, time_ms duration, transform* tform, float strength )
+	: timed_effect( should_restore_state, duration ),
 	tform( tform ), strength( strength )
 {
+	saved_state.angle = tform->angle;
 }
 
-void te_transform_shake::update()
+void te_transform_shake_angle::update()
 {
 	timed_effect::update();
 
@@ -46,7 +53,14 @@ void te_transform_shake::update()
 	{
 		//tform->pos.x += noise.get() * strength;
 		//tform->pos.y += noise.get() * strength;
-		tform->angle += noise.get() * strength;
+		tform->angle = saved_state.angle + ( noise.get() * strength );
+	}
+	else
+	{
+		if( should_restore_state )
+		{
+			tform->angle = saved_state.angle;
+		}
 	}
 }
 
