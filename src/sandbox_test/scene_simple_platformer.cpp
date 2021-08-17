@@ -172,6 +172,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 
 	if( evt->input_id == input_id::gamepad_button_x )
 	{
+		// #effect - would be nice to NOT add this if there already is one running
 		fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
 	}
 

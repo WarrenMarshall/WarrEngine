@@ -112,6 +112,7 @@ struct entity
 	void make_pickable();
 
 	std::deque<std::unique_ptr<entity_component>> components;
+	//std::deque<entity_component> components;
 
 	[[nodiscard]] virtual bool can_be_deleted();
 
