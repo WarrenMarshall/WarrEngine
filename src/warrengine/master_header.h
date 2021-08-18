@@ -17,6 +17,7 @@
 #include "range.h"
 #include "color.h"
 #include "timeline.h"
+#include "timeline_node.h"
 #include "scoped_vars.h"
 #include "util_geo.h"
 

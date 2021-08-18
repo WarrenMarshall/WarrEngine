@@ -286,6 +286,9 @@
     <ClCompile Include="bounding_box.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
+    <ClCompile Include="timeline_node.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -580,6 +583,9 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="bounding_box.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="timeline_node.h">
       <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>

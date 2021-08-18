@@ -2,6 +2,8 @@
 namespace war
 {
 
+constexpr auto max_entity_component_sz = 352;
+
 struct entity_component
 {
 	life_cycle_mgr life_cycle;
@@ -65,6 +67,8 @@ struct entity_component
 	virtual void clear_collision_flags();
 };
 
+static_assert( sizeof( entity_component ) <= max_entity_component_sz );
+
 // ----------------------------------------------------------------------------
 
 struct ec_sprite : entity_component
@@ -80,6 +84,8 @@ struct ec_sprite : entity_component
 	entity_component* init( std::string_view tex_tag );
 	virtual void draw() override;
 };
+
+static_assert( sizeof( ec_sprite ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -105,6 +111,8 @@ struct ec_primitive_shape : entity_component
 	virtual void draw() override;
 };
 
+static_assert( sizeof( ec_primitive_shape ) <= max_entity_component_sz );
+
 // ----------------------------------------------------------------------------
 
 struct ec_emitter : entity_component
@@ -120,6 +128,8 @@ struct ec_emitter : entity_component
 	virtual void draw() override;
 	virtual void update() override;
 };
+
+static_assert( sizeof( ec_emitter ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -158,6 +168,8 @@ struct ec_sound : entity_component
 	virtual void stop() override;
 };
 
+static_assert( sizeof( ec_sound ) <= max_entity_component_sz );
+
 // ----------------------------------------------------------------------------
 // physics
 
@@ -175,6 +187,8 @@ struct ec_box2d_physics : entity_component
 	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
 	virtual void clear_collision_flags() override;
 };
+
+static_assert( sizeof( ec_box2d_physics ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // physics bodies
@@ -213,6 +227,8 @@ struct ec_box2d_physics_body : entity_component
 	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
 };
 
+static_assert( sizeof( ec_box2d_physics_body ) <= max_entity_component_sz );
+
 // ----------------------------------------------------------------------------
 
 struct ec_box2d_static_physics_body : ec_box2d_physics_body
@@ -220,6 +236,8 @@ struct ec_box2d_static_physics_body : ec_box2d_physics_body
 	ec_box2d_static_physics_body() = delete;
 	ec_box2d_static_physics_body( entity* parent_entity );
 };
+
+static_assert( sizeof( ec_box2d_static_physics_body ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
@@ -230,6 +248,8 @@ struct ec_box2d_dynamic_physics_body : ec_box2d_physics_body
 	ec_box2d_dynamic_physics_body( entity* parent_entity );
 };
 
+static_assert( sizeof( ec_box2d_dynamic_physics_body ) <= max_entity_component_sz );
+
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
@@ -238,6 +258,8 @@ struct ec_box2d_kinematic_physics_body : ec_box2d_physics_body
 	ec_box2d_kinematic_physics_body() = delete;
 	ec_box2d_kinematic_physics_body( entity* parent_entity );
 };
+
+static_assert( sizeof( ec_box2d_kinematic_physics_body ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -251,6 +273,8 @@ struct ec_mesh : entity_component
 	entity_component* init( std::string_view mesh_tag );
 	virtual void draw() override;
 };
+
+static_assert( sizeof( ec_mesh ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -299,6 +323,10 @@ struct ec_simple_collision_body : entity_component
 	c2Circle get_bounds_as_simple_circle();
 };
 
+static_assert( sizeof( ec_simple_collision_body ) <= max_entity_component_sz );
+
+// ----------------------------------------------------------------------------
+
 struct ec_simple_collision_body_platform : ec_simple_collision_body
 {
 	ec_simple_collision_body_platform() = delete;
@@ -306,6 +334,8 @@ struct ec_simple_collision_body_platform : ec_simple_collision_body
 
 	virtual std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* other ) override;
 };
+
+static_assert( sizeof( ec_simple_collision_body_platform ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -322,5 +352,7 @@ struct ec_tile_map : entity_component
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
 	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
 };
+
+static_assert( sizeof( ec_tile_map ) <= max_entity_component_sz );
 
 }

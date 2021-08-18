@@ -247,6 +247,7 @@
     <ClCompile Include="noise.cpp" />
     <ClCompile Include="opengl_color_attachment.cpp" />
     <ClCompile Include="timeline.cpp" />
+    <ClCompile Include="timeline_node.cpp" />
     <ClCompile Include="util_geo.cpp" />
     <ClCompile Include="value_accumulator.cpp" />
     <ClCompile Include="matrix.cpp" />
@@ -339,6 +340,7 @@
     <ClInclude Include="render_stats.h" />
     <ClInclude Include="scoped_vars.h" />
     <ClInclude Include="timeline.h" />
+    <ClInclude Include="timeline_node.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="ui_control_data.h" />
     <ClInclude Include="ui_result.h" />
