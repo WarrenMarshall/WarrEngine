@@ -10,6 +10,8 @@ static bit_flag_generator collision_bits = 1;
 static const unsigned scene_simple_platformer_coll_player = collision_bits.get();
 static const unsigned scene_simple_platformer_coll_geo = collision_bits.next();
 
+constexpr auto player_collision_radius = 7.f;
+
 // ----------------------------------------------------------------------------
 
 scene_simple_platformer::scene_simple_platformer()
@@ -62,7 +64,7 @@ f_decl_tile_map_spawn_entity( spawn_entity )
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->tag = H( "player_body" );
-				ec->set_as_circle( 7.f );
+				ec->set_as_circle( player_collision_radius );
 
 				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
 			}
@@ -146,7 +148,6 @@ bool scene_simple_platformer::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
-		// #platformer - add a dead zone for pulling downwards - would make dropping down a lot less slidy and awkward
 		player->apply_movement_walk( evt->delta, 12.f );
 	}
 
@@ -162,7 +163,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		if( !player->simple.is_in_air
 			and g_engine->input.get_axis_state( input_id::gamepad_left_stick, true ).y > 0.5f )
 		{
-			player->add_delta_pos( vec2::y_axis * 8.f );
+			player->add_delta_pos( vec2::y_axis * player_collision_radius );
 			player->velocity.x = 0.f;
 		}
 		else
@@ -175,7 +176,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 	{
 		//fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
 
-		if( !fx_timeline.get_life_cycle()->is_alive() )
+		if( !fx_timeline.life_cycle.is_alive() )
 		{
 			fx_timeline.clear();
 			fx_timeline.add_key_frame<timeline_nkf_msg>( 0.0f, "first key frame!" );

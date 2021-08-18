@@ -14,11 +14,9 @@ struct engine
 	}
 
 	static void launch( int argc, char* argv [] );
-	static void launch_init_engine_assets();
-	static void launch_init_frame_buffers();
-	static void launch_command_line( int argc, char* argv [] );
-	static void launch_precache();
-	static void launch_apply_config_settings();
+	static void parse_command_line( int argc, char* argv [] );
+	static void precache();
+	static void apply_config_settings();
 
 	void main_loop();
 

@@ -28,7 +28,7 @@ void timeline_nkf_msg::update()
 	timeline_nodes_key_frame::update();
 
 	log( "{}", msg );
-	set_life_cycle( life_cycle::dead );
+	life_cycle.set( life_cycle::dead );
 }
 
 }

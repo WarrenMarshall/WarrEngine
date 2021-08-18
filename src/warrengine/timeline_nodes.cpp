@@ -7,7 +7,7 @@ namespace war
 
 timeline_nodes::timeline_nodes()
 {
-	set_life_cycle( life_cycle::dead );
+	life_cycle.set( life_cycle::dead );
 }
 
 void timeline_nodes::clear()
@@ -20,7 +20,7 @@ void timeline_nodes::init( time_ms duration )
 	this->duration = (float)duration;
 	start = g_engine->time.now();
 	end = start + duration;
-	set_life_cycle( life_cycle::alive );
+	life_cycle.set( life_cycle::alive );
 }
 
 void timeline_nodes::update()
@@ -30,7 +30,7 @@ void timeline_nodes::update()
 		return;
 	}
 
-	if( !get_life_cycle()->is_alive() )
+	if( !life_cycle.is_alive() )
 	{
 		return;
 	}
@@ -42,7 +42,7 @@ void timeline_nodes::update()
 
 	for( auto& kf : key_frames )
 	{
-		if( kf->get_life_cycle()->is_alive() and kf->pct_marker <= pct_on_timeline )
+		if( kf->life_cycle.is_alive() and kf->pct_marker <= pct_on_timeline )
 		{
 			kf->update();
 		}
@@ -50,7 +50,7 @@ void timeline_nodes::update()
 
 	if( fequals( pct_on_timeline, 1.f ) )
 	{
-		set_life_cycle( life_cycle::dead );
+		life_cycle.set( life_cycle::dead );
 	}
 }
 

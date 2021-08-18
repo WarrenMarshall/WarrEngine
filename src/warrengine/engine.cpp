@@ -29,7 +29,7 @@ void engine::launch( int argc, char* argv [] )
 
 	g_ui = std::make_unique<war::ui_mgr>();
 
-	engine::launch_command_line( argc, argv );
+	engine::parse_command_line( argc, argv );
 
 	log( "Creating main window" );
 	g_engine->window.init();
@@ -37,48 +37,11 @@ void engine::launch( int argc, char* argv [] )
 	log( "Initializing OpenGL" );
 	g_engine->render_api.init();
 
-	engine::launch_precache();
+	engine::precache();
 
 	log( "Initializing Box2D physics" );
 	g_engine->new_physics_world();
 
-	engine::launch_init_frame_buffers();
-	engine::launch_init_engine_assets();
-
-	log( "Initializing renderer" );
-	g_engine->renderer.init();
-
-	log( "Initializing game" );
-	g_base_game->init();
-
-	log( "Initializing input" );
-	g_engine->input.init();
-
-	g_engine->is_running = true;
-	g_engine->time.init();
-	g_engine->stats.init();
-
-	log( "Running..." );
-
-	g_engine->main_loop();
-
-	log( "Shutting down..." );
-	g_engine->shutdown();
-}
-
-void engine::launch_init_engine_assets()
-{
-	// used for solid drawing
-	g_engine->tex_white = g_engine->find_asset<texture_asset>( "engine_white" );
-	g_engine->tex_default_lut = g_engine->find_asset<texture_asset>( "tex_default_lut" );
-
-	// there's a simple pixel font that always lives inside of engine so there
-	// is always a font available, regardless of ui theme settings.
-	g_engine->pixel_font = g_engine->find_asset<font_asset>( "engine_pixel_font" );
-}
-
-void engine::launch_init_frame_buffers()
-{
 	vec2 viewport_sz = { viewport_w, viewport_h };
 
 	g_engine->frame_buffer = std::make_unique<opengl_framebuffer>( "game" );
@@ -101,9 +64,37 @@ void engine::launch_init_frame_buffers()
 		g_engine->composite_frame_buffer->add_color_attachment( viewport_sz );
 		g_engine->composite_frame_buffer->finalize();
 	}
+
+	// used for solid drawing
+	g_engine->tex_white = g_engine->find_asset<texture_asset>( "engine_white" );
+	g_engine->tex_default_lut = g_engine->find_asset<texture_asset>( "tex_default_lut" );
+
+	// there's a simple pixel font that always lives inside of engine so there
+	// is always a font available, regardless of ui theme settings.
+	g_engine->pixel_font = g_engine->find_asset<font_asset>( "engine_pixel_font" );
+
+	log( "Initializing renderer" );
+	g_engine->renderer.init();
+
+	log( "Initializing game" );
+	g_base_game->init();
+
+	log( "Initializing input" );
+	g_engine->input.init();
+
+	g_engine->is_running = true;
+	g_engine->time.init();
+	g_engine->stats.init();
+
+	log( "Running..." );
+
+	g_engine->main_loop();
+
+	log( "Shutting down..." );
+	g_engine->shutdown();
 }
 
-void engine::launch_command_line( int argc, char* argv [] )
+void engine::parse_command_line( int argc, char* argv [] )
 {
 	for( auto x = 1 ; x < argc ; ++x )
 	{
@@ -123,7 +114,7 @@ void engine::launch_command_line( int argc, char* argv [] )
 	}
 }
 
-void engine::launch_precache()
+void engine::precache()
 {
 	log( "Caching asset definitions (*.asset_def)..." );
 	g_engine->cache_asset_definition_files( "data/warrengine" );
@@ -163,7 +154,7 @@ void engine::launch_precache()
 		g_engine->_symbol_to_value[ key ] = value;
 	}
 
-	engine::launch_apply_config_settings();
+	engine::apply_config_settings();
 
 	g_engine->precache_asset_resources( 2 );
 	g_engine->precache_asset_resources( 3 );
@@ -172,7 +163,7 @@ void engine::launch_precache()
 	g_engine->asset_def_file_cache.clear();
 }
 
-void engine::launch_apply_config_settings()
+void engine::apply_config_settings()
 {
 	tokenizer tok;
 
