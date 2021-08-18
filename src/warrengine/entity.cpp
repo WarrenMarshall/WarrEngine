@@ -509,7 +509,16 @@ void entity::apply_movement_jump()
 
 void entity::apply_movement_walk( vec2 delta, float speed )
 {
-	add_force( { delta * vec2::x_axis, 12.f } );
+	auto dot = vec2::dot( delta, vec2::down );
+
+	// if the delta is mostly aimed downwards, then don't apply the delta. this
+	// allows the player to pull down on the stick without the entity sliding
+	// left and right.
+
+	if( dot > -0.85f )
+	{
+		add_force( { delta * vec2::x_axis, 12.f } );
+	}
 }
 
 // ----------------------------------------------------------------------------
