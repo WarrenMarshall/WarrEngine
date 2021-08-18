@@ -9,6 +9,7 @@
 #include "file_mem.h"
 #include "file_disk.h"
 
+#include "life_cycle_mgr.h"
 #include "random.h"
 #include "vec2.h"
 #include "vec3.h"
@@ -16,8 +17,10 @@
 #include "bounding_box.h"
 #include "range.h"
 #include "color.h"
+#include "timeline_key_frame.h"
 #include "timeline.h"
-#include "timeline_node.h"
+#include "timeline_nodes_key_frame.h"
+#include "timeline_nodes.h"
 #include "scoped_vars.h"
 #include "util_geo.h"
 
@@ -34,7 +37,6 @@
 #include "vertex_array_object.h"
 #include "primitive_batch.h"
 
-#include "life_cycle_mgr.h"
 #include "clock.h"
 #include "noise.h"
 #include "effect.h"

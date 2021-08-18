@@ -286,7 +286,13 @@
     <ClCompile Include="bounding_box.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="timeline_node.cpp">
+    <ClCompile Include="timeline_nodes.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="timeline_nodes_key_frame.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="timeline_key_frame.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -585,7 +591,13 @@
     <ClInclude Include="bounding_box.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="timeline_node.h">
+    <ClInclude Include="timeline_nodes.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="timeline_nodes_key_frame.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="timeline_key_frame.h">
       <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>

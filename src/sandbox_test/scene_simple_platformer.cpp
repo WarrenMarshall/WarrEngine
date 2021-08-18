@@ -146,6 +146,7 @@ bool scene_simple_platformer::on_input_motion( const input_event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
+		// #platformer - add a dead zone for pulling downwards - would make dropping down a lot less slidy and awkward
 		player->apply_movement_walk( evt->delta, 12.f );
 	}
 
@@ -172,8 +173,17 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 
 	if( evt->input_id == input_id::gamepad_button_x )
 	{
-		// #effect - would be nice to NOT add this if there already is one running
-		fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
+		//fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
+
+		if( !fx_timeline.get_life_cycle()->is_alive() )
+		{
+			fx_timeline.clear();
+			fx_timeline.add_key_frame<timeline_nkf_msg>( 0.0f, "first key frame!" );
+			fx_timeline.add_key_frame<timeline_nkf_msg>( 0.75f, "near the end!" );
+			fx_timeline.add_key_frame<timeline_nkf_msg>( 0.95f, "look out!" );
+			fx_timeline.add_key_frame<timeline_nkf_msg>( 1.0f, "done!" );
+			fx_timeline.init( 2000 );
+		}
 	}
 
 	return false;

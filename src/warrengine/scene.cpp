@@ -139,7 +139,7 @@ void scene::update()
 		);
 	}
 
-	fx_stack.update();
+	fx_timeline.update();
 }
 
 void scene::post_update()
