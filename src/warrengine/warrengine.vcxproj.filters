@@ -259,12 +259,6 @@
     <ClCompile Include="util_geo.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="effect.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="effect_stack.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="range.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
@@ -562,12 +556,6 @@
       <Filter>include\collision</Filter>
     </ClInclude>
     <ClInclude Include="util_geo.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="effect.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="effect_stack.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="range.h">

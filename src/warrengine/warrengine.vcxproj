@@ -195,8 +195,6 @@
     <ClCompile Include="asset_file_definition.cpp" />
     <ClCompile Include="bounding_box.cpp" />
     <ClCompile Include="color.cpp" />
-    <ClCompile Include="effect.cpp" />
-    <ClCompile Include="effect_stack.cpp" />
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
     <ClCompile Include="simple_collision_query.cpp" />
@@ -300,8 +298,6 @@
     <ClInclude Include="bounding_box.h" />
     <ClInclude Include="cache.h" />
     <ClInclude Include="color.h" />
-    <ClInclude Include="effect.h" />
-    <ClInclude Include="effect_stack.h" />
     <ClInclude Include="rect.h" />
     <ClInclude Include="simple_collision_world.h" />
     <ClInclude Include="simple_collision_query.h" />

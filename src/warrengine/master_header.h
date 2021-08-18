@@ -17,6 +17,7 @@
 #include "bounding_box.h"
 #include "range.h"
 #include "color.h"
+#include "noise.h"
 #include "timeline_key_frame.h"
 #include "timeline.h"
 #include "timeline_nodes_key_frame.h"
@@ -38,9 +39,6 @@
 #include "primitive_batch.h"
 
 #include "clock.h"
-#include "noise.h"
-#include "effect.h"
-#include "effect_stack.h"
 #include "tween.h"
 #include "timer.h"
 #include "keyvalues.h"
