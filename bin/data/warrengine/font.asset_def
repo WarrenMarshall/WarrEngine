@@ -5,19 +5,19 @@
 
 {
 	"type" "src_texture"
-	"tag" "engine_pixel_font"
+	"tag" "st_engine_pixel_font"
 	"filename" "fonts/font_pixel.png"
 }
 
 {
 	"type" "font_def"
-	"tag" "def_engine_pixel_font"
-	"src_texture_tag" "engine_pixel_font"
+	"tag" "fd_engine_pixel_font"
+	"src_texture_tag" "st_engine_pixel_font"
 	"filename" "fonts/font_pixel.fnt"
 }
 
 {
 	"type" "font"
 	"tag" "engine_pixel_font"
-	"font_def_tag" "def_engine_pixel_font"
+	"font_def_tag" "fd_engine_pixel_font"
 }
