@@ -97,13 +97,13 @@ void timeline_nkf_pp_color_overlay::update()
 
 	if( g_engine->time.now() < started + duration )
 	{
-		g_engine->render_api.set_uniform( "u_color_overlay", color_overlay );
+		g_engine->render_api.set_uniform_color( "u_color_overlay", color_overlay );
 	}
 	else
 	{
 		if( should_restore_state )
 		{
-			g_engine->render_api.set_uniform( "u_color_overlay", saved_state.color_overlay );
+			g_engine->render_api.set_uniform_color( "u_color_overlay", saved_state.color_overlay );
 		}
 		life_cycle.set( life_cycle::dead );
 	}

@@ -7,27 +7,27 @@ namespace war
 
 void update_shader_uniforms( scene_post_process_ui_callback* cb )
 {
-	g_engine->render_api.set_uniform( "ub_vignette", cb->ub_vignette.bool_value() );
+	g_engine->render_api.set_uniform_bool( "ub_vignette", cb->ub_vignette.bool_value() );
 
-	g_engine->render_api.set_uniform( "u_vignette_size", cb->u_vignette_size.float_value() );
-	g_engine->render_api.set_uniform( "u_vignette_smoothness", cb->u_vignette_smoothness.float_value() );
-	g_engine->render_api.set_uniform( "u_vignette_rounding", cb->u_vignette_rounding.float_value() );
+	g_engine->render_api.set_uniform_float( "u_vignette_size", cb->u_vignette_size.float_value() );
+	g_engine->render_api.set_uniform_float( "u_vignette_smoothness", cb->u_vignette_smoothness.float_value() );
+	g_engine->render_api.set_uniform_float( "u_vignette_rounding", cb->u_vignette_rounding.float_value() );
 
-	g_engine->render_api.set_uniform( "ub_crt_tint", cb->ub_crt_tint.bool_value() );
-	g_engine->render_api.set_uniform( "u_crt_tint_scaling_factor", cb->u_crt_tint_scaling.float_value() );
-	g_engine->render_api.set_uniform( "u_crt_tint_intensity", cb->u_crt_tint_intensity.float_value() );
-	g_engine->render_api.set_uniform( "ub_film_grain", cb->ub_film_grain.bool_value() );
-	g_engine->render_api.set_uniform( "u_film_grain_intensity", cb->u_film_grain_intensity.float_value() );
-	g_engine->render_api.set_uniform( "ub_chromatic_aberration", cb->ub_chromatic_aberration.bool_value() );
-	g_engine->render_api.set_uniform( "u_chromatic_aberration_amount", cb->u_chromatic_aberration_amount.float_value() );
-	g_engine->render_api.set_uniform( "ub_crt_scanlines", cb->ub_crt_scanlines.bool_value() );
-	g_engine->render_api.set_uniform( "u_crt_scanlines_intensity", cb->u_crt_scanlines_intensity.float_value() );
-	g_engine->render_api.set_uniform( "ub_desaturation", cb->ub_desaturation.bool_value() );
-	g_engine->render_api.set_uniform( "u_desaturation_amount", cb->u_desaturation_amount.float_value() );
-	g_engine->render_api.set_uniform( "ub_crt_warp", cb->ub_crt_warp.bool_value() );
-	g_engine->render_api.set_uniform( "u_crt_warp_bend", cb->u_crt_warp_bend.float_value() );
-	g_engine->render_api.set_uniform( "ub_pixelate", cb->ub_pixelate.bool_value() );
-	g_engine->render_api.set_uniform( "u_pixelate_factor", cb->u_pixelate_factor.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_crt_tint", cb->ub_crt_tint.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_crt_tint_scaling_factor", cb->u_crt_tint_scaling.float_value() );
+	g_engine->render_api.set_uniform_float( "u_crt_tint_intensity", cb->u_crt_tint_intensity.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_film_grain", cb->ub_film_grain.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_film_grain_intensity", cb->u_film_grain_intensity.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_chromatic_aberration", cb->ub_chromatic_aberration.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_chromatic_aberration_amount", cb->u_chromatic_aberration_amount.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_crt_scanlines", cb->ub_crt_scanlines.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_crt_scanlines_intensity", cb->u_crt_scanlines_intensity.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_desaturation", cb->ub_desaturation.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_desaturation_amount", cb->u_desaturation_amount.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_crt_warp", cb->ub_crt_warp.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_crt_warp_bend", cb->u_crt_warp_bend.float_value() );
+	g_engine->render_api.set_uniform_bool( "ub_pixelate", cb->ub_pixelate.bool_value() );
+	g_engine->render_api.set_uniform_float( "u_pixelate_factor", cb->u_pixelate_factor.float_value() );
 }
 
 // ----------------------------------------------------------------------------

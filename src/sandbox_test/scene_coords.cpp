@@ -119,7 +119,7 @@ void scene_coords::draw_ui()
 		render::state->align = align::vcenter;
 		render::state->color = make_color( color( 1.f, 0.5f, 0.f ) );
 		render::state->glow = glow_val;
-		g_engine->render_api.set_uniform( "u_pixelate_factor", glow_val );
+		g_engine->render_api.set_uniform_float( "u_pixelate_factor", glow_val );
 
 		render::draw_string( "<< Your crosshair", ui_pos );
 	}

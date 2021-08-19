@@ -286,8 +286,8 @@ void engine::main_loop()
 
 			g_engine->stats.update();
 
-			g_engine->render_api.set_uniform( "u_current_time", (float)time.now() / 1000.f );
-			g_engine->render_api.set_uniform( "u_film_grain_amount", post_process.film_grain_amount );
+			g_engine->render_api.set_uniform_float( "u_current_time", (float)time.now() / 1000.f );
+			g_engine->render_api.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
 		}
 
 		// ----------------------------------------------------------------------------
@@ -353,10 +353,10 @@ void engine::do_draw_finished_frame()
 
 	g_engine->render_api.shaders[ blur_shader_name ].bind();
 
-	g_engine->render_api.set_uniform( "u_kernel_size", blur_kernel_size );
+	g_engine->render_api.set_uniform_float( "u_kernel_size", blur_kernel_size );
 
-	g_engine->render_api.set_uniform( "u_viewport_w", viewport_w );
-	g_engine->render_api.set_uniform( "u_viewport_h", viewport_h );
+	g_engine->render_api.set_uniform_float( "u_viewport_w", viewport_w );
+	g_engine->render_api.set_uniform_float( "u_viewport_h", viewport_h );
 
 	render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
 	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );

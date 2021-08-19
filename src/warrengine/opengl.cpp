@@ -393,7 +393,7 @@ color opengl::get_uniform_color( std::string_view name )
 // the "set_uniform" functions loop through all shaders and attempt to set a
 // uniform value in each one, if it exists.
 
-void opengl::set_uniform( std::string_view name, float value )
+void opengl::set_uniform_float( std::string_view name, float value )
 {
 	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
 	{
@@ -405,7 +405,7 @@ void opengl::set_uniform( std::string_view name, float value )
 	}
 }
 
-void opengl::set_uniform( std::string_view name, bool value )
+void opengl::set_uniform_bool( std::string_view name, bool value )
 {
 	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
 	{
@@ -417,7 +417,7 @@ void opengl::set_uniform( std::string_view name, bool value )
 	}
 }
 
-void opengl::set_uniform( std::string_view name, const color& value )
+void opengl::set_uniform_color( std::string_view name, const color& value )
 {
 	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
 	{
