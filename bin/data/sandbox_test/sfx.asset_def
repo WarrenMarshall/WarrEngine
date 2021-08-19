@@ -35,3 +35,15 @@
 	"tag" "sfx_entity_delete"
 	"filename" "sfx/entity_delete.wav"
 }
+
+{
+	"type" "sound"
+	"tag" "sfx_platfomer_jump"
+	"filename" "sfx/platformer_jump.wav"
+}
+
+{
+	"type" "sound"
+	"tag" "sfx_platfomer_boom"
+	"filename" "sfx/platformer_boom.wav"
+}

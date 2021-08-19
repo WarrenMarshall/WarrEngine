@@ -28,23 +28,6 @@ void timeline_nodes_key_frame::update()
 
 // ----------------------------------------------------------------------------
 
-timeline_nkf_msg::timeline_nkf_msg( bool should_restore_state, float pct_marker, time_ms duration, std::string msg )
-	: timeline_nodes_key_frame( should_restore_state, pct_marker, duration ),
-	msg( msg )
-{
-
-}
-
-void timeline_nkf_msg::update()
-{
-	timeline_nodes_key_frame::update();
-
-	log( "{}", msg );
-	life_cycle.set( life_cycle::dead );
-}
-
-// ----------------------------------------------------------------------------
-
 timeline_nkf_transform_shake_angle::timeline_nkf_transform_shake_angle( bool should_restore_state, float pct_marker, time_ms duration, transform* tform, float strength )
 	: timeline_nodes_key_frame( should_restore_state, pct_marker, duration ),
 	tform( tform ), strength( strength )
@@ -107,6 +90,22 @@ void timeline_nkf_pp_color_overlay::update()
 		}
 		life_cycle.set( life_cycle::dead );
 	}
+}
+
+// ----------------------------------------------------------------------------
+
+timeline_nkf_play_sound::timeline_nkf_play_sound( bool should_restore_state, float pct_marker, time_ms duration, sound_asset* snd )
+	: timeline_nodes_key_frame( should_restore_state, pct_marker, duration ),
+	snd( snd )
+{
+}
+
+void timeline_nkf_play_sound::on_started_running()
+{
+	timeline_nodes_key_frame::on_started_running();
+
+	snd->play();
+	life_cycle.set( life_cycle::dead );
 }
 
 }

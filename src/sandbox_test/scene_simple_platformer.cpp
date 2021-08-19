@@ -179,10 +179,12 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		if( !fx_timeline.life_cycle.is_alive() )
 		{
 			fx_timeline.clear();
-			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.0f, 2000, make_color( color::red, 0.25f ) );
-			fx_timeline.add_key_frame<timeline_nkf_transform_shake_angle>( true, 0.5f, 500, get_transform(), 3.0f );
-			fx_timeline.add_key_frame<timeline_nkf_msg>( false, 1.0f, 0, "finished!" );
-			fx_timeline.init( 2000 );
+			fx_timeline.add_key_frame<timeline_nkf_transform_shake_angle>( true, 0.0f, 1000, get_transform(), 2.0f );
+			fx_timeline.add_key_frame<timeline_nkf_play_sound>( true, 0.0f, 1000, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
+			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.0f, 250, make_color( color::red, 0.25f ) );
+			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.3f, 250, make_color( color::red, 0.25f ) );
+			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.6f, 250, make_color( color::red, 0.25f ) );
+			fx_timeline.init( 1000 );
 		}
 	}
 
