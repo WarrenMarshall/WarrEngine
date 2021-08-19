@@ -372,6 +372,24 @@ bool opengl::get_uniform_bool( std::string_view name )
 	return bool( result );
 }
 
+color opengl::get_uniform_color( std::string_view name )
+{
+	color result;
+
+	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	{
+		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+
+		if( loc != -1 )
+		{
+			glGetnUniformfv( shader.gl_id, loc, 4 * sizeof(float), &result.r );
+			break;
+		}
+	}
+
+	return result;
+}
+
 // the "set_uniform" functions loop through all shaders and attempt to set a
 // uniform value in each one, if it exists.
 

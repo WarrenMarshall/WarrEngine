@@ -42,6 +42,7 @@ struct opengl
 
 	float get_uniform_float( std::string_view name );
 	bool get_uniform_bool( std::string_view name );
+	color get_uniform_color( std::string_view name );
 
 	void set_uniform( std::string_view name, float value );
 	void set_uniform( std::string_view name, bool value );

@@ -179,9 +179,9 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		if( !fx_timeline.life_cycle.is_alive() )
 		{
 			fx_timeline.clear();
-			fx_timeline.add_key_frame<timeline_nkf_msg>( false, 0.0f, "get ready!" );
-			fx_timeline.add_key_frame<timeline_nkf_transform_shake_angle>( true, 0.25f, 1000, get_transform(), 2.0f );
-			fx_timeline.add_key_frame<timeline_nkf_msg>( false, 1.0f, "finished!" );
+			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.0f, 2000, make_color( color::red, 0.25f ) );
+			fx_timeline.add_key_frame<timeline_nkf_transform_shake_angle>( true, 0.5f, 500, get_transform(), 3.0f );
+			fx_timeline.add_key_frame<timeline_nkf_msg>( false, 1.0f, 0, "finished!" );
 			fx_timeline.init( 2000 );
 		}
 	}

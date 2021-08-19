@@ -52,7 +52,7 @@ vec4 fx_chromatic_aberration( vec4 output_color )
 // > color overlay - replaces the fragment color with a lerp. good for color fades, like to/from black.
 // ----------------------------------------------------------------------------
 
-uniform vec4 u_color_overlay = vec4( 0.0f, 0.0f, 0.0f, 0.0f );
+uniform vec4 u_color_overlay = vec4( 0.1f, 0.2f, 0.3f, 0.4f );
 
 vec4 fx_color_overlay( vec4 output_color )
 {
