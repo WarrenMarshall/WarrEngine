@@ -503,7 +503,7 @@ void entity::apply_movement_jump()
 {
 	if( !simple.is_in_air )
 	{
-		g_engine->find_asset<sound_asset>( "sfx_platfomer_jump" )->play();
+		//g_engine->find_asset<sound_asset>( "sfx_platfomer_jump" )->play();
 		add_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
 	}
 }

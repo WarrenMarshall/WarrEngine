@@ -149,6 +149,7 @@ struct scene
 	[[nodiscard]] entity* find_entity_by_pick_id( int pick_id );
 
 	virtual void new_game();
+	void follow_cam( const transform* follow_target );
 
 	std::unique_ptr<war::ui_callback> ui_callback = nullptr;
 	virtual war::ui_callback* get_ui_callback();
@@ -161,7 +162,6 @@ struct scene
 
 private:
 	transform camera_transform;
-
 };
 
 }

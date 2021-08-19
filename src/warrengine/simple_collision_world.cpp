@@ -175,10 +175,12 @@ void simple_collision_world::handle_collisions()
 
 void simple_collision_world::push_apart( simple_collision::pending_collision& coll )
 {
+/*
 	if( glm::abs( coll.depth ) < 0.01f )
 	{
 		return;
 	}
+*/
 
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;

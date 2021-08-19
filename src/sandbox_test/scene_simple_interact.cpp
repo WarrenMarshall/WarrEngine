@@ -204,17 +204,7 @@ void scene_simple_interact::update()
 	// show the raycast beam if the right stick is being pushed
 	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
 
-	// follow cam
-
-	auto curent_cam = get_transform()->pos;
-	auto desired_cam = -player->get_pos();
-
-	auto lerp_factor = fixed_time_step::per_second( 2.f );
-
-	curent_cam.x = lerp( curent_cam.x, desired_cam.x, lerp_factor );
-	curent_cam.y = lerp( curent_cam.y, desired_cam.y, lerp_factor );
-
-	get_transform()->set_pos( curent_cam );
+	follow_cam( player->get_transform() );
 }
 
 void scene_simple_interact::reset_collision_trace_results()

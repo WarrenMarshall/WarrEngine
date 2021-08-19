@@ -120,17 +120,7 @@ void scene_simple_platformer::update()
 {
 	scene::update();
 
-	// follow cam
-
-	auto curent_cam = get_transform()->pos;
-	auto desired_cam = -player->get_pos();
-
-	auto lerp_factor = fixed_time_step::per_second( 2.f );
-
-	curent_cam.x = lerp( curent_cam.x, desired_cam.x, lerp_factor );
-	curent_cam.y = lerp( curent_cam.y, desired_cam.y, lerp_factor );
-
-	get_transform()->set_pos( curent_cam );
+	follow_cam( player->get_transform());
 
 	// keyboard input
 
