@@ -4,11 +4,11 @@ namespace war
 
 struct key_values
 {
-	[[nodiscard]] bool does_key_exist( std::string_view key ) const;
-	[[nodiscard]] std::string_view find_value( std::string_view key ) const;
-	[[nodiscard]] std::string_view find_value_or( std::string_view key, std::string_view default_value = "" ) const;
+	[[nodiscard]] bool does_key_exist( const std::string& key ) const;
+	[[nodiscard]] std::string_view find_value( const std::string& ) const;
+	[[nodiscard]] std::string_view find_value_or( const std::string&, const std::string& default_value = "" ) const;
 
-	std::unordered_map<std::string, std::string> kv;
+	std::map<std::string, std::string> kv;
 };
 
 }

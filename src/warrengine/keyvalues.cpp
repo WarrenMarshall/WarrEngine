@@ -5,30 +5,30 @@
 namespace war
 {
 
-bool key_values::does_key_exist( std::string_view key ) const
+bool key_values::does_key_exist( const std::string& key ) const
 {
-	return kv.count( key.data() ) > 0;
+	return kv.count( key ) > 0;
 }
 
-std::string_view key_values::find_value( std::string_view key ) const
+std::string_view key_values::find_value( const std::string& key ) const
 {
 	if( !does_key_exist( key ) )
 	{
 		return "";
 	}
 
-	return kv.at( key.data() );
+	return kv.at( key );
 }
 
 // same as "find_values", but it isn't fatal if the key doesn't exist
-std::string_view key_values::find_value_or( std::string_view key, std::string_view default_value ) const
+std::string_view key_values::find_value_or( const std::string& key, const std::string& default_value ) const
 {
 	if( !does_key_exist( key ) )
 	{
 		return default_value;
 	}
 
-	return std::string_view( kv.at( key.data() ) );
+	return kv.at( key );
 }
 
 }
