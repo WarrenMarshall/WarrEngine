@@ -46,6 +46,7 @@ struct entity_simple_collision
 
 struct entity
 {
+	life_cycle_mgr life_cycle;
 	scene* parent_scene = nullptr;
 
 #ifndef _FINAL_RELEASE
@@ -101,7 +102,6 @@ struct entity
 	void update_transform_to_match_physics_components();
 
 	virtual void set_life_cycle( e_life_cycle lc );
-	const life_cycle_mgr* get_life_cycle();
 
 	void set_tag( hash tag );
 	hash tag = hash_none;
@@ -219,10 +219,6 @@ struct entity
 
 	virtual void apply_movement_jump();
 	virtual void apply_movement_walk( vec2 delta, float speed );
-
-private:
-
-	life_cycle_mgr life_cycle;
 };
 
 // ----------------------------------------------------------------------------

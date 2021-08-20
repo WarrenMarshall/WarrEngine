@@ -175,12 +175,10 @@ void simple_collision_world::handle_collisions()
 
 void simple_collision_world::push_apart( simple_collision::pending_collision& coll )
 {
-/*
-	if( glm::abs( coll.depth ) < 0.01f )
+	if( glm::abs( coll.depth ) < push_apart_tolerance )
 	{
 		return;
 	}
-*/
 
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
@@ -312,7 +310,11 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
 		{
 			ent_a->simple.bounce_needs_dampening = true;
+			ent_b->simple.bounce_needs_dampening = true;
+			ent_a->velocity = vec2::zero;
+			ent_b->velocity = vec2::zero;
 		}
+
 	}
 	else
 	{

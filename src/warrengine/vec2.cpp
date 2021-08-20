@@ -249,6 +249,11 @@ vec2 vec2::snap_to_int( const vec2& v )
 	return vec2( war::snap_to_int( v.x ), war::snap_to_int( v.y ) );
 }
 
+vec2 vec2::snap_to_int()
+{
+	return vec2::snap_to_int( *this );
+}
+
 vec2 vec2::cross( const vec2& a, const vec2& b)
 {
 	auto v = glm::cross( glm::vec3( a.x, a.y, 0.f ), glm::vec3( b.x, b.y, 0.f ) );

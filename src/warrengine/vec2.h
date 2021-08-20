@@ -51,6 +51,7 @@ struct vec2
 	vec2( float v );
 	vec2( std::string_view str );
 	vec2( const b2Vec2& b2v2 );
+	vec2 snap_to_int();
 
 	// static utilities
 

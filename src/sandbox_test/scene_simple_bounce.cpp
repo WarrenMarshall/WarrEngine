@@ -77,6 +77,8 @@ void scene_simple_bounce::pushed()
 {
 	scene::pushed();
 
+	sc_world->push_apart_tolerance = 2.0f;
+
 	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 

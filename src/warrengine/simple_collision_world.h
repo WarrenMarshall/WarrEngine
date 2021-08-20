@@ -6,6 +6,16 @@ struct simple_collision_world
 {
 	scene* parent_scene = nullptr;
 
+	// how far 2 bodies need to be penetrating before we will push them apart.
+	// setting this higher results in a better dynamic simulation but can look
+	// choppy in a platformer where the character is constantly being pushed
+	// down by gravity.
+	//
+	// 0.25 - good for a platformer
+	// 2.0 - good for dynamically moving bodies bouncing off each other
+
+	float push_apart_tolerance = 0.25f;
+
 	std::vector<ec_simple_collision_body*> active_bodies;
 	std::set<ec_simple_body_pair> colliding_bodies_set;
 	bool need_another_iteration = false;

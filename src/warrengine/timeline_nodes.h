@@ -6,12 +6,10 @@ namespace war
 
 struct timeline_nodes
 {
-	life_cycle_mgr life_cycle;
-	time_ms start, end;
-	float duration;
-
 	std::vector<std::unique_ptr<timeline_nodes_key_frame>> key_frames;
-	e_timeline_type type = timeline_type::invalid;
+	life_cycle_mgr life_cycle;
+	time_ms start = 0, end = 0;
+	float duration = 0.f;
 
 	timeline_nodes();
 

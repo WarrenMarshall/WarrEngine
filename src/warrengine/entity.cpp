@@ -171,8 +171,8 @@ void entity::apply_forces()
 {
 	compile_velocity();
 
-	// if the velocity has reached a point where it's so small we're just jittering, clear it out.
 /*
+	// if the velocity has reached a point where it's so small we're just jittering, clear it out.
 	if( simple.is_dynamic() && velocity.get_size() < 0.05f )
 	{
 		velocity = vec2::zero;
@@ -251,7 +251,8 @@ void entity::draw()
 
 void entity::update_physics_components_to_match_transform()
 {
-	// physics
+	// ----------------------------------------------------------------------------
+	// BOX2D
 
 	if( has_component<ec_box2d_physics>() )
 	{
@@ -274,6 +275,9 @@ void entity::update_physics_components_to_match_transform()
 
 void entity::update_transform_to_match_physics_components()
 {
+	// ----------------------------------------------------------------------------
+	// BOX2D
+
 	// entities with physics components need their transforms
 	// updated as per what the physics engine is reporting.
 	//
@@ -478,11 +482,6 @@ void entity::set_life_cycle( e_life_cycle lc )
 	{
 		iter->life_cycle.set( lc );
 	}
-}
-
-const life_cycle_mgr* entity::get_life_cycle()
-{
-	return &life_cycle;
 }
 
 void entity::remove_dead_components()

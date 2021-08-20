@@ -16,7 +16,7 @@ void contact_listener::BeginContact( b2Contact* contact )
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
 
 	// if either entity is dying, don't add this contact to the list.
-	if( !pc.entity_a->get_life_cycle()->is_alive() or !pc.entity_b->get_life_cycle()->is_alive() )
+	if( !pc.entity_a->life_cycle.is_alive() or !pc.entity_b->life_cycle.is_alive() )
 	{
 		return;
 	}
@@ -39,7 +39,7 @@ void contact_listener::EndContact( b2Contact* contact )
 	pc.entity_b = ( (entity_component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
 
 	// if either entity is dying, don't add this contact to the list.
-	if( !pc.entity_a->get_life_cycle()->is_alive() or !pc.entity_b->get_life_cycle()->is_alive() )
+	if( !pc.entity_a->life_cycle.is_alive() or !pc.entity_b->life_cycle.is_alive() )
 	{
 		return;
 	}
