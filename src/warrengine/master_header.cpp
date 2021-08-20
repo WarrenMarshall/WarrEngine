@@ -15,6 +15,22 @@ std::unique_ptr<game> g_base_game = nullptr;
 std::unique_ptr<engine> g_engine = nullptr;
 std::unique_ptr<ui_mgr> g_ui = nullptr;
 
+float lerp( float a, float b, float lerp_factor )
+{
+	float result = ( ( 1.f - lerp_factor ) * a ) + ( lerp_factor * b );
+	return result;
+}
+
+vec2 lerp( vec2 a, vec2 b, float lerp_factor )
+{
+	vec2 result = vec2::zero;
+
+	result.x = ( ( 1.f - lerp_factor ) * a.x ) + ( lerp_factor * b.x );
+	result.y = ( ( 1.f - lerp_factor ) * a.y ) + ( lerp_factor * b.y );
+
+	return result;
+}
+
 }
 
 // yoinked from: http://stevendebock.blogspot.com/2013/07/nvidia-optimus.html

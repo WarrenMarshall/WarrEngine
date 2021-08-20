@@ -235,7 +235,7 @@ void render::draw_tiled( texture_asset* texture, const rect& dst )
 // returns: the x,y position immediately following the last character that was
 // drawn.
 
-vec2 render::draw_string( std::string_view text, const vec2& pos )
+vec2 render::draw_string( const std::string& text, const vec2& pos )
 {
 	auto extents = render::state->font->get_string_extents( text );
 

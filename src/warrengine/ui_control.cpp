@@ -23,9 +23,9 @@ void ui_control::draw_slice_def( const rect& rc_ui, bool is_hovered, bool is_hot
 	}
 }
 
-void ui_control::draw_text( const rect& rc_client, const color& color, bool is_hovered, bool is_hot, std::string_view text )
+void ui_control::draw_text( const rect& rc_client, const color& color, bool is_hovered, bool is_hot, const std::string& text )
 {
-	if( text.length() )
+	if( !text.empty() )
 	{
 		const vec2 pos = rc_client.get_pos_from_alignment( text_align );
 
@@ -621,7 +621,7 @@ void ui_dropdown_control::draw( const rect& rc_ui, const rect& rc_client, bool i
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 
 	auto str = g_ui->current_callback->get_item_for_idx( dropdown_control_tag, control_data->int_value() );
-	draw_text( rc_client, text_color, is_hovered, is_hot, str );
+	draw_text( rc_client, text_color, is_hovered, is_hot, str.data() );
 
 	auto tex = g_engine->find_asset<texture_asset>( "ui_dropdown_arrow" );
 

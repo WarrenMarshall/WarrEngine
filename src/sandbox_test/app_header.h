@@ -20,7 +20,7 @@ static void draw_gradient_background()
 	render::draw_quad( g_engine->find_asset<texture_asset>( "background_gradient" ), rect( 0.f, 0.f, viewport_w, viewport_h ) );
 }
 
-static void draw_title( std::string_view title )
+static void draw_title( const std::string& title )
 {
 	scoped_render_state;
 

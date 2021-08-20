@@ -1239,9 +1239,8 @@ std::optional<war::simple_collision::pending_collision> ec_simple_collision_body
 	}
 
 	// if any of these assert, something weird is happening
-	// 8/14/2021 - #clean_up - if these haven't triggered in a long while, might as well delete them
-	assert( !isnan( collision.manifold.n.x ) );
-	assert( !isnan( collision.manifold.n.y ) );
+	//assert( !isnan( collision.manifold.n.x ) );
+	//assert( !isnan( collision.manifold.n.y ) );
 
 	// fill out the collision structure and return a positive result
 

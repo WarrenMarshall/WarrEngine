@@ -42,7 +42,6 @@ struct asset_cache_mgr
 		return tag.data();
 	}
 
-
 	template<typename T>
 	[[nodiscard]] T* find( std::string_view tag )
 	{

@@ -50,7 +50,7 @@ void scene_tweens::draw_ui()
 	{
 		scoped_render_state;
 
-		auto l_draw_label = [&] ( std::string_view desc, float& ypos )
+		auto l_draw_label = [&] ( const std::string& desc, float& ypos )
 		{
 			render::state->color = make_color( 0, 0.35f );
 			render::draw_filled_rect( rect( 96.f, ypos - 5.f, 200.f, 10.f ) );

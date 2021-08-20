@@ -171,7 +171,6 @@ constexpr float zdepth_debug_bias = 1000.f;
 }
 
 [[nodiscard]] float snap_to_int( float val );
-[[nodiscard]] float lerp( float a, float b, float lerp_factor );
 
 // ----------------------------------------------------------------------------
 // physics constants and helpers

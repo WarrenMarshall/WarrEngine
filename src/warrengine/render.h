@@ -80,7 +80,7 @@ struct render
 	static void draw_mesh( mesh_asset* mesh );
 	static void draw_sliced( const slice_def_asset* slice_def, const rect& dst );
 	static void draw_sprite( texture_asset* texture, const vec2& dst );
-	static vec2 draw_string( std::string_view text, const vec2& pos );
+	static vec2 draw_string( const std::string& text, const vec2& pos );
 	static vec2 draw_string( const std::vector<std::string>& text, const vec2& rc );
 	static vec2 draw_string( const std::vector<std::string>& text, const rect& rc );
 	static void draw_tiled( texture_asset* texture, const rect& dst );

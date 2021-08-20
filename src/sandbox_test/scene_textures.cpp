@@ -45,7 +45,7 @@ void scene_textures::draw_ui()
 
 		// info boxes
 
-		auto l_draw_info_box = [] ( std::string_view caption, const rect& rc )
+		auto l_draw_info_box = [] ( const std::string& caption, const rect& rc )
 		{
 			render::state->color = make_color( color::black, 0.25f );
 			render::draw_rounded_filled_rect( rc, 6.f );

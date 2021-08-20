@@ -43,7 +43,7 @@ struct ui_control
 
 	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have
 	void draw_slice_def( const rect& rc_ui, bool is_hovered, bool is_hot );
-	void draw_text( const rect& rc_client, const color& color, bool is_hovered, bool is_hot, std::string_view text );
+	void draw_text( const rect& rc_client, const color& color, bool is_hovered, bool is_hot, const std::string& text );
 	void draw_texture( const rect& rc, texture_asset* texture, bool is_hovered, bool is_hot );
 	void draw_image( const rect& rc, texture_asset* texture );
 

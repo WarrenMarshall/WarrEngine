@@ -120,6 +120,9 @@ namespace war
 namespace war
 {
 
+[[nodiscard]] float lerp( float a, float b, float lerp_factor );
+[[nodiscard]] vec2 lerp( vec2 a, vec2 b, float lerp_factor );
+
 extern std::unique_ptr<engine> g_engine;
 extern std::unique_ptr<ui_mgr> g_ui;
 
