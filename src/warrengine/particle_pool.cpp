@@ -7,7 +7,6 @@ namespace war
 
 void particle_pool::draw()
 {
-
 	for( const auto& particle : _objects )
 	{
 		if( !particle.is_alive )
@@ -53,7 +52,18 @@ void particle_pool::update()
 	{
 		if( particle.is_alive )
 		{
-			particle.update();
+			{
+				particle.life_span -= fixed_time_step::ms_per_step;
+				particle.is_alive = ( particle.life_span > 0 );
+
+				particle.pos += particle.v_dir * ( fixed_time_step::per_second( particle.velocity_per_sec ) );
+
+				particle.gravity_accum += fixed_time_step::per_second( simple_collision_gravity_default ) * particle.params->uses_gravity;
+				particle.pos.y += particle.gravity_accum;
+
+				particle.spin += fixed_time_step::per_second( particle.spin_per_sec );
+			}
+
 			num_alive++;
 		}
 	}

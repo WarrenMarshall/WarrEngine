@@ -13,7 +13,7 @@ struct particle final
 
 	// how long this particle should live, in ticks
 	float life_span = 0.f;
-	float life_span_save = 0.f;	// saves the original life span for reference
+	float life_span_save = 0.f;	// !! // saves the original life span for reference
 
 	// angle of movement
 	vec2 v_dir = { 0, 0 };
@@ -22,16 +22,14 @@ struct particle final
 	float velocity_per_sec = 0.f;
 
 	// current particle state
-	float base_scale = 0.f;
+	float base_scale = 0.f; // !!
 
 	float spin = 0.f;
 	float spin_per_sec = 0.f;
 
-	float anim_offset = 0.f;
+	float anim_offset = 0.f; // !!
 
 	float gravity_accum = 0.f;
-
-	void update();
 };
 
 // make sure the particle struct doesn't get above 64 bytes
