@@ -146,7 +146,7 @@ void scene::post_update()
 {
 	// loop through the collision
 
-	for( auto iter_counter = 0 ; iter_counter < simple_collision_pos_iterations ; ++iter_counter )
+	for( auto iter_counter = 0 ; iter_counter < sc_world->settings.num_pos_iterations ; ++iter_counter )
 	{
 		for( auto& scc : sc_world->active_bodies )
 		{

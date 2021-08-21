@@ -101,7 +101,7 @@ void scene_simple_collision::spawn_ball_at( vec2 world_pos )
 	e->make_pickable();
 	e->simple.friction = 0.01f;
 	e->simple.is_affected_by_gravity = true;
-	e->simple.max_velocity_y = { -5.f, simple_collision_gravity_max };
+	e->simple.max_velocity_y = { -5.f, sc_world->settings.gravity_max_speed };
 	e->simple.is_bouncy = true;
 	{
 		float random_radius = random::getf_range( 16.f, 32.f );
@@ -131,7 +131,7 @@ void scene_simple_collision::spawn_box_at( vec2 world_pos )
 	e->simple.friction = 0.5f;
 	e->simple.is_affected_by_gravity = true;
 	e->simple.is_bouncy = true;
-	e->simple.max_velocity_y = { -5.f, simple_collision_gravity_max };
+	e->simple.max_velocity_y = { -5.f, sc_world->settings.gravity_max_speed };
 	{
 		float random_radius = random::getf_range( 16.f, 32.f );
 

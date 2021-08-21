@@ -175,7 +175,7 @@ void simple_collision_world::handle_collisions()
 
 void simple_collision_world::push_apart( simple_collision::pending_collision& coll )
 {
-	if( glm::abs( coll.depth ) < push_apart_tolerance )
+	if( glm::abs( coll.depth ) < settings.push_apart_tolerance )
 	{
 		return;
 	}
@@ -193,23 +193,23 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 
 	if( dynamic_count == 2 )
 	{
-		ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
-		ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness * 0.5f );
+		ent_a->add_delta_pos( -coll.normal * coll.depth * settings.skin_thickness * 0.5f );
+		ent_b->add_delta_pos( coll.normal * coll.depth * settings.skin_thickness * 0.5f );
 	}
 	else if( dynamic_count == 1 and kinematic_count == 1 )
 	{
 		if( a_is_dynamic )
 		{
-			ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness );
+			ent_a->add_delta_pos( -coll.normal * coll.depth * settings.skin_thickness );
 		}
 		else
 		{
-			ent_b->add_delta_pos( coll.normal * coll.depth * simple_collision_skin_thickness );
+			ent_b->add_delta_pos( coll.normal * coll.depth * settings.skin_thickness );
 		}
 	}
 	else
 	{
-		ent_a->add_delta_pos( -coll.normal * coll.depth * simple_collision_skin_thickness );
+		ent_a->add_delta_pos( -coll.normal * coll.depth * settings.skin_thickness );
 	}
 }
 
@@ -229,7 +229,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 
 	// swap the entity info, and then tell entityb about the collision
 
-	auto coll_b = coll;
+	simple_collision::pending_collision coll_b = coll;
 	std::swap( coll_b.entity_a, coll_b.entity_b );
 	std::swap( coll_b.body_a, coll_b.body_b );
 
@@ -304,6 +304,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	// if an entity is bouncy and it uses gravity, then we need to dampen it's
 	// vertical velocity each time we compiled the velocity, otherwise it'll
 	// just bounce forever at the same height.
+
 	if( ent_a->simple.is_bouncy and ent_a->simple.is_affected_by_gravity )
 	{
 		// hitting the ceiling or the floor means we need to dampen next update
@@ -311,6 +312,11 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 		{
 			ent_a->simple.bounce_needs_dampening = true;
 			ent_b->simple.bounce_needs_dampening = true;
+
+			// zeroing these out makes things a little more stable. but remember
+			// that this isn't a real physics simulator. close enough is good
+			// enough.
+
 			ent_a->velocity = vec2::zero;
 			ent_b->velocity = vec2::zero;
 		}
@@ -330,6 +336,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			}
 
 			// hitting a wall kills horizontal velocity
+
 			if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
 			{
 				ent_a->velocity.x = 0.f;
