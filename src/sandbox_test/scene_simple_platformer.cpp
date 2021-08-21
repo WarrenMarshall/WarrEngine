@@ -101,7 +101,7 @@ void scene_simple_platformer::pushed()
 	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	fx_red_alert.clear( 6 );
+	fx_red_alert.clear( 1000 );
 	fx_red_alert.add_kf_shake_angle( true, 0.0f, 1000, get_transform(), 2.0f );
 	fx_red_alert.add_kf_play_sound( true, 0.0f, 0, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.0f, 250, make_color( color::red, 0.25f ) );

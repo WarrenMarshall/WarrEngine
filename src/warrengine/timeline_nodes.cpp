@@ -10,15 +10,9 @@ timeline_nodes::timeline_nodes()
 	life_cycle.set( life_cycle::dead );
 }
 
-void timeline_nodes::clear( time_ms duration, int kf_reserve_count )
+void timeline_nodes::clear( time_ms duration )
 {
 	key_frames.clear();
-
-	if( kf_reserve_count > 0 )
-	{
-		key_frames.reserve( kf_reserve_count );
-	}
-
 	this->duration = duration;
 }
 
@@ -28,6 +22,12 @@ void timeline_nodes::go()
 	end = start + duration;
 
 	life_cycle.set( life_cycle::alive );
+
+	for( auto& kf : key_frames )
+	{
+		kf.life_cycle.set( life_cycle::alive );
+		kf.is_running = false;
+	}
 }
 
 void timeline_nodes::update()

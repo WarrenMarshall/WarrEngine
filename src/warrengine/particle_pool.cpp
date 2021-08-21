@@ -20,12 +20,11 @@ void particle_pool::draw()
 
 		// color + alpha
 		color color;
-		particle.params->t_color.get_value( pct_of_life, &color );
-		particle.params->t_alpha.get_value( pct_of_life, &color.a );
+		color = particle.params->t_color.get_color_value( pct_of_life );
+		color.a = particle.params->t_alpha.get_float_value( pct_of_life );
 
 		// scale
-		float scale;
-		particle.params->t_scale.get_value( pct_of_life, &scale );
+		float scale = particle.params->t_scale.get_float_value( pct_of_life );
 
 
 		// render state

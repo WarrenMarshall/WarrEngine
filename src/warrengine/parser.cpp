@@ -164,13 +164,13 @@ std::unique_ptr<timeline> text_parser::timeline_from_str( e_timeline_type type, 
 		{
 			case timeline_type::float_type:
 			{
-				kf.value = text_parser::float_from_str( *tok.get_next_token() );
+				kf.float_value = text_parser::float_from_str( *tok.get_next_token() );
 				break;
 			}
 
 			case timeline_type::color_type:
 			{
-				kf.value = text_parser::color_from_str( *tok.get_next_token() );
+				kf.color_value = text_parser::color_from_str( *tok.get_next_token() );
 				break;
 			}
 

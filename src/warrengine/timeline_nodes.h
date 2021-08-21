@@ -13,7 +13,7 @@ struct timeline_nodes
 
 	timeline_nodes();
 
-	void clear( time_ms duration, int kf_reserve_count = 0 );
+	void clear( time_ms duration );
 	void go();
 	void update();
 
