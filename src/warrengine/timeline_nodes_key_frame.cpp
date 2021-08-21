@@ -7,14 +7,40 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-timeline_nodes_key_frame::timeline_nodes_key_frame( bool should_restore_state, float pct_marker, time_ms duration )
-	: should_restore_state( should_restore_state ), pct_marker( pct_marker ), duration( duration )
+timeline_nodes_key_frame::timeline_nodes_key_frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration )
+	: type( type ), should_restore_state( should_restore_state ), pct_marker( pct_marker ), duration( duration )
 {
 }
 
 void timeline_nodes_key_frame::on_started_running()
 {
 	started = g_engine->time.now();
+
+	switch( type )
+	{
+		// ----------------------------------------------------------------------------
+		case tnkf_type::shake_angle:
+		{
+			shake_angle.save.angle = shake_angle.tform->angle;
+		}
+		break;
+
+		// ----------------------------------------------------------------------------
+		case tnkf_type::pp_color_overlay:
+		{
+			auto clr = g_engine->render_api.get_uniform_color( "u_color_overlay" );
+			pp_color_overlay.save.clr = clr;
+		}
+		break;
+
+		// ----------------------------------------------------------------------------
+		case tnkf_type::play_sound:
+		{
+			play_sound.snd->play();
+			life_cycle.set( life_cycle::dead );
+		}
+		break;
+	}
 }
 
 void timeline_nodes_key_frame::update()
@@ -24,88 +50,46 @@ void timeline_nodes_key_frame::update()
 		is_running = true;
 		on_started_running();
 	}
-}
 
-// ----------------------------------------------------------------------------
-
-timeline_nkf_transform_shake_angle::timeline_nkf_transform_shake_angle( bool should_restore_state, float pct_marker, time_ms duration, transform* tform, float strength )
-	: timeline_nodes_key_frame( should_restore_state, pct_marker, duration ),
-	tform( tform ), strength( strength )
-{
-}
-
-void timeline_nkf_transform_shake_angle::on_started_running()
-{
-	timeline_nodes_key_frame::on_started_running();
-
-	saved_state.angle = tform->angle;
-}
-
-void timeline_nkf_transform_shake_angle::update()
-{
-	timeline_nodes_key_frame::update();
-
-	if( g_engine->time.now() < started + duration )
+	switch( type )
 	{
-		tform->angle = saved_state.angle + ( noise.get() * strength );
-	}
-	else
-	{
-		if( should_restore_state )
+		// ----------------------------------------------------------------------------
+		case tnkf_type::shake_angle:
 		{
-			tform->angle = saved_state.angle;
+			if( g_engine->time.now() < started + duration )
+			{
+				shake_angle.tform->angle = shake_angle.save.angle + ( shake_angle.noise.get() * shake_angle.strength );
+			}
+			else
+			{
+				if( should_restore_state )
+				{
+					shake_angle.tform->angle = shake_angle.save.angle;
+				}
+				life_cycle.set( life_cycle::dead );
+			}
 		}
-		life_cycle.set( life_cycle::dead );
-	}
-}
+		break;
 
-// ----------------------------------------------------------------------------
-
-timeline_nkf_pp_color_overlay::timeline_nkf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, color color_overlay )
-	: timeline_nodes_key_frame( should_restore_state, pct_marker, duration ),
-	color_overlay( color_overlay )
-{
-}
-
-void timeline_nkf_pp_color_overlay::on_started_running()
-{
-	timeline_nodes_key_frame::on_started_running();
-
-	saved_state.color_overlay = g_engine->render_api.get_uniform_color( "u_color_overlay" );
-}
-
-void timeline_nkf_pp_color_overlay::update()
-{
-	timeline_nodes_key_frame::update();
-
-	if( g_engine->time.now() < started + duration )
-	{
-		g_engine->render_api.set_uniform_color( "u_color_overlay", color_overlay );
-	}
-	else
-	{
-		if( should_restore_state )
+		// ----------------------------------------------------------------------------
+		case tnkf_type::pp_color_overlay:
 		{
-			g_engine->render_api.set_uniform_color( "u_color_overlay", saved_state.color_overlay );
+			if( g_engine->time.now() < started + duration )
+			{
+				//color clr = { pp_color_overlay.r, pp_color_overlay.g, pp_color_overlay.b, pp_color_overlay.a };
+				g_engine->render_api.set_uniform_color( "u_color_overlay", pp_color_overlay.clr );
+			}
+			else
+			{
+				if( should_restore_state )
+				{
+					g_engine->render_api.set_uniform_color( "u_color_overlay", pp_color_overlay.save.clr );
+				}
+				life_cycle.set( life_cycle::dead );
+			}
 		}
-		life_cycle.set( life_cycle::dead );
+		break;
 	}
-}
-
-// ----------------------------------------------------------------------------
-
-timeline_nkf_play_sound::timeline_nkf_play_sound( bool should_restore_state, float pct_marker, time_ms duration, sound_asset* snd )
-	: timeline_nodes_key_frame( should_restore_state, pct_marker, duration ),
-	snd( snd )
-{
-}
-
-void timeline_nkf_play_sound::on_started_running()
-{
-	timeline_nodes_key_frame::on_started_running();
-
-	snd->play();
-	life_cycle.set( life_cycle::dead );
 }
 
 }

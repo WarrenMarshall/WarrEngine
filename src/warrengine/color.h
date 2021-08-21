@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct color
+struct color final
 {
 	float r = 0.f, g = 0.f, b = 0.f, a = 1.f;
 
@@ -40,7 +40,7 @@ struct color
 	static void scale( color& color, float s );
 
 	static color make( const color& clr, float alpha = 1.f );
-	static color make( int pal_idx, float alpha = 1.f );
+	static color make( e_pal pal_idx, float alpha = 1.f );
 };
 
 }

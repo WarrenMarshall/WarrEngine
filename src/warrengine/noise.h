@@ -2,36 +2,34 @@
 namespace war
 {
 
-struct noise
-{
-	noise();
+// ----------------------------------------------------------------------------
 
+struct noise_perlin
+{
 	float idx = 0.f;
 	float seed = 0.f;
 
-	void init();
-	[[nodiscard]] virtual float get() = 0;
+	[[nodiscard]] float get();
 };
 
 // ----------------------------------------------------------------------------
 
-struct noise_perlin : noise
+struct noise_simplex
 {
-	[[nodiscard]] virtual float get() override;
+	float idx = 0.f;
+	float seed = 0.f;
+
+	[[nodiscard]] float get();
 };
 
 // ----------------------------------------------------------------------------
 
-struct noise_simplex : noise
+struct noise_random
 {
-	[[nodiscard]] virtual float get() override;
-};
+	float idx = 0.f;
+	float seed = 0.f;
 
-// ----------------------------------------------------------------------------
-
-struct noise_random : noise
-{
-	[[nodiscard]] virtual float get() override;
+	[[nodiscard]] float get();
 };
 
 }

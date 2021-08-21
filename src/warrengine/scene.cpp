@@ -138,8 +138,6 @@ void scene::update()
 			sccs.begin(), sccs.end()
 		);
 	}
-
-	fx_timeline.update();
 }
 
 void scene::post_update()

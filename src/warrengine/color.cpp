@@ -133,12 +133,12 @@ void color::scale( color& color, float s )
 	color.b *= s;
 }
 
-color make_color( const color& clr, float alpha )
+color color::make( const color& clr, float alpha )
 {
 	return color( clr.r, clr.g, clr.b, alpha );
 }
 
-color make_color( e_pal pal_idx, float alpha )
+color color::make( e_pal pal_idx, float alpha )
 {
 	return make_color( render::palette[ pal_idx ], alpha );
 }

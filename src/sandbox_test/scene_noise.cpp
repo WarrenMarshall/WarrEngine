@@ -110,10 +110,6 @@ void scene_noise::draw_ui()
 
 void scene_noise::generate_noise_samples()
 {
-	perlin.init();
-	simplex.init();
-	random.init();
-
 	for( auto x = 0 ; x < 64 ; ++x )
 	{
 		simplex_samples[ x ] = simplex.get();

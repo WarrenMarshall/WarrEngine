@@ -490,3 +490,13 @@ enum_begin( draw_call )
 	transparent,
 	max,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( tnkf_type )
+	none = 0,
+	shake_angle,
+	pp_color_overlay,
+	play_sound,
+	max,
+enum_end

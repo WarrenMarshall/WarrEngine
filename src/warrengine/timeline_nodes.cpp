@@ -10,16 +10,23 @@ timeline_nodes::timeline_nodes()
 	life_cycle.set( life_cycle::dead );
 }
 
-void timeline_nodes::clear()
+void timeline_nodes::clear( time_ms duration, int kf_reserve_count )
 {
 	key_frames.clear();
+
+	if( kf_reserve_count > 0 )
+	{
+		key_frames.reserve( kf_reserve_count );
+	}
+
+	this->duration = duration;
 }
 
-void timeline_nodes::init( time_ms duration )
+void timeline_nodes::go()
 {
-	this->duration = (float)duration;
 	start = g_engine->time.now();
 	end = start + duration;
+
 	life_cycle.set( life_cycle::alive );
 }
 
@@ -35,16 +42,16 @@ void timeline_nodes::update()
 		return;
 	}
 
-	float pct_on_timeline = glm::clamp( ( g_engine->time.now() - start ) / duration, 0.f, 1.f );
+	float pct_on_timeline = glm::clamp( ( g_engine->time.now() - start ) / (float)duration, 0.f, 1.f );
 
 	// for every node_key_frame that is behind the current pct marker of this
 	// timeline, call it's update() function.
 
 	for( auto& kf : key_frames )
 	{
-		if( kf->life_cycle.is_alive() and kf->pct_marker <= pct_on_timeline )
+		if( kf.life_cycle.is_alive() and kf.pct_marker <= pct_on_timeline )
 		{
-			kf->update();
+			kf.update();
 		}
 	}
 
@@ -52,6 +59,31 @@ void timeline_nodes::update()
 	{
 		life_cycle.set( life_cycle::dead );
 	}
+}
+
+void timeline_nodes::add_kf_shake_angle( bool should_restore_state, float pct_marker, time_ms duration, transform* tform, float strength )
+{
+	key_frames.emplace_back( tnkf_type::shake_angle, should_restore_state, pct_marker, duration );
+	auto kf = &key_frames.back();
+
+	kf->shake_angle.tform = tform;
+	kf->shake_angle.strength = strength;
+}
+
+void timeline_nodes::add_kf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, color color_overlay )
+{
+	key_frames.emplace_back( tnkf_type::pp_color_overlay, should_restore_state, pct_marker, duration );
+	auto kf = &key_frames.back();
+
+	kf->pp_color_overlay.clr = color_overlay;
+}
+
+void timeline_nodes::add_kf_play_sound( bool should_restore_state, float pct_marker, time_ms duration, sound_asset* snd )
+{
+	key_frames.emplace_back( tnkf_type::play_sound, should_restore_state, pct_marker, duration );
+	auto kf = &key_frames.back();
+
+	kf->play_sound.snd = snd;
 }
 
 }

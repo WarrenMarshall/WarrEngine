@@ -6,23 +6,20 @@ namespace war
 
 struct timeline_nodes
 {
-	std::vector<std::unique_ptr<timeline_nodes_key_frame>> key_frames;
+	std::vector<timeline_nodes_key_frame> key_frames;
 	life_cycle_mgr life_cycle;
 	time_ms start = 0, end = 0;
-	float duration = 0.f;
+	time_ms duration = 0;
 
 	timeline_nodes();
 
-	void clear();
-	void init( time_ms duration );
+	void clear( time_ms duration, int kf_reserve_count = 0 );
+	void go();
 	void update();
 
-	template<typename T, typename ...Args>
-	timeline_nodes_key_frame* add_key_frame( Args &&...args )
-	{
-		key_frames.push_back( std::make_unique<T>( std::forward<Args>( args )... ) );
-		return key_frames.back().get();
-	}
+	void add_kf_shake_angle( bool should_restore_state, float pct_marker, time_ms duration, transform* tform, float strength );
+	void add_kf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, color color_overlay );
+	void add_kf_play_sound( bool should_restore_state, float pct_marker, time_ms duration, sound_asset* snd );
 };
 
 }

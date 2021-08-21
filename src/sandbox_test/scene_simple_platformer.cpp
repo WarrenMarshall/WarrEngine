@@ -101,6 +101,14 @@ void scene_simple_platformer::pushed()
 	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
+	fx_red_alert.clear( 6 );
+	fx_red_alert.add_kf_shake_angle( true, 0.0f, 1000, get_transform(), 2.0f );
+	fx_red_alert.add_kf_play_sound( true, 0.0f, 0, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
+	fx_red_alert.add_kf_pp_color_overlay( true, 0.0f, 250, make_color( color::red, 0.25f ) );
+	fx_red_alert.add_kf_pp_color_overlay( true, 0.3f, 250, make_color( color::red, 0.5f ) );
+	fx_red_alert.add_kf_play_sound( true, 0.75f, 0, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
+	fx_red_alert.add_kf_pp_color_overlay( true, 0.6f, 250, make_color( color::red, 0.25f ) );
+
 	// world
 
 	{
@@ -119,6 +127,8 @@ void scene_simple_platformer::pushed()
 void scene_simple_platformer::update()
 {
 	scene::update();
+
+	fx_red_alert.update();
 
 	follow_cam( player->get_transform());
 
@@ -166,15 +176,9 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 	{
 		//fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
 
-		if( !fx_timeline.life_cycle.is_alive() )
+		if( !fx_red_alert.life_cycle.is_alive() )
 		{
-			fx_timeline.clear();
-			fx_timeline.add_key_frame<timeline_nkf_transform_shake_angle>( true, 0.0f, 1000, get_transform(), 2.0f );
-			fx_timeline.add_key_frame<timeline_nkf_play_sound>( true, 0.0f, 1000, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
-			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.0f, 250, make_color( color::red, 0.25f ) );
-			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.3f, 250, make_color( color::red, 0.25f ) );
-			fx_timeline.add_key_frame<timeline_nkf_pp_color_overlay>( true, 0.6f, 250, make_color( color::red, 0.25f ) );
-			fx_timeline.init( 1000 );
+			fx_red_alert.go();
 		}
 	}
 
