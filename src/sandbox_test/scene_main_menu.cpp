@@ -95,6 +95,7 @@ void scene_main_menu::draw_ui()
 			g_ui->divider_control()->done();
 			do_menu_button<scene_simple_breakout>( H( "button_simple_breakout" ), "Break Out" );
 			do_menu_button<scene_simple_platformer>( H( "button_simple_platformer" ), "Platformer" );
+			do_menu_button<scene_simple_top_down>( H( "button_simple_top_down" ), "Top Down" );
 
 			g_ui->divider_control()->done();
 			do_menu_button<scene_controller>( H( "button_controller" ), "Game Controller" );

@@ -174,8 +174,6 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 
 	if( evt->input_id == input_id::gamepad_button_x )
 	{
-		//fx_stack.add_effect<te_transform_shake_angle>( true, 500, get_transform(), 4.0f );
-
 		if( !fx_red_alert.life_cycle.is_alive() )
 		{
 			fx_red_alert.go();

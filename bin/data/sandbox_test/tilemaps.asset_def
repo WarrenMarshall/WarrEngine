@@ -5,14 +5,37 @@
 
 {
 	"type" "src_texture"
-	"tag" "rpg_sheet"
+	"tag" "st_rpg_sheet"
 	"filename" "gfx/rpg_sheet.png"
 }
 
 {
 	"type" "src_texture"
-	"tag" "tex_platformer_tile_set_master"
+	"tag" "st_platformer_tile_set_master"
 	"filename" "gfx/platformer_tileset.png"
+}
+
+{
+	"type" "src_texture"
+	"tag" "st_top_down_atlas"
+	"filename" "gfx/top_down_shooter_atlas.png"
+	"texture_tags" "\
+		top_down_bullet, 0, 64, 16, 16,\
+		top_down_heart, 64, 0, 16, 16,\
+		top_down_walk, 80, 0, 16, 16,\
+		top_down_shoot, 80, 32, 16, 16,\
+		top_down_explo1, 64, 16, 16, 16,\
+		top_down_explo2, 64, 32, 16, 16,\
+		top_down_explo3, 64, 48, 16, 16\
+	"
+}
+
+{
+	"type" "anim_texture"
+	"tag" "anim_top_down_explo"
+	"frames_per_sec" "10"
+	"tween" "tween.one_shot"
+	"frame_tags" "top_down_explo1,top_down_explo2,top_down_explo3"
 }
 
 # ---------------------------------------------------------
@@ -22,20 +45,26 @@
 {
 	"type" "tile_set"
 	"tag" "ts_ultima"
-	"texture_tag" "rpg_sheet"
+	"texture_tag" "st_rpg_sheet"
 	"tile_sz" "16"
 }
 
 {
 	"type" "tile_set"
 	"tag" "ts_platformer"
-	"texture_tag" "tex_platformer_tile_set_master"
+	"texture_tag" "st_platformer_tile_set_master"
+	"tile_sz" "16"
+}
+
+{
+	"type" "tile_set"
+	"tag" "ts_top_down"
+	"texture_tag" "st_top_down_atlas"
 	"tile_sz" "16"
 }
 
 # ---------------------------------------------------------
 # tile maps
-
 # ---------------------------------------------------------
 
 {
@@ -54,4 +83,10 @@
 	"type" "tile_map"
 	"tag" "tm_platformer_level_01"
 	"filename" "tilemaps/platformer.tmx"
+}
+
+{
+	"type" "tile_map"
+	"tag" "tm_top_down"
+	"filename" "tilemaps/top_down.tmx"
 }

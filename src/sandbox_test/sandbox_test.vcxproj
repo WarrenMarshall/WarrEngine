@@ -187,6 +187,7 @@
     <ClCompile Include="scene_simple_interact.cpp" />
     <ClCompile Include="scene_simple_platformer.cpp" />
     <ClCompile Include="scene_simple_bounce.cpp" />
+    <ClCompile Include="scene_simple_top_down.cpp" />
     <ClCompile Include="scene_sound_board.cpp" />
     <ClCompile Include="scene_textures.cpp" />
     <ClCompile Include="scene_wrapped_text.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="scene_simple_interact.h" />
     <ClInclude Include="scene_simple_platformer.h" />
     <ClInclude Include="scene_simple_bounce.h" />
+    <ClInclude Include="scene_simple_top_down.h" />
     <ClInclude Include="scene_sound_board.h" />
     <ClInclude Include="scene_textures.h" />
     <ClInclude Include="scene_wrapped_text.h" />
