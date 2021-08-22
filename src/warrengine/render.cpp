@@ -591,63 +591,67 @@ void render::draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, 
 			continue;
 		}
 
-		for( auto y = 0 ; y < tile_map->height ; ++y )
+		// #tilemap_drawing
+		for( auto& chunk : layer.chunks )
 		{
-			for( auto x = 0 ; x < tile_map->width ; ++x )
+			for( auto y = 0 ; y < chunk.tilemap_bounds.h ; ++y )
 			{
-				auto tile = &( layer.tiles[ ( y * tile_map->width ) + x ] );
-
-				if( tile->idx == tile_map_asset::tile::empty )
+				for( auto x = 0 ; x < chunk.tilemap_bounds.w ; ++x )
 				{
-					continue;
+					auto tile = &( chunk.tiles[ ( y * (int)chunk.tilemap_bounds.w ) + x ] );
+
+					if( tile->idx == tile_map_asset::tile::empty )
+					{
+						continue;
+					}
+
+					bool flip_h = tile->flags & tile_flags::flipped_horizontally;
+					bool flip_v = tile->flags & tile_flags::flipped_vertically;
+					bool flip_d = tile->flags & tile_flags::flipped_diagonally;
+
+					render::state->scale = vec2( 1.f, 1.f );
+					render::state->angle = 0.f;
+
+					if( flip_d )
+					{
+						if( flip_h and !flip_v )
+						{
+							render::state->angle = 90.f;
+						}
+						else if( !flip_h and !flip_v )
+						{
+							render::state->angle = 180.f;
+						}
+						else if( !flip_h and flip_v )
+						{
+							render::state->angle = 270.f;
+						}
+					}
+					else
+					{
+						if( flip_h and flip_v )
+						{
+							render::state->angle = 180.f;
+						}
+						else if( flip_h and !flip_v )
+						{
+							render::state->scale.x = -1.f;
+						}
+						else if( !flip_h and flip_v )
+						{
+							render::state->scale.y = -1.f;
+						}
+					}
+
+					vec2 tile_pos =
+					{
+						pos.x + ( ( x + chunk.tilemap_bounds.x ) * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f ),
+						pos.y + ( ( y + chunk.tilemap_bounds.y ) * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
+					};
+
+					texture_asset* tile_set_texture = &tile_set->tiles[ tile->idx ];
+					render::draw_sprite( tile_set_texture, tile_pos );
 				}
-
-				bool flip_h = tile->flags & tile_flags::flipped_horizontally;
-				bool flip_v = tile->flags & tile_flags::flipped_vertically;
-				bool flip_d = tile->flags & tile_flags::flipped_diagonally;
-
-				render::state->scale = vec2( 1.f, 1.f );
-				render::state->angle = 0.f;
-
-				if( flip_d )
-				{
-					if( flip_h and !flip_v )
-					{
-						render::state->angle = 90.f;
-					}
-					else if( !flip_h and !flip_v )
-					{
-						render::state->angle = 180.f;
-					}
-					else if( !flip_h and flip_v )
-					{
-						render::state->angle = 270.f;
-					}
-				}
-				else
-				{
-					if( flip_h and flip_v )
-					{
-						render::state->angle = 180.f;
-					}
-					else if( flip_h and !flip_v )
-					{
-						render::state->scale.x = -1.f;
-					}
-					else if( !flip_h and flip_v )
-					{
-						render::state->scale.y = -1.f;
-					}
-				}
-
-				vec2 tile_pos =
-				{
-					pos.x + ( x * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f ),
-					pos.y + ( y * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
-				};
-
-				texture_asset* tile_set_texture = &tile_set->tiles[ tile->idx ];
-				render::draw_sprite( tile_set_texture, tile_pos );
 			}
 		}
 	}

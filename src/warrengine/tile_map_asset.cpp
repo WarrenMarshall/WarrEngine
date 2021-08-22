@@ -19,10 +19,15 @@ bool tile_map_asset::create()
 	auto file = file_system::load_text_file( original_filename );
 
 	layer* current_layer = nullptr;
+	chunk* current_chunk = nullptr;
 	object_group* current_object_group = nullptr;
 	object* current_object = nullptr;
 	float current_object_rotation = 0.f;
 	bool inside_data_block = false;
+	bool inside_editor_settings = false;
+	bool inside_chunk_block = false;
+	size_t chunk_w = chunk::default_chunk_sz, chunk_h = chunk::default_chunk_sz;
+	rect chunk_bounds;
 	int data_block_y = 0;
 
 	for( const auto& raw_line : file->lines )
@@ -58,6 +63,10 @@ bool tile_map_asset::create()
 					{
 						tile_sz = text_parser::int_from_str( value_str );
 					}
+					else if( key == "infinite" )
+					{
+						is_infinite = text_parser::int_from_str( value_str );
+					}
 				}
 			}
 
@@ -74,11 +83,97 @@ bool tile_map_asset::create()
 		{
 			inside_data_block = false;
 		}
+		else if( line.starts_with( "<editorsettings>" ) )
+		{
+			inside_editor_settings = true;
+		}
+		else if( line.starts_with( "</editorsettings>" ) )
+		{
+			inside_editor_settings = false;
+		}
+		else if( line.starts_with( "<chunk" ) )
+		{
+			assert( current_layer );
+
+			data_block_y = 0;
+			inside_chunk_block = true;
+			current_layer->chunks.emplace_back();
+			current_chunk = &current_layer->chunks.back();
+
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+				auto value = subtok.get_next_token();
+
+				if( value.has_value() )
+				{
+					std::string value_str = std::string( *value );
+					string_util::replace_char( value_str, '\"', ' ' );
+					value_str = string_util::trim( value_str );
+
+					if( key == "x" )
+					{
+						current_chunk->tilemap_bounds.x = text_parser::float_from_str( value_str );
+					}
+					else if( key == "y" )
+					{
+						current_chunk->tilemap_bounds.y = text_parser::float_from_str( value_str );
+					}
+					else if( key == "width" )
+					{
+						current_chunk->tilemap_bounds.w = text_parser::float_from_str( value_str );
+					}
+					else if( key == "height" )
+					{
+						current_chunk->tilemap_bounds.h = text_parser::float_from_str( value_str );
+					}
+				}
+			}
+
+			current_chunk->tiles.reserve( (size_t)( current_chunk->tilemap_bounds.w * current_chunk->tilemap_bounds.h ) );
+		}
+		else if( line.starts_with( "</chunk>" ) )
+		{
+			inside_chunk_block = false;
+			current_chunk = nullptr;
+		}
+		else if( inside_editor_settings and line.starts_with( "<chunksize" ) )
+		{
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+				auto value = subtok.get_next_token();
+
+				if( value.has_value() )
+				{
+					std::string value_str = std::string( *value );
+					string_util::replace_char( value_str, '\"', ' ' );
+					value_str = string_util::trim( value_str );
+
+					if( key == "width" )
+					{
+						chunk_w = text_parser::int_from_str( value_str );
+					}
+					else if( key == "height" )
+					{
+						chunk_h = text_parser::int_from_str( value_str );
+					}
+				}
+			}
+		}
 		else if( inside_data_block )
 		{
 			tokenizer tok( line, "," );
 
-			for( auto x = 0 ; x < width ; ++x )
+			for( auto x = 0 ; x < current_chunk->tilemap_bounds.w ; ++x )
 			{
 				unsigned idx = string_util::to_uint( std::string( *tok.get_next_token() ) );
 
@@ -90,7 +185,7 @@ bool tile_map_asset::create()
 
 				idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
 
-				current_layer->tiles.emplace_back( idx - 1, x, data_block_y, flags );
+				current_chunk->tiles.emplace_back( idx - 1, x, data_block_y, flags );
 			}
 
 			data_block_y++;
@@ -99,7 +194,20 @@ bool tile_map_asset::create()
 		{
 			layers.emplace_back();
 			current_layer = &layers.back();
-			current_layer->tiles.reserve( width * height );
+
+			if( !is_infinite )
+			{
+				// finite maps have a single chunk inside of each layer,
+				// representing the entire map
+
+				current_layer->chunks.emplace_back();
+				current_chunk = &current_layer->chunks.back();
+
+				current_chunk->tilemap_bounds.w = width;
+				current_chunk->tilemap_bounds.h = height;
+
+				current_chunk->tiles.reserve( (size_t)( current_chunk->tilemap_bounds.w* current_chunk->tilemap_bounds.h ) );
+			}
 
 			tokenizer tok( line, " " );
 
@@ -223,7 +331,7 @@ bool tile_map_asset::create()
 						current_object->vertices.emplace_back( vec2( w, h ) );
 						current_object->vertices.emplace_back( vec2( 0.f, h ) );
 
-						current_object->rotate_vertices( current_object_rotation );
+						current_object->rotate( current_object_rotation );
 					}
 				}
 				else if( *key == "type" )
@@ -294,7 +402,7 @@ bool tile_map_asset::create()
 		}
 		else if( line.starts_with( "</object" ) )
 		{
-			current_object->rotate_vertices( current_object_rotation );
+			current_object->rotate( current_object_rotation );
 			current_object = nullptr;
 			current_object_rotation = 0.f;
 		}

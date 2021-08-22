@@ -397,6 +397,7 @@ enum_end
 // ----------------------------------------------------------------------------
 
 enum_begin( tile_flags )
+	none					= 0b00000000,
 	flipped_horizontally	= 0b00000001,
 	flipped_vertically		= 0b00000010,
 	flipped_diagonally		= 0b00000100,

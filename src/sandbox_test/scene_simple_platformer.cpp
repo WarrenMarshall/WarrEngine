@@ -41,7 +41,7 @@ void scene_simple_platformer::draw()
 	scene::draw();
 }
 
-f_decl_tile_map_spawn_entity( spawn_entity )
+f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 {
 	auto gameplay_scene = (scene_simple_platformer*)scene;
 
@@ -119,7 +119,7 @@ void scene_simple_platformer::pushed()
 			auto ec = world->add_component<ec_tile_map>();
 			ec->set_collision_flags( scene_simple_platformer_coll_geo, 0 );
 			ec->init( "ts_platformer", "tm_platformer_level_01" );
-			ec->spawn_entities( this, spawn_entity );
+			ec->spawn_entities( this, platformer_spawn_entity );
 		}
 	}
 }

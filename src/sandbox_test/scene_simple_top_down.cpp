@@ -27,7 +27,7 @@ scene_simple_top_down::scene_simple_top_down()
 	flags.is_debug_physics_scene = true;
 }
 
-f_decl_tile_map_spawn_entity( spawn_entity )
+f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 {
 	auto gameplay_scene = (scene_simple_top_down*)scene;
 
@@ -103,43 +103,15 @@ void scene_simple_top_down::pushed()
 	// GEO
 
 	{
-		auto e = add_entity<entity>( "world" );
-		e->simple.type = sc_type::stationary;
+		world = add_entity<entity>( "world" );
+		world->simple.type = sc_type::stationary;
 
 		{
-			auto ec = e->add_component<ec_tile_map>();
+			auto ec = world->add_component<ec_tile_map>();
 			ec->set_collision_flags( scene_simple_top_down_geo, 0 );
 			ec->init( "ts_top_down", "tm_top_down" );
-			ec->spawn_entities( this, spawn_entity );
+			ec->spawn_entities( this, topdown_spawn_entity );
 		}
-
-		// 4 walls
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
-			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_top_down_geo, 0 );
-		}
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
-			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_top_down_geo, 0 );
-		}
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
-			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( scene_simple_top_down_geo, 0 );
-		}
-		{
-			auto ec = e->add_component<ec_simple_collision_body>();
-			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
-			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( scene_simple_top_down_geo, 0 );
-		}
-
-		world = e;
 	}
 }
 

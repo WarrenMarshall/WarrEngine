@@ -1473,11 +1473,14 @@ void ec_tile_map::spawn_entities( scene* scene, f_tile_map_spawn_entity func_cal
 	{
 		if( layer.tag == "entities" )
 		{
-			for( auto& tile : layer.tiles )
+			for( auto& chunk : layer.chunks )
 			{
-				if( tile.idx != tile_map_asset::tile::empty )
+				for( auto& tile : chunk.tiles )
 				{
-					func_callback( scene, &tile );
+					if( tile.idx != tile_map_asset::tile::empty )
+					{
+						func_callback( scene, &tile );
+					}
 				}
 			}
 		}
