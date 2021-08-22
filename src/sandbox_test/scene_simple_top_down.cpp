@@ -40,13 +40,8 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			auto e = scene->add_entity<entity>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
-			e->simple.is_affected_by_gravity = true;
 			e->simple.friction = 0.1f;
 
-			{
-				auto ec = e->add_component<ec_primitive_shape>();
-				ec->add_shape( primitive_shape::point );
-			}
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
 				ec->tag = H( "player_body" );
@@ -55,18 +50,9 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 				ec->set_collision_flags( scene_simple_top_down_player, scene_simple_top_down_geo );
 			}
 			{
-				auto ec = e->add_component<ec_simple_collision_body>();
-				ec->tag = H( "ground_sensor" );
-				ec->set_body_collider_type( sc_body_collider_type::sensor );
-				ec->set_as_circle( 4.f );
-				ec->get_transform()->set_pos( { 0.f, 8.f } );
-
-				ec->set_collision_flags( scene_simple_top_down_player, scene_simple_top_down_geo );
-			}
-			{
-				auto ec = e->add_component<ec_emitter>();
-				ec->init( "em_stars" );
-				ec->get_transform()->set_scale( 0.25f );
+				auto ec = e->add_component<ec_sprite>();
+				ec->init( "top_down_walk" );
+				ec->get_transform()->add_pos( { 0.f, -4.f } );
 			}
 
 			gameplay_scene->player = e;
@@ -79,9 +65,10 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 
 void scene_simple_top_down::pushed()
 {
+	get_transform()->set_scale( 2.f );
+
 	scene::pushed();
 
-	g_engine->renderer.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	// HIT MARKER
@@ -117,41 +104,43 @@ void scene_simple_top_down::pushed()
 
 void scene_simple_top_down::draw()
 {
-	{
-		scoped_render_state;
-		render::state->color = make_color( pal::darker );
-		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ),
-			rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
-	}
-
 	scene::draw();
-	//render::draw_world_axis();
 
-	if( b_show_ray )
-	{
-		render::state->color = make_color( color::green, 0.25f );
-		auto start = player->get_pos();
-		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
-	}
+	scoped_render_state;
+
+	render::state->z -= 10.f;
+	render::state->color = make_color( color::red, 0.15f );
+
+	auto start = player->get_pos();
+	auto dir = vec2::dir_from_angle( player->get_angle() );
+	auto end = start + ( dir * ray_cast_length_hit );
+	render::draw_line( start, end );
 }
 
 void scene_simple_top_down::draw_ui()
 {
 	scene::draw_ui();
-	//draw_title( "Simple Collisions" );
-
-	//render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
-	//	player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
 }
 
 void scene_simple_top_down::update()
 {
 	scene::update();
+	follow_cam( player->get_transform() );
 
-	// show the raycast beam if the right stick is being pushed
-	b_show_ray = g_engine->input.get_axis_state( input_id::gamepad_right_stick ).get_size_fast() > 0.f;
+	reset_collision_trace_results();
 
-	//follow_cam( player->get_transform() );
+	auto start = player->get_pos();
+	auto dir = vec2::dir_from_angle( player->get_angle() );
+	auto end = start + ( dir * 1024.f );
+
+	simple_collision::raycast_closest callback;
+	sc_world->ray_cast( &callback, player, start, end );
+
+	if( callback.hit_something )
+	{
+		ray_cast_length_hit = ( callback.result.pos - player->get_pos() ).get_size();
+	}
+
 }
 
 void scene_simple_top_down::reset_collision_trace_results()
@@ -166,41 +155,11 @@ void scene_simple_top_down::reset_collision_trace_results()
 
 bool scene_simple_top_down::on_input_pressed( const input_event* evt )
 {
+/*
 	switch( evt->input_id )
 	{
-		case input_id::key_1:
-		{
-			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_centered_box( radius * random::getf_range( 0.5f, 3.0f ), radius * random::getf_range( 0.5f, 3.0f ) );
-		}
-		break;
-
-		case input_id::key_2:
-		{
-			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_circle( radius * random::getf_range( 0.5f, 2.0f ) );
-		}
-		break;
-
-		case input_id::key_3:
-		{
-			auto ec = player->get_component<ec_simple_collision_body>();
-
-			auto s = random::geti_range( 3, 8 );
-			auto r = radius * random::getf_range( 0.5f, 3.0f );
-			ec->set_as_polygon( util_geo::generate_convex_shape( s, r ) );
-		}
-		break;
-
-		case input_id::mouse_button_right:
-		{
-			auto pos = coord_system::window_to_world_pos( evt->mouse_pos );
-			player->set_pos( pos );
-		}
-		break;
 
 		// ALL
-
 		case input_id::gamepad_button_left_shoulder:
 		case input_id::key_a:
 		{
@@ -250,6 +209,7 @@ bool scene_simple_top_down::on_input_pressed( const input_event* evt )
 		}
 		break;
 	}
+*/
 
 	return false;
 }
@@ -260,15 +220,26 @@ bool scene_simple_top_down::on_input_motion( const input_event* evt )
 	{
 		case input_id::gamepad_left_stick:
 		{
-			player->add_force( { evt->delta, 10.f } );
+			// take the input delta and apply the scene matrix to it. this
+			// allows proper walking angles regardless of scene rotation.
 
+			vec2 dir = evt->delta;
+			auto mtx = player->get_transform()->to_matrix_vec();
+			dir = mtx.transform_vec2( dir );
+
+			player->add_force( { dir, 7.5f } );
 			return true;
 		}
 		break;
 
 		case input_id::gamepad_right_stick:
 		{
-			ray_dir = evt->delta;
+			// rotate the player and the scene in opposite directions, which
+			// leaves the player facing north
+
+			get_transform()->add_angle( -evt->delta.x * 1.5f );
+			player->add_delta_angle( evt->delta.x * 1.5f );
+
 			return true;
 		}
 		break;

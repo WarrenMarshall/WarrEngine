@@ -118,9 +118,10 @@ void ec_sprite::draw()
 	{
 		scoped_opengl;
 
+		auto mtx = g_engine->render_api.top_matrix;
+
 		// flipping
-		g_engine->render_api.top_matrix
-			->scale( { flip_x ? -1.f : 1.f, flip_y ? -1.f : 1.f } );
+		mtx->scale( { flip_x ? -1.f : 1.f, flip_y ? -1.f : 1.f } );
 
 		scoped_render_state;
 

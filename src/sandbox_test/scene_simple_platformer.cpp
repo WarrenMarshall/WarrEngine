@@ -106,7 +106,6 @@ void scene_simple_platformer::pushed()
 	fx_red_alert.add_kf_play_sound( true, 0.0f, 0, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.0f, 250, make_color( color::red, 0.25f ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.3f, 250, make_color( color::red, 0.5f ) );
-	fx_red_alert.add_kf_play_sound( true, 0.75f, 0, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.6f, 250, make_color( color::red, 0.25f ) );
 
 	// world

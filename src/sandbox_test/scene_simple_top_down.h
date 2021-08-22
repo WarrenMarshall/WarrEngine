@@ -9,8 +9,7 @@ struct scene_simple_top_down : scene
 	entity* hit_marker = nullptr;
 	entity* world = nullptr;
 
-	bool b_show_ray = false;
-	vec2 ray_dir = {};
+	float ray_cast_length_hit = 0.0f;
 
 	virtual void pushed() override;
 	virtual void draw() override;

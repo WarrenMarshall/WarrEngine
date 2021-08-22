@@ -22,8 +22,8 @@
 	"texture_tags" "\
 		top_down_bullet, 0, 64, 16, 16,\
 		top_down_heart, 64, 0, 16, 16,\
-		top_down_walk, 80, 0, 16, 16,\
-		top_down_shoot, 80, 32, 16, 16,\
+		top_down_walk, 80, 0, 16, 32,\
+		top_down_shoot, 80, 32, 16, 32,\
 		top_down_explo1, 64, 16, 16, 16,\
 		top_down_explo2, 64, 32, 16, 16,\
 		top_down_explo3, 64, 48, 16, 16\
