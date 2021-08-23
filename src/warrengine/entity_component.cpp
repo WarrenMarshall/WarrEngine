@@ -1398,6 +1398,76 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 		component->set_life_cycle( life_cycle::dying );
 	}
 
+	// create collision components for any tile that has them
+
+	for( auto& layer : tile_map->layers )
+	{
+		if( !layer.is_visible )
+		{
+			continue;
+		}
+
+		for( auto& chunk : layer.chunks )
+		{
+			for( auto y = 0 ; y < chunk.tilemap_bounds.h ; ++y )
+			{
+				for( auto x = 0 ; x < chunk.tilemap_bounds.w ; ++x )
+				{
+					auto tile = &( chunk.tiles[ ( y * (int)chunk.tilemap_bounds.w ) + x ] );
+
+					if( tile->idx == tile_map_asset::tile::empty )
+					{
+						continue;
+					}
+
+					vec2 tile_pos =
+					{
+						( x + chunk.tilemap_bounds.x ) * tile_map->tile_sz,
+						( y + chunk.tilemap_bounds.y ) * tile_map->tile_sz
+					};
+
+					//texture_asset* tile_set_texture = &tile_set->tile_definitions[ tile->idx ].texture;
+					//render::draw_sprite( tile_set_texture, tile_pos );
+
+					auto tile_definition = &tile_set->tile_definitions[ tile->idx ];
+
+					for( auto& obj : tile_definition->objects )
+					{
+						switch( obj.collision_type )
+						{
+							case sc_prim_type::aabb:
+							{
+								auto ec = parent_entity->add_component<ec_simple_collision_body>();
+								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y } );
+								ec->set_as_box( obj.rc.w, obj.rc.h );
+								ec->set_collision_flags( collision_mask, collides_with_mask );
+							}
+							break;
+
+							case sc_prim_type::circle:
+							{
+								auto ec = parent_entity->add_component<ec_simple_collision_body>();
+								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x + obj.radius, tile_pos.y + obj.rc.y + obj.radius } );
+								ec->set_as_circle( obj.radius );
+								ec->set_collision_flags( collision_mask, collides_with_mask );
+							}
+							break;
+
+							case sc_prim_type::polygon:
+							{
+								auto ec = parent_entity->add_component<ec_simple_collision_body>();
+								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y } );
+								ec->set_as_polygon( obj.vertices );
+								ec->set_collision_flags( collision_mask, collides_with_mask );
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	// create new collision components based on any objects attached to the tile map
 
 	for( auto& og : tile_map->object_groups )

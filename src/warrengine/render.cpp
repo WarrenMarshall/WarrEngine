@@ -591,7 +591,6 @@ void render::draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, 
 			continue;
 		}
 
-		// #tilemap_drawing
 		for( auto& chunk : layer.chunks )
 		{
 			for( auto y = 0 ; y < chunk.tilemap_bounds.h ; ++y )
@@ -649,7 +648,7 @@ void render::draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, 
 						pos.y + ( ( y + chunk.tilemap_bounds.y ) * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
 					};
 
-					texture_asset* tile_set_texture = &tile_set->tiles[ tile->idx ];
+					texture_asset* tile_set_texture = &tile_set->tile_definitions[ tile->idx ].texture;
 					render::draw_sprite( tile_set_texture, tile_pos );
 				}
 			}

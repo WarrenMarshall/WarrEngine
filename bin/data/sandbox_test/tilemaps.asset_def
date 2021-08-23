@@ -44,23 +44,23 @@
 
 {
 	"type" "tile_set"
+	"tag" "ts_top_down"
+	"filename" "tilemaps/top_down.tsx"
+	"texture_tag" "st_top_down_atlas"
+}
+
+{
 	"tag" "ts_ultima"
+	"type" "tile_set"
+	"filename" "tilemaps/tile_map_test.tsx"
 	"texture_tag" "st_rpg_sheet"
-	"tile_sz" "16"
 }
 
 {
 	"type" "tile_set"
 	"tag" "ts_platformer"
+	"filename" "tilemaps/platformer.tsx"
 	"texture_tag" "st_platformer_tile_set_master"
-	"tile_sz" "16"
-}
-
-{
-	"type" "tile_set"
-	"tag" "ts_top_down"
-	"texture_tag" "st_top_down_atlas"
-	"tile_sz" "16"
 }
 
 # ---------------------------------------------------------

@@ -53,40 +53,6 @@ struct tile_map_asset final : asset
 		bool is_visible = true;
 	};
 
-	// ----------------------------------------------------------------------------
-	// a primitive or a polygonal shape
-
-	struct object
-	{
-		e_sc_prim_type collision_type = sc_prim_type::aabb;
-
-		rect rc;
-		float radius;
-		std::vector<vec2> vertices;
-		std::string type;
-
-		void rotate( float angle )
-		{
-			matrix mtx;
-			mtx.rotate( angle );
-
-			for( auto& v : vertices )
-			{
-				v = mtx.transform_vec2( v );
-			}
-		}
-	};
-
-	// ----------------------------------------------------------------------------
-	// object group
-
-	struct object_group
-	{
-		std::string tag;
-		std::vector<object> objects;
-		bool is_visible = true;
-	};
-
 	// global info about the tile map
 
 	int width = 0;
@@ -94,7 +60,7 @@ struct tile_map_asset final : asset
 	int tile_sz = 0;
 	bool is_infinite = false;
 	std::vector<layer> layers;
-	std::vector<object_group> object_groups;
+	std::vector<tiled_object_group> object_groups;
 
 	virtual bool create() override;
 };

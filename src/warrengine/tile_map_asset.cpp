@@ -20,8 +20,8 @@ bool tile_map_asset::create()
 
 	layer* current_layer = nullptr;
 	chunk* current_chunk = nullptr;
-	object_group* current_object_group = nullptr;
-	object* current_object = nullptr;
+	tiled_object_group* current_object_group = nullptr;
+	tiled_object* current_object = nullptr;
 	float current_object_rotation = 0.f;
 	bool inside_data_block = false;
 	bool inside_editor_settings = false;
@@ -224,6 +224,8 @@ bool tile_map_asset::create()
 
 					current_layer->tag = *value;
 					string_util::erase_char( current_layer->tag, '\"' );
+					string_util::erase_char( current_layer->tag, '/' );
+					string_util::erase_char( current_layer->tag, '>' );
 				}
 				else if( *key == "visible" )
 				{
@@ -255,6 +257,7 @@ bool tile_map_asset::create()
 				{
 					std::string value = std::string( *subtok.get_next_token() );
 					string_util::erase_char( value, '\"' );
+					string_util::erase_char( value, '/' );
 					string_util::erase_char( value, '>' );
 					current_object_group->tag = value;
 				}

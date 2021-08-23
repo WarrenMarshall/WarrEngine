@@ -7,22 +7,240 @@ namespace war
 
 bool tile_set_asset::create()
 {
-	// create the individual tiles from the tile set info
+	// load tile index specific data
 
-	auto tile_count = (size_t)( ( texture->get_src_texture()->w / tile_sz ) * ( texture->get_src_texture()->h / tile_sz ) );
-	tiles.reserve( tile_count );
+	auto file = file_system::load_text_file( original_filename );
 
-	auto w = texture->get_src_texture()->w / tile_sz;
-	auto h = texture->get_src_texture()->h / tile_sz;
+	tile_def* current_tile_def = nullptr;
+	tiled_object* current_object = nullptr;
+	float current_object_rotation = 0.f;
 
-	for( auto y = 0 ; y < h ; ++y )
+	for( const auto& raw_line : file->lines )
 	{
-		for( auto x = 0 ; x < w ; ++x )
+		auto line = string_util::trim( raw_line );
+
+		if( line.starts_with( "<tileset " ) )
 		{
-			tiles.emplace_back(
-				texture->get_src_texture()->tag,
-				rect( x * tile_sz, y * tile_sz, tile_sz, tile_sz )
-			);
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+				auto value = subtok.get_next_token();
+
+				if( value.has_value() )
+				{
+					std::string value_str = std::string( *value );
+					string_util::replace_char( value_str, '\"', ' ' );
+					value_str = string_util::trim( value_str );
+
+					if( key == "tilewidth" )
+					{
+						tile_width = text_parser::int_from_str( value_str );
+					}
+					else if( key == "tileheight" )
+					{
+						tile_height = text_parser::int_from_str( value_str );
+					}
+					else if( key == "tilecount" )
+					{
+						tile_count = text_parser::int_from_str( value_str );
+					}
+					else if( key == "columns" )
+					{
+						columns = text_parser::int_from_str( value_str );
+					}
+				}
+			}
+
+			assert( tile_width );
+			assert( tile_height );
+			assert( tile_count );
+			assert( columns );
+
+			// now that we have the header from the tileset, we can create the base tile definitions
+
+			tile_definitions.clear();
+			tile_definitions.reserve( tile_count );
+
+			auto w = texture->get_src_texture()->w / tile_width;
+			auto h = texture->get_src_texture()->h / tile_height;
+
+			for( auto y = 0 ; y < h ; ++y )
+			{
+				for( auto x = 0 ; x < w ; ++x )
+				{
+					tile_definitions.emplace_back();
+					auto tile_def = &tile_definitions.back();
+
+					tile_def->texture = texture_asset( texture->get_src_texture()->tag,
+						rect( x * tile_width, y * tile_height, tile_width, tile_height ) );
+				}
+			}
+		}
+		else if( line.starts_with( "<tile " ) )
+		{
+			int tile_idx = -1;
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+				auto value = subtok.get_next_token();
+
+				if( value.has_value() )
+				{
+					std::string value_str = std::string( *value );
+					string_util::replace_char( value_str, '\"', ' ' );
+					value_str = string_util::trim( value_str );
+
+					if( key == "id" )
+					{
+						tile_idx = text_parser::int_from_str( value_str );
+					}
+				}
+			}
+
+			assert( tile_idx > -1 );
+
+			current_tile_def = &tile_definitions[ tile_idx ];
+			current_object = nullptr;
+		}
+		else if( line.starts_with( "</tile>" ) )
+		{
+			current_tile_def = nullptr;
+			current_object = nullptr;
+		}
+		else if( line.starts_with( "<object " ) )
+		{
+			assert( current_tile_def );
+
+			current_tile_def->objects.emplace_back();
+			current_object = &current_tile_def->objects.back();
+
+			tokenizer tok( line, " " );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+
+				if( *key == "x" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.x = text_parser::float_from_str( value );
+				}
+				else if( *key == "y" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.y = text_parser::float_from_str( value );
+				}
+				else if( *key == "width" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.w = text_parser::float_from_str( value );
+				}
+				else if( *key == "height" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object->rc.h = text_parser::float_from_str( value );
+				}
+				else if( *key == "rotation" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					string_util::erase_char( value, '\"' );
+					current_object_rotation = text_parser::float_from_str( value );
+
+					if( !fequals( current_object_rotation, 0.f ) )
+					{
+						// if a shape has rotation, it needs to be turned into a
+						// polygonal shape for collision to work properly. AABBs
+						// can't be rotated, obviously.
+
+						current_object->collision_type = sc_prim_type::polygon;
+
+						auto w = current_object->rc.w;
+						auto h = current_object->rc.h;
+
+						current_object->vertices.emplace_back( vec2( 0.f, 0.f ) );
+						current_object->vertices.emplace_back( vec2( w, 0.f ) );
+						current_object->vertices.emplace_back( vec2( w, h ) );
+						current_object->vertices.emplace_back( vec2( 0.f, h ) );
+
+						current_object->rotate( current_object_rotation );
+					}
+				}
+			}
+		}
+		else if( line.starts_with( "<polygon " ) )
+		{
+			assert( current_object );
+
+			current_object->collision_type = sc_prim_type::polygon;
+			current_object->vertices.clear();
+
+			tokenizer tok( line, " ", true );
+
+			while( !tok.is_eos() )
+			{
+				tokenizer subtok( *tok.get_next_token(), "=" );
+
+				auto key = subtok.get_next_token();
+
+				if( *key == "points" )
+				{
+					std::string value = std::string( *subtok.get_next_token() );
+					value = value.substr( 1, value.size() - 4 );
+
+					tokenizer vert_tok( value, " " );
+
+					while( !vert_tok.is_eos() )
+					{
+						tokenizer xy_tok( *vert_tok.get_next_token(), "," );
+
+						auto x = string_util::to_float( std::string( *xy_tok.get_next_token() ) );
+						auto y = string_util::to_float( std::string( *xy_tok.get_next_token() ) );
+
+						current_object->vertices.emplace_back( vec2( x, y ) );
+					}
+
+				#ifdef _DEBUG
+					if( current_object->vertices.size() > C2_MAX_POLYGON_VERTS )
+					{
+						// there is a polygon collision objects in the tile map
+						// with more vertuces than the simple collision system
+						// is configured to handle. either increase
+						// C2_MAX_POLYGON_VERTS or edit the collider to be
+						// within limits.
+
+						log_warning( "too many vertices in polygon shape : {} (max: {})",
+							current_object->vertices.size(), C2_MAX_POLYGON_VERTS );
+					}
+				#endif
+				}
+			}
+		}
+		else if( line.starts_with( "<ellipse" ) )
+		{
+			assert( current_object );
+
+			current_object->collision_type = sc_prim_type::circle;
+			current_object->radius = current_object->rc.w / 2.f;
+		}
+		else if( line.starts_with( "</objectgroup" ) )
+		{
+			current_object->rotate( current_object_rotation );
+			current_object = nullptr;
+			current_object_rotation = 0.f;
 		}
 	}
 

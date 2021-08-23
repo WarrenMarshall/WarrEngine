@@ -341,7 +341,7 @@ void scene::follow_cam( const transform* follow_target )
 
 	// speed is computed as a function of how far away the camera is from the
 	// follow transforms position. the further away it is, the faster it moves.
-	auto speed = dist / 32.f;
+	auto speed = dist / 8.f;
 
 	// stops the endless creep of the slow moving camera. follow cuts off below
 	// a certain threshold.
