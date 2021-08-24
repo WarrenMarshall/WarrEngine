@@ -789,6 +789,7 @@ ec_simple_collision_body::ec_simple_collision_body( entity* parent_entity )
 
 void ec_simple_collision_body::draw()
 {
+#ifndef _FINAL_RELEASE
 	// optional debug mode drawing
 
 	if( g_engine->renderer.debug.draw_debug_info )
@@ -852,6 +853,7 @@ void ec_simple_collision_body::draw()
 			break;
 		}
 	}
+#endif
 }
 
 void ec_simple_collision_body::update_to_match_parent_transform()

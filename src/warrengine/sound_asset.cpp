@@ -5,6 +5,11 @@
 namespace war
 {
 
+sound_asset::~sound_asset()
+{
+	int warren = 5;
+}
+
 void sound_asset::play()
 {
 	sound.play();
