@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_tilemap : scene
+struct scene_tilemap final : scene
 {
 	tile_set_asset* ts_ultima = nullptr;
 	tile_map_asset* tm_overworld = nullptr;

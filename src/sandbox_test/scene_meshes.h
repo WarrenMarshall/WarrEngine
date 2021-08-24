@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_meshes : scene
+struct scene_meshes final : scene
 {
 	ec_mesh* mesh_player = nullptr;
 	ec_mesh* mesh_crate = nullptr;

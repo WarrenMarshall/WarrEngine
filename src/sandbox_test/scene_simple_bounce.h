@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_simple_bounce : scene
+struct scene_simple_bounce final : scene
 {
 	scene_simple_bounce();
 

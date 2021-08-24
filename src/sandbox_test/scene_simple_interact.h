@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_simple_interact : scene
+struct scene_simple_interact final : scene
 {
 	scene_simple_interact();
 

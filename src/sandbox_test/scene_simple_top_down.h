@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_simple_top_down : scene
+struct scene_simple_top_down final : scene
 {
 	scene_simple_top_down();
 
@@ -13,7 +13,6 @@ struct scene_simple_top_down : scene
 
 	virtual void pushed() override;
 	virtual void draw() override;
-	virtual void draw_ui() override;
 	virtual void update() override;
 
 	void reset_collision_trace_results();

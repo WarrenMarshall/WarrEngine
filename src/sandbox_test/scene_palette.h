@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_palette : scene
+struct scene_palette final : scene
 {
 	scene_palette();
 

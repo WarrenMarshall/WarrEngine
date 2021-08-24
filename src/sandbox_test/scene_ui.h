@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_ui_callback : ui_callback
+struct scene_ui_callback final : ui_callback
 {
 	scene_ui_callback();
 

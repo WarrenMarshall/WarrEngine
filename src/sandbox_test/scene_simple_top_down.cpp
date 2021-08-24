@@ -40,7 +40,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			auto e = scene->add_entity<entity>();
 			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
-			e->simple.friction = 0.1f;
+			e->simple.friction = 0.5f;
 
 			{
 				auto ec = e->add_component<ec_simple_collision_body>();
@@ -117,11 +117,6 @@ void scene_simple_top_down::draw()
 	render::draw_line( start, end );
 }
 
-void scene_simple_top_down::draw_ui()
-{
-	scene::draw_ui();
-}
-
 void scene_simple_top_down::update()
 {
 	scene::update();
@@ -155,62 +150,8 @@ void scene_simple_top_down::reset_collision_trace_results()
 
 bool scene_simple_top_down::on_input_pressed( const input_event* evt )
 {
-/*
-	switch( evt->input_id )
-	{
-
-		// ALL
-		case input_id::gamepad_button_left_shoulder:
-		case input_id::key_a:
-		{
-			reset_collision_trace_results();
-
-			auto start = player->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			simple_collision::raycast_all callback;
-			sc_world->ray_cast( &callback, player, start, end );
-
-			if( callback.hit_something )
-			{
-				auto ec = hit_marker->get_component<ec_primitive_shape>();
-				ec->shapes.clear();
-
-				for( auto& hit : callback.results )
-				{
-					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
-					hit.scc->rs_opt.color = make_color( color::teal );
-				}
-			}
-		}
-		break;
-
-		// CLOSEST
-
-		case input_id::gamepad_button_right_shoulder:
-		case input_id::key_c:
-		{
-			reset_collision_trace_results();
-
-			auto start = player->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			simple_collision::raycast_closest callback;
-			sc_world->ray_cast( &callback, player, start, end );
-
-			if( callback.hit_something )
-			{
-				auto ec = hit_marker->get_component<ec_primitive_shape>();
-				ec->shapes.clear();
-				ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), callback.result.pos );
-
-				callback.result.scc->rs_opt.color = make_color( color::teal );
-			}
-		}
-		break;
-	}
-*/
-
+	// #topdown - add a keypress toggle to switch into a mode where the player
+	// rotates based on the right_stick direction but the world stays upright
 	return false;
 }
 
@@ -227,7 +168,7 @@ bool scene_simple_top_down::on_input_motion( const input_event* evt )
 			auto mtx = player->get_transform()->to_matrix_vec();
 			dir = mtx.transform_vec2( dir );
 
-			player->add_force( { dir, 7.5f } );
+			player->add_force( { dir, 50.5f } );
 			return true;
 		}
 		break;

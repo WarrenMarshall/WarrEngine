@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_simple_collision : scene
+struct scene_simple_collision final : scene
 {
 	scene_simple_collision();
 

@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_main_menu : scene
+struct scene_main_menu final : scene
 {
 	scene_main_menu();
 

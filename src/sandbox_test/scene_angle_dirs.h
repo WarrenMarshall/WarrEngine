@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_angle_dirs : scene
+struct scene_angle_dirs final : scene
 {
 	scene_angle_dirs();
 

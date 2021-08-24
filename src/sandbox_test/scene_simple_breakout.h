@@ -3,20 +3,20 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct e_ball : entity
+struct e_ball final : entity
 {
 	virtual bool on_collided( simple_collision::pending_collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct e_paddle : entity
+struct e_paddle final : entity
 {
 	virtual bool on_collided( simple_collision::pending_collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
-struct scene_simple_breakout : scene
+struct scene_simple_breakout final : scene
 {
 	scene_simple_breakout();
 

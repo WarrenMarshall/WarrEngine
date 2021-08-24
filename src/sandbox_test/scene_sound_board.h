@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_sound_board : scene
+struct scene_sound_board final : scene
 {
 	texture_asset* gradient = nullptr;
 

@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_tweens : scene
+struct scene_tweens final : scene
 {
 	texture_asset* tween_tex = nullptr;
 

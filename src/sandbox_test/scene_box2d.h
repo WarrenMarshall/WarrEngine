@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_box2d : scene
+struct scene_box2d final : scene
 {
 	scene_box2d();
 

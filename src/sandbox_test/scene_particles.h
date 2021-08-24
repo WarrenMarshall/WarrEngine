@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_particles : scene
+struct scene_particles final : scene
 {
 	scene_particles();
 

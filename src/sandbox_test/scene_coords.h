@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_coords : scene
+struct scene_coords final : scene
 {
 	scene_coords();
 

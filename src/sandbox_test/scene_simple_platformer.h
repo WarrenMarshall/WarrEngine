@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_simple_platformer : scene
+struct scene_simple_platformer final : scene
 {
 	entity* world = nullptr;
 	entity* player = nullptr;
