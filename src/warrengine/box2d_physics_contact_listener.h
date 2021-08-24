@@ -6,6 +6,8 @@ namespace war::box2d_physics
 
 struct contact_listener : b2ContactListener
 {
+	virtual ~contact_listener() = default;
+
 	b2Contact* contact = nullptr;
 	b2Manifold* manifold = nullptr;
 

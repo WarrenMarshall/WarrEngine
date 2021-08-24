@@ -5,11 +5,6 @@
 namespace war
 {
 
-sound_asset::~sound_asset()
-{
-	sound.stop();
-}
-
 void sound_asset::play()
 {
 	sound.play();

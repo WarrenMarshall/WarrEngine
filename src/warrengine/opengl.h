@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct opengl
+struct opengl final
 {
 	// used for scaling/rotating objects around their local origins and then
 	// translating them into world space

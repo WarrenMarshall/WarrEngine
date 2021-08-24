@@ -17,6 +17,7 @@ struct object_pool
 	size_t num_objects_in_pool = 0;
 
 	object_pool() = default;
+	virtual ~object_pool() = default;
 
 	void init_to_size( size_t num_objects )
 	{

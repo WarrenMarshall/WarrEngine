@@ -2,7 +2,7 @@
 namespace war::simple_collision
 {
 
-struct query
+struct query final
 {
 	/*
 	[[nodiscard]] static bool trace_simple( const entity* entity, const vec2& start, const vec2& normal, float dist, int collision_mask );

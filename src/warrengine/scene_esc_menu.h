@@ -18,6 +18,7 @@ struct scene_esc_menu_ui_callback final : ui_callback
 struct scene_esc_menu final : scene
 {
 	scene_esc_menu();
+	virtual ~scene_esc_menu() override = default;
 
 	virtual void pushed() override;
 	virtual void popped() override;

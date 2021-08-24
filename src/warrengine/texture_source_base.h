@@ -7,6 +7,6 @@ namespace war
 		float w = 0.f;
 		float h = 0.f;
 
-		~texture_source_base();
+		virtual ~texture_source_base() override;
 	};
 }

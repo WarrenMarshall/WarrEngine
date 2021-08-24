@@ -9,8 +9,6 @@ struct sound_asset final : asset
 	sf::Sound sound;
 	sf::SoundBuffer buffer;
 
-	virtual ~sound_asset() override;
-
 	void play();
 	void pause();
 	void stop();

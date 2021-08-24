@@ -1,6 +1,6 @@
 #pragma once
 
-struct layer_gameplay : w_layer
+struct layer_gameplay final : w_layer
 {
 	layer_gameplay();
 

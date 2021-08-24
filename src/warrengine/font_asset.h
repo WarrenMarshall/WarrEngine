@@ -38,7 +38,7 @@ struct font_def_asset final : asset
 
 // ----------------------------------------------------------------------------
 
-struct font_asset : asset
+struct font_asset final : asset
 {
 	font_def_asset* font_def = nullptr;
 

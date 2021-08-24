@@ -2,7 +2,7 @@
 namespace war::box2d_physics
 {
 
-struct raycast_hit
+struct raycast_hit final
 {
 	// how far along the ray did the hit occur?
 	float fraction = 0.f;

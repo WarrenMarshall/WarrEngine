@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct scene_mgr
+struct scene_mgr final
 {
 	// the scenes are stored front-to-back so this means that the topmost scene
 	// on the screen is first in the vector. meaning, new scenes are inserted at
@@ -11,7 +11,7 @@ struct scene_mgr
 	// therefore, iterating forwards through scene_stack is drilling downwards
 	// into the screen.
 
-	std::deque<std::unique_ptr<scene>> scene_stack;
+	std::vector<std::unique_ptr<scene>> scene_stack;
 
 	// holds a pointer to the current scene being drawn. this is needed to
 	// retrieve things like the viewport_pivot as scenes are being drawn,
@@ -59,7 +59,7 @@ struct scene_mgr
 		new_scene->pushed();
 		new_scene->becoming_top_scene();
 
-		scene_stack.push_front( std::move( new_scene ) );
+		scene_stack.insert( scene_stack.begin(), std::move( new_scene ) );
 	}
 
 	void clear_stack();

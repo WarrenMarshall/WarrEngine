@@ -7,7 +7,7 @@ namespace war
 // a chunk is a set of key/values that are grouped together to form
 // an asset definition, scoped between curly braces.
 
-struct asset_file_definition
+struct asset_file_definition final
 {
 	std::string original_filename;
 	std::vector<key_values> asset_definitions;

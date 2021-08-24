@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct engine
+struct engine final
 {
 	// the function that all games/apps call to get the engine up and running
 	template<typename T>
@@ -33,7 +33,7 @@ struct engine
 
 	std::vector<asset_file_definition> asset_def_file_cache;
 
-	std::deque<std::future<void>> threads;
+	std::vector<std::future<void>> threads;
 
 	texture_asset* tex_white = nullptr;
 	texture_asset* tex_default_lut = nullptr;

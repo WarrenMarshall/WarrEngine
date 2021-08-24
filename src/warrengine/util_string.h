@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct string_util
+struct string_util final
 {
 	[[nodiscard]] static std::string_view ltrim( std::string_view str );
 	[[nodiscard]] static std::string_view rtrim( std::string_view str );

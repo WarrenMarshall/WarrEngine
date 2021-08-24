@@ -14,6 +14,7 @@ namespace war
 
 struct ui_control_data
 {
+	virtual ~ui_control_data() = default;
 
 	virtual bool is_expanded();
 	virtual void set_expanded( bool expanded );
@@ -42,7 +43,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-struct ui_slider_control_data : ui_control_data
+struct ui_slider_control_data final : ui_control_data
 {
 	[[nodiscard]] virtual float float_value() override;
 	virtual void set_float_value( float value ) override;
@@ -52,7 +53,7 @@ struct ui_slider_control_data : ui_control_data
 
 // ----------------------------------------------------------------------------
 
-struct ui_text_control_data : ui_control_data
+struct ui_text_control_data final : ui_control_data
 {
 	std::string valid_char_list;
 	size_t max_length = 0;
@@ -61,14 +62,14 @@ struct ui_text_control_data : ui_control_data
 
 // ----------------------------------------------------------------------------
 
-struct ui_progress_control_data : ui_control_data
+struct ui_progress_control_data final : ui_control_data
 {
 	bool draw_percentage_as_text : 1 = true;
 };
 
 // ----------------------------------------------------------------------------
 
-struct ui_dropdown_control_data : ui_control_data
+struct ui_dropdown_control_data final : ui_control_data
 {
 	[[nodiscard]] virtual bool is_expanded() override;
 	virtual void set_expanded( bool expanded ) override;

@@ -4,7 +4,7 @@ namespace war::simple_collision
 
 // ----------------------------------------------------------------------------
 
-struct raycast_hit
+struct raycast_hit final
 {
 	// how far along the ray did the hit occur?
 	float dist = 999999.f;
@@ -31,6 +31,8 @@ struct raycast_hit
 
 struct raycast_callback
 {
+	virtual ~raycast_callback() = default;
+
 	bool hit_something = false;
 	int collision_mask = 0;
 

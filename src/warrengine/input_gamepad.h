@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct game_controller
+struct game_controller final
 {
 	std::unique_ptr<timer> timer_repeat = nullptr;
 	int player_id = -1;

@@ -350,7 +350,7 @@ std::vector<std::string> render::wrap_string_to_width( std::string_view text, fl
 	// will allow the wrapping code below to work with computed newlines as well
 	// as manually placed ones.
 
-	std::deque<std::string_view> new_tokens;
+	std::vector<std::string_view> new_tokens;
 
 	for( auto& token : tok.tokens )
 	{

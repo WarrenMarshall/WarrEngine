@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct coord_system
+struct coord_system final
 {
 	// ----------------------------------------------------------------------------
 	// position transforms between spaces

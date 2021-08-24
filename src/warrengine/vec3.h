@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct vec3
+struct vec3 final
 {
 	float x, y, z;
 

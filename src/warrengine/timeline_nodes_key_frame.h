@@ -4,7 +4,7 @@
 namespace war
 {
 
-struct timeline_nodes_key_frame
+struct timeline_nodes_key_frame final
 {
 	e_tnkf_type type = tnkf_type::none;
 	life_cycle_mgr life_cycle;

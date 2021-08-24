@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct tween
+struct tween final
 {
 	tweeny::tween<float> _tween = {};
 	float start = 0.f, end = 1.f;

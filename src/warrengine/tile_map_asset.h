@@ -15,7 +15,7 @@ struct tile_map_asset final : asset
 	// ----------------------------------------------------------------------------
 	// a tile within a chunk
 
-	struct tile
+	struct tile final
 	{
 		static constexpr int empty = -1;
 
@@ -31,7 +31,7 @@ struct tile_map_asset final : asset
 	//
 	// chunks are stored as a collection of tiles
 
-	struct chunk
+	struct chunk final
 	{
 		static constexpr int default_chunk_sz = 16;
 
@@ -46,7 +46,7 @@ struct tile_map_asset final : asset
 	//
 	// layers are stored as collections of chunks.
 
-	struct layer
+	struct layer final
 	{
 		std::string tag;
 		std::vector<chunk> chunks = {};

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct opengl_color_attachment
+struct opengl_color_attachment final
 {
 	opengl_color_attachment( opengl_framebuffer* fb_owner, vec2 sz, const color& clear_color );
 

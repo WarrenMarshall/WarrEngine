@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct life_cycle_mgr
+struct life_cycle_mgr final
 {
 	void set( e_life_cycle life_cycle );
 	e_life_cycle get();

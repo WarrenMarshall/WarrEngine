@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct input_event
+struct input_event final
 {
 	input_event();
 
@@ -31,7 +31,7 @@ static_assert( sizeof( input_event ) <= 64 );
 
 // ----------------------------------------------------------------------------
 
-struct input_mgr
+struct input_mgr final
 {
 	// holds onto generated input events until the update
 	// function can send them to anyone listening

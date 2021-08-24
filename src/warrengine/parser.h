@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct text_parser
+struct text_parser final
 {
 	[[nodiscard]] static std::string_view key_from_str( std::string_view src_string, std::string_view key );
 	[[nodiscard]] static bool bool_from_str( std::string_view str );

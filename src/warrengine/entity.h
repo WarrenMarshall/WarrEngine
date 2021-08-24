@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct entity_simple_force
+struct entity_simple_force final
 {
 	entity_simple_force() = default;
 	entity_simple_force( vec2 normal, float strength );
@@ -15,7 +15,7 @@ struct entity_simple_force
 
 // ----------------------------------------------------------------------------
 
-struct entity_simple_collision
+struct entity_simple_collision final
 {
 	e_sc_type type = sc_type::dynamic;
 
@@ -57,6 +57,7 @@ struct entity
 
 	entity();
 	entity( std::string debug_name );
+	virtual ~entity() = default;
 
 	entity_simple_collision simple;
 
@@ -111,8 +112,7 @@ struct entity
 
 	void make_pickable();
 
-	std::deque<std::unique_ptr<entity_component>> components;
-	//std::deque<entity_component> components;
+	std::vector<std::unique_ptr<entity_component>> components;
 
 	[[nodiscard]] virtual bool can_be_deleted();
 
@@ -231,7 +231,7 @@ struct entity
 // particles forever means that instance will never be die or be deleted. give
 // that emitter a "one shot" flag or a lifetime timer.
 
-struct entity_transient : entity
+struct entity_transient final : entity
 {
 	virtual void update() override;
 };

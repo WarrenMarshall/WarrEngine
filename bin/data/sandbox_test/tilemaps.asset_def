@@ -6,12 +6,14 @@
 {
 	"type" "src_texture"
 	"tag" "st_rpg_sheet"
+	"use_mipmaps" "false"
 	"filename" "gfx/rpg_sheet.png"
 }
 
 {
 	"type" "src_texture"
 	"tag" "st_platformer_tile_set_master"
+	"use_mipmaps" "false"
 	"filename" "gfx/platformer_tileset.png"
 }
 
@@ -19,6 +21,8 @@
 	"type" "src_texture"
 	"tag" "st_top_down_atlas"
 	"filename" "gfx/top_down_shooter_atlas.png"
+	"tiling" "tiling.clamp"
+	"use_mipmaps" "false"
 	"texture_tags" "\
 		top_down_bullet, 0, 64, 16, 16,\
 		top_down_heart, 64, 0, 16, 16,\

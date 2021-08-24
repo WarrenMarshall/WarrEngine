@@ -41,7 +41,7 @@ struct scene
 	vec2 get_viewport_pivot();
 	vec2 viewport_pivot = { viewport_hw - 1.f, viewport_hh - 1.f };
 
-	std::deque<std::unique_ptr<entity>> entities;
+	std::vector<std::unique_ptr<entity>> entities;
 
 	std::unique_ptr<simple_collision_world> sc_world = nullptr;
 

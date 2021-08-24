@@ -4,7 +4,7 @@
 namespace war
 {
 
-struct timeline_nodes
+struct timeline_nodes final
 {
 	std::vector<timeline_nodes_key_frame> key_frames;
 	life_cycle_mgr life_cycle;

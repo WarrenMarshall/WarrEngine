@@ -92,10 +92,13 @@ void scene_mgr::update()
 	// if the game requires a game controller and one is not detected, put up
 	// the dialog that waits for one to get connected.
 
+	// #sanitize
+/*
 	if( g_engine->scenes.current_scene->flags.requires_controller and !g_engine->input.gamepad )
 	{
 		g_engine->scenes.push<scene_controller_required>();
 	}
+*/
 }
 
 void scene_mgr::post_update()

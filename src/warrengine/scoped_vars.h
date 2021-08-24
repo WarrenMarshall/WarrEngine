@@ -13,7 +13,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct s_render_state
+struct s_render_state final
 {
 	s_render_state();
 	~s_render_state();
@@ -23,7 +23,7 @@ struct s_render_state
 
 // ----------------------------------------------------------------------------
 
-struct s_opengl
+struct s_opengl final
 {
 	s_opengl();
 	~s_opengl();
@@ -33,7 +33,7 @@ struct s_opengl
 
 // ----------------------------------------------------------------------------
 
-struct s_opengl_identity
+struct s_opengl_identity final
 {
 	s_opengl_identity();
 	~s_opengl_identity();
@@ -43,7 +43,7 @@ struct s_opengl_identity
 
 // ----------------------------------------------------------------------------
 
-struct s_ui_layout
+struct s_ui_layout final
 {
 	s_ui_layout( rect rc );
 	~s_ui_layout();

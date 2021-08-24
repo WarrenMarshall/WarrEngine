@@ -1398,7 +1398,9 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 		component->set_life_cycle( life_cycle::dying );
 	}
 
-	// create collision components for any tile that has them
+	std::vector<rect> aabbs;
+
+	// Look through each tile and if a tile has collision data associated with it, add it into the pool.
 
 	for( auto& layer : tile_map->layers )
 	{
@@ -1426,9 +1428,6 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 						( y + chunk.tilemap_bounds.y ) * tile_map->tile_sz
 					};
 
-					//texture_asset* tile_set_texture = &tile_set->tile_definitions[ tile->idx ].texture;
-					//render::draw_sprite( tile_set_texture, tile_pos );
-
 					auto tile_definition = &tile_set->tile_definitions[ tile->idx ];
 
 					for( auto& obj : tile_definition->objects )
@@ -1437,10 +1436,7 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 						{
 							case sc_prim_type::aabb:
 							{
-								auto ec = parent_entity->add_component<ec_simple_collision_body>();
-								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y } );
-								ec->set_as_box( obj.rc.w, obj.rc.h );
-								ec->set_collision_flags( collision_mask, collides_with_mask );
+								aabbs.emplace_back( tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y, obj.rc.w, obj.rc.h );
 							}
 							break;
 
@@ -1468,7 +1464,73 @@ void ec_tile_map::init( std::string_view tile_set_tag, std::string_view tile_map
 		}
 	}
 
-	// create new collision components based on any objects attached to the tile map
+	// merge together aabb collision boxes for perf reasons
+	//
+	// the merge routine is simplistic in that it merges boxes that are touching
+	// each other and match in width or height. this could get more complicated
+	// in the future by merging groups of aabbs and polygons into larger convex
+	// polygons but it's unclear if it's worth it at this point.
+
+	bool need_more_merging = true;
+
+	while( need_more_merging )
+	{
+		need_more_merging = false;
+
+		for( auto itera = 0 ; itera < aabbs.size(); ++itera )
+		{
+			rect& recta = aabbs[ itera ];
+
+			for( auto iterb = 0 ; iterb < aabbs.size(); ++iterb )
+			{
+				if( iterb == itera )
+				{
+					// can't merge with ourselves
+					continue;
+				}
+
+				rect& rectb = aabbs[ iterb ];
+
+				// check horizontally
+
+				if( fequals( recta.x + recta.w, rectb.x ) and fequals( recta.y, rectb.y ) and fequals( recta.h, rectb.h ) )
+				{
+					recta.w += rectb.w;
+					aabbs.erase( aabbs.begin() + iterb );
+					itera--;
+					need_more_merging = true;
+					break;
+				}
+
+				// check vertically
+
+				if( fequals( recta.y + recta.h, rectb.y ) and fequals( recta.x, rectb.x ) and fequals( recta.w, rectb.w ) )
+				{
+					recta.h += rectb.h;
+					aabbs.erase( aabbs.begin() + iterb );
+					itera--;
+					need_more_merging = true;
+					break;
+				}
+			}
+		}
+	}
+
+	// add the merged aabbs as collision components
+
+	for( auto& rect : aabbs )
+	{
+		auto ec = parent_entity->add_component<ec_simple_collision_body>();
+		ec->get_transform()->set_pos( { rect.x, rect.y } );
+		ec->set_as_box( rect.w, rect.h );
+		ec->set_collision_flags( collision_mask, collides_with_mask );
+	}
+
+	// create new collision components based on any objects attached to the tile
+	// map itself
+	//
+	// these are collision primitives that were added manually in the
+	// "collision" layer in tiled.
 
 	for( auto& og : tile_map->object_groups )
 	{

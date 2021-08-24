@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct simple_collision_world
+struct simple_collision_world final
 {
 	scene* parent_scene = nullptr;
 

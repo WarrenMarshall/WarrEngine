@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct bit_flag_generator
+struct bit_flag_generator final
 {
 	uint16 bit = 1;
 

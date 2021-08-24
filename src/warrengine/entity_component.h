@@ -71,7 +71,7 @@ static_assert( sizeof( entity_component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_sprite : entity_component
+struct ec_sprite final : entity_component
 {
 	texture_asset* texture = nullptr;
 	float anim_offset = 0.f;
@@ -89,9 +89,9 @@ static_assert( sizeof( ec_sprite ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_primitive_shape : entity_component
+struct ec_primitive_shape final : entity_component
 {
-	struct shape_def
+	struct shape_def final
 	{
 		e_primitive_shape prim_shape = primitive_shape::rect;
 		rect rc = {};
@@ -115,7 +115,7 @@ static_assert( sizeof( ec_primitive_shape ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_emitter : entity_component
+struct ec_emitter final : entity_component
 {
 	ec_emitter() = default;
 	ec_emitter( entity* parent_entity );
@@ -133,7 +133,7 @@ static_assert( sizeof( ec_emitter ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_sound : entity_component
+struct ec_sound final : entity_component
 {
 	sound_asset* snd = nullptr;
 
@@ -173,7 +173,7 @@ static_assert( sizeof( ec_sound ) <= max_entity_component_sz );
 // ----------------------------------------------------------------------------
 // physics
 
-struct ec_box2d_physics : entity_component
+struct ec_box2d_physics final : entity_component
 {
 	ec_box2d_physics() = delete;
 	ec_box2d_physics( entity* parent_entity );
@@ -242,7 +242,7 @@ static_assert( sizeof( ec_box2d_static_physics_body ) <= max_entity_component_sz
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
 
-struct ec_box2d_dynamic_physics_body : ec_box2d_physics_body
+struct ec_box2d_dynamic_physics_body final : ec_box2d_physics_body
 {
 	ec_box2d_dynamic_physics_body() = delete;
 	ec_box2d_dynamic_physics_body( entity* parent_entity );
@@ -253,7 +253,7 @@ static_assert( sizeof( ec_box2d_dynamic_physics_body ) <= max_entity_component_s
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
-struct ec_box2d_kinematic_physics_body : ec_box2d_physics_body
+struct ec_box2d_kinematic_physics_body final : ec_box2d_physics_body
 {
 	ec_box2d_kinematic_physics_body() = delete;
 	ec_box2d_kinematic_physics_body( entity* parent_entity );
@@ -263,7 +263,7 @@ static_assert( sizeof( ec_box2d_kinematic_physics_body ) <= max_entity_component
 
 // ----------------------------------------------------------------------------
 
-struct ec_mesh : entity_component
+struct ec_mesh final : entity_component
 {
 	mesh_asset* mesh = nullptr;
 
@@ -282,6 +282,7 @@ struct ec_simple_collision_body : entity_component
 {
 	ec_simple_collision_body() = delete;
 	ec_simple_collision_body( entity* parent_entity );
+	virtual ~ec_simple_collision_body() = default;
 
 	e_sc_prim_type type = sc_prim_type::circle;
 
@@ -339,7 +340,7 @@ static_assert( sizeof( ec_simple_collision_body_platform ) <= max_entity_compone
 
 // ----------------------------------------------------------------------------
 
-struct ec_tile_map : entity_component
+struct ec_tile_map final : entity_component
 {
 	ec_tile_map() = delete;
 	ec_tile_map( entity* parent_entity );

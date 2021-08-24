@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct vertex_buffer
+struct vertex_buffer final
 {
 	unsigned int gl_id;
 

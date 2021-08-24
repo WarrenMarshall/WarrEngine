@@ -10,6 +10,8 @@ namespace war
 
 struct ui_callback
 {
+	virtual ~ui_callback() = default;
+
 	ui_control_data default_data;
 
 	virtual ui_control_data* get_data( hash tag );

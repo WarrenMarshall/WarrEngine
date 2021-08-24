@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct vertex_array_object
+struct vertex_array_object final
 {
 	e_render_prim render_prim = render_prim::quad;
 	GLuint gl_id = 0;

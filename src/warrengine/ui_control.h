@@ -40,6 +40,7 @@ struct ui_control
 	bool can_retain_focus : 1 = false;
 
 	ui_control( hash tag = hash_none );
+	virtual ~ui_control() = default;
 
 	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have
 	void draw_slice_def( const rect& rc_ui, bool is_hovered, bool is_hot );

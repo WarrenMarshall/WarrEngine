@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct primitive_batch
+struct primitive_batch final
 {
 	// the max per batch before we force a flush and set up a new batch.
 	static const int max_elements_per_draw_call = 15'000;
@@ -29,7 +29,7 @@ private:
 
 // ----------------------------------------------------------------------------
 
-struct render_batch_group
+struct render_batch_group final
 {
 	std::array<primitive_batch, 4> batches;
 

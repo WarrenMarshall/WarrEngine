@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct scene_post_process_ui_callback : ui_callback
+struct scene_post_process_ui_callback final : ui_callback
 {
 	scene_post_process_ui_callback();
 
@@ -35,7 +35,7 @@ struct scene_post_process_ui_callback : ui_callback
 
 // ----------------------------------------------------------------------------
 
-struct scene_post_process : scene
+struct scene_post_process final : scene
 {
 	float background_alpha = 0.5f;
 

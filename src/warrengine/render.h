@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct render
+struct render final
 {
 	static palette_asset palette;
 
@@ -100,7 +100,7 @@ struct render
 
 	void clear_render_state_stack();
 
-	std::deque<render_state> render_states;
+	std::vector<render_state> render_states;
 	static render_state* state;
 
 	render* push();

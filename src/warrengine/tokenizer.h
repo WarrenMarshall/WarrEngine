@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct tokenizer
+struct tokenizer final
 {
 	std::string_view string_buffer = "";
 	size_t idx = 0;
@@ -16,7 +16,7 @@ struct tokenizer
 	void init( std::string_view string_buffer, std::string_view delim );
 	void preprocess();
 
-	std::deque<std::string_view> tokens;
+	std::vector<std::string_view> tokens;
 
 	std::optional<std::string_view> get_next_token();
 	[[nodiscard]] bool is_eos();
