@@ -5,11 +5,6 @@
 namespace war
 {
 
-sound_asset::~sound_asset()
-{
-	int warren = 5;
-}
-
 void sound_asset::play()
 {
 	sound.play();
@@ -28,9 +23,9 @@ void sound_asset::stop()
 
 bool sound_asset::create()
 {
-	auto file = file_system::load_binary_file( original_filename );
+	auto file_data = file_system::load_binary_file( original_filename );
 
-	if( buffer.loadFromMemory( file->buffer.data(), file->buffer.size() ) )
+	if( buffer.loadFromMemory( file_data->buffer.data(), file_data->buffer.size() ) )
 	{
 		sound.setBuffer( buffer );
 		sound.setLoop( looped );

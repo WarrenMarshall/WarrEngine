@@ -550,6 +550,14 @@ void engine::deinit()
 {
 	// NOTE : let the OS handle cleaning up. trying to do it manually can cause
 	// weird crashes.
+
+	// this exception is made because without it there's an address sanitizer
+	// crash that comes from, I believe, the order in which SFML sound stuff
+	// gets destroyed. controlling when the asset cache gets cleared like this
+	// seems to dictate the destruction order enough that we avoid the crash
+	// when the sf::SoundBuffer in each sound_asset tries to destroy itself.
+
+	asset_cache.cache.clear();
 }
 
 void engine::draw()

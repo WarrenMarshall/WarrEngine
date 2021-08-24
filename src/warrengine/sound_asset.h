@@ -6,10 +6,8 @@ struct sound_asset final : asset
 {
 	bool looped = false;
 
-	sf::Sound sound;
 	sf::SoundBuffer buffer;
-
-	virtual ~sound_asset() override;
+	sf::Sound sound;
 
 	void play();
 	void pause();
