@@ -116,27 +116,30 @@ void scene::pre_update()
 
 void scene::update()
 {
-	sc_world->active_bodies.clear();
-
-	// update entities and components
-
-	for( auto& entity : entities )
+	if( !entities.empty() )
 	{
-		scoped_opengl;
+		sc_world->active_bodies.clear();
 
-		auto tform = entity->get_transform();
-		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+		// update entities and components
 
-		entity->update();
-		entity->update_components();
-		entity->update_from_physics();
+		for( auto& entity : entities )
+		{
+			scoped_opengl;
 
-		// collect the simple collision bodies active in the scene
-		auto sccs = entity->get_components<ec_simple_collision_body>();
-		sc_world->active_bodies.insert(
-			sc_world->active_bodies.end(),
-			sccs.begin(), sccs.end()
-		);
+			auto tform = entity->get_transform();
+			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+
+			entity->update();
+			entity->update_components();
+			entity->update_from_physics();
+
+			// collect the simple collision bodies active in the scene
+			auto sccs = entity->get_components<ec_simple_collision_body>();
+			sc_world->active_bodies.insert(
+				sc_world->active_bodies.end(),
+				sccs.begin(), sccs.end()
+			);
+		}
 	}
 }
 

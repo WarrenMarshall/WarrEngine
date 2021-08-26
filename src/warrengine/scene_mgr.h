@@ -38,6 +38,30 @@ struct scene_mgr final
 
 	vec2 get_viewport_pivot();
 
+	// pushes a new scene underneath the current one on top
+	void push_under( scene* new_scene )
+	{
+		if( scene_stack.empty() )
+		{
+			log_fatal( "scene stack is empty" );
+		}
+
+		scene* top_scene = get_top();
+
+		if( top_scene->life_cycle.is_alive() and typeid( *top_scene ) == typeid( *new_scene ) )
+		{
+			log_fatal( "Duplicate scene types at top of stack : {}", typeid( *top_scene ).name() );
+			assert( false );
+		}
+
+		new_scene->pushed();
+		std::unique_ptr<scene> fuck;
+		fuck.reset( new_scene );
+		scene_stack.insert( scene_stack.begin() + 1, std::move( fuck ) );
+
+	}
+
+	// pushes a new scene on top of the stack
 	template<typename T>
 	void push()
 	{
@@ -64,6 +88,7 @@ struct scene_mgr final
 
 	void clear_stack();
 	void pop();
+	void pop_at_offset( int offset );
 	[[nodiscard]] scene* get_top();
 
 	void pre_update();

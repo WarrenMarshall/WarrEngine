@@ -78,12 +78,29 @@ void timeline_nodes::add_kf_pp_color_overlay( bool should_restore_state, float p
 	kf->pp_color_overlay.clr = color_overlay;
 }
 
-void timeline_nodes::add_kf_play_sound( bool should_restore_state, float pct_marker, time_ms duration, sound_asset* snd )
+void timeline_nodes::add_kf_play_sound( bool should_restore_state, float pct_marker, sound_asset* snd )
 {
-	key_frames.emplace_back( tnkf_type::play_sound, should_restore_state, pct_marker, duration );
+	key_frames.emplace_back( tnkf_type::play_sound, should_restore_state, pct_marker, 0 );
 	auto kf = &key_frames.back();
 
 	kf->play_sound.snd = snd;
+}
+
+void timeline_nodes::add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<scene> scene_to_push )
+{
+	key_frames.emplace_back( tnkf_type::scene_push_under, should_restore_state, pct_marker, 0 );
+	auto kf = &key_frames.back();
+
+	kf->scene_push_under.new_scene = scene_to_push.get();
+	scene_to_push.release();
+}
+
+void timeline_nodes::add_kf_scene_pop_at_offset( bool should_restore_state, float pct_marker, int offset )
+{
+	key_frames.emplace_back( tnkf_type::scene_pop_at_offset, should_restore_state, pct_marker, 0 );
+	auto kf = &key_frames.back();
+
+	kf->scene_pop_at_offset.offset = offset;
 }
 
 }

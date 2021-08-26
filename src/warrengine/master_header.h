@@ -114,6 +114,7 @@ namespace war
 #include "scene_esc_menu.h"
 #include "scene_msg_box.h"
 #include "scene_post_process.h"
+#include "scene_timeline.h"
 
 #include "game.h"
 

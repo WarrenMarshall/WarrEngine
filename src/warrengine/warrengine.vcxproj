@@ -250,6 +250,7 @@
     <ClCompile Include="bounding_box.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="rect.cpp" />
+    <ClCompile Include="scene_timeline.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
     <ClCompile Include="simple_collision_query.cpp" />
     <ClCompile Include="simple_collision_pending_collision.cpp" />
@@ -354,6 +355,7 @@
     <ClInclude Include="cache.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="rect.h" />
+    <ClInclude Include="scene_timeline.h" />
     <ClInclude Include="simple_collision_world.h" />
     <ClInclude Include="simple_collision_query.h" />
     <ClInclude Include="simple_collision_pending_collision.h" />

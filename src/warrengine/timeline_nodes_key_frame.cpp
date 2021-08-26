@@ -40,6 +40,22 @@ void timeline_nodes_key_frame::on_started_running()
 			life_cycle.set( life_cycle::dead );
 		}
 		break;
+
+		// ----------------------------------------------------------------------------
+		case tnkf_type::scene_push_under:
+		{
+			g_engine->scenes.push_under( scene_push_under.new_scene );
+			life_cycle.set( life_cycle::dead );
+		}
+		break;
+
+		// ----------------------------------------------------------------------------
+		case tnkf_type::scene_pop_at_offset:
+		{
+			g_engine->scenes.pop_at_offset( scene_pop_at_offset.offset );
+			life_cycle.set( life_cycle::dead );
+		}
+		break;
 	}
 }
 
@@ -76,7 +92,6 @@ void timeline_nodes_key_frame::update()
 		{
 			if( g_engine->time.now() < started + duration )
 			{
-				//color clr = { pp_color_overlay.r, pp_color_overlay.g, pp_color_overlay.b, pp_color_overlay.a };
 				g_engine->render_api.set_uniform_color( "u_color_overlay", pp_color_overlay.clr );
 			}
 			else

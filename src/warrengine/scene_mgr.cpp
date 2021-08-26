@@ -24,10 +24,7 @@ void scene_mgr::clear_stack()
 
 void scene_mgr::pop()
 {
-	if( scene_stack.empty() )
-	{
-		log_warning( "No scenes on stack - pop failed!" );
-	}
+	assert( !scene_stack.empty() );
 
 	scene* scene = nullptr;
 	size_t idx;
@@ -51,6 +48,18 @@ void scene_mgr::pop()
 		scene = scene_stack[ idx + 1 ].get();
 		scene->becoming_top_scene();
 	}
+}
+
+void scene_mgr::pop_at_offset( int offset )
+{
+	assert( !scene_stack.empty() );
+	assert( offset < scene_stack.size() );
+
+	scene* scene = scene_stack[ offset ].get();
+	scene->popped();
+	scene->life_cycle.set( life_cycle::dead );
+
+	remove_dead_scenes();
 }
 
 scene* scene_mgr::get_top()
@@ -92,13 +101,10 @@ void scene_mgr::update()
 	// if the game requires a game controller and one is not detected, put up
 	// the dialog that waits for one to get connected.
 
-	// #sanitize
-/*
 	if( g_engine->scenes.current_scene->flags.requires_controller and !g_engine->input.gamepad )
 	{
 		g_engine->scenes.push<scene_controller_required>();
 	}
-*/
 }
 
 void scene_mgr::post_update()

@@ -212,8 +212,9 @@ struct ec_box2d_physics_body : entity_component
 
 	// all vec2 args below are relative to the position of the body
 	//
-	// i.e. if the body is at the world origin, all vec2 args are
-	// effectively world positions
+	// this means that if the body is at the world origin, all vec2 args are
+	// effectively world positions which is handy for things like static world
+	// geometry.
 
 	b2Fixture* add_fixture_box( hash tag, vec2 pos, float w, float h );
 	b2Fixture* add_fixture_box( hash tag, const rect& rc );

@@ -33,8 +33,15 @@ void do_menu_button( hash tag, const char* text )
 		->cut_top( 12.f )
 		->done() )
 	{
-		g_engine->scenes.pop();
-		g_engine->scenes.push<T>();
+		// add the timeline scene
+		g_engine->scenes.push<scene_timeline>();
+
+		// set up the timeline scene
+		auto st = (scene_timeline*)g_engine->scenes.get_top();
+		st->fx_timeline.clear( 1000 );
+		st->fx_timeline.add_kf_pp_color_overlay( true, 0.0f, 1000, make_color( color::red, 0.5f ) );
+		st->fx_timeline.add_kf_scene_pop_at_offset( false, 1.0f, 1 );	// pop main menu
+		st->fx_timeline.add_kf_scene_push_under( false, 1.0f, std::make_unique<T>() );
 	}
 };
 

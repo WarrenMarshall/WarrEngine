@@ -44,8 +44,31 @@ struct timeline_nodes_key_frame final
 		// ----------------------------------------------------------------------------
 		struct
 		{
+			struct
+			{
+				float starting_factor;
+			} save;
+
+			float target_factor;
+		} pp_pixelate;
+
+		// ----------------------------------------------------------------------------
+		struct
+		{
 			sound_asset* snd;
 		} play_sound;
+
+		// ----------------------------------------------------------------------------
+		struct
+		{
+			scene* new_scene;
+		} scene_push_under;
+
+		// ----------------------------------------------------------------------------
+		struct
+		{
+			int offset;
+		} scene_pop_at_offset;
 	};
 
 	timeline_nodes_key_frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration );

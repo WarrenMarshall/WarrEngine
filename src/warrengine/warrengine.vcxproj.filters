@@ -289,6 +289,9 @@
     <ClCompile Include="timeline_key_frame.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
+    <ClCompile Include="scene_timeline.cpp">
+      <Filter>src\scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bit_flag_generator.h">
@@ -587,6 +590,9 @@
     </ClInclude>
     <ClInclude Include="timeline_key_frame.h">
       <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_timeline.h">
+      <Filter>include\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
