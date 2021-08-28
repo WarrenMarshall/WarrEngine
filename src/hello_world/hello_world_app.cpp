@@ -4,7 +4,7 @@
 using namespace war;
 
 hello_world_app::hello_world_app()
-	: game( "hello_world" )
+	: Game( "hello_world" )
 {
 }
 
@@ -35,10 +35,10 @@ void hello_world_app::init()
 
 void hello_world_app::new_game()
 {
-	game::new_game();
+	Game::new_game();
 }
 
 void hello_world_app::update()
 {
-	game::update();
+	Game::update();
 }

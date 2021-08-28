@@ -3,27 +3,27 @@ namespace war
 {
 
 template<typename T>
-struct range final
+struct Range final
 {
 	T start = {};
 	T end = {};
 
-	range() = delete;
-	range( T start, T end )
+	Range() = delete;
+	Range( T start, T end )
 		: start( start ), end( end )
 	{
 	}
-	range( T value )
+	Range( T value )
 		: start( -value ), end( value )
 	{
 	}
 
-	range( std::string_view str )
+	Range( std::string_view str )
 	{
-		tokenizer tok( str, "," );
+		Tokenizer tok( str, "," );
 
-		start = text_parser::float_from_str( *tok.get_next_token() );
-		end = text_parser::float_from_str( *tok.get_next_token() );
+		start = Text_Parser::float_from_str( *tok.get_next_token() );
+		end = Text_Parser::float_from_str( *tok.get_next_token() );
 	}
 
 	float clamp_value( T value )
@@ -33,7 +33,7 @@ struct range final
 
 	[[nodiscard]] T get_random_value()
 	{
-		float rand = random::getf_range( 0.f, 1.f );
+		float rand = Random::getf_range( 0.f, 1.f );
 		return start + ( ( end - start ) * rand );
 	}
 

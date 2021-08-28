@@ -5,60 +5,60 @@
 namespace war
 {
 
-const rect rect::zero = rect( 0, 0, 0, 0 );
+const Rect Rect::zero = Rect( 0, 0, 0, 0 );
 
-rect::rect( float x, float y )
+Rect::Rect( float x, float y )
 	: x( x ), y( y )
 {
 }
 
-rect::rect( float x, float y, float w, float h )
+Rect::Rect( float x, float y, float w, float h )
 	: x( x ), y( y ), w( w ), h( h )
 {
 }
 
-rect::rect( int x, int y, int w, int h )
+Rect::Rect( int x, int y, int w, int h )
 	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
 {
 }
 
-rect::rect( int16 x, int16 y, int16 w, int16 h )
+Rect::Rect( int16 x, int16 y, int16 w, int16 h )
 	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
 {
 }
 
-rect::rect( const vec2& top_left, const vec2& bottom_right )
+Rect::Rect( const Vec2& top_left, const Vec2& bottom_right )
 	: x( top_left.x ), y( top_left.y ), w( bottom_right.x - top_left.x ), h( bottom_right.y - top_left.y )
 {
 }
 
-vec2 rect::extents() const
+Vec2 Rect::extents() const
 {
 	return { ( w - x ), ( h - y ) };
 }
 
-vec2 rect::top_left() const
+Vec2 Rect::top_left() const
 {
 	return { x, y };
 }
 
-vec2 rect::bottom_right() const
+Vec2 Rect::bottom_right() const
 {
 	return { x + w, y + h };
 }
 
-vec2 rect::get_midpoint() const
+Vec2 Rect::get_midpoint() const
 {
-	return vec2( x + ( w / 2.f ), y + ( h / 2.f ) );
+	return Vec2( x + ( w / 2.f ), y + ( h / 2.f ) );
 }
 
 // returns a position within this rectangle that represents
 // the best spot to start drawing from, given the alignment
 // requested.
 
-vec2 rect::get_pos_from_alignment( e_align align ) const
+Vec2 Rect::get_pos_from_alignment( e_align align ) const
 {
-	vec2 pos = { x, y };
+	Vec2 pos = { x, y };
 
 	auto mid = get_midpoint();
 	auto br = bottom_right();
@@ -86,7 +86,7 @@ vec2 rect::get_pos_from_alignment( e_align align ) const
 
 // inflates/deflates a rectangle by "val". this affects all 4 sides.
 
-rect rect::grow( float val )
+Rect Rect::grow( float val )
 {
 	x -= val;
 	y -= val;
@@ -96,7 +96,7 @@ rect rect::grow( float val )
 	return *this;
 }
 
-rect rect::shrink( float val )
+Rect Rect::shrink( float val )
 {
 	x += val;
 	y += val;
@@ -108,7 +108,7 @@ rect rect::shrink( float val )
 
 // is "pos" within the bounds of this rectangle?
 
-bool rect::contains_point( vec2 pos )
+bool Rect::contains_point( Vec2 pos )
 {
 	return c2AABBtoPoint( to_c2AABB(), pos.to_c2v() );
 }
@@ -116,14 +116,14 @@ bool rect::contains_point( vec2 pos )
 // NOTE : passing in a sz of < 1.f is translated as passing in a percentage of
 // the existing width or height.
 
-rect rect::cut_left( float sz )
+Rect Rect::cut_left( float sz )
 {
 	if( sz < 1.f )
 	{
 		sz = w * sz;
 	}
 
-	rect result = { x, y, sz, h };
+	Rect result = { x, y, sz, h };
 
 	x += sz;
 	w -= sz;
@@ -131,28 +131,28 @@ rect rect::cut_left( float sz )
 	return result;
 }
 
-rect rect::cut_right( float sz )
+Rect Rect::cut_right( float sz )
 {
 	if( sz < 1.f )
 	{
 		sz = w * sz;
 	}
 
-	rect result = { x + ( w - sz ), y, sz, h };
+	Rect result = { x + ( w - sz ), y, sz, h };
 
 	w -= sz;
 
 	return result;
 }
 
-rect rect::cut_top( float sz )
+Rect Rect::cut_top( float sz )
 {
 	if( sz < 1.f )
 	{
 		sz = h * sz;
 	}
 
-	rect result = { x, y, w, sz };
+	Rect result = { x, y, w, sz };
 
 	y += sz;
 	h -= sz;
@@ -160,14 +160,14 @@ rect rect::cut_top( float sz )
 	return result;
 }
 
-rect rect::cut_bottom( float sz )
+Rect Rect::cut_bottom( float sz )
 {
 	if( sz < 1.f )
 	{
 		sz = h * sz;
 	}
 
-	rect result = { x, y + ( h - sz ), w, sz };
+	Rect result = { x, y + ( h - sz ), w, sz };
 
 	h -= sz;
 
@@ -176,64 +176,64 @@ rect rect::cut_bottom( float sz )
 
 // returns whatever is remaining and returns it whole
 
-rect rect::cut()
+Rect Rect::cut()
 {
-	rect result = *this;
+	Rect result = *this;
 
-	*this = rect::zero;
+	*this = Rect::zero;
 
 	return result;
 }
 
-bool rect::operator==( const rect& rhs ) const
+bool Rect::operator==( const Rect& rhs ) const
 {
 	return( fequals( rhs.x, x ) and fequals( rhs.y, y ) and fequals( rhs.w, w ) and fequals( rhs.h, h ) );
 }
 
-rect rect::operator+( const vec2& v ) const
+Rect Rect::operator+( const Vec2& v ) const
 {
-	return rect( this->x + v.x, this->y + v.y, this->w, this->h );
+	return Rect( this->x + v.x, this->y + v.y, this->w, this->h );
 }
 
-rect rect::operator+=( const vec2& v )
+Rect Rect::operator+=( const Vec2& v )
 {
 	*this = *this + v;
 	return *this;
 }
 
-rect rect::operator-( const vec2& v ) const
+Rect Rect::operator-( const Vec2& v ) const
 {
-	return rect( this->x - v.x, this->y - v.y, this->w, this->h );
+	return Rect( this->x - v.x, this->y - v.y, this->w, this->h );
 }
 
-rect rect::operator-=( const vec2& v )
+Rect Rect::operator-=( const Vec2& v )
 {
 	*this = *this - v;
 	return *this;
 }
 
-rect rect::operator+( const rect& rhs ) const
+Rect Rect::operator+( const Rect& rhs ) const
 {
-	return rect( x + rhs.x, y + rhs.y, w + rhs.w, h + rhs.h );
+	return Rect( x + rhs.x, y + rhs.y, w + rhs.w, h + rhs.h );
 }
 
-rect rect::operator-( const rect& rhs ) const
+Rect Rect::operator-( const Rect& rhs ) const
 {
-	return rect( x - rhs.x, y - rhs.y, w - rhs.w, h - rhs.h );
+	return Rect( x - rhs.x, y - rhs.y, w - rhs.w, h - rhs.h );
 }
 
-rect rect::operator*( float v ) const
+Rect Rect::operator*( float v ) const
 {
-	return rect( this->x * v, this->y * v, this->w * v, this->h * v );
+	return Rect( this->x * v, this->y * v, this->w * v, this->h * v );
 }
 
-rect rect::operator*=( float v )
+Rect Rect::operator*=( float v )
 {
 	*this = *this * v;
 	return *this;
 }
 
-c2AABB rect::to_c2AABB() const
+c2AABB Rect::to_c2AABB() const
 {
 	c2AABB aabb = {};
 
@@ -245,17 +245,17 @@ c2AABB rect::to_c2AABB() const
 	return aabb;
 }
 
-rect rect::create_centered( float sz )
+Rect Rect::create_centered( float sz )
 {
-	return rect::create_centered( sz, sz );
+	return Rect::create_centered( sz, sz );
 }
 
-rect rect::create_centered( float w, float h )
+Rect Rect::create_centered( float w, float h )
 {
 	auto hw = w / 2.f;
 	auto hh = h / 2.f;
 
-	return rect( -hw, -hh, w, h );
+	return Rect( -hw, -hh, w, h );
 }
 
 }

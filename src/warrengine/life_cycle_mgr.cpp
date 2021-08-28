@@ -5,7 +5,7 @@
 namespace war
 {
 
-void life_cycle_mgr::set( e_life_cycle lc )
+void Life_Cycle_Mgr::set( e_life_cycle lc )
 {
 	_life_cycle = lc;
 
@@ -17,27 +17,27 @@ void life_cycle_mgr::set( e_life_cycle lc )
 	}
 }
 
-e_life_cycle life_cycle_mgr::get()
+e_life_cycle Life_Cycle_Mgr::get()
 {
 	return _life_cycle;
 }
 
-bool life_cycle_mgr::is_alive() const
+bool Life_Cycle_Mgr::is_alive() const
 {
 	return ( _life_cycle == life_cycle::alive );
 }
 
-bool life_cycle_mgr::is_dying() const
+bool Life_Cycle_Mgr::is_dying() const
 {
 	return ( _life_cycle == life_cycle::dying );
 }
 
-bool life_cycle_mgr::is_dead() const
+bool Life_Cycle_Mgr::is_dead() const
 {
 	return ( _life_cycle == life_cycle::dead );
 }
 
-void life_cycle_mgr::pre_update()
+void Life_Cycle_Mgr::pre_update()
 {
 	// tick the death delay down, stopping at zero
 	death_delay = glm::max( death_delay - 1, 0 );

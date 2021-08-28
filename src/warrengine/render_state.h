@@ -2,38 +2,38 @@
 namespace war
 {
 
-struct render_state final
+struct Render_State final
 {
-	render_state();
+	Render_State();
 
 	e_align align = align::left;
 	float angle = 0.f;
-	color color = color::white;
+	Color color = Color::white;
 	float glow = 0.f;
 	int pick_id = 0;
-	vec2 scale = { 1.f, 1.f };
-	vec2 uv_tiling = { 1.f, 1.f };
+	Vec2 scale = { 1.f, 1.f };
+	Vec2 uv_tiling = { 1.f, 1.f };
 	float z = zdepth_background;
 	float z_bias = 0;
 	float anim_offset = 0.f;
-	render_batch_group* batch_render_target = nullptr;
-	font_asset* font = nullptr;		// set in ctor
+	Primitive_Batch_Group* batch_render_target = nullptr;
+	Font_Asset* font = nullptr;		// set in ctor
 
-	void set_from_opt( render_state_optional& rso );
+	void set_from_opt( Render_State_Optional& rso );
 };
 
-struct render_state_optional final
+struct Render_State_Optional final
 {
 	std::optional<e_align> align = std::nullopt;
 	std::optional<float> angle = std::nullopt;
-	std::optional<color> color = std::nullopt;
+	std::optional<Color> color = std::nullopt;
 	std::optional<float> glow = std::nullopt;
 	std::optional<int> pick_id = std::nullopt;
-	std::optional<vec2> scale = std::nullopt;
-	std::optional<vec2> uv_tiling = std::nullopt;
+	std::optional<Vec2> scale = std::nullopt;
+	std::optional<Vec2> uv_tiling = std::nullopt;
 	std::optional<float> z = std::nullopt;
 	std::optional<float> z_bias = std::nullopt;
-	std::optional<font_asset*> font = std::nullopt;
+	std::optional<Font_Asset*> font = std::nullopt;
 };
 
 }

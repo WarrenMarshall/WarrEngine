@@ -5,7 +5,7 @@
 namespace war
 {
 
-opengl_color_attachment::opengl_color_attachment( opengl_framebuffer* fb_owner, vec2 sz, const color& clear_color )
+opengl_color_attachment::opengl_color_attachment( OpenGL_Frame_Buffer* fb_owner, Vec2 sz, const Color& clear_color )
 	: fb_owner( fb_owner ), clear_color( clear_color )
 {
 
@@ -14,8 +14,8 @@ opengl_color_attachment::opengl_color_attachment( opengl_framebuffer* fb_owner, 
 	std::string tex_name = std::format( "tex_{}_{}_fb", texture_num, fb_owner->base_name );
 
 	// create the internal texture
-	g_engine->asset_cache.add( std::make_unique<texture_source_asset>(), tex_name, "" );
-	texture = g_engine->asset_cache.add( std::make_unique<texture_asset>( tex_name ), "fb_" + tex_name, "" );
+	g_engine->asset_cache.add( std::make_unique<Texture_Source_Asset>(), tex_name, "" );
+	texture = g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tex_name ), "fb_" + tex_name, "" );
 	auto src_texture = texture->get_src_texture();
 
 	src_texture->w = sz.w;

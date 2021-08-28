@@ -21,14 +21,14 @@ namespace war
 // 	...etc...
 // ----------------------------------------------------------------------------
 
-file_zip::toc_entry::toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size )
+Zip_File::toc_entry::toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size )
 	: zip_filename( zip_filename ), filename( filename ), offset_from_start_of_file( offset ), size( size )
 {
 }
 
 // ----------------------------------------------------------------------------
 
-void file_zip::scan_and_build_table_of_contents()
+void Zip_File::scan_and_build_table_of_contents()
 {
 	table_of_contents.clear();
 
@@ -58,7 +58,7 @@ void file_zip::scan_and_build_table_of_contents()
 				while( true )
 				{
 					// local file header
-					auto hdr = (file_zip_header*)rptr;
+					auto hdr = (Zip_File_Header*)rptr;
 
 					// we don't support compression or encryption in any form
 					if( hdr->compression_method != 0 )
@@ -68,7 +68,7 @@ void file_zip::scan_and_build_table_of_contents()
 
 					if( hdr->local_file_header_signature == 0x04034b50 )
 					{
-						rptr += sizeof( file_zip_header );
+						rptr += sizeof( Zip_File_Header );
 
 						if( hdr->version_needed_to_extract == 10 )
 						{
@@ -78,7 +78,7 @@ void file_zip::scan_and_build_table_of_contents()
 							rptr += hdr->file_name_length;
 
 							std::string wk_filename = filename;
-							string_util::replace_char( wk_filename, '\\', '/' );
+							String_Util::replace_char( wk_filename, '\\', '/' );
 
 							table_of_contents.insert(
 								std::make_pair(
@@ -113,7 +113,7 @@ void file_zip::scan_and_build_table_of_contents()
 	}
 }
 
-file_zip::toc_entry* file_zip::get_toc_entry_for_filename( std::string_view filename )
+Zip_File::toc_entry* Zip_File::get_toc_entry_for_filename( std::string_view filename )
 {
 	auto iter = table_of_contents.find( std::string( filename ) );
 
@@ -125,7 +125,7 @@ file_zip::toc_entry* file_zip::get_toc_entry_for_filename( std::string_view file
 	return &( iter->second );
 }
 
-std::vector<char> file_zip::get_data_for_filename( std::string_view filename )
+std::vector<char> Zip_File::get_data_for_filename( std::string_view filename )
 {
 	toc_entry* toc_entry = get_toc_entry_for_filename( filename );
 

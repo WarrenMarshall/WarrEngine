@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-ui_control_data* scene_esc_menu_ui_callback::get_data( hash tag )
+UI_Control_Data* Scene_Esc_Menu_UI_Callback::get_data( hash tag )
 {
 	switch( tag )
 	{
@@ -18,10 +18,10 @@ ui_control_data* scene_esc_menu_ui_callback::get_data( hash tag )
 		}
 	}
 
-	return ui_callback::get_data( tag );
+	return UI_Callback::get_data( tag );
 }
 
-bool scene_esc_menu_ui_callback::on_input_pressed( const input_event* evt )
+bool Scene_Esc_Menu_UI_Callback::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -38,14 +38,14 @@ bool scene_esc_menu_ui_callback::on_input_pressed( const input_event* evt )
 
 // ----------------------------------------------------------------------------
 
-scene_esc_menu::scene_esc_menu()
+Scene_Esc_Menu::Scene_Esc_Menu()
 {
-	ui_callback = std::make_unique<scene_esc_menu_ui_callback>();
+	ui_callback = std::make_unique<Scene_Esc_Menu_UI_Callback>();
 	flags.blocks_further_input = true;
 	flags.blocks_further_update = true;
 }
 
-void scene_esc_menu::pushed()
+void Scene_Esc_Menu::pushed()
 {
 	scene::pushed();
 
@@ -53,41 +53,41 @@ void scene_esc_menu::pushed()
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 }
 
-void scene_esc_menu::popped()
+void Scene_Esc_Menu::popped()
 {
 	scene::popped();
 
 	restore_mouse_mode();
 }
 
-void scene_esc_menu::draw_ui()
+void Scene_Esc_Menu::draw_ui()
 {
 	scene::draw_ui();
 
 	{
 		scoped_render_state;
 
-		render::state->color = make_color( 0, 0.75f );
-		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+		Render::state->color = make_color( 0, 0.75f );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
 	}
 
 	int num_buttons = 3 + g_base_game->flags.has_main_menu;
 
-	auto slice_def = g_engine->find_asset<slice_def_asset>( "simple_ui_panel" );
+	auto slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_panel" );
 
 	float panel_w =
 		slice_def->get_left_slice_sz()
-		+ ui_button_control::get_default_width()
+		+ UI_Button_Control::get_default_width()
 		+ slice_def->get_right_slice_sz();
 
 	float panel_h =
-		( ui_button_control::get_default_height() * num_buttons )
+		( UI_Button_Control::get_default_height() * num_buttons )
 		+ slice_def->get_top_slice_sz()
 		+ ( get_ui_callback()->get_control_margin( ui_control_type::button ).y * ( num_buttons - 1 ) )
 		+ slice_def->get_bottom_slice_sz()
 		+ 12.f;
 
-	g_ui->layout_init( rect( 0.f, 0.f, panel_w, panel_h ) );
+	g_ui->layout_init( Rect( 0.f, 0.f, panel_w, panel_h ) );
 
 	g_ui->panel_control( H( "main_panel" ) )
 		->center_control_on_screen()
@@ -95,7 +95,7 @@ void scene_esc_menu::draw_ui()
 		->done();
 
 	{
-		render::state->z += zdepth_nudge;
+		Render::state->z += zdepth_nudge;
 
 		g_ui->caption_control()
 			->set_text( "PAUSE MENU" )

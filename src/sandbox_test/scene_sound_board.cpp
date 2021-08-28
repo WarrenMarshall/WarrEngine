@@ -10,7 +10,7 @@ void scene_sound_board::draw()
 {
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 void scene_sound_board::draw_ui()
@@ -18,7 +18,7 @@ void scene_sound_board::draw_ui()
 	scene::draw_ui();
 	draw_title( "Sound Board" );
 
-	rect rc_panel = { 0.f, 0.f, ui_w, ui_h };
+	Rect rc_panel = { 0.f, 0.f, ui_w, ui_h };
 	rc_panel.shrink( 32.f );
 	g_ui->layout_init( rc_panel );
 
@@ -29,21 +29,21 @@ void scene_sound_board::draw_ui()
 			->set_text( "Coin" )
 			->done() )
 		{
-			g_engine->find_asset<sound_asset>( "sfx_01" )->play();
+			g_engine->find_asset<Sound_Asset>( "sfx_01" )->play();
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Jump" )
 			->done() )
 		{
-			g_engine->find_asset<sound_asset>( "sfx_02" )->play();
+			g_engine->find_asset<Sound_Asset>( "sfx_02" )->play();
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Doom" )
 			->done() )
 		{
-			g_engine->find_asset<sound_asset>( "sfx_doom" )->play();
+			g_engine->find_asset<Sound_Asset>( "sfx_doom" )->play();
 		}
 
 		g_ui->divider_control()
@@ -61,7 +61,7 @@ void scene_sound_board::draw_ui()
 				->cut_left( button_width )
 				->done() )
 			{
-				g_engine->find_asset<sound_asset>( "music_01" )->play();
+				g_engine->find_asset<Sound_Asset>( "music_01" )->play();
 			}
 
 			if( g_ui->button_control()
@@ -69,7 +69,7 @@ void scene_sound_board::draw_ui()
 				->cut_left( button_width )
 				->done() )
 			{
-				g_engine->find_asset<sound_asset>( "music_01" )->pause();
+				g_engine->find_asset<Sound_Asset>( "music_01" )->pause();
 			}
 
 			if( g_ui->button_control()
@@ -77,7 +77,7 @@ void scene_sound_board::draw_ui()
 				->cut_left( button_width )
 				->done() )
 			{
-				g_engine->find_asset<sound_asset>( "music_01" )->stop();
+				g_engine->find_asset<Sound_Asset>( "music_01" )->stop();
 			}
 		}
 	}
@@ -85,7 +85,7 @@ void scene_sound_board::draw_ui()
 
 void scene_sound_board::popped()
 {
-	g_engine->find_asset<sound_asset>( "music_01" )->stop();
+	g_engine->find_asset<Sound_Asset>( "music_01" )->stop();
 
 	scene::popped();
 }

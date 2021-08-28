@@ -2,14 +2,14 @@
 namespace war
 {
 
-struct render_vertex final
+struct Render_Vertex final
 {
-	render_vertex() = default;
-	render_vertex( const vec2& pos, const vec2& uv, const color& color, float glow );
-	render_vertex( const vec2& pos );
-	render_vertex( const vec3& pos, const vec2& uv, const color& color, float glow );
-	render_vertex( const vec3& pos );
-	render_vertex( const render_vertex& other );
+	Render_Vertex() = default;
+	Render_Vertex( const Vec2& pos, const Vec2& uv, const Color& color, float glow );
+	Render_Vertex( const Vec2& pos );
+	Render_Vertex( const Vec3& pos, const Vec2& uv, const Color& color, float glow );
+	Render_Vertex( const Vec3& pos );
+	Render_Vertex( const Render_Vertex& other );
 
 	float x = 0.f, y = 0.f, z = 0.f;
 	float u = 0.f, v = 0.f;
@@ -21,18 +21,18 @@ struct render_vertex final
 
 // ----------------------------------------------------------------------------
 
-struct render_triangle final
+struct Render_Triangle final
 {
-	std::array<render_vertex,3> verts;
-	render_triangle( const render_vertex& v0, const render_vertex& v1, const render_vertex& v2, const color& color, float glow );
+	std::array<Render_Vertex,3> verts;
+	Render_Triangle( const Render_Vertex& v0, const Render_Vertex& v1, const Render_Vertex& v2, const Color& color, float glow );
 };
 
 // ----------------------------------------------------------------------------
 
-struct render_line final
+struct Render_Line final
 {
-	std::array<render_vertex, 2> verts;
-	render_line( const render_vertex& v0, const render_vertex& v1, const color& color, float glow );
+	std::array<Render_Vertex, 2> verts;
+	Render_Line( const Render_Vertex& v0, const Render_Vertex& v1, const Color& color, float glow );
 };
 
 }

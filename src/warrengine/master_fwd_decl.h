@@ -1,53 +1,54 @@
 
 namespace war::simple_collision
 {
-struct raycast_callback;
+struct Raycast_Callback;
 }
 
 namespace war
 {
 
-struct color;
-struct ec_emitter;
-struct emitter_parameters_asset;
-struct entity;
-struct file_mem;
-struct file_mem_text;
-struct file_zip;
-struct game;
-struct index_buffer_lines;
-struct index_buffer_points;
-struct index_buffer_quads;
-struct index_buffer_tris;
-struct opengl_framebuffer;
-struct os_window;
-struct particle_emitter;
-struct particle_pool;
-struct ec_box2d_physics_body;
+struct Color;
+struct Emitter_Component;
+struct Emitter_Parameters_Asset;
+struct Entity;
+struct Mem_File;
+struct Mem_File_Text;
+struct Zip_File;
+struct Game;
+struct Index_Buffer_Lines;
+struct Index_Buffer_Points;
+struct Index_Buffer_Quads;
+struct Index_Buffer_Tris;
+struct OpenGL_Frame_Buffer;
+struct OS_Window;
+struct Particle_Emitter;
+struct Particle_Pool;
+struct Box2D_Physics_Body_Component;
 struct contact_listener;
 struct debug_draw;
-struct rect;
-struct render;
-struct primitive_batch;
-struct render_state;
-struct render_state_optional;
+struct Rect;
+struct Render;
+struct Primitive_Batch;
+struct Render_State;
+struct Render_State_Optional;
 struct scene;
-struct scene_mgr;
-struct shader;
-struct ec_simple_collision_body;
-struct simple_collision_world;
-struct sound_asset;
-struct texture_asset;
-struct timeline;
-struct transform;
-struct ui_control;
-struct ui_control;
-struct ui_control_data;
-struct ui_mgr;
-struct ui_result;
-struct vec2;
-struct vec3;
-struct vertex_array_object;
-template<typename T> struct range;
+struct Scene_Mgr;
+struct Scene_Transient;
+struct Shader;
+struct Simple_Collision_Body;
+struct Simple_Collision_World;
+struct Sound_Asset;
+struct Texture_Asset;
+struct Timeline_Values;
+struct Transform;
+struct UI_Control;
+struct UI_Control;
+struct UI_Control_Data;
+struct UI_Mgr;
+struct UI_Result;
+struct Vec2;
+struct Vec3;
+struct Vertex_Array_Object;
+template<typename T> struct Range;
 
 }

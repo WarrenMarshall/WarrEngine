@@ -20,7 +20,7 @@ void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int width, 
 	// This allows us to work with a set size screen (viewport) and not have to worry about
 	// the user changing the window to some weird size.
 
-	g_engine->window.viewport_pos_sz = rect( 0.f, 0.f, (float)( width ), (float)( height ) );
+	g_engine->window.viewport_pos_sz = Rect( 0.f, 0.f, (float)( width ), (float)( height ) );
 
 	float w_ratio = width / viewport_w;
 	float h_ratio = height / viewport_h;
@@ -44,7 +44,7 @@ void focus_change_callback( [[maybe_unused]] GLFWwindow* window, int focused )
 
 // ----------------------------------------------------------------------------
 
-rect os_window::compute_max_window_size_for_desktop()
+Rect OS_Window::compute_max_window_size_for_desktop()
 {
 	float desktop_w = vidmode->width - viewport_hw;
 	float desktop_h = vidmode->height - viewport_hh;
@@ -56,16 +56,16 @@ rect os_window::compute_max_window_size_for_desktop()
 	auto hdiv = (int)( std::floorf( desktop_h / (float)( viewport_h ) ) );
 	int div = glm::min( wdiv, hdiv );
 
-	rect window_pos( 0.f, 0.f, viewport_w * div, viewport_h * div );
+	Rect window_pos( 0.f, 0.f, viewport_w * div, viewport_h * div );
 	window_pos.x = ( vidmode->width - window_pos.w ) / 2;
 	window_pos.y = ( vidmode->height - window_pos.h ) / 2;
 
-	viewport_pos_sz = rect( 0.f, 0.f, window_pos.w, window_pos.h );
+	viewport_pos_sz = Rect( 0.f, 0.f, window_pos.w, window_pos.h );
 
 	return window_pos;
 }
 
-bool os_window::init()
+bool OS_Window::init()
 {
 	glfwInit();
 
@@ -79,7 +79,7 @@ bool os_window::init()
 	const char* monitor_name = glfwGetMonitorName( primary_monitor );
 	log( "Primary monitor [{} - {}x{}]", monitor_name, vidmode->width, vidmode->height );
 
-	rect window_pos = compute_max_window_size_for_desktop();
+	Rect window_pos = compute_max_window_size_for_desktop();
 
 	//glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
 	//glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
@@ -110,12 +110,12 @@ bool os_window::init()
 	return true;
 }
 
-void os_window::deinit()
+void OS_Window::deinit()
 {
 	glfwDestroyWindow( glfw_window );
 }
 
-void os_window::toggle_fullscreen()
+void OS_Window::toggle_fullscreen()
 {
 	toggle_bool( is_fullscreen );
 
@@ -139,18 +139,18 @@ void os_window::toggle_fullscreen()
 	}
 }
 
-void os_window::set_title( std::string_view title )
+void OS_Window::set_title( std::string_view title )
 {
 	glfwSetWindowTitle( glfw_window, title.data() );
 }
 
-void os_window::set_mouse_mode( e_mouse_mode mouse_mode )
+void OS_Window::set_mouse_mode( e_mouse_mode mouse_mode )
 {
 	this->mouse_mode = mouse_mode;
 	refresh_mouse_mode();
 }
 
-void os_window::refresh_mouse_mode()
+void OS_Window::refresh_mouse_mode()
 {
 	switch( mouse_mode )
 	{

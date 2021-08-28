@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct file_disk final
+struct Disk_File final
 {
 	FILE* file_handle = nullptr;
 

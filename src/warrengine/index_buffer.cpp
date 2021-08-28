@@ -5,37 +5,37 @@
 namespace war
 {
 
-index_buffer::index_buffer()
+Index_Buffer::Index_Buffer()
 {
 	glCreateBuffers( 1, &gl_id );
 	bind();
 }
 
-index_buffer::~index_buffer()
+Index_Buffer::~Index_Buffer()
 {
 	unbind();
 	glDeleteBuffers( 1, &gl_id );
 }
 
-void index_buffer::bind()
+void Index_Buffer::bind()
 {
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, gl_id );
 }
 
-void index_buffer::unbind()
+void Index_Buffer::unbind()
 {
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
 // ----------------------------------------------------------------------------
 
-index_buffer_quads::index_buffer_quads()
+Index_Buffer_Quads::Index_Buffer_Quads()
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<uint32> indices;
-	indices.resize( primitive_batch::max_elements_per_draw_call * 6 );
+	indices.resize( Primitive_Batch::max_elements_per_draw_call * 6 );
 
 	// index format:
 	// 0, 1, 2, 0, 2, 3
@@ -43,7 +43,7 @@ index_buffer_quads::index_buffer_quads()
 	// ...
 
 	uint32 offset = 0;
-	for( uint32 q = 0 ; q < primitive_batch::max_elements_per_draw_call * 6 ; q += 6 )
+	for( uint32 q = 0 ; q < Primitive_Batch::max_elements_per_draw_call * 6 ; q += 6 )
 	{
 		indices[ q + 0 ] = offset + 0;
 		indices[ q + 1 ] = offset + 1;
@@ -61,7 +61,7 @@ index_buffer_quads::index_buffer_quads()
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( primitive_batch::max_elements_per_draw_call * 6 ) * sizeof( uint32 ),
+		( Primitive_Batch::max_elements_per_draw_call * 6 ) * sizeof( uint32 ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);
@@ -69,20 +69,20 @@ index_buffer_quads::index_buffer_quads()
 
 // ----------------------------------------------------------------------------
 
-index_buffer_tris::index_buffer_tris()
+Index_Buffer_Tris::Index_Buffer_Tris()
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<uint32> indices;
-	indices.resize( primitive_batch::max_elements_per_draw_call * 3 );
+	indices.resize( Primitive_Batch::max_elements_per_draw_call * 3 );
 
 	// index format:
 	// 0, 1, 2,
 	// 3, 4, 5,
 	// ...
 
-	for( uint32 q = 0 ; q < primitive_batch::max_elements_per_draw_call * 3 ; q++ )
+	for( uint32 q = 0 ; q < Primitive_Batch::max_elements_per_draw_call * 3 ; q++ )
 	{
 		indices[ q ] = q;
 	}
@@ -92,7 +92,7 @@ index_buffer_tris::index_buffer_tris()
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( primitive_batch::max_elements_per_draw_call * 3 ) * sizeof( uint32 ),
+		( Primitive_Batch::max_elements_per_draw_call * 3 ) * sizeof( uint32 ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);
@@ -100,20 +100,20 @@ index_buffer_tris::index_buffer_tris()
 
 // ----------------------------------------------------------------------------
 
-index_buffer_lines::index_buffer_lines()
+Index_Buffer_Lines::Index_Buffer_Lines()
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<uint32> indices;
-	indices.resize( primitive_batch::max_elements_per_draw_call * 2 );
+	indices.resize( Primitive_Batch::max_elements_per_draw_call * 2 );
 
 	// index format:
 	// 0, 1,
 	// 2, 3,
 	// ...
 
-	for( uint32 q = 0 ; q < primitive_batch::max_elements_per_draw_call * 2 ; q++ )
+	for( uint32 q = 0 ; q < Primitive_Batch::max_elements_per_draw_call * 2 ; q++ )
 	{
 		indices[ q ] = q;
 	}
@@ -123,7 +123,7 @@ index_buffer_lines::index_buffer_lines()
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( primitive_batch::max_elements_per_draw_call * 2 ) * sizeof( uint32 ),
+		( Primitive_Batch::max_elements_per_draw_call * 2 ) * sizeof( uint32 ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);
@@ -131,20 +131,20 @@ index_buffer_lines::index_buffer_lines()
 
 // ----------------------------------------------------------------------------
 
-index_buffer_points::index_buffer_points()
+Index_Buffer_Points::Index_Buffer_Points()
 {
 	// create the full set of indices right ahead of time since we know
 	// the pattern they will be following.
 
 	std::vector<uint32> indices;
-	indices.resize( primitive_batch::max_elements_per_draw_call * 1 );
+	indices.resize( Primitive_Batch::max_elements_per_draw_call * 1 );
 
 	// index format:
 	// 0,
 	// 1,
 	// ...
 
-	for( uint32 q = 0 ; q < primitive_batch::max_elements_per_draw_call * 1 ; q++ )
+	for( uint32 q = 0 ; q < Primitive_Batch::max_elements_per_draw_call * 1 ; q++ )
 	{
 		indices[ q ] = q;
 	}
@@ -154,7 +154,7 @@ index_buffer_points::index_buffer_points()
 
 	glBufferData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		( primitive_batch::max_elements_per_draw_call * 1 ) * sizeof( uint32 ),
+		( Primitive_Batch::max_elements_per_draw_call * 1 ) * sizeof( uint32 ),
 		indices.data(),
 		GL_STATIC_DRAW
 	);

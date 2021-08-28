@@ -5,7 +5,7 @@
 namespace war
 {
 
-std::string_view text_parser::key_from_str( std::string_view src_string, std::string_view key )
+std::string_view Text_Parser::key_from_str( std::string_view src_string, std::string_view key )
 {
 	size_t idx = src_string.find( key.data() );
 
@@ -21,7 +21,7 @@ std::string_view text_parser::key_from_str( std::string_view src_string, std::st
 	return value;
 }
 
-int text_parser::int_from_str( std::string_view str )
+int Text_Parser::int_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -31,10 +31,10 @@ int text_parser::int_from_str( std::string_view str )
 	}
 
 	// Otherwise, parse the string...
-	return string_util::to_int( str );
+	return String_Util::to_int( str );
 }
 
-unsigned text_parser::uint_from_str( std::string_view str )
+unsigned Text_Parser::uint_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -44,10 +44,10 @@ unsigned text_parser::uint_from_str( std::string_view str )
 	}
 
 	// Otherwise, parse the string...
-	return string_util::to_uint( str.data() );
+	return String_Util::to_uint( str.data() );
 }
 
-bool text_parser::bool_from_str( std::string_view str )
+bool Text_Parser::bool_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -64,7 +64,7 @@ bool text_parser::bool_from_str( std::string_view str )
 	return false;
 }
 
-float text_parser::float_from_str( std::string_view str )
+float Text_Parser::float_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -74,10 +74,10 @@ float text_parser::float_from_str( std::string_view str )
 	}
 
 	// Otherwise, parse the string...
-	return string_util::to_float( str );
+	return String_Util::to_float( str );
 }
 
-color text_parser::color_from_str( std::string_view str )
+Color Text_Parser::color_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -87,10 +87,10 @@ color text_parser::color_from_str( std::string_view str )
 	}
 
 	auto color_str = std::string( str );
-	return color( color_str );
+	return Color( color_str );
 }
 
-range<float> text_parser::range_from_str( std::string_view str )
+Range<float> Text_Parser::range_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -101,30 +101,30 @@ range<float> text_parser::range_from_str( std::string_view str )
 
 	// Otherwise, parse the string...
 
-	tokenizer tok( str, "," );
+	Tokenizer tok( str, "," );
 
-	range<float> range(
-		text_parser::float_from_str( *tok.get_next_token() ),
-		text_parser::float_from_str( *tok.get_next_token() )
+	Range<float> range(
+		Text_Parser::float_from_str( *tok.get_next_token() ),
+		Text_Parser::float_from_str( *tok.get_next_token() )
 	);
 
 	return range;
 }
 
-rect text_parser::rect_from_str( std::string_view str )
+Rect Text_Parser::rect_from_str( std::string_view str )
 {
-	tokenizer tok( str, "," );
+	Tokenizer tok( str, "," );
 
-	rect rect;
-	rect.x = text_parser::float_from_str( *tok.get_next_token() );
-	rect.y = text_parser::float_from_str( *tok.get_next_token() );
-	rect.w = text_parser::float_from_str( *tok.get_next_token() );
-	rect.h = text_parser::float_from_str( *tok.get_next_token() );
+	Rect rect;
+	rect.x = Text_Parser::float_from_str( *tok.get_next_token() );
+	rect.y = Text_Parser::float_from_str( *tok.get_next_token() );
+	rect.w = Text_Parser::float_from_str( *tok.get_next_token() );
+	rect.h = Text_Parser::float_from_str( *tok.get_next_token() );
 
 	return rect;
 }
 
-vec2 text_parser::vec2_from_str( std::string_view str )
+Vec2 Text_Parser::vec2_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -135,42 +135,42 @@ vec2 text_parser::vec2_from_str( std::string_view str )
 
 	// Otherwise, parse the string...
 
-	tokenizer tok( str, "," );
+	Tokenizer tok( str, "," );
 
-	vec2 vec2;
-	vec2.x = text_parser::float_from_str( *tok.get_next_token() );
-	vec2.y = text_parser::float_from_str( *tok.get_next_token() );
+	Vec2 vec2;
+	vec2.x = Text_Parser::float_from_str( *tok.get_next_token() );
+	vec2.y = Text_Parser::float_from_str( *tok.get_next_token() );
 
 	return vec2;
 }
 
-std::unique_ptr<timeline> text_parser::timeline_from_str( e_timeline_type type, std::string_view str )
+std::unique_ptr<Timeline_Values> Text_Parser::timeline_from_str( e_timeline_type type, std::string_view str )
 {
-	std::unique_ptr<timeline> tl = std::make_unique<timeline>( type );
+	std::unique_ptr<Timeline_Values> tl = std::make_unique<Timeline_Values>( type );
 	tl->clear_key_frames();
 
-	tokenizer tok( str, "," );
+	Tokenizer tok( str, "," );
 
 	// Make sure there are an even number of tokens
 	assert( ( tok.tokens.size() % 2 ) == 0 );
 
 	while( !tok.is_eos() )
 	{
-		timeline_key_frame kf;
+		Timeline_Values_Key_Frame kf;
 
-		kf.pct_marker = text_parser::float_from_str( *tok.get_next_token() );
+		kf.pct_marker = Text_Parser::float_from_str( *tok.get_next_token() );
 
 		switch( type )
 		{
 			case timeline_type::float_type:
 			{
-				kf.float_value = text_parser::float_from_str( *tok.get_next_token() );
+				kf.float_value = Text_Parser::float_from_str( *tok.get_next_token() );
 				break;
 			}
 
 			case timeline_type::color_type:
 			{
-				kf.color_value = text_parser::color_from_str( *tok.get_next_token() );
+				kf.color_value = Text_Parser::color_from_str( *tok.get_next_token() );
 				break;
 			}
 
@@ -187,11 +187,11 @@ std::unique_ptr<timeline> text_parser::timeline_from_str( e_timeline_type type, 
 	return tl;
 }
 
-std::vector<color> text_parser::color_list_from_str( std::string_view str )
+std::vector<Color> Text_Parser::color_list_from_str( std::string_view str )
 {
-	std::vector<color> color_list;
+	std::vector<Color> color_list;
 
-	tokenizer tok( str, "," );
+	Tokenizer tok( str, "," );
 
 	std::vector<std::string> wk_values;
 	while( true )
@@ -232,7 +232,7 @@ std::vector<color> text_parser::color_list_from_str( std::string_view str )
 		if( pos != std::string::npos )
 		{
 			pos++;
-			repeat_count = string_util::to_int( color_value.substr( pos, color_value.length() - pos ) );
+			repeat_count = String_Util::to_int( color_value.substr( pos, color_value.length() - pos ) );
 			color_value = color_value.substr( 0, pos - 1 );
 		}
 

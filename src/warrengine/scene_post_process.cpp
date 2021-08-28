@@ -5,7 +5,7 @@
 namespace war
 {
 
-void update_shader_uniforms( scene_post_process_ui_callback* cb )
+void update_shader_uniforms( Scene_Post_Process_UI_Callback* cb )
 {
 	g_engine->render_api.set_uniform_bool( "ub_vignette", cb->ub_vignette.bool_value() );
 
@@ -32,17 +32,17 @@ void update_shader_uniforms( scene_post_process_ui_callback* cb )
 
 // ----------------------------------------------------------------------------
 
-scene_post_process_ui_callback::scene_post_process_ui_callback()
+Scene_Post_Process_UI_Callback::Scene_Post_Process_UI_Callback()
 {
-	u_vignette_size.slider_range = range( 1.7f, 2.5f );
-	u_vignette_smoothness.slider_range = range( 0.5f, 1.5f );
-	u_vignette_rounding.slider_range = range( 8.f, 16.f );
-	u_crt_tint_scaling.slider_range = range( 0.25f, 4.f );
-	u_film_grain_intensity.slider_range = range( 0.f, 2.f );
-	u_chromatic_aberration_amount.slider_range = range( 0.f, 0.01f );
-	u_crt_scanlines_intensity.slider_range = range( 0.f, 0.1f );
-	u_crt_warp_bend.slider_range = range( 2.f, 12.f );
-	u_pixelate_factor.slider_range = range( 1.f, 32.f );
+	u_vignette_size.slider_range = Range( 1.7f, 2.5f );
+	u_vignette_smoothness.slider_range = Range( 0.5f, 1.5f );
+	u_vignette_rounding.slider_range = Range( 8.f, 16.f );
+	u_crt_tint_scaling.slider_range = Range( 0.25f, 4.f );
+	u_film_grain_intensity.slider_range = Range( 0.f, 2.f );
+	u_chromatic_aberration_amount.slider_range = Range( 0.f, 0.01f );
+	u_crt_scanlines_intensity.slider_range = Range( 0.f, 0.1f );
+	u_crt_warp_bend.slider_range = Range( 2.f, 12.f );
+	u_pixelate_factor.slider_range = Range( 1.f, 32.f );
 
 	ub_vignette.set_bool_value( g_engine->render_api.get_uniform_float( "ub_vignette" ) );
 
@@ -69,7 +69,7 @@ scene_post_process_ui_callback::scene_post_process_ui_callback()
 
 // ----------------------------------------------------------------------------
 
-ui_control_data* scene_post_process_ui_callback::get_data( hash tag )
+UI_Control_Data* Scene_Post_Process_UI_Callback::get_data( hash tag )
 {
 	switch( tag )
 	{
@@ -94,15 +94,15 @@ ui_control_data* scene_post_process_ui_callback::get_data( hash tag )
 		case H( "slider_pixelate_factor" ):				return &u_pixelate_factor;
 	}
 
-	return ui_callback::get_data( tag );
+	return UI_Callback::get_data( tag );
 }
 
-void scene_post_process_ui_callback::on_value_changed( hash tag )
+void Scene_Post_Process_UI_Callback::on_value_changed( hash tag )
 {
 	update_shader_uniforms( this );
 }
 
-bool scene_post_process_ui_callback::on_input_pressed( const input_event* evt )
+bool Scene_Post_Process_UI_Callback::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -119,36 +119,36 @@ bool scene_post_process_ui_callback::on_input_pressed( const input_event* evt )
 
 // ----------------------------------------------------------------------------
 
-scene_post_process::scene_post_process()
+Scene_Post_Process::Scene_Post_Process()
 {
-	ui_callback = std::make_unique<scene_post_process_ui_callback>();
+	ui_callback = std::make_unique<Scene_Post_Process_UI_Callback>();
 
 	flags.blocks_further_drawing = false;
 }
 
-void scene_post_process::pushed()
+void Scene_Post_Process::pushed()
 {
 	scene::pushed();
 
-	viewport_pivot = vec2::zero;
+	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::custom );
 }
 
-void scene_post_process::draw_ui()
+void Scene_Post_Process::draw_ui()
 {
-	auto cb = (scene_post_process_ui_callback*)get_ui_callback();
+	auto cb = (Scene_Post_Process_UI_Callback*)get_ui_callback();
 
 	if( background_alpha > 0.f )
 	{
 		scoped_render_state;
 
-		render::state->color = make_color( color::black, background_alpha );
-		render::draw_quad( g_engine->tex_white, { 0.f, 0.f, ui_w, ui_h } );
+		Render::state->color = make_color( Color::black, background_alpha );
+		Render::draw_quad( g_engine->tex_white, { 0.f, 0.f, ui_w, ui_h } );
 	}
 
 	scene::draw_ui();
 
-	auto rc_layout = rect( 8.f, 30.f, ui_w, ui_h );
+	auto rc_layout = Rect( 8.f, 30.f, ui_w, ui_h );
 	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ void scene_post_process::draw_ui()
 		->set_size( { viewport_w, g_engine->tex_default_lut->height() } )
 		->done();
 
-	rc_layout = rect( 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
+	rc_layout = Rect( 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
 	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
@@ -172,12 +172,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_vignette.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Size:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_vignette_size" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -191,12 +191,12 @@ void scene_post_process::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Smooth:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_vignette_smooth" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
 
-			range vignette_smooth_range( 0.5f, 1.5f );
+			Range vignette_smooth_range( 0.5f, 1.5f );
 
 			g_ui->label_control()
 				->set_text( std::format( "{:.2f}", cb->u_vignette_smoothness.float_value() ) )
@@ -207,12 +207,12 @@ void scene_post_process::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Round:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_vignette_round" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
 
-			range vignette_round_range( 8.f, 16.f );
+			Range vignette_round_range( 8.f, 16.f );
 
 			g_ui->label_control()
 				->set_text( std::format( "{:.2f}", cb->u_vignette_rounding.float_value() ) )
@@ -230,12 +230,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_chromatic_aberration.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_chromatic_aberration_amount" ) )->cut_left( 48.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -256,12 +256,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_desaturation.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Amount:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_desaturation_amount" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -282,12 +282,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_crt_warp.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Bend:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_warp_bend" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -308,12 +308,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_pixelate.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Factor:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_pixelate_factor" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -325,7 +325,7 @@ void scene_post_process::draw_ui()
 		}
 	}
 
-	rc_layout = rect( ui_hw + 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
+	rc_layout = Rect( ui_hw + 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
 
 	g_ui->layout_init( rc_layout );
 
@@ -338,12 +338,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_crt_tint.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Scale:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_tint_scaling" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -357,7 +357,7 @@ void scene_post_process::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_tint_intensity" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -378,12 +378,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_crt_scanlines.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_scanlines_intensity" ) )->cut_left( 48.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -404,12 +404,12 @@ void scene_post_process::draw_ui()
 
 	if( cb->ub_film_grain.bool_value() )
 	{
-		float height = ui_label_control::get_default_height();
+		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( ui_spacer_control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_film_grain_intensity" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -422,7 +422,7 @@ void scene_post_process::draw_ui()
 	}
 }
 
-bool scene_post_process::on_input_motion( const input_event* evt )
+bool Scene_Post_Process::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == input_id::mouse_wheel )
 	{

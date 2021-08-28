@@ -17,18 +17,18 @@ void scene_coords::pushed()
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->tag = H( "crosshair" );
 		e->set_pos( { 0.f, 0.f } );
 		e->rs_opt.color = make_color( pal::brighter );
 		{
-			auto ec = e->add_component<ec_sprite>();
+			auto ec = e->add_component<Sprite_Component>();
 			ec->init( "tex_swirl" );
 		}
 		{
-			auto ec = e->add_component<ec_sprite>();
+			auto ec = e->add_component<Sprite_Component>();
 			ec->init( "tex_crosshair" );
-			ec->rs_opt.color = color::white;
+			ec->rs_opt.color = Color::white;
 		}
 	}
 }
@@ -37,7 +37,7 @@ void scene_coords::draw()
 {
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 void scene_coords::draw_ui()
@@ -48,42 +48,42 @@ void scene_coords::draw_ui()
 	{
 		scoped_render_state;
 
-		render::state->color = make_color( color::black, 0.5f );
-		render::draw_rounded_filled_rect( rect( 4.f, 30.f, 75.f, 52.f ), 8.f );
-		render::state->color = make_color( color::black, 1.f );
-		render::draw_rounded_rect( rect( 4.f, 30.f, 75.f, 52.f ), 8.f );
+		Render::state->color = make_color( Color::black, 0.5f );
+		Render::draw_rounded_filled_rect( Rect( 4.f, 30.f, 75.f, 52.f ), 8.f );
+		Render::state->color = make_color( Color::black, 1.f );
+		Render::draw_rounded_rect( Rect( 4.f, 30.f, 75.f, 52.f ), 8.f );
 
-		render::state->color = make_color( color::white, 0.5f );
-		render::state->scale = 0.5f;
+		Render::state->color = make_color( Color::white, 0.5f );
+		Render::state->scale = 0.5f;
 
 		auto window_pos = g_engine->input.mouse_window_pos;
 
-		vec2 render_pos( 12.f, 36.f );
-		render::draw_string( std::format(
+		Vec2 render_pos( 12.f, 36.f );
+		Render::draw_string( std::format(
 			"window : {:.0f} / {:.0f}",
 			window_pos.x, window_pos.y ),
 			render_pos
 		);
 
-		render_pos.y += render::state->font->get_max_height() * render::state->scale.y;
-		auto viewport_pos = coord_system::window_to_viewport_pos( window_pos );
-		render::draw_string( std::format(
+		render_pos.y += Render::state->font->get_max_height() * Render::state->scale.y;
+		auto viewport_pos = Coord_System::window_to_viewport_pos( window_pos );
+		Render::draw_string( std::format(
 			"viewport : {:.0f} / {:.0f}",
 			viewport_pos.x, viewport_pos.y ),
 			render_pos
 		);
 
-		render_pos.y += render::state->font->get_max_height() * render::state->scale.y;
-		auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
-		render::draw_string( std::format(
+		render_pos.y += Render::state->font->get_max_height() * Render::state->scale.y;
+		auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
+		Render::draw_string( std::format(
 			"ui : {:.0f} / {:.0f}",
 			ui_pos.x, ui_pos.y ),
 			render_pos
 		);
 
-		render_pos.y += render::state->font->get_max_height() * render::state->scale.y;
-		auto world_pos = coord_system::viewport_to_world_pos( viewport_pos );
-		render::draw_string( std::format(
+		render_pos.y += Render::state->font->get_max_height() * Render::state->scale.y;
+		auto world_pos = Coord_System::viewport_to_world_pos( viewport_pos );
+		Render::draw_string( std::format(
 			"world : {:.0f} / {:.0f}",
 			world_pos.x, world_pos.y ),
 			render_pos
@@ -91,18 +91,18 @@ void scene_coords::draw_ui()
 
 		auto cam_transform = get_transform();
 
-		render_pos.y += (render::state->font->get_max_height() * render::state->scale.y) * 2.f;
-		render::draw_string( std::format(
+		render_pos.y += (Render::state->font->get_max_height() * Render::state->scale.y) * 2.f;
+		Render::draw_string( std::format(
 			"scene_pos : {:.0f} / {:.0f}", cam_transform->pos.x, cam_transform->pos.y ),
 			render_pos
 		);
-		render_pos.y += render::state->font->get_max_height() * render::state->scale.y;
-		render::draw_string( std::format(
+		render_pos.y += Render::state->font->get_max_height() * Render::state->scale.y;
+		Render::draw_string( std::format(
 			"scene_rot : {:.1f}", cam_transform->angle ),
 			render_pos
 		);
-		render_pos.y += render::state->font->get_max_height() * render::state->scale.y;
-		render::draw_string( std::format(
+		render_pos.y += Render::state->font->get_max_height() * Render::state->scale.y;
+		Render::draw_string( std::format(
 			"scene_scl : {:.2f}", cam_transform->scale ),
 			render_pos
 		);
@@ -112,20 +112,20 @@ void scene_coords::draw_ui()
 	{
 		auto e = find_entity( H( "crosshair" ) );
 
-		auto viewport_pos = coord_system::world_to_viewport_pos( e->get_pos() );
-		auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos + vec2( 32.f, 0.f ) );
+		auto viewport_pos = Coord_System::world_to_viewport_pos( e->get_pos() );
+		auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos + Vec2( 32.f, 0.f ) );
 
 		scoped_render_state;
-		render::state->align = align::vcenter;
-		render::state->color = make_color( color( 1.f, 0.5f, 0.f ) );
-		render::state->glow = glow_val;
+		Render::state->align = align::vcenter;
+		Render::state->color = make_color( Color( 1.f, 0.5f, 0.f ) );
+		Render::state->glow = glow_val;
 		g_engine->render_api.set_uniform_float( "u_pixelate_factor", glow_val );
 
-		render::draw_string( "<< Your crosshair", ui_pos );
+		Render::draw_string( "<< Your crosshair", ui_pos );
 	}
 }
 
-bool scene_coords::on_input_motion( const input_event* evt )
+bool scene_coords::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -145,8 +145,8 @@ bool scene_coords::on_input_motion( const input_event* evt )
 				else
 				{
 					// move crosshair to mouse location
-					auto viewport_pos = coord_system::window_to_viewport_pos( evt->mouse_pos );
-					auto world_pos = coord_system::viewport_to_world_pos( viewport_pos );
+					auto viewport_pos = Coord_System::window_to_viewport_pos( evt->mouse_pos );
+					auto world_pos = Coord_System::viewport_to_world_pos( viewport_pos );
 
 					e->set_pos( world_pos );
 				}

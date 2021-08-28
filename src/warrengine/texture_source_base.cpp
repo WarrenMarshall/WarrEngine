@@ -5,7 +5,7 @@
 namespace war
 {
 
-texture_source_base::~texture_source_base()
+Texture_Source_Base::~Texture_Source_Base()
 {
 	if( gl_id )
 	{

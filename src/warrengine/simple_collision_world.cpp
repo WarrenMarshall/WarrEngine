@@ -5,15 +5,15 @@
 namespace war
 {
 
-simple_collision_world::simple_collision_world( scene* parent_scene )
+Simple_Collision_World::Simple_Collision_World( scene* parent_scene )
 	: parent_scene( parent_scene )
 {
 }
 
-void simple_collision_world::ray_cast( simple_collision::raycast_callback* callback, const entity* entity, const vec2& start, const vec2& end ) const
+void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callback, const Entity* entity, const Vec2& start, const Vec2& end ) const
 {
 	auto delta = ( end - start );
-	auto ray_normal = vec2::normalize( delta );
+	auto ray_normal = Vec2::normalize( delta );
 	auto ray_length = delta.get_size();
 
 	c2Ray ray = {};
@@ -90,7 +90,7 @@ void simple_collision_world::ray_cast( simple_collision::raycast_callback* callb
 // - push themselves apart so they aren't colliding anymore
 // - react to the collision (changing direction, or whatever)
 
-void simple_collision_world::handle_collisions()
+void Simple_Collision_World::handle_collisions()
 {
 	colliding_bodies_set.clear();
 
@@ -173,7 +173,7 @@ void simple_collision_world::handle_collisions()
 
 // pushes two entities apart so they are no longer intersecting
 
-void simple_collision_world::push_apart( simple_collision::pending_collision& coll )
+void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& coll )
 {
 	if( glm::abs( coll.depth ) < settings.push_apart_tolerance )
 	{
@@ -215,7 +215,7 @@ void simple_collision_world::push_apart( simple_collision::pending_collision& co
 
 // responds to a collision between 2 entities
 
-void simple_collision_world::resolve_collision( simple_collision::pending_collision& coll )
+void Simple_Collision_World::resolve_collision( simple_collision::Pending_Collision& coll )
 {
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
@@ -229,7 +229,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 
 	// swap the entity info, and then tell entityb about the collision
 
-	simple_collision::pending_collision coll_b = coll;
+	simple_collision::Pending_Collision coll_b = coll;
 	std::swap( coll_b.entity_a, coll_b.entity_b );
 	std::swap( coll_b.body_a, coll_b.body_b );
 
@@ -257,7 +257,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			// #prevent_nan_town
 			if( velocity_a.is_zero() or velocity_b.is_zero() ) { return; }
 
-			auto dot = vec2::dot( velocity_a, velocity_b );
+			auto dot = Vec2::dot( velocity_a, velocity_b );
 
 			// entities are heading in the same direction, so swap their
 			// velocities and exit. this is a cheap way to resolve that
@@ -283,8 +283,8 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 
 			auto relative_velocity = velocity_b - velocity_a;
 			auto total_velocity = velocity_a.get_size() + velocity_b.get_size();
-			auto new_dir_a = vec2::reflect_across_normal( velocity_a, coll.normal );
-			auto new_dir_b = vec2::reflect_across_normal( velocity_b, coll.normal );
+			auto new_dir_a = Vec2::reflect_across_normal( velocity_a, coll.normal );
+			auto new_dir_b = Vec2::reflect_across_normal( velocity_b, coll.normal );
 
 			ent_a->set_force( { new_dir_a, total_velocity * 0.5f } );
 			ent_b->set_force( { new_dir_b, total_velocity * 0.5f } );
@@ -317,8 +317,8 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 			// that this isn't a real physics simulator. close enough is good
 			// enough.
 
-			ent_a->velocity = vec2::zero;
-			ent_b->velocity = vec2::zero;
+			ent_a->velocity = Vec2::zero;
+			ent_b->velocity = Vec2::zero;
 		}
 
 	}
@@ -345,7 +345,7 @@ void simple_collision_world::resolve_collision( simple_collision::pending_collis
 	}
 }
 
-void simple_collision_world::resolve_touch( simple_collision::pending_collision& coll )
+void Simple_Collision_World::resolve_touch( simple_collision::Pending_Collision& coll )
 {
 	coll.entity_a->simple.is_in_air = false;
 	coll.entity_a->on_touched( coll );

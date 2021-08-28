@@ -5,25 +5,25 @@
 namespace war
 {
 
-void sound_asset::play()
+void Sound_Asset::play()
 {
 	sound.play();
 	sound.setPitch( g_engine->time.dilation );
 }
 
-void sound_asset::pause()
+void Sound_Asset::pause()
 {
 	sound.pause();
 }
 
-void sound_asset::stop()
+void Sound_Asset::stop()
 {
 	sound.stop();
 }
 
-bool sound_asset::create()
+bool Sound_Asset::create()
 {
-	auto file_data = file_system::load_binary_file( original_filename );
+	auto file_data = File_System::load_binary_file( original_filename );
 
 	if( buffer.loadFromMemory( file_data->buffer.data(), file_data->buffer.size() ) )
 	{
@@ -37,7 +37,7 @@ bool sound_asset::create()
 	return false;
 }
 
-void sound_asset::adjust_for_time_dilation()
+void Sound_Asset::adjust_for_time_dilation()
 {
 	if( sound.getStatus() != sf::SoundSource::Stopped )
 	{

@@ -2,20 +2,20 @@
 namespace war
 {
 
-struct emitter_parameters_asset final : asset
+struct Emitter_Parameters_Asset final : Asset
 {
-	texture_asset* texture = nullptr;
-	timeline t_color = timeline( timeline_type::color_type );
-	timeline t_alpha = timeline( timeline_type::float_type );
-	timeline t_scale = timeline( timeline_type::float_type );
-	particle_spawner particle_spawner;
+	Texture_Asset* texture = nullptr;
+	Timeline_Values t_color = Timeline_Values( timeline_type::color_type );
+	Timeline_Values t_alpha = Timeline_Values( timeline_type::float_type );
+	Timeline_Values t_scale = Timeline_Values( timeline_type::float_type );
+	Particle_Spawner particle_spawner;
 
-	range<float> r_velocity_spawn = range<float>( 50, 50 );	// initial velocity
-	range<float> r_scale_spawn = range<float>( 1, 1 );		// scale - spawn value and timeline
-	range<float> r_lifespan = range<float>( 500, 1000 );	// lifetime in milliseconds
-	range<float> r_spin_per_sec = range<float>( 0, 0 );		// ranges for controlling angle values
-	range<float> r_spin_spawn = range<float>( 0, 0 );
-	range<float> r_dir_var = range<float>( 0, 0 );			// variance for the spawn direction
+	Range<float> r_velocity_spawn = Range<float>( 50, 50 );	// initial velocity
+	Range<float> r_scale_spawn = Range<float>( 1, 1 );		// scale - spawn value and timeline
+	Range<float> r_lifespan = Range<float>( 500, 1000 );	// lifetime in milliseconds
+	Range<float> r_spin_per_sec = Range<float>( 0, 0 );		// ranges for controlling angle values
+	Range<float> r_spin_spawn = Range<float>( 0, 0 );
+	Range<float> r_dir_var = Range<float>( 0, 0 );			// variance for the spawn direction
 
 	float s_spawn_rate = 100.f;			// how many particles to spawn from this emitter, per second. aka the spawn rate.
 	float a_dir = 0.f;					// the base direction that particles start moving in when they spawn
@@ -25,7 +25,7 @@ struct emitter_parameters_asset final : asset
 	bool is_one_shot = false;
 	bool uses_gravity = false;
 
-	emitter_parameters_asset();
+	Emitter_Parameters_Asset();
 };
 
 }

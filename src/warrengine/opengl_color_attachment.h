@@ -4,13 +4,13 @@ namespace war
 
 struct opengl_color_attachment final
 {
-	opengl_color_attachment( opengl_framebuffer* fb_owner, vec2 sz, const color& clear_color );
+	opengl_color_attachment( OpenGL_Frame_Buffer* fb_owner, Vec2 sz, const Color& clear_color );
 
 	void clear();
 
-	opengl_framebuffer* fb_owner = nullptr;
-	texture_asset* texture = nullptr;
-	color clear_color = color::black;
+	OpenGL_Frame_Buffer* fb_owner = nullptr;
+	Texture_Asset* texture = nullptr;
+	Color clear_color = Color::black;
 };
 
 }

@@ -4,39 +4,39 @@ namespace war::simple_collision
 
 // ----------------------------------------------------------------------------
 
-struct raycast_hit final
+struct Raycast_Hit final
 {
 	// how far along the ray did the hit occur?
 	float dist = 999999.f;
 
 	// the normal direction from the hit location. this is NOT the normal of the
 	// ray that was cast, this is the normal of the impact.
-	vec2 normal = vec2::zero;
+	Vec2 normal = Vec2::zero;
 
 	// the normal that the original ray was cast along.
-	vec2 ray_normal = vec2::zero;
+	Vec2 ray_normal = Vec2::zero;
 
 	// the world space position of the hit.
-	vec2 pos = vec2::zero;
+	Vec2 pos = Vec2::zero;
 
 	// the entity that initiated the trace
-	const entity* entity = nullptr;
+	const Entity* entity = nullptr;
 
 	// the collision component that was hit by the ray. this belongs to the
 	// entity that was hit, not the one doing the tracing.
-	ec_simple_collision_body* scc = nullptr;
+	Simple_Collision_Body* scc = nullptr;
 };
 
 // ----------------------------------------------------------------------------
 
-struct raycast_callback
+struct Raycast_Callback
 {
-	virtual ~raycast_callback() = default;
+	virtual ~Raycast_Callback() = default;
 
 	bool hit_something = false;
 	int collision_mask = 0;
 
-	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) = 0;
+	virtual float report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -44,11 +44,11 @@ struct raycast_callback
 //
 // "what's the closest hit along this ray?"
 
-struct raycast_closest final : raycast_callback
+struct Raycast_Closest final : Raycast_Callback
 {
-	raycast_hit result;
+	Raycast_Hit result;
 
-	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
+	virtual float report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -57,9 +57,9 @@ struct raycast_closest final : raycast_callback
 //
 // "is there anything to hit along this ray?"
 
-struct raycast_quick final : raycast_callback
+struct Raycast_Quick final : Raycast_Callback
 {
-	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
+	virtual float report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -67,11 +67,11 @@ struct raycast_quick final : raycast_callback
 //
 // "what are all the hits along this ray?"
 
-struct raycast_all final : raycast_callback
+struct Raycast_All final : Raycast_Callback
 {
-	std::vector<raycast_hit> results;
+	std::vector<Raycast_Hit> results;
 
-	virtual float report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast ) override;
+	virtual float report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 }

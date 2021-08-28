@@ -7,12 +7,12 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-timeline_nodes_key_frame::timeline_nodes_key_frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration )
+Timeline_Nodes_Key_Frame::Timeline_Nodes_Key_Frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration )
 	: type( type ), should_restore_state( should_restore_state ), pct_marker( pct_marker ), duration( duration )
 {
 }
 
-void timeline_nodes_key_frame::on_started_running()
+void Timeline_Nodes_Key_Frame::on_started_running()
 {
 	started = g_engine->time.now();
 
@@ -50,16 +50,16 @@ void timeline_nodes_key_frame::on_started_running()
 		break;
 
 		// ----------------------------------------------------------------------------
-		case tnkf_type::scene_pop_at_offset:
+		case tnkf_type::scene_pop_under:
 		{
-			g_engine->scenes.pop_at_offset( scene_pop_at_offset.offset );
+			g_engine->scenes.pop_under();
 			life_cycle.set( life_cycle::dead );
 		}
 		break;
 	}
 }
 
-void timeline_nodes_key_frame::update()
+void Timeline_Nodes_Key_Frame::update()
 {
 	if( !is_running )
 	{

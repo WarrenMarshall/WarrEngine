@@ -7,29 +7,29 @@ namespace war
 // a chunk is a set of key/values that are grouped together to form
 // an asset definition, scoped between curly braces.
 
-struct asset_file_definition final
+struct Asset_File_Definition final
 {
 	std::string original_filename;
-	std::vector<key_values> asset_definitions;
+	std::vector<Key_Values> asset_definitions;
 
 	std::string data_folder;
 
 	void precache_asset_resources( size_t pass_num );
-	void precache_preproc( const key_values& key_values_for_asset_def );
-	void precache_palette( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_src_texture( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_src_gradient( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_font_def( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_slice_def( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_sound( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_anim_texture( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_texture( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_emitter_params( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_font( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_mesh( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_cursor( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_tile_set( const key_values& key_values_for_asset_def, std::string_view tag );
-	void precache_tile_map( const key_values& key_values_for_asset_def, std::string_view tag );
+	void precache_preproc( const Key_Values& key_values_for_asset_def );
+	void precache_palette( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_src_texture( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_src_gradient( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_font_def( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_slice_def( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_sound( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_anim_texture( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_texture( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_emitter_params( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_font( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_mesh( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_cursor( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_tile_set( const Key_Values& key_values_for_asset_def, std::string_view tag );
+	void precache_tile_map( const Key_Values& key_values_for_asset_def, std::string_view tag );
 
 	bool create_internals();
 };

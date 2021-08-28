@@ -2,16 +2,16 @@
 namespace war
 {
 
-struct scene_msg_box_ui_callback final : ui_callback
+struct Scene_Msg_Box_UI_Callback final : UI_Callback
 {
-	virtual bool on_input_pressed( const input_event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct scene_msg_box final : scene
+struct Scene_Msg_Box final : scene
 {
-	scene_msg_box();
+	Scene_Msg_Box();
 
 	std::vector<std::string> msg;
 	e_mouse_mode save_mouse_mode;

@@ -2,9 +2,9 @@
 namespace war
 {
 
-struct asset_cache_mgr final
+struct Asset_Cache_Mgr final
 {
-	std::unordered_map<std::string, std::unique_ptr<asset>> cache;
+	std::unordered_map<std::string, std::unique_ptr<Asset>> cache;
 
 	template<typename T>
 	T* add( std::unique_ptr<T> asset, std::string_view tag, std::string_view filename )

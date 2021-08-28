@@ -6,12 +6,12 @@ namespace war
 // a file that has been read into memory, either from the hard drive or a ZIP
 // file
 
-struct file_mem final
+struct Mem_File final
 {
 	std::vector<char> buffer;
 
-	file_mem() = default;
-	file_mem( int size );
+	Mem_File() = default;
+	Mem_File( int size );
 };
 
 // ----------------------------------------------------------------------------
@@ -19,13 +19,13 @@ struct file_mem final
 // out stuff that is only useful to humans - comments, line continuations, blank
 // lines, etc.
 
-struct file_mem_text final
+struct Mem_File_Text final
 {
 	std::vector<char> buffer;
 	std::vector<std::string> lines;
 
-	file_mem_text() = default;
-	file_mem_text( int size );
+	Mem_File_Text() = default;
+	Mem_File_Text( int size );
 
 	void preprocess();
 	void preprocess_raw();

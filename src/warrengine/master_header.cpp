@@ -10,10 +10,10 @@ float viewport_h = 240;
 float ui_w = 640;
 float ui_h = 480;
 
-std::unique_ptr<log_file> g_logfile = nullptr;
-std::unique_ptr<game> g_base_game = nullptr;
-std::unique_ptr<engine> g_engine = nullptr;
-std::unique_ptr<ui_mgr> g_ui = nullptr;
+std::unique_ptr<Log_File> g_logfile = nullptr;
+std::unique_ptr<Game> g_base_game = nullptr;
+std::unique_ptr<Engine> g_engine = nullptr;
+std::unique_ptr<UI_Mgr> g_ui = nullptr;
 
 float lerp( float a, float b, float lerp_factor )
 {
@@ -21,9 +21,9 @@ float lerp( float a, float b, float lerp_factor )
 	return result;
 }
 
-vec2 lerp( vec2 a, vec2 b, float lerp_factor )
+Vec2 lerp( Vec2 a, Vec2 b, float lerp_factor )
 {
-	vec2 result = vec2::zero;
+	Vec2 result = Vec2::zero;
 
 	result.x = ( ( 1.f - lerp_factor ) * a.x ) + ( lerp_factor * b.x );
 	result.y = ( ( 1.f - lerp_factor ) * a.y ) + ( lerp_factor * b.y );

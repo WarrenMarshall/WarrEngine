@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct gradient_source_asset final : texture_source_base
+struct Gradient_Source_Asset final : Texture_Source_Base
 {
 	std::vector<float> colors = {};
 	e_align alignment = align::horizontal;

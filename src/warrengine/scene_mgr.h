@@ -2,8 +2,10 @@
 namespace war
 {
 
-struct scene_mgr final
+struct Scene_Mgr final
 {
+	Timeline_Nodes transition_timeline;
+
 	// the scenes are stored front-to-back so this means that the topmost scene
 	// on the screen is first in the vector. meaning, new scenes are inserted at
 	// the front.
@@ -18,12 +20,12 @@ struct scene_mgr final
 	// layered on top of each other.
 	scene* current_scene = nullptr;
 
-	[[nodiscard]] transform* get_transform()
+	[[nodiscard]] Transform* get_transform()
 	{
 		return current_scene->get_transform();
 	}
 
-	[[nodiscard]] vec2 get_pos()
+	[[nodiscard]] Vec2 get_pos()
 	{
 		return get_transform()->pos;
 	}
@@ -36,9 +38,21 @@ struct scene_mgr final
 		return get_transform()->scale;
 	}
 
-	vec2 get_viewport_pivot();
+	Vec2 get_viewport_pivot();
 
-	// pushes a new scene underneath the current one on top
+	void do_transient_timeline( Timeline_Nodes timeline )
+	{
+		assert( transition_timeline.life_cycle.is_dead() );
+
+		transition_timeline = timeline;
+		push<Scene_Transient>();
+		transition_timeline.go();
+	}
+
+	// pushes a new scene underneath the current one on top. this is most useful
+	// when a scene_dummy is at the top of the stack and you want to insert a
+	// new scene below it so THAT scene will be on top once the dummy clears.
+
 	void push_under( scene* new_scene )
 	{
 		if( scene_stack.empty() )
@@ -88,7 +102,7 @@ struct scene_mgr final
 
 	void clear_stack();
 	void pop();
-	void pop_at_offset( int offset );
+	void pop_under();
 	[[nodiscard]] scene* get_top();
 
 	void pre_update();
@@ -106,11 +120,11 @@ struct scene_mgr final
 
 	virtual void new_game();
 
-	bool on_input_motion( const input_event* evt );
-	bool on_input_pressed( const input_event* evt );
-	bool on_input_held( const input_event* evt );
-	bool on_input_released( const input_event* evt );
-	bool on_input_key( const input_event* evt );
+	bool on_input_motion( const Input_Event* evt );
+	bool on_input_pressed( const Input_Event* evt );
+	bool on_input_held( const Input_Event* evt );
+	bool on_input_released( const Input_Event* evt );
+	bool on_input_key( const Input_Event* evt );
 };
 
 }

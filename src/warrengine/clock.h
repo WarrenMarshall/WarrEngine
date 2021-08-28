@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct clock final
+struct Clock final
 {
 	// the time when this frame started
 	time_ms current_frame_ms = 0;
@@ -27,7 +27,7 @@ struct clock final
 	// 2.0 = 200% of normal
 	float dilation = 1.f;
 
-	clock();
+	Clock();
 	void init();
 	void update();
 	[[nodiscard]] time_ms now() const;

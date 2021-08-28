@@ -1,12 +1,12 @@
 
 #include "app_header.h"
 
-layer_gameplay::layer_gameplay()
+Layer_Gameplay::Layer_Gameplay()
 {
 	draws_completely_solid = true;
 }
 
-void layer_gameplay::push()
+void Layer_Gameplay::push()
 {
 	background_gradient = engine->get_asset<a_gradient>( "background_gradient" );
 	click_snd = engine->get_asset<a_sound>( "ui_click_01" );
@@ -18,7 +18,7 @@ void layer_gameplay::push()
 	music->play();
 }
 
-bool layer_gameplay::handle_input_event( const w_input_event* evt )
+bool Layer_Gameplay::handle_input_event( const w_input_event* evt )
 {
 	if( evt->event_id == event_id::input_released )
 	{
@@ -37,7 +37,7 @@ bool layer_gameplay::handle_input_event( const w_input_event* evt )
 	return false;
 }
 
-void layer_gameplay::draw()
+void Layer_Gameplay::draw()
 {
 	RENDER->draw( background_gradient, w_rect( 0, 0, v_window_w, v_window_h ) );
 	RENDER

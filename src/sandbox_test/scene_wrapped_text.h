@@ -3,11 +3,11 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct scene_wrapped_text_ui_callback final : ui_callback
+struct scene_wrapped_text_ui_callback final : UI_Callback
 {
-	ui_control_data radio_alignment_data;
+	UI_Control_Data radio_alignment_data;
 
-	virtual ui_control_data* get_data( hash tag ) override;
+	virtual UI_Control_Data* get_data( hash tag ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -19,10 +19,10 @@ struct scene_wrapped_text final : scene
 	std::string big_text_block;
 
 	std::vector<std::string> wrapped_lines_01;
-	rect rc_big_text_block_01 = {};
+	Rect rc_big_text_block_01 = {};
 
 	std::vector<std::string> wrapped_lines_02;
-	rect rc_big_text_block_02 = {};
+	Rect rc_big_text_block_02 = {};
 
 	virtual void pushed() override;
 	virtual void draw() override;

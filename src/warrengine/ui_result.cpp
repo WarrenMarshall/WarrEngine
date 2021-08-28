@@ -5,7 +5,7 @@
 namespace war
 {
 
-void ui_result::operator=( const e_im_result res )
+void UI_Result::operator=( const e_im_result res )
 {
 	code = res;
 }

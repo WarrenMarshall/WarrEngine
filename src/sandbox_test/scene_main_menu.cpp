@@ -12,38 +12,17 @@ void scene_main_menu::pushed()
 {
 	scene::pushed();
 
-	viewport_pivot = vec2::zero;
+	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
+
 }
 
 void scene_main_menu::draw()
 {
 	scene::draw();
 	draw_gradient_background();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
-
-template<typename T>
-void do_menu_button( hash tag, const char* text )
-{
-	if( g_ui
-		->button_control()
-		->set_slice_def( "" )
-		->set_text( text )
-		->cut_top( 12.f )
-		->done() )
-	{
-		// add the timeline scene
-		g_engine->scenes.push<scene_timeline>();
-
-		// set up the timeline scene
-		auto st = (scene_timeline*)g_engine->scenes.get_top();
-		st->fx_timeline.clear( 1000 );
-		st->fx_timeline.add_kf_pp_color_overlay( true, 0.0f, 1000, make_color( color::red, 0.5f ) );
-		st->fx_timeline.add_kf_scene_pop_at_offset( false, 1.0f, 1 );	// pop main menu
-		st->fx_timeline.add_kf_scene_push_under( false, 1.0f, std::make_unique<T>() );
-	}
-};
 
 void scene_main_menu::draw_ui()
 {
@@ -52,7 +31,7 @@ void scene_main_menu::draw_ui()
 	auto border_sz = 4.f;
 	auto button_h = 12.f;
 
-	auto rc_panel = rect( border_sz, border_sz, ui_w - ( border_sz * 2.f ), ui_h - ( border_sz * 2.f ) );
+	auto rc_panel = Rect( border_sz, border_sz, ui_w - ( border_sz * 2.f ), ui_h - ( border_sz * 2.f ) );
 	g_ui->layout_init( rc_panel );
 
 	g_ui->panel_control( H( "main_panel" ) )

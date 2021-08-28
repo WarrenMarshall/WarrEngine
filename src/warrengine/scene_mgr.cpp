@@ -5,12 +5,12 @@
 namespace war
 {
 
-vec2 scene_mgr::get_viewport_pivot()
+Vec2 Scene_Mgr::get_viewport_pivot()
 {
 	return current_scene->get_viewport_pivot();
 }
 
-void scene_mgr::clear_stack()
+void Scene_Mgr::clear_stack()
 {
 	// give each scene a chance to clean up before the manager shuts down.
 
@@ -22,7 +22,7 @@ void scene_mgr::clear_stack()
 	}
 }
 
-void scene_mgr::pop()
+void Scene_Mgr::pop()
 {
 	assert( !scene_stack.empty() );
 
@@ -50,19 +50,18 @@ void scene_mgr::pop()
 	}
 }
 
-void scene_mgr::pop_at_offset( int offset )
+void Scene_Mgr::pop_under()
 {
 	assert( !scene_stack.empty() );
-	assert( offset < scene_stack.size() );
 
-	scene* scene = scene_stack[ offset ].get();
+	scene* scene = nullptr;
+	size_t idx = 1;
+	scene = scene_stack[ idx ].get();
 	scene->popped();
 	scene->life_cycle.set( life_cycle::dead );
-
-	remove_dead_scenes();
 }
 
-scene* scene_mgr::get_top()
+scene* Scene_Mgr::get_top()
 {
 	assert( !scene_stack.empty() );
 
@@ -71,7 +70,7 @@ scene* scene_mgr::get_top()
 
 // ----------------------------------------------------------------------------
 
-void scene_mgr::pre_update()
+void Scene_Mgr::pre_update()
 {
 	remove_dead_scenes();
 
@@ -86,8 +85,19 @@ void scene_mgr::pre_update()
 	}
 }
 
-void scene_mgr::update()
+void Scene_Mgr::update()
 {
+	if( transition_timeline.life_cycle.is_alive() )
+	{
+		transition_timeline.update();
+
+		if( !transition_timeline.life_cycle.is_alive() )
+		{
+			pop();
+			//remove_dead_scenes();
+		}
+	}
+
 	for( auto& iter : scene_stack )
 	{
 		iter->update();
@@ -103,11 +113,11 @@ void scene_mgr::update()
 
 	if( g_engine->scenes.current_scene->flags.requires_controller and !g_engine->input.gamepad )
 	{
-		g_engine->scenes.push<scene_controller_required>();
+		g_engine->scenes.push<Scene_Controller_Required>();
 	}
 }
 
-void scene_mgr::post_update()
+void Scene_Mgr::post_update()
 {
 	for( auto& iter : scene_stack )
 	{
@@ -122,7 +132,7 @@ void scene_mgr::post_update()
 
 // ----------------------------------------------------------------------------
 
-void scene_mgr::draw()
+void Scene_Mgr::draw()
 {
 	if( !scene_stack.empty() )
 	{
@@ -148,7 +158,7 @@ void scene_mgr::draw()
 // that is drawing opaquely. drawing will start from there and walk back up the
 // stack to the top.
 
-int scene_mgr::find_first_fully_opaque_scene()
+int Scene_Mgr::find_first_fully_opaque_scene()
 {
 	int idx = -1;
 
@@ -171,7 +181,7 @@ int scene_mgr::find_first_fully_opaque_scene()
 	return idx;
 }
 
-void scene_mgr::draw_scene( int starting_scene_idx )
+void Scene_Mgr::draw_scene( int starting_scene_idx )
 {
 	scoped_render_state;
 	auto scene_depth_start = 0.f;
@@ -186,7 +196,7 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 
 			g_engine->render_api.clear_depth_buffer();
 			scene_depth_start += zdepth_scene_start;
-			render::state->z = scene_depth_start;
+			Render::state->z = scene_depth_start;
 
 			g_engine->render_api.set_view_matrix_identity();
 
@@ -199,7 +209,7 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 					// draw any debug information that lives in world space.
 					if( scene->flags.is_debug_physics_scene && g_engine->renderer.debug.is_drawing_debug_info() )
 					{
-						render::state->z += zdepth_debug_bias;
+						Render::state->z += zdepth_debug_bias;
 						g_engine->box2d.world->DebugDraw();
 					}
 				#endif
@@ -213,7 +223,7 @@ void scene_mgr::draw_scene( int starting_scene_idx )
 	}
 }
 
-void scene_mgr::draw_scene_ui( int starting_scene_idx )
+void Scene_Mgr::draw_scene_ui( int starting_scene_idx )
 {
 	g_engine->render_api.set_view_matrix_identity_ui();
 
@@ -230,7 +240,7 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 
 			g_engine->render_api.clear_depth_buffer();
 			scene_depth_start += zdepth_scene_start;
-			render::state->z = scene_depth_start;
+			Render::state->z = scene_depth_start;
 
 			{
 				scoped_opengl;
@@ -259,7 +269,7 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 				// draw a circle so we can visualize the viewport offset location
 				if( g_engine->renderer.debug.is_drawing_debug_info() )
 				{
-					render::draw_crosshair( scene->viewport_pivot / ui_scale );
+					Render::draw_crosshair( scene->viewport_pivot / ui_scale );
 				}
 			#endif
 			}
@@ -270,7 +280,7 @@ void scene_mgr::draw_scene_ui( int starting_scene_idx )
 	}
 }
 
-void scene_mgr::new_game()
+void Scene_Mgr::new_game()
 {
 	for( auto& scene : scene_stack )
 	{
@@ -281,7 +291,7 @@ void scene_mgr::new_game()
 	}
 }
 
-bool scene_mgr::on_input_motion( const input_event* evt )
+bool Scene_Mgr::on_input_motion( const Input_Event* evt )
 {
 	for( const auto& iter : scene_stack )
 	{
@@ -299,7 +309,7 @@ bool scene_mgr::on_input_motion( const input_event* evt )
 	return false;
 }
 
-bool scene_mgr::on_input_pressed( const input_event* evt )
+bool Scene_Mgr::on_input_pressed( const Input_Event* evt )
 {
 	for( const auto& iter : scene_stack )
 	{
@@ -317,7 +327,7 @@ bool scene_mgr::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene_mgr::on_input_held( const input_event* evt )
+bool Scene_Mgr::on_input_held( const Input_Event* evt )
 {
 	for( const auto& iter : scene_stack )
 	{
@@ -335,7 +345,7 @@ bool scene_mgr::on_input_held( const input_event* evt )
 	return false;
 }
 
-bool scene_mgr::on_input_released( const input_event* evt )
+bool Scene_Mgr::on_input_released( const Input_Event* evt )
 {
 	for( const auto& iter : scene_stack )
 	{
@@ -353,7 +363,7 @@ bool scene_mgr::on_input_released( const input_event* evt )
 	return false;
 }
 
-bool scene_mgr::on_input_key( const input_event* evt )
+bool Scene_Mgr::on_input_key( const Input_Event* evt )
 {
 	for( const auto& iter : scene_stack )
 	{
@@ -371,7 +381,7 @@ bool scene_mgr::on_input_key( const input_event* evt )
 	return false;
 }
 
-void scene_mgr::remove_dead_scenes()
+void Scene_Mgr::remove_dead_scenes()
 {
 	for( size_t x = 0 ; x < scene_stack.size() ; ++x )
 	{

@@ -5,7 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static bit_flag_generator collision_bits = 1;
+static Bit_Flag_Generator collision_bits = 1;
 
 static const unsigned scene_simple_platformer_coll_player = collision_bits.get();
 static const unsigned scene_simple_platformer_coll_geo = collision_bits.next();
@@ -33,9 +33,9 @@ void scene_simple_platformer::draw()
 {
 	{
 		scoped_render_state;
-		render::state->color = make_color( pal::darker );
-		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ),
-			rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		Render::state->color = make_color( pal::darker );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
+			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
 	scene::draw();
@@ -49,27 +49,27 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 	{
 		case 15:
 		{
-			auto tmc = gameplay_scene->world->get_component<ec_tile_map>();
+			auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
 
-			auto e = scene->add_entity<entity>();
-			e->set_pos( vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
-			e->add_delta_pos( vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+			auto e = scene->add_entity<Entity>();
+			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
+			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.is_affected_by_gravity = true;
 			e->simple.friction = 0.1f;
 
 			{
-				auto ec = e->add_component<ec_primitive_shape>();
+				auto ec = e->add_component<Primitve_Shape_Component>();
 				ec->add_shape( primitive_shape::point );
 			}
 			{
-				auto ec = e->add_component<ec_simple_collision_body>();
+				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( player_collision_radius );
 
 				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
 			}
 			{
-				auto ec = e->add_component<ec_simple_collision_body>();
+				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->tag = H( "ground_sensor" );
 				ec->set_body_collider_type( sc_body_collider_type::sensor );
 				ec->set_as_circle( 4.f );
@@ -78,14 +78,14 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
 			}
 			{
-				auto ec = e->add_component<ec_emitter>();
+				auto ec = e->add_component<Emitter_Component>();
 				ec->init( "em_stars" );
 				ec->get_transform()->set_scale( 0.25f );
 			}
 
 			gameplay_scene->player = e;
 
-			tile->idx = tile_map_asset::tile::empty;
+			tile->idx = Tile_Map_Asset::Tile::empty;
 		}
 		break;
 	}
@@ -103,19 +103,19 @@ void scene_simple_platformer::pushed()
 
 	fx_red_alert.clear( 1000 );
 	fx_red_alert.add_kf_shake_angle( true, 0.0f, 1000, get_transform(), 2.0f );
-	fx_red_alert.add_kf_play_sound( true, 0.0f, g_engine->find_asset<sound_asset>( "sfx_platfomer_boom" ) );
-	fx_red_alert.add_kf_pp_color_overlay( true, 0.0f, 250, make_color( color::red, 0.25f ) );
-	fx_red_alert.add_kf_pp_color_overlay( true, 0.3f, 250, make_color( color::red, 0.5f ) );
-	fx_red_alert.add_kf_pp_color_overlay( true, 0.6f, 250, make_color( color::red, 0.25f ) );
+	fx_red_alert.add_kf_play_sound( true, 0.0f, g_engine->find_asset<Sound_Asset>( "sfx_platfomer_boom" ) );
+	fx_red_alert.add_kf_pp_color_overlay( true, 0.0f, 250, make_color( Color::red, 0.25f ) );
+	fx_red_alert.add_kf_pp_color_overlay( true, 0.3f, 250, make_color( Color::red, 0.5f ) );
+	fx_red_alert.add_kf_pp_color_overlay( true, 0.6f, 250, make_color( Color::red, 0.25f ) );
 
 	// world
 
 	{
-		world = add_entity<entity>();
+		world = add_entity<Entity>();
 		world->simple.type = sc_type::stationary;
 
 		{
-			auto ec = world->add_component<ec_tile_map>();
+			auto ec = world->add_component<Tile_Map_Component>();
 			ec->set_collision_flags( scene_simple_platformer_coll_geo, 0 );
 			ec->init( "ts_platformer", "tm_platformer_level_01" );
 			ec->spawn_entities( this, platformer_spawn_entity );
@@ -135,15 +135,15 @@ void scene_simple_platformer::update()
 
 	if( g_engine->input.is_button_down( input_id::key_left ) )
 	{
-		player->apply_movement_walk( -vec2::x_axis, 150.f );
+		player->apply_movement_walk( -Vec2::x_axis, 150.f );
 	}
 	if( g_engine->input.is_button_down( input_id::key_right ) )
 	{
-		player->apply_movement_walk( vec2::x_axis, 150.f );
+		player->apply_movement_walk( Vec2::x_axis, 150.f );
 	}
 }
 
-bool scene_simple_platformer::on_input_motion( const input_event* evt )
+bool scene_simple_platformer::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == input_id::gamepad_left_stick )
 	{
@@ -153,7 +153,7 @@ bool scene_simple_platformer::on_input_motion( const input_event* evt )
 	return false;
 }
 
-bool scene_simple_platformer::on_input_pressed( const input_event* evt )
+bool scene_simple_platformer::on_input_pressed( const Input_Event* evt )
 {
 	if( evt->input_id == input_id::gamepad_button_a
 		or evt->input_id == input_id::key_space )
@@ -162,7 +162,7 @@ bool scene_simple_platformer::on_input_pressed( const input_event* evt )
 		if( !player->simple.is_in_air
 			and g_engine->input.get_axis_state( input_id::gamepad_left_stick, true ).y > 0.5f )
 		{
-			player->add_delta_pos( vec2::y_axis * player_collision_radius );
+			player->add_delta_pos( Vec2::y_axis * player_collision_radius );
 			player->velocity.x = 0.f;
 		}
 		else

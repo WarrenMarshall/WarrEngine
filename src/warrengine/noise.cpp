@@ -7,12 +7,12 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-float noise_perlin::get()
+float Perlin_Noise::get()
 {
 	if( seed < 1.0f )
 	{
-		seed = random::getf();
-		idx = random::getf_range( 0.f, 256.f );
+		seed = Random::getf();
+		idx = Random::getf_range( 0.f, 256.f );
 	}
 
 	idx += 1.f;
@@ -21,12 +21,12 @@ float noise_perlin::get()
 
 // ----------------------------------------------------------------------------
 
-float noise_simplex::get()
+float Simplex_Noise::get()
 {
 	if( seed < 1.0f )
 	{
-		seed = random::getf();
-		idx = random::getf_range( 0.f, 256.f );
+		seed = Random::getf();
+		idx = Random::getf_range( 0.f, 256.f );
 	}
 
 	idx += 1.f;
@@ -35,15 +35,15 @@ float noise_simplex::get()
 
 // ----------------------------------------------------------------------------
 
-float noise_random::get()
+float Random_Noise::get()
 {
 	if( seed < 1.0f )
 	{
-		seed = random::getf();
-		idx = random::getf_range( 0.f, 256.f );
+		seed = Random::getf();
+		idx = Random::getf_range( 0.f, 256.f );
 	}
 
-	return random::getf_range( -1.f, 1.f );
+	return Random::getf_range( -1.f, 1.f );
 }
 
 }

@@ -11,7 +11,7 @@ namespace war
 #pragma pack(push)
 #pragma pack(1)
 
-struct file_zip_header final
+struct Zip_File_Header final
 {
 	int local_file_header_signature;
 	short version_needed_to_extract;
@@ -30,7 +30,7 @@ struct file_zip_header final
 
 // ----------------------------------------------------------------------------
 
-struct file_zip final
+struct Zip_File final
 {
 	struct toc_entry final
 	{
@@ -44,7 +44,7 @@ struct file_zip final
 	std::unordered_map<std::string, toc_entry> table_of_contents;
 
 	void scan_and_build_table_of_contents();
-	[[nodiscard]] file_zip::toc_entry* get_toc_entry_for_filename( std::string_view filename );
+	[[nodiscard]] Zip_File::toc_entry* get_toc_entry_for_filename( std::string_view filename );
 	[[nodiscard]] std::vector<char> get_data_for_filename( std::string_view filename );
 };
 

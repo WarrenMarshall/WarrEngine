@@ -5,13 +5,13 @@
 namespace war
 {
 
-game_controller::game_controller( int player_id )
+Game_Controller::Game_Controller( int player_id )
 	: player_id( player_id )
 {
-	timer_repeat = std::make_unique<timer>( 150 );
+	timer_repeat = std::make_unique<Timer>( 150 );
 }
 
-void game_controller::update_button_state( e_input_id input_id, int xinput_button_bit )
+void Game_Controller::update_button_state( e_input_id input_id, int xinput_button_bit )
 {
 	bool last_state = g_engine->input.button_states_last_frame[ input_id ];
 
@@ -20,7 +20,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 
 	if( !last_state and current_state )
 	{
-		input_event evt;
+		Input_Event evt;
 		evt.event_id = event_id::input_pressed;
 		evt.input_id = input_id;
 
@@ -30,7 +30,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 	}
 	else if( last_state and !current_state )
 	{
-		input_event evt;
+		Input_Event evt;
 		evt.event_id = event_id::input_released;
 		evt.input_id = input_id;
 
@@ -40,7 +40,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 	{
 		if( timer_repeat->get_elapsed() )
 		{
-			input_event evt;
+			Input_Event evt;
 			evt.event_id = event_id::input_held;
 			evt.input_id = input_id;
 
@@ -51,7 +51,7 @@ void game_controller::update_button_state( e_input_id input_id, int xinput_butto
 
 // updates the internal state of the controller, from xinput
 
-void game_controller::update_state()
+void Game_Controller::update_state()
 {
 	// refresh the xinput state for this controller
 
@@ -59,7 +59,7 @@ void game_controller::update_state()
 	XInputGetState( player_id, &xinput_state );
 }
 
-void game_controller::update()
+void Game_Controller::update()
 {
 	rumble_time_remaining_ms -= fixed_time_step::ms_per_step;
 	if( rumble_time_remaining_ms <= 0 )
@@ -75,7 +75,7 @@ void game_controller::update()
 	update_state();
 }
 
-void game_controller::play_rumble( e_rumble_effect effect )
+void Game_Controller::play_rumble( e_rumble_effect effect )
 {
 	return;
 
@@ -119,7 +119,7 @@ void game_controller::play_rumble( e_rumble_effect effect )
 	*/
 }
 
-void game_controller::play_rumble( int intensity, int ms )
+void Game_Controller::play_rumble( int intensity, int ms )
 {
 	XINPUT_VIBRATION rumbler {};
 	rumbler.wLeftMotorSpeed = (WORD)( intensity );

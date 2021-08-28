@@ -4,10 +4,10 @@ namespace war
 
 // this class exists because cursors need to know where their hot spot is.
 
-struct cursor_asset final : asset
+struct Cursor_Asset final : Asset
 {
-	vec2 hotspot_offset = vec2( 0, 0 );
-	texture_asset* texture = nullptr;
+	Vec2 hotspot_offset = Vec2( 0, 0 );
+	Texture_Asset* texture = nullptr;
 };
 
 }

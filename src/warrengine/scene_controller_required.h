@@ -2,10 +2,10 @@
 namespace war
 {
 
-struct scene_controller_required final : scene
+struct Scene_Controller_Required final : scene
 {
-	texture_asset* tex_game_controller = nullptr;
-	tween anim_tween;
+	Texture_Asset* tex_game_controller = nullptr;
+	Tween anim_tween;
 	std::vector<std::string> msg_false, msg_true;
 
 	virtual void pushed() override;
@@ -13,7 +13,7 @@ struct scene_controller_required final : scene
 	virtual void draw_ui() override;
 	virtual void update() override;
 
-	virtual bool on_input_pressed( const input_event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
 };
 
 }

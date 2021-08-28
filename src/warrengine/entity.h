@@ -4,18 +4,18 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct entity_simple_force final
+struct Entity_Simple_Force final
 {
-	entity_simple_force() = default;
-	entity_simple_force( vec2 normal, float strength );
+	Entity_Simple_Force() = default;
+	Entity_Simple_Force( Vec2 normal, float strength );
 
-	vec2 normal = vec2::zero;
+	Vec2 normal = Vec2::zero;
 	float strength = 0.f;
 };
 
 // ----------------------------------------------------------------------------
 
-struct entity_simple_collision final
+struct Entity_Simple_Collision final
 {
 	e_sc_type type = sc_type::dynamic;
 
@@ -34,8 +34,8 @@ struct entity_simple_collision final
 
 	float friction = 1.0f;
 	float bounce_dampen = 0.75f;
-	range<float> max_velocity_x = { -5.0f, 5.0f };
-	range<float> max_velocity_y = { -5.0f, 5.0f };
+	Range<float> max_velocity_x = { -5.0f, 5.0f };
+	Range<float> max_velocity_y = { -5.0f, 5.0f };
 	bool is_in_air : 1= false;
 	bool is_affected_by_gravity : 1 = false;
 	bool is_bouncy : 1 = false;
@@ -44,9 +44,9 @@ struct entity_simple_collision final
 
 // ----------------------------------------------------------------------------
 
-struct entity
+struct Entity
 {
-	life_cycle_mgr life_cycle;
+	Life_Cycle_Mgr life_cycle;
 	scene* parent_scene = nullptr;
 
 #ifndef _FINAL_RELEASE
@@ -55,47 +55,47 @@ struct entity
 	std::string debug_name;
 #endif
 
-	entity();
-	entity( std::string debug_name );
-	virtual ~entity() = default;
+	Entity();
+	Entity( std::string debug_name );
+	virtual ~Entity() = default;
 
-	entity_simple_collision simple;
+	Entity_Simple_Collision simple;
 
 	// forces and impulses
 
-	vec2 velocity = vec2::zero;
+	Vec2 velocity = Vec2::zero;
 
-	std::vector<entity_simple_force> pending_forces;
+	std::vector<Entity_Simple_Force> pending_forces;
 
-	void add_force( const entity_simple_force& force );
-	void set_force( const entity_simple_force& force );
-	void add_impulse( const entity_simple_force& force );
+	void add_force( const Entity_Simple_Force& force );
+	void set_force( const Entity_Simple_Force& force );
+	void add_impulse( const Entity_Simple_Force& force );
 
 	void compile_velocity();
 
 	// transforms
-	transform _tform;
+	Transform _tform;
 
 	// this is a read-only pointer. to change the transform, use the
 	// "transform_" functions below.
-	[[nodiscard]] const transform* get_transform();
+	[[nodiscard]] const Transform* get_transform();
 
 	// direct transforms
 
-	transform* set_pos_angle_scale( const vec2& pos, const float angle, const float scale );
-	transform* set_pos( const vec2& pos );
-	transform* set_angle( const float angle );
-	transform* set_scale( const float scale );
+	Transform* set_pos_angle_scale( const Vec2& pos, const float angle, const float scale );
+	Transform* set_pos( const Vec2& pos );
+	Transform* set_angle( const float angle );
+	Transform* set_scale( const float scale );
 
-	[[nodiscard]] vec2 get_pos();
+	[[nodiscard]] Vec2 get_pos();
 	[[nodiscard]] float get_angle();
 	[[nodiscard]] float get_scale();
 
 	// delta transforms
 
-	transform* add_delta_pos( const vec2& delta );
-	transform* add_delta_angle( const float delta );
-	transform* add_delta_scale( const float delta );
+	Transform* add_delta_pos( const Vec2& delta );
+	Transform* add_delta_angle( const float delta );
+	Transform* add_delta_scale( const float delta );
 
 	// ----------------------------------------------------------------------------
 
@@ -108,11 +108,11 @@ struct entity
 	hash tag = hash_none;
 	int pick_id = 0;
 	bool is_selected = false;
-	render_state_optional rs_opt;
+	Render_State_Optional rs_opt;
 
 	void make_pickable();
 
-	std::vector<std::unique_ptr<entity_component>> components;
+	std::vector<std::unique_ptr<Entity_Component>> components;
 
 	[[nodiscard]] virtual bool can_be_deleted();
 
@@ -140,9 +140,9 @@ struct entity
 	}
 
 	// returns the first component it finds that matches the type bit mask.
-	[[nodiscard]] entity_component* get_component( hash tag = hash_none ) const
+	[[nodiscard]] Entity_Component* get_component( hash tag = hash_none ) const
 	{
-		return get_component<entity_component>( tag );
+		return get_component<Entity_Component>( tag );
 	}
 
 	template<typename T>
@@ -209,16 +209,16 @@ struct entity
 		}
 	}
 
-	virtual void on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by );
-	virtual void on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by );
+	virtual void on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* touched_by );
+	virtual void on_box2d_collision_end( box2d_physics::Pending_Collision& coll, Entity* touched_by );
 
-	virtual bool on_collided( simple_collision::pending_collision& coll );
-	virtual bool on_touched( simple_collision::pending_collision& coll );
+	virtual bool on_collided( simple_collision::Pending_Collision& coll );
+	virtual bool on_touched( simple_collision::Pending_Collision& coll );
 
-	void reflect_across( vec2 normal );
+	void reflect_across( Vec2 normal );
 
 	virtual void apply_movement_jump();
-	virtual void apply_movement_walk( vec2 delta, float speed );
+	virtual void apply_movement_walk( Vec2 delta, float speed );
 };
 
 // ----------------------------------------------------------------------------
@@ -231,7 +231,7 @@ struct entity
 // particles forever means that instance will never be die or be deleted. give
 // that emitter a "one shot" flag or a lifetime timer.
 
-struct entity_transient final : entity
+struct Entity_Transient final : Entity
 {
 	virtual void update() override;
 };

@@ -5,11 +5,11 @@
 namespace war
 {
 
-bool texture_source_asset::create()
+bool Texture_Source_Asset::create()
 {
 	assert( !original_filename.empty() );
 
-	auto file = file_system::load_binary_file( original_filename );
+	auto file = File_System::load_binary_file( original_filename );
 
 	// for safety, allocate the image on the heap - loading a large texture
 	// might be bad news on the stack

@@ -3,8 +3,8 @@ using namespace war;
 
 struct scene_tilemap final : scene
 {
-	tile_set_asset* ts_ultima = nullptr;
-	tile_map_asset* tm_overworld = nullptr;
+	Tile_Set_Asset* ts_ultima = nullptr;
+	Tile_Map_Asset* tm_overworld = nullptr;
 
 	scene_tilemap();
 

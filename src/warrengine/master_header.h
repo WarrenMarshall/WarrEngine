@@ -4,10 +4,10 @@
 #include "cmd_line.h"
 #include "object_pool.h"
 
-#include "file_zip.h"
+#include "zip_file.h"
 #include "file_system.h"
-#include "file_mem.h"
-#include "file_disk.h"
+#include "mem_file.h"
+#include "disk_file.h"
 
 #include "life_cycle_mgr.h"
 #include "random.h"
@@ -18,12 +18,11 @@
 #include "range.h"
 #include "color.h"
 #include "noise.h"
-#include "timeline_key_frame.h"
-#include "timeline.h"
+#include "timeline_values_key_frame.h"
+#include "timeline_values.h"
 #include "timeline_nodes_key_frame.h"
 #include "timeline_nodes.h"
 #include "scoped_vars.h"
-#include "util_geo.h"
 
 #include "bit_flag_generator.h"
 #include "coord.h"
@@ -64,13 +63,13 @@ namespace war
 	// ----------------------------------------------------------------------------
 	// callback function typedefs and declaration macros
 
-	using f_draw_control = std::function<void( ui_control* control, const rect& rc_ui )>;
-	#define f_decl_draw_control( func_name ) void func_name ( ui_control* control, const rect& rc_ui )
+	using f_draw_control = std::function<void( UI_Control* control, const Rect& rc_ui )>;
+	#define f_decl_draw_control( func_name ) void func_name ( UI_Control* control, const Rect& rc_ui )
 
-	using f_tile_map_spawn_entity = std::function<void( scene* scene, tile_map_asset::tile* tile )>;
-	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( scene* scene, tile_map_asset::tile* tile )
+	using f_tile_map_spawn_entity = std::function<void( scene* scene, Tile_Map_Asset::Tile* tile )>;
+	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( scene* scene, Tile_Map_Asset::Tile* tile )
 
-	using ec_simple_body_pair = std::pair<ec_simple_collision_body*, ec_simple_collision_body*>;
+	using ec_simple_body_pair = std::pair<Simple_Collision_Body*, Simple_Collision_Body*>;
 }
 
 #include "cursor_asset.h"
@@ -114,7 +113,7 @@ namespace war
 #include "scene_esc_menu.h"
 #include "scene_msg_box.h"
 #include "scene_post_process.h"
-#include "scene_timeline.h"
+#include "scene_transient.h"
 
 #include "game.h"
 
@@ -122,9 +121,9 @@ namespace war
 {
 
 [[nodiscard]] float lerp( float a, float b, float lerp_factor );
-[[nodiscard]] vec2 lerp( vec2 a, vec2 b, float lerp_factor );
+[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, float lerp_factor );
 
-extern std::unique_ptr<engine> g_engine;
-extern std::unique_ptr<ui_mgr> g_ui;
+extern std::unique_ptr<Engine> g_engine;
+extern std::unique_ptr<UI_Mgr> g_ui;
 
 }

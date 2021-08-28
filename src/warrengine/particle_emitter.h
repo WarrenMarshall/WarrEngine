@@ -2,12 +2,12 @@
 namespace war
 {
 
-struct particle_emitter final
+struct Particle_Emitter final
 {
-	ec_emitter* parent_component = nullptr;
+	Emitter_Component* parent_component = nullptr;
 
-	emitter_parameters_asset* params = nullptr;
-	particle_pool pool;
+	Emitter_Parameters_Asset* params = nullptr;
+	Particle_Pool pool;
 
 	// how many particles from this emitter are allowed to
 	// be alive at any given moment
@@ -17,7 +17,7 @@ struct particle_emitter final
 	// than 1.0, it's time to spawn a particle.
 	float particles_to_spawn_accum = 0.f;
 
-	void set_params( emitter_parameters_asset* params );
+	void set_params( Emitter_Parameters_Asset* params );
 	void update();
 	void spawn_particle();
 	void warm_up();

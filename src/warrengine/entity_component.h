@@ -4,19 +4,19 @@ namespace war
 
 constexpr auto max_entity_component_sz = 352;
 
-struct entity_component
+struct Entity_Component
 {
-	life_cycle_mgr life_cycle;
+	Life_Cycle_Mgr life_cycle;
 
 	virtual void set_life_cycle( e_life_cycle lc );
 
-	transform _tform;
-	[[nodiscard]] transform* get_transform()
+	Transform _tform;
+	[[nodiscard]] Transform* get_transform()
 	{
 		return &_tform;
 	}
 
-	[[nodiscard]] vec2 get_pos()
+	[[nodiscard]] Vec2 get_pos()
 	{
 		return get_transform()->pos;
 	}
@@ -29,11 +29,11 @@ struct entity_component
 		return get_transform()->scale;
 	}
 
-	entity* parent_entity = nullptr;
+	Entity* parent_entity = nullptr;
 	hash tag = hash_none;
-	render_state_optional rs_opt;
+	Render_State_Optional rs_opt;
 
-	std::optional<timer> life_timer = std::nullopt;
+	std::optional<Timer> life_timer = std::nullopt;
 
 	// some components have things they want to do as a last construction step.
 	// checking this value at the top of their Update() functions gives them the
@@ -43,9 +43,9 @@ struct entity_component
 
 	bool was_finalized = false;
 
-	entity_component() = delete;
-	entity_component( entity* parent_entity );
-	virtual ~entity_component() = default;
+	Entity_Component() = delete;
+	Entity_Component( Entity* parent_entity );
+	virtual ~Entity_Component() = default;
 
 	[[nodiscard]] virtual bool is_fully_dead();
 	virtual void draw();
@@ -67,75 +67,75 @@ struct entity_component
 	virtual void clear_collision_flags();
 };
 
-static_assert( sizeof( entity_component ) <= max_entity_component_sz );
+static_assert( sizeof( Entity_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_sprite final : entity_component
+struct Sprite_Component final : Entity_Component
 {
-	texture_asset* texture = nullptr;
+	Texture_Asset* texture = nullptr;
 	float anim_offset = 0.f;
 	bool flip_x = false;
 	bool flip_y = false;
 
-	ec_sprite() = delete;
-	ec_sprite( entity* parent_entity );
+	Sprite_Component() = delete;
+	Sprite_Component( Entity* parent_entity );
 
-	entity_component* init( std::string_view tex_tag );
+	Entity_Component* init( std::string_view tex_tag );
 	virtual void draw() override;
 };
 
-static_assert( sizeof( ec_sprite ) <= max_entity_component_sz );
+static_assert( sizeof( Sprite_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_primitive_shape final : entity_component
+struct Primitve_Shape_Component final : Entity_Component
 {
-	struct shape_def final
+	struct Shape_Def final
 	{
 		e_primitive_shape prim_shape = primitive_shape::rect;
-		rect rc = {};
+		Rect rc = {};
 		float radius = 0.f;
-		vec2 pos_offset = {};
+		Vec2 pos_offset = {};
 	};
 
-	std::vector<shape_def> shapes;
+	std::vector<Shape_Def> shapes;
 
-	ec_primitive_shape() = delete;
-	ec_primitive_shape( entity* parent_entity );
+	Primitve_Shape_Component() = delete;
+	Primitve_Shape_Component( Entity* parent_entity );
 
-	entity_component* add_shape( const e_primitive_shape prim_shape, const rect& rc, const vec2& pos_offset = vec2::zero );
-	entity_component* add_shape( const e_primitive_shape prim_shape, float radius, const vec2& pos_offset = vec2::zero );
-	entity_component* add_shape( const e_primitive_shape prim_shape, const vec2& pos_offset = vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape prim_shape, float radius, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape prim_shape, const Vec2& pos_offset = Vec2::zero );
 
 	virtual void draw() override;
 };
 
-static_assert( sizeof( ec_primitive_shape ) <= max_entity_component_sz );
+static_assert( sizeof( Primitve_Shape_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_emitter final : entity_component
+struct Emitter_Component final : Entity_Component
 {
-	ec_emitter() = default;
-	ec_emitter( entity* parent_entity );
+	Emitter_Component() = default;
+	Emitter_Component( Entity* parent_entity );
 
-	particle_emitter emitter = {};
+	Particle_Emitter emitter = {};
 
-	entity_component* init( std::string_view params_tag );
+	Entity_Component* init( std::string_view params_tag );
 	virtual void set_life_cycle( e_life_cycle lc ) override;
 	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
 };
 
-static_assert( sizeof( ec_emitter ) <= max_entity_component_sz );
+static_assert( sizeof( Emitter_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_sound final : entity_component
+struct Sound_Component final : Entity_Component
 {
-	sound_asset* snd = nullptr;
+	Sound_Asset* snd = nullptr;
 
 	// general usage cases:
 	//
@@ -159,26 +159,26 @@ struct ec_sound final : entity_component
 	// time the "update" function is called
 	bool auto_play = false;
 
-	ec_sound() = delete;
-	ec_sound( entity* parent_entity );
+	Sound_Component() = delete;
+	Sound_Component( Entity* parent_entity );
 
-	entity_component* init( std::string_view snd_tag, bool one_shot, bool auto_play );
+	Entity_Component* init( std::string_view snd_tag, bool one_shot, bool auto_play );
 	virtual void update() override;
 	virtual void play() override;
 	virtual void stop() override;
 };
 
-static_assert( sizeof( ec_sound ) <= max_entity_component_sz );
+static_assert( sizeof( Sound_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // physics
 
-struct ec_box2d_physics final : entity_component
+struct Box2D_Physics_Component final : Entity_Component
 {
-	ec_box2d_physics() = delete;
-	ec_box2d_physics( entity* parent_entity );
+	Box2D_Physics_Component() = delete;
+	Box2D_Physics_Component( Entity* parent_entity );
 
-	[[nodiscard]] ec_box2d_physics_body* get_primary_body();
+	[[nodiscard]] Box2D_Physics_Body_Component* get_primary_body();
 
 	void set_friction( float friction );
 	void set_restitution( float restitution );
@@ -188,12 +188,12 @@ struct ec_box2d_physics final : entity_component
 	virtual void clear_collision_flags() override;
 };
 
-static_assert( sizeof( ec_box2d_physics ) <= max_entity_component_sz );
+static_assert( sizeof( Box2D_Physics_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // physics bodies
 
-struct ec_box2d_physics_body : entity_component
+struct Box2D_Physics_Body_Component : Entity_Component
 {
 	b2BodyType body_type = b2_staticBody;
 	b2Body* body = nullptr;
@@ -204,9 +204,9 @@ struct ec_box2d_physics_body : entity_component
 	// it's transform to each update.
 	bool is_primary_body = false;
 
-	ec_box2d_physics_body() = delete;
-	ec_box2d_physics_body( entity* parent_entity );
-	virtual ~ec_box2d_physics_body() override;
+	Box2D_Physics_Body_Component() = delete;
+	Box2D_Physics_Body_Component( Entity* parent_entity );
+	virtual ~Box2D_Physics_Body_Component() override;
 
 	void init_body();
 
@@ -216,96 +216,96 @@ struct ec_box2d_physics_body : entity_component
 	// effectively world positions which is handy for things like static world
 	// geometry.
 
-	b2Fixture* add_fixture_box( hash tag, vec2 pos, float w, float h );
-	b2Fixture* add_fixture_box( hash tag, const rect& rc );
-	b2Fixture* add_fixture_circle( hash tag, vec2 pos, float radius );
-	b2Fixture* add_fixture_line( hash tag, vec2 pos, vec2 start, vec2 end );
-	b2Fixture* add_fixture_line_loop( hash tag, vec2 pos, const std::vector<vec2>& verts );
-	b2Fixture* add_fixture_polygon( hash tag, vec2 pos, const std::vector<vec2>& verts );
+	b2Fixture* add_fixture_box( hash tag, Vec2 pos, float w, float h );
+	b2Fixture* add_fixture_box( hash tag, const Rect& rc );
+	b2Fixture* add_fixture_circle( hash tag, Vec2 pos, float radius );
+	b2Fixture* add_fixture_line( hash tag, Vec2 pos, Vec2 start, Vec2 end );
+	b2Fixture* add_fixture_line_loop( hash tag, Vec2 pos, const std::vector<Vec2>& verts );
+	b2Fixture* add_fixture_polygon( hash tag, Vec2 pos, const std::vector<Vec2>& verts );
 
 	void add_physics_component_if_needed();
 
 	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
 };
 
-static_assert( sizeof( ec_box2d_physics_body ) <= max_entity_component_sz );
+static_assert( sizeof( Box2D_Physics_Body_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_box2d_static_physics_body : ec_box2d_physics_body
+struct Box2D_Static_Body_Component : Box2D_Physics_Body_Component
 {
-	ec_box2d_static_physics_body() = delete;
-	ec_box2d_static_physics_body( entity* parent_entity );
+	Box2D_Static_Body_Component() = delete;
+	Box2D_Static_Body_Component( Entity* parent_entity );
 };
 
-static_assert( sizeof( ec_box2d_static_physics_body ) <= max_entity_component_sz );
+static_assert( sizeof( Box2D_Static_Body_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
 
-struct ec_box2d_dynamic_physics_body final : ec_box2d_physics_body
+struct Box2D_Dynamic_Body_Component final : Box2D_Physics_Body_Component
 {
-	ec_box2d_dynamic_physics_body() = delete;
-	ec_box2d_dynamic_physics_body( entity* parent_entity );
+	Box2D_Dynamic_Body_Component() = delete;
+	Box2D_Dynamic_Body_Component( Entity* parent_entity );
 };
 
-static_assert( sizeof( ec_box2d_dynamic_physics_body ) <= max_entity_component_sz );
+static_assert( sizeof( Box2D_Dynamic_Body_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
-struct ec_box2d_kinematic_physics_body final : ec_box2d_physics_body
+struct Box2D_Kinematic_Body_Component final : Box2D_Physics_Body_Component
 {
-	ec_box2d_kinematic_physics_body() = delete;
-	ec_box2d_kinematic_physics_body( entity* parent_entity );
+	Box2D_Kinematic_Body_Component() = delete;
+	Box2D_Kinematic_Body_Component( Entity* parent_entity );
 };
 
-static_assert( sizeof( ec_box2d_kinematic_physics_body ) <= max_entity_component_sz );
+static_assert( sizeof( Box2D_Kinematic_Body_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_mesh final : entity_component
+struct Mesh_Component final : Entity_Component
 {
-	mesh_asset* mesh = nullptr;
+	Mesh_Asset* mesh = nullptr;
 
-	ec_mesh() = delete;
-	ec_mesh( entity* parent_entity );
+	Mesh_Component() = delete;
+	Mesh_Component( Entity* parent_entity );
 
-	entity_component* init( std::string_view mesh_tag );
+	Entity_Component* init( std::string_view mesh_tag );
 	virtual void draw() override;
 };
 
-static_assert( sizeof( ec_mesh ) <= max_entity_component_sz );
+static_assert( sizeof( Mesh_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_simple_collision_body : entity_component
+struct Simple_Collision_Body : Entity_Component
 {
-	ec_simple_collision_body() = delete;
-	ec_simple_collision_body( entity* parent_entity );
-	virtual ~ec_simple_collision_body() = default;
+	Simple_Collision_Body() = delete;
+	Simple_Collision_Body( Entity* parent_entity );
+	virtual ~Simple_Collision_Body() = default;
 
 	e_sc_prim_type type = sc_prim_type::circle;
 
 	bool is_platform = false;
 
 	// box
-	rect aabb = {};
+	Rect aabb = {};
 
 	// circle
 	float radius = 0.f;
 
 	// verts
-	std::vector<vec2> verts = {};
+	std::vector<Vec2> verts = {};
 
 	e_sc_body_collider_type collider_type = sc_body_collider_type::solid;
 
 	struct
 	{
-		vec2 pos = {};
-		rect aabb = {};
+		Vec2 pos = {};
+		Rect aabb = {};
 		float radius = {};
-		std::vector<vec2> verts = {};
+		std::vector<Vec2> verts = {};
 	} ws;
 
 	virtual void draw() override;
@@ -313,11 +313,11 @@ struct ec_simple_collision_body : entity_component
 	void set_as_box( float w, float h );
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
-	void set_as_polygon( std::vector<vec2> verts );
+	void set_as_polygon( std::vector<Vec2> verts );
 	void set_body_collider_type( e_sc_body_collider_type type );
 
-	bool intersects_with( ec_simple_collision_body* scc );
-	virtual std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* other );
+	bool intersects_with( Simple_Collision_Body* scc );
+	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
@@ -325,29 +325,29 @@ struct ec_simple_collision_body : entity_component
 	c2Circle get_bounds_as_simple_circle();
 };
 
-static_assert( sizeof( ec_simple_collision_body ) <= max_entity_component_sz );
+static_assert( sizeof( Simple_Collision_Body ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_simple_collision_body_platform : ec_simple_collision_body
+struct Simple_Collision_Platform_Body : Simple_Collision_Body
 {
-	ec_simple_collision_body_platform() = delete;
-	ec_simple_collision_body_platform( entity* parent_entity );
+	Simple_Collision_Platform_Body() = delete;
+	Simple_Collision_Platform_Body( Entity* parent_entity );
 
-	virtual std::optional<simple_collision::pending_collision> intersects_with_manifold( ec_simple_collision_body* other ) override;
+	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other ) override;
 };
 
-static_assert( sizeof( ec_simple_collision_body_platform ) <= max_entity_component_sz );
+static_assert( sizeof( Simple_Collision_Platform_Body ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct ec_tile_map final : entity_component
+struct Tile_Map_Component final : Entity_Component
 {
-	ec_tile_map() = delete;
-	ec_tile_map( entity* parent_entity );
+	Tile_Map_Component() = delete;
+	Tile_Map_Component( Entity* parent_entity );
 
-	tile_set_asset* tile_set = nullptr;
-	tile_map_asset* tile_map = nullptr;
+	Tile_Set_Asset* tile_set = nullptr;
+	Tile_Map_Asset* tile_map = nullptr;
 
 	virtual void draw() override;
 
@@ -355,6 +355,6 @@ struct ec_tile_map final : entity_component
 	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
 };
 
-static_assert( sizeof( ec_tile_map ) <= max_entity_component_sz );
+static_assert( sizeof( Tile_Map_Component ) <= max_entity_component_sz );
 
 }

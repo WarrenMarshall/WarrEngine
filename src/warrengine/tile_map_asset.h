@@ -10,16 +10,16 @@ constexpr unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
 // ----------------------------------------------------------------------------
 
-struct tile_map_asset final : asset
+struct Tile_Map_Asset final : Asset
 {
 	// ----------------------------------------------------------------------------
 	// a tile within a chunk
 
-	struct tile final
+	struct Tile final
 	{
 		static constexpr int empty = -1;
 
-		tile( int idx, int x_idx, int y_idx, e_tile_flags flags );
+		Tile( int idx, int x_idx, int y_idx, e_tile_flags flags );
 
 		int idx = 0;
 		int x_idx = 0, y_idx = 0;		// coordinates from the top left of the tile map
@@ -31,14 +31,14 @@ struct tile_map_asset final : asset
 	//
 	// chunks are stored as a collection of tiles
 
-	struct chunk final
+	struct Chunk final
 	{
 		static constexpr int default_chunk_sz = 16;
 
 		// the rectangular area on the tilemap where this chunk sits
-		rect tilemap_bounds = { 0, 0, default_chunk_sz, default_chunk_sz };
+		Rect tilemap_bounds = { 0, 0, default_chunk_sz, default_chunk_sz };
 
-		std::vector<tile> tiles = {};
+		std::vector<Tile> tiles = {};
 	};
 
 	// ----------------------------------------------------------------------------
@@ -46,10 +46,10 @@ struct tile_map_asset final : asset
 	//
 	// layers are stored as collections of chunks.
 
-	struct layer final
+	struct Layer final
 	{
 		std::string tag;
-		std::vector<chunk> chunks = {};
+		std::vector<Chunk> chunks = {};
 		bool is_visible = true;
 	};
 
@@ -59,8 +59,8 @@ struct tile_map_asset final : asset
 	int height = 0;
 	int tile_sz = 0;
 	bool is_infinite = false;
-	std::vector<layer> layers;
-	std::vector<tiled_object_group> object_groups;
+	std::vector<Layer> layers;
+	std::vector<Tiled_Object_Group> object_groups;
 
 	virtual bool create() override;
 };

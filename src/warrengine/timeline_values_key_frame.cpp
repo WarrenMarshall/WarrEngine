@@ -5,12 +5,12 @@
 namespace war
 {
 
-timeline_key_frame::timeline_key_frame( float pct_marker, float value )
+Timeline_Values_Key_Frame::Timeline_Values_Key_Frame( float pct_marker, float value )
 	: pct_marker( pct_marker ), float_value( value )
 {
 }
 
-timeline_key_frame::timeline_key_frame( float pct_marker, const color& value )
+Timeline_Values_Key_Frame::Timeline_Values_Key_Frame( float pct_marker, const Color& value )
 	: pct_marker( pct_marker ), color_value( value )
 {
 }

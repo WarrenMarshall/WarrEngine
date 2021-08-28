@@ -4,7 +4,7 @@ namespace war
 
 struct scene
 {
-	life_cycle_mgr life_cycle;
+	Life_Cycle_Mgr life_cycle;
 
 	void save_mouse_mode();
 	void restore_mouse_mode();
@@ -14,12 +14,12 @@ struct scene
 
 	// scenes can have a camera attached to them. this is applied against the
 	// view matrix.
-	[[nodiscard]] transform* get_transform()
+	[[nodiscard]] Transform* get_transform()
 	{
 		return &camera_transform;
 	}
 
-	[[nodiscard]] vec2 get_pos()
+	[[nodiscard]] Vec2 get_pos()
 	{
 		return get_transform()->pos;
 	}
@@ -38,12 +38,12 @@ struct scene
 	//
 	// note : this is NOT a camera. this is purely a viewport offset.
 
-	vec2 get_viewport_pivot();
-	vec2 viewport_pivot = { viewport_hw - 1.f, viewport_hh - 1.f };
+	Vec2 get_viewport_pivot();
+	Vec2 viewport_pivot = { viewport_hw - 1.f, viewport_hh - 1.f };
 
-	std::vector<std::unique_ptr<entity>> entities;
+	std::vector<std::unique_ptr<Entity>> entities;
 
-	std::unique_ptr<simple_collision_world> sc_world = nullptr;
+	std::unique_ptr<Simple_Collision_World> sc_world = nullptr;
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
@@ -91,7 +91,7 @@ struct scene
 
 	void select_by_pick_id( int pick_id );
 	void deselect_all();
-	std::vector<entity*> get_selected();
+	std::vector<Entity*> get_selected();
 
 	// ----------------------------------------------------------------------------
 
@@ -144,23 +144,23 @@ struct scene
 	}
 
 	[[nodiscard]] bool is_topmost_scene() const;
-	[[nodiscard]] entity* find_entity( hash tag );
-	[[nodiscard]] entity* find_entity_by_pick_id( int pick_id );
+	[[nodiscard]] Entity* find_entity( hash tag );
+	[[nodiscard]] Entity* find_entity_by_pick_id( int pick_id );
 
 	virtual void new_game();
-	void follow_cam( const transform* follow_target );
+	void follow_cam( const Transform* follow_target );
 
-	std::unique_ptr<war::ui_callback> ui_callback = nullptr;
-	virtual war::ui_callback* get_ui_callback();
+	std::unique_ptr<war::UI_Callback> ui_callback = nullptr;
+	virtual war::UI_Callback* get_ui_callback();
 
-	virtual bool on_input_motion( const input_event* evt );
-	virtual bool on_input_pressed( const input_event* evt );
-	virtual bool on_input_held( const input_event* evt );
-	virtual bool on_input_released( const input_event* evt );
-	virtual bool on_input_key( const input_event* evt );
+	virtual bool on_input_motion( const Input_Event* evt );
+	virtual bool on_input_pressed( const Input_Event* evt );
+	virtual bool on_input_held( const Input_Event* evt );
+	virtual bool on_input_released( const Input_Event* evt );
+	virtual bool on_input_key( const Input_Event* evt );
 
 private:
-	transform camera_transform;
+	Transform camera_transform;
 };
 
 }

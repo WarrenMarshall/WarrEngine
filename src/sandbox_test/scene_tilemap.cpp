@@ -14,8 +14,8 @@ void scene_tilemap::pushed()
 
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	ts_ultima = g_engine->find_asset<tile_set_asset>( "ts_ultima" );
-	tm_overworld = g_engine->find_asset<tile_map_asset>( "tm_overworld" );
+	ts_ultima = g_engine->find_asset<Tile_Set_Asset>( "ts_ultima" );
+	tm_overworld = g_engine->find_asset<Tile_Map_Asset>( "tm_overworld" );
 }
 
 void scene_tilemap::draw()
@@ -26,12 +26,12 @@ void scene_tilemap::draw()
 	{
 		scoped_render_state;
 
-		render::state->color = color::white;
-		render::state->z += zdepth_nudge;
-		render::draw_tile_map( ts_ultima, tm_overworld, vec2( 0.f, 0.f ) );
+		Render::state->color = Color::white;
+		Render::state->z += zdepth_nudge;
+		Render::draw_tile_map( ts_ultima, tm_overworld, Vec2( 0.f, 0.f ) );
 	}
 
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 void scene_tilemap::draw_ui()

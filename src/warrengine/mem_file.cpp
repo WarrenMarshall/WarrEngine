@@ -5,21 +5,21 @@
 namespace war
 {
 
-file_mem::file_mem( int size )
+Mem_File::Mem_File( int size )
 {
 	buffer.resize( size );
 }
 
 // ----------------------------------------------------------------------------
 
-file_mem_text::file_mem_text( int size )
+Mem_File_Text::Mem_File_Text( int size )
 {
 	buffer.resize( size );
 }
 
-void file_mem_text::preprocess()
+void Mem_File_Text::preprocess()
 {
-	tokenizer tok( buffer.data(), "\n" );
+	Tokenizer tok( buffer.data(), "\n" );
 
 	size_t count = std::count( buffer.begin(), buffer.end(), '\n' );
 	lines.clear();
@@ -50,7 +50,7 @@ void file_mem_text::preprocess()
 
 		if( pos != std::string::npos )
 		{
-			line = string_util::trim( line.substr( 0, pos ) );
+			line = String_Util::trim( line.substr( 0, pos ) );
 		}
 
 		// handle lines that use continuation characters
@@ -88,9 +88,9 @@ void file_mem_text::preprocess()
 	buffer.clear();
 }
 
-void file_mem_text::preprocess_raw()
+void Mem_File_Text::preprocess_raw()
 {
-	tokenizer tok( buffer.data(), "\n" );
+	Tokenizer tok( buffer.data(), "\n" );
 
 	size_t count = std::count( buffer.begin(), buffer.end(), '\n' );
 	lines.clear();

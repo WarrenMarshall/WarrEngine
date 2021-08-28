@@ -5,32 +5,32 @@
 namespace war
 {
 
-vertex_buffer::vertex_buffer( vertex_array_object* vao, int verts_per_element )
+Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, int verts_per_element )
 	: vao( vao ), verts_per_element( verts_per_element )
 {
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
-	g_engine->render_api.allocate_vertex_buffer_on_gpu( primitive_batch::max_elements_per_draw_call * verts_per_element, false );
+	g_engine->render_api.allocate_vertex_buffer_on_gpu( Primitive_Batch::max_elements_per_draw_call * verts_per_element, false );
 	set_up_vertex_attribs();
-	vertices.init_to_size( (size_t)( primitive_batch::max_elements_per_draw_call * verts_per_element ) );
+	vertices.init_to_size( (size_t)( Primitive_Batch::max_elements_per_draw_call * verts_per_element ) );
 	reset();
 
 	unbind();
 }
 
-vertex_buffer::~vertex_buffer()
+Vertex_Buffer::~Vertex_Buffer()
 {
 	unbind();
 	glDeleteBuffers( 1, &gl_id );
 }
 
-void vertex_buffer::bind()
+void Vertex_Buffer::bind()
 {
 	glBindBuffer( GL_ARRAY_BUFFER, gl_id );
 }
 
-void vertex_buffer::reset()
+void Vertex_Buffer::reset()
 {
 	texture_slots.clear();
 	texture_slots.resize( g_engine->render_api.max_texture_image_units );
@@ -42,7 +42,7 @@ void vertex_buffer::reset()
 	vertices.reset();
 }
 
-void vertex_buffer::set_up_vertex_attribs()
+void Vertex_Buffer::set_up_vertex_attribs()
 {
 	glEnableVertexAttribArray( 0 );
 	glEnableVertexAttribArray( 1 );
@@ -51,15 +51,15 @@ void vertex_buffer::set_up_vertex_attribs()
 	glEnableVertexAttribArray( 4 );
 	glEnableVertexAttribArray( 5 );
 
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( render_vertex ), (const void*)offsetof( render_vertex, x ) );
-	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( render_vertex ), (const void*)offsetof( render_vertex, u ) );
-	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( render_vertex ), (const void*)offsetof( render_vertex, r ) );
-	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( render_vertex ), (const void*)offsetof( render_vertex, glow ) );
-	glVertexAttribIPointer( 4, 1, GL_INT, sizeof( render_vertex ), (const void*)offsetof( render_vertex, texture_id ) );
-	glVertexAttribIPointer( 5, 1, GL_INT, sizeof( render_vertex ), (const void*)offsetof( render_vertex, pick_id ) );
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( Render_Vertex ), (const void*)offsetof( Render_Vertex, x ) );
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, sizeof( Render_Vertex ), (const void*)offsetof( Render_Vertex, u ) );
+	glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, sizeof( Render_Vertex ), (const void*)offsetof( Render_Vertex, r ) );
+	glVertexAttribPointer( 3, 1, GL_FLOAT, GL_FALSE, sizeof( Render_Vertex ), (const void*)offsetof( Render_Vertex, glow ) );
+	glVertexAttribIPointer( 4, 1, GL_INT, sizeof( Render_Vertex ), (const void*)offsetof( Render_Vertex, texture_id ) );
+	glVertexAttribIPointer( 5, 1, GL_INT, sizeof( Render_Vertex ), (const void*)offsetof( Render_Vertex, pick_id ) );
 }
 
-size_t vertex_buffer::assign_texture_slot( const texture_asset* texture )
+size_t Vertex_Buffer::assign_texture_slot( const Texture_Asset* texture )
 {
 	// if this is the same texture as the last time this function was called,
 	// just return that same idx
@@ -103,12 +103,12 @@ size_t vertex_buffer::assign_texture_slot( const texture_asset* texture )
 	return total_texture_slots_used - 1;
 }
 
-void vertex_buffer::unbind()
+void Vertex_Buffer::unbind()
 {
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 }
 
-void vertex_buffer::bind_texture_units()
+void Vertex_Buffer::bind_texture_units()
 {
 	for( int x = 0 ; x < total_texture_slots_used ; ++x )
 	{
@@ -119,9 +119,9 @@ void vertex_buffer::bind_texture_units()
 	}
 }
 
-void vertex_buffer::upload_vertices_to_gpu()
+void Vertex_Buffer::upload_vertices_to_gpu()
 {
-	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.num_objects_in_pool * sizeof( render_vertex ), vertices.data() );
+	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.num_objects_in_pool * sizeof( Render_Vertex ), vertices.data() );
 }
 
 }

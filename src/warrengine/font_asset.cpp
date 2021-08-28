@@ -5,37 +5,37 @@
 namespace war
 {
 
-bool font_def_asset::create()
+bool Font_Def_Asset::create()
 {
-	ZeroMemory( char_map, sizeof( glyph ) * max_font_chars );
+	ZeroMemory( char_map, sizeof( Glyph ) * max_font_chars );
 
-	auto file = file_system::load_text_file( original_filename );
+	auto file = File_System::load_text_file( original_filename );
 
 	uint8 x, y, w, h;
 	uint8 char_id;
-	glyph* fch;
+	Glyph* fch;
 
 	for( const auto& line : file->lines )
 	{
 		if( line.substr( 0, 5 ) == "char " )
 		{
 			// parse a char definition
-			char_id = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "id=" ) );
+			char_id = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "id=" ) );
 			fch = &( char_map[ char_id ] );
 
-			x = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "x=" ) );
-			y = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "y=" ) );
-			w = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "width=" ) );
-			h = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "height=" ) );
+			x = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "x=" ) );
+			y = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "y=" ) );
+			w = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "width=" ) );
+			h = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "height=" ) );
 
-			fch->xoffset = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "xoffset=" ) );
-			fch->yoffset = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "yoffset=" ) );
-			fch->xadvance = (uint8)text_parser::uint_from_str( text_parser::key_from_str( line, "xadvance=" ) );
+			fch->xoffset = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "xoffset=" ) );
+			fch->yoffset = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "yoffset=" ) );
+			fch->xadvance = (uint8)Text_Parser::uint_from_str( Text_Parser::key_from_str( line, "xadvance=" ) );
 
 			fch->w = (uint8)w;
 			fch->h = (uint8)h;
 
-			fch->glyph_texture = texture_asset( src_texture->tag, rect( x, y, w, h ) );
+			fch->glyph_texture = Texture_Asset( src_texture->tag, Rect( x, y, w, h ) );
 
 			max_height = glm::max( max_height, fch->h );
 		}
@@ -48,10 +48,10 @@ bool font_def_asset::create()
 
 // computes how wide and how tall a string is using this font.
 
-vec2 font_asset::get_string_extents( std::string_view text ) const
+Vec2 Font_Asset::get_string_extents( std::string_view text ) const
 {
-	font_def_asset::glyph* pxch;
-	vec2 bounds;
+	Font_Def_Asset::Glyph* pxch;
+	Vec2 bounds;
 
 	for( auto ch : text )
 	{
@@ -64,7 +64,7 @@ vec2 font_asset::get_string_extents( std::string_view text ) const
 	return bounds;
 }
 
-float font_asset::get_max_height()
+float Font_Asset::get_max_height()
 {
 	return font_def->max_height;
 }

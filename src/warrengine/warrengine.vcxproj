@@ -250,7 +250,7 @@
     <ClCompile Include="bounding_box.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="rect.cpp" />
-    <ClCompile Include="scene_timeline.cpp" />
+    <ClCompile Include="scene_transient.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
     <ClCompile Include="simple_collision_query.cpp" />
     <ClCompile Include="simple_collision_pending_collision.cpp" />
@@ -277,8 +277,8 @@
     <ClCompile Include="entity_component.cpp" />
     <ClCompile Include="range.cpp" />
     <ClCompile Include="file_system.cpp" />
-    <ClCompile Include="file_disk.cpp" />
-    <ClCompile Include="file_mem.cpp" />
+    <ClCompile Include="disk_file.cpp" />
+    <ClCompile Include="mem_file.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="impl_header_only.cpp" />
     <ClCompile Include="input_gamepad.cpp" />
@@ -294,17 +294,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="file_zip.cpp" />
+    <ClCompile Include="zip_file.cpp" />
     <ClCompile Include="life_cycle_mgr.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="noise.cpp" />
     <ClCompile Include="opengl_color_attachment.cpp" />
-    <ClCompile Include="timeline.cpp" />
-    <ClCompile Include="timeline_key_frame.cpp" />
+    <ClCompile Include="timeline_values.cpp" />
+    <ClCompile Include="timeline_values_key_frame.cpp" />
     <ClCompile Include="timeline_nodes.cpp" />
     <ClCompile Include="timeline_nodes_key_frame.cpp" />
-    <ClCompile Include="util_geo.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="value_accumulator.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="opengl.cpp" />
@@ -339,7 +339,6 @@
     <ClCompile Include="random.cpp" />
     <ClCompile Include="render.cpp" />
     <ClCompile Include="scene_mgr.cpp" />
-    <ClCompile Include="util_string.cpp" />
     <ClCompile Include="tween.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particle_emitter.cpp" />
@@ -355,7 +354,7 @@
     <ClInclude Include="cache.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="rect.h" />
-    <ClInclude Include="scene_timeline.h" />
+    <ClInclude Include="scene_transient.h" />
     <ClInclude Include="simple_collision_world.h" />
     <ClInclude Include="simple_collision_query.h" />
     <ClInclude Include="simple_collision_pending_collision.h" />
@@ -381,8 +380,8 @@
     <ClInclude Include="coord.h" />
     <ClInclude Include="entity_component.h" />
     <ClInclude Include="file_system.h" />
-    <ClInclude Include="file_disk.h" />
-    <ClInclude Include="file_mem.h" />
+    <ClInclude Include="disk_file.h" />
+    <ClInclude Include="mem_file.h" />
     <ClInclude Include="render_vertex.h" />
     <ClInclude Include="scene_controller_required.h" />
     <ClInclude Include="scene_msg_box.h" />
@@ -394,14 +393,14 @@
     <ClInclude Include="render_state.h" />
     <ClInclude Include="render_stats.h" />
     <ClInclude Include="scoped_vars.h" />
-    <ClInclude Include="timeline.h" />
-    <ClInclude Include="timeline_key_frame.h" />
+    <ClInclude Include="timeline_values.h" />
+    <ClInclude Include="timeline_values_key_frame.h" />
     <ClInclude Include="timeline_nodes.h" />
     <ClInclude Include="timeline_nodes_key_frame.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="ui_control_data.h" />
     <ClInclude Include="ui_result.h" />
-    <ClInclude Include="util_geo.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="vec2.h" />
     <ClInclude Include="vec3.h" />
     <ClInclude Include="vertex_array_object.h" />
@@ -410,7 +409,7 @@
     <ClInclude Include="ui_callback.h" />
     <ClInclude Include="warrengine.h" />
     <ClInclude Include="input_gamepad.h" />
-    <ClInclude Include="file_zip.h" />
+    <ClInclude Include="zip_file.h" />
     <ClInclude Include="scene_esc_menu.h" />
     <ClInclude Include="master_fwd_decl.h" />
     <ClInclude Include="game.h" />
@@ -441,7 +440,6 @@
     <ClInclude Include="random.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="scene_mgr.h" />
-    <ClInclude Include="util_string.h" />
     <ClInclude Include="tween.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_emitter.h" />

@@ -5,7 +5,7 @@
 namespace war
 {
 
-void asset_file_definition::precache_asset_resources( size_t pass_num )
+void Asset_File_Definition::precache_asset_resources( size_t pass_num )
 {
 	std::string type, tag;
 
@@ -67,7 +67,7 @@ void asset_file_definition::precache_asset_resources( size_t pass_num )
 	}
 }
 
-void asset_file_definition::precache_preproc( const key_values& key_values_for_asset_def )
+void Asset_File_Definition::precache_preproc( const Key_Values& key_values_for_asset_def )
 {
 	for( auto& [key, value] : key_values_for_asset_def.kv )
 	{
@@ -78,22 +78,22 @@ void asset_file_definition::precache_preproc( const key_values& key_values_for_a
 	}
 }
 
-void asset_file_definition::precache_palette( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_palette( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "colors" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<palette_asset>(), tag.data(), "" );
-	asset_ptr->colors = text_parser::color_list_from_str( key_values_for_asset_def.find_value( "colors" ) );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Palette_Asset>(), tag.data(), "" );
+	asset_ptr->colors = Text_Parser::color_list_from_str( key_values_for_asset_def.find_value( "colors" ) );
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_src_texture( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<texture_source_asset>(), tag.data(), filename );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Source_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
 	asset_ptr->tiling = g_engine->find_int_from_symbol( key_values_for_asset_def.find_value_or( "tiling", "tiling.repeat" ) );
 	asset_ptr->use_mipmaps = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( " ", "true" ) );
@@ -103,7 +103,7 @@ void asset_file_definition::precache_src_texture( const key_values& key_values_f
 	// ----------------------------------------------------------------------------
 	// every src_texture automatically creates an a_texture with the same name
 
-	g_engine->asset_cache.add( std::make_unique<texture_asset>( tag ), tag.data(), "" );
+	g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag ), tag.data(), "" );
 
 	// the texture_tags" k/v is a convenient way to specify a set
 	// of textures belonging to a src_texture. it's an easy way to break
@@ -121,35 +121,35 @@ void asset_file_definition::precache_src_texture( const key_values& key_values_f
 			log_fatal( "'{}' has bad formatting - too many or too few commas", texture_list );
 		}
 
-		tokenizer tok( texture_list, "," );
+		Tokenizer tok( texture_list, "," );
 
 		while( !tok.is_eos() )
 		{
 			auto texture_tag = std::string( *tok.get_next_token() );
 
-			float x = text_parser::float_from_str( *tok.get_next_token() );
-			float y = text_parser::float_from_str( *tok.get_next_token() );
-			float w = text_parser::float_from_str( *tok.get_next_token() );
-			float h = text_parser::float_from_str( *tok.get_next_token() );
+			float x = Text_Parser::float_from_str( *tok.get_next_token() );
+			float y = Text_Parser::float_from_str( *tok.get_next_token() );
+			float w = Text_Parser::float_from_str( *tok.get_next_token() );
+			float h = Text_Parser::float_from_str( *tok.get_next_token() );
 
-			rect rc( x, y, w, h );
+			Rect rc( x, y, w, h );
 
-			g_engine->asset_cache.add( std::make_unique<texture_asset>( tag, rc ), texture_tag, "" );
+			g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag, rc ), texture_tag, "" );
 		}
 	}
 }
 
-void asset_file_definition::precache_src_gradient( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_src_gradient( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "alignment" ) );
 	assert( key_values_for_asset_def.does_key_exist( "colors" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<gradient_source_asset>(), tag.data(), "" );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Gradient_Source_Asset>(), tag.data(), "" );
 
 	asset_ptr->alignment = (e_align)( g_engine->find_int_from_symbol( key_values_for_asset_def.find_value( "alignment" ) ) );
 
 	asset_ptr->colors.clear();
-	std::vector<color> color_list = text_parser::color_list_from_str( key_values_for_asset_def.find_value( "colors" ) );
+	std::vector<Color> color_list = Text_Parser::color_list_from_str( key_values_for_asset_def.find_value( "colors" ) );
 
 	// must reverse the order or else vertical gradient textures end up
 	// backwards on the screen
@@ -169,37 +169,37 @@ void asset_file_definition::precache_src_gradient( const key_values& key_values_
 
 	// every gradient automatically creates an a_texture with the same name
 
-	g_engine->asset_cache.add( std::make_unique<texture_asset>( tag.data() ), tag.data(), "" );
+	g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag.data() ), tag.data(), "" );
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_font_def( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_font_def( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
 	assert( key_values_for_asset_def.does_key_exist( "src_texture_tag" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<font_def_asset>(), tag.data(), filename );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Font_Def_Asset>(), tag.data(), filename );
 
 	asset_ptr->original_filename = filename;
-	asset_ptr->src_texture = g_engine->find_asset<texture_source_asset>( key_values_for_asset_def.find_value( "src_texture_tag" ) );
+	asset_ptr->src_texture = g_engine->find_asset<Texture_Source_Asset>( key_values_for_asset_def.find_value( "src_texture_tag" ) );
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_slice_def( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
 	assert( key_values_for_asset_def.does_key_exist( "x_slices" ) );
 	assert( key_values_for_asset_def.does_key_exist( "y_slices" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<slice_def_asset>(), tag.data(), "" );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Slide_Def_Asset>(), tag.data(), "" );
 
-	auto texture = g_engine->find_asset<texture_asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
-	vec2 x_slices = text_parser::vec2_from_str( key_values_for_asset_def.find_value( "x_slices" ) );
-	vec2 y_slices = text_parser::vec2_from_str( key_values_for_asset_def.find_value( "y_slices" ) );
+	auto texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	Vec2 x_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "x_slices" ) );
+	Vec2 y_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "y_slices" ) );
 
 	float x, y, w, h;
 
@@ -214,21 +214,21 @@ void asset_file_definition::precache_slice_def( const key_values& key_values_for
 
 	asset_ptr->patches[ slicedef_patch::top_left ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_00", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_00", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
 	asset_ptr->patches[ slicedef_patch::top_middle ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_10", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_10", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
 	asset_ptr->patches[ slicedef_patch::top_right ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_20", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_20", tag.data() ), ""
 		);
 
 	// middle row
@@ -240,21 +240,21 @@ void asset_file_definition::precache_slice_def( const key_values& key_values_for
 
 	asset_ptr->patches[ slicedef_patch::middle_left ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_01", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_01", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
 	asset_ptr->patches[ slicedef_patch::middle_middle ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_11", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_11", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
 	asset_ptr->patches[ slicedef_patch::middle_right ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_21", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_21", tag.data() ), ""
 		);
 
 	// bottom row
@@ -266,33 +266,33 @@ void asset_file_definition::precache_slice_def( const key_values& key_values_for
 
 	asset_ptr->patches[ slicedef_patch::bottom_left ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_02", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_02", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
 	asset_ptr->patches[ slicedef_patch::bottom_middle ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_12", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_12", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
 	asset_ptr->patches[ slicedef_patch::bottom_right ] =
 		g_engine->asset_cache.add(
-			std::make_unique<texture_asset>( src_texture_tag, rect( x, y, w, h ) ), std::format( "{}_22", tag.data() ), ""
+			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_22", tag.data() ), ""
 		);
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_sound( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_sound( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<sound_asset>(), tag.data(), filename );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Sound_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
 
 	for( auto& [key, value] : key_values_for_asset_def.kv )
@@ -306,26 +306,26 @@ void asset_file_definition::precache_sound( const key_values& key_values_for_ass
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_anim_texture( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_anim_texture( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "frame_tags" ) );
 	assert( key_values_for_asset_def.does_key_exist( "frames_per_sec" ) );
 	assert( key_values_for_asset_def.does_key_exist( "tween" ) );
 
-	int frames_per_sec = text_parser::int_from_str( key_values_for_asset_def.find_value( "frames_per_sec" ) );
-	auto tween_type = (e_tween_type)( text_parser::int_from_str( key_values_for_asset_def.find_value( "tween" ) ) );
+	int frames_per_sec = Text_Parser::int_from_str( key_values_for_asset_def.find_value( "frames_per_sec" ) );
+	auto tween_type = (e_tween_type)( Text_Parser::int_from_str( key_values_for_asset_def.find_value( "tween" ) ) );
 
 	std::string_view frames = key_values_for_asset_def.find_value( "frame_tags" );
 
-	std::vector<texture_asset*> anim_frames;
-	tokenizer tok( frames, "," );
+	std::vector<Texture_Asset*> anim_frames;
+	Tokenizer tok( frames, "," );
 	while( !tok.is_eos() )
 	{
-		anim_frames.push_back( g_engine->find_asset<texture_asset>( *tok.get_next_token() ) );
+		anim_frames.push_back( g_engine->find_asset<Texture_Asset>( *tok.get_next_token() ) );
 	}
 
 	auto asset_ptr = g_engine->asset_cache.add(
-		std::make_unique<texture_asset>( anim_frames, tween_type, frames_per_sec ),
+		std::make_unique<Texture_Asset>( anim_frames, tween_type, frames_per_sec ),
 		tag.data(),
 		""
 	);
@@ -333,23 +333,23 @@ void asset_file_definition::precache_anim_texture( const key_values& key_values_
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_texture( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_texture( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "rect" ) );
 	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
 
-	rect rc = text_parser::rect_from_str( key_values_for_asset_def.find_value( "rect" ) );
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<texture_asset>( key_values_for_asset_def.find_value( "texture_tag" ), rc ),
+	Rect rc = Text_Parser::rect_from_str( key_values_for_asset_def.find_value( "rect" ) );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ), rc ),
 		tag.data(), "" );
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_emitter_params( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_emitter_params( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	// ------------------------------------------------------------------------
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<emitter_parameters_asset>(), tag.data(), "" );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Emitter_Parameters_Asset>(), tag.data(), "" );
 
 	// ------------------------------------------------------------------------
 
@@ -373,7 +373,7 @@ void asset_file_definition::precache_emitter_params( const key_values& key_value
 		}
 		else if( key == "texture_tag" )
 		{
-			asset_ptr->texture = g_engine->find_asset<texture_asset>( value );
+			asset_ptr->texture = g_engine->find_asset<Texture_Asset>( value );
 		}
 		else if( key == "spawner_type" )
 		{
@@ -381,51 +381,51 @@ void asset_file_definition::precache_emitter_params( const key_values& key_value
 		}
 		else if( key == "a_dir" )
 		{
-			asset_ptr->a_dir = text_parser::float_from_str( value );
+			asset_ptr->a_dir = Text_Parser::float_from_str( value );
 		}
 		else if( key == "r_dir_var" )
 		{
-			asset_ptr->r_dir_var = text_parser::range_from_str( value );
+			asset_ptr->r_dir_var = Text_Parser::range_from_str( value );
 		}
 		else if( key == "r_scale_spawn" )
 		{
-			asset_ptr->r_scale_spawn = text_parser::range_from_str( value );
+			asset_ptr->r_scale_spawn = Text_Parser::range_from_str( value );
 		}
 		else if( key == "t_scale" )
 		{
-			asset_ptr->t_scale = *text_parser::timeline_from_str( timeline_type::float_type, value );
+			asset_ptr->t_scale = *Text_Parser::timeline_from_str( timeline_type::float_type, value );
 		}
 		else if( key == "s_spawn_rate" )
 		{
-			asset_ptr->s_spawn_rate = text_parser::float_from_str( value );
+			asset_ptr->s_spawn_rate = Text_Parser::float_from_str( value );
 		}
 		else if( key == "s_max_alive" )
 		{
-			asset_ptr->s_max_alive = text_parser::float_from_str( value );
+			asset_ptr->s_max_alive = Text_Parser::float_from_str( value );
 		}
 		else if( key == "r_lifespan" )
 		{
-			asset_ptr->r_lifespan = text_parser::range_from_str( value );
+			asset_ptr->r_lifespan = Text_Parser::range_from_str( value );
 		}
 		else if( key == "r_velocity_spawn" )
 		{
-			asset_ptr->r_velocity_spawn = text_parser::range_from_str( value );
+			asset_ptr->r_velocity_spawn = Text_Parser::range_from_str( value );
 		}
 		else if( key == "t_color" )
 		{
-			asset_ptr->t_color = *text_parser::timeline_from_str( timeline_type::color_type, value );
+			asset_ptr->t_color = *Text_Parser::timeline_from_str( timeline_type::color_type, value );
 		}
 		else if( key == "r_spin_spawn" )
 		{
-			asset_ptr->r_spin_spawn = text_parser::range_from_str( value );
+			asset_ptr->r_spin_spawn = Text_Parser::range_from_str( value );
 		}
 		else if( key == "r_spin_per_sec" )
 		{
-			asset_ptr->r_spin_per_sec = text_parser::range_from_str( value );
+			asset_ptr->r_spin_per_sec = Text_Parser::range_from_str( value );
 		}
 		else if( key == "t_alpha" )
 		{
-			asset_ptr->t_alpha = *text_parser::timeline_from_str( timeline_type::float_type, value );
+			asset_ptr->t_alpha = *Text_Parser::timeline_from_str( timeline_type::float_type, value );
 		}
 		else
 		{
@@ -436,61 +436,61 @@ void asset_file_definition::precache_emitter_params( const key_values& key_value
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_font( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_font( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "font_def_tag" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<font_asset>(), tag.data(), "" );
-	asset_ptr->font_def = g_engine->find_asset<font_def_asset>( key_values_for_asset_def.find_value( "font_def_tag" ) );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Font_Asset>(), tag.data(), "" );
+	asset_ptr->font_def = g_engine->find_asset<Font_Def_Asset>( key_values_for_asset_def.find_value( "font_def_tag" ) );
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_mesh( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_mesh( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<mesh_asset>(), tag.data(), filename );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Mesh_Asset>(), tag.data(), filename );
 
 	asset_ptr->original_filename = filename;
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_cursor( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_cursor( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<cursor_asset>(), tag.data(), "" );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Cursor_Asset>(), tag.data(), "" );
 
-	asset_ptr->texture = g_engine->find_asset<texture_asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
-	asset_ptr->hotspot_offset = text_parser::vec2_from_str( key_values_for_asset_def.find_value( "hotspot" ) );
+	asset_ptr->texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	asset_ptr->hotspot_offset = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "hotspot" ) );
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_tile_set( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_tile_set( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<tile_set_asset>(), tag.data(), filename );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Tile_Set_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
 
-	asset_ptr->texture = g_engine->find_asset<texture_asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	asset_ptr->texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
 
 	asset_ptr->create();
 }
 
-void asset_file_definition::precache_tile_map( const key_values& key_values_for_asset_def, std::string_view tag )
+void Asset_File_Definition::precache_tile_map( const Key_Values& key_values_for_asset_def, std::string_view tag )
 {
 	assert( key_values_for_asset_def.does_key_exist( "filename" ) );
 
 	auto filename = std::format( "{}{}", data_folder, key_values_for_asset_def.find_value( "filename" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<tile_map_asset>(), tag.data(), filename );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Tile_Map_Asset>(), tag.data(), filename );
 
 	asset_ptr->original_filename = filename;
 
@@ -499,16 +499,16 @@ void asset_file_definition::precache_tile_map( const key_values& key_values_for_
 
 // ----------------------------------------------------------------------------
 
-bool asset_file_definition::create_internals()
+bool Asset_File_Definition::create_internals()
 {
 	asset_definitions.clear();
 
 	// read the contents of the asset definition file and break it up
 	// into individual asset definitions
 
-	auto file = file_system::load_text_file( original_filename );
+	auto file = File_System::load_text_file( original_filename );
 
-	key_values current_asset_definition;
+	Key_Values current_asset_definition;
 
 	// loop through every line of the asset_def fil and
 	for( const auto& line : file->lines )
@@ -527,7 +527,7 @@ bool asset_file_definition::create_internals()
 		// parse each line into a key/value pair for the current asset definition
 		else
 		{
-			tokenizer tok_kv( line, "\"" );
+			Tokenizer tok_kv( line, "\"" );
 
 			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token();

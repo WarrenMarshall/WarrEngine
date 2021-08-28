@@ -5,19 +5,19 @@
 namespace war
 {
 
-timeline::timeline( e_timeline_type type )
+Timeline_Values::Timeline_Values( e_timeline_type type )
 	: type( type )
 {
 	key_frames.clear();
 }
 
-timeline* timeline::clear_key_frames()
+Timeline_Values* Timeline_Values::clear_key_frames()
 {
 	key_frames.clear();
 	return this;
 }
 
-timeline* timeline::add_key_frame( const timeline_key_frame& kf )
+Timeline_Values* Timeline_Values::add_key_frame( const Timeline_Values_Key_Frame& kf )
 {
 	key_frames.push_back( kf );
 	return this;
@@ -26,7 +26,7 @@ timeline* timeline::add_key_frame( const timeline_key_frame& kf )
 // figure out which key_frame is the one we are approaching next
 // based on a percentage indicator of where we are on the timeline.
 
-size_t timeline::find_next_key_frame_idx_from_pct( float pct )
+size_t Timeline_Values::find_next_key_frame_idx_from_pct( float pct )
 {
 	size_t kf_next = 0;
 
@@ -41,7 +41,7 @@ size_t timeline::find_next_key_frame_idx_from_pct( float pct )
 	return kf_next;
 }
 
-float timeline::get_float_value( float pct_on_timeline )
+float Timeline_Values::get_float_value( float pct_on_timeline )
 {
 	auto kf_max = find_next_key_frame_idx_from_pct( pct_on_timeline );
 	size_t kf_min = kf_max - 1;
@@ -60,7 +60,7 @@ float timeline::get_float_value( float pct_on_timeline )
 	return min_value + ( ( max_value - min_value ) * pct_within );
 }
 
-color timeline::get_color_value( float pct_on_timeline )
+Color Timeline_Values::get_color_value( float pct_on_timeline )
 {
 	auto kf_max = find_next_key_frame_idx_from_pct( pct_on_timeline );
 	size_t kf_min = kf_max - 1;
@@ -73,8 +73,8 @@ color timeline::get_color_value( float pct_on_timeline )
 
 	// compute the value represented by that pct_within within the min/max key frames
 
-	color min_value = key_frames[ kf_min ].color_value;
-	color max_value = key_frames[ kf_max ].color_value;
+	Color min_value = key_frames[ kf_min ].color_value;
+	Color max_value = key_frames[ kf_max ].color_value;
 
 	return min_value + ( ( max_value - min_value ) * pct_within );
 }

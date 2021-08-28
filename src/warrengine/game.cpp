@@ -5,12 +5,12 @@
 namespace war
 {
 
-game::game( std::string internal_name )
+Game::Game( std::string internal_name )
 {
 	this->internal_name = internal_name;
 }
 
-void game::init()
+void Game::init()
 {
 	if( flags.has_main_menu )
 	{
@@ -20,19 +20,19 @@ void game::init()
 	new_game();
 }
 
-void game::new_game()
+void Game::new_game()
 {
 	g_engine->new_physics_world();
 	g_engine->scenes.new_game();
 }
 
-void game::update()
+void Game::update()
 {
 }
 
 // removes all existing layers and sets up the game to be at the main menu
 
-void game::reset_scene_stack_to_main_menu()
+void Game::reset_scene_stack_to_main_menu()
 {
 }
 

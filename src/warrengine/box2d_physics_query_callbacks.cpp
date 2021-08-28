@@ -25,11 +25,11 @@ namespace war::box2d_physics
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-float raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float Raycast_Closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<ec_box2d_physics>();
+		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<Box2D_Physics_Component>();
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -40,19 +40,19 @@ float raycast_closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, c
 	hit_something = true;
 
 	result.fraction = fraction;
-	result.normal = vec2( normal.x, normal.y );
-	result.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
+	result.normal = Vec2( normal.x, normal.y );
+	result.pos = Vec2( from_box2d( point.x ), from_box2d( point.y ) );
 
 	return fraction;
 }
 
 // ----------------------------------------------------------------------------
 
-float raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float Raycast_Simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<ec_box2d_physics>();
+		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<Box2D_Physics_Component>();
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -63,19 +63,19 @@ float raycast_simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, co
 	hit_something = true;
 
 	result.fraction = fraction;
-	result.normal = vec2( normal.x, normal.y );
-	result.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
+	result.normal = Vec2( normal.x, normal.y );
+	result.pos = Vec2( from_box2d( point.x ), from_box2d( point.y ) );
 
 	return 0.f;
 }
 
 // ----------------------------------------------------------------------------
 
-float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
+float Raycast_All::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction )
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (entity_component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<ec_box2d_physics>();
+		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<Box2D_Physics_Component>();
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -85,10 +85,10 @@ float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const
 
 	hit_something = true;
 
-	raycast_hit hit;
+	Raycast_Hit hit;
 	hit.fraction = fraction;
-	hit.normal = vec2( normal.x, normal.y );
-	hit.pos = vec2( from_box2d( point.x ), from_box2d( point.y ) );
+	hit.normal = Vec2( normal.x, normal.y );
+	hit.pos = Vec2( from_box2d( point.x ), from_box2d( point.y ) );
 
 	results.push_back( hit );
 
@@ -97,7 +97,7 @@ float raycast_all::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const
 
 // ----------------------------------------------------------------------------
 
-bool touching_first::ReportFixture( b2Fixture* fixture )
+bool Touching_First::ReportFixture( b2Fixture* fixture )
 {
 	this->fixture = fixture;
 	return false;

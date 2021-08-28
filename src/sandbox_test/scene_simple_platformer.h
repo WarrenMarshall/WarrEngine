@@ -3,10 +3,10 @@ using namespace war;
 
 struct scene_simple_platformer final : scene
 {
-	entity* world = nullptr;
-	entity* player = nullptr;
+	Entity* world = nullptr;
+	Entity* player = nullptr;
 
-	timeline_nodes fx_red_alert;
+	Timeline_Nodes fx_red_alert;
 
 	scene_simple_platformer();
 
@@ -15,6 +15,6 @@ struct scene_simple_platformer final : scene
 	virtual void pushed() override;
 	virtual void update() override;
 
-	virtual bool on_input_motion( const input_event* evt ) override;
-	virtual bool on_input_pressed( const input_event* evt ) override;
+	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
 };

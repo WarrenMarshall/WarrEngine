@@ -500,7 +500,7 @@ enum_begin( tnkf_type )
 	pp_color_overlay,
 	play_sound,
 	scene_push_under,
-	scene_pop_at_offset,
+	scene_pop_under,
 	pp_pixelate,
 	max,
 enum_end

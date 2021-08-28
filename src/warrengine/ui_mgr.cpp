@@ -5,102 +5,102 @@
 namespace war
 {
 
-unsigned ui_mgr::automatic_id;
+unsigned UI_Mgr::automatic_id;
 
-ui_mgr::ui_mgr()
+UI_Mgr::UI_Mgr()
 {
-	caret_blink_tween = tween( 0.f, 1.f, 1000, tween_type::loop, tween_via::sinusoidal );
+	caret_blink_tween = Tween( 0.f, 1.f, 1000, tween_type::loop, tween_via::sinusoidal );
 }
 
-void ui_mgr::reset()
+void UI_Mgr::reset()
 {
-	mouse_cursor = g_engine->find_asset_safe<cursor_asset>( "mouse_cursor_default" );
+	mouse_cursor = g_engine->find_asset_safe<Cursor_Asset>( "mouse_cursor_default" );
 	current_callback = &default_callback;
 	automatic_id = 1;
 }
 
-ui_mgr* ui_mgr::panel_control( hash tag )
+UI_Mgr* UI_Mgr::panel_control( hash tag )
 {
-	return do_control<ui_panel_control>( tag );
+	return do_control<UI_Panel_Control>( tag );
 }
 
-ui_mgr* ui_mgr::caption_control( hash tag )
+UI_Mgr* UI_Mgr::caption_control( hash tag )
 {
-	return do_control<ui_caption_control>( tag );
+	return do_control<UI_Caption_Control>( tag );
 }
 
-ui_mgr* ui_mgr::button_control( hash tag )
+UI_Mgr* UI_Mgr::button_control( hash tag )
 {
-	return do_control<ui_button_control>( tag );
+	return do_control<UI_Button_Control>( tag );
 }
 
-ui_mgr* ui_mgr::check_control( hash tag )
+UI_Mgr* UI_Mgr::check_control( hash tag )
 {
-	return do_control<ui_check_control>( tag );
+	return do_control<UI_Check_Control>( tag );
 }
 
-ui_mgr* ui_mgr::divider_control( hash tag )
+UI_Mgr* UI_Mgr::divider_control( hash tag )
 {
-	return do_control<ui_divider_control>( tag );
+	return do_control<UI_Divider_Control>( tag );
 }
 
-ui_mgr* ui_mgr::spacer_control( hash tag )
+UI_Mgr* UI_Mgr::spacer_control( hash tag )
 {
-	return do_control<ui_spacer_control>( tag );
+	return do_control<UI_Spacer_Control>( tag );
 }
 
-ui_mgr* ui_mgr::image_control( hash tag )
+UI_Mgr* UI_Mgr::image_control( hash tag )
 {
-	return do_control<ui_image_control>( tag );
+	return do_control<UI_Image_Control>( tag );
 }
 
-ui_mgr* ui_mgr::label_control( hash tag )
+UI_Mgr* UI_Mgr::label_control( hash tag )
 {
-	return do_control<ui_label_control>( tag );
+	return do_control<UI_Label_Control>( tag );
 }
 
-ui_mgr* ui_mgr::slider_control( hash tag )
+UI_Mgr* UI_Mgr::slider_control( hash tag )
 {
-	return do_control<ui_slider_control>( tag );
+	return do_control<UI_Slider_Control>( tag );
 }
 
-ui_mgr* ui_mgr::text_control( hash tag )
+UI_Mgr* UI_Mgr::text_control( hash tag )
 {
-	return do_control<ui_text_control>( tag );
+	return do_control<UI_Text_Control>( tag );
 }
 
-ui_mgr* ui_mgr::radio_control( hash tag )
+UI_Mgr* UI_Mgr::radio_control( hash tag )
 {
-	return do_control<ui_radio_control>( tag );
+	return do_control<UI_Radio_Control>( tag );
 }
 
-ui_mgr* ui_mgr::progress_control( hash tag )
+UI_Mgr* UI_Mgr::progress_control( hash tag )
 {
-	return do_control<ui_progress_control>( tag );
+	return do_control<UI_Progress_Control>( tag );
 }
 
-ui_mgr* ui_mgr::list_control( hash tag )
+UI_Mgr* UI_Mgr::list_control( hash tag )
 {
-	return do_control<ui_list_control>( tag );
+	return do_control<UI_List_Control>( tag );
 }
 
-ui_mgr* ui_mgr::dropdown_control( hash tag )
+UI_Mgr* UI_Mgr::dropdown_control( hash tag )
 {
-	return do_control<ui_dropdown_control>( tag );
+	return do_control<UI_Dropdown_Control>( tag );
 }
 
-ui_mgr* ui_mgr::set_text( std::string text )
+UI_Mgr* UI_Mgr::set_text( std::string text )
 {
 	current_control->text = text;
 	return this;
 }
 
-ui_mgr* ui_mgr::center_control_on_screen()
+UI_Mgr* UI_Mgr::center_control_on_screen()
 {
 	// only valid for panel controls
 	assert( current_control->type == ui_control_type::panel );
 
-	vec2 centered_pos;
+	Vec2 centered_pos;
 
 	centered_pos.x = ( ui_w - current_control->rc_ui.w ) / 2.f;
 	centered_pos.y = ( ui_h - current_control->rc_ui.h ) / 2.f;
@@ -111,7 +111,7 @@ ui_mgr* ui_mgr::center_control_on_screen()
 }
 
 // looks at the current panel
-ui_mgr* ui_mgr::adjust_layout_to_client_area()
+UI_Mgr* UI_Mgr::adjust_layout_to_client_area()
 {
 	// only valid for panel controls
 	assert( current_control->type == ui_control_type::panel );
@@ -125,49 +125,49 @@ ui_mgr* ui_mgr::adjust_layout_to_client_area()
 	return this;
 }
 
-ui_mgr* ui_mgr::set_text_align( e_align align )
+UI_Mgr* UI_Mgr::set_text_align( e_align align )
 {
 	current_control->text_align = align;
 	return this;
 }
 
-ui_mgr* ui_mgr::set_text_color( color color )
+UI_Mgr* UI_Mgr::set_text_color( Color color )
 {
 	current_control->text_color = color;
 	return this;
 }
 
-ui_mgr* ui_mgr::set_color( color color )
+UI_Mgr* UI_Mgr::set_color( Color color )
 {
 	current_control->primary_color = color;
 	return this;
 }
 
-ui_mgr* ui_mgr::set_image( std::string_view tex_tag )
+UI_Mgr* UI_Mgr::set_image( std::string_view tex_tag )
 {
-	return set_image( g_engine->find_asset<texture_asset>( tex_tag ) );
+	return set_image( g_engine->find_asset<Texture_Asset>( tex_tag ) );
 }
 
-ui_mgr* ui_mgr::set_image( texture_asset* tex )
+UI_Mgr* UI_Mgr::set_image( Texture_Asset* tex )
 {
 	current_control->image = tex;
 
 	return this;
 }
 
-ui_mgr* ui_mgr::set_func_draw( f_draw_control func_draw_control )
+UI_Mgr* UI_Mgr::set_func_draw( f_draw_control func_draw_control )
 {
 	current_control->func_draw_control = func_draw_control;
 	return this;
 }
 
-ui_mgr* ui_mgr::set_slice_def( std::string_view slice_def_name )
+UI_Mgr* UI_Mgr::set_slice_def( std::string_view slice_def_name )
 {
 	current_control->slice_def = nullptr;
 
 	if( !slice_def_name.empty() )
 	{
-		current_control->slice_def = g_engine->find_asset<slice_def_asset>( slice_def_name );
+		current_control->slice_def = g_engine->find_asset<Slide_Def_Asset>( slice_def_name );
 	}
 
 	current_control->rc_client = compute_client_rect_from_ui_rect( current_control->rc_ui );
@@ -175,7 +175,7 @@ ui_mgr* ui_mgr::set_slice_def( std::string_view slice_def_name )
 	return this;
 }
 
-ui_mgr* ui_mgr::set_rect( const rect& rect )
+UI_Mgr* UI_Mgr::set_rect( const Rect& rect )
 {
 	set_pos( { rect.x, rect.y } );
 	set_size( { rect.w, rect.h } );
@@ -183,7 +183,7 @@ ui_mgr* ui_mgr::set_rect( const rect& rect )
 	return this;
 }
 
-ui_mgr* ui_mgr::set_pos( const vec2& pos )
+UI_Mgr* UI_Mgr::set_pos( const Vec2& pos )
 {
 	current_control->rc_ui.x = pos.x;
 	current_control->rc_ui.y = pos.y;
@@ -194,20 +194,20 @@ ui_mgr* ui_mgr::set_pos( const vec2& pos )
 	return this;
 }
 
-ui_mgr* ui_mgr::set_size( const vec2& sz )
+UI_Mgr* UI_Mgr::set_size( const Vec2& sz )
 {
-	if( !fequals( sz.w, vec2::ignored ) )
+	if( !fequals( sz.w, Vec2::ignored ) )
 	{
 		current_control->rc_ui.w =
-			fequals( sz.w, vec2::defaulted )
+			fequals( sz.w, Vec2::defaulted )
 			? current_control->default_width
 			: sz.w;
 	}
 
-	if( !fequals( sz.h, vec2::ignored ) )
+	if( !fequals( sz.h, Vec2::ignored ) )
 	{
 		current_control->rc_ui.h =
-			fequals( sz.h, vec2::defaulted )
+			fequals( sz.h, Vec2::defaulted )
 			? current_control->default_height
 			: sz.h;
 	}
@@ -217,13 +217,13 @@ ui_mgr* ui_mgr::set_size( const vec2& sz )
 	return this;
 }
 
-ui_mgr* ui_mgr::set_interval( float interval )
+UI_Mgr* UI_Mgr::set_interval( float interval )
 {
 	current_control->interval = interval;
 	return this;
 }
 
-ui_mgr* ui_mgr::set_idx( int idx )
+UI_Mgr* UI_Mgr::set_idx( int idx )
 {
 	current_control->idx = idx;
 	return this;
@@ -232,7 +232,7 @@ ui_mgr* ui_mgr::set_idx( int idx )
 // copies the window rect to the client rect, and then makes adjustments
 // to compensate for graphical frames and whatever else would affect the client area.
 
-rect ui_mgr::compute_client_rect_from_ui_rect( rect rc_ui )
+Rect UI_Mgr::compute_client_rect_from_ui_rect( Rect rc_ui )
 {
 	auto result = rc_ui;
 
@@ -248,7 +248,7 @@ rect ui_mgr::compute_client_rect_from_ui_rect( rect rc_ui )
 	return result;
 }
 
-bool ui_mgr::done()
+bool UI_Mgr::done()
 {
 	result = {};
 
@@ -274,22 +274,22 @@ bool ui_mgr::done()
 	{
 		// we always want panels to be below anything they contain, so nudge the
 		// depth value a little before leaving
-		render::state->z += zdepth_nudge;
+		Render::state->z += zdepth_nudge;
 	}
 
 	return ( result.code & im_result::left_clicked );
 }
 
-void ui_mgr::end_static_control()
+void UI_Mgr::end_static_control()
 {
 	result.code = im_result::none;
-	result.click_pos = vec2::zero;
-	result.click_pct = vec2::zero;
+	result.click_pos = Vec2::zero;
+	result.click_pct = Vec2::zero;
 
 	draw( current_control.get(), false, false );
 }
 
-void ui_mgr::end_active_control()
+void UI_Mgr::end_active_control()
 {
 	bool is_hot = ( hot_tag == current_control->tag );
 	bool is_hovered = ( hover_tag == current_control->tag );
@@ -300,7 +300,7 @@ void ui_mgr::end_active_control()
 
 	if( current_scene == g_engine->scenes.get_top() )
 	{
-		range expanded_tag_range( current_scene->ui_expanded_tag_begin, current_scene->ui_expanded_tag_end );
+		Range expanded_tag_range( current_scene->ui_expanded_tag_begin, current_scene->ui_expanded_tag_end );
 		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( current_control->tag ) )
 		{
 			update_im_state( current_control.get(), is_hovered, is_hot );
@@ -323,7 +323,7 @@ void ui_mgr::end_active_control()
 	draw( current_control.get(), false, false );
 }
 
-void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot )
+void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot )
 {
 	control->rc_ui.w =
 		fequals( control->rc_ui.w, 0.f )
@@ -396,12 +396,12 @@ void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot 
 	{
 		// convert mouse location to client rect position inside control
 
-		auto viewport_pos = coord_system::window_to_viewport_pos( g_engine->input.mouse_window_pos );
-		auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
+		auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+		auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 		result.click_pos =
 			ui_pos
-			- vec2( current_control->rc_ui.x, current_control->rc_ui.y );
+			- Vec2( current_control->rc_ui.x, current_control->rc_ui.y );
 
 		result.click_pct.x = result.click_pos.x / current_control->rc_ui.w;
 		result.click_pos.y = result.click_pos.y / current_control->rc_ui.h;
@@ -411,7 +411,7 @@ void ui_mgr::update_im_state( ui_control* control, bool is_hovered, bool is_hot 
 	}
 }
 
-void ui_mgr::draw( ui_control* control, bool is_hovered, bool is_hot )
+void UI_Mgr::draw( UI_Control* control, bool is_hovered, bool is_hot )
 {
 	auto control_data = current_callback->get_data( control->tag );
 
@@ -434,21 +434,21 @@ void ui_mgr::draw( ui_control* control, bool is_hovered, bool is_hot )
 
 	auto margins = control->get_control_inner_margins();
 
-	rect rc_ui = control->rc_ui;
+	Rect rc_ui = control->rc_ui;
 	rc_ui.x += margins.x / 2.f;
 	rc_ui.y += margins.y / 2.f;
 	rc_ui.w -= margins.x;
 	rc_ui.h -= margins.y;
 
-	rect rc_client = control->rc_client;
+	Rect rc_client = control->rc_client;
 	rc_client.x += margins.x / 2.f;
 	rc_client.y += margins.y / 2.f;
 	rc_client.w -= margins.x;
 	rc_client.h -= margins.y;
 
-	vec2 clicked_offset = get_click_offset( is_hovered, is_hot );
-	rect rc_ui_offset = rc_ui + clicked_offset;
-	rect rc_client_offset = rc_client + clicked_offset;
+	Vec2 clicked_offset = get_click_offset( is_hovered, is_hot );
+	Rect rc_ui_offset = rc_ui + clicked_offset;
+	Rect rc_client_offset = rc_client + clicked_offset;
 
 	{
 		scoped_render_state;
@@ -479,30 +479,30 @@ void ui_mgr::draw( ui_control* control, bool is_hovered, bool is_hot )
 
 // takes a base color and modifies it based on the state of the UI
 
-color ui_mgr::get_adjusted_color( const color& base_color, bool is_hovered, bool is_hot )
+Color UI_Mgr::get_adjusted_color( const Color& base_color, bool is_hovered, bool is_hot )
 {
-	color color = base_color;
+	Color color = base_color;
 
 	if( is_hot )
 	{
-		color::scale( color, 1.75f );
+		Color::scale( color, 1.75f );
 	}
 	else if( is_hovered )
 	{
-		color::scale( color, 1.25f );
+		Color::scale( color, 1.25f );
 	}
 
 	return color;
 }
 
-ui_mgr* ui_mgr::layout_init()
+UI_Mgr* UI_Mgr::layout_init()
 {
 	layout_stack.clear();
 	layout_push( { 0.f, 0.f, ui_w, ui_h } );
 	return this;
 }
 
-ui_mgr* ui_mgr::layout_init( rect rc )
+UI_Mgr* UI_Mgr::layout_init( Rect rc )
 {
 	layout_stack.clear();
 	layout_push( rc );
@@ -510,21 +510,21 @@ ui_mgr* ui_mgr::layout_init( rect rc )
 	return this;
 }
 
-ui_mgr* ui_mgr::layout_push()
+UI_Mgr* UI_Mgr::layout_push()
 {
-	rect layout = { 0.f, 0.f, ui_w, ui_h };
+	Rect layout = { 0.f, 0.f, ui_w, ui_h };
 	layout_stack.push_back( layout );
 
 	return this;
 }
 
-ui_mgr* ui_mgr::layout_push( rect rc )
+UI_Mgr* UI_Mgr::layout_push( Rect rc )
 {
 	layout_stack.push_back( rc );
 	return this;
 }
 
-ui_mgr* ui_mgr::layout_pop()
+UI_Mgr* UI_Mgr::layout_pop()
 {
 	assert( !layout_stack.empty() );
 
@@ -532,49 +532,49 @@ ui_mgr* ui_mgr::layout_pop()
 	return this;
 }
 
-rect ui_mgr::layout_top()
+Rect UI_Mgr::layout_top()
 {
 	assert( !layout_stack.empty() );
 
 	return layout_stack.back();
 }
 
-rect* ui_mgr::layout_top_ptr()
+Rect* UI_Mgr::layout_top_ptr()
 {
 	assert( !layout_stack.empty() );
 
 	return &(layout_stack.back());
 }
 
-ui_mgr* ui_mgr::cut_top( float sz )
+UI_Mgr* UI_Mgr::cut_top( float sz )
 {
 	set_rect( layout_top_ptr()->cut_top( sz > 0.f ? sz : current_control->default_height + current_control->get_control_inner_margins().y ) );
 	return this;
 
 }
 
-ui_mgr* ui_mgr::cut_bottom( float sz )
+UI_Mgr* UI_Mgr::cut_bottom( float sz )
 {
 	set_rect( layout_top_ptr()->cut_bottom( sz > 0.f ? sz : current_control->default_height + current_control->get_control_inner_margins().y ) );
 	return this;
 
 }
 
-ui_mgr* ui_mgr::cut_left( float sz )
+UI_Mgr* UI_Mgr::cut_left( float sz )
 {
 	set_rect( layout_top_ptr()->cut_left( sz > 0.f ? sz : current_control->default_width + current_control->get_control_inner_margins().x ) );
 	return this;
 
 }
 
-ui_mgr* ui_mgr::cut_right( float sz )
+UI_Mgr* UI_Mgr::cut_right( float sz )
 {
 	set_rect( layout_top_ptr()->cut_right( sz > 0.f ? sz : current_control->default_width + current_control->get_control_inner_margins().x ) );
 	return this;
 
 }
 
-void ui_mgr::draw_topmost()
+void UI_Mgr::draw_topmost()
 {
 	// mouse cursor
 
@@ -583,14 +583,14 @@ void ui_mgr::draw_topmost()
 		{
 			scoped_render_state;
 
-			render::state->z = zdepth_topmost;
+			Render::state->z = zdepth_topmost;
 
-			auto viewport_pos = coord_system::window_to_viewport_pos( g_engine->input.mouse_window_pos );
-			auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
+			auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+			auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
-			render::draw_quad(
+			Render::draw_quad(
 				mouse_cursor->texture,
-				vec2( ( ui_pos.x - mouse_cursor->hotspot_offset.x ), ( ui_pos.y - mouse_cursor->hotspot_offset.y ) )
+				Vec2( ( ui_pos.x - mouse_cursor->hotspot_offset.x ), ( ui_pos.y - mouse_cursor->hotspot_offset.y ) )
 			);
 
 		#if 0
@@ -607,23 +607,23 @@ void ui_mgr::draw_topmost()
 
 // a control with the mouse button held down on it will offset slightly
 
-vec2 ui_mgr::get_click_offset( bool is_hovered, bool is_hot )
+Vec2 UI_Mgr::get_click_offset( bool is_hovered, bool is_hot )
 {
 	if( current_control->uses_click_offset and is_hovered and is_hot )
 	{
-		return vec2( 1, 1 );
+		return Vec2( 1, 1 );
 	}
 
-	return vec2( 0, 0 );
+	return Vec2( 0, 0 );
 }
 
 // checks if the mouse cursor is inside the bounds of a rectangle.
 // note : both the mouse position and the rectangle need to be in UI space
 
-bool ui_mgr::is_mouse_inside( rect& rc )
+bool UI_Mgr::is_mouse_inside( Rect& rc )
 {
-	auto viewport_pos = coord_system::window_to_viewport_pos( g_engine->input.mouse_window_pos );
-	auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
+	auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+	auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 	return rc.contains_point( ui_pos );
 }

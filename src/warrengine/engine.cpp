@@ -5,7 +5,7 @@
 namespace war
 {
 
-void engine::launch( int argc, char* argv [] )
+void Engine::launch( int argc, char* argv [] )
 {
 #if defined(_FINAL_RELEASE)
 	// in final release, we don't want to bother the user with the visual
@@ -15,21 +15,21 @@ void engine::launch( int argc, char* argv [] )
 
 	// get the log file running so we can immediately start writing into it
 
-	g_logfile = std::make_unique<log_file>();
+	g_logfile = std::make_unique<Log_File>();
 	g_logfile->init( g_base_game->internal_name );
 	g_logfile->time_stamp( "Started" );
 
 	log( "Creating engine" );
-	g_engine = std::make_unique<engine>();
+	g_engine = std::make_unique<Engine>();
 
 	log( "Initializing engine" );
 	g_engine->init();
 
 	log( "Current Path : {}", std::filesystem::current_path().generic_string() );
 
-	g_ui = std::make_unique<war::ui_mgr>();
+	g_ui = std::make_unique<war::UI_Mgr>();
 
-	engine::parse_command_line( argc, argv );
+	Engine::parse_command_line( argc, argv );
 
 	log( "Creating main window" );
 	g_engine->window.init();
@@ -37,14 +37,14 @@ void engine::launch( int argc, char* argv [] )
 	log( "Initializing OpenGL" );
 	g_engine->render_api.init();
 
-	engine::precache();
+	Engine::precache();
 
 	log( "Initializing Box2D physics" );
 	g_engine->new_physics_world();
 
-	vec2 viewport_sz = { viewport_w, viewport_h };
+	Vec2 viewport_sz = { viewport_w, viewport_h };
 
-	g_engine->frame_buffer = std::make_unique<opengl_framebuffer>( "game" );
+	g_engine->frame_buffer = std::make_unique<OpenGL_Frame_Buffer>( "game" );
 	{
 		g_engine->frame_buffer->add_color_attachment( viewport_sz, g_engine->window.window_clear_color );	// color
 		g_engine->frame_buffer->add_color_attachment( viewport_sz );										// glow
@@ -53,25 +53,25 @@ void engine::launch( int argc, char* argv [] )
 		g_engine->frame_buffer->finalize();
 	}
 
-	g_engine->blur_frame_buffer = std::make_unique<opengl_framebuffer>( "blur" );
+	g_engine->blur_frame_buffer = std::make_unique<OpenGL_Frame_Buffer>( "blur" );
 	{
 		g_engine->blur_frame_buffer->add_color_attachment( viewport_sz );
 		g_engine->blur_frame_buffer->finalize();
 	}
 
-	g_engine->composite_frame_buffer = std::make_unique<opengl_framebuffer>( "composite" );
+	g_engine->composite_frame_buffer = std::make_unique<OpenGL_Frame_Buffer>( "composite" );
 	{
 		g_engine->composite_frame_buffer->add_color_attachment( viewport_sz );
 		g_engine->composite_frame_buffer->finalize();
 	}
 
 	// used for solid drawing
-	g_engine->tex_white = g_engine->find_asset<texture_asset>( "engine_white" );
-	g_engine->tex_default_lut = g_engine->find_asset<texture_asset>( "tex_default_lut" );
+	g_engine->tex_white = g_engine->find_asset<Texture_Asset>( "engine_white" );
+	g_engine->tex_default_lut = g_engine->find_asset<Texture_Asset>( "tex_default_lut" );
 
 	// there's a simple pixel font that always lives inside of engine so there
 	// is always a font available, regardless of ui theme settings.
-	g_engine->pixel_font = g_engine->find_asset<font_asset>( "engine_pixel_font" );
+	g_engine->pixel_font = g_engine->find_asset<Font_Asset>( "engine_pixel_font" );
 
 	log( "Initializing renderer" );
 	g_engine->renderer.init();
@@ -94,7 +94,7 @@ void engine::launch( int argc, char* argv [] )
 	g_engine->shutdown();
 }
 
-void engine::parse_command_line( int argc, char* argv [] )
+void Engine::parse_command_line( int argc, char* argv [] )
 {
 	for( auto x = 1 ; x < argc ; ++x )
 	{
@@ -114,7 +114,7 @@ void engine::parse_command_line( int argc, char* argv [] )
 	}
 }
 
-void engine::precache()
+void Engine::precache()
 {
 	log( "Caching asset definitions (*.asset_def)..." );
 	g_engine->cache_asset_definition_files( "data/warrengine" );
@@ -154,7 +154,7 @@ void engine::precache()
 		g_engine->_symbol_to_value[ key ] = value;
 	}
 
-	engine::apply_config_settings();
+	Engine::apply_config_settings();
 
 	g_engine->precache_asset_resources( 2 );
 	g_engine->precache_asset_resources( 3 );
@@ -163,13 +163,13 @@ void engine::precache()
 	g_engine->asset_def_file_cache.clear();
 }
 
-void engine::apply_config_settings()
+void Engine::apply_config_settings()
 {
-	tokenizer tok;
+	Tokenizer tok;
 
 	tok.init( g_engine->config_vars.find_value_or( "viewport_res", "320x240" ), "x" );
-	viewport_w = text_parser::float_from_str( tok.tokens[ 0 ] );
-	viewport_h = text_parser::float_from_str( tok.tokens[ 1 ] );
+	viewport_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
+	viewport_h = Text_Parser::float_from_str( tok.tokens[ 1 ] );
 	g_engine->_symbol_to_value[ "viewport_w" ] = std::format( "{}", viewport_w );
 	g_engine->_symbol_to_value[ "viewport_h" ] = std::format( "{}", viewport_h );
 	g_engine->_symbol_to_value[ "viewport_hw" ] = std::format( "{}", viewport_hw );
@@ -177,8 +177,8 @@ void engine::apply_config_settings()
 	log( "V Window Res: {}x{}", (int)viewport_w, (int)viewport_h );
 
 	tok.init( g_engine->config_vars.find_value_or( "ui_res", "640x480" ), "x" );
-	ui_w = text_parser::float_from_str( tok.tokens[ 0 ] );
-	ui_h = text_parser::float_from_str( tok.tokens[ 1 ] );
+	ui_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
+	ui_h = Text_Parser::float_from_str( tok.tokens[ 1 ] );
 	g_engine->_symbol_to_value[ "ui_w" ] = std::format( "{}", ui_w );
 	g_engine->_symbol_to_value[ "ui_h" ] = std::format( "{}", ui_h );
 	g_engine->_symbol_to_value[ "ui_hw" ] = std::format( "{}", ui_hw );
@@ -187,25 +187,25 @@ void engine::apply_config_settings()
 
 
 	g_engine->renderer.init_set_up_default_palette();
-	render::palette = *( g_engine->find_asset<palette_asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
+	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
 
-	rect rc = g_engine->window.compute_max_window_size_for_desktop();
+	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
 	glfwSetWindowPos( g_engine->window.glfw_window, (int)( rc.x ), (int)( rc.y ) );
 	glfwSetWindowSize( g_engine->window.glfw_window, (int)( rc.w ), (int)( rc.h ) );
 	glfwSetWindowAspectRatio( g_engine->window.glfw_window,
 		100,
 		(int)( ( viewport_h / viewport_w ) * 100 ) );
 
-	bool vsync = text_parser::bool_from_str( g_engine->config_vars.find_value_or( "v_sync", "false" ) );
+	bool vsync = Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "v_sync", "false" ) );
 	log( "VSync: {}", vsync ? "true" : "false" );
 	glfwSwapInterval( vsync ? 1 : 0 );
 	g_engine->window.set_title( g_engine->config_vars.find_value_or( "app_title", "WarrEngine" ) );
-	glfwSetWindowAttrib( g_engine->window.glfw_window, GLFW_FLOATING, text_parser::bool_from_str( g_engine->config_vars.find_value_or( "always_on_top", "false" ) ) );
-	g_engine->window.viewport_clear_color = text_parser::color_from_str( g_engine->config_vars.find_value_or( "viewport_clear_color", "64,64,64" ) );
-	g_engine->window.window_clear_color = text_parser::color_from_str( g_engine->config_vars.find_value_or( "window_clear_color", "32,32,32" ) );
+	glfwSetWindowAttrib( g_engine->window.glfw_window, GLFW_FLOATING, Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "always_on_top", "false" ) ) );
+	g_engine->window.viewport_clear_color = Text_Parser::color_from_str( g_engine->config_vars.find_value_or( "viewport_clear_color", "64,64,64" ) );
+	g_engine->window.window_clear_color = Text_Parser::color_from_str( g_engine->config_vars.find_value_or( "window_clear_color", "32,32,32" ) );
 }
 
-void engine::shutdown()
+void Engine::shutdown()
 {
 	// Clean up
 	log( "Shutting down..." );
@@ -223,9 +223,9 @@ void engine::shutdown()
 	glfwTerminate();
 
 	log( "Shutting down OpenGL" );
-	for( auto& [name, shader] : g_engine->render_api.shaders )
+	for( auto& [name, Shader] : g_engine->render_api.shaders )
 	{
-		glDeleteProgram( shader.gl_id );
+		glDeleteProgram( Shader.gl_id );
 	}
 
 	log( "Shutting down input" );
@@ -239,7 +239,7 @@ void engine::shutdown()
 	g_logfile->deinit();
 }
 
-void engine::main_loop()
+void Engine::main_loop()
 {
 	while( is_running and !glfwWindowShouldClose( window.glfw_window ) )
 	{
@@ -337,10 +337,10 @@ void engine::main_loop()
 	}
 }
 
-void engine::do_draw_finished_frame()
+void Engine::do_draw_finished_frame()
 {
 	static auto blur_shader_name = std::format( "blur_{}", g_engine->config_vars.find_value_or( "blur_method", "gaussian" ) );
-	static auto blur_kernel_size = war::text_parser::float_from_str( g_engine->config_vars.find_value_or( "blur_kernel_size", "5" ) );
+	static auto blur_kernel_size = war::Text_Parser::float_from_str( g_engine->config_vars.find_value_or( "blur_kernel_size", "5" ) );
 
 	// ----------------------------------------------------------------------------
 	// the engine frame buffer now contains the color texture and the glow
@@ -358,7 +358,7 @@ void engine::do_draw_finished_frame()
 	g_engine->render_api.set_uniform_float( "u_viewport_w", viewport_w );
 	g_engine->render_api.set_uniform_float( "u_viewport_h", viewport_h );
 
-	render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+	Render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
 	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 	blur_frame_buffer->unbind();
@@ -375,7 +375,7 @@ void engine::do_draw_finished_frame()
 
 			g_engine->render_api.shaders[ "compositing_pass" ].bind();
 
-			render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+			Render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
 			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 		}
@@ -388,7 +388,7 @@ void engine::do_draw_finished_frame()
 			g_engine->render_api.shaders[ "simple" ].bind();
 			g_engine->render_api.set_blend( opengl_blend::glow );
 
-			render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+			Render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
 			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 
@@ -415,10 +415,10 @@ void engine::do_draw_finished_frame()
 			(int)window.viewport_pos_sz.h
 		);
 
-		render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer->color_attachments[ 0 ].texture );
-		render::state->batch_render_target->assign_texture_slot_manual( g_engine->tex_default_lut );
+		Render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer->color_attachments[ 0 ].texture );
+		Render::state->batch_render_target->assign_texture_slot_manual( g_engine->tex_default_lut );
 
-		render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, rect( 0.f, 0.f, viewport_w, viewport_h ) );
+		Render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
 		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
 	}
@@ -426,13 +426,13 @@ void engine::do_draw_finished_frame()
 
 // checks if 'symbol' exists in the map
 
-bool engine::is_symbol_in_map( std::string_view symbol )
+bool Engine::is_symbol_in_map( std::string_view symbol )
 {
 	return _symbol_to_value.count( std::string( symbol ) ) > 0;
 }
 
 // returns a string containing the value stored for 'symbol'
-std::optional<std::string> engine::find_string_from_symbol( std::string_view symbol )
+std::optional<std::string> Engine::find_string_from_symbol( std::string_view symbol )
 {
 	if( !is_symbol_in_map( symbol ) )
 	{
@@ -446,7 +446,7 @@ std::optional<std::string> engine::find_string_from_symbol( std::string_view sym
 //
 // if no value is found for 'symbol', the default value is returned
 
-bool engine::find_bool_from_symbol( std::string_view symbol, bool def_value )
+bool Engine::find_bool_from_symbol( std::string_view symbol, bool def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -455,10 +455,10 @@ bool engine::find_bool_from_symbol( std::string_view symbol, bool def_value )
 		sval = std::format( "{}", def_value );
 	}
 
-	return string_util::to_int( std::string( *sval ) );
+	return String_Util::to_int( std::string( *sval ) );
 }
 
-int engine::find_int_from_symbol( std::string_view symbol, int def_value )
+int Engine::find_int_from_symbol( std::string_view symbol, int def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -467,10 +467,10 @@ int engine::find_int_from_symbol( std::string_view symbol, int def_value )
 		sval = std::format( "{}", def_value );
 	}
 
-	return string_util::to_int( std::string( *sval ) );
+	return String_Util::to_int( std::string( *sval ) );
 }
 
-float engine::find_float_from_symbol( std::string_view symbol, float def_value )
+float Engine::find_float_from_symbol( std::string_view symbol, float def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -479,10 +479,10 @@ float engine::find_float_from_symbol( std::string_view symbol, float def_value )
 		sval = std::format( "{}", def_value );
 	}
 
-	return string_util::to_float( *sval );
+	return String_Util::to_float( *sval );
 }
 
-color engine::find_color_from_symbol( std::string_view symbol, const color& def_value )
+Color Engine::find_color_from_symbol( std::string_view symbol, const Color& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -491,10 +491,10 @@ color engine::find_color_from_symbol( std::string_view symbol, const color& def_
 		sval = std::format( "{},{},{},{}", def_value.r, def_value.g, def_value.b, def_value.a );
 	}
 
-	return color( *sval );
+	return Color( *sval );
 }
 
-range<float> engine::find_range_from_symbol( std::string_view symbol, const range<float>& def_value )
+Range<float> Engine::find_range_from_symbol( std::string_view symbol, const Range<float>& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -503,10 +503,10 @@ range<float> engine::find_range_from_symbol( std::string_view symbol, const rang
 		sval = std::format( "{},{}", def_value.start, def_value.end );
 	}
 
-	return range<float>( *sval );
+	return Range<float>( *sval );
 }
 
-vec2 engine::find_vec2_from_symbol( std::string_view symbol, const vec2& def_value )
+Vec2 Engine::find_vec2_from_symbol( std::string_view symbol, const Vec2& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -515,18 +515,18 @@ vec2 engine::find_vec2_from_symbol( std::string_view symbol, const vec2& def_val
 		sval = std::format( "{},{}", def_value.x, def_value.y );
 	}
 
-	return vec2( *sval );
+	return Vec2( *sval );
 }
 
-void engine::new_physics_world()
+void Engine::new_physics_world()
 {
 	// box2d
 
 	g_engine->box2d.world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
-	g_engine->box2d.listener = std::make_unique<box2d_physics::contact_listener>();
+	g_engine->box2d.listener = std::make_unique<box2d_physics::Contact_Listener>();
 	g_engine->box2d.world->SetContactListener( g_engine->box2d.listener.get() );
 
-	g_engine->box2d.debug_draw = std::make_unique<war::box2d_physics::debug_draw>();
+	g_engine->box2d.debug_draw = std::make_unique<war::box2d_physics::Box2D_Debug_Draw>();
 	g_engine->box2d.world->SetDebugDraw( g_engine->box2d.debug_draw.get() );
 	g_engine->box2d.debug_draw->SetFlags(
 		0
@@ -540,13 +540,13 @@ void engine::new_physics_world()
 
 // called ONCE, as the engine is starting up
 
-void engine::init()
+void Engine::init()
 {
-	random::seed();
-	file_system::init();
+	Random::seed();
+	File_System::init();
 }
 
-void engine::deinit()
+void Engine::deinit()
 {
 	// NOTE : let the OS handle cleaning up. trying to do it manually can cause
 	// weird crashes.
@@ -560,7 +560,7 @@ void engine::deinit()
 	asset_cache.cache.clear();
 }
 
-void engine::draw()
+void Engine::draw()
 {
 	// If engine is paused, draw a border around the screen for visibility
 
@@ -569,54 +569,54 @@ void engine::draw()
 		{
 			scoped_render_state;
 
-			render::state->z = zdepth_topmost;
+			Render::state->z = zdepth_topmost;
 
-			rect rc( 0.f, 0.f, ui_w, ui_h );
+			Rect rc( 0.f, 0.f, ui_w, ui_h );
 
-			render::state->color = make_color( pal::darker );
-			render::draw_line_loop( rc );
-
-			rc.shrink( 1.f );
-			render::state->color = make_color( pal::middle );
-			render::draw_line_loop( rc );
+			Render::state->color = make_color( pal::darker );
+			Render::draw_line_loop( rc );
 
 			rc.shrink( 1.f );
-			render::state->color = make_color( pal::brighter );
-			render::draw_line_loop( rc );
+			Render::state->color = make_color( pal::middle );
+			Render::draw_line_loop( rc );
+
+			rc.shrink( 1.f );
+			Render::state->color = make_color( pal::brighter );
+			Render::draw_line_loop( rc );
 		}
 	}
 }
 
-void engine::toggle_pause()
+void Engine::toggle_pause()
 {
 	toggle_bool( pause_state.toggle );
 }
 
-void engine::pause()
+void Engine::pause()
 {
 	pause_state.ref_count++;
 }
 
-void engine::resume()
+void Engine::resume()
 {
 	pause_state.ref_count--;
 }
 
-bool engine::is_paused()
+bool Engine::is_paused()
 {
 	return pause_state.toggle or pause_state.ref_count > 0;
 }
 
 // loads and caches every "*.asset_def" file it sees in the "asset_def" folder
 
-void engine::cache_asset_definition_files( std::string_view folder_name )
+void Engine::cache_asset_definition_files( std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	file_system::scan_folder_for_ext( &filenames, std::format( "{}", folder_name ), ".asset_def" );
+	File_System::scan_folder_for_ext( &filenames, std::format( "{}", folder_name ), ".asset_def" );
 
 	for( const auto& iter : filenames )
 	{
-		asset_file_definition asset_def_file = {};
+		Asset_File_Definition asset_def_file = {};
 		asset_def_file.original_filename = iter;
 
 		if( asset_def_file.create_internals() )
@@ -626,10 +626,10 @@ void engine::cache_asset_definition_files( std::string_view folder_name )
 	}
 }
 
-void engine::parse_config_files( std::string_view folder_name )
+void Engine::parse_config_files( std::string_view folder_name )
 {
 	std::vector<std::string> filenames;
-	file_system::scan_folder_for_ext( &filenames, std::format( "{}", folder_name ), ".ini" );
+	File_System::scan_folder_for_ext( &filenames, std::format( "{}", folder_name ), ".ini" );
 
 	for( const auto& iter : filenames )
 	{
@@ -637,15 +637,15 @@ void engine::parse_config_files( std::string_view folder_name )
 	}
 }
 
-void engine::parse_config_file( std::string_view filename )
+void Engine::parse_config_file( std::string_view filename )
 {
-	auto file = file_system::load_text_file( filename );
+	auto file = File_System::load_text_file( filename );
 
 	for( const auto& line : file->lines )
 	{
 		if( line.substr( 0, 1 ) == "\"" )
 		{
-			tokenizer tok_kv( line, "\"" );
+			Tokenizer tok_kv( line, "\"" );
 
 			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token(); // skip blank
@@ -664,7 +664,7 @@ void engine::parse_config_file( std::string_view filename )
 //
 // things like texture files, sound files, etc.
 
-void engine::precache_asset_resources( int pass )
+void Engine::precache_asset_resources( int pass )
 {
 	for( auto& iter : asset_def_file_cache )
 	{
@@ -677,7 +677,7 @@ void engine::precache_asset_resources( int pass )
 // loops through all threads we have a handle for and waits until they finish
 // executing. the list is then cleared.
 
-void engine::wait_for_thread_pool_to_finish()
+void Engine::wait_for_thread_pool_to_finish()
 {
 	log_verbose( "Waiting for {} threads to finish.", threads.size() );
 
@@ -689,7 +689,7 @@ void engine::wait_for_thread_pool_to_finish()
 	threads.clear();
 }
 
-bool engine::on_input_motion( const input_event* evt )
+bool Engine::on_input_motion( const Input_Event* evt )
 {
 	auto cam_transform = scenes.get_transform();
 
@@ -702,15 +702,15 @@ bool engine::on_input_motion( const input_event* evt )
 			{
 				if( evt->control_down )
 				{
-					cam_transform->add_angle( coord_system::window_to_viewport_vec( evt->delta ).x );
+					cam_transform->add_angle( Coord_System::window_to_viewport_vec( evt->delta ).x );
 				}
 				else if( evt->alt_down )
 				{
-					cam_transform->add_scale( coord_system::window_to_viewport_vec( evt->delta ).x * 0.01f );
+					cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).x * 0.01f );
 				}
 				else
 				{
-					vec2 delta = coord_system::window_to_world_vec( evt->delta );
+					Vec2 delta = Coord_System::window_to_world_vec( evt->delta );
 					cam_transform->add_pos( delta );
 				}
 
@@ -721,7 +721,7 @@ bool engine::on_input_motion( const input_event* evt )
 
 		case input_id::mouse_wheel:
 		{
-			cam_transform->add_scale( coord_system::window_to_viewport_vec( evt->delta ).y * 0.25f );
+			cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).y * 0.25f );
 
 			return true;
 		}
@@ -731,7 +731,7 @@ bool engine::on_input_motion( const input_event* evt )
 	return false;
 }
 
-bool engine::on_input_pressed( const input_event* evt )
+bool Engine::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -789,7 +789,7 @@ bool engine::on_input_pressed( const input_event* evt )
 		// post process tweaker
 		case input_id::key_f4:
 		{
-			g_engine->scenes.push<scene_post_process>();
+			g_engine->scenes.push<Scene_Post_Process>();
 
 			return true;
 		}
@@ -829,13 +829,13 @@ bool engine::on_input_pressed( const input_event* evt )
 
 			// if we've reached this point, toggle the ESC menu as normal.
 
-			if( typeid( *scene_ptr ) == typeid( scene_esc_menu ) )
+			if( typeid( *scene_ptr ) == typeid( Scene_Esc_Menu ) )
 			{
 				scenes.pop();
 			}
 			else
 			{
-				scenes.push<scene_esc_menu>();
+				scenes.push<Scene_Esc_Menu>();
 			}
 
 			return true;
@@ -851,7 +851,7 @@ bool engine::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool engine::on_input_released( const input_event* evt )
+bool Engine::on_input_released( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -865,13 +865,13 @@ bool engine::on_input_released( const input_event* evt )
 	return false;
 }
 
-void engine::dispatch_collision_queue()
+void Engine::dispatch_collision_queue()
 {
 	dispatch_box2d_collisions();
 	//scenes.dispatch_simple_collisions();
 }
 
-void engine::dispatch_box2d_collisions()
+void Engine::dispatch_box2d_collisions()
 {
 	// begin contact
 
@@ -904,25 +904,25 @@ void engine::dispatch_box2d_collisions()
 	box2d.end_contact_queue.clear();
 }
 
-void engine::set_time_dilation( float dilation )
+void Engine::set_time_dilation( float dilation )
 {
 	time.dilation = glm::clamp( dilation, 0.1f, 5.f );
 
 	// give all assets a chance to respond to the time dilation change
 
-	for( auto& [name, asset] : asset_cache.cache )
+	for( auto& [name, Asset] : asset_cache.cache )
 	{
-		asset->adjust_for_time_dilation();
+		Asset->adjust_for_time_dilation();
 	}
 }
 
-void engine::show_msg_box( std::string_view msg )
+void Engine::show_msg_box( std::string_view msg )
 {
 	msg_box.msg = msg;
-	g_engine->scenes.push<scene_msg_box>();
+	g_engine->scenes.push<Scene_Msg_Box>();
 }
 
-void engine::debug_draw_buffers()
+void Engine::debug_draw_buffers()
 {
 #if 0
 	// ---------------------------------------------------------------------------

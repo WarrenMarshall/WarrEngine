@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct tokenizer final
+struct Tokenizer final
 {
 	std::string_view string_buffer = "";
 	size_t idx = 0;
@@ -10,8 +10,8 @@ struct tokenizer final
 	bool end_of_string = false;
 	bool keep_quoted_strings = false;
 
-	tokenizer() = default;
-	tokenizer( std::string_view string_buffer, std::string_view delim, bool keep_quoted_strings = false );
+	Tokenizer() = default;
+	Tokenizer( std::string_view string_buffer, std::string_view delim, bool keep_quoted_strings = false );
 
 	void init( std::string_view string_buffer, std::string_view delim );
 	void preprocess();

@@ -6,9 +6,9 @@ namespace war
 
 constexpr uint8 max_font_chars = 255;
 
-struct font_def_asset final : asset
+struct Font_Def_Asset final : Asset
 {
-	struct glyph
+	struct Glyph final
 	{
 		uint8 w = 0;
 		uint8 h = 0;
@@ -19,11 +19,11 @@ struct font_def_asset final : asset
 		// this is not in the main asset cache as it would be inefficient to flood
 		// the asset cache with an a_texture for every glyph in a font.
 
-		texture_asset glyph_texture;
+		Texture_Asset glyph_texture;
 	};
 
 	// the font texture this font definition is pulling from
-	texture_source_asset* src_texture = nullptr;
+	Texture_Source_Asset* src_texture = nullptr;
 
 	// this height value is the largest one found in the font. using this is
 	// guaranteed to enclose any line of text.
@@ -31,18 +31,18 @@ struct font_def_asset final : asset
 
 	// using an array here to maximize look ups later on. char values
 	// become indices into this array.
-	glyph char_map[ max_font_chars ];
+	Glyph char_map[ max_font_chars ];
 
 	virtual bool create() override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct font_asset final : asset
+struct Font_Asset final : Asset
 {
-	font_def_asset* font_def = nullptr;
+	Font_Def_Asset* font_def = nullptr;
 
-	[[nodiscard]] vec2 get_string_extents( std::string_view text ) const;
+	[[nodiscard]] Vec2 get_string_extents( std::string_view text ) const;
 	[[nodiscard]] float get_max_height();
 };
 

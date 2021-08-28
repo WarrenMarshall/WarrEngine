@@ -5,7 +5,7 @@
 namespace war
 {
 
-tween::tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via )
+Tween::Tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via )
 	: start( start ), end( end )
 {
 	_tween = tweeny::from( start ).to( end ).during( duration_ms );
@@ -15,7 +15,7 @@ tween::tween( float start, float end, time_ms duration_ms, e_tween_type type, e_
 	time_last = g_engine->time.now();
 }
 
-tween::tween()
+Tween::Tween()
 {
 	time_last = g_engine->time.now();
 }
@@ -23,7 +23,7 @@ tween::tween()
 // when a tween is dereferenced, it is updated with the amount of time that has
 // passed since the last time. the value is then returned.
 
-float tween::operator*()
+float Tween::operator*()
 {
 	time_ms delta = g_engine->time.now() - time_last;
 	time_last = g_engine->time.now();
@@ -31,17 +31,17 @@ float tween::operator*()
 	return _tween.step( (int)( delta ) );
 }
 
-void tween::restart()
+void Tween::restart()
 {
 	_tween.seek( 0.f, true );
 }
 
-void tween::randomize()
+void Tween::randomize()
 {
-	_tween.seek( random::getf(), true );
+	_tween.seek( Random::getf(), true );
 }
 
-void tween::toggle_direction()
+void Tween::toggle_direction()
 {
 	// direction is returned as 1:forward, -1:backward
 
@@ -55,7 +55,7 @@ void tween::toggle_direction()
 	}
 }
 
-void tween::set_backwards()
+void Tween::set_backwards()
 {
 	_tween.seek( 1.f, false );
 	_tween.backward();
@@ -97,7 +97,7 @@ bool on_step_pingpong( tweeny::tween<float>& tween )
 	return false;
 }
 
-void tween::set_type( e_tween_type type )
+void Tween::set_type( e_tween_type type )
 {
 	switch( type )
 	{
@@ -115,7 +115,7 @@ void tween::set_type( e_tween_type type )
 	}
 }
 
-void tween::set_via( e_tween_via via )
+void Tween::set_via( e_tween_via via )
 {
 	switch( via )
 	{

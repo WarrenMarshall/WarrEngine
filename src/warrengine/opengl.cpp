@@ -9,7 +9,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-void opengl::init()
+void OpenGL_Mgr::init()
 {
 	// Init GLEW
 	GLenum err = glewInit();
@@ -59,12 +59,12 @@ void opengl::init()
 
 	// create the shaders we need
 
-	shaders[ "simple" ] = shader( "simple.vert", "simple.frag" );
-	shaders[ "base_pass" ] = shader( "simple.vert", "base_pass.frag" );
-	shaders[ "blur_box" ] = shader( "simple.vert", "blur_box.frag" );
-	shaders[ "blur_gaussian" ] = shader( "simple.vert", "blur_gaussian.frag" );
-	shaders[ "compositing_pass" ] = shader( "simple.vert", "compositing_pass.frag" );
-	shaders[ "final_pass" ] = shader( "simple.vert", "final_pass.frag" );
+	shaders[ "simple" ] = Shader( "simple.vert", "simple.frag" );
+	shaders[ "base_pass" ] = Shader( "simple.vert", "base_pass.frag" );
+	shaders[ "blur_box" ] = Shader( "simple.vert", "blur_box.frag" );
+	shaders[ "blur_gaussian" ] = Shader( "simple.vert", "blur_gaussian.frag" );
+	shaders[ "compositing_pass" ] = Shader( "simple.vert", "compositing_pass.frag" );
+	shaders[ "final_pass" ] = Shader( "simple.vert", "final_pass.frag" );
 
 	// we only have to do this one time, so a local array is created, filled,
 	// uploaded, and left for dead
@@ -125,10 +125,10 @@ void opengl::init()
 	// them never change. all rendering code references these and they are only
 	// uploaded to the GPU one time.
 
-	ib_quads = std::make_unique<index_buffer_quads>();
-	ib_tris = std::make_unique<index_buffer_tris>();
-	ib_lines = std::make_unique<index_buffer_lines>();
-	ib_points = std::make_unique<index_buffer_points>();
+	ib_quads = std::make_unique<Index_Buffer_Quads>();
+	ib_tris = std::make_unique<Index_Buffer_Tris>();
+	ib_lines = std::make_unique<Index_Buffer_Lines>();
+	ib_points = std::make_unique<Index_Buffer_Points>();
 }
 
 // pushes a new matrix on top of the stack.
@@ -136,14 +136,14 @@ void opengl::init()
 // this can either be an identity matrix, or a copy of the
 // existing top matrix
 
-matrix* opengl::model_matrix_push_identity()
+Matrix* OpenGL_Mgr::model_matrix_push_identity()
 {
 	model_matrix_stack.emplace_back();
 	top_matrix = &( model_matrix_stack.back() );
 	return top_matrix;
 }
 
-matrix* opengl::model_matrix_push()
+Matrix* OpenGL_Mgr::model_matrix_push()
 {
 	model_matrix_stack.push_back( model_matrix_stack.back() );
 	top_matrix = &( model_matrix_stack.back() );
@@ -152,19 +152,19 @@ matrix* opengl::model_matrix_push()
 
 // removes the top matrix from the stack
 
-matrix* opengl::model_matrix_pop()
+Matrix* OpenGL_Mgr::model_matrix_pop()
 {
 	model_matrix_stack.pop_back();
 	top_matrix = &( model_matrix_stack.back() );
 	return top_matrix;
 }
 
-void opengl::clear_depth_buffer()
+void OpenGL_Mgr::clear_depth_buffer()
 {
 	glClear( GL_DEPTH_BUFFER_BIT );
 }
 
-void opengl::set_blend( e_opengl_blend blend ) const
+void OpenGL_Mgr::set_blend( e_opengl_blend blend ) const
 {
 	switch( blend )
 	{
@@ -196,7 +196,7 @@ void opengl::set_blend( e_opengl_blend blend ) const
 
 // PROJECTION MATRIX - getting stuff into screen space from camera space
 
-void opengl::set_projection_matrix() const
+void OpenGL_Mgr::set_projection_matrix() const
 {
 	glm::mat4 projection = glm::mat4( 1.f );
 
@@ -208,11 +208,11 @@ void opengl::set_projection_matrix() const
 		-zdepth_max,
 		zdepth_max );
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_projection_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_projection_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( projection )
@@ -222,17 +222,17 @@ void opengl::set_projection_matrix() const
 
 // sets up the default view matrix
 
-void opengl::set_view_matrix_identity()
+void OpenGL_Mgr::set_view_matrix_identity()
 {
 	//assert( g_engine->renderer.dynamic_batches.is_empty() );
 
 	// identity
 
-	matrix view_mtx;
+	Matrix view_mtx;
 
 	// viewport pivot
 
-	matrix viewport_pivot_mtx;
+	Matrix viewport_pivot_mtx;
 	viewport_pivot_mtx.translate( g_engine->scenes.get_viewport_pivot() );
 
 	// camera
@@ -243,18 +243,18 @@ void opengl::set_view_matrix_identity()
 
 	// send to all shaders
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_view_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_view_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( view_mtx.m )
 		);
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_viewport_pivot_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_viewport_pivot_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( viewport_pivot_mtx.m )
@@ -262,31 +262,31 @@ void opengl::set_view_matrix_identity()
 	}
 }
 
-void opengl::set_view_matrix_identity_no_camera()
+void OpenGL_Mgr::set_view_matrix_identity_no_camera()
 {
 	//assert( g_engine->renderer.dynamic_batches.is_empty() );
 
 	// identity
 
-	matrix view_mtx;
-	matrix viewport_pivot_mtx;
+	Matrix view_mtx;
+	Matrix viewport_pivot_mtx;
 
 	using_camera = false;
 
 	// send to all shaders
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_view_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_view_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( view_mtx.m )
 		);
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_viewport_pivot_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_viewport_pivot_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( viewport_pivot_mtx.m )
@@ -296,14 +296,14 @@ void opengl::set_view_matrix_identity_no_camera()
 
 // sets the view matrix as identity for things like UI and mouse cursors.
 
-void opengl::set_view_matrix_identity_ui()
+void OpenGL_Mgr::set_view_matrix_identity_ui()
 {
 	//assert( g_engine->renderer.dynamic_batches.is_empty() );
 
 	// identity
 
-	matrix view_mtx;
-	matrix viewport_pivot_mtx;
+	Matrix view_mtx;
+	Matrix viewport_pivot_mtx;
 
 	using_camera = false;
 
@@ -313,18 +313,18 @@ void opengl::set_view_matrix_identity_ui()
 
 	// send to all shaders
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_view_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_view_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( view_mtx.m )
 		);
 		glProgramUniformMatrix4fv(
-			shader.gl_id,
-			glGetUniformLocation( shader.gl_id, "u_viewport_pivot_matrix" ),
+			Shader.gl_id,
+			glGetUniformLocation( Shader.gl_id, "u_viewport_pivot_matrix" ),
 			1,
 			GL_FALSE,
 			glm::value_ptr( viewport_pivot_mtx.m )
@@ -336,17 +336,17 @@ void opengl::set_view_matrix_identity_ui()
 // the requested uniform name. they will read and return the first one they
 // find.
 
-float opengl::get_uniform_float( std::string_view name )
+float OpenGL_Mgr::get_uniform_float( std::string_view name )
 {
 	float result = 0.f;
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 
 		if( loc != -1 )
 		{
-			glGetUniformfv( shader.gl_id, loc, &result );
+			glGetUniformfv( Shader.gl_id, loc, &result );
 			break;
 		}
 	}
@@ -354,17 +354,17 @@ float opengl::get_uniform_float( std::string_view name )
 	return result;
 }
 
-bool opengl::get_uniform_bool( std::string_view name )
+bool OpenGL_Mgr::get_uniform_bool( std::string_view name )
 {
 	int result = 0;
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 
 		if( loc != -1 )
 		{
-			glGetUniformiv( shader.gl_id, loc, &result );
+			glGetUniformiv( Shader.gl_id, loc, &result );
 			break;
 		}
 	}
@@ -372,17 +372,17 @@ bool opengl::get_uniform_bool( std::string_view name )
 	return bool( result );
 }
 
-color opengl::get_uniform_color( std::string_view name )
+Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 {
-	color result;
+	Color result;
 
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 
 		if( loc != -1 )
 		{
-			glGetnUniformfv( shader.gl_id, loc, 4 * sizeof(float), &result.r );
+			glGetnUniformfv( Shader.gl_id, loc, 4 * sizeof(float), &result.r );
 			break;
 		}
 	}
@@ -393,50 +393,50 @@ color opengl::get_uniform_color( std::string_view name )
 // the "set_uniform" functions loop through all shaders and attempt to set a
 // uniform value in each one, if it exists.
 
-void opengl::set_uniform_float( std::string_view name, float value )
+void OpenGL_Mgr::set_uniform_float( std::string_view name, float value )
 {
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
 		{
-			glProgramUniform1f( shader.gl_id, loc, value );
+			glProgramUniform1f( Shader.gl_id, loc, value );
 		}
 	}
 }
 
-void opengl::set_uniform_bool( std::string_view name, bool value )
+void OpenGL_Mgr::set_uniform_bool( std::string_view name, bool value )
 {
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
 		{
-			glProgramUniform1i( shader.gl_id, loc, value );
+			glProgramUniform1i( Shader.gl_id, loc, value );
 		}
 	}
 }
 
-void opengl::set_uniform_color( std::string_view name, const color& value )
+void OpenGL_Mgr::set_uniform_color( std::string_view name, const Color& value )
 {
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
 		{
-			glProgramUniform4f( shader.gl_id, loc, value.r, value.g, value.b, value.a );
+			glProgramUniform4f( Shader.gl_id, loc, value.r, value.g, value.b, value.a );
 		}
 	}
 }
 
-void opengl::set_uniform_array( std::string_view name, int* value, int count )
+void OpenGL_Mgr::set_uniform_array( std::string_view name, int* value, int count )
 {
-	for( auto& [shader_name, shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
 	{
-		auto loc = glGetUniformLocation( shader.gl_id, name.data() );
+		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
 		{
-			glProgramUniform1iv( shader.gl_id, loc, count, value );
+			glProgramUniform1iv( Shader.gl_id, loc, count, value );
 		}
 	}
 }
@@ -448,11 +448,11 @@ void opengl::set_uniform_array( std::string_view name, int* value, int count )
 //
 // note : buffer must already be bound or this will crash
 
-void opengl::allocate_vertex_buffer_on_gpu( int max_verts, bool is_static )
+void OpenGL_Mgr::allocate_vertex_buffer_on_gpu( int max_verts, bool is_static )
 {
 	glBufferData(
 		GL_ARRAY_BUFFER,
-		max_verts * sizeof( render_vertex ),
+		max_verts * sizeof( Render_Vertex ),
 		nullptr,
 		is_static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW
 	);

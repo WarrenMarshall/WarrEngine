@@ -5,12 +5,12 @@
 namespace war
 {
 
-render_state::render_state()
+Render_State::Render_State()
 	: font( g_engine->pixel_font )
 {
 }
 
-void render_state::set_from_opt( render_state_optional& rso )
+void Render_State::set_from_opt( Render_State_Optional& rso )
 {
 	align = rso.align.value_or( align );
 	angle = rso.angle.value_or( angle );

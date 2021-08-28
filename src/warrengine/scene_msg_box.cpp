@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-bool scene_msg_box_ui_callback::on_input_pressed( const input_event* evt )
+bool Scene_Msg_Box_UI_Callback::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -24,32 +24,32 @@ bool scene_msg_box_ui_callback::on_input_pressed( const input_event* evt )
 
 // ----------------------------------------------------------------------------
 
-scene_msg_box::scene_msg_box()
+Scene_Msg_Box::Scene_Msg_Box()
 {
-	ui_callback = std::make_unique<scene_msg_box_ui_callback>();
+	ui_callback = std::make_unique<Scene_Msg_Box_UI_Callback>();
 }
 
-void scene_msg_box::pushed()
+void Scene_Msg_Box::pushed()
 {
 	scene::pushed();
 
 	flags.blocks_further_input = true;
 }
 
-void scene_msg_box::popped()
+void Scene_Msg_Box::popped()
 {
 	scene::popped();
 }
 
-void scene_msg_box::draw_ui()
+void Scene_Msg_Box::draw_ui()
 {
 	scene::draw_ui();
 
 	{
 		scoped_render_state;
 
-		render::state->color = make_color( 0, 0.75f );
-		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+		Render::state->color = make_color( 0, 0.75f );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
 	}
 
 	float panel_w = ui_w * .75f;
@@ -57,12 +57,12 @@ void scene_msg_box::draw_ui()
 
 	if( msg.empty() )
 	{
-		msg = render::wrap_string_to_width( g_engine->msg_box.msg, panel_w );
+		msg = Render::wrap_string_to_width( g_engine->msg_box.msg, panel_w );
 	}
 
-	panel_h += msg.size() * render::state->font->get_max_height();
+	panel_h += msg.size() * Render::state->font->get_max_height();
 
-	rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
+	Rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
 	g_ui->layout_init( rc_panel );
 
 	g_ui

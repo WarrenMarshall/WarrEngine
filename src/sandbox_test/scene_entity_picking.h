@@ -10,6 +10,6 @@ struct scene_entity_picking final : scene
 	virtual void draw_ui() override;
 	virtual void post_update() override;
 
-	virtual bool on_input_pressed( const input_event* evt ) override;
-	virtual bool on_input_motion( const input_event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input_motion( const Input_Event* evt ) override;
 };

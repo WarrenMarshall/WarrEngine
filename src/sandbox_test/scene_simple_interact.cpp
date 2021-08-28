@@ -5,7 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static bit_flag_generator collision_bits = 1;
+static Bit_Flag_Generator collision_bits = 1;
 
 static const unsigned scene_simple_coll_player = collision_bits.get();
 static const unsigned scene_simple_coll_geo = collision_bits.next();
@@ -25,35 +25,35 @@ scene_simple_interact::scene_simple_interact()
 	flags.is_debug_physics_scene = true;
 }
 
-entity* scene_simple_interact::spawn_player()
+Entity* scene_simple_interact::spawn_player()
 {
-	auto e = add_entity<entity>();
+	auto e = add_entity<Entity>();
 	e->debug_name = "player";
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
 	e->simple.friction = 0.1f;
 	{
-		auto ec = e->add_component<ec_simple_collision_body>();
+		auto ec = e->add_component<Simple_Collision_Body>();
 
-		switch( random::geti_range( 0, 2 ) )
+		switch( Random::geti_range( 0, 2 ) )
 		{
 			case 0:
 			{
-				ec->set_as_centered_box( radius * random::getf_range( 0.5f, 3.0f ), radius * random::getf_range( 0.5f, 3.0f ) );
+				ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
 			}
 			break;
 
 			case 1:
 			{
-				ec->set_as_circle( radius * random::getf_range( 0.5f, 2.0f ) );
+				ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
 			}
 			break;
 
 			case 2:
 			{
-				auto s = random::geti_range( 3, 8 );
-				auto r = radius * random::getf_range( 0.5f, 3.0f );
-				ec->set_as_polygon( util_geo::generate_convex_shape( s, r ) );
+				auto s = Random::geti_range( 3, 8 );
+				auto r = radius * Random::getf_range( 0.5f, 3.0f );
+				ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
 			}
 			break;
 		}
@@ -61,7 +61,7 @@ entity* scene_simple_interact::spawn_player()
 		ec->set_collision_flags( scene_simple_coll_player, scene_simple_coll_geo | scene_simple_coll_player );
 	}
 	{
-		auto ec = e->add_component<ec_primitive_shape>();
+		auto ec = e->add_component<Primitve_Shape_Component>();
 		ec->add_shape( primitive_shape::point );
 	}
 
@@ -88,13 +88,13 @@ void scene_simple_interact::pushed()
 	// HIT MARKER
 
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->tag = H( "hit_marker" );
 		e->set_pos( { 0.f, 0.f } );
 		e->rs_opt.z_bias = zdepth_debug_bias;
 		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->rs_opt.color = make_color( color::yellow );
+			auto ec = e->add_component<Primitve_Shape_Component>();
+			ec->rs_opt.color = make_color( Color::yellow );
 		}
 
 		hit_marker = e;
@@ -106,18 +106,18 @@ void scene_simple_interact::pushed()
 	{
 		int num_primitives = 4;
 
-		auto e = add_entity<entity>( "world" );
+		auto e = add_entity<Entity>( "world" );
 		e->simple.type = sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{
-			auto x = random::getf_range( -viewport_hw, viewport_hw );
-			auto y = random::getf_range( -viewport_hw, viewport_hw );
-			auto w = random::getf_range( 16.f, 80.f );
-			auto h = random::getf_range( 16.f, 80.f );
+			auto x = Random::getf_range( -viewport_hw, viewport_hw );
+			auto y = Random::getf_range( -viewport_hw, viewport_hw );
+			auto w = Random::getf_range( 16.f, 80.f );
+			auto h = Random::getf_range( 16.f, 80.f );
 
 			{
-				auto ec = e->add_component<ec_simple_collision_body>();
+				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
@@ -126,12 +126,12 @@ void scene_simple_interact::pushed()
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{
-			auto x = random::getf_range( -viewport_hw, viewport_hw );
-			auto y = random::getf_range( -viewport_hw, viewport_hw );
-			auto r = random::getf_range( 8.f, 40.f );
+			auto x = Random::getf_range( -viewport_hw, viewport_hw );
+			auto y = Random::getf_range( -viewport_hw, viewport_hw );
+			auto r = Random::getf_range( 8.f, 40.f );
 
 			{
-				auto ec = e->add_component<ec_simple_collision_body>();
+				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( scene_simple_coll_geo, 0 );
@@ -140,25 +140,25 @@ void scene_simple_interact::pushed()
 
 		// 4 walls
 		{
-			auto ec = e->add_component<ec_simple_collision_body>();
+			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( scene_simple_coll_geo, 0 );
 		}
 		{
-			auto ec = e->add_component<ec_simple_collision_body>();
+			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( scene_simple_coll_geo, 0 );
 		}
 		{
-			auto ec = e->add_component<ec_simple_collision_body>();
+			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( scene_simple_coll_geo, 0 );
 		}
 		{
-			auto ec = e->add_component<ec_simple_collision_body>();
+			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( scene_simple_coll_geo, 0 );
@@ -172,9 +172,9 @@ void scene_simple_interact::draw()
 {
 	{
 		scoped_render_state;
-		render::state->color = make_color( pal::darker );
-		render::draw_tiled( g_engine->find_asset<texture_asset>( "engine_tile_background_stripe" ),
-			rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		Render::state->color = make_color( pal::darker );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
+			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
 	scene::draw();
@@ -182,9 +182,9 @@ void scene_simple_interact::draw()
 
 	if( b_show_ray )
 	{
-		render::state->color = make_color( color::green, 0.25f );
+		Render::state->color = make_color( Color::green, 0.25f );
 		auto start = player->get_pos();
-		render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
+		Render::draw_line( start, start + ( ray_dir * max_raycast_length ) );
 	}
 }
 
@@ -209,39 +209,39 @@ void scene_simple_interact::update()
 
 void scene_simple_interact::reset_collision_trace_results()
 {
-	hit_marker->get_component<ec_primitive_shape>()->shapes.clear();
+	hit_marker->get_component<Primitve_Shape_Component>()->shapes.clear();
 
-	for( auto& iter : world_geo->get_components<ec_simple_collision_body>() )
+	for( auto& iter : world_geo->get_components<Simple_Collision_Body>() )
 	{
-		iter->rs_opt.color = make_color( color::dark_teal );
+		iter->rs_opt.color = make_color( Color::dark_teal );
 	}
 }
 
-bool scene_simple_interact::on_input_pressed( const input_event* evt )
+bool scene_simple_interact::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
 		case input_id::key_1:
 		{
-			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_centered_box( radius * random::getf_range( 0.5f, 3.0f ), radius * random::getf_range( 0.5f, 3.0f ) );
+			auto ec = player->get_component<Simple_Collision_Body>();
+			ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
 		}
 		break;
 
 		case input_id::key_2:
 		{
-			auto ec = player->get_component<ec_simple_collision_body>();
-			ec->set_as_circle( radius * random::getf_range( 0.5f, 2.0f ) );
+			auto ec = player->get_component<Simple_Collision_Body>();
+			ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
 		}
 		break;
 
 		case input_id::key_3:
 		{
-			auto ec = player->get_component<ec_simple_collision_body>();
+			auto ec = player->get_component<Simple_Collision_Body>();
 
-			auto s = random::geti_range( 3, 8 );
-			auto r = radius * random::getf_range( 0.5f, 3.0f );
-			ec->set_as_polygon( util_geo::generate_convex_shape( s, r ) );
+			auto s = Random::geti_range( 3, 8 );
+			auto r = radius * Random::getf_range( 0.5f, 3.0f );
+			ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
 		}
 		break;
 
@@ -254,7 +254,7 @@ bool scene_simple_interact::on_input_pressed( const input_event* evt )
 
 		case input_id::mouse_button_right:
 		{
-			auto pos = coord_system::window_to_world_pos( evt->mouse_pos );
+			auto pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 			player->set_pos( pos );
 		}
 		break;
@@ -269,18 +269,18 @@ bool scene_simple_interact::on_input_pressed( const input_event* evt )
 			auto start = player->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
-			simple_collision::raycast_all callback;
+			simple_collision::Raycast_All callback;
 			sc_world->ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<ec_primitive_shape>();
+				auto ec = hit_marker->get_component<Primitve_Shape_Component>();
 				ec->shapes.clear();
 
 				for( auto& hit : callback.results )
 				{
-					ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), hit.pos );
-					hit.scc->rs_opt.color = make_color( color::teal );
+					ec->add_shape( primitive_shape::rect, Rect::create_centered( 6.f ), hit.pos );
+					hit.scc->rs_opt.color = make_color( Color::teal );
 				}
 			}
 		}
@@ -296,16 +296,16 @@ bool scene_simple_interact::on_input_pressed( const input_event* evt )
 			auto start = player->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
-			simple_collision::raycast_closest callback;
+			simple_collision::Raycast_Closest callback;
 			sc_world->ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<ec_primitive_shape>();
+				auto ec = hit_marker->get_component<Primitve_Shape_Component>();
 				ec->shapes.clear();
-				ec->add_shape( primitive_shape::rect, rect::create_centered( 6.f ), callback.result.pos );
+				ec->add_shape( primitive_shape::rect, Rect::create_centered( 6.f ), callback.result.pos );
 
-				callback.result.scc->rs_opt.color = make_color( color::teal );
+				callback.result.scc->rs_opt.color = make_color( Color::teal );
 			}
 		}
 		break;
@@ -314,7 +314,7 @@ bool scene_simple_interact::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene_simple_interact::on_input_motion( const input_event* evt )
+bool scene_simple_interact::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

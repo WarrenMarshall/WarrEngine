@@ -4,10 +4,10 @@
 namespace war
 {
 
-struct timeline_nodes_key_frame final
+struct Timeline_Nodes_Key_Frame final
 {
 	e_tnkf_type type = tnkf_type::none;
-	life_cycle_mgr life_cycle;
+	Life_Cycle_Mgr life_cycle;
 	float pct_marker = 0.f;
 	bool should_restore_state = false;
 	time_ms started = 0, duration = 0;
@@ -25,8 +25,8 @@ struct timeline_nodes_key_frame final
 				float angle;
 			} save;
 
-			noise_simplex noise;
-			transform* tform;
+			Simplex_Noise noise;
+			Transform* tform;
 			float strength;
 		} shake_angle;
 
@@ -35,10 +35,10 @@ struct timeline_nodes_key_frame final
 		{
 			struct
 			{
-				color clr;
+				Color clr;
 			} save;
 
-			color clr;
+			Color clr;
 		} pp_color_overlay;
 
 		// ----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ struct timeline_nodes_key_frame final
 		// ----------------------------------------------------------------------------
 		struct
 		{
-			sound_asset* snd;
+			Sound_Asset* snd;
 		} play_sound;
 
 		// ----------------------------------------------------------------------------
@@ -67,11 +67,10 @@ struct timeline_nodes_key_frame final
 		// ----------------------------------------------------------------------------
 		struct
 		{
-			int offset;
-		} scene_pop_at_offset;
+		} scene_pop;
 	};
 
-	timeline_nodes_key_frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration );
+	Timeline_Nodes_Key_Frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration );
 
 	void on_started_running();
 	void update();

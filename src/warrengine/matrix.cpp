@@ -5,32 +5,32 @@
 namespace war
 {
 
-matrix::matrix()
+Matrix::Matrix()
 {
 	identity();
 }
 
-matrix::matrix( glm::mat4 glm_mtx )
+Matrix::Matrix( glm::mat4 glm_mtx )
 	: m( glm_mtx )
 {
 }
 
-void matrix::identity()
+void Matrix::identity()
 {
 	m = glm::mat4( 1 );
 }
 
-void matrix::apply_transform( const transform& transform )
+void Matrix::apply_transform( const Transform& transform )
 {
 	apply_transform( transform.pos, transform.angle, { transform.scale, transform.scale } );
 }
 
-void matrix::apply_transform( const vec2& pos, float angle, float scale )
+void Matrix::apply_transform( const Vec2& pos, float angle, float scale )
 {
 	apply_transform( pos, angle, { scale, scale } );
 }
 
-void matrix::apply_transform( const vec2& pos, float angle, const vec2& scale )
+void Matrix::apply_transform( const Vec2& pos, float angle, const Vec2& scale )
 {
 	// apply requested transforms to this matrix
 	//
@@ -47,54 +47,54 @@ void matrix::apply_transform( const vec2& pos, float angle, const vec2& scale )
 	this->scale( scale );
 }
 
-void matrix::translate( const vec2& v )
+void Matrix::translate( const Vec2& v )
 {
 	m = glm::translate( m, glm::vec3( v.x, v.y, 0.f ) );
 }
 
-void matrix::scale( float v )
+void Matrix::scale( float v )
 {
 	m = glm::scale( m, glm::vec3( v, v, 1.f ) );
 }
 
-void matrix::scale( const vec2& v )
+void Matrix::scale( const Vec2& v )
 {
 	m = glm::scale( m, glm::vec3( v.x, v.y, 1.f ) );
 }
 
-void matrix::rotate( float v )
+void Matrix::rotate( float v )
 {
 	m = glm::rotate( m, glm::radians( v ), glm::vec3( 0.f, 0.f, 1.f ) );
 }
 
-void matrix::invert()
+void Matrix::invert()
 {
 	m = glm::inverse( m );
 }
 
 // ----------------------------------------------------------------------------
 
-vec2 matrix::transform_vec2( const vec2& v ) const
+Vec2 Matrix::transform_vec2( const Vec2& v ) const
 {
 	auto new_v = m * glm::vec4( v.x, v.y, 0.f, 1.f );
-	return vec2( new_v.x, new_v.y );
+	return Vec2( new_v.x, new_v.y );
 }
 
-void matrix::transform_vec2( vec2* v ) const
+void Matrix::transform_vec2( Vec2* v ) const
 {
 	auto new_v = m * glm::vec4( v->x, v->y, 0.f, 1.f );
-	*v = vec2( new_v.x, new_v.y );
+	*v = Vec2( new_v.x, new_v.y );
 }
 
 // ----------------------------------------------------------------------------
 
-matrix matrix::operator*( matrix& mtx ) const
+Matrix Matrix::operator*( Matrix& mtx ) const
 {
 	glm::mat4 glm_mtx = this->m * mtx.m;
-	return matrix( glm_mtx );
+	return Matrix( glm_mtx );
 }
 
-matrix matrix::operator*=( matrix& mtx )
+Matrix Matrix::operator*=( Matrix& mtx )
 {
 	m *= mtx.m;
 	return *this;

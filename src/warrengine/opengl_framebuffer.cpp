@@ -5,7 +5,7 @@
 namespace war
 {
 
-opengl_framebuffer::opengl_framebuffer( std::string_view base_name )
+OpenGL_Frame_Buffer::OpenGL_Frame_Buffer( std::string_view base_name )
 	: base_name( base_name.data() )
 {
 	glCreateFramebuffers( 1, &fb_id );
@@ -13,12 +13,12 @@ opengl_framebuffer::opengl_framebuffer( std::string_view base_name )
 	bind();
 }
 
-void opengl_framebuffer::add_color_attachment( vec2 sz, const color& clear_color )
+void OpenGL_Frame_Buffer::add_color_attachment( Vec2 sz, const Color& clear_color )
 {
 	color_attachments.emplace_back( this, sz, clear_color );
 }
 
-void opengl_framebuffer::add_depth_attachment( vec2 sz )
+void OpenGL_Frame_Buffer::add_depth_attachment( Vec2 sz )
 {
 	// depth/stencil buffer
 
@@ -30,7 +30,7 @@ void opengl_framebuffer::add_depth_attachment( vec2 sz )
 	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_id );
 }
 
-void opengl_framebuffer::finalize()
+void OpenGL_Frame_Buffer::finalize()
 {
 	auto status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
 
@@ -82,7 +82,7 @@ void opengl_framebuffer::finalize()
 	unbind();
 }
 
-opengl_framebuffer::~opengl_framebuffer()
+OpenGL_Frame_Buffer::~OpenGL_Frame_Buffer()
 {
 	unbind();
 
@@ -100,17 +100,17 @@ opengl_framebuffer::~opengl_framebuffer()
 	glBindTextureUnit( 0, 0 );
 }
 
-void opengl_framebuffer::bind()
+void OpenGL_Frame_Buffer::bind()
 {
 	glBindFramebuffer( GL_FRAMEBUFFER, fb_id );
 }
 
-void opengl_framebuffer::unbind()
+void OpenGL_Frame_Buffer::unbind()
 {
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void opengl_framebuffer::clear_color_attachments()
+void OpenGL_Frame_Buffer::clear_color_attachments()
 {
 	for( auto& ca : color_attachments )
 	{

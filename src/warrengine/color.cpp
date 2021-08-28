@@ -5,46 +5,46 @@
 namespace war
 {
 
-const color color::white = color( 1.f, 1.f, 1.f );
-const color color::black = color( 0.f, 0.f, 0.f );
-const color color::dark_red = color( 0.5f, 0.f, 0.f );
-const color color::red = color( 1.f, 0.f, 0.f );
-const color color::dark_green = color( 0.f, 0.5f, 0.f );
-const color color::green = color( 0.f, 1.f, 0.f );
-const color color::light_green = color( 0.5f, 1.f, 0.5f );
-const color color::dark_blue = color( 0.0f, 0.0f, 0.5f );
-const color color::blue = color( 0.f, 0.f, 1.f );
-const color color::light_blue = color( 0.5f, 0.5f, 1.f );
-const color color::orange = color( 1.f, 0.5f, 0.f );
-const color color::yellow = color( 1.f, 1.f, 0.f );
-const color color::dark_teal = color( 0.2f, 0.4f, 0.5f );
-const color color::teal = color( 0.3f, 0.8f, 1.f );
-const color color::dark_grey = color( 0.25f, 0.25f, 0.25f );
-const color color::grey = color( 0.5f, 0.5f, 0.5f );
-const color color::light_grey = color( 0.75f, 0.75f, 0.75f );
-const color color::magenta = color( 0.96f, 0.32f, 0.65f );
+const Color Color::white = Color( 1.f, 1.f, 1.f );
+const Color Color::black = Color( 0.f, 0.f, 0.f );
+const Color Color::dark_red = Color( 0.5f, 0.f, 0.f );
+const Color Color::red = Color( 1.f, 0.f, 0.f );
+const Color Color::dark_green = Color( 0.f, 0.5f, 0.f );
+const Color Color::green = Color( 0.f, 1.f, 0.f );
+const Color Color::light_green = Color( 0.5f, 1.f, 0.5f );
+const Color Color::dark_blue = Color( 0.0f, 0.0f, 0.5f );
+const Color Color::blue = Color( 0.f, 0.f, 1.f );
+const Color Color::light_blue = Color( 0.5f, 0.5f, 1.f );
+const Color Color::orange = Color( 1.f, 0.5f, 0.f );
+const Color Color::yellow = Color( 1.f, 1.f, 0.f );
+const Color Color::dark_teal = Color( 0.2f, 0.4f, 0.5f );
+const Color Color::teal = Color( 0.3f, 0.8f, 1.f );
+const Color Color::dark_grey = Color( 0.25f, 0.25f, 0.25f );
+const Color Color::grey = Color( 0.5f, 0.5f, 0.5f );
+const Color Color::light_grey = Color( 0.75f, 0.75f, 0.75f );
+const Color Color::magenta = Color( 0.96f, 0.32f, 0.65f );
 
-color::color( float r, float g, float b, float a )
+Color::Color( float r, float g, float b, float a )
 	: r( r ), g( g ), b( b ), a( a )
 {
 }
 
 // integer values are assumed to be in the 0-255 range and are converted to float
-color::color( int r, int g, int b, int a )
-	: color( r* byte_color_to_float, g* byte_color_to_float, b* byte_color_to_float, a* byte_color_to_float )
+Color::Color( int r, int g, int b, int a )
+	: Color( r* byte_color_to_float, g* byte_color_to_float, b* byte_color_to_float, a* byte_color_to_float )
 {
 }
 
 // strings can contain any supported kind of data format (hex, int, or floats)
-color::color( std::string& str )
+Color::Color( std::string& str )
 {
 	assert( !str.empty() );
 
 	if( str[ 0 ] == '@' )
 	{
 		// strings starting with a '@' char are palette indices
-		tokenizer tok( str, "@" );
-		int idx = string_util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
+		Tokenizer tok( str, "@" );
+		int idx = String_Util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
 		*this = make_color( idx );
 	}
 	else if( str[ 0 ] == '$' )
@@ -52,9 +52,9 @@ color::color( std::string& str )
 		// strings starting with a '$' char are hex values
 		assert( str.length() == 7 );
 
-		r = string_util::to_uint( "$" + str.substr( 1, 2 ) ) * byte_color_to_float;
-		g = string_util::to_uint( "$" + str.substr( 3, 2 ) ) * byte_color_to_float;
-		b = string_util::to_uint( "$" + str.substr( 5, 2 ) ) * byte_color_to_float;
+		r = String_Util::to_uint( "$" + str.substr( 1, 2 ) ) * byte_color_to_float;
+		g = String_Util::to_uint( "$" + str.substr( 3, 2 ) ) * byte_color_to_float;
+		b = String_Util::to_uint( "$" + str.substr( 5, 2 ) ) * byte_color_to_float;
 	}
 	else
 	{
@@ -70,12 +70,12 @@ color::color( std::string& str )
 		if( str.find_first_of( '%' ) != std::string::npos )
 		{
 			str.erase( std::remove( str.begin(), str.end(), '%' ), str.end() );
-			tokenizer tok( str, "," );
+			Tokenizer tok( str, "," );
 
-			r = text_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
-			g = text_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
-			b = text_parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
-			a = text_parser::int_from_str( tok.get_next_token().value_or( "1.f" ) ) * byte_color_to_float;
+			r = Text_Parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
+			g = Text_Parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
+			b = Text_Parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
+			a = Text_Parser::int_from_str( tok.get_next_token().value_or( "1.f" ) ) * byte_color_to_float;
 		}
 		else
 		{
@@ -83,64 +83,64 @@ color::color( std::string& str )
 			// color values out of programmer habit
 
 			str.erase( std::remove( str.begin(), str.end(), 'f' ), str.end() );
-			tokenizer tok( str, "," );
+			Tokenizer tok( str, "," );
 
-			r = text_parser::float_from_str( *tok.get_next_token() );
-			g = text_parser::float_from_str( *tok.get_next_token() );
-			b = text_parser::float_from_str( *tok.get_next_token() );
-			a = text_parser::float_from_str( tok.get_next_token().value_or( "1.f" ) );
+			r = Text_Parser::float_from_str( *tok.get_next_token() );
+			g = Text_Parser::float_from_str( *tok.get_next_token() );
+			b = Text_Parser::float_from_str( *tok.get_next_token() );
+			a = Text_Parser::float_from_str( tok.get_next_token().value_or( "1.f" ) );
 		}
 	}
 }
 
-color color::operator*( float v ) const
+Color Color::operator*( float v ) const
 {
-	return color( this->r * v, this->g * v, this->b * v );
+	return Color( this->r * v, this->g * v, this->b * v );
 }
 
-color color::operator*=( float v )
+Color Color::operator*=( float v )
 {
 	*this = *this * v;
 	return *this;
 }
 
-color color::operator-( color v ) const
+Color Color::operator-( Color v ) const
 {
-	return color( this->r - v.r, this->g - v.g, this->b - v.b, this->a - v.a );
+	return Color( this->r - v.r, this->g - v.g, this->b - v.b, this->a - v.a );
 }
 
-color color::operator-=( color v )
+Color Color::operator-=( Color v )
 {
 	*this = *this - v;
 	return *this;
 }
 
-color color::operator+( color v ) const
+Color Color::operator+( Color v ) const
 {
-	return color( this->r + v.r, this->g + v.g, this->b + v.b, this->a + v.a );
+	return Color( this->r + v.r, this->g + v.g, this->b + v.b, this->a + v.a );
 }
 
-color color::operator+=( color v )
+Color Color::operator+=( Color v )
 {
 	*this = *this + v;
 	return *this;
 }
 
-void color::scale( color& color, float s )
+void Color::scale( Color& color, float s )
 {
 	color.r *= s;
 	color.g *= s;
 	color.b *= s;
 }
 
-color color::make( const color& clr, float alpha )
+Color Color::make( const Color& clr, float alpha )
 {
-	return color( clr.r, clr.g, clr.b, alpha );
+	return Color( clr.r, clr.g, clr.b, alpha );
 }
 
-color color::make( e_pal pal_idx, float alpha )
+Color Color::make( e_pal pal_idx, float alpha )
 {
-	return make_color( render::palette[ pal_idx ], alpha );
+	return make_color( Render::palette[ pal_idx ], alpha );
 }
 
 }

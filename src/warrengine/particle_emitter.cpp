@@ -5,7 +5,7 @@
 namespace war
 {
 
-void particle_emitter::set_params( emitter_parameters_asset* params )
+void Particle_Emitter::set_params( Emitter_Parameters_Asset* params )
 {
 	this->params = params;
 
@@ -30,7 +30,7 @@ void particle_emitter::set_params( emitter_parameters_asset* params )
 	pool.parent_emitter = this;
 }
 
-void particle_emitter::update()
+void Particle_Emitter::update()
 {
 	if( !parent_component->life_cycle.is_alive() )
 	{
@@ -87,11 +87,11 @@ void particle_emitter::update()
 	}
 }
 
-void particle_emitter::spawn_particle()
+void Particle_Emitter::spawn_particle()
 {
 	// get a pointer to the next particle slot in the pool
 
-	particle* p = pool.get_next();
+	Particle* p = pool.get_next();
 
 	// if that particle slot contains a living particle, don't stomp it. let the
 	// spawn fail and the code will try again the next update() cycle.
@@ -138,13 +138,13 @@ void particle_emitter::spawn_particle()
 		{
 			auto a_dir = parent_component->parent_entity->get_angle();
 			a_dir += params->r_dir_var.get_random_value();
-			p->v_dir = vec2::dir_from_angle( a_dir );
+			p->v_dir = Vec2::dir_from_angle( a_dir );
 			break;
 		}
 
 		case particle_spawn_dir::away_from_owner:
 		{
-			p->v_dir = vec2::normalize( save_particle_position_at_origin );
+			p->v_dir = Vec2::normalize( save_particle_position_at_origin );
 			break;
 		}
 
@@ -152,7 +152,7 @@ void particle_emitter::spawn_particle()
 		{
 			auto a_dir = params->a_dir;
 			a_dir += params->r_dir_var.get_random_value();
-			p->v_dir = vec2::dir_from_angle( a_dir );
+			p->v_dir = Vec2::dir_from_angle( a_dir );
 			break;
 		}
 	}
@@ -166,7 +166,7 @@ void particle_emitter::spawn_particle()
 		* parent_component->parent_entity->get_scale();
 	p->spin_per_sec = params->r_spin_per_sec.get_random_value();
 	p->spin = params->r_spin_spawn.get_random_value();
-	p->anim_offset = random::getf();
+	p->anim_offset = Random::getf();
 }
 
 // "warms up" a particle emitter by updating it for the maximum life span of one
@@ -175,7 +175,7 @@ void particle_emitter::spawn_particle()
 // This is good for not having all the torches turn on when you walk into a
 // room, for example. They will look as tho they've been burning for awhile.
 
-void particle_emitter::warm_up()
+void Particle_Emitter::warm_up()
 {
 	float max_life_span = params->r_lifespan.end;
 

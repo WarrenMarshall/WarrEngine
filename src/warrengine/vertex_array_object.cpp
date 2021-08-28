@@ -4,13 +4,13 @@
 namespace war
 {
 
-vertex_array_object::vertex_array_object( primitive_batch* batch, e_render_prim render_prim )
+Vertex_Array_Object::Vertex_Array_Object( Primitive_Batch* batch, e_render_prim render_prim )
 	: render_prim( render_prim ), batch( batch )
 {
 	init( batch, render_prim );
 }
 
-void vertex_array_object::init( primitive_batch* batch, e_render_prim render_prim )
+void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_prim )
 {
 	this->batch = batch;
 	this->render_prim = render_prim;
@@ -34,7 +34,7 @@ void vertex_array_object::init( primitive_batch* batch, e_render_prim render_pri
 
 			indices_to_verts_factor = 1.5f;
 
-			vb = std::make_unique<vertex_buffer>( this, 4 );
+			vb = std::make_unique<Vertex_Buffer>( this, 4 );
 			ib = g_engine->render_api.ib_quads.get();
 			break;
 		}
@@ -51,7 +51,7 @@ void vertex_array_object::init( primitive_batch* batch, e_render_prim render_pri
 
 			indices_to_verts_factor = 1.f;
 
-			vb = std::make_unique<vertex_buffer>( this, 3 );
+			vb = std::make_unique<Vertex_Buffer>( this, 3 );
 			ib = g_engine->render_api.ib_tris.get();
 			break;
 		}
@@ -68,7 +68,7 @@ void vertex_array_object::init( primitive_batch* batch, e_render_prim render_pri
 
 			indices_to_verts_factor = 1.f;
 
-			vb = std::make_unique<vertex_buffer>( this, 2 );
+			vb = std::make_unique<Vertex_Buffer>( this, 2 );
 			ib = g_engine->render_api.ib_lines.get();
 			break;
 		}
@@ -85,7 +85,7 @@ void vertex_array_object::init( primitive_batch* batch, e_render_prim render_pri
 
 			indices_to_verts_factor = 1.f;
 
-			vb = std::make_unique<vertex_buffer>( this, 1 );
+			vb = std::make_unique<Vertex_Buffer>( this, 1 );
 			ib = g_engine->render_api.ib_points.get();
 			break;
 		}
@@ -97,26 +97,26 @@ void vertex_array_object::init( primitive_batch* batch, e_render_prim render_pri
 	}
 }
 
-vertex_array_object::~vertex_array_object()
+Vertex_Array_Object::~Vertex_Array_Object()
 {
 	glDeleteVertexArrays( 1, &gl_id );
 }
 
-void vertex_array_object::bind()
+void Vertex_Array_Object::bind()
 {
 	glBindVertexArray( gl_id );
 	vb->bind();
 	ib->bind();
 }
 
-void vertex_array_object::unbind()
+void Vertex_Array_Object::unbind()
 {
 	glBindVertexArray( 0 );
 	vb->unbind();
 	ib->unbind();
 }
 
-void vertex_array_object::update_stats()
+void Vertex_Array_Object::update_stats()
 {
 #ifndef _FINAL_RELEASE
 
@@ -173,7 +173,7 @@ void vertex_array_object::update_stats()
 #endif
 }
 
-void vertex_array_object::flush_and_reset( e_draw_call draw_call )
+void Vertex_Array_Object::flush_and_reset( e_draw_call draw_call )
 {
 	if( !vb->vertices.empty() )
 	{
@@ -182,7 +182,7 @@ void vertex_array_object::flush_and_reset( e_draw_call draw_call )
 	}
 }
 
-void vertex_array_object::upload_vertices_to_gpu()
+void Vertex_Array_Object::upload_vertices_to_gpu()
 {
 	if( vb->vertices.empty() )
 	{
@@ -193,7 +193,7 @@ void vertex_array_object::upload_vertices_to_gpu()
 	vb->upload_vertices_to_gpu();
 }
 
-void vertex_array_object::flush_and_reset_internal( e_draw_call draw_call )
+void Vertex_Array_Object::flush_and_reset_internal( e_draw_call draw_call )
 {
 	if( vb->vertices.empty() )
 	{
@@ -205,7 +205,7 @@ void vertex_array_object::flush_and_reset_internal( e_draw_call draw_call )
 	reset();
 }
 
-void vertex_array_object::draw( e_draw_call draw_call )
+void Vertex_Array_Object::draw( e_draw_call draw_call )
 {
 	if( vb->vertices.empty() )
 	{
@@ -242,12 +242,12 @@ void vertex_array_object::draw( e_draw_call draw_call )
 	unbind();
 }
 
-void vertex_array_object::reset()
+void Vertex_Array_Object::reset()
 {
 	vb->reset();
 }
 
-GLenum vertex_array_object::get_gl_prim_type()
+GLenum Vertex_Array_Object::get_gl_prim_type()
 {
 	return (
 		( ( render_prim == render_prim::line ) * GL_LINES )

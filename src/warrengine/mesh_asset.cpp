@@ -5,55 +5,55 @@
 namespace war
 {
 
-bool mesh_asset::create()
+bool Mesh_Asset::create()
 {
 	assert( !original_filename.empty() );
 
-	auto file = file_system::load_text_file( original_filename );
+	auto file = File_System::load_text_file( original_filename );
 
 	texture_to_triangles = {};
 
-	std::vector<vec3> vertex_list;
-	std::vector<vec2> uv_list;
-	texture_asset* current_texture = nullptr;
+	std::vector<Vec3> vertex_list;
+	std::vector<Vec2> uv_list;
+	Texture_Asset* current_texture = nullptr;
 
 	for( auto& line : file->lines )
 	{
 		if( line.substr( 0, 2 ) == "v " )
 		{
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
-			vec3 v;
+			Vec3 v;
 
 			tok.get_next_token();	// eat "v "
-			v.x = text_parser::float_from_str( *( tok.get_next_token() ) );
-			v.y = text_parser::float_from_str( *( tok.get_next_token() ) );
-			v.z = text_parser::float_from_str( *( tok.get_next_token() ) );
+			v.x = Text_Parser::float_from_str( *( tok.get_next_token() ) );
+			v.y = Text_Parser::float_from_str( *( tok.get_next_token() ) );
+			v.z = Text_Parser::float_from_str( *( tok.get_next_token() ) );
 
 			vertex_list.push_back( v );
 		}
 		else if( line.substr( 0, 3 ) == "vt " )
 		{
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
-			vec2 v;
+			Vec2 v;
 
 			tok.get_next_token();	// eat "vt "
-			v.u = text_parser::float_from_str( *( tok.get_next_token() ) );
-			v.v = text_parser::float_from_str( *( tok.get_next_token() ) );
+			v.u = Text_Parser::float_from_str( *( tok.get_next_token() ) );
+			v.v = Text_Parser::float_from_str( *( tok.get_next_token() ) );
 
 			uv_list.push_back( v );
 		}
 		else if( line.substr( 0, 7 ) == "usemtl " )
 		{
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
 			tok.get_next_token();	// eat "usemtl "
-			current_texture = g_engine->find_asset<texture_asset>( *tok.get_next_token() );
+			current_texture = g_engine->find_asset<Texture_Asset>( *tok.get_next_token() );
 		}
 		else if( line.substr( 0, 2 ) == "f " )
 		{
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
 			tok.get_next_token();	// eat "f "
 
@@ -66,26 +66,26 @@ bool mesh_asset::create()
 			{
 				if( x == 0 )
 				{
-					tokenizer tok2( *( tok.get_next_token() ), "/" );
+					Tokenizer tok2( *( tok.get_next_token() ), "/" );
 
-					vidx[ 0 ] = text_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
-					uvidx[ 0 ] = text_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					vidx[ 0 ] = Text_Parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					uvidx[ 0 ] = Text_Parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 				}
 				else if( x == 1 )
 				{
-					tokenizer tok2( *( tok.get_next_token() ), "/" );
+					Tokenizer tok2( *( tok.get_next_token() ), "/" );
 
-					vidx[ 1 ] = text_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
-					uvidx[ 1 ] = text_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					vidx[ 1 ] = Text_Parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					uvidx[ 1 ] = Text_Parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 				}
 				else
 				{
-					tokenizer tok2( *( tok.get_next_token() ), "/" );
+					Tokenizer tok2( *( tok.get_next_token() ), "/" );
 
-					vidx[ 2 ] = text_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
-					uvidx[ 2 ] = text_parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					vidx[ 2 ] = Text_Parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
+					uvidx[ 2 ] = Text_Parser::int_from_str( *( tok2.get_next_token() ) ) - 1;
 
-					render_vertex v0, v1, v2;
+					Render_Vertex v0, v1, v2;
 
 					v0.x = vertex_list[ vidx[ 0 ] ].x;
 					v0.y = vertex_list[ vidx[ 0 ] ].y;
@@ -105,12 +105,12 @@ bool mesh_asset::create()
 					v2.u = uv_list[ uvidx[ 2 ] ].u;
 					v2.v = uv_list[ uvidx[ 2 ] ].v;
 
-					render_triangle rtri( v0, v1, v2, make_color( color::white ), 0.f );
-					auto texture = current_texture ? current_texture : g_engine->find_asset<texture_asset>( "engine_white" );
+					Render_Triangle rtri( v0, v1, v2, make_color( Color::white ), 0.f );
+					auto texture = current_texture ? current_texture : g_engine->find_asset<Texture_Asset>( "engine_white" );
 
 					if( texture_to_triangles.contains( texture ) )
 					{
-						texture_to_triangles.insert( std::make_pair( texture, std::vector<render_triangle>() ) );
+						texture_to_triangles.insert( std::make_pair( texture, std::vector<Render_Triangle>() ) );
 					}
 
 					texture_to_triangles[ texture ].push_back( rtri );

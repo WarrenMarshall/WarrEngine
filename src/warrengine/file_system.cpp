@@ -5,26 +5,26 @@
 namespace war
 {
 
-void file_system::init()
+void File_System::init()
 {
-	file_system::zip_file.scan_and_build_table_of_contents();
+	File_System::zip_file.scan_and_build_table_of_contents();
 }
 
-bool file_system::file_exists_on_disk( std::string_view filename )
+bool File_System::file_exists_on_disk( std::string_view filename )
 {
 	return std::filesystem::exists( filename );
 }
 
 // checks to see if a filename is valid either on the disk or in a zip file.
 
-bool file_system::file_exists_on_disk_or_in_zip( std::string_view filename )
+bool File_System::file_exists_on_disk_or_in_zip( std::string_view filename )
 {
-	if( file_system::file_exists_on_disk( filename ) )
+	if( File_System::file_exists_on_disk( filename ) )
 	{
 		return true;
 	}
 
-	auto toc_entry = file_system::zip_file.get_toc_entry_for_filename( filename );
+	auto toc_entry = File_System::zip_file.get_toc_entry_for_filename( filename );
 	if( toc_entry != nullptr )
 	{
 		return true;
@@ -33,27 +33,27 @@ bool file_system::file_exists_on_disk_or_in_zip( std::string_view filename )
 	return false;
 }
 
-std::unique_ptr<file_mem> file_system::load_binary_file( std::string_view filename )
+std::unique_ptr<Mem_File> File_System::load_binary_file( std::string_view filename )
 {
-	return load_file_into_memory<file_mem>( filename );
+	return load_file_into_memory<Mem_File>( filename );
 }
 
-std::unique_ptr<file_mem_text> file_system::load_text_file( std::string_view filename )
+std::unique_ptr<Mem_File_Text> File_System::load_text_file( std::string_view filename )
 {
-	auto file = load_file_into_memory<file_mem_text>( filename );
+	auto file = load_file_into_memory<Mem_File_Text>( filename );
 	file->preprocess();
 	return file;
 }
 
-std::unique_ptr<file_mem_text> file_system::load_text_file_raw( std::string_view filename )
+std::unique_ptr<Mem_File_Text> File_System::load_text_file_raw( std::string_view filename )
 {
-	auto file = load_file_into_memory<file_mem_text>( filename );
+	auto file = load_file_into_memory<Mem_File_Text>( filename );
 	file->preprocess_raw();
 
 	return file;
 }
 
-void file_system::scan_folder_for_ext( std::vector<std::string>* filenames, std::string_view folder, std::string_view extension )
+void File_System::scan_folder_for_ext( std::vector<std::string>* filenames, std::string_view folder, std::string_view extension )
 {
 	// look on disk
 
@@ -76,10 +76,10 @@ void file_system::scan_folder_for_ext( std::vector<std::string>* filenames, std:
 
 	// look in ZIP files
 
-	for( auto& [filename, toc_entry] : file_system::zip_file.table_of_contents )
+	for( auto& [filename, toc_entry] : File_System::zip_file.table_of_contents )
 	{
 		std::string wk_filename = filename;
-		string_util::replace_char( wk_filename, '\\', '/' );
+		String_Util::replace_char( wk_filename, '\\', '/' );
 
 		if( wk_filename.substr( 0, folder.size() ) == folder )
 		{
@@ -100,7 +100,7 @@ void file_system::scan_folder_for_ext( std::vector<std::string>* filenames, std:
 // files will always find a place to write themselves even if
 // all the other data files are stored in ZIPs, for example.
 
-void file_system::create_path_if_not_exist( std::string_view path )
+void File_System::create_path_if_not_exist( std::string_view path )
 {
 	if( !std::filesystem::exists( path ) )
 	{

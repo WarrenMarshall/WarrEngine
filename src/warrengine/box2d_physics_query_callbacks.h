@@ -2,16 +2,16 @@
 namespace war::box2d_physics
 {
 
-struct raycast_hit final
+struct Raycast_Hit final
 {
 	// how far along the ray did the hit occur?
 	float fraction = 0.f;
 
 	// the normal direction resulting from the hit.
-	vec2 normal = vec2::zero;
+	Vec2 normal = Vec2::zero;
 
 	// the world space position of the hit.
-	vec2 pos = vec2::zero;
+	Vec2 pos = Vec2::zero;
 };
 
 // ----------------------------------------------------------------------------
@@ -19,11 +19,11 @@ struct raycast_hit final
 //
 // "what's the closest hit along this ray?"
 
-struct raycast_closest final : b2RayCastCallback
+struct Raycast_Closest final : b2RayCastCallback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
-	raycast_hit result;
+	Raycast_Hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 		const b2Vec2& normal, float fraction ) override;
@@ -35,11 +35,11 @@ struct raycast_closest final : b2RayCastCallback
 //
 // "is there anything to hit along this ray?"
 
-struct raycast_simple final : b2RayCastCallback
+struct Raycast_Simple final : b2RayCastCallback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
-	raycast_hit result;
+	Raycast_Hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 		const b2Vec2& normal, float fraction ) override;
@@ -50,11 +50,11 @@ struct raycast_simple final : b2RayCastCallback
 //
 // "what are all the hits along this ray?"
 
-struct raycast_all final : b2RayCastCallback
+struct Raycast_All final : b2RayCastCallback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
-	std::vector<raycast_hit> results;
+	std::vector<Raycast_Hit> results;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 		const b2Vec2& normal, float fraction ) override;
@@ -63,7 +63,7 @@ struct raycast_all final : b2RayCastCallback
 // ----------------------------------------------------------------------------
 // stops after finding the first fixture that intersects with the AABB being queried
 
-class touching_first final : public b2QueryCallback
+class Touching_First final : public b2QueryCallback
 {
 public:
 	b2Fixture* fixture;

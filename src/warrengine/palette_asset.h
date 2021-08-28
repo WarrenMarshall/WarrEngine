@@ -2,11 +2,11 @@
 namespace war
 {
 
-struct palette_asset final : asset
+struct Palette_Asset final : Asset
 {
-	std::vector<color> colors;
+	std::vector<Color> colors;
 
-	const color& operator []( size_t idx ) const
+	const Color& operator []( size_t idx ) const
 	{
 		assert( colors.size() );
 		assert( idx >= 0 and idx < colors.size() );

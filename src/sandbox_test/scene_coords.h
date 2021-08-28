@@ -11,5 +11,5 @@ struct scene_coords final : scene
 	virtual void draw() override;
 	virtual void draw_ui() override;
 
-	virtual bool on_input_motion( const input_event* evt ) override;
+	virtual bool on_input_motion( const Input_Event* evt ) override;
 };

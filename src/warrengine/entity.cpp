@@ -7,31 +7,31 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-entity_simple_force::entity_simple_force( vec2 normal, float strength )
+Entity_Simple_Force::Entity_Simple_Force( Vec2 normal, float strength )
 	: strength( strength )
 {
-	this->normal = vec2::normalize( normal );
+	this->normal = Vec2::normalize( normal );
 }
 
 // ----------------------------------------------------------------------------
 
-entity::entity()
+Entity::Entity()
 {
 }
 
-entity::entity( std::string debug_name )
+Entity::Entity( std::string debug_name )
 {
 #ifdef _DEBUG
 	this->debug_name = debug_name;
 #endif
 }
 
-void entity::update_from_physics()
+void Entity::update_from_physics()
 {
 	update_transform_to_match_physics_components();
 }
 
-void entity::pre_update()
+void Entity::pre_update()
 {
 	life_cycle.pre_update();
 
@@ -48,17 +48,17 @@ void entity::pre_update()
 			accel = 2.0f;
 		}
 
-		add_force( { vec2::y_axis, simple_collision_gravity_default * accel } );
+		add_force( { Vec2::y_axis, simple_collision_gravity_default * accel } );
 	}
 
 	apply_forces();
 }
 
-void entity::update()
+void Entity::update()
 {
 }
 
-void entity::pre_update_components()
+void Entity::pre_update_components()
 {
 	for( const auto& component : components )
 	{
@@ -69,7 +69,7 @@ void entity::pre_update_components()
 	}
 }
 
-void entity::update_components()
+void Entity::update_components()
 {
 	remove_dead_components();
 
@@ -82,7 +82,7 @@ void entity::update_components()
 	}
 }
 
-void entity::post_update_components()
+void Entity::post_update_components()
 {
 	for( const auto& component : components )
 	{
@@ -109,28 +109,28 @@ void entity::post_update_components()
 #endif
 }
 
-void entity::post_update()
+void Entity::post_update()
 {
 }
 
 // forces are gradual and build up over time.
 //
 // this is good for moving a character or applying things like gravity or wind.
-void entity::add_force( const entity_simple_force& force )
+void Entity::add_force( const Entity_Simple_Force& force )
 {
 	pending_forces.emplace_back( force.normal, fixed_time_step::per_second( force.strength ) );
 }
 
 // resets the velocity to zero, and applies an impulse of the requested force.
 // creates an immediate change in direction.
-void entity::set_force( const entity_simple_force& force )
+void Entity::set_force( const Entity_Simple_Force& force )
 {
 	// kill the current velocity...
 	//
 	// #simple - do we really need to zero this out? if this can be removed,
 	// this entire function can be deleted and replaced with calls to
 	// apply_impulse instead.
-	velocity = vec2::zero;
+	velocity = Vec2::zero;
 
 	// ...then add the new impulse
 	add_impulse( force );
@@ -139,12 +139,12 @@ void entity::set_force( const entity_simple_force& force )
 // impulses are immediate and applied at full strength.
 //
 // this is for things like jumping or bouncing off of things.
-void entity::add_impulse( const entity_simple_force& force )
+void Entity::add_impulse( const Entity_Simple_Force& force )
 {
 	pending_forces.push_back( force );
 }
 
-void entity::compile_velocity()
+void Entity::compile_velocity()
 {
 	for( auto& f : pending_forces )
 	{
@@ -157,9 +157,9 @@ void entity::compile_velocity()
 	pending_forces.clear();
 }
 
-void entity::reflect_across( vec2 normal )
+void Entity::reflect_across( Vec2 normal )
 {
-	auto reflected_dir = vec2::reflect_across_normal( velocity, normal.normalize() );
+	auto reflected_dir = Vec2::reflect_across_normal( velocity, normal.normalize() );
 
 	if( !reflected_dir.is_zero() )
 	{
@@ -167,7 +167,7 @@ void entity::reflect_across( vec2 normal )
 	}
 }
 
-void entity::apply_forces()
+void Entity::apply_forces()
 {
 	compile_velocity();
 
@@ -216,7 +216,7 @@ void entity::apply_forces()
 
 // ----------------------------------------------------------------------------
 
-void entity::draw()
+void Entity::draw()
 {
 	// super hacky way to indicate a selected entity. it just pumps up the glow
 	// on it. we need a nicer system for this eventually.
@@ -232,12 +232,12 @@ void entity::draw()
 		scoped_opengl;
 		g_engine->render_api.top_matrix->apply_transform( component->get_pos(), component->get_angle(), component->get_scale() );
 
-		render::state->z += zdepth_nudge;
+		Render::state->z += zdepth_nudge;
 
 		scoped_render_state;
 
-		render::state->set_from_opt( rs_opt );
-		render::state->pick_id = pick_id;
+		Render::state->set_from_opt( rs_opt );
+		Render::state->pick_id = pick_id;
 		component->draw();
 	}
 }
@@ -249,16 +249,16 @@ void entity::draw()
 // you have physics, let the physics engine control what the entity transform is
 // via the regular update() cycle.
 
-void entity::update_physics_components_to_match_transform()
+void Entity::update_physics_components_to_match_transform()
 {
 	// ----------------------------------------------------------------------------
 	// BOX2D
 
-	if( has_component<ec_box2d_physics>() )
+	if( has_component<Box2D_Physics_Component>() )
 	{
-		std::vector<ec_box2d_physics_body*> ecs;
-		get_components<ec_box2d_physics_body, ec_box2d_dynamic_physics_body>( ecs );
-		get_components<ec_box2d_physics_body, ec_box2d_kinematic_physics_body>( ecs );
+		std::vector<Box2D_Physics_Body_Component*> ecs;
+		get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
+		get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
 
 		for( auto ec : ecs )
 		{
@@ -273,7 +273,7 @@ void entity::update_physics_components_to_match_transform()
 	}
 }
 
-void entity::update_transform_to_match_physics_components()
+void Entity::update_transform_to_match_physics_components()
 {
 	// ----------------------------------------------------------------------------
 	// BOX2D
@@ -285,15 +285,15 @@ void entity::update_transform_to_match_physics_components()
 	// to an entity so it is assumed that once we find and
 	// process that one, we're done.
 
-	std::vector<ec_box2d_physics_body*> ecs;
-	get_components<ec_box2d_physics_body, ec_box2d_dynamic_physics_body>( ecs );
-	get_components<ec_box2d_physics_body, ec_box2d_kinematic_physics_body>( ecs );
+	std::vector<Box2D_Physics_Body_Component*> ecs;
+	get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
+	get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
 
 	for( auto& ec : ecs )
 	{
 		if( ec->is_primary_body )
 		{
-			vec2 position = vec2( ec->body->GetPosition() ).from_box2d();
+			Vec2 position = Vec2( ec->body->GetPosition() ).from_box2d();
 			float angle = ec->body->GetAngle();
 
 			_tform.set_pos( { position.x, position.y } );
@@ -303,12 +303,12 @@ void entity::update_transform_to_match_physics_components()
 	}
 }
 
-const war::transform* entity::get_transform()
+const war::Transform* Entity::get_transform()
 {
 	return &_tform;
 }
 
-transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, const float scale )
+Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float angle, const float scale )
 {
 	_tform.set_pos( pos );
 	_tform.set_angle( angle );
@@ -319,7 +319,7 @@ transform* entity::set_pos_angle_scale( const vec2& pos, const float angle, cons
 	return &_tform;
 }
 
-transform* entity::set_angle( const float angle )
+Transform* Entity::set_angle( const float angle )
 {
 	_tform.set_angle( angle );
 	update_physics_components_to_match_transform();
@@ -327,7 +327,7 @@ transform* entity::set_angle( const float angle )
 	return &_tform;
 }
 
-transform* entity::set_scale( const float scale )
+Transform* Entity::set_scale( const float scale )
 {
 	_tform.set_scale( scale );
 
@@ -335,27 +335,27 @@ transform* entity::set_scale( const float scale )
 	// don't have a way to scale the physics components at the same time. so
 	// collision will remain the original size which is likely not what you
 	// want.
-	assert( !has_component<ec_box2d_physics>() );
+	assert( !has_component<Box2D_Physics_Component>() );
 
 	return &_tform;
 }
 
-vec2 entity::get_pos()
+Vec2 Entity::get_pos()
 {
 	return get_transform()->pos;
 }
 
-float entity::get_angle()
+float Entity::get_angle()
 {
 	return get_transform()->angle;
 }
 
-float entity::get_scale()
+float Entity::get_scale()
 {
 	return get_transform()->scale;
 }
 
-transform* entity::set_pos( const vec2& pos )
+Transform* Entity::set_pos( const Vec2& pos )
 {
 	_tform.set_pos( pos );
 
@@ -364,7 +364,7 @@ transform* entity::set_pos( const vec2& pos )
 	return &_tform;
 }
 
-transform* entity::add_delta_pos( const vec2& delta )
+Transform* Entity::add_delta_pos( const Vec2& delta )
 {
 	_tform.add_pos( delta );
 
@@ -378,7 +378,7 @@ transform* entity::add_delta_pos( const vec2& delta )
 	return &_tform;
 }
 
-transform* entity::add_delta_angle( const float delta )
+Transform* Entity::add_delta_angle( const float delta )
 {
 	_tform.add_angle( delta );
 
@@ -387,7 +387,7 @@ transform* entity::add_delta_angle( const float delta )
 	return &_tform;
 }
 
-transform* entity::add_delta_scale( const float delta )
+Transform* Entity::add_delta_scale( const float delta )
 {
 	_tform.add_scale( delta );
 
@@ -396,36 +396,36 @@ transform* entity::add_delta_scale( const float delta )
 	// don't have a way to scale the physics components at the same time. so
 	// collision will remain the original size which is likely not what you
 	// want.
-	assert( !has_component<ec_box2d_physics>() );
+	assert( !has_component<Box2D_Physics_Component>() );
 
 	return &_tform;
 }
 
 // entities are starting to collide
 
-void entity::on_box2d_collision_begin( box2d_physics::pending_collision& coll, entity* touched_by )
+void Entity::on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* touched_by )
 {
 }
 
 // entities are no longer colliding
 
-void entity::on_box2d_collision_end( box2d_physics::pending_collision& coll, entity* touched_by )
+void Entity::on_box2d_collision_end( box2d_physics::Pending_Collision& coll, Entity* touched_by )
 {
 }
 
 // returns TRUE if the collision was handled
-bool entity::on_collided( simple_collision::pending_collision& coll )
+bool Entity::on_collided( simple_collision::Pending_Collision& coll )
 {
 	return false;
 }
 
 // returns TRUE if the touch was handled
-bool entity::on_touched( simple_collision::pending_collision& coll )
+bool Entity::on_touched( simple_collision::Pending_Collision& coll )
 {
 	return false;
 }
 
-bool entity::can_be_deleted()
+bool Entity::can_be_deleted()
 {
 	// still alive, can't delete
 	if( life_cycle.is_alive() )
@@ -456,24 +456,24 @@ bool entity::can_be_deleted()
 	return true;
 }
 
-void entity::set_tag( hash tag )
+void Entity::set_tag( hash tag )
 {
 	this->tag = tag;
 }
 
 static int w_entity_last_pick_id = 0;
 
-void entity::make_pickable()
+void Entity::make_pickable()
 {
 	w_entity_last_pick_id++;
 	pick_id = w_entity_last_pick_id;
 }
 
-void entity::set_life_cycle( e_life_cycle lc )
+void Entity::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
-	if( auto ec = get_component<ec_box2d_physics>() ; ec and !life_cycle.is_alive() )
+	if( auto ec = get_component<Box2D_Physics_Component>() ; ec and !life_cycle.is_alive() )
 	{
 		ec->clear_collision_flags();
 	}
@@ -484,11 +484,11 @@ void entity::set_life_cycle( e_life_cycle lc )
 	}
 }
 
-void entity::remove_dead_components()
+void Entity::remove_dead_components()
 {
 	for( size_t x = 0; x < components.size(); ++x )
 	{
-		entity_component* ec = components[ x ].get();
+		Entity_Component* ec = components[ x ].get();
 
 		if( ec->is_fully_dead() )
 		{
@@ -498,18 +498,18 @@ void entity::remove_dead_components()
 	}
 }
 
-void entity::apply_movement_jump()
+void Entity::apply_movement_jump()
 {
 	if( !simple.is_in_air )
 	{
 		//g_engine->find_asset<sound_asset>( "sfx_platfomer_jump" )->play();
-		add_impulse( { vec2( 0.0f, -1.0f ), 3.5f } );
+		add_impulse( { Vec2( 0.0f, -1.0f ), 3.5f } );
 	}
 }
 
-void entity::apply_movement_walk( vec2 delta, float speed )
+void Entity::apply_movement_walk( Vec2 delta, float speed )
 {
-	auto dot = vec2::dot( delta, vec2::down );
+	auto dot = Vec2::dot( delta, Vec2::down );
 
 	// if the delta is mostly aimed downwards, then don't apply the delta. this
 	// allows the player to pull down on the stick without the entity sliding
@@ -517,15 +517,15 @@ void entity::apply_movement_walk( vec2 delta, float speed )
 
 	if( dot > -0.85f )
 	{
-		add_force( { delta * vec2::x_axis, 12.f } );
+		add_force( { delta * Vec2::x_axis, 12.f } );
 	}
 }
 
 // ----------------------------------------------------------------------------
 
-void entity_transient::update()
+void Entity_Transient::update()
 {
-	entity::update();
+	Entity::update();
 
 	// once all of the components have died, the fx container entity can die.
 	if( components.empty() )

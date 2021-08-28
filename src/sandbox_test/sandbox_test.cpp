@@ -4,7 +4,7 @@
 using namespace war;
 
 sandbox_test_app::sandbox_test_app()
-	: game( "sandbox_test" )
+	: Game( "sandbox_test" )
 {
 	flags.has_main_menu = true;
 }

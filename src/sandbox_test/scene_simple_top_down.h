@@ -5,9 +5,9 @@ struct scene_simple_top_down final : scene
 {
 	scene_simple_top_down();
 
-	entity* player = nullptr;
-	entity* hit_marker = nullptr;
-	entity* world = nullptr;
+	Entity* player = nullptr;
+	Entity* hit_marker = nullptr;
+	Entity* world = nullptr;
 
 	float ray_cast_length_hit = 0.0f;
 
@@ -17,6 +17,6 @@ struct scene_simple_top_down final : scene
 
 	void reset_collision_trace_results();
 
-	virtual bool on_input_pressed( const input_event* evt ) override;
-	virtual bool on_input_motion( const input_event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input_motion( const Input_Event* evt ) override;
 };

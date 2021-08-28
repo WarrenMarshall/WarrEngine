@@ -3,11 +3,11 @@ using namespace war;
 
 struct scene_meshes final : scene
 {
-	ec_mesh* mesh_player = nullptr;
-	ec_mesh* mesh_crate = nullptr;
+	Mesh_Component* mesh_player = nullptr;
+	Mesh_Component* mesh_crate = nullptr;
 
-	tween mesh_rotator = {};
-	tween mesh_scaler = {};
+	Tween mesh_rotator = {};
+	Tween mesh_scaler = {};
 
 	scene_meshes();
 

@@ -5,12 +5,12 @@
 namespace war
 {
 
-void render_stats::init()
+void Render_Stats::init()
 {
-	stat_timer = timer( 1000 );
+	stat_timer = Timer( 1000 );
 }
 
-void render_stats::update()
+void Render_Stats::update()
 {
 	if( stat_timer.is_elapsed() )
 	{
@@ -31,14 +31,14 @@ void render_stats::update()
 
 // draws useful stats at the top of the screen
 
-void render_stats::draw()
+void Render_Stats::draw()
 {
 #if !defined(_FINAL_RELEASE)
 	{
 		scoped_render_state;
 
 		stat_strings.clear();
-		render::state->z = zdepth_stats;
+		Render::state->z = zdepth_stats;
 
 		if( draw_verbose )
 		{
@@ -58,9 +58,9 @@ void render_stats::draw()
 			stat_strings.push_back( std::format( "Time Dilation: {:.2f}", g_engine->time.dilation ) );
 
 			auto window_pos = g_engine->input.mouse_window_pos;
-			auto viewport_pos = coord_system::window_to_viewport_pos( window_pos );
-			auto world_pos = coord_system::viewport_to_world_pos( viewport_pos );
-			auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
+			auto viewport_pos = Coord_System::window_to_viewport_pos( window_pos );
+			auto world_pos = Coord_System::viewport_to_world_pos( viewport_pos );
+			auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 			stat_strings.push_back( std::format( "wn:{:.0f}/{:.0f} | wd:{:.0f}/{:.0f} | vp:{:.0f}/{:.0f} | ui:{:.0f}/{:.0f}",
 				window_pos.x, window_pos.y,
@@ -83,20 +83,20 @@ void render_stats::draw()
 			{
 				scoped_render_state;
 
-				render::state->color = make_color( 0, 0.5f );
-				render::draw_filled_rect(
-					rect( 0.f, 0.f,
+				Render::state->color = make_color( 0, 0.5f );
+				Render::draw_filled_rect(
+					Rect( 0.f, 0.f,
 					ui_w, (float)( g_engine->pixel_font->get_max_height() * stat_strings.size() ) )
 				);
 
-				render::state->z += zdepth_nudge;
-				render::state->align = align::hcenter;
-				render::state->color = color::white;
+				Render::state->z += zdepth_nudge;
+				Render::state->align = align::hcenter;
+				Render::state->color = Color::white;
 
 				auto ypos = 0.f;
 				for( const auto& iter : stat_strings )
 				{
-					render::draw_string( iter, { ui_hw, ypos } );
+					Render::draw_string( iter, { ui_hw, ypos } );
 					ypos += g_engine->pixel_font->get_max_height();
 				}
 			}
@@ -107,8 +107,8 @@ void render_stats::draw()
 			{
 				scoped_render_state;
 
-				render::state->align = align::right;
-				render::draw_string(
+				Render::state->align = align::right;
+				Render::draw_string(
 					std::format( "{} FPS ({:.2f} ms)", f_commas( frame_count.value ), frame_times_ms.value ),
 					{ ui_w, 0.f } );
 			}

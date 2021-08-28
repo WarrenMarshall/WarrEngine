@@ -21,21 +21,21 @@ void scene_angle_dirs::draw()
 {
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 
 //	scoped_render_state;
 
 	// circle at world origin
-	render::state->color = make_color( pal::brighter );
-	render::draw_filled_circle( vec2::zero, 6.f );
+	Render::state->color = make_color( pal::brighter );
+	Render::draw_filled_circle( Vec2::zero, 6.f );
 
 	// circle at marker position
-	render::state->color = make_color( pal::middle );
-	render::draw_filled_circle( marker_pos, 6.f );
+	Render::state->color = make_color( pal::middle );
+	Render::draw_filled_circle( marker_pos, 6.f );
 
 	// connecting line
-	render::state->color = make_color( pal::middle );
-	render::draw_line( vec2::zero, marker_pos );
+	Render::state->color = make_color( pal::middle );
+	Render::draw_line( Vec2::zero, marker_pos );
 }
 
 void scene_angle_dirs::draw_ui()
@@ -46,15 +46,15 @@ void scene_angle_dirs::draw_ui()
 	scoped_render_state;
 
 	// label next to the marker
-	if( marker_pos != vec2::zero )
+	if( marker_pos != Vec2::zero )
 	{
-		auto ui_pos = coord_system::world_to_ui_pos( marker_pos + vec2( 16.f, 0.f ) );
+		auto ui_pos = Coord_System::world_to_ui_pos( marker_pos + Vec2( 16.f, 0.f ) );
 
-		render::state->align = align::vcenter;
-		render::state->color = make_color( pal::brightest );
+		Render::state->align = align::vcenter;
+		Render::state->color = make_color( pal::brightest );
 
-		auto angle = vec2::clamped_angle_from_dir( vec2::normalize( marker_pos ) );
-		auto dir = vec2::dir_from_angle( angle );
+		auto angle = Vec2::clamped_angle_from_dir( Vec2::normalize( marker_pos ) );
+		auto dir = Vec2::dir_from_angle( angle );
 
 		const std::vector<std::string> info_lines =
 		{
@@ -62,11 +62,11 @@ void scene_angle_dirs::draw_ui()
 			std::format( "Dir   : {:.1f}, {:.1f}", dir.x, dir.y )
 		};
 
-		render::draw_string( info_lines, ui_pos );
+		Render::draw_string( info_lines, ui_pos );
 	}
 }
 
-bool scene_angle_dirs::on_input_motion( const input_event* evt )
+bool scene_angle_dirs::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -74,7 +74,7 @@ bool scene_angle_dirs::on_input_motion( const input_event* evt )
 		{
 			if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
 			{
-				marker_pos = coord_system::window_to_world_pos( evt->mouse_pos );
+				marker_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 				return true;
 			}
 		}

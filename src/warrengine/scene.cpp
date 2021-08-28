@@ -54,9 +54,9 @@ void scene::deselect_all()
 	}
 }
 
-std::vector<entity*> scene::get_selected()
+std::vector<Entity*> scene::get_selected()
 {
-	std::vector<entity*> selections;
+	std::vector<Entity*> selections;
 
 	for( const auto& e : entities )
 	{
@@ -71,7 +71,7 @@ std::vector<entity*> scene::get_selected()
 
 void scene::pushed()
 {
-	sc_world = std::make_unique<simple_collision_world>( this );
+	sc_world = std::make_unique<Simple_Collision_World>( this );
 }
 
 void scene::popped()
@@ -134,7 +134,7 @@ void scene::update()
 			entity->update_from_physics();
 
 			// collect the simple collision bodies active in the scene
-			auto sccs = entity->get_components<ec_simple_collision_body>();
+			auto sccs = entity->get_components<Simple_Collision_Body>();
 			sc_world->active_bodies.insert(
 				sc_world->active_bodies.end(),
 				sccs.begin(), sccs.end()
@@ -207,15 +207,15 @@ bool scene::is_topmost_scene() const
 	return ( g_engine->scenes.get_top() == this );
 }
 
-entity* scene::find_entity( hash tag )
+Entity* scene::find_entity( hash tag )
 {
-	entity* e = nullptr;
+	Entity* e = nullptr;
 
 	// look for an entity with a matching tag
 	auto iter = std::find_if(
 		entities.begin(),
 		entities.end(),
-		[&] ( std::unique_ptr<entity>& e )
+		[&] ( std::unique_ptr<Entity>& e )
 		{
 			return e->tag == tag;
 		}
@@ -229,7 +229,7 @@ entity* scene::find_entity( hash tag )
 	return e;
 }
 
-entity* scene::find_entity_by_pick_id( int pick_id )
+Entity* scene::find_entity_by_pick_id( int pick_id )
 {
 	if( pick_id )
 	{
@@ -250,7 +250,7 @@ void scene::new_game()
 	entities.clear();
 }
 
-ui_callback* scene::get_ui_callback()
+UI_Callback* scene::get_ui_callback()
 {
 	if( ui_callback )
 	{
@@ -260,12 +260,12 @@ ui_callback* scene::get_ui_callback()
 	return &( g_ui->default_callback );
 }
 
-bool scene::on_input_motion( const input_event* evt )
+bool scene::on_input_motion( const Input_Event* evt )
 {
 	return false;
 }
 
-bool scene::on_input_pressed( const input_event* evt )
+bool scene::on_input_pressed( const Input_Event* evt )
 {
 	if( g_engine->scenes.get_top() == this )
 	{
@@ -282,7 +282,7 @@ bool scene::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool scene::on_input_held( const input_event* evt )
+bool scene::on_input_held( const Input_Event* evt )
 {
 	if( g_engine->scenes.get_top() == this )
 	{
@@ -295,7 +295,7 @@ bool scene::on_input_held( const input_event* evt )
 	return false;
 }
 
-bool scene::on_input_released( const input_event* evt )
+bool scene::on_input_released( const Input_Event* evt )
 {
 	if( g_engine->scenes.get_top() == this )
 	{
@@ -308,7 +308,7 @@ bool scene::on_input_released( const input_event* evt )
 	return false;
 }
 
-bool scene::on_input_key( const input_event* evt )
+bool scene::on_input_key( const Input_Event* evt )
 {
 	if( g_engine->scenes.get_top() == this )
 	{
@@ -321,7 +321,7 @@ bool scene::on_input_key( const input_event* evt )
 	return false;
 }
 
-vec2 scene::get_viewport_pivot()
+Vec2 scene::get_viewport_pivot()
 {
 	return viewport_pivot;
 }
@@ -336,7 +336,7 @@ void scene::force_close_expanded_controls()
 	flags.clear_expanded_tag_this_frame = true;
 }
 
-void scene::follow_cam( const transform* follow_target )
+void scene::follow_cam( const Transform* follow_target )
 {
 	auto current_cam = get_transform()->pos;
 	auto desired_cam = -follow_target->pos;

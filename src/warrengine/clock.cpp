@@ -5,12 +5,12 @@
 namespace war
 {
 
-clock::clock()
+Clock::Clock()
 {
 	init();
 }
 
-void clock::init()
+void Clock::init()
 {
 	time_since_app_start_ms = 0;
 	prev_frame_ms = get_ticks();
@@ -18,7 +18,7 @@ void clock::init()
 
 // called at the start of each frame to update the internal time keeping
 
-void clock::update()
+void Clock::update()
 {
 	// get current time
 	current_frame_ms = get_ticks();
@@ -47,7 +47,7 @@ void clock::update()
 //
 // so 1 second would be returned as 1000 ms
 
-time_ms clock::now() const
+time_ms Clock::now() const
 {
 	return (time_ms)time_since_app_start_ms;
 }
@@ -56,7 +56,7 @@ time_ms clock::now() const
 //
 // so 1 second would be returned as 1000 ms
 
-time_ms clock::get_ticks()
+time_ms Clock::get_ticks()
 {
 	auto time = glfwGetTime();
 	return (time_ms)( time * 1000.0 );

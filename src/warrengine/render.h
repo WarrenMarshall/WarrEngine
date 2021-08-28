@@ -2,13 +2,13 @@
 namespace war
 {
 
-struct render final
+struct Render final
 {
-	static palette_asset palette;
+	static Palette_Asset palette;
 
 	// rendering batches that are recreated every frame. the bulk of the
 	// rendered geo goes through these batches.
-	render_batch_group dynamic_batches;
+	Primitive_Batch_Group dynamic_batches;
 
 	// a value from 0.0-1.0 that represents how near we are to the NEXT update
 	// tick. this is used to interpolate/predict rendering for smooth movement
@@ -48,44 +48,44 @@ struct render final
 
 	// circle sample points are stored in a unit circle
 	constexpr static int circle_sample_points_max = 16;
-	std::vector<vec2> circle_sample_points;
+	std::vector<Vec2> circle_sample_points;
 
 	void init();
 	void init_set_up_default_palette();
 	void init_generate_circle_sample_points();
 
-	static void draw_quad( texture_asset* texture, const vec2& dst );
-	static void draw_quad( texture_asset* texture, const rect& dst );
+	static void draw_quad( Texture_Asset* texture, const Vec2& dst );
+	static void draw_quad( Texture_Asset* texture, const Rect& dst );
 
 	static auto get_circle_start_end_indices( e_corner corner );
-	static void draw_circle( const vec2& origin, float radius, e_corner corner = corner::all );
-	static void draw_filled_circle( const vec2& origin, float radius, e_corner corner = corner::all );
+	static void draw_circle( const Vec2& origin, float radius, e_corner corner = corner::all );
+	static void draw_filled_circle( const Vec2& origin, float radius, e_corner corner = corner::all );
 
-	static void draw_rect( const rect& dst );
-	static void draw_filled_rect( const rect& dst );
+	static void draw_rect( const Rect& dst );
+	static void draw_filled_rect( const Rect& dst );
 
-	static void draw_rounded_rect( const rect& dst, float radius );
-	static void draw_rounded_filled_rect( const rect& dst, float radius );
+	static void draw_rounded_rect( const Rect& dst, float radius );
+	static void draw_rounded_filled_rect( const Rect& dst, float radius );
 
-	static void draw_triangle( const vec2& v0, const vec2& v1, const vec2& v2 );
-	static void draw_filled_triangle( const vec2& v0, const vec2& v1, const vec2& v2 );
+	static void draw_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 );
+	static void draw_filled_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 );
 
-	static void draw_line( const vec2& start, const vec2& end );
-	static void draw_lines( const std::vector<vec2>& list_of_verts );
-	static void draw_line_loop( const rect& rc );
-	static void draw_line_loop( const std::vector<vec2>& list_of_verts );
+	static void draw_line( const Vec2& start, const Vec2& end );
+	static void draw_lines( const std::vector<Vec2>& list_of_verts );
+	static void draw_line_loop( const Rect& rc );
+	static void draw_line_loop( const std::vector<Vec2>& list_of_verts );
 
-	static void draw_point( const vec2& pos );
+	static void draw_point( const Vec2& pos );
 
-	static void draw_mesh( mesh_asset* mesh );
-	static void draw_sliced( const slice_def_asset* slice_def, const rect& dst );
-	static void draw_sprite( texture_asset* texture, const vec2& dst );
-	static vec2 draw_string( const std::string& text, const vec2& pos );
-	static vec2 draw_string( const std::vector<std::string>& text, const vec2& rc );
-	static vec2 draw_string( const std::vector<std::string>& text, const rect& rc );
-	static void draw_tiled( texture_asset* texture, const rect& dst );
-	static void draw_tile_map( tile_set_asset* tile_set, tile_map_asset* tile_map, const vec2& pos );
-	static void draw_crosshair( vec2 pos );
+	static void draw_mesh( Mesh_Asset* mesh );
+	static void draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst );
+	static void draw_sprite( Texture_Asset* texture, const Vec2& dst );
+	static Vec2 draw_string( const std::string& text, const Vec2& pos );
+	static Vec2 draw_string( const std::vector<std::string>& text, const Vec2& rc );
+	static Vec2 draw_string( const std::vector<std::string>& text, const Rect& rc );
+	static void draw_tiled( Texture_Asset* texture, const Rect& dst );
+	static void draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, const Vec2& pos );
+	static void draw_crosshair( Vec2 pos );
 
 	static std::vector<std::string> wrap_string_to_width( std::string_view text, float width );
 
@@ -100,13 +100,13 @@ struct render final
 
 	void clear_render_state_stack();
 
-	std::vector<render_state> render_states;
-	static render_state* state;
+	std::vector<Render_State> render_states;
+	static Render_State* state;
 
-	render* push();
-	render* pop();
+	Render* push();
+	Render* pop();
 
-	[[nodiscard]] static int sample_pick_id_at( vec2 viewport_click_pos );
+	[[nodiscard]] static int sample_pick_id_at( Vec2 viewport_click_pos );
 };
 
 }

@@ -2,9 +2,9 @@
 namespace war
 {
 
-struct game_controller final
+struct Game_Controller final
 {
-	std::unique_ptr<timer> timer_repeat = nullptr;
+	std::unique_ptr<Timer> timer_repeat = nullptr;
 	int player_id = -1;
 	float rumble_time_remaining_ms = 0;
 
@@ -18,7 +18,7 @@ struct game_controller final
 
 	bool is_being_used = false;
 
-	game_controller( int player_id );
+	Game_Controller( int player_id );
 
 	void update_button_state( e_input_id input_id, int xinput_button_bit );
 	void update_state();

@@ -2,11 +2,11 @@
 namespace war
 {
 
-struct bit_flag_generator final
+struct Bit_Flag_Generator final
 {
 	uint16 bit = 1;
 
-	bit_flag_generator( uint16 start_bit );
+	Bit_Flag_Generator( uint16 start_bit );
 
 	uint16 get();
 	uint16 next();

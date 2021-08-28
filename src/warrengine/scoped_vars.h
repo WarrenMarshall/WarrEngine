@@ -13,42 +13,42 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct s_render_state final
+struct Scoped_Render_State final
 {
-	s_render_state();
-	~s_render_state();
+	Scoped_Render_State();
+	~Scoped_Render_State();
 };
 
-#define scoped_render_state	scoped_decl( s_render_state, __LINE__)
+#define scoped_render_state	scoped_decl( Scoped_Render_State, __LINE__)
 
 // ----------------------------------------------------------------------------
 
-struct s_opengl final
+struct Scoped_OpenGL final
 {
-	s_opengl();
-	~s_opengl();
+	Scoped_OpenGL();
+	~Scoped_OpenGL();
 };
 
-#define scoped_opengl	scoped_decl( s_opengl, __LINE__)
+#define scoped_opengl	scoped_decl( Scoped_OpenGL, __LINE__)
 
 // ----------------------------------------------------------------------------
 
-struct s_opengl_identity final
+struct Scoped_OpenGL_Identity final
 {
-	s_opengl_identity();
-	~s_opengl_identity();
+	Scoped_OpenGL_Identity();
+	~Scoped_OpenGL_Identity();
 };
 
-#define scoped_opengl_identity	scoped_decl( s_opengl_identity, __LINE__)
+#define scoped_opengl_identity	scoped_decl( Scoped_OpenGL_Identity, __LINE__)
 
 // ----------------------------------------------------------------------------
 
-struct s_ui_layout final
+struct Scoped_UI_Layout final
 {
-	s_ui_layout( rect rc );
-	~s_ui_layout();
+	Scoped_UI_Layout( Rect rc );
+	~Scoped_UI_Layout();
 };
 
-#define scoped_ui_layout( layout_rect )	scoped_decl_arg1( s_ui_layout, layout_rect, __LINE__)
+#define scoped_ui_layout( layout_rect )	scoped_decl_arg1( Scoped_UI_Layout, layout_rect, __LINE__)
 
 }

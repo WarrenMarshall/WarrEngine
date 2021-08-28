@@ -10,7 +10,7 @@ namespace war
 // values in memory. whatever the assets needs to turn itself into something the
 // engine can use.
 
-bool asset::create()
+bool Asset::create()
 {
 	return false;
 }
@@ -19,7 +19,7 @@ bool asset::create()
 // chance to do something in response. this is primarily for sound assets to
 // adjust their pitch and playback but is open to any asset.
 
-void asset::adjust_for_time_dilation()
+void Asset::adjust_for_time_dilation()
 {
 }
 

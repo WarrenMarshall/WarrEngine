@@ -6,7 +6,7 @@ namespace war
 // pointer to the next object in the pool.
 
 template<typename T>
-struct object_pool
+struct Object_Pool
 {
 	// which object we're going to use next. this wraps around the vector
 	// above, endlessly, re-using objects.
@@ -16,8 +16,8 @@ struct object_pool
 	// was reset
 	size_t num_objects_in_pool = 0;
 
-	object_pool() = default;
-	virtual ~object_pool() = default;
+	Object_Pool() = default;
+	virtual ~Object_Pool() = default;
 
 	void init_to_size( size_t num_objects )
 	{

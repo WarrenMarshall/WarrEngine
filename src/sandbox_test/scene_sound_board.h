@@ -3,7 +3,7 @@ using namespace war;
 
 struct scene_sound_board final : scene
 {
-	texture_asset* gradient = nullptr;
+	Texture_Asset* gradient = nullptr;
 
 	scene_sound_board();
 

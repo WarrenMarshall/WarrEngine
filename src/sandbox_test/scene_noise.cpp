@@ -16,7 +16,7 @@ void scene_noise::pushed()
 {
 	scene::pushed();
 
-	viewport_pivot = vec2::zero;
+	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::custom );
 
 	generate_noise_samples();
@@ -44,16 +44,16 @@ void scene_noise::draw_ui()
 		{
 			y_pos += g_engine->pixel_font->get_max_height();
 
-			render::state->color = make_color( 1, 0.5f );
-			render::draw_filled_rect( rect( 0.f, y_pos, ui_w, noise_sz * 2.5f ) );
+			Render::state->color = make_color( 1, 0.5f );
+			Render::draw_filled_rect( Rect( 0.f, y_pos, ui_w, noise_sz * 2.5f ) );
 
-			render::state->color = make_color( 0, 0.5f );
-			render::draw_filled_rect( rect( 0.f, y_pos + ( noise_sz * 1.25f ), ui_w, 1.f ) );
+			Render::state->color = make_color( 0, 0.5f );
+			Render::draw_filled_rect( Rect( 0.f, y_pos + ( noise_sz * 1.25f ), ui_w, 1.f ) );
 
-			render::state->color = make_color( 4, 1.f );
+			Render::state->color = make_color( 4, 1.f );
 
-			vec2 start = { 0.f, y_pos + ( noise_sz * 1.25f ) };
-			vec2 end;
+			Vec2 start = { 0.f, y_pos + ( noise_sz * 1.25f ) };
+			Vec2 end;
 
 			constexpr int steps = 64;
 			float pixels_per_step = ui_w / (float)steps;
@@ -65,34 +65,34 @@ void scene_noise::draw_ui()
 
 				end.y = y_pos + ( noise_sz * 1.25f ) + ( samples[ x ] * noise_sz );
 
-				render::state->color = make_color( pal::brighter, 0.5f );
-				render::state->glow = 0.f;
-				render::draw_line( start, end );
+				Render::state->color = make_color( pal::brighter, 0.5f );
+				Render::state->glow = 0.f;
+				Render::draw_line( start, end );
 
 
-				render::state->color = make_color( pal::brightest, 1.f );
-				render::state->glow = 6.f;
-				render::draw_point( start );
+				Render::state->color = make_color( pal::brightest, 1.f );
+				Render::state->glow = 6.f;
+				Render::draw_point( start );
 
 				start = end;
 			}
 
-			render::state->glow = 0.f;
+			Render::state->glow = 0.f;
 		};
 
-		render::state->color = make_color( pal::brightest );
+		Render::state->color = make_color( pal::brightest );
 
-		render::draw_string( "Simplex", { 4.f, 64.f } );
+		Render::draw_string( "Simplex", { 4.f, 64.f } );
 		l_draw_noise( 64.f, simplex_samples );
 
-		render::draw_string( "Perlin", { 4.f, 112.f } );
+		Render::draw_string( "Perlin", { 4.f, 112.f } );
 		l_draw_noise( 112.f, perlin_samples );
 
-		render::draw_string( "Random", { 4.f, 166.f } );
+		Render::draw_string( "Random", { 4.f, 166.f } );
 		l_draw_noise( 166.f, random_samples );
 	}
 
-	rect rc_panel = { 0.f, 0.f, ui_w, ui_h };
+	Rect rc_panel = { 0.f, 0.f, ui_w, ui_h };
 	rc_panel.shrink( 32.f );
 	g_ui->layout_init( rc_panel );
 

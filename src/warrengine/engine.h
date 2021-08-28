@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct engine final
+struct Engine final
 {
 	// the function that all games/apps call to get the engine up and running
 	template<typename T>
@@ -31,13 +31,13 @@ struct engine final
 		float film_grain_amount = 0.f;
 	} post_process;
 
-	std::vector<asset_file_definition> asset_def_file_cache;
+	std::vector<Asset_File_Definition> asset_def_file_cache;
 
 	std::vector<std::future<void>> threads;
 
-	texture_asset* tex_white = nullptr;
-	texture_asset* tex_default_lut = nullptr;
-	font_asset* pixel_font = nullptr;
+	Texture_Asset* tex_white = nullptr;
+	Texture_Asset* tex_default_lut = nullptr;
+	Font_Asset* pixel_font = nullptr;
 
 	bool is_running = false;
 
@@ -53,23 +53,23 @@ struct engine final
 	void resume();
 	bool is_paused();
 
-	cmdline_args cmdline;
+	Cmdline_Args cmdline;
 
-	std::unique_ptr<opengl_framebuffer> frame_buffer = nullptr;
-	std::unique_ptr<opengl_framebuffer> blur_frame_buffer = nullptr;
-	std::unique_ptr<opengl_framebuffer> composite_frame_buffer = nullptr;
+	std::unique_ptr<OpenGL_Frame_Buffer> frame_buffer = nullptr;
+	std::unique_ptr<OpenGL_Frame_Buffer> blur_frame_buffer = nullptr;
+	std::unique_ptr<OpenGL_Frame_Buffer> composite_frame_buffer = nullptr;
 
 	struct
 	{
 		std::unique_ptr<b2World> world = nullptr;
-		std::unique_ptr<box2d_physics::debug_draw> debug_draw = nullptr;
+		std::unique_ptr<box2d_physics::Box2D_Debug_Draw> debug_draw = nullptr;
 
-		std::unique_ptr<box2d_physics::contact_listener> listener = nullptr;
-		std::vector<box2d_physics::pending_collision> begin_contact_queue;
-		std::vector<box2d_physics::pending_collision> end_contact_queue;
+		std::unique_ptr<box2d_physics::Contact_Listener> listener = nullptr;
+		std::vector<box2d_physics::Pending_Collision> begin_contact_queue;
+		std::vector<box2d_physics::Pending_Collision> end_contact_queue;
 	} box2d;
 
-	render_stats stats;
+	Render_Stats stats;
 
 	void new_physics_world();
 
@@ -103,30 +103,30 @@ struct engine final
 	[[nodiscard]] bool find_bool_from_symbol( std::string_view str, bool def_value = true );
 	[[nodiscard]] int find_int_from_symbol( std::string_view str, int def_value = 0 );
 	[[nodiscard]] float find_float_from_symbol( std::string_view str, float def_value = 0.f );
-	[[nodiscard]] color find_color_from_symbol( std::string_view str, const color& def_value = color::white );
-	[[nodiscard]] range<float> find_range_from_symbol( std::string_view str, const range<float>& def_value = range<float>( 0, 1 ) );
-	[[nodiscard]] vec2 find_vec2_from_symbol( std::string_view str, const vec2& def_value = vec2( 0, 0 ) );
+	[[nodiscard]] Color find_color_from_symbol( std::string_view str, const Color& def_value = Color::white );
+	[[nodiscard]] Range<float> find_range_from_symbol( std::string_view str, const Range<float>& def_value = Range<float>( 0, 1 ) );
+	[[nodiscard]] Vec2 find_vec2_from_symbol( std::string_view str, const Vec2& def_value = Vec2( 0, 0 ) );
 
-	[[nodiscard]] bool on_input_motion( const input_event* evt );
-	[[nodiscard]] bool on_input_pressed( const input_event* evt );
-	[[nodiscard]] bool on_input_held( const input_event* evt )
+	[[nodiscard]] bool on_input_motion( const Input_Event* evt );
+	[[nodiscard]] bool on_input_pressed( const Input_Event* evt );
+	[[nodiscard]] bool on_input_held( const Input_Event* evt )
 	{
 		return false;
 	}
-	[[nodiscard]] bool on_input_released( const input_event* evt );
-	[[nodiscard]] bool on_input_key( const input_event* evt )
+	[[nodiscard]] bool on_input_released( const Input_Event* evt );
+	[[nodiscard]] bool on_input_key( const Input_Event* evt )
 	{
 		return false;
 	}
 
-	clock time;
-	asset_cache_mgr asset_cache;
-	scene_mgr scenes;
-	os_window window;
-	render renderer;
-	input_mgr input;
-	opengl render_api;
-	key_values config_vars;
+	Clock time;
+	Asset_Cache_Mgr asset_cache;
+	Scene_Mgr scenes;
+	OS_Window window;
+	Render renderer;
+	Input_Mgr input;
+	OpenGL_Mgr render_api;
+	Key_Values config_vars;
 
 	void dispatch_collision_queue();
 	void dispatch_box2d_collisions();

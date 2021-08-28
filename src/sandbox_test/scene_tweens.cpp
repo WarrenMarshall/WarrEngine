@@ -12,32 +12,32 @@ void scene_tweens::pushed()
 {
 	scene::pushed();
 
-	viewport_pivot = vec2::zero;
+	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 
-	tween_tex = g_engine->find_asset<texture_asset>( "tex_particle_02" );
+	tween_tex = g_engine->find_asset<Texture_Asset>( "tex_particle_02" );
 
-	tween_linear = tween( 0, 200, 3000, tween_type::pingpong, tween_via::linear );
-	tween_sin = tween( 0, 200, 3000, tween_type::pingpong, tween_via::sinusoidal );
-	tween_quad = tween( 0, 200, 3000, tween_type::pingpong, tween_via::quadratic );
-	tween_circular = tween( 0, 200, 3000, tween_type::pingpong, tween_via::circular );
-	tween_back = tween( 0, 200, 3000, tween_type::pingpong, tween_via::back );
-	tween_bounce = tween( 0, 200, 3000, tween_type::pingpong, tween_via::bounce );
-	tween_cubic = tween( 0, 200, 3000, tween_type::pingpong, tween_via::cubic );
-	tween_elastic = tween( 0, 200, 3000, tween_type::pingpong, tween_via::elastic );
-	tween_exponential = tween( 0, 200, 3000, tween_type::pingpong, tween_via::exponential );
-	tween_quartic = tween( 0, 200, 3000, tween_type::pingpong, tween_via::quartic );
-	tween_quintic = tween( 0, 200, 3000, tween_type::pingpong, tween_via::quintic );
+	tween_linear = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::linear );
+	tween_sin = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::sinusoidal );
+	tween_quad = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::quadratic );
+	tween_circular = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::circular );
+	tween_back = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::back );
+	tween_bounce = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::bounce );
+	tween_cubic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::cubic );
+	tween_elastic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::elastic );
+	tween_exponential = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::exponential );
+	tween_quartic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::quartic );
+	tween_quintic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::quintic );
 
-	timer_01 = timer( 5000 );
-	timer_02 = timer( 2500 );
+	timer_01 = Timer( 5000 );
+	timer_02 = Timer( 2500 );
 }
 
 void scene_tweens::draw()
 {
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 void scene_tweens::draw_ui()
@@ -52,16 +52,16 @@ void scene_tweens::draw_ui()
 
 		auto l_draw_label = [&] ( const std::string& desc, float& ypos )
 		{
-			render::state->color = make_color( 0, 0.35f );
-			render::draw_filled_rect( rect( 96.f, ypos - 5.f, 200.f, 10.f ) );
+			Render::state->color = make_color( 0, 0.35f );
+			Render::draw_filled_rect( Rect( 96.f, ypos - 5.f, 200.f, 10.f ) );
 
-			render::state->color = make_color( 0, 0.25f );
-			render::draw_filled_rect( rect( 0.f, ypos - 7.f, ui_w, 14.f ) );
+			Render::state->color = make_color( 0, 0.25f );
+			Render::draw_filled_rect( Rect( 0.f, ypos - 7.f, ui_w, 14.f ) );
 
-			render::state->color = make_color( 4, 1.f );
-			render::state->scale = 1.f;
-			render::state->align = align::vcenter;
-			render::draw_string( desc, vec2( 12.f, ypos ) );
+			Render::state->color = make_color( 4, 1.f );
+			Render::state->scale = 1.f;
+			Render::state->align = align::vcenter;
+			Render::draw_string( desc, Vec2( 12.f, ypos ) );
 
 			ypos += 16.f;
 		};
@@ -87,11 +87,11 @@ void scene_tweens::draw_ui()
 
 	float ypos = 40.f;
 
-	auto l_draw_marker = [&] ( float& ypos, tween& tweener )
+	auto l_draw_marker = [&] ( float& ypos, Tween& tweener )
 	{
-		render::state->color = color::white;
-		render::state->scale = 2.f;
-		render::draw_sprite( tween_tex, vec2( 96.f + *tweener, ypos ) );
+		Render::state->color = Color::white;
+		Render::state->scale = 2.f;
+		Render::draw_sprite( tween_tex, Vec2( 96.f + *tweener, ypos ) );
 
 		ypos += 16.f;
 	};
@@ -99,7 +99,7 @@ void scene_tweens::draw_ui()
 	{
 		scoped_render_state;
 
-		render::state->z += zdepth_nudge;
+		Render::state->z += zdepth_nudge;
 
 		l_draw_marker( ypos, tween_linear );
 		l_draw_marker( ypos, tween_sin );
@@ -114,6 +114,6 @@ void scene_tweens::draw_ui()
 		l_draw_marker( ypos, tween_quintic );
 	}
 
-	render::draw_string( std::format( "Timer (will toggle in 5.0 seconds): {}", timer_01.is_elapsed() ), { 16.f, ui_h - 12.f } );
-	render::draw_string( std::format( "Repeating Timer (2.5 second interval): {}", timer_02.get_elapsed() % 2 ? "ON" : "OFF" ), { 16.f, ui_h - 24.f } );
+	Render::draw_string( std::format( "Timer (will toggle in 5.0 seconds): {}", timer_01.is_elapsed() ), { 16.f, ui_h - 12.f } );
+	Render::draw_string( std::format( "Repeating Timer (2.5 second interval): {}", timer_02.get_elapsed() % 2 ? "ON" : "OFF" ), { 16.f, ui_h - 24.f } );
 }

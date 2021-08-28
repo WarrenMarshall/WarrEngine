@@ -5,27 +5,27 @@
 namespace war
 {
 
-bool tile_set_asset::create()
+bool Tile_Set_Asset::create()
 {
 	// load tile index specific data
 
-	auto file = file_system::load_text_file( original_filename );
+	auto file = File_System::load_text_file( original_filename );
 
-	tile_def* current_tile_def = nullptr;
-	tiled_object* current_object = nullptr;
+	Tile_Def* current_tile_def = nullptr;
+	Tiled_Object* current_object = nullptr;
 	float current_object_rotation = 0.f;
 
 	for( const auto& raw_line : file->lines )
 	{
-		auto line = string_util::trim( raw_line );
+		auto line = String_Util::trim( raw_line );
 
 		if( line.starts_with( "<tileset " ) )
 		{
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
 			while( !tok.is_eos() )
 			{
-				tokenizer subtok( *tok.get_next_token(), "=" );
+				Tokenizer subtok( *tok.get_next_token(), "=" );
 
 				auto key = subtok.get_next_token();
 				auto value = subtok.get_next_token();
@@ -33,24 +33,24 @@ bool tile_set_asset::create()
 				if( value.has_value() )
 				{
 					std::string value_str = std::string( *value );
-					string_util::replace_char( value_str, '\"', ' ' );
-					value_str = string_util::trim( value_str );
+					String_Util::replace_char( value_str, '\"', ' ' );
+					value_str = String_Util::trim( value_str );
 
 					if( key == "tilewidth" )
 					{
-						tile_width = text_parser::int_from_str( value_str );
+						tile_width = Text_Parser::int_from_str( value_str );
 					}
 					else if( key == "tileheight" )
 					{
-						tile_height = text_parser::int_from_str( value_str );
+						tile_height = Text_Parser::int_from_str( value_str );
 					}
 					else if( key == "tilecount" )
 					{
-						tile_count = text_parser::int_from_str( value_str );
+						tile_count = Text_Parser::int_from_str( value_str );
 					}
 					else if( key == "columns" )
 					{
-						columns = text_parser::int_from_str( value_str );
+						columns = Text_Parser::int_from_str( value_str );
 					}
 				}
 			}
@@ -75,19 +75,19 @@ bool tile_set_asset::create()
 					tile_definitions.emplace_back();
 					auto tile_def = &tile_definitions.back();
 
-					tile_def->texture = texture_asset( texture->get_src_texture()->tag,
-						rect( x * tile_width, y * tile_height, tile_width, tile_height ) );
+					tile_def->texture = Texture_Asset( texture->get_src_texture()->tag,
+						Rect( x * tile_width, y * tile_height, tile_width, tile_height ) );
 				}
 			}
 		}
 		else if( line.starts_with( "<tile " ) )
 		{
 			int tile_idx = -1;
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
 			while( !tok.is_eos() )
 			{
-				tokenizer subtok( *tok.get_next_token(), "=" );
+				Tokenizer subtok( *tok.get_next_token(), "=" );
 
 				auto key = subtok.get_next_token();
 				auto value = subtok.get_next_token();
@@ -95,12 +95,12 @@ bool tile_set_asset::create()
 				if( value.has_value() )
 				{
 					std::string value_str = std::string( *value );
-					string_util::replace_char( value_str, '\"', ' ' );
-					value_str = string_util::trim( value_str );
+					String_Util::replace_char( value_str, '\"', ' ' );
+					value_str = String_Util::trim( value_str );
 
 					if( key == "id" )
 					{
-						tile_idx = text_parser::int_from_str( value_str );
+						tile_idx = Text_Parser::int_from_str( value_str );
 					}
 				}
 			}
@@ -122,43 +122,43 @@ bool tile_set_asset::create()
 			current_tile_def->objects.emplace_back();
 			current_object = &current_tile_def->objects.back();
 
-			tokenizer tok( line, " " );
+			Tokenizer tok( line, " " );
 
 			while( !tok.is_eos() )
 			{
-				tokenizer subtok( *tok.get_next_token(), "=" );
+				Tokenizer subtok( *tok.get_next_token(), "=" );
 
 				auto key = subtok.get_next_token();
 
 				if( *key == "x" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.x = text_parser::float_from_str( value );
+					String_Util::erase_char( value, '\"' );
+					current_object->rc.x = Text_Parser::float_from_str( value );
 				}
 				else if( *key == "y" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.y = text_parser::float_from_str( value );
+					String_Util::erase_char( value, '\"' );
+					current_object->rc.y = Text_Parser::float_from_str( value );
 				}
 				else if( *key == "width" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.w = text_parser::float_from_str( value );
+					String_Util::erase_char( value, '\"' );
+					current_object->rc.w = Text_Parser::float_from_str( value );
 				}
 				else if( *key == "height" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object->rc.h = text_parser::float_from_str( value );
+					String_Util::erase_char( value, '\"' );
+					current_object->rc.h = Text_Parser::float_from_str( value );
 				}
 				else if( *key == "rotation" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
-					string_util::erase_char( value, '\"' );
-					current_object_rotation = text_parser::float_from_str( value );
+					String_Util::erase_char( value, '\"' );
+					current_object_rotation = Text_Parser::float_from_str( value );
 
 					if( !fequals( current_object_rotation, 0.f ) )
 					{
@@ -171,10 +171,10 @@ bool tile_set_asset::create()
 						auto w = current_object->rc.w;
 						auto h = current_object->rc.h;
 
-						current_object->vertices.emplace_back( vec2( 0.f, 0.f ) );
-						current_object->vertices.emplace_back( vec2( w, 0.f ) );
-						current_object->vertices.emplace_back( vec2( w, h ) );
-						current_object->vertices.emplace_back( vec2( 0.f, h ) );
+						current_object->vertices.emplace_back( Vec2( 0.f, 0.f ) );
+						current_object->vertices.emplace_back( Vec2( w, 0.f ) );
+						current_object->vertices.emplace_back( Vec2( w, h ) );
+						current_object->vertices.emplace_back( Vec2( 0.f, h ) );
 
 						current_object->rotate( current_object_rotation );
 					}
@@ -188,11 +188,11 @@ bool tile_set_asset::create()
 			current_object->collision_type = sc_prim_type::polygon;
 			current_object->vertices.clear();
 
-			tokenizer tok( line, " ", true );
+			Tokenizer tok( line, " ", true );
 
 			while( !tok.is_eos() )
 			{
-				tokenizer subtok( *tok.get_next_token(), "=" );
+				Tokenizer subtok( *tok.get_next_token(), "=" );
 
 				auto key = subtok.get_next_token();
 
@@ -201,16 +201,16 @@ bool tile_set_asset::create()
 					std::string value = std::string( *subtok.get_next_token() );
 					value = value.substr( 1, value.size() - 4 );
 
-					tokenizer vert_tok( value, " " );
+					Tokenizer vert_tok( value, " " );
 
 					while( !vert_tok.is_eos() )
 					{
-						tokenizer xy_tok( *vert_tok.get_next_token(), "," );
+						Tokenizer xy_tok( *vert_tok.get_next_token(), "," );
 
-						auto x = string_util::to_float( std::string( *xy_tok.get_next_token() ) );
-						auto y = string_util::to_float( std::string( *xy_tok.get_next_token() ) );
+						auto x = String_Util::to_float( std::string( *xy_tok.get_next_token() ) );
+						auto y = String_Util::to_float( std::string( *xy_tok.get_next_token() ) );
 
-						current_object->vertices.emplace_back( vec2( x, y ) );
+						current_object->vertices.emplace_back( Vec2( x, y ) );
 					}
 
 				#ifdef _DEBUG

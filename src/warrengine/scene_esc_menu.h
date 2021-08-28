@@ -4,21 +4,21 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct scene_esc_menu_ui_callback final : ui_callback
+struct Scene_Esc_Menu_UI_Callback final : UI_Callback
 {
-	ui_control_data data_fullscreen;
+	UI_Control_Data data_fullscreen;
 
-	virtual ui_control_data* get_data( hash tag ) override;
+	virtual UI_Control_Data* get_data( hash tag ) override;
 
-	virtual bool on_input_pressed( const input_event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct scene_esc_menu final : scene
+struct Scene_Esc_Menu final : scene
 {
-	scene_esc_menu();
-	virtual ~scene_esc_menu() override = default;
+	Scene_Esc_Menu();
+	virtual ~Scene_Esc_Menu() override = default;
 
 	virtual void pushed() override;
 	virtual void popped() override;

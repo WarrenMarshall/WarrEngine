@@ -2,9 +2,9 @@
 namespace war
 {
 
-struct input_event final
+struct Input_Event final
 {
-	input_event();
+	Input_Event();
 
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = event_id::invalid;
@@ -16,10 +16,10 @@ struct input_event final
 	char ch = 0;
 
 	// current mouse position, in window coordinates
-	vec2 mouse_pos = vec2::zero;
+	Vec2 mouse_pos = Vec2::zero;
 
 	// a place for various events to store the deltas. used for mouse and controllers.
-	vec2 delta = vec2::zero;
+	Vec2 delta = Vec2::zero;
 
 	// modifier keys
 	bool shift_down = false;
@@ -27,25 +27,25 @@ struct input_event final
 	bool alt_down = false;
 };
 
-static_assert( sizeof( input_event ) <= 64 );
+static_assert( sizeof( Input_Event ) <= 64 );
 
 // ----------------------------------------------------------------------------
 
-struct input_mgr final
+struct Input_Mgr final
 {
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
-	std::vector<input_event> event_queue;
-	std::unique_ptr<timer> timer_repeat = nullptr;
+	std::vector<Input_Event> event_queue;
+	std::unique_ptr<Timer> timer_repeat = nullptr;
 
 	// tracks the mouse movement delta since the last call to Update()
-	vec2 mouse_move_delta = vec2::zero;
-	vec2 mouse_wheel_delta = vec2::zero;
+	Vec2 mouse_move_delta = Vec2::zero;
+	Vec2 mouse_wheel_delta = Vec2::zero;
 
 	// where the mouse currently sits in the window
-	vec2 mouse_window_pos = vec2::zero;
+	Vec2 mouse_window_pos = Vec2::zero;
 
-	std::unique_ptr<game_controller> gamepad = nullptr;
+	std::unique_ptr<Game_Controller> gamepad = nullptr;
 
 	std::array<bool, input_id::max> button_states = {};
 	std::array<bool, input_id::max> button_states_last_frame = {};
@@ -57,7 +57,7 @@ struct input_mgr final
 	[[nodiscard]] bool is_alt_down();
 
 	[[nodiscard]] e_button_state get_button_state( e_input_id input_id );
-	[[nodiscard]] vec2 get_axis_state( e_input_id input_id, bool use_dead_zone = true );
+	[[nodiscard]] Vec2 get_axis_state( e_input_id input_id, bool use_dead_zone = true );
 
 	void init();
 	void deinit();

@@ -5,12 +5,12 @@
 namespace war
 {
 
-shader::shader( std::string_view vert_filename, std::string_view frag_filename )
+Shader::Shader( std::string_view vert_filename, std::string_view frag_filename )
 {
 	create_and_compile( vert_filename, frag_filename );
 }
 
-void shader::create_and_compile( std::string_view vert_filename, std::string_view frag_filename )
+void Shader::create_and_compile( std::string_view vert_filename, std::string_view frag_filename )
 {
 	int success;
 	char infoLog[ 512 ];
@@ -19,7 +19,7 @@ void shader::create_and_compile( std::string_view vert_filename, std::string_vie
 	// vertex shader
 	unsigned int vertex_id;
 	{
-		auto vertex_shader_src = file_system::load_binary_file( std::format( "data/warrengine/shaders/{}", vert_filename ) );
+		auto vertex_shader_src = File_System::load_binary_file( std::format( "data/warrengine/shaders/{}", vert_filename ) );
 		auto wk = std::string( vertex_shader_src->buffer.begin(), vertex_shader_src->buffer.end() );
 
 		vertex_id = glCreateShader( GL_VERTEX_SHADER );
@@ -39,7 +39,7 @@ void shader::create_and_compile( std::string_view vert_filename, std::string_vie
 	std::string wk;
 	unsigned int fragment_id;
 	{
-		auto fragment_shader_src = file_system::load_text_file_raw( std::format( "data/warrengine/shaders/{}", frag_filename ) );
+		auto fragment_shader_src = File_System::load_text_file_raw( std::format( "data/warrengine/shaders/{}", frag_filename ) );
 
 		std::string pragma_include( "#pragma include " );
 		for( auto& line : fragment_shader_src->lines )
@@ -51,9 +51,9 @@ void shader::create_and_compile( std::string_view vert_filename, std::string_vie
 			if( pos != std::string::npos )
 			{
 				auto filename = line.substr( pos + pragma_include.size() );
-				string_util::erase_char( filename, '\"' );
+				String_Util::erase_char( filename, '\"' );
 
-				auto include_file = file_system::load_text_file_raw( std::format( "data/warrengine/shaders/inc/{}", filename ) );
+				auto include_file = File_System::load_text_file_raw( std::format( "data/warrengine/shaders/inc/{}", filename ) );
 
 				for( auto& inc_line : include_file->lines )
 				{
@@ -105,12 +105,12 @@ void shader::create_and_compile( std::string_view vert_filename, std::string_vie
 	glDeleteShader( fragment_id );
 }
 
-void shader::bind()
+void Shader::bind()
 {
 	glUseProgram( gl_id );
 }
 
-void shader::unbind()
+void Shader::unbind()
 {
 	glUseProgram( 0 );
 }

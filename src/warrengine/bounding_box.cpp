@@ -5,12 +5,12 @@
 namespace war
 {
 
-bounding_box::bounding_box()
+Bounding_Box::Bounding_Box()
 {
 	reset();
 }
 
-void bounding_box::add( const vec2& vtx )
+void Bounding_Box::add( const Vec2& vtx )
 {
 	min.x = glm::min( min.x, vtx.x );
 	min.y = glm::min( min.y, vtx.y );
@@ -19,15 +19,15 @@ void bounding_box::add( const vec2& vtx )
 	max.y = glm::max( max.y, vtx.y );
 }
 
-void bounding_box::reset()
+void Bounding_Box::reset()
 {
 	min.x = min.y = std::numeric_limits<float>::max();
 	max.x = max.y = std::numeric_limits<float>::min();
 }
 
-bounding_box bounding_box::operator+( const vec2& v ) const
+Bounding_Box Bounding_Box::operator+( const Vec2& v ) const
 {
-	bounding_box bb;
+	Bounding_Box bb;
 	bb.add( this->min );
 	bb.add( this->max );
 	bb.add( v );
@@ -35,15 +35,15 @@ bounding_box bounding_box::operator+( const vec2& v ) const
 	return bb;
 }
 
-bounding_box bounding_box::operator+=( const vec2& v )
+Bounding_Box Bounding_Box::operator+=( const Vec2& v )
 {
 	*this = *this + v;
 	return *this;
 }
 
-bounding_box bounding_box::operator+( const bounding_box& bbox ) const
+Bounding_Box Bounding_Box::operator+( const Bounding_Box& bbox ) const
 {
-	bounding_box bb;
+	Bounding_Box bb;
 	bb = *this;
 	bb.add( bbox.min );
 	bb.add( bbox.max );
@@ -51,7 +51,7 @@ bounding_box bounding_box::operator+( const bounding_box& bbox ) const
 	return bb;
 }
 
-bounding_box bounding_box::operator+=( const bounding_box& bbox )
+Bounding_Box Bounding_Box::operator+=( const Bounding_Box& bbox )
 {
 	*this = *this + bbox;
 	return *this;

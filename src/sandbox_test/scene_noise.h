@@ -5,13 +5,13 @@ struct scene_noise final : scene
 {
 	scene_noise();
 
-	noise_simplex simplex = {};
+	Simplex_Noise simplex = {};
 	float simplex_samples[ 64 ];
 
-	noise_perlin perlin = {};
+	Perlin_Noise perlin = {};
 	float perlin_samples[ 64 ];
 
-	noise_random random = {};
+	Random_Noise random = {};
 	float random_samples[ 64 ];
 
 	virtual void pushed() override;

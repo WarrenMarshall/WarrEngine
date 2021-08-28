@@ -22,7 +22,7 @@ scene_ui_callback::scene_ui_callback()
 	progress_data.draw_percentage_as_text = true;
 }
 
-ui_control_data* scene_ui_callback::get_data( hash tag )
+UI_Control_Data* scene_ui_callback::get_data( hash tag )
 {
 	switch( tag )
 	{
@@ -38,7 +38,7 @@ ui_control_data* scene_ui_callback::get_data( hash tag )
 		case H( "dropdown_01" ):		return &dropdown_data;
 	}
 
-	return ui_callback::get_data( tag );
+	return UI_Callback::get_data( tag );
 }
 
 size_t scene_ui_callback::get_item_count( hash tag )
@@ -56,7 +56,7 @@ size_t scene_ui_callback::get_item_count( hash tag )
 		}
 	}
 
-	return ui_callback::get_item_count( tag );
+	return UI_Callback::get_item_count( tag );
 }
 
 std::string_view scene_ui_callback::get_item_for_idx( hash tag, int idx )
@@ -74,7 +74,7 @@ std::string_view scene_ui_callback::get_item_for_idx( hash tag, int idx )
 		}
 	}
 
-	return ui_callback::get_item_for_idx( tag, idx );
+	return UI_Callback::get_item_for_idx( tag, idx );
 }
 
 void scene_ui_callback::on_value_changed( hash tag )
@@ -102,7 +102,7 @@ void scene_ui::pushed()
 {
 	scene::pushed();
 
-	viewport_pivot = vec2::zero;
+	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( mouse_mode::os );
 }
 
@@ -110,7 +110,7 @@ void scene_ui::draw()
 {
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 // ----------------------------------------------------------------------------
@@ -119,11 +119,11 @@ f_decl_draw_control( draw_control_player )
 {
 	scoped_render_state;
 
-	render::state->z += zdepth_nudge;
-	render::state->color = make_color( color::white );
-	render::state->scale = 2.f;
+	Render::state->z += zdepth_nudge;
+	Render::state->color = make_color( Color::white );
+	Render::state->scale = 2.f;
 
-	render::draw_sprite( control->image, rc_ui.get_midpoint() );
+	Render::draw_sprite( control->image, rc_ui.get_midpoint() );
 }
 
 // ----------------------------------------------------------------------------
@@ -138,7 +138,7 @@ void scene_ui::draw_ui()
 	float panel_w = (half_panel_w * 2.f) + 16.f;
 	float panel_h = 196.f;
 
-	rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
+	Rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
 	g_ui->layout_init( rc_panel );
 
 	g_ui->panel_control()
@@ -153,7 +153,7 @@ void scene_ui::draw_ui()
 
 	g_ui->spacer_control()->done();
 
-	rect rc = g_ui->layout_top();
+	Rect rc = g_ui->layout_top();
 
 	// left side
 
@@ -188,7 +188,7 @@ void scene_ui::draw_ui()
 			->done();
 
 		g_ui->slider_control( H( "slider_02" ) )
-			->set_size( { half_panel_w, vec2::ignored } )
+			->set_size( { half_panel_w, Vec2::ignored } )
 			->set_interval( 0.2f )
 			->done();
 
@@ -224,7 +224,7 @@ void scene_ui::draw_ui()
 
 		g_ui
 			->list_control( H( "list_01" ) )
-			->cut_top( render::state->font->get_max_height() * 6 )
+			->cut_top( Render::state->font->get_max_height() * 6 )
 			->done();
 
 		g_ui

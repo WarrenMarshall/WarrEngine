@@ -24,16 +24,16 @@ namespace war::simple_collision
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-float raycast_closest::report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast )
+float Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
-	auto start_of_trace = vec2( ray.p.x, ray.p.y ).from_simple();
-	auto trace_normal = vec2( ray.d.x, ray.d.y );
+	auto start_of_trace = Vec2( ray.p.x, ray.p.y ).from_simple();
+	auto trace_normal = Vec2( ray.d.x, ray.d.y );
 
 	if( raycast.t < result.dist )
 	{
-		raycast_hit hit;
+		Raycast_Hit hit;
 		hit.normal.x = raycast.n.x;
 		hit.normal.y = raycast.n.y;
 		hit.ray_normal.x = ray.d.x;
@@ -51,7 +51,7 @@ float raycast_closest::report_component( const entity* entity, const c2Ray& ray,
 
 // ----------------------------------------------------------------------------
 
-float raycast_quick::report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast )
+float Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
@@ -61,14 +61,14 @@ float raycast_quick::report_component( const entity* entity, const c2Ray& ray, e
 
 // ----------------------------------------------------------------------------
 
-float raycast_all::report_component( const entity* entity, const c2Ray& ray, ec_simple_collision_body* scc, const c2Raycast& raycast )
+float Raycast_All::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
-	auto start_of_trace = vec2( ray.p.x, ray.p.y ).from_simple();;
-	auto trace_normal = vec2( ray.d.x, ray.d.y );
+	auto start_of_trace = Vec2( ray.p.x, ray.p.y ).from_simple();;
+	auto trace_normal = Vec2( ray.d.x, ray.d.y );
 
-	raycast_hit hit;
+	Raycast_Hit hit;
 	hit.normal.x = raycast.n.x;
 	hit.normal.y = raycast.n.y;
 	hit.ray_normal.x = ray.d.x;

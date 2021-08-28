@@ -7,8 +7,8 @@ scene_meshes::scene_meshes()
 {
 	flags.blocks_further_drawing = true;
 
-	mesh_rotator = tween( 0, 360, 5000, tween_type::pingpong, tween_via::bounce );
-	mesh_scaler = tween( 1.f, 2.f, 3000, tween_type::pingpong, tween_via::sinusoidal );
+	mesh_rotator = Tween( 0, 360, 5000, tween_type::pingpong, tween_via::bounce );
+	mesh_scaler = Tween( 1.f, 2.f, 3000, tween_type::pingpong, tween_via::sinusoidal );
 }
 
 void scene_meshes::pushed()
@@ -18,10 +18,10 @@ void scene_meshes::pushed()
 	// PLAYER
 
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->set_pos( { -128.f, 0.f } );
 		{
-			mesh_player = e->add_component<ec_mesh>();
+			mesh_player = e->add_component<Mesh_Component>();
 			mesh_player->init( "mesh_mario_jump" );
 			mesh_player->get_transform()->set_scale( 1.25f );
 		}
@@ -30,10 +30,10 @@ void scene_meshes::pushed()
 	// CRATE
 
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->set_pos( { 128.f, 0.f } );
 		{
-			mesh_crate = e->add_component<ec_mesh>();
+			mesh_crate = e->add_component<Mesh_Component>();
 			mesh_crate->init( "mesh_crate" );
 		}
 	}
@@ -48,7 +48,7 @@ void scene_meshes::draw()
 
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 void scene_meshes::draw_ui()

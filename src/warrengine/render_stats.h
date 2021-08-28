@@ -2,21 +2,21 @@
 namespace war
 {
 
-struct render_stats final
+struct Render_Stats final
 {
 	void init();
 
-	timer stat_timer;
+	Timer stat_timer;
 
-	value_accumulator frame_count;
+	Value_Accumulator frame_count;
 
-	value_accumulator draw_calls;
-	value_accumulator frame_times_ms;
-	value_accumulator entities;
-	value_accumulator quads;
-	value_accumulator triangles;
-	value_accumulator lines;
-	value_accumulator points;
+	Value_Accumulator draw_calls;
+	Value_Accumulator frame_times_ms;
+	Value_Accumulator entities;
+	Value_Accumulator quads;
+	Value_Accumulator triangles;
+	Value_Accumulator lines;
+	Value_Accumulator points;
 
 	std::string stat_custom_string;
 	std::vector<std::string> stat_strings;

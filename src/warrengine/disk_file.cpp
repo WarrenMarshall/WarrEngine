@@ -5,7 +5,7 @@
 namespace war
 {
 
-void file_disk::open_for_read( std::string_view filename )
+void Disk_File::open_for_read( std::string_view filename )
 {
 	fopen_s( &file_handle, filename.data(), "rb" );
 
@@ -15,7 +15,7 @@ void file_disk::open_for_read( std::string_view filename )
 	}
 }
 
-bool file_disk::read_glob( void* write_ptr, size_t size )
+bool Disk_File::read_glob( void* write_ptr, size_t size )
 {
 	size_t elements_read = fread_s( write_ptr, size, 1, size, file_handle );
 
@@ -28,9 +28,9 @@ bool file_disk::read_glob( void* write_ptr, size_t size )
 	return true;
 }
 
-void file_disk::open_for_write( std::string_view filename )
+void Disk_File::open_for_write( std::string_view filename )
 {
-	file_system::create_path_if_not_exist( filename );
+	File_System::create_path_if_not_exist( filename );
 
 	fopen_s( &file_handle, filename.data(), "wb" );
 
@@ -40,7 +40,7 @@ void file_disk::open_for_write( std::string_view filename )
 	}
 }
 
-void file_disk::write_glob( void* read_ptr, size_t size )
+void Disk_File::write_glob( void* read_ptr, size_t size )
 {
 	size_t elements_written = fwrite( read_ptr, 1, size, file_handle );
 
@@ -50,7 +50,7 @@ void file_disk::write_glob( void* read_ptr, size_t size )
 	}
 }
 
-void file_disk::close()
+void Disk_File::close()
 {
 	fclose( file_handle );
 }

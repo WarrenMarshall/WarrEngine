@@ -14,16 +14,16 @@ void scene_particles::pushed()
 
 	// stars
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->tag = H( "stars" );
 		e->set_pos( { -150.f, -100.f } );
 
 		{
-			auto ec = e->add_component<ec_emitter>();
+			auto ec = e->add_component<Emitter_Component>();
 			ec->init( "em_stars" );
 		}
 		{
-			auto ec = e->add_component<ec_primitive_shape>();
+			auto ec = e->add_component<Primitve_Shape_Component>();
 			ec->add_shape( primitive_shape::circle, 30.f );
 			ec->rs_opt.color = make_color( pal::brightest );
 		}
@@ -31,36 +31,36 @@ void scene_particles::pushed()
 
 	// jumping coins
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->set_pos( { 0.f, viewport_hh } );
 
 		{
-			auto ec = e->add_component<ec_emitter>();
+			auto ec = e->add_component<Emitter_Component>();
 			ec->init( "em_coin_fountain" );
 		}
 		{
-			auto ec = e->add_component<ec_primitive_shape>();
-			ec->add_shape( primitive_shape::filled_rect, rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
+			auto ec = e->add_component<Primitve_Shape_Component>();
+			ec->add_shape( primitive_shape::filled_rect, Rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
 			ec->rs_opt.color = make_color( 4, 0.25f );
 		}
 	}
 
 	// torch emitter attached to mouse cursor
 	{
-		auto e = add_entity<entity>();
+		auto e = add_entity<Entity>();
 		e->set_pos( { 50.f, -100.f } );
 		e->tag = H( "mouse_torch" );
 
 		{
-			auto ec = e->add_component<ec_emitter>();
+			auto ec = e->add_component<Emitter_Component>();
 			ec->init( "em_torch" );
 		}
 		{
-			auto ec = e->add_component<ec_emitter>();
+			auto ec = e->add_component<Emitter_Component>();
 			ec->init( "em_torch_embers" );
 		}
 		{
-			auto ec = e->add_component<ec_primitive_shape>();
+			auto ec = e->add_component<Primitve_Shape_Component>();
 			ec->add_shape( primitive_shape::filled_circle, 10.f );
 			ec->rs_opt.color = make_color( pal::brightest );
 			ec->rs_opt.color->a = 0.25f;
@@ -74,7 +74,7 @@ void scene_particles::draw()
 {
 	draw_tiled_background();
 	scene::draw();
-	render::draw_world_axis();
+	Render::draw_world_axis();
 }
 
 void scene_particles::draw_ui()
@@ -84,28 +84,28 @@ void scene_particles::draw_ui()
 
 	// compute where the torch is in UI space and draw a label there
 
-	auto viewport_pos = coord_system::world_to_viewport_pos( find_entity( H( "mouse_torch" ) )->get_pos() );
+	auto viewport_pos = Coord_System::world_to_viewport_pos( find_entity( H( "mouse_torch" ) )->get_pos() );
 	viewport_pos += { 24.f, 0.f };
-	auto ui_pos = coord_system::viewport_to_ui_pos( viewport_pos );
+	auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
-	render::state->align = align::left | align::vcenter;
-	render::state->color = make_color( pal::brighter );
-	render::draw_string( "My Light In The Dark", ui_pos );
+	Render::state->align = align::left | align::vcenter;
+	Render::state->color = make_color( pal::brighter );
+	Render::draw_string( "My Light In The Dark", ui_pos );
 }
 
-bool scene_particles::on_input_motion( const input_event* evt )
+bool scene_particles::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == input_id::mouse )
 	{
 		if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
 		{
-			auto wpos = coord_system::window_to_world_pos( evt->mouse_pos );
+			auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
 			find_entity( H( "mouse_torch" ) )->set_pos( wpos );
 		}
 
 		if( g_engine->input.is_button_held( input_id::mouse_button_right ) )
 		{
-			auto wpos = coord_system::window_to_world_pos( evt->mouse_pos );
+			auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
 			find_entity( H( "stars" ) )->set_pos( wpos );
 		}
 	}

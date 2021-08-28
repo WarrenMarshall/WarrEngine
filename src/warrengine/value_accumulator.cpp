@@ -5,70 +5,70 @@
 namespace war
 {
 
-void value_accumulator::init()
+void Value_Accumulator::init()
 {
 	value = accumulator = 0.f;
 }
 
-void value_accumulator::update_value( int steps )
+void Value_Accumulator::update_value( int steps )
 {
 	value = accumulator / (float)( steps );
 	accumulator = 0.f;
 }
 
-void value_accumulator::update_value()
+void Value_Accumulator::update_value()
 {
 	value = accumulator;
 	accumulator = 0.f;
 }
 
-value_accumulator& value_accumulator::operator++()
+Value_Accumulator& Value_Accumulator::operator++()
 {
 	accumulator += 1.f;
 	return *this;
 }
 
-value_accumulator value_accumulator::operator++( int )
+Value_Accumulator Value_Accumulator::operator++( int )
 {
-	value_accumulator val( *this );
+	Value_Accumulator val( *this );
 	++( *this );
 	return val;
 }
 
-value_accumulator& value_accumulator::operator--()
+Value_Accumulator& Value_Accumulator::operator--()
 {
 	accumulator -= 1.f;
 	return *this;
 }
 
-value_accumulator value_accumulator::operator--( int )
+Value_Accumulator Value_Accumulator::operator--( int )
 {
-	value_accumulator val( *this );
+	Value_Accumulator val( *this );
 	--( *this );
 	return val;
 }
 
-value_accumulator value_accumulator::operator+( float v ) const
+Value_Accumulator Value_Accumulator::operator+( float v ) const
 {
-	value_accumulator av( *this );
+	Value_Accumulator av( *this );
 	av.accumulator += v;
 	return av;
 }
 
-value_accumulator value_accumulator::operator+=( float v )
+Value_Accumulator Value_Accumulator::operator+=( float v )
 {
 	*this = *this + v;
 	return *this;
 }
 
-value_accumulator value_accumulator::operator+( time_ms v ) const
+Value_Accumulator Value_Accumulator::operator+( time_ms v ) const
 {
-	value_accumulator av( *this );
+	Value_Accumulator av( *this );
 	av.accumulator += v;
 	return av;
 }
 
-value_accumulator value_accumulator::operator+=( time_ms v )
+Value_Accumulator Value_Accumulator::operator+=( time_ms v )
 {
 	*this = *this + v;
 	return *this;

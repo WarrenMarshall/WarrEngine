@@ -3,16 +3,16 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct e_ball final : entity
+struct e_ball final : Entity
 {
-	virtual bool on_collided( simple_collision::pending_collision& coll ) override;
+	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct e_paddle final : entity
+struct e_paddle final : Entity
 {
-	virtual bool on_collided( simple_collision::pending_collision& coll ) override;
+	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -20,8 +20,8 @@ struct scene_simple_breakout final : scene
 {
 	scene_simple_breakout();
 
-	entity* paddle = nullptr;
-	entity* world_geo = nullptr;
+	Entity* paddle = nullptr;
+	Entity* world_geo = nullptr;
 
 	void spawn_ball();
 	virtual void pushed() override;
@@ -29,7 +29,7 @@ struct scene_simple_breakout final : scene
 	virtual void draw_ui() override;
 	virtual void update() override;
 
-	virtual bool on_input_pressed( const input_event* evt ) override;
-	virtual bool on_input_held( const input_event* evt ) override;
-	virtual bool on_input_motion( const input_event* evt ) override;
+	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input_held( const Input_Event* evt ) override;
+	virtual bool on_input_motion( const Input_Event* evt ) override;
 };

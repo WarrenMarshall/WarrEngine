@@ -6,9 +6,9 @@ namespace war
 //
 // the size is determined at construction and never changes.
 
-struct particle_pool final : object_pool<particle>
+struct Particle_Pool final : Object_Pool<Particle>
 {
-	particle_emitter* parent_emitter = nullptr;
+	Particle_Emitter* parent_emitter = nullptr;
 
 	// the number of particles in the pool that are currently alive. this is
 	// updated with each "update" cycle.

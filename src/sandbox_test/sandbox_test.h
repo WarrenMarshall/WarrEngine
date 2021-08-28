@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct sandbox_test_app final : game
+struct sandbox_test_app final : Game
 {
 	sandbox_test_app();
 

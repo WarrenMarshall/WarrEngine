@@ -6,7 +6,7 @@ namespace war
 // a value that wants to accumulate over a period of time, and then report
 // an averaged value for that period.
 
-struct value_accumulator final
+struct Value_Accumulator final
 {
 	float value = 0.f;
 
@@ -14,14 +14,14 @@ struct value_accumulator final
 	void update_value( int steps );
 	void update_value();
 
-	value_accumulator& operator++();
-	value_accumulator operator++( int );
-	value_accumulator& operator--();
-	value_accumulator operator--( int );
-	value_accumulator operator+( float value ) const;
-	value_accumulator operator+=( float v );
-	value_accumulator operator+( time_ms value ) const;
-	value_accumulator operator+=( time_ms v );
+	Value_Accumulator& operator++();
+	Value_Accumulator operator++( int );
+	Value_Accumulator& operator--();
+	Value_Accumulator operator--( int );
+	Value_Accumulator operator+( float value ) const;
+	Value_Accumulator operator+=( float v );
+	Value_Accumulator operator+( time_ms value ) const;
+	Value_Accumulator operator+=( time_ms v );
 
 private:
 

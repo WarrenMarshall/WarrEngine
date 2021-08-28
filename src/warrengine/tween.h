@@ -2,15 +2,15 @@
 namespace war
 {
 
-struct tween final
+struct Tween final
 {
 	tweeny::tween<float> _tween = {};
 	float start = 0.f, end = 1.f;
 
 	time_ms time_last;
 
-	tween();
-	tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via );
+	Tween();
+	Tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via );
 
 	[[nodiscard]] float operator*();
 

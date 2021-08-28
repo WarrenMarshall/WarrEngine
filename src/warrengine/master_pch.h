@@ -114,7 +114,7 @@ const std::string valid_chars_punctuation = "!@#$%^&*(),.;:";
 
 #include "master_enum.h"
 
-#include "util_string.h"
+#include "utils.h"
 #include "logfile.h"
 
 #include "value_accumulator.h"
@@ -215,8 +215,8 @@ constexpr auto simple_world_scale_factor = 100.f;
 
 // ----------------------------------------------------------------------------
 
-extern std::unique_ptr<war::log_file> g_logfile;
-extern std::unique_ptr<game> g_base_game;
+extern std::unique_ptr<war::Log_File> g_logfile;
+extern std::unique_ptr<Game> g_base_game;
 
 // ----------------------------------------------------------------------------
 // attempts to make logging things easier
@@ -316,6 +316,6 @@ extern float ui_h;
 
 // ----------------------------------------------------------------------------
 
-#define make_color war::color::make
+#define make_color war::Color::make
 
 }

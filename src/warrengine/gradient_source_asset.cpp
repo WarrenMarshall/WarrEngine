@@ -5,7 +5,7 @@
 namespace war
 {
 
-bool gradient_source_asset::create()
+bool Gradient_Source_Asset::create()
 {
 	// gradients are 1x? or ?x1 textures
 	//

@@ -2,22 +2,22 @@
 namespace war
 {
 
-struct vertex_array_object final
+struct Vertex_Array_Object final
 {
 	e_render_prim render_prim = render_prim::quad;
 	GLuint gl_id = 0;
-	primitive_batch* batch = nullptr;
+	Primitive_Batch* batch = nullptr;
 
 	float indices_to_verts_factor = 0.f;
 
-	std::unique_ptr<vertex_buffer> vb = nullptr;
-	index_buffer* ib = nullptr;
+	std::unique_ptr<Vertex_Buffer> vb = nullptr;
+	Index_Buffer* ib = nullptr;
 
-	vertex_array_object() = default;
-	vertex_array_object( vertex_array_object& ) = delete;
-	vertex_array_object( primitive_batch* batch, e_render_prim render_prim );
-	void init( primitive_batch* batch, e_render_prim render_prim );
-	~vertex_array_object();
+	Vertex_Array_Object() = default;
+	Vertex_Array_Object( Vertex_Array_Object& ) = delete;
+	Vertex_Array_Object( Primitive_Batch* batch, e_render_prim render_prim );
+	void init( Primitive_Batch* batch, e_render_prim render_prim );
+	~Vertex_Array_Object();
 
 	void bind();
 	void unbind();

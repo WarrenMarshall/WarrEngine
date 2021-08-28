@@ -5,32 +5,32 @@
 namespace war
 {
 
-ui_control_data* ui_callback::get_data( hash tag )
+UI_Control_Data* UI_Callback::get_data( hash tag )
 {
 	return &default_data;
 }
 
-texture_asset* ui_callback::get_texture_for_checkbox( hash tag )
+Texture_Asset* UI_Callback::get_texture_for_checkbox( hash tag )
 {
 	auto checked = get_data( tag )->bool_value();
 
 	return
 		checked
-		? g_engine->find_asset<texture_asset>( "ui_check_on" )
-		: g_engine->find_asset<texture_asset>( "ui_check_off" );
+		? g_engine->find_asset<Texture_Asset>( "ui_check_on" )
+		: g_engine->find_asset<Texture_Asset>( "ui_check_off" );
 }
 
-texture_asset* ui_callback::get_texture_for_radio( hash tag )
+Texture_Asset* UI_Callback::get_texture_for_radio( hash tag )
 {
 	auto idx = get_data( tag )->int_value();
 
 	return
 		( idx == g_ui->current_control->idx )
-		? g_engine->find_asset<texture_asset>( "ui_radio_on" )
-		: g_engine->find_asset<texture_asset>( "ui_radio_off" );
+		? g_engine->find_asset<Texture_Asset>( "ui_radio_on" )
+		: g_engine->find_asset<Texture_Asset>( "ui_radio_off" );
 }
 
-void ui_callback::on_control_left_clicked( hash tag, const ui_result& result )
+void UI_Callback::on_control_left_clicked( hash tag, const UI_Result& result )
 {
 	auto control_data = get_data( tag );
 
@@ -58,7 +58,7 @@ void ui_callback::on_control_left_clicked( hash tag, const ui_result& result )
 	}
 }
 
-void ui_callback::on_motion( hash tag, const ui_result& result )
+void UI_Callback::on_motion( hash tag, const UI_Result& result )
 {
 	auto control_data = get_data( tag );
 
@@ -85,26 +85,26 @@ void ui_callback::on_motion( hash tag, const ui_result& result )
 	}
 }
 
-size_t ui_callback::get_item_count( hash tag )
+size_t UI_Callback::get_item_count( hash tag )
 {
 	return 0;
 }
 
-std::string_view ui_callback::get_item_for_idx( hash tag, int idx )
+std::string_view UI_Callback::get_item_for_idx( hash tag, int idx )
 {
 	return "n/a";
 }
 
-void ui_callback::on_value_changed( hash tag )
+void UI_Callback::on_value_changed( hash tag )
 {
 }
 
-bool ui_callback::validate_value_change( hash tag, ui_control_data* old_value, ui_control_data* new_value )
+bool UI_Callback::validate_value_change( hash tag, UI_Control_Data* old_value, UI_Control_Data* new_value )
 {
 	if( g_ui->focused.type == ui_control_type::text )
 	{
-		auto old_text_data = static_cast<ui_text_control_data*>( old_value );
-		auto new_text_data = static_cast<ui_text_control_data*>( new_value );
+		auto old_text_data = static_cast<UI_Text_Control_Data*>( old_value );
+		auto new_text_data = static_cast<UI_Text_Control_Data*>( new_value );
 
 		std::string old_str = old_text_data->string_value();
 		std::string new_str = new_text_data->string_value();
@@ -146,7 +146,7 @@ bool ui_callback::validate_value_change( hash tag, ui_control_data* old_value, u
 //
 // i.e between a checkbox and it's label
 
-float ui_callback::get_control_padding()
+float UI_Callback::get_control_padding()
 {
 	return 4.f;
 }
@@ -156,9 +156,9 @@ float ui_callback::get_control_padding()
 //
 // i.e. between 2 buttons sitting side by side
 
-vec2 ui_callback::get_control_margin( e_ui_control_type control_type )
+Vec2 UI_Callback::get_control_margin( e_ui_control_type control_type )
 {
-	vec2 result = { 2.f, 2.f };
+	Vec2 result = { 2.f, 2.f };
 
 	switch( control_type )
 	{
@@ -178,16 +178,16 @@ vec2 ui_callback::get_control_margin( e_ui_control_type control_type )
 	return result;
 }
 
-bool ui_callback::on_input_motion( const input_event* evt )
+bool UI_Callback::on_input_motion( const Input_Event* evt )
 {
 	return false;
 }
 
-bool ui_callback::handle_editing_key( const input_event* evt )
+bool UI_Callback::handle_editing_key( const Input_Event* evt )
 {
 	if( g_ui->focused.type == ui_control_type::text )
 	{
-		auto control_data = static_cast<ui_text_control_data*>( get_data( g_ui->focused.tag ) );
+		auto control_data = static_cast<UI_Text_Control_Data*>( get_data( g_ui->focused.tag ) );
 
 		// ----------------------------------------------------------------------------
 		// standard text editing keys
@@ -264,7 +264,7 @@ bool ui_callback::handle_editing_key( const input_event* evt )
 	return false;
 }
 
-bool ui_callback::on_input_pressed( const input_event* evt )
+bool UI_Callback::on_input_pressed( const Input_Event* evt )
 {
 	if( g_ui->focused.tag != hash_none )
 	{
@@ -285,7 +285,7 @@ bool ui_callback::on_input_pressed( const input_event* evt )
 	return false;
 }
 
-bool ui_callback::on_input_held( const input_event* evt )
+bool UI_Callback::on_input_held( const Input_Event* evt )
 {
 	if( g_ui->focused.tag != hash_none )
 	{
@@ -302,12 +302,12 @@ bool ui_callback::on_input_held( const input_event* evt )
 	return false;
 }
 
-bool ui_callback::on_input_released( const input_event* evt )
+bool UI_Callback::on_input_released( const Input_Event* evt )
 {
 	return false;
 }
 
-bool ui_callback::on_input_key( const input_event* evt )
+bool UI_Callback::on_input_key( const Input_Event* evt )
 {
 	if( g_ui->focused.tag != hash_none )
 	{
@@ -315,12 +315,12 @@ bool ui_callback::on_input_key( const input_event* evt )
 
 		if( g_ui->focused.type == ui_control_type::text )
 		{
-			auto control_data = static_cast<ui_text_control_data*>( get_data( g_ui->focused.tag ) );
+			auto control_data = static_cast<UI_Text_Control_Data*>( get_data( g_ui->focused.tag ) );
 
 			std::string new_str = control_data->string_value();
 			new_str.insert( new_str.begin() + control_data->caret_pos, evt->ch );
 
-			auto new_data = ui_text_control_data();
+			auto new_data = UI_Text_Control_Data();
 			new_data.set_string_value( new_str );
 
 			if( validate_value_change( g_ui->focused.tag, control_data, &new_data ) )

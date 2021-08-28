@@ -8,35 +8,35 @@ namespace war
 //
 // this is how the UI system talks to the outside world.
 
-struct ui_callback
+struct UI_Callback
 {
-	virtual ~ui_callback() = default;
+	virtual ~UI_Callback() = default;
 
-	ui_control_data default_data;
+	UI_Control_Data default_data;
 
-	virtual ui_control_data* get_data( hash tag );
+	virtual UI_Control_Data* get_data( hash tag );
 
-	virtual texture_asset* get_texture_for_checkbox( hash tag );
-	virtual texture_asset* get_texture_for_radio( hash tag );
+	virtual Texture_Asset* get_texture_for_checkbox( hash tag );
+	virtual Texture_Asset* get_texture_for_radio( hash tag );
 
-	virtual void on_control_left_clicked( hash tag, const ui_result& result );
-	virtual void on_motion( hash tag, const ui_result& result );
+	virtual void on_control_left_clicked( hash tag, const UI_Result& result );
+	virtual void on_motion( hash tag, const UI_Result& result );
 
 	virtual size_t get_item_count( hash tag );
 	virtual std::string_view get_item_for_idx( hash tag, int idx );
 
 	virtual void on_value_changed( hash tag );
-	virtual bool validate_value_change( hash tag, ui_control_data* old_value, ui_control_data* new_value );
+	virtual bool validate_value_change( hash tag, UI_Control_Data* old_value, UI_Control_Data* new_value );
 
 	virtual float get_control_padding();
-	virtual vec2 get_control_margin( e_ui_control_type control_type );
+	virtual Vec2 get_control_margin( e_ui_control_type control_type );
 
-	virtual bool on_input_motion( const input_event* evt );
-	bool handle_editing_key( const input_event* evt );
-	virtual bool on_input_pressed( const input_event* evt );
-	virtual bool on_input_held( const input_event* evt );
-	virtual bool on_input_released( const input_event* evt );
-	virtual bool on_input_key( const input_event* evt );
+	virtual bool on_input_motion( const Input_Event* evt );
+	bool handle_editing_key( const Input_Event* evt );
+	virtual bool on_input_pressed( const Input_Event* evt );
+	virtual bool on_input_held( const Input_Event* evt );
+	virtual bool on_input_released( const Input_Event* evt );
+	virtual bool on_input_key( const Input_Event* evt );
 };
 
 }

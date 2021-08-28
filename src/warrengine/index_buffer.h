@@ -2,10 +2,10 @@
 namespace war
 {
 
-struct index_buffer
+struct Index_Buffer
 {
-	index_buffer();
-	~index_buffer();
+	Index_Buffer();
+	~Index_Buffer();
 
 	unsigned int gl_id;
 
@@ -15,30 +15,30 @@ struct index_buffer
 
 // ----------------------------------------------------------------------------
 
-struct index_buffer_quads final : index_buffer
+struct Index_Buffer_Quads final : Index_Buffer
 {
-	index_buffer_quads();
+	Index_Buffer_Quads();
 };
 
 // ----------------------------------------------------------------------------
 
-struct index_buffer_tris final : index_buffer
+struct Index_Buffer_Tris final : Index_Buffer
 {
-	index_buffer_tris();
+	Index_Buffer_Tris();
 };
 
 // ----------------------------------------------------------------------------
 
-struct index_buffer_lines final : index_buffer
+struct Index_Buffer_Lines final : Index_Buffer
 {
-	index_buffer_lines();
+	Index_Buffer_Lines();
 };
 
 // ----------------------------------------------------------------------------
 
-struct index_buffer_points final : index_buffer
+struct Index_Buffer_Points final : Index_Buffer
 {
-	index_buffer_points();
+	Index_Buffer_Points();
 };
 
 }

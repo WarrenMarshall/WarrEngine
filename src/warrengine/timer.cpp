@@ -5,13 +5,13 @@
 namespace war
 {
 
-timer::timer( time_ms interval_ms )
+Timer::Timer( time_ms interval_ms )
 	: interval_ms( interval_ms )
 {
 	restart();
 }
 
-void timer::restart()
+void Timer::restart()
 {
 	delta_accum = 0;
 	time_last = g_engine->time.now();
@@ -21,7 +21,7 @@ void timer::restart()
 //
 // this is good for: one-shot timers
 
-bool timer::is_elapsed()
+bool Timer::is_elapsed()
 {
 	return ( g_engine->time.now() - time_last ) > interval_ms;
 }
@@ -30,7 +30,7 @@ bool timer::is_elapsed()
 //
 // this is good for: repeating timers
 
-int timer::get_elapsed()
+int Timer::get_elapsed()
 {
 	delta_accum += ( g_engine->time.now() - time_last );
 	time_last = g_engine->time.now();
@@ -39,7 +39,7 @@ int timer::get_elapsed()
 
 // returns the percentage of completion for this time, expressed as 0-1
 
-float timer::get_pct_complete()
+float Timer::get_pct_complete()
 {
 	float pct = ( g_engine->time.now() - time_last ) / (float)interval_ms;
 	return glm::clamp<float>( pct, 0.f, 1.f );

@@ -3,22 +3,22 @@ using namespace war;
 
 struct scene_tweens final : scene
 {
-	texture_asset* tween_tex = nullptr;
+	Texture_Asset* tween_tex = nullptr;
 
-	tween tween_linear;
-	tween tween_sin;
-	tween tween_quad;
-	tween tween_circular;
-	tween tween_bounce;
-	tween tween_back;
-	tween tween_cubic;
-	tween tween_elastic;
-	tween tween_exponential;
-	tween tween_quartic;
-	tween tween_quintic;
+	Tween tween_linear;
+	Tween tween_sin;
+	Tween tween_quad;
+	Tween tween_circular;
+	Tween tween_bounce;
+	Tween tween_back;
+	Tween tween_cubic;
+	Tween tween_elastic;
+	Tween tween_exponential;
+	Tween tween_quartic;
+	Tween tween_quintic;
 
-	timer timer_01;
-	timer timer_02;
+	Timer timer_01;
+	Timer timer_02;
 
 	scene_tweens();
 

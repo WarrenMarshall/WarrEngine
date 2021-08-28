@@ -1,8 +1,8 @@
 #pragma once
 
-struct layer_gameplay final : w_layer
+struct Layer_Gameplay final : w_layer
 {
-	layer_gameplay();
+	Layer_Gameplay();
 
 	virtual void push() override;
 	virtual void draw() override;

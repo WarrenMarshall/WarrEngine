@@ -2,19 +2,19 @@
 namespace war
 {
 
-struct bounding_box final
+struct Bounding_Box final
 {
-	vec2 min, max;
+	Vec2 min, max;
 
-	bounding_box();
+	Bounding_Box();
 
-	void add( const vec2& vtx );
+	void add( const Vec2& vtx );
 	void reset();
 
-	bounding_box operator+( const vec2& v ) const;
-	bounding_box operator+=( const vec2& v );
-	bounding_box operator+( const bounding_box& bbox ) const;
-	bounding_box operator+=( const bounding_box& bbox );
+	Bounding_Box operator+( const Vec2& v ) const;
+	Bounding_Box operator+=( const Vec2& v );
+	Bounding_Box operator+( const Bounding_Box& bbox ) const;
+	Bounding_Box operator+=( const Bounding_Box& bbox );
 };
 
 }

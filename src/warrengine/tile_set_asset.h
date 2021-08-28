@@ -5,18 +5,18 @@ namespace war
 // ----------------------------------------------------------------------------
 // a primitive or a polygonal shape
 
-struct tiled_object final
+struct Tiled_Object final
 {
 	e_sc_prim_type collision_type = sc_prim_type::aabb;
 
-	rect rc;
+	Rect rc;
 	float radius;
-	std::vector<vec2> vertices;
+	std::vector<Vec2> vertices;
 	std::string type;
 
 	void rotate( float angle )
 	{
-		matrix mtx;
+		Matrix mtx;
 		mtx.rotate( angle );
 
 		for( auto& v : vertices )
@@ -29,30 +29,30 @@ struct tiled_object final
 // ----------------------------------------------------------------------------
 // object group
 
-struct tiled_object_group final
+struct Tiled_Object_Group final
 {
 	std::string tag;
-	std::vector<tiled_object> objects;
+	std::vector<Tiled_Object> objects;
 	bool is_visible = true;
 };
 
 
 // ----------------------------------------------------------------------------
 
-struct tile_set_asset final : asset
+struct Tile_Set_Asset final : Asset
 {
 	// ----------------------------------------------------------------------------
 	// a tile definition
 
-	struct tile_def final
+	struct Tile_Def final
 	{
-		texture_asset texture;
-		std::vector<tiled_object> objects;
+		Texture_Asset texture;
+		std::vector<Tiled_Object> objects;
 	};
 
 	int tile_width = 0, tile_height = 0, tile_count = 0, columns = 0;
-	texture_asset* texture = nullptr;	// the source texture containing the tile set atlas
-	std::vector<tile_def> tile_definitions;
+	Texture_Asset* texture = nullptr;	// the source texture containing the tile set atlas
+	std::vector<Tile_Def> tile_definitions;
 
 	virtual bool create() override;
 };

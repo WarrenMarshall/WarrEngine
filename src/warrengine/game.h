@@ -2,10 +2,10 @@
 namespace war
 {
 
-struct game
+struct Game
 {
-	game( std::string internal_name );
-	virtual ~game() = default;
+	Game( std::string internal_name );
+	virtual ~Game() = default;
 
 	virtual void init();
 	virtual void new_game();

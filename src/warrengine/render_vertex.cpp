@@ -5,39 +5,39 @@
 namespace war
 {
 
-render_vertex::render_vertex( const vec2& pos, const vec2& uv, const color& color, float glow )
-	: x( pos.x ), y( pos.y ), z( render::state->z + render::state->z_bias ),
+Render_Vertex::Render_Vertex( const Vec2& pos, const Vec2& uv, const Color& color, float glow )
+	: x( pos.x ), y( pos.y ), z( Render::state->z + Render::state->z_bias ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	glow( glow )
 {
 }
 
-render_vertex::render_vertex( const vec2& pos )
-	: x( pos.x ), y( pos.y ), z( render::state->z + render::state->z_bias ),
+Render_Vertex::Render_Vertex( const Vec2& pos )
+	: x( pos.x ), y( pos.y ), z( Render::state->z + Render::state->z_bias ),
 	u( 0.f ), v( 0.f ),
-	r( render::state->color.r ), g( render::state->color.g ), b( render::state->color.b ), a( render::state->color.a ),
-	glow( render::state->glow )
+	r( Render::state->color.r ), g( Render::state->color.g ), b( Render::state->color.b ), a( Render::state->color.a ),
+	glow( Render::state->glow )
 {
 }
 
-render_vertex::render_vertex( const vec3& pos, const vec2& uv, const color& color, float glow )
-	: x( pos.x ), y( pos.y ), z( pos.z + render::state->z + render::state->z_bias ),
+Render_Vertex::Render_Vertex( const Vec3& pos, const Vec2& uv, const Color& color, float glow )
+	: x( pos.x ), y( pos.y ), z( pos.z + Render::state->z + Render::state->z_bias ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
 	glow( glow )
 {
 }
 
-render_vertex::render_vertex( const vec3& pos )
-	: x( pos.x ), y( pos.y ), z( pos.z + render::state->z + render::state->z_bias ),
+Render_Vertex::Render_Vertex( const Vec3& pos )
+	: x( pos.x ), y( pos.y ), z( pos.z + Render::state->z + Render::state->z_bias ),
 	u( 0.f ), v( 0.f ),
 	r( 1.f ), g( 1.f ), b( 1.f ), a( 1.f ),
 	glow( 0.f )
 {
 }
 
-render_vertex::render_vertex( const render_vertex& other )
+Render_Vertex::Render_Vertex( const Render_Vertex& other )
 {
 	x = other.x;
 	y = other.y;
@@ -55,9 +55,9 @@ render_vertex::render_vertex( const render_vertex& other )
 
 // ----------------------------------------------------------------------------
 
-render_triangle::render_triangle( const render_vertex& v0, const render_vertex& v1, const render_vertex& v2, const color& color, float glow )
+Render_Triangle::Render_Triangle( const Render_Vertex& v0, const Render_Vertex& v1, const Render_Vertex& v2, const Color& color, float glow )
 {
-	auto l_copy_render_vert = [&] ( size_t idx, const render_vertex& rv )
+	auto l_copy_render_vert = [&] ( size_t idx, const Render_Vertex& rv )
 	{
 		verts[ idx ] = rv;
 		verts[ idx ].r = color.r;
@@ -75,9 +75,9 @@ render_triangle::render_triangle( const render_vertex& v0, const render_vertex& 
 
 // ----------------------------------------------------------------------------
 
-render_line::render_line( const render_vertex& v0, const render_vertex& v1, const color& color, float glow )
+Render_Line::Render_Line( const Render_Vertex& v0, const Render_Vertex& v1, const Color& color, float glow )
 {
-	auto l_copy_render_vert = [&] ( size_t idx, const render_vertex& rv )
+	auto l_copy_render_vert = [&] ( size_t idx, const Render_Vertex& rv )
 	{
 		verts[ idx ] = rv;
 		verts[ idx ].r = color.r;

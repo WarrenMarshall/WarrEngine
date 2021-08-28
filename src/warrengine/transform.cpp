@@ -4,7 +4,7 @@
 namespace war
 {
 
-transform* transform::set( vec2 pos, float angle, float scale )
+Transform* Transform::set( Vec2 pos, float angle, float scale )
 {
 	set_pos( pos );
 	set_angle( angle );
@@ -13,40 +13,40 @@ transform* transform::set( vec2 pos, float angle, float scale )
 	return this;
 }
 
-transform* transform::set_pos( vec2 pos )
+Transform* Transform::set_pos( Vec2 pos )
 {
 	this->pos = pos;
 	return this;
 }
 
-transform* transform::set_angle( float angle )
+Transform* Transform::set_angle( float angle )
 {
 	this->angle = angle;
 	return this;
 }
 
-transform* transform::set_scale( float scale )
+Transform* Transform::set_scale( float scale )
 {
 	this->scale = glm::max( scale, 0.01f );
 	return this;
 }
 
-transform* transform::add_pos( vec2 delta )
+Transform* Transform::add_pos( Vec2 delta )
 {
 	return set_pos( this->pos + delta );
 }
 
-transform* transform::add_angle( float delta )
+Transform* Transform::add_angle( float delta )
 {
 	return set_angle( this->angle + delta );
 }
 
-transform* transform::add_scale( float delta )
+Transform* Transform::add_scale( float delta )
 {
 	return set_scale( this->scale + delta );
 }
 
-transform* transform::multiply_scale( float delta )
+Transform* Transform::multiply_scale( float delta )
 {
 	return set_scale( this->scale * delta );
 }
@@ -54,9 +54,9 @@ transform* transform::multiply_scale( float delta )
 // ----------------------------------------------------------------------------
 // transforms positions, not directions.
 
-matrix transform::to_matrix() const
+Matrix Transform::to_matrix() const
 {
-	matrix mtx;
+	Matrix mtx;
 
 	mtx.rotate( angle );
 	mtx.scale( scale );
@@ -69,9 +69,9 @@ matrix transform::to_matrix() const
 // same as "to_matrix" except that the translation is ignored. this is for
 // transforming directions, not positions.
 
-matrix transform::to_matrix_vec() const
+Matrix Transform::to_matrix_vec() const
 {
-	matrix mtx;
+	Matrix mtx;
 
 	mtx.rotate( angle );
 	mtx.scale( scale );

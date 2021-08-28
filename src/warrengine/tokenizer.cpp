@@ -5,14 +5,14 @@
 namespace war
 {
 
-tokenizer::tokenizer( std::string_view string_buffer, std::string_view delim, bool keep_quoted_strings )
+Tokenizer::Tokenizer( std::string_view string_buffer, std::string_view delim, bool keep_quoted_strings )
 	: keep_quoted_strings( keep_quoted_strings )
 {
 
 	init( string_buffer, delim );
 }
 
-void tokenizer::init( std::string_view string_buffer, std::string_view delim )
+void Tokenizer::init( std::string_view string_buffer, std::string_view delim )
 {
 	this->string_buffer = string_buffer;
 	this->delim = delim;
@@ -27,7 +27,7 @@ void tokenizer::init( std::string_view string_buffer, std::string_view delim )
 // - text inside of a bracket set "[]" is kept whole as a single token.
 // - if NOT delimiting on quotation marks, then keep text inside of quotation marks as a single token.
 
-void tokenizer::preprocess()
+void Tokenizer::preprocess()
 {
 	size_t start = 0, end = 0;
 	auto bracket_depth = 0;
@@ -74,7 +74,7 @@ void tokenizer::preprocess()
 	}
 }
 
-std::optional<std::string_view> tokenizer::get_next_token()
+std::optional<std::string_view> Tokenizer::get_next_token()
 {
 	if( is_eos() )
 	{
@@ -97,10 +97,10 @@ std::optional<std::string_view> tokenizer::get_next_token()
 	idx++;
 
 	// trim the token before sending it back
-	return string_util::trim( *ret );
+	return String_Util::trim( *ret );
 }
 
-bool tokenizer::is_eos()
+bool Tokenizer::is_eos()
 {
 	return idx >= tokens.size();
 }

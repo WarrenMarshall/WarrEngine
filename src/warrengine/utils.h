@@ -1,8 +1,9 @@
-
 namespace war
 {
 
-struct string_util final
+// ----------------------------------------------------------------------------
+
+struct String_Util final
 {
 	[[nodiscard]] static std::string_view ltrim( std::string_view str );
 	[[nodiscard]] static std::string_view rtrim( std::string_view str );
@@ -16,6 +17,13 @@ struct string_util final
 	[[nodiscard]] static float to_float( std::string_view str );
 };
 
-#define f_commas string_util::format_with_commas
+#define f_commas String_Util::format_with_commas
+
+// ----------------------------------------------------------------------------
+
+struct Geo_Util final
+{
+	[[nodiscard]] static std::vector<Vec2> generate_convex_shape( int sides, float radius );
+};
 
 }

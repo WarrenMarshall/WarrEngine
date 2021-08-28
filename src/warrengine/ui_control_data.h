@@ -12,9 +12,9 @@ namespace war
 // i.e. the text and caret position for an edit control, the on/off state for a
 // checkbox, the item idx for a list box, etc.
 
-struct ui_control_data
+struct UI_Control_Data
 {
-	virtual ~ui_control_data() = default;
+	virtual ~UI_Control_Data() = default;
 
 	virtual bool is_expanded();
 	virtual void set_expanded( bool expanded );
@@ -42,18 +42,19 @@ private:
 };
 
 // ----------------------------------------------------------------------------
+// #DOP
 
-struct ui_slider_control_data final : ui_control_data
+struct UI_Slider_Control_Data final : UI_Control_Data
 {
 	[[nodiscard]] virtual float float_value() override;
 	virtual void set_float_value( float value ) override;
 
-	range<float> slider_range = { 0.f, 1.f };
+	Range<float> slider_range = { 0.f, 1.f };
 };
 
 // ----------------------------------------------------------------------------
 
-struct ui_text_control_data final : ui_control_data
+struct UI_Text_Control_Data final : UI_Control_Data
 {
 	std::string valid_char_list;
 	size_t max_length = 0;
@@ -62,14 +63,14 @@ struct ui_text_control_data final : ui_control_data
 
 // ----------------------------------------------------------------------------
 
-struct ui_progress_control_data final : ui_control_data
+struct UI_Progress_Control_Data final : UI_Control_Data
 {
 	bool draw_percentage_as_text : 1 = true;
 };
 
 // ----------------------------------------------------------------------------
 
-struct ui_dropdown_control_data final : ui_control_data
+struct UI_Dropdown_Control_Data final : UI_Control_Data
 {
 	[[nodiscard]] virtual bool is_expanded() override;
 	virtual void set_expanded( bool expanded ) override;

@@ -5,18 +5,18 @@
 namespace war
 {
 
-void log_file::init( std::string_view name )
+void Log_File::init( std::string_view name )
 {
 	fopen_s( &file, std::format( "{}_log.txt", name ).c_str(), "wt" );
 	assert( file );
 }
 
-void log_file::deinit()
+void Log_File::deinit()
 {
 	fclose( file );
 }
 
-void log_file::_write_line( std::string_view string_to_log )
+void Log_File::_write_line( std::string_view string_to_log )
 {
 	if( string_to_log.length() )
 	{
@@ -25,7 +25,7 @@ void log_file::_write_line( std::string_view string_to_log )
 	}
 }
 
-void log_file::time_stamp( std::string_view msg )
+void Log_File::time_stamp( std::string_view msg )
 {
 	time_t raw_time;
 	tm time_info;
@@ -38,12 +38,12 @@ void log_file::time_stamp( std::string_view msg )
 	log( "{} : {}", msg, time_str );
 }
 
-void log_file::msg( std::string_view msg )
+void Log_File::msg( std::string_view msg )
 {
 	_write_line( std::string( msg ) );
 }
 
-void log_file::verbose( std::string_view msg )
+void Log_File::verbose( std::string_view msg )
 {
 	if( g_engine->cmdline.verbose )
 	{
@@ -51,7 +51,7 @@ void log_file::verbose( std::string_view msg )
 	}
 }
 
-void log_file::error( std::string_view msg )
+void Log_File::error( std::string_view msg )
 {
 	_write_line( msg );
 

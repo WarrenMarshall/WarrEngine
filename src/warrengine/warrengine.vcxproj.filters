@@ -88,13 +88,13 @@
     <ClCompile Include="texture_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
-    <ClCompile Include="file_disk.cpp">
+    <ClCompile Include="disk_file.cpp">
       <Filter>src\file_io</Filter>
     </ClCompile>
-    <ClCompile Include="file_mem.cpp">
+    <ClCompile Include="mem_file.cpp">
       <Filter>src\file_io</Filter>
     </ClCompile>
-    <ClCompile Include="file_zip.cpp">
+    <ClCompile Include="zip_file.cpp">
       <Filter>src\file_io</Filter>
     </ClCompile>
     <ClCompile Include="file_system.cpp">
@@ -175,9 +175,6 @@
     <ClCompile Include="transform.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="util_string.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="opengl.cpp">
       <Filter>src\opengl</Filter>
     </ClCompile>
@@ -256,13 +253,13 @@
     <ClCompile Include="simple_collision_world.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
-    <ClCompile Include="util_geo.cpp">
+    <ClCompile Include="utils.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="range.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="timeline.cpp">
+    <ClCompile Include="timeline_values.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
     <ClCompile Include="color.cpp">
@@ -286,10 +283,10 @@
     <ClCompile Include="timeline_nodes_key_frame.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="timeline_key_frame.cpp">
+    <ClCompile Include="timeline_values_key_frame.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="scene_timeline.cpp">
+    <ClCompile Include="scene_transient.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -381,13 +378,13 @@
     <ClInclude Include="texture_asset.h">
       <Filter>include\assets</Filter>
     </ClInclude>
-    <ClInclude Include="file_disk.h">
+    <ClInclude Include="disk_file.h">
       <Filter>include\file_io</Filter>
     </ClInclude>
-    <ClInclude Include="file_mem.h">
+    <ClInclude Include="mem_file.h">
       <Filter>include\file_io</Filter>
     </ClInclude>
-    <ClInclude Include="file_zip.h">
+    <ClInclude Include="zip_file.h">
       <Filter>include\file_io</Filter>
     </ClInclude>
     <ClInclude Include="file_system.h">
@@ -474,9 +471,6 @@
     <ClInclude Include="transform.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="util_string.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="opengl.h">
       <Filter>include\opengl</Filter>
     </ClInclude>
@@ -543,9 +537,6 @@
     <ClInclude Include="scene_post_process.h">
       <Filter>include\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cache.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="simple_collision_pending_collision.h">
       <Filter>include\collision</Filter>
     </ClInclude>
@@ -558,13 +549,13 @@
     <ClInclude Include="simple_collision_world.h">
       <Filter>include\collision</Filter>
     </ClInclude>
-    <ClInclude Include="util_geo.h">
+    <ClInclude Include="utils.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="range.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="timeline.h">
+    <ClInclude Include="timeline_values.h">
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="color.h">
@@ -588,11 +579,14 @@
     <ClInclude Include="timeline_nodes_key_frame.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="timeline_key_frame.h">
+    <ClInclude Include="timeline_values_key_frame.h">
       <Filter>include\core</Filter>
     </ClInclude>
-    <ClInclude Include="scene_timeline.h">
+    <ClInclude Include="scene_transient.h">
       <Filter>include\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="cache.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

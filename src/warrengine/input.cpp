@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-input_event::input_event()
+Input_Event::Input_Event()
 {
 	shift_down = g_engine->input.is_shift_down();
 	control_down = g_engine->input.is_control_down();
@@ -20,7 +20,7 @@ input_event::input_event()
 
 void character_callback( GLFWwindow* window, unsigned int key_code )
 {
-	input_event evt;
+	Input_Event evt;
 	evt.event_id = event_id::input_key;
 	evt.ch = (unsigned char)key_code;
 
@@ -37,7 +37,7 @@ void mouse_wheel_callback( GLFWwindow* window, double xoffset, double yoffset )
 
 // ----------------------------------------------------------------------------
 
-static vec2 last_mouse_pos = vec2::zero;
+static Vec2 last_mouse_pos = Vec2::zero;
 
 void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 {
@@ -48,7 +48,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 	g_engine->input.mouse_move_delta.x += fxpos - last_mouse_pos.x;
 	g_engine->input.mouse_move_delta.y += fypos - last_mouse_pos.y;
 
-	last_mouse_pos = vec2( fxpos, fypos );
+	last_mouse_pos = Vec2( fxpos, fypos );
 
 	// save the window space position of the mouse
 	g_engine->input.mouse_window_pos.x = fxpos;
@@ -73,7 +73,7 @@ void joystick_callback( int jid, int event )
 
 // ----------------------------------------------------------------------------
 
-void input_mgr::init()
+void Input_Mgr::init()
 {
 	refresh_connected_gamepads();
 
@@ -94,15 +94,15 @@ void input_mgr::init()
 		button_states_last_frame[ x ] = false;
 	}
 
-	timer_repeat = std::make_unique<timer>( 150 );
+	timer_repeat = std::make_unique<Timer>( 150 );
 }
 
-void input_mgr::deinit()
+void Input_Mgr::deinit()
 {
 	gamepad = nullptr;
 }
 
-void input_mgr::queue_presses()
+void Input_Mgr::queue_presses()
 {
 	button_states_last_frame = button_states;
 
@@ -210,7 +210,7 @@ void input_mgr::queue_presses()
 	}
 }
 
-void input_mgr::queue_motion()
+void Input_Mgr::queue_motion()
 {
 	// mouse motion
 	//
@@ -222,28 +222,28 @@ void input_mgr::queue_motion()
 
 	if( !fequals( mouse_move_delta.x + mouse_move_delta.y, 0.f ) )
 	{
-		input_event evt;
+		Input_Event evt;
 		evt.event_id = event_id::input_motion;
 		evt.input_id = input_id::mouse;
 		evt.delta = mouse_move_delta;
 
 		event_queue.push_back( evt );
 
-		mouse_move_delta = vec2::zero;
+		mouse_move_delta = Vec2::zero;
 	}
 
 	// mouse wheel
 
 	if( !fequals( mouse_wheel_delta.x + mouse_wheel_delta.y, 0.f ) )
 	{
-		input_event evt;
+		Input_Event evt;
 		evt.event_id = event_id::input_motion;
 		evt.input_id = input_id::mouse_wheel;
 		evt.delta = mouse_wheel_delta;
 
 		event_queue.push_back( evt );
 
-		mouse_wheel_delta = vec2::zero;
+		mouse_wheel_delta = Vec2::zero;
 	}
 
 	// game controller
@@ -259,13 +259,13 @@ void input_mgr::queue_motion()
 	}
 }
 
-void input_mgr::update_axis_delta( e_input_id input_id ) const
+void Input_Mgr::update_axis_delta( e_input_id input_id ) const
 {
-	vec2 delta = g_engine->input.get_axis_state( input_id );
+	Vec2 delta = g_engine->input.get_axis_state( input_id );
 
 	if( !delta.is_zero() )
 	{
-		input_event evt;
+		Input_Event evt;
 		evt.event_id = event_id::input_motion;
 		evt.input_id = input_id;
 		evt.delta = delta;
@@ -274,7 +274,7 @@ void input_mgr::update_axis_delta( e_input_id input_id ) const
 	}
 }
 
-void input_mgr::dispatch_event_queue()
+void Input_Mgr::dispatch_event_queue()
 {
 	// send all queued messages down the virtual function call chain,
 	// and then empty the queue.
@@ -359,7 +359,7 @@ void input_mgr::dispatch_event_queue()
 	event_queue.clear();
 }
 
-void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
+void Input_Mgr::update_button_state( e_input_id input_id, int glfw_state )
 {
 	button_states[ input_id ] = glfw_state;
 
@@ -367,7 +367,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 	{
 		case button_state::pressed:
 		{
-			input_event evt;
+			Input_Event evt;
 			evt.event_id = event_id::input_pressed;
 			evt.input_id = input_id;
 
@@ -379,7 +379,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 
 		case button_state::released:
 		{
-			input_event evt;
+			Input_Event evt;
 			evt.event_id = event_id::input_released;
 			evt.input_id = input_id;
 
@@ -391,7 +391,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 		{
 			if( timer_repeat->get_elapsed() )
 			{
-				input_event evt;
+				Input_Event evt;
 				evt.event_id = event_id::input_held;
 				evt.input_id = input_id;
 
@@ -405,7 +405,7 @@ void input_mgr::update_button_state( e_input_id input_id, int glfw_state )
 	}
 }
 
-void input_mgr::play_rumble( e_rumble_effect effect ) const
+void Input_Mgr::play_rumble( e_rumble_effect effect ) const
 {
 	if( !gamepad or !gamepad->is_being_used )
 	{
@@ -415,7 +415,7 @@ void input_mgr::play_rumble( e_rumble_effect effect ) const
 	gamepad->play_rumble( effect );
 }
 
-void input_mgr::refresh_connected_gamepads()
+void Input_Mgr::refresh_connected_gamepads()
 {
 	auto save_gamepad = gamepad.get();
 
@@ -440,7 +440,7 @@ void input_mgr::refresh_connected_gamepads()
 			xinput_player_id = pn;
 
 			log( "Using controller : player_id : {}", xinput_player_id );
-			gamepad = std::make_unique<game_controller>( xinput_player_id );
+			gamepad = std::make_unique<Game_Controller>( xinput_player_id );
 			break;
 		}
 	}
@@ -452,19 +452,19 @@ void input_mgr::refresh_connected_gamepads()
 	}
 }
 
-bool input_mgr::is_button_down( e_input_id input_id )
+bool Input_Mgr::is_button_down( e_input_id input_id )
 {
 	e_button_state bs = get_button_state( input_id );
 	return ( bs == button_state::pressed or bs == button_state::held );
 }
 
-bool input_mgr::is_button_held( e_input_id input_id )
+bool Input_Mgr::is_button_held( e_input_id input_id )
 {
 	e_button_state bs = get_button_state( input_id );
 	return ( bs == button_state::held );
 }
 
-bool input_mgr::is_shift_down()
+bool Input_Mgr::is_shift_down()
 {
 	e_button_state bs_left = get_button_state( input_id::key_shift_left );
 	e_button_state bs_right = get_button_state( input_id::key_shift_right );
@@ -477,7 +477,7 @@ bool input_mgr::is_shift_down()
 		);
 }
 
-bool input_mgr::is_control_down()
+bool Input_Mgr::is_control_down()
 {
 	e_button_state bs_left = get_button_state( input_id::key_control_left );
 	e_button_state bs_right = get_button_state( input_id::key_control_right );
@@ -490,7 +490,7 @@ bool input_mgr::is_control_down()
 		);
 }
 
-bool input_mgr::is_alt_down()
+bool Input_Mgr::is_alt_down()
 {
 	e_button_state bs_left = get_button_state( input_id::key_alt_left );
 	e_button_state bs_right = get_button_state( input_id::key_alt_right );
@@ -506,7 +506,7 @@ bool input_mgr::is_alt_down()
 // determines the state of a button by comparing it's current state with the
 // previous frame.
 
-e_button_state input_mgr::get_button_state( e_input_id input_id )
+e_button_state Input_Mgr::get_button_state( e_input_id input_id )
 {
 	e_button_state bs = button_state::up;
 
@@ -533,15 +533,15 @@ e_button_state input_mgr::get_button_state( e_input_id input_id )
 //
 // these values are updated once per frame.
 
-vec2 input_mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
+Vec2 Input_Mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 {
 	if( !gamepad )
 	{
-		return vec2::zero;
+		return Vec2::zero;
 	}
 
-	static float gamepad_dead_zone = war::text_parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
-	vec2 value;
+	static float gamepad_dead_zone = war::Text_Parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
+	Vec2 value;
 
 	switch( input_id )
 	{
