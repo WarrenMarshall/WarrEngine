@@ -23,11 +23,11 @@ Vec2 Coord_System::viewport_to_world_pos( const Vec2& viewport_pos )
 	Vec2 world_pos = viewport_pos;
 
 	Matrix mtx_viewport_pivot;
-	mtx_viewport_pivot.translate( g_engine->scenes.get_viewport_pivot() );
+	mtx_viewport_pivot.translate( g_engine->scene_mgr.get_viewport_pivot() );
 	mtx_viewport_pivot.invert();
 	mtx_viewport_pivot.transform_vec2( &world_pos );
 
-	auto mtx = g_engine->scenes.get_transform()->to_matrix();
+	auto mtx = g_engine->scene_mgr.get_transform()->to_matrix();
 	mtx.invert();
 	mtx.transform_vec2( &world_pos );
 
@@ -47,11 +47,11 @@ Vec2 Coord_System::world_to_viewport_pos( const Vec2& world_pos )
 {
 	Vec2 viewport_pos = world_pos;
 
-	auto cam_mtx = g_engine->scenes.get_transform()->to_matrix();
+	auto cam_mtx = g_engine->scene_mgr.get_transform()->to_matrix();
 	cam_mtx.transform_vec2( &viewport_pos );
 
 	Matrix mtx_viewport_pivot;
-	mtx_viewport_pivot.translate( g_engine->scenes.get_viewport_pivot() );
+	mtx_viewport_pivot.translate( g_engine->scene_mgr.get_viewport_pivot() );
 	mtx_viewport_pivot.transform_vec2( &viewport_pos );
 
 	return viewport_pos;
@@ -110,7 +110,7 @@ Vec2 Coord_System::viewport_to_world_vec( const Vec2& viewport_delta )
 {
 	Vec2 world_delta = viewport_delta;
 
-	auto angle_mtx = g_engine->scenes.get_transform()->to_matrix_vec();
+	auto angle_mtx = g_engine->scene_mgr.get_transform()->to_matrix_vec();
 	angle_mtx.invert();
 	angle_mtx.transform_vec2( &world_delta );
 

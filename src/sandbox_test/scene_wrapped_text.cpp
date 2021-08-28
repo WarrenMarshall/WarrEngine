@@ -35,7 +35,7 @@ void scene_wrapped_text::pushed()
 	scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( mouse_mode::custom );
+	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 	rc_big_text_block_01 = { 8.f, 32.f, 100.f, 100.f };
 	rc_big_text_block_02 = { 120.f, 32.f, 185.f, 200.f };
 
@@ -74,7 +74,6 @@ void scene_wrapped_text::draw_ui()
 		rc_big_text_block_01.grow( 4.f );
 		rc_big_text_block_02.grow( 4.f );
 
-
 		Render::state->color = make_color( 0, 0.5f );
 		Render::draw_rounded_filled_rect( rc_big_text_block_01, 4.f );
 		Render::state->color = make_color( 0, 0.75f );
@@ -85,9 +84,9 @@ void scene_wrapped_text::draw_ui()
 		Render::state->color = make_color( 0, 0.75f );
 		Render::draw_rounded_rect( rc_big_text_block_02, 4.f );
 
-		Render::state->color = make_color( pal::brighter );
+		Render::state->color = make_color( e_pal::brighter );
 
-		std::array<e_align, 3> alignments = { align::left, align::hcenter, align::right };
+		std::array<e_align_t, 3> alignments = { e_align::left, e_align::hcenter, e_align::right };
 		Render::state->align = alignments[ cb->radio_alignment_data.int_value() ];
 
 		rc_big_text_block_01.shrink( 4.f );
@@ -96,7 +95,6 @@ void scene_wrapped_text::draw_ui()
 		Render::state->z += zdepth_nudge;
 		Render::draw_string( wrapped_lines_01, rc_big_text_block_01 );
 		Render::draw_string( wrapped_lines_02, rc_big_text_block_02 );
-
 	}
 
 	Rect rc_panel = { 8.f, 150.f, 100.f, 56.f };

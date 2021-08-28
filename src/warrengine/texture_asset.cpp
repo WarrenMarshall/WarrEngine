@@ -68,11 +68,11 @@ Texture_Asset::Texture_Asset( std::string_view src_texture_tag, const Rect& rc_t
 
 // animated, uses a series of textures on a timed loop
 
-Texture_Asset::Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, int frames_per_second )
+Texture_Asset::Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type_t tween_type, int frames_per_second )
 	: frames( frames ), tween_type( tween_type ), frames_per_second( frames_per_second )
 {
 	auto duration_ms = ( 1000 / frames_per_second ) * frames.size();
-	frame_tween = Tween( 0.f, (float)( frames.size() ), duration_ms, tween_type, tween_via::linear );
+	frame_tween = Tween( 0.f, (float)( frames.size() ), duration_ms, tween_type, e_tween_via::linear );
 }
 
 Texture_Source_Base* Texture_Asset::find_texture_source_base( std::string_view src_texture_tag )

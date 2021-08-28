@@ -33,7 +33,7 @@ void scene_simple_platformer::draw()
 {
 	{
 		scoped_render_state;
-		Render::state->color = make_color( pal::darker );
+		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
@@ -59,7 +59,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 			{
 				auto ec = e->add_component<Primitve_Shape_Component>();
-				ec->add_shape( primitive_shape::point );
+				ec->add_shape( e_primitive_shape::point );
 			}
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
@@ -71,7 +71,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->tag = H( "ground_sensor" );
-				ec->set_body_collider_type( sc_body_collider_type::sensor );
+				ec->set_body_collider_type( e_sc_body_collider_type::sensor );
 				ec->set_as_circle( 4.f );
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
 
@@ -98,8 +98,8 @@ void scene_simple_platformer::pushed()
 	viewport_pivot = { viewport_hw, viewport_hh };
 	get_transform()->set_scale( 2.0f );
 
-	g_engine->renderer.debug.draw_debug_info = true;
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->render.debug.draw_debug_info = true;
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	fx_red_alert.clear( 1000 );
 	fx_red_alert.add_kf_shake_angle( true, 0.0f, 1000, get_transform(), 2.0f );
@@ -112,7 +112,7 @@ void scene_simple_platformer::pushed()
 
 	{
 		world = add_entity<Entity>();
-		world->simple.type = sc_type::stationary;
+		world->simple.type = e_sc_type::stationary;
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
@@ -133,11 +133,11 @@ void scene_simple_platformer::update()
 
 	// keyboard input
 
-	if( g_engine->input.is_button_down( input_id::key_left ) )
+	if( g_engine->input_mgr.is_button_down( e_input_id::key_left ) )
 	{
 		player->apply_movement_walk( -Vec2::x_axis, 150.f );
 	}
-	if( g_engine->input.is_button_down( input_id::key_right ) )
+	if( g_engine->input_mgr.is_button_down( e_input_id::key_right ) )
 	{
 		player->apply_movement_walk( Vec2::x_axis, 150.f );
 	}
@@ -145,7 +145,7 @@ void scene_simple_platformer::update()
 
 bool scene_simple_platformer::on_input_motion( const Input_Event* evt )
 {
-	if( evt->input_id == input_id::gamepad_left_stick )
+	if( evt->input_id == e_input_id::gamepad_left_stick )
 	{
 		player->apply_movement_walk( evt->delta, 12.f );
 	}
@@ -155,12 +155,12 @@ bool scene_simple_platformer::on_input_motion( const Input_Event* evt )
 
 bool scene_simple_platformer::on_input_pressed( const Input_Event* evt )
 {
-	if( evt->input_id == input_id::gamepad_button_a
-		or evt->input_id == input_id::key_space )
+	if( evt->input_id == e_input_id::gamepad_button_a
+		or evt->input_id == e_input_id::key_space )
 	{
 
 		if( !player->simple.is_in_air
-			and g_engine->input.get_axis_state( input_id::gamepad_left_stick, true ).y > 0.5f )
+			and g_engine->input_mgr.get_axis_state( e_input_id::gamepad_left_stick, true ).y > 0.5f )
 		{
 			player->add_delta_pos( Vec2::y_axis * player_collision_radius );
 			player->velocity.x = 0.f;
@@ -171,7 +171,7 @@ bool scene_simple_platformer::on_input_pressed( const Input_Event* evt )
 		}
 	}
 
-	if( evt->input_id == input_id::gamepad_button_x )
+	if( evt->input_id == e_input_id::gamepad_button_x )
 	{
 		if( !fx_red_alert.life_cycle.is_alive() )
 		{

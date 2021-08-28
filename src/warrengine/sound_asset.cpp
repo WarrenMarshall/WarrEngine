@@ -8,7 +8,7 @@ namespace war
 void Sound_Asset::play()
 {
 	sound.play();
-	sound.setPitch( g_engine->time.dilation );
+	sound.setPitch( g_engine->clock.dilation );
 }
 
 void Sound_Asset::pause()
@@ -41,7 +41,7 @@ void Sound_Asset::adjust_for_time_dilation()
 {
 	if( sound.getStatus() != sf::SoundSource::Stopped )
 	{
-		sound.setPitch( g_engine->time.dilation );
+		sound.setPitch( g_engine->clock.dilation );
 	}
 }
 

@@ -69,7 +69,7 @@ void scene_simple_top_down::pushed()
 
 	scene::pushed();
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// HIT MARKER
 
@@ -91,7 +91,7 @@ void scene_simple_top_down::pushed()
 
 	{
 		world = add_entity<Entity>( "world" );
-		world->simple.type = sc_type::stationary;
+		world->simple.type = e_sc_type::stationary;
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
@@ -159,7 +159,7 @@ bool scene_simple_top_down::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::gamepad_left_stick:
+		case e_input_id::gamepad_left_stick:
 		{
 			// take the input delta and apply the scene matrix to it. this
 			// allows proper walking angles regardless of scene rotation.
@@ -173,7 +173,7 @@ bool scene_simple_top_down::on_input_motion( const Input_Event* evt )
 		}
 		break;
 
-		case input_id::gamepad_right_stick:
+		case e_input_id::gamepad_right_stick:
 		{
 			// rotate the player and the scene in opposite directions, which
 			// leaves the player facing north

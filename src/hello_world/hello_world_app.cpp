@@ -30,7 +30,7 @@ void hello_world_app::init()
 	//g_engine->render_api.set_uniform( "u_pixelate_factor", 1.0f );
 #endif
 
-	g_engine->scenes.push<scene_default>();
+	g_engine->scene_mgr.push<scene_default>();
 }
 
 void hello_world_app::new_game()

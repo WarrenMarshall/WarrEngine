@@ -22,13 +22,13 @@ struct Texture_Asset final : Asset
 	// animation controls
 	std::vector<Texture_Asset*> frames;
 	Tween frame_tween;
-	e_tween_type tween_type = tween_type::loop;
+	e_tween_type_t tween_type = e_tween_type::loop;
 	int frames_per_second = 0;
 
 	Texture_Asset() = default;
 	Texture_Asset( std::string_view src_texture_tag );
 	Texture_Asset( std::string_view src_texture_tag, const Rect& rc_tex );
-	Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, int frames_per_second );
+	Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type_t tween_type, int frames_per_second );
 
 	Texture_Source_Base* find_texture_source_base( std::string_view src_texture_tag );
 

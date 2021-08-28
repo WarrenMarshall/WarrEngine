@@ -111,6 +111,7 @@ void main()
 		out_color_buffer = get_sample_from_texture( fs_texture_id, uv_coord );
 	}
 
+	/*
 	// note : it is assumed that texture 1 is the LUT texture
 	//
 	// using the r,g,b values from the color buffer, look up the final color
@@ -127,4 +128,5 @@ void main()
 	);
 
 	out_color_buffer.rgb = lut;
+	*/
 }

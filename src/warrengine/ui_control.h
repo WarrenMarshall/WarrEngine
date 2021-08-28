@@ -4,11 +4,11 @@ namespace war
 
 struct UI_Control
 {
-	e_ui_control_type type = ui_control_type::none;
+	e_ui_control_type_t type = e_ui_control_type::none;
 
 	hash tag;
 	std::string text;
-	e_align text_align = align::hcenter | align::vcenter;
+	e_align_t text_align = e_align::hcenter | e_align::vcenter;
 	Color text_color = Color::white;
 	Color primary_color = Color::black;
 	Slide_Def_Asset* slice_def = nullptr;

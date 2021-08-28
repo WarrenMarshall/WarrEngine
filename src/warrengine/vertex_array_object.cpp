@@ -4,13 +4,13 @@
 namespace war
 {
 
-Vertex_Array_Object::Vertex_Array_Object( Primitive_Batch* batch, e_render_prim render_prim )
+Vertex_Array_Object::Vertex_Array_Object( Primitive_Batch* batch, e_render_prim_t render_prim )
 	: render_prim( render_prim ), batch( batch )
 {
 	init( batch, render_prim );
 }
 
-void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_prim )
+void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim_t render_prim )
 {
 	this->batch = batch;
 	this->render_prim = render_prim;
@@ -22,7 +22,7 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_pri
 
 	switch( render_prim )
 	{
-		case render_prim::quad:
+		case e_render_prim::quad:
 		{
 			// this computes to 10,000 x 4 vertices, which is 40,000 vertices max,
 			// which is 60,000 indices
@@ -35,11 +35,11 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_pri
 			indices_to_verts_factor = 1.5f;
 
 			vb = std::make_unique<Vertex_Buffer>( this, 4 );
-			ib = g_engine->render_api.ib_quads.get();
+			ib = g_engine->opengl_mgr.ib_quads.get();
 			break;
 		}
 
-		case render_prim::triangle:
+		case e_render_prim::triangle:
 		{
 			// this computes to 10,000 x 3 vertices, which is 30,000 vertices max,
 			// which is 60,000 indices
@@ -52,11 +52,11 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_pri
 			indices_to_verts_factor = 1.f;
 
 			vb = std::make_unique<Vertex_Buffer>( this, 3 );
-			ib = g_engine->render_api.ib_tris.get();
+			ib = g_engine->opengl_mgr.ib_tris.get();
 			break;
 		}
 
-		case render_prim::line:
+		case e_render_prim::line:
 		{
 			// this computes to 10,000 x 2 vertices, which is 20,000 vertices max,
 			// which is 40,000 indices
@@ -69,11 +69,11 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_pri
 			indices_to_verts_factor = 1.f;
 
 			vb = std::make_unique<Vertex_Buffer>( this, 2 );
-			ib = g_engine->render_api.ib_lines.get();
+			ib = g_engine->opengl_mgr.ib_lines.get();
 			break;
 		}
 
-		case render_prim::point:
+		case e_render_prim::point:
 		{
 			// this computes to 10,000 x 1 vertices, which is 10,000 vertices max,
 			// which is 10,000 indices
@@ -86,7 +86,7 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_pri
 			indices_to_verts_factor = 1.f;
 
 			vb = std::make_unique<Vertex_Buffer>( this, 1 );
-			ib = g_engine->render_api.ib_points.get();
+			ib = g_engine->opengl_mgr.ib_points.get();
 			break;
 		}
 
@@ -128,26 +128,26 @@ void Vertex_Array_Object::update_stats()
 	// update stats and clean up
 	g_engine->stats.draw_calls++;
 
-	if( render_prim == render_prim::quad )
+	if( render_prim == e_render_prim::quad )
 	{
 		g_engine->stats.quads += vb->vertices.size() / 4.f;
 	}
-	else if( render_prim == render_prim::triangle )
+	else if( render_prim == e_render_prim::triangle )
 	{
 		g_engine->stats.triangles += vb->vertices.size() / 3.f;
 	}
-	else if( render_prim == render_prim::line )
+	else if( render_prim == e_render_prim::line )
 	{
 		g_engine->stats.lines += vb->vertices.size() / 2.f;
 	}
-	else if( render_prim == render_prim::point )
+	else if( render_prim == e_render_prim::point )
 	{
 		g_engine->stats.points += vb->vertices.size() / 1.f;
 	}
 
 	// frame debugger
 	{
-		if( g_engine->renderer.debug.is_single_frame_logging() )
+		if( g_engine->render.debug.is_single_frame_logging() )
 		{
 			const char* prim_type_desc [] = { "quad", "triangle", "line", "point" };
 			auto prim_count = vb->vertices.size() / (float)vb->verts_per_element;
@@ -160,7 +160,7 @@ void Vertex_Array_Object::update_stats()
 				f_commas( vb->vertices.size() * indices_to_verts_factor )
 			);
 
-			for( int x = 0 ; x < g_engine->render_api.max_texture_image_units ; ++x )
+			for( int x = 0 ; x < g_engine->opengl_mgr.max_texture_image_units ; ++x )
 			{
 				if( vb->texture_slots[ x ] )
 				{
@@ -173,7 +173,7 @@ void Vertex_Array_Object::update_stats()
 #endif
 }
 
-void Vertex_Array_Object::flush_and_reset( e_draw_call draw_call )
+void Vertex_Array_Object::flush_and_reset( e_draw_call_t draw_call )
 {
 	if( !vb->vertices.empty() )
 	{
@@ -193,7 +193,7 @@ void Vertex_Array_Object::upload_vertices_to_gpu()
 	vb->upload_vertices_to_gpu();
 }
 
-void Vertex_Array_Object::flush_and_reset_internal( e_draw_call draw_call )
+void Vertex_Array_Object::flush_and_reset_internal( e_draw_call_t draw_call )
 {
 	if( vb->vertices.empty() )
 	{
@@ -205,7 +205,7 @@ void Vertex_Array_Object::flush_and_reset_internal( e_draw_call draw_call )
 	reset();
 }
 
-void Vertex_Array_Object::draw( e_draw_call draw_call )
+void Vertex_Array_Object::draw( e_draw_call_t draw_call )
 {
 	if( vb->vertices.empty() )
 	{
@@ -220,9 +220,9 @@ void Vertex_Array_Object::draw( e_draw_call draw_call )
 		float line_width = 1.f;
 		float point_sz = 2.f;
 
-		float scale = g_engine->scenes.get_scale();
-		line_width *= 1.f + ( scale * g_engine->render_api.using_camera );
-		point_sz *= 1.f + ( scale * g_engine->render_api.using_camera );
+		float scale = g_engine->scene_mgr.get_scale();
+		line_width *= 1.f + ( scale * g_engine->opengl_mgr.using_camera );
+		point_sz *= 1.f + ( scale * g_engine->opengl_mgr.using_camera );
 
 		glLineWidth( line_width );
 		glPointSize( point_sz );
@@ -235,7 +235,7 @@ void Vertex_Array_Object::draw( e_draw_call draw_call )
 	bind();
 
 	// only write to the depth buffer for opaque primitives
-	glDepthMask( draw_call == draw_call::opaque );
+	glDepthMask( draw_call == e_draw_call::opaque );
 
 	glDrawElements( get_gl_prim_type(), (int)( vb->vertices.size() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 
@@ -250,10 +250,10 @@ void Vertex_Array_Object::reset()
 GLenum Vertex_Array_Object::get_gl_prim_type()
 {
 	return (
-		( ( render_prim == render_prim::line ) * GL_LINES )
-		+ ( ( render_prim == render_prim::point ) * GL_POINTS )
-		+ ( ( render_prim == render_prim::triangle ) * GL_TRIANGLES )
-		+ ( ( render_prim == render_prim::quad ) * GL_TRIANGLES )
+		( ( render_prim == e_render_prim::line ) * GL_LINES )
+		+ ( ( render_prim == e_render_prim::point ) * GL_POINTS )
+		+ ( ( render_prim == e_render_prim::triangle ) * GL_TRIANGLES )
+		+ ( ( render_prim == e_render_prim::quad ) * GL_TRIANGLES )
 		);
 }
 

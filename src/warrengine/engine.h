@@ -119,13 +119,13 @@ struct Engine final
 		return false;
 	}
 
-	Clock time;
+	Clock clock;
 	Asset_Cache_Mgr asset_cache;
-	Scene_Mgr scenes;
+	Scene_Mgr scene_mgr;
 	OS_Window window;
-	Render renderer;
-	Input_Mgr input;
-	OpenGL_Mgr render_api;
+	Render render;
+	Input_Mgr input_mgr;
+	OpenGL_Mgr opengl_mgr;
 	Key_Values config_vars;
 
 	void dispatch_collision_queue();

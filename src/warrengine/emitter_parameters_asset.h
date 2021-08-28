@@ -5,9 +5,9 @@ namespace war
 struct Emitter_Parameters_Asset final : Asset
 {
 	Texture_Asset* texture = nullptr;
-	Timeline_Values t_color = Timeline_Values( timeline_type::color_type );
-	Timeline_Values t_alpha = Timeline_Values( timeline_type::float_type );
-	Timeline_Values t_scale = Timeline_Values( timeline_type::float_type );
+	Timeline_Values t_color = Timeline_Values( e_timeline_type::color_type );
+	Timeline_Values t_alpha = Timeline_Values( e_timeline_type::float_type );
+	Timeline_Values t_scale = Timeline_Values( e_timeline_type::float_type );
 	Particle_Spawner particle_spawner;
 
 	Range<float> r_velocity_spawn = Range<float>( 50, 50 );	// initial velocity

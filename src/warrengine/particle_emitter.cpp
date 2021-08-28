@@ -83,7 +83,7 @@ void Particle_Emitter::update()
 	// a one-shot particle system spawns all of it's particles at once and then dies
 	if( params->is_one_shot )
 	{
-		parent_component->life_cycle.set( life_cycle::dying );
+		parent_component->life_cycle.set( e_life_cycle::dying );
 	}
 }
 
@@ -130,11 +130,11 @@ void Particle_Emitter::spawn_particle()
 	// ...then apply the current transform (entity+component) to move the particle
 	// position into world space
 	auto save_particle_position_at_origin = p->pos;
-	g_engine->render_api.top_matrix->transform_vec2( &p->pos );
+	g_engine->opengl_mgr.top_matrix->transform_vec2( &p->pos );
 
-	switch( (e_particle_spawn_dir)( params->a_dir ) )
+	switch( (e_particle_spawn_dir_t)params->a_dir )
 	{
-		case particle_spawn_dir::inherit_from_owner:
+		case e_particle_spawn_dir::inherit_from_owner:
 		{
 			auto a_dir = parent_component->parent_entity->get_angle();
 			a_dir += params->r_dir_var.get_random_value();
@@ -142,7 +142,7 @@ void Particle_Emitter::spawn_particle()
 			break;
 		}
 
-		case particle_spawn_dir::away_from_owner:
+		case e_particle_spawn_dir::away_from_owner:
 		{
 			p->v_dir = Vec2::normalize( save_particle_position_at_origin );
 			break;

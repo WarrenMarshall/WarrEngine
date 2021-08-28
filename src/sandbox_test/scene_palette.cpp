@@ -12,7 +12,7 @@ void scene_palette::pushed()
 {
 	scene::pushed();
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void scene_palette::draw()
@@ -38,28 +38,28 @@ void scene_palette::draw_ui()
 			->set_text( "Ink" )
 			->done() )
 		{
-			g_engine->renderer.palette = *( g_engine->find_asset<Palette_Asset>( "pal_ink" ) );
+			g_engine->render.palette = *( g_engine->find_asset<Palette_Asset>( "pal_ink" ) );
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Lumpy" )
 			->done() )
 		{
-			g_engine->renderer.palette = *( g_engine->find_asset<Palette_Asset>( "pal_lumpy" ) );
+			g_engine->render.palette = *( g_engine->find_asset<Palette_Asset>( "pal_lumpy" ) );
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Azul 5" )
 			->done() )
 		{
-			g_engine->renderer.palette = *( g_engine->find_asset<Palette_Asset>( "pal_azul5" ) );
+			g_engine->render.palette = *( g_engine->find_asset<Palette_Asset>( "pal_azul5" ) );
 		}
 
 		if( g_ui->button_control()
 			->set_text( "Poison" )
 			->done() )
 		{
-			g_engine->renderer.palette = *( g_engine->find_asset<Palette_Asset>( "pal_poison" ) );
+			g_engine->render.palette = *( g_engine->find_asset<Palette_Asset>( "pal_poison" ) );
 		}
 	}
 }

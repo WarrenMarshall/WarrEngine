@@ -25,9 +25,9 @@ bool Scene_Esc_Menu_UI_Callback::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::key_esc:
+		case e_input_id::key_esc:
 		{
-			g_engine->scenes.pop();
+			g_engine->scene_mgr.pop();
 			return true;
 
 		}
@@ -50,7 +50,7 @@ void Scene_Esc_Menu::pushed()
 	scene::pushed();
 
 	save_mouse_mode();
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void Scene_Esc_Menu::popped()
@@ -83,7 +83,7 @@ void Scene_Esc_Menu::draw_ui()
 	float panel_h =
 		( UI_Button_Control::get_default_height() * num_buttons )
 		+ slice_def->get_top_slice_sz()
-		+ ( get_ui_callback()->get_control_margin( ui_control_type::button ).y * ( num_buttons - 1 ) )
+		+ ( get_ui_callback()->get_control_margin( e_ui_control_type::button ).y * ( num_buttons - 1 ) )
 		+ slice_def->get_bottom_slice_sz()
 		+ 12.f;
 
@@ -108,7 +108,7 @@ void Scene_Esc_Menu::draw_ui()
 			->set_text( "Resume" )
 			->done() )
 		{
-			g_engine->scenes.pop();
+			g_engine->scene_mgr.pop();
 		}
 
 		if( g_base_game->flags.has_main_menu )
@@ -117,7 +117,7 @@ void Scene_Esc_Menu::draw_ui()
 				->set_text( "Main Menu" )
 				->done() )
 			{
-				g_engine->scenes.pop();
+				g_engine->scene_mgr.pop();
 				g_base_game->reset_scene_stack_to_main_menu();
 			}
 		}

@@ -13,21 +13,21 @@ void scene_tweens::pushed()
 	scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	tween_tex = g_engine->find_asset<Texture_Asset>( "tex_particle_02" );
 
-	tween_linear = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::linear );
-	tween_sin = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::sinusoidal );
-	tween_quad = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::quadratic );
-	tween_circular = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::circular );
-	tween_back = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::back );
-	tween_bounce = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::bounce );
-	tween_cubic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::cubic );
-	tween_elastic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::elastic );
-	tween_exponential = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::exponential );
-	tween_quartic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::quartic );
-	tween_quintic = Tween( 0, 200, 3000, tween_type::pingpong, tween_via::quintic );
+	tween_linear = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::linear );
+	tween_sin = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::sinusoidal );
+	tween_quad = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::quadratic );
+	tween_circular = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::circular );
+	tween_back = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::back );
+	tween_bounce = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::bounce );
+	tween_cubic = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::cubic );
+	tween_elastic = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::elastic );
+	tween_exponential = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::exponential );
+	tween_quartic = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::quartic );
+	tween_quintic = Tween( 0, 200, 3000, e_tween_type::pingpong, e_tween_via::quintic );
 
 	timer_01 = Timer( 5000 );
 	timer_02 = Timer( 2500 );
@@ -60,7 +60,7 @@ void scene_tweens::draw_ui()
 
 			Render::state->color = make_color( 4, 1.f );
 			Render::state->scale = 1.f;
-			Render::state->align = align::vcenter;
+			Render::state->align = e_align::vcenter;
 			Render::draw_string( desc, Vec2( 12.f, ypos ) );
 
 			ypos += 16.f;

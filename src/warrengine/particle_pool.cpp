@@ -15,7 +15,7 @@ void Particle_Pool::draw()
 		}
 
 		// lifetime
-		float interp_life_span = g_engine->renderer.calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
+		float interp_life_span = g_engine->render.calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
 		float pct_of_life = glm::abs( 1.f - ( interp_life_span / particle.life_span_save ) );
 
 		// color + alpha
@@ -28,15 +28,15 @@ void Particle_Pool::draw()
 
 
 		// render state
-		Render::state->angle = g_engine->renderer.calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec );
+		Render::state->angle = g_engine->render.calc_interpolated_per_sec_value( particle.spin, particle.spin_per_sec );
 		Render::state->color = color;
 		Render::state->scale = particle.base_scale * scale;
 		Render::state->anim_offset = particle.anim_offset;
 
 		// position
 		Vec2 interp_pos = {
-			g_engine->renderer.calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) ),
-			g_engine->renderer.calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) )
+			g_engine->render.calc_interpolated_per_sec_value( particle.pos.x, ( particle.v_dir.x * particle.velocity_per_sec ) ),
+			g_engine->render.calc_interpolated_per_sec_value( particle.pos.y, ( particle.v_dir.y * particle.velocity_per_sec ) )
 		};
 
 		Render::draw_sprite( particle.params->texture, interp_pos );

@@ -23,7 +23,7 @@ void Render::init()
 	// first element in the stack and should be the only matrix remaining when
 	// the frame finishes rendering.
 
-	g_engine->render_api.model_matrix_push_identity();
+	g_engine->opengl_mgr.model_matrix_push_identity();
 
 	// initialize render state stacks
 
@@ -109,7 +109,7 @@ void Render::draw_mesh( Mesh_Asset* mesh )
 		}
 
 	#ifndef _FINAL_RELEASE
-		if( g_engine->renderer.debug.is_drawing_debug_info() )
+		if( g_engine->render.debug.is_drawing_debug_info() )
 		{
 			// wireframe overlay
 
@@ -169,7 +169,7 @@ void Render::draw_sprite( Texture_Asset* texture, const Vec2& dst )
 
 	{
 		scoped_opengl;
-		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, Render::state->angle, Render::state->scale );
+		g_engine->opengl_mgr.top_matrix->apply_transform( { dst.x, dst.y }, Render::state->angle, Render::state->scale );
 
 		Render::state->batch_render_target->add_quad( frame, &v0, &v1, &v2, &v3 );
 	}
@@ -213,7 +213,7 @@ void Render::draw_quad( Texture_Asset* texture, const Rect& dst )
 
 	{
 		scoped_opengl;
-		g_engine->render_api.top_matrix->apply_transform( { dst.x, dst.y }, Render::state->angle, Render::state->scale );
+		g_engine->opengl_mgr.top_matrix->apply_transform( { dst.x, dst.y }, Render::state->angle, Render::state->scale );
 
 		Render::state->batch_render_target->add_quad( frame, &v0, &v1, &v2, &v3 );
 	}
@@ -241,17 +241,17 @@ Vec2 Render::draw_string( const std::string& text, const Vec2& pos )
 
 	Vec2 alignment_pos_adjustment( 0.f, 0.f );
 
-	if( Render::state->align & align::hcenter )
+	if( Render::state->align & e_align::hcenter )
 	{
 		alignment_pos_adjustment.x -= ( extents.x * Render::state->scale.x ) / 2.f;
 	}
 
-	if( Render::state->align & align::right )
+	if( Render::state->align & e_align::right )
 	{
 		alignment_pos_adjustment.x -= extents.x * Render::state->scale.x;
 	}
 
-	if( Render::state->align & align::vcenter )
+	if( Render::state->align & e_align::vcenter )
 	{
 		alignment_pos_adjustment.y += ( Render::state->font->get_max_height() * Render::state->scale.y ) / 2.f;
 	}
@@ -305,15 +305,15 @@ Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 {
 	Vec2 wk_pos = { rc.x, rc.y };
 
-	if( Render::state->align & align::right )
+	if( Render::state->align & e_align::right )
 	{
 		wk_pos.x = rc.x + rc.w;
 	}
-	if( Render::state->align & align::hcenter )
+	if( Render::state->align & e_align::hcenter )
 	{
 		wk_pos.x = rc.x + ( rc.w / 2.f );
 	}
-	if( Render::state->align & align::vcenter )
+	if( Render::state->align & e_align::vcenter )
 	{
 		wk_pos.y = rc.y + ( Render::state->font->get_max_height() / 2.f );
 	}
@@ -457,29 +457,29 @@ void Render::end_frame()
 {
 	// stats - use the UI view matrix since stats are drawn as if they are UI
 
-	g_engine->render_api.set_view_matrix_identity_ui();
+	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 
-	g_engine->stats.frame_times_ms += g_engine->time.delta_ms;
+	g_engine->stats.frame_times_ms += g_engine->clock.delta_ms;
 	g_engine->stats.frame_count++;
 
 	g_engine->stats.draw();
 
 	// flush the final batches
 
-	dynamic_batches.flush_and_reset_internal( draw_call::opaque );
-	dynamic_batches.flush_and_reset_internal( draw_call::transparent );
+	dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+	dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 
 	// there should be a single model matrix left on the stack (the identity
 	// matrix we created at renderer start up). If there is any other number,
 	// then there is an uneven push/pop combo somewhere in the code.
 
-	assert( g_engine->render_api.model_matrix_stack.size() == 1 );
+	assert( g_engine->opengl_mgr.model_matrix_stack.size() == 1 );
 
 	clear_render_state_stack();
 
 #ifndef _FINAL_RELEASE
-	g_engine->renderer.debug.single_frame_log = false;
-	g_engine->renderer.debug.entity_info_log = false;
+	g_engine->render.debug.single_frame_log = false;
+	g_engine->render.debug.entity_info_log = false;
 #endif
 }
 
@@ -520,10 +520,10 @@ void Render::draw_rounded_rect( const Rect& dst, float radius )
 	// make sure there is enough room for the rounded corners
 	assert( dst.w >= radius * 2.f or dst.h >= radius * 2.f );
 
-	Render::draw_circle( { dst.x + radius, dst.y + radius }, radius, corner::top_left );
-	Render::draw_circle( { dst.x + dst.w - radius, dst.y + radius }, radius, corner::top_right );
-	Render::draw_circle( { dst.x + dst.w - radius, dst.y + dst.h - radius }, radius, corner::bottom_right );
-	Render::draw_circle( { dst.x + radius, dst.y + dst.h - radius }, radius, corner::bottom_left );
+	Render::draw_circle( { dst.x + radius, dst.y + radius }, radius, e_corner::top_left );
+	Render::draw_circle( { dst.x + dst.w - radius, dst.y + radius }, radius, e_corner::top_right );
+	Render::draw_circle( { dst.x + dst.w - radius, dst.y + dst.h - radius }, radius, e_corner::bottom_right );
+	Render::draw_circle( { dst.x + radius, dst.y + dst.h - radius }, radius, e_corner::bottom_left );
 
 	Render::draw_line( { dst.x + radius, dst.y }, { dst.x + dst.w - radius, dst.y } );
 	Render::draw_line( { dst.x + dst.w, dst.y + radius }, { dst.x + dst.w, dst.y + dst.h - radius } );
@@ -536,10 +536,10 @@ void Render::draw_rounded_filled_rect( const Rect& dst, float radius )
 	// make sure there is enough room for the rounded corners
 	assert( dst.w >= radius * 2.f or dst.h >= radius * 2.f );
 
-	Render::draw_filled_circle( { dst.x + radius, dst.y + radius }, radius, corner::top_left );
-	Render::draw_filled_circle( { dst.x + dst.w - radius, dst.y + radius }, radius, corner::top_right );
-	Render::draw_filled_circle( { dst.x + dst.w - radius, dst.y + dst.h - radius }, radius, corner::bottom_right );
-	Render::draw_filled_circle( { dst.x + radius, dst.y + dst.h - radius }, radius, corner::bottom_left );
+	Render::draw_filled_circle( { dst.x + radius, dst.y + radius }, radius, e_corner::top_left );
+	Render::draw_filled_circle( { dst.x + dst.w - radius, dst.y + radius }, radius, e_corner::top_right );
+	Render::draw_filled_circle( { dst.x + dst.w - radius, dst.y + dst.h - radius }, radius, e_corner::bottom_right );
+	Render::draw_filled_circle( { dst.x + radius, dst.y + dst.h - radius }, radius, e_corner::bottom_left );
 
 	float dradius = radius * 2.f;
 	Render::draw_filled_rect( { dst.x + radius, dst.y, dst.w - dradius, radius } );
@@ -604,9 +604,9 @@ void Render::draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, 
 						continue;
 					}
 
-					bool flip_h = tile->flags & tile_flags::flipped_horizontally;
-					bool flip_v = tile->flags & tile_flags::flipped_vertically;
-					bool flip_d = tile->flags & tile_flags::flipped_diagonally;
+					bool flip_h = tile->flags & e_tile_flags::flipped_horizontally;
+					bool flip_v = tile->flags & e_tile_flags::flipped_vertically;
+					bool flip_d = tile->flags & e_tile_flags::flipped_diagonally;
 
 					Render::state->scale = Vec2( 1.f, 1.f );
 					Render::state->angle = 0.f;
@@ -688,7 +688,7 @@ void Render::draw_filled_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v
 	Render::state->batch_render_target->add_triangle( g_engine->tex_white, &rv0, &rv1, &rv2 );
 }
 
-auto Render::get_circle_start_end_indices( e_corner corner )
+auto Render::get_circle_start_end_indices( e_corner_t corner )
 {
 	int start, end;
 	int quarter_circle = circle_sample_points_max / 4;
@@ -699,28 +699,28 @@ auto Render::get_circle_start_end_indices( e_corner corner )
 
 	switch( corner )
 	{
-		case corner::top_left:
+		case e_corner::top_left:
 		{
 			start = quarter_circle * 3;
 			end = quarter_circle * 4;
 			break;
 		}
 
-		case corner::bottom_left:
+		case e_corner::bottom_left:
 		{
 			start = quarter_circle * 2;
 			end = quarter_circle * 3;
 			break;
 		}
 
-		case corner::bottom_right:
+		case e_corner::bottom_right:
 		{
 			start = quarter_circle;
 			end = quarter_circle * 2;
 			break;
 		}
 
-		case corner::top_right:
+		case e_corner::top_right:
 		{
 			start = 0;
 			end = quarter_circle;
@@ -733,7 +733,7 @@ auto Render::get_circle_start_end_indices( e_corner corner )
 
 // draws a circle with line segments
 
-void Render::draw_circle( const Vec2& origin, float radius, e_corner corner )
+void Render::draw_circle( const Vec2& origin, float radius, e_corner_t corner )
 {
 	Render_Vertex v0( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
@@ -745,18 +745,18 @@ void Render::draw_circle( const Vec2& origin, float radius, e_corner corner )
 
 		for( auto x = circle_start; x < circle_end; ++x )
 		{
-			v0.x = origin.x + ( g_engine->renderer.circle_sample_points[ x ].x * radius );
-			v0.y = origin.y + ( g_engine->renderer.circle_sample_points[ x ].y * radius );
+			v0.x = origin.x + ( g_engine->render.circle_sample_points[ x ].x * radius );
+			v0.y = origin.y + ( g_engine->render.circle_sample_points[ x ].y * radius );
 
-			v1.x = origin.x + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-			v1.y = origin.y + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+			v1.x = origin.x + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+			v1.y = origin.y + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
 			Render::state->batch_render_target->add_line( g_engine->tex_white, &v0, &v1 );
 		}
 	}
 }
 
-void Render::draw_filled_circle( const Vec2& origin, float radius, e_corner corner )
+void Render::draw_filled_circle( const Vec2& origin, float radius, e_corner_t corner )
 {
 	Render_Vertex v0( origin, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( v0 );
@@ -769,11 +769,11 @@ void Render::draw_filled_circle( const Vec2& origin, float radius, e_corner corn
 
 		for( auto x = circle_start; x < circle_end; ++x )
 		{
-			v1.x = origin.x + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-			v1.y = origin.y + ( g_engine->renderer.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+			v1.x = origin.x + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
+			v1.y = origin.y + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
 
-			v2.x = origin.x + ( g_engine->renderer.circle_sample_points[ x ].x * radius );
-			v2.y = origin.y + ( g_engine->renderer.circle_sample_points[ x ].y * radius );
+			v2.x = origin.x + ( g_engine->render.circle_sample_points[ x ].x * radius );
+			v2.y = origin.y + ( g_engine->render.circle_sample_points[ x ].y * radius );
 
 			Render::state->batch_render_target->add_triangle( g_engine->tex_white, &v0, &v1, &v2 );
 		}
@@ -848,15 +848,15 @@ void Render::draw_point( const Vec2& pos )
 
 void Render::draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst )
 {
-	Texture_Asset* p_00 = slice_def->patches[ slicedef_patch::top_left ];
-	Texture_Asset* p_10 = slice_def->patches[ slicedef_patch::top_middle ];
-	Texture_Asset* p_20 = slice_def->patches[ slicedef_patch::top_right ];
-	Texture_Asset* p_01 = slice_def->patches[ slicedef_patch::middle_left ];
-	Texture_Asset* p_11 = slice_def->patches[ slicedef_patch::middle_middle ];
-	Texture_Asset* p_21 = slice_def->patches[ slicedef_patch::middle_right ];
-	Texture_Asset* p_02 = slice_def->patches[ slicedef_patch::bottom_left ];
-	Texture_Asset* p_12 = slice_def->patches[ slicedef_patch::bottom_middle ];
-	Texture_Asset* p_22 = slice_def->patches[ slicedef_patch::bottom_right ];
+	Texture_Asset* p_00 = slice_def->patches[ e_slice_def_patch::top_left ];
+	Texture_Asset* p_10 = slice_def->patches[ e_slice_def_patch::top_middle ];
+	Texture_Asset* p_20 = slice_def->patches[ e_slice_def_patch::top_right ];
+	Texture_Asset* p_01 = slice_def->patches[ e_slice_def_patch::middle_left ];
+	Texture_Asset* p_11 = slice_def->patches[ e_slice_def_patch::middle_middle ];
+	Texture_Asset* p_21 = slice_def->patches[ e_slice_def_patch::middle_right ];
+	Texture_Asset* p_02 = slice_def->patches[ e_slice_def_patch::bottom_left ];
+	Texture_Asset* p_12 = slice_def->patches[ e_slice_def_patch::bottom_middle ];
+	Texture_Asset* p_22 = slice_def->patches[ e_slice_def_patch::bottom_right ];
 
 	float xpos = dst.x;
 	float ypos = dst.y;
@@ -903,7 +903,7 @@ void Render::draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst )
 
 float Render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const
 {
-	return current_value + ( fixed_time_step::per_second( step_per_second ) * g_engine->renderer.frame_interpolate_pct );
+	return current_value + ( fixed_time_step::per_second( step_per_second ) * g_engine->render.frame_interpolate_pct );
 }
 
 // samples the "pick" frame buffer at click_pos and returns the pick_id found

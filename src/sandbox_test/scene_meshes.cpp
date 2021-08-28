@@ -7,8 +7,8 @@ scene_meshes::scene_meshes()
 {
 	flags.blocks_further_drawing = true;
 
-	mesh_rotator = Tween( 0, 360, 5000, tween_type::pingpong, tween_via::bounce );
-	mesh_scaler = Tween( 1.f, 2.f, 3000, tween_type::pingpong, tween_via::sinusoidal );
+	mesh_rotator = Tween( 0, 360, 5000, e_tween_type::pingpong, e_tween_via::bounce );
+	mesh_scaler = Tween( 1.f, 2.f, 3000, e_tween_type::pingpong, e_tween_via::sinusoidal );
 }
 
 void scene_meshes::pushed()
@@ -38,7 +38,7 @@ void scene_meshes::pushed()
 		}
 	}
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void scene_meshes::draw()

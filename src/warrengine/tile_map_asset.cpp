@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Tile_Map_Asset::Tile::Tile( int idx, int x_idx, int y_idx, e_tile_flags flags )
+Tile_Map_Asset::Tile::Tile( int idx, int x_idx, int y_idx, e_tile_flags_t flags )
 	: idx( idx ), x_idx( x_idx ), y_idx( y_idx ), flags( flags )
 {
 }
@@ -177,11 +177,11 @@ bool Tile_Map_Asset::create()
 			{
 				unsigned idx = String_Util::to_uint( std::string( *tok.get_next_token() ) );
 
-				e_tile_flags flags = 0;
+				e_tile_flags_t flags = 0;
 
-				flags |= ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0 ? tile_flags::flipped_horizontally : 0;
-				flags |= ( idx & FLIPPED_VERTICALLY_FLAG ) > 0 ? tile_flags::flipped_vertically : 0;
-				flags |= ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0 ? tile_flags::flipped_diagonally : 0;
+				flags |= ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0 ? e_tile_flags::flipped_horizontally : 0;
+				flags |= ( idx & FLIPPED_VERTICALLY_FLAG ) > 0 ? e_tile_flags::flipped_vertically : 0;
+				flags |= ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0 ? e_tile_flags::flipped_diagonally : 0;
 
 				idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
 
@@ -324,7 +324,7 @@ bool Tile_Map_Asset::create()
 						// polygonal shape for collision to work properly. AABBs
 						// can't be rotated, obviously.
 
-						current_object->collision_type = sc_prim_type::polygon;
+						current_object->collision_type = e_sc_prim_type::polygon;
 
 						auto w = current_object->rc.w;
 						auto h = current_object->rc.h;
@@ -352,7 +352,7 @@ bool Tile_Map_Asset::create()
 			assert( current_object_group );
 			assert( current_object );
 
-			current_object->collision_type = sc_prim_type::polygon;
+			current_object->collision_type = e_sc_prim_type::polygon;
 			current_object->vertices.clear();
 
 			Tokenizer tok( line, " ", true );
@@ -400,7 +400,7 @@ bool Tile_Map_Asset::create()
 		{
 			assert( current_object );
 
-			current_object->collision_type = sc_prim_type::circle;
+			current_object->collision_type = e_sc_prim_type::circle;
 			current_object->radius = current_object->rc.w / 2.f;
 		}
 		else if( line.starts_with( "</object" ) )

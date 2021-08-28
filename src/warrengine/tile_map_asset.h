@@ -19,11 +19,11 @@ struct Tile_Map_Asset final : Asset
 	{
 		static constexpr int empty = -1;
 
-		Tile( int idx, int x_idx, int y_idx, e_tile_flags flags );
+		Tile( int idx, int x_idx, int y_idx, e_tile_flags_t flags );
 
 		int idx = 0;
 		int x_idx = 0, y_idx = 0;		// coordinates from the top left of the tile map
-		e_tile_flags flags = tile_flags::none;
+		e_tile_flags_t flags = e_tile_flags::none;
 	};
 
 	// ----------------------------------------------------------------------------

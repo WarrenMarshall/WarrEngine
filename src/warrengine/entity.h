@@ -17,19 +17,19 @@ struct Entity_Simple_Force final
 
 struct Entity_Simple_Collision final
 {
-	e_sc_type type = sc_type::dynamic;
+	e_sc_type_t type = e_sc_type::dynamic;
 
 	[[nodiscard]] bool is_dynamic()
 	{
-		return ( type == sc_type::dynamic );
+		return ( type == e_sc_type::dynamic );
 	}
 	[[nodiscard]] bool is_stationary()
 	{
-		return ( type == sc_type::stationary );
+		return ( type == e_sc_type::stationary );
 	}
 	[[nodiscard]] bool is_kinematic()
 	{
-		return ( type == sc_type::kinematic );
+		return ( type == e_sc_type::kinematic );
 	}
 
 	float friction = 1.0f;
@@ -102,7 +102,7 @@ struct Entity
 	void update_physics_components_to_match_transform();
 	void update_transform_to_match_physics_components();
 
-	virtual void set_life_cycle( e_life_cycle lc );
+	virtual void set_life_cycle( e_life_cycle_t lc );
 
 	void set_tag( hash tag );
 	hash tag = hash_none;

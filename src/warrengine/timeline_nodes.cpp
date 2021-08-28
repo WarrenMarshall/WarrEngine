@@ -7,7 +7,7 @@ namespace war
 
 Timeline_Nodes::Timeline_Nodes()
 {
-	life_cycle.set( life_cycle::dead );
+	life_cycle.set( e_life_cycle::dead );
 }
 
 void Timeline_Nodes::clear( time_ms duration )
@@ -23,14 +23,14 @@ void Timeline_Nodes::clear( time_ms duration )
 
 void Timeline_Nodes::go()
 {
-	start = g_engine->time.now();
+	start = g_engine->clock.now();
 	end = start + duration;
 
-	life_cycle.set( life_cycle::alive );
+	life_cycle.set( e_life_cycle::alive );
 
 	for( auto& kf : key_frames )
 	{
-		kf.life_cycle.set( life_cycle::alive );
+		kf.life_cycle.set( e_life_cycle::alive );
 		kf.is_running = false;
 	}
 }
@@ -47,7 +47,7 @@ void Timeline_Nodes::update()
 		return;
 	}
 
-	float pct_on_timeline = glm::clamp( ( g_engine->time.now() - start ) / (float)duration, 0.f, 1.f );
+	float pct_on_timeline = glm::clamp( ( g_engine->clock.now() - start ) / (float)duration, 0.f, 1.f );
 
 	// for every node_key_frame that is behind the current pct marker of this
 	// timeline, call it's update() function.
@@ -62,13 +62,13 @@ void Timeline_Nodes::update()
 
 	if( fequals( pct_on_timeline, 1.f ) )
 	{
-		life_cycle.set( life_cycle::dead );
+		life_cycle.set( e_life_cycle::dead );
 	}
 }
 
 void Timeline_Nodes::add_kf_shake_angle( bool should_restore_state, float pct_marker, time_ms duration, Transform* tform, float strength )
 {
-	key_frames.emplace_back( tnkf_type::shake_angle, should_restore_state, pct_marker, duration );
+	key_frames.emplace_back( e_tnkf_type::shake_angle, should_restore_state, pct_marker, duration );
 	auto kf = &key_frames.back();
 
 	kf->shake_angle.tform = tform;
@@ -77,7 +77,7 @@ void Timeline_Nodes::add_kf_shake_angle( bool should_restore_state, float pct_ma
 
 void Timeline_Nodes::add_kf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, Color color_overlay )
 {
-	key_frames.emplace_back( tnkf_type::pp_color_overlay, should_restore_state, pct_marker, duration );
+	key_frames.emplace_back( e_tnkf_type::pp_color_overlay, should_restore_state, pct_marker, duration );
 	auto kf = &key_frames.back();
 
 	kf->pp_color_overlay.clr = color_overlay;
@@ -85,7 +85,7 @@ void Timeline_Nodes::add_kf_pp_color_overlay( bool should_restore_state, float p
 
 void Timeline_Nodes::add_kf_play_sound( bool should_restore_state, float pct_marker, Sound_Asset* snd )
 {
-	key_frames.emplace_back( tnkf_type::play_sound, should_restore_state, pct_marker, 0 );
+	key_frames.emplace_back( e_tnkf_type::play_sound, should_restore_state, pct_marker, 0 );
 	auto kf = &key_frames.back();
 
 	kf->play_sound.snd = snd;
@@ -93,7 +93,7 @@ void Timeline_Nodes::add_kf_play_sound( bool should_restore_state, float pct_mar
 
 void Timeline_Nodes::add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<scene> scene_to_push )
 {
-	key_frames.emplace_back( tnkf_type::scene_push_under, should_restore_state, pct_marker, 0 );
+	key_frames.emplace_back( e_tnkf_type::scene_push_under, should_restore_state, pct_marker, 0 );
 	auto kf = &key_frames.back();
 
 	kf->scene_push_under.new_scene = scene_to_push.get();
@@ -102,7 +102,7 @@ void Timeline_Nodes::add_kf_scene_push_under( bool should_restore_state, float p
 
 void Timeline_Nodes::add_kf_scene_pop_under( bool should_restore_state, float pct_marker )
 {
-	key_frames.emplace_back( tnkf_type::scene_pop_under, should_restore_state, pct_marker, 0 );
+	key_frames.emplace_back( e_tnkf_type::scene_pop_under, should_restore_state, pct_marker, 0 );
 }
 
 }

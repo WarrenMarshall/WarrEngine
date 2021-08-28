@@ -14,7 +14,7 @@ struct Scene_Msg_Box final : scene
 	Scene_Msg_Box();
 
 	std::vector<std::string> msg;
-	e_mouse_mode save_mouse_mode;
+	e_mouse_mode_t save_mouse_mode;
 
 	virtual void pushed() override;
 	virtual void popped() override;

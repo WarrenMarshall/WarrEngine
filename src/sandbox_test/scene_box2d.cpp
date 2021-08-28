@@ -23,7 +23,7 @@ void scene_box2d::pushed()
 {
 	scene::pushed();
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// kinematic circle
 	{
@@ -37,8 +37,8 @@ void scene_box2d::pushed()
 			}
 			{
 				auto ec = e->add_component<Primitve_Shape_Component>();
-				ec->add_shape( primitive_shape::filled_circle, 32.f );
-				ec->rs_opt.color = make_color( pal::brighter );
+				ec->add_shape( e_primitive_shape::filled_circle, 32.f );
+				ec->rs_opt.color = make_color( e_pal::brighter );
 				ec->rs_opt.glow = 1.f;
 			}
 		}
@@ -61,10 +61,10 @@ void scene_box2d::pushed()
 			}
 			{
 				auto ec = e->add_component<Primitve_Shape_Component>();
-				ec->add_shape( primitive_shape::filled_rect, rc_floor );
-				ec->add_shape( primitive_shape::filled_rect, rc_left_wall );
-				ec->add_shape( primitive_shape::filled_rect, rc_right_wall );
-				ec->rs_opt.color = make_color( pal::brighter );
+				ec->add_shape( e_primitive_shape::filled_rect, rc_floor );
+				ec->add_shape( e_primitive_shape::filled_rect, rc_left_wall );
+				ec->add_shape( e_primitive_shape::filled_rect, rc_right_wall );
+				ec->rs_opt.color = make_color( e_pal::brighter );
 			}
 		}
 	}
@@ -75,7 +75,7 @@ void scene_box2d::draw()
 	{
 		scoped_render_state;
 
-		Render::state->color = make_color( pal::darker );
+		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ), Rect( -viewport_hw, -viewport_h, viewport_w, viewport_h ) );
 	}
 
@@ -141,13 +141,13 @@ void scene_box2d::spawn_box_at( Vec2 world_pos )
 		rc_box.grow( 1.f );
 		{
 			auto ec = e->add_component<Primitve_Shape_Component>();
-			ec->add_shape( primitive_shape::filled_rect, rc_box );
-			ec->rs_opt.color = make_color( pal::darker );
+			ec->add_shape( e_primitive_shape::filled_rect, rc_box );
+			ec->rs_opt.color = make_color( e_pal::darker );
 		}
 		rc_box.shrink( 2.f );
 		{
 			auto ec = e->add_component<Primitve_Shape_Component>();
-			ec->add_shape( primitive_shape::filled_rect, rc_box );
+			ec->add_shape( e_primitive_shape::filled_rect, rc_box );
 
 			glm::vec3 clr = { Random::getf(), Random::getf(), Random::getf() };
 			auto sz = glm::length( clr );
@@ -160,7 +160,7 @@ void scene_box2d::spawn_box_at( Vec2 world_pos )
 bool scene_box2d::on_input_pressed( const Input_Event* evt )
 {
 	// spawn ball at random location
-	if( evt->input_id == input_id::key_r )
+	if( evt->input_id == e_input_id::key_r )
 	{
 		auto num_new_balls = 1;
 
@@ -179,20 +179,20 @@ bool scene_box2d::on_input_pressed( const Input_Event* evt )
 	}
 
 	// delete entities with right click
-	if( evt->input_id == input_id::mouse_button_right )
+	if( evt->input_id == e_input_id::mouse_button_right )
 	{
 		auto pick_id = Render::sample_pick_id_at( Coord_System::window_to_viewport_pos( evt->mouse_pos ) );
 		auto e = find_entity_by_pick_id( pick_id );
 
 		if( e )
 		{
-			e->set_life_cycle( life_cycle::dying );
+			e->set_life_cycle( e_life_cycle::dying );
 			g_engine->find_asset<Sound_Asset>( "sfx_entity_delete" )->play();
 		}
 	}
 
 	// shift_lclick to spawn new ball at mouse position
-	if( evt->input_id == input_id::mouse_button_left and evt->shift_down )
+	if( evt->input_id == e_input_id::mouse_button_left and evt->shift_down )
 	{
 		auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
 		spawn_ball_at( world_click_location );
@@ -200,7 +200,7 @@ bool scene_box2d::on_input_pressed( const Input_Event* evt )
 	}
 
 	// control_lclick to spawn new box at mouse position
-	if( evt->input_id == input_id::mouse_button_left and evt->control_down )
+	if( evt->input_id == e_input_id::mouse_button_left and evt->control_down )
 	{
 		auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
 		spawn_box_at( world_click_location );
@@ -214,9 +214,9 @@ bool scene_box2d::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::mouse:
+		case e_input_id::mouse:
 		{
-			if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 			{
 				if( !evt->shift_down and !evt->control_down )
 				{

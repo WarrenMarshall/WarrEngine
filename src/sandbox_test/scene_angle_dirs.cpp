@@ -14,7 +14,7 @@ void scene_angle_dirs::pushed()
 {
 	scene::pushed();
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void scene_angle_dirs::draw()
@@ -26,15 +26,15 @@ void scene_angle_dirs::draw()
 //	scoped_render_state;
 
 	// circle at world origin
-	Render::state->color = make_color( pal::brighter );
+	Render::state->color = make_color( e_pal::brighter );
 	Render::draw_filled_circle( Vec2::zero, 6.f );
 
 	// circle at marker position
-	Render::state->color = make_color( pal::middle );
+	Render::state->color = make_color( e_pal::middle );
 	Render::draw_filled_circle( marker_pos, 6.f );
 
 	// connecting line
-	Render::state->color = make_color( pal::middle );
+	Render::state->color = make_color( e_pal::middle );
 	Render::draw_line( Vec2::zero, marker_pos );
 }
 
@@ -50,8 +50,8 @@ void scene_angle_dirs::draw_ui()
 	{
 		auto ui_pos = Coord_System::world_to_ui_pos( marker_pos + Vec2( 16.f, 0.f ) );
 
-		Render::state->align = align::vcenter;
-		Render::state->color = make_color( pal::brightest );
+		Render::state->align = e_align::vcenter;
+		Render::state->color = make_color( e_pal::brightest );
 
 		auto angle = Vec2::clamped_angle_from_dir( Vec2::normalize( marker_pos ) );
 		auto dir = Vec2::dir_from_angle( angle );
@@ -70,9 +70,9 @@ bool scene_angle_dirs::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::mouse:
+		case e_input_id::mouse:
 		{
-			if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 			{
 				marker_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 				return true;

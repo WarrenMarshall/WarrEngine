@@ -7,24 +7,24 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Primitive_Batch::Primitive_Batch( e_render_prim render_prim )
+Primitive_Batch::Primitive_Batch( e_render_prim_t render_prim )
 {
 	init( render_prim );
 }
 
-void Primitive_Batch::init( e_render_prim render_prim )
+void Primitive_Batch::init( e_render_prim_t render_prim )
 {
-	vao[ draw_call::opaque ].init( this, render_prim );
-	vao[ draw_call::opaque ].reset();
+	vao[ e_draw_call::opaque ].init( this, render_prim );
+	vao[ e_draw_call::opaque ].reset();
 
-	vao[ draw_call::transparent ].init( this, render_prim );
-	vao[ draw_call::transparent ].reset();
+	vao[ e_draw_call::transparent ].init( this, render_prim );
+	vao[ e_draw_call::transparent ].reset();
 }
 
 void Primitive_Batch::add_quad( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a + v3->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 4.f ) );
+	auto draw_call = ( e_draw_call::transparent * ( alpha != 4.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -35,7 +35,7 @@ void Primitive_Batch::add_quad( Texture_Asset* texture, const Render_Vertex* v0,
 void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 3.f ) );
+	auto draw_call = ( e_draw_call::transparent * ( alpha != 3.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -45,7 +45,7 @@ void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex*
 void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
 {
 	auto alpha = ( v0->a + v1->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 2.f ) );
+	auto draw_call = ( e_draw_call::transparent * ( alpha != 2.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -54,17 +54,17 @@ void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0,
 void Primitive_Batch::add_point( Texture_Asset* texture, const Render_Vertex* v0 )
 {
 	auto alpha = ( v0->a );
-	auto draw_call = ( draw_call::transparent * ( alpha != 1.f ) );
+	auto draw_call = ( e_draw_call::transparent * ( alpha != 1.f ) );
 
 	add_vert( draw_call, texture, v0 );
 }
 
 bool Primitive_Batch::is_empty()
 {
-	return vao[ draw_call::opaque ].vb->vertices.empty() and vao[ draw_call::transparent ].vb->vertices.empty();
+	return vao[ e_draw_call::opaque ].vb->vertices.empty() and vao[ e_draw_call::transparent ].vb->vertices.empty();
 }
 
-void Primitive_Batch::add_vert( e_draw_call draw_call, Texture_Asset* texture, const Render_Vertex* render_vert )
+void Primitive_Batch::add_vert( e_draw_call_t draw_call, Texture_Asset* texture, const Render_Vertex* render_vert )
 {
 	// get a new render_vertex from the pool
 
@@ -76,7 +76,7 @@ void Primitive_Batch::add_vert( e_draw_call draw_call, Texture_Asset* texture, c
 	// until this point, the vertex has been in object space. this
 	// moves it into world space.
 
-	auto transformed_vtx = g_engine->render_api.top_matrix->transform_vec2( Vec2( rvtx->x, rvtx->y ) );
+	auto transformed_vtx = g_engine->opengl_mgr.top_matrix->transform_vec2( Vec2( rvtx->x, rvtx->y ) );
 
 	// update the position to the transformed position
 
@@ -96,10 +96,10 @@ void Primitive_Batch::add_vert( e_draw_call draw_call, Texture_Asset* texture, c
 
 void Primitive_Batch_Group::init()
 {
-	batches[ render_prim::quad ].init( render_prim::quad );
-	batches[ render_prim::triangle ].init( render_prim::triangle );
-	batches[ render_prim::line ].init( render_prim::line );
-	batches[ render_prim::point ].init( render_prim::point );
+	batches[ e_render_prim::quad ].init( e_render_prim::quad );
+	batches[ e_render_prim::triangle ].init( e_render_prim::triangle );
+	batches[ e_render_prim::line ].init( e_render_prim::line );
+	batches[ e_render_prim::point ].init( e_render_prim::point );
 }
 
 bool Primitive_Batch_Group::is_empty()
@@ -115,7 +115,7 @@ bool Primitive_Batch_Group::is_empty()
 	return true;
 }
 
-void Primitive_Batch_Group::flush_and_reset( e_draw_call draw_call )
+void Primitive_Batch_Group::flush_and_reset( e_draw_call_t draw_call )
 {
 	for( auto& b : batches )
 	{
@@ -123,7 +123,7 @@ void Primitive_Batch_Group::flush_and_reset( e_draw_call draw_call )
 	}
 }
 
-void Primitive_Batch_Group::flush_and_reset_internal( e_draw_call draw_call )
+void Primitive_Batch_Group::flush_and_reset_internal( e_draw_call_t draw_call )
 {
 	for( auto& b : batches )
 	{
@@ -133,22 +133,22 @@ void Primitive_Batch_Group::flush_and_reset_internal( e_draw_call draw_call )
 
 void Primitive_Batch_Group::add_quad( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
 {
-	batches[ render_prim::quad ].add_quad( texture, v0, v1, v2, v3 );
+	batches[ e_render_prim::quad ].add_quad( texture, v0, v1, v2, v3 );
 }
 
 void Primitive_Batch_Group::add_triangle( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
 {
-	batches[ render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
+	batches[ e_render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
 }
 
 void Primitive_Batch_Group::add_line( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
 {
-	batches[ render_prim::line ].add_line( texture, v0, v1 );
+	batches[ e_render_prim::line ].add_line( texture, v0, v1 );
 }
 
 void Primitive_Batch_Group::add_point( Texture_Asset* texture, const Render_Vertex* v0 )
 {
-	batches[ render_prim::point ].add_point( texture, v0 );
+	batches[ e_render_prim::point ].add_point( texture, v0 );
 }
 
 // lets you get a texture slot for a specific texture without having to actually
@@ -162,8 +162,8 @@ size_t Primitive_Batch_Group::assign_texture_slot_manual( Texture_Asset* texture
 	// need changing in the future.
 
 	return Render::state->batch_render_target
-		->batches[ render_prim::quad ]
-		.vao[ draw_call::opaque ]
+		->batches[ e_render_prim::quad ]
+		.vao[ e_draw_call::opaque ]
 		.vb->assign_texture_slot( texture );
 }
 

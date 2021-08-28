@@ -54,7 +54,7 @@ void Box2D_Debug_Draw::DrawCircle( const b2Vec2& center, float radius, const b2C
 
 	{
 		scoped_opengl;
-		g_engine->render_api.top_matrix->translate( { position.x, position.y } );
+		g_engine->opengl_mgr.top_matrix->translate( { position.x, position.y } );
 
 		{
 			scoped_render_state;
@@ -73,7 +73,7 @@ void Box2D_Debug_Draw::DrawSolidCircle( const b2Vec2& center, float radius, cons
 	{
 		scoped_opengl;
 
-		g_engine->render_api.top_matrix->translate( { position.x, position.y } );
+		g_engine->opengl_mgr.top_matrix->translate( { position.x, position.y } );
 		{
 			scoped_render_state;
 

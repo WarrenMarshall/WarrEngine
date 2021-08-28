@@ -20,15 +20,15 @@ void Layer_Gameplay::push()
 
 bool Layer_Gameplay::handle_input_event( const w_input_event* evt )
 {
-	if( evt->event_id == event_id::input_released )
+	if( evt->event_id == e_event_id::input_released )
 	{
 		switch( evt->input_id )
 		{
-			case input_id::controller_button_a:
+			case e_input_id::controller_button_a:
 			click_snd->play();
 			return true;
 
-			case input_id::controller_button_b:
+			case e_input_id::controller_button_b:
 			snd2->play();
 			return true;
 		}

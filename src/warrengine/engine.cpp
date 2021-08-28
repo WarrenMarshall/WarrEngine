@@ -35,7 +35,7 @@ void Engine::launch( int argc, char* argv [] )
 	g_engine->window.init();
 
 	log( "Initializing OpenGL" );
-	g_engine->render_api.init();
+	g_engine->opengl_mgr.init();
 
 	Engine::precache();
 
@@ -74,16 +74,16 @@ void Engine::launch( int argc, char* argv [] )
 	g_engine->pixel_font = g_engine->find_asset<Font_Asset>( "engine_pixel_font" );
 
 	log( "Initializing renderer" );
-	g_engine->renderer.init();
+	g_engine->render.init();
 
 	log( "Initializing game" );
 	g_base_game->init();
 
 	log( "Initializing input" );
-	g_engine->input.init();
+	g_engine->input_mgr.init();
 
 	g_engine->is_running = true;
-	g_engine->time.init();
+	g_engine->clock.init();
 	g_engine->stats.init();
 
 	log( "Running..." );
@@ -186,7 +186,7 @@ void Engine::apply_config_settings()
 	log( "UI Window Res: {}x{}", (int)ui_w, (int)ui_h );
 
 
-	g_engine->renderer.init_set_up_default_palette();
+	g_engine->render.init_set_up_default_palette();
 	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
 
 	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
@@ -214,7 +214,7 @@ void Engine::shutdown()
 
 	// note : this needs to be done before the audio or windowing systems, to
 	// give the scenes a chance to clean up first.
-	scenes.clear_stack();
+	scene_mgr.clear_stack();
 
 	log( "Shutting down window" );
 	window.deinit();
@@ -223,13 +223,13 @@ void Engine::shutdown()
 	glfwTerminate();
 
 	log( "Shutting down OpenGL" );
-	for( auto& [name, Shader] : g_engine->render_api.shaders )
+	for( auto& [name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		glDeleteProgram( Shader.gl_id );
 	}
 
 	log( "Shutting down input" );
-	input.deinit();
+	input_mgr.deinit();
 
 	log( "Shutting down engine" );
 	deinit();
@@ -245,7 +245,7 @@ void Engine::main_loop()
 	{
 		// update core engine stuff - time, timers, etc
 
-		time.update();
+		clock.update();
 		g_ui->reset();
 
 		// whatever remaining ms are left in time.fts_accum_ms should be passed
@@ -253,41 +253,41 @@ void Engine::main_loop()
 		//
 		// it is passed a percentage for easier use : 0.f-1.f
 
-		g_engine->renderer.frame_interpolate_pct = time.fts_accum_ms / (float)fixed_time_step::ms_per_step;
+		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / (float)fixed_time_step::ms_per_step;
 
 		// if due for a fixed time step ...
 
-		bool fixed_time_step_due = ( time.fts_accum_ms >= fixed_time_step::ms_per_step );
+		bool fixed_time_step_due = ( clock.fts_accum_ms >= fixed_time_step::ms_per_step );
 
 		if( fixed_time_step_due )
 		{
 			int num_time_steps = 0;
 
-			while( time.fts_accum_ms >= fixed_time_step::ms_per_step )
+			while( clock.fts_accum_ms >= fixed_time_step::ms_per_step )
 			{
-				time.fts_accum_ms -= fixed_time_step::ms_per_step;
+				clock.fts_accum_ms -= fixed_time_step::ms_per_step;
 				num_time_steps++;
 			}
 
 			post_process.film_grain_amount += 0.01f;
 
-			input.queue_presses();
-			input.queue_motion();
+			input_mgr.queue_presses();
+			input_mgr.queue_motion();
 
-			input.dispatch_event_queue();
+			input_mgr.dispatch_event_queue();
 
 			box2d.world->Step( fixed_time_step::per_second( 1.f ) * num_time_steps, b2d_velocity_iterations, b2d_pos_iterations );
 
-			scenes.pre_update();
-			scenes.update();
-			scenes.post_update();
+			scene_mgr.pre_update();
+			scene_mgr.update();
+			scene_mgr.post_update();
 
 			g_base_game->update();
 
 			g_engine->stats.update();
 
-			g_engine->render_api.set_uniform_float( "u_current_time", (float)time.now() / 1000.f );
-			g_engine->render_api.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
+			g_engine->opengl_mgr.set_uniform_float( "u_current_time", (float)clock.now() / 1000.f );
+			g_engine->opengl_mgr.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
 		}
 
 		// ----------------------------------------------------------------------------
@@ -299,32 +299,32 @@ void Engine::main_loop()
 		// 2. same as #1 but only contains the brightest pixels (used for glow effects)
 		// 3. entity pick ids
 
-		g_engine->render_api.clear_depth_buffer();
+		g_engine->opengl_mgr.clear_depth_buffer();
 		frame_buffer->bind();
-		g_engine->render_api.shaders[ "base_pass" ].bind();
-		g_engine->renderer.begin_frame();
+		g_engine->opengl_mgr.shaders[ "base_pass" ].bind();
+		g_engine->render.begin_frame();
 		{
 			// ----------------------------------------------------------------------------
 			// render the game frame
 			// ----------------------------------------------------------------------------
 
-			g_engine->render_api.set_projection_matrix();
+			g_engine->opengl_mgr.set_projection_matrix();
 
 			{
 				scoped_opengl;
 
 				// scenes and entities
-				scenes.draw();
+				scene_mgr.draw();
 
 			}
 
 			// engine specific things, like pause borders
 			draw();
 
-			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::opaque );
-			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::transparent );
+			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
+			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
 		}
-		g_engine->renderer.end_frame();
+		g_engine->render.end_frame();
 		frame_buffer->unbind();
 
 		do_draw_finished_frame();
@@ -348,19 +348,19 @@ void Engine::do_draw_finished_frame()
 	// blur shader.
 	// ----------------------------------------------------------------------------
 
-	g_engine->render_api.set_view_matrix_identity_no_camera();
+	g_engine->opengl_mgr.set_view_matrix_identity_no_camera();
 	blur_frame_buffer->bind();
 
-	g_engine->render_api.shaders[ blur_shader_name ].bind();
+	g_engine->opengl_mgr.shaders[ blur_shader_name ].bind();
 
-	g_engine->render_api.set_uniform_float( "u_kernel_size", blur_kernel_size );
+	g_engine->opengl_mgr.set_uniform_float( "u_kernel_size", blur_kernel_size );
 
-	g_engine->render_api.set_uniform_float( "u_viewport_w", viewport_w );
-	g_engine->render_api.set_uniform_float( "u_viewport_h", viewport_h );
+	g_engine->opengl_mgr.set_uniform_float( "u_viewport_w", viewport_w );
+	g_engine->opengl_mgr.set_uniform_float( "u_viewport_h", viewport_h );
 
-	Render::draw_quad( frame_buffer->color_attachments[ framebuffer::glow ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
-	g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
+	Render::draw_quad( frame_buffer->color_attachments[ e_framebuffer::glow ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 	blur_frame_buffer->unbind();
 
 	{
@@ -373,11 +373,11 @@ void Engine::do_draw_finished_frame()
 		{
 			scoped_render_state;
 
-			g_engine->render_api.shaders[ "compositing_pass" ].bind();
+			g_engine->opengl_mgr.shaders[ "compositing_pass" ].bind();
 
 			Render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
+			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 		}
 
 		// ----------------------------------------------------------------------------
@@ -385,14 +385,14 @@ void Engine::do_draw_finished_frame()
 		// ----------------------------------------------------------------------------
 
 		{
-			g_engine->render_api.shaders[ "simple" ].bind();
-			g_engine->render_api.set_blend( opengl_blend::glow );
+			g_engine->opengl_mgr.shaders[ "simple" ].bind();
+			g_engine->opengl_mgr.set_blend( e_opengl_blend::glow );
 
 			Render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
-			g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
+			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 
-			g_engine->render_api.set_blend( opengl_blend::alpha );
+			g_engine->opengl_mgr.set_blend( e_opengl_blend::alpha );
 		}
 
 		composite_frame_buffer->unbind();
@@ -404,8 +404,8 @@ void Engine::do_draw_finished_frame()
 	// ----------------------------------------------------------------------------
 
 	{
-		g_engine->render_api.shaders[ "final_pass" ].bind();
-		g_engine->render_api.set_view_matrix_identity_no_camera();
+		g_engine->opengl_mgr.shaders[ "final_pass" ].bind();
+		g_engine->opengl_mgr.set_view_matrix_identity_no_camera();
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
@@ -419,8 +419,8 @@ void Engine::do_draw_finished_frame()
 		Render::state->batch_render_target->assign_texture_slot_manual( g_engine->tex_default_lut );
 
 		Render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::opaque );
-		g_engine->renderer.dynamic_batches.flush_and_reset_internal( draw_call::transparent );
+		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 	}
 }
 
@@ -573,15 +573,15 @@ void Engine::draw()
 
 			Rect rc( 0.f, 0.f, ui_w, ui_h );
 
-			Render::state->color = make_color( pal::darker );
+			Render::state->color = make_color( e_pal::darker );
 			Render::draw_line_loop( rc );
 
 			rc.shrink( 1.f );
-			Render::state->color = make_color( pal::middle );
+			Render::state->color = make_color( e_pal::middle );
 			Render::draw_line_loop( rc );
 
 			rc.shrink( 1.f );
-			Render::state->color = make_color( pal::brighter );
+			Render::state->color = make_color( e_pal::brighter );
 			Render::draw_line_loop( rc );
 		}
 	}
@@ -691,14 +691,14 @@ void Engine::wait_for_thread_pool_to_finish()
 
 bool Engine::on_input_motion( const Input_Event* evt )
 {
-	auto cam_transform = scenes.get_transform();
+	auto cam_transform = scene_mgr.get_transform();
 
 	switch( evt->input_id )
 	{
-		case input_id::mouse:
+		case e_input_id::mouse:
 		{
 			// camera control
-			if( g_engine->input.is_button_held( input_id::mouse_button_middle ) )
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_middle ) )
 			{
 				if( evt->control_down )
 				{
@@ -719,7 +719,7 @@ bool Engine::on_input_motion( const Input_Event* evt )
 		}
 		break;
 
-		case input_id::mouse_wheel:
+		case e_input_id::mouse_wheel:
 		{
 			cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).y * 0.25f );
 
@@ -736,7 +736,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 	switch( evt->input_id )
 	{
 		// toggle engine pause
-		case input_id::key_pause:
+		case e_input_id::key_pause:
 		{
 			toggle_pause();
 
@@ -744,23 +744,23 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		}
 
 		// slow down game clock
-		case input_id::key_left_bracket:
+		case e_input_id::key_left_bracket:
 		{
-			set_time_dilation( g_engine->input.is_shift_down() ? 1.f : time.dilation - 0.1f );
+			set_time_dilation( g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f );
 			return true;
 		}
 
 		// speed up game clock
-		case input_id::key_right_bracket:
+		case e_input_id::key_right_bracket:
 		{
-			set_time_dilation( g_engine->input.is_shift_down() ? 5.f : time.dilation + 0.1f );
+			set_time_dilation( g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f );
 			return true;
 		}
 
 	#ifndef _FINAL_RELEASE
-		case input_id::key_f9:
+		case e_input_id::key_f9:
 		{
-			g_engine->renderer.debug.entity_info_log = true;
+			g_engine->render.debug.entity_info_log = true;
 			log_div();
 			log( "-- Entity Info" );
 			log_div();
@@ -768,9 +768,9 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 			return true;
 		}
 
-		case input_id::key_f10:
+		case e_input_id::key_f10:
 		{
-			g_engine->renderer.debug.single_frame_log = true;
+			g_engine->render.debug.single_frame_log = true;
 			log_div();
 			log( "-- Single Frame Debugger" );
 			log_div();
@@ -779,32 +779,32 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		}
 
 		// toggle debug physics drawing
-		case input_id::key_f5:
+		case e_input_id::key_f5:
 		{
-			toggle_bool( g_engine->renderer.debug.draw_debug_info );
+			toggle_bool( g_engine->render.debug.draw_debug_info );
 			return true;
 		}
 	#endif
 
 		// post process tweaker
-		case input_id::key_f4:
+		case e_input_id::key_f4:
 		{
-			g_engine->scenes.push<Scene_Post_Process>();
+			g_engine->scene_mgr.push<Scene_Post_Process>();
 
 			return true;
 		}
 
 		// toggle full screen
-		case input_id::key_f11:
+		case e_input_id::key_f11:
 		{
 			window.toggle_fullscreen();
 
 			return true;
 		}
 
-		case input_id::key_enter:
+		case e_input_id::key_enter:
 		{
-			if( g_engine->input.is_alt_down() )
+			if( g_engine->input_mgr.is_alt_down() )
 			{
 				window.toggle_fullscreen();
 			}
@@ -813,9 +813,9 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		}
 
 		// toggle esc menu
-		case input_id::key_esc:
+		case e_input_id::key_esc:
 		{
-			auto scene_ptr = scenes.get_top();
+			auto scene_ptr = scene_mgr.get_top();
 
 			// if there are UI controls in the current scene that are expanded,
 			// then hitting ESC will force them closed instead of toggling the
@@ -831,17 +831,17 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 
 			if( typeid( *scene_ptr ) == typeid( Scene_Esc_Menu ) )
 			{
-				scenes.pop();
+				scene_mgr.pop();
 			}
 			else
 			{
-				scenes.push<Scene_Esc_Menu>();
+				scene_mgr.push<Scene_Esc_Menu>();
 			}
 
 			return true;
 		}
 
-		case input_id::key_f8:
+		case e_input_id::key_f8:
 		{
 			stats.draw_verbose = true;
 			return true;
@@ -855,7 +855,7 @@ bool Engine::on_input_released( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::key_f8:
+		case e_input_id::key_f8:
 		{
 			stats.draw_verbose = false;
 			return true;
@@ -906,7 +906,7 @@ void Engine::dispatch_box2d_collisions()
 
 void Engine::set_time_dilation( float dilation )
 {
-	time.dilation = glm::clamp( dilation, 0.1f, 5.f );
+	clock.dilation = glm::clamp( dilation, 0.1f, 5.f );
 
 	// give all assets a chance to respond to the time dilation change
 
@@ -919,7 +919,7 @@ void Engine::set_time_dilation( float dilation )
 void Engine::show_msg_box( std::string_view msg )
 {
 	msg_box.msg = msg;
-	g_engine->scenes.push<Scene_Msg_Box>();
+	g_engine->scene_mgr.push<Scene_Msg_Box>();
 }
 
 void Engine::debug_draw_buffers()
@@ -939,7 +939,7 @@ void Engine::debug_draw_buffers()
 	float h = viewport_h * scale_factor;
 	rect rc = { 0.f, viewport_h - h, w, h };
 
-	std::array<const char*, framebuffer::max> names = { "color", "glow", "pick", "blur", "comp", "final" };
+	std::array<const char*, e_framebuffer::max> names = { "color", "glow", "pick", "blur", "comp", "final" };
 
 	{
 		scoped_render_state;

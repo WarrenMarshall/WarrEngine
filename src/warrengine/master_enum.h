@@ -21,12 +21,12 @@
 // i.e.
 //	e_color border_clr = clr::white;
 //
-//	void set_screen_color( e_color clr );
+//	void set_text_align( e_align_t clr );
 // ----------------------------------------------------------------------------
 
 #define enum_begin( name )\
-	using e_##name = int;\
-	namespace name\
+	using e_ ##name ##_t = int;\
+	namespace e_ ##name\
 	{\
 		enum\
 		{
@@ -244,7 +244,7 @@ enum_end
 // middle_left middle_middle middle_right
 // bottom_left bottom_middle bottom_right
 
-enum_begin( slicedef_patch )
+enum_begin( slice_def_patch )
 	top_left = 0,
 	top_middle,
 	top_right,

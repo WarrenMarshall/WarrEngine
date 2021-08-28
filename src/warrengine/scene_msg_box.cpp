@@ -11,10 +11,10 @@ bool Scene_Msg_Box_UI_Callback::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::key_enter:
-		case input_id::key_esc:
+		case e_input_id::key_enter:
+		case e_input_id::key_esc:
 		{
-			g_engine->scenes.pop();
+			g_engine->scene_mgr.pop();
 			return true;
 		}
 	}
@@ -81,7 +81,7 @@ void Scene_Msg_Box::draw_ui()
 		g_ui
 			->label_control()
 			->set_text( str )
-			->set_text_align( align::hcenter )
+			->set_text_align( e_align::hcenter )
 			->done();
 	}
 
@@ -94,7 +94,7 @@ void Scene_Msg_Box::draw_ui()
 		->set_text( "OK" )
 		->done() )
 	{
-		g_engine->scenes.pop();
+		g_engine->scene_mgr.pop();
 	}
 }
 

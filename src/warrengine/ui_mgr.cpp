@@ -9,7 +9,7 @@ unsigned UI_Mgr::automatic_id;
 
 UI_Mgr::UI_Mgr()
 {
-	caret_blink_tween = Tween( 0.f, 1.f, 1000, tween_type::loop, tween_via::sinusoidal );
+	caret_blink_tween = Tween( 0.f, 1.f, 1000, e_tween_type::loop, e_tween_via::sinusoidal );
 }
 
 void UI_Mgr::reset()
@@ -98,7 +98,7 @@ UI_Mgr* UI_Mgr::set_text( std::string text )
 UI_Mgr* UI_Mgr::center_control_on_screen()
 {
 	// only valid for panel controls
-	assert( current_control->type == ui_control_type::panel );
+	assert( current_control->type == e_ui_control_type::panel );
 
 	Vec2 centered_pos;
 
@@ -114,7 +114,7 @@ UI_Mgr* UI_Mgr::center_control_on_screen()
 UI_Mgr* UI_Mgr::adjust_layout_to_client_area()
 {
 	// only valid for panel controls
-	assert( current_control->type == ui_control_type::panel );
+	assert( current_control->type == e_ui_control_type::panel );
 
 	current_control->rc_client = compute_client_rect_from_ui_rect( current_control->rc_ui );
 
@@ -125,7 +125,7 @@ UI_Mgr* UI_Mgr::adjust_layout_to_client_area()
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_text_align( e_align align )
+UI_Mgr* UI_Mgr::set_text_align( e_align_t align )
 {
 	current_control->text_align = align;
 	return this;
@@ -238,11 +238,11 @@ Rect UI_Mgr::compute_client_rect_from_ui_rect( Rect rc_ui )
 
 	if( current_control->slice_def )
 	{
-		result.x += current_control->slice_def->patches[ slicedef_patch::top_left ]->rc.w;
-		result.y += current_control->slice_def->patches[ slicedef_patch::top_left ]->rc.h;
+		result.x += current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.w;
+		result.y += current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.h;
 
-		result.w -= current_control->slice_def->patches[ slicedef_patch::top_left ]->rc.w + current_control->slice_def->patches[ slicedef_patch::bottom_right ]->rc.w;
-		result.h -= current_control->slice_def->patches[ slicedef_patch::top_left ]->rc.h + current_control->slice_def->patches[ slicedef_patch::bottom_right ]->rc.h;
+		result.w -= current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.w + current_control->slice_def->patches[ e_slice_def_patch::bottom_right ]->rc.w;
+		result.h -= current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.h + current_control->slice_def->patches[ e_slice_def_patch::bottom_right ]->rc.h;
 	}
 
 	return result;
@@ -270,19 +270,19 @@ bool UI_Mgr::done()
 		end_static_control();
 	}
 
-	if( current_control->type == ui_control_type::panel )
+	if( current_control->type == e_ui_control_type::panel )
 	{
 		// we always want panels to be below anything they contain, so nudge the
 		// depth value a little before leaving
 		Render::state->z += zdepth_nudge;
 	}
 
-	return ( result.code & im_result::left_clicked );
+	return ( result.code & e_im_result::left_clicked );
 }
 
 void UI_Mgr::end_static_control()
 {
-	result.code = im_result::none;
+	result.code = e_im_result::none;
 	result.click_pos = Vec2::zero;
 	result.click_pct = Vec2::zero;
 
@@ -296,9 +296,9 @@ void UI_Mgr::end_active_control()
 
 	// only the topmost scene is allowed to respond to UI input
 
-	auto current_scene = g_engine->scenes.current_scene;
+	auto current_scene = g_engine->scene_mgr.current_scene;
 
-	if( current_scene == g_engine->scenes.get_top() )
+	if( current_scene == g_engine->scene_mgr.get_top() )
 	{
 		Range expanded_tag_range( current_scene->ui_expanded_tag_begin, current_scene->ui_expanded_tag_end );
 		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( current_control->tag ) )
@@ -335,31 +335,31 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 		? control->default_height
 		: control->rc_ui.h;
 
-	result.code = im_result::none;
+	result.code = e_im_result::none;
 
-	e_button_state bs_left = g_engine->input.get_button_state( input_id::mouse_button_left );
-	e_button_state bs_middle = g_engine->input.get_button_state( input_id::mouse_button_middle );
-	e_button_state bs_right = g_engine->input.get_button_state( input_id::mouse_button_right );
+	e_button_state_t bs_left = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_left );
+	e_button_state_t bs_middle = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_middle );
+	e_button_state_t bs_right = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_right );
 
 	auto rc_ui_offset = control->rc_ui;
 	if( is_mouse_inside( rc_ui_offset ) )
 	{
 		if(
-			( bs_left == button_state::up and bs_middle == button_state::up && bs_right == button_state::up )
-			or ( bs_left == button_state::held and g_ui->hot_tag == control->tag )
+			( bs_left == e_button_state::up and bs_middle == e_button_state::up && bs_right == e_button_state::up )
+			or ( bs_left == e_button_state::held and g_ui->hot_tag == control->tag )
 		)
 		{
 			g_ui->hover_tag = control->tag;
 		}
-		else if( bs_left == button_state::pressed )
+		else if( bs_left == e_button_state::pressed )
 		{
 			g_ui->hot_tag = control->tag;
 		}
-		else if( bs_left == button_state::released )
+		else if( bs_left == e_button_state::released )
 		{
 			if( g_ui->hot_tag == control->tag and g_ui->hover_tag == control->tag )
 			{
-				result.code |= im_result::left_clicked;
+				result.code |= e_im_result::left_clicked;
 				current_callback->on_control_left_clicked( control->tag, result );
 			}
 			g_ui->hover_tag = g_ui->hot_tag = hash_none;
@@ -375,7 +375,7 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 			}
 		}
 
-		if( bs_left == button_state::released and g_ui->hot_tag == control->tag )
+		if( bs_left == e_button_state::released and g_ui->hot_tag == control->tag )
 		{
 			g_ui->hot_tag = hash_none;
 		}
@@ -383,20 +383,20 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 
 	if( g_ui->hover_tag == control->tag )
 	{
-		result.code |= im_result::hovered;
+		result.code |= e_im_result::hovered;
 	}
 	if( g_ui->hot_tag == control->tag )
 	{
-		result.code |= im_result::hot;
+		result.code |= e_im_result::hot;
 	}
 
 	// client rect position of mouse cursor
 
-	if( result.code & im_result::left_clicked or control->type == ui_control_type::slider )
+	if( result.code & e_im_result::left_clicked or control->type == e_ui_control_type::slider )
 	{
 		// convert mouse location to client rect position inside control
 
-		auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+		auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input_mgr.mouse_window_pos );
 		auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 		result.click_pos =
@@ -455,7 +455,7 @@ void UI_Mgr::draw( UI_Control* control, bool is_hovered, bool is_hot )
 
 		// if the expanded tag is being cleared, then force all control data to
 		// be unexpanded before drawing this frame.
-		if( g_engine->scenes.current_scene->flags.clear_expanded_tag_this_frame )
+		if( g_engine->scene_mgr.current_scene->flags.clear_expanded_tag_this_frame )
 		{
 			control_data->set_expanded( false );
 		}
@@ -578,14 +578,14 @@ void UI_Mgr::draw_topmost()
 {
 	// mouse cursor
 
-	if( mouse_cursor and g_engine->window.mouse_mode == mouse_mode::custom )
+	if( mouse_cursor and g_engine->window.mouse_mode == e_mouse_mode::custom )
 	{
 		{
 			scoped_render_state;
 
 			Render::state->z = zdepth_topmost;
 
-			auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+			auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input_mgr.mouse_window_pos );
 			auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 			Render::draw_quad(
@@ -622,7 +622,7 @@ Vec2 UI_Mgr::get_click_offset( bool is_hovered, bool is_hot )
 
 bool UI_Mgr::is_mouse_inside( Rect& rc )
 {
-	auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+	auto viewport_pos = Coord_System::window_to_viewport_pos( g_engine->input_mgr.mouse_window_pos );
 	auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 	return rc.contains_point( ui_pos );

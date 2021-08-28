@@ -14,11 +14,11 @@ void scene_default::pushed()
 
 	gradient = g_engine->find_asset<Texture_Asset>( "background_gradient" );
 	tex_hello_world = g_engine->find_asset<Texture_Asset>( "tex_hello_world" );
-	movement_tween = Tween( -175, 175, 4000, tween_type::pingpong, tween_via::quadratic );
-	scale_tween = Tween( .5f, 5.f, 9000, tween_type::pingpong, tween_via::sinusoidal );
-	tilt_tween = Tween( -25.f, 25.f, 20000, tween_type::pingpong, tween_via::cubic );
+	movement_tween = Tween( -175, 175, 4000, e_tween_type::pingpong, e_tween_via::quadratic );
+	scale_tween = Tween( .5f, 5.f, 9000, e_tween_type::pingpong, e_tween_via::sinusoidal );
+	tilt_tween = Tween( -25.f, 25.f, 20000, e_tween_type::pingpong, e_tween_via::cubic );
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 }
 

@@ -25,7 +25,7 @@ struct scene_main_menu final : scene
 			tl.add_kf_pp_color_overlay( true, 0.0f, 1000, make_color( Color::red, 0.5f ) );
 			tl.add_kf_scene_push_under( false, 0.5f, std::make_unique<T>() );
 
-			g_engine->scenes.do_transient_timeline( tl );
+			g_engine->scene_mgr.do_transient_timeline( tl );
 		}
 	};
 };

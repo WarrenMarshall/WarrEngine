@@ -36,21 +36,21 @@ void UI_Callback::on_control_left_clicked( hash tag, const UI_Result& result )
 
 	switch( g_ui->current_control->type )
 	{
-		case ui_control_type::check:
+		case e_ui_control_type::check:
 		{
 			control_data->set_bool_value( !control_data->bool_value() );
 			on_value_changed( tag );
 			break;
 		}
 
-		case ui_control_type::radio:
+		case e_ui_control_type::radio:
 		{
 			control_data->set_int_value( g_ui->current_control->idx );
 			on_value_changed( tag );
 			break;
 		}
 
-		case ui_control_type::slider:
+		case e_ui_control_type::slider:
 		{
 			on_motion( tag, result );
 			break;
@@ -64,7 +64,7 @@ void UI_Callback::on_motion( hash tag, const UI_Result& result )
 
 	switch( g_ui->current_control->type )
 	{
-		case ui_control_type::slider:
+		case e_ui_control_type::slider:
 		{
 			auto value = result.click_pct.x;
 
@@ -101,7 +101,7 @@ void UI_Callback::on_value_changed( hash tag )
 
 bool UI_Callback::validate_value_change( hash tag, UI_Control_Data* old_value, UI_Control_Data* new_value )
 {
-	if( g_ui->focused.type == ui_control_type::text )
+	if( g_ui->focused.type == e_ui_control_type::text )
 	{
 		auto old_text_data = static_cast<UI_Text_Control_Data*>( old_value );
 		auto new_text_data = static_cast<UI_Text_Control_Data*>( new_value );
@@ -156,21 +156,21 @@ float UI_Callback::get_control_padding()
 //
 // i.e. between 2 buttons sitting side by side
 
-Vec2 UI_Callback::get_control_margin( e_ui_control_type control_type )
+Vec2 UI_Callback::get_control_margin( e_ui_control_type_t control_type )
 {
 	Vec2 result = { 2.f, 2.f };
 
 	switch( control_type )
 	{
-		case ui_control_type::slider:
+		case e_ui_control_type::slider:
 		result.y = 3.f;
 		return result;
 
-		case ui_control_type::progress:
+		case e_ui_control_type::progress:
 		result.y = 4.f;
 		return result;
 
-		case ui_control_type::divider:
+		case e_ui_control_type::divider:
 		result.y = 1.f;
 		return result;
 	}
@@ -185,7 +185,7 @@ bool UI_Callback::on_input_motion( const Input_Event* evt )
 
 bool UI_Callback::handle_editing_key( const Input_Event* evt )
 {
-	if( g_ui->focused.type == ui_control_type::text )
+	if( g_ui->focused.type == e_ui_control_type::text )
 	{
 		auto control_data = static_cast<UI_Text_Control_Data*>( get_data( g_ui->focused.tag ) );
 
@@ -194,7 +194,7 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 
 		switch( evt->input_id )
 		{
-			case input_id::key_backspace:
+			case e_input_id::key_backspace:
 			{
 				std::string str = control_data->string_value();
 				if( !str.empty() and control_data->caret_pos > 0 )
@@ -208,7 +208,7 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 				return true;
 			}
 
-			case input_id::key_delete:
+			case e_input_id::key_delete:
 			{
 				std::string str = control_data->string_value();
 				if( !str.empty() and control_data->caret_pos < str.size() )
@@ -221,7 +221,7 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 				return true;
 			}
 
-			case input_id::key_left:
+			case e_input_id::key_left:
 			{
 				if( control_data->caret_pos > 0 )
 				{
@@ -230,7 +230,7 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 				return true;
 			}
 
-			case input_id::key_right:
+			case e_input_id::key_right:
 			{
 				std::string str = control_data->string_value();
 
@@ -239,21 +239,21 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 				return true;
 			}
 
-			case input_id::key_home:
+			case e_input_id::key_home:
 			{
 				control_data->caret_pos = 0;
 				return true;
 			}
 
-			case input_id::key_end:
+			case e_input_id::key_end:
 			{
 				std::string str = control_data->string_value();
 				control_data->caret_pos = str.length();
 				return true;
 			}
 
-			case input_id::key_esc:
-			case input_id::key_enter:
+			case e_input_id::key_esc:
+			case e_input_id::key_enter:
 			{
 				g_ui->focused.tag = hash_none;
 				return true;
@@ -276,7 +276,7 @@ bool UI_Callback::on_input_pressed( const Input_Event* evt )
 		// if a text control has focus, we want to eat all of these events
 		// regardless. otherwise each time we press a key the input control
 		// gives up it's focused state.
-		if( g_ui->focused.type == ui_control_type::text )
+		if( g_ui->focused.type == e_ui_control_type::text )
 		{
 			return true;
 		}
@@ -313,7 +313,7 @@ bool UI_Callback::on_input_key( const Input_Event* evt )
 	{
 		// text controls want keypresses
 
-		if( g_ui->focused.type == ui_control_type::text )
+		if( g_ui->focused.type == e_ui_control_type::text )
 		{
 			auto control_data = static_cast<UI_Text_Control_Data*>( get_data( g_ui->focused.tag ) );
 

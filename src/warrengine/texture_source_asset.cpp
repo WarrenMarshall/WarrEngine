@@ -32,7 +32,7 @@ bool Texture_Source_Asset::create()
 	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, use_mipmaps ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST );
 	glTextureParameteri( gl_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
-	if( tiling == tiling::clamp )
+	if( tiling == e_tiling::clamp )
 	{
 		glTextureParameteri( gl_id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 		glTextureParameteri( gl_id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );

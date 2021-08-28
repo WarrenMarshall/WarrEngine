@@ -11,7 +11,7 @@ Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, int verts_per_element )
 	glCreateBuffers( 1, &gl_id );
 	bind();
 
-	g_engine->render_api.allocate_vertex_buffer_on_gpu( Primitive_Batch::max_elements_per_draw_call * verts_per_element, false );
+	g_engine->opengl_mgr.allocate_vertex_buffer_on_gpu( Primitive_Batch::max_elements_per_draw_call * verts_per_element, false );
 	set_up_vertex_attribs();
 	vertices.init_to_size( (size_t)( Primitive_Batch::max_elements_per_draw_call * verts_per_element ) );
 	reset();
@@ -33,7 +33,7 @@ void Vertex_Buffer::bind()
 void Vertex_Buffer::reset()
 {
 	texture_slots.clear();
-	texture_slots.resize( g_engine->render_api.max_texture_image_units );
+	texture_slots.resize( g_engine->opengl_mgr.max_texture_image_units );
 
 	total_texture_slots_used = 0;
 
@@ -86,10 +86,10 @@ size_t Vertex_Buffer::assign_texture_slot( const Texture_Asset* texture )
 	// if all texture slots are currently in use, flush and reset the vertex
 	// array.
 
-	if( total_texture_slots_used == g_engine->render_api.max_texture_image_units )
+	if( total_texture_slots_used == g_engine->opengl_mgr.max_texture_image_units )
 	{
-		vao->flush_and_reset( draw_call::opaque );
-		vao->flush_and_reset( draw_call::transparent );
+		vao->flush_and_reset( e_draw_call::opaque );
+		vao->flush_and_reset( e_draw_call::transparent );
 	}
 
 	// add the new texture to the slot list

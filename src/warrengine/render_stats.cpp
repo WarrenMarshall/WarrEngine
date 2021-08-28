@@ -54,10 +54,10 @@ void Render_Stats::draw()
 				f_commas( lines.value ),
 				f_commas( points.value ) )
 			);
-			stat_strings.push_back( std::format( "Scenes : {}, Entities : {}", g_engine->scenes.scene_stack.size(), f_commas( entities.value ) ) );
-			stat_strings.push_back( std::format( "Time Dilation: {:.2f}", g_engine->time.dilation ) );
+			stat_strings.push_back( std::format( "Scenes : {}, Entities : {}", g_engine->scene_mgr.scene_stack.size(), f_commas( entities.value ) ) );
+			stat_strings.push_back( std::format( "Time Dilation: {:.2f}", g_engine->clock.dilation ) );
 
-			auto window_pos = g_engine->input.mouse_window_pos;
+			auto window_pos = g_engine->input_mgr.mouse_window_pos;
 			auto viewport_pos = Coord_System::window_to_viewport_pos( window_pos );
 			auto world_pos = Coord_System::viewport_to_world_pos( viewport_pos );
 			auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
@@ -69,7 +69,7 @@ void Render_Stats::draw()
 				ui_pos.x, ui_pos.y )
 			);
 
-			auto cam_transform = g_engine->scenes.get_transform();
+			auto cam_transform = g_engine->scene_mgr.get_transform();
 			stat_strings.push_back( std::format( "cam: {:.0f}/{:.0f} | {:.1f} d | {:.2f} s",
 				cam_transform->pos.x, cam_transform->pos.y, cam_transform->angle, cam_transform->scale )
 			);
@@ -90,7 +90,7 @@ void Render_Stats::draw()
 				);
 
 				Render::state->z += zdepth_nudge;
-				Render::state->align = align::hcenter;
+				Render::state->align = e_align::hcenter;
 				Render::state->color = Color::white;
 
 				auto ypos = 0.f;
@@ -107,7 +107,7 @@ void Render_Stats::draw()
 			{
 				scoped_render_state;
 
-				Render::state->align = align::right;
+				Render::state->align = e_align::right;
 				Render::draw_string(
 					std::format( "{} FPS ({:.2f} ms)", f_commas( frame_count.value ), frame_times_ms.value ),
 					{ ui_w, 0.f } );

@@ -138,7 +138,7 @@ Color Color::make( const Color& clr, float alpha )
 	return Color( clr.r, clr.g, clr.b, alpha );
 }
 
-Color Color::make( e_pal pal_idx, float alpha )
+Color Color::make( e_pal_t pal_idx, float alpha )
 {
 	return make_color( Render::palette[ pal_idx ], alpha );
 }

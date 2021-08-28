@@ -5,7 +5,7 @@
 namespace war
 {
 
-void Entity_Component::set_life_cycle( e_life_cycle lc )
+void Entity_Component::set_life_cycle( e_life_cycle_t lc )
 {
 	life_cycle.set( lc );
 }
@@ -55,7 +55,7 @@ void Entity_Component::update()
 		if( life_timer->is_elapsed() )
 		{
 			life_timer = std::nullopt;
-			life_cycle.set( life_cycle::dying );
+			life_cycle.set( e_life_cycle::dying );
 		}
 	}
 
@@ -64,7 +64,7 @@ void Entity_Component::update()
 
 	if( life_cycle.is_dying() and is_fully_dead() )
 	{
-		life_cycle.set( life_cycle::dead );
+		life_cycle.set( e_life_cycle::dead );
 	}
 }
 
@@ -118,7 +118,7 @@ void Sprite_Component::draw()
 	{
 		scoped_opengl;
 
-		auto mtx = g_engine->render_api.top_matrix;
+		auto mtx = g_engine->opengl_mgr.top_matrix;
 
 		// flipping
 		mtx->scale( { flip_x ? -1.f : 1.f, flip_y ? -1.f : 1.f } );
@@ -138,7 +138,7 @@ Primitve_Shape_Component::Primitve_Shape_Component( Entity* parent_entity )
 	shapes.clear();
 }
 
-Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape prim_shape, const Rect& rc, const Vec2& pos_offset )
+Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset )
 {
 	Shape_Def shape;
 
@@ -151,7 +151,7 @@ Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape p
 	return this;
 }
 
-Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape prim_shape, float radius, const Vec2& pos_offset )
+Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset )
 {
 	Shape_Def shape;
 
@@ -164,7 +164,7 @@ Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape p
 	return this;
 }
 
-Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape prim_shape, const Vec2& pos_offset )
+Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset )
 {
 	Shape_Def shape;
 
@@ -187,31 +187,31 @@ void Primitve_Shape_Component::draw()
 		{
 			switch( shape.prim_shape )
 			{
-				case primitive_shape::filled_rect:
+				case e_primitive_shape::filled_rect:
 				{
 					Render::draw_filled_rect( shape.rc + shape.pos_offset );
 					break;
 				}
 
-				case primitive_shape::rect:
+				case e_primitive_shape::rect:
 				{
 					Render::draw_rect( shape.rc + shape.pos_offset );
 					break;
 				}
 
-				case primitive_shape::circle:
+				case e_primitive_shape::circle:
 				{
 					Render::draw_circle( shape.pos_offset, shape.radius );
 					break;
 				}
 
-				case primitive_shape::filled_circle:
+				case e_primitive_shape::filled_circle:
 				{
 					Render::draw_filled_circle( shape.pos_offset, shape.radius );
 					break;
 				}
 
-				case primitive_shape::point:
+				case e_primitive_shape::point:
 				{
 					Render::draw_point( shape.pos_offset );
 					break;
@@ -283,8 +283,8 @@ void Emitter_Component::update()
 			{
 				scoped_opengl_identity;
 
-				g_engine->render_api.top_matrix->apply_transform( *parent_entity->get_transform() );
-				g_engine->render_api.top_matrix->apply_transform( *get_transform() );
+				g_engine->opengl_mgr.top_matrix->apply_transform( *parent_entity->get_transform() );
+				g_engine->opengl_mgr.top_matrix->apply_transform( *get_transform() );
 
 				emitter.warm_up();
 			}
@@ -300,7 +300,7 @@ void Emitter_Component::update()
 	emitter.update();
 }
 
-void Emitter_Component::set_life_cycle( e_life_cycle lc )
+void Emitter_Component::set_life_cycle( e_life_cycle_t lc )
 {
 	life_cycle.set( lc );
 
@@ -346,7 +346,7 @@ void Sound_Component::play()
 
 	if( one_shot )
 	{
-		life_cycle.set( life_cycle::dying );
+		life_cycle.set( e_life_cycle::dying );
 	}
 }
 
@@ -792,7 +792,7 @@ void Simple_Collision_Body::draw()
 #ifndef _FINAL_RELEASE
 	// optional debug mode drawing
 
-	if( g_engine->renderer.debug.draw_debug_info )
+	if( g_engine->render.debug.draw_debug_info )
 	{
 		scoped_render_state;
 
@@ -802,7 +802,7 @@ void Simple_Collision_Body::draw()
 
 		switch( collider_type )
 		{
-			case sc_body_collider_type::solid:
+			case e_sc_body_collider_type::solid:
 			{
 				Render::state->color = make_color( Color::light_green );
 
@@ -823,7 +823,7 @@ void Simple_Collision_Body::draw()
 			}
 			break;
 
-			case sc_body_collider_type::sensor:
+			case e_sc_body_collider_type::sensor:
 			{
 				Render::state->color = make_color( Color::light_blue );
 			}
@@ -834,19 +834,19 @@ void Simple_Collision_Body::draw()
 
 		switch( type )
 		{
-			case sc_prim_type::circle:
+			case e_sc_prim_type::circle:
 			{
 				Render::draw_circle( { 0.f, 0.f }, radius );
 			}
 			break;
 
-			case sc_prim_type::aabb:
+			case e_sc_prim_type::aabb:
 			{
 				Render::draw_rect( aabb );
 			}
 			break;
 
-			case sc_prim_type::polygon:
+			case e_sc_prim_type::polygon:
 			{
 				Render::draw_lines( verts );
 			}
@@ -862,24 +862,24 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 	scoped_opengl;
 
-	g_engine->render_api.top_matrix->identity();
+	g_engine->opengl_mgr.top_matrix->identity();
 	auto tform = parent_entity->get_transform();
-	g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+	g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 	tform = get_transform();
-	g_engine->render_api.top_matrix->apply_transform( tform->pos, 0.f, tform->scale );
+	g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, 0.f, tform->scale );
 
 	switch( type )
 	{
-		case sc_prim_type::circle:
+		case e_sc_prim_type::circle:
 		{
-			ws.pos = g_engine->render_api.top_matrix->transform_vec2( Vec2( 0.f, 0.f ) );
+			ws.pos = g_engine->opengl_mgr.top_matrix->transform_vec2( Vec2( 0.f, 0.f ) );
 			ws.radius = radius * scale;
 		}
 		break;
 
-		case sc_prim_type::aabb:
+		case e_sc_prim_type::aabb:
 		{
-			auto v = g_engine->render_api.top_matrix->transform_vec2( Vec2( aabb.x, aabb.y ) );
+			auto v = g_engine->opengl_mgr.top_matrix->transform_vec2( Vec2( aabb.x, aabb.y ) );
 			ws.aabb.x = v.x;
 			ws.aabb.y = v.y;
 			ws.aabb.w = aabb.w * scale;
@@ -887,12 +887,12 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 		}
 		break;
 
-		case sc_prim_type::polygon:
+		case e_sc_prim_type::polygon:
 		{
 			ws.verts.clear();
 			for( auto& v : verts )
 			{
-				auto ws_v = g_engine->render_api.top_matrix->transform_vec2( v );
+				auto ws_v = g_engine->opengl_mgr.top_matrix->transform_vec2( v );
 				ws.verts.push_back( ws_v );
 			}
 		}
@@ -904,7 +904,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 void Simple_Collision_Body::set_as_box( float w, float h )
 {
-	type = sc_prim_type::aabb;
+	type = e_sc_prim_type::aabb;
 	aabb.x = 0.f;
 	aabb.y = 0.f;
 	aabb.w = w;
@@ -915,7 +915,7 @@ void Simple_Collision_Body::set_as_box( float w, float h )
 
 void Simple_Collision_Body::set_as_centered_box( float w, float h )
 {
-	type = sc_prim_type::aabb;
+	type = e_sc_prim_type::aabb;
 	aabb.x = -w / 2.f;
 	aabb.y = -h / 2.f;
 	aabb.w = w;
@@ -924,19 +924,19 @@ void Simple_Collision_Body::set_as_centered_box( float w, float h )
 
 void Simple_Collision_Body::set_as_circle( float r )
 {
-	type = sc_prim_type::circle;
+	type = e_sc_prim_type::circle;
 	radius = r;
 }
 
 void Simple_Collision_Body::set_as_polygon( std::vector<Vec2> vs )
 {
-	type = sc_prim_type::polygon;
+	type = e_sc_prim_type::polygon;
 	verts.clear();
 	verts.reserve( verts.size() );
 	verts.insert( verts.end(), vs.begin(), vs.end() );
 }
 
-void Simple_Collision_Body::set_body_collider_type( e_sc_body_collider_type type )
+void Simple_Collision_Body::set_body_collider_type( e_sc_body_collider_type_t type )
 {
 	this->collider_type = type;
 }
@@ -967,11 +967,11 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 
 	switch( type )
 	{
-		case sc_prim_type::circle:
+		case e_sc_prim_type::circle:
 		{
 			switch( scc->type )
 			{
-				case sc_prim_type::circle:
+				case e_sc_prim_type::circle:
 				{
 					// circle to circle
 
@@ -982,7 +982,7 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 				}
 				break;
 
-				case sc_prim_type::aabb:
+				case e_sc_prim_type::aabb:
 				{
 					// circle to aabb
 
@@ -993,7 +993,7 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 				}
 				break;
 
-				case sc_prim_type::polygon:
+				case e_sc_prim_type::polygon:
 				{
 					// circle to polygon
 
@@ -1007,11 +1007,11 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 		}
 		break;
 
-		case sc_prim_type::aabb:
+		case e_sc_prim_type::aabb:
 		{
 			switch( scc->type )
 			{
-				case sc_prim_type::circle:
+				case e_sc_prim_type::circle:
 				{
 					// aabb to circle
 
@@ -1022,7 +1022,7 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 				}
 				break;
 
-				case sc_prim_type::aabb:
+				case e_sc_prim_type::aabb:
 				{
 					// aabb to aabb
 
@@ -1033,7 +1033,7 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 				}
 				break;
 
-				case sc_prim_type::polygon:
+				case e_sc_prim_type::polygon:
 				{
 					// aabb to polygon
 
@@ -1047,11 +1047,11 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 		}
 		break;
 
-		case sc_prim_type::polygon:
+		case e_sc_prim_type::polygon:
 		{
 			switch( scc->type )
 			{
-				case sc_prim_type::circle:
+				case e_sc_prim_type::circle:
 				{
 					// polygon to circle
 
@@ -1062,7 +1062,7 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 				}
 				break;
 
-				case sc_prim_type::aabb:
+				case e_sc_prim_type::aabb:
 				{
 					// polygon to aabb
 
@@ -1073,7 +1073,7 @@ bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
 				}
 				break;
 
-				case sc_prim_type::polygon:
+				case e_sc_prim_type::polygon:
 				{
 					// polygon to polygon
 
@@ -1099,11 +1099,11 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 
 	switch( type )
 	{
-		case sc_prim_type::circle:
+		case e_sc_prim_type::circle:
 		{
 			switch( other->type )
 			{
-				case sc_prim_type::circle:
+				case e_sc_prim_type::circle:
 				{
 					// circle to circle
 
@@ -1114,7 +1114,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 				}
 				break;
 
-				case sc_prim_type::aabb:
+				case e_sc_prim_type::aabb:
 				{
 					// circle to aabb
 
@@ -1125,7 +1125,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 				}
 				break;
 
-				case sc_prim_type::polygon:
+				case e_sc_prim_type::polygon:
 				{
 					// circle to polygon
 
@@ -1139,11 +1139,11 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 		}
 		break;
 
-		case sc_prim_type::aabb:
+		case e_sc_prim_type::aabb:
 		{
 			switch( other->type )
 			{
-				case sc_prim_type::circle:
+				case e_sc_prim_type::circle:
 				{
 					// aabb to circle
 
@@ -1157,7 +1157,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 				}
 				break;
 
-				case sc_prim_type::aabb:
+				case e_sc_prim_type::aabb:
 				{
 					// aabb to aabb
 
@@ -1168,7 +1168,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 				}
 				break;
 
-				case sc_prim_type::polygon:
+				case e_sc_prim_type::polygon:
 				{
 					// aabb to polygon
 
@@ -1182,11 +1182,11 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 		}
 		break;
 
-		case sc_prim_type::polygon:
+		case e_sc_prim_type::polygon:
 		{
 			switch( other->type )
 			{
-				case sc_prim_type::circle:
+				case e_sc_prim_type::circle:
 				{
 					// polygon to circle
 
@@ -1200,7 +1200,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 				}
 				break;
 
-				case sc_prim_type::aabb:
+				case e_sc_prim_type::aabb:
 				{
 					// polygon to aabb
 
@@ -1214,7 +1214,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 				}
 				break;
 
-				case sc_prim_type::polygon:
+				case e_sc_prim_type::polygon:
 				{
 					// polygon to polygon
 
@@ -1302,13 +1302,13 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 
 	switch( type )
 	{
-		case sc_prim_type::circle:
+		case e_sc_prim_type::circle:
 		{
 			circle = as_simple_circle();
 		}
 		break;
 
-		case sc_prim_type::aabb:
+		case e_sc_prim_type::aabb:
 		{
 			assert( false );	// this has never been tested
 			auto aabb_ws = as_simple_aabb();
@@ -1320,7 +1320,7 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 		}
 		break;
 
-		case sc_prim_type::polygon:
+		case e_sc_prim_type::polygon:
 		{
 			assert( false );	// this has never been tested
 
@@ -1356,7 +1356,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Platfor
 
 	// sensors collide with platforms the same as they do regular bodies.
 
-	if( coll->body_b->collider_type == sc_body_collider_type::sensor )
+	if( coll->body_b->collider_type == e_sc_body_collider_type::sensor )
 	{
 		return coll;
 	}
@@ -1397,7 +1397,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 	for( auto& component : existing_components )
 	{
-		component->set_life_cycle( life_cycle::dying );
+		component->set_life_cycle( e_life_cycle::dying );
 	}
 
 	std::vector<Rect> aabbs;
@@ -1436,13 +1436,13 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 					{
 						switch( obj.collision_type )
 						{
-							case sc_prim_type::aabb:
+							case e_sc_prim_type::aabb:
 							{
 								aabbs.emplace_back( tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y, obj.rc.w, obj.rc.h );
 							}
 							break;
 
-							case sc_prim_type::circle:
+							case e_sc_prim_type::circle:
 							{
 								auto ec = parent_entity->add_component<Simple_Collision_Body>();
 								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x + obj.radius, tile_pos.y + obj.rc.y + obj.radius } );
@@ -1451,7 +1451,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 							}
 							break;
 
-							case sc_prim_type::polygon:
+							case e_sc_prim_type::polygon:
 							{
 								auto ec = parent_entity->add_component<Simple_Collision_Body>();
 								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y } );
@@ -1556,7 +1556,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 				{
 					switch( obj.collision_type )
 					{
-						case sc_prim_type::aabb:
+						case e_sc_prim_type::aabb:
 						{
 							auto ec = parent_entity->add_component<Simple_Collision_Body>();
 							ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
@@ -1565,7 +1565,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 						}
 						break;
 
-						case sc_prim_type::circle:
+						case e_sc_prim_type::circle:
 						{
 							auto ec = parent_entity->add_component<Simple_Collision_Body>();
 							ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
@@ -1574,7 +1574,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 						}
 						break;
 
-						case sc_prim_type::polygon:
+						case e_sc_prim_type::polygon:
 						{
 							auto ec = parent_entity->add_component<Simple_Collision_Body>();
 							ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );

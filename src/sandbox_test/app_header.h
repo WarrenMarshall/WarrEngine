@@ -9,7 +9,7 @@ static void draw_tiled_background()
 {
 	scoped_render_state;
 
-	Render::state->color = make_color( pal::darker );
+	Render::state->color = make_color( e_pal::darker );
 	Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ), Rect( -viewport_w, -viewport_h, viewport_w * 2.f, viewport_h * 2.f ) );
 }
 
@@ -24,8 +24,8 @@ static void draw_title( const std::string& title )
 {
 	scoped_render_state;
 
-	Render::state->align = align::centered;
-	Render::state->color = make_color( pal::brightest );
+	Render::state->align = e_align::centered;
+	Render::state->color = make_color( e_pal::brightest );
 	Render::state->scale = 2.f;
 
 	Render::draw_string( title, { ui_w / 2.f, 16.f } );

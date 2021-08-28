@@ -6,7 +6,7 @@ namespace war
 
 struct Timeline_Nodes_Key_Frame final
 {
-	e_tnkf_type type = tnkf_type::none;
+	e_tnkf_type_t type = e_tnkf_type::none;
 	Life_Cycle_Mgr life_cycle;
 	float pct_marker = 0.f;
 	bool should_restore_state = false;
@@ -70,7 +70,7 @@ struct Timeline_Nodes_Key_Frame final
 		} scene_pop;
 	};
 
-	Timeline_Nodes_Key_Frame( e_tnkf_type type, bool should_restore_state, float pct_marker, time_ms duration );
+	Timeline_Nodes_Key_Frame( e_tnkf_type_t type, bool should_restore_state, float pct_marker, time_ms duration );
 
 	void on_started_running();
 	void update();

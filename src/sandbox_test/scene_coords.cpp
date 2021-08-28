@@ -14,13 +14,13 @@ void scene_coords::pushed()
 {
 	scene::pushed();
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "crosshair" );
 		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.color = make_color( pal::brighter );
+		e->rs_opt.color = make_color( e_pal::brighter );
 		{
 			auto ec = e->add_component<Sprite_Component>();
 			ec->init( "tex_swirl" );
@@ -56,7 +56,7 @@ void scene_coords::draw_ui()
 		Render::state->color = make_color( Color::white, 0.5f );
 		Render::state->scale = 0.5f;
 
-		auto window_pos = g_engine->input.mouse_window_pos;
+		auto window_pos = g_engine->input_mgr.mouse_window_pos;
 
 		Vec2 render_pos( 12.f, 36.f );
 		Render::draw_string( std::format(
@@ -116,10 +116,10 @@ void scene_coords::draw_ui()
 		auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos + Vec2( 32.f, 0.f ) );
 
 		scoped_render_state;
-		Render::state->align = align::vcenter;
+		Render::state->align = e_align::vcenter;
 		Render::state->color = make_color( Color( 1.f, 0.5f, 0.f ) );
 		Render::state->glow = glow_val;
-		g_engine->render_api.set_uniform_float( "u_pixelate_factor", glow_val );
+		g_engine->opengl_mgr.set_uniform_float( "u_pixelate_factor", glow_val );
 
 		Render::draw_string( "<< Your crosshair", ui_pos );
 	}
@@ -129,9 +129,9 @@ bool scene_coords::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::mouse:
+		case e_input_id::mouse:
 		{
-			if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 			{
 				auto e = find_entity( H( "crosshair" ) );
 
@@ -156,7 +156,7 @@ bool scene_coords::on_input_motion( const Input_Event* evt )
 		}
 		break;
 
-		case input_id::mouse_wheel:
+		case e_input_id::mouse_wheel:
 		{
 			if( evt->control_down )
 			{

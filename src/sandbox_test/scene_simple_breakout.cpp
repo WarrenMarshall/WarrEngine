@@ -55,7 +55,7 @@ void scene_simple_breakout::spawn_ball()
 	e->simple.is_bouncy = true;
 	{
 		auto ec = e->add_component<Primitve_Shape_Component>();
-		ec->add_shape( primitive_shape::point );
+		ec->add_shape( e_primitive_shape::point );
 	}
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
@@ -70,8 +70,8 @@ void scene_simple_breakout::pushed()
 {
 	scene::pushed();
 
-	g_engine->renderer.debug.draw_debug_info = true;
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->render.debug.draw_debug_info = true;
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// paddle
 	{
@@ -79,12 +79,12 @@ void scene_simple_breakout::pushed()
 		e->tag = H( "THE_PADDLE" );
 		e->set_pos( { 0.f, 0.f } );
 		e->simple.friction = 0.5f;
-		e->simple.type = sc_type::kinematic;
+		e->simple.type = e_sc_type::kinematic;
 		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;
 		{
 			auto ec = e->add_component<Primitve_Shape_Component>();
-			ec->add_shape( primitive_shape::point );
+			ec->add_shape( e_primitive_shape::point );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
@@ -105,7 +105,7 @@ void scene_simple_breakout::pushed()
 		auto num_primitives = 2;
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = sc_type::stationary;
+		e->simple.type = e_sc_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{
@@ -170,7 +170,7 @@ void scene_simple_breakout::draw()
 {
 	{
 		scoped_render_state;
-		Render::state->color = make_color( pal::darker );
+		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
@@ -193,8 +193,8 @@ bool scene_simple_breakout::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::gamepad_button_y:
-		case input_id::key_space:
+		case e_input_id::gamepad_button_y:
+		case e_input_id::key_space:
 		{
 			spawn_ball();
 		}
@@ -214,7 +214,7 @@ bool scene_simple_breakout::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::gamepad_left_stick:
+		case e_input_id::gamepad_left_stick:
 		{
 			paddle->add_force( { evt->delta * Vec2::x_axis, 150.f } );
 

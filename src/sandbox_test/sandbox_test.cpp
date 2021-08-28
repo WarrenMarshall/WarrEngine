@@ -31,12 +31,12 @@ void sandbox_test_app::init()
 	g_engine->render_api.set_uniform( "u_pixelate_factor", 1.f );
 #endif
 
-	g_engine->scenes.push<scene_main_menu>();
+	g_engine->scene_mgr.push<scene_main_menu>();
 }
 
 void sandbox_test_app::reset_scene_stack_to_main_menu()
 {
-	g_engine->scenes.clear_stack();
+	g_engine->scene_mgr.clear_stack();
 
-	g_engine->scenes.push<scene_main_menu>();
+	g_engine->scene_mgr.push<scene_main_menu>();
 }

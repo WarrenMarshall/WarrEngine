@@ -17,7 +17,7 @@ void scene_noise::pushed()
 	scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( mouse_mode::custom );
+	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
 	generate_noise_samples();
 }
@@ -65,12 +65,12 @@ void scene_noise::draw_ui()
 
 				end.y = y_pos + ( noise_sz * 1.25f ) + ( samples[ x ] * noise_sz );
 
-				Render::state->color = make_color( pal::brighter, 0.5f );
+				Render::state->color = make_color( e_pal::brighter, 0.5f );
 				Render::state->glow = 0.f;
 				Render::draw_line( start, end );
 
 
-				Render::state->color = make_color( pal::brightest, 1.f );
+				Render::state->color = make_color( e_pal::brightest, 1.f );
 				Render::state->glow = 6.f;
 				Render::draw_point( start );
 
@@ -80,7 +80,7 @@ void scene_noise::draw_ui()
 			Render::state->glow = 0.f;
 		};
 
-		Render::state->color = make_color( pal::brightest );
+		Render::state->color = make_color( e_pal::brightest );
 
 		Render::draw_string( "Simplex", { 4.f, 64.f } );
 		l_draw_noise( 64.f, simplex_samples );

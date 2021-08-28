@@ -8,8 +8,8 @@ namespace war
 UI_Control::UI_Control( hash tag )
 	: tag( tag )
 {
-	text_color = make_color( pal::middle );
-	primary_color = make_color( pal::middle );
+	text_color = make_color( e_pal::middle );
+	primary_color = make_color( e_pal::middle );
 }
 
 void UI_Control::draw_slice_def( const Rect& rc_ui, bool is_hovered, bool is_hot )
@@ -17,7 +17,7 @@ void UI_Control::draw_slice_def( const Rect& rc_ui, bool is_hovered, bool is_hot
 	if( slice_def )
 	{
 		Render::state->z += zdepth_nudge;
-		Render::state->color = g_ui->get_adjusted_color( make_color( pal::darker ), is_hovered, is_hot );
+		Render::state->color = g_ui->get_adjusted_color( make_color( e_pal::darker ), is_hovered, is_hot );
 
 		Render::draw_sliced( slice_def, rc_ui );
 	}
@@ -39,7 +39,7 @@ void UI_Control::draw_text( const Rect& rc_client, const Color& color, bool is_h
 void UI_Control::draw_texture( const Rect& rc, Texture_Asset* texture, bool is_hovered, bool is_hot )
 {
 	Render::state->z += zdepth_nudge;
-	Render::state->color = g_ui->get_adjusted_color( make_color( pal::middle ), is_hovered, is_hot );
+	Render::state->color = g_ui->get_adjusted_color( make_color( e_pal::middle ), is_hovered, is_hot );
 	Render::draw_sprite( texture, rc.get_midpoint() );
 }
 
@@ -64,7 +64,7 @@ Vec2 UI_Control::get_control_inner_margins()
 UI_Panel_Control::UI_Panel_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::panel;
+	type = e_ui_control_type::panel;
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_panel" );
 }
 
@@ -88,9 +88,9 @@ float UI_Panel_Control::get_default_height()
 UI_Caption_Control::UI_Caption_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::caption;
-	text_align = align::hcenter | align::vcenter;
-	primary_color = make_color( pal::darkest );
+	type = e_ui_control_type::caption;
+	text_align = e_align::hcenter | e_align::vcenter;
+	primary_color = make_color( e_pal::darkest );
 }
 
 void UI_Caption_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -121,11 +121,11 @@ float UI_Caption_Control::get_default_height()
 UI_Button_Control::UI_Button_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::button;
+	type = e_ui_control_type::button;
 	is_active = true;
 
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_button" );
-	text_align = align::centered;
+	text_align = e_align::centered;
 }
 
 void UI_Button_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -149,9 +149,9 @@ float UI_Button_Control::get_default_height()
 UI_Check_Control::UI_Check_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::check;
+	type = e_ui_control_type::check;
 	is_active = true;
-	text_align = align::left | align::vcenter;
+	text_align = e_align::left | e_align::vcenter;
 }
 
 void UI_Check_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -196,7 +196,7 @@ float UI_Check_Control::get_default_height()
 UI_Divider_Control::UI_Divider_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::divider;
+	type = e_ui_control_type::divider;
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_divider" );
 }
 
@@ -225,7 +225,7 @@ Vec2 UI_Divider_Control::get_control_inner_margins()
 UI_Spacer_Control::UI_Spacer_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::spacer;
+	type = e_ui_control_type::spacer;
 }
 
 void UI_Spacer_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -252,7 +252,7 @@ Vec2 UI_Spacer_Control::get_control_inner_margins()
 UI_Image_Control::UI_Image_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::image;
+	type = e_ui_control_type::image;
 }
 
 void UI_Image_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -275,8 +275,8 @@ float UI_Image_Control::get_default_height()
 UI_Label_Control::UI_Label_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::label;
-	text_align = align::left | align::vcenter;
+	type = e_ui_control_type::label;
+	text_align = e_align::left | e_align::vcenter;
 }
 
 void UI_Label_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -300,9 +300,9 @@ float UI_Label_Control::get_default_height()
 UI_Slider_Control::UI_Slider_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::slider;
+	type = e_ui_control_type::slider;
 	is_active = true;
-	text_align = align::left | align::vcenter;
+	text_align = e_align::left | e_align::vcenter;
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_slider_body" );
 	uses_click_offset = false;
 }
@@ -311,7 +311,7 @@ void UI_Slider_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 
-	Render::state->color = g_ui->get_adjusted_color( make_color( pal::middle ), is_hovered, is_hot );
+	Render::state->color = g_ui->get_adjusted_color( make_color( e_pal::middle ), is_hovered, is_hot );
 
 	if( interval )
 	{
@@ -375,10 +375,10 @@ Vec2 UI_Slider_Control::get_control_inner_margins()
 UI_Text_Control::UI_Text_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::text;
+	type = e_ui_control_type::text;
 	is_active = true;
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_text" );
-	text_align = align::left | align::vcenter;
+	text_align = e_align::left | e_align::vcenter;
 	uses_click_offset = false;
 	can_retain_focus = true;
 }
@@ -439,9 +439,9 @@ float UI_Text_Control::get_default_height()
 UI_Radio_Control::UI_Radio_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::radio;
+	type = e_ui_control_type::radio;
 	is_active = true;
-	text_align = align::left | align::vcenter;
+	text_align = e_align::left | e_align::vcenter;
 }
 
 void UI_Radio_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -484,7 +484,7 @@ float UI_Radio_Control::get_default_height()
 UI_Progress_Control::UI_Progress_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::progress;
+	type = e_ui_control_type::progress;
 }
 
 void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -501,16 +501,16 @@ void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 	shrunken_rc.shrink( 1.f );
 	shrunken_rc.w *= pct;
 
-	Render::state->color = make_color( pal::darker );
+	Render::state->color = make_color( e_pal::darker );
 	Render::draw_filled_rect( rc_client );
 
-	Render::state->color = make_color( pal::middle );
+	Render::state->color = make_color( e_pal::middle );
 	Render::draw_filled_rect( shrunken_rc );
 
 	if( control_data->draw_percentage_as_text and pct >= 0.01f )
 	{
-		Render::state->color = make_color( pal::brightest );
-		Render::state->align = align::centered;
+		Render::state->color = make_color( e_pal::brightest );
+		Render::state->align = e_align::centered;
 		Render::draw_string( std::format( "{}%", (int)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
 	}
 }
@@ -530,8 +530,8 @@ float UI_Progress_Control::get_default_height()
 UI_List_Control::UI_List_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::list;
-	text_align = align::left | align::top;
+	type = e_ui_control_type::list;
+	text_align = e_align::left | e_align::top;
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_list" );
 }
 
@@ -563,7 +563,7 @@ void UI_List_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 				->set_pos( pos )
 				->set_size( { list_rc_client.w, Render::state->font->get_max_height() } )
 				->set_text( item_str.data() )
-				->set_text_align( align::left | align::vcenter )
+				->set_text_align( e_align::left | e_align::vcenter )
 				->set_idx( idx )
 				->done() )
 			{
@@ -576,7 +576,7 @@ void UI_List_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 		// if this item is currently selected, give it a background highlight
 		if( idx == control_data->int_value() )
 		{
-			Render::state->color = make_color( pal::darker );
+			Render::state->color = make_color( e_pal::darker );
 			Rect rc = g_ui->current_control->rc_client;
 			rc.x -= interior_margin.x;
 			Render::draw_filled_rect( rc );
@@ -601,10 +601,10 @@ float UI_List_Control::get_default_height()
 UI_Dropdown_Control::UI_Dropdown_Control( hash tag )
 	: UI_Control( tag )
 {
-	type = ui_control_type::dropdown;
+	type = e_ui_control_type::dropdown;
 	is_active = true;
 	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_button" );
-	text_align = align::left | align::vcenter;
+	text_align = e_align::left | e_align::vcenter;
 	uses_click_offset = true;
 }
 
@@ -625,7 +625,7 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 
 	auto tex = g_engine->find_asset<Texture_Asset>( "ui_dropdown_arrow" );
 
-	Render::state->color = g_ui->get_adjusted_color( make_color( pal::middle ), is_hovered, is_hot );
+	Render::state->color = g_ui->get_adjusted_color( make_color( e_pal::middle ), is_hovered, is_hot );
 	Render::draw_sprite( tex,
 		{
 			rc_client.x + rc_client.w - ( tex->rc.w / 2.f ),
@@ -635,11 +635,11 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 
 	Render::state->z -= zdepth_nudge;
 
-	if( g_ui->result.code & im_result::left_clicked )
+	if( g_ui->result.code & e_im_result::left_clicked )
 	{
 		control_data->set_expanded( !control_data->is_expanded() );
-		g_engine->scenes.current_scene->ui_expanded_tag_begin = control_data->is_expanded() ? dropdown_control_tag : hash_none;
-		g_engine->scenes.current_scene->ui_expanded_tag_end = g_engine->scenes.current_scene->ui_expanded_tag_begin;
+		g_engine->scene_mgr.current_scene->ui_expanded_tag_begin = control_data->is_expanded() ? dropdown_control_tag : hash_none;
+		g_engine->scene_mgr.current_scene->ui_expanded_tag_end = g_engine->scene_mgr.current_scene->ui_expanded_tag_begin;
 	}
 
 	if( control_data->is_expanded() )
@@ -667,7 +667,7 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 
 		// draw background
 
-		Render::state->color = make_color( pal::darker );
+		Render::state->color = make_color( e_pal::darker );
 		Render::draw_sliced( slice_def_dropdown_list, item_list_rc );
 
 		auto rc_item_list_client = g_ui->compute_client_rect_from_ui_rect( item_list_rc );
@@ -684,15 +684,15 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 
 				auto extents = rc_client.extents();
 
-				g_engine->scenes.current_scene->ui_expanded_tag_end = dropdown_control_tag + idx + 1;
+				g_engine->scene_mgr.current_scene->ui_expanded_tag_end = dropdown_control_tag + idx + 1;
 
 				if( g_ui
-					->button_control( g_engine->scenes.current_scene->ui_expanded_tag_end )
+					->button_control( g_engine->scene_mgr.current_scene->ui_expanded_tag_end )
 					->set_slice_def( "" )
 					->cut_top( Render::state->font->get_max_height() )
 					->set_size( { item_list_rc.w - ( interior_margin.x * 3.f ), Vec2::ignored } )
 					->set_text( item_str.data() )
-					->set_text_align( align::left | align::vcenter )
+					->set_text_align( e_align::left | e_align::vcenter )
 					->set_idx( idx )
 					->done() )
 				{
@@ -700,14 +700,14 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 					control_data->set_int_value( idx );
 
 					control_data->set_expanded( false );
-					g_engine->scenes.current_scene->ui_expanded_tag_begin = g_engine->scenes.current_scene->ui_expanded_tag_end = hash_none;
+					g_engine->scene_mgr.current_scene->ui_expanded_tag_begin = g_engine->scene_mgr.current_scene->ui_expanded_tag_end = hash_none;
 				}
 
 				// if this item is currently selected, give it a background highlight
 				if( idx == control_data->int_value() )
 				{
 					Render::state->z -= zdepth_nudge;
-					Render::state->color = make_color( pal::darker );
+					Render::state->color = make_color( e_pal::darker );
 					Rect rc = g_ui->current_control->rc_client;
 					rc.x -= interior_margin.x * 2.f;
 					rc.w -= interior_margin.x * 4.f;

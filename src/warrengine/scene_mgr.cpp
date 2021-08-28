@@ -18,7 +18,7 @@ void Scene_Mgr::clear_stack()
 	{
 		scene->getting_covered();
 		scene->popped();
-		scene->life_cycle.set( life_cycle::dead );
+		scene->life_cycle.set( e_life_cycle::dead );
 	}
 }
 
@@ -36,7 +36,7 @@ void Scene_Mgr::pop()
 		if( scene->life_cycle.is_alive() )
 		{
 			scene->popped();
-			scene->life_cycle.set( life_cycle::dead );
+			scene->life_cycle.set( e_life_cycle::dead );
 			break;
 		}
 	}
@@ -58,7 +58,7 @@ void Scene_Mgr::pop_under()
 	size_t idx = 1;
 	scene = scene_stack[ idx ].get();
 	scene->popped();
-	scene->life_cycle.set( life_cycle::dead );
+	scene->life_cycle.set( e_life_cycle::dead );
 }
 
 scene* Scene_Mgr::get_top()
@@ -111,9 +111,9 @@ void Scene_Mgr::update()
 	// if the game requires a game controller and one is not detected, put up
 	// the dialog that waits for one to get connected.
 
-	if( g_engine->scenes.current_scene->flags.requires_controller and !g_engine->input.gamepad )
+	if( g_engine->scene_mgr.current_scene->flags.requires_controller and !g_engine->input_mgr.gamepad )
 	{
-		g_engine->scenes.push<Scene_Controller_Required>();
+		g_engine->scene_mgr.push<Scene_Controller_Required>();
 	}
 }
 
@@ -194,11 +194,11 @@ void Scene_Mgr::draw_scene( int starting_scene_idx )
 		{
 			current_scene = scene;
 
-			g_engine->render_api.clear_depth_buffer();
+			g_engine->opengl_mgr.clear_depth_buffer();
 			scene_depth_start += zdepth_scene_start;
 			Render::state->z = scene_depth_start;
 
-			g_engine->render_api.set_view_matrix_identity();
+			g_engine->opengl_mgr.set_view_matrix_identity();
 
 			{
 				scoped_render_state;
@@ -207,7 +207,7 @@ void Scene_Mgr::draw_scene( int starting_scene_idx )
 
 				#ifndef _FINAL_RELEASE
 					// draw any debug information that lives in world space.
-					if( scene->flags.is_debug_physics_scene && g_engine->renderer.debug.is_drawing_debug_info() )
+					if( scene->flags.is_debug_physics_scene && g_engine->render.debug.is_drawing_debug_info() )
 					{
 						Render::state->z += zdepth_debug_bias;
 						g_engine->box2d.world->DebugDraw();
@@ -217,15 +217,15 @@ void Scene_Mgr::draw_scene( int starting_scene_idx )
 
 			current_scene = get_top();
 
-			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::opaque );
-			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::transparent );
+			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
+			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
 		}
 	}
 }
 
 void Scene_Mgr::draw_scene_ui( int starting_scene_idx )
 {
-	g_engine->render_api.set_view_matrix_identity_ui();
+	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 
 	scoped_render_state;
 	auto scene_depth_start = 0.f;
@@ -238,7 +238,7 @@ void Scene_Mgr::draw_scene_ui( int starting_scene_idx )
 		{
 			current_scene = scene;
 
-			g_engine->render_api.clear_depth_buffer();
+			g_engine->opengl_mgr.clear_depth_buffer();
 			scene_depth_start += zdepth_scene_start;
 			Render::state->z = scene_depth_start;
 
@@ -267,15 +267,15 @@ void Scene_Mgr::draw_scene_ui( int starting_scene_idx )
 			#ifndef _FINAL_RELEASE
 
 				// draw a circle so we can visualize the viewport offset location
-				if( g_engine->renderer.debug.is_drawing_debug_info() )
+				if( g_engine->render.debug.is_drawing_debug_info() )
 				{
 					Render::draw_crosshair( scene->viewport_pivot / ui_scale );
 				}
 			#endif
 			}
 
-			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::opaque );
-			g_engine->renderer.dynamic_batches.flush_and_reset( draw_call::transparent );
+			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
+			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
 		}
 	}
 }

@@ -144,7 +144,7 @@ void OS_Window::set_title( std::string_view title )
 	glfwSetWindowTitle( glfw_window, title.data() );
 }
 
-void OS_Window::set_mouse_mode( e_mouse_mode mouse_mode )
+void OS_Window::set_mouse_mode( e_mouse_mode_t mouse_mode )
 {
 	this->mouse_mode = mouse_mode;
 	refresh_mouse_mode();
@@ -154,19 +154,19 @@ void OS_Window::refresh_mouse_mode()
 {
 	switch( mouse_mode )
 	{
-		case mouse_mode::os:
+		case e_mouse_mode::os:
 		{
 			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
 			break;
 		}
 
-		case mouse_mode::custom:
+		case e_mouse_mode::custom:
 		{
 			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN );
 			break;
 		}
 
-		case mouse_mode::locked:
+		case e_mouse_mode::locked:
 		{
 			glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
 			break;

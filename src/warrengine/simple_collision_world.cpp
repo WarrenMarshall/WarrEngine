@@ -41,7 +41,7 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 
 		switch( scc->type )
 		{
-			case sc_prim_type::circle:
+			case e_sc_prim_type::circle:
 			{
 				if( c2RaytoCircle( ray, scc->as_simple_circle(), &raycast ) )
 				{
@@ -54,7 +54,7 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 			}
 			break;
 
-			case sc_prim_type::aabb:
+			case e_sc_prim_type::aabb:
 			{
 				if( c2RaytoAABB( ray, scc->as_simple_aabb(), &raycast ) )
 				{
@@ -67,7 +67,7 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 			}
 			break;
 
-			case sc_prim_type::polygon:
+			case e_sc_prim_type::polygon:
 			{
 				auto poly = scc->as_simple_poly();
 				if( c2RaytoPoly( ray, &poly, nullptr, &raycast ) )
@@ -141,7 +141,7 @@ void Simple_Collision_World::handle_collisions()
 		{
 			switch( body_a->collider_type )
 			{
-				case sc_body_collider_type::solid:
+				case e_sc_body_collider_type::solid:
 				{
 					auto coll = body_a->intersects_with_manifold( body_b );
 					if( coll.has_value() )
@@ -157,7 +157,7 @@ void Simple_Collision_World::handle_collisions()
 				// sort of batching thing so we only fire them ONCE per update cycle
 				// and not every time through the collision iteration
 
-				case sc_body_collider_type::sensor:
+				case e_sc_body_collider_type::sensor:
 				{
 					auto coll = body_a->intersects_with_manifold( body_b );
 					if( coll.has_value() )

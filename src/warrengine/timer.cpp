@@ -14,7 +14,7 @@ Timer::Timer( time_ms interval_ms )
 void Timer::restart()
 {
 	delta_accum = 0;
-	time_last = g_engine->time.now();
+	time_last = g_engine->clock.now();
 }
 
 // call to see if timer has run over it's duration
@@ -23,7 +23,7 @@ void Timer::restart()
 
 bool Timer::is_elapsed()
 {
-	return ( g_engine->time.now() - time_last ) > interval_ms;
+	return ( g_engine->clock.now() - time_last ) > interval_ms;
 }
 
 // call repeatedly to see how many times the timer has elapsed
@@ -32,8 +32,8 @@ bool Timer::is_elapsed()
 
 int Timer::get_elapsed()
 {
-	delta_accum += ( g_engine->time.now() - time_last );
-	time_last = g_engine->time.now();
+	delta_accum += ( g_engine->clock.now() - time_last );
+	time_last = g_engine->clock.now();
 	return (int)( delta_accum / interval_ms );
 }
 
@@ -41,7 +41,7 @@ int Timer::get_elapsed()
 
 float Timer::get_pct_complete()
 {
-	float pct = ( g_engine->time.now() - time_last ) / (float)interval_ms;
+	float pct = ( g_engine->clock.now() - time_last ) / (float)interval_ms;
 	return glm::clamp<float>( pct, 0.f, 1.f );
 }
 

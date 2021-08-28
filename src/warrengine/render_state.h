@@ -6,7 +6,7 @@ struct Render_State final
 {
 	Render_State();
 
-	e_align align = align::left;
+	e_align_t align = e_align::left;
 	float angle = 0.f;
 	Color color = Color::white;
 	float glow = 0.f;
@@ -24,7 +24,7 @@ struct Render_State final
 
 struct Render_State_Optional final
 {
-	std::optional<e_align> align = std::nullopt;
+	std::optional<e_align_t> align = std::nullopt;
 	std::optional<float> angle = std::nullopt;
 	std::optional<Color> color = std::nullopt;
 	std::optional<float> glow = std::nullopt;

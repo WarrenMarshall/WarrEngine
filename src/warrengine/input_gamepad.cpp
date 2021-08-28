@@ -11,40 +11,40 @@ Game_Controller::Game_Controller( int player_id )
 	timer_repeat = std::make_unique<Timer>( 150 );
 }
 
-void Game_Controller::update_button_state( e_input_id input_id, int xinput_button_bit )
+void Game_Controller::update_button_state( e_input_id_t input_id, int xinput_button_bit )
 {
-	bool last_state = g_engine->input.button_states_last_frame[ input_id ];
+	bool last_state = g_engine->input_mgr.button_states_last_frame[ input_id ];
 
 	bool current_state = ( xinput_state.Gamepad.wButtons & xinput_button_bit ) > 0;
-	g_engine->input.button_states[ input_id ] = current_state;
+	g_engine->input_mgr.button_states[ input_id ] = current_state;
 
 	if( !last_state and current_state )
 	{
 		Input_Event evt;
-		evt.event_id = event_id::input_pressed;
+		evt.event_id = e_event_id::input_pressed;
 		evt.input_id = input_id;
 
-		g_engine->input.event_queue.push_back( evt );
+		g_engine->input_mgr.event_queue.push_back( evt );
 
 		is_being_used = true;
 	}
 	else if( last_state and !current_state )
 	{
 		Input_Event evt;
-		evt.event_id = event_id::input_released;
+		evt.event_id = e_event_id::input_released;
 		evt.input_id = input_id;
 
-		g_engine->input.event_queue.push_back( evt );
+		g_engine->input_mgr.event_queue.push_back( evt );
 	}
 	else if( last_state and current_state )
 	{
 		if( timer_repeat->get_elapsed() )
 		{
 			Input_Event evt;
-			evt.event_id = event_id::input_held;
+			evt.event_id = e_event_id::input_held;
 			evt.input_id = input_id;
 
-			g_engine->input.event_queue.push_back( evt );
+			g_engine->input_mgr.event_queue.push_back( evt );
 		}
 	}
 }
@@ -75,39 +75,36 @@ void Game_Controller::update()
 	update_state();
 }
 
-void Game_Controller::play_rumble( e_rumble_effect effect )
+void Game_Controller::play_rumble( e_rumble_effect_t effect )
 {
-	return;
-
-	/*
 	int rumble_max = 65535;
 	int intensity = 65535;
 	int duration_ms = 600;
 
 	switch( effect )
 	{
-		case rumble_effect::medium:
+		case e_rumble_effect::medium:
 		{
 			intensity = (int)( rumble_max * 0.75f );
 			duration_ms = 400;
 			break;
 		}
 
-		case rumble_effect::small:
+		case e_rumble_effect::small:
 		{
 			intensity = (int)( rumble_max * 0.5f );
 			duration_ms = 300;
 			break;
 		}
 
-		case rumble_effect::tiny:
+		case e_rumble_effect::tiny:
 		{
 			intensity = (int)( rumble_max * 0.35f );
 			duration_ms = 200;
 			break;
 		}
 
-		case rumble_effect::none:
+		case e_rumble_effect::none:
 		{
 			intensity = 0;
 			duration_ms = 100;
@@ -116,7 +113,6 @@ void Game_Controller::play_rumble( e_rumble_effect effect )
 	}
 
 	play_rumble( intensity, duration_ms );
-	*/
 }
 
 void Game_Controller::play_rumble( int intensity, int ms )

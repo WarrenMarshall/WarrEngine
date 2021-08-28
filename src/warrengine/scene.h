@@ -8,7 +8,7 @@ struct scene
 
 	void save_mouse_mode();
 	void restore_mouse_mode();
-	std::optional<e_mouse_mode> saved_mouse_mode = std::nullopt;
+	std::optional<e_mouse_mode_t> saved_mouse_mode = std::nullopt;
 
 	//effect_stack fx_stack;
 

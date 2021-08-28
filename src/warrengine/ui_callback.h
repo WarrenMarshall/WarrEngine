@@ -29,7 +29,7 @@ struct UI_Callback
 	virtual bool validate_value_change( hash tag, UI_Control_Data* old_value, UI_Control_Data* new_value );
 
 	virtual float get_control_padding();
-	virtual Vec2 get_control_margin( e_ui_control_type control_type );
+	virtual Vec2 get_control_margin( e_ui_control_type_t control_type );
 
 	virtual bool on_input_motion( const Input_Event* evt );
 	bool handle_editing_key( const Input_Event* evt );

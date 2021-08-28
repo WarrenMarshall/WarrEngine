@@ -10,7 +10,7 @@ struct Tween final
 	time_ms time_last;
 
 	Tween();
-	Tween( float start, float end, time_ms duration_ms, e_tween_type type, e_tween_via via );
+	Tween( float start, float end, time_ms duration_ms, e_tween_type_t type, e_tween_via_t via );
 
 	[[nodiscard]] float operator*();
 
@@ -18,8 +18,8 @@ struct Tween final
 	void randomize();
 	void toggle_direction();
 	void set_backwards();
-	void set_type( e_tween_type type );
-	void set_via( e_tween_via via );
+	void set_type( e_tween_type_t type );
+	void set_via( e_tween_via_t via );
 };
 
 }

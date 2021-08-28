@@ -7,7 +7,7 @@ namespace war
 
 struct Tiled_Object final
 {
-	e_sc_prim_type collision_type = sc_prim_type::aabb;
+	e_sc_prim_type_t collision_type = e_sc_prim_type::aabb;
 
 	Rect rc;
 	float radius;

@@ -12,7 +12,7 @@ void scene_entity_picking::pushed()
 {
 	scene::pushed();
 
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	{
 		auto e = add_entity<Entity>();
@@ -21,8 +21,8 @@ void scene_entity_picking::pushed()
 		e->set_scale( 2.f );
 		{
 			auto ec = e->add_component<Primitve_Shape_Component>();
-			ec->add_shape( primitive_shape::filled_rect, Rect( -16, -16, 32, 32 ) );
-			ec->rs_opt.color = make_color( pal::darker );
+			ec->add_shape( e_primitive_shape::filled_rect, Rect( -16, -16, 32, 32 ) );
+			ec->rs_opt.color = make_color( e_pal::darker );
 		}
 	}
 
@@ -44,8 +44,8 @@ void scene_entity_picking::pushed()
 		e->set_pos_angle_scale( { 150.f, 200.f }, 15.f, 2.f );
 		{
 			auto ec = e->add_component<Primitve_Shape_Component>();
-			ec->add_shape( primitive_shape::filled_rect, Rect( -32, -16, 64, 32 ) );
-			ec->rs_opt.color = make_color( pal::brighter );
+			ec->add_shape( e_primitive_shape::filled_rect, Rect( -32, -16, 64, 32 ) );
+			ec->rs_opt.color = make_color( e_pal::brighter );
 		}
 	}
 }
@@ -81,9 +81,9 @@ void scene_entity_picking::post_update()
 
 bool scene_entity_picking::on_input_pressed( const Input_Event* evt )
 {
-	if( evt->input_id == input_id::mouse_button_left )
+	if( evt->input_id == e_input_id::mouse_button_left )
 	{
-		Vec2 click_pos = Coord_System::window_to_viewport_pos( g_engine->input.mouse_window_pos );
+		Vec2 click_pos = Coord_System::window_to_viewport_pos( g_engine->input_mgr.mouse_window_pos );
 		auto pick_id = Render::sample_pick_id_at( click_pos );
 
 		deselect_all();
@@ -102,9 +102,9 @@ bool scene_entity_picking::on_input_pressed( const Input_Event* evt )
 
 bool scene_entity_picking::on_input_motion( const Input_Event* evt )
 {
-	if( evt->input_id == input_id::mouse )
+	if( evt->input_id == e_input_id::mouse )
 	{
-		if( g_engine->input.is_button_held( input_id::mouse_button_left ) )
+		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 		{
 			Vec2 delta = Coord_System::window_to_world_vec( evt->delta );
 

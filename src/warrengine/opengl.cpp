@@ -104,7 +104,7 @@ void OpenGL_Mgr::init()
 
 	// default blending is transparency using the alpha channel
 	glEnable( GL_BLEND );
-	set_blend( opengl_blend::alpha );
+	set_blend( e_opengl_blend::alpha );
 
 	// smooth things look nicer
 	glEnable( GL_LINE_SMOOTH );
@@ -164,29 +164,29 @@ void OpenGL_Mgr::clear_depth_buffer()
 	glClear( GL_DEPTH_BUFFER_BIT );
 }
 
-void OpenGL_Mgr::set_blend( e_opengl_blend blend ) const
+void OpenGL_Mgr::set_blend( e_opengl_blend_t blend ) const
 {
 	switch( blend )
 	{
-		case opengl_blend::alpha:
+		case e_opengl_blend::alpha:
 		{
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 			break;
 		}
 
-		case opengl_blend::add:
+		case e_opengl_blend::add:
 		{
 			glBlendFunc( GL_ONE, GL_ONE );
 			break;
 		}
 
-		case opengl_blend::multiply:
+		case e_opengl_blend::multiply:
 		{
 			glBlendFunc( GL_DST_COLOR, GL_ZERO );
 			break;
 		}
 
-		case opengl_blend::glow:
+		case e_opengl_blend::glow:
 		{
 			glBlendFunc( GL_SRC_COLOR, GL_ONE );
 			break;
@@ -208,7 +208,7 @@ void OpenGL_Mgr::set_projection_matrix() const
 		-zdepth_max,
 		zdepth_max );
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		glProgramUniformMatrix4fv(
 			Shader.gl_id,
@@ -233,17 +233,17 @@ void OpenGL_Mgr::set_view_matrix_identity()
 	// viewport pivot
 
 	Matrix viewport_pivot_mtx;
-	viewport_pivot_mtx.translate( g_engine->scenes.get_viewport_pivot() );
+	viewport_pivot_mtx.translate( g_engine->scene_mgr.get_viewport_pivot() );
 
 	// camera
 
-	auto cam_mtx = g_engine->scenes.get_transform()->to_matrix();
+	auto cam_mtx = g_engine->scene_mgr.get_transform()->to_matrix();
 	view_mtx *= cam_mtx;
 	using_camera = true;
 
 	// send to all shaders
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		glProgramUniformMatrix4fv(
 			Shader.gl_id,
@@ -275,7 +275,7 @@ void OpenGL_Mgr::set_view_matrix_identity_no_camera()
 
 	// send to all shaders
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		glProgramUniformMatrix4fv(
 			Shader.gl_id,
@@ -313,7 +313,7 @@ void OpenGL_Mgr::set_view_matrix_identity_ui()
 
 	// send to all shaders
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		glProgramUniformMatrix4fv(
 			Shader.gl_id,
@@ -340,7 +340,7 @@ float OpenGL_Mgr::get_uniform_float( std::string_view name )
 {
 	float result = 0.f;
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 
@@ -358,7 +358,7 @@ bool OpenGL_Mgr::get_uniform_bool( std::string_view name )
 {
 	int result = 0;
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 
@@ -376,7 +376,7 @@ Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 {
 	Color result;
 
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 
@@ -395,7 +395,7 @@ Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 
 void OpenGL_Mgr::set_uniform_float( std::string_view name, float value )
 {
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
@@ -407,7 +407,7 @@ void OpenGL_Mgr::set_uniform_float( std::string_view name, float value )
 
 void OpenGL_Mgr::set_uniform_bool( std::string_view name, bool value )
 {
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
@@ -419,7 +419,7 @@ void OpenGL_Mgr::set_uniform_bool( std::string_view name, bool value )
 
 void OpenGL_Mgr::set_uniform_color( std::string_view name, const Color& value )
 {
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )
@@ -431,7 +431,7 @@ void OpenGL_Mgr::set_uniform_color( std::string_view name, const Color& value )
 
 void OpenGL_Mgr::set_uniform_array( std::string_view name, int* value, int count )
 {
-	for( auto& [shader_name, Shader] : g_engine->render_api.shaders )
+	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
 		auto loc = glGetUniformLocation( Shader.gl_id, name.data() );
 		if( loc != -1 )

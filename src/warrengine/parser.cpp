@@ -144,7 +144,7 @@ Vec2 Text_Parser::vec2_from_str( std::string_view str )
 	return vec2;
 }
 
-std::unique_ptr<Timeline_Values> Text_Parser::timeline_from_str( e_timeline_type type, std::string_view str )
+std::unique_ptr<Timeline_Values> Text_Parser::timeline_from_str( e_timeline_type_t type, std::string_view str )
 {
 	std::unique_ptr<Timeline_Values> tl = std::make_unique<Timeline_Values>( type );
 	tl->clear_key_frames();
@@ -162,13 +162,13 @@ std::unique_ptr<Timeline_Values> Text_Parser::timeline_from_str( e_timeline_type
 
 		switch( type )
 		{
-			case timeline_type::float_type:
+			case e_timeline_type::float_type:
 			{
 				kf.float_value = Text_Parser::float_from_str( *tok.get_next_token() );
 				break;
 			}
 
-			case timeline_type::color_type:
+			case e_timeline_type::color_type:
 			{
 				kf.color_value = Text_Parser::color_from_str( *tok.get_next_token() );
 				break;

@@ -4,18 +4,18 @@ namespace war
 
 struct Particle_Spawner final
 {
-	e_particle_spawner_type type = particle_spawner_type::point;
+	e_particle_spawner_type_t type = e_particle_spawner_type::point;
 
 	union
 	{
 		struct
 		{
-			// for particle_spawner_type::box
+			// for e_particle_spawner_type::box
 			int w, h;
 		};
 		struct
 		{
-			// for particle_spawner_type::circle
+			// for e_particle_spawner_type::circle
 			float radius;
 		};
 	};

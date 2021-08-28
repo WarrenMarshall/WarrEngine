@@ -58,7 +58,7 @@ Entity* scene_simple_bounce::spawn_player()
 	{
 		auto ec = e->add_component<Primitve_Shape_Component>();
 		ec->rs_opt.color = make_color( Color::white, 1.0f );
-		ec->add_shape( primitive_shape::point );
+		ec->add_shape( e_primitive_shape::point );
 	}
 
 	if( first_time )
@@ -79,8 +79,8 @@ void scene_simple_bounce::pushed()
 
 	sc_world->settings.push_apart_tolerance = 2.0f;
 
-	g_engine->renderer.debug.draw_debug_info = true;
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->render.debug.draw_debug_info = true;
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// WORLD GEO
 
@@ -89,7 +89,7 @@ void scene_simple_bounce::pushed()
 
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = sc_type::stationary;
+		e->simple.type = e_sc_type::stationary;
 
 		for( int i = 0 ; i < num_colliders ; ++i )
 		{
@@ -154,7 +154,7 @@ void scene_simple_bounce::draw()
 {
 	{
 		scoped_render_state;
-		Render::state->color = make_color( pal::darker );
+		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
@@ -196,8 +196,8 @@ bool scene_simple_bounce::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::gamepad_button_y:
-		case input_id::key_space:
+		case e_input_id::gamepad_button_y:
+		case e_input_id::key_space:
 		{
 			spawn_player();
 		}
@@ -211,7 +211,7 @@ bool scene_simple_bounce::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
-		case input_id::gamepad_left_stick:
+		case e_input_id::gamepad_left_stick:
 		{
 			player->add_force( { evt->delta, 1.0f } );
 

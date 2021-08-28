@@ -33,7 +33,7 @@ struct UI_Mgr final
 	struct
 	{
 		hash tag = hash_none;
-		e_ui_control_type type = ui_control_type::none;
+		e_ui_control_type_t type = e_ui_control_type::none;
 	} focused;
 
 	// layout stack control
@@ -67,7 +67,7 @@ private:
 		current_control->default_width = T::get_default_width();
 		current_control->default_height = T::get_default_height();
 
-		if( current_control->type == ui_control_type::panel )
+		if( current_control->type == e_ui_control_type::panel )
 		{
 			current_control->default_width = layout_top().w;
 			current_control->default_height = layout_top().h;
@@ -92,7 +92,7 @@ public:
 	UI_Mgr* set_text( std::string text );
 	UI_Mgr* center_control_on_screen();
 	UI_Mgr* adjust_layout_to_client_area();
-	UI_Mgr* set_text_align( e_align align );
+	UI_Mgr* set_text_align( e_align_t align );
 	UI_Mgr* set_text_color( Color color );
 	UI_Mgr* set_color( Color color );
 	UI_Mgr* set_image( std::string_view tex_tag );

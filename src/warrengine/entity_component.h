@@ -8,7 +8,7 @@ struct Entity_Component
 {
 	Life_Cycle_Mgr life_cycle;
 
-	virtual void set_life_cycle( e_life_cycle lc );
+	virtual void set_life_cycle( e_life_cycle_t lc );
 
 	Transform _tform;
 	[[nodiscard]] Transform* get_transform()
@@ -93,7 +93,7 @@ struct Primitve_Shape_Component final : Entity_Component
 {
 	struct Shape_Def final
 	{
-		e_primitive_shape prim_shape = primitive_shape::rect;
+		e_primitive_shape_t prim_shape = e_primitive_shape::rect;
 		Rect rc = {};
 		float radius = 0.f;
 		Vec2 pos_offset = {};
@@ -104,9 +104,9 @@ struct Primitve_Shape_Component final : Entity_Component
 	Primitve_Shape_Component() = delete;
 	Primitve_Shape_Component( Entity* parent_entity );
 
-	Entity_Component* add_shape( const e_primitive_shape prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
-	Entity_Component* add_shape( const e_primitive_shape prim_shape, float radius, const Vec2& pos_offset = Vec2::zero );
-	Entity_Component* add_shape( const e_primitive_shape prim_shape, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset = Vec2::zero );
 
 	virtual void draw() override;
 };
@@ -123,7 +123,7 @@ struct Emitter_Component final : Entity_Component
 	Particle_Emitter emitter = {};
 
 	Entity_Component* init( std::string_view params_tag );
-	virtual void set_life_cycle( e_life_cycle lc ) override;
+	virtual void set_life_cycle( e_life_cycle_t lc ) override;
 	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
@@ -285,7 +285,7 @@ struct Simple_Collision_Body : Entity_Component
 	Simple_Collision_Body( Entity* parent_entity );
 	virtual ~Simple_Collision_Body() = default;
 
-	e_sc_prim_type type = sc_prim_type::circle;
+	e_sc_prim_type_t type = e_sc_prim_type::circle;
 
 	bool is_platform = false;
 
@@ -298,7 +298,7 @@ struct Simple_Collision_Body : Entity_Component
 	// verts
 	std::vector<Vec2> verts = {};
 
-	e_sc_body_collider_type collider_type = sc_body_collider_type::solid;
+	e_sc_body_collider_type_t collider_type = e_sc_body_collider_type::solid;
 
 	struct
 	{
@@ -314,7 +314,7 @@ struct Simple_Collision_Body : Entity_Component
 	void set_as_centered_box( float w, float h );
 	void set_as_circle( float r );
 	void set_as_polygon( std::vector<Vec2> verts );
-	void set_body_collider_type( e_sc_body_collider_type type );
+	void set_body_collider_type( e_sc_body_collider_type_t type );
 
 	bool intersects_with( Simple_Collision_Body* scc );
 	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other );

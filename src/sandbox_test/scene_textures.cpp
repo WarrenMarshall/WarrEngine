@@ -23,7 +23,7 @@ void scene_textures::pushed()
 	anim_offsets[ 2 ] = Random::getf();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void scene_textures::draw()
@@ -51,7 +51,7 @@ void scene_textures::draw_ui()
 			Render::draw_rounded_filled_rect( rc, 6.f );
 
 			Render::state->color = make_color( Color::white, 0.75f );
-			Render::state->align = align::centered;
+			Render::state->align = e_align::centered;
 			Render::draw_string( caption, Vec2( rc.x + ( rc.w / 2.f ), rc.y + 9.f ) );
 		};
 

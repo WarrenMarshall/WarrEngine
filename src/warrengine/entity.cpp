@@ -63,7 +63,7 @@ void Entity::pre_update_components()
 	for( const auto& component : components )
 	{
 		scoped_opengl;
-		g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
+		g_engine->opengl_mgr.top_matrix->apply_transform( *component->get_transform() );
 
 		component->pre_update();
 	}
@@ -76,7 +76,7 @@ void Entity::update_components()
 	for( const auto& component : components )
 	{
 		scoped_opengl;
-		g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
+		g_engine->opengl_mgr.top_matrix->apply_transform( *component->get_transform() );
 
 		component->update();
 	}
@@ -87,14 +87,14 @@ void Entity::post_update_components()
 	for( const auto& component : components )
 	{
 		scoped_opengl;
-		g_engine->render_api.top_matrix->apply_transform( *component->get_transform() );
+		g_engine->opengl_mgr.top_matrix->apply_transform( *component->get_transform() );
 
 		component->post_update();
 	}
 
 #ifndef _FINAL_RELEASE
 
-	if( g_engine->renderer.debug.is_entity_info_logging() )
+	if( g_engine->render.debug.is_entity_info_logging() )
 	{
 
 		auto tform = get_transform();
@@ -230,7 +230,7 @@ void Entity::draw()
 		}
 
 		scoped_opengl;
-		g_engine->render_api.top_matrix->apply_transform( component->get_pos(), component->get_angle(), component->get_scale() );
+		g_engine->opengl_mgr.top_matrix->apply_transform( component->get_pos(), component->get_angle(), component->get_scale() );
 
 		Render::state->z += zdepth_nudge;
 
@@ -469,7 +469,7 @@ void Entity::make_pickable()
 	pick_id = w_entity_last_pick_id;
 }
 
-void Entity::set_life_cycle( e_life_cycle lc )
+void Entity::set_life_cycle( e_life_cycle_t lc )
 {
 	life_cycle.set( lc );
 
@@ -530,7 +530,7 @@ void Entity_Transient::update()
 	// once all of the components have died, the fx container entity can die.
 	if( components.empty() )
 	{
-		set_life_cycle( life_cycle::dying );
+		set_life_cycle( e_life_cycle::dying );
 	}
 }
 

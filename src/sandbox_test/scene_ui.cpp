@@ -83,7 +83,7 @@ void scene_ui_callback::on_value_changed( hash tag )
 	{
 		case H( "check_box" ):
 		{
-			g_engine->window.set_mouse_mode( checkbox_data.bool_value() ? mouse_mode::custom : mouse_mode::os );
+			g_engine->window.set_mouse_mode( checkbox_data.bool_value() ? e_mouse_mode::custom : e_mouse_mode::os );
 		}
 		break;
 	}
@@ -103,7 +103,7 @@ void scene_ui::pushed()
 	scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( mouse_mode::os );
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void scene_ui::draw()

@@ -23,7 +23,7 @@ void Game::init()
 void Game::new_game()
 {
 	g_engine->new_physics_world();
-	g_engine->scenes.new_game();
+	g_engine->scene_mgr.new_game();
 }
 
 void Game::update()

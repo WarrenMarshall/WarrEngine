@@ -95,7 +95,7 @@ void scene::pre_update()
 		scoped_opengl;
 
 		auto tform = entity->get_transform();
-		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+		g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 		entity->pre_update();
 		entity->pre_update_components();
@@ -127,7 +127,7 @@ void scene::update()
 			scoped_opengl;
 
 			auto tform = entity->get_transform();
-			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+			g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 			entity->update();
 			entity->update_components();
@@ -172,7 +172,7 @@ void scene::post_update()
 		scoped_opengl;
 
 		auto tform = entity->get_transform();
-		g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+		g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 		entity->post_update();
 		entity->post_update_components();
@@ -191,7 +191,7 @@ void scene::draw()
 			scoped_opengl;
 
 			auto tform = entity->get_transform();
-			g_engine->render_api.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+			g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 			entity->draw();
 		}
@@ -204,7 +204,7 @@ void scene::draw_ui()
 
 bool scene::is_topmost_scene() const
 {
-	return ( g_engine->scenes.get_top() == this );
+	return ( g_engine->scene_mgr.get_top() == this );
 }
 
 Entity* scene::find_entity( hash tag )
@@ -267,7 +267,7 @@ bool scene::on_input_motion( const Input_Event* evt )
 
 bool scene::on_input_pressed( const Input_Event* evt )
 {
-	if( g_engine->scenes.get_top() == this )
+	if( g_engine->scene_mgr.get_top() == this )
 	{
 
 		auto callback = get_ui_callback();
@@ -284,7 +284,7 @@ bool scene::on_input_pressed( const Input_Event* evt )
 
 bool scene::on_input_held( const Input_Event* evt )
 {
-	if( g_engine->scenes.get_top() == this )
+	if( g_engine->scene_mgr.get_top() == this )
 	{
 		if( get_ui_callback()->on_input_held( evt ) )
 		{
@@ -297,7 +297,7 @@ bool scene::on_input_held( const Input_Event* evt )
 
 bool scene::on_input_released( const Input_Event* evt )
 {
-	if( g_engine->scenes.get_top() == this )
+	if( g_engine->scene_mgr.get_top() == this )
 	{
 		if( get_ui_callback()->on_input_released( evt ) )
 		{
@@ -310,7 +310,7 @@ bool scene::on_input_released( const Input_Event* evt )
 
 bool scene::on_input_key( const Input_Event* evt )
 {
-	if( g_engine->scenes.get_top() == this )
+	if( g_engine->scene_mgr.get_top() == this )
 	{
 		if( get_ui_callback()->on_input_key( evt ) )
 		{
