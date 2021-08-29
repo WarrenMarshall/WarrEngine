@@ -22,12 +22,12 @@ struct Particle final
 	float velocity_per_sec = 0.f;
 
 	// current particle state
-	float base_scale = 0.f; // !!
+	float base_scale = 0.f;
 
 	float spin = 0.f;
 	float spin_per_sec = 0.f;
 
-	float anim_offset = 0.f; // !!
+	float anim_offset = 0.f;
 
 	float gravity_accum = 0.f;
 };

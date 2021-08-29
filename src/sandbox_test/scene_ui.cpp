@@ -5,8 +5,8 @@ using namespace war;
 
 scene_ui_callback::scene_ui_callback()
 {
-	text_data.max_length = 15;
-	text_data.valid_char_list = valid_chars_alphanumeric + valid_chars_simple_whitespace + valid_chars_punctuation;
+	text_data.text.max_length = 15;
+	text_data.text.valid_char_list = valid_chars_alphanumeric + valid_chars_simple_whitespace + valid_chars_punctuation;
 
 	list_data.set_int_value( 0 );
 	list_items.emplace_back( "list item #1" );
@@ -19,7 +19,7 @@ scene_ui_callback::scene_ui_callback()
 	dropdown_items.emplace_back( "drop-down #3" );
 	dropdown_items.emplace_back( "drop-down #4" );
 
-	progress_data.draw_percentage_as_text = true;
+	progress_data.progress.draw_percentage_as_text = true;
 }
 
 UI_Control_Data* scene_ui_callback::get_data( hash tag )

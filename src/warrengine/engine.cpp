@@ -19,6 +19,8 @@ void Engine::launch( int argc, char* argv [] )
 	g_logfile->init( g_base_game->internal_name );
 	g_logfile->time_stamp( "Started" );
 
+	log( "CPU Cache Line Size : {}", OS_Util::get_cpu_cache_line_sz() );
+
 	log( "Creating engine" );
 	g_engine = std::make_unique<Engine>();
 

@@ -103,8 +103,8 @@ bool UI_Callback::validate_value_change( hash tag, UI_Control_Data* old_value, U
 {
 	if( g_ui->focused.type == e_ui_control_type::text )
 	{
-		auto old_text_data = static_cast<UI_Text_Control_Data*>( old_value );
-		auto new_text_data = static_cast<UI_Text_Control_Data*>( new_value );
+		auto old_text_data = old_value;
+		auto new_text_data = new_value;
 
 		std::string old_str = old_text_data->string_value();
 		std::string new_str = new_text_data->string_value();
@@ -115,25 +115,22 @@ bool UI_Callback::validate_value_change( hash tag, UI_Control_Data* old_value, U
 			return true;
 		}
 
-		if( old_text_data->max_length > 0 )
+		if( old_text_data->text.max_length > 0 )
 		{
 			// validate against length
 
-			if( new_text_data->string_value().size() > old_text_data->max_length )
+			if( new_text_data->string_value().size() > old_text_data->text.max_length )
 			{
 				return false;
 			}
 
 			// validate against character list
 
-			if( new_str.size() > old_str.size() )
+			if( new_str.size() > old_str.size() and !old_text_data->text.valid_char_list.empty() )
 			{
-				if( !old_text_data->valid_char_list.empty() )
+				if( old_text_data->text.valid_char_list.find_first_of( new_str.back() ) == std::string::npos )
 				{
-					if( old_text_data->valid_char_list.find_first_of( new_str.back() ) == std::string::npos )
-					{
-						return false;
-					}
+					return false;
 				}
 			}
 		}
@@ -187,7 +184,7 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 {
 	if( g_ui->focused.type == e_ui_control_type::text )
 	{
-		auto control_data = static_cast<UI_Text_Control_Data*>( get_data( g_ui->focused.tag ) );
+		auto control_data = get_data( g_ui->focused.tag );
 
 		// ----------------------------------------------------------------------------
 		// standard text editing keys
@@ -197,13 +194,13 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 			case e_input_id::key_backspace:
 			{
 				std::string str = control_data->string_value();
-				if( !str.empty() and control_data->caret_pos > 0 )
+				if( !str.empty() and control_data->text.caret_pos > 0 )
 				{
-					std::string str_pre_caret = str.substr( 0, control_data->caret_pos - 1 );
-					std::string str_post_caret = str.substr( control_data->caret_pos, std::string::npos );
+					std::string str_pre_caret = str.substr( 0, control_data->text.caret_pos - 1 );
+					std::string str_post_caret = str.substr( control_data->text.caret_pos, std::string::npos );
 
 					control_data->set_string_value( str_pre_caret + str_post_caret );
-					control_data->caret_pos--;
+					control_data->text.caret_pos--;
 				}
 				return true;
 			}
@@ -211,10 +208,10 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 			case e_input_id::key_delete:
 			{
 				std::string str = control_data->string_value();
-				if( !str.empty() and control_data->caret_pos < str.size() )
+				if( !str.empty() and control_data->text.caret_pos < str.size() )
 				{
-					std::string str_pre_caret = str.substr( 0, control_data->caret_pos );
-					std::string str_post_caret = str.substr( control_data->caret_pos + 1, std::string::npos );
+					std::string str_pre_caret = str.substr( 0, control_data->text.caret_pos );
+					std::string str_post_caret = str.substr( control_data->text.caret_pos + 1, std::string::npos );
 
 					control_data->set_string_value( str_pre_caret + str_post_caret );
 				}
@@ -223,9 +220,9 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 
 			case e_input_id::key_left:
 			{
-				if( control_data->caret_pos > 0 )
+				if( control_data->text.caret_pos > 0 )
 				{
-					control_data->caret_pos--;
+					control_data->text.caret_pos--;
 				}
 				return true;
 			}
@@ -234,21 +231,21 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 			{
 				std::string str = control_data->string_value();
 
-				control_data->caret_pos++;
-				control_data->caret_pos = glm::min<size_t>( str.size(), control_data->caret_pos );
+				control_data->text.caret_pos++;
+				control_data->text.caret_pos = glm::min<size_t>( str.size(), control_data->text.caret_pos );
 				return true;
 			}
 
 			case e_input_id::key_home:
 			{
-				control_data->caret_pos = 0;
+				control_data->text.caret_pos = 0;
 				return true;
 			}
 
 			case e_input_id::key_end:
 			{
 				std::string str = control_data->string_value();
-				control_data->caret_pos = str.length();
+				control_data->text.caret_pos = str.length();
 				return true;
 			}
 
@@ -315,18 +312,18 @@ bool UI_Callback::on_input_key( const Input_Event* evt )
 
 		if( g_ui->focused.type == e_ui_control_type::text )
 		{
-			auto control_data = static_cast<UI_Text_Control_Data*>( get_data( g_ui->focused.tag ) );
+			auto control_data = get_data( g_ui->focused.tag );
 
 			std::string new_str = control_data->string_value();
-			new_str.insert( new_str.begin() + control_data->caret_pos, evt->ch );
+			new_str.insert( new_str.begin() + control_data->text.caret_pos, evt->ch );
 
-			auto new_data = UI_Text_Control_Data();
+			auto new_data = UI_Control_Data( e_ui_control_type::text );
 			new_data.set_string_value( new_str );
 
 			if( validate_value_change( g_ui->focused.tag, control_data, &new_data ) )
 			{
 				control_data->set_string_value( new_data.string_value() );
-				control_data->caret_pos++;
+				control_data->text.caret_pos++;
 			}
 
 			return true;

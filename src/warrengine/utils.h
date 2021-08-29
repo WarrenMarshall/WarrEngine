@@ -26,4 +26,11 @@ struct Geo_Util final
 	[[nodiscard]] static std::vector<Vec2> generate_convex_shape( int sides, float radius );
 };
 
+// ----------------------------------------------------------------------------
+
+struct OS_Util final
+{
+	[[nodiscard]] static size_t get_cpu_cache_line_sz();
+};
+
 }

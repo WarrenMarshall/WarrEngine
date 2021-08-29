@@ -385,7 +385,7 @@ UI_Text_Control::UI_Text_Control( hash tag )
 
 void UI_Text_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
-	auto control_data = static_cast<UI_Text_Control_Data*>( g_ui->current_callback->get_data( tag ) );
+	auto control_data = g_ui->current_callback->get_data( tag );
 
 	// background
 	draw_slice_def( rc_ui, is_hovered, is_hot );
@@ -410,7 +410,7 @@ void UI_Text_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 		if( *g_ui->caret_blink_tween < 0.5f )
 		{
 			// caret
-			Vec2 extents = g_engine->pixel_font->get_string_extents( text_being_used.substr( 0, control_data->caret_pos ) );
+			Vec2 extents = g_engine->pixel_font->get_string_extents( text_being_used.substr( 0, control_data->text.caret_pos ) );
 			auto tex_caret = g_engine->find_asset<Texture_Asset>( "ui_text_caret" );
 
 			Render::state->color = Color::white;
@@ -489,7 +489,7 @@ UI_Progress_Control::UI_Progress_Control( hash tag )
 
 void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
-	auto control_data = static_cast<UI_Progress_Control_Data*>( g_ui->current_callback->get_data( tag ) );
+	auto control_data = g_ui->current_callback->get_data( tag );
 
 	// background
 	draw_slice_def( rc_ui, is_hovered, is_hot );
@@ -507,7 +507,7 @@ void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 	Render::state->color = make_color( e_pal::middle );
 	Render::draw_filled_rect( shrunken_rc );
 
-	if( control_data->draw_percentage_as_text and pct >= 0.01f )
+	if( control_data->progress.draw_percentage_as_text and pct >= 0.01f )
 	{
 		Render::state->color = make_color( e_pal::brightest );
 		Render::state->align = e_align::centered;
@@ -610,7 +610,7 @@ UI_Dropdown_Control::UI_Dropdown_Control( hash tag )
 
 void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
-	auto control_data = static_cast<UI_Dropdown_Control_Data*>( g_ui->current_callback->get_data( tag ) );
+	auto control_data = g_ui->current_callback->get_data( tag );
 	auto dropdown_control_tag = tag;
 
 	Render::state->z += zdepth_nudge;

@@ -10,14 +10,14 @@ struct scene_ui_callback final : UI_Callback
 	virtual std::string_view get_item_for_idx( hash tag, int idx ) override;
 	virtual void on_value_changed( hash tag ) override;
 
-	UI_Control_Data checkbox_data;
-	UI_Progress_Control_Data progress_data;
-	UI_Slider_Control_Data slider_01_data;
-	UI_Slider_Control_Data slider_02_data;
-	UI_Text_Control_Data text_data;
-	UI_Control_Data radio_data;
-	UI_Control_Data list_data;
-	UI_Dropdown_Control_Data dropdown_data;
+	UI_Control_Data checkbox_data = UI_Control_Data( e_ui_control_type::check );
+	UI_Control_Data progress_data = UI_Control_Data( e_ui_control_type::progress );
+	UI_Control_Data slider_01_data = UI_Control_Data( e_ui_control_type::slider );
+	UI_Control_Data slider_02_data = UI_Control_Data( e_ui_control_type::slider );
+	UI_Control_Data text_data = UI_Control_Data( e_ui_control_type::text );
+	UI_Control_Data radio_data = UI_Control_Data( e_ui_control_type::radio );
+	UI_Control_Data list_data = UI_Control_Data( e_ui_control_type::list );
+	UI_Control_Data dropdown_data = UI_Control_Data( e_ui_control_type::dropdown );
 
 	std::vector<std::string> list_items;
 	std::vector<std::string> dropdown_items;

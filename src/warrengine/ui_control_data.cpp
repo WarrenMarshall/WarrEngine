@@ -4,15 +4,43 @@
 namespace war
 {
 
-// ----------------------------------------------------------------------------
+UI_Control_Data::UI_Control_Data()
+	: type( e_ui_control_type::none )
+{
+}
+
+UI_Control_Data::UI_Control_Data( e_ui_control_type_t type )
+	: type( type )
+{
+}
+
+UI_Control_Data::~UI_Control_Data()
+{
+}
 
 bool UI_Control_Data::is_expanded()
 {
+	switch( type )
+	{
+		case e_ui_control_type::dropdown:
+		{
+			return dropdown.expanded;
+		}
+	}
+
 	return false;
 }
 
 void UI_Control_Data::set_expanded( bool expanded )
 {
+	switch( type )
+	{
+		case e_ui_control_type::dropdown:
+		{
+			dropdown.expanded = expanded;
+		}
+		break;
+	}
 }
 
 std::string UI_Control_Data::string_value()
@@ -37,12 +65,38 @@ void UI_Control_Data::set_bool_value( bool value )
 
 float UI_Control_Data::float_value()
 {
+	switch( type )
+	{
+		case e_ui_control_type::slider:
+		{
+			// slider controls automatically convert back and forth between their internal
+			// perctanges and the values in their range slider.
+
+			return slider.range.get_value_at_pct( _float_value );
+		}
+	}
+
 	return _float_value;
 }
 
 void UI_Control_Data::set_float_value( float value )
 {
-	_float_value = value;
+	switch( type )
+	{
+		case e_ui_control_type::slider:
+		{
+			// slider controls automatically convert back and forth between their internal
+			// perctanges and the values in their range slider.
+
+			_float_value = slider.range.get_pct_from_value( value );
+		}
+		break;
+
+		default:
+		{
+			_float_value = value;
+		}
+	}
 }
 
 // the _internal functions work with the literal 0-1 range that some controls
@@ -73,32 +127,6 @@ int UI_Control_Data::int_value()
 void UI_Control_Data::set_int_value( int value )
 {
 	_int_value = value;
-}
-
-// ----------------------------------------------------------------------------
-// slider controls automatically convert back and forth between their internal
-// perctanges and the values in their range slider.
-
-float UI_Slider_Control_Data::float_value()
-{
-	return slider_range.get_value_at_pct( UI_Control_Data::float_value() );
-}
-
-void UI_Slider_Control_Data::set_float_value( float value )
-{
-	return UI_Control_Data::set_float_value( slider_range.get_pct_from_value( value ) );
-}
-
-// ----------------------------------------------------------------------------
-
-bool UI_Dropdown_Control_Data::is_expanded()
-{
-	return _expanded;
-}
-
-void UI_Dropdown_Control_Data::set_expanded( bool expanded )
-{
-	_expanded = expanded;
 }
 
 }

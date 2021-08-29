@@ -152,4 +152,31 @@ std::vector<war::Vec2> Geo_Util::generate_convex_shape( int sides, float radius 
 	return verts;
 }
 
+// ----------------------------------------------------------------------------
+// yoinked from : https://stackoverflow.com/questions/794632/programmatically-get-the-cache-line-size
+
+size_t OS_Util::get_cpu_cache_line_sz()
+{
+	size_t line_size = 0;
+	DWORD buffer_size = 0;
+	DWORD i = 0;
+	SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = nullptr;
+
+	GetLogicalProcessorInformation( nullptr, &buffer_size );
+	buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION*)malloc( buffer_size );
+	GetLogicalProcessorInformation( &buffer[ 0 ], &buffer_size );
+
+	for( i = 0; i != buffer_size / sizeof( SYSTEM_LOGICAL_PROCESSOR_INFORMATION ); ++i )
+	{
+		if( buffer[ i ].Relationship == RelationCache and buffer[ i ].Cache.Level == 1 )
+		{
+			line_size = buffer[ i ].Cache.LineSize;
+			break;
+		}
+	}
+
+	free( buffer );
+	return line_size;
+}
+
 }

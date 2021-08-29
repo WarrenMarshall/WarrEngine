@@ -34,15 +34,15 @@ void update_shader_uniforms( Scene_Post_Process_UI_Callback* cb )
 
 Scene_Post_Process_UI_Callback::Scene_Post_Process_UI_Callback()
 {
-	u_vignette_size.slider_range = Range( 1.7f, 2.5f );
-	u_vignette_smoothness.slider_range = Range( 0.5f, 1.5f );
-	u_vignette_rounding.slider_range = Range( 8.f, 16.f );
-	u_crt_tint_scaling.slider_range = Range( 0.25f, 4.f );
-	u_film_grain_intensity.slider_range = Range( 0.f, 2.f );
-	u_chromatic_aberration_amount.slider_range = Range( 0.f, 0.01f );
-	u_crt_scanlines_intensity.slider_range = Range( 0.f, 0.1f );
-	u_crt_warp_bend.slider_range = Range( 2.f, 12.f );
-	u_pixelate_factor.slider_range = Range( 1.f, 32.f );
+	u_vignette_size.slider.range = Range( 1.7f, 2.5f );
+	u_vignette_smoothness.slider.range = Range( 0.5f, 1.5f );
+	u_vignette_rounding.slider.range = Range( 8.f, 16.f );
+	u_crt_tint_scaling.slider.range = Range( 0.25f, 4.f );
+	u_film_grain_intensity.slider.range = Range( 0.f, 2.f );
+	u_chromatic_aberration_amount.slider.range = Range( 0.f, 0.01f );
+	u_crt_scanlines_intensity.slider.range = Range( 0.f, 0.1f );
+	u_crt_warp_bend.slider.range = Range( 2.f, 12.f );
+	u_pixelate_factor.slider.range = Range( 1.f, 32.f );
 
 	ub_vignette.set_bool_value( g_engine->opengl_mgr.get_uniform_float( "ub_vignette" ) );
 

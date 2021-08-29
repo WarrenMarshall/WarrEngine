@@ -7,8 +7,8 @@ struct scene_controller_callback final : UI_Callback
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
 
-	UI_Progress_Control_Data progress_data_l2;
-	UI_Progress_Control_Data progress_data_r2;
+	UI_Control_Data progress_data_l2 = UI_Control_Data( e_ui_control_type::progress );
+	UI_Control_Data progress_data_r2 = UI_Control_Data( e_ui_control_type::progress );
 };
 
 // ----------------------------------------------------------------------------

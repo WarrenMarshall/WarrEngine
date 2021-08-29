@@ -5,8 +5,8 @@ using namespace war;
 
 scene_controller_callback::scene_controller_callback()
 {
-	progress_data_l2.draw_percentage_as_text = false;
-	progress_data_r2.draw_percentage_as_text = false;
+	progress_data_l2.progress.draw_percentage_as_text = false;
+	progress_data_r2.progress.draw_percentage_as_text = false;
 }
 
 UI_Control_Data* scene_controller_callback::get_data( hash tag )
