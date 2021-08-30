@@ -58,9 +58,13 @@ vec2 fx_crt_warp( vec2 output_uvs )
 
 // ----------------------------------------------------------------------------
 // > pixelate - snaps the UV coordinates to a specific step for chunky pixels
+//
+// the values for this are a little weird in that 0.0 == 1.0
+//
+// from the game's perspective, 0.0 == off, so it makes sense.  Anything above
+// that, results in pixelation.
 // ----------------------------------------------------------------------------
 
-//uniform bool ub_pixelate = false;
 uniform float u_pixelate_factor = 0.0f;
 
 vec2 fx_pixelate( vec2 output_uvs )

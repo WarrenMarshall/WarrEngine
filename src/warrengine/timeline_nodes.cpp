@@ -83,6 +83,14 @@ void Timeline_Nodes::add_kf_pp_color_overlay( bool should_restore_state, float p
 	kf->pp_color_overlay.color = color;
 }
 
+void Timeline_Nodes::add_kf_pp_pixelate( bool should_restore_state, float pct_marker, time_ms duration, float pixelate_factor )
+{
+	key_frames.emplace_back( e_tnkf_type::pp_pixelate, should_restore_state, pct_marker, duration );
+	auto kf = &key_frames.back();
+
+	kf->pp_pixelate.pixelate_factor = pixelate_factor;
+}
+
 void Timeline_Nodes::add_kf_play_sound( bool should_restore_state, float pct_marker, Sound_Asset* snd )
 {
 	key_frames.emplace_back( e_tnkf_type::play_sound, should_restore_state, pct_marker, 0 );

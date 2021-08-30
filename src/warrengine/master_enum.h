@@ -498,9 +498,9 @@ enum_begin( tnkf_type )
 	none = 0,
 	shake_angle,
 	pp_color_overlay,
+	pp_pixelate,
 	play_sound,
 	scene_push_under,
 	scene_pop_under,
-	pp_pixelate,
 	max,
 enum_end

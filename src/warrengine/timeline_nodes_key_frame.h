@@ -46,10 +46,10 @@ struct Timeline_Nodes_Key_Frame final
 		{
 			struct
 			{
-				float starting_factor;
+				float pixelate_factor;
 			} save;
 
-			float target_factor;
+			float pixelate_factor;
 		} pp_pixelate;
 
 		// ----------------------------------------------------------------------------
