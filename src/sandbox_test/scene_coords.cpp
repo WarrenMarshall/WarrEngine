@@ -110,6 +110,8 @@ void scene_coords::draw_ui()
 
 	// label next to the crosshair
 	{
+		scoped_render_state;
+
 		auto e = find_entity( H( "crosshair" ) );
 
 		auto viewport_pos = Coord_System::world_to_viewport_pos( e->get_pos() );
@@ -119,7 +121,6 @@ void scene_coords::draw_ui()
 		Render::state->align = e_align::vcenter;
 		Render::state->color = make_color( Color( 1.f, 0.5f, 0.f ) );
 		Render::state->glow = glow_val;
-		g_engine->opengl_mgr.set_uniform_float( "u_pixelate_factor", glow_val );
 
 		Render::draw_string( "<< Your crosshair", ui_pos );
 	}
