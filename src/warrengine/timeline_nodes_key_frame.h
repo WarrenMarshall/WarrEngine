@@ -35,10 +35,10 @@ struct Timeline_Nodes_Key_Frame final
 		{
 			struct
 			{
-				Color clr;
+				Color color;
 			} save;
 
-			Color clr;
+			Color color;
 		} pp_color_overlay;
 
 		// ----------------------------------------------------------------------------

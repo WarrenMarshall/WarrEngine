@@ -60,14 +60,14 @@ vec2 fx_crt_warp( vec2 output_uvs )
 // > pixelate - snaps the UV coordinates to a specific step for chunky pixels
 // ----------------------------------------------------------------------------
 
-uniform bool ub_pixelate = false;
-uniform float u_pixelate_factor = 2.0f;
+//uniform bool ub_pixelate = false;
+uniform float u_pixelate_factor = 0.0f;
 
 vec2 fx_pixelate( vec2 output_uvs )
 {
-	if( ub_pixelate && u_pixelate_factor > 1.0 )
+	if( u_pixelate_factor > 0.0 )
 	{
-		vec2 pixel_density = vec2( u_viewport_w / u_pixelate_factor, u_viewport_h / u_pixelate_factor );
+		vec2 pixel_density = vec2( u_viewport_w / ( u_pixelate_factor + 1.0 ), u_viewport_h / ( u_pixelate_factor + 1.0 ) );
 		vec2 aspect_ratio_multiplier;
 
 		if( u_viewport_h > u_viewport_w )

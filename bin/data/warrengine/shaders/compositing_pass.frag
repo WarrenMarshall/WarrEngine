@@ -35,7 +35,7 @@ float PI = 3.14159;
 // ----------------------------------------------------------------------------
 
 uniform bool ub_chromatic_aberration = false;
-uniform float u_chromatic_aberration_amount = 0.0035f;
+uniform float u_chromatic_aberration_amount = 0.0025f;
 
 vec4 fx_chromatic_aberration( vec4 output_color )
 {

@@ -26,7 +26,6 @@ void update_shader_uniforms( Scene_Post_Process_UI_Callback* cb )
 	g_engine->opengl_mgr.set_uniform_float( "u_desaturation_amount", cb->u_desaturation_amount.float_value() );
 	g_engine->opengl_mgr.set_uniform_bool( "ub_crt_warp", cb->ub_crt_warp.bool_value() );
 	g_engine->opengl_mgr.set_uniform_float( "u_crt_warp_bend", cb->u_crt_warp_bend.float_value() );
-	g_engine->opengl_mgr.set_uniform_bool( "ub_pixelate", cb->ub_pixelate.bool_value() );
 	g_engine->opengl_mgr.set_uniform_float( "u_pixelate_factor", cb->u_pixelate_factor.float_value() );
 }
 
@@ -42,7 +41,7 @@ Scene_Post_Process_UI_Callback::Scene_Post_Process_UI_Callback()
 	u_chromatic_aberration_amount.slider.range = Range( 0.f, 0.01f );
 	u_crt_scanlines_intensity.slider.range = Range( 0.f, 0.1f );
 	u_crt_warp_bend.slider.range = Range( 2.f, 12.f );
-	u_pixelate_factor.slider.range = Range( 1.f, 32.f );
+	u_pixelate_factor.slider.range = Range( 0.f, 32.f );
 
 	ub_vignette.set_bool_value( g_engine->opengl_mgr.get_uniform_float( "ub_vignette" ) );
 
@@ -63,7 +62,6 @@ Scene_Post_Process_UI_Callback::Scene_Post_Process_UI_Callback()
 	u_desaturation_amount.set_float_value( g_engine->opengl_mgr.get_uniform_float( "u_desaturation_amount" ) );
 	ub_crt_warp.set_bool_value( g_engine->opengl_mgr.get_uniform_float( "ub_crt_warp" ) );
 	u_crt_warp_bend.set_float_value( g_engine->opengl_mgr.get_uniform_float( "u_crt_warp_bend" ) );
-	ub_pixelate.set_bool_value( g_engine->opengl_mgr.get_uniform_float( "ub_pixelate" ) );
 	u_pixelate_factor.set_float_value( g_engine->opengl_mgr.get_uniform_float( "u_pixelate_factor" ) );
 }
 
@@ -90,7 +88,6 @@ UI_Control_Data* Scene_Post_Process_UI_Callback::get_data( hash tag )
 		case H( "slider_desaturation_amount" ):			return &u_desaturation_amount;
 		case H( "check_crt_warp" ):						return &ub_crt_warp;
 		case H( "slider_crt_warp_bend" ):				return &u_crt_warp_bend;
-		case H( "check_pixelate" ):						return &ub_pixelate;
 		case H( "slider_pixelate_factor" ):				return &u_pixelate_factor;
 	}
 
@@ -302,31 +299,30 @@ void Scene_Post_Process::draw_ui()
 	// ----------------------------------------------------------------------------
 	// pixelate
 
-	g_ui->check_control( H( "check_pixelate" ) )
-		->set_text( "Pixelate" )
-		->done();
-
-	if( cb->ub_pixelate.bool_value() )
 	{
 		float height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
-			g_ui->label_control()->set_text( "Factor:" )->cut_left( 48.f )->done();
+			g_ui->label_control()->set_text( "Pixelate:" )
+				->cut_left( 56.f )
+				->set_text_color( make_color( e_pal::brightest ) )
+				->done();
 			g_ui->slider_control( H( "slider_pixelate_factor" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
 
 			g_ui->label_control()
 				->set_text( std::format( "{:.2f}", cb->u_pixelate_factor.float_value() ) )
+				->set_text_color( make_color( e_pal::brightest ) )
 				->cut_left( 32.f )
 				->done();
 		}
 	}
 
-	rc_layout = Rect( ui_hw + 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
+	// move to right side of screen
 
+	rc_layout = Rect( ui_hw + 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
 	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------

@@ -20,10 +20,11 @@ struct scene_main_menu final : scene
 			->done() )
 		{
 			Timeline_Nodes tl;
-			tl.clear( 1000 );
+			tl.clear( 500 );
+			tl.add_kf_pp_color_overlay( false, 0.0f, 250, make_color( Color::black, 1.f ) );
 			tl.add_kf_scene_pop_under( false, 0.5f );
-			tl.add_kf_pp_color_overlay( true, 0.0f, 1000, make_color( Color::red, 0.5f ) );
 			tl.add_kf_scene_push_under( false, 0.5f, std::make_unique<T>() );
+			tl.add_kf_pp_color_overlay( false, 0.5f, 250, make_color( Color::black, 0.f ) );
 
 			g_engine->scene_mgr.do_transient_timeline( tl );
 		}

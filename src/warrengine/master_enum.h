@@ -1,4 +1,5 @@
 
+
 // ----------------------------------------------------------------------------
 // macros to make enum definitions easier to read.
 //
@@ -13,15 +14,14 @@
 //		blue
 //	enum_end
 //
-// this create an integer alias called "e_color" which can be used in place of
+// this create an integer alias called "e_color_t" which can be used in place of
 // "int" when defining vars using this enum.
 //
-// to access the enum values, use "clr::white" format.
+// to access the enum values, use "e_color::white" format.
 //
 // i.e.
-//	e_color border_clr = clr::white;
+//	e_color_t border_clr = e_color::white;
 //
-//	void set_text_align( e_align_t clr );
 // ----------------------------------------------------------------------------
 
 #define enum_begin( name )\

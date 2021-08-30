@@ -75,12 +75,12 @@ void Timeline_Nodes::add_kf_shake_angle( bool should_restore_state, float pct_ma
 	kf->shake_angle.strength = strength;
 }
 
-void Timeline_Nodes::add_kf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, Color color_overlay )
+void Timeline_Nodes::add_kf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, Color color )
 {
 	key_frames.emplace_back( e_tnkf_type::pp_color_overlay, should_restore_state, pct_marker, duration );
 	auto kf = &key_frames.back();
 
-	kf->pp_color_overlay.clr = color_overlay;
+	kf->pp_color_overlay.color = color;
 }
 
 void Timeline_Nodes::add_kf_play_sound( bool should_restore_state, float pct_marker, Sound_Asset* snd )

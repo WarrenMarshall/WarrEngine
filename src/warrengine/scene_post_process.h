@@ -25,7 +25,6 @@ struct Scene_Post_Process_UI_Callback final : UI_Callback
 	UI_Control_Data u_desaturation_amount = UI_Control_Data( e_ui_control_type::slider );
 	UI_Control_Data ub_crt_warp = UI_Control_Data( e_ui_control_type::check );
 	UI_Control_Data u_crt_warp_bend = UI_Control_Data( e_ui_control_type::slider );
-	UI_Control_Data ub_pixelate = UI_Control_Data( e_ui_control_type::check );
 	UI_Control_Data u_pixelate_factor = UI_Control_Data( e_ui_control_type::slider );
 
 	virtual UI_Control_Data* get_data( hash tag ) override;

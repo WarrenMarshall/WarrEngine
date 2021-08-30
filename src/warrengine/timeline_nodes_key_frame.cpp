@@ -28,8 +28,7 @@ void Timeline_Nodes_Key_Frame::on_started_running()
 		// ----------------------------------------------------------------------------
 		case e_tnkf_type::pp_color_overlay:
 		{
-			auto clr = g_engine->opengl_mgr.get_uniform_color( "u_color_overlay" );
-			pp_color_overlay.save.clr = clr;
+			pp_color_overlay.save.color = g_engine->opengl_mgr.get_uniform_color( "u_color_overlay" );
 		}
 		break;
 
@@ -67,12 +66,15 @@ void Timeline_Nodes_Key_Frame::update()
 		on_started_running();
 	}
 
+	auto time_now = g_engine->clock.now();
+	auto pct = ( time_now - started ) / (float)duration;
+
 	switch( type )
 	{
 		// ----------------------------------------------------------------------------
 		case e_tnkf_type::shake_angle:
 		{
-			if( g_engine->clock.now() < started + duration )
+			if( time_now < started + duration )
 			{
 				shake_angle.tform->angle = shake_angle.save.angle + ( shake_angle.noise.get() * shake_angle.strength );
 			}
@@ -90,15 +92,17 @@ void Timeline_Nodes_Key_Frame::update()
 		// ----------------------------------------------------------------------------
 		case e_tnkf_type::pp_color_overlay:
 		{
-			if( g_engine->clock.now() < started + duration )
+			if( time_now < started + duration )
 			{
-				g_engine->opengl_mgr.set_uniform_color( "u_color_overlay", pp_color_overlay.clr );
+				g_engine->opengl_mgr.set_uniform_color( "u_color_overlay",
+					make_color( pp_color_overlay.color, lerp( pp_color_overlay.save.color.a, pp_color_overlay.color.a, pct ) )
+				);
 			}
 			else
 			{
 				if( should_restore_state )
 				{
-					g_engine->opengl_mgr.set_uniform_color( "u_color_overlay", pp_color_overlay.save.clr );
+					g_engine->opengl_mgr.set_uniform_color( "u_color_overlay", pp_color_overlay.save.color );
 				}
 				life_cycle.set( e_life_cycle::dead );
 			}
