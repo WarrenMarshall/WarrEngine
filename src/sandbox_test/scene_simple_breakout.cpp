@@ -13,7 +13,7 @@ static const unsigned scene_simple_breakout_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-bool e_ball::on_collided( simple_collision::Pending_Collision& coll )
+bool E_Breakout_Ball::on_collided( simple_collision::Pending_Collision& coll )
 {
 	if( coll.entity_b->tag == H( "THE_PADDLE" ) )
 	{
@@ -24,7 +24,7 @@ bool e_ball::on_collided( simple_collision::Pending_Collision& coll )
 
 // ----------------------------------------------------------------------------
 
-bool e_paddle::on_collided( simple_collision::Pending_Collision& coll )
+bool E_Breakout_Paddle::on_collided( simple_collision::Pending_Collision& coll )
 {
 	if( coll.entity_b->tag == H( "BALL" ) )
 	{
@@ -39,16 +39,16 @@ bool e_paddle::on_collided( simple_collision::Pending_Collision& coll )
 
 // ----------------------------------------------------------------------------
 
-scene_simple_breakout::scene_simple_breakout()
+Scene_Simple_Breakout::Scene_Simple_Breakout()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-void scene_simple_breakout::spawn_ball()
+void Scene_Simple_Breakout::spawn_ball()
 {
-	auto e = add_entity<e_ball>();
+	auto e = add_entity<E_Breakout_Ball>();
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
 	e->simple.friction = 0.0;
@@ -66,16 +66,16 @@ void scene_simple_breakout::spawn_ball()
 	e->add_impulse( { Random::get_random_unit_vector(), 2.5f } );
 }
 
-void scene_simple_breakout::pushed()
+void Scene_Simple_Breakout::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->render.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// paddle
 	{
-		auto e = add_entity<e_paddle>();
+		auto e = add_entity<E_Breakout_Paddle>();
 		e->tag = H( "THE_PADDLE" );
 		e->set_pos( { 0.f, 0.f } );
 		e->simple.friction = 0.5f;
@@ -166,7 +166,7 @@ void scene_simple_breakout::pushed()
 	}
 }
 
-void scene_simple_breakout::draw()
+void Scene_Simple_Breakout::draw()
 {
 	{
 		scoped_render_state;
@@ -175,21 +175,21 @@ void scene_simple_breakout::draw()
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	scene::draw();
+	Scene::draw();
 	//render::draw_world_axis();
 }
 
-void scene_simple_breakout::draw_ui()
+void Scene_Simple_Breakout::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 }
 
-void scene_simple_breakout::update()
+void Scene_Simple_Breakout::update()
 {
-	scene::update();
+	Scene::update();
 }
 
-bool scene_simple_breakout::on_input_pressed( const Input_Event* evt )
+bool Scene_Simple_Breakout::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -204,13 +204,13 @@ bool scene_simple_breakout::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene_simple_breakout::on_input_held( const Input_Event* evt )
+bool Scene_Simple_Breakout::on_input_held( const Input_Event* evt )
 {
 
 	return false;
 }
 
-bool scene_simple_breakout::on_input_motion( const Input_Event* evt )
+bool Scene_Simple_Breakout::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

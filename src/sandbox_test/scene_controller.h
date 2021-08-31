@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_controller_callback final : UI_Callback
+struct Scene_Controller_UI_Callback : UI_Callback
 {
-	scene_controller_callback();
+	Scene_Controller_UI_Callback();
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
 
@@ -13,13 +13,13 @@ struct scene_controller_callback final : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct scene_controller final : scene
+struct Scene_Controller : Scene
 {
 	bool use_controller_dead_zone = true;
 
 	Tween fader;
 
-	scene_controller();
+	Scene_Controller();
 
 	virtual void pushed() override;
 	virtual void draw() override;

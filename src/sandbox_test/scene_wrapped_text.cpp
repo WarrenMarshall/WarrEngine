@@ -5,7 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-UI_Control_Data* scene_wrapped_text_ui_callback::get_data( hash tag )
+UI_Control_Data* Scene_Wrapped_Text_UI_Callback::get_data( hash tag )
 {
 	switch( tag )
 	{
@@ -23,16 +23,16 @@ UI_Control_Data* scene_wrapped_text_ui_callback::get_data( hash tag )
 
 // ----------------------------------------------------------------------------
 
-scene_wrapped_text::scene_wrapped_text()
+Scene_Wrapped_Text::Scene_Wrapped_Text()
 {
-	ui_callback = std::make_unique<scene_wrapped_text_ui_callback>();
+	ui_callback = std::make_unique<Scene_Wrapped_Text_UI_Callback>();
 
 	flags.blocks_further_drawing = true;
 }
 
-void scene_wrapped_text::pushed()
+void Scene_Wrapped_Text::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
@@ -54,19 +54,19 @@ void scene_wrapped_text::pushed()
 	wrapped_lines_02 = Render::wrap_string_to_width( big_text_block, rc_big_text_block_02.w );
 }
 
-void scene_wrapped_text::draw()
+void Scene_Wrapped_Text::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_wrapped_text::draw_ui()
+void Scene_Wrapped_Text::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Wrapped Text" );
 
-	auto cb = (scene_wrapped_text_ui_callback*)get_ui_callback();
+	auto cb = (Scene_Wrapped_Text_UI_Callback*)get_ui_callback();
 
 	{
 		scoped_render_state;

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Emitter_Parameters_Asset final : Asset
+struct Emitter_Parameters_Asset : Asset
 {
 	Texture_Asset* texture = nullptr;
 	Timeline_Values t_color = Timeline_Values( e_timeline_type::color_type );

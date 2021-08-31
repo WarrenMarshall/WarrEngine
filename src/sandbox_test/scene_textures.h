@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_textures final : scene
+struct Scene_Textures : Scene
 {
 	Texture_Asset* tex_crate = nullptr;
 	Texture_Asset* grad_horizontal = nullptr;
@@ -11,7 +11,7 @@ struct scene_textures final : scene
 
 	float anim_offsets[ 3 ] = {};
 
-	scene_textures();
+	Scene_Textures();
 
 	virtual void pushed() override;
 	virtual void draw() override;

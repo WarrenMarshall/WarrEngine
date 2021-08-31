@@ -3,13 +3,13 @@
 
 using namespace war;
 
-scene_controller_callback::scene_controller_callback()
+Scene_Controller_UI_Callback::Scene_Controller_UI_Callback()
 {
 	progress_data_l2.progress.draw_percentage_as_text = false;
 	progress_data_r2.progress.draw_percentage_as_text = false;
 }
 
-UI_Control_Data* scene_controller_callback::get_data( hash tag )
+UI_Control_Data* Scene_Controller_UI_Callback::get_data( hash tag )
 {
 	switch( tag )
 	{
@@ -23,33 +23,33 @@ UI_Control_Data* scene_controller_callback::get_data( hash tag )
 
 // ----------------------------------------------------------------------------
 
-scene_controller::scene_controller()
+Scene_Controller::Scene_Controller()
 {
-	ui_callback = std::make_unique<scene_controller_callback>();
+	ui_callback = std::make_unique<Scene_Controller_UI_Callback>();
 	flags.blocks_further_drawing = true;
 }
 
-void scene_controller::pushed()
+void Scene_Controller::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	fader = Tween( 0.25f, 1.f, 1000, e_tween_type::pingpong, e_tween_via::sinusoidal );
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
-void scene_controller::draw()
+void Scene_Controller::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_controller::draw_ui()
+void Scene_Controller::draw_ui()
 {
-	auto cb = (scene_controller_callback*)get_ui_callback();
+	auto cb = (Scene_Controller_UI_Callback*)get_ui_callback();
 
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	draw_title( "Game Controller" );
 
@@ -162,7 +162,7 @@ void scene_controller::draw_ui()
 	}
 }
 
-bool scene_controller::on_input_pressed( const Input_Event* evt )
+bool Scene_Controller::on_input_pressed( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::key_d )
 	{

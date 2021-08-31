@@ -3,14 +3,14 @@
 
 using namespace war;
 
-scene_tilemap::scene_tilemap()
+Scene_TileMap::Scene_TileMap()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_tilemap::pushed()
+void Scene_TileMap::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
@@ -18,10 +18,10 @@ void scene_tilemap::pushed()
 	tm_overworld = g_engine->find_asset<Tile_Map_Asset>( "tm_overworld" );
 }
 
-void scene_tilemap::draw()
+void Scene_TileMap::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 
 	{
 		scoped_render_state;
@@ -34,8 +34,8 @@ void scene_tilemap::draw()
 	Render::draw_world_axis();
 }
 
-void scene_tilemap::draw_ui()
+void Scene_TileMap::draw_ui()
 {
 	draw_title( "Tile Map" );
-	scene::draw_ui();
+	Scene::draw_ui();
 }

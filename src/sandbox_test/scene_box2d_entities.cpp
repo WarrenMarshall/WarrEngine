@@ -3,7 +3,7 @@
 
 // ----------------------------------------------------------------------------
 
-void e_emoji_ball::on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* other )
+void E_Emoji_Ball::on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* other )
 {
 	if( other->tag == H( "world" ) )
 	{

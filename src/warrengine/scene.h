@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct scene
+struct Scene
 {
 	Life_Cycle_Mgr life_cycle;
 
@@ -83,8 +83,8 @@ struct scene
 		bool requires_controller : 1 = false;
 	} flags;
 
-	scene();
-	virtual ~scene() = default;
+	Scene();
+	virtual ~Scene() = default;
 
 	// ----------------------------------------------------------------------------
 	// entity selections

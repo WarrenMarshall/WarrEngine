@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct hello_world_app final : Game
+struct Hello_World_App : Game
 {
-	hello_world_app();
+	Hello_World_App();
 
 	virtual void init() override;
 	virtual void new_game() override;

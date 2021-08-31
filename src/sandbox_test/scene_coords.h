@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_coords final : scene
+struct Scene_Coords : Scene
 {
-	scene_coords();
+	Scene_Coords();
 
 	float glow_val = 0.f;
 

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Render_State final
+struct Render_State
 {
 	Render_State();
 
@@ -22,7 +22,7 @@ struct Render_State final
 	void set_from_opt( Render_State_Optional& rso );
 };
 
-struct Render_State_Optional final
+struct Render_State_Optional
 {
 	std::optional<e_align_t> align = std::nullopt;
 	std::optional<float> angle = std::nullopt;

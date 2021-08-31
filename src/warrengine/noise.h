@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct Perlin_Noise final
+struct Perlin_Noise
 {
 	float idx = 0.f;
 	float seed = 0.f;
@@ -14,7 +14,7 @@ struct Perlin_Noise final
 
 // ----------------------------------------------------------------------------
 
-struct Simplex_Noise final
+struct Simplex_Noise
 {
 	float idx = 0.f;
 	float seed = 0.f;
@@ -24,7 +24,7 @@ struct Simplex_Noise final
 
 // ----------------------------------------------------------------------------
 
-struct Random_Noise final
+struct Random_Noise
 {
 	float idx = 0.f;
 	float seed = 0.f;

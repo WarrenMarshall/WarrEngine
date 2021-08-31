@@ -3,14 +3,14 @@
 
 using namespace war;
 
-scene_particles::scene_particles()
+Scene_Particles::Scene_Particles()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_particles::pushed()
+void Scene_Particles::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	// stars
 	{
@@ -70,16 +70,16 @@ void scene_particles::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 }
 
-void scene_particles::draw()
+void Scene_Particles::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_particles::draw_ui()
+void Scene_Particles::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Particles" );
 
 	// compute where the torch is in UI space and draw a label there
@@ -93,7 +93,7 @@ void scene_particles::draw_ui()
 	Render::draw_string( "My Light In The Dark", ui_pos );
 }
 
-bool scene_particles::on_input_motion( const Input_Event* evt )
+bool Scene_Particles::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::mouse )
 	{

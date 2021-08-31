@@ -4,7 +4,7 @@
 namespace war
 {
 
-struct Timeline_Nodes final
+struct Timeline_Nodes
 {
 	std::vector<Timeline_Nodes_Key_Frame> key_frames;
 	Life_Cycle_Mgr life_cycle;
@@ -22,7 +22,7 @@ struct Timeline_Nodes final
 	void add_kf_pp_color_overlay( bool should_restore_state, float pct_marker, time_ms duration, Color color );
 	void add_kf_pp_pixelate( bool should_restore_state, float pct_marker, time_ms duration, float pixelate_factor );
 	void add_kf_play_sound( bool should_restore_state, float pct_marker, Sound_Asset* snd );
-	void add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<scene> scene_to_push );
+	void add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<Scene> scene_to_push );
 	void add_kf_scene_pop_under( bool should_restore_state, float pct_marker );
 	void add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, float pct_marker );
 };

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct UI_Mgr final
+struct UI_Mgr
 {
 	static unsigned automatic_id;
 

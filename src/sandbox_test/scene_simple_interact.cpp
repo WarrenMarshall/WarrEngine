@@ -18,14 +18,14 @@ constexpr auto radius = 12.f;
 
 // ----------------------------------------------------------------------------
 
-scene_simple_interact::scene_simple_interact()
+Scene_Simple_Interact::Scene_Simple_Interact()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-Entity* scene_simple_interact::spawn_player()
+Entity* Scene_Simple_Interact::spawn_player()
 {
 	auto e = add_entity<Entity>();
 	e->debug_name = "player";
@@ -71,9 +71,9 @@ Entity* scene_simple_interact::spawn_player()
 }
 
 
-void scene_simple_interact::pushed()
+void Scene_Simple_Interact::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->render.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
@@ -168,7 +168,7 @@ void scene_simple_interact::pushed()
 	}
 }
 
-void scene_simple_interact::draw()
+void Scene_Simple_Interact::draw()
 {
 	{
 		scoped_render_state;
@@ -177,7 +177,7 @@ void scene_simple_interact::draw()
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	scene::draw();
+	Scene::draw();
 	//render::draw_world_axis();
 
 	if( b_show_ray )
@@ -188,18 +188,18 @@ void scene_simple_interact::draw()
 	}
 }
 
-void scene_simple_interact::draw_ui()
+void Scene_Simple_Interact::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	//draw_title( "Simple Collisions" );
 
 	//render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
 	//	player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
 }
 
-void scene_simple_interact::update()
+void Scene_Simple_Interact::update()
 {
-	scene::update();
+	Scene::update();
 
 	// show the raycast beam if the right stick is being pushed
 	b_show_ray = g_engine->input_mgr.get_axis_state( e_input_id::gamepad_right_stick ).get_size_fast() > 0.f;
@@ -207,7 +207,7 @@ void scene_simple_interact::update()
 	follow_cam( player->get_transform() );
 }
 
-void scene_simple_interact::reset_collision_trace_results()
+void Scene_Simple_Interact::reset_collision_trace_results()
 {
 	hit_marker->get_component<Primitve_Shape_Component>()->shapes.clear();
 
@@ -217,7 +217,7 @@ void scene_simple_interact::reset_collision_trace_results()
 	}
 }
 
-bool scene_simple_interact::on_input_pressed( const Input_Event* evt )
+bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -314,7 +314,7 @@ bool scene_simple_interact::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene_simple_interact::on_input_motion( const Input_Event* evt )
+bool Scene_Simple_Interact::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

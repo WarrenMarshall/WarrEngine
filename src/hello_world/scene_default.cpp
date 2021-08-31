@@ -3,14 +3,14 @@
 
 using namespace war;
 
-scene_default::scene_default()
+Scene_Default::Scene_Default()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_default::pushed()
+void Scene_Default::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	gradient = g_engine->find_asset<Texture_Asset>( "background_gradient" );
 	tex_hello_world = g_engine->find_asset<Texture_Asset>( "tex_hello_world" );
@@ -22,9 +22,9 @@ void scene_default::pushed()
 
 }
 
-void scene_default::draw()
+void Scene_Default::draw()
 {
-	scene::draw();
+	Scene::draw();
 
 
 	Render::draw_quad( gradient, Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );

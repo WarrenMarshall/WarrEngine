@@ -5,14 +5,14 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-scene_coords::scene_coords()
+Scene_Coords::Scene_Coords()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_coords::pushed()
+void Scene_Coords::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
@@ -33,16 +33,16 @@ void scene_coords::pushed()
 	}
 }
 
-void scene_coords::draw()
+void Scene_Coords::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_coords::draw_ui()
+void Scene_Coords::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Coordinate Systems" );
 
 	{
@@ -126,7 +126,7 @@ void scene_coords::draw_ui()
 	}
 }
 
-bool scene_coords::on_input_motion( const Input_Event* evt )
+bool Scene_Coords::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

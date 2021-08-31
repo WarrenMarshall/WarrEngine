@@ -3,14 +3,14 @@
 
 using namespace war;
 
-scene_tweens::scene_tweens()
+Scene_Tweens_Timers::Scene_Tweens_Timers()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_tweens::pushed()
+void Scene_Tweens_Timers::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
@@ -33,16 +33,16 @@ void scene_tweens::pushed()
 	timer_02 = Timer( 2500 );
 }
 
-void scene_tweens::draw()
+void Scene_Tweens_Timers::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_tweens::draw_ui()
+void Scene_Tweens_Timers::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Tweens Timers" );
 
 	// ----------------------------------------------------------------------------

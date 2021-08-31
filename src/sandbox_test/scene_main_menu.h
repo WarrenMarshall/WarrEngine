@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_main_menu final : scene
+struct Scene_Main_Menu : Scene
 {
-	scene_main_menu();
+	Scene_Main_Menu();
 
 	virtual void pushed() override;
 	virtual void draw() override;

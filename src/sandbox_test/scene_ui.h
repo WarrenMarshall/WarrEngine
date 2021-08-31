@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_ui_callback final : UI_Callback
+struct Scene_UI_Callback : UI_Callback
 {
-	scene_ui_callback();
+	Scene_UI_Callback();
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
 	virtual size_t get_item_count( hash tag ) override;
@@ -25,9 +25,9 @@ struct scene_ui_callback final : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct scene_ui : scene
+struct Scene_UI : Scene
 {
-	scene_ui();
+	Scene_UI();
 
 	virtual void pushed() override;
 	virtual void draw() override;

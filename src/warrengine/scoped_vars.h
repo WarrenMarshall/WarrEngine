@@ -13,7 +13,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct Scoped_Render_State final
+struct Scoped_Render_State
 {
 	Scoped_Render_State();
 	~Scoped_Render_State();
@@ -23,7 +23,7 @@ struct Scoped_Render_State final
 
 // ----------------------------------------------------------------------------
 
-struct Scoped_OpenGL final
+struct Scoped_OpenGL
 {
 	Scoped_OpenGL();
 	~Scoped_OpenGL();
@@ -33,7 +33,7 @@ struct Scoped_OpenGL final
 
 // ----------------------------------------------------------------------------
 
-struct Scoped_OpenGL_Identity final
+struct Scoped_OpenGL_Identity
 {
 	Scoped_OpenGL_Identity();
 	~Scoped_OpenGL_Identity();
@@ -43,7 +43,7 @@ struct Scoped_OpenGL_Identity final
 
 // ----------------------------------------------------------------------------
 
-struct Scoped_UI_Layout final
+struct Scoped_UI_Layout
 {
 	Scoped_UI_Layout( Rect rc );
 	~Scoped_UI_Layout();

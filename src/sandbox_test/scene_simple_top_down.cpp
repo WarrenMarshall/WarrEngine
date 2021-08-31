@@ -20,7 +20,7 @@ constexpr auto radius = 12.f;
 
 // ----------------------------------------------------------------------------
 
-scene_simple_top_down::scene_simple_top_down()
+Scene_Simple_Top_Down::Scene_Simple_Top_Down()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
@@ -29,7 +29,7 @@ scene_simple_top_down::scene_simple_top_down()
 
 f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 {
-	auto gameplay_scene = (scene_simple_top_down*)scene;
+	auto gameplay_scene = (Scene_Simple_Top_Down*)scene;
 
 	switch( tile->idx )
 	{
@@ -63,11 +63,11 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 	}
 }
 
-void scene_simple_top_down::pushed()
+void Scene_Simple_Top_Down::pushed()
 {
 	get_transform()->set_scale( 2.f );
 
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
@@ -102,9 +102,9 @@ void scene_simple_top_down::pushed()
 	}
 }
 
-void scene_simple_top_down::draw()
+void Scene_Simple_Top_Down::draw()
 {
-	scene::draw();
+	Scene::draw();
 
 	scoped_render_state;
 
@@ -117,9 +117,9 @@ void scene_simple_top_down::draw()
 	Render::draw_line( start, end );
 }
 
-void scene_simple_top_down::update()
+void Scene_Simple_Top_Down::update()
 {
-	scene::update();
+	Scene::update();
 	follow_cam( player->get_transform() );
 
 	reset_collision_trace_results();
@@ -138,7 +138,7 @@ void scene_simple_top_down::update()
 
 }
 
-void scene_simple_top_down::reset_collision_trace_results()
+void Scene_Simple_Top_Down::reset_collision_trace_results()
 {
 	hit_marker->get_component<Primitve_Shape_Component>()->shapes.clear();
 
@@ -148,14 +148,14 @@ void scene_simple_top_down::reset_collision_trace_results()
 	}
 }
 
-bool scene_simple_top_down::on_input_pressed( const Input_Event* evt )
+bool Scene_Simple_Top_Down::on_input_pressed( const Input_Event* evt )
 {
 	// #topdown - add a keypress toggle to switch into a mode where the player
 	// rotates based on the right_stick direction but the world stays upright
 	return false;
 }
 
-bool scene_simple_top_down::on_input_motion( const Input_Event* evt )
+bool Scene_Simple_Top_Down::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

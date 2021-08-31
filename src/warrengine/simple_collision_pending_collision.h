@@ -3,7 +3,7 @@
 namespace war::simple_collision
 {
 
-struct Pending_Collision final
+struct Pending_Collision
 {
 	Entity* entity_a = nullptr;
 	Simple_Collision_Body* body_a = nullptr;

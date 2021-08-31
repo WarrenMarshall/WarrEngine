@@ -31,19 +31,19 @@ Scene_Msg_Box::Scene_Msg_Box()
 
 void Scene_Msg_Box::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	flags.blocks_further_input = true;
 }
 
 void Scene_Msg_Box::popped()
 {
-	scene::popped();
+	Scene::popped();
 }
 
 void Scene_Msg_Box::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	{
 		scoped_render_state;

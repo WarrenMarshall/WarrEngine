@@ -26,7 +26,7 @@ void Scene_Mgr::pop()
 {
 	assert( !scene_stack.empty() );
 
-	scene* scene = nullptr;
+	Scene* scene = nullptr;
 	size_t idx;
 
 	for( idx = 0 ; idx < scene_stack.size() ; ++idx )
@@ -54,14 +54,14 @@ void Scene_Mgr::pop_under()
 {
 	assert( !scene_stack.empty() );
 
-	scene* scene = nullptr;
+	Scene* scene = nullptr;
 	size_t idx = 1;
 	scene = scene_stack[ idx ].get();
 	scene->popped();
 	scene->life_cycle.set( e_life_cycle::dead );
 }
 
-scene* Scene_Mgr::get_top()
+Scene* Scene_Mgr::get_top()
 {
 	assert( !scene_stack.empty() );
 

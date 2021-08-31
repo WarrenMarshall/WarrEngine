@@ -5,7 +5,7 @@
 namespace war
 {
 
-scene::scene()
+Scene::Scene()
 {
 	flags.blocks_further_drawing = false;
 	flags.blocks_further_input = false;
@@ -15,12 +15,12 @@ scene::scene()
 
 // ----------------------------------------------------------------------------
 
-void scene::save_mouse_mode()
+void Scene::save_mouse_mode()
 {
 	saved_mouse_mode = g_engine->window.mouse_mode;
 }
 
-void scene::restore_mouse_mode()
+void Scene::restore_mouse_mode()
 {
 	// mouse mode has never been saved
 	assert( saved_mouse_mode.has_value() );
@@ -30,7 +30,7 @@ void scene::restore_mouse_mode()
 
 // ----------------------------------------------------------------------------
 
-void scene::select_by_pick_id( int pick_id )
+void Scene::select_by_pick_id( int pick_id )
 {
 	if( !pick_id )
 	{
@@ -46,7 +46,7 @@ void scene::select_by_pick_id( int pick_id )
 	}
 }
 
-void scene::deselect_all()
+void Scene::deselect_all()
 {
 	for( const auto& e : entities )
 	{
@@ -54,7 +54,7 @@ void scene::deselect_all()
 	}
 }
 
-std::vector<Entity*> scene::get_selected()
+std::vector<Entity*> Scene::get_selected()
 {
 	std::vector<Entity*> selections;
 
@@ -69,26 +69,26 @@ std::vector<Entity*> scene::get_selected()
 	return selections;
 }
 
-void scene::pushed()
+void Scene::pushed()
 {
 	sc_world = std::make_unique<Simple_Collision_World>( this );
 }
 
-void scene::popped()
+void Scene::popped()
 {
 }
 
-void scene::becoming_top_scene()
+void Scene::becoming_top_scene()
 {
 }
 
-void scene::getting_covered()
+void Scene::getting_covered()
 {
 }
 
 // ----------------------------------------------------------------------------
 
-void scene::pre_update()
+void Scene::pre_update()
 {
 	for( auto& entity : entities )
 	{
@@ -114,7 +114,7 @@ void scene::pre_update()
 	}
 }
 
-void scene::update()
+void Scene::update()
 {
 	if( !entities.empty() )
 	{
@@ -143,7 +143,7 @@ void scene::update()
 	}
 }
 
-void scene::post_update()
+void Scene::post_update()
 {
 	// loop through the collision
 
@@ -181,7 +181,7 @@ void scene::post_update()
 
 // ----------------------------------------------------------------------------
 
-void scene::draw()
+void Scene::draw()
 {
 	for( const auto& entity : entities )
 	{
@@ -198,16 +198,16 @@ void scene::draw()
 	}
 }
 
-void scene::draw_ui()
+void Scene::draw_ui()
 {
 }
 
-bool scene::is_topmost_scene() const
+bool Scene::is_topmost_scene() const
 {
 	return ( g_engine->scene_mgr.get_top() == this );
 }
 
-Entity* scene::find_entity( hash tag )
+Entity* Scene::find_entity( hash tag )
 {
 	Entity* e = nullptr;
 
@@ -229,7 +229,7 @@ Entity* scene::find_entity( hash tag )
 	return e;
 }
 
-Entity* scene::find_entity_by_pick_id( int pick_id )
+Entity* Scene::find_entity_by_pick_id( int pick_id )
 {
 	if( pick_id )
 	{
@@ -245,12 +245,12 @@ Entity* scene::find_entity_by_pick_id( int pick_id )
 	return nullptr;
 }
 
-void scene::new_game()
+void Scene::new_game()
 {
 	entities.clear();
 }
 
-UI_Callback* scene::get_ui_callback()
+UI_Callback* Scene::get_ui_callback()
 {
 	if( ui_callback )
 	{
@@ -260,12 +260,12 @@ UI_Callback* scene::get_ui_callback()
 	return &( g_ui->default_callback );
 }
 
-bool scene::on_input_motion( const Input_Event* evt )
+bool Scene::on_input_motion( const Input_Event* evt )
 {
 	return false;
 }
 
-bool scene::on_input_pressed( const Input_Event* evt )
+bool Scene::on_input_pressed( const Input_Event* evt )
 {
 	if( g_engine->scene_mgr.get_top() == this )
 	{
@@ -282,7 +282,7 @@ bool scene::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene::on_input_held( const Input_Event* evt )
+bool Scene::on_input_held( const Input_Event* evt )
 {
 	if( g_engine->scene_mgr.get_top() == this )
 	{
@@ -295,7 +295,7 @@ bool scene::on_input_held( const Input_Event* evt )
 	return false;
 }
 
-bool scene::on_input_released( const Input_Event* evt )
+bool Scene::on_input_released( const Input_Event* evt )
 {
 	if( g_engine->scene_mgr.get_top() == this )
 	{
@@ -308,7 +308,7 @@ bool scene::on_input_released( const Input_Event* evt )
 	return false;
 }
 
-bool scene::on_input_key( const Input_Event* evt )
+bool Scene::on_input_key( const Input_Event* evt )
 {
 	if( g_engine->scene_mgr.get_top() == this )
 	{
@@ -321,7 +321,7 @@ bool scene::on_input_key( const Input_Event* evt )
 	return false;
 }
 
-Vec2 scene::get_viewport_pivot()
+Vec2 Scene::get_viewport_pivot()
 {
 	return viewport_pivot;
 }
@@ -330,13 +330,13 @@ Vec2 scene::get_viewport_pivot()
 // closing of things like dropdown controls without needing to actually click on
 // them directly.
 
-void scene::force_close_expanded_controls()
+void Scene::force_close_expanded_controls()
 {
 	ui_expanded_tag_begin = ui_expanded_tag_end = hash_none;
 	flags.clear_expanded_tag_this_frame = true;
 }
 
-void scene::follow_cam( const Transform* follow_target )
+void Scene::follow_cam( const Transform* follow_target )
 {
 	auto current_cam = get_transform()->pos;
 	auto desired_cam = -follow_target->pos;

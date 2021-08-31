@@ -3,12 +3,12 @@
 
 using namespace war;
 
-hello_world_app::hello_world_app()
+Hello_World_App::Hello_World_App()
 	: Game( "hello_world" )
 {
 }
 
-void hello_world_app::init()
+void Hello_World_App::init()
 {
 #if 1
 	//g_engine->render_api.set_uniform( "ub_vignette", true );
@@ -26,19 +26,18 @@ void hello_world_app::init()
 	//g_engine->render_api.set_uniform( "u_color_overlay", color( 0.f, 1.f, 0.f, 0.1f ) );
 
 
-	//g_engine->render_api.set_uniform( "ub_pixelate", true );
-	//g_engine->render_api.set_uniform( "u_pixelate_factor", 1.0f );
+	//g_engine->render_api.set_uniform( "u_pixelate_factor", 0.0f );
 #endif
 
-	g_engine->scene_mgr.push<scene_default>();
+	g_engine->scene_mgr.push<Scene_Default>();
 }
 
-void hello_world_app::new_game()
+void Hello_World_App::new_game()
 {
 	Game::new_game();
 }
 
-void hello_world_app::update()
+void Hello_World_App::update()
 {
 	Game::update();
 }

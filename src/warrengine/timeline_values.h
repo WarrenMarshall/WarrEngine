@@ -4,7 +4,7 @@
 namespace war
 {
 
-struct Timeline_Values final
+struct Timeline_Values
 {
 	std::vector<Timeline_Values_Key_Frame> key_frames;
 	e_timeline_type_t type = e_timeline_type::invalid;

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Cmdline_Args final
+struct Cmdline_Args
 {
 	// "-verbose" to set TRUE
 	//		* enables optional log messages that are marked using "log_verbose"

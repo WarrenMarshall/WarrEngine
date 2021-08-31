@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct Entity_Simple_Force final
+struct Entity_Simple_Force
 {
 	Entity_Simple_Force() = default;
 	Entity_Simple_Force( Vec2 normal, float strength );
@@ -15,7 +15,7 @@ struct Entity_Simple_Force final
 
 // ----------------------------------------------------------------------------
 
-struct Entity_Simple_Collision final
+struct Entity_Simple_Collision
 {
 	e_sc_type_t type = e_sc_type::dynamic;
 
@@ -47,7 +47,7 @@ struct Entity_Simple_Collision final
 struct Entity
 {
 	Life_Cycle_Mgr life_cycle;
-	scene* parent_scene = nullptr;
+	Scene* parent_scene = nullptr;
 
 #ifndef _FINAL_RELEASE
 	// a handy string to throw info or a name in debug builds to make figuring
@@ -231,7 +231,7 @@ struct Entity
 // particles forever means that instance will never be die or be deleted. give
 // that emitter a "one shot" flag or a lifetime timer.
 
-struct Entity_Transient final : Entity
+struct Entity_Transient : Entity
 {
 	virtual void update() override;
 };

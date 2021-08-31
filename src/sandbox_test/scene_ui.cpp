@@ -3,7 +3,7 @@
 
 using namespace war;
 
-scene_ui_callback::scene_ui_callback()
+Scene_UI_Callback::Scene_UI_Callback()
 {
 	text_data.text.max_length = 15;
 	text_data.text.valid_char_list = valid_chars_alphanumeric + valid_chars_simple_whitespace + valid_chars_punctuation;
@@ -22,7 +22,7 @@ scene_ui_callback::scene_ui_callback()
 	progress_data.progress.draw_percentage_as_text = true;
 }
 
-UI_Control_Data* scene_ui_callback::get_data( hash tag )
+UI_Control_Data* Scene_UI_Callback::get_data( hash tag )
 {
 	switch( tag )
 	{
@@ -41,7 +41,7 @@ UI_Control_Data* scene_ui_callback::get_data( hash tag )
 	return UI_Callback::get_data( tag );
 }
 
-size_t scene_ui_callback::get_item_count( hash tag )
+size_t Scene_UI_Callback::get_item_count( hash tag )
 {
 	switch( tag )
 	{
@@ -59,7 +59,7 @@ size_t scene_ui_callback::get_item_count( hash tag )
 	return UI_Callback::get_item_count( tag );
 }
 
-std::string_view scene_ui_callback::get_item_for_idx( hash tag, int idx )
+std::string_view Scene_UI_Callback::get_item_for_idx( hash tag, int idx )
 {
 	switch( tag )
 	{
@@ -77,7 +77,7 @@ std::string_view scene_ui_callback::get_item_for_idx( hash tag, int idx )
 	return UI_Callback::get_item_for_idx( tag, idx );
 }
 
-void scene_ui_callback::on_value_changed( hash tag )
+void Scene_UI_Callback::on_value_changed( hash tag )
 {
 	switch( tag )
 	{
@@ -92,24 +92,24 @@ void scene_ui_callback::on_value_changed( hash tag )
 
 // ----------------------------------------------------------------------------
 
-scene_ui::scene_ui()
+Scene_UI::Scene_UI()
 {
-	ui_callback = std::make_unique<scene_ui_callback>();
+	ui_callback = std::make_unique<Scene_UI_Callback>();
 	flags.blocks_further_drawing = true;
 }
 
-void scene_ui::pushed()
+void Scene_UI::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
-void scene_ui::draw()
+void Scene_UI::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
@@ -128,11 +128,11 @@ f_decl_draw_control( draw_control_player )
 
 // ----------------------------------------------------------------------------
 
-void scene_ui::draw_ui()
+void Scene_UI::draw_ui()
 {
-	auto cb = (scene_ui_callback*)get_ui_callback();
+	auto cb = (Scene_UI_Callback*)get_ui_callback();
 
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	float half_panel_w = 120.f;
 	float panel_w = (half_panel_w * 2.f) + 16.f;

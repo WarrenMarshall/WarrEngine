@@ -7,7 +7,7 @@ namespace war
 
 void Scene_Controller_Required::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	tex_game_controller = g_engine->find_asset<Texture_Asset>( "engine_game_controller" );
 	anim_tween = Tween( 0.f, 1.f, 500, e_tween_type::pingpong, e_tween_via::sinusoidal );
@@ -19,7 +19,7 @@ void Scene_Controller_Required::pushed()
 
 void Scene_Controller_Required::popped()
 {
-	scene::popped();
+	Scene::popped();
 
 	restore_mouse_mode();
 }
@@ -58,7 +58,7 @@ f_decl_draw_control( draw_controller_false )
 
 void Scene_Controller_Required::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	{
 		scoped_render_state;
@@ -144,7 +144,7 @@ void Scene_Controller_Required::draw_ui()
 
 bool Scene_Controller_Required::on_input_pressed( const Input_Event* evt )
 {
-	if( scene::on_input_pressed( evt ) )
+	if( Scene::on_input_pressed( evt ) )
 	{
 		return true;
 	}

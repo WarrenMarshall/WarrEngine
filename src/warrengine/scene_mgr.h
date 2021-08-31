@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Scene_Mgr final
+struct Scene_Mgr
 {
 	Timeline_Nodes transition_timeline;
 
@@ -13,12 +13,12 @@ struct Scene_Mgr final
 	// therefore, iterating forwards through scene_stack is drilling downwards
 	// into the screen.
 
-	std::vector<std::unique_ptr<scene>> scene_stack;
+	std::vector<std::unique_ptr<Scene>> scene_stack;
 
 	// holds a pointer to the current scene being drawn. this is needed to
 	// retrieve things like the viewport_pivot as scenes are being drawn,
 	// layered on top of each other.
-	scene* current_scene = nullptr;
+	Scene* current_scene = nullptr;
 
 	[[nodiscard]] Transform* get_transform()
 	{
@@ -53,14 +53,14 @@ struct Scene_Mgr final
 	// when a scene_dummy is at the top of the stack and you want to insert a
 	// new scene below it so THAT scene will be on top once the dummy clears.
 
-	void push_under( scene* new_scene )
+	void push_under( Scene* new_scene )
 	{
 		if( scene_stack.empty() )
 		{
 			log_fatal( "scene stack is empty" );
 		}
 
-		scene* top_scene = get_top();
+		Scene* top_scene = get_top();
 
 		if( top_scene->life_cycle.is_alive() and typeid( *top_scene ) == typeid( *new_scene ) )
 		{
@@ -69,7 +69,7 @@ struct Scene_Mgr final
 		}
 
 		new_scene->pushed();
-		std::unique_ptr<scene> fuck;
+		std::unique_ptr<Scene> fuck;
 		fuck.reset( new_scene );
 		scene_stack.insert( scene_stack.begin() + 1, std::move( fuck ) );
 
@@ -83,7 +83,7 @@ struct Scene_Mgr final
 
 		if( !scene_stack.empty() )
 		{
-			scene* top_scene = get_top();
+			Scene* top_scene = get_top();
 
 			if( top_scene->life_cycle.is_alive() and typeid( *top_scene ) == typeid( *new_scene ) )
 			{
@@ -103,7 +103,7 @@ struct Scene_Mgr final
 	void clear_stack();
 	void pop();
 	void pop_under();
-	[[nodiscard]] scene* get_top();
+	[[nodiscard]] Scene* get_top();
 
 	void pre_update();
 

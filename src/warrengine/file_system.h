@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct File_System final
+struct File_System
 {
 	inline static Zip_File zip_file;
 

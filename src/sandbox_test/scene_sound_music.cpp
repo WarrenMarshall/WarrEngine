@@ -1,21 +1,21 @@
 
 #include "app_header.h"
 
-scene_sound_board::scene_sound_board()
+Scene_Sound_Music::Scene_Sound_Music()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_sound_board::draw()
+void Scene_Sound_Music::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_sound_board::draw_ui()
+void Scene_Sound_Music::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Sound Board" );
 
 	Rect rc_panel = { 0.f, 0.f, ui_w, ui_h };
@@ -83,9 +83,9 @@ void scene_sound_board::draw_ui()
 	}
 }
 
-void scene_sound_board::popped()
+void Scene_Sound_Music::popped()
 {
 	g_engine->find_asset<Sound_Asset>( "music_01" )->stop();
 
-	scene::popped();
+	Scene::popped();
 }

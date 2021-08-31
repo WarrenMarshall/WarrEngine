@@ -4,7 +4,7 @@
 namespace war
 {
 
-struct Timeline_Nodes_Key_Frame final
+struct Timeline_Nodes_Key_Frame
 {
 	e_tnkf_type_t type = e_tnkf_type::none;
 	Life_Cycle_Mgr life_cycle;
@@ -61,7 +61,7 @@ struct Timeline_Nodes_Key_Frame final
 		// ----------------------------------------------------------------------------
 		struct
 		{
-			scene* new_scene;
+			Scene* new_scene;
 		} scene_push_under;
 
 		// ----------------------------------------------------------------------------

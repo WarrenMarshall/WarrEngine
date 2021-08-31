@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_simple_collision final : scene
+struct Scene_Simple_Collision : Scene
 {
-	scene_simple_collision();
+	Scene_Simple_Collision();
 
 	Entity* player = nullptr;
 	Entity* world_geo = nullptr;

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Key_Values final
+struct Key_Values
 {
 	[[nodiscard]] bool does_key_exist( const std::string& key ) const;
 	[[nodiscard]] std::string_view find_value( const std::string& ) const;

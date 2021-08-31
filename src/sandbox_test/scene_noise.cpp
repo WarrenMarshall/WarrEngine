@@ -3,7 +3,7 @@
 
 using namespace war;
 
-scene_noise::scene_noise()
+Scene_Noise::Scene_Noise()
 {
 	flags.blocks_further_drawing = true;
 
@@ -12,9 +12,9 @@ scene_noise::scene_noise()
 	memset( &random_samples[ 0 ], 0, sizeof( float ) * 64 );
 }
 
-void scene_noise::pushed()
+void Scene_Noise::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
@@ -22,15 +22,15 @@ void scene_noise::pushed()
 	generate_noise_samples();
 }
 
-void scene_noise::draw()
+void Scene_Noise::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 }
 
-void scene_noise::draw_ui()
+void Scene_Noise::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Noise" );
 
 	auto cb = get_ui_callback();
@@ -108,7 +108,7 @@ void scene_noise::draw_ui()
 	}
 }
 
-void scene_noise::generate_noise_samples()
+void Scene_Noise::generate_noise_samples()
 {
 	for( auto x = 0 ; x < 64 ; ++x )
 	{

@@ -3,30 +3,30 @@
 
 using namespace war;
 
-scene_main_menu::scene_main_menu()
+Scene_Main_Menu::Scene_Main_Menu()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_main_menu::pushed()
+void Scene_Main_Menu::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 }
 
-void scene_main_menu::draw()
+void Scene_Main_Menu::draw()
 {
-	scene::draw();
+	Scene::draw();
 	draw_gradient_background();
 	Render::draw_world_axis();
 }
 
-void scene_main_menu::draw_ui()
+void Scene_Main_Menu::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	auto border_sz = 4.f;
 	auto button_h = 12.f;
@@ -48,44 +48,45 @@ void scene_main_menu::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top().cut_left( 0.5f ) );
 
-			do_menu_button<scene_palette>( H( "button_palettes" ), "Palettes" );
+			do_menu_button<Scene_Palette>( H( "button_palettes" ), "Palettes" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<scene_angle_dirs>( H( "angle_dirs" ), "Angles / Directions" );
-			do_menu_button<scene_coords>( H( "button_coords" ), "Coords" );
+			do_menu_button<Scene_Angle_Dirs>( H( "angle_dirs" ), "Angles / Directions" );
+			do_menu_button<Scene_Coords>( H( "button_coords" ), "Coords" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<scene_ui>( H( "button_ui" ), "UI Controls" );
-			do_menu_button<scene_wrapped_text>( H( "button_wrapped_text" ), "Wrapped Text" );
+			do_menu_button<Scene_UI>( H( "button_ui" ), "UI Controls" );
+			do_menu_button<Scene_Wrapped_Text>( H( "button_wrapped_text" ), "Wrapped Text" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<scene_textures>( H( "button_textures" ), "Textures" );
-			do_menu_button<scene_meshes>( H( "button_meshes" ), "Meshes" );
-			do_menu_button<scene_particles>( H( "button_particles" ), "Particles" );
-			do_menu_button<scene_tilemap>( H( "button_tilemap" ), "Tile Map" );
+			do_menu_button<Scene_Textures>( H( "button_textures" ), "Textures" );
+			do_menu_button<Scene_Meshes>( H( "button_meshes" ), "Meshes" );
+			do_menu_button<Scene_Particles>( H( "button_particles" ), "Particles" );
+			do_menu_button<Scene_TileMap>( H( "button_tilemap" ), "Tile Map" );
 		}
 
 		{
 			scoped_ui_layout( g_ui->layout_top().cut_right( 0.5f ) );
 
-			do_menu_button<scene_entity_picking>( H( "button_entity_picking" ), "Entity Picking" );
-			do_menu_button<scene_tweens>( H( "button_tweens" ), "Tweens / Timers" );
-			do_menu_button<scene_sound_board>( H( "button_sound_board" ), "Sound Board" );
+			do_menu_button<Scene_Entity_Picking>( H( "button_entity_picking" ), "Entity Picking" );
+			do_menu_button<Scene_Tweens_Timers>( H( "button_tweens" ), "Tweens / Timers" );
+			do_menu_button<Scene_Sound_Music>( H( "button_sound_board" ), "Sound Board" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<scene_box2d>( H( "button_box2d" ), "Box2D Collision" );
-			do_menu_button<scene_simple_collision>( H( "button_simple_collision" ), "Simple Collision" );
-			do_menu_button<scene_simple_interact>( H( "button_simple_interact" ), "Simple Interaction" );
-			do_menu_button<scene_simple_bounce>( H( "button_simple_space" ), "Simple Bouncing" );
+			do_menu_button<Scene_Box2D>( H( "button_box2d" ), "Box2D Collision" );
+			do_menu_button<Scene_Simple_Collision>( H( "button_simple_collision" ), "Simple Collision" );
+			do_menu_button<Scene_Simple_Sensors>( H( "button_simple_sensors" ), "Simple Sensors" );
+			do_menu_button<Scene_Simple_Interact>( H( "button_simple_interact" ), "Simple Interaction" );
+			do_menu_button<Scene_Simple_Bounce>( H( "button_simple_space" ), "Simple Bouncing" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<scene_simple_breakout>( H( "button_simple_breakout" ), "Break Out" );
-			do_menu_button<scene_simple_platformer>( H( "button_simple_platformer" ), "Platformer" );
-			do_menu_button<scene_simple_top_down>( H( "button_simple_top_down" ), "Top Down" );
+			do_menu_button<Scene_Simple_Breakout>( H( "button_simple_breakout" ), "Break Out" );
+			do_menu_button<Scene_Simple_Platformer>( H( "button_simple_platformer" ), "Platformer" );
+			do_menu_button<Scene_Simple_Top_Down>( H( "button_simple_top_down" ), "Top Down" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<scene_controller>( H( "button_controller" ), "Game Controller" );
-			do_menu_button<scene_noise>( H( "button_noise" ), "Noise" );
+			do_menu_button<Scene_Controller>( H( "button_controller" ), "Game Controller" );
+			do_menu_button<Scene_Noise>( H( "button_noise" ), "Noise" );
 		}
 	}
 }

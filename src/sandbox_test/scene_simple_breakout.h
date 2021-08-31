@@ -3,22 +3,22 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct e_ball final : Entity
+struct E_Breakout_Ball : Entity
 {
 	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct e_paddle final : Entity
+struct E_Breakout_Paddle : Entity
 {
 	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
-struct scene_simple_breakout final : scene
+struct Scene_Simple_Breakout : Scene
 {
-	scene_simple_breakout();
+	Scene_Simple_Breakout();
 
 	Entity* paddle = nullptr;
 	Entity* world_geo = nullptr;

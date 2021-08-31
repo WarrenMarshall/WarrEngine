@@ -6,7 +6,7 @@ namespace war
 // updates. used to stop the user from interacting with the engine while we're
 // doing something like traansitioning between scenes.
 
-struct Scene_Transient final : scene
+struct Scene_Transient : Scene
 {
 	Scene_Transient();
 };

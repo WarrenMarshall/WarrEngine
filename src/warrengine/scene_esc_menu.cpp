@@ -47,7 +47,7 @@ Scene_Esc_Menu::Scene_Esc_Menu()
 
 void Scene_Esc_Menu::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	save_mouse_mode();
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
@@ -55,14 +55,14 @@ void Scene_Esc_Menu::pushed()
 
 void Scene_Esc_Menu::popped()
 {
-	scene::popped();
+	Scene::popped();
 
 	restore_mouse_mode();
 }
 
 void Scene_Esc_Menu::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	{
 		scoped_render_state;

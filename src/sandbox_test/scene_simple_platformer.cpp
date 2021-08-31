@@ -14,22 +14,22 @@ constexpr auto player_collision_radius = 7.f;
 
 // ----------------------------------------------------------------------------
 
-scene_simple_platformer::scene_simple_platformer()
+Scene_Simple_Platformer::Scene_Simple_Platformer()
 {
 	flags.is_debug_physics_scene = true;
 	flags.requires_controller = true;
 }
 
-void scene_simple_platformer::draw_ui()
+void Scene_Simple_Platformer::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	//render::draw_string( std::format( "Vel : {:.1f}, {:.1f} / In-Air : {}",
 	//	player->velocity.x, player->velocity.y, player->simple.is_in_air ),
 	//	vec2( 8.f, 8.f ) );
 }
 
-void scene_simple_platformer::draw()
+void Scene_Simple_Platformer::draw()
 {
 	{
 		scoped_render_state;
@@ -38,12 +38,12 @@ void scene_simple_platformer::draw()
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	scene::draw();
+	Scene::draw();
 }
 
 f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 {
-	auto gameplay_scene = (scene_simple_platformer*)scene;
+	auto gameplay_scene = (Scene_Simple_Platformer*)scene;
 
 	switch( tile->idx )
 	{
@@ -91,9 +91,9 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 	}
 }
 
-void scene_simple_platformer::pushed()
+void Scene_Simple_Platformer::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = { viewport_hw, viewport_hh };
 	get_transform()->set_scale( 2.0f );
@@ -123,9 +123,9 @@ void scene_simple_platformer::pushed()
 	}
 }
 
-void scene_simple_platformer::update()
+void Scene_Simple_Platformer::update()
 {
-	scene::update();
+	Scene::update();
 
 	fx_red_alert.update();
 
@@ -143,7 +143,7 @@ void scene_simple_platformer::update()
 	}
 }
 
-bool scene_simple_platformer::on_input_motion( const Input_Event* evt )
+bool Scene_Simple_Platformer::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::gamepad_left_stick )
 	{
@@ -153,7 +153,7 @@ bool scene_simple_platformer::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool scene_simple_platformer::on_input_pressed( const Input_Event* evt )
+bool Scene_Simple_Platformer::on_input_pressed( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::gamepad_button_a
 		or evt->input_id == e_input_id::key_space )

@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_particles final : scene
+struct Scene_Particles : Scene
 {
-	scene_particles();
+	Scene_Particles();
 
 	virtual void pushed() override;
 	virtual void draw() override;

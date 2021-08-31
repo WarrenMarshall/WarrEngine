@@ -3,14 +3,14 @@
 
 using namespace war;
 
-scene_entity_picking::scene_entity_picking()
+Scene_Entity_Picking::Scene_Entity_Picking()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_entity_picking::pushed()
+void Scene_Entity_Picking::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
@@ -50,22 +50,22 @@ void scene_entity_picking::pushed()
 	}
 }
 
-void scene_entity_picking::draw()
+void Scene_Entity_Picking::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_entity_picking::draw_ui()
+void Scene_Entity_Picking::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Entity Picking" );
 }
 
-void scene_entity_picking::post_update()
+void Scene_Entity_Picking::post_update()
 {
-	scene::post_update();
+	Scene::post_update();
 
 	{
 		auto e = find_entity( H( "player" ) );
@@ -79,7 +79,7 @@ void scene_entity_picking::post_update()
 
 }
 
-bool scene_entity_picking::on_input_pressed( const Input_Event* evt )
+bool Scene_Entity_Picking::on_input_pressed( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::mouse_button_left )
 	{
@@ -100,7 +100,7 @@ bool scene_entity_picking::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene_entity_picking::on_input_motion( const Input_Event* evt )
+bool Scene_Entity_Picking::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::mouse )
 	{

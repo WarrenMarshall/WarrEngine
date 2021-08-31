@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_angle_dirs final : scene
+struct Scene_Angle_Dirs : Scene
 {
-	scene_angle_dirs();
+	Scene_Angle_Dirs();
 
 	Vec2 marker_pos = Vec2::zero;
 

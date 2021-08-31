@@ -3,28 +3,28 @@
 
 using namespace war;
 
-scene_palette::scene_palette()
+Scene_Palette::Scene_Palette()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_palette::pushed()
+void Scene_Palette::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
-void scene_palette::draw()
+void Scene_Palette::draw()
 {
 	Render::draw_world_axis();
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 }
 
-void scene_palette::draw_ui()
+void Scene_Palette::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Palettes" );
 
 	Rect rc_panel = { 0.f, 0.f, ui_w, ui_h };

@@ -3,7 +3,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct scene_wrapped_text_ui_callback final : UI_Callback
+struct Scene_Wrapped_Text_UI_Callback : UI_Callback
 {
 	UI_Control_Data radio_alignment_data;
 
@@ -12,9 +12,9 @@ struct scene_wrapped_text_ui_callback final : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct scene_wrapped_text final : scene
+struct Scene_Wrapped_Text : Scene
 {
-	scene_wrapped_text();
+	Scene_Wrapped_Text();
 
 	std::string big_text_block;
 

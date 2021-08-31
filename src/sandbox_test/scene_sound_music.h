@@ -1,11 +1,11 @@
 
 using namespace war;
 
-struct scene_sound_board final : scene
+struct Scene_Sound_Music : Scene
 {
 	Texture_Asset* gradient = nullptr;
 
-	scene_sound_board();
+	Scene_Sound_Music();
 
 	virtual void draw() override;
 	virtual void draw_ui() override;

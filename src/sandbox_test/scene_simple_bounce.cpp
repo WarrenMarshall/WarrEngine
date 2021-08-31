@@ -12,14 +12,14 @@ static const unsigned scene_simple_space_coll_geo = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-scene_simple_bounce::scene_simple_bounce()
+Scene_Simple_Bounce::Scene_Simple_Bounce()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-Entity* scene_simple_bounce::spawn_player()
+Entity* Scene_Simple_Bounce::spawn_player()
 {
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
@@ -73,9 +73,9 @@ Entity* scene_simple_bounce::spawn_player()
 	return e;
 }
 
-void scene_simple_bounce::pushed()
+void Scene_Simple_Bounce::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	sc_world->settings.push_apart_tolerance = 2.0f;
 
@@ -150,7 +150,7 @@ void scene_simple_bounce::pushed()
 	}
 }
 
-void scene_simple_bounce::draw()
+void Scene_Simple_Bounce::draw()
 {
 	{
 		scoped_render_state;
@@ -159,13 +159,13 @@ void scene_simple_bounce::draw()
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	scene::draw();
+	Scene::draw();
 	//render::draw_world_axis();
 }
 
-void scene_simple_bounce::draw_ui()
+void Scene_Simple_Bounce::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	//draw_title( "Space Drifter" );
 
 	//if( player )
@@ -175,9 +175,9 @@ void scene_simple_bounce::draw_ui()
 	//}
 }
 
-void scene_simple_bounce::post_update()
+void Scene_Simple_Bounce::post_update()
 {
-	scene::post_update();
+	Scene::post_update();
 
 	for( auto& e : entities )
 	{
@@ -192,7 +192,7 @@ void scene_simple_bounce::post_update()
 	}
 }
 
-bool scene_simple_bounce::on_input_pressed( const Input_Event* evt )
+bool Scene_Simple_Bounce::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -207,7 +207,7 @@ bool scene_simple_bounce::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene_simple_bounce::on_input_motion( const Input_Event* evt )
+bool Scene_Simple_Bounce::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

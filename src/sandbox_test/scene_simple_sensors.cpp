@@ -1,0 +1,130 @@
+
+#include "app_header.h"
+
+using namespace war;
+
+// ----------------------------------------------------------------------------
+
+static Bit_Flag_Generator collision_bits = 1;
+
+static const unsigned scene_simple_sensors_player = collision_bits.get();
+static const unsigned scene_simple_sensors_world = collision_bits.next();
+
+Scene_Simple_Sensors::Scene_Simple_Sensors()
+{
+	flags.blocks_further_drawing = true;
+	flags.requires_controller = false;
+	flags.is_debug_physics_scene = true;
+}
+
+void Scene_Simple_Sensors::pushed()
+{
+	Scene::pushed();
+
+	g_engine->render.debug.draw_debug_info = true;
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
+
+	// KINEMATIC CIRCLE
+	{
+		auto e = add_entity<Entity>();
+		e->tag = H( "main_ball" );
+		e->simple.type = e_sc_type::kinematic;
+		{
+			auto ec = e->add_component<Primitve_Shape_Component>();
+			ec->add_shape( e_primitive_shape::point );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->set_as_circle( 32.f );
+			ec->set_collision_flags( scene_simple_sensors_player, 0 );
+		}
+	}
+
+	// WORLD GEO
+
+	{
+		auto e = add_entity<Entity>( "world" );
+		e->simple.type = e_sc_type::stationary;
+
+		// 4 walls
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+		}
+
+		world_geo = e;
+	}
+}
+
+void Scene_Simple_Sensors::draw()
+{
+	{
+		scoped_render_state;
+		Render::state->color = make_color( e_pal::darker );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
+			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	}
+
+	Scene::draw();
+	Render::draw_world_axis();
+}
+
+void Scene_Simple_Sensors::draw_ui()
+{
+	Scene::draw_ui();
+}
+
+void Scene_Simple_Sensors::update()
+{
+	Scene::update();
+}
+
+bool Scene_Simple_Sensors::on_input_pressed( const Input_Event* evt )
+{
+	return false;
+}
+
+bool Scene_Simple_Sensors::on_input_motion( const Input_Event* evt )
+{
+	switch( evt->input_id )
+	{
+		case e_input_id::mouse:
+		{
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			{
+				if( !evt->shift_down and !evt->control_down )
+				{
+					auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+
+					auto e = find_entity( H( "main_ball" ) );
+					e->set_pos( world_pos );
+
+					return true;
+				}
+			}
+		}
+		break;
+	}
+
+	return false;
+}

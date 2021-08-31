@@ -31,7 +31,7 @@ struct Render;
 struct Primitive_Batch;
 struct Render_State;
 struct Render_State_Optional;
-struct scene;
+struct Scene;
 struct Scene_Mgr;
 struct Scene_Transient;
 struct Shader;

@@ -5,7 +5,7 @@
 namespace war
 {
 
-Simple_Collision_World::Simple_Collision_World( scene* parent_scene )
+Simple_Collision_World::Simple_Collision_World( Scene* parent_scene )
 	: parent_scene( parent_scene )
 {
 }

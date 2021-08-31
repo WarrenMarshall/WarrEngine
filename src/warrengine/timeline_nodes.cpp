@@ -99,7 +99,7 @@ void Timeline_Nodes::add_kf_play_sound( bool should_restore_state, float pct_mar
 	kf->play_sound.snd = snd;
 }
 
-void Timeline_Nodes::add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<scene> scene_to_push )
+void Timeline_Nodes::add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<Scene> scene_to_push )
 {
 	key_frames.emplace_back( e_tnkf_type::scene_push_under, should_restore_state, pct_marker, 0 );
 	auto kf = &key_frames.back();

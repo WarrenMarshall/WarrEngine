@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct UI_Result final
+struct UI_Result
 {
 	e_im_result_t code = e_im_result::none;
 

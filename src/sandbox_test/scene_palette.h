@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_palette final : scene
+struct Scene_Palette : Scene
 {
-	scene_palette();
+	Scene_Palette();
 
 	virtual void pushed() override;
 	virtual void draw() override;

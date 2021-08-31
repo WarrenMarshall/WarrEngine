@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	war::Engine::go<hello_world_app>( argc, argv );
+	war::Engine::go<Hello_World_App>( argc, argv );
 
 	return EXIT_SUCCESS;
 }

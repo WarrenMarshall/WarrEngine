@@ -4,7 +4,7 @@
 namespace war
 {
 
-struct Timeline_Values_Key_Frame final
+struct Timeline_Values_Key_Frame
 {
 	float pct_marker = 0.f;
 

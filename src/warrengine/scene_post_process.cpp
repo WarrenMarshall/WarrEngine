@@ -125,7 +125,7 @@ Scene_Post_Process::Scene_Post_Process()
 
 void Scene_Post_Process::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
@@ -143,7 +143,7 @@ void Scene_Post_Process::draw_ui()
 		Render::draw_quad( g_engine->tex_white, { 0.f, 0.f, ui_w, ui_h } );
 	}
 
-	scene::draw_ui();
+	Scene::draw_ui();
 
 	auto rc_layout = Rect( 8.f, 30.f, ui_w, ui_h );
 	g_ui->layout_init( rc_layout );

@@ -10,12 +10,12 @@ constexpr unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
 // ----------------------------------------------------------------------------
 
-struct Tile_Map_Asset final : Asset
+struct Tile_Map_Asset : Asset
 {
 	// ----------------------------------------------------------------------------
 	// a tile within a chunk
 
-	struct Tile final
+	struct Tile
 	{
 		static constexpr int empty = -1;
 
@@ -31,7 +31,7 @@ struct Tile_Map_Asset final : Asset
 	//
 	// chunks are stored as a collection of tiles
 
-	struct Chunk final
+	struct Chunk
 	{
 		static constexpr int default_chunk_sz = 16;
 
@@ -46,7 +46,7 @@ struct Tile_Map_Asset final : Asset
 	//
 	// layers are stored as collections of chunks.
 
-	struct Layer final
+	struct Layer
 	{
 		std::string tag;
 		std::vector<Chunk> chunks = {};

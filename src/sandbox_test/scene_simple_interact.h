@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_simple_interact final : scene
+struct Scene_Simple_Interact : Scene
 {
-	scene_simple_interact();
+	Scene_Simple_Interact();
 
 	Entity* player = nullptr;
 	Entity* hit_marker = nullptr;

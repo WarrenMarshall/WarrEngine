@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct sandbox_test_app final : Game
+struct Sandbox_Test_App : Game
 {
-	sandbox_test_app();
+	Sandbox_Test_App();
 
 	virtual void init() override;
 	virtual void reset_scene_stack_to_main_menu() override;

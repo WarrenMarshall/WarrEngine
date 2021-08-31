@@ -2,7 +2,7 @@
 namespace war::box2d_physics
 {
 
-struct Raycast_Hit final
+struct Raycast_Hit
 {
 	// how far along the ray did the hit occur?
 	float fraction = 0.f;
@@ -19,7 +19,7 @@ struct Raycast_Hit final
 //
 // "what's the closest hit along this ray?"
 
-struct Raycast_Closest final : b2RayCastCallback
+struct Raycast_Closest : b2RayCastCallback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
@@ -35,7 +35,7 @@ struct Raycast_Closest final : b2RayCastCallback
 //
 // "is there anything to hit along this ray?"
 
-struct Raycast_Simple final : b2RayCastCallback
+struct Raycast_Simple : b2RayCastCallback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
@@ -50,7 +50,7 @@ struct Raycast_Simple final : b2RayCastCallback
 //
 // "what are all the hits along this ray?"
 
-struct Raycast_All final : b2RayCastCallback
+struct Raycast_All : b2RayCastCallback
 {
 	bool hit_something = false;
 	int collision_mask = 0;
@@ -63,7 +63,7 @@ struct Raycast_All final : b2RayCastCallback
 // ----------------------------------------------------------------------------
 // stops after finding the first fixture that intersects with the AABB being queried
 
-class Touching_First final : public b2QueryCallback
+class Touching_First : public b2QueryCallback
 {
 public:
 	b2Fixture* fixture;
@@ -74,7 +74,7 @@ public:
 // ----------------------------------------------------------------------------
 // builds a list of all the fixtures that intersect with the AABB being queried
 
-class touching_all final : public b2QueryCallback
+class touching_all : public b2QueryCallback
 {
 public:
 	std::vector<b2Fixture*> fixtures;

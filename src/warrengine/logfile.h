@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Log_File final
+struct Log_File
 {
 	FILE* file;
 

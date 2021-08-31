@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_box2d final : scene
+struct Scene_Box2D : Scene
 {
-	scene_box2d();
+	Scene_Box2D();
 
 	virtual void pushed() override;
 	virtual void draw() override;

@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_meshes final : scene
+struct Scene_Meshes : Scene
 {
 	Mesh_Component* mesh_player = nullptr;
 	Mesh_Component* mesh_crate = nullptr;
@@ -9,7 +9,7 @@ struct scene_meshes final : scene
 	Tween mesh_rotator = {};
 	Tween mesh_scaler = {};
 
-	scene_meshes();
+	Scene_Meshes();
 
 	virtual void pushed() override;
 	virtual void draw() override;

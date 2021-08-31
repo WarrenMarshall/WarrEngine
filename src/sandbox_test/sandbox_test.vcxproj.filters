@@ -15,7 +15,7 @@
     <ClCompile Include="scene_entity_picking.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_sound_board.cpp">
+    <ClCompile Include="scene_sound_music.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_meshes.cpp">
@@ -24,7 +24,7 @@
     <ClCompile Include="scene_coords.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_tweens.cpp">
+    <ClCompile Include="scene_tweens_timers.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_box2d.cpp">
@@ -72,6 +72,9 @@
     <ClCompile Include="scene_simple_top_down.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="scene_simple_sensors.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene_main_menu.h">
@@ -88,7 +91,7 @@
     <ClInclude Include="scene_entity_picking.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_sound_board.h">
+    <ClInclude Include="scene_sound_music.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_meshes.h">
@@ -97,7 +100,7 @@
     <ClInclude Include="scene_coords.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_tweens.h">
+    <ClInclude Include="scene_tweens_timers.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_box2d.h">
@@ -143,6 +146,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_top_down.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_simple_sensors.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

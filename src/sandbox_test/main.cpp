@@ -5,7 +5,7 @@ using namespace war;
 
 int main( int argc, char* argv [] )
 {
-	Engine::go<sandbox_test_app>( argc, argv );
+	Engine::go<Sandbox_Test_App>( argc, argv );
 
 	return EXIT_SUCCESS;
 }

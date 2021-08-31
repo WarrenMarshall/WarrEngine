@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Shader final
+struct Shader
 {
 	unsigned int gl_id = 0;
 

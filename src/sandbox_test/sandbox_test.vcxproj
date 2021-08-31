@@ -259,12 +259,13 @@
     <ClCompile Include="scene_simple_interact.cpp" />
     <ClCompile Include="scene_simple_platformer.cpp" />
     <ClCompile Include="scene_simple_bounce.cpp" />
+    <ClCompile Include="scene_simple_sensors.cpp" />
     <ClCompile Include="scene_simple_top_down.cpp" />
-    <ClCompile Include="scene_sound_board.cpp" />
+    <ClCompile Include="scene_sound_music.cpp" />
     <ClCompile Include="scene_textures.cpp" />
     <ClCompile Include="scene_wrapped_text.cpp" />
     <ClCompile Include="scene_tilemap.cpp" />
-    <ClCompile Include="scene_tweens.cpp" />
+    <ClCompile Include="scene_tweens_timers.cpp" />
     <ClCompile Include="scene_ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sandbox_test.cpp" />
@@ -287,12 +288,13 @@
     <ClInclude Include="scene_simple_interact.h" />
     <ClInclude Include="scene_simple_platformer.h" />
     <ClInclude Include="scene_simple_bounce.h" />
+    <ClInclude Include="scene_simple_sensors.h" />
     <ClInclude Include="scene_simple_top_down.h" />
-    <ClInclude Include="scene_sound_board.h" />
+    <ClInclude Include="scene_sound_music.h" />
     <ClInclude Include="scene_textures.h" />
     <ClInclude Include="scene_wrapped_text.h" />
     <ClInclude Include="scene_tilemap.h" />
-    <ClInclude Include="scene_tweens.h" />
+    <ClInclude Include="scene_tweens_timers.h" />
     <ClInclude Include="scene_ui.h" />
     <ClInclude Include="sandbox_test.h" />
   </ItemGroup>

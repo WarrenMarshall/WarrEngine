@@ -1,14 +1,14 @@
 
 using namespace war;
 
-struct scene_simple_platformer final : scene
+struct Scene_Simple_Platformer : Scene
 {
 	Entity* world = nullptr;
 	Entity* player = nullptr;
 
 	Timeline_Nodes fx_red_alert;
 
-	scene_simple_platformer();
+	Scene_Simple_Platformer();
 
 	virtual void draw_ui() override;
 	virtual void draw() override;

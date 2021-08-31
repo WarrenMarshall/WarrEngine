@@ -59,7 +59,7 @@ struct UI_Control
 // ----------------------------------------------------------------------------
 // #DOP - it feels like all these subclasses could be reduced to DOP
 
-struct UI_Panel_Control final : UI_Control
+struct UI_Panel_Control : UI_Control
 {
 	UI_Panel_Control( hash tag = hash_none );
 
@@ -69,7 +69,7 @@ struct UI_Panel_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Caption_Control final : UI_Control
+struct UI_Caption_Control : UI_Control
 {
 	UI_Caption_Control( hash tag = hash_none );
 
@@ -79,7 +79,7 @@ struct UI_Caption_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Button_Control final : UI_Control
+struct UI_Button_Control : UI_Control
 {
 	UI_Button_Control( hash tag = hash_none );
 
@@ -89,7 +89,7 @@ struct UI_Button_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Check_Control final : UI_Control
+struct UI_Check_Control : UI_Control
 {
 	UI_Check_Control( hash tag = hash_none );
 
@@ -100,7 +100,7 @@ struct UI_Check_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Divider_Control final : UI_Control
+struct UI_Divider_Control : UI_Control
 {
 	UI_Divider_Control( hash tag = hash_none );
 
@@ -111,7 +111,7 @@ struct UI_Divider_Control final : UI_Control
 	virtual Vec2 get_control_inner_margins() override;
 };
 
-struct UI_Spacer_Control final : UI_Control
+struct UI_Spacer_Control : UI_Control
 {
 	UI_Spacer_Control( hash tag = hash_none );
 
@@ -123,7 +123,7 @@ struct UI_Spacer_Control final : UI_Control
 };
 
 
-struct UI_Image_Control final : UI_Control
+struct UI_Image_Control : UI_Control
 {
 	UI_Image_Control( hash tag = hash_none );
 
@@ -133,7 +133,7 @@ struct UI_Image_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Label_Control final : UI_Control
+struct UI_Label_Control : UI_Control
 {
 	UI_Label_Control( hash tag = hash_none );
 
@@ -143,7 +143,7 @@ struct UI_Label_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Slider_Control final : UI_Control
+struct UI_Slider_Control : UI_Control
 {
 	UI_Slider_Control( hash tag = hash_none );
 
@@ -156,7 +156,7 @@ struct UI_Slider_Control final : UI_Control
 	virtual Vec2 get_control_inner_margins() override;
 };
 
-struct UI_Text_Control final : UI_Control
+struct UI_Text_Control : UI_Control
 {
 	UI_Text_Control( hash tag = hash_none );
 
@@ -166,7 +166,7 @@ struct UI_Text_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Radio_Control final : UI_Control
+struct UI_Radio_Control : UI_Control
 {
 	UI_Radio_Control( hash tag = hash_none );
 
@@ -176,7 +176,7 @@ struct UI_Radio_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Progress_Control final : UI_Control
+struct UI_Progress_Control : UI_Control
 {
 	UI_Progress_Control( hash tag = hash_none );
 
@@ -187,7 +187,7 @@ struct UI_Progress_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_List_Control final : UI_Control
+struct UI_List_Control : UI_Control
 {
 	UI_List_Control( hash tag = hash_none );
 
@@ -197,7 +197,7 @@ struct UI_List_Control final : UI_Control
 	static float get_default_height();
 };
 
-struct UI_Dropdown_Control final : UI_Control
+struct UI_Dropdown_Control : UI_Control
 {
 	UI_Dropdown_Control( hash tag = hash_none );
 

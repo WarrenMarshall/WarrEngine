@@ -71,7 +71,7 @@ static_assert( sizeof( Entity_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct Sprite_Component final : Entity_Component
+struct Sprite_Component : Entity_Component
 {
 	Texture_Asset* texture = nullptr;
 	float anim_offset = 0.f;
@@ -89,9 +89,9 @@ static_assert( sizeof( Sprite_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct Primitve_Shape_Component final : Entity_Component
+struct Primitve_Shape_Component : Entity_Component
 {
-	struct Shape_Def final
+	struct Shape_Def
 	{
 		e_primitive_shape_t prim_shape = e_primitive_shape::rect;
 		Rect rc = {};
@@ -115,7 +115,7 @@ static_assert( sizeof( Primitve_Shape_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct Emitter_Component final : Entity_Component
+struct Emitter_Component : Entity_Component
 {
 	Emitter_Component() = default;
 	Emitter_Component( Entity* parent_entity );
@@ -133,7 +133,7 @@ static_assert( sizeof( Emitter_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct Sound_Component final : Entity_Component
+struct Sound_Component : Entity_Component
 {
 	Sound_Asset* snd = nullptr;
 
@@ -173,7 +173,7 @@ static_assert( sizeof( Sound_Component ) <= max_entity_component_sz );
 // ----------------------------------------------------------------------------
 // physics
 
-struct Box2D_Physics_Component final : Entity_Component
+struct Box2D_Physics_Component : Entity_Component
 {
 	Box2D_Physics_Component() = delete;
 	Box2D_Physics_Component( Entity* parent_entity );
@@ -243,7 +243,7 @@ static_assert( sizeof( Box2D_Static_Body_Component ) <= max_entity_component_sz 
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
 
-struct Box2D_Dynamic_Body_Component final : Box2D_Physics_Body_Component
+struct Box2D_Dynamic_Body_Component : Box2D_Physics_Body_Component
 {
 	Box2D_Dynamic_Body_Component() = delete;
 	Box2D_Dynamic_Body_Component( Entity* parent_entity );
@@ -254,7 +254,7 @@ static_assert( sizeof( Box2D_Dynamic_Body_Component ) <= max_entity_component_sz
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
-struct Box2D_Kinematic_Body_Component final : Box2D_Physics_Body_Component
+struct Box2D_Kinematic_Body_Component : Box2D_Physics_Body_Component
 {
 	Box2D_Kinematic_Body_Component() = delete;
 	Box2D_Kinematic_Body_Component( Entity* parent_entity );
@@ -264,7 +264,7 @@ static_assert( sizeof( Box2D_Kinematic_Body_Component ) <= max_entity_component_
 
 // ----------------------------------------------------------------------------
 
-struct Mesh_Component final : Entity_Component
+struct Mesh_Component : Entity_Component
 {
 	Mesh_Asset* mesh = nullptr;
 
@@ -341,7 +341,7 @@ static_assert( sizeof( Simple_Collision_Platform_Body ) <= max_entity_component_
 
 // ----------------------------------------------------------------------------
 
-struct Tile_Map_Component final : Entity_Component
+struct Tile_Map_Component : Entity_Component
 {
 	Tile_Map_Component() = delete;
 	Tile_Map_Component( Entity* parent_entity );
@@ -352,7 +352,7 @@ struct Tile_Map_Component final : Entity_Component
 	virtual void draw() override;
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
-	void spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback );
+	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
 
 static_assert( sizeof( Tile_Map_Component ) <= max_entity_component_sz );

@@ -1,11 +1,11 @@
 
-struct scene_default final : scene
+struct Scene_Default : Scene
 {
 	Texture_Asset* gradient = nullptr;
 	Texture_Asset* tex_hello_world = nullptr;
 	Tween movement_tween, scale_tween, tilt_tween;
 
-	scene_default();
+	Scene_Default();
 
 	virtual void pushed() override;
 	virtual void draw() override;

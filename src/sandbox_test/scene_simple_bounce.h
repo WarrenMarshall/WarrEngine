@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_simple_bounce final : scene
+struct Scene_Simple_Bounce : Scene
 {
-	scene_simple_bounce();
+	Scene_Simple_Bounce();
 
 	// debug
 	bool first_time = true;

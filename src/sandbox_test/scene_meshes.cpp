@@ -3,7 +3,7 @@
 
 using namespace war;
 
-scene_meshes::scene_meshes()
+Scene_Meshes::Scene_Meshes()
 {
 	flags.blocks_further_drawing = true;
 
@@ -11,9 +11,9 @@ scene_meshes::scene_meshes()
 	mesh_scaler = Tween( 1.f, 2.f, 3000, e_tween_type::pingpong, e_tween_via::sinusoidal );
 }
 
-void scene_meshes::pushed()
+void Scene_Meshes::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	// PLAYER
 
@@ -41,18 +41,18 @@ void scene_meshes::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
-void scene_meshes::draw()
+void Scene_Meshes::draw()
 {
 	mesh_player->get_transform()->set_angle( *mesh_rotator );
 	mesh_crate->get_transform()->set_scale( *mesh_scaler );
 
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_meshes::draw_ui()
+void Scene_Meshes::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Meshes" );
 }

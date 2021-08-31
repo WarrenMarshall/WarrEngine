@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_noise final : scene
+struct Scene_Noise : Scene
 {
-	scene_noise();
+	Scene_Noise();
 
 	Simplex_Noise simplex = {};
 	float simplex_samples[ 64 ];

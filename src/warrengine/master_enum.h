@@ -456,7 +456,7 @@ enum_begin( framebuffer )
 	pick_ids,
 	blurred,
 	composited,
-	final,
+	Scene_Angle_Dirs,
 	max,
 enum_end
 
@@ -472,7 +472,6 @@ enum_end
 
 enum_begin( sc_body_collider_type )
 	solid = 0,
-//	platform,
 	sensor,
 enum_end
 

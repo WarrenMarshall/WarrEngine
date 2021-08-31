@@ -13,15 +13,15 @@ static const unsigned scene_box2d_ball = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 
-scene_box2d::scene_box2d()
+Scene_Box2D::Scene_Box2D()
 {
 	flags.blocks_further_drawing = true;
 	flags.is_debug_physics_scene = true;
 }
 
-void scene_box2d::pushed()
+void Scene_Box2D::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
@@ -70,7 +70,7 @@ void scene_box2d::pushed()
 	}
 }
 
-void scene_box2d::draw()
+void Scene_Box2D::draw()
 {
 	{
 		scoped_render_state;
@@ -79,21 +79,21 @@ void scene_box2d::draw()
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ), Rect( -viewport_hw, -viewport_h, viewport_w, viewport_h ) );
 	}
 
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_box2d::draw_ui()
+void Scene_Box2D::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Box2D Physics" );
 }
 
 // spawns a randomly sized emoji ball at "world_pos"
 
-void scene_box2d::spawn_ball_at( Vec2 world_pos )
+void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 {
-	auto e = add_entity<e_emoji_ball>();
+	auto e = add_entity<E_Emoji_Ball>();
 	e->set_pos( world_pos );
 	e->rs_opt.color = Color( Random::getf(), Random::getf(), Random::getf() );
 	e->make_pickable();
@@ -118,7 +118,7 @@ void scene_box2d::spawn_ball_at( Vec2 world_pos )
 
 // spawns a randomly sized and colored box at "world_pos"
 
-void scene_box2d::spawn_box_at( Vec2 world_pos )
+void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 {
 	float base_size = 8.f;
 	float w = Random::getf_range( base_size, base_size * 10.f );
@@ -157,7 +157,7 @@ void scene_box2d::spawn_box_at( Vec2 world_pos )
 	}
 }
 
-bool scene_box2d::on_input_pressed( const Input_Event* evt )
+bool Scene_Box2D::on_input_pressed( const Input_Event* evt )
 {
 	// spawn ball at random location
 	if( evt->input_id == e_input_id::key_r )
@@ -210,7 +210,7 @@ bool scene_box2d::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene_box2d::on_input_motion( const Input_Event* evt )
+bool Scene_Box2D::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

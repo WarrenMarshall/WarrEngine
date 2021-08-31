@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct scene_entity_picking final : scene
+struct Scene_Entity_Picking : Scene
 {
-	scene_entity_picking();
+	Scene_Entity_Picking();
 
 	virtual void pushed() override;
 	virtual void draw() override;

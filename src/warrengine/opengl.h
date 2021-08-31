@@ -3,7 +3,7 @@ namespace war
 {
 
 // #OpenGL_Mgr - what's a better name for this?
-struct OpenGL_Mgr final
+struct OpenGL_Mgr
 {
 	// used for scaling/rotating objects around their local origins and then
 	// translating them into world space

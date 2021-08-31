@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Random final
+struct Random
 {
 	static void seed();
 	[[nodiscard]] static float getf();

@@ -2,7 +2,7 @@
 namespace war::box2d_physics
 {
 
-struct Pending_Collision final
+struct Pending_Collision
 {
 	Entity* entity_a = nullptr;
 	b2Fixture* fixture_a = nullptr;

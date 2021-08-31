@@ -3,13 +3,13 @@
 
 using namespace war;
 
-sandbox_test_app::sandbox_test_app()
+Sandbox_Test_App::Sandbox_Test_App()
 	: Game( "sandbox_test" )
 {
 	flags.has_main_menu = true;
 }
 
-void sandbox_test_app::init()
+void Sandbox_Test_App::init()
 {
 #if 0
 	//g_engine->render_api.set_uniform( "ub_vignette", true );
@@ -31,12 +31,12 @@ void sandbox_test_app::init()
 	g_engine->render_api.set_uniform( "u_pixelate_factor", 1.f );
 #endif
 
-	g_engine->scene_mgr.push<scene_main_menu>();
+	g_engine->scene_mgr.push<Scene_Main_Menu>();
 }
 
-void sandbox_test_app::reset_scene_stack_to_main_menu()
+void Sandbox_Test_App::reset_scene_stack_to_main_menu()
 {
 	g_engine->scene_mgr.clear_stack();
 
-	g_engine->scene_mgr.push<scene_main_menu>();
+	g_engine->scene_mgr.push<Scene_Main_Menu>();
 }

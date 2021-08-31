@@ -5,27 +5,27 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-scene_angle_dirs::scene_angle_dirs()
+Scene_Angle_Dirs::Scene_Angle_Dirs()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_angle_dirs::pushed()
+void Scene_Angle_Dirs::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
-void scene_angle_dirs::draw()
+void Scene_Angle_Dirs::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 
-//	scoped_render_state;
+	//	scoped_render_state;
 
-	// circle at world origin
+		// circle at world origin
 	Render::state->color = make_color( e_pal::brighter );
 	Render::draw_filled_circle( Vec2::zero, 6.f );
 
@@ -38,9 +38,9 @@ void scene_angle_dirs::draw()
 	Render::draw_line( Vec2::zero, marker_pos );
 }
 
-void scene_angle_dirs::draw_ui()
+void Scene_Angle_Dirs::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Angles / Directions" );
 
 	scoped_render_state;
@@ -66,7 +66,7 @@ void scene_angle_dirs::draw_ui()
 	}
 }
 
-bool scene_angle_dirs::on_input_motion( const Input_Event* evt )
+bool Scene_Angle_Dirs::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

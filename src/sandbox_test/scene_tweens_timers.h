@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct scene_tweens final : scene
+struct Scene_Tweens_Timers : Scene
 {
 	Texture_Asset* tween_tex = nullptr;
 
@@ -20,7 +20,7 @@ struct scene_tweens final : scene
 	Timer timer_01;
 	Timer timer_02;
 
-	scene_tweens();
+	Scene_Tweens_Timers();
 
 	virtual void pushed() override;
 	virtual void draw() override;

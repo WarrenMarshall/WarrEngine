@@ -3,14 +3,14 @@
 
 using namespace war;
 
-scene_textures::scene_textures()
+Scene_Textures::Scene_Textures()
 {
 	flags.blocks_further_drawing = true;
 }
 
-void scene_textures::pushed()
+void Scene_Textures::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	tex_crate = g_engine->find_asset<Texture_Asset>( "tex_crate_01" );
 	grad_horizontal = g_engine->find_asset<Texture_Asset>( "gradient_horizontal" );
@@ -26,16 +26,16 @@ void scene_textures::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
-void scene_textures::draw()
+void Scene_Textures::draw()
 {
 	draw_tiled_background();
-	scene::draw();
+	Scene::draw();
 	Render::draw_world_axis();
 }
 
-void scene_textures::draw_ui()
+void Scene_Textures::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 	draw_title( "Textures" );
 
 	{

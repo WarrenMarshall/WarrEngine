@@ -1602,7 +1602,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 // loops through any layer with the name "entities" and calls the callback
 // function with that index so the layer in question can spawn it
 
-void Tile_Map_Component::spawn_entities( scene* scene, f_tile_map_spawn_entity func_callback )
+void Tile_Map_Component::spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback )
 {
 	for( auto& layer : tile_map->layers )
 	{

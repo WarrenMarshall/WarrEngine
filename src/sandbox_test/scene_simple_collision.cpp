@@ -11,16 +11,16 @@ static const unsigned scene_simple_coll_ball = collision_bits.get();
 static const unsigned scene_simple_coll_world = collision_bits.next();
 static const unsigned scene_simple_coll_dynamic_object = collision_bits.get();
 
-scene_simple_collision::scene_simple_collision()
+Scene_Simple_Collision::Scene_Simple_Collision()
 {
 	flags.blocks_further_drawing = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }
 
-void scene_simple_collision::pushed()
+void Scene_Simple_Collision::pushed()
 {
-	scene::pushed();
+	Scene::pushed();
 
 	g_engine->render.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
@@ -70,7 +70,7 @@ void scene_simple_collision::pushed()
 	}
 }
 
-void scene_simple_collision::draw()
+void Scene_Simple_Collision::draw()
 {
 	{
 		scoped_render_state;
@@ -79,21 +79,21 @@ void scene_simple_collision::draw()
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	scene::draw();
+	Scene::draw();
 	//render::draw_world_axis();
 }
 
-void scene_simple_collision::draw_ui()
+void Scene_Simple_Collision::draw_ui()
 {
-	scene::draw_ui();
+	Scene::draw_ui();
 }
 
-void scene_simple_collision::update()
+void Scene_Simple_Collision::update()
 {
-	scene::update();
+	Scene::update();
 }
 
-void scene_simple_collision::spawn_ball_at( Vec2 world_pos )
+void Scene_Simple_Collision::spawn_ball_at( Vec2 world_pos )
 {
 	auto e = add_entity<Entity>( "ball" );
 	e->set_pos( world_pos );
@@ -118,7 +118,7 @@ void scene_simple_collision::spawn_ball_at( Vec2 world_pos )
 	}
 }
 
-void scene_simple_collision::spawn_box_at( Vec2 world_pos )
+void Scene_Simple_Collision::spawn_box_at( Vec2 world_pos )
 {
 	float base_size = 8.f;
 	float w = Random::getf_range( base_size, base_size * 10.f );
@@ -147,7 +147,7 @@ void scene_simple_collision::spawn_box_at( Vec2 world_pos )
 	}
 }
 
-bool scene_simple_collision::on_input_pressed( const Input_Event* evt )
+bool Scene_Simple_Collision::on_input_pressed( const Input_Event* evt )
 {
 	// spawn ball at random location
 	if( evt->input_id == e_input_id::key_r )
@@ -200,7 +200,7 @@ bool scene_simple_collision::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool scene_simple_collision::on_input_motion( const Input_Event* evt )
+bool Scene_Simple_Collision::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
