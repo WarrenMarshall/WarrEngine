@@ -9,10 +9,6 @@ namespace war
 struct Scene_Transient final : scene
 {
 	Scene_Transient();
-
-/*
-	virtual void draw_ui() override;
-*/
 };
 
 }

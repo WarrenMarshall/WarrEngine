@@ -502,5 +502,6 @@ enum_begin( tnkf_type )
 	play_sound,
 	scene_push_under,
 	scene_pop_under,
+	reset_scene_stack_to_main_menu,
 	max,
 enum_end

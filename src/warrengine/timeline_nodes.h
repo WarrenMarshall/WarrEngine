@@ -24,6 +24,7 @@ struct Timeline_Nodes final
 	void add_kf_play_sound( bool should_restore_state, float pct_marker, Sound_Asset* snd );
 	void add_kf_scene_push_under( bool should_restore_state, float pct_marker, std::unique_ptr<scene> scene_to_push );
 	void add_kf_scene_pop_under( bool should_restore_state, float pct_marker );
+	void add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, float pct_marker );
 };
 
 }

@@ -62,6 +62,14 @@ void Timeline_Nodes_Key_Frame::on_started_running()
 			life_cycle.set( e_life_cycle::dead );
 		}
 		break;
+
+		// ----------------------------------------------------------------------------
+		case e_tnkf_type::reset_scene_stack_to_main_menu:
+		{
+			g_base_game->reset_scene_stack_to_main_menu();
+			life_cycle.set( e_life_cycle::dead );
+		}
+		break;
 	}
 }
 

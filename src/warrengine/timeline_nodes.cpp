@@ -113,4 +113,9 @@ void Timeline_Nodes::add_kf_scene_pop_under( bool should_restore_state, float pc
 	key_frames.emplace_back( e_tnkf_type::scene_pop_under, should_restore_state, pct_marker, 0 );
 }
 
+void Timeline_Nodes::add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, float pct_marker )
+{
+	key_frames.emplace_back( e_tnkf_type::reset_scene_stack_to_main_menu, should_restore_state, pct_marker, 0 );
+}
+
 }
