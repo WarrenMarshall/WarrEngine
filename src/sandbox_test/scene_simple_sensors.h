@@ -1,6 +1,13 @@
 
 using namespace war;
 
+struct E_Sensor_Player : Entity
+{
+	virtual bool on_touched( simple_collision::Pending_Collision& coll ) override;
+};
+
+// ----------------------------------------------------------------------------
+
 struct Scene_Simple_Sensors : Scene
 {
 	Scene_Simple_Sensors();

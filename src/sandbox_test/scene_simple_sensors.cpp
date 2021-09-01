@@ -5,10 +5,20 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
+bool E_Sensor_Player::on_touched( simple_collision::Pending_Collision& coll )
+{
+	int warren = 5;
+
+	return true;
+}
+
+// ----------------------------------------------------------------------------
+
 static Bit_Flag_Generator collision_bits = 1;
 
 static const unsigned scene_simple_sensors_player = collision_bits.get();
 static const unsigned scene_simple_sensors_world = collision_bits.next();
+static const unsigned scene_simple_sensors_sensor = collision_bits.next();
 
 Scene_Simple_Sensors::Scene_Simple_Sensors()
 {
@@ -26,8 +36,8 @@ void Scene_Simple_Sensors::pushed()
 
 	// KINEMATIC CIRCLE
 	{
-		auto e = add_entity<Entity>();
-		e->tag = H( "main_ball" );
+		auto e = add_entity<E_Sensor_Player>();
+		e->tag = H( "the_player" );
 		e->simple.type = e_sc_type::kinematic;
 		{
 			auto ec = e->add_component<Primitve_Shape_Component>();
@@ -36,7 +46,24 @@ void Scene_Simple_Sensors::pushed()
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->set_as_circle( 32.f );
-			ec->set_collision_flags( scene_simple_sensors_player, 0 );
+			ec->set_collision_flags( scene_simple_sensors_player, scene_simple_sensors_world | scene_simple_sensors_sensor );
+		}
+	}
+
+	// SENSORS
+
+
+	{
+		auto e = add_entity<Entity>( "world" );
+		e->simple.type = e_sc_type::stationary;
+
+		// 4 walls
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw / 4.f, 0.f } );
+			ec->set_as_circle( 16.f );
+			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
+			ec->set_collision_flags( scene_simple_sensors_sensor, 0 );
 		}
 	}
 
@@ -116,7 +143,7 @@ bool Scene_Simple_Sensors::on_input_motion( const Input_Event* evt )
 				{
 					auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 
-					auto e = find_entity( H( "main_ball" ) );
+					auto e = find_entity( H( "the_player" ) );
 					e->set_pos( world_pos );
 
 					return true;

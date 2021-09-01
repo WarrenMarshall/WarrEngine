@@ -169,12 +169,11 @@ bool Scene_Box2D::on_input_pressed( const Input_Event* evt )
 			num_new_balls = 20;
 		}
 
-		Range<float> spawn_x( -viewport_hw + 8, +viewport_hw - 8 );
-		Range<float> spawn_y( -viewport_hh, -8.f );
+		Bounding_Box spawn_area( { -viewport_hw + 8, -8.f }, { viewport_hw - 8, -viewport_hh } );
 
 		for( auto x = 0 ; x < num_new_balls ; ++x )
 		{
-			spawn_ball_at( { spawn_x.get_random_value(), spawn_y.get_random_value() } );
+			spawn_ball_at( spawn_area.get_random_spot() );
 		}
 	}
 

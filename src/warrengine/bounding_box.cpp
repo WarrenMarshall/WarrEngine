@@ -10,6 +10,14 @@ Bounding_Box::Bounding_Box()
 	reset();
 }
 
+Bounding_Box::Bounding_Box( const Vec2& v1, const Vec2& v2 )
+{
+	reset();
+	min = v1;
+	max = v1;
+	add( v2 );
+}
+
 void Bounding_Box::add( const Vec2& vtx )
 {
 	min.x = glm::min( min.x, vtx.x );
@@ -23,6 +31,14 @@ void Bounding_Box::reset()
 {
 	min.x = min.y = std::numeric_limits<float>::max();
 	max.x = max.y = std::numeric_limits<float>::min();
+}
+
+Vec2 Bounding_Box::get_random_spot() const
+{
+	auto dist_x = ( Vec2( max.x, 0.f ) - Vec2( min.x, 0.f ) ).get_size();
+	auto dist_y = ( Vec2( 0.f, max.y ) - Vec2( 0.f, min.y ) ).get_size();
+
+	return Vec2( min.x + ( dist_x * Random::getf() ), min.y + ( dist_y * Random::getf() ) );
 }
 
 Bounding_Box Bounding_Box::operator+( const Vec2& v ) const
