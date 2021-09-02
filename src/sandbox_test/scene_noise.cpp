@@ -6,6 +6,7 @@ using namespace war;
 Scene_Noise::Scene_Noise()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 
 	memset( &perlin_samples[ 0 ], 0, sizeof( float ) * 64 );
 	memset( &simplex_samples[ 0 ], 0, sizeof( float ) * 64 );

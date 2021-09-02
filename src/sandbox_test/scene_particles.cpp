@@ -6,6 +6,7 @@ using namespace war;
 Scene_Particles::Scene_Particles()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Particles::pushed()

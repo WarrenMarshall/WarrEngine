@@ -16,6 +16,7 @@ static const unsigned scene_box2d_ball = collision_bits.next();
 Scene_Box2D::Scene_Box2D()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 	flags.is_debug_physics_scene = true;
 }
 

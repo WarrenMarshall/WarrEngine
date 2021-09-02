@@ -8,6 +8,7 @@ using namespace war;
 Scene_Angle_Dirs::Scene_Angle_Dirs()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Angle_Dirs::pushed()

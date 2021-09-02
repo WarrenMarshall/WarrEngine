@@ -6,6 +6,7 @@ using namespace war;
 Scene_Meshes::Scene_Meshes()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 
 	mesh_rotator = Tween( 0, 360, 5000, e_tween_type::pingpong, e_tween_via::bounce );
 	mesh_scaler = Tween( 1.f, 2.f, 3000, e_tween_type::pingpong, e_tween_via::sinusoidal );

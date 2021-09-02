@@ -18,6 +18,8 @@ Scene_Simple_Platformer::Scene_Simple_Platformer()
 {
 	flags.is_debug_physics_scene = true;
 	flags.requires_controller = true;
+	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Simple_Platformer::draw_ui()

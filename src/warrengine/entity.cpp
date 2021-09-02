@@ -37,20 +37,6 @@ void Entity::pre_update()
 
 	simple.is_in_air = true;
 
-	if( simple.is_affected_by_gravity )
-	{
-		float accel = 1.0f;
-
-		// if entity is already falling downwards, accelerate the fall. this
-		// makes jumping feel tighter.
-		if( velocity.y > 0.f )
-		{
-			accel = 2.0f;
-		}
-
-		add_force( { Vec2::y_axis, simple_collision_gravity_default * accel } );
-	}
-
 	apply_forces();
 }
 
@@ -103,7 +89,7 @@ void Entity::post_update_components()
 			log( "{}", debug_name );
 		}
 		log( "P : {:.2f}, {:.2f}", tform->pos.x, tform->pos.y );
-		log( "V : {:.2f}, {:.2f}", velocity.x, velocity.y );
+		log( "V : {:.8f}, {:.8f}", velocity.x, velocity.y );
 		log( "---" );
 	}
 #endif
@@ -169,16 +155,30 @@ void Entity::reflect_across( Vec2 normal )
 
 void Entity::apply_forces()
 {
+	if( simple.is_affected_by_gravity )
+	{
+		float accel = 1.0f;
+
+		// if entity is already falling downwards, accelerate the fall. this
+		// makes jumping feel tighter.
+		if( velocity.y > 0.f )
+		{
+			accel = 2.0f;
+		}
+
+		add_force( { Vec2::y_axis, simple_collision_gravity_default * accel } );
+	}
+
 	compile_velocity();
 
-/*
 	// if the velocity has reached a point where it's so small we're just jittering, clear it out.
-	if( simple.is_dynamic() && velocity.get_size() < 0.05f )
+	if( simple.is_dynamic() )
 	{
-		velocity = vec2::zero;
-		return;
+		if( glm::abs( velocity.y ) < 0.1f )
+			velocity.y = 0.f;
+		if( glm::abs( velocity.x ) < 0.1f )
+			velocity.x = 0.f;
 	}
-*/
 
 	add_delta_pos( velocity );
 

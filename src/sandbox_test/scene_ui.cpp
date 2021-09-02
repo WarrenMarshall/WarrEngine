@@ -96,6 +96,7 @@ Scene_UI::Scene_UI()
 {
 	ui_callback = std::make_unique<Scene_UI_Callback>();
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_UI::pushed()

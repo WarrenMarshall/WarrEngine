@@ -15,7 +15,6 @@ UI_Control_Data* Scene_Wrapped_Text_UI_Callback::get_data( hash tag )
 		{
 			return &radio_alignment_data;
 		}
-		break;
 	}
 
 	return UI_Callback::get_data( tag );
@@ -28,6 +27,7 @@ Scene_Wrapped_Text::Scene_Wrapped_Text()
 	ui_callback = std::make_unique<Scene_Wrapped_Text_UI_Callback>();
 
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Wrapped_Text::pushed()
@@ -117,7 +117,6 @@ void Scene_Wrapped_Text::draw_ui()
 		->set_text( "Center" )
 		->set_idx( 1 )
 		->done();
-
 
 	g_ui
 		->radio_control( H( "rb_align_right" ) )

@@ -6,6 +6,7 @@ using namespace war;
 Scene_TileMap::Scene_TileMap()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_TileMap::pushed()

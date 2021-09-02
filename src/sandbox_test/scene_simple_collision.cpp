@@ -14,6 +14,7 @@ static const unsigned scene_simple_coll_dynamic_object = collision_bits.get();
 Scene_Simple_Collision::Scene_Simple_Collision()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }

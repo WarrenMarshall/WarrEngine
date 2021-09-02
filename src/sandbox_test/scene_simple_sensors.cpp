@@ -23,6 +23,7 @@ static const unsigned scene_simple_sensors_sensor = collision_bits.next();
 Scene_Simple_Sensors::Scene_Simple_Sensors()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }

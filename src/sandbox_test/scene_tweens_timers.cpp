@@ -6,6 +6,7 @@ using namespace war;
 Scene_Tweens_Timers::Scene_Tweens_Timers()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Tweens_Timers::pushed()

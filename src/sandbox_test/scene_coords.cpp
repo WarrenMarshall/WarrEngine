@@ -8,6 +8,7 @@ using namespace war;
 Scene_Coords::Scene_Coords()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Coords::pushed()

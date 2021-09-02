@@ -23,6 +23,7 @@ constexpr auto radius = 12.f;
 Scene_Simple_Top_Down::Scene_Simple_Top_Down()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }

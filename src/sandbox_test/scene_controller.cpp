@@ -27,6 +27,7 @@ Scene_Controller::Scene_Controller()
 {
 	ui_callback = std::make_unique<Scene_Controller_UI_Callback>();
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Controller::pushed()

@@ -6,6 +6,7 @@ using namespace war;
 Scene_Main_Menu::Scene_Main_Menu()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Main_Menu::pushed()

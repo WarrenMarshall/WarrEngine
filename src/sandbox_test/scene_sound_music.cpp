@@ -4,6 +4,7 @@
 Scene_Sound_Music::Scene_Sound_Music()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Sound_Music::draw()

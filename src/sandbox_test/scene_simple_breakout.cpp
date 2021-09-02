@@ -42,6 +42,7 @@ bool E_Breakout_Paddle::on_collided( simple_collision::Pending_Collision& coll )
 Scene_Simple_Breakout::Scene_Simple_Breakout()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }

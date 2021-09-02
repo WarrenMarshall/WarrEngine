@@ -15,6 +15,7 @@ static const unsigned scene_simple_space_coll_geo = collision_bits.next();
 Scene_Simple_Bounce::Scene_Simple_Bounce()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 	flags.requires_controller = false;
 	flags.is_debug_physics_scene = true;
 }

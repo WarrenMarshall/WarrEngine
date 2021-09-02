@@ -6,6 +6,7 @@ using namespace war;
 Scene_Textures::Scene_Textures()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Textures::pushed()
@@ -62,6 +63,7 @@ void Scene_Textures::draw_ui()
 		l_draw_info_box( "animated", { 194.f, 128.f, 108.f, 108.f } );
 
 		Render::state->color = make_color( Color::white );
+		Render::state->z += zdepth_nudge;
 
 		// crate, quad
 

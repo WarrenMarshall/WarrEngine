@@ -109,8 +109,8 @@ void Simple_Collision_World::handle_collisions()
 				// every time. so basically avoids "A hit B" and then "B hit A"
 				// - we only care that "A hit B".
 
-				if( !colliding_bodies_set.contains( std::make_pair( scc_a, scc_b ) )
-					and !colliding_bodies_set.contains( std::make_pair( scc_b, scc_a ) ) )
+				//if( !colliding_bodies_set.contains( std::make_pair( scc_a, scc_b ) )
+				//	and !colliding_bodies_set.contains( std::make_pair( scc_b, scc_a ) ) )
 				{
 					colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
 				}
@@ -138,35 +138,49 @@ void Simple_Collision_World::handle_collisions()
 			}
 		}
 
+		switch( body_b->collider_type )
 		{
-			switch( body_a->collider_type )
+			case e_sc_body_collider_type::sensor:
 			{
-				case e_sc_body_collider_type::solid:
+				auto coll = body_b->intersects_with_manifold( body_a );
+				if( coll.has_value() )
 				{
-					auto coll = body_a->intersects_with_manifold( body_b );
-					if( coll.has_value() )
-					{
-						push_apart( *coll );
-						resolve_collision( *coll );
-						need_another_iteration = true;
-					}
+					resolve_touch( *coll );
+					continue;
 				}
-				break;
-
-				// #collision - it feels like sensors are going to have to do some
-				// sort of batching thing so we only fire them ONCE per update cycle
-				// and not every time through the collision iteration
-
-				case e_sc_body_collider_type::sensor:
-				{
-					auto coll = body_a->intersects_with_manifold( body_b );
-					if( coll.has_value() )
-					{
-						resolve_touch( *coll );
-					}
-				}
-				break;
 			}
+			break;
+		}
+
+		switch( body_a->collider_type )
+		{
+			case e_sc_body_collider_type::solid:
+			{
+				auto coll = body_a->intersects_with_manifold( body_b );
+				if( coll.has_value() )
+				{
+					push_apart( *coll );
+					resolve_collision( *coll );
+					need_another_iteration = true;
+					continue;
+				}
+			}
+			break;
+
+			// #collision - it feels like sensors are going to have to do some
+			// sort of batching thing so we only fire them ONCE per update cycle
+			// and not every time through the collision iteration
+
+			case e_sc_body_collider_type::sensor:
+			{
+				auto coll = body_a->intersects_with_manifold( body_b );
+				if( coll.has_value() )
+				{
+					resolve_touch( *coll );
+					continue;
+				}
+			}
+			break;
 		}
 	}
 }
@@ -241,7 +255,7 @@ void Simple_Collision_World::resolve_collision( simple_collision::Pending_Collis
 	// if we're here, then the entities didn't fully handle the collision and we
 	// should resolve it using the default behaviors
 
-	if( ent_a->simple.is_dynamic() and ent_b->simple.is_dynamic() )
+	if( !ent_a->simple.is_stationary() and !ent_b->simple.is_stationary() )
 	{
 		// ----------------------------------------------------------------------------
 		// dynamic-to-dynamic
@@ -324,7 +338,7 @@ void Simple_Collision_World::resolve_collision( simple_collision::Pending_Collis
 	}
 	else
 	{
-		if( ent_a->simple.is_dynamic() and ent_b->simple.is_stationary() )
+		if( ent_b->simple.is_stationary() )
 		{
 			// when landing on the ground, kill any velocity on the Y axis. this
 			// stops it from accruing to the maximum as you run around on flat
@@ -340,6 +354,25 @@ void Simple_Collision_World::resolve_collision( simple_collision::Pending_Collis
 			if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
 			{
 				ent_a->velocity.x = 0.f;
+			}
+		}
+
+		if( ent_a->simple.is_stationary() )
+		{
+			// when landing on the ground, kill any velocity on the Y axis. this
+			// stops it from accruing to the maximum as you run around on flat
+			// geo.
+
+			if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+			{
+				ent_b->velocity.y = 0.f;
+			}
+
+			// hitting a wall kills horizontal velocity
+
+			if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+			{
+				ent_b->velocity.x = 0.f;
 			}
 		}
 	}

@@ -6,6 +6,7 @@ using namespace war;
 Scene_Entity_Picking::Scene_Entity_Picking()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_update = true;
 }
 
 void Scene_Entity_Picking::pushed()
