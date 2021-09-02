@@ -19,8 +19,8 @@ void Particle_Spawner::find_spawn_pos_for_new_particle( Particle* particle )
 
 		case e_particle_spawner_type::box:
 		{
-			particle->pos.x = Range( -( w / 2.f ), ( w / 2.f ) ).get_random_value();
-			particle->pos.y = Range( -( h / 2.f ), ( h / 2.f ) ).get_random_value();
+			Bounding_Box spawn_area( { -( w / 2.f ), -( h / 2.f ) }, { ( w / 2.f ), ( h / 2.f ) } );
+			particle->pos = spawn_area.get_random_spot();
 			break;
 		}
 
