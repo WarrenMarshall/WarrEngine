@@ -7,7 +7,7 @@ using namespace war;
 
 bool E_Sensor_Player::on_touched( simple_collision::Pending_Collision& coll )
 {
-	int warren = 5;
+	log( "player touching sensor : {}", g_engine->clock.now() );
 
 	return true;
 }
@@ -58,11 +58,17 @@ void Scene_Simple_Sensors::pushed()
 		auto e = add_entity<Entity>( "world" );
 		e->simple.type = e_sc_type::stationary;
 
-		// 4 walls
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw / 4.f, 0.f } );
 			ec->set_as_circle( 16.f );
+			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
+			ec->set_collision_flags( scene_simple_sensors_sensor, 0 );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw / 2.f, 16.f } );
+			ec->set_as_circle( 32.f );
 			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
 			ec->set_collision_flags( scene_simple_sensors_sensor, 0 );
 		}

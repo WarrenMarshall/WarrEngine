@@ -300,6 +300,9 @@ struct Simple_Collision_Body : Entity_Component
 
 	e_sc_body_collider_type_t collider_type = e_sc_body_collider_type::solid;
 
+	[[nodiscard]] bool is_solid() { return collider_type == e_sc_body_collider_type::solid; }
+	[[nodiscard]] bool is_sensor() { return collider_type == e_sc_body_collider_type::sensor; }
+
 	struct
 	{
 		Vec2 pos = {};

@@ -138,49 +138,26 @@ void Simple_Collision_World::handle_collisions()
 			}
 		}
 
-		switch( body_b->collider_type )
+		if( body_a->is_solid() and body_b->is_solid() )
 		{
-			case e_sc_body_collider_type::sensor:
+			auto coll = body_a->intersects_with_manifold( body_b );
+			if( coll.has_value() )
 			{
-				auto coll = body_b->intersects_with_manifold( body_a );
-				if( coll.has_value() )
-				{
-					resolve_touch( *coll );
-					continue;
-				}
+				push_apart( *coll );
+				resolve_solid_collision( *coll );
+				need_another_iteration = true;
+				continue;
 			}
-			break;
 		}
 
-		switch( body_a->collider_type )
+		if( body_a->is_sensor() or body_b->is_sensor() )
 		{
-			case e_sc_body_collider_type::solid:
+			auto coll = body_a->intersects_with_manifold( body_b );
+			if( coll.has_value() )
 			{
-				auto coll = body_a->intersects_with_manifold( body_b );
-				if( coll.has_value() )
-				{
-					push_apart( *coll );
-					resolve_collision( *coll );
-					need_another_iteration = true;
-					continue;
-				}
+				resolve_sensor_collision( *coll );
+				continue;
 			}
-			break;
-
-			// #collision - it feels like sensors are going to have to do some
-			// sort of batching thing so we only fire them ONCE per update cycle
-			// and not every time through the collision iteration
-
-			case e_sc_body_collider_type::sensor:
-			{
-				auto coll = body_a->intersects_with_manifold( body_b );
-				if( coll.has_value() )
-				{
-					resolve_touch( *coll );
-					continue;
-				}
-			}
-			break;
 		}
 	}
 }
@@ -229,7 +206,7 @@ void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& co
 
 // responds to a collision between 2 entities
 
-void Simple_Collision_World::resolve_collision( simple_collision::Pending_Collision& coll )
+void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_Collision& coll )
 {
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
@@ -378,10 +355,19 @@ void Simple_Collision_World::resolve_collision( simple_collision::Pending_Collis
 	}
 }
 
-void Simple_Collision_World::resolve_touch( simple_collision::Pending_Collision& coll )
+void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending_Collision& coll )
 {
-	coll.entity_a->simple.is_in_air = false;
-	coll.entity_a->on_touched( coll );
+	if( coll.body_b->is_sensor() )
+	{
+		coll.entity_b->simple.is_in_air = false;
+		coll.entity_a->on_touched( coll );
+	}
+
+	if( coll.body_a->is_sensor() )
+	{
+		coll.entity_a->simple.is_in_air = false;
+		coll.entity_b->on_touched( coll );
+	}
 }
 
 }

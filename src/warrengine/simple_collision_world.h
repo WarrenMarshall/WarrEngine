@@ -43,8 +43,8 @@ struct Simple_Collision_World
 
 	void handle_collisions();
 	void push_apart( simple_collision::Pending_Collision& coll );
-	void resolve_collision( simple_collision::Pending_Collision& coll );
-	void resolve_touch( simple_collision::Pending_Collision& coll );
+	void resolve_solid_collision( simple_collision::Pending_Collision& coll );
+	void resolve_sensor_collision( simple_collision::Pending_Collision& coll );
 };
 
 }
