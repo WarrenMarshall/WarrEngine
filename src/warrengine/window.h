@@ -20,7 +20,7 @@ struct OS_Window
 	const GLFWvidmode* vidmode = nullptr;
 	struct
 	{
-		int x, y, w, h;
+		int32_t x, y, w, h;
 	} save_windowed_state;
 
 	[[nodiscard]] Rect compute_max_window_size_for_desktop();

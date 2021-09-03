@@ -24,7 +24,7 @@ void OpenGL_Frame_Buffer::add_depth_attachment( Vec2 sz )
 
 	glCreateRenderbuffers( 1, &rbo_id );
 	glBindRenderbuffer( GL_RENDERBUFFER, rbo_id );
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int)sz.w, (int)sz.h );
+	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, (int32_t)sz.w, (int32_t)sz.h );
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 
 	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_id );
@@ -70,14 +70,14 @@ void OpenGL_Frame_Buffer::finalize()
 
 	// tell opengl to render to all color attachments (by default, it only renders to the first)
 
-	std::vector<unsigned> ids;
+	std::vector<uint32_t> ids;
 
-	for( unsigned id = 0 ; id < color_attachments.size() ; ++id )
+	for( auto id = 0 ; id < color_attachments.size() ; ++id )
 	{
 		ids.push_back( GL_COLOR_ATTACHMENT0 + id );
 	}
 
-	glDrawBuffers( (int)( color_attachments.size() ), ids.data() );
+	glDrawBuffers( (int32_t)( color_attachments.size() ), ids.data() );
 
 	unbind();
 }

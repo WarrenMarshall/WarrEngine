@@ -7,7 +7,7 @@ namespace war
 struct Primitive_Batch
 {
 	// the max per batch before we force a flush and set up a new batch.
-	static const int max_elements_per_draw_call = 15'000;
+	static const int32_t max_elements_per_draw_call = 15'000;
 
 	Primitive_Batch() = default;
 	Primitive_Batch( Primitive_Batch& ) = delete;

@@ -21,7 +21,7 @@ namespace war
 // 	...etc...
 // ----------------------------------------------------------------------------
 
-Zip_File::toc_entry::toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size )
+Zip_File::toc_entry::toc_entry( std::string_view zip_filename, std::string_view filename, int32_t offset, int32_t size )
 	: zip_filename( zip_filename ), filename( filename ), offset_from_start_of_file( offset ), size( size )
 {
 }
@@ -83,7 +83,7 @@ void Zip_File::scan_and_build_table_of_contents()
 							table_of_contents.insert(
 								std::make_pair(
 								wk_filename,
-								toc_entry( zip_filename, wk_filename, (int)( rptr - buffer.data() ), hdr->uncompressed_size )
+								toc_entry( zip_filename, wk_filename, (int32_t)( rptr - buffer.data() ), hdr->uncompressed_size )
 							)
 							);
 							rptr += hdr->uncompressed_size;
@@ -101,7 +101,7 @@ void Zip_File::scan_and_build_table_of_contents()
 						}
 					}
 					// central directory file header
-					else if( *( (int*)rptr ) == 0x02014b50 )
+					else if( *( (int32_t*)rptr ) == 0x02014b50 )
 					{
 						// once we hit the central directory, we're done with
 						// file entries and can stop reading the ZIP file

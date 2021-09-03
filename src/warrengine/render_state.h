@@ -10,7 +10,7 @@ struct Render_State
 	float angle = 0.f;
 	Color color = Color::white;
 	float glow = 0.f;
-	int pick_id = 0;
+	int32_t pick_id = 0;
 	Vec2 scale = { 1.f, 1.f };
 	Vec2 uv_tiling = { 1.f, 1.f };
 	float z = zdepth_background;

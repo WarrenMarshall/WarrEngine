@@ -7,7 +7,7 @@ namespace war
 
 void Random::seed()
 {
-	std::srand( (unsigned)std::time( nullptr ) );
+	std::srand( (uint32_t)std::time( nullptr ) );
 }
 
 // returns a float value between 0.0 and 1.0
@@ -33,9 +33,9 @@ float Random::getf_range( float min, float max )
 
 // returns an integer value between min and max
 
-int Random::geti_range( int min, int max )
+int32_t Random::geti_range( int32_t min, int32_t max )
 {
-	return (int)( glm::floor( getf_range( (float)( min ), (float)( max ) ) + 0.5f ) );
+	return (int32_t)( glm::floor( getf_range( (float)( min ), (float)( max ) ) + 0.5f ) );
 }
 
 // returns a vec2 inside of a circle

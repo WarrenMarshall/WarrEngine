@@ -119,12 +119,12 @@ void UI_Control_Data::set_float_value_internal( float value )
 	_float_value = value;
 }
 
-int UI_Control_Data::int_value()
+int32_t UI_Control_Data::int_value()
 {
 	return _int_value;
 }
 
-void UI_Control_Data::set_int_value( int value )
+void UI_Control_Data::set_int_value( int32_t value )
 {
 	_int_value = value;
 }

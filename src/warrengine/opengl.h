@@ -21,7 +21,7 @@ struct OpenGL_Mgr
 
 	// this value is polled from opengl at initialization. this allows the code
 	// to dynamically work with various video cards.
-	GLint max_texture_image_units = -1;
+	int32_t max_texture_image_units = -1;
 
 	// rendering the various primitive types always uses the same layout for the
 	// index buffers. this means we can generate these one time, at start up,
@@ -48,9 +48,9 @@ struct OpenGL_Mgr
 	void set_uniform_float( std::string_view name, float value );
 	void set_uniform_bool( std::string_view name, bool value );
 	void set_uniform_color( std::string_view name, const Color& value );
-	void set_uniform_array( std::string_view name, int* value, int count );
+	void set_uniform_array( std::string_view name, int32_t* value, int32_t count );
 
-	void allocate_vertex_buffer_on_gpu( int max_verts, bool is_static );
+	void allocate_vertex_buffer_on_gpu( int32_t max_verts, bool is_static );
 };
 
 }

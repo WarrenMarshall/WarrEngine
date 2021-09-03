@@ -13,15 +13,15 @@ void Particle_Emitter::set_params( Emitter_Parameters_Asset* params )
 	// they spawn all of their particles, no matter what.
 	if( params->is_one_shot )
 	{
-		max_particles_alive = (int)( params->s_max_alive );
+		max_particles_alive = (int32_t)( params->s_max_alive );
 	}
 	else
 	{
-		max_particles_alive = (int)( params->s_spawn_rate * ( params->r_lifespan.end / 1000.f ) );
+		max_particles_alive = (int32_t)( params->s_spawn_rate * ( params->r_lifespan.end / 1000.f ) );
 	}
 
 	// if "s_max_alive" has been set in the params, that overrides any calculated value from above
-	max_particles_alive = ( params->s_max_alive > 0.f ) ? (int)params->s_max_alive : max_particles_alive;
+	max_particles_alive = ( params->s_max_alive > 0.f ) ? (int32_t)params->s_max_alive : max_particles_alive;
 
 	//log( "{} particles allocated in pool", max_particles_alive );
 
@@ -48,17 +48,17 @@ void Particle_Emitter::update()
 
 	}
 
-	int particles_to_spawn = 0;
+	int32_t particles_to_spawn = 0;
 
 	if( params->is_one_shot )
 	{
 		particles_to_spawn_accum = 0.f;
-		particles_to_spawn = (int)( params->s_max_alive );
+		particles_to_spawn = (int32_t)( params->s_max_alive );
 	}
 	else
 	{
 		// strip off the fractional part of the accum to get the number to spawn
-		particles_to_spawn = (int)( glm::trunc( particles_to_spawn_accum ) );
+		particles_to_spawn = (int32_t)( glm::trunc( particles_to_spawn_accum ) );
 	}
 
 	if( particles_to_spawn )

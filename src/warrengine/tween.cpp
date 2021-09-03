@@ -28,7 +28,7 @@ float Tween::operator*()
 	time_ms delta = g_engine->clock.now() - time_last;
 	time_last = g_engine->clock.now();
 
-	return _tween.step( (int)( delta ) );
+	return _tween.step( (int32_t)delta );
 }
 
 void Tween::restart()

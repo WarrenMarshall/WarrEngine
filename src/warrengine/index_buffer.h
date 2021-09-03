@@ -7,7 +7,7 @@ struct Index_Buffer
 	Index_Buffer();
 	~Index_Buffer();
 
-	unsigned int gl_id;
+	uint32_t gl_id;
 
 	void bind();
 	void unbind();

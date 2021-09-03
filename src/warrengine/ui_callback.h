@@ -23,7 +23,7 @@ struct UI_Callback
 	virtual void on_motion( hash tag, const UI_Result& result );
 
 	virtual size_t get_item_count( hash tag );
-	virtual std::string_view get_item_for_idx( hash tag, int idx );
+	virtual std::string_view get_item_for_idx( hash tag, int32_t idx );
 
 	virtual void on_value_changed( hash tag );
 	virtual bool validate_value_change( hash tag, UI_Control_Data* old_value, UI_Control_Data* new_value );

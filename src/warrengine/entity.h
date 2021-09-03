@@ -49,7 +49,7 @@ struct Entity
 	Life_Cycle_Mgr life_cycle;
 
 	hash tag = hash_none;
-	int pick_id = 0;
+	int32_t pick_id = 0;
 	bool is_selected = false;
 	Render_State_Optional rs_opt;
 
@@ -103,10 +103,9 @@ struct Entity
 
 	// delta transforms
 
-	// #opt - do these need return values?
-	Transform* add_delta_pos( const Vec2& delta );
-	Transform* add_delta_angle( const float delta );
-	Transform* add_delta_scale( const float delta );
+	void add_delta_pos( const Vec2& delta );
+	void add_delta_angle( const float delta );
+	void add_delta_scale( const float delta );
 
 	void update_physics_components_to_match_transform();
 	void update_transform_to_match_physics_components();

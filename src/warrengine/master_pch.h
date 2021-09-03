@@ -70,11 +70,11 @@ namespace war
 namespace fixed_time_step
 {
 	// how many fixed time steps, per second
-	constexpr int frames_per_second = 60;
+	constexpr int32_t frames_per_second = 60;
 
 	// how many milliseconds will have passed each time a fixed time step update
 	// occurs
-	constexpr int ms_per_step = (int)( 1000.f / (float)frames_per_second );
+	constexpr int32_t ms_per_step = (int32_t)( 1000.f / (float)frames_per_second );
 
 	// any value you want to update as a "per second" value in an update
 	// function should be multiplied against this constant.
@@ -134,7 +134,10 @@ namespace war
 // used to convert color values in the range 0-255 to 0-1
 // i.e. color.r = 168.f * byte_color_to_float;
 
-constexpr float byte_color_to_float = 1.f / 255.f;
+constexpr float byte_color_to_float( int32_t value )
+{
+	return value / 255.f;
+}
 
 // ----------------------------------------------------------------------------
 // standard rendering start depths
@@ -258,9 +261,9 @@ constexpr void _log_fatal_( Params&&... params )
 // what:
 //
 // this is a super simple hasher for string literals, but all it's for is to
-// generate unique unsigned int values for arbitrary string literals that are
+// generate unique uint32_t values for arbitrary string literals that are
 // passed to it. it also needs to be constexpr friendly so it melts away in
-// release builds. this allows the engine to compare unsigned ints instead of
+// release builds. this allows the engine to compare uint32_ts instead of
 // strings in places like the UI code, which is WAY faster.
 //
 // how:
@@ -281,7 +284,7 @@ consteval hash hash_it( const char* str )
 	hash result = hash_none;
 
 	const char* rp = str;
-	int i = 0;
+	int32_t i = 0;
 
 	while( *rp )
 	{

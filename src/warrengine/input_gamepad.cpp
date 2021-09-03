@@ -5,13 +5,13 @@
 namespace war
 {
 
-Game_Controller::Game_Controller( int player_id )
+Game_Controller::Game_Controller( int32_t player_id )
 	: player_id( player_id )
 {
 	timer_repeat = std::make_unique<Timer>( 150 );
 }
 
-void Game_Controller::update_button_state( e_input_id_t input_id, int xinput_button_bit )
+void Game_Controller::update_button_state( e_input_id_t input_id, int32_t xinput_button_bit )
 {
 	bool last_state = g_engine->input_mgr.button_states_last_frame[ input_id ];
 
@@ -77,29 +77,29 @@ void Game_Controller::update()
 
 void Game_Controller::play_rumble( e_rumble_effect_t effect )
 {
-	int rumble_max = 65535;
-	int intensity = 65535;
-	int duration_ms = 600;
+	int32_t rumble_max = 65535;
+	int32_t intensity = 65535;
+	int32_t duration_ms = 600;
 
 	switch( effect )
 	{
 		case e_rumble_effect::medium:
 		{
-			intensity = (int)( rumble_max * 0.75f );
+			intensity = (int32_t)( rumble_max * 0.75f );
 			duration_ms = 400;
 			break;
 		}
 
 		case e_rumble_effect::small:
 		{
-			intensity = (int)( rumble_max * 0.5f );
+			intensity = (int32_t)( rumble_max * 0.5f );
 			duration_ms = 300;
 			break;
 		}
 
 		case e_rumble_effect::tiny:
 		{
-			intensity = (int)( rumble_max * 0.35f );
+			intensity = (int32_t)( rumble_max * 0.35f );
 			duration_ms = 200;
 			break;
 		}
@@ -115,7 +115,7 @@ void Game_Controller::play_rumble( e_rumble_effect_t effect )
 	play_rumble( intensity, duration_ms );
 }
 
-void Game_Controller::play_rumble( int intensity, int ms )
+void Game_Controller::play_rumble( int32_t intensity, int32_t ms )
 {
 	XINPUT_VIBRATION rumbler {};
 	rumbler.wLeftMotorSpeed = (WORD)( intensity );

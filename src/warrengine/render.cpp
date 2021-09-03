@@ -262,7 +262,7 @@ Vec2 Render::draw_string( const std::string& text, const Vec2& pos )
 
 	for( const char iter : text )
 	{
-		Font_Def_Asset::Glyph* fch = &( Render::state->font->font_def->char_map[ (int)( iter ) ] );
+		Font_Def_Asset::Glyph* fch = &( Render::state->font->font_def->char_map[ (int32_t)( iter ) ] );
 
 		// small optimization to skip drawing completely blank characters
 		if( fch->w > 0 )
@@ -443,7 +443,7 @@ std::vector<std::string> Render::wrap_string_to_width( std::string_view text, fl
 void Render::begin_frame()
 {
 	// reset glviewport
-	glViewport( 0, 0, (int)viewport_w, (int)viewport_h );
+	glViewport( 0, 0, (int32_t)viewport_w, (int32_t)viewport_h );
 
 	// clear color attachments
 	g_engine->frame_buffer->clear_color_attachments();
@@ -597,7 +597,7 @@ void Render::draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, 
 			{
 				for( auto x = 0 ; x < chunk.tilemap_bounds.w ; ++x )
 				{
-					auto tile = &( chunk.tiles[ ( y * (int)chunk.tilemap_bounds.w ) + x ] );
+					auto tile = &( chunk.tiles[ ( y * (int32_t)chunk.tilemap_bounds.w ) + x ] );
 
 					if( tile->idx == Tile_Map_Asset::Tile::empty )
 					{
@@ -690,8 +690,8 @@ void Render::draw_filled_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v
 
 auto Render::get_circle_start_end_indices( e_corner_t corner )
 {
-	int start, end;
-	int quarter_circle = circle_sample_points_max / 4;
+	int32_t start, end;
+	int32_t quarter_circle = circle_sample_points_max / 4;
 
 	// default to drawing the full circle
 	start = 0;
@@ -819,9 +819,9 @@ void Render::draw_line_loop( const Rect& rc )
 	Render::draw_line_loop(
 		{
 			{ left, top },
-			{ right, top },
-			{ right, bottom },
-			{ left, bottom }
+		{ right, top },
+		{ right, bottom },
+		{ left, bottom }
 		}
 	);
 }
@@ -909,7 +909,7 @@ float Render::calc_interpolated_per_sec_value( float current_value, float step_p
 // samples the "pick" frame buffer at click_pos and returns the pick_id found
 // there.
 
-int Render::sample_pick_id_at( Vec2 viewport_click_pos )
+int32_t Render::sample_pick_id_at( Vec2 viewport_click_pos )
 {
 	g_engine->frame_buffer->bind();
 	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
@@ -919,9 +919,9 @@ int Render::sample_pick_id_at( Vec2 viewport_click_pos )
 
 	// read single pixel back from texture to see what was at viewport_click_pos
 	float pixel[ 4 ];
-	glReadPixels( (int)viewport_click_pos.x, (int)viewport_click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
+	glReadPixels( (int32_t)viewport_click_pos.x, (int32_t)viewport_click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
 
-	return (int)( pixel[ 0 ] );
+	return (int32_t)( pixel[ 0 ] );
 }
 
 }

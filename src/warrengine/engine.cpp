@@ -5,7 +5,7 @@
 namespace war
 {
 
-void Engine::launch( int argc, char* argv [] )
+void Engine::launch( int32_t argc, char* argv [] )
 {
 #if defined(_FINAL_RELEASE)
 	// in final release, we don't want to bother the user with the visual
@@ -96,7 +96,7 @@ void Engine::launch( int argc, char* argv [] )
 	g_engine->shutdown();
 }
 
-void Engine::parse_command_line( int argc, char* argv [] )
+void Engine::parse_command_line( int32_t argc, char* argv [] )
 {
 	for( auto x = 1 ; x < argc ; ++x )
 	{
@@ -176,7 +176,7 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "viewport_h" ] = std::format( "{}", viewport_h );
 	g_engine->_symbol_to_value[ "viewport_hw" ] = std::format( "{}", viewport_hw );
 	g_engine->_symbol_to_value[ "viewport_hh" ] = std::format( "{}", viewport_hh );
-	log( "V Window Res: {}x{}", (int)viewport_w, (int)viewport_h );
+	log( "V Window Res: {}x{}", (int32_t)viewport_w, (int32_t)viewport_h );
 
 	tok.init( g_engine->config_vars.find_value_or( "ui_res", "640x480" ), "x" );
 	ui_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
@@ -185,18 +185,18 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "ui_h" ] = std::format( "{}", ui_h );
 	g_engine->_symbol_to_value[ "ui_hw" ] = std::format( "{}", ui_hw );
 	g_engine->_symbol_to_value[ "ui_hh" ] = std::format( "{}", ui_hh );
-	log( "UI Window Res: {}x{}", (int)ui_w, (int)ui_h );
+	log( "UI Window Res: {}x{}", (int32_t)ui_w, (int32_t)ui_h );
 
 
 	g_engine->render.init_set_up_default_palette();
 	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
 
 	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
-	glfwSetWindowPos( g_engine->window.glfw_window, (int)( rc.x ), (int)( rc.y ) );
-	glfwSetWindowSize( g_engine->window.glfw_window, (int)( rc.w ), (int)( rc.h ) );
+	glfwSetWindowPos( g_engine->window.glfw_window, (int32_t)( rc.x ), (int32_t)( rc.y ) );
+	glfwSetWindowSize( g_engine->window.glfw_window, (int32_t)( rc.w ), (int32_t)( rc.h ) );
 	glfwSetWindowAspectRatio( g_engine->window.glfw_window,
 		100,
-		(int)( ( viewport_h / viewport_w ) * 100 ) );
+		(int32_t)( ( viewport_h / viewport_w ) * 100 ) );
 
 	bool vsync = Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "v_sync", "false" ) );
 	log( "VSync: {}", vsync ? "true" : "false" );
@@ -263,7 +263,7 @@ void Engine::main_loop()
 
 		if( fixed_time_step_due )
 		{
-			int num_time_steps = 0;
+			int32_t num_time_steps = 0;
 
 			while( clock.fts_accum_ms >= fixed_time_step::ms_per_step )
 			{
@@ -411,10 +411,10 @@ void Engine::do_draw_finished_frame()
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
-			(int)window.viewport_pos_sz.x,
-			(int)window.viewport_pos_sz.y,
-			(int)window.viewport_pos_sz.w,
-			(int)window.viewport_pos_sz.h
+			(int32_t)window.viewport_pos_sz.x,
+			(int32_t)window.viewport_pos_sz.y,
+			(int32_t)window.viewport_pos_sz.w,
+			(int32_t)window.viewport_pos_sz.h
 		);
 
 		Render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer->color_attachments[ 0 ].texture );
@@ -460,7 +460,7 @@ bool Engine::find_bool_from_symbol( std::string_view symbol, bool def_value )
 	return String_Util::to_int( std::string( *sval ) );
 }
 
-int Engine::find_int_from_symbol( std::string_view symbol, int def_value )
+int32_t Engine::find_int_from_symbol( std::string_view symbol, int32_t def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -666,7 +666,7 @@ void Engine::parse_config_file( std::string_view filename )
 //
 // things like texture files, sound files, etc.
 
-void Engine::precache_asset_resources( int pass )
+void Engine::precache_asset_resources( int32_t pass )
 {
 	for( auto& iter : asset_def_file_cache )
 	{
@@ -946,7 +946,7 @@ void Engine::debug_draw_buffers()
 	{
 		scoped_render_state;
 
-		for( int x = 0 ; x < num_color_attachments ; ++x )
+		for( auto x = 0 ; x < num_color_attachments ; ++x )
 		{
 			render::draw_quad( frame_buffer->color_attachments[ x ].texture, rc );
 			render::draw_string( names[ x ], { rc.x, rc.y } );

@@ -17,12 +17,7 @@ Rect::Rect( float x, float y, float w, float h )
 {
 }
 
-Rect::Rect( int x, int y, int w, int h )
-	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
-{
-}
-
-Rect::Rect( int16 x, int16 y, int16 w, int16 h )
+Rect::Rect( int32_t x, int32_t y, int32_t w, int32_t h )
 	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
 {
 }

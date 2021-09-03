@@ -11,8 +11,7 @@ struct Rect
 	Rect() = default;
 	Rect( float x, float y );
 	Rect( float x, float y, float w, float h );
-	Rect( int x, int y, int w, int h );
-	Rect( int16 x, int16 y, int16 w, int16 h );
+	Rect( int32_t x, int32_t y, int32_t w, int32_t h );
 	Rect( const Vec2& top_left, const Vec2& bottom_right );
 
 	Vec2 extents() const;

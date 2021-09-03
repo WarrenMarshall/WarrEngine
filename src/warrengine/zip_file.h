@@ -13,17 +13,17 @@ namespace war
 
 struct Zip_File_Header
 {
-	int local_file_header_signature;
-	short version_needed_to_extract;
-	short general_purpose_bit_flag;
-	short compression_method;
-	short last_mod_file_time;
-	short last_mod_file_date;
-	int crc_32;
-	int compressed_size;
-	int uncompressed_size;
-	short file_name_length;
-	short extra_field_length;
+	int32_t local_file_header_signature;
+	int16_t version_needed_to_extract;
+	int16_t general_purpose_bit_flag;
+	int16_t compression_method;
+	int16_t last_mod_file_time;
+	int16_t last_mod_file_date;
+	int32_t crc_32;
+	int32_t compressed_size;
+	int32_t uncompressed_size;
+	int16_t file_name_length;
+	int16_t extra_field_length;
 };
 
 #pragma pack(pop)
@@ -34,11 +34,11 @@ struct Zip_File
 {
 	struct toc_entry
 	{
-		toc_entry( std::string_view zip_filename, std::string_view filename, int offset, int size );
+		toc_entry( std::string_view zip_filename, std::string_view filename, int32_t offset, int32_t size );
 		std::string zip_filename;
 		std::string filename;
-		int offset_from_start_of_file = 0;
-		int size = 0;
+		int32_t offset_from_start_of_file = 0;
+		int32_t size = 0;
 	};
 
 	std::unordered_map<std::string, toc_entry> table_of_contents;

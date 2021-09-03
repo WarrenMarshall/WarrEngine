@@ -59,8 +59,8 @@ bool Mesh_Asset::create()
 
 			// each face is broken down as if it's a triangle fan
 
-			int vidx[ 3 ] = {};
-			int uvidx[ 3 ] = {};
+			int32_t vidx[ 3 ] = {};
+			int32_t uvidx[ 3 ] = {};
 
 			for( auto x = 0 ; x < tok.tokens.size() - 1 ; ++x )
 			{

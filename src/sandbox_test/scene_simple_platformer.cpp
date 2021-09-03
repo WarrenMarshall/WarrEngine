@@ -7,8 +7,8 @@ using namespace war;
 
 static Bit_Flag_Generator collision_bits = 1;
 
-static const unsigned scene_simple_platformer_coll_player = collision_bits.get();
-static const unsigned scene_simple_platformer_coll_geo = collision_bits.next();
+static const uint16_t scene_simple_platformer_coll_player = collision_bits.get();
+static const uint16_t scene_simple_platformer_coll_geo = collision_bits.next();
 
 constexpr auto player_collision_radius = 7.f;
 

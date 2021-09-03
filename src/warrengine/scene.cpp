@@ -30,7 +30,7 @@ void Scene::restore_mouse_mode()
 
 // ----------------------------------------------------------------------------
 
-void Scene::select_by_pick_id( int pick_id )
+void Scene::select_by_pick_id( int32_t pick_id )
 {
 	if( !pick_id )
 	{
@@ -238,7 +238,7 @@ Entity* Scene::find_entity( hash tag )
 	return e;
 }
 
-Entity* Scene::find_entity_by_pick_id( int pick_id )
+Entity* Scene::find_entity_by_pick_id( int32_t pick_id )
 {
 	if( pick_id )
 	{

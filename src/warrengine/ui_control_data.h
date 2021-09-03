@@ -33,14 +33,14 @@ struct UI_Control_Data
 	[[nodiscard]] float float_value_internal();
 	void set_float_value_internal( float value );
 
-	[[nodiscard]] int int_value();
-	void set_int_value( int value );
+	[[nodiscard]] int32_t int_value();
+	void set_int_value( int32_t value );
 
 	e_ui_control_type_t type = e_ui_control_type::none;
 
 	// hot data
 	bool _bool_value = false;
-	int _int_value = 0;
+	int32_t _int_value = 0;
 	float _float_value = 0.f;
 	std::string _string_value;
 

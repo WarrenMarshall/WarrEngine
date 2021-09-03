@@ -50,7 +50,7 @@ struct Tile_Set_Asset : Asset
 		std::vector<Tiled_Object> objects;
 	};
 
-	int tile_width = 0, tile_height = 0, tile_count = 0, columns = 0;
+	int32_t tile_width = 0, tile_height = 0, tile_count = 0, columns = 0;
 	Texture_Asset* texture = nullptr;	// the source texture containing the tile set atlas
 	std::vector<Tile_Def> tile_definitions;
 

@@ -11,13 +11,13 @@ struct Value_Accumulator
 	float value = 0.f;
 
 	void init();
-	void update_value( int steps );
+	void update_value( int32_t steps );
 	void update_value();
 
 	Value_Accumulator& operator++();
-	Value_Accumulator operator++( int );
+	Value_Accumulator operator++( int32_t );
 	Value_Accumulator& operator--();
-	Value_Accumulator operator--( int );
+	Value_Accumulator operator--( int32_t );
 	Value_Accumulator operator+( float value ) const;
 	Value_Accumulator operator+=( float v );
 	Value_Accumulator operator+( time_ms value ) const;

@@ -90,7 +90,7 @@ size_t UI_Callback::get_item_count( hash tag )
 	return 0;
 }
 
-std::string_view UI_Callback::get_item_for_idx( hash tag, int idx )
+std::string_view UI_Callback::get_item_for_idx( hash tag, int32_t idx )
 {
 	return "n/a";
 }

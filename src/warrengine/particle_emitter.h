@@ -11,7 +11,7 @@ struct Particle_Emitter
 
 	// how many particles from this emitter are allowed to
 	// be alive at any given moment
-	int max_particles_alive = 0;
+	int32_t max_particles_alive = 0;
 
 	// floating point accumulator of time steps. whenever this is greater
 	// than 1.0, it's time to spawn a particle.

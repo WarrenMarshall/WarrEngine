@@ -21,7 +21,7 @@ struct Life_Cycle_Mgr
 	// box2d a chance to stop talking about certain entities
 	// for example.
 
-	int death_delay = 0;
+	int32_t death_delay = 0;
 
 private:
 	e_life_cycle_t _life_cycle = e_life_cycle::alive;

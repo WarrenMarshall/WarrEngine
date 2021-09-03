@@ -6,15 +6,15 @@ struct Engine
 {
 	// the function that all games/apps call to get the engine up and running
 	template<typename T>
-	static void go( int argc, char* argv [] )
+	static void go( int32_t argc, char* argv [] )
 	{
 		g_base_game = std::make_unique<T>();
 
 		launch( argc, argv );
 	}
 
-	static void launch( int argc, char* argv [] );
-	static void parse_command_line( int argc, char* argv [] );
+	static void launch( int32_t argc, char* argv [] );
+	static void parse_command_line( int32_t argc, char* argv [] );
 	static void precache();
 	static void apply_config_settings();
 
@@ -77,7 +77,7 @@ struct Engine
 	void deinit();
 	void draw();
 	void cache_asset_definition_files( std::string_view folder_name );
-	void precache_asset_resources( int pass );
+	void precache_asset_resources( int32_t pass );
 	void wait_for_thread_pool_to_finish();
 
 	void debug_draw_buffers();
@@ -101,7 +101,7 @@ struct Engine
 	[[nodiscard]] bool is_symbol_in_map( std::string_view str );
 	[[nodiscard]] std::optional<std::string> find_string_from_symbol( std::string_view str );
 	[[nodiscard]] bool find_bool_from_symbol( std::string_view str, bool def_value = true );
-	[[nodiscard]] int find_int_from_symbol( std::string_view str, int def_value = 0 );
+	[[nodiscard]] int32_t find_int_from_symbol( std::string_view str, int32_t def_value = 0 );
 	[[nodiscard]] float find_float_from_symbol( std::string_view str, float def_value = 0.f );
 	[[nodiscard]] Color find_color_from_symbol( std::string_view str, const Color& def_value = Color::white );
 	[[nodiscard]] Range<float> find_range_from_symbol( std::string_view str, const Range<float>& def_value = Range<float>( 0, 1 ) );

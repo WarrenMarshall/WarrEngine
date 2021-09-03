@@ -66,7 +66,7 @@ struct Input_Mgr
 	void update_axis_delta( e_input_id_t input_id ) const;
 	void dispatch_event_queue();
 
-	void update_button_state( e_input_id_t input_id, int glfw_state );
+	void update_button_state( e_input_id_t input_id, int32_t glfw_state );
 	void play_rumble( e_rumble_effect_t effect ) const;
 	void refresh_connected_gamepads();
 };

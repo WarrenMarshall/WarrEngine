@@ -45,7 +45,7 @@ bool Texture_Source_Asset::create()
 
 	glTexImage2D(
 		GL_TEXTURE_2D, 0, GL_RGBA8,
-		(int)( w ), (int)( h ),
+		(int32_t)w, (int32_t)h,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)( image->getPixelsPtr() ) );
 
 	if( use_mipmaps )

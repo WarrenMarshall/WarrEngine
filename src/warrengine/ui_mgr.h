@@ -4,7 +4,7 @@ namespace war
 
 struct UI_Mgr
 {
-	static unsigned automatic_id;
+	static uint32_t automatic_id;
 
 	Cursor_Asset* mouse_cursor = nullptr;
 
@@ -107,7 +107,7 @@ public:
 	UI_Mgr* set_pos( const Vec2& pos );
 	UI_Mgr* set_size( const Vec2& sz );
 	UI_Mgr* set_interval( float interval );
-	UI_Mgr* set_idx( int idx );
+	UI_Mgr* set_idx( int32_t idx );
 
 	Rect compute_client_rect_from_ui_rect( Rect rc_ui );
 	bool done();

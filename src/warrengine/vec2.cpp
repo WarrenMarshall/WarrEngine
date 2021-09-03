@@ -20,7 +20,7 @@ Vec2::Vec2()
 {
 }
 
-Vec2::Vec2( int x, int y )
+Vec2::Vec2( int32_t x, int32_t y )
 	: x( (float)( x ) ), y( (float)( y ) )
 {
 }

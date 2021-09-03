@@ -34,7 +34,7 @@ struct Raycast_Callback
 	virtual ~Raycast_Callback() = default;
 
 	bool hit_something = false;
-	int collision_mask = 0;
+	int32_t collision_mask = 0;
 
 	virtual float report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) = 0;
 };

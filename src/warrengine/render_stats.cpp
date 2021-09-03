@@ -17,7 +17,7 @@ void Render_Stats::update()
 		stat_timer.restart();
 
 		frame_count.update_value();
-		auto steps = (int)( frame_count.value );
+		auto steps = (int32_t)( frame_count.value );
 
 		frame_times_ms.update_value( steps );
 		draw_calls.update_value( steps );

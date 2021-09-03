@@ -11,7 +11,7 @@ struct Particle_Spawner
 		struct
 		{
 			// for e_particle_spawner_type::box
-			int w, h;
+			int32_t w, h;
 		};
 		struct
 		{

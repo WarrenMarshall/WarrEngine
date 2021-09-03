@@ -42,7 +42,7 @@ struct File_System
 			std::streamsize size = file.tellg();
 			file.seekg( 0, std::ios::beg );
 
-			std::unique_ptr<T> mem_file = std::make_unique<T>( (int)size + 1 );
+			std::unique_ptr<T> mem_file = std::make_unique<T>( (int32_t)size + 1 );
 			file.read( mem_file->buffer.data(), size );
 
 			return std::move( mem_file );

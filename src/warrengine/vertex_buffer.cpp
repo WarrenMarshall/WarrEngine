@@ -5,7 +5,7 @@
 namespace war
 {
 
-Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, int verts_per_element )
+Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, int32_t verts_per_element )
 	: vao( vao ), verts_per_element( verts_per_element )
 {
 	glCreateBuffers( 1, &gl_id );
@@ -110,7 +110,7 @@ void Vertex_Buffer::unbind()
 
 void Vertex_Buffer::bind_texture_units()
 {
-	for( int x = 0 ; x < total_texture_slots_used ; ++x )
+	for( auto x = 0 ; x < total_texture_slots_used ; ++x )
 	{
 		if( texture_slots[ x ] )
 		{

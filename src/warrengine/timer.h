@@ -14,7 +14,7 @@ struct Timer
 
 	void restart();
 	[[nodiscard]] bool is_elapsed();
-	[[nodiscard]] int get_elapsed();
+	[[nodiscard]] int32_t get_elapsed();
 	[[nodiscard]] float get_pct_complete();
 };
 

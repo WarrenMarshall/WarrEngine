@@ -6,7 +6,7 @@ namespace war::simple_collision
 {
 
 /*
-bool query::trace_simple( const entity* entity, const vec2& start, const vec2& normal, float dist, int collision_mask )
+bool query::trace_simple( const entity* entity, const vec2& start, const vec2& normal, float dist, int32_t collision_mask )
 {
 	raycast_quick callback;
 	callback.collision_mask = collision_mask;
@@ -15,7 +15,7 @@ bool query::trace_simple( const entity* entity, const vec2& start, const vec2& n
 	return callback.hit_something;
 }
 
-bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_simple* hit_result )
+bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int32_t collision_mask, raycast_simple* hit_result )
 {
 	hit_result->collision_mask = collision_mask;
 	g_engine->box2d.world->RayCast( hit_result, start, ( start + ( normal * dist ) ) );
@@ -23,14 +23,14 @@ bool query::trace_simple( const vec2& start, const vec2& normal, float dist, int
 	return hit_result->hit_something;
 }
 
-bool query::trace_closest( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_closest* hit_result )
+bool query::trace_closest( const vec2& start, const vec2& normal, float dist, int32_t collision_mask, raycast_closest* hit_result )
 {
 	hit_result->collision_mask = collision_mask;
 	g_engine->box2d.world->RayCast( hit_result, start, ( start + ( normal * dist ) ) );
 	return hit_result->hit_something;
 }
 
-bool query::trace_all( const vec2& start, const vec2& normal, float dist, int collision_mask, raycast_all* hit_result )
+bool query::trace_all( const vec2& start, const vec2& normal, float dist, int32_t collision_mask, raycast_all* hit_result )
 {
 	hit_result->collision_mask = collision_mask;
 	g_engine->box2d.world->RayCast( hit_result, start, ( start + ( normal * dist ) ) );

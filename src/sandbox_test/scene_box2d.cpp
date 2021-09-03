@@ -7,9 +7,9 @@ using namespace war;
 
 static Bit_Flag_Generator collision_bits = 1;
 
-static const unsigned scene_box2d_all = collision_bits.get();
-static const unsigned scene_box2d_world = collision_bits.next();
-static const unsigned scene_box2d_ball = collision_bits.next();
+static const uint16_t scene_box2d_all = collision_bits.get();
+static const uint16_t scene_box2d_world = collision_bits.next();
+static const uint16_t scene_box2d_ball = collision_bits.next();
 
 // ----------------------------------------------------------------------------
 

@@ -5,14 +5,14 @@
 namespace war
 {
 
-Mem_File::Mem_File( int size )
+Mem_File::Mem_File( int32_t size )
 {
 	buffer.resize( size );
 }
 
 // ----------------------------------------------------------------------------
 
-Mem_File_Text::Mem_File_Text( int size )
+Mem_File_Text::Mem_File_Text( int32_t size )
 {
 	buffer.resize( size );
 }

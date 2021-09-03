@@ -114,9 +114,9 @@ struct Scene_Mgr
 
 	void draw();
 
-	int find_first_fully_opaque_scene();
-	void draw_scene( int starting_scene_idx );
-	void draw_scene_ui( int starting_scene_idx );
+	int32_t find_first_fully_opaque_scene();
+	void draw_scene( int32_t starting_scene_idx );
+	void draw_scene_ui( int32_t starting_scene_idx );
 
 	virtual void new_game();
 

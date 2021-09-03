@@ -113,7 +113,7 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 	{
 		std::string_view texture_list = key_values_for_asset_def.find_value( "texture_tags" );
 
-		int comma_count = (int)( std::count( texture_list.begin(), texture_list.end(), ',' ) );
+		int32_t comma_count = (int32_t)( std::count( texture_list.begin(), texture_list.end(), ',' ) );
 
 		// each texture_tag is expected to have 5 args : name,x,y,w,h
 		if( ( comma_count % 5 ) != 4 )
@@ -312,7 +312,7 @@ void Asset_File_Definition::precache_anim_texture( const Key_Values& key_values_
 	assert( key_values_for_asset_def.does_key_exist( "frames_per_sec" ) );
 	assert( key_values_for_asset_def.does_key_exist( "tween" ) );
 
-	int frames_per_sec = Text_Parser::int_from_str( key_values_for_asset_def.find_value( "frames_per_sec" ) );
+	auto frames_per_sec = Text_Parser::int_from_str( key_values_for_asset_def.find_value( "frames_per_sec" ) );
 	auto tween_type = (e_tween_type_t)( Text_Parser::int_from_str( key_values_for_asset_def.find_value( "tween" ) ) );
 
 	std::string_view frames = key_values_for_asset_def.find_value( "frame_tags" );

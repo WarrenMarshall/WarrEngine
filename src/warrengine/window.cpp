@@ -5,12 +5,12 @@
 namespace war
 {
 
-void glfw_error_callback( [[maybe_unused]] int error_code, const char* description )
+void glfw_error_callback( [[maybe_unused]] int32_t error_code, const char* description )
 {
 	log_fatal( "\"{}\"", description );
 }
 
-void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int width, int height )
+void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int32_t width, int32_t height )
 {
 	// This chunk of code:
 	//
@@ -37,7 +37,7 @@ void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int width, 
 	}
 }
 
-void focus_change_callback( [[maybe_unused]] GLFWwindow* window, int focused )
+void focus_change_callback( [[maybe_unused]] GLFWwindow* window, int32_t focused )
 {
 	focused ? g_engine->resume() : g_engine->pause();
 }
@@ -52,9 +52,9 @@ Rect OS_Window::compute_max_window_size_for_desktop()
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.
 
-	auto wdiv = (int)( std::floorf( desktop_w / (float)( viewport_w ) ) );
-	auto hdiv = (int)( std::floorf( desktop_h / (float)( viewport_h ) ) );
-	int div = glm::min( wdiv, hdiv );
+	auto wdiv = (int32_t)( std::floorf( desktop_w / (float)( viewport_w ) ) );
+	auto hdiv = (int32_t)( std::floorf( desktop_h / (float)( viewport_h ) ) );
+	int32_t div = glm::min( wdiv, hdiv );
 
 	Rect window_pos( 0.f, 0.f, viewport_w * div, viewport_h * div );
 	window_pos.x = ( vidmode->width - window_pos.w ) / 2;
@@ -86,7 +86,7 @@ bool OS_Window::init()
 	//glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
 	glfw_window = glfwCreateWindow(
-		(int)( window_pos.w ), (int)( window_pos.h ),
+		(int32_t)( window_pos.w ), (int32_t)( window_pos.h ),
 		"WarrEngine", nullptr, nullptr
 	);
 
@@ -96,8 +96,8 @@ bool OS_Window::init()
 	}
 
 	glfwSetWindowPos( glfw_window,
-		(int)( window_pos.x ),
-		(int)( window_pos.y ) );
+		(int32_t)( window_pos.x ),
+		(int32_t)( window_pos.y ) );
 
 	glfwSetFramebufferSizeCallback( glfw_window, framebuffer_size_callback );
 	glfwSetWindowFocusCallback( glfw_window, focus_change_callback );

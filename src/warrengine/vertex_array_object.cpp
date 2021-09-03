@@ -160,7 +160,7 @@ void Vertex_Array_Object::update_stats()
 				f_commas( vb->vertices.size() * indices_to_verts_factor )
 			);
 
-			for( int x = 0 ; x < g_engine->opengl_mgr.max_texture_image_units ; ++x )
+			for( auto x = 0 ; x < g_engine->opengl_mgr.max_texture_image_units ; ++x )
 			{
 				if( vb->texture_slots[ x ] )
 				{
@@ -237,7 +237,7 @@ void Vertex_Array_Object::draw( e_draw_call_t draw_call )
 	// only write to the depth buffer for opaque primitives
 	glDepthMask( draw_call == e_draw_call::opaque );
 
-	glDrawElements( get_gl_prim_type(), (int)( vb->vertices.size() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
+	glDrawElements( get_gl_prim_type(), (int32_t)( vb->vertices.size() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 
 	unbind();
 }

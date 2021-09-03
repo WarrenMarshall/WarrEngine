@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Tile_Map_Asset::Tile::Tile( int idx, int x_idx, int y_idx, e_tile_flags_t flags )
+Tile_Map_Asset::Tile::Tile( int32_t idx, int32_t x_idx, int32_t y_idx, e_tile_flags_t flags )
 	: idx( idx ), x_idx( x_idx ), y_idx( y_idx ), flags( flags )
 {
 }
@@ -28,7 +28,7 @@ bool Tile_Map_Asset::create()
 	bool inside_chunk_block = false;
 	size_t chunk_w = Chunk::default_chunk_sz, chunk_h = Chunk::default_chunk_sz;
 	Rect chunk_bounds;
-	int data_block_y = 0;
+	int32_t data_block_y = 0;
 
 	for( const auto& raw_line : file->lines )
 	{
@@ -175,7 +175,7 @@ bool Tile_Map_Asset::create()
 
 			for( auto x = 0 ; x < current_chunk->tilemap_bounds.w ; ++x )
 			{
-				unsigned idx = String_Util::to_uint( std::string( *tok.get_next_token() ) );
+				uint32_t idx = String_Util::to_uint( std::string( *tok.get_next_token() ) );
 
 				e_tile_flags_t flags = 0;
 

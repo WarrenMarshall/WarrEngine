@@ -4,9 +4,9 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-constexpr unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-constexpr unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
-constexpr unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+constexpr uint32_t FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+constexpr uint32_t FLIPPED_VERTICALLY_FLAG = 0x40000000;
+constexpr uint32_t FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
 // ----------------------------------------------------------------------------
 
@@ -17,12 +17,12 @@ struct Tile_Map_Asset : Asset
 
 	struct Tile
 	{
-		static constexpr int empty = -1;
+		static constexpr int32_t empty = -1;
 
-		Tile( int idx, int x_idx, int y_idx, e_tile_flags_t flags );
+		Tile( int32_t idx, int32_t x_idx, int32_t y_idx, e_tile_flags_t flags );
 
-		int idx = 0;
-		int x_idx = 0, y_idx = 0;		// coordinates from the top left of the tile map
+		int32_t idx = 0;
+		int32_t x_idx = 0, y_idx = 0;		// coordinates from the top left of the tile map
 		e_tile_flags_t flags = e_tile_flags::none;
 	};
 
@@ -33,7 +33,7 @@ struct Tile_Map_Asset : Asset
 
 	struct Chunk
 	{
-		static constexpr int default_chunk_sz = 16;
+		static constexpr int32_t default_chunk_sz = 16;
 
 		// the rectangular area on the tilemap where this chunk sits
 		Rect tilemap_bounds = { 0, 0, default_chunk_sz, default_chunk_sz };
@@ -55,9 +55,9 @@ struct Tile_Map_Asset : Asset
 
 	// global info about the tile map
 
-	int width = 0;
-	int height = 0;
-	int tile_sz = 0;
+	int32_t width = 0;
+	int32_t height = 0;
+	int32_t tile_sz = 0;
 	bool is_infinite = false;
 	std::vector<Layer> layers;
 	std::vector<Tiled_Object_Group> object_groups;

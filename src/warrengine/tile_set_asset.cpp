@@ -82,7 +82,7 @@ bool Tile_Set_Asset::create()
 		}
 		else if( line.starts_with( "<tile " ) )
 		{
-			int tile_idx = -1;
+			int32_t tile_idx = -1;
 			Tokenizer tok( line, " " );
 
 			while( !tok.is_eos() )

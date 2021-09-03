@@ -18,11 +18,11 @@ Input_Event::Input_Event()
 
 // ----------------------------------------------------------------------------
 
-void character_callback( GLFWwindow* window, unsigned int key_code )
+void character_callback( GLFWwindow* window, uint32_t key_code )
 {
 	Input_Event evt;
 	evt.event_id = e_event_id::input_key;
-	evt.ch = (unsigned char)key_code;
+	evt.ch = (uint8_t)key_code;
 
 	g_engine->input_mgr.event_queue.push_back( evt );
 }
@@ -57,7 +57,7 @@ void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
 
 // ----------------------------------------------------------------------------
 
-void joystick_callback( int jid, int event )
+void joystick_callback( int32_t jid, int32_t event )
 {
 	if( event == GLFW_CONNECTED )
 	{
@@ -359,7 +359,7 @@ void Input_Mgr::dispatch_event_queue()
 	event_queue.clear();
 }
 
-void Input_Mgr::update_button_state( e_input_id_t input_id, int glfw_state )
+void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
 {
 	button_states[ input_id ] = glfw_state;
 
@@ -432,7 +432,7 @@ void Input_Mgr::refresh_connected_gamepads()
 	XINPUT_STATE state;
 	ZeroMemory( &state, sizeof( XINPUT_STATE ) );
 
-	int xinput_player_id = -1;
+	int32_t xinput_player_id = -1;
 	for( auto pn = 0 ; pn < XUSER_MAX_COUNT and xinput_player_id == -1 ; ++pn )
 	{
 		if( XInputGetState( pn, &state ) == ERROR_SUCCESS )

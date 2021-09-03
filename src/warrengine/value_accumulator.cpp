@@ -10,7 +10,7 @@ void Value_Accumulator::init()
 	value = accumulator = 0.f;
 }
 
-void Value_Accumulator::update_value( int steps )
+void Value_Accumulator::update_value( int32_t steps )
 {
 	value = accumulator / (float)( steps );
 	accumulator = 0.f;
@@ -28,7 +28,7 @@ Value_Accumulator& Value_Accumulator::operator++()
 	return *this;
 }
 
-Value_Accumulator Value_Accumulator::operator++( int )
+Value_Accumulator Value_Accumulator::operator++( int32_t )
 {
 	Value_Accumulator val( *this );
 	++( *this );
@@ -41,7 +41,7 @@ Value_Accumulator& Value_Accumulator::operator--()
 	return *this;
 }
 
-Value_Accumulator Value_Accumulator::operator--( int )
+Value_Accumulator Value_Accumulator::operator--( int32_t )
 {
 	Value_Accumulator val( *this );
 	--( *this );

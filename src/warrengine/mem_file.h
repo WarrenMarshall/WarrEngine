@@ -11,7 +11,7 @@ struct Mem_File
 	std::vector<char> buffer;
 
 	Mem_File() = default;
-	Mem_File( int size );
+	Mem_File( int32_t size );
 };
 
 // ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ struct Mem_File_Text
 	std::vector<std::string> lines;
 
 	Mem_File_Text() = default;
-	Mem_File_Text( int size );
+	Mem_File_Text( int32_t size );
 
 	void preprocess();
 	void preprocess_raw();

@@ -4,7 +4,7 @@ namespace war
 
 struct Vertex_Buffer
 {
-	unsigned int gl_id;
+	uint32_t gl_id;
 
 	// pool of contiguous vertex data
 	Object_Pool<Render_Vertex> vertices;
@@ -15,13 +15,13 @@ struct Vertex_Buffer
 
 	// how many vertices make up a single element.
 	// i.e. quad = 4, triangles = 3, line = 2, point = 1
-	int verts_per_element = -1;
+	int32_t verts_per_element = -1;
 
 	Vertex_Array_Object* vao = nullptr;
 
 	// ----------------------------------------------------------------------------
 
-	Vertex_Buffer( Vertex_Array_Object* vao, int verts_per_element );
+	Vertex_Buffer( Vertex_Array_Object* vao, int32_t verts_per_element );
 	~Vertex_Buffer();
 
 	virtual void bind();

@@ -39,12 +39,12 @@ void OpenGL_Mgr::init()
 	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", max_texture_image_units );
 
 	// how many color attachments can be added to a frame buffer object
-	GLint max_color_attachments = 0;
+	int32_t max_color_attachments = 0;
 	glGetIntegerv( GL_MAX_COLOR_ATTACHMENTS, &max_color_attachments );
 	log( "GL_MAX_COLOR_ATTACHMENTS : {} (per frame buffer object)", max_color_attachments );
 
 	// the maximum number of buffers that can be written to at once from a fragment shader
-	GLint max_draw_buffers = 0;
+	int32_t max_draw_buffers = 0;
 	glGetIntegerv( GL_MAX_DRAW_BUFFERS, &max_draw_buffers );
 	log( "GL_MAX_DRAW_BUFFERS : {}", max_draw_buffers );
 
@@ -70,7 +70,7 @@ void OpenGL_Mgr::init()
 	// uploaded, and left for dead
 
 	std::vector<int> texture_slots( max_texture_image_units );
-	for( int x = 0 ; x < max_texture_image_units ; ++x )
+	for( auto x = 0 ; x < max_texture_image_units ; ++x )
 	{
 		texture_slots[ x ] = x;
 	}
@@ -356,7 +356,7 @@ float OpenGL_Mgr::get_uniform_float( std::string_view name )
 
 bool OpenGL_Mgr::get_uniform_bool( std::string_view name )
 {
-	int result = 0;
+	int32_t result = 0;
 
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -429,7 +429,7 @@ void OpenGL_Mgr::set_uniform_color( std::string_view name, const Color& value )
 	}
 }
 
-void OpenGL_Mgr::set_uniform_array( std::string_view name, int* value, int count )
+void OpenGL_Mgr::set_uniform_array( std::string_view name, int32_t* value, int32_t count )
 {
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -448,7 +448,7 @@ void OpenGL_Mgr::set_uniform_array( std::string_view name, int* value, int count
 //
 // note : buffer must already be bound or this will crash
 
-void OpenGL_Mgr::allocate_vertex_buffer_on_gpu( int max_verts, bool is_static )
+void OpenGL_Mgr::allocate_vertex_buffer_on_gpu( int32_t max_verts, bool is_static )
 {
 	glBufferData(
 		GL_ARRAY_BUFFER,

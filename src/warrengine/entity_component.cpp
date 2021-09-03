@@ -81,14 +81,14 @@ void Entity_Component::stop()
 {
 }
 
-void Entity_Component::set_life_timer( int life_in_ms )
+void Entity_Component::set_life_timer( int32_t life_in_ms )
 {
 	assert( !life_timer.has_value() );
 
 	life_timer = Timer( life_in_ms );
 }
 
-void Entity_Component::set_collision_flags( int collision_mask, int collides_with )
+void Entity_Component::set_collision_flags( int32_t collision_mask, int32_t collides_with )
 {
 	this->collision_mask = collision_mask;
 	this->collides_with_mask = collides_with;
@@ -365,7 +365,7 @@ Box2D_Physics_Component::Box2D_Physics_Component( Entity* parent_entity )
 
 }
 
-void Box2D_Physics_Component::set_collision_flags( int collision_mask, int collides_with )
+void Box2D_Physics_Component::set_collision_flags( int32_t collision_mask, int32_t collides_with )
 {
 	Entity_Component::set_collision_flags( collision_mask, collides_with );
 
@@ -603,7 +603,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_line_loop( hash tag, Vec2 p
 
 	b2ChainShape shape;
 	{
-		shape.CreateLoop( b2verts.data(), (int)( b2verts.size() ) );
+		shape.CreateLoop( b2verts.data(), (int32_t)( b2verts.size() ) );
 	}
 
 	b2FixtureDef fixture_def;
@@ -639,7 +639,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_polygon( hash tag, Vec2 pos
 
 	b2PolygonShape shape;
 	{
-		shape.Set( b2verts.data(), (int)( b2verts.size() ) );
+		shape.Set( b2verts.data(), (int32_t)( b2verts.size() ) );
 	}
 
 	b2FixtureDef fixture_def;
@@ -671,7 +671,7 @@ void Box2D_Physics_Body_Component::add_physics_component_if_needed()
 	}
 }
 
-void Box2D_Physics_Body_Component::set_collision_flags( int collision_mask, int collides_with )
+void Box2D_Physics_Body_Component::set_collision_flags( int32_t collision_mask, int32_t collides_with )
 {
 	std::vector<b2Fixture*> existing_fixtures;
 
@@ -1229,8 +1229,8 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 		break;
 
 		default:
-			assert( false );
-			break;
+		assert( false );
+		break;
 	}
 
 	// sometimes things go badly for reasons that are in the collision system
@@ -1282,7 +1282,7 @@ c2AABB Simple_Collision_Body::as_simple_aabb()
 c2Poly Simple_Collision_Body::as_simple_poly()
 {
 	c2Poly poly = {};
-	poly.count = (int)ws.verts.size();
+	poly.count = (int32_t)ws.verts.size();
 
 	for( auto x = 0 ; x < ws.verts.size() ; ++x )
 	{
@@ -1327,7 +1327,7 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 			auto poly_ws = as_simple_poly();
 
 			Bounding_Box bbox;
-			for( int v = 0 ; v < poly_ws.count ; ++v )
+			for( auto v = 0 ; v < poly_ws.count ; ++v )
 			{
 				bbox.add( { poly_ws.verts[ v ].x, poly_ws.verts[ v ].y } );
 			}
@@ -1417,7 +1417,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 			{
 				for( auto x = 0 ; x < chunk.tilemap_bounds.w ; ++x )
 				{
-					auto tile = &( chunk.tiles[ ( y * (int)chunk.tilemap_bounds.w ) + x ] );
+					auto tile = &( chunk.tiles[ ( y * (int32_t)chunk.tilemap_bounds.w ) + x ] );
 
 					if( tile->idx == Tile_Map_Asset::Tile::empty )
 					{

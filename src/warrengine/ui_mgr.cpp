@@ -5,7 +5,7 @@
 namespace war
 {
 
-unsigned UI_Mgr::automatic_id;
+uint32_t UI_Mgr::automatic_id;
 
 UI_Mgr::UI_Mgr()
 {
@@ -223,7 +223,7 @@ UI_Mgr* UI_Mgr::set_interval( float interval )
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_idx( int idx )
+UI_Mgr* UI_Mgr::set_idx( int32_t idx )
 {
 	current_control->idx = idx;
 	return this;

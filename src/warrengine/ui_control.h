@@ -12,7 +12,7 @@ struct UI_Control
 	Color text_color = Color::white;
 	Color primary_color = Color::black;
 	Slide_Def_Asset* slice_def = nullptr;
-	int idx = -1;
+	int32_t idx = -1;
 	size_t total = 0;
 	Texture_Asset* image = nullptr;
 	float image_scale = 1.f;

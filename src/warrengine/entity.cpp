@@ -175,9 +175,14 @@ void Entity::apply_forces()
 	if( simple.is_dynamic() )
 	{
 		if( glm::abs( velocity.y ) < 0.1f )
+		{
 			velocity.y = 0.f;
+		}
+
 		if( glm::abs( velocity.x ) < 0.1f )
+		{
 			velocity.x = 0.f;
+		}
 	}
 
 	add_delta_pos( velocity );
@@ -364,7 +369,7 @@ Transform* Entity::set_pos( const Vec2& pos )
 	return &_tform;
 }
 
-Transform* Entity::add_delta_pos( const Vec2& delta )
+void Entity::add_delta_pos( const Vec2& delta )
 {
 	_tform.add_pos( delta );
 
@@ -374,20 +379,16 @@ Transform* Entity::add_delta_pos( const Vec2& delta )
 	{
 		update_physics_components_to_match_transform();
 	}
-
-	return &_tform;
 }
 
-Transform* Entity::add_delta_angle( const float delta )
+void Entity::add_delta_angle( const float delta )
 {
 	_tform.add_angle( delta );
 
 	update_physics_components_to_match_transform();
-
-	return &_tform;
 }
 
-Transform* Entity::add_delta_scale( const float delta )
+void Entity::add_delta_scale( const float delta )
 {
 	_tform.add_scale( delta );
 
@@ -397,8 +398,6 @@ Transform* Entity::add_delta_scale( const float delta )
 	// collision will remain the original size which is likely not what you
 	// want.
 	assert( !has_component<Box2D_Physics_Component>() );
-
-	return &_tform;
 }
 
 // entities are starting to collide
@@ -462,7 +461,7 @@ void Entity::set_tag( hash tag )
 	this->tag = tag;
 }
 
-static int w_entity_last_pick_id = 0;
+static int32_t w_entity_last_pick_id = 0;
 
 void Entity::make_pickable()
 {

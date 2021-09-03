@@ -139,7 +139,7 @@ void Scene_Mgr::draw()
 		// Locate the first completely opaque scene, starting at the top
 		// and moving backward.
 
-		int starting_scene_idx = find_first_fully_opaque_scene();
+		int32_t starting_scene_idx = find_first_fully_opaque_scene();
 
 		// draw starting from the starting_scene_idx and iterate through every
 		// scene above it
@@ -158,9 +158,9 @@ void Scene_Mgr::draw()
 // that is drawing opaquely. drawing will start from there and walk back up the
 // stack to the top.
 
-int Scene_Mgr::find_first_fully_opaque_scene()
+int32_t Scene_Mgr::find_first_fully_opaque_scene()
 {
-	int idx = -1;
+	int32_t idx = -1;
 
 	for( const auto& iter : scene_stack )
 	{
@@ -181,7 +181,7 @@ int Scene_Mgr::find_first_fully_opaque_scene()
 	return idx;
 }
 
-void Scene_Mgr::draw_scene( int starting_scene_idx )
+void Scene_Mgr::draw_scene( int32_t starting_scene_idx )
 {
 	scoped_render_state;
 	auto scene_depth_start = 0.f;
@@ -223,7 +223,7 @@ void Scene_Mgr::draw_scene( int starting_scene_idx )
 	}
 }
 
-void Scene_Mgr::draw_scene_ui( int starting_scene_idx )
+void Scene_Mgr::draw_scene_ui( int32_t starting_scene_idx )
 {
 	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 

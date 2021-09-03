@@ -5,7 +5,7 @@ namespace war
 struct Vertex_Array_Object
 {
 	e_render_prim_t render_prim = e_render_prim::quad;
-	GLuint gl_id = 0;
+	uint32_t gl_id = 0;
 	Primitive_Batch* batch = nullptr;
 
 	float indices_to_verts_factor = 0.f;

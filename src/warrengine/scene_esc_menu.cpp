@@ -71,7 +71,7 @@ void Scene_Esc_Menu::draw_ui()
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
 	}
 
-	int num_buttons = 3 + g_base_game->flags.has_main_menu;
+	int32_t num_buttons = 3 + g_base_game->flags.has_main_menu;
 
 	auto slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_panel" );
 

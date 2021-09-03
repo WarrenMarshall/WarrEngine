@@ -90,9 +90,9 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 	str.erase( std::remove( str.begin(), str.end(), char_to_erase ), str.end() );
 }
 
-[[nodiscard]] int String_Util::to_int( std::string_view str )
+[[nodiscard]] int32_t String_Util::to_int( std::string_view str )
 {
-	int value = 0;
+	int32_t value = 0;
 
 	if( str[ 0 ] == '$' )
 	{
@@ -107,9 +107,9 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 	return value;
 }
 
-[[nodiscard]] unsigned String_Util::to_uint( std::string_view str )
+[[nodiscard]] uint32_t String_Util::to_uint( std::string_view str )
 {
-	unsigned int value = 0;
+	uint32_t value = 0;
 
 	if( str[ 0 ] == '$' )
 	{
@@ -136,7 +136,7 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 
 // ----------------------------------------------------------------------------
 
-std::vector<war::Vec2> Geo_Util::generate_convex_shape( int sides, float radius )
+std::vector<war::Vec2> Geo_Util::generate_convex_shape( int32_t sides, float radius )
 {
 	std::vector<Vec2> verts;
 

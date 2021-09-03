@@ -55,15 +55,15 @@ struct Entity_Component
 	virtual void play();
 	virtual void stop();
 
-	virtual void set_life_timer( int life_in_ms );
+	virtual void set_life_timer( int32_t life_in_ms );
 
 	// which collision mask(s) this entity is a part of
-	int collision_mask = 0;
+	int32_t collision_mask = 0;
 
 	// which collision mask(s) this entity will collide WITH
-	int collides_with_mask = 0;
+	int32_t collides_with_mask = 0;
 
-	virtual void set_collision_flags( int collision_mask, int collides_with );
+	virtual void set_collision_flags( int32_t collision_mask, int32_t collides_with );
 	virtual void clear_collision_flags();
 };
 
@@ -184,7 +184,7 @@ struct Box2D_Physics_Component : Entity_Component
 	void set_restitution( float restitution );
 	void set_density( float density );
 
-	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
+	virtual void set_collision_flags( int32_t collision_mask, int32_t collides_with ) override;
 	virtual void clear_collision_flags() override;
 };
 
@@ -225,7 +225,7 @@ struct Box2D_Physics_Body_Component : Entity_Component
 
 	void add_physics_component_if_needed();
 
-	virtual void set_collision_flags( int collision_mask, int collides_with ) override;
+	virtual void set_collision_flags( int32_t collision_mask, int32_t collides_with ) override;
 };
 
 static_assert( sizeof( Box2D_Physics_Body_Component ) <= max_entity_component_sz );

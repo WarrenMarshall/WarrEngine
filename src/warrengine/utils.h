@@ -12,8 +12,8 @@ struct String_Util
 	static void replace_substring( std::string& str, std::string_view old_str, std::string_view new_str );
 	static void replace_char( std::string& str, char old_char, char new_char );
 	static void erase_char( std::string& str, char char_to_erase );
-	[[nodiscard]] static int to_int( std::string_view str );
-	[[nodiscard]] static unsigned to_uint( std::string_view str );
+	[[nodiscard]] static int32_t to_int( std::string_view str );
+	[[nodiscard]] static uint32_t to_uint( std::string_view str );
 	[[nodiscard]] static float to_float( std::string_view str );
 };
 
@@ -23,7 +23,7 @@ struct String_Util
 
 struct Geo_Util
 {
-	[[nodiscard]] static std::vector<Vec2> generate_convex_shape( int sides, float radius );
+	[[nodiscard]] static std::vector<Vec2> generate_convex_shape( int32_t sides, float radius );
 };
 
 // ----------------------------------------------------------------------------

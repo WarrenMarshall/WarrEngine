@@ -22,7 +22,7 @@ struct Raycast_Hit
 struct Raycast_Closest : b2RayCastCallback
 {
 	bool hit_something = false;
-	int collision_mask = 0;
+	int32_t collision_mask = 0;
 	Raycast_Hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
@@ -38,7 +38,7 @@ struct Raycast_Closest : b2RayCastCallback
 struct Raycast_Simple : b2RayCastCallback
 {
 	bool hit_something = false;
-	int collision_mask = 0;
+	int32_t collision_mask = 0;
 	Raycast_Hit result;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,
@@ -53,7 +53,7 @@ struct Raycast_Simple : b2RayCastCallback
 struct Raycast_All : b2RayCastCallback
 {
 	bool hit_something = false;
-	int collision_mask = 0;
+	int32_t collision_mask = 0;
 	std::vector<Raycast_Hit> results;
 
 	virtual float ReportFixture( b2Fixture* fixture, const b2Vec2& point,

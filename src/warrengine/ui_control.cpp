@@ -345,7 +345,7 @@ void UI_Slider_Control::draw_slider_tick_marks( const Rect& rc_ui, const Rect& r
 	auto tex_tick = g_engine->find_asset<Texture_Asset>( "ui_slider_tick" );
 
 	Vec2 tick_pos = Vec2( rc_client.x, rc_ui.y + 5.f );
-	auto steps = (int)( 1.f / interval );
+	auto steps = (int32_t)( 1.f / interval );
 	auto stride = rc_client.w * interval;
 
 	for( auto x = 0 ; x <= steps ; ++x )
@@ -511,7 +511,7 @@ void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 	{
 		Render::state->color = make_color( e_pal::brightest );
 		Render::state->align = e_align::centered;
-		Render::draw_string( std::format( "{}%", (int)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
+		Render::draw_string( std::format( "{}%", (int32_t)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
 	}
 }
 

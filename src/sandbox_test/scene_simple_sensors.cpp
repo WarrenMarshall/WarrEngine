@@ -27,9 +27,9 @@ bool E_Sensor_Player::on_touching_end( Simple_Collision_Body* sensor )
 
 static Bit_Flag_Generator collision_bits = 1;
 
-static const unsigned scene_simple_sensors_player = collision_bits.get();
-static const unsigned scene_simple_sensors_world = collision_bits.next();
-static const unsigned scene_simple_sensors_sensor = collision_bits.next();
+static const uint16_t scene_simple_sensors_player = collision_bits.get();
+static const uint16_t scene_simple_sensors_world = collision_bits.next();
+static const uint16_t scene_simple_sensors_sensor = collision_bits.next();
 
 Scene_Simple_Sensors::Scene_Simple_Sensors()
 {

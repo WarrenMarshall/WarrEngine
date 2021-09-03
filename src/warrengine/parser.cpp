@@ -21,7 +21,7 @@ std::string_view Text_Parser::key_from_str( std::string_view src_string, std::st
 	return value;
 }
 
-int Text_Parser::int_from_str( std::string_view str )
+int32_t Text_Parser::int_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -34,7 +34,7 @@ int Text_Parser::int_from_str( std::string_view str )
 	return String_Util::to_int( str );
 }
 
-unsigned Text_Parser::uint_from_str( std::string_view str )
+uint32_t Text_Parser::uint_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -223,7 +223,7 @@ std::vector<Color> Text_Parser::color_list_from_str( std::string_view str )
 	// repeating entries
 
 	std::vector<std::string> color_values;
-	int repeat_count;
+	int32_t repeat_count;
 	for( auto& color_value : wk_values )
 	{
 		repeat_count = 1;

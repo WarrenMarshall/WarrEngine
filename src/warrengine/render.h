@@ -47,7 +47,7 @@ struct Render
 #endif
 
 	// circle sample points are stored in a unit circle
-	constexpr static int circle_sample_points_max = 16;
+	constexpr static int32_t circle_sample_points_max = 16;
 	std::vector<Vec2> circle_sample_points;
 
 	void init();
@@ -106,7 +106,7 @@ struct Render
 	Render* push();
 	Render* pop();
 
-	[[nodiscard]] static int sample_pick_id_at( Vec2 viewport_click_pos );
+	[[nodiscard]] static int32_t sample_pick_id_at( Vec2 viewport_click_pos );
 };
 
 }

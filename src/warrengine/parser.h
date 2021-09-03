@@ -6,8 +6,8 @@ struct Text_Parser
 {
 	[[nodiscard]] static std::string_view key_from_str( std::string_view src_string, std::string_view key );
 	[[nodiscard]] static bool bool_from_str( std::string_view str );
-	[[nodiscard]] static int int_from_str( std::string_view str );
-	[[nodiscard]] static unsigned uint_from_str( std::string_view str );
+	[[nodiscard]] static int32_t int_from_str( std::string_view str );
+	[[nodiscard]] static uint32_t uint_from_str( std::string_view str );
 	[[nodiscard]] static float float_from_str( std::string_view str );
 	[[nodiscard]] static Color color_from_str( std::string_view str );
 	[[nodiscard]] static Range<float> range_from_str( std::string_view str );

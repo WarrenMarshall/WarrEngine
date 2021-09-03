@@ -30,8 +30,8 @@ Color::Color( float r, float g, float b, float a )
 }
 
 // integer values are assumed to be in the 0-255 range and are converted to float
-Color::Color( int r, int g, int b, int a )
-	: Color( r* byte_color_to_float, g* byte_color_to_float, b* byte_color_to_float, a* byte_color_to_float )
+Color::Color( int32_t r, int32_t g, int32_t b, int32_t a )
+	: Color( byte_color_to_float( r ), byte_color_to_float( g ), byte_color_to_float( b ), byte_color_to_float( a ) )
 {
 }
 
@@ -44,7 +44,7 @@ Color::Color( std::string& str )
 	{
 		// strings starting with a '@' char are palette indices
 		Tokenizer tok( str, "@" );
-		int idx = String_Util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
+		int32_t idx = String_Util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
 		*this = make_color( idx );
 	}
 	else if( str[ 0 ] == '$' )
@@ -52,9 +52,9 @@ Color::Color( std::string& str )
 		// strings starting with a '$' char are hex values
 		assert( str.length() == 7 );
 
-		r = String_Util::to_uint( "$" + str.substr( 1, 2 ) ) * byte_color_to_float;
-		g = String_Util::to_uint( "$" + str.substr( 3, 2 ) ) * byte_color_to_float;
-		b = String_Util::to_uint( "$" + str.substr( 5, 2 ) ) * byte_color_to_float;
+		r = byte_color_to_float( String_Util::to_uint( "$" + str.substr( 1, 2 ) ) );
+		g = byte_color_to_float( String_Util::to_uint( "$" + str.substr( 3, 2 ) ) );
+		b = byte_color_to_float( String_Util::to_uint( "$" + str.substr( 5, 2 ) ) );
 	}
 	else
 	{
@@ -72,10 +72,10 @@ Color::Color( std::string& str )
 			str.erase( std::remove( str.begin(), str.end(), '%' ), str.end() );
 			Tokenizer tok( str, "," );
 
-			r = Text_Parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
-			g = Text_Parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
-			b = Text_Parser::int_from_str( *tok.get_next_token() ) * byte_color_to_float;
-			a = Text_Parser::int_from_str( tok.get_next_token().value_or( "1.f" ) ) * byte_color_to_float;
+			r = byte_color_to_float( Text_Parser::int_from_str( *tok.get_next_token() ) );
+			g = byte_color_to_float( Text_Parser::int_from_str( *tok.get_next_token() ) );
+			b = byte_color_to_float( Text_Parser::int_from_str( *tok.get_next_token() ) );
+			a = byte_color_to_float( Text_Parser::int_from_str( tok.get_next_token().value_or( "1.f" ) ) );
 		}
 		else
 		{

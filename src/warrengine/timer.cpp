@@ -30,11 +30,11 @@ bool Timer::is_elapsed()
 //
 // this is good for: repeating timers
 
-int Timer::get_elapsed()
+int32_t Timer::get_elapsed()
 {
 	delta_accum += ( g_engine->clock.now() - time_last );
 	time_last = g_engine->clock.now();
-	return (int)( delta_accum / interval_ms );
+	return (int32_t)( delta_accum / interval_ms );
 }
 
 // returns the percentage of completion for this time, expressed as 0-1
