@@ -47,7 +47,28 @@ struct Entity_Simple_Collision
 struct Entity
 {
 	Life_Cycle_Mgr life_cycle;
+
+	hash tag = hash_none;
+	int pick_id = 0;
+	bool is_selected = false;
+	Render_State_Optional rs_opt;
+
 	Scene* parent_scene = nullptr;
+
+	std::set<Simple_Collision_Body*> sensors_this_frame;
+	std::set<Simple_Collision_Body*> sensors_last_frame;
+
+	Entity_Simple_Collision simple;
+
+	// forces and impulses
+
+	Vec2 velocity = Vec2::zero;
+	std::vector<Entity_Simple_Force> pending_forces;
+
+	// transforms
+	Transform _tform;
+
+	std::vector<std::unique_ptr<Entity_Component>> components;
 
 #ifndef _FINAL_RELEASE
 	// a handy string to throw info or a name in debug builds to make figuring
@@ -59,22 +80,11 @@ struct Entity
 	Entity( std::string debug_name );
 	virtual ~Entity() = default;
 
-	Entity_Simple_Collision simple;
-
-	// forces and impulses
-
-	Vec2 velocity = Vec2::zero;
-
-	std::vector<Entity_Simple_Force> pending_forces;
-
 	void add_force( const Entity_Simple_Force& force );
 	void set_force( const Entity_Simple_Force& force );
 	void add_impulse( const Entity_Simple_Force& force );
 
 	void compile_velocity();
-
-	// transforms
-	Transform _tform;
 
 	// this is a read-only pointer. to change the transform, use the
 	// "transform_" functions below.
@@ -93,11 +103,10 @@ struct Entity
 
 	// delta transforms
 
+	// #opt - do these need return values?
 	Transform* add_delta_pos( const Vec2& delta );
 	Transform* add_delta_angle( const float delta );
 	Transform* add_delta_scale( const float delta );
-
-	// ----------------------------------------------------------------------------
 
 	void update_physics_components_to_match_transform();
 	void update_transform_to_match_physics_components();
@@ -105,14 +114,8 @@ struct Entity
 	virtual void set_life_cycle( e_life_cycle_t lc );
 
 	void set_tag( hash tag );
-	hash tag = hash_none;
-	int pick_id = 0;
-	bool is_selected = false;
-	Render_State_Optional rs_opt;
 
 	void make_pickable();
-
-	std::vector<std::unique_ptr<Entity_Component>> components;
 
 	[[nodiscard]] virtual bool can_be_deleted();
 
@@ -172,11 +175,8 @@ struct Entity
 	template<typename T>
 	std::vector<T*> get_components( hash tag = hash_none ) const
 	{
-		// make sure the vector can handle at least 10 items - most get_* calls
-		// will result in fewer than that so this saves unnecessary
-		// reallocations
 		std::vector<T*> ecs;
-		ecs.reserve( 10 );
+		ecs.reserve( this->components.size() );
 
 		for( auto& ec : this->components )
 		{
@@ -195,10 +195,7 @@ struct Entity
 	template<typename B, typename T>
 	void get_components( std::vector<B*>& ecs )
 	{
-		// make sure the vector can handle at least 10 items - most get_* calls
-		// will result in fewer than that so this saves unnecessary
-		// reallocations
-		ecs.reserve( 10 );
+		ecs.reserve( this->components.size() );
 
 		for( auto& ec : this->components )
 		{
@@ -213,7 +210,11 @@ struct Entity
 	virtual void on_box2d_collision_end( box2d_physics::Pending_Collision& coll, Entity* touched_by );
 
 	virtual bool on_collided( simple_collision::Pending_Collision& coll );
-	virtual bool on_touched( simple_collision::Pending_Collision& coll );
+
+	bool on_touched( simple_collision::Pending_Collision& coll );
+	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) { return false; };
+	virtual bool on_touching( Simple_Collision_Body* sensor ) { return false; };
+	virtual bool on_touching_end( Simple_Collision_Body* sensor ) { return false; };
 
 	void reflect_across( Vec2 normal );
 

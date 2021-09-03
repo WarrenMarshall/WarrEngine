@@ -20,8 +20,18 @@ struct Simple_Collision_World
 
 		// we allow for a few iterations here to do our best to free colliders from
 		// other colliders. if this ends up being slow, adjust this value downwards.
+		//
+		// a low number works well here for a small number of things pushing
+		// against each other. a larger number is needed when you want to have,
+		// say, an entity pushing many other entities at the same time. low
+		// values lead to some bodies penetrating each other while force is
+		// being applied but then correct when you let go. basically, the higher
+		// this value the more solid objects will appear at a perf cost.
+		//
+		// 3 = good enough for platforming and most games
+		// 20 = pushing 10+ entities at a time
 
-		size_t num_pos_iterations = 20;
+		size_t num_pos_iterations = 3;
 
 		// collisions do better if you can add a little padding between collision bodies
 		// after resolution. 1.0 would be exactly snug against each other. Anything
@@ -45,6 +55,8 @@ struct Simple_Collision_World
 	void push_apart( simple_collision::Pending_Collision& coll );
 	void resolve_solid_collision( simple_collision::Pending_Collision& coll );
 	void resolve_sensor_collision( simple_collision::Pending_Collision& coll );
+	void init_sensor_sets_for_new_frame( Scene* scene ) const;
+	void process_sensor_sets( Scene* scene ) const;
 };
 
 }

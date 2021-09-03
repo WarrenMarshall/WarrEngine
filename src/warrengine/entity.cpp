@@ -422,6 +422,7 @@ bool Entity::on_collided( simple_collision::Pending_Collision& coll )
 // returns TRUE if the touch was handled
 bool Entity::on_touched( simple_collision::Pending_Collision& coll )
 {
+	sensors_this_frame.insert( coll.body_b );
 	return false;
 }
 

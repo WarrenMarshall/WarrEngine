@@ -145,25 +145,34 @@ void Scene::update()
 
 void Scene::post_update()
 {
-	// loop through the collision
+	sc_world->init_sensor_sets_for_new_frame( this );
+
+	// simple collision detection
 
 	for( auto iter_counter = 0 ; iter_counter < sc_world->settings.num_pos_iterations ; ++iter_counter )
 	{
+		// make sure the collision bodies are in the correct world space
+		// position, relative to their parent entities
+
 		for( auto& scc : sc_world->active_bodies )
 		{
 			scc->update_to_match_parent_transform();
 		}
 
-		// collision detection
+		// detect and handle intersecting colliders
+
 		sc_world->need_another_iteration = false;
 		sc_world->handle_collisions();
 
-		// If nothing is intersecting anymore, we can abort the rest of the iterations
+		// If nothing is intersecting anymore, we can skip the remaining iterations
+
 		if( !sc_world->need_another_iteration )
 		{
 			break;
 		}
 	}
+
+	sc_world->process_sensor_sets( this );
 
 	// update entities and components, after physics have run
 

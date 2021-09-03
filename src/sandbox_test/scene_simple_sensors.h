@@ -3,7 +3,9 @@ using namespace war;
 
 struct E_Sensor_Player : Entity
 {
-	virtual bool on_touched( simple_collision::Pending_Collision& coll ) override;
+	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
+	virtual bool on_touching( Simple_Collision_Body* sensor ) override;
+	virtual bool on_touching_end( Simple_Collision_Body* sensor ) override;
 };
 
 // ----------------------------------------------------------------------------

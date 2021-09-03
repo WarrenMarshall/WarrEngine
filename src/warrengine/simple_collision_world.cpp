@@ -102,18 +102,7 @@ void Simple_Collision_World::handle_collisions()
 		{
 			if( scc_a->intersects_with( scc_b ) )
 			{
-				// if the bodies are touching and we haven't seen this pair
-				// before, add them into the set
-				//
-				// this prevents us from processing the same collision set twice
-				// every time. so basically avoids "A hit B" and then "B hit A"
-				// - we only care that "A hit B".
-
-				//if( !colliding_bodies_set.contains( std::make_pair( scc_a, scc_b ) )
-				//	and !colliding_bodies_set.contains( std::make_pair( scc_b, scc_a ) ) )
-				{
-					colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
-				}
+				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
 			}
 		}
 	}
@@ -367,6 +356,43 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 	{
 		coll.entity_a->simple.is_in_air = false;
 		coll.entity_b->on_touched( coll );
+	}
+}
+
+void Simple_Collision_World::init_sensor_sets_for_new_frame( Scene* scene ) const
+{
+	for( auto& entity : scene->entities )
+	{
+		entity->sensors_last_frame = entity->sensors_this_frame;
+		entity->sensors_this_frame.clear();
+	}
+}
+
+void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
+{
+	for( auto& entity : scene->entities )
+	{
+		std::set<Simple_Collision_Body*> common_set = entity->sensors_last_frame;
+		common_set.insert( entity->sensors_this_frame.begin(), entity->sensors_this_frame.end() );
+
+		for( auto sensor : common_set )
+		{
+			bool last_frame = entity->sensors_last_frame.contains( sensor );
+			bool this_frame = entity->sensors_this_frame.contains( sensor );
+
+			if( !last_frame and this_frame )
+			{
+				entity->on_touching_begin( sensor );
+			}
+			if( last_frame and this_frame )
+			{
+				entity->on_touching( sensor );
+			}
+			if( last_frame and !this_frame )
+			{
+				entity->on_touching_end( sensor );
+			}
+		}
 	}
 }
 

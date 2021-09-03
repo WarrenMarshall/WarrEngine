@@ -5,12 +5,23 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-bool E_Sensor_Player::on_touched( simple_collision::Pending_Collision& coll )
+bool E_Sensor_Player::on_touching_begin( Simple_Collision_Body* sensor )
 {
-	log( "player touching sensor : {}", g_engine->clock.now() );
-
+	log( "TOUCHED_BEGIN : {}", g_engine->clock.now() );
 	return true;
-}
+};
+
+bool E_Sensor_Player::on_touching( Simple_Collision_Body* sensor )
+{
+	//log( "TOUCHING : {}", g_engine->clock.now() );
+	return true;
+};
+
+bool E_Sensor_Player::on_touching_end( Simple_Collision_Body* sensor )
+{
+	log( "TOUCHED_END : {}", g_engine->clock.now() );
+	return true;
+};
 
 // ----------------------------------------------------------------------------
 
