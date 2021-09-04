@@ -264,7 +264,7 @@
     <ClCompile Include="scene_sound_music.cpp" />
     <ClCompile Include="scene_textures.cpp" />
     <ClCompile Include="scene_wrapped_text.cpp" />
-    <ClCompile Include="scene_tilemap.cpp" />
+    <ClCompile Include="scene_tile_map.cpp" />
     <ClCompile Include="scene_tweens_timers.cpp" />
     <ClCompile Include="scene_ui.cpp" />
     <ClCompile Include="main.cpp" />
@@ -293,7 +293,7 @@
     <ClInclude Include="scene_sound_music.h" />
     <ClInclude Include="scene_textures.h" />
     <ClInclude Include="scene_wrapped_text.h" />
-    <ClInclude Include="scene_tilemap.h" />
+    <ClInclude Include="scene_tile_map.h" />
     <ClInclude Include="scene_tweens_timers.h" />
     <ClInclude Include="scene_ui.h" />
     <ClInclude Include="sandbox_test.h" />

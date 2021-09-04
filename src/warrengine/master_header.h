@@ -65,8 +65,8 @@ namespace war
 	using f_draw_control = std::function<void( UI_Control* control, const Rect& rc_ui )>;
 	#define f_decl_draw_control( func_name ) void func_name ( UI_Control* control, const Rect& rc_ui )
 
-	using f_tile_map_spawn_entity = std::function<void( Scene* Scene, Tile_Map_Asset::Tile* tile )>;
-	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( Scene* scene, Tile_Map_Asset::Tile* tile )
+	using f_tile_map_spawn_entity = std::function<void( Scene* Scene, Tile_Map_Asset* tile_map, Tile_Map_Asset::Chunk* chunk, Tile_Map_Asset::Tile* tile )>;
+	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( Scene* scene, Tile_Map_Asset* tile_map, Tile_Map_Asset::Chunk* chunk, Tile_Map_Asset::Tile* tile )
 
 	using ec_simple_body_pair = std::pair<Simple_Collision_Body*, Simple_Collision_Body*>;
 }

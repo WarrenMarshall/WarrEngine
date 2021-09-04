@@ -1614,7 +1614,7 @@ void Tile_Map_Component::spawn_entities( Scene* scene, f_tile_map_spawn_entity f
 				{
 					if( tile.idx != Tile_Map_Asset::Tile::empty )
 					{
-						func_callback( scene, &tile );
+						func_callback( scene, tile_map, &chunk, &tile );
 					}
 				}
 			}

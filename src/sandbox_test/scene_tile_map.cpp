@@ -3,13 +3,13 @@
 
 using namespace war;
 
-Scene_TileMap::Scene_TileMap()
+Scene_Tile_Map::Scene_Tile_Map()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
 }
 
-void Scene_TileMap::pushed()
+void Scene_Tile_Map::pushed()
 {
 	Scene::pushed();
 
@@ -19,7 +19,7 @@ void Scene_TileMap::pushed()
 	tm_overworld = g_engine->find_asset<Tile_Map_Asset>( "tm_overworld" );
 }
 
-void Scene_TileMap::draw()
+void Scene_Tile_Map::draw()
 {
 	draw_tiled_background();
 	Scene::draw();
@@ -35,7 +35,7 @@ void Scene_TileMap::draw()
 	Render::draw_world_axis();
 }
 
-void Scene_TileMap::draw_ui()
+void Scene_Tile_Map::draw_ui()
 {
 	draw_title( "Tile Map" );
 	Scene::draw_ui();

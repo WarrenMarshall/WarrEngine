@@ -42,7 +42,7 @@
     <ClCompile Include="scene_palette.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_tilemap.cpp">
+    <ClCompile Include="scene_tile_map.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_wrapped_text.cpp">
@@ -118,7 +118,7 @@
     <ClInclude Include="scene_palette.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_tilemap.h">
+    <ClInclude Include="scene_tile_map.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_wrapped_text.h">

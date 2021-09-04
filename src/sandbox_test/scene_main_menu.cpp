@@ -63,7 +63,7 @@ void Scene_Main_Menu::draw_ui()
 			do_menu_button<Scene_Textures>( H( "button_textures" ), "Textures" );
 			do_menu_button<Scene_Meshes>( H( "button_meshes" ), "Meshes" );
 			do_menu_button<Scene_Particles>( H( "button_particles" ), "Particles" );
-			do_menu_button<Scene_TileMap>( H( "button_tilemap" ), "Tile Map" );
+			do_menu_button<Scene_Tile_Map>( H( "button_tilemap" ), "Tile Map" );
 		}
 
 		{

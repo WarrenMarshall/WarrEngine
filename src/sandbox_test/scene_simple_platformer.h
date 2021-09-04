@@ -4,9 +4,12 @@ using namespace war;
 struct E_Jump_Pad : Entity
 {
 	Sprite_Component* sprite_component = nullptr;
+	Texture_Asset* tex_jump_pad_up = nullptr;
+	Texture_Asset* tex_jump_pad_down = nullptr;
 
 	time_ms time_reset = 0;
 
+	E_Jump_Pad();
 	virtual void update() override;
 };
 

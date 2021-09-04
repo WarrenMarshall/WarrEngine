@@ -56,7 +56,7 @@ static void draw_title( const std::string& title )
 #include "scene_simple_breakout.h"
 #include "scene_simple_platformer.h"
 #include "scene_controller.h"
-#include "scene_tilemap.h"
+#include "scene_tile_map.h"
 #include "scene_wrapped_text.h"
 #include "scene_noise.h"
 

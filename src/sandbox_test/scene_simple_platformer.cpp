@@ -26,12 +26,14 @@ void Scene_Simple_Platformer::draw_ui()
 
 void Scene_Simple_Platformer::draw()
 {
+/*
 	{
 		scoped_render_state;
 		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
 			Rect( -viewport_w, -viewport_h, viewport_w*2, viewport_h*2 ) );
 	}
+*/
 
 	Scene::draw();
 }
@@ -41,17 +43,24 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 	auto gameplay_scene = (Scene_Simple_Platformer*)scene;
 	auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
 
+	Vec2 tile_pos =
+	{
+		( ( tile->x_idx + chunk->tilemap_bounds.x ) * tile_map->tile_sz )
+			+ ( tile_map->tile_sz / 2.f ),
+		( ( tile->y_idx + chunk->tilemap_bounds.y ) * tile_map->tile_sz )
+			+ ( tile_map->tile_sz / 2.f )
+	};
+
 	switch( tile->idx )
 	{
-
 		// jump pad
 
 		case 107:
 		{
 			auto e = scene->add_entity<E_Jump_Pad>();
 			e->tag = H( "JUMP_PAD" );
-			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
-			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+			e->set_pos( tile_pos );
+			//e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 
 			{
 				auto ec = e->add_component<Sprite_Component>();
@@ -80,8 +89,8 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 		case 180:
 		{
 			auto e = scene->add_entity<E_Player>();
-			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
-			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+			e->set_pos( tile_pos );
+			//e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.is_affected_by_gravity = true;
 			e->simple.friction = 0.1f;
 
@@ -237,14 +246,22 @@ bool E_Player::on_touching_begin( Simple_Collision_Body* sensor )
 
 // ----------------------------------------------------------------------------
 
+E_Jump_Pad::E_Jump_Pad()
+	: Entity()
+{
+	tex_jump_pad_down = g_engine->find_asset<Texture_Asset>( "tex_jump_pad_down" );
+	tex_jump_pad_up = g_engine->find_asset<Texture_Asset>( "tex_jump_pad_up" );
+
+}
+
 void E_Jump_Pad::update()
 {
 	if( time_reset < g_engine->clock.now() )
 	{
-		sprite_component->texture = g_engine->find_asset<Texture_Asset>( "tex_jump_pad_down" );
+		sprite_component->texture = tex_jump_pad_down;
 	}
 	else
 	{
-		sprite_component->texture = g_engine->find_asset<Texture_Asset>( "tex_jump_pad_up" );
+		sprite_component->texture = tex_jump_pad_up;
 	}
 }
