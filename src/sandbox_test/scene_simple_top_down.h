@@ -3,6 +3,12 @@ using namespace war;
 
 struct Scene_Simple_Top_Down : Scene
 {
+	struct
+	{
+		uint16_t player = 0b00000001;
+		uint16_t geo	= 0b00000010;
+	} coll_flags;
+
 	Scene_Simple_Top_Down();
 
 	Entity* player = nullptr;

@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="bit_flag_generator.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="asset_cache_mgr.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -291,9 +288,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bit_flag_generator.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="asset_cache_mgr.h">
       <Filter>include</Filter>
     </ClInclude>

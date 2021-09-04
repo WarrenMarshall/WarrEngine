@@ -5,14 +5,6 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static Bit_Flag_Generator collision_bits = 1;
-
-static const uint16_t scene_box2d_all = collision_bits.get();
-static const uint16_t scene_box2d_world = collision_bits.next();
-static const uint16_t scene_box2d_ball = collision_bits.next();
-
-// ----------------------------------------------------------------------------
-
 Scene_Box2D::Scene_Box2D()
 {
 	flags.blocks_further_drawing = true;
@@ -34,7 +26,7 @@ void Scene_Box2D::pushed()
 			{
 				auto ec = e->add_component<Box2D_Kinematic_Body_Component>();
 				ec->add_fixture_circle( hash_none, { 0.f, 0.f }, 32.f );
-				ec->set_collision_flags( scene_box2d_world, scene_box2d_ball );
+				ec->set_collision_flags( coll_flags.world, coll_flags.ball );
 			}
 			{
 				auto ec = e->add_component<Primitve_Shape_Component>();
@@ -58,7 +50,7 @@ void Scene_Box2D::pushed()
 				ec->add_fixture_box( hash_none, rc_floor );
 				ec->add_fixture_box( hash_none, rc_left_wall );
 				ec->add_fixture_box( hash_none, rc_right_wall );
-				e->get_component<Box2D_Physics_Component>()->set_collision_flags( scene_box2d_world, scene_box2d_ball );
+				e->get_component<Box2D_Physics_Component>()->set_collision_flags( coll_flags.world, coll_flags.ball );
 			}
 			{
 				auto ec = e->add_component<Primitve_Shape_Component>();
@@ -105,7 +97,7 @@ void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 			auto ec = e->add_component<Box2D_Dynamic_Body_Component>();
 			ec->is_primary_body = true;
 			ec->add_fixture_circle( hash_none, Vec2::zero, random_radius );
-			ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball | scene_box2d_world );
+			ec->set_collision_flags( coll_flags.ball, coll_flags.ball | coll_flags.world );
 			e->get_component<Box2D_Physics_Component>()->set_restitution( Random::getf_range( 0.f, 1.f ) );
 		}
 		{
@@ -136,7 +128,7 @@ void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 			auto ec = e->add_component<Box2D_Dynamic_Body_Component>();
 			ec->is_primary_body = true;
 			ec->add_fixture_box( hash_none, rc_box );
-			ec->set_collision_flags( scene_box2d_ball, scene_box2d_ball | scene_box2d_world );
+			ec->set_collision_flags( coll_flags.ball, coll_flags.ball | coll_flags.world );
 			e->get_component<Box2D_Physics_Component>()->set_restitution( Random::getf_range( 0.f, 1.f ) );
 		}
 		rc_box.grow( 1.f );

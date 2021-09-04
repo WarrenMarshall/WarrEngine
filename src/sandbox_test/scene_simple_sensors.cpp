@@ -25,12 +25,6 @@ bool E_Sensor_Player::on_touching_end( Simple_Collision_Body* sensor )
 
 // ----------------------------------------------------------------------------
 
-static Bit_Flag_Generator collision_bits = 1;
-
-static const uint16_t scene_simple_sensors_player = collision_bits.get();
-static const uint16_t scene_simple_sensors_world = collision_bits.next();
-static const uint16_t scene_simple_sensors_sensor = collision_bits.next();
-
 Scene_Simple_Sensors::Scene_Simple_Sensors()
 {
 	flags.blocks_further_drawing = true;
@@ -58,12 +52,11 @@ void Scene_Simple_Sensors::pushed()
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->set_as_circle( 32.f );
-			ec->set_collision_flags( scene_simple_sensors_player, scene_simple_sensors_world | scene_simple_sensors_sensor );
+			ec->set_collision_flags( coll_flags.player, coll_flags.world | coll_flags.sensor );
 		}
 	}
 
 	// SENSORS
-
 
 	{
 		auto e = add_entity<Entity>( "world" );
@@ -74,14 +67,14 @@ void Scene_Simple_Sensors::pushed()
 			ec->get_transform()->set_pos( { -viewport_hw / 4.f, 0.f } );
 			ec->set_as_circle( 16.f );
 			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
-			ec->set_collision_flags( scene_simple_sensors_sensor, 0 );
+			ec->set_collision_flags( coll_flags.sensor, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw / 2.f, 16.f } );
 			ec->set_as_circle( 32.f );
 			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
-			ec->set_collision_flags( scene_simple_sensors_sensor, 0 );
+			ec->set_collision_flags( coll_flags.sensor, 0 );
 		}
 	}
 
@@ -96,25 +89,25 @@ void Scene_Simple_Sensors::pushed()
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( scene_simple_sensors_world, 0 );
+			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 
 		world_geo = e;

@@ -5,12 +5,6 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static Bit_Flag_Generator collision_bits = 1;
-
-static const uint16_t scene_simple_coll_ball = collision_bits.get();
-static const uint16_t scene_simple_coll_world = collision_bits.next();
-static const uint16_t scene_simple_coll_dynamic_object = collision_bits.get();
-
 Scene_Simple_Collision::Scene_Simple_Collision()
 {
 	flags.blocks_further_drawing = true;
@@ -38,7 +32,7 @@ void Scene_Simple_Collision::pushed()
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->set_as_circle( 32.f );
-			ec->set_collision_flags( scene_simple_coll_ball, scene_simple_coll_dynamic_object );
+			ec->set_collision_flags( coll_flags.player, coll_flags.dynamic_object );
 		}
 	}
 
@@ -52,19 +46,19 @@ void Scene_Simple_Collision::pushed()
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_coll_world, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_h } );
 			ec->set_as_box( 16.f, viewport_h * 2.f );
-			ec->set_collision_flags( scene_simple_coll_world, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_h } );
 			ec->set_as_box( 16.f, viewport_h * 2.f );
-			ec->set_collision_flags( scene_simple_coll_world, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 
 		world_geo = e;
@@ -114,7 +108,7 @@ void Scene_Simple_Collision::spawn_ball_at( Vec2 world_pos )
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->set_as_circle( random_radius );
-			ec->set_collision_flags( scene_simple_coll_dynamic_object, scene_simple_coll_world | scene_simple_coll_ball );
+			ec->set_collision_flags( coll_flags.dynamic_object, coll_flags.geo | coll_flags.player | coll_flags.dynamic_object );
 		}
 	}
 }
@@ -143,7 +137,7 @@ void Scene_Simple_Collision::spawn_box_at( Vec2 world_pos )
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->set_as_box( rc_box.w, rc_box.h );
-			ec->set_collision_flags( scene_simple_coll_dynamic_object, scene_simple_coll_world | scene_simple_coll_ball );
+			ec->set_collision_flags( coll_flags.dynamic_object, coll_flags.geo | coll_flags.player | coll_flags.dynamic_object );
 		}
 	}
 }

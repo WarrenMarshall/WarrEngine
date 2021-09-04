@@ -5,14 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static Bit_Flag_Generator collision_bits = 1;
-
-static const uint16_t scene_simple_platformer_coll_player = collision_bits.get();
-static const uint16_t scene_simple_platformer_coll_geo = collision_bits.next();
-
-constexpr auto player_collision_radius = 7.f;
-
-// ----------------------------------------------------------------------------
+constexpr auto player_collision_radius = 8.f;
 
 Scene_Simple_Platformer::Scene_Simple_Platformer()
 {
@@ -37,7 +30,7 @@ void Scene_Simple_Platformer::draw()
 		scoped_render_state;
 		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
-			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+			Rect( -viewport_w, -viewport_h, viewport_w*2, viewport_h*2 ) );
 	}
 
 	Scene::draw();
@@ -49,7 +42,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 	switch( tile->idx )
 	{
-		case 15:
+		case 180:
 		{
 			auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
 
@@ -68,7 +61,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( player_collision_radius );
 
-				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
+				ec->set_collision_flags( gameplay_scene->coll_flags.player, gameplay_scene->coll_flags.geo );
 			}
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
@@ -77,7 +70,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				ec->set_as_circle( 4.f );
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
 
-				ec->set_collision_flags( scene_simple_platformer_coll_player, scene_simple_platformer_coll_geo );
+				ec->set_collision_flags( gameplay_scene->coll_flags.player, gameplay_scene->coll_flags.geo );
 			}
 			{
 				auto ec = e->add_component<Emitter_Component>();
@@ -118,7 +111,7 @@ void Scene_Simple_Platformer::pushed()
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
-			ec->set_collision_flags( scene_simple_platformer_coll_geo, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->init( "ts_platformer", "tm_platformer_level_01" );
 			ec->spawn_entities( this, platformer_spawn_entity );
 		}

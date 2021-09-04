@@ -5,25 +5,6 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static Bit_Flag_Generator collision_bits = 1;
-
-static const uint16_t scene_simple_breakout_coll_ball = collision_bits.get();
-static const uint16_t scene_simple_breakout_coll_paddle = collision_bits.get();
-static const uint16_t scene_simple_breakout_coll_geo = collision_bits.next();
-
-// ----------------------------------------------------------------------------
-
-bool E_Breakout_Ball::on_collided( simple_collision::Pending_Collision& coll )
-{
-	if( coll.entity_b->tag == H( "THE_PADDLE" ) )
-	{
-	}
-
-	return false;
-}
-
-// ----------------------------------------------------------------------------
-
 bool E_Breakout_Paddle::on_collided( simple_collision::Pending_Collision& coll )
 {
 	if( coll.entity_b->tag == H( "BALL" ) )
@@ -49,7 +30,7 @@ Scene_Simple_Breakout::Scene_Simple_Breakout()
 
 void Scene_Simple_Breakout::spawn_ball()
 {
-	auto e = add_entity<E_Breakout_Ball>();
+	auto e = add_entity<Entity>();
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
 	e->simple.friction = 0.0;
@@ -61,7 +42,7 @@ void Scene_Simple_Breakout::spawn_ball()
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 		ec->set_as_circle( 12.f );
-		ec->set_collision_flags( scene_simple_breakout_coll_ball, scene_simple_breakout_coll_geo | scene_simple_breakout_coll_paddle );
+		ec->set_collision_flags( coll_flags.ball, coll_flags.geo | coll_flags.ball | coll_flags.paddle );
 	}
 
 	e->add_impulse( { Random::get_random_unit_vector(), 2.5f } );
@@ -90,7 +71,7 @@ void Scene_Simple_Breakout::pushed()
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->set_as_centered_box( paddle_w, paddle_h );
-			ec->set_collision_flags( scene_simple_breakout_coll_paddle, scene_simple_breakout_coll_ball );
+			ec->set_collision_flags( coll_flags.paddle, coll_flags.ball );
 		}
 
 		paddle = e;
@@ -119,7 +100,7 @@ void Scene_Simple_Breakout::pushed()
 				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+				ec->set_collision_flags( coll_flags.geo, 0 );
 			}
 		}
 
@@ -133,7 +114,7 @@ void Scene_Simple_Breakout::pushed()
 				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
-				ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+				ec->set_collision_flags( coll_flags.geo, 0 );
 			}
 		}
 
@@ -142,25 +123,25 @@ void Scene_Simple_Breakout::pushed()
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( scene_simple_breakout_coll_geo, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 
 		world_geo = e;

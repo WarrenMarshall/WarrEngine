@@ -24,7 +24,6 @@
 #include "timeline_nodes.h"
 #include "scoped_vars.h"
 
-#include "bit_flag_generator.h"
 #include "coord.h"
 #include "matrix.h"
 #include "opengl_color_attachment.h"

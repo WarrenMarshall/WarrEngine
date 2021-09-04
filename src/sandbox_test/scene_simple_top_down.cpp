@@ -5,12 +5,6 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-static Bit_Flag_Generator collision_bits = 1;
-
-static const uint16_t scene_simple_top_down_player = collision_bits.get();
-static const uint16_t scene_simple_top_down_geo = collision_bits.next();
-static const uint16_t scene_simple_top_down_npc = collision_bits.next();
-
 constexpr auto player_collision_radius = 8.f;
 
 // ----------------------------------------------------------------------------
@@ -48,7 +42,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( player_collision_radius );
 
-				ec->set_collision_flags( scene_simple_top_down_player, scene_simple_top_down_geo );
+				ec->set_collision_flags( gameplay_scene->coll_flags.player, gameplay_scene->coll_flags.geo );
 			}
 			{
 				auto ec = e->add_component<Sprite_Component>();
@@ -96,7 +90,7 @@ void Scene_Simple_Top_Down::pushed()
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
-			ec->set_collision_flags( scene_simple_top_down_geo, 0 );
+			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->init( "ts_top_down", "tm_top_down" );
 			ec->spawn_entities( this, topdown_spawn_entity );
 		}

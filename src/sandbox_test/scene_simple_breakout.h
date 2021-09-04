@@ -3,13 +3,6 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct E_Breakout_Ball : Entity
-{
-	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
-};
-
-// ----------------------------------------------------------------------------
-
 struct E_Breakout_Paddle : Entity
 {
 	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
@@ -18,6 +11,13 @@ struct E_Breakout_Paddle : Entity
 // ----------------------------------------------------------------------------
 struct Scene_Simple_Breakout : Scene
 {
+	struct
+	{
+		uint16_t ball	= 0b00000001;
+		uint16_t paddle = 0b00000010;
+		uint16_t geo	= 0b00000100;
+	} coll_flags;
+
 	Scene_Simple_Breakout();
 
 	Entity* paddle = nullptr;

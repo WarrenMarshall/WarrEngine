@@ -3,6 +3,13 @@ using namespace war;
 
 struct Scene_Simple_Collision : Scene
 {
+	struct
+	{
+		uint16_t player			= 0b00000001;
+		uint16_t geo			= 0b00000010;
+		uint16_t dynamic_object	= 0b00000100;
+	} coll_flags;
+
 	Scene_Simple_Collision();
 
 	Entity* player = nullptr;

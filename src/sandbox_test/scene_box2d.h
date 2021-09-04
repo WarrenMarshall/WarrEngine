@@ -3,6 +3,13 @@ using namespace war;
 
 struct Scene_Box2D : Scene
 {
+	struct
+	{
+		uint16_t all	= 0b00000001;
+		uint16_t world	= 0b00000010;
+		uint16_t ball	= 0b00000100;
+	} coll_flags;
+
 	Scene_Box2D();
 
 	virtual void pushed() override;

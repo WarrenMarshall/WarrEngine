@@ -12,6 +12,13 @@ struct E_Sensor_Player : Entity
 
 struct Scene_Simple_Sensors : Scene
 {
+	struct
+	{
+		uint16_t player = 0b0000001;
+		uint16_t world	= 0b0000010;
+		uint16_t sensor = 0b0000100;
+	} coll_flags;
+
 	Scene_Simple_Sensors();
 
 	Entity* player = nullptr;
