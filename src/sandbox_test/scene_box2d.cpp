@@ -29,7 +29,7 @@ void Scene_Box2D::pushed()
 				ec->set_collision_flags( coll_flags.world, coll_flags.ball );
 			}
 			{
-				auto ec = e->add_component<Primitve_Shape_Component>();
+				auto ec = e->add_component<Primitive_Shape_Component>();
 				ec->add_shape( e_primitive_shape::filled_circle, 32.f );
 				ec->rs_opt.color = make_color( e_pal::brighter );
 				ec->rs_opt.glow = 1.f;
@@ -53,7 +53,7 @@ void Scene_Box2D::pushed()
 				e->get_component<Box2D_Physics_Component>()->set_collision_flags( coll_flags.world, coll_flags.ball );
 			}
 			{
-				auto ec = e->add_component<Primitve_Shape_Component>();
+				auto ec = e->add_component<Primitive_Shape_Component>();
 				ec->add_shape( e_primitive_shape::filled_rect, rc_floor );
 				ec->add_shape( e_primitive_shape::filled_rect, rc_left_wall );
 				ec->add_shape( e_primitive_shape::filled_rect, rc_right_wall );
@@ -133,13 +133,13 @@ void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 		}
 		rc_box.grow( 1.f );
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, rc_box );
 			ec->rs_opt.color = make_color( e_pal::darker );
 		}
 		rc_box.shrink( 2.f );
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, rc_box );
 
 			glm::vec3 clr = { Random::getf(), Random::getf(), Random::getf() };

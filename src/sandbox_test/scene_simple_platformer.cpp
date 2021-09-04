@@ -39,29 +39,69 @@ void Scene_Simple_Platformer::draw()
 f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 {
 	auto gameplay_scene = (Scene_Simple_Platformer*)scene;
+	auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
 
 	switch( tile->idx )
 	{
+
+		// jump pad
+
+		case 107:
+		{
+			auto e = scene->add_entity<E_Jump_Pad>();
+			e->tag = H( "JUMP_PAD" );
+			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
+			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+
+			{
+				auto ec = e->add_component<Sprite_Component>();
+				ec->init( "tex_jump_pad_down" );
+
+				e->sprite_component = ec;
+			}
+			{
+				auto ec = e->add_component<Simple_Collision_Body>();
+				ec->collider_type = e_sc_body_collider_type::sensor;
+				ec->set_as_centered_box( 16.f, 6.f );
+				ec->get_transform()->add_pos( { 0.f, 4.f } );
+
+				ec->set_collision_flags(
+					gameplay_scene->coll_flags.jump_pad,
+					0
+				);
+			}
+
+			tile->idx = Tile_Map_Asset::Tile::empty;
+		}
+		break;
+
+		// player
+
 		case 180:
 		{
-			auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
-
-			auto e = scene->add_entity<Entity>();
+			auto e = scene->add_entity<E_Player>();
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.is_affected_by_gravity = true;
 			e->simple.friction = 0.1f;
 
 			{
-				auto ec = e->add_component<Primitve_Shape_Component>();
+				auto ec = e->add_component<Primitive_Shape_Component>();
 				ec->add_shape( e_primitive_shape::point );
+			}
+			{
+				auto ec = e->add_component<Sprite_Component>();
+				ec->init( "tex_player" );
 			}
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( player_collision_radius );
 
-				ec->set_collision_flags( gameplay_scene->coll_flags.player, gameplay_scene->coll_flags.geo );
+				ec->set_collision_flags(
+					gameplay_scene->coll_flags.player,
+					gameplay_scene->coll_flags.geo | gameplay_scene->coll_flags.jump_pad
+				);
 			}
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
@@ -70,7 +110,10 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				ec->set_as_circle( 4.f );
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
 
-				ec->set_collision_flags( gameplay_scene->coll_flags.player, gameplay_scene->coll_flags.geo );
+				ec->set_collision_flags(
+					gameplay_scene->coll_flags.player,
+					gameplay_scene->coll_flags.geo
+				);
 			}
 			{
 				auto ec = e->add_component<Emitter_Component>();
@@ -175,4 +218,33 @@ bool Scene_Simple_Platformer::on_input_pressed( const Input_Event* evt )
 	}
 
 	return false;
+}
+
+// ----------------------------------------------------------------------------
+
+bool E_Player::on_touching_begin( Simple_Collision_Body* sensor )
+{
+	if( sensor->parent_entity->tag == H("JUMP_PAD") )
+	{
+		g_engine->find_asset<Sound_Asset>( "sfx_platfomer_jump" )->play();
+		add_impulse( { Vec2( 0.0f, -1.0f ), 50.0f } );
+		( (E_Jump_Pad*)sensor->parent_entity )->time_reset = g_engine->clock.now() + 500;
+		return true;
+	}
+
+	return false;
+}
+
+// ----------------------------------------------------------------------------
+
+void E_Jump_Pad::update()
+{
+	if( time_reset < g_engine->clock.now() )
+	{
+		sprite_component->texture = g_engine->find_asset<Texture_Asset>( "tex_jump_pad_down" );
+	}
+	else
+	{
+		sprite_component->texture = g_engine->find_asset<Texture_Asset>( "tex_jump_pad_up" );
+	}
 }

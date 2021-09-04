@@ -50,7 +50,7 @@ Entity* Scene_Simple_Bounce::spawn_player()
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 	}
 	{
-		auto ec = e->add_component<Primitve_Shape_Component>();
+		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->rs_opt.color = make_color( Color::white, 1.0f );
 		ec->add_shape( e_primitive_shape::point );
 	}

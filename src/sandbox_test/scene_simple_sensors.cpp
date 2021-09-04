@@ -46,7 +46,7 @@ void Scene_Simple_Sensors::pushed()
 		e->tag = H( "the_player" );
 		e->simple.type = e_sc_type::kinematic;
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
 		}
 		{

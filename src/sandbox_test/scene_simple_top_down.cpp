@@ -74,7 +74,7 @@ void Scene_Simple_Top_Down::pushed()
 		e->set_pos( { 0.f, 0.f } );
 		e->rs_opt.z_bias = zdepth_debug_bias;
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->rs_opt.color = make_color( Color::yellow );
 		}
 
@@ -135,7 +135,7 @@ void Scene_Simple_Top_Down::update()
 
 void Scene_Simple_Top_Down::reset_collision_trace_results()
 {
-	hit_marker->get_component<Primitve_Shape_Component>()->shapes.clear();
+	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
 
 	for( auto& iter : world->get_components<Simple_Collision_Body>() )
 	{

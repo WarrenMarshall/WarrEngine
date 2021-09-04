@@ -1,12 +1,30 @@
 
 using namespace war;
 
+struct E_Jump_Pad : Entity
+{
+	Sprite_Component* sprite_component = nullptr;
+
+	time_ms time_reset = 0;
+
+	virtual void update() override;
+};
+
+// ----------------------------------------------------------------------------
+
+struct E_Player : Entity
+{
+	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
+};
+
+// ----------------------------------------------------------------------------
 struct Scene_Simple_Platformer : Scene
 {
 	struct
 	{
-		uint16_t player = 0b00000001;
-		uint16_t geo	= 0b00000010;
+		uint16_t player		= 0b00000001;
+		uint16_t geo		= 0b00000010;
+		uint16_t jump_pad	= 0b00000100;
 	} coll_flags;
 
 	Entity* world = nullptr;

@@ -15,6 +15,11 @@
 	"tag" "st_platformer_tile_set_master"
 	"use_mipmaps" "false"
 	"filename" "gfx/platformer_tileset.png"
+	"texture_tags" "\
+		tex_jump_pad_down, 126, 90, 18, 18,\
+		tex_jump_pad_up, 144, 90, 18, 18,\
+		tex_player, 90, 126, 18, 18\
+	"
 }
 
 {

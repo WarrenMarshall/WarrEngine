@@ -36,7 +36,7 @@ void Scene_Simple_Breakout::spawn_ball()
 	e->simple.friction = 0.0;
 	e->simple.is_bouncy = true;
 	{
-		auto ec = e->add_component<Primitve_Shape_Component>();
+		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );
 	}
 	{
@@ -65,7 +65,7 @@ void Scene_Simple_Breakout::pushed()
 		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
 		}
 		{

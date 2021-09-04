@@ -89,9 +89,9 @@ static_assert( sizeof( Sprite_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
-struct Primitve_Shape_Component : Entity_Component
+struct Primitive_Shape_Component : Entity_Component
 {
-	struct Shape_Def
+	struct Shape
 	{
 		e_primitive_shape_t prim_shape = e_primitive_shape::rect;
 		Rect rc = {};
@@ -99,10 +99,10 @@ struct Primitve_Shape_Component : Entity_Component
 		Vec2 pos_offset = {};
 	};
 
-	std::vector<Shape_Def> shapes;
+	std::vector<Shape> shapes;
 
-	Primitve_Shape_Component() = delete;
-	Primitve_Shape_Component( Entity* parent_entity );
+	Primitive_Shape_Component() = delete;
+	Primitive_Shape_Component( Entity* parent_entity );
 
 	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
 	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset = Vec2::zero );
@@ -111,7 +111,7 @@ struct Primitve_Shape_Component : Entity_Component
 	virtual void draw() override;
 };
 
-static_assert( sizeof( Primitve_Shape_Component ) <= max_entity_component_sz );
+static_assert( sizeof( Primitive_Shape_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 

@@ -24,7 +24,7 @@ void Scene_Particles::pushed()
 			ec->init( "em_stars" );
 		}
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::circle, 30.f );
 			ec->rs_opt.color = make_color( e_pal::brightest );
 		}
@@ -40,7 +40,7 @@ void Scene_Particles::pushed()
 			ec->init( "em_coin_fountain" );
 		}
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
 			ec->rs_opt.color = make_color( 4, 0.25f );
 		}
@@ -61,7 +61,7 @@ void Scene_Particles::pushed()
 			ec->init( "em_torch_embers" );
 		}
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_circle, 10.f );
 			ec->rs_opt.color = make_color( e_pal::brightest );
 			ec->rs_opt.color->a = 0.25f;

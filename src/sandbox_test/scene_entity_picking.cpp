@@ -21,7 +21,7 @@ void Scene_Entity_Picking::pushed()
 		e->set_pos( { 100.f, 75.f } );
 		e->set_scale( 2.f );
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -16, -16, 32, 32 ) );
 			ec->rs_opt.color = make_color( e_pal::darker );
 		}
@@ -44,7 +44,7 @@ void Scene_Entity_Picking::pushed()
 		e->make_pickable();
 		e->set_pos_angle_scale( { 150.f, 200.f }, 15.f, 2.f );
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -32, -16, 64, 32 ) );
 			ec->rs_opt.color = make_color( e_pal::brighter );
 		}

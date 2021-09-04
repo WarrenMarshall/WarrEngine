@@ -132,15 +132,15 @@ void Sprite_Component::draw()
 
 // ----------------------------------------------------------------------------
 
-Primitve_Shape_Component::Primitve_Shape_Component( Entity* parent_entity )
+Primitive_Shape_Component::Primitive_Shape_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
 	shapes.clear();
 }
 
-Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset )
 {
-	Shape_Def shape;
+	Shape shape;
 
 	shape.prim_shape = prim_shape;
 	shape.rc = rc;
@@ -151,9 +151,9 @@ Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t
 	return this;
 }
 
-Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset )
 {
-	Shape_Def shape;
+	Shape shape;
 
 	shape.prim_shape = prim_shape;
 	shape.radius = radius;
@@ -164,9 +164,9 @@ Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t
 	return this;
 }
 
-Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset )
 {
-	Shape_Def shape;
+	Shape shape;
 
 	shape.prim_shape = prim_shape;
 	shape.pos_offset = pos_offset;
@@ -176,7 +176,7 @@ Entity_Component* Primitve_Shape_Component::add_shape( const e_primitive_shape_t
 	return this;
 }
 
-void Primitve_Shape_Component::draw()
+void Primitive_Shape_Component::draw()
 {
 	{
 		scoped_render_state;

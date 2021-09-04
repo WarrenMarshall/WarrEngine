@@ -26,7 +26,7 @@ void Scene_Simple_Collision::pushed()
 		e->tag = H( "main_ball" );
 		e->simple.type = e_sc_type::kinematic;
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
 		}
 		{
@@ -102,7 +102,7 @@ void Scene_Simple_Collision::spawn_ball_at( Vec2 world_pos )
 		float random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
 		}
 		{
@@ -131,7 +131,7 @@ void Scene_Simple_Collision::spawn_box_at( Vec2 world_pos )
 		float random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
 		}
 		{

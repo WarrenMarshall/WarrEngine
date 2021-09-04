@@ -54,7 +54,7 @@ Entity* Scene_Simple_Interact::spawn_player()
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 	}
 	{
-		auto ec = e->add_component<Primitve_Shape_Component>();
+		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );
 	}
 
@@ -86,7 +86,7 @@ void Scene_Simple_Interact::pushed()
 		e->set_pos( { 0.f, 0.f } );
 		e->rs_opt.z_bias = zdepth_debug_bias;
 		{
-			auto ec = e->add_component<Primitve_Shape_Component>();
+			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->rs_opt.color = make_color( Color::yellow );
 		}
 
@@ -202,7 +202,7 @@ void Scene_Simple_Interact::update()
 
 void Scene_Simple_Interact::reset_collision_trace_results()
 {
-	hit_marker->get_component<Primitve_Shape_Component>()->shapes.clear();
+	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
 
 	for( auto& iter : world_geo->get_components<Simple_Collision_Body>() )
 	{
@@ -267,7 +267,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<Primitve_Shape_Component>();
+				auto ec = hit_marker->get_component<Primitive_Shape_Component>();
 				ec->shapes.clear();
 
 				for( auto& hit : callback.results )
@@ -294,7 +294,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<Primitve_Shape_Component>();
+				auto ec = hit_marker->get_component<Primitive_Shape_Component>();
 				ec->shapes.clear();
 				ec->add_shape( e_primitive_shape::rect, Rect::create_centered( 6.f ), callback.result.pos );
 
