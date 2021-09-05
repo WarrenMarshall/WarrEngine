@@ -24,7 +24,9 @@ Entity* Scene_Simple_Bounce::spawn_player()
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 
-		switch( Random::geti_range( 0, 2 ) )
+		static int32_t last_spawned_type = 0;
+		last_spawned_type++;
+		switch( last_spawned_type % 3 )
 		{
 			case 0:
 			{

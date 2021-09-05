@@ -2,8 +2,6 @@
 namespace war
 {
 
-constexpr auto max_entity_component_sz = 352;
-
 struct Entity_Component
 {
 	Life_Cycle_Mgr life_cycle;
@@ -67,8 +65,6 @@ struct Entity_Component
 	virtual void clear_collision_flags();
 };
 
-static_assert( sizeof( Entity_Component ) <= max_entity_component_sz );
-
 // ----------------------------------------------------------------------------
 
 struct Sprite_Component : Entity_Component
@@ -84,8 +80,6 @@ struct Sprite_Component : Entity_Component
 	Entity_Component* init( std::string_view tex_tag );
 	virtual void draw() override;
 };
-
-static_assert( sizeof( Sprite_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -111,8 +105,6 @@ struct Primitive_Shape_Component : Entity_Component
 	virtual void draw() override;
 };
 
-static_assert( sizeof( Primitive_Shape_Component ) <= max_entity_component_sz );
-
 // ----------------------------------------------------------------------------
 
 struct Emitter_Component : Entity_Component
@@ -128,8 +120,6 @@ struct Emitter_Component : Entity_Component
 	virtual void draw() override;
 	virtual void update() override;
 };
-
-static_assert( sizeof( Emitter_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -168,8 +158,6 @@ struct Sound_Component : Entity_Component
 	virtual void stop() override;
 };
 
-static_assert( sizeof( Sound_Component ) <= max_entity_component_sz );
-
 // ----------------------------------------------------------------------------
 // physics
 
@@ -187,8 +175,6 @@ struct Box2D_Physics_Component : Entity_Component
 	virtual void set_collision_flags( int32_t collision_mask, int32_t collides_with ) override;
 	virtual void clear_collision_flags() override;
 };
-
-static_assert( sizeof( Box2D_Physics_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // physics bodies
@@ -228,8 +214,6 @@ struct Box2D_Physics_Body_Component : Entity_Component
 	virtual void set_collision_flags( int32_t collision_mask, int32_t collides_with ) override;
 };
 
-static_assert( sizeof( Box2D_Physics_Body_Component ) <= max_entity_component_sz );
-
 // ----------------------------------------------------------------------------
 
 struct Box2D_Static_Body_Component : Box2D_Physics_Body_Component
@@ -237,8 +221,6 @@ struct Box2D_Static_Body_Component : Box2D_Physics_Body_Component
 	Box2D_Static_Body_Component() = delete;
 	Box2D_Static_Body_Component( Entity* parent_entity );
 };
-
-static_assert( sizeof( Box2D_Static_Body_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
@@ -249,8 +231,6 @@ struct Box2D_Dynamic_Body_Component : Box2D_Physics_Body_Component
 	Box2D_Dynamic_Body_Component( Entity* parent_entity );
 };
 
-static_assert( sizeof( Box2D_Dynamic_Body_Component ) <= max_entity_component_sz );
-
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
@@ -259,8 +239,6 @@ struct Box2D_Kinematic_Body_Component : Box2D_Physics_Body_Component
 	Box2D_Kinematic_Body_Component() = delete;
 	Box2D_Kinematic_Body_Component( Entity* parent_entity );
 };
-
-static_assert( sizeof( Box2D_Kinematic_Body_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -274,8 +252,6 @@ struct Mesh_Component : Entity_Component
 	Entity_Component* init( std::string_view mesh_tag );
 	virtual void draw() override;
 };
-
-static_assert( sizeof( Mesh_Component ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -328,8 +304,6 @@ struct Simple_Collision_Body : Entity_Component
 	c2Circle get_bounds_as_simple_circle();
 };
 
-static_assert( sizeof( Simple_Collision_Body ) <= max_entity_component_sz );
-
 // ----------------------------------------------------------------------------
 
 struct Simple_Collision_Platform_Body : Simple_Collision_Body
@@ -339,8 +313,6 @@ struct Simple_Collision_Platform_Body : Simple_Collision_Body
 
 	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other ) override;
 };
-
-static_assert( sizeof( Simple_Collision_Platform_Body ) <= max_entity_component_sz );
 
 // ----------------------------------------------------------------------------
 
@@ -357,7 +329,5 @@ struct Tile_Map_Component : Entity_Component
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
-
-static_assert( sizeof( Tile_Map_Component ) <= max_entity_component_sz );
 
 }

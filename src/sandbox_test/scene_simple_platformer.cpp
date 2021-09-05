@@ -15,26 +15,8 @@ Scene_Simple_Platformer::Scene_Simple_Platformer()
 	flags.blocks_further_update = true;
 }
 
-void Scene_Simple_Platformer::draw_ui()
-{
-	Scene::draw_ui();
-
-	//render::draw_string( std::format( "Vel : {:.1f}, {:.1f} / In-Air : {}",
-	//	player->velocity.x, player->velocity.y, player->simple.is_in_air ),
-	//	vec2( 8.f, 8.f ) );
-}
-
 void Scene_Simple_Platformer::draw()
 {
-/*
-	{
-		scoped_render_state;
-		Render::state->color = make_color( e_pal::darker );
-		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
-			Rect( -viewport_w, -viewport_h, viewport_w*2, viewport_h*2 ) );
-	}
-*/
-
 	Render::draw_world_axis();
 
 	Scene::draw();
@@ -47,10 +29,8 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 	Vec2 tile_pos =
 	{
-		( ( tile->x_idx + chunk->tilemap_bounds.x ) * tile_map->tile_sz )
-			+ ( tile_map->tile_sz / 2.f ),
-		( ( tile->y_idx + chunk->tilemap_bounds.y ) * tile_map->tile_sz )
-			+ ( tile_map->tile_sz / 2.f )
+		( ( tile->x_idx + chunk->tilemap_bounds.x ) * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f ),
+		( ( tile->y_idx + chunk->tilemap_bounds.y ) * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
 	};
 
 	switch( tile->idx )
@@ -95,10 +75,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			e->simple.friction = 0.1f;
 
 			{
-				auto ec = e->add_component<Primitive_Shape_Component>();
-				ec->add_shape( e_primitive_shape::point );
-			}
-			{
 				auto ec = e->add_component<Sprite_Component>();
 				ec->init( "tex_player" );
 			}
@@ -109,7 +85,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 				ec->set_collision_flags(
 					gameplay_scene->coll_flags.player,
-					gameplay_scene->coll_flags.geo | gameplay_scene->coll_flags.jump_pad
+					gameplay_scene->coll_flags.geo | gameplay_scene->coll_flags.jump_pad //| gameplay_scene->coll_flags.mover
 				);
 			}
 			{
@@ -168,6 +144,45 @@ void Scene_Simple_Platformer::pushed()
 			ec->spawn_entities( this, platformer_spawn_entity );
 		}
 	}
+
+	// mover
+
+	{
+		auto e = add_entity<Entity>();
+		e->set_pos( { 0.f, -16.f } );
+		e->simple.type = e_sc_type::kinematic;
+
+		{
+			auto ec = e->add_component<Primitive_Shape_Component>();
+			ec->add_shape( e_primitive_shape::point );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->set_as_centered_box( 48.f, 16.f );
+
+			ec->set_collision_flags(
+				coll_flags.geo,
+				0
+			);
+		}
+		/*
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->collider_type = e_sc_body_collider_type::sensor;
+			ec->set_as_centered_box( 16.f, 6.f );
+			ec->get_transform()->add_pos( { 0.f, 4.f } );
+
+			ec->set_collision_flags(
+				coll_flags.mover,
+				0
+			);
+		}
+		*/
+
+		mover = e;
+
+	}
+
 }
 
 void Scene_Simple_Platformer::update()
@@ -195,6 +210,10 @@ bool Scene_Simple_Platformer::on_input_motion( const Input_Event* evt )
 	if( evt->input_id == e_input_id::gamepad_left_stick )
 	{
 		player->apply_movement_walk( evt->delta, 12.f );
+	}
+	if( evt->input_id == e_input_id::gamepad_right_stick )
+	{
+		mover->add_delta_pos( evt->delta );
 	}
 
 	return false;

@@ -144,6 +144,10 @@ void Simple_Collision_World::handle_collisions()
 			auto coll = body_a->intersects_with_manifold( body_b );
 			if( coll.has_value() )
 			{
+				if( body_b->parent_entity->simple.is_kinematic() )
+				{
+					int warren = 5;
+				}
 				resolve_sensor_collision( *coll );
 				continue;
 			}
@@ -169,7 +173,7 @@ void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& co
 	auto b_is_kinematic = ent_b->simple.is_kinematic();
 
 	auto dynamic_count = a_is_dynamic + b_is_dynamic;
-	auto kinematic_count = a_is_kinematic + b_is_kinematic;;
+	auto kinematic_count = a_is_kinematic + b_is_kinematic;
 
 	if( dynamic_count == 2 )
 	{
@@ -304,7 +308,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 	}
 	else
 	{
-		if( ent_b->simple.is_stationary() )
+		if( !ent_b->simple.is_dynamic() )
 		{
 			// when landing on the ground, kill any velocity on the Y axis. this
 			// stops it from accruing to the maximum as you run around on flat
@@ -323,7 +327,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 			}
 		}
 
-		if( ent_a->simple.is_stationary() )
+		if( !ent_a->simple.is_dynamic() )
 		{
 			// when landing on the ground, kill any velocity on the Y axis. this
 			// stops it from accruing to the maximum as you run around on flat

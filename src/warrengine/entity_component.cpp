@@ -1229,8 +1229,8 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 		break;
 
 		default:
-		assert( false );
-		break;
+			assert( false );
+			break;
 	}
 
 	// sometimes things go badly for reasons that are in the collision system
@@ -1352,30 +1352,17 @@ Simple_Collision_Platform_Body::Simple_Collision_Platform_Body( Entity* parent_e
 
 std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Platform_Body::intersects_with_manifold( Simple_Collision_Body* other )
 {
-	auto coll = Simple_Collision_Body::intersects_with_manifold( other );
-
-	// sensors collide with platforms the same as they do regular bodies.
-
-	if( coll->body_b->collider_type == e_sc_body_collider_type::sensor )
-	{
-		return coll;
-	}
-
-	auto oe = other->parent_entity;
-
 	// platforms have extra logic for rejecting collisions once they've been detected
 
-	if( oe->simple.is_dynamic() )
+	if( other->parent_entity->simple.is_dynamic() and other->parent_entity->velocity.y < 0.0f )
 	{
-		if( oe->velocity.y < 0.0f )
-		{
-			// the entity won't collide with the platform if it is currently
-			// moving upwards
+		// the entity won't collide with the platform if it is currently
+		// moving upwards
 
-			return std::nullopt;
-		}
+		return std::nullopt;
 	}
 
+	auto coll = Simple_Collision_Body::intersects_with_manifold( other );
 	return coll;
 }
 

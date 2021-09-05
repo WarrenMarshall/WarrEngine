@@ -276,8 +276,8 @@ constexpr void _log_fatal_( Params&&... params )
 //
 // in other words H("AB") != H("BA"), which is what we want.
 
-using hash = uint32;
-constexpr static hash hash_none = 0;
+using hash = uint32_t;
+constexpr hash hash_none = 0;
 
 consteval hash hash_it( const char* str )
 {
