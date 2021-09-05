@@ -35,3 +35,4 @@ AsmSandbox/AsmSandbox.vcxproj.user
 AsmSandbox
 *.tmp
 *.mtl
+intermediate_files
