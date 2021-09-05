@@ -100,8 +100,22 @@ void Simple_Collision_World::handle_collisions()
 	{
 		for( auto scc_b : active_bodies )
 		{
-			if( scc_a->intersects_with( scc_b ) )
+			// don't test self->self
+			if( scc_a == scc_b )
 			{
+				continue;
+			}
+
+			// don't test if both bodies belong to same entity. entities can't
+			// collide with their own collision bodies.
+			if( scc_a->parent_entity == scc_b->parent_entity )
+			{
+				continue;
+			}
+
+			if( scc_a->intersects_with_quick( scc_b ) )
+			{
+				assert( scc_a->parent_entity != scc_b->parent_entity );
 				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
 			}
 		}
@@ -109,6 +123,11 @@ void Simple_Collision_World::handle_collisions()
 
 	for( auto& [body_a, body_b] : colliding_bodies_set )
 	{
+		if( body_a->parent_entity == body_b->parent_entity )
+		{
+			continue;
+		}
+
 		if( body_a->is_platform )
 		{
 			auto coll = body_a->intersects_with_manifold( body_b );
@@ -144,10 +163,6 @@ void Simple_Collision_World::handle_collisions()
 			auto coll = body_a->intersects_with_manifold( body_b );
 			if( coll.has_value() )
 			{
-				if( body_b->parent_entity->simple.is_kinematic() )
-				{
-					int warren = 5;
-				}
 				resolve_sensor_collision( *coll );
 				continue;
 			}
@@ -353,13 +368,13 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 	if( coll.body_b->is_sensor() )
 	{
 		coll.entity_b->simple.is_in_air = false;
-		coll.entity_a->on_touched( coll );
+		coll.entity_a->on_touched( coll.body_b );
 	}
 
 	if( coll.body_a->is_sensor() )
 	{
 		coll.entity_a->simple.is_in_air = false;
-		coll.entity_b->on_touched( coll );
+		coll.entity_b->on_touched( coll.body_a );
 	}
 }
 

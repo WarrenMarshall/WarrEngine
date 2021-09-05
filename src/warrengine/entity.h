@@ -55,6 +55,10 @@ struct Entity
 
 	Scene* parent_scene = nullptr;
 
+	// the entities that are stuck to this one. meaning that when this entity
+	// moves, the entities in this list move as well.
+	std::set<Entity*> sticky_set;
+
 	std::set<Simple_Collision_Body*> sensors_this_frame;
 	std::set<Simple_Collision_Body*> sensors_last_frame;
 
@@ -210,10 +214,10 @@ struct Entity
 
 	virtual bool on_collided( simple_collision::Pending_Collision& coll );
 
-	bool on_touched( simple_collision::Pending_Collision& coll );
-	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) { return false; };
-	virtual bool on_touching( Simple_Collision_Body* sensor ) { return false; };
-	virtual bool on_touching_end( Simple_Collision_Body* sensor ) { return false; };
+	bool on_touched( Simple_Collision_Body* sensor );
+	virtual bool on_touching_begin( Simple_Collision_Body* sensor );
+	virtual bool on_touching( Simple_Collision_Body* sensor );
+	virtual bool on_touching_end( Simple_Collision_Body* sensor );
 
 	void reflect_across( Vec2 normal );
 

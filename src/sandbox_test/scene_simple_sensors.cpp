@@ -7,18 +7,24 @@ using namespace war;
 
 bool E_Sensor_Player::on_touching_begin( Simple_Collision_Body* sensor )
 {
+	Entity::on_touching_begin( sensor );
+
 	log( "TOUCHED_BEGIN : {}", g_engine->clock.now() );
 	return true;
 };
 
 bool E_Sensor_Player::on_touching( Simple_Collision_Body* sensor )
 {
+	Entity::on_touching( sensor );
+
 	//log( "TOUCHING : {}", g_engine->clock.now() );
 	return true;
 };
 
 bool E_Sensor_Player::on_touching_end( Simple_Collision_Body* sensor )
 {
+	Entity::on_touching_end( sensor );
+
 	log( "TOUCHED_END : {}", g_engine->clock.now() );
 	return true;
 };

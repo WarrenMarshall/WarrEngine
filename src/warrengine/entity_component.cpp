@@ -943,7 +943,7 @@ void Simple_Collision_Body::set_body_collider_type( e_sc_body_collider_type_t ty
 
 // does a broad phase check against "scc" to see if these bodies are intersecting
 
-bool Simple_Collision_Body::intersects_with( Simple_Collision_Body* scc )
+bool Simple_Collision_Body::intersects_with_quick( Simple_Collision_Body* scc )
 {
 	// simple_collision_components can't collide with themselves
 	if( this == scc )

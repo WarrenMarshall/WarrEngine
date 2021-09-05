@@ -368,6 +368,11 @@ void Entity::add_delta_pos( const Vec2& delta )
 {
 	_tform.add_pos( delta );
 
+	for( auto e : sticky_set )
+	{
+		e->add_delta_pos( delta );
+	}
+
 	// note : without this check, box2d bodies stop reacting to gravity - not
 	// sure why, but for now, leave this alone.
 	if( !delta.is_zero() )
@@ -414,9 +419,36 @@ bool Entity::on_collided( simple_collision::Pending_Collision& coll )
 }
 
 // returns TRUE if the touch was handled
-bool Entity::on_touched( simple_collision::Pending_Collision& coll )
+bool Entity::on_touched( Simple_Collision_Body* sensor )
 {
-	sensors_this_frame.insert( coll.body_b );
+	assert( this != sensor->parent_entity );
+	sensors_this_frame.insert( sensor );
+	return false;
+}
+
+bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
+{
+	if( sensor->is_sticky )
+	{
+		assert( this != sensor->parent_entity );
+		sensor->parent_entity->sticky_set.insert( this );
+	}
+
+	return false;
+}
+
+bool Entity::on_touching( Simple_Collision_Body* sensor )
+{
+	return false;
+}
+
+bool Entity::on_touching_end( Simple_Collision_Body* sensor )
+{
+	if( sensor->is_sticky )
+	{
+		sensor->parent_entity->sticky_set.erase( this );
+	}
+
 	return false;
 }
 
