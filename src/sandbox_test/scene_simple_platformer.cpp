@@ -35,6 +35,8 @@ void Scene_Simple_Platformer::draw()
 	}
 */
 
+	Render::draw_world_axis();
+
 	Scene::draw();
 }
 
@@ -60,7 +62,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			auto e = scene->add_entity<E_Jump_Pad>();
 			e->tag = H( "JUMP_PAD" );
 			e->set_pos( tile_pos );
-			//e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 
 			{
 				auto ec = e->add_component<Sprite_Component>();
@@ -86,11 +87,10 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 		// player
 
-		case 180:
+		case 145:
 		{
 			auto e = scene->add_entity<E_Player>();
 			e->set_pos( tile_pos );
-			//e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.is_affected_by_gravity = true;
 			e->simple.friction = 0.1f;
 
