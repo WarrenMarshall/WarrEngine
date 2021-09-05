@@ -185,36 +185,39 @@ void Entity::apply_forces()
 		}
 	}
 
-	add_delta_pos( velocity );
-
-	// apply friction to the horizontal velocity
-	velocity.x = lerp(
-		velocity.x,
-		0.f,
-		simple.friction
-	);
-
-	// only apply friction to the vertical axis if we are not affected by gravity
-	if( !simple.is_affected_by_gravity )
+	if( !velocity.is_zero() )
 	{
-		velocity.y = lerp(
-			velocity.y,
+		add_delta_pos( velocity );
+
+		// apply friction to the horizontal velocity
+		velocity.x = lerp(
+			velocity.x,
 			0.f,
 			simple.friction
 		);
-	}
 
-	// "bounce_needs_dampening" flag gets set when the entity is bouncy and it
-	// hit something last frame.
-
-	if( simple.bounce_needs_dampening )
-	{
-		simple.bounce_needs_dampening = false;
-
-		// only dampen the vertical velocity on the way up
-		if( velocity.y < 0.0f )
+		// only apply friction to the vertical axis if we are not affected by gravity
+		if( !simple.is_affected_by_gravity )
 		{
-			velocity.y *= 0.5f;
+			velocity.y = lerp(
+				velocity.y,
+				0.f,
+				simple.friction
+			);
+		}
+
+		// "bounce_needs_dampening" flag gets set when the entity is bouncy and it
+		// hit something last frame.
+
+		if( simple.bounce_needs_dampening )
+		{
+			simple.bounce_needs_dampening = false;
+
+			// only dampen the vertical velocity on the way up
+			if( velocity.y < 0.0f )
+			{
+				velocity.y *= 0.5f;
+			}
 		}
 	}
 }
@@ -290,21 +293,13 @@ void Entity::update_transform_to_match_physics_components()
 	// to an entity so it is assumed that once we find and
 	// process that one, we're done.
 
-	std::vector<Box2D_Physics_Body_Component*> ecs;
-	get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
-	get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
-
-	for( auto& ec : ecs )
+	if( auto ec = find_primary_box2d_body() ; ec )
 	{
-		if( ec->is_primary_body )
-		{
-			Vec2 position = Vec2( ec->body->GetPosition() ).from_box2d();
-			float angle = ec->body->GetAngle();
+		Vec2 position = Vec2( ec->body->GetPosition() ).from_box2d();
+		float angle = ec->body->GetAngle();
 
-			_tform.set_pos( { position.x, position.y } );
-			_tform.set_angle( glm::degrees( angle ) );
-			break;
-		}
+		_tform.set_pos( { position.x, position.y } );
+		_tform.set_angle( glm::degrees( angle ) );
 	}
 }
 
@@ -519,6 +514,23 @@ void Entity::apply_movement_walk( Vec2 delta, float speed )
 	{
 		add_force( { delta * Vec2::x_axis, 12.f } );
 	}
+}
+
+Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const
+{
+	std::vector<Box2D_Physics_Body_Component*> ecs;
+	get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
+	get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
+
+	for( auto& ec : ecs )
+	{
+		if( ec->is_primary_body )
+		{
+			return ec;
+		}
+	}
+
+	return nullptr;
 }
 
 // ----------------------------------------------------------------------------

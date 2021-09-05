@@ -192,7 +192,7 @@ struct Entity
 	// and have a base class of "B"
 
 	template<typename B, typename T>
-	void get_components( std::vector<B*>& ecs )
+	void get_components( std::vector<B*>& ecs ) const
 	{
 		ecs.reserve( this->components.size() );
 
@@ -219,6 +219,8 @@ struct Entity
 
 	virtual void apply_movement_jump();
 	virtual void apply_movement_walk( Vec2 delta, float speed );
+private:
+	Box2D_Physics_Body_Component* find_primary_box2d_body() const;
 };
 
 // ----------------------------------------------------------------------------

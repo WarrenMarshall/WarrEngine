@@ -154,35 +154,33 @@ void Scene_Simple_Platformer::pushed()
 
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
-			ec->add_shape( e_primitive_shape::point );
+			ec->add_shape( e_primitive_shape::filled_rect, Rect( -24.f, -8.f, 48.f, 16.f ) );
+			ec->rs_opt.color = make_color( Color::teal, 0.25f );
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
-			ec->set_as_centered_box( 48.f, 16.f );
+			auto ec = e->add_component<Simple_Collision_Platform_Body>();
+			ec->set_as_centered_box( 48.f, 1.f );
+			ec->get_transform()->add_pos( { 0.f, -8.0f } );
 
 			ec->set_collision_flags(
 				coll_flags.geo,
 				0
 			);
 		}
-		/*
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->collider_type = e_sc_body_collider_type::sensor;
-			ec->set_as_centered_box( 16.f, 6.f );
-			ec->get_transform()->add_pos( { 0.f, 4.f } );
+			ec->set_as_centered_box( 48.f, 4.f );
+			ec->get_transform()->add_pos( { 0.f, -8.0f } );
 
 			ec->set_collision_flags(
-				coll_flags.mover,
+				coll_flags.geo,
 				0
 			);
 		}
-		*/
 
 		mover = e;
-
 	}
-
 }
 
 void Scene_Simple_Platformer::update()

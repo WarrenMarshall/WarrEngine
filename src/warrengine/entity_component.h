@@ -265,6 +265,9 @@ struct Simple_Collision_Body : Entity_Component
 
 	bool is_platform = false;
 
+	// if true, then any entities touching this sensor need to move WITH the sensor.
+	bool is_sticky = false;
+
 	// box
 	Rect aabb = {};
 
