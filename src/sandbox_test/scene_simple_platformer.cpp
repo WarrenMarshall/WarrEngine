@@ -71,7 +71,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 		{
 			auto e = scene->add_entity<E_Player>();
 			e->set_pos( tile_pos );
-			e->debug_name = "PLAYER";
 			e->simple.is_affected_by_gravity = true;
 			e->simple.friction = 0.1f;
 
@@ -150,10 +149,11 @@ void Scene_Simple_Platformer::pushed()
 
 	{
 		auto e = add_entity<Entity>();
-		e->set_pos( { 0.f, -16.f } );
+		e->set_pos( { 0.f, -8.f } );
 		e->simple.type = e_sc_type::kinematic;
-		e->debug_name = "MOVER";
 
+	#if 0
+		// flying rectangle with platform collision
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -24.f, -8.f, 48.f, 16.f ) );
@@ -181,6 +181,40 @@ void Scene_Simple_Platformer::pushed()
 				0
 			);
 		}
+	#else
+		// flying cube, regular collision
+		{
+			auto ec = e->add_component<Primitive_Shape_Component>();
+			ec->add_shape( e_primitive_shape::filled_rect, Rect( -16.f, -16.f, 32.f, 32.f ) );
+			ec->rs_opt.color = make_color( Color::teal, 0.25f );
+		}
+		{
+			//auto ec = e->add_component<Simple_Collision_Platform_Body>();
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->set_as_centered_box( 32.f, 32.f );
+			ec->get_transform()->add_pos( { 0.f, -0.0f } );
+
+			ec->set_collision_flags(
+				coll_flags.geo,
+				0
+			);
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->collider_type = e_sc_body_collider_type::sensor;
+			//ec->set_as_centered_box( 48.f, 4.f );
+			//ec->get_transform()->add_pos( { 0.f, -8.0f } );
+			ec->set_as_centered_box( 34.f, 34.f );
+			ec->get_transform()->add_pos( { 0.f, -0.0f } );
+			ec->is_sticky = true;
+
+			ec->set_collision_flags(
+				coll_flags.geo,
+				0
+			);
+		}
+
+	#endif
 
 		mover = e;
 	}

@@ -109,6 +109,14 @@ void Scene::pre_update()
 		{
 			// we remove a single dead entity each update to amortize the cost
 			entities.erase( iter );
+
+			// since this entity is going away, remove from any entities it may
+			// have been stuck to
+			for( auto& e : entities )
+			{
+				e->sticky_set.erase( iter->get() );
+			}
+
 			break;
 		}
 	}

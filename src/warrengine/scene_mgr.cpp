@@ -94,7 +94,6 @@ void Scene_Mgr::update()
 		if( !transition_timeline.life_cycle.is_alive() )
 		{
 			pop();
-			//remove_dead_scenes();
 		}
 	}
 

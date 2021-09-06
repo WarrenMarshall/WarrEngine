@@ -367,14 +367,40 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 {
 	if( coll.body_b->is_sensor() )
 	{
-		coll.entity_b->simple.is_in_air = false;
 		coll.entity_a->on_touched( coll.body_b );
+
+/*
+		if( coll.body_b->is_sticky )
+		{
+			if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+			{
+				coll.entity_a->velocity.y = 0.f;
+			}
+			if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+			{
+				coll.entity_a->velocity.x = 0.f;
+			}
+		}
+*/
 	}
 
 	if( coll.body_a->is_sensor() )
 	{
-		coll.entity_a->simple.is_in_air = false;
 		coll.entity_b->on_touched( coll.body_a );
+
+/*
+		if( coll.body_a->is_sticky )
+		{
+			if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
+			{
+				coll.entity_b->velocity.y = 0.f;
+			}
+			if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
+			{
+				coll.entity_b->velocity.x = 0.f;
+			}
+		}
+*/
 	}
 }
 
