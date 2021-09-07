@@ -29,19 +29,11 @@ bool Texture_Source_Asset::create()
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
-	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, use_mipmaps ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST );
+	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, ( use_mipmaps ) ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST );
 	glTextureParameteri( gl_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 
-	if( tiling == e_tiling::clamp )
-	{
-		glTextureParameteri( gl_id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-		glTextureParameteri( gl_id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	}
-	else
-	{
-		glTextureParameteri( gl_id, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTextureParameteri( gl_id, GL_TEXTURE_WRAP_T, GL_REPEAT );
-	}
+	glTextureParameteri( gl_id, GL_TEXTURE_WRAP_S, ( tiling == e_tiling::clamp ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
+	glTextureParameteri( gl_id, GL_TEXTURE_WRAP_T, ( tiling == e_tiling::clamp ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
 
 	glTexImage2D(
 		GL_TEXTURE_2D, 0, GL_RGBA8,
