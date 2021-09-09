@@ -41,11 +41,11 @@ struct OpenGL_Mgr
 	void set_view_matrix_identity_no_camera();
 	void set_view_matrix_identity_ui();
 
-	float get_uniform_float( std::string_view name );
+	float_t get_uniform_float( std::string_view name );
 	bool get_uniform_bool( std::string_view name );
 	Color get_uniform_color( std::string_view name );
 
-	void set_uniform_float( std::string_view name, float value );
+	void set_uniform_float( std::string_view name, float_t value );
 	void set_uniform_bool( std::string_view name, bool value );
 	void set_uniform_color( std::string_view name, const Color& value );
 	void set_uniform_array( std::string_view name, int32_t* value, int32_t count );

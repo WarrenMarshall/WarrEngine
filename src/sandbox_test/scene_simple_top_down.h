@@ -15,7 +15,7 @@ struct Scene_Simple_Top_Down : Scene
 	Entity* hit_marker = nullptr;
 	Entity* world = nullptr;
 
-	float ray_cast_length_hit = 0.0f;
+	float_t ray_cast_length_hit = 0.0f;
 
 	virtual void pushed() override;
 	virtual void draw() override;

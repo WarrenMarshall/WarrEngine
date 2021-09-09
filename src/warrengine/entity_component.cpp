@@ -151,7 +151,7 @@ Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_
 	return this;
 }
 
-Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, float_t radius, const Vec2& pos_offset )
 {
 	Shape shape;
 
@@ -404,7 +404,7 @@ Box2D_Physics_Body_Component* Box2D_Physics_Component::get_primary_body()
 }
 
 // friction : 0 - slide, 1 - stick
-void Box2D_Physics_Component::set_friction( float friction )
+void Box2D_Physics_Component::set_friction( float_t friction )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -413,7 +413,7 @@ void Box2D_Physics_Component::set_friction( float friction )
 }
 
 // restitution : 0 = no bounce, 1 = full bounce
-void Box2D_Physics_Component::set_restitution( float restitution )
+void Box2D_Physics_Component::set_restitution( float_t restitution )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -422,7 +422,7 @@ void Box2D_Physics_Component::set_restitution( float restitution )
 }
 
 // density : 0 = no density, 1 = full density
-void Box2D_Physics_Component::set_density( float density )
+void Box2D_Physics_Component::set_density( float_t density )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -510,12 +510,12 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, const Rect& 
 
 // pos - middle of box, relative to body
 // w/h - size of box
-b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, Vec2 pos, float w, float h )
+b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, Vec2 pos, float_t w, float_t h )
 {
 	return add_fixture_box( tag, { pos.x, pos.y, w, h } );
 }
 
-b2Fixture* Box2D_Physics_Body_Component::add_fixture_circle( hash tag, Vec2 pos, float radius )
+b2Fixture* Box2D_Physics_Body_Component::add_fixture_circle( hash tag, Vec2 pos, float_t radius )
 {
 	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
@@ -552,7 +552,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_line( hash tag, Vec2 pos, V
 		start += pos;
 		end += pos;
 
-		float length = ( end - start ).get_size() / 2.f;
+		float_t length = ( end - start ).get_size() / 2.f;
 
 		shape.SetOneSided(
 			( start + Vec2( -length, length ) ).to_box2d().to_b2Vec2(),
@@ -902,7 +902,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
 
-void Simple_Collision_Body::set_as_box( float w, float h )
+void Simple_Collision_Body::set_as_box( float_t w, float_t h )
 {
 	type = e_sc_prim_type::aabb;
 	aabb.x = 0.f;
@@ -913,7 +913,7 @@ void Simple_Collision_Body::set_as_box( float w, float h )
 
 // sets the dimensions of the collision box, centered around the components position.
 
-void Simple_Collision_Body::set_as_centered_box( float w, float h )
+void Simple_Collision_Body::set_as_centered_box( float_t w, float_t h )
 {
 	type = e_sc_prim_type::aabb;
 	aabb.x = -w / 2.f;
@@ -922,7 +922,7 @@ void Simple_Collision_Body::set_as_centered_box( float w, float h )
 	aabb.h = h;
 }
 
-void Simple_Collision_Body::set_as_circle( float r )
+void Simple_Collision_Body::set_as_circle( float_t r )
 {
 	type = e_sc_prim_type::circle;
 	radius = r;

@@ -13,7 +13,7 @@ bool Tile_Set_Asset::create()
 
 	Tile_Def* current_tile_def = nullptr;
 	Tiled_Object* current_object = nullptr;
-	float current_object_rotation = 0.f;
+	float_t current_object_rotation = 0.f;
 
 	for( const auto& raw_line : file->lines )
 	{

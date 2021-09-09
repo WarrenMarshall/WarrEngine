@@ -6,13 +6,13 @@ struct Scene_Noise : Scene
 	Scene_Noise();
 
 	Simplex_Noise simplex = {};
-	float simplex_samples[ 64 ];
+	float_t simplex_samples[ 64 ];
 
 	Perlin_Noise perlin = {};
-	float perlin_samples[ 64 ];
+	float_t perlin_samples[ 64 ];
 
 	Random_Noise random = {};
-	float random_samples[ 64 ];
+	float_t random_samples[ 64 ];
 
 	virtual void pushed() override;
 	virtual void draw() override;

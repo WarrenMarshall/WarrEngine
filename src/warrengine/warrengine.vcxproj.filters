@@ -241,9 +241,6 @@
     <ClCompile Include="simple_collision_pending_collision.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
-    <ClCompile Include="simple_collision_query.cpp">
-      <Filter>src\collision</Filter>
-    </ClCompile>
     <ClCompile Include="simple_collision_query_callbacks.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
@@ -532,9 +529,6 @@
       <Filter>include\scenes</Filter>
     </ClInclude>
     <ClInclude Include="simple_collision_pending_collision.h">
-      <Filter>include\collision</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_collision_query.h">
       <Filter>include\collision</Filter>
     </ClInclude>
     <ClInclude Include="simple_collision_query_callbacks.h">

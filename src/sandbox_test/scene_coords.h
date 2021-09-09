@@ -5,7 +5,7 @@ struct Scene_Coords : Scene
 {
 	Scene_Coords();
 
-	float glow_val = 0.f;
+	float_t glow_val = 0.f;
 
 	virtual void pushed() override;
 	virtual void draw() override;

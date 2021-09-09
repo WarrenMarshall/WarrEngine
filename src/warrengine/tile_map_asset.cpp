@@ -22,7 +22,7 @@ bool Tile_Map_Asset::create()
 	Chunk* current_chunk = nullptr;
 	Tiled_Object_Group* current_object_group = nullptr;
 	Tiled_Object* current_object = nullptr;
-	float current_object_rotation = 0.f;
+	float_t current_object_rotation = 0.f;
 	bool inside_data_block = false;
 	bool inside_editor_settings = false;
 	bool inside_chunk_block = false;

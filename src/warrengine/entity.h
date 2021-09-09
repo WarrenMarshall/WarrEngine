@@ -7,10 +7,10 @@ namespace war
 struct Entity_Simple_Force
 {
 	Entity_Simple_Force() = default;
-	Entity_Simple_Force( Vec2 normal, float strength );
+	Entity_Simple_Force( Vec2 normal, float_t strength );
 
 	Vec2 normal = Vec2::zero;
-	float strength = 0.f;
+	float_t strength = 0.f;
 };
 
 // ----------------------------------------------------------------------------
@@ -32,22 +32,22 @@ struct Entity_Simple_Collision
 		return ( type == e_sc_type::kinematic );
 	}
 
-	float friction = 1.0f;
-	float bounce_dampen = 0.75f;
-	Range<float> max_velocity_x = { -5.0f, 5.0f };
-	Range<float> max_velocity_y = { -5.0f, 5.0f };
+	float_t friction = 1.0f;
+	float_t bounce_dampen = 0.75f;
+	Range<float_t> max_velocity_x = { -5.0f, 5.0f };
+	Range<float_t> max_velocity_y = { -5.0f, 5.0f };
 
 	//struct
 	//{
-		bool is_in_air : 1 = true;
-		bool is_affected_by_gravity : 1 = false;
-		bool is_bouncy : 1 = false;
-		bool bounce_needs_dampening : 1 = false;
+	bool is_in_air : 1 = true;
+	bool is_affected_by_gravity : 1 = false;
+	bool is_bouncy : 1 = false;
+	bool bounce_needs_dampening : 1 = false;
 
-		struct
-		{
-			bool is_affected_by_gravity : 1 = false;
-		} save;
+	struct
+	{
+		bool is_affected_by_gravity : 1 = false;
+	} save;
 	//} flags;
 };
 
@@ -94,7 +94,6 @@ struct Entity
 	virtual ~Entity() = default;
 
 	void add_force( const Entity_Simple_Force& force );
-	void set_force( const Entity_Simple_Force& force );
 	void add_impulse( const Entity_Simple_Force& force );
 
 	void compile_velocity();
@@ -105,20 +104,20 @@ struct Entity
 
 	// direct transforms
 
-	Transform* set_pos_angle_scale( const Vec2& pos, const float angle, const float scale );
+	Transform* set_pos_angle_scale( const Vec2& pos, const float_t angle, const float_t scale );
 	Transform* set_pos( const Vec2& pos );
-	Transform* set_angle( const float angle );
-	Transform* set_scale( const float scale );
+	Transform* set_angle( const float_t angle );
+	Transform* set_scale( const float_t scale );
 
 	[[nodiscard]] Vec2 get_pos();
-	[[nodiscard]] float get_angle();
-	[[nodiscard]] float get_scale();
+	[[nodiscard]] float_t get_angle();
+	[[nodiscard]] float_t get_scale();
 
 	// delta transforms
 
 	void add_delta_pos( const Vec2& delta );
-	void add_delta_angle( const float delta );
-	void add_delta_scale( const float delta );
+	void add_delta_angle( const float_t delta );
+	void add_delta_scale( const float_t delta );
 
 	void update_physics_components_to_match_transform();
 	void update_transform_to_match_physics_components();
@@ -231,7 +230,7 @@ struct Entity
 	void reflect_across( Vec2 normal );
 
 	virtual void apply_movement_jump();
-	virtual void apply_movement_walk( Vec2 delta, float speed );
+	virtual void apply_movement_walk( Vec2 delta, float_t speed );
 private:
 	Box2D_Physics_Body_Component* find_primary_box2d_body() const;
 };

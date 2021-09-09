@@ -39,10 +39,10 @@ int32_t Timer::get_elapsed()
 
 // returns the percentage of completion for this time, expressed as 0-1
 
-float Timer::get_pct_complete()
+float_t Timer::get_pct_complete()
 {
-	float pct = ( g_engine->clock.now() - time_last ) / (float)interval_ms;
-	return glm::clamp<float>( pct, 0.f, 1.f );
+	float_t pct = ( g_engine->clock.now() - time_last ) / (float)interval_ms;
+	return glm::clamp<float_t>( pct, 0.f, 1.f );
 }
 
 }

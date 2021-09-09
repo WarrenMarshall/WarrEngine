@@ -48,14 +48,14 @@ Value_Accumulator Value_Accumulator::operator--( int32_t )
 	return val;
 }
 
-Value_Accumulator Value_Accumulator::operator+( float v ) const
+Value_Accumulator Value_Accumulator::operator+( float_t v ) const
 {
 	Value_Accumulator av( *this );
 	av.accumulator += v;
 	return av;
 }
 
-Value_Accumulator Value_Accumulator::operator+=( float v )
+Value_Accumulator Value_Accumulator::operator+=( float_t v )
 {
 	*this = *this + v;
 	return *this;

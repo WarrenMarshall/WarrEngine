@@ -26,7 +26,7 @@ std::string_view String_Util::trim( std::string_view s )
 	return String_Util::rtrim( String_Util::ltrim( s ) );
 }
 
-const std::string String_Util::format_with_commas( float value )
+const std::string String_Util::format_with_commas( float_t value )
 {
 	std::string str = std::format( "{:.0f}", value );
 	auto sz = str.size();
@@ -124,9 +124,9 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 	return value;
 }
 
-[[nodiscard]] float String_Util::to_float( std::string_view str )
+[[nodiscard]] float_t String_Util::to_float( std::string_view str )
 {
-	float value = 0.f;
+	float_t value = 0.f;
 
 	std::from_chars( str.data(), str.data() + str.size(), value );
 
@@ -136,12 +136,12 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 
 // ----------------------------------------------------------------------------
 
-std::vector<war::Vec2> Geo_Util::generate_convex_shape( int32_t sides, float radius )
+std::vector<war::Vec2> Geo_Util::generate_convex_shape( int32_t sides, float_t radius )
 {
 	std::vector<Vec2> verts;
 
-	float angle = 0;
-	float angle_step = 360.f / (float)( sides );
+	float_t angle = 0;
+	float_t angle_step = 360.f / (float)( sides );
 
 	for( auto x = 0 ; x < sides ; ++x )
 	{

@@ -18,11 +18,11 @@ struct Entity_Component
 	{
 		return get_transform()->pos;
 	}
-	[[nodiscard]] float get_angle()
+	[[nodiscard]] float_t get_angle()
 	{
 		return get_transform()->angle;
 	}
-	[[nodiscard]] float get_scale()
+	[[nodiscard]] float_t get_scale()
 	{
 		return get_transform()->scale;
 	}
@@ -70,7 +70,7 @@ struct Entity_Component
 struct Sprite_Component : Entity_Component
 {
 	Texture_Asset* texture = nullptr;
-	float anim_offset = 0.f;
+	float_t anim_offset = 0.f;
 	bool flip_x = false;
 	bool flip_y = false;
 
@@ -89,7 +89,7 @@ struct Primitive_Shape_Component : Entity_Component
 	{
 		e_primitive_shape_t prim_shape = e_primitive_shape::rect;
 		Rect rc = {};
-		float radius = 0.f;
+		float_t radius = 0.f;
 		Vec2 pos_offset = {};
 	};
 
@@ -99,7 +99,7 @@ struct Primitive_Shape_Component : Entity_Component
 	Primitive_Shape_Component( Entity* parent_entity );
 
 	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
-	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, float radius, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, float_t radius, const Vec2& pos_offset = Vec2::zero );
 	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset = Vec2::zero );
 
 	virtual void draw() override;
@@ -168,9 +168,9 @@ struct Box2D_Physics_Component : Entity_Component
 
 	[[nodiscard]] Box2D_Physics_Body_Component* get_primary_body();
 
-	void set_friction( float friction );
-	void set_restitution( float restitution );
-	void set_density( float density );
+	void set_friction( float_t friction );
+	void set_restitution( float_t restitution );
+	void set_density( float_t density );
 
 	virtual void set_collision_flags( int32_t collision_mask, int32_t collides_with ) override;
 	virtual void clear_collision_flags() override;
@@ -202,9 +202,9 @@ struct Box2D_Physics_Body_Component : Entity_Component
 	// effectively world positions which is handy for things like static world
 	// geometry.
 
-	b2Fixture* add_fixture_box( hash tag, Vec2 pos, float w, float h );
+	b2Fixture* add_fixture_box( hash tag, Vec2 pos, float_t w, float_t h );
 	b2Fixture* add_fixture_box( hash tag, const Rect& rc );
-	b2Fixture* add_fixture_circle( hash tag, Vec2 pos, float radius );
+	b2Fixture* add_fixture_circle( hash tag, Vec2 pos, float_t radius );
 	b2Fixture* add_fixture_line( hash tag, Vec2 pos, Vec2 start, Vec2 end );
 	b2Fixture* add_fixture_line_loop( hash tag, Vec2 pos, const std::vector<Vec2>& verts );
 	b2Fixture* add_fixture_polygon( hash tag, Vec2 pos, const std::vector<Vec2>& verts );
@@ -272,29 +272,35 @@ struct Simple_Collision_Body : Entity_Component
 	Rect aabb = {};
 
 	// circle
-	float radius = 0.f;
+	float_t radius = 0.f;
 
 	// verts
 	std::vector<Vec2> verts = {};
 
 	e_sc_body_collider_type_t collider_type = e_sc_body_collider_type::solid;
 
-	[[nodiscard]] bool is_solid() { return collider_type == e_sc_body_collider_type::solid; }
-	[[nodiscard]] bool is_sensor() { return collider_type == e_sc_body_collider_type::sensor; }
+	[[nodiscard]] bool is_solid()
+	{
+		return collider_type == e_sc_body_collider_type::solid;
+	}
+	[[nodiscard]] bool is_sensor()
+	{
+		return collider_type == e_sc_body_collider_type::sensor;
+	}
 
 	struct
 	{
 		Vec2 pos = {};
 		Rect aabb = {};
-		float radius = {};
+		float_t radius = {};
 		std::vector<Vec2> verts = {};
 	} ws;
 
 	virtual void draw() override;
 	void update_to_match_parent_transform();
-	void set_as_box( float w, float h );
-	void set_as_centered_box( float w, float h );
-	void set_as_circle( float r );
+	void set_as_box( float_t w, float_t h );
+	void set_as_centered_box( float_t w, float_t h );
+	void set_as_circle( float_t r );
 	void set_as_polygon( std::vector<Vec2> verts );
 	void set_body_collider_type( e_sc_body_collider_type_t type );
 

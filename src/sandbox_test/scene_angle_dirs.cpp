@@ -49,9 +49,8 @@ void Scene_Angle_Dirs::draw_ui()
 	// label next to the marker
 	if( marker_pos != Vec2::zero )
 	{
-		auto ui_pos = Coord_System::world_to_ui_pos( marker_pos + Vec2( 16.f, 0.f ) );
+		Rect ui_pos( Coord_System::world_to_ui_pos( marker_pos + Vec2( 16.f, 0.f ) ), 0.f, 64.f );
 
-		Render::state->align = e_align::vcenter;
 		Render::state->color = make_color( e_pal::brightest );
 
 		auto angle = Vec2::clamped_angle_from_dir( Vec2::normalize( marker_pos ) );

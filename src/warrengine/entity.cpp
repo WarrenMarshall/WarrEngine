@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Entity_Simple_Force::Entity_Simple_Force( Vec2 normal, float strength )
+Entity_Simple_Force::Entity_Simple_Force( Vec2 normal, float_t strength )
 	: strength( strength )
 {
 	this->normal = Vec2::normalize( normal );
@@ -105,21 +105,6 @@ void Entity::add_force( const Entity_Simple_Force& force )
 	pending_forces.emplace_back( force.normal, fixed_time_step::per_second( force.strength ) );
 }
 
-// resets the velocity to zero, and applies an impulse of the requested force.
-// creates an immediate change in direction.
-void Entity::set_force( const Entity_Simple_Force& force )
-{
-	// kill the current velocity...
-	//
-	// #simple - do we really need to zero this out? if this can be removed,
-	// this entire function can be deleted and replaced with calls to
-	// apply_impulse instead.
-	velocity = Vec2::zero;
-
-	// ...then add the new impulse
-	add_impulse( force );
-}
-
 // impulses are immediate and applied at full strength.
 //
 // this is for things like jumping or bouncing off of things.
@@ -147,7 +132,8 @@ void Entity::reflect_across( Vec2 normal )
 
 	if( !reflected_dir.is_zero() )
 	{
-		set_force( { reflected_dir, velocity.get_size() } );
+		add_impulse( { reflected_dir, velocity.get_size() } );
+		velocity = Vec2::zero;
 	}
 }
 
@@ -155,7 +141,7 @@ void Entity::apply_forces()
 {
 	if( simple.is_affected_by_gravity )
 	{
-		float accel = 1.0f;
+		auto accel = 1.0f;
 
 		// if entity is already falling downwards, accelerate the fall. this
 		// makes jumping feel tighter.
@@ -294,7 +280,7 @@ void Entity::update_transform_to_match_physics_components()
 	if( auto ec = find_primary_box2d_body() ; ec )
 	{
 		Vec2 position = Vec2( ec->body->GetPosition() ).from_box2d();
-		float angle = ec->body->GetAngle();
+		auto angle = ec->body->GetAngle();
 
 		_tform.set_pos( { position.x, position.y } );
 		_tform.set_angle( glm::degrees( angle ) );
@@ -306,7 +292,7 @@ const war::Transform* Entity::get_transform()
 	return &_tform;
 }
 
-Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float angle, const float scale )
+Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float_t angle, const float_t scale )
 {
 	_tform.set_pos( pos );
 	_tform.set_angle( angle );
@@ -317,7 +303,7 @@ Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float angle, cons
 	return &_tform;
 }
 
-Transform* Entity::set_angle( const float angle )
+Transform* Entity::set_angle( const float_t angle )
 {
 	_tform.set_angle( angle );
 	update_physics_components_to_match_transform();
@@ -325,7 +311,7 @@ Transform* Entity::set_angle( const float angle )
 	return &_tform;
 }
 
-Transform* Entity::set_scale( const float scale )
+Transform* Entity::set_scale( const float_t scale )
 {
 	_tform.set_scale( scale );
 
@@ -343,12 +329,12 @@ Vec2 Entity::get_pos()
 	return get_transform()->pos;
 }
 
-float Entity::get_angle()
+float_t Entity::get_angle()
 {
 	return get_transform()->angle;
 }
 
-float Entity::get_scale()
+float_t Entity::get_scale()
 {
 	return get_transform()->scale;
 }
@@ -379,14 +365,14 @@ void Entity::add_delta_pos( const Vec2& delta )
 	}
 }
 
-void Entity::add_delta_angle( const float delta )
+void Entity::add_delta_angle( const float_t delta )
 {
 	_tform.add_angle( delta );
 
 	update_physics_components_to_match_transform();
 }
 
-void Entity::add_delta_scale( const float delta )
+void Entity::add_delta_scale( const float_t delta )
 {
 	_tform.add_scale( delta );
 
@@ -428,11 +414,11 @@ bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 	if( sensor->is_sticky )
 	{
 		sensor->parent_entity->sticky_set.insert( this );
-		simple.save.is_affected_by_gravity = simple.is_affected_by_gravity;
-		simple.is_affected_by_gravity = false;
+		//simple.save.is_affected_by_gravity = simple.is_affected_by_gravity;
+		//simple.is_affected_by_gravity = false;
 	}
 
-	if( sensor->tag == H("ground_sensor") )
+	if( sensor->tag == H( "ground_sensor" ) )
 	{
 		sensor->parent_entity->simple.is_in_air = false;
 	}
@@ -450,7 +436,7 @@ bool Entity::on_touching_end( Simple_Collision_Body* sensor )
 	if( sensor->is_sticky )
 	{
 		sensor->parent_entity->sticky_set.erase( this );
-		simple.is_affected_by_gravity = simple.save.is_affected_by_gravity;
+		//simple.is_affected_by_gravity = simple.save.is_affected_by_gravity;
 	}
 
 	if( sensor->tag == H( "ground_sensor" ) )
@@ -538,12 +524,12 @@ void Entity::apply_movement_jump()
 {
 	if( !simple.is_in_air )
 	{
-		//g_engine->find_asset<sound_asset>( "sfx_platfomer_jump" )->play();
+		//g_engine->find_asset<sound_asset>( "sfx_platformer_jump" )->play();
 		add_impulse( { Vec2( 0.0f, -1.0f ), 3.5f } );
 	}
 }
 
-void Entity::apply_movement_walk( Vec2 delta, float speed )
+void Entity::apply_movement_walk( Vec2 delta, float_t speed )
 {
 	auto dot = Vec2::dot( delta, Vec2::down );
 

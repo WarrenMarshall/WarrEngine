@@ -217,10 +217,10 @@ void Vertex_Array_Object::draw( e_draw_call_t draw_call )
 	auto gl_prim_type = get_gl_prim_type();
 	if( gl_prim_type == GL_LINES or gl_prim_type == GL_POINTS )
 	{
-		float line_width = 1.f;
-		float point_sz = 2.f;
+		float_t line_width = 1.f;
+		float_t point_sz = 2.f;
 
-		float scale = g_engine->scene_mgr.get_scale();
+		float_t scale = g_engine->scene_mgr.get_scale();
 		line_width *= 1.f + ( scale * g_engine->opengl_mgr.using_camera );
 		point_sz *= 1.f + ( scale * g_engine->opengl_mgr.using_camera );
 

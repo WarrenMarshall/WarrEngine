@@ -28,7 +28,7 @@ struct Engine
 	// all the info it needs
 	struct
 	{
-		float film_grain_amount = 0.f;
+		float_t film_grain_amount = 0.f;
 	} post_process;
 
 	std::vector<Asset_File_Definition> asset_def_file_cache;
@@ -102,9 +102,9 @@ struct Engine
 	[[nodiscard]] std::optional<std::string> find_string_from_symbol( std::string_view str );
 	[[nodiscard]] bool find_bool_from_symbol( std::string_view str, bool def_value = true );
 	[[nodiscard]] int32_t find_int_from_symbol( std::string_view str, int32_t def_value = 0 );
-	[[nodiscard]] float find_float_from_symbol( std::string_view str, float def_value = 0.f );
+	[[nodiscard]] float_t find_float_from_symbol( std::string_view str, float_t def_value = 0.f );
 	[[nodiscard]] Color find_color_from_symbol( std::string_view str, const Color& def_value = Color::white );
-	[[nodiscard]] Range<float> find_range_from_symbol( std::string_view str, const Range<float>& def_value = Range<float>( 0, 1 ) );
+	[[nodiscard]] Range<float_t> find_range_from_symbol( std::string_view str, const Range<float_t>& def_value = Range<float_t>( 0, 1 ) );
 	[[nodiscard]] Vec2 find_vec2_from_symbol( std::string_view str, const Vec2& def_value = Vec2( 0, 0 ) );
 
 	[[nodiscard]] bool on_input_motion( const Input_Event* evt );
@@ -131,7 +131,7 @@ struct Engine
 	void dispatch_collision_queue();
 	void dispatch_box2d_collisions();
 
-	void set_time_dilation( float dilation );
+	void set_time_dilation( float_t dilation );
 
 	// message box
 

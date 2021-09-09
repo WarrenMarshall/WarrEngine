@@ -15,11 +15,11 @@ struct UI_Control
 	int32_t idx = -1;
 	size_t total = 0;
 	Texture_Asset* image = nullptr;
-	float image_scale = 1.f;
+	float_t image_scale = 1.f;
 	f_draw_control func_draw_control = nullptr;
 
 	// expressed as a 0-1 percentage.  So 0.2 would be 5 intervals, 0.1 would be 10, etc.
-	float interval = 0.f;
+	float_t interval = 0.f;
 
 	// the ui and client rectangles
 	Rect rc_ui = {};
@@ -43,17 +43,17 @@ struct UI_Control
 	virtual ~UI_Control() = default;
 
 	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have
-	void draw_slice_def( const Rect& rc_ui, bool is_hovered, bool is_hot );
-	void draw_text( const Rect& rc_client, const Color& color, bool is_hovered, bool is_hot, const std::string& text );
-	void draw_texture( const Rect& rc, Texture_Asset* texture, bool is_hovered, bool is_hot );
-	void draw_image( const Rect& rc, Texture_Asset* texture );
+	void draw_slice_def( const Rect & rc_ui, bool is_hovered, bool is_hot );
+	void draw_text( const Rect & rc_client, const Color & color, bool is_hovered, bool is_hot, const std::string & text );
+	void draw_texture( const Rect & rc, Texture_Asset * texture, bool is_hovered, bool is_hot );
+	void draw_image( const Rect & rc, Texture_Asset * texture );
 
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	virtual void draw( const Rect & rc_ui, const Rect & rc_client, bool is_hovered, bool is_hot );
 
 	virtual Vec2 get_control_inner_margins();
 
-	float default_width = 0.f;
-	float default_height = 0.f;
+	float_t default_width = 0.f;
+	float_t default_height = 0.f;
 };
 
 // ----------------------------------------------------------------------------
@@ -65,8 +65,8 @@ struct UI_Panel_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Caption_Control : UI_Control
@@ -75,8 +75,8 @@ struct UI_Caption_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Button_Control : UI_Control
@@ -85,8 +85,8 @@ struct UI_Button_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Check_Control : UI_Control
@@ -96,8 +96,8 @@ struct UI_Check_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Divider_Control : UI_Control
@@ -106,8 +106,8 @@ struct UI_Divider_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 	virtual Vec2 get_control_inner_margins() override;
 };
 
@@ -117,8 +117,8 @@ struct UI_Spacer_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 	virtual Vec2 get_control_inner_margins() override;
 };
 
@@ -129,8 +129,8 @@ struct UI_Image_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Label_Control : UI_Control
@@ -139,8 +139,8 @@ struct UI_Label_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Slider_Control : UI_Control
@@ -151,8 +151,8 @@ struct UI_Slider_Control : UI_Control
 	void draw_slider_thumb( const Rect& rc_client );
 	void draw_slider_tick_marks( const Rect& rc_ui, const Rect& rc_client );
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 	virtual Vec2 get_control_inner_margins() override;
 };
 
@@ -162,8 +162,8 @@ struct UI_Text_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Radio_Control : UI_Control
@@ -172,8 +172,8 @@ struct UI_Radio_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Progress_Control : UI_Control
@@ -183,8 +183,8 @@ struct UI_Progress_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_List_Control : UI_Control
@@ -193,8 +193,8 @@ struct UI_List_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 struct UI_Dropdown_Control : UI_Control
@@ -203,8 +203,8 @@ struct UI_Dropdown_Control : UI_Control
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 
-	static float get_default_width();
-	static float get_default_height();
+	static float_t get_default_width();
+	static float_t get_default_height();
 };
 
 }

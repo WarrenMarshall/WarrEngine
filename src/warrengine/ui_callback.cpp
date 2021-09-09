@@ -143,7 +143,7 @@ bool UI_Callback::validate_value_change( hash tag, UI_Control_Data* old_value, U
 //
 // i.e between a checkbox and it's label
 
-float UI_Callback::get_control_padding()
+float_t UI_Callback::get_control_padding()
 {
 	return 4.f;
 }

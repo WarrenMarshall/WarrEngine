@@ -52,8 +52,8 @@ void Scene_Msg_Box::draw_ui()
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
 	}
 
-	float panel_w = ui_w * .75f;
-	float panel_h = 58.f;
+	auto panel_w = ui_w * .75f;
+	auto panel_h = 58.f;
 
 	if( msg.empty() )
 	{

@@ -2,6 +2,8 @@
 #include "master_pch.h"
 #include "master_header.h"
 
+// #shader - screen wipes would be nice. just simple black bars that cover and uncover the screen in various directions.
+
 namespace war
 {
 
@@ -17,10 +19,8 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 	auto ray_length = delta.get_size();
 
 	c2Ray ray = {};
-	ray.p.x = to_simple( start.x );
-	ray.p.y = to_simple( start.y );
-	ray.d.x = ray_normal.x;
-	ray.d.y = ray_normal.y;
+	ray.p = { to_simple( start.x ), to_simple( start.y ) };
+	ray.d = { ray_normal.x, ray_normal.y };
 	ray.t = to_simple( ray_length );
 
 	for( auto scc : active_bodies )
@@ -264,8 +264,11 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 
 			if( dot > 0.f )
 			{
-				ent_a->set_force( { velocity_b, velocity_b.get_size() } );
-				ent_b->set_force( { velocity_a, velocity_a.get_size() } );
+				ent_a->add_impulse( { velocity_b, velocity_b.get_size() } );
+				ent_b->add_impulse( { velocity_a, velocity_a.get_size() } );
+
+				ent_a->velocity = Vec2::zero;
+				ent_b->velocity = Vec2::zero;
 
 				return;
 			}
@@ -285,8 +288,11 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 			auto new_dir_a = Vec2::reflect_across_normal( velocity_a, coll.normal );
 			auto new_dir_b = Vec2::reflect_across_normal( velocity_b, coll.normal );
 
-			ent_a->set_force( { new_dir_a, total_velocity * 0.5f } );
-			ent_b->set_force( { new_dir_b, total_velocity * 0.5f } );
+			ent_a->add_impulse( { new_dir_a, total_velocity * 0.5f } );
+			ent_b->add_impulse( { new_dir_b, total_velocity * 0.5f } );
+
+			ent_a->velocity = Vec2::zero;
+			ent_b->velocity = Vec2::zero;
 		}
 	}
 	else

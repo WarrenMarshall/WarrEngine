@@ -75,12 +75,12 @@ void Scene_Esc_Menu::draw_ui()
 
 	auto slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_panel" );
 
-	float panel_w =
+	float_t panel_w =
 		slice_def->get_left_slice_sz()
 		+ UI_Button_Control::get_default_width()
 		+ slice_def->get_right_slice_sz();
 
-	float panel_h =
+	float_t panel_h =
 		( UI_Button_Control::get_default_height() * num_buttons )
 		+ slice_def->get_top_slice_sz()
 		+ ( get_ui_callback()->get_control_margin( e_ui_control_type::button ).y * ( num_buttons - 1 ) )

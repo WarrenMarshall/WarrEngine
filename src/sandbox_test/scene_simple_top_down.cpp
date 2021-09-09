@@ -9,7 +9,7 @@ constexpr auto player_collision_radius = 8.f;
 
 // ----------------------------------------------------------------------------
 
-constexpr float max_raycast_length = 350.f;
+constexpr auto max_raycast_length = 350.f;
 constexpr auto radius = 12.f;
 
 // ----------------------------------------------------------------------------

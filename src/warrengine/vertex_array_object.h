@@ -8,7 +8,7 @@ struct Vertex_Array_Object
 	uint32_t gl_id = 0;
 	Primitive_Batch* batch = nullptr;
 
-	float indices_to_verts_factor = 0.f;
+	float_t indices_to_verts_factor = 0.f;
 
 	std::unique_ptr<Vertex_Buffer> vb = nullptr;
 	Index_Buffer* ib = nullptr;

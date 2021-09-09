@@ -179,7 +179,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_vignette.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -237,7 +237,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_chromatic_aberration.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -263,7 +263,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_desaturation.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -289,7 +289,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_crt_warp.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -310,7 +310,7 @@ void Scene_Post_Process::draw_ui()
 	// pixelate
 
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -344,7 +344,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_crt_tint.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -384,7 +384,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_crt_scanlines.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -410,7 +410,7 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_film_grain.bool_value() )
 	{
-		float height = UI_Label_Control::get_default_height();
+		auto height = UI_Label_Control::get_default_height();
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );

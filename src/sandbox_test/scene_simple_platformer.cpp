@@ -100,11 +100,13 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 					gameplay_scene->coll_flags.geo
 				);
 			}
+/*
 			{
 				auto ec = e->add_component<Emitter_Component>();
 				ec->init( "em_stars" );
 				ec->get_transform()->set_scale( 0.25f );
 			}
+*/
 
 			gameplay_scene->player = e;
 
@@ -126,7 +128,7 @@ void Scene_Simple_Platformer::pushed()
 
 	fx_red_alert.clear( 1000 );
 	fx_red_alert.add_kf_shake_angle( true, 0.0f, 1000, get_transform(), 2.0f );
-	fx_red_alert.add_kf_play_sound( true, 0.0f, g_engine->find_asset<Sound_Asset>( "sfx_platfomer_boom" ) );
+	fx_red_alert.add_kf_play_sound( true, 0.0f, g_engine->find_asset<Sound_Asset>( "sfx_platformer_boom" ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.0f, 250, make_color( Color::red, 0.25f ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.3f, 250, make_color( Color::red, 0.5f ) );
 	fx_red_alert.add_kf_pp_color_overlay( true, 0.6f, 250, make_color( Color::red, 0.25f ) );
@@ -152,7 +154,7 @@ void Scene_Simple_Platformer::pushed()
 		e->set_pos( { 0.f, -8.f } );
 		e->simple.type = e_sc_type::kinematic;
 
-	#if 0
+	#if 1
 		// flying rectangle with platform collision
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
@@ -291,7 +293,7 @@ bool E_Player::on_touching_begin( Simple_Collision_Body* sensor )
 
 	if( sensor->parent_entity->tag == H("JUMP_PAD") )
 	{
-		g_engine->find_asset<Sound_Asset>( "sfx_platfomer_jump" )->play();
+		g_engine->find_asset<Sound_Asset>( "sfx_platformer_jump" )->play();
 		add_impulse( { Vec2( 0.0f, -1.0f ), 50.0f } );
 		( (E_Jump_Pad*)sensor->parent_entity )->time_reset = g_engine->clock.now() + 500;
 		return true;

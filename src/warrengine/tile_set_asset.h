@@ -10,11 +10,11 @@ struct Tiled_Object
 	e_sc_prim_type_t collision_type = e_sc_prim_type::aabb;
 
 	Rect rc;
-	float radius;
+	float_t radius;
 	std::vector<Vec2> vertices;
 	std::string type;
 
-	void rotate( float angle )
+	void rotate( float_t angle )
 	{
 		Matrix mtx;
 		mtx.rotate( angle );

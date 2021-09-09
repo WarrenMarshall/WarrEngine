@@ -3,7 +3,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Wrapped_Text_UI_Callback : UI_Callback
+struct Scene_Wrapped_Text_UI_Callback final : UI_Callback
 {
 	UI_Control_Data radio_alignment_data;
 
@@ -12,7 +12,7 @@ struct Scene_Wrapped_Text_UI_Callback : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Wrapped_Text : Scene
+struct Scene_Wrapped_Text final : Scene
 {
 	Scene_Wrapped_Text();
 
@@ -23,10 +23,12 @@ struct Scene_Wrapped_Text : Scene
 
 	std::vector<std::string> wrapped_lines_02;
 	Rect rc_big_text_block_02 = {};
+	float_t text_pct = 0.0f;
 
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;
 
+	virtual bool on_input_motion( const Input_Event* evt ) override;
 
 };

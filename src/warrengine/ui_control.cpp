@@ -73,12 +73,12 @@ void UI_Panel_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 }
 
-float UI_Panel_Control::get_default_width()
+float_t UI_Panel_Control::get_default_width()
 {
 	return 100.f;
 }
 
-float UI_Panel_Control::get_default_height()
+float_t UI_Panel_Control::get_default_height()
 {
 	return 100.f;
 }
@@ -106,12 +106,12 @@ void UI_Caption_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is
 }
 
 
-float UI_Caption_Control::get_default_width()
+float_t UI_Caption_Control::get_default_width()
 {
 	return 100.f;
 }
 
-float UI_Caption_Control::get_default_height()
+float_t UI_Caption_Control::get_default_height()
 {
 	return 12.f;
 }
@@ -134,12 +134,12 @@ void UI_Button_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_
 	draw_text( rc_client, text_color, is_hovered, is_hot, text );
 }
 
-float UI_Button_Control::get_default_width()
+float_t UI_Button_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Button_Control::get_default_height()
+float_t UI_Button_Control::get_default_height()
 {
 	return 24.f;
 }
@@ -181,12 +181,12 @@ void UI_Check_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
-float UI_Check_Control::get_default_width()
+float_t UI_Check_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Check_Control::get_default_height()
+float_t UI_Check_Control::get_default_height()
 {
 	return 12.f;
 }
@@ -205,12 +205,12 @@ void UI_Divider_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is
 	draw_slice_def( rc_ui, false, false );
 }
 
-float UI_Divider_Control::get_default_width()
+float_t UI_Divider_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Divider_Control::get_default_height()
+float_t UI_Divider_Control::get_default_height()
 {
 	return 2.f;
 }
@@ -232,12 +232,12 @@ void UI_Spacer_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_
 {
 }
 
-float UI_Spacer_Control::get_default_width()
+float_t UI_Spacer_Control::get_default_width()
 {
 	return 4.f;
 }
 
-float UI_Spacer_Control::get_default_height()
+float_t UI_Spacer_Control::get_default_height()
 {
 	return 4.f;
 }
@@ -260,12 +260,12 @@ void UI_Image_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_image( rc_ui, image );
 }
 
-float UI_Image_Control::get_default_width()
+float_t UI_Image_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Image_Control::get_default_height()
+float_t UI_Image_Control::get_default_height()
 {
 	return 24.f;
 }
@@ -285,12 +285,12 @@ void UI_Label_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_text( rc_client, text_color, false, false, text );
 }
 
-float UI_Label_Control::get_default_width()
+float_t UI_Label_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Label_Control::get_default_height()
+float_t UI_Label_Control::get_default_height()
 {
 	return 14.f;
 }
@@ -355,12 +355,12 @@ void UI_Slider_Control::draw_slider_tick_marks( const Rect& rc_ui, const Rect& r
 	}
 }
 
-float UI_Slider_Control::get_default_width()
+float_t UI_Slider_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Slider_Control::get_default_height()
+float_t UI_Slider_Control::get_default_height()
 {
 	return 6.f;
 }
@@ -424,12 +424,12 @@ void UI_Text_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 	}
 }
 
-float UI_Text_Control::get_default_width()
+float_t UI_Text_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Text_Control::get_default_height()
+float_t UI_Text_Control::get_default_height()
 {
 	return 16.f;
 }
@@ -469,12 +469,12 @@ void UI_Radio_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
-float UI_Radio_Control::get_default_width()
+float_t UI_Radio_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Radio_Control::get_default_height()
+float_t UI_Radio_Control::get_default_height()
 {
 	return 12.f;
 }
@@ -495,7 +495,7 @@ void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 
 	// progress bar
-	float pct = control_data->float_value_internal();
+	float_t pct = control_data->float_value_internal();
 
 	Rect shrunken_rc = rc_client;
 	shrunken_rc.shrink( 1.f );
@@ -515,12 +515,12 @@ void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 	}
 }
 
-float UI_Progress_Control::get_default_width()
+float_t UI_Progress_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Progress_Control::get_default_height()
+float_t UI_Progress_Control::get_default_height()
 {
 	return 12.f;
 }
@@ -586,12 +586,12 @@ void UI_List_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 	}
 }
 
-float UI_List_Control::get_default_width()
+float_t UI_List_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_List_Control::get_default_height()
+float_t UI_List_Control::get_default_height()
 {
 	return 24.f;
 }
@@ -719,12 +719,12 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 	}
 }
 
-float UI_Dropdown_Control::get_default_width()
+float_t UI_Dropdown_Control::get_default_width()
 {
 	return 120.f;
 }
 
-float UI_Dropdown_Control::get_default_height()
+float_t UI_Dropdown_Control::get_default_height()
 {
 	return 16.f;
 }

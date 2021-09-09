@@ -8,9 +8,9 @@ Scene_Noise::Scene_Noise()
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
 
-	memset( &perlin_samples[ 0 ], 0, sizeof( float ) * 64 );
-	memset( &simplex_samples[ 0 ], 0, sizeof( float ) * 64 );
-	memset( &random_samples[ 0 ], 0, sizeof( float ) * 64 );
+	memset( &perlin_samples[ 0 ], 0, sizeof( float_t ) * 64 );
+	memset( &simplex_samples[ 0 ], 0, sizeof( float_t ) * 64 );
+	memset( &random_samples[ 0 ], 0, sizeof( float_t ) * 64 );
 }
 
 void Scene_Noise::pushed()
@@ -39,9 +39,9 @@ void Scene_Noise::draw_ui()
 	{
 		scoped_render_state;
 
-		constexpr float noise_sz = 16.f;
+		constexpr float_t noise_sz = 16.f;
 
-		auto l_draw_noise = [ & ]( float y_pos, float samples [] )
+		auto l_draw_noise = [&] ( float_t y_pos, float_t samples [] )
 		{
 			y_pos += g_engine->pixel_font->get_max_height();
 
@@ -57,7 +57,7 @@ void Scene_Noise::draw_ui()
 			Vec2 end;
 
 			constexpr int steps = 64;
-			float pixels_per_step = ui_w / (float)steps;
+			float_t pixels_per_step = ui_w / (float_t)steps;
 
 			for( int x = 0 ; x < steps ; ++x )
 			{

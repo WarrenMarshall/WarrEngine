@@ -472,7 +472,7 @@ int32_t Engine::find_int_from_symbol( std::string_view symbol, int32_t def_value
 	return String_Util::to_int( std::string( *sval ) );
 }
 
-float Engine::find_float_from_symbol( std::string_view symbol, float def_value )
+float_t Engine::find_float_from_symbol( std::string_view symbol, float_t def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -496,7 +496,7 @@ Color Engine::find_color_from_symbol( std::string_view symbol, const Color& def_
 	return Color( *sval );
 }
 
-Range<float> Engine::find_range_from_symbol( std::string_view symbol, const Range<float>& def_value )
+Range<float_t> Engine::find_range_from_symbol( std::string_view symbol, const Range<float_t>& def_value )
 {
 	auto sval = find_string_from_symbol( symbol );
 
@@ -505,7 +505,7 @@ Range<float> Engine::find_range_from_symbol( std::string_view symbol, const Rang
 		sval = std::format( "{},{}", def_value.start, def_value.end );
 	}
 
-	return Range<float>( *sval );
+	return Range<float_t>( *sval );
 }
 
 Vec2 Engine::find_vec2_from_symbol( std::string_view symbol, const Vec2& def_value )
@@ -906,7 +906,7 @@ void Engine::dispatch_box2d_collisions()
 	box2d.end_contact_queue.clear();
 }
 
-void Engine::set_time_dilation( float dilation )
+void Engine::set_time_dilation( float_t dilation )
 {
 	clock.dilation = glm::clamp( dilation, 0.1f, 5.f );
 
@@ -936,9 +936,9 @@ void Engine::debug_draw_buffers()
 	g_engine->render_api.shaders[ "simple" ].bind();
 
 	auto num_color_attachments = frame_buffer->color_attachments.size();
-	float scale_factor = 1.f / (float)num_color_attachments;
-	float w = viewport_w * scale_factor;
-	float h = viewport_h * scale_factor;
+	float_t scale_factor = 1.f / (float)num_color_attachments;
+	float_t w = viewport_w * scale_factor;
+	float_t h = viewport_h * scale_factor;
 	rect rc = { 0.f, viewport_h - h, w, h };
 
 	std::array<const char*, e_framebuffer::max> names = { "color", "glow", "pick", "blur", "comp", "final" };

@@ -84,7 +84,7 @@ namespace fixed_time_step
 	//
 	// angle += 15.f * fixed_time_step::per_second_scaler;
 
-	constexpr float _per_second_scaler = 1.f / (float)frames_per_second;
+	constexpr float_t _per_second_scaler = 1.f / (float)frames_per_second;
 
 	template<typename T>
 	constexpr T per_second( T val )
@@ -96,7 +96,7 @@ namespace fixed_time_step
 // ----------------------------------------------------------------------------
 //	useful type definitions to increase code readability
 
-using time_ms = uint64;
+using time_ms = uint64_t;
 
 // ----------------------------------------------------------------------------
 // strings to validate text input against
@@ -134,7 +134,7 @@ namespace war
 // used to convert color values in the range 0-255 to 0-1
 // i.e. color.r = 168.f * byte_color_to_float;
 
-constexpr float byte_color_to_float( int32_t value )
+constexpr float_t byte_color_to_float( int32_t value )
 {
 	return value / 255.f;
 }
@@ -150,29 +150,30 @@ constexpr float byte_color_to_float( int32_t value )
 // positive because of the projection flip.
 // ----------------------------------------------------------------------------
 
-constexpr float zdepth_nudge = 10.f;
+constexpr float_t zdepth_nudge = 10.f;
 
-constexpr float zdepth_background = 100.f;
-constexpr float zdepth_scene_start = 1000.f;
-constexpr float zdepth_stats = 45000.f;
-constexpr float zdepth_topmost = 50000.f;
-constexpr float zdepth_max = 50000.f;
+constexpr float_t zdepth_background = 100.f;
+constexpr float_t zdepth_scene_start = 1000.f;
+constexpr float_t zdepth_stats = 45000.f;
+constexpr float_t zdepth_topmost = 50000.f;
+constexpr float_t zdepth_max = 50000.f;
 
-constexpr float zdepth_debug_bias = 1000.f;
+constexpr float_t zdepth_debug_bias = 1000.f;
 
 // ----------------------------------------------------------------------------
 // if (a - b) is smaller than epsilon, return true.
 //
-// this allows float values to be compared with some slack for accuracy drift.
+// this allows float_t values to be compared with some slack for accuracy drift.
 
-[[nodiscard]] constexpr bool fequals( float a, float b )
+static auto epsilon = glm::epsilon<float_t>();
+
+[[nodiscard]] constexpr bool fequals( float_t a, float_t b )
 {
 	auto diff = a - b;
-	auto epsilon = glm::epsilon<float>();
 	return ( diff < epsilon && diff > -epsilon );
 }
 
-[[nodiscard]] float snap_to_int( float val );
+[[nodiscard]] float_t snap_to_int( float_t val );
 
 // ----------------------------------------------------------------------------
 // physics constants and helpers
@@ -189,12 +190,12 @@ constexpr auto b2d_world_scale_factor = 100.f;
 constexpr auto b2d_velocity_iterations = 8;
 constexpr auto b2d_pos_iterations = 3;
 
-[[nodiscard]] constexpr float to_box2d( float v )
+[[nodiscard]] constexpr float_t to_box2d( float_t v )
 {
 	return ( v / b2d_world_scale_factor );
 }
 
-[[nodiscard]] constexpr float from_box2d( float v )
+[[nodiscard]] constexpr float_t from_box2d( float_t v )
 {
 	return ( v * b2d_world_scale_factor );
 }
@@ -206,12 +207,12 @@ constexpr auto b2d_pos_iterations = 3;
 constexpr auto simple_collision_gravity_default = 9.81f;
 constexpr auto simple_world_scale_factor = 100.f;
 
-[[nodiscard]] constexpr float to_simple( float v )
+[[nodiscard]] constexpr float_t to_simple( float_t v )
 {
 	return ( v / simple_world_scale_factor );
 }
 
-[[nodiscard]] constexpr float from_simple( float v )
+[[nodiscard]] constexpr float_t from_simple( float_t v )
 {
 	return ( v * simple_world_scale_factor );
 }
@@ -288,7 +289,7 @@ consteval hash hash_it( const char* str )
 
 	while( *rp )
 	{
-		result += (*rp) * i;
+		result += ( *rp ) * i;
 		i++;
 		rp++;
 	}
@@ -303,14 +304,14 @@ consteval hash hash_it( const char* str )
 // the assumption of these dimensions. the renderer handles scaling this up to
 // the actual game window the player sees. this makes a lot of things simpler.
 
-extern float viewport_w;
-extern float viewport_h;
+extern float_t viewport_w;
+extern float_t viewport_h;
 
 #define viewport_hw (viewport_w * 0.5f)
 #define viewport_hh (viewport_h * 0.5f)
 
-extern float ui_w;
-extern float ui_h;
+extern float_t ui_w;
+extern float_t ui_h;
 
 #define ui_hw (ui_w * 0.5f)
 #define ui_hh (ui_h * 0.5f)

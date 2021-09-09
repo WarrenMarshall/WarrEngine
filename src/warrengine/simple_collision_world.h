@@ -16,7 +16,7 @@ struct Simple_Collision_World
 		// 0.25 - good for a platformer
 		// 2.0 - good for dynamically moving bodies bouncing off each other
 
-		float push_apart_tolerance = 0.25f;
+		float_t push_apart_tolerance = 0.25f;
 
 		// we allow for a few iterations here to do our best to free colliders from
 		// other colliders. if this ends up being slow, adjust this value downwards.
@@ -36,10 +36,10 @@ struct Simple_Collision_World
 		// collisions do better if you can add a little padding between collision bodies
 		// after resolution. 1.0 would be exactly snug against each other. Anything
 		// above 1.0 represents the skin thickness we are adding.
-		float skin_thickness = 1.1f;
+		float_t skin_thickness = 1.1f;
 
 		// the maximum speed that we allow things to fall when applying gravity
-		float gravity_max_speed = simple_collision_gravity_default * 3.0f;
+		float_t gravity_max_speed = simple_collision_gravity_default * 3.0f;
 
 	} settings;
 

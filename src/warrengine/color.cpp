@@ -24,7 +24,7 @@ const Color Color::grey = Color( 0.5f, 0.5f, 0.5f );
 const Color Color::light_grey = Color( 0.75f, 0.75f, 0.75f );
 const Color Color::magenta = Color( 0.96f, 0.32f, 0.65f );
 
-Color::Color( float r, float g, float b, float a )
+Color::Color( float_t r, float_t g, float_t b, float_t a )
 	: r( r ), g( g ), b( b ), a( a )
 {
 }
@@ -93,12 +93,12 @@ Color::Color( std::string& str )
 	}
 }
 
-Color Color::operator*( float v ) const
+Color Color::operator*( float_t v ) const
 {
 	return Color( this->r * v, this->g * v, this->b * v );
 }
 
-Color Color::operator*=( float v )
+Color Color::operator*=( float_t v )
 {
 	*this = *this * v;
 	return *this;
@@ -126,19 +126,19 @@ Color Color::operator+=( Color v )
 	return *this;
 }
 
-void Color::scale( Color& color, float s )
+void Color::scale( Color& color, float_t s )
 {
 	color.r *= s;
 	color.g *= s;
 	color.b *= s;
 }
 
-Color Color::make( const Color& clr, float alpha )
+Color Color::make( const Color& clr, float_t alpha )
 {
 	return Color( clr.r, clr.g, clr.b, alpha );
 }
 
-Color Color::make( e_pal_t pal_idx, float alpha )
+Color Color::make( e_pal_t pal_idx, float_t alpha )
 {
 	return make_color( Render::palette[ pal_idx ], alpha );
 }

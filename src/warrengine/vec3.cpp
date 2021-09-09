@@ -17,7 +17,7 @@ Vec3::Vec3( int32_t x, int32_t y, int32_t z )
 {
 }
 
-Vec3::Vec3( float x, float y, float z )
+Vec3::Vec3( float_t x, float_t y, float_t z )
 	: x( x ), y( y ), z( z )
 {
 }

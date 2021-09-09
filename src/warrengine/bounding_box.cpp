@@ -29,8 +29,8 @@ void Bounding_Box::add( const Vec2& vtx )
 
 void Bounding_Box::reset()
 {
-	min.x = min.y = std::numeric_limits<float>::max();
-	max.x = max.y = std::numeric_limits<float>::min();
+	min.x = min.y = std::numeric_limits<float_t>::max();
+	max.x = max.y = std::numeric_limits<float_t>::min();
 }
 
 Vec2 Bounding_Box::get_random_spot() const

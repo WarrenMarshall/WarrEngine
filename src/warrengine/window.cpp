@@ -22,8 +22,8 @@ void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int32_t wid
 
 	g_engine->window.viewport_pos_sz = Rect( 0.f, 0.f, (float)( width ), (float)( height ) );
 
-	float w_ratio = width / viewport_w;
-	float h_ratio = height / viewport_h;
+	float_t w_ratio = width / viewport_w;
+	float_t h_ratio = height / viewport_h;
 
 	if( w_ratio > h_ratio )
 	{
@@ -46,8 +46,8 @@ void focus_change_callback( [[maybe_unused]] GLFWwindow* window, int32_t focused
 
 Rect OS_Window::compute_max_window_size_for_desktop()
 {
-	float desktop_w = vidmode->width - viewport_hw;
-	float desktop_h = vidmode->height - viewport_hh;
+	float_t desktop_w = vidmode->width - viewport_hw;
+	float_t desktop_h = vidmode->height - viewport_hh;
 
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.

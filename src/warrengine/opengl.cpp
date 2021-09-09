@@ -200,7 +200,7 @@ void OpenGL_Mgr::set_projection_matrix() const
 {
 	glm::mat4 projection = glm::mat4( 1.f );
 
-	projection = glm::ortho<float>(
+	projection = glm::ortho<float_t>(
 		0.f,
 		viewport_w,
 		viewport_h,
@@ -336,9 +336,9 @@ void OpenGL_Mgr::set_view_matrix_identity_ui()
 // the requested uniform name. they will read and return the first one they
 // find.
 
-float OpenGL_Mgr::get_uniform_float( std::string_view name )
+float_t OpenGL_Mgr::get_uniform_float( std::string_view name )
 {
-	float result = 0.f;
+	float_t result = 0.f;
 
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -382,7 +382,7 @@ Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 
 		if( loc != -1 )
 		{
-			glGetnUniformfv( Shader.gl_id, loc, 4 * sizeof(float), &result.r );
+			glGetnUniformfv( Shader.gl_id, loc, 4 * sizeof( float_t ), &result.r );
 			break;
 		}
 	}
@@ -393,7 +393,7 @@ Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 // the "set_uniform" functions loop through all shaders and attempt to set a
 // uniform value in each one, if it exists.
 
-void OpenGL_Mgr::set_uniform_float( std::string_view name, float value )
+void OpenGL_Mgr::set_uniform_float( std::string_view name, float_t value )
 {
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{

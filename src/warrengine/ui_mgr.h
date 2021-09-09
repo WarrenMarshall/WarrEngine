@@ -100,13 +100,13 @@ public:
 	UI_Mgr* set_func_draw( f_draw_control func_draw_control );
 	UI_Mgr* set_slice_def( std::string_view slice_def_name );
 	UI_Mgr* set_rect( const Rect& rect );
-	UI_Mgr* cut_top( float sz = 0.f );
-	UI_Mgr* cut_bottom( float sz = 0.f );
-	UI_Mgr* cut_left( float sz = 0.f );
-	UI_Mgr* cut_right( float sz = 0.f );
+	UI_Mgr* cut_top( float_t sz = 0.f );
+	UI_Mgr* cut_bottom( float_t sz = 0.f );
+	UI_Mgr* cut_left( float_t sz = 0.f );
+	UI_Mgr* cut_right( float_t sz = 0.f );
 	UI_Mgr* set_pos( const Vec2& pos );
 	UI_Mgr* set_size( const Vec2& sz );
-	UI_Mgr* set_interval( float interval );
+	UI_Mgr* set_interval( float_t interval );
 	UI_Mgr* set_idx( int32_t idx );
 
 	Rect compute_client_rect_from_ui_rect( Rect rc_ui );

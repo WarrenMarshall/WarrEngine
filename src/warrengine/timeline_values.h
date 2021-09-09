@@ -14,10 +14,10 @@ struct Timeline_Values
 	Timeline_Values* clear_key_frames();
 	Timeline_Values* add_key_frame( const Timeline_Values_Key_Frame& kf );
 
-	size_t find_next_key_frame_idx_from_pct( float pct );
+	size_t find_next_key_frame_idx_from_pct( float_t pct );
 
-	float get_float_value( float pct_on_timeline );
-	Color get_color_value( float pct_on_timeline );
+	float_t get_float_value( float_t pct_on_timeline );
+	Color get_color_value( float_t pct_on_timeline );
 };
 
 }

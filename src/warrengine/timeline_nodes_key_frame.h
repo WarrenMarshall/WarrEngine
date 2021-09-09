@@ -8,7 +8,7 @@ struct Timeline_Nodes_Key_Frame
 {
 	e_tnkf_type_t type = e_tnkf_type::none;
 	Life_Cycle_Mgr life_cycle;
-	float pct_marker = 0.f;
+	float_t pct_marker = 0.f;
 	bool should_restore_state = false;
 	time_ms started = 0, duration = 0;
 
@@ -22,12 +22,12 @@ struct Timeline_Nodes_Key_Frame
 		{
 			struct
 			{
-				float angle;
+				float_t angle;
 			} save;
 
 			Simplex_Noise noise;
 			Transform* tform;
-			float strength;
+			float_t strength;
 		} shake_angle;
 
 		// ----------------------------------------------------------------------------
@@ -46,10 +46,10 @@ struct Timeline_Nodes_Key_Frame
 		{
 			struct
 			{
-				float pixelate_factor;
+				float_t pixelate_factor;
 			} save;
 
-			float pixelate_factor;
+			float_t pixelate_factor;
 		} pp_pixelate;
 
 		// ----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ struct Timeline_Nodes_Key_Frame
 		} scene_pop;
 	};
 
-	Timeline_Nodes_Key_Frame( e_tnkf_type_t type, bool should_restore_state, float pct_marker, time_ms duration );
+	Timeline_Nodes_Key_Frame( e_tnkf_type_t type, bool should_restore_state, float_t pct_marker, time_ms duration );
 
 	void on_started_running();
 	void update();

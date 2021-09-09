@@ -13,6 +13,7 @@ Render_State::Render_State()
 void Render_State::set_from_opt( Render_State_Optional& rso )
 {
 	align = rso.align.value_or( align );
+	pct = rso.pct.value_or( pct );
 	angle = rso.angle.value_or( angle );
 	color = rso.color.value_or( color );
 	glow = rso.glow.value_or( glow );

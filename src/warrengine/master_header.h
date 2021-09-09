@@ -86,7 +86,6 @@ namespace war
 #include "render_stats.h"
 
 #include "simple_collision_query_callbacks.h"
-#include "simple_collision_query.h"
 #include "simple_collision_pending_collision.h"
 #include "simple_collision_world.h"
 
@@ -119,8 +118,8 @@ namespace war
 namespace war
 {
 
-[[nodiscard]] float lerp( float a, float b, float lerp_factor );
-[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, float lerp_factor );
+[[nodiscard]] float_t lerp( float_t a, float_t b, float_t lerp_factor );
+[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, float_t lerp_factor );
 
 extern std::unique_ptr<Engine> g_engine;
 extern std::unique_ptr<UI_Mgr> g_ui;

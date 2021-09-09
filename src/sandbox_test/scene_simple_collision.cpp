@@ -99,7 +99,7 @@ void Scene_Simple_Collision::spawn_ball_at( Vec2 world_pos )
 	e->simple.max_velocity_y = { -5.f, sc_world->settings.gravity_max_speed };
 	e->simple.is_bouncy = true;
 	{
-		float random_radius = Random::getf_range( 16.f, 32.f );
+		float_t random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
@@ -115,9 +115,9 @@ void Scene_Simple_Collision::spawn_ball_at( Vec2 world_pos )
 
 void Scene_Simple_Collision::spawn_box_at( Vec2 world_pos )
 {
-	float base_size = 8.f;
-	float w = Random::getf_range( base_size, base_size * 10.f );
-	float h = ( base_size * 15.f ) - w;
+	float_t base_size = 8.f;
+	float_t w = Random::getf_range( base_size, base_size * 10.f );
+	float_t h = ( base_size * 15.f ) - w;
 	Rect rc_box = { 0.f, 0.f, w, h };
 
 	auto e = add_entity<Entity>();
@@ -128,7 +128,7 @@ void Scene_Simple_Collision::spawn_box_at( Vec2 world_pos )
 	e->simple.is_bouncy = true;
 	e->simple.max_velocity_y = { -5.f, sc_world->settings.gravity_max_speed };
 	{
-		float random_radius = Random::getf_range( 16.f, 32.f );
+		float_t random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();

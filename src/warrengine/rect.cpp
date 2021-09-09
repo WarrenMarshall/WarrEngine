@@ -7,12 +7,12 @@ namespace war
 
 const Rect Rect::zero = Rect( 0, 0, 0, 0 );
 
-Rect::Rect( float x, float y )
+Rect::Rect( float_t x, float_t y )
 	: x( x ), y( y )
 {
 }
 
-Rect::Rect( float x, float y, float w, float h )
+Rect::Rect( float_t x, float_t y, float_t w, float_t h )
 	: x( x ), y( y ), w( w ), h( h )
 {
 }
@@ -22,8 +22,18 @@ Rect::Rect( int32_t x, int32_t y, int32_t w, int32_t h )
 {
 }
 
-Rect::Rect( const Vec2& top_left, const Vec2& bottom_right )
-	: x( top_left.x ), y( top_left.y ), w( bottom_right.x - top_left.x ), h( bottom_right.y - top_left.y )
+Rect::Rect( const Vec2& top_left, const Vec2& width_height )
+	: x( top_left.x ), y( top_left.y ), w( width_height.x ), h( width_height.y )
+{
+}
+
+Rect::Rect( const Vec2& top_left, float_t width, float_t height )
+	: x( top_left.x ), y( top_left.y ), w( width ), h( height )
+{
+}
+
+Rect::Rect( const Vec2& pos )
+	: x( pos.x ), y( pos.y ), w( 0.f ), h( 0.f )
 {
 }
 
@@ -81,7 +91,7 @@ Vec2 Rect::get_pos_from_alignment( e_align_t align ) const
 
 // inflates/deflates a rectangle by "val". this affects all 4 sides.
 
-Rect Rect::grow( float val )
+Rect Rect::grow( float_t val )
 {
 	x -= val;
 	y -= val;
@@ -91,7 +101,7 @@ Rect Rect::grow( float val )
 	return *this;
 }
 
-Rect Rect::shrink( float val )
+Rect Rect::shrink( float_t val )
 {
 	x += val;
 	y += val;
@@ -111,7 +121,7 @@ bool Rect::contains_point( Vec2 pos )
 // NOTE : passing in a sz of < 1.f is translated as passing in a percentage of
 // the existing width or height.
 
-Rect Rect::cut_left( float sz )
+Rect Rect::cut_left( float_t sz )
 {
 	if( sz < 1.f )
 	{
@@ -126,7 +136,7 @@ Rect Rect::cut_left( float sz )
 	return result;
 }
 
-Rect Rect::cut_right( float sz )
+Rect Rect::cut_right( float_t sz )
 {
 	if( sz < 1.f )
 	{
@@ -140,7 +150,7 @@ Rect Rect::cut_right( float sz )
 	return result;
 }
 
-Rect Rect::cut_top( float sz )
+Rect Rect::cut_top( float_t sz )
 {
 	if( sz < 1.f )
 	{
@@ -155,7 +165,7 @@ Rect Rect::cut_top( float sz )
 	return result;
 }
 
-Rect Rect::cut_bottom( float sz )
+Rect Rect::cut_bottom( float_t sz )
 {
 	if( sz < 1.f )
 	{
@@ -217,12 +227,12 @@ Rect Rect::operator-( const Rect& rhs ) const
 	return Rect( x - rhs.x, y - rhs.y, w - rhs.w, h - rhs.h );
 }
 
-Rect Rect::operator*( float v ) const
+Rect Rect::operator*( float_t v ) const
 {
 	return Rect( this->x * v, this->y * v, this->w * v, this->h * v );
 }
 
-Rect Rect::operator*=( float v )
+Rect Rect::operator*=( float_t v )
 {
 	*this = *this * v;
 	return *this;
@@ -235,17 +245,17 @@ c2AABB Rect::to_c2AABB() const
 	aabb.min.x = to_simple( x );
 	aabb.min.y = to_simple( y );
 	aabb.max.x = to_simple( x + w );
-	aabb.max.y = to_simple( y + h  );
+	aabb.max.y = to_simple( y + h );
 
 	return aabb;
 }
 
-Rect Rect::create_centered( float sz )
+Rect Rect::create_centered( float_t sz )
 {
 	return Rect::create_centered( sz, sz );
 }
 
-Rect Rect::create_centered( float w, float h )
+Rect Rect::create_centered( float_t w, float_t h )
 {
 	auto hw = w / 2.f;
 	auto hh = h / 2.f;

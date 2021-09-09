@@ -64,7 +64,7 @@ Vec2 Font_Asset::get_string_extents( std::string_view text ) const
 	return bounds;
 }
 
-float Font_Asset::get_max_height()
+float_t Font_Asset::get_max_height()
 {
 	return font_def->max_height;
 }

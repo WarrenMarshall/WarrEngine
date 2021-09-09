@@ -32,12 +32,12 @@ struct Texture_Asset : Asset
 
 	Texture_Source_Base* find_texture_source_base( std::string_view src_texture_tag );
 
-	[[nodiscard]] Texture_Asset* get_frame( float anim_offset );
+	[[nodiscard]] Texture_Asset* get_frame( float_t anim_offset );
 	void randomize();
 	bool is_animated() const;
 
-	float width();
-	float height();
+	float_t width();
+	float_t height();
 
 private:
 	Texture_Source_Base* src_texture = nullptr;

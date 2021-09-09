@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Timeline_Nodes_Key_Frame::Timeline_Nodes_Key_Frame( e_tnkf_type_t type, bool should_restore_state, float pct_marker, time_ms duration )
+Timeline_Nodes_Key_Frame::Timeline_Nodes_Key_Frame( e_tnkf_type_t type, bool should_restore_state, float_t pct_marker, time_ms duration )
 	: type( type ), should_restore_state( should_restore_state ), pct_marker( pct_marker ), duration( duration )
 {
 }

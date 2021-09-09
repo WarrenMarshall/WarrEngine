@@ -177,7 +177,7 @@ void Particle_Emitter::spawn_particle()
 
 void Particle_Emitter::warm_up()
 {
-	float max_life_span = params->r_lifespan.end;
+	float_t max_life_span = params->r_lifespan.end;
 
 	while( max_life_span > 0 )
 	{

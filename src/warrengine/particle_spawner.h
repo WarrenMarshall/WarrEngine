@@ -16,7 +16,7 @@ struct Particle_Spawner
 		struct
 		{
 			// for e_particle_spawner_type::circle
-			float radius;
+			float_t radius;
 		};
 	};
 

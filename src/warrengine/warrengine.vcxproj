@@ -270,7 +270,6 @@
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="scene_transient.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
-    <ClCompile Include="simple_collision_query.cpp" />
     <ClCompile Include="simple_collision_pending_collision.cpp" />
     <ClCompile Include="object_pool.cpp" />
     <ClCompile Include="scene_post_process.cpp" />
@@ -373,7 +372,6 @@
     <ClInclude Include="rect.h" />
     <ClInclude Include="scene_transient.h" />
     <ClInclude Include="simple_collision_world.h" />
-    <ClInclude Include="simple_collision_query.h" />
     <ClInclude Include="simple_collision_pending_collision.h" />
     <ClInclude Include="object_pool.h" />
     <ClInclude Include="scene_post_process.h" />

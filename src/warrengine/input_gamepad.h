@@ -6,7 +6,7 @@ struct Game_Controller
 {
 	std::unique_ptr<Timer> timer_repeat = nullptr;
 	int32_t player_id = -1;
-	float rumble_time_remaining_ms = 0;
+	float_t rumble_time_remaining_ms = 0.f;
 
 	XINPUT_STATE xinput_state = { 0 };
 

@@ -29,7 +29,7 @@ void character_callback( GLFWwindow* window, uint32_t key_code )
 
 // ----------------------------------------------------------------------------
 
-void mouse_wheel_callback( GLFWwindow* window, double xoffset, double yoffset )
+void mouse_wheel_callback( GLFWwindow* window, double_t xoffset, double_t yoffset )
 {
 	g_engine->input_mgr.mouse_wheel_delta.x += (float)( xoffset );
 	g_engine->input_mgr.mouse_wheel_delta.y += (float)( yoffset );
@@ -39,7 +39,7 @@ void mouse_wheel_callback( GLFWwindow* window, double xoffset, double yoffset )
 
 static Vec2 last_mouse_pos = Vec2::zero;
 
-void mouse_motion_callback( GLFWwindow* window, double xpos, double ypos )
+void mouse_motion_callback( GLFWwindow* window, double_t xpos, double_t ypos )
 {
 	auto fxpos = (float)xpos;
 	auto fypos = (float)ypos;
@@ -542,7 +542,7 @@ Vec2 Input_Mgr::get_axis_state( e_input_id_t input_id, bool use_dead_zone )
 		return Vec2::zero;
 	}
 
-	static float gamepad_dead_zone = war::Text_Parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
+	static float_t gamepad_dead_zone = war::Text_Parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
 	Vec2 value;
 
 	switch( input_id )

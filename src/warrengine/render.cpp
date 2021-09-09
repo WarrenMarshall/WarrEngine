@@ -52,8 +52,8 @@ void Render::init_generate_circle_sample_points()
 	circle_sample_points.clear();
 	circle_sample_points.reserve( circle_sample_points_max );
 
-	float angle = 0;
-	float angle_step = 360.f / (float)( circle_sample_points_max );
+	float_t angle = 0;
+	float_t angle_step = 360.f / (float)( circle_sample_points_max );
 
 	for( auto x = 0 ; x < circle_sample_points_max ; ++x )
 	{
@@ -79,15 +79,15 @@ void Render::draw_mesh( Mesh_Asset* mesh )
 	{
 		scoped_opengl;
 
-		for( auto& [ texture, triangle_list ] : mesh->texture_to_triangles )
+		for( auto& [texture, triangle_list] : mesh->texture_to_triangles )
 		{
 			auto tex = texture->get_frame( Render::state->anim_offset );
 
 			for( auto& tri : triangle_list )
 			{
 				Render_Vertex v0(
-					Vec3( tri.verts[0].x, tri.verts[ 0 ].y, tri.verts[ 0 ].z ),
-					Vec2( tri.verts[0].u * Render::state->uv_tiling.u, tri.verts[0].v * Render::state->uv_tiling.v ),
+					Vec3( tri.verts[ 0 ].x, tri.verts[ 0 ].y, tri.verts[ 0 ].z ),
+					Vec2( tri.verts[ 0 ].u * Render::state->uv_tiling.u, tri.verts[ 0 ].v * Render::state->uv_tiling.v ),
 					Render::state->color,
 					Render::state->glow
 				);
@@ -144,8 +144,8 @@ void Render::draw_sprite( Texture_Asset* texture, const Vec2& dst )
 {
 	auto frame = texture->get_frame( Render::state->anim_offset );
 
-	float hw = frame->rc.w / 2.f;
-	float hh = frame->rc.h / 2.f;
+	float_t hw = frame->rc.w / 2.f;
+	float_t hh = frame->rc.h / 2.f;
 
 	Render_Vertex v0(
 		Vec2( -hw, -hh ),
@@ -188,8 +188,8 @@ void Render::draw_quad( Texture_Asset* texture, const Rect& dst )
 {
 	auto frame = texture->get_frame( Render::state->anim_offset );
 
-	float w = dst.w ? dst.w : frame->rc.w;
-	float h = dst.h ? dst.h : frame->rc.h;
+	float_t w = dst.w ? dst.w : frame->rc.w;
+	float_t h = dst.h ? dst.h : frame->rc.h;
 
 	Render_Vertex v0(
 		Vec2( 0.f, 0.f ),
@@ -282,29 +282,16 @@ Vec2 Render::draw_string( const std::string& text, const Vec2& pos )
 	return draw_pos;
 }
 
-// returns: the x,y position immediately following the last character that was
-// drawn on the last line.
-
-Vec2 Render::draw_string( const std::vector<std::string>& text, const Vec2& pos )
-{
-	Vec2 wk_pos = pos;
-
-	Vec2 draw_pos;
-
-	for( auto& iter : text )
-	{
-		draw_pos = Render::draw_string( iter, wk_pos );
-
-		wk_pos.y += Render::state->font->get_max_height();
-	}
-
-	return draw_pos;
-}
+// "rc" can be a proper rectangular region or it can just be an x,y coordinate
+// with no w,h specified. the w,h are only used for certain alignments and
+// knowing when to stop drawing strings inside of a box. if w.h are zero,
+// those options just don't do anything.
 
 Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 {
 	Vec2 wk_pos = { rc.x, rc.y };
 
+	/*
 	if( Render::state->align & e_align::right )
 	{
 		wk_pos.x = rc.x + rc.w;
@@ -315,18 +302,18 @@ Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 	}
 	if( Render::state->align & e_align::vcenter )
 	{
-		wk_pos.y = rc.y + ( Render::state->font->get_max_height() / 2.f );
+		wk_pos.y = rc.y - ( ( Render::state->font->get_max_height() * text.size() ) / 2.f );
 	}
+	*/
 
 	Vec2 draw_pos;
 
 	for( auto& iter : text )
 	{
 		draw_pos = Render::draw_string( iter, wk_pos );
-
 		wk_pos.y += Render::state->font->get_max_height();
 
-		if( wk_pos.y >= rc.y + rc.h )
+		if( rc.h > 0.f and wk_pos.y >= rc.y + rc.h )
 		{
 			break;
 		}
@@ -335,14 +322,13 @@ Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 	return draw_pos;
 }
 
-std::vector<std::string> Render::wrap_string_to_width( std::string_view text, float width )
+std::vector<std::string> Render::wrap_string_to_width( std::string_view text, float_t width )
 {
 	std::vector<std::string> wrapped_lines;
 	auto space_char_extents = Render::state->font->get_string_extents( " " );
 
 	Tokenizer tok;
 	tok.init( text, " " );
-
 
 	// ----------------------------------------------------------------------------
 	// each token that contains newline characters must be broken down into
@@ -395,7 +381,7 @@ std::vector<std::string> Render::wrap_string_to_width( std::string_view text, fl
 
 	// ----------------------------------------------------------------------------
 
-	float line_width = 0.f;
+	float_t line_width = 0.f;
 	std::string wk_line;
 
 	for( auto& iter : new_tokens )
@@ -515,7 +501,7 @@ void Render::draw_rect( const Rect& dst )
 	Render::draw_line_loop( dst );
 }
 
-void Render::draw_rounded_rect( const Rect& dst, float radius )
+void Render::draw_rounded_rect( const Rect& dst, float_t radius )
 {
 	// make sure there is enough room for the rounded corners
 	assert( dst.w >= radius * 2.f or dst.h >= radius * 2.f );
@@ -531,7 +517,7 @@ void Render::draw_rounded_rect( const Rect& dst, float radius )
 	Render::draw_line( { dst.x, dst.y + dst.h - radius }, { dst.x, dst.y + radius } );
 }
 
-void Render::draw_rounded_filled_rect( const Rect& dst, float radius )
+void Render::draw_rounded_filled_rect( const Rect& dst, float_t radius )
 {
 	// make sure there is enough room for the rounded corners
 	assert( dst.w >= radius * 2.f or dst.h >= radius * 2.f );
@@ -541,7 +527,7 @@ void Render::draw_rounded_filled_rect( const Rect& dst, float radius )
 	Render::draw_filled_circle( { dst.x + dst.w - radius, dst.y + dst.h - radius }, radius, e_corner::bottom_right );
 	Render::draw_filled_circle( { dst.x + radius, dst.y + dst.h - radius }, radius, e_corner::bottom_left );
 
-	float dradius = radius * 2.f;
+	float_t dradius = radius * 2.f;
 	Render::draw_filled_rect( { dst.x + radius, dst.y, dst.w - dradius, radius } );
 	Render::draw_filled_rect( { dst.x, dst.y + radius, dst.w, dst.h - dradius } );
 	Render::draw_filled_rect( { dst.x + radius, dst.y + dst.h - radius, dst.w - dradius, radius } );
@@ -662,9 +648,9 @@ void Render::draw_crosshair( Vec2 pos )
 {
 	scoped_render_state;
 
-	const float sz = 7.f;
-	const float hsz = sz / 2.f;
-	const float spoke_sz = sz / 3.f;
+	const float_t sz = 7.f;
+	const float_t hsz = sz / 2.f;
+	const float_t spoke_sz = sz / 3.f;
 
 	auto l_draw_spoke = [&] ( Vec2 offset )
 	{
@@ -733,7 +719,7 @@ auto Render::get_circle_start_end_indices( e_corner_t corner )
 
 // draws a circle with line segments
 
-void Render::draw_circle( const Vec2& origin, float radius, e_corner_t corner )
+void Render::draw_circle( const Vec2& origin, float_t radius, e_corner_t corner )
 {
 	Render_Vertex v0( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
@@ -756,7 +742,7 @@ void Render::draw_circle( const Vec2& origin, float radius, e_corner_t corner )
 	}
 }
 
-void Render::draw_filled_circle( const Vec2& origin, float radius, e_corner_t corner )
+void Render::draw_filled_circle( const Vec2& origin, float_t radius, e_corner_t corner )
 {
 	Render_Vertex v0( origin, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( v0 );
@@ -858,11 +844,11 @@ void Render::draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst )
 	Texture_Asset* p_12 = slice_def->patches[ e_slice_def_patch::bottom_middle ];
 	Texture_Asset* p_22 = slice_def->patches[ e_slice_def_patch::bottom_right ];
 
-	float xpos = dst.x;
-	float ypos = dst.y;
+	float_t xpos = dst.x;
+	float_t ypos = dst.y;
 
-	float inner_w = dst.w - p_00->rc.w - p_20->rc.w;
-	float inner_h = dst.h - p_00->rc.h - p_02->rc.h;
+	float_t inner_w = dst.w - p_00->rc.w - p_20->rc.w;
+	float_t inner_h = dst.h - p_00->rc.h - p_02->rc.h;
 
 	// top row
 
@@ -901,7 +887,7 @@ void Render::draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst )
 
 // call this function to figure out a new value based on the frame interpolation percentage.
 
-float Render::calc_interpolated_per_sec_value( float current_value, float step_per_second ) const
+float_t Render::calc_interpolated_per_sec_value( float_t current_value, float_t step_per_second ) const
 {
 	return current_value + ( fixed_time_step::per_second( step_per_second ) * g_engine->render.frame_interpolate_pct );
 }
@@ -918,7 +904,7 @@ int32_t Render::sample_pick_id_at( Vec2 viewport_click_pos )
 	viewport_click_pos.y = viewport_h - viewport_click_pos.y;
 
 	// read single pixel back from texture to see what was at viewport_click_pos
-	float pixel[ 4 ];
+	float_t pixel[ 4 ];
 	glReadPixels( (int32_t)viewport_click_pos.x, (int32_t)viewport_click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
 
 	return (int32_t)( pixel[ 0 ] );

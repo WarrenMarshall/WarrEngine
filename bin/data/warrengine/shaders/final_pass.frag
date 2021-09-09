@@ -105,6 +105,8 @@ void main()
 	uv_coord = fx_pixelate( uv_coord );
 	uv_coord = fx_crt_warp( uv_coord );
 
+	// #test
+
 	// adjust final_color to be fully black if outside the 0-1 range in UV coords
 	if( uv_coord.x < 0.0f || uv_coord.x > 1.0f || uv_coord.y < 0.0f || uv_coord.y > 1.0f )
 	{

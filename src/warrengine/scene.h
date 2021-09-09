@@ -23,11 +23,11 @@ struct Scene
 	{
 		return get_transform()->pos;
 	}
-	[[nodiscard]] float get_angle()
+	[[nodiscard]] float_t get_angle()
 	{
 		return get_transform()->angle;
 	}
-	[[nodiscard]] float get_scale()
+	[[nodiscard]] float_t get_scale()
 	{
 		return get_transform()->scale;
 	}

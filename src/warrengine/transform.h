@@ -5,22 +5,22 @@ namespace war
 struct Transform
 {
 	Vec2 pos = Vec2::zero;
-	float angle = 0.f;			// rotation (around z axis)
-	float scale = 1.f;
+	float_t angle = 0.f;			// rotation (around z axis)
+	float_t scale = 1.f;
 
 	// direct transforms
 
-	Transform* set( Vec2 pos, float angle, float scale );
+	Transform* set( Vec2 pos, float_t angle, float_t scale );
 	Transform* set_pos( Vec2 pos );
-	Transform* set_angle( float angle );
-	Transform* set_scale( float scale );
+	Transform* set_angle( float_t angle );
+	Transform* set_scale( float_t scale );
 
 	// delta transforms
 
 	Transform* add_pos( Vec2 delta );
-	Transform* add_angle( float delta );
-	Transform* add_scale( float delta );
-	Transform* multiply_scale( float delta );
+	Transform* add_angle( float_t delta );
+	Transform* add_scale( float_t delta );
+	Transform* multiply_scale( float_t delta );
 
 	// builds a matrix from the current transform values
 

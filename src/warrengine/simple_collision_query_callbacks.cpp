@@ -24,7 +24,7 @@ namespace war::simple_collision
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-float Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
+float_t Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
@@ -51,7 +51,7 @@ float Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray,
 
 // ----------------------------------------------------------------------------
 
-float Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
+float_t Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
@@ -61,7 +61,7 @@ float Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, S
 
 // ----------------------------------------------------------------------------
 
-float Raycast_All::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
+float_t Raycast_All::report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 

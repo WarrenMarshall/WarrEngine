@@ -217,7 +217,7 @@ UI_Mgr* UI_Mgr::set_size( const Vec2& sz )
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_interval( float interval )
+UI_Mgr* UI_Mgr::set_interval( float_t interval )
 {
 	current_control->interval = interval;
 	return this;
@@ -347,7 +347,7 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 		if(
 			( bs_left == e_button_state::up and bs_middle == e_button_state::up && bs_right == e_button_state::up )
 			or ( bs_left == e_button_state::held and g_ui->hot_tag == control->tag )
-		)
+			)
 		{
 			g_ui->hover_tag = control->tag;
 		}
@@ -543,31 +543,31 @@ Rect* UI_Mgr::layout_top_ptr()
 {
 	assert( !layout_stack.empty() );
 
-	return &(layout_stack.back());
+	return &( layout_stack.back() );
 }
 
-UI_Mgr* UI_Mgr::cut_top( float sz )
+UI_Mgr* UI_Mgr::cut_top( float_t sz )
 {
 	set_rect( layout_top_ptr()->cut_top( sz > 0.f ? sz : current_control->default_height + current_control->get_control_inner_margins().y ) );
 	return this;
 
 }
 
-UI_Mgr* UI_Mgr::cut_bottom( float sz )
+UI_Mgr* UI_Mgr::cut_bottom( float_t sz )
 {
 	set_rect( layout_top_ptr()->cut_bottom( sz > 0.f ? sz : current_control->default_height + current_control->get_control_inner_margins().y ) );
 	return this;
 
 }
 
-UI_Mgr* UI_Mgr::cut_left( float sz )
+UI_Mgr* UI_Mgr::cut_left( float_t sz )
 {
 	set_rect( layout_top_ptr()->cut_left( sz > 0.f ? sz : current_control->default_width + current_control->get_control_inner_margins().x ) );
 	return this;
 
 }
 
-UI_Mgr* UI_Mgr::cut_right( float sz )
+UI_Mgr* UI_Mgr::cut_right( float_t sz )
 {
 	set_rect( layout_top_ptr()->cut_right( sz > 0.f ? sz : current_control->default_width + current_control->get_control_inner_margins().x ) );
 	return this;

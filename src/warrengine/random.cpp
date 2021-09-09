@@ -12,7 +12,7 @@ void Random::seed()
 
 // returns a float value between 0.0 and 1.0
 
-float Random::getf()
+float_t Random::getf()
 {
 	return glm::linearRand( 0.f, 1.f );
 }
@@ -26,7 +26,7 @@ bool Random::getb()
 
 // returns a float value between min and max
 
-float Random::getf_range( float min, float max )
+float_t Random::getf_range( float_t min, float_t max )
 {
 	return glm::linearRand( min, max );
 }
@@ -40,7 +40,7 @@ int32_t Random::geti_range( int32_t min, int32_t max )
 
 // returns a vec2 inside of a circle
 
-Vec2 Random::get_random_in_circle( float radius )
+Vec2 Random::get_random_in_circle( float_t radius )
 {
 	auto result = glm::diskRand( radius );
 	return { result.x, result.y };
@@ -48,7 +48,7 @@ Vec2 Random::get_random_in_circle( float radius )
 
 // returns a vec2 on the outside of a circle
 
-Vec2 Random::get_random_on_circle( float radius )
+Vec2 Random::get_random_on_circle( float_t radius )
 {
 	auto result = glm::circularRand( radius );
 	return { result.x, result.y };

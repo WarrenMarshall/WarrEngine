@@ -88,7 +88,7 @@ Texture_Source_Base* Texture_Asset::find_texture_source_base( std::string_view s
 	return result;
 }
 
-Texture_Asset* Texture_Asset::get_frame( float anim_offset )
+Texture_Asset* Texture_Asset::get_frame( float_t anim_offset )
 {
 	if( !is_animated() )
 	{
@@ -96,7 +96,7 @@ Texture_Asset* Texture_Asset::get_frame( float anim_offset )
 	}
 
 	// use the tween to get the animation frame index, clamped to the value range
-	auto idx = (size_t)( glm::clamp<float>( *frame_tween, 0.f, (float)frames.size() ) );
+	auto idx = (size_t)( glm::clamp<float_t>( *frame_tween, 0.f, (float)frames.size() ) );
 
 	idx += (size_t)( anim_offset * frames.size() );
 
@@ -117,12 +117,12 @@ bool Texture_Asset::is_animated() const
 	return frames_per_second;
 }
 
-float Texture_Asset::width()
+float_t Texture_Asset::width()
 {
 	return get_frame( 0.f )->rc.w;
 }
 
-float Texture_Asset::height()
+float_t Texture_Asset::height()
 {
 	return get_frame( 0.f )->rc.h;
 }

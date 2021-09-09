@@ -38,12 +38,12 @@
 
 {
 	"type" "sound"
-	"tag" "sfx_platfomer_jump"
+	"tag" "sfx_platformer_jump"
 	"filename" "sfx/platformer_jump.wav"
 }
 
 {
 	"type" "sound"
-	"tag" "sfx_platfomer_boom"
+	"tag" "sfx_platformer_boom"
 	"filename" "sfx/platformer_boom.wav"
 }

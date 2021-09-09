@@ -127,10 +127,10 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 		{
 			auto texture_tag = std::string( *tok.get_next_token() );
 
-			float x = Text_Parser::float_from_str( *tok.get_next_token() );
-			float y = Text_Parser::float_from_str( *tok.get_next_token() );
-			float w = Text_Parser::float_from_str( *tok.get_next_token() );
-			float h = Text_Parser::float_from_str( *tok.get_next_token() );
+			float_t x = Text_Parser::float_from_str( *tok.get_next_token() );
+			float_t y = Text_Parser::float_from_str( *tok.get_next_token() );
+			float_t w = Text_Parser::float_from_str( *tok.get_next_token() );
+			float_t h = Text_Parser::float_from_str( *tok.get_next_token() );
 
 			Rect rc( x, y, w, h );
 
@@ -201,7 +201,7 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	Vec2 x_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "x_slices" ) );
 	Vec2 y_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "y_slices" ) );
 
-	float x, y, w, h;
+	float_t x, y, w, h;
 
 	// top row
 

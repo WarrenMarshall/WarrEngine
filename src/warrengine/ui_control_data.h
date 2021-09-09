@@ -27,11 +27,11 @@ struct UI_Control_Data
 	[[nodiscard]] bool bool_value();
 	void set_bool_value( bool value );
 
-	[[nodiscard]] float float_value();
-	void set_float_value( float value );
+	[[nodiscard]] float_t float_value();
+	void set_float_value( float_t value );
 
-	[[nodiscard]] float float_value_internal();
-	void set_float_value_internal( float value );
+	[[nodiscard]] float_t float_value_internal();
+	void set_float_value_internal( float_t value );
 
 	[[nodiscard]] int32_t int_value();
 	void set_int_value( int32_t value );
@@ -41,7 +41,7 @@ struct UI_Control_Data
 	// hot data
 	bool _bool_value = false;
 	int32_t _int_value = 0;
-	float _float_value = 0.f;
+	float_t _float_value = 0.f;
 	std::string _string_value;
 
 	struct
@@ -54,7 +54,7 @@ struct UI_Control_Data
 	} dropdown;
 	struct
 	{
-		Range<float> range = Range<float>( 0.f, 1.f );
+		Range<float_t> range = Range<float_t>( 0.f, 1.f );
 	} slider;
 	struct
 	{

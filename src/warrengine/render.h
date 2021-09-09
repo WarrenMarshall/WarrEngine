@@ -14,7 +14,7 @@ struct Render
 	// tick. this is used to interpolate/predict rendering for smooth movement
 	// and rotations even at low FTS values.
 
-	float frame_interpolate_pct = 0.f;
+	float_t frame_interpolate_pct = 0.f;
 
 #ifndef _FINAL_RELEASE
 	struct
@@ -58,14 +58,14 @@ struct Render
 	static void draw_quad( Texture_Asset* texture, const Rect& dst );
 
 	static auto get_circle_start_end_indices( e_corner_t corner );
-	static void draw_circle( const Vec2& origin, float radius, e_corner_t corner = e_corner::all );
-	static void draw_filled_circle( const Vec2& origin, float radius, e_corner_t corner = e_corner::all );
+	static void draw_circle( const Vec2& origin, float_t radius, e_corner_t corner = e_corner::all );
+	static void draw_filled_circle( const Vec2& origin, float_t radius, e_corner_t corner = e_corner::all );
 
 	static void draw_rect( const Rect& dst );
 	static void draw_filled_rect( const Rect& dst );
 
-	static void draw_rounded_rect( const Rect& dst, float radius );
-	static void draw_rounded_filled_rect( const Rect& dst, float radius );
+	static void draw_rounded_rect( const Rect& dst, float_t radius );
+	static void draw_rounded_filled_rect( const Rect& dst, float_t radius );
 
 	static void draw_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 );
 	static void draw_filled_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 );
@@ -81,20 +81,19 @@ struct Render
 	static void draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst );
 	static void draw_sprite( Texture_Asset* texture, const Vec2& dst );
 	static Vec2 draw_string( const std::string& text, const Vec2& pos );
-	static Vec2 draw_string( const std::vector<std::string>& text, const Vec2& rc );
 	static Vec2 draw_string( const std::vector<std::string>& text, const Rect& rc );
 	static void draw_tiled( Texture_Asset* texture, const Rect& dst );
 	static void draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, const Vec2& pos );
 	static void draw_crosshair( Vec2 pos );
 
-	static std::vector<std::string> wrap_string_to_width( std::string_view text, float width );
+	static std::vector<std::string> wrap_string_to_width( std::string_view text, float_t width );
 
 	static void draw_world_axis();
 
 	void begin_frame();
 	void end_frame();
 
-	[[nodiscard]] float calc_interpolated_per_sec_value( float current_value, float step_per_second ) const;
+	[[nodiscard]] float_t calc_interpolated_per_sec_value( float_t current_value, float_t step_per_second ) const;
 
 	// ----------------------------------------------------------------------------
 
