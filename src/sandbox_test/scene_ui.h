@@ -3,6 +3,11 @@ using namespace war;
 
 struct Scene_UI_Callback : UI_Callback
 {
+	std::vector<std::string> list_items;
+	std::vector<std::string> dropdown_items;
+
+	// ----------------------------------------------------------------------------
+
 	Scene_UI_Callback();
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
@@ -18,15 +23,16 @@ struct Scene_UI_Callback : UI_Callback
 	UI_Control_Data radio_data = UI_Control_Data( e_ui_control_type::radio );
 	UI_Control_Data list_data = UI_Control_Data( e_ui_control_type::list );
 	UI_Control_Data dropdown_data = UI_Control_Data( e_ui_control_type::dropdown );
-
-	std::vector<std::string> list_items;
-	std::vector<std::string> dropdown_items;
 };
 
 // ----------------------------------------------------------------------------
 
 struct Scene_UI : Scene
 {
+	Scene_UI_Callback uic;
+
+	// ----------------------------------------------------------------------------
+
 	Scene_UI();
 
 	virtual void pushed() override;

@@ -15,6 +15,7 @@ struct Scene_Controller_UI_Callback : UI_Callback
 
 struct Scene_Controller : Scene
 {
+	Scene_Controller_UI_Callback uic;
 	bool use_controller_dead_zone = true;
 
 	Tween fader;

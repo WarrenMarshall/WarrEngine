@@ -17,6 +17,8 @@ struct Scene_Esc_Menu_UI_Callback : UI_Callback
 
 struct Scene_Esc_Menu : Scene
 {
+	Scene_Esc_Menu_UI_Callback uic;
+
 	Scene_Esc_Menu();
 	virtual ~Scene_Esc_Menu() override = default;
 

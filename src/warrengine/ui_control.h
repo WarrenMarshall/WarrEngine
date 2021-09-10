@@ -11,7 +11,7 @@ struct UI_Control
 	e_align_t text_align = e_align::hcenter | e_align::vcenter;
 	Color text_color = Color::white;
 	Color primary_color = Color::black;
-	Slide_Def_Asset* slice_def = nullptr;
+	Slice_Def_Asset* slice_def = nullptr;
 	int32_t idx = -1;
 	size_t total = 0;
 	Texture_Asset* image = nullptr;
@@ -148,8 +148,6 @@ struct UI_Slider_Control : UI_Control
 	UI_Slider_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-	void draw_slider_thumb( const Rect& rc_client );
-	void draw_slider_tick_marks( const Rect& rc_ui, const Rect& rc_client );
 
 	static float_t get_default_width();
 	static float_t get_default_height();

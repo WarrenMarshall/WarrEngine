@@ -94,7 +94,7 @@ void Scene_UI_Callback::on_value_changed( hash tag )
 
 Scene_UI::Scene_UI()
 {
-	ui_callback = std::make_unique<Scene_UI_Callback>();
+	ui_callback = &uic;
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
 }

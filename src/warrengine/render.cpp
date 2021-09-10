@@ -826,7 +826,7 @@ void Render::draw_point( const Vec2& pos )
 	}
 }
 
-void Render::draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst )
+void Render::draw_sliced( const Slice_Def_Asset* slice_def, const Rect& dst )
 {
 	Texture_Asset* p_00 = slice_def->patches[ e_slice_def_patch::top_left ];
 	Texture_Asset* p_10 = slice_def->patches[ e_slice_def_patch::top_middle ];

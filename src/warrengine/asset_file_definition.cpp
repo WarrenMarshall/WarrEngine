@@ -195,7 +195,7 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	assert( key_values_for_asset_def.does_key_exist( "x_slices" ) );
 	assert( key_values_for_asset_def.does_key_exist( "y_slices" ) );
 
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Slide_Def_Asset>(), tag.data(), "" );
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Slice_Def_Asset>(), tag.data(), "" );
 
 	auto texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
 	Vec2 x_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "x_slices" ) );

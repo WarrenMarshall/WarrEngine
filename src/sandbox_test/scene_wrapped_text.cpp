@@ -24,7 +24,7 @@ UI_Control_Data* Scene_Wrapped_Text_UI_Callback::get_data( hash tag )
 
 Scene_Wrapped_Text::Scene_Wrapped_Text()
 {
-	ui_callback = std::make_unique<Scene_Wrapped_Text_UI_Callback>();
+	ui_callback = &uic;
 
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;

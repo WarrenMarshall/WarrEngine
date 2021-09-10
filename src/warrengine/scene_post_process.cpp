@@ -128,7 +128,7 @@ bool Scene_Post_Process_UI_Callback::on_input_pressed( const Input_Event* evt )
 
 Scene_Post_Process::Scene_Post_Process()
 {
-	ui_callback = std::make_unique<Scene_Post_Process_UI_Callback>();
+	ui_callback = &uic;
 
 	flags.blocks_further_drawing = false;
 }

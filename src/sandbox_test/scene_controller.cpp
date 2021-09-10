@@ -25,7 +25,7 @@ UI_Control_Data* Scene_Controller_UI_Callback::get_data( hash tag )
 
 Scene_Controller::Scene_Controller()
 {
-	ui_callback = std::make_unique<Scene_Controller_UI_Callback>();
+	ui_callback = &uic;
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
 }

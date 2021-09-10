@@ -72,7 +72,18 @@ Scene* Scene_Mgr::get_top()
 
 void Scene_Mgr::pre_update()
 {
-	remove_dead_scenes();
+	// remove dead scenes
+
+	for( size_t x = 0 ; x < scene_stack.size() ; ++x )
+	{
+		if( scene_stack[ x ]->life_cycle.is_dead() )
+		{
+			scene_stack.erase( scene_stack.begin() + x );
+			x--;
+		}
+	}
+
+	// update living scenes
 
 	for( auto& iter : scene_stack )
 	{
@@ -378,18 +389,6 @@ bool Scene_Mgr::on_input_key( const Input_Event* evt )
 	}
 
 	return false;
-}
-
-void Scene_Mgr::remove_dead_scenes()
-{
-	for( size_t x = 0 ; x < scene_stack.size() ; ++x )
-	{
-		if( scene_stack[ x ]->life_cycle.is_dead() )
-		{
-			scene_stack.erase( scene_stack.begin() + x );
-			x--;
-		}
-	}
 }
 
 }

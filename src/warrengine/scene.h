@@ -150,7 +150,8 @@ struct Scene
 	virtual void new_game();
 	void follow_cam( const Transform* follow_target );
 
-	std::unique_ptr<war::UI_Callback> ui_callback = nullptr;
+	UI_Callback* ui_callback = nullptr;
+	//std::unique_ptr<war::UI_Callback> ui_callback = nullptr;
 	virtual war::UI_Callback* get_ui_callback();
 
 	virtual bool on_input_motion( const Input_Event* evt );

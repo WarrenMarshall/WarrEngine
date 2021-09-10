@@ -40,7 +40,7 @@ bool Scene_Esc_Menu_UI_Callback::on_input_pressed( const Input_Event* evt )
 
 Scene_Esc_Menu::Scene_Esc_Menu()
 {
-	ui_callback = std::make_unique<Scene_Esc_Menu_UI_Callback>();
+	ui_callback = &uic;
 	flags.blocks_further_input = true;
 	flags.blocks_further_update = true;
 }
@@ -73,7 +73,7 @@ void Scene_Esc_Menu::draw_ui()
 
 	int32_t num_buttons = 3 + g_base_game->flags.has_main_menu;
 
-	auto slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_panel" );
+	auto slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
 
 	float_t panel_w =
 		slice_def->get_left_slice_sz()

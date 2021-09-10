@@ -65,7 +65,7 @@ UI_Panel_Control::UI_Panel_Control( hash tag )
 	: UI_Control( tag )
 {
 	type = e_ui_control_type::panel;
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_panel" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
 }
 
 void UI_Panel_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -124,7 +124,7 @@ UI_Button_Control::UI_Button_Control( hash tag )
 	type = e_ui_control_type::button;
 	is_active = true;
 
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_button" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_button" );
 	text_align = e_align::centered;
 }
 
@@ -197,7 +197,7 @@ UI_Divider_Control::UI_Divider_Control( hash tag )
 	: UI_Control( tag )
 {
 	type = e_ui_control_type::divider;
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_divider" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_divider" );
 }
 
 void UI_Divider_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -303,7 +303,7 @@ UI_Slider_Control::UI_Slider_Control( hash tag )
 	type = e_ui_control_type::slider;
 	is_active = true;
 	text_align = e_align::left | e_align::vcenter;
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_slider_body" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_slider_body" );
 	uses_click_offset = false;
 }
 
@@ -315,14 +315,19 @@ void UI_Slider_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_
 
 	if( interval )
 	{
-		draw_slider_tick_marks( rc_ui, rc_client );
+		auto tex_tick = g_engine->find_asset<Texture_Asset>( "ui_slider_tick" );
+
+		Vec2 tick_pos = Vec2( rc_client.x, rc_ui.y + 5.f );
+		auto steps = (int32_t)( 1.f / interval );
+		auto stride = rc_client.w * interval;
+
+		for( auto x = 0 ; x <= steps ; ++x )
+		{
+			Render::draw_sprite( tex_tick, tick_pos );
+			tick_pos.x += stride;
+		}
 	}
 
-	draw_slider_thumb( rc_client );
-}
-
-void UI_Slider_Control::draw_slider_thumb( const Rect& rc_client )
-{
 	// draw the thumb indicator
 
 	auto data = g_ui->current_callback->get_data( tag )->float_value_internal();
@@ -333,26 +338,6 @@ void UI_Slider_Control::draw_slider_thumb( const Rect& rc_client )
 	);
 
 	Render::draw_sprite( g_engine->find_asset<Texture_Asset>( "ui_slider_thumb" ), pos );
-}
-
-void UI_Slider_Control::draw_slider_tick_marks( const Rect& rc_ui, const Rect& rc_client )
-{
-	if( fequals( interval, 0.f ) )
-	{
-		return;
-	}
-
-	auto tex_tick = g_engine->find_asset<Texture_Asset>( "ui_slider_tick" );
-
-	Vec2 tick_pos = Vec2( rc_client.x, rc_ui.y + 5.f );
-	auto steps = (int32_t)( 1.f / interval );
-	auto stride = rc_client.w * interval;
-
-	for( auto x = 0 ; x <= steps ; ++x )
-	{
-		Render::draw_sprite( tex_tick, tick_pos );
-		tick_pos.x += stride;
-	}
 }
 
 float_t UI_Slider_Control::get_default_width()
@@ -377,7 +362,7 @@ UI_Text_Control::UI_Text_Control( hash tag )
 {
 	type = e_ui_control_type::text;
 	is_active = true;
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_text" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_text" );
 	text_align = e_align::left | e_align::vcenter;
 	uses_click_offset = false;
 	can_retain_focus = true;
@@ -532,7 +517,7 @@ UI_List_Control::UI_List_Control( hash tag )
 {
 	type = e_ui_control_type::list;
 	text_align = e_align::left | e_align::top;
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_list" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_list" );
 }
 
 void UI_List_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
@@ -603,7 +588,7 @@ UI_Dropdown_Control::UI_Dropdown_Control( hash tag )
 {
 	type = e_ui_control_type::dropdown;
 	is_active = true;
-	slice_def = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_button" );
+	slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_button" );
 	text_align = e_align::left | e_align::vcenter;
 	uses_click_offset = true;
 }
@@ -652,7 +637,7 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 		// and massage it so it sits below the button and has enough height to
 		// hold all the items.
 
-		auto slice_def_dropdown_list = g_engine->find_asset<Slide_Def_Asset>( "simple_ui_dropdown_list" );
+		auto slice_def_dropdown_list = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_dropdown_list" );
 
 		Rect item_list_rc = rc_ui;
 		item_list_rc.x += interior_margin.x * 2.f;

@@ -167,7 +167,7 @@ UI_Mgr* UI_Mgr::set_slice_def( std::string_view slice_def_name )
 
 	if( !slice_def_name.empty() )
 	{
-		current_control->slice_def = g_engine->find_asset<Slide_Def_Asset>( slice_def_name );
+		current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( slice_def_name );
 	}
 
 	current_control->rc_client = compute_client_rect_from_ui_rect( current_control->rc_ui );

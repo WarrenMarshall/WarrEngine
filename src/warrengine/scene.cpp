@@ -269,12 +269,7 @@ void Scene::new_game()
 
 UI_Callback* Scene::get_ui_callback()
 {
-	if( ui_callback )
-	{
-		return ui_callback.get();
-	}
-
-	return &( g_ui->default_callback );
+	return ( ui_callback ) ? ui_callback : &( g_ui->default_callback );
 }
 
 bool Scene::on_input_motion( const Input_Event* evt )
@@ -286,9 +281,7 @@ bool Scene::on_input_pressed( const Input_Event* evt )
 {
 	if( g_engine->scene_mgr.get_top() == this )
 	{
-
-		auto callback = get_ui_callback();
-		if( callback->on_input_pressed( evt ) )
+		if( get_ui_callback()->on_input_pressed( evt ) )
 		{
 			return true;
 		}

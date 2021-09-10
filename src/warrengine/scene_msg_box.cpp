@@ -26,7 +26,7 @@ bool Scene_Msg_Box_UI_Callback::on_input_pressed( const Input_Event* evt )
 
 Scene_Msg_Box::Scene_Msg_Box()
 {
-	ui_callback = std::make_unique<Scene_Msg_Box_UI_Callback>();
+	ui_callback = &uic;
 }
 
 void Scene_Msg_Box::pushed()

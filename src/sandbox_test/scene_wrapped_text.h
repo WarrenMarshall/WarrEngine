@@ -14,7 +14,7 @@ struct Scene_Wrapped_Text_UI_Callback final : UI_Callback
 
 struct Scene_Wrapped_Text final : Scene
 {
-	Scene_Wrapped_Text();
+	Scene_Wrapped_Text_UI_Callback uic;
 
 	std::string big_text_block;
 
@@ -24,6 +24,8 @@ struct Scene_Wrapped_Text final : Scene
 	std::vector<std::string> wrapped_lines_02;
 	Rect rc_big_text_block_02 = {};
 	float_t text_pct = 0.0f;
+
+	Scene_Wrapped_Text();
 
 	virtual void pushed() override;
 	virtual void draw() override;

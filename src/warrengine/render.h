@@ -78,7 +78,7 @@ struct Render
 	static void draw_point( const Vec2& pos );
 
 	static void draw_mesh( Mesh_Asset* mesh );
-	static void draw_sliced( const Slide_Def_Asset* slice_def, const Rect& dst );
+	static void draw_sliced( const Slice_Def_Asset* slice_def, const Rect& dst );
 	static void draw_sprite( Texture_Asset* texture, const Vec2& dst );
 	static Vec2 draw_string( const std::string& text, const Vec2& pos );
 	static Vec2 draw_string( const std::vector<std::string>& text, const Rect& rc );
