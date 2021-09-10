@@ -264,17 +264,13 @@ Vec2 Render::draw_string( const std::string& text, const Vec2& pos )
 	{
 		Font_Def_Asset::Glyph* fch = &( Render::state->font->font_def->char_map[ (int32_t)( iter ) ] );
 
-		// small optimization to skip drawing completely blank characters
-		if( fch->w > 0 )
-		{
-			Render::draw_quad(
-				&fch->glyph_texture,
-				Rect(
+		Render::draw_quad(
+			&fch->glyph_texture,
+			Rect(
 				draw_pos.x + ( fch->xoffset * Render::state->scale.x ),
 				draw_pos.y + ( fch->yoffset * Render::state->scale.y )
 			)
-			);
-		}
+		);
 
 		draw_pos.x += ( fch->xadvance * Render::state->scale.x );
 	}
@@ -291,7 +287,6 @@ Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 {
 	Vec2 wk_pos = { rc.x, rc.y };
 
-	/*
 	if( Render::state->align & e_align::right )
 	{
 		wk_pos.x = rc.x + rc.w;
@@ -304,7 +299,6 @@ Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 	{
 		wk_pos.y = rc.y - ( ( Render::state->font->get_max_height() * text.size() ) / 2.f );
 	}
-	*/
 
 	Vec2 draw_pos;
 
