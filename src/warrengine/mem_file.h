@@ -6,7 +6,7 @@ namespace war
 // a file that has been read into memory, either from the hard drive or a ZIP
 // file
 
-struct Mem_File
+struct Mem_File final
 {
 	std::vector<char> buffer;
 
@@ -19,7 +19,7 @@ struct Mem_File
 // out stuff that is only useful to humans - comments, line continuations, blank
 // lines, etc.
 
-struct Mem_File_Text
+struct Mem_File_Text final
 {
 	std::vector<char> buffer;
 	std::vector<std::string> lines;

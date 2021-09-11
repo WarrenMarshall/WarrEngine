@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Matrix
+struct Matrix final
 {
 	Matrix();
 	Matrix( glm::mat4 glm_mtx );

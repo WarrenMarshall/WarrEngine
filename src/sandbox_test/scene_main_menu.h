@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Main_Menu : Scene
+struct Scene_Main_Menu final : Scene
 {
 	Scene_Main_Menu();
 
@@ -19,7 +19,7 @@ struct Scene_Main_Menu : Scene
 			->cut_top( 12.f )
 			->done() )
 		{
-			Timeline_Nodes tl;
+			Timeline_Of_Nodes tl;
 			tl.clear( 1000 );
 
 			tl.add_kf_pp_color_overlay( false, 0.25f, 250, make_color( Color::black, 1.f ) );

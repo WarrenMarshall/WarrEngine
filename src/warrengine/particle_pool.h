@@ -6,7 +6,7 @@ namespace war
 //
 // the size is determined at construction and never changes.
 
-struct Particle_Pool : Object_Pool<Particle>
+struct Particle_Pool final : Object_Pool<Particle>
 {
 	Particle_Emitter* parent_emitter = nullptr;
 

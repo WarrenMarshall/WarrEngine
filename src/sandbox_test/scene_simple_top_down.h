@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Simple_Top_Down : Scene
+struct Scene_Simple_Top_Down final : Scene
 {
 	struct
 	{

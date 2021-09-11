@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct Entity_Simple_Force
+struct Entity_Simple_Force final
 {
 	Entity_Simple_Force() = default;
 	Entity_Simple_Force( Vec2 normal, float_t strength );
@@ -15,7 +15,7 @@ struct Entity_Simple_Force
 
 // ----------------------------------------------------------------------------
 
-struct Entity_Simple_Collision
+struct Entity_Simple_Collision final
 {
 	e_sc_type_t type = e_sc_type::dynamic;
 
@@ -37,8 +37,6 @@ struct Entity_Simple_Collision
 	Range<float_t> max_velocity_x = { -5.0f, 5.0f };
 	Range<float_t> max_velocity_y = { -5.0f, 5.0f };
 
-	//struct
-	//{
 	bool is_in_air : 1 = true;
 	bool is_affected_by_gravity : 1 = false;
 	bool is_bouncy : 1 = false;
@@ -48,14 +46,13 @@ struct Entity_Simple_Collision
 	{
 		bool is_affected_by_gravity : 1 = false;
 	} save;
-	//} flags;
 };
 
 // ----------------------------------------------------------------------------
 
 struct Entity
 {
-	Life_Cycle_Mgr life_cycle;
+	Life_Cycle life_cycle;
 
 	hash tag = hash_none;
 	int32_t pick_id = 0;

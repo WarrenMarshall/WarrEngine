@@ -34,7 +34,7 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim_t render_p
 
 			indices_to_verts_factor = 1.5f;
 
-			vb = std::make_unique<Vertex_Buffer>( this, 4 );
+			vb = Vertex_Buffer( this, 4 );
 			ib = g_engine->opengl_mgr.ib_quads.get();
 			break;
 		}
@@ -51,7 +51,7 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim_t render_p
 
 			indices_to_verts_factor = 1.f;
 
-			vb = std::make_unique<Vertex_Buffer>( this, 3 );
+			vb = Vertex_Buffer( this, 3 );
 			ib = g_engine->opengl_mgr.ib_tris.get();
 			break;
 		}
@@ -68,7 +68,7 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim_t render_p
 
 			indices_to_verts_factor = 1.f;
 
-			vb = std::make_unique<Vertex_Buffer>( this, 2 );
+			vb = Vertex_Buffer( this, 2 );
 			ib = g_engine->opengl_mgr.ib_lines.get();
 			break;
 		}
@@ -85,7 +85,7 @@ void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim_t render_p
 
 			indices_to_verts_factor = 1.f;
 
-			vb = std::make_unique<Vertex_Buffer>( this, 1 );
+			vb = Vertex_Buffer( this, 1 );
 			ib = g_engine->opengl_mgr.ib_points.get();
 			break;
 		}
@@ -105,14 +105,14 @@ Vertex_Array_Object::~Vertex_Array_Object()
 void Vertex_Array_Object::bind()
 {
 	glBindVertexArray( gl_id );
-	vb->bind();
+	vb.bind();
 	ib->bind();
 }
 
 void Vertex_Array_Object::unbind()
 {
 	glBindVertexArray( 0 );
-	vb->unbind();
+	vb.unbind();
 	ib->unbind();
 }
 
@@ -120,7 +120,7 @@ void Vertex_Array_Object::update_stats()
 {
 #ifndef _FINAL_RELEASE
 
-	if( vb->vertices.empty() )
+	if( vb.vertices.empty() )
 	{
 		return;
 	}
@@ -130,19 +130,19 @@ void Vertex_Array_Object::update_stats()
 
 	if( render_prim == e_render_prim::quad )
 	{
-		g_engine->stats.quads += vb->vertices.num_objects_in_pool() / 4.f;
+		g_engine->stats.quads += vb.vertices.num_objects_in_pool() / 4.f;
 	}
 	else if( render_prim == e_render_prim::triangle )
 	{
-		g_engine->stats.triangles += vb->vertices.num_objects_in_pool() / 3.f;
+		g_engine->stats.triangles += vb.vertices.num_objects_in_pool() / 3.f;
 	}
 	else if( render_prim == e_render_prim::line )
 	{
-		g_engine->stats.lines += vb->vertices.num_objects_in_pool() / 2.f;
+		g_engine->stats.lines += vb.vertices.num_objects_in_pool() / 2.f;
 	}
 	else if( render_prim == e_render_prim::point )
 	{
-		g_engine->stats.points += vb->vertices.num_objects_in_pool() / 1.f;
+		g_engine->stats.points += vb.vertices.num_objects_in_pool() / 1.f;
 	}
 
 	// frame debugger
@@ -150,21 +150,21 @@ void Vertex_Array_Object::update_stats()
 		if( g_engine->render.debug.is_single_frame_logging() )
 		{
 			const char* prim_type_desc [] = { "quad", "triangle", "line", "point" };
-			auto prim_count = vb->vertices.num_objects_in_pool() / (float)vb->verts_per_element;
+			auto prim_count = vb.vertices.num_objects_in_pool() / (float)vb.verts_per_element;
 			log(
 				">> draw call >> {} {}{} (v: {}, i: {})",
 				f_commas( prim_count ),
 				prim_type_desc[ render_prim ],
 				( prim_count > 1.f ) ? "s" : "",
-				f_commas( (float)( vb->vertices.num_objects_in_pool() ) ),
-				f_commas( vb->vertices.num_objects_in_pool() * indices_to_verts_factor )
+				f_commas( (float)( vb.vertices.num_objects_in_pool() ) ),
+				f_commas( vb.vertices.num_objects_in_pool() * indices_to_verts_factor )
 			);
 
 			for( auto x = 0 ; x < g_engine->opengl_mgr.max_texture_image_units ; ++x )
 			{
-				if( vb->texture_slots[ x ] )
+				if( vb.texture_slots[ x ] )
 				{
-					log( "  [{}] {}", x, vb->texture_slots[ x ]->get_src_texture()->tag );
+					log( "  [{}] {}", x, vb.texture_slots[ x ]->get_src_texture()->tag );
 				}
 			}
 			log_div();
@@ -175,7 +175,7 @@ void Vertex_Array_Object::update_stats()
 
 void Vertex_Array_Object::flush_and_reset( e_draw_call_t draw_call )
 {
-	if( !vb->vertices.empty() )
+	if( !vb.vertices.empty() )
 	{
 		update_stats();
 		flush_and_reset_internal( draw_call );
@@ -184,18 +184,18 @@ void Vertex_Array_Object::flush_and_reset( e_draw_call_t draw_call )
 
 void Vertex_Array_Object::upload_vertices_to_gpu()
 {
-	if( vb->vertices.empty() )
+	if( vb.vertices.empty() )
 	{
 		return;
 	}
 
 	bind();
-	vb->upload_vertices_to_gpu();
+	vb.upload_vertices_to_gpu();
 }
 
 void Vertex_Array_Object::flush_and_reset_internal( e_draw_call_t draw_call )
 {
-	if( vb->vertices.empty() )
+	if( vb.vertices.empty() )
 	{
 		return;
 	}
@@ -207,7 +207,7 @@ void Vertex_Array_Object::flush_and_reset_internal( e_draw_call_t draw_call )
 
 void Vertex_Array_Object::draw( e_draw_call_t draw_call )
 {
-	if( vb->vertices.empty() )
+	if( vb.vertices.empty() )
 	{
 		return;
 	}
@@ -230,21 +230,21 @@ void Vertex_Array_Object::draw( e_draw_call_t draw_call )
 	}
 
 	// bind texture units
-	vb->bind_texture_units();
+	vb.bind_texture_units();
 
 	bind();
 
 	// only write to the depth buffer for opaque primitives
 	glDepthMask( draw_call == e_draw_call::opaque );
 
-	glDrawElements( get_gl_prim_type(), (int32_t)( vb->vertices.num_objects_in_pool() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
+	glDrawElements( get_gl_prim_type(), (int32_t)( vb.vertices.num_objects_in_pool() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 
 	unbind();
 }
 
 void Vertex_Array_Object::reset()
 {
-	vb->reset();
+	vb.reset();
 }
 
 GLenum Vertex_Array_Object::get_gl_prim_type()

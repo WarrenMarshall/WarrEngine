@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_UI_Callback : UI_Callback
+struct Scene_UI_Callback final : UI_Callback
 {
 	std::vector<std::string> list_items;
 	std::vector<std::string> dropdown_items;
@@ -27,7 +27,7 @@ struct Scene_UI_Callback : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct Scene_UI : Scene
+struct Scene_UI final : Scene
 {
 	Scene_UI_Callback uic;
 

@@ -6,7 +6,7 @@ namespace war
 // a value that wants to accumulate over a period of time, and then report
 // an averaged value for that period.
 
-struct Value_Accumulator
+struct Value_Accumulator final
 {
 	float_t value = 0.f;
 

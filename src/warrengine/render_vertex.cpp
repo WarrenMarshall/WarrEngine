@@ -72,23 +72,4 @@ Render_Triangle::Render_Triangle( const Render_Vertex& v0, const Render_Vertex& 
 	l_copy_render_vert( 2, v2 );
 }
 
-
-// ----------------------------------------------------------------------------
-
-Render_Line::Render_Line( const Render_Vertex& v0, const Render_Vertex& v1, const Color& color, float_t glow )
-{
-	auto l_copy_render_vert = [&] ( size_t idx, const Render_Vertex& rv )
-	{
-		verts[ idx ] = rv;
-		verts[ idx ].r = color.r;
-		verts[ idx ].g = color.g;
-		verts[ idx ].b = color.b;
-		verts[ idx ].a = color.a;
-		verts[ idx ].glow = glow;
-	};
-
-	l_copy_render_vert( 0, v0 );
-	l_copy_render_vert( 1, v1 );
-}
-
 }

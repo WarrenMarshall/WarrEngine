@@ -12,7 +12,7 @@ namespace war
 // i.e. the text and caret position for an edit control, the on/off state for a
 // checkbox, the item idx for a list box, etc.
 
-struct UI_Control_Data
+struct UI_Control_Data final
 {
 	UI_Control_Data();
 	UI_Control_Data( e_ui_control_type_t type );

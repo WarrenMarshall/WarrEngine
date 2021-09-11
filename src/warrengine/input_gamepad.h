@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Game_Controller
+struct Game_Controller final
 {
 	Timer timer_repeat;
 	int32_t player_id = -1;

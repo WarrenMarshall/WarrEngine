@@ -11,18 +11,18 @@ Emitter_Parameters_Asset::Emitter_Parameters_Asset()
 
 	t_scale
 		.clear_key_frames()
-		->add_key_frame( Timeline_Values_Key_Frame( 0.f, 1.f ) )
-		->add_key_frame( Timeline_Values_Key_Frame( 1.f, 0.f ) );
+		->add_key_frame( Timeline_Of_Values::Key_Frame( 0.f, 1.f ) )
+		->add_key_frame( Timeline_Of_Values::Key_Frame( 1.f, 0.f ) );
 
 	t_alpha
 		.clear_key_frames()
-		->add_key_frame( Timeline_Values_Key_Frame( 0.f, 0.f ) )
-		->add_key_frame( Timeline_Values_Key_Frame( 1.f, 0.f ) );
+		->add_key_frame( Timeline_Of_Values::Key_Frame( 0.f, 0.f ) )
+		->add_key_frame( Timeline_Of_Values::Key_Frame( 1.f, 0.f ) );
 
 	t_color
 		.clear_key_frames()
-		->add_key_frame( Timeline_Values_Key_Frame( 0.f, Color::white ) )
-		->add_key_frame( Timeline_Values_Key_Frame( 1.f, Color::black ) );
+		->add_key_frame( Timeline_Of_Values::Key_Frame( 0.f, Color::white ) )
+		->add_key_frame( Timeline_Of_Values::Key_Frame( 1.f, Color::black ) );
 }
 
 }

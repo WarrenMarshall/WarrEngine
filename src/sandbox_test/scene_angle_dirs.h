@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Angle_Dirs : Scene
+struct Scene_Angle_Dirs final : Scene
 {
 	Scene_Angle_Dirs();
 

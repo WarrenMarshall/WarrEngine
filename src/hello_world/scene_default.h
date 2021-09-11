@@ -1,5 +1,5 @@
 
-struct Scene_Default : Scene
+struct Scene_Default final : Scene
 {
 	Texture_Asset* gradient = nullptr;
 	Texture_Asset* tex_hello_world = nullptr;

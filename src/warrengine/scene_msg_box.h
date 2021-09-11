@@ -2,14 +2,14 @@
 namespace war
 {
 
-struct Scene_Msg_Box_UI_Callback : UI_Callback
+struct Scene_Msg_Box_UI_Callback final : UI_Callback
 {
 	virtual bool on_input_pressed( const Input_Event* evt ) override;
 };
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Msg_Box : Scene
+struct Scene_Msg_Box final : Scene
 {
 	Scene_Msg_Box_UI_Callback uic;
 

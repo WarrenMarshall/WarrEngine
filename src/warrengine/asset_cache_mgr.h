@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Asset_Cache_Mgr
+struct Asset_Cache_Mgr final
 {
 	std::unordered_map<std::string, std::unique_ptr<Asset>> cache;
 

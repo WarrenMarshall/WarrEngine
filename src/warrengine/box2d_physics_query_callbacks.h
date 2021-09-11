@@ -2,7 +2,7 @@
 namespace war::box2d_physics
 {
 
-struct Raycast_Hit
+struct Raycast_Hit final
 {
 	// how far along the ray did the hit occur?
 	float_t fraction = 0.f;
@@ -19,7 +19,7 @@ struct Raycast_Hit
 //
 // "what's the closest hit along this ray?"
 
-struct Raycast_Closest : b2RayCastCallback
+struct Raycast_Closest final : b2RayCastCallback
 {
 	bool hit_something = false;
 	int32_t collision_mask = 0;
@@ -35,7 +35,7 @@ struct Raycast_Closest : b2RayCastCallback
 //
 // "is there anything to hit along this ray?"
 
-struct Raycast_Simple : b2RayCastCallback
+struct Raycast_Simple final : b2RayCastCallback
 {
 	bool hit_something = false;
 	int32_t collision_mask = 0;
@@ -50,7 +50,7 @@ struct Raycast_Simple : b2RayCastCallback
 //
 // "what are all the hits along this ray?"
 
-struct Raycast_All : b2RayCastCallback
+struct Raycast_All final : b2RayCastCallback
 {
 	bool hit_something = false;
 	int32_t collision_mask = 0;

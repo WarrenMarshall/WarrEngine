@@ -11,7 +11,7 @@ namespace war
 #pragma pack(push)
 #pragma pack(1)
 
-struct Zip_File_Header
+struct Zip_File_Header final
 {
 	int32_t local_file_header_signature;
 	int16_t version_needed_to_extract;
@@ -30,9 +30,9 @@ struct Zip_File_Header
 
 // ----------------------------------------------------------------------------
 
-struct Zip_File
+struct Zip_File final
 {
-	struct toc_entry
+	struct toc_entry final
 	{
 		toc_entry( std::string_view zip_filename, std::string_view filename, int32_t offset, int32_t size );
 		std::string zip_filename;

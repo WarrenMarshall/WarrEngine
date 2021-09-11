@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Vertex_Buffer
+struct Vertex_Buffer final
 {
 	uint32_t gl_id;
 
@@ -21,8 +21,9 @@ struct Vertex_Buffer
 
 	// ----------------------------------------------------------------------------
 
+	Vertex_Buffer() = default;
 	Vertex_Buffer( Vertex_Array_Object* vao, int32_t verts_per_element );
-	~Vertex_Buffer();
+	virtual ~Vertex_Buffer();
 
 	virtual void bind();
 	virtual void unbind();

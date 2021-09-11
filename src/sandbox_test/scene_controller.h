@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Controller_UI_Callback : UI_Callback
+struct Scene_Controller_UI_Callback final : UI_Callback
 {
 	Scene_Controller_UI_Callback();
 
@@ -13,7 +13,7 @@ struct Scene_Controller_UI_Callback : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Controller : Scene
+struct Scene_Controller final : Scene
 {
 	Scene_Controller_UI_Callback uic;
 	bool use_controller_dead_zone = true;

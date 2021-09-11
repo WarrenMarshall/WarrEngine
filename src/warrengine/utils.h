@@ -3,7 +3,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct String_Util
+struct String_Util final
 {
 	[[nodiscard]] static std::string_view ltrim( std::string_view str );
 	[[nodiscard]] static std::string_view rtrim( std::string_view str );
@@ -21,14 +21,14 @@ struct String_Util
 
 // ----------------------------------------------------------------------------
 
-struct Geo_Util
+struct Geo_Util final
 {
 	[[nodiscard]] static std::vector<Vec2> generate_convex_shape( int32_t sides, float_t radius );
 };
 
 // ----------------------------------------------------------------------------
 
-struct OS_Util
+struct OS_Util final
 {
 	[[nodiscard]] static size_t get_cpu_cache_line_sz();
 };

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Particle_Emitter
+struct Particle_Emitter final
 {
 	Emitter_Component* parent_component = nullptr;
 

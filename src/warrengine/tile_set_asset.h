@@ -5,7 +5,7 @@ namespace war
 // ----------------------------------------------------------------------------
 // a primitive or a polygonal shape
 
-struct Tiled_Object
+struct Tiled_Object final
 {
 	e_sc_prim_type_t collision_type = e_sc_prim_type::aabb;
 
@@ -29,7 +29,7 @@ struct Tiled_Object
 // ----------------------------------------------------------------------------
 // object group
 
-struct Tiled_Object_Group
+struct Tiled_Object_Group final
 {
 	std::string tag;
 	std::vector<Tiled_Object> objects;
@@ -39,12 +39,12 @@ struct Tiled_Object_Group
 
 // ----------------------------------------------------------------------------
 
-struct Tile_Set_Asset : Asset
+struct Tile_Set_Asset final : Asset
 {
 	// ----------------------------------------------------------------------------
 	// a tile definition
 
-	struct Tile_Def
+	struct Tile_Def final
 	{
 		Texture_Asset texture;
 		std::vector<Tiled_Object> objects;
