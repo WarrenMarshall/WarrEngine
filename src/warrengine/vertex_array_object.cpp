@@ -130,19 +130,19 @@ void Vertex_Array_Object::update_stats()
 
 	if( render_prim == e_render_prim::quad )
 	{
-		g_engine->stats.quads += vb->vertices.size() / 4.f;
+		g_engine->stats.quads += vb->vertices.num_objects_in_pool() / 4.f;
 	}
 	else if( render_prim == e_render_prim::triangle )
 	{
-		g_engine->stats.triangles += vb->vertices.size() / 3.f;
+		g_engine->stats.triangles += vb->vertices.num_objects_in_pool() / 3.f;
 	}
 	else if( render_prim == e_render_prim::line )
 	{
-		g_engine->stats.lines += vb->vertices.size() / 2.f;
+		g_engine->stats.lines += vb->vertices.num_objects_in_pool() / 2.f;
 	}
 	else if( render_prim == e_render_prim::point )
 	{
-		g_engine->stats.points += vb->vertices.size() / 1.f;
+		g_engine->stats.points += vb->vertices.num_objects_in_pool() / 1.f;
 	}
 
 	// frame debugger
@@ -150,14 +150,14 @@ void Vertex_Array_Object::update_stats()
 		if( g_engine->render.debug.is_single_frame_logging() )
 		{
 			const char* prim_type_desc [] = { "quad", "triangle", "line", "point" };
-			auto prim_count = vb->vertices.size() / (float)vb->verts_per_element;
+			auto prim_count = vb->vertices.num_objects_in_pool() / (float)vb->verts_per_element;
 			log(
 				">> draw call >> {} {}{} (v: {}, i: {})",
 				f_commas( prim_count ),
 				prim_type_desc[ render_prim ],
 				( prim_count > 1.f ) ? "s" : "",
-				f_commas( (float)( vb->vertices.size() ) ),
-				f_commas( vb->vertices.size() * indices_to_verts_factor )
+				f_commas( (float)( vb->vertices.num_objects_in_pool() ) ),
+				f_commas( vb->vertices.num_objects_in_pool() * indices_to_verts_factor )
 			);
 
 			for( auto x = 0 ; x < g_engine->opengl_mgr.max_texture_image_units ; ++x )
@@ -237,7 +237,7 @@ void Vertex_Array_Object::draw( e_draw_call_t draw_call )
 	// only write to the depth buffer for opaque primitives
 	glDepthMask( draw_call == e_draw_call::opaque );
 
-	glDrawElements( get_gl_prim_type(), (int32_t)( vb->vertices.size() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
+	glDrawElements( get_gl_prim_type(), (int32_t)( vb->vertices.num_objects_in_pool() * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 
 	unbind();
 }

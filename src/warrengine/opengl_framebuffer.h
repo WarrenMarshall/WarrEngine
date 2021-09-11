@@ -4,7 +4,7 @@ namespace war
 
 struct OpenGL_Frame_Buffer
 {
-	std::vector<opengl_color_attachment> color_attachments;
+	std::vector<OpenGL_Color_Attachment> color_attachments;
 	std::string base_name;
 	uint32_t fb_id = 0;
 	uint32_t rbo_id = 0;

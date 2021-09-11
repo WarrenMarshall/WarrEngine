@@ -2,9 +2,9 @@
 namespace war
 {
 
-struct opengl_color_attachment
+struct OpenGL_Color_Attachment
 {
-	opengl_color_attachment( OpenGL_Frame_Buffer* fb_owner, Vec2 sz, const Color& clear_color );
+	OpenGL_Color_Attachment( OpenGL_Frame_Buffer* fb_owner, Vec2 sz, const Color& clear_color );
 
 	void clear();
 

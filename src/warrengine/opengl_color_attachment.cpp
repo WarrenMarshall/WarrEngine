@@ -5,13 +5,13 @@
 namespace war
 {
 
-opengl_color_attachment::opengl_color_attachment( OpenGL_Frame_Buffer* fb_owner, Vec2 sz, const Color& clear_color )
+OpenGL_Color_Attachment::OpenGL_Color_Attachment( OpenGL_Frame_Buffer* fb_owner, Vec2 sz, const Color& clear_color )
 	: fb_owner( fb_owner ), clear_color( clear_color )
 {
 
 	// figure out how to identify the internal texture
 	auto texture_num = (int32_t)fb_owner->color_attachments.size();
-	std::string tex_name = std::format( "tex_{}_{}_fb", texture_num, fb_owner->base_name );
+	std::string tex_name( std::format( "tex_{}_{}_fb", texture_num, fb_owner->base_name ) );
 
 	// create the internal texture
 	g_engine->asset_cache.add( std::make_unique<Texture_Source_Asset>(), tex_name, "" );
@@ -36,7 +36,7 @@ opengl_color_attachment::opengl_color_attachment( OpenGL_Frame_Buffer* fb_owner,
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + texture_num, GL_TEXTURE_2D, texture->get_src_texture()->gl_id, 0 );
 }
 
-void opengl_color_attachment::clear()
+void OpenGL_Color_Attachment::clear()
 {
 	glClearTexImage( texture->get_src_texture()->gl_id, 0, GL_RGB, GL_FLOAT, &( clear_color.r ) );
 }

@@ -12,10 +12,6 @@ struct Object_Pool
 	// above, endlessly, re-using objects.
 	size_t idx = 0;
 
-	// how many objects have been added into this pool since the last time it
-	// was reset
-	size_t num_objects_in_pool = 0;
-
 	Object_Pool() = default;
 	virtual ~Object_Pool() = default;
 
@@ -34,7 +30,7 @@ struct Object_Pool
 		// move the idx ahead by 1, wrapping around from the end to the start
 		idx = ( idx + 1 ) % _objects.size();
 
-		num_objects_in_pool++;
+		_num_objects_in_pool++;
 
 		// return a pointer to the current object
 		return result;
@@ -43,17 +39,17 @@ struct Object_Pool
 	// resets the pool index to the first element
 	void reset()
 	{
-		idx = num_objects_in_pool = 0;
+		idx = _num_objects_in_pool = 0;
 	}
 
 	[[nodiscard]] bool empty()
 	{
-		return ( num_objects_in_pool == 0 );
+		return ( _num_objects_in_pool == 0 );
 	}
 
-	[[nodiscard]] size_t size()
+	[[nodiscard]] size_t num_objects_in_pool()
 	{
-		return num_objects_in_pool;
+		return _num_objects_in_pool;
 	}
 
 	[[nodiscard]] T* data()
@@ -64,6 +60,11 @@ struct Object_Pool
 protected:
 
 	std::vector<T> _objects;
+
+	// how many objects have been added into this pool since the last time it
+	// was reset
+	size_t _num_objects_in_pool = 0;
 };
 
 }
+

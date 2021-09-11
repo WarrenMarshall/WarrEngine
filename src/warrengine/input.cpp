@@ -417,9 +417,7 @@ void Input_Mgr::play_rumble( e_rumble_effect_t effect )
 
 void Input_Mgr::refresh_connected_gamepads()
 {
-	//auto save_gamepad = gamepad.get();
-
-	if( gamepad )
+	if( gamepad.has_value() )
 	{
 		gamepad->play_rumble( e_rumble_effect::none );
 	}

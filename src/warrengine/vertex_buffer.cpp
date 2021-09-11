@@ -121,7 +121,7 @@ void Vertex_Buffer::bind_texture_units()
 
 void Vertex_Buffer::upload_vertices_to_gpu()
 {
-	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.num_objects_in_pool * sizeof( Render_Vertex ), vertices.data() );
+	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.num_objects_in_pool() * sizeof( Render_Vertex ), vertices.data() );
 }
 
 }
