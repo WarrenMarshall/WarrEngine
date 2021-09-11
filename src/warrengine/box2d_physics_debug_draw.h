@@ -2,7 +2,7 @@
 namespace war::box2d_physics
 {
 
-struct Box2D_Debug_Draw final : public b2Draw
+struct Box2D_Debug_Draw : public b2Draw
 {
 	// Draw a closed polygon provided in CCW order.
 	virtual void DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color ) override;

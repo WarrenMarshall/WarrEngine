@@ -4,7 +4,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Esc_Menu_UI_Callback final : UI_Callback
+struct Scene_Esc_Menu_UI_Callback : UI_Callback
 {
 	UI_Control_Data data_fullscreen;
 
@@ -15,7 +15,7 @@ struct Scene_Esc_Menu_UI_Callback final : UI_Callback
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Esc_Menu final : Scene
+struct Scene_Esc_Menu : Scene
 {
 	Scene_Esc_Menu_UI_Callback uic;
 

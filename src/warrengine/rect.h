@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Rect final
+struct Rect
 {
 	float_t x = 0.f, y = 0.f, w = 0.f, h = 0.f;
 

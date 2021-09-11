@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Transform final
+struct Transform
 {
 	Vec2 pos = Vec2::zero;
 	float_t angle = 0.f;			// rotation (around z axis)

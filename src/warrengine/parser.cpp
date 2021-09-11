@@ -144,9 +144,9 @@ Vec2 Text_Parser::vec2_from_str( std::string_view str )
 	return vec2;
 }
 
-std::unique_ptr<Timeline_Of_Values> Text_Parser::timeline_from_str( e_timeline_type_t type, std::string_view str )
+std::unique_ptr<Timeline_Values> Text_Parser::timeline_from_str( e_timeline_type_t type, std::string_view str )
 {
-	std::unique_ptr<Timeline_Of_Values> tl = std::make_unique<Timeline_Of_Values>( type );
+	std::unique_ptr<Timeline_Values> tl = std::make_unique<Timeline_Values>( type );
 	tl->clear_key_frames();
 
 	Tokenizer tok( str, "," );
@@ -156,7 +156,7 @@ std::unique_ptr<Timeline_Of_Values> Text_Parser::timeline_from_str( e_timeline_t
 
 	while( !tok.is_eos() )
 	{
-		Timeline_Of_Values::Key_Frame kf;
+		Timeline_Values_Key_Frame kf;
 
 		kf.pct_marker = Text_Parser::float_from_str( *tok.get_next_token() );
 

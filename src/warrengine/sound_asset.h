@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Sound_Asset final : Asset
+struct Sound_Asset : Asset
 {
 	bool looped = false;
 

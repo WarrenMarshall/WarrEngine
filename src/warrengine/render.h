@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Render final
+struct Render
 {
 	static Palette_Asset palette;
 

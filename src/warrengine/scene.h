@@ -4,7 +4,7 @@ namespace war
 
 struct Scene
 {
-	Life_Cycle life_cycle;
+	Life_Cycle_Mgr life_cycle;
 
 	void save_mouse_mode();
 	void restore_mouse_mode();

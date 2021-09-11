@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Bounding_Box final
+struct Bounding_Box
 {
 	Vec2 min, max;
 

@@ -4,7 +4,7 @@ namespace war::simple_collision
 
 // ----------------------------------------------------------------------------
 
-struct Raycast_Hit final
+struct Raycast_Hit
 {
 	// how far along the ray did the hit occur?
 	float_t dist = 999999.f;
@@ -44,7 +44,7 @@ struct Raycast_Callback
 //
 // "what's the closest hit along this ray?"
 
-struct Raycast_Closest final : Raycast_Callback
+struct Raycast_Closest : Raycast_Callback
 {
 	Raycast_Hit result;
 
@@ -57,7 +57,7 @@ struct Raycast_Closest final : Raycast_Callback
 //
 // "is there anything to hit along this ray?"
 
-struct Raycast_Quick final : Raycast_Callback
+struct Raycast_Quick : Raycast_Callback
 {
 	virtual float_t report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
@@ -67,7 +67,7 @@ struct Raycast_Quick final : Raycast_Callback
 //
 // "what are all the hits along this ray?"
 
-struct Raycast_All final : Raycast_Callback
+struct Raycast_All : Raycast_Callback
 {
 	std::vector<Raycast_Hit> results;
 

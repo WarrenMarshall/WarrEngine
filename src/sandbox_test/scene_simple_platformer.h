@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct E_Jump_Pad final : Entity
+struct E_Jump_Pad : Entity
 {
 	Sprite_Component* sprite_component = nullptr;
 	Texture_Asset* tex_jump_pad_up = nullptr;
@@ -15,13 +15,13 @@ struct E_Jump_Pad final : Entity
 
 // ----------------------------------------------------------------------------
 
-struct E_Player final : Entity
+struct E_Player : Entity
 {
 	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
 };
 
 // ----------------------------------------------------------------------------
-struct Scene_Simple_Platformer final : Scene
+struct Scene_Simple_Platformer : Scene
 {
 	struct
 	{
@@ -35,7 +35,7 @@ struct Scene_Simple_Platformer final : Scene
 	Entity* player = nullptr;
 	Entity* mover = nullptr;
 
-	Timeline_Of_Nodes fx_red_alert;
+	Timeline_Nodes fx_red_alert;
 
 	Scene_Simple_Platformer();
 

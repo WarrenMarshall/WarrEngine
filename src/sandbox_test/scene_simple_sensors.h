@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct E_Sensor_Player final : Entity
+struct E_Sensor_Player : Entity
 {
 	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
 	virtual bool on_touching( Simple_Collision_Body* sensor ) override;
@@ -10,7 +10,7 @@ struct E_Sensor_Player final : Entity
 
 // ----------------------------------------------------------------------------
 
-struct Scene_Simple_Sensors final : Scene
+struct Scene_Simple_Sensors : Scene
 {
 	struct
 	{

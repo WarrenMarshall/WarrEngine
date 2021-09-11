@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Slice_Def_Asset final : Asset
+struct Slice_Def_Asset : Asset
 {
 	std::array<Texture_Asset*, 9> patches = {};
 

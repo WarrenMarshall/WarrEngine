@@ -117,7 +117,7 @@ void Scene_Esc_Menu::draw_ui()
 				->set_text( "Main Menu" )
 				->done() )
 			{
-				Timeline_Of_Nodes tl;
+				Timeline_Nodes tl;
 				tl.clear( 1000 );
 
 				tl.add_kf_pp_color_overlay( false, 0.0f, 500, make_color( Color::black, 1.f ) );

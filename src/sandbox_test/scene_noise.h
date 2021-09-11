@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Noise final : Scene
+struct Scene_Noise : Scene
 {
 	Scene_Noise();
 

@@ -3,7 +3,7 @@ namespace war
 {
 
 template<typename T>
-struct Range final
+struct Range
 {
 	T start = {};
 	T end = {};

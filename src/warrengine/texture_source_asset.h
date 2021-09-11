@@ -12,7 +12,7 @@
 namespace war
 {
 
-struct Texture_Source_Asset final : Texture_Source_Base
+struct Texture_Source_Asset : Texture_Source_Base
 {
 	// how the edges of the texture are handled
 	e_tiling_t tiling = e_tiling::repeat;

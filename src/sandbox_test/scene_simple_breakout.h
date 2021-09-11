@@ -3,13 +3,13 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-struct E_Breakout_Paddle final : Entity
+struct E_Breakout_Paddle : Entity
 {
 	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------
-struct Scene_Simple_Breakout final : Scene
+struct Scene_Simple_Breakout : Scene
 {
 	struct
 	{

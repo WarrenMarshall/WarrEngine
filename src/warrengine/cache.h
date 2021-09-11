@@ -6,7 +6,7 @@ namespace war
 // anything that does consecutive look ups that might be expensive.
 
 template<typename T_Key, typename T_Value>
-struct Cache final
+struct Cache
 {
 	T_Key key;
 	T_Value value;

@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Tweens_Timers final : Scene
+struct Scene_Tweens_Timers : Scene
 {
 	Texture_Asset* tween_tex = nullptr;
 

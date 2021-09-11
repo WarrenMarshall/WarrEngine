@@ -4,7 +4,7 @@ namespace war
 
 struct Entity_Component
 {
-	Life_Cycle life_cycle;
+	Life_Cycle_Mgr life_cycle;
 
 	virtual void set_life_cycle( e_life_cycle_t lc );
 
@@ -67,7 +67,7 @@ struct Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Sprite_Component final : Entity_Component
+struct Sprite_Component : Entity_Component
 {
 	Texture_Asset* texture = nullptr;
 	float_t anim_offset = 0.f;
@@ -83,9 +83,9 @@ struct Sprite_Component final : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Primitive_Shape_Component final : Entity_Component
+struct Primitive_Shape_Component : Entity_Component
 {
-	struct Shape final
+	struct Shape
 	{
 		e_primitive_shape_t prim_shape = e_primitive_shape::rect;
 		Rect rc = {};
@@ -107,7 +107,7 @@ struct Primitive_Shape_Component final : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Emitter_Component final : Entity_Component
+struct Emitter_Component : Entity_Component
 {
 	Emitter_Component() = default;
 	Emitter_Component( Entity* parent_entity );
@@ -123,7 +123,7 @@ struct Emitter_Component final : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Sound_Component final : Entity_Component
+struct Sound_Component : Entity_Component
 {
 	Sound_Asset* snd = nullptr;
 
@@ -161,7 +161,7 @@ struct Sound_Component final : Entity_Component
 // ----------------------------------------------------------------------------
 // physics
 
-struct Box2D_Physics_Component final : Entity_Component
+struct Box2D_Physics_Component : Entity_Component
 {
 	Box2D_Physics_Component() = delete;
 	Box2D_Physics_Component( Entity* parent_entity );
@@ -216,7 +216,7 @@ struct Box2D_Physics_Body_Component : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Box2D_Static_Body_Component final : Box2D_Physics_Body_Component
+struct Box2D_Static_Body_Component : Box2D_Physics_Body_Component
 {
 	Box2D_Static_Body_Component() = delete;
 	Box2D_Static_Body_Component( Entity* parent_entity );
@@ -225,7 +225,7 @@ struct Box2D_Static_Body_Component final : Box2D_Physics_Body_Component
 // ----------------------------------------------------------------------------
 // NOTE :	entities can have a SINGLE dynamic body attached to them.
 
-struct Box2D_Dynamic_Body_Component final : Box2D_Physics_Body_Component
+struct Box2D_Dynamic_Body_Component : Box2D_Physics_Body_Component
 {
 	Box2D_Dynamic_Body_Component() = delete;
 	Box2D_Dynamic_Body_Component( Entity* parent_entity );
@@ -234,7 +234,7 @@ struct Box2D_Dynamic_Body_Component final : Box2D_Physics_Body_Component
 // ----------------------------------------------------------------------------
 // kinematic bodies
 
-struct Box2D_Kinematic_Body_Component final : Box2D_Physics_Body_Component
+struct Box2D_Kinematic_Body_Component : Box2D_Physics_Body_Component
 {
 	Box2D_Kinematic_Body_Component() = delete;
 	Box2D_Kinematic_Body_Component( Entity* parent_entity );
@@ -242,7 +242,7 @@ struct Box2D_Kinematic_Body_Component final : Box2D_Physics_Body_Component
 
 // ----------------------------------------------------------------------------
 
-struct Mesh_Component final : Entity_Component
+struct Mesh_Component : Entity_Component
 {
 	Mesh_Asset* mesh = nullptr;
 
@@ -315,7 +315,7 @@ struct Simple_Collision_Body : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Simple_Collision_Platform_Body final : Simple_Collision_Body
+struct Simple_Collision_Platform_Body : Simple_Collision_Body
 {
 	Simple_Collision_Platform_Body() = delete;
 	Simple_Collision_Platform_Body( Entity* parent_entity );
@@ -325,7 +325,7 @@ struct Simple_Collision_Platform_Body final : Simple_Collision_Body
 
 // ----------------------------------------------------------------------------
 
-struct Tile_Map_Component final : Entity_Component
+struct Tile_Map_Component : Entity_Component
 {
 	Tile_Map_Component() = delete;
 	Tile_Map_Component( Entity* parent_entity );

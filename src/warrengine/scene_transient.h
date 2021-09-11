@@ -2,11 +2,11 @@
 namespace war
 {
 
-// an empty scene that does nothing other than block user input. used to stop
-// the user from interacting with the engine while we're doing something like
-// traansitioning between scenes.
+// an empty scene that does nothing other than block user input and scene
+// updates. used to stop the user from interacting with the engine while we're
+// doing something like traansitioning between scenes.
 
-struct Scene_Transient final : Scene
+struct Scene_Transient : Scene
 {
 	Scene_Transient();
 };

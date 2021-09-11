@@ -4,7 +4,7 @@ namespace war
 
 // the actual OS window on the screen.
 
-struct OS_Window final
+struct OS_Window
 {
 	// clear color for the entire window
 	Color window_clear_color = Color::light_grey;

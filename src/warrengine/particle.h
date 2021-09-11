@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Particle final
+struct Particle
 {
 	bool is_alive = false;
 	Emitter_Parameters_Asset* params = nullptr;

@@ -4,7 +4,7 @@ namespace war::box2d_physics
 
 // called by box2d when collisions begin or end between bodies
 
-struct Contact_Listener final : b2ContactListener
+struct Contact_Listener : b2ContactListener
 {
 	virtual ~Contact_Listener() = default;
 

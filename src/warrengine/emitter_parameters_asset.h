@@ -2,12 +2,12 @@
 namespace war
 {
 
-struct Emitter_Parameters_Asset final : Asset
+struct Emitter_Parameters_Asset : Asset
 {
 	Texture_Asset* texture = nullptr;
-	Timeline_Of_Values t_color = Timeline_Of_Values( e_timeline_type::color_type );
-	Timeline_Of_Values t_alpha = Timeline_Of_Values( e_timeline_type::float_type );
-	Timeline_Of_Values t_scale = Timeline_Of_Values( e_timeline_type::float_type );
+	Timeline_Values t_color = Timeline_Values( e_timeline_type::color_type );
+	Timeline_Values t_alpha = Timeline_Values( e_timeline_type::float_type );
+	Timeline_Values t_scale = Timeline_Values( e_timeline_type::float_type );
 	Particle_Spawner particle_spawner;
 
 	Range<float_t> r_velocity_spawn = Range<float_t>( 50, 50 );	// initial velocity

@@ -2,9 +2,9 @@
 namespace war
 {
 
-struct Scene_Mgr final
+struct Scene_Mgr
 {
-	Timeline_Of_Nodes transition_timeline;
+	Timeline_Nodes transition_timeline;
 
 	// the scenes are stored front-to-back so this means that the topmost scene
 	// on the screen is first in the vector. meaning, new scenes are inserted at
@@ -40,7 +40,7 @@ struct Scene_Mgr final
 
 	Vec2 get_viewport_pivot();
 
-	void do_transient_timeline( Timeline_Of_Nodes timeline )
+	void do_transient_timeline( Timeline_Nodes timeline )
 	{
 		assert( transition_timeline.life_cycle.is_dead() );
 

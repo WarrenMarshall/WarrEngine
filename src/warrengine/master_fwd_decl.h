@@ -39,7 +39,7 @@ struct Simple_Collision_Body;
 struct Simple_Collision_World;
 struct Sound_Asset;
 struct Texture_Asset;
-struct Timeline_Of_Values;
+struct Timeline_Values;
 struct Transform;
 struct UI_Control;
 struct UI_Control;

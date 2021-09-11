@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Vertex_Array_Object final
+struct Vertex_Array_Object
 {
 	e_render_prim_t render_prim = e_render_prim::quad;
 	uint32_t gl_id = 0;
@@ -10,7 +10,7 @@ struct Vertex_Array_Object final
 
 	float_t indices_to_verts_factor = 0.f;
 
-	Vertex_Buffer vb;
+	std::unique_ptr<Vertex_Buffer> vb = nullptr;
 	Index_Buffer* ib = nullptr;
 
 	Vertex_Array_Object() = default;
