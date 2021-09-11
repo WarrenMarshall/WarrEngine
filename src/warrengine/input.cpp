@@ -94,12 +94,12 @@ void Input_Mgr::init()
 		button_states_last_frame[ x ] = false;
 	}
 
-	timer_repeat = std::make_unique<Timer>( 150 );
+	timer_repeat = Timer( 150 );
 }
 
 void Input_Mgr::deinit()
 {
-	gamepad = nullptr;
+	gamepad = std::nullopt;
 }
 
 void Input_Mgr::queue_presses()
@@ -187,7 +187,7 @@ void Input_Mgr::queue_presses()
 
 	// update game controller states
 
-	if( gamepad )
+	if( gamepad.has_value() )
 	{
 		gamepad->update();
 
@@ -373,7 +373,7 @@ void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
 
 			g_engine->input_mgr.event_queue.push_back( evt );
 
-			timer_repeat->restart();
+			timer_repeat.restart();
 			break;
 		}
 
@@ -389,7 +389,7 @@ void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
 
 		case e_button_state::held:
 		{
-			if( timer_repeat->get_elapsed() )
+			if( timer_repeat.get_elapsed() )
 			{
 				Input_Event evt;
 				evt.event_id = e_event_id::input_held;
@@ -397,7 +397,7 @@ void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
 
 				g_engine->input_mgr.event_queue.push_back( evt );
 
-				timer_repeat->restart();
+				timer_repeat.restart();
 				g_ui->caret_blink_tween.restart();
 			}
 			break;
@@ -405,7 +405,7 @@ void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
 	}
 }
 
-void Input_Mgr::play_rumble( e_rumble_effect_t effect ) const
+void Input_Mgr::play_rumble( e_rumble_effect_t effect )
 {
 	if( !gamepad or !gamepad->is_being_used )
 	{
@@ -424,7 +424,7 @@ void Input_Mgr::refresh_connected_gamepads()
 		gamepad->play_rumble( e_rumble_effect::none );
 	}
 
-	gamepad = nullptr;
+	gamepad = std::nullopt;
 
 	// look for an attached xbox controller. the first valid one
 	// we find is the one we use for player input.
@@ -440,18 +440,10 @@ void Input_Mgr::refresh_connected_gamepads()
 			xinput_player_id = pn;
 
 			log( "Using controller : player_id : {}", xinput_player_id );
-			gamepad = std::make_unique<Game_Controller>( xinput_player_id );
+			gamepad = Game_Controller( xinput_player_id );
 			break;
 		}
 	}
-
-	// if a gamepad is newly detected, give it a little rumble
-/*
-	if( gamepad and gamepad.get() != save_gamepad )
-	{
-		gamepad->play_rumble( e_rumble_effect::large );
-	}
-*/
 }
 
 bool Input_Mgr::is_button_down( e_input_id_t input_id )

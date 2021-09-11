@@ -8,7 +8,7 @@ namespace war
 Game_Controller::Game_Controller( int32_t player_id )
 	: player_id( player_id )
 {
-	timer_repeat = std::make_unique<Timer>( 150 );
+	timer_repeat = Timer( 150 );
 }
 
 void Game_Controller::update_button_state( e_input_id_t input_id, int32_t xinput_button_bit )
@@ -38,7 +38,7 @@ void Game_Controller::update_button_state( e_input_id_t input_id, int32_t xinput
 	}
 	else if( last_state and current_state )
 	{
-		if( timer_repeat->get_elapsed() )
+		if( timer_repeat.get_elapsed() )
 		{
 			Input_Event evt;
 			evt.event_id = e_event_id::input_held;

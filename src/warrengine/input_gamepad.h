@@ -4,7 +4,7 @@ namespace war
 
 struct Game_Controller
 {
-	std::unique_ptr<Timer> timer_repeat = nullptr;
+	Timer timer_repeat;
 	int32_t player_id = -1;
 	float_t rumble_time_remaining_ms = 0.f;
 

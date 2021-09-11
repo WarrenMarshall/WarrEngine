@@ -36,7 +36,7 @@ struct Input_Mgr
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
 	std::vector<Input_Event> event_queue;
-	std::unique_ptr<Timer> timer_repeat = nullptr;
+	Timer timer_repeat;
 
 	// tracks the mouse movement delta since the last call to Update()
 	Vec2 mouse_move_delta = Vec2::zero;
@@ -45,7 +45,7 @@ struct Input_Mgr
 	// where the mouse currently sits in the window
 	Vec2 mouse_window_pos = Vec2::zero;
 
-	std::unique_ptr<Game_Controller> gamepad = nullptr;
+	std::optional<Game_Controller> gamepad = std::nullopt;
 
 	std::array<bool, e_input_id::max> button_states = {};
 	std::array<bool, e_input_id::max> button_states_last_frame = {};
@@ -67,7 +67,7 @@ struct Input_Mgr
 	void dispatch_event_queue();
 
 	void update_button_state( e_input_id_t input_id, int32_t glfw_state );
-	void play_rumble( e_rumble_effect_t effect ) const;
+	void play_rumble( e_rumble_effect_t effect );
 	void refresh_connected_gamepads();
 };
 
