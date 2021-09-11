@@ -525,12 +525,14 @@ void Engine::new_physics_world()
 	// box2d
 
 	g_engine->box2d.world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
-	g_engine->box2d.listener = std::make_unique<box2d_physics::Contact_Listener>();
-	g_engine->box2d.world->SetContactListener( g_engine->box2d.listener.get() );
 
-	g_engine->box2d.debug_draw = std::make_unique<war::box2d_physics::Box2D_Debug_Draw>();
-	g_engine->box2d.world->SetDebugDraw( g_engine->box2d.debug_draw.get() );
-	g_engine->box2d.debug_draw->SetFlags(
+	g_engine->box2d.listener = {};
+	g_engine->box2d.world->SetContactListener( &g_engine->box2d.listener );
+
+	g_engine->box2d.debug_draw = {};
+	g_engine->box2d.world->SetDebugDraw( &g_engine->box2d.debug_draw );
+
+	g_engine->box2d.debug_draw.SetFlags(
 		0
 		| b2Draw::e_shapeBit			// shapes
 		| b2Draw::e_jointBit			// joint connections
