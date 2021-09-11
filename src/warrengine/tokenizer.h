@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Tokenizer
+struct Tokenizer final
 {
 	std::string_view string_buffer = "";
 	size_t idx = 0;

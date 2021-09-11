@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Textures : Scene
+struct Scene_Textures final : Scene
 {
 	Texture_Asset* tex_crate = nullptr;
 	Texture_Asset* grad_horizontal = nullptr;

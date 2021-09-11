@@ -6,9 +6,9 @@ namespace war
 
 constexpr uint8 max_font_chars = 255;
 
-struct Font_Def_Asset : Asset
+struct Font_Def_Asset final : Asset
 {
-	struct Glyph
+	struct Glyph final
 	{
 		uint8 w = 0;
 		uint8 h = 0;
@@ -38,7 +38,7 @@ struct Font_Def_Asset : Asset
 
 // ----------------------------------------------------------------------------
 
-struct Font_Asset : Asset
+struct Font_Asset final : Asset
 {
 	Font_Def_Asset* font_def = nullptr;
 

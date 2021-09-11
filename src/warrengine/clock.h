@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Clock
+struct Clock final
 {
 	// the time when this frame started
 	time_ms current_frame_ms = 0;

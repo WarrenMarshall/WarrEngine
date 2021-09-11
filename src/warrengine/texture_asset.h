@@ -7,7 +7,7 @@ namespace war
 //
 // these are what gets passed to the renderer functions.
 
-struct Texture_Asset : Asset
+struct Texture_Asset final : Asset
 {
 	// the raw_image asset this texture sources from
 	Texture_Source_Base* get_src_texture() const;

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct OpenGL_Frame_Buffer
+struct OpenGL_Frame_Buffer final
 {
 	std::vector<OpenGL_Color_Attachment> color_attachments;
 	std::string base_name;

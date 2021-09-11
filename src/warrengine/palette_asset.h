@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Palette_Asset : Asset
+struct Palette_Asset final : Asset
 {
 	std::vector<Color> colors;
 

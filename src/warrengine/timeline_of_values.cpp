@@ -5,19 +5,19 @@
 namespace war
 {
 
-Timeline_Values::Timeline_Values( e_timeline_type_t type )
+Timeline_Of_Values::Timeline_Of_Values( e_timeline_type_t type )
 	: type( type )
 {
 	key_frames.clear();
 }
 
-Timeline_Values* Timeline_Values::clear_key_frames()
+Timeline_Of_Values* Timeline_Of_Values::clear_key_frames()
 {
 	key_frames.clear();
 	return this;
 }
 
-Timeline_Values* Timeline_Values::add_key_frame( const Timeline_Values_Key_Frame& kf )
+Timeline_Of_Values* Timeline_Of_Values::add_key_frame( const Timeline_Of_Values::Key_Frame& kf )
 {
 	key_frames.push_back( kf );
 	return this;
@@ -26,7 +26,7 @@ Timeline_Values* Timeline_Values::add_key_frame( const Timeline_Values_Key_Frame
 // figure out which key_frame is the one we are approaching next
 // based on a percentage indicator of where we are on the timeline.
 
-size_t Timeline_Values::find_next_key_frame_idx_from_pct( float_t pct )
+size_t Timeline_Of_Values::find_next_key_frame_idx_from_pct( float_t pct )
 {
 	size_t kf_next = 0;
 
@@ -41,7 +41,7 @@ size_t Timeline_Values::find_next_key_frame_idx_from_pct( float_t pct )
 	return kf_next;
 }
 
-float_t Timeline_Values::get_float_value( float_t pct_on_timeline )
+float_t Timeline_Of_Values::get_float_value( float_t pct_on_timeline )
 {
 	auto kf_max = find_next_key_frame_idx_from_pct( pct_on_timeline );
 	size_t kf_min = kf_max - 1;
@@ -60,7 +60,7 @@ float_t Timeline_Values::get_float_value( float_t pct_on_timeline )
 	return min_value + ( ( max_value - min_value ) * pct_within );
 }
 
-Color Timeline_Values::get_color_value( float_t pct_on_timeline )
+Color Timeline_Of_Values::get_color_value( float_t pct_on_timeline )
 {
 	auto kf_max = find_next_key_frame_idx_from_pct( pct_on_timeline );
 	size_t kf_min = kf_max - 1;

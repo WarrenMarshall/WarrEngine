@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Engine
+struct Engine final
 {
 	// the function that all games/apps call to get the engine up and running
 	template<typename T>

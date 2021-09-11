@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Entity_Picking : Scene
+struct Scene_Entity_Picking final : Scene
 {
 	Scene_Entity_Picking();
 

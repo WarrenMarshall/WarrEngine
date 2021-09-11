@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Hello_World_App : Game
+struct Hello_World_App final : Game
 {
 	Hello_World_App();
 

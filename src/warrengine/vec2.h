@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Vec2
+struct Vec2 final
 {
 	union
 	{

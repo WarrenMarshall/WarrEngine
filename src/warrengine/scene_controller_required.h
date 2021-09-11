@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Scene_Controller_Required : Scene
+struct Scene_Controller_Required final : Scene
 {
 	Texture_Asset* tex_game_controller = nullptr;
 	Tween anim_tween;

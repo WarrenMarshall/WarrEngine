@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Timer
+struct Timer final
 {
 	time_ms time_last = 0;
 	time_ms interval_ms = 0;		// how many ms before this timer elapses

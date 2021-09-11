@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Render_Stats
+struct Render_Stats final
 {
 	void init();
 

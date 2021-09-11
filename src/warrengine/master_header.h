@@ -9,7 +9,7 @@
 #include "mem_file.h"
 #include "disk_file.h"
 
-#include "life_cycle_mgr.h"
+#include "life_cycle.h"
 #include "random.h"
 #include "vec2.h"
 #include "vec3.h"
@@ -18,10 +18,8 @@
 #include "range.h"
 #include "color.h"
 #include "noise.h"
-#include "timeline_values_key_frame.h"
-#include "timeline_values.h"
-#include "timeline_nodes_key_frame.h"
-#include "timeline_nodes.h"
+#include "timeline_of_values.h"
+#include "timeline_of_nodes.h"
 #include "scoped_vars.h"
 
 #include "coord.h"

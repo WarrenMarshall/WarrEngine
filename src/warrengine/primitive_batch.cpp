@@ -31,10 +31,10 @@ void Primitive_Batch::add_quad( Texture_Asset* texture, const Render_Vertex* v0,
 	add_vert( draw_call, texture, v2 );
 	add_vert( draw_call, texture, v3 );
 
-	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	if( vao[ draw_call ].vb.vertices.num_objects_in_pool() >= vao[ draw_call ].vb.vertices.capacity() )
 	{
 		vao[ draw_call ].flush_and_reset( draw_call );
-		//vao[ draw_call ].vb->reset();
+		//vao[ draw_call ].vb.reset();
 	}
 }
 
@@ -47,10 +47,10 @@ void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex*
 	add_vert( draw_call, texture, v1 );
 	add_vert( draw_call, texture, v2 );
 
-	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	if( vao[ draw_call ].vb.vertices.num_objects_in_pool() >= vao[ draw_call ].vb.vertices.capacity() )
 	{
 		vao[ draw_call ].flush_and_reset( draw_call );
-		//vao[ draw_call ].vb->reset();
+		//vao[ draw_call ].vb.reset();
 	}
 }
 
@@ -62,7 +62,7 @@ void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0,
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
 
-	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	if( vao[ draw_call ].vb.vertices.num_objects_in_pool() >= vao[ draw_call ].vb.vertices.capacity() )
 	{
 		vao[ draw_call ].flush_and_reset( draw_call );
 	}
@@ -75,7 +75,7 @@ void Primitive_Batch::add_point( Texture_Asset* texture, const Render_Vertex* v0
 
 	add_vert( draw_call, texture, v0 );
 
-	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	if( vao[ draw_call ].vb.vertices.num_objects_in_pool() >= vao[ draw_call ].vb.vertices.capacity() )
 	{
 		vao[ draw_call ].flush_and_reset( draw_call );
 	}
@@ -83,16 +83,16 @@ void Primitive_Batch::add_point( Texture_Asset* texture, const Render_Vertex* v0
 
 bool Primitive_Batch::is_empty()
 {
-	return vao[ e_draw_call::opaque ].vb->vertices.empty() and vao[ e_draw_call::transparent ].vb->vertices.empty();
+	return vao[ e_draw_call::opaque ].vb.vertices.empty() and vao[ e_draw_call::transparent ].vb.vertices.empty();
 }
 
 void Primitive_Batch::add_vert( e_draw_call_t draw_call, Texture_Asset* texture, const Render_Vertex* render_vert )
 {
-	auto texture_id = vao[ draw_call ].vb->assign_texture_slot( texture );
+	auto texture_id = vao[ draw_call ].vb.assign_texture_slot( texture );
 
 	// get a new render_vertex from the pool
 
-	Render_Vertex* rvtx = vao[ draw_call ].vb->vertices.get_next();
+	Render_Vertex* rvtx = vao[ draw_call ].vb.vertices.get_next();
 	*rvtx = *render_vert;
 
 	// multiply the current modelview matrix against the vertex being rendered.
@@ -188,7 +188,7 @@ size_t Primitive_Batch_Group::assign_texture_slot_manual( Texture_Asset* texture
 	return Render::state->batch_render_target
 		->batches[ e_render_prim::quad ]
 		.vao[ e_draw_call::opaque ]
-		.vb->assign_texture_slot( texture );
+		.vb.assign_texture_slot( texture );
 }
 
 }

@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Render_Vertex
+struct Render_Vertex final
 {
 	Render_Vertex() = default;
 	Render_Vertex( const Vec2& pos, const Vec2& uv, const Color& color, float_t glow );
@@ -21,18 +21,10 @@ struct Render_Vertex
 
 // ----------------------------------------------------------------------------
 
-struct Render_Triangle
+struct Render_Triangle final
 {
 	std::array<Render_Vertex,3> verts;
 	Render_Triangle( const Render_Vertex& v0, const Render_Vertex& v1, const Render_Vertex& v2, const Color& color, float_t glow );
-};
-
-// ----------------------------------------------------------------------------
-
-struct Render_Line
-{
-	std::array<Render_Vertex, 2> verts;
-	Render_Line( const Render_Vertex& v0, const Render_Vertex& v1, const Color& color, float_t glow );
 };
 
 }

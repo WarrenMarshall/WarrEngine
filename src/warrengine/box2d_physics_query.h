@@ -2,7 +2,7 @@
 namespace war::box2d_physics
 {
 
-struct Query
+struct Query final
 {
 	[[nodiscard]] static bool trace_quick( const Vec2& start, const Vec2& normal, float_t dist, int32_t collision_mask );
 	[[nodiscard]] static bool trace_quick( const Vec2& start, const Vec2& normal, float_t dist, int32_t collision_mask, Raycast_Simple* hit_result );
