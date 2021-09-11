@@ -10,7 +10,7 @@ struct Vertex_Array_Object final
 
 	float_t indices_to_verts_factor = 0.f;
 
-	Vertex_Buffer vb;
+	std::unique_ptr<Vertex_Buffer> vb = nullptr;
 	Index_Buffer* ib = nullptr;
 
 	Vertex_Array_Object() = default;
