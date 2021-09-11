@@ -274,9 +274,6 @@
     <ClCompile Include="timeline_of_nodes.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="timeline_of_nodes_key_frame.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
     <ClCompile Include="scene_transient.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
@@ -559,9 +556,6 @@
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="timeline_of_nodes.h">
-      <Filter>include\core</Filter>
-    </ClInclude>
-    <ClInclude Include="timeline_of_nodes_key_frame.h">
       <Filter>include\core</Filter>
     </ClInclude>
     <ClInclude Include="scene_transient.h">

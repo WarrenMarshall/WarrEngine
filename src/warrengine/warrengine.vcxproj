@@ -318,7 +318,6 @@
     <ClCompile Include="opengl_color_attachment.cpp" />
     <ClCompile Include="timeline_of_values.cpp" />
     <ClCompile Include="timeline_of_nodes.cpp" />
-    <ClCompile Include="timeline_of_nodes_key_frame.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="value_accumulator.cpp" />
     <ClCompile Include="matrix.cpp" />
@@ -408,7 +407,6 @@
     <ClInclude Include="scoped_vars.h" />
     <ClInclude Include="timeline_of_values.h" />
     <ClInclude Include="timeline_of_nodes.h" />
-    <ClInclude Include="timeline_of_nodes_key_frame.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="ui_control_data.h" />
     <ClInclude Include="ui_result.h" />
