@@ -7,14 +7,14 @@ namespace war
 struct Primitive_Batch
 {
 	// the max per batch before we force a flush and set up a new batch.
-	static const int32_t max_elements_per_draw_call = 15'000;
+	static const int32_t max_elements_per_draw_call = 1'000;
 
 	Primitive_Batch() = default;
 	Primitive_Batch( Primitive_Batch& ) = delete;
 	Primitive_Batch( e_render_prim_t render_prim );
 
 	void init( e_render_prim_t render_prim );
-	Vertex_Array_Object vao[ e_draw_call::max ];
+	std::array< Vertex_Array_Object, e_draw_call::max> vao;
 
 	void add_quad( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 );
 	void add_triangle( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 );

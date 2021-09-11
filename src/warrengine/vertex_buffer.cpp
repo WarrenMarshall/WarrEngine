@@ -90,6 +90,8 @@ size_t Vertex_Buffer::assign_texture_slot( const Texture_Asset* texture )
 	{
 		vao->flush_and_reset( e_draw_call::opaque );
 		vao->flush_and_reset( e_draw_call::transparent );
+
+		reset();
 	}
 
 	// add the new texture to the slot list
@@ -121,6 +123,11 @@ void Vertex_Buffer::bind_texture_units()
 
 void Vertex_Buffer::upload_vertices_to_gpu()
 {
+	// the number of objects in the pool needs to be evenly divisible by the
+	// primitive types being stored in this vertex buffer. if not, something is
+	// off in the batching code.
+	assert( ( vertices.num_objects_in_pool() % verts_per_element ) == 0 );
+
 	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.num_objects_in_pool() * sizeof( Render_Vertex ), vertices.data() );
 }
 

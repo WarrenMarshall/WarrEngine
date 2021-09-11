@@ -30,6 +30,12 @@ void Primitive_Batch::add_quad( Texture_Asset* texture, const Render_Vertex* v0,
 	add_vert( draw_call, texture, v1 );
 	add_vert( draw_call, texture, v2 );
 	add_vert( draw_call, texture, v3 );
+
+	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	{
+		vao[ draw_call ].flush_and_reset( draw_call );
+		//vao[ draw_call ].vb->reset();
+	}
 }
 
 void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
@@ -40,6 +46,12 @@ void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex*
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
 	add_vert( draw_call, texture, v2 );
+
+	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	{
+		vao[ draw_call ].flush_and_reset( draw_call );
+		//vao[ draw_call ].vb->reset();
+	}
 }
 
 void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
@@ -49,6 +61,11 @@ void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0,
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
+
+	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	{
+		vao[ draw_call ].flush_and_reset( draw_call );
+	}
 }
 
 void Primitive_Batch::add_point( Texture_Asset* texture, const Render_Vertex* v0 )
@@ -57,6 +74,11 @@ void Primitive_Batch::add_point( Texture_Asset* texture, const Render_Vertex* v0
 	auto draw_call = ( e_draw_call::transparent * ( alpha != 1.f ) );
 
 	add_vert( draw_call, texture, v0 );
+
+	if( vao[ draw_call ].vb->vertices.num_objects_in_pool() >= vao[ draw_call ].vb->vertices.capacity() )
+	{
+		vao[ draw_call ].flush_and_reset( draw_call );
+	}
 }
 
 bool Primitive_Batch::is_empty()
@@ -66,6 +88,8 @@ bool Primitive_Batch::is_empty()
 
 void Primitive_Batch::add_vert( e_draw_call_t draw_call, Texture_Asset* texture, const Render_Vertex* render_vert )
 {
+	auto texture_id = vao[ draw_call ].vb->assign_texture_slot( texture );
+
 	// get a new render_vertex from the pool
 
 	Render_Vertex* rvtx = vao[ draw_call ].vb->vertices.get_next();
@@ -85,7 +109,7 @@ void Primitive_Batch::add_vert( e_draw_call_t draw_call, Texture_Asset* texture,
 
 	// fill in the details
 
-	rvtx->texture_id = vao[ draw_call ].vb->assign_texture_slot( texture );
+	rvtx->texture_id = texture_id;
 	rvtx->pick_id = Render::state->pick_id;
 }
 
@@ -153,7 +177,7 @@ void Primitive_Batch_Group::add_point( Texture_Asset* texture, const Render_Vert
 
 // lets you get a texture slot for a specific texture without having to actually
 // draw anything. useful for when you want a shader to be able to access a
-// texture that isn't attached to geometry, like a LUT.
+// texture that isn't attached to geometry, like a LUT or a mask.
 
 size_t Primitive_Batch_Group::assign_texture_slot_manual( Texture_Asset* texture )
 {

@@ -57,6 +57,11 @@ struct Object_Pool
 		return _objects.data();
 	}
 
+	[[nodiscard]] size_t capacity()
+	{
+		return _objects.capacity();
+	}
+
 protected:
 
 	std::vector<T> _objects;
