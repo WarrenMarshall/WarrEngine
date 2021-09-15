@@ -18,7 +18,7 @@ Scene_Simple_Interact::Scene_Simple_Interact()
 	flags.is_debug_physics_scene = true;
 }
 
-Entity* Scene_Simple_Interact::spawn_player()
+Entity* Scene_Simple_Interact::spawn_entity()
 {
 	auto e = add_entity<Entity>();
 	e->debug_name = "player";
@@ -28,7 +28,9 @@ Entity* Scene_Simple_Interact::spawn_player()
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 
-		switch( Random::geti_range( 0, 2 ) )
+		static int32_t last_spawned_type = 0;
+		last_spawned_type++;
+		switch( last_spawned_type % 3 )
 		{
 			case 0:
 			{
@@ -73,10 +75,10 @@ void Scene_Simple_Interact::pushed()
 
 	// PLAYER
 
-	player = spawn_player();
+	player = spawn_entity();
 	player->add_delta_pos( { 0.f, 80.f } );
 	player->rs_opt.glow = 3.0f;	// player has a glow
-	spawn_player();
+	spawn_entity();
 
 	// HIT MARKER
 
@@ -241,7 +243,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 		case e_input_id::gamepad_button_y:
 		case e_input_id::key_space:
 		{
-			spawn_player();
+			spawn_entity();
 		}
 		break;
 
@@ -263,7 +265,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::Raycast_All callback;
-			sc_world->ray_cast( &callback, player, start, end );
+			sc_world.ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{
@@ -290,7 +292,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 			auto end = start + ( ray_dir * max_raycast_length );
 
 			simple_collision::Raycast_Closest callback;
-			sc_world->ray_cast( &callback, player, start, end );
+			sc_world.ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
 			{

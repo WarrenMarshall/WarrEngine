@@ -279,15 +279,11 @@ struct Simple_Collision_Body : Entity_Component
 
 	e_sc_body_collider_type_t collider_type = e_sc_body_collider_type::solid;
 
-	[[nodiscard]] bool is_solid()
-	{
-		return collider_type == e_sc_body_collider_type::solid;
-	}
-	[[nodiscard]] bool is_sensor()
-	{
-		return collider_type == e_sc_body_collider_type::sensor;
-	}
+	[[nodiscard]] bool is_solid()	{ return collider_type == e_sc_body_collider_type::solid; }
+	[[nodiscard]] bool is_sensor()	{ return collider_type == e_sc_body_collider_type::sensor; }
 
+	// worlspace positions - these are computed as needed and are necessary for
+	// testing collisions in the proper locations
 	struct
 	{
 		Vec2 pos = {};
@@ -295,6 +291,14 @@ struct Simple_Collision_Body : Entity_Component
 		float_t radius = {};
 		std::vector<Vec2> verts = {};
 	} ws;
+
+	// how long this sensor will wait between registering collision
+	time_ms retrigger_delay = 0;
+	// the next time this sensor is available for collision
+	time_ms next_trigger_time = 0;
+
+	bool is_one_shot = true;
+	bool has_triggered = false;
 
 	virtual void draw() override;
 	void update_to_match_parent_transform();
@@ -304,7 +308,7 @@ struct Simple_Collision_Body : Entity_Component
 	void set_as_polygon( std::vector<Vec2> verts );
 	void set_body_collider_type( e_sc_body_collider_type_t type );
 
-	bool intersects_with_quick( Simple_Collision_Body* scc );
+	bool does_intersect( Simple_Collision_Body* scc );
 	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other );
 
 	c2Circle as_simple_circle();
@@ -336,6 +340,7 @@ struct Tile_Map_Component final : Entity_Component
 	virtual void draw() override;
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
+	Simple_Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_sc_body_collider_type_t collider_type );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
 

@@ -785,6 +785,7 @@ void Mesh_Component::draw()
 Simple_Collision_Body::Simple_Collision_Body( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	next_trigger_time = g_engine->clock.now();
 }
 
 void Simple_Collision_Body::draw()
@@ -808,7 +809,7 @@ void Simple_Collision_Body::draw()
 
 				if( parent_entity->simple.is_stationary() )
 				{
-					Render::state->color = make_color( Color::grey );
+					Render::state->color = make_color( Color::green );
 				}
 
 				if( parent_entity->simple.is_kinematic() )
@@ -943,7 +944,7 @@ void Simple_Collision_Body::set_body_collider_type( e_sc_body_collider_type_t ty
 
 // does a broad phase check against "scc" to see if these bodies are intersecting
 
-bool Simple_Collision_Body::intersects_with_quick( Simple_Collision_Body* scc )
+bool Simple_Collision_Body::does_intersect( Simple_Collision_Body* scc )
 {
 	// simple_collision_components can't collide with themselves
 	if( this == scc )
@@ -1534,6 +1535,10 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 			{
 				if( obj.type == "platform" )
 				{
+					// if a solid collider is tagged as a "platform", it's shape
+					// is discarded and it's turned into a single line (aka a
+					// box with no height)
+
 					auto ec = parent_entity->add_component<Simple_Collision_Platform_Body>();
 					ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 					ec->set_as_box( obj.rc.w, 0.f );
@@ -1541,35 +1546,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 				}
 				else
 				{
-					switch( obj.collision_type )
-					{
-						case e_sc_prim_type::aabb:
-						{
-							auto ec = parent_entity->add_component<Simple_Collision_Body>();
-							ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
-							ec->set_as_box( obj.rc.w, obj.rc.h );
-							ec->set_collision_flags( collision_mask, collides_with_mask );
-						}
-						break;
-
-						case e_sc_prim_type::circle:
-						{
-							auto ec = parent_entity->add_component<Simple_Collision_Body>();
-							ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
-							ec->set_as_circle( obj.radius );
-							ec->set_collision_flags( collision_mask, collides_with_mask );
-						}
-						break;
-
-						case e_sc_prim_type::polygon:
-						{
-							auto ec = parent_entity->add_component<Simple_Collision_Body>();
-							ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
-							ec->set_as_polygon( obj.vertices );
-							ec->set_collision_flags( collision_mask, collides_with_mask );
-						}
-						break;
-					}
+					add_collision_body_from_object( obj, e_sc_body_collider_type::solid );
 				}
 			}
 		}
@@ -1578,12 +1555,85 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 			// this doesn't exist yet - if you want it, we gotta write it!
 			assert( false );
 		}
+		else if( og.tag == "triggers" )
+		{
+			for( auto& obj : og.objects )
+			{
+				auto ec = add_collision_body_from_object( obj, e_sc_body_collider_type::sensor );
+
+				if( !obj.name.empty() )
+				{
+					// if the name field is populated with key/values, parse and
+					// use them here
+
+					Tokenizer tok( obj.name, "," );
+
+					while( !tok.is_eos() )
+					{
+						Tokenizer kv( *tok.get_next_token(), "=" );
+
+						auto key = kv.get_next_token();
+						auto value = kv.get_next_token();
+
+						if( *key == "tag" )
+						{
+							auto& sv = value.value();
+							ec->tag = H( std::string( sv ).c_str() );
+						}
+						else if( *key == "delay" )
+						{
+							std::string wk = std::string( *value );
+							String_Util::erase_char( wk, '\"' );
+							ec->retrigger_delay = Text_Parser::uint_from_str( wk );
+							ec->is_one_shot = false;
+						}
+					}
+				}
+			}
+		}
 		else
 		{
 			// unknown collision type
 			assert( false );
 		}
 	}
+}
+
+// adds an appropriate simple_collision_body based on a Tiled_Object we read
+// from the tile map
+
+Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_sc_body_collider_type_t collider_type )
+{
+	auto ec = parent_entity->add_component<Simple_Collision_Body>();
+
+	switch( obj.collision_type )
+	{
+		case e_sc_prim_type::aabb:
+		{
+			ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+			ec->set_as_box( obj.rc.w, obj.rc.h );
+		}
+		break;
+
+		case e_sc_prim_type::circle:
+		{
+			ec->get_transform()->set_pos( { obj.rc.x + obj.radius, obj.rc.y + obj.radius } );
+			ec->set_as_circle( obj.radius );
+		}
+		break;
+
+		case e_sc_prim_type::polygon:
+		{
+			ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
+			ec->set_as_polygon( obj.vertices );
+		}
+		break;
+	}
+
+	ec->set_collision_flags( collision_mask, collides_with_mask );
+	ec->set_body_collider_type( collider_type );
+
+	return ec;
 }
 
 // loops through any layer with the name "entities" and calls the callback

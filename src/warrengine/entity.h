@@ -219,7 +219,8 @@ struct Entity
 
 	virtual bool on_collided( simple_collision::Pending_Collision& coll );
 
-	bool on_touched( Simple_Collision_Body* sensor );
+	bool add_sensor_to_touch_list( Simple_Collision_Body* sensor );
+
 	virtual bool on_touching_begin( Simple_Collision_Body* sensor );
 	virtual bool on_touching( Simple_Collision_Body* sensor );
 	virtual bool on_touching_end( Simple_Collision_Body* sensor );

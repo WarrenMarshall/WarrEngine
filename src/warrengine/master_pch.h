@@ -1,4 +1,5 @@
 
+
 #include "master_fwd_decl.h"
 
 #pragma warning(disable : 4530 )	// C++ exception handler used, but unwind semantics are not enabled
@@ -280,7 +281,7 @@ constexpr void _log_fatal_( Params&&... params )
 using hash = uint32_t;
 constexpr hash hash_none = 0;
 
-consteval hash hash_it( const char* str )
+constexpr hash hash_it( const char* str )
 {
 	hash result = hash_none;
 

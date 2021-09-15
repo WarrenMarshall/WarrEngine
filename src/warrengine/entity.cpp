@@ -403,7 +403,7 @@ bool Entity::on_collided( simple_collision::Pending_Collision& coll )
 }
 
 // returns TRUE if the touch was handled
-bool Entity::on_touched( Simple_Collision_Body* sensor )
+bool Entity::add_sensor_to_touch_list( Simple_Collision_Body* sensor )
 {
 	sensors_this_frame.insert( sensor );
 	return false;
@@ -414,8 +414,6 @@ bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 	if( sensor->is_sticky )
 	{
 		sensor->parent_entity->sticky_set.insert( this );
-		//simple.save.is_affected_by_gravity = simple.is_affected_by_gravity;
-		//simple.is_affected_by_gravity = false;
 	}
 
 	if( sensor->tag == H( "ground_sensor" ) )
@@ -436,7 +434,6 @@ bool Entity::on_touching_end( Simple_Collision_Body* sensor )
 	if( sensor->is_sticky )
 	{
 		sensor->parent_entity->sticky_set.erase( this );
-		//simple.is_affected_by_gravity = simple.save.is_affected_by_gravity;
 	}
 
 	if( sensor->tag == H( "ground_sensor" ) )

@@ -31,6 +31,11 @@ void OpenGL_Mgr::init()
 
 	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &max_texture_image_units );
 
+#ifdef _DEBUG
+	// this is set low in debug mode so we'll know if the texture unit batching code breaks.
+	max_texture_image_units = 1;
+#endif
+
 	if( g_engine->cmdline.nobatch )
 	{
 		max_texture_image_units = 1;

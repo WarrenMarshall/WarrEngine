@@ -47,6 +47,7 @@ struct Simple_Collision_World final
 	std::set<ec_simple_body_pair> colliding_bodies_set;
 	bool need_another_iteration = false;
 
+	Simple_Collision_World() = default;
 	Simple_Collision_World( Scene* parent_scene );
 
 	void ray_cast( simple_collision::Raycast_Callback* callback, const Entity* entity, const Vec2& start, const Vec2& end ) const;

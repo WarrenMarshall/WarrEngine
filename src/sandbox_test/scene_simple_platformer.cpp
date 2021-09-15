@@ -85,7 +85,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 				ec->set_collision_flags(
 					gameplay_scene->coll_flags.player,
-					gameplay_scene->coll_flags.geo | gameplay_scene->coll_flags.jump_pad //| gameplay_scene->coll_flags.mover
+					gameplay_scene->coll_flags.geo | gameplay_scene->coll_flags.jump_pad
 				);
 			}
 			{
@@ -100,13 +100,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 					gameplay_scene->coll_flags.geo
 				);
 			}
-/*
-			{
-				auto ec = e->add_component<Emitter_Component>();
-				ec->init( "em_stars" );
-				ec->get_transform()->set_scale( 0.25f );
-			}
-*/
 
 			gameplay_scene->player = e;
 
@@ -228,7 +221,7 @@ void Scene_Simple_Platformer::update()
 
 	fx_red_alert.update();
 
-	follow_cam( player->get_transform());
+	follow_cam( player->get_transform() );
 
 	// keyboard input
 

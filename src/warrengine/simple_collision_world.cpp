@@ -113,7 +113,7 @@ void Simple_Collision_World::handle_collisions()
 				continue;
 			}
 
-			if( scc_a->intersects_with_quick( scc_b ) )
+			if( scc_a->does_intersect( scc_b ) )
 			{
 				assert( scc_a->parent_entity != scc_b->parent_entity );
 				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
@@ -373,7 +373,7 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 {
 	if( coll.body_b->is_sensor() )
 	{
-		coll.entity_a->on_touched( coll.body_b );
+		coll.entity_a->add_sensor_to_touch_list( coll.body_b );
 
 /*
 		if( coll.body_b->is_sticky )
@@ -392,7 +392,7 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 
 	if( coll.body_a->is_sensor() )
 	{
-		coll.entity_b->on_touched( coll.body_a );
+		coll.entity_b->add_sensor_to_touch_list( coll.body_a );
 
 /*
 		if( coll.body_a->is_sticky )
@@ -431,17 +431,83 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 			bool last_frame = entity->sensors_last_frame.contains( sensor );
 			bool this_frame = entity->sensors_this_frame.contains( sensor );
 
+			// begin
+
 			if( !last_frame and this_frame )
 			{
-				entity->on_touching_begin( sensor );
+				// if sensor is one-shot and has already triggered, skip it
+				if( sensor->is_one_shot and sensor->has_triggered )
+				{
+					continue;
+				}
+
+				// give the scene a chance to handle the event, otherwise pass
+				// to the entity doing the touching
+				if( !scene->on_entity_and_sensor_touching_begin( entity.get(), sensor ) )
+				{
+					entity->on_touching_begin( sensor );
+				}
+
+				// if it's a repeating sensor, set the next available time to
+				// right now
+				if( !sensor->is_one_shot )
+				{
+					sensor->next_trigger_time = g_engine->clock.now();
+				}
 			}
+
+			// touching
+
 			if( last_frame and this_frame )
 			{
-				entity->on_touching( sensor );
+				// if sensor is one-shot and has already triggered, skip it
+				if( sensor->is_one_shot and sensor->has_triggered )
+				{
+					continue;
+				}
+
+				// if this is a repeating sensor but we are still in the delay
+				// period, skip it
+				if( sensor->next_trigger_time == 0 or g_engine->clock.now() < sensor->next_trigger_time )
+				{
+					continue;
+				}
+
+				// give the scene a chance to handle the event, otherwise pass
+				// to the entity doing the touching
+				if( !scene->on_entity_and_sensor_touching( entity.get(), sensor) )
+				{
+					entity->on_touching( sensor );
+				}
+
+				// if this is a repeating trigger, set the next time it is
+				// available to fire. otherwise mark it as triggered.
+				if( sensor->retrigger_delay > 0 )
+				{
+					sensor->next_trigger_time = g_engine->clock.now() + sensor->retrigger_delay;
+				}
+				else
+				{
+					sensor->has_triggered = true;
+				}
 			}
+
+			// end
+
 			if( last_frame and !this_frame )
 			{
-				entity->on_touching_end( sensor );
+				// if sensor is one-shot and has already triggered, skip it
+				if( sensor->is_one_shot and sensor->has_triggered )
+				{
+					continue;
+				}
+
+				// give the scene a chance to handle the event, otherwise pass
+				// to the entity doing the touching
+				if( !scene->on_entity_and_sensor_touching_end( entity.get(), sensor ) )
+				{
+					entity->on_touching_end( sensor );
+				}
 			}
 		}
 	}

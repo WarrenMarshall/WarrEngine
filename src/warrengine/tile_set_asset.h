@@ -12,6 +12,7 @@ struct Tiled_Object final
 	Rect rc;
 	float_t radius;
 	std::vector<Vec2> vertices;
+	std::string name;
 	std::string type;
 
 	void rotate( float_t angle )

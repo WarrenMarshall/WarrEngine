@@ -71,7 +71,7 @@ std::vector<Entity*> Scene::get_selected()
 
 void Scene::pushed()
 {
-	sc_world = std::make_unique<Simple_Collision_World>( this );
+	sc_world = Simple_Collision_World( this );
 }
 
 void Scene::popped()
@@ -126,7 +126,7 @@ void Scene::update()
 {
 	if( !entities.empty() )
 	{
-		sc_world->active_bodies.clear();
+		sc_world.active_bodies.clear();
 
 		// update entities and components
 
@@ -143,8 +143,8 @@ void Scene::update()
 
 			// collect the simple collision bodies active in the scene
 			auto sccs = entity->get_components<Simple_Collision_Body>();
-			sc_world->active_bodies.insert(
-				sc_world->active_bodies.end(),
+			sc_world.active_bodies.insert(
+				sc_world.active_bodies.end(),
 				sccs.begin(), sccs.end()
 			);
 		}
@@ -153,34 +153,34 @@ void Scene::update()
 
 void Scene::post_update()
 {
-	sc_world->init_sensor_sets_for_new_frame( this );
+	sc_world.init_sensor_sets_for_new_frame( this );
 
 	// simple collision detection
 
-	for( auto iter_counter = 0 ; iter_counter < sc_world->settings.num_pos_iterations ; ++iter_counter )
+	for( auto iter_counter = 0 ; iter_counter < sc_world.settings.num_pos_iterations ; ++iter_counter )
 	{
 		// make sure the collision bodies are in the correct world space
 		// position, relative to their parent entities
 
-		for( auto& scc : sc_world->active_bodies )
+		for( auto& scc : sc_world.active_bodies )
 		{
 			scc->update_to_match_parent_transform();
 		}
 
 		// detect and handle intersecting colliders
 
-		sc_world->need_another_iteration = false;
-		sc_world->handle_collisions();
+		sc_world.need_another_iteration = false;
+		sc_world.handle_collisions();
 
 		// If nothing is intersecting anymore, we can skip the remaining iterations
 
-		if( !sc_world->need_another_iteration )
+		if( !sc_world.need_another_iteration )
 		{
 			break;
 		}
 	}
 
-	sc_world->process_sensor_sets( this );
+	sc_world.process_sensor_sets( this );
 
 	// update entities and components, after physics have run
 
@@ -328,6 +328,21 @@ bool Scene::on_input_key( const Input_Event* evt )
 		}
 	}
 
+	return false;
+}
+
+bool Scene::on_entity_and_sensor_touching_begin( Entity* entity, Simple_Collision_Body* sensor )
+{
+	return false;
+}
+
+bool Scene::on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor )
+{
+	return false;
+}
+
+bool Scene::on_entity_and_sensor_touching_end( Entity* entity, Simple_Collision_Body* sensor )
+{
 	return false;
 }
 

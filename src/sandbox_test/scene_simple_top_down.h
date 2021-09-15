@@ -1,6 +1,7 @@
 
 using namespace war;
 
+
 struct Scene_Simple_Top_Down final : Scene
 {
 	struct
@@ -15,6 +16,8 @@ struct Scene_Simple_Top_Down final : Scene
 	Entity* hit_marker = nullptr;
 	Entity* world = nullptr;
 
+	Timeline_Of_Nodes fx_hurt;
+
 	float_t ray_cast_length_hit = 0.0f;
 
 	virtual void pushed() override;
@@ -25,4 +28,6 @@ struct Scene_Simple_Top_Down final : Scene
 
 	virtual bool on_input_pressed( const Input_Event* evt ) override;
 	virtual bool on_input_motion( const Input_Event* evt ) override;
+
+	virtual bool on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor ) override;
 };

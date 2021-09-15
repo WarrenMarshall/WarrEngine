@@ -284,7 +284,7 @@ bool Tile_Map_Asset::create()
 
 			while( !tok.is_eos() )
 			{
-				Tokenizer subtok( *tok.get_next_token(), "=" );
+				Tokenizer subtok( *tok.get_next_token(), "=", true );
 
 				auto key = subtok.get_next_token();
 
@@ -345,6 +345,14 @@ bool Tile_Map_Asset::create()
 					current_object->type = *value;
 					String_Util::erase_char( current_object->type, '\"' );
 				}
+				else if( *key == "name" )
+				{
+					auto value = subtok.get_next_token();
+					assert( value.has_value() );
+
+					current_object->name = *value;
+					String_Util::erase_char( current_object->name, '\"' );
+				}
 			}
 		}
 		else if( line.starts_with( "<polygon " ) )
@@ -384,7 +392,7 @@ bool Tile_Map_Asset::create()
 					if( current_object->vertices.size() > C2_MAX_POLYGON_VERTS )
 					{
 						// there is a polygon collision objects in the tile map
-						// with more vertuces than the simple collision system
+						// with more vertices than the simple collision system
 						// is configured to handle. either increase
 						// C2_MAX_POLYGON_VERTS or edit the collider to be
 						// within limits.

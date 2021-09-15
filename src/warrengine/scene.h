@@ -43,7 +43,8 @@ struct Scene
 
 	std::vector<std::unique_ptr<Entity>> entities;
 
-	std::unique_ptr<Simple_Collision_World> sc_world = nullptr;
+	//std::unique_ptr<Simple_Collision_World> sc_world = nullptr;
+	Simple_Collision_World sc_world;
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
@@ -151,7 +152,6 @@ struct Scene
 	void follow_cam( const Transform* follow_target );
 
 	UI_Callback* ui_callback = nullptr;
-	//std::unique_ptr<war::UI_Callback> ui_callback = nullptr;
 	virtual war::UI_Callback* get_ui_callback();
 
 	virtual bool on_input_motion( const Input_Event* evt );
@@ -159,6 +159,13 @@ struct Scene
 	virtual bool on_input_held( const Input_Event* evt );
 	virtual bool on_input_released( const Input_Event* evt );
 	virtual bool on_input_key( const Input_Event* evt );
+
+	// called every time an entity in this scene registers a touch with a sensor
+	// in this scene. this allows the scene to be the main handler of triggers
+	// and related events.
+	virtual bool on_entity_and_sensor_touching_begin( Entity* entity, Simple_Collision_Body* sensor );
+	virtual bool on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor );
+	virtual bool on_entity_and_sensor_touching_end( Entity* entity, Simple_Collision_Body* sensor );
 
 private:
 	Transform camera_transform;

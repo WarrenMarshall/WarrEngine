@@ -33,9 +33,11 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
 
 			auto e = scene->add_entity<Entity>();
+			e->tag = H( "player" );
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 			e->simple.friction = 0.5f;
+			// #warren - this player should have a little movement drift/slide - why doesn't that work anymore?
 
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
@@ -95,6 +97,10 @@ void Scene_Simple_Top_Down::pushed()
 			ec->spawn_entities( this, topdown_spawn_entity );
 		}
 	}
+
+	fx_hurt.clear( 200 );
+	fx_hurt.add_kf_pp_color_overlay( true, 0.0f, 100, make_color( Color::red, 0.25f ) );
+	fx_hurt.add_kf_pp_color_overlay( true, 0.5f, 100, make_color( Color::red, 0.25f ) );
 }
 
 void Scene_Simple_Top_Down::draw()
@@ -117,6 +123,8 @@ void Scene_Simple_Top_Down::update()
 	Scene::update();
 	follow_cam( player->get_transform() );
 
+	fx_hurt.update();
+
 	reset_collision_trace_results();
 
 	auto start = player->get_pos();
@@ -124,13 +132,12 @@ void Scene_Simple_Top_Down::update()
 	auto end = start + ( dir * 1024.f );
 
 	simple_collision::Raycast_Closest callback;
-	sc_world->ray_cast( &callback, player, start, end );
+	sc_world.ray_cast( &callback, player, start, end );
 
 	if( callback.hit_something )
 	{
 		ray_cast_length_hit = ( callback.result.pos - player->get_pos() ).get_size();
 	}
-
 }
 
 void Scene_Simple_Top_Down::reset_collision_trace_results()
@@ -184,3 +191,19 @@ bool Scene_Simple_Top_Down::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
+bool Scene_Simple_Top_Down::on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor )
+{
+	if( entity->tag == H( "player" ) )
+	{
+		switch( sensor->tag )
+		{
+			case H( "trigger_shake" ):
+			{
+				fx_hurt.go();
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
