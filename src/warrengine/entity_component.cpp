@@ -785,7 +785,7 @@ void Mesh_Component::draw()
 Simple_Collision_Body::Simple_Collision_Body( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
-	next_trigger_time = g_engine->clock.now();
+	trigger.time_next = g_engine->clock.now();
 }
 
 void Simple_Collision_Body::draw()
@@ -1584,8 +1584,8 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 						{
 							std::string wk = std::string( *value );
 							String_Util::erase_char( wk, '\"' );
-							ec->retrigger_delay = Text_Parser::uint_from_str( wk );
-							ec->is_one_shot = false;
+							ec->trigger.time_delay = Text_Parser::uint_from_str( wk );
+							ec->trigger.one_shot = false;
 						}
 					}
 				}

@@ -292,13 +292,17 @@ struct Simple_Collision_Body : Entity_Component
 		std::vector<Vec2> verts = {};
 	} ws;
 
-	// how long this sensor will wait between registering collision
-	time_ms retrigger_delay = 0;
-	// the next time this sensor is available for collision
-	time_ms next_trigger_time = 0;
+	struct
+	{
+		// how long this sensor will wait between registering collision
+		time_ms time_delay = 0;
+		// the next time this sensor is available for collision
+		time_ms time_next = 0;
 
-	bool is_one_shot = true;
-	bool has_triggered = false;
+		bool one_shot = true;
+		bool expired = false;
+
+	} trigger;
 
 	virtual void draw() override;
 	void update_to_match_parent_transform();
