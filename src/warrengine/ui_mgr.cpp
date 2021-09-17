@@ -21,72 +21,121 @@ void UI_Mgr::reset()
 
 UI_Mgr* UI_Mgr::panel_control( hash tag )
 {
-	return do_control<UI_Panel_Control>( tag );
+	return do_control( e_ui_control_type::panel, tag );
 }
 
 UI_Mgr* UI_Mgr::caption_control( hash tag )
 {
-	return do_control<UI_Caption_Control>( tag );
+	return do_control( e_ui_control_type::caption, tag );
 }
 
 UI_Mgr* UI_Mgr::button_control( hash tag )
 {
-	return do_control<UI_Button_Control>( tag );
+	return do_control( e_ui_control_type::button, tag );
 }
 
 UI_Mgr* UI_Mgr::check_control( hash tag )
 {
-	return do_control<UI_Check_Control>( tag );
+	return do_control( e_ui_control_type::check, tag );
 }
 
 UI_Mgr* UI_Mgr::divider_control( hash tag )
 {
-	return do_control<UI_Divider_Control>( tag );
+	return do_control( e_ui_control_type::divider, tag );
 }
 
 UI_Mgr* UI_Mgr::spacer_control( hash tag )
 {
-	return do_control<UI_Spacer_Control>( tag );
+	return do_control( e_ui_control_type::spacer, tag );
 }
 
 UI_Mgr* UI_Mgr::image_control( hash tag )
 {
-	return do_control<UI_Image_Control>( tag );
+	return do_control( e_ui_control_type::image, tag );
 }
 
 UI_Mgr* UI_Mgr::label_control( hash tag )
 {
-	return do_control<UI_Label_Control>( tag );
+	return do_control( e_ui_control_type::label, tag );
 }
 
 UI_Mgr* UI_Mgr::slider_control( hash tag )
 {
-	return do_control<UI_Slider_Control>( tag );
+	return do_control( e_ui_control_type::slider, tag );
 }
 
 UI_Mgr* UI_Mgr::text_control( hash tag )
 {
-	return do_control<UI_Text_Control>( tag );
+	return do_control( e_ui_control_type::text, tag );
 }
 
 UI_Mgr* UI_Mgr::radio_control( hash tag )
 {
-	return do_control<UI_Radio_Control>( tag );
+	return do_control( e_ui_control_type::radio, tag );
 }
 
 UI_Mgr* UI_Mgr::progress_control( hash tag )
 {
-	return do_control<UI_Progress_Control>( tag );
+	return do_control( e_ui_control_type::progress, tag );
 }
 
 UI_Mgr* UI_Mgr::list_control( hash tag )
 {
-	return do_control<UI_List_Control>( tag );
+	return do_control( e_ui_control_type::list, tag );
 }
 
 UI_Mgr* UI_Mgr::dropdown_control( hash tag )
 {
-	return do_control<UI_Dropdown_Control>( tag );
+	return do_control( e_ui_control_type::dropdown, tag );
+}
+
+UI_Mgr* UI_Mgr::do_control( e_ui_control_type_t control_type, hash tag )
+{
+	current_control = nullptr;
+
+	switch( control_type )
+	{
+		case e_ui_control_type::panel:		current_control = std::make_unique<UI_Panel_Control>();		break;
+		case e_ui_control_type::caption:	current_control = std::make_unique<UI_Caption_Control>();	break;
+		case e_ui_control_type::button:		current_control = std::make_unique<UI_Button_Control>();	break;
+		case e_ui_control_type::check:		current_control = std::make_unique<UI_Check_Control>();		break;
+		case e_ui_control_type::divider:	current_control = std::make_unique<UI_Divider_Control>();	break;
+		case e_ui_control_type::spacer:		current_control = std::make_unique<UI_Spacer_Control>();	break;
+		case e_ui_control_type::image:		current_control = std::make_unique<UI_Image_Control>();		break;
+		case e_ui_control_type::label:		current_control = std::make_unique<UI_Label_Control>();		break;
+		case e_ui_control_type::slider:		current_control = std::make_unique<UI_Slider_Control>();	break;
+		case e_ui_control_type::text:		current_control = std::make_unique<UI_Text_Control>();		break;
+		case e_ui_control_type::radio:		current_control = std::make_unique<UI_Radio_Control>();		break;
+		case e_ui_control_type::progress:	current_control = std::make_unique<UI_Progress_Control>();	break;
+		case e_ui_control_type::list:		current_control = std::make_unique<UI_List_Control>();		break;
+		case e_ui_control_type::dropdown:	current_control = std::make_unique<UI_Dropdown_Control>();	break;
+	}
+
+	assert( current_control );
+
+	current_control->tag = tag;
+	current_control->default_width = current_control->get_default_width( current_control->type );
+	current_control->default_height = current_control->get_default_height( current_control->type );
+
+	if( current_control->type == e_ui_control_type::panel )
+	{
+		current_control->default_width = layout_top().w;
+		current_control->default_height = layout_top().h;
+	}
+
+	if( tag == hash_none )
+	{
+		// if the control is active and does NOT have a specific tag, auto
+		// generate an id for it
+		if( current_control->is_active )
+		{
+			current_control->tag = automatic_id++;
+		}
+	}
+
+	set_size( { Vec2::defaulted, Vec2::defaulted } );
+
+	return this;
 }
 
 UI_Mgr* UI_Mgr::set_text( std::string text )

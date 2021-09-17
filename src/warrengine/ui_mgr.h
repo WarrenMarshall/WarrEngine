@@ -59,34 +59,8 @@ struct UI_Mgr final
 	UI_Mgr* dropdown_control( hash tag = hash_none );
 
 private:
-	template<typename T>
-	UI_Mgr* do_control( hash tag = hash_none )
-	{
-		current_control = std::make_unique<T>();
-		current_control->tag = tag;
-		current_control->default_width = T::get_default_width();
-		current_control->default_height = T::get_default_height();
+	UI_Mgr* do_control( e_ui_control_type_t control_type, hash tag = hash_none );
 
-		if( current_control->type == e_ui_control_type::panel )
-		{
-			current_control->default_width = layout_top().w;
-			current_control->default_height = layout_top().h;
-		}
-
-		if( tag == hash_none )
-		{
-			// if the control is active and does NOT have a specific tag, auto
-			// generate an id for it
-			if( current_control->is_active )
-			{
-				current_control->tag = automatic_id++;
-			}
-		}
-
-		set_size( { Vec2::defaulted, Vec2::defaulted } );
-
-		return this;
-	}
 public:
 
 	UI_Mgr* set_text( std::string text );

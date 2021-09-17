@@ -179,12 +179,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_vignette.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Size:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_vignette_size" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -198,7 +198,7 @@ void Scene_Post_Process::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Smooth:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_vignette_smooth" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -214,7 +214,7 @@ void Scene_Post_Process::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Round:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_vignette_round" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -237,12 +237,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_chromatic_aberration.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_chromatic_aberration_amount" ) )->cut_left( 48.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -263,12 +263,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_desaturation.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Amount:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_desaturation_amount" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -289,12 +289,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_crt_warp.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Bend:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_warp_bend" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -310,7 +310,7 @@ void Scene_Post_Process::draw_ui()
 	// pixelate
 
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
@@ -344,12 +344,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_crt_tint.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Scale:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_tint_scaling" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -363,7 +363,7 @@ void Scene_Post_Process::draw_ui()
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_tint_intensity" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -384,12 +384,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_crt_scanlines.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_crt_scanlines_intensity" ) )->cut_left( 48.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
@@ -410,12 +410,12 @@ void Scene_Post_Process::draw_ui()
 
 	if( cb->ub_film_grain.bool_value() )
 	{
-		auto height = UI_Label_Control::get_default_height();
+		auto height = UI_Control::get_default_height( e_ui_control_type::label );
 
 		{
 			scoped_ui_layout( g_ui->layout_top_ptr()->cut_top( height ) );
 
-			g_ui->cut_left( UI_Spacer_Control::get_default_width() * 3.f );
+			g_ui->cut_left( UI_Control::get_default_width( e_ui_control_type::spacer ) * 3.f );
 			g_ui->label_control()->set_text( "Intens:" )->cut_left( 48.f )->done();
 			g_ui->slider_control( H( "slider_film_grain_intensity" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();

@@ -10,8 +10,6 @@ struct Scene
 	void restore_mouse_mode();
 	std::optional<e_mouse_mode_t> saved_mouse_mode = std::nullopt;
 
-	//effect_stack fx_stack;
-
 	// scenes can have a camera attached to them. this is applied against the
 	// view matrix.
 	[[nodiscard]] Transform* get_transform()
@@ -43,7 +41,6 @@ struct Scene
 
 	std::vector<std::unique_ptr<Entity>> entities;
 
-	//std::unique_ptr<Simple_Collision_World> sc_world = nullptr;
 	Simple_Collision_World sc_world;
 
 	// if set to anything other than hash_none, some control is in it's expanded

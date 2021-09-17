@@ -77,11 +77,11 @@ void Scene_Esc_Menu::draw_ui()
 
 	float_t panel_w =
 		slice_def->get_left_slice_sz()
-		+ UI_Button_Control::get_default_width()
+		+ UI_Control::get_default_width( e_ui_control_type::button )
 		+ slice_def->get_right_slice_sz();
 
 	float_t panel_h =
-		( UI_Button_Control::get_default_height() * num_buttons )
+		( UI_Control::get_default_height( e_ui_control_type::button ) * num_buttons )
 		+ slice_def->get_top_slice_sz()
 		+ ( get_ui_callback()->get_control_margin( e_ui_control_type::button ).y * ( num_buttons - 1 ) )
 		+ slice_def->get_bottom_slice_sz()

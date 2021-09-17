@@ -54,9 +54,73 @@ void UI_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered
 {
 }
 
+float_t UI_Control::get_default_width( e_ui_control_type_t control_type )
+{
+	static const std::array<float_t, e_ui_control_type::max> values =
+	{
+		100.f,	// panel
+		100.f,	// caption
+		120.f,	// button
+		120.f,	// check
+		120.f,	// divider
+		4.f,	// spacer
+		120.f,	// image
+		120.f,	// label
+		120.f,	// slider
+		120.f,	// text
+		120.f,	// radio
+		120.f,	// progress
+		120.f,	// list
+		120.f,	// dropdown
+	};
+
+	return values[ control_type ];
+}
+
+float_t UI_Control::get_default_height( e_ui_control_type_t control_type )
+{
+	static const std::array<float_t, e_ui_control_type::max> values =
+	{
+		100.f,	// panel
+		12.f,	// caption
+		24.f,	// button
+		12.f,	// check
+		2.f,	// divider
+		4.f,	// spacer
+		24.f,	// image
+		14.f,	// label
+		6.f,	// slider
+		16.f,	// text
+		12.f,	// radio
+		12.f,	// progress
+		24.f,	// list
+		16.f,	// dropdown
+	};
+
+	return values[ control_type ];
+}
+
 Vec2 UI_Control::get_control_inner_margins()
 {
-	return Vec2( 1.f, 2.f );
+	static const std::array<Vec2, e_ui_control_type::max> values =
+	{
+		Vec2( 1.f, 2.f ),	// panel
+		Vec2( 1.f, 2.f ),	// caption
+		Vec2( 1.f, 2.f ),	// button
+		Vec2( 1.f, 2.f ),	// check
+		Vec2( 0.f, 4.f ),	// divider
+		Vec2( 0.f, 0.f ),	// spacer
+		Vec2( 1.f, 2.f ),	// image
+		Vec2( 1.f, 2.f ),	// label
+		Vec2( 1.f, 8.f ),	// slider
+		Vec2( 1.f, 2.f ),	// text
+		Vec2( 1.f, 2.f ),	// radio
+		Vec2( 1.f, 2.f ),	// progress
+		Vec2( 1.f, 2.f ),	// list
+		Vec2( 1.f, 2.f ),	// dropdown
+	};
+
+	return values[ type ];
 }
 
 // ----------------------------------------------------------------------------
@@ -71,16 +135,6 @@ UI_Panel_Control::UI_Panel_Control( hash tag )
 void UI_Panel_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
-}
-
-float_t UI_Panel_Control::get_default_width()
-{
-	return 100.f;
-}
-
-float_t UI_Panel_Control::get_default_height()
-{
-	return 100.f;
 }
 
 // ----------------------------------------------------------------------------
@@ -105,17 +159,6 @@ void UI_Caption_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is
 	draw_text( rc_client, text_color, is_hovered, is_hot, text );
 }
 
-
-float_t UI_Caption_Control::get_default_width()
-{
-	return 100.f;
-}
-
-float_t UI_Caption_Control::get_default_height()
-{
-	return 12.f;
-}
-
 // ----------------------------------------------------------------------------
 
 UI_Button_Control::UI_Button_Control( hash tag )
@@ -132,16 +175,6 @@ void UI_Button_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 	draw_text( rc_client, text_color, is_hovered, is_hot, text );
-}
-
-float_t UI_Button_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Button_Control::get_default_height()
-{
-	return 24.f;
 }
 
 // ----------------------------------------------------------------------------
@@ -181,16 +214,6 @@ void UI_Check_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
-float_t UI_Check_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Check_Control::get_default_height()
-{
-	return 12.f;
-}
-
 // ----------------------------------------------------------------------------
 
 UI_Divider_Control::UI_Divider_Control( hash tag )
@@ -205,21 +228,6 @@ void UI_Divider_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is
 	draw_slice_def( rc_ui, false, false );
 }
 
-float_t UI_Divider_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Divider_Control::get_default_height()
-{
-	return 2.f;
-}
-
-Vec2 UI_Divider_Control::get_control_inner_margins()
-{
-	return { 0.f, 4.f };
-}
-
 // ----------------------------------------------------------------------------
 
 UI_Spacer_Control::UI_Spacer_Control( hash tag )
@@ -230,21 +238,6 @@ UI_Spacer_Control::UI_Spacer_Control( hash tag )
 
 void UI_Spacer_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
-}
-
-float_t UI_Spacer_Control::get_default_width()
-{
-	return 4.f;
-}
-
-float_t UI_Spacer_Control::get_default_height()
-{
-	return 4.f;
-}
-
-Vec2 UI_Spacer_Control::get_control_inner_margins()
-{
-	return { 0.f, 0.f };
 }
 
 // ----------------------------------------------------------------------------
@@ -260,16 +253,6 @@ void UI_Image_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_image( rc_ui, image );
 }
 
-float_t UI_Image_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Image_Control::get_default_height()
-{
-	return 24.f;
-}
-
 // ----------------------------------------------------------------------------
 
 UI_Label_Control::UI_Label_Control( hash tag )
@@ -283,16 +266,6 @@ void UI_Label_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 {
 	draw_slice_def( rc_ui, false, false );
 	draw_text( rc_client, text_color, false, false, text );
-}
-
-float_t UI_Label_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Label_Control::get_default_height()
-{
-	return 14.f;
 }
 
 // ----------------------------------------------------------------------------
@@ -338,21 +311,6 @@ void UI_Slider_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_
 	);
 
 	Render::draw_sprite( g_engine->find_asset<Texture_Asset>( "ui_slider_thumb" ), pos );
-}
-
-float_t UI_Slider_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Slider_Control::get_default_height()
-{
-	return 6.f;
-}
-
-Vec2 UI_Slider_Control::get_control_inner_margins()
-{
-	return Vec2( 1.f, 8.f );
 }
 
 // ----------------------------------------------------------------------------
@@ -409,16 +367,6 @@ void UI_Text_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 	}
 }
 
-float_t UI_Text_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Text_Control::get_default_height()
-{
-	return 16.f;
-}
-
 // ----------------------------------------------------------------------------
 
 UI_Radio_Control::UI_Radio_Control( hash tag )
@@ -452,16 +400,6 @@ void UI_Radio_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	};
 
 	draw_text( rc_text, text_color, is_hovered, is_hot, text );
-}
-
-float_t UI_Radio_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Radio_Control::get_default_height()
-{
-	return 12.f;
 }
 
 // ----------------------------------------------------------------------------
@@ -498,16 +436,6 @@ void UI_Progress_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 		Render::state->align = e_align::centered;
 		Render::draw_string( std::format( "{}%", (int32_t)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
 	}
-}
-
-float_t UI_Progress_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Progress_Control::get_default_height()
-{
-	return 12.f;
 }
 
 // ----------------------------------------------------------------------------
@@ -569,16 +497,6 @@ void UI_List_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 
 		pos.y += Render::state->font->get_max_height();
 	}
-}
-
-float_t UI_List_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_List_Control::get_default_height()
-{
-	return 24.f;
 }
 
 // ----------------------------------------------------------------------------
@@ -702,16 +620,6 @@ void UI_Dropdown_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool i
 			}
 		}
 	}
-}
-
-float_t UI_Dropdown_Control::get_default_width()
-{
-	return 120.f;
-}
-
-float_t UI_Dropdown_Control::get_default_height()
-{
-	return 16.f;
 }
 
 }

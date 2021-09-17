@@ -42,16 +42,19 @@ struct UI_Control
 	UI_Control( hash tag = hash_none );
 	virtual ~UI_Control() = default;
 
-	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have
 	void draw_slice_def( const Rect & rc_ui, bool is_hovered, bool is_hot );
 	void draw_text( const Rect & rc_client, const Color & color, bool is_hovered, bool is_hot, const std::string & text );
 	void draw_texture( const Rect & rc, Texture_Asset * texture, bool is_hovered, bool is_hot );
 	void draw_image( const Rect & rc, Texture_Asset * texture );
 
+	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have (??)
 	virtual void draw( const Rect & rc_ui, const Rect & rc_client, bool is_hovered, bool is_hot );
 
-	virtual Vec2 get_control_inner_margins();
+	static float_t get_default_width( e_ui_control_type_t type );
+	static float_t get_default_height( e_ui_control_type_t type );
+	Vec2 get_control_inner_margins();
 
+	// #warren - are these used?
 	float_t default_width = 0.f;
 	float_t default_height = 0.f;
 };
@@ -63,9 +66,6 @@ struct UI_Panel_Control final : UI_Control
 	UI_Panel_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Caption_Control final : UI_Control
@@ -73,9 +73,6 @@ struct UI_Caption_Control final : UI_Control
 	UI_Caption_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Button_Control final : UI_Control
@@ -83,9 +80,6 @@ struct UI_Button_Control final : UI_Control
 	UI_Button_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Check_Control final : UI_Control
@@ -94,9 +88,6 @@ struct UI_Check_Control final : UI_Control
 
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Divider_Control final : UI_Control
@@ -104,10 +95,6 @@ struct UI_Divider_Control final : UI_Control
 	UI_Divider_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
-	virtual Vec2 get_control_inner_margins() override;
 };
 
 struct UI_Spacer_Control final : UI_Control
@@ -115,10 +102,6 @@ struct UI_Spacer_Control final : UI_Control
 	UI_Spacer_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
-	virtual Vec2 get_control_inner_margins() override;
 };
 
 
@@ -127,9 +110,6 @@ struct UI_Image_Control final : UI_Control
 	UI_Image_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Label_Control final : UI_Control
@@ -137,9 +117,6 @@ struct UI_Label_Control final : UI_Control
 	UI_Label_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Slider_Control final : UI_Control
@@ -147,10 +124,6 @@ struct UI_Slider_Control final : UI_Control
 	UI_Slider_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
-	virtual Vec2 get_control_inner_margins() override;
 };
 
 struct UI_Text_Control final : UI_Control
@@ -158,9 +131,6 @@ struct UI_Text_Control final : UI_Control
 	UI_Text_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Radio_Control final : UI_Control
@@ -168,20 +138,13 @@ struct UI_Radio_Control final : UI_Control
 	UI_Radio_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Progress_Control final : UI_Control
 {
 	UI_Progress_Control( hash tag = hash_none );
 
-
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_List_Control final : UI_Control
@@ -189,9 +152,6 @@ struct UI_List_Control final : UI_Control
 	UI_List_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 struct UI_Dropdown_Control final : UI_Control
@@ -199,9 +159,6 @@ struct UI_Dropdown_Control final : UI_Control
 	UI_Dropdown_Control( hash tag = hash_none );
 
 	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-
-	static float_t get_default_width();
-	static float_t get_default_height();
 };
 
 }

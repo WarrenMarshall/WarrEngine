@@ -341,7 +341,7 @@ enum_end
 // ----------------------------------------------------------------------------
 
 enum_begin( ui_control_type )
-	none = 0,
+	none = -1,
 	panel,			// window frame
 	caption,		// a caption that sits at the top of a panel
 	button,			// button that clicks up/down
@@ -356,7 +356,7 @@ enum_begin( ui_control_type )
 	progress,		// a bar that marks a %, from 0-100
 	list,			// a list of clickable items
 	dropdown,		// button that presents a menu of options when clicked
-	tab,			// a series of clickable tabs that can break screens up into sections
+	max,
 enum_end
 
 // ----------------------------------------------------------------------------
