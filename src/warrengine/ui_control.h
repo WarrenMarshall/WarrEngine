@@ -13,9 +13,7 @@ struct UI_Control final
 	Color primary_color = Color::black;
 	Slice_Def_Asset* slice_def = nullptr;
 	int32_t idx = -1;
-	size_t total = 0;
 	Texture_Asset* image = nullptr;
-	float_t image_scale = 1.f;
 	f_draw_control func_draw_control = nullptr;
 
 	// expressed as a 0-1 percentage.  So 0.2 would be 5 intervals, 0.1 would be 10, etc.
@@ -47,23 +45,22 @@ struct UI_Control final
 	void draw_texture( const Rect & rc, Texture_Asset * texture, bool is_hovered, bool is_hot );
 	void draw_image( const Rect & rc, Texture_Asset * texture );
 
-	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have (??)
 	virtual void draw( const Rect & rc_ui, const Rect & rc_client, bool is_hovered, bool is_hot );
 
-	void draw_panel( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_caption( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_button( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_check( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_divider( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_spacer( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_image( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_label( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_slider( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_text( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_radio( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_progress( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_list( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
-	void draw_dropdown( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_panel_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_caption_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_button_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_check_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_divider_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_spacer_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_image_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_label_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_slider_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_text_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_radio_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_progress_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_list_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
 
 	static float_t get_default_width( e_ui_control_type_t type );
 	static float_t get_default_height( e_ui_control_type_t type );

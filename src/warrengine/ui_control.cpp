@@ -54,30 +54,30 @@ void UI_Control::draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered
 {
 	switch( type )
 	{
-		case e_ui_control_type::panel:		return draw_panel( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::caption:	return draw_caption( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::button:		return draw_button( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::check:		return draw_check( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::divider:	return draw_divider( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::spacer:		return draw_spacer( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::image:		return draw_image( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::label:		return draw_label( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::slider:		return draw_slider( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::text:		return draw_text( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::radio:		return draw_radio( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::progress:	return draw_progress( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::list:		return draw_list( rc_ui, rc_client, is_hovered, is_hot );
-		case e_ui_control_type::dropdown:	return draw_dropdown( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::panel:		return draw_panel_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::caption:	return draw_caption_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::button:		return draw_button_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::check:		return draw_check_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::divider:	return draw_divider_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::spacer:		return draw_spacer_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::image:		return draw_image_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::label:		return draw_label_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::slider:		return draw_slider_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::text:		return draw_text_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::radio:		return draw_radio_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::progress:	return draw_progress_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::list:		return draw_list_control( rc_ui, rc_client, is_hovered, is_hot );
+		case e_ui_control_type::dropdown:	return draw_dropdown_control( rc_ui, rc_client, is_hovered, is_hot );
 	}
 
 }
 
-void UI_Control::draw_panel( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_panel_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 }
 
-void UI_Control::draw_caption( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_caption_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	// background color bar
 
@@ -89,13 +89,13 @@ void UI_Control::draw_caption( const Rect& rc_ui, const Rect& rc_client, bool is
 	draw_text( rc_client, text_color, is_hovered, is_hot, text );
 }
 
-void UI_Control::draw_button( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_button_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 	draw_text( rc_client, text_color, is_hovered, is_hot, text );
 }
 
-void UI_Control::draw_check( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_check_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	Texture_Asset* texture = g_ui->current_callback->get_texture_for_checkbox( tag );
 
@@ -122,27 +122,27 @@ void UI_Control::draw_check( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
-void UI_Control::draw_divider( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_divider_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, false, false );
 }
 
-void UI_Control::draw_spacer( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_spacer_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 }
 
-void UI_Control::draw_image( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_image_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_image( rc_ui, image );
 }
 
-void UI_Control::draw_label( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_label_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, false, false );
 	draw_text( rc_client, text_color, false, false, text );
 }
 
-void UI_Control::draw_slider( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_slider_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 
@@ -175,7 +175,7 @@ void UI_Control::draw_slider( const Rect& rc_ui, const Rect& rc_client, bool is_
 	Render::draw_sprite( g_engine->find_asset<Texture_Asset>( "ui_slider_thumb" ), pos );
 }
 
-void UI_Control::draw_text( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_text_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	auto control_data = g_ui->current_callback->get_data( tag );
 
@@ -216,7 +216,7 @@ void UI_Control::draw_text( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 	}
 }
 
-void UI_Control::draw_radio( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_radio_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	Texture_Asset* texture = g_ui->current_callback->get_texture_for_radio( tag );
 	draw_slice_def( rc_ui, is_hovered, is_hot );
@@ -241,7 +241,7 @@ void UI_Control::draw_radio( const Rect& rc_ui, const Rect& rc_client, bool is_h
 	draw_text( rc_text, text_color, is_hovered, is_hot, text );
 }
 
-void UI_Control::draw_progress( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_progress_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	auto control_data = g_ui->current_callback->get_data( tag );
 
@@ -269,7 +269,7 @@ void UI_Control::draw_progress( const Rect& rc_ui, const Rect& rc_client, bool i
 	}
 }
 
-void UI_Control::draw_list( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_list_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	auto control_data = g_ui->current_callback->get_data( tag );
 
@@ -320,7 +320,7 @@ void UI_Control::draw_list( const Rect& rc_ui, const Rect& rc_client, bool is_ho
 	}
 }
 
-void UI_Control::draw_dropdown( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
+void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot )
 {
 	auto control_data = g_ui->current_callback->get_data( tag );
 	auto dropdown_control_tag = tag;

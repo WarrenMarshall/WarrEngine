@@ -392,9 +392,7 @@ void UI_Mgr::end_active_control()
 
 	// only the topmost scene is allowed to respond to UI input
 
-	auto current_scene = g_engine->scene_mgr.current_scene;
-
-	if( current_scene == g_engine->scene_mgr.get_top() )
+	if( auto current_scene = g_engine->scene_mgr.current_scene ; current_scene == g_engine->scene_mgr.get_top() )
 	{
 		Range expanded_tag_range( current_scene->ui_expanded_tag_begin, current_scene->ui_expanded_tag_end );
 		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( current_control->tag ) )
