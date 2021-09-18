@@ -91,25 +91,72 @@ UI_Mgr* UI_Mgr::dropdown_control( hash tag )
 
 UI_Mgr* UI_Mgr::do_control( e_ui_control_type_t control_type, hash tag )
 {
-	current_control = nullptr;
+	current_control = std::make_unique<UI_Control>();
 
 	switch( control_type )
 	{
-		case e_ui_control_type::panel:		current_control = std::make_unique<UI_Panel_Control>();		break;
-		case e_ui_control_type::caption:	current_control = std::make_unique<UI_Caption_Control>();	break;
-		case e_ui_control_type::button:		current_control = std::make_unique<UI_Button_Control>();	break;
-		case e_ui_control_type::check:		current_control = std::make_unique<UI_Check_Control>();		break;
-		case e_ui_control_type::divider:	current_control = std::make_unique<UI_Divider_Control>();	break;
-		case e_ui_control_type::spacer:		current_control = std::make_unique<UI_Spacer_Control>();	break;
-		case e_ui_control_type::image:		current_control = std::make_unique<UI_Image_Control>();		break;
-		case e_ui_control_type::label:		current_control = std::make_unique<UI_Label_Control>();		break;
-		case e_ui_control_type::slider:		current_control = std::make_unique<UI_Slider_Control>();	break;
-		case e_ui_control_type::text:		current_control = std::make_unique<UI_Text_Control>();		break;
-		case e_ui_control_type::radio:		current_control = std::make_unique<UI_Radio_Control>();		break;
-		case e_ui_control_type::progress:	current_control = std::make_unique<UI_Progress_Control>();	break;
-		case e_ui_control_type::list:		current_control = std::make_unique<UI_List_Control>();		break;
-		case e_ui_control_type::dropdown:	current_control = std::make_unique<UI_Dropdown_Control>();	break;
+		case e_ui_control_type::panel:
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
+			break;
+
+		case e_ui_control_type::caption:
+			current_control->text_align = e_align::hcenter | e_align::vcenter;
+			current_control->primary_color = make_color( e_pal::darkest );
+			break;
+
+		case e_ui_control_type::button:
+			current_control->is_active = true;
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_button" );
+			current_control->text_align = e_align::centered;
+			break;
+
+		case e_ui_control_type::check:
+			current_control->is_active = true;
+			current_control->text_align = e_align::left | e_align::vcenter;
+			break;
+
+		case e_ui_control_type::divider:
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_divider" );
+			break;
+
+		case e_ui_control_type::label:
+			current_control->text_align = e_align::left | e_align::vcenter;
+			break;
+
+		case e_ui_control_type::slider:
+			current_control->is_active = true;
+			current_control->text_align = e_align::left | e_align::vcenter;
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_slider_body" );
+			current_control->uses_click_offset = false;
+			break;
+
+		case e_ui_control_type::text:
+			current_control->is_active = true;
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_text" );
+			current_control->text_align = e_align::left | e_align::vcenter;
+			current_control->uses_click_offset = false;
+			current_control->can_retain_focus = true;
+			break;
+
+		case e_ui_control_type::radio:
+			current_control->is_active = true;
+			current_control->text_align = e_align::left | e_align::vcenter;
+			break;
+
+		case e_ui_control_type::list:
+			current_control->text_align = e_align::left | e_align::top;
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_list" );
+			break;
+
+		case e_ui_control_type::dropdown:
+			current_control->is_active = true;
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_button" );
+			current_control->text_align = e_align::left | e_align::vcenter;
+			current_control->uses_click_offset = true;
+			break;
 	}
+
+	current_control->type = control_type;
 
 	assert( current_control );
 

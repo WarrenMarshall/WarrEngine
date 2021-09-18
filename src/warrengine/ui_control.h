@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct UI_Control
+struct UI_Control final
 {
 	e_ui_control_type_t type = e_ui_control_type::none;
 
@@ -50,115 +50,27 @@ struct UI_Control
 	// #ui - remove all these references to rc_ui and rc_client - use the member vars we already have (??)
 	virtual void draw( const Rect & rc_ui, const Rect & rc_client, bool is_hovered, bool is_hot );
 
+	void draw_panel( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_caption( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_button( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_check( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_divider( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_spacer( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_image( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_label( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_slider( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_text( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_radio( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_progress( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_list( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+	void draw_dropdown( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
+
 	static float_t get_default_width( e_ui_control_type_t type );
 	static float_t get_default_height( e_ui_control_type_t type );
 	Vec2 get_control_inner_margins();
 
-	// #warren - are these used?
 	float_t default_width = 0.f;
 	float_t default_height = 0.f;
-};
-
-// ----------------------------------------------------------------------------
-
-struct UI_Panel_Control final : UI_Control
-{
-	UI_Panel_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Caption_Control final : UI_Control
-{
-	UI_Caption_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Button_Control final : UI_Control
-{
-	UI_Button_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Check_Control final : UI_Control
-{
-	UI_Check_Control( hash tag = hash_none );
-
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Divider_Control final : UI_Control
-{
-	UI_Divider_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Spacer_Control final : UI_Control
-{
-	UI_Spacer_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-
-struct UI_Image_Control final : UI_Control
-{
-	UI_Image_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Label_Control final : UI_Control
-{
-	UI_Label_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Slider_Control final : UI_Control
-{
-	UI_Slider_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Text_Control final : UI_Control
-{
-	UI_Text_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Radio_Control final : UI_Control
-{
-	UI_Radio_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Progress_Control final : UI_Control
-{
-	UI_Progress_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_List_Control final : UI_Control
-{
-	UI_List_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
-};
-
-struct UI_Dropdown_Control final : UI_Control
-{
-	UI_Dropdown_Control( hash tag = hash_none );
-
-	virtual void draw( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot ) override;
 };
 
 }
