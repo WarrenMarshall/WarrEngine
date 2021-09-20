@@ -571,6 +571,12 @@ void Render::draw_tile_map( const Tile_Set_Asset* tile_set, const Tile_Map_Asset
 			continue;
 		}
 
+		// skip special utility layers
+		if( layer.tag == "entities" )
+		{
+			continue;
+		}
+
 		for( auto& chunk : layer.chunks )
 		{
 			for( auto y = 0 ; y < chunk.tilemap_bounds.h ; ++y )
