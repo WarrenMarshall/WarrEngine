@@ -60,8 +60,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 					0
 				);
 			}
-
-			tile->idx = Tile_Map_Asset::Tile::empty;
 		}
 		break;
 
@@ -102,8 +100,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			}
 
 			gameplay_scene->player = e;
-
-			tile->idx = Tile_Map_Asset::Tile::empty;
 		}
 		break;
 	}

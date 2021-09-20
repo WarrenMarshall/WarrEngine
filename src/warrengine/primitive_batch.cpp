@@ -21,7 +21,7 @@ void Primitive_Batch::init( e_render_prim_t render_prim )
 	vao[ e_draw_call::transparent ].reset();
 }
 
-void Primitive_Batch::add_quad( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
+void Primitive_Batch::add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a + v3->a );
 	auto draw_call = ( e_draw_call::transparent * ( alpha != 4.f ) );
@@ -37,7 +37,7 @@ void Primitive_Batch::add_quad( Texture_Asset* texture, const Render_Vertex* v0,
 	}
 }
 
-void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
+void Primitive_Batch::add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a );
 	auto draw_call = ( e_draw_call::transparent * ( alpha != 3.f ) );
@@ -52,7 +52,7 @@ void Primitive_Batch::add_triangle( Texture_Asset* texture, const Render_Vertex*
 	}
 }
 
-void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
+void Primitive_Batch::add_line( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
 {
 	auto alpha = ( v0->a + v1->a );
 	auto draw_call = ( e_draw_call::transparent * ( alpha != 2.f ) );
@@ -66,7 +66,7 @@ void Primitive_Batch::add_line( Texture_Asset* texture, const Render_Vertex* v0,
 	}
 }
 
-void Primitive_Batch::add_point( Texture_Asset* texture, const Render_Vertex* v0 )
+void Primitive_Batch::add_point( const Texture_Asset* texture, const Render_Vertex* v0 )
 {
 	auto alpha = ( v0->a );
 	auto draw_call = ( e_draw_call::transparent * ( alpha != 1.f ) );
@@ -84,7 +84,7 @@ bool Primitive_Batch::is_empty()
 	return vao[ e_draw_call::opaque ].vb->vertices.empty() and vao[ e_draw_call::transparent ].vb->vertices.empty();
 }
 
-void Primitive_Batch::add_vert( e_draw_call_t draw_call, Texture_Asset* texture, const Render_Vertex* render_vert )
+void Primitive_Batch::add_vert( e_draw_call_t draw_call, const Texture_Asset* texture, const Render_Vertex* render_vert )
 {
 	auto texture_id = vao[ draw_call ].vb->assign_texture_slot( texture );
 
@@ -153,22 +153,22 @@ void Primitive_Batch_Group::flush_and_reset_internal( e_draw_call_t draw_call )
 	}
 }
 
-void Primitive_Batch_Group::add_quad( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
+void Primitive_Batch_Group::add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
 {
 	batches[ e_render_prim::quad ].add_quad( texture, v0, v1, v2, v3 );
 }
 
-void Primitive_Batch_Group::add_triangle( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
+void Primitive_Batch_Group::add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
 {
 	batches[ e_render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
 }
 
-void Primitive_Batch_Group::add_line( Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
+void Primitive_Batch_Group::add_line( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
 {
 	batches[ e_render_prim::line ].add_line( texture, v0, v1 );
 }
 
-void Primitive_Batch_Group::add_point( Texture_Asset* texture, const Render_Vertex* v0 )
+void Primitive_Batch_Group::add_point( const Texture_Asset* texture, const Render_Vertex* v0 )
 {
 	batches[ e_render_prim::point ].add_point( texture, v0 );
 }
@@ -177,7 +177,7 @@ void Primitive_Batch_Group::add_point( Texture_Asset* texture, const Render_Vert
 // draw anything. useful for when you want a shader to be able to access a
 // texture that isn't attached to geometry, like a LUT or a mask.
 
-size_t Primitive_Batch_Group::assign_texture_slot_manual( Texture_Asset* texture )
+size_t Primitive_Batch_Group::assign_texture_slot_manual( const Texture_Asset* texture )
 {
 	// this is making wild assumptions about which batch you're referring
 	// drawing from and which draw call pass. it's fine for now but this might

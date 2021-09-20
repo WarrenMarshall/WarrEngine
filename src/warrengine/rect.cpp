@@ -18,7 +18,7 @@ Rect::Rect( float_t x, float_t y, float_t w, float_t h )
 }
 
 Rect::Rect( int32_t x, int32_t y, int32_t w, int32_t h )
-	: x( (float)x ), y( (float)y ), w( (float)w ), h( (float)h )
+	: x( (float_t)x ), y( (float_t)y ), w( (float_t)w ), h( (float_t)h )
 {
 }
 

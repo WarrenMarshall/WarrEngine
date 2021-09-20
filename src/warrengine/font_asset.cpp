@@ -58,7 +58,7 @@ Vec2 Font_Asset::get_string_extents( std::string_view text ) const
 		pxch = &( font_def->char_map[ (int32_t)ch ] );
 
 		bounds.x += pxch->xadvance;
-		bounds.y = glm::max( bounds.y, (float)( pxch->h + pxch->yoffset ) );
+		bounds.y = glm::max( bounds.y, (float_t)( pxch->h + pxch->yoffset ) );
 	}
 
 	return bounds;

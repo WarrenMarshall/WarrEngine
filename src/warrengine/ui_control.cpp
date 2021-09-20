@@ -36,14 +36,14 @@ void UI_Control::draw_text( const Rect& rc_client, const Color& color, bool is_h
 	}
 }
 
-void UI_Control::draw_texture( const Rect& rc, Texture_Asset* texture, bool is_hovered, bool is_hot )
+void UI_Control::draw_texture( const Rect& rc, const Texture_Asset* texture, bool is_hovered, bool is_hot )
 {
 	Render::state->z += zdepth_nudge;
 	Render::state->color = g_ui->get_adjusted_color( make_color( e_pal::middle ), is_hovered, is_hot );
 	Render::draw_sprite( texture, rc.get_midpoint() );
 }
 
-void UI_Control::draw_image( const Rect& rc, Texture_Asset* texture )
+void UI_Control::draw_image( const Rect& rc, const Texture_Asset* texture )
 {
 	Render::state->z += zdepth_nudge;
 	Render::state->color = make_color( Color::white );

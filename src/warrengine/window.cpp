@@ -20,7 +20,7 @@ void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int32_t wid
 	// This allows us to work with a set size screen (viewport) and not have to worry about
 	// the user changing the window to some weird size.
 
-	g_engine->window.viewport_pos_sz = Rect( 0.f, 0.f, (float)( width ), (float)( height ) );
+	g_engine->window.viewport_pos_sz = Rect( 0.f, 0.f, (float_t)( width ), (float_t)( height ) );
 
 	float_t w_ratio = width / viewport_w;
 	float_t h_ratio = height / viewport_h;
@@ -52,8 +52,8 @@ Rect OS_Window::compute_max_window_size_for_desktop()
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.
 
-	auto wdiv = (int32_t)( std::floorf( desktop_w / (float)( viewport_w ) ) );
-	auto hdiv = (int32_t)( std::floorf( desktop_h / (float)( viewport_h ) ) );
+	auto wdiv = (int32_t)( std::floorf( desktop_w / (float_t)( viewport_w ) ) );
+	auto hdiv = (int32_t)( std::floorf( desktop_h / (float_t)( viewport_h ) ) );
 	int32_t div = glm::min( wdiv, hdiv );
 
 	Rect window_pos( 0.f, 0.f, viewport_w * div, viewport_h * div );

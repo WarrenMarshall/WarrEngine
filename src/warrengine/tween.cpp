@@ -31,6 +31,14 @@ float_t Tween::operator*()
 	return _tween.step( (int32_t)delta );
 }
 
+float_t Tween::value()
+{
+	time_ms delta = g_engine->clock.now() - time_last;
+	time_last = g_engine->clock.now();
+
+	return _tween.step( (int32_t)delta );
+}
+
 void Tween::restart()
 {
 	_tween.seek( 0.f, true );
@@ -102,16 +110,12 @@ void Tween::set_type( e_tween_type_t type )
 	switch( type )
 	{
 		case e_tween_type::loop:
-		{
 			_tween.onStep( on_step_loop );
 			break;
-		}
 
 		case e_tween_type::pingpong:
-		{
 			_tween.onStep( on_step_pingpong );
 			break;
-		}
 	}
 }
 

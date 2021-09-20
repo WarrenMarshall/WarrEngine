@@ -53,8 +53,6 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			}
 
 			gameplay_scene->player = e;
-
-			tile->idx = Tile_Map_Asset::Tile::empty;
 		}
 		break;
 	}

@@ -13,6 +13,7 @@ struct Tween final
 	Tween( float_t start, float_t end, time_ms duration_ms, e_tween_type_t type, e_tween_via_t via );
 
 	[[nodiscard]] float_t operator*();
+	[[nodiscard]] float_t value();
 
 	void restart();
 	void randomize();

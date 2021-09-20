@@ -41,7 +41,7 @@ int32_t Timer::get_elapsed()
 
 float_t Timer::get_pct_complete()
 {
-	float_t pct = ( g_engine->clock.now() - time_last ) / (float)interval_ms;
+	float_t pct = ( g_engine->clock.now() - time_last ) / (float_t)interval_ms;
 	return glm::clamp<float_t>( pct, 0.f, 1.f );
 }
 

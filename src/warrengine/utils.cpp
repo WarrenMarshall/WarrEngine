@@ -141,7 +141,7 @@ std::vector<war::Vec2> Geo_Util::generate_convex_shape( int32_t sides, float_t r
 	std::vector<Vec2> verts;
 
 	float_t angle = 0;
-	float_t angle_step = 360.f / (float)( sides );
+	float_t angle_step = 360.f / (float_t)( sides );
 
 	for( auto x = 0 ; x < sides ; ++x )
 	{

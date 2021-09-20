@@ -244,7 +244,7 @@ UI_Mgr* UI_Mgr::set_image( std::string_view tex_tag )
 	return set_image( g_engine->find_asset<Texture_Asset>( tex_tag ) );
 }
 
-UI_Mgr* UI_Mgr::set_image( Texture_Asset* tex )
+UI_Mgr* UI_Mgr::set_image( const Texture_Asset* tex )
 {
 	current_control->image = tex;
 

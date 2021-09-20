@@ -5,9 +5,9 @@
 namespace war
 {
 
-void Particle_Emitter::set_params( Emitter_Parameters_Asset* params )
+void Particle_Emitter::set_params( const Emitter_Parameters_Asset* params )
 {
-	this->params = params;
+	this->params = const_cast<Emitter_Parameters_Asset*>( params );
 
 	// "one shot" emitters don't get throttled like regular emitters.
 	// they spawn all of their particles, no matter what.

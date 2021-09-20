@@ -53,7 +53,7 @@ void Render::init_generate_circle_sample_points()
 	circle_sample_points.reserve( circle_sample_points_max );
 
 	float_t angle = 0;
-	float_t angle_step = 360.f / (float)( circle_sample_points_max );
+	float_t angle_step = 360.f / (float_t)( circle_sample_points_max );
 
 	for( auto x = 0 ; x < circle_sample_points_max ; ++x )
 	{
@@ -74,7 +74,7 @@ void Render::clear_render_state_stack()
 	Render::state = &render_states.back();
 }
 
-void Render::draw_mesh( Mesh_Asset* mesh )
+void Render::draw_mesh( const Mesh_Asset* mesh )
 {
 	{
 		scoped_opengl;
@@ -140,9 +140,9 @@ void Render::draw_mesh( Mesh_Asset* mesh )
 // this offsets along left and up by half the texture size, which centers the
 // quad being drawn at 0,0,0.
 
-void Render::draw_sprite( Texture_Asset* texture, const Vec2& dst )
+void Render::draw_sprite( const Texture_Asset* texture, const Vec2& dst )
 {
-	auto frame = texture->get_frame( Render::state->anim_offset );
+	const auto frame = const_cast<Texture_Asset*>( texture )->get_frame( Render::state->anim_offset );
 
 	float_t hw = frame->rc.w / 2.f;
 	float_t hh = frame->rc.h / 2.f;
@@ -177,16 +177,16 @@ void Render::draw_sprite( Texture_Asset* texture, const Vec2& dst )
 
 // draws a textured quad
 
-void Render::draw_quad( Texture_Asset* texture, const Vec2& dst )
+void Render::draw_quad( const Texture_Asset* texture, const Vec2& dst )
 {
-	Texture_Asset* frame = texture->get_frame( Render::state->anim_offset );
+	const Texture_Asset* frame = const_cast<Texture_Asset*>( texture )->get_frame( Render::state->anim_offset );
 
 	Render::draw_quad( texture, Rect( dst.x, dst.y, frame->rc.w, frame->rc.h ) );
 }
 
-void Render::draw_quad( Texture_Asset* texture, const Rect& dst )
+void Render::draw_quad( const Texture_Asset* texture, const Rect& dst )
 {
-	auto frame = texture->get_frame( Render::state->anim_offset );
+	const auto frame = const_cast<Texture_Asset*>( texture )->get_frame( Render::state->anim_offset );
 
 	float_t w = dst.w ? dst.w : frame->rc.w;
 	float_t h = dst.h ? dst.h : frame->rc.h;
@@ -219,11 +219,11 @@ void Render::draw_quad( Texture_Asset* texture, const Rect& dst )
 	}
 }
 
-void Render::draw_tiled( Texture_Asset* texture, const Rect& dst )
+void Render::draw_tiled( const Texture_Asset* texture, const Rect& dst )
 {
 	scoped_render_state;
 
-	Texture_Asset* frame = texture->get_frame( Render::state->anim_offset );
+	const Texture_Asset* frame = const_cast<Texture_Asset*>( texture )->get_frame( Render::state->anim_offset );
 
 	Render::state->uv_tiling = Vec2::compute_uv_tiling( frame, dst );
 
@@ -562,7 +562,7 @@ void Render::draw_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 )
 	Render::draw_line_loop( { v0, v1, v2 } );
 }
 
-void Render::draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, const Vec2& pos )
+void Render::draw_tile_map( const Tile_Set_Asset* tile_set, const Tile_Map_Asset* tile_map, const Vec2& pos )
 {
 	for( auto& layer : tile_map->layers )
 	{
@@ -628,7 +628,7 @@ void Render::draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, 
 						pos.y + ( ( y + chunk.tilemap_bounds.y ) * tile_map->tile_sz ) + ( tile_map->tile_sz / 2.f )
 					};
 
-					Texture_Asset* tile_set_texture = &tile_set->tile_definitions[ tile->idx ].texture;
+					const Texture_Asset* tile_set_texture = &tile_set->tile_definitions[ tile->idx ].texture;
 					Render::draw_sprite( tile_set_texture, tile_pos );
 				}
 			}

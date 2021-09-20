@@ -12,7 +12,7 @@ void Value_Accumulator::init()
 
 void Value_Accumulator::update_value( int32_t steps )
 {
-	value = accumulator / (float)( steps );
+	value = accumulator / (float_t)( steps );
 	accumulator = 0.f;
 }
 

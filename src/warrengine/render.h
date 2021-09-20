@@ -54,8 +54,8 @@ struct Render final
 	void init_set_up_default_palette();
 	void init_generate_circle_sample_points();
 
-	static void draw_quad( Texture_Asset* texture, const Vec2& dst );
-	static void draw_quad( Texture_Asset* texture, const Rect& dst );
+	static void draw_quad( const Texture_Asset* texture, const Vec2& dst );
+	static void draw_quad( const Texture_Asset* texture, const Rect& dst );
 
 	static auto get_circle_start_end_indices( e_corner_t corner );
 	static void draw_circle( const Vec2& origin, float_t radius, e_corner_t corner = e_corner::all );
@@ -77,13 +77,13 @@ struct Render final
 
 	static void draw_point( const Vec2& pos );
 
-	static void draw_mesh( Mesh_Asset* mesh );
+	static void draw_mesh( const Mesh_Asset* mesh );
 	static void draw_sliced( const Slice_Def_Asset* slice_def, const Rect& dst );
-	static void draw_sprite( Texture_Asset* texture, const Vec2& dst );
+	static void draw_sprite( const Texture_Asset* texture, const Vec2& dst );
 	static Vec2 draw_string( const std::string& text, const Vec2& pos );
 	static Vec2 draw_string( const std::vector<std::string>& text, const Rect& rc );
-	static void draw_tiled( Texture_Asset* texture, const Rect& dst );
-	static void draw_tile_map( Tile_Set_Asset* tile_set, Tile_Map_Asset* tile_map, const Vec2& pos );
+	static void draw_tiled( const Texture_Asset* texture, const Rect& dst );
+	static void draw_tile_map( const Tile_Set_Asset* tile_set, const Tile_Map_Asset* tile_map, const Vec2& pos );
 	static void draw_crosshair( Vec2 pos );
 
 	static std::vector<std::string> wrap_string_to_width( std::string_view text, float_t width );

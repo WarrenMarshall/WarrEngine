@@ -17,7 +17,7 @@ struct Particle_Emitter final
 	// than 1.0, it's time to spawn a particle.
 	float_t particles_to_spawn_accum = 0.f;
 
-	void set_params( Emitter_Parameters_Asset* params );
+	void set_params( const Emitter_Parameters_Asset* params );
 	void update();
 	void spawn_particle();
 	void warm_up();

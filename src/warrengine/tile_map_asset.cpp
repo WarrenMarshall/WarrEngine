@@ -203,8 +203,8 @@ bool Tile_Map_Asset::create()
 				current_layer->chunks.emplace_back();
 				current_chunk = &current_layer->chunks.back();
 
-				current_chunk->tilemap_bounds.w = (float)width;
-				current_chunk->tilemap_bounds.h = (float)height;
+				current_chunk->tilemap_bounds.w = (float_t)width;
+				current_chunk->tilemap_bounds.h = (float_t)height;
 
 				current_chunk->tiles.reserve( (size_t)( current_chunk->tilemap_bounds.w* current_chunk->tilemap_bounds.h ) );
 			}

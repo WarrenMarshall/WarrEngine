@@ -150,13 +150,13 @@ void Vertex_Array_Object::update_stats()
 		if( g_engine->render.debug.is_single_frame_logging() )
 		{
 			const char* prim_type_desc [] = { "quad", "triangle", "line", "point" };
-			auto prim_count = vb->vertices.num_objects_in_pool() / (float)vb->verts_per_element;
+			auto prim_count = vb->vertices.num_objects_in_pool() / (float_t)vb->verts_per_element;
 			log(
 				">> draw call >> {} {}{} (v: {}, i: {})",
 				f_commas( prim_count ),
 				prim_type_desc[ render_prim ],
 				( prim_count > 1.f ) ? "s" : "",
-				f_commas( (float)( vb->vertices.num_objects_in_pool() ) ),
+				f_commas( (float_t)( vb->vertices.num_objects_in_pool() ) ),
 				f_commas( vb->vertices.num_objects_in_pool() * indices_to_verts_factor )
 			);
 

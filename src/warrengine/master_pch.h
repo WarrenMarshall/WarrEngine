@@ -75,7 +75,7 @@ namespace fixed_time_step
 
 	// how many milliseconds will have passed each time a fixed time step update
 	// occurs
-	constexpr int32_t ms_per_step = (int32_t)( 1000.f / (float)frames_per_second );
+	constexpr int32_t ms_per_step = (int32_t)( 1000.f / (float_t)frames_per_second );
 
 	// any value you want to update as a "per second" value in an update
 	// function should be multiplied against this constant.
@@ -85,7 +85,7 @@ namespace fixed_time_step
 	//
 	// angle += 15.f * fixed_time_step::per_second_scaler;
 
-	constexpr float_t _per_second_scaler = 1.f / (float)frames_per_second;
+	constexpr float_t _per_second_scaler = 1.f / (float_t)frames_per_second;
 
 	template<typename T>
 	constexpr T per_second( T val )

@@ -35,7 +35,7 @@ float_t Random::getf_range( float_t min, float_t max )
 
 int32_t Random::geti_range( int32_t min, int32_t max )
 {
-	return (int32_t)( glm::floor( getf_range( (float)( min ), (float)( max ) ) + 0.5f ) );
+	return (int32_t)( glm::floor( getf_range( (float_t)( min ), (float_t)( max ) ) + 0.5f ) );
 }
 
 // returns a vec2 inside of a circle

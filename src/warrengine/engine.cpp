@@ -255,7 +255,7 @@ void Engine::main_loop()
 		//
 		// it is passed a percentage for easier use : 0.f-1.f
 
-		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / (float)fixed_time_step::ms_per_step;
+		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / (float_t)fixed_time_step::ms_per_step;
 
 		// if due for a fixed time step ...
 
@@ -288,7 +288,7 @@ void Engine::main_loop()
 
 			g_engine->stats.update();
 
-			g_engine->opengl_mgr.set_uniform_float( "u_current_time", (float)clock.now() / 1000.f );
+			g_engine->opengl_mgr.set_uniform_float( "u_current_time", (float_t)clock.now() / 1000.f );
 			g_engine->opengl_mgr.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
 		}
 
@@ -675,7 +675,7 @@ void Engine::precache_asset_resources( int32_t pass )
 		iter.precache_asset_resources( pass );
 	}
 
-	log( "Pass: {} / {} total assets precached", pass, f_commas( (float)( g_engine->asset_cache.cache.size() ) ) );
+	log( "Pass: {} / {} total assets precached", pass, f_commas( (float_t)( g_engine->asset_cache.cache.size() ) ) );
 }
 
 // loops through all threads we have a handle for and waits until they finish
@@ -938,7 +938,7 @@ void Engine::debug_draw_buffers()
 	g_engine->render_api.shaders[ "simple" ].bind();
 
 	auto num_color_attachments = frame_buffer->color_attachments.size();
-	float_t scale_factor = 1.f / (float)num_color_attachments;
+	float_t scale_factor = 1.f / (float_t)num_color_attachments;
 	float_t w = viewport_w * scale_factor;
 	float_t h = viewport_h * scale_factor;
 	rect rc = { 0.f, viewport_h - h, w, h };

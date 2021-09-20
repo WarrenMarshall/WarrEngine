@@ -122,7 +122,7 @@ void Game_Controller::play_rumble( int32_t intensity, int32_t ms )
 	rumbler.wRightMotorSpeed = (WORD)( intensity );
 	XInputSetState( player_id, &rumbler );
 
-	rumble_time_remaining_ms = (float)( ms );
+	rumble_time_remaining_ms = (float_t)( ms );
 }
 
 }

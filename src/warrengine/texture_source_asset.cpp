@@ -21,8 +21,8 @@ bool Texture_Source_Asset::create()
 	}
 
 	auto sz = image->getSize();
-	w = (float)sz.x;
-	h = (float)sz.y;
+	w = (float_t)sz.x;
+	h = (float_t)sz.y;
 
 	image->flipVertically();
 

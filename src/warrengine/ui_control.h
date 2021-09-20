@@ -13,7 +13,7 @@ struct UI_Control final
 	Color primary_color = Color::black;
 	Slice_Def_Asset* slice_def = nullptr;
 	int32_t idx = -1;
-	Texture_Asset* image = nullptr;
+	const Texture_Asset* image = nullptr;
 	f_draw_control func_draw_control = nullptr;
 
 	// expressed as a 0-1 percentage.  So 0.2 would be 5 intervals, 0.1 would be 10, etc.
@@ -42,8 +42,8 @@ struct UI_Control final
 
 	void draw_slice_def( const Rect & rc_ui, bool is_hovered, bool is_hot );
 	void draw_text( const Rect & rc_client, const Color & color, bool is_hovered, bool is_hot, const std::string & text );
-	void draw_texture( const Rect & rc, Texture_Asset * texture, bool is_hovered, bool is_hot );
-	void draw_image( const Rect & rc, Texture_Asset * texture );
+	void draw_texture( const Rect & rc, const Texture_Asset * texture, bool is_hovered, bool is_hot );
+	void draw_image( const Rect & rc, const Texture_Asset * texture );
 
 	virtual void draw( const Rect & rc_ui, const Rect & rc_client, bool is_hovered, bool is_hot );
 

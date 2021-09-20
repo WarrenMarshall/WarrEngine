@@ -31,8 +31,8 @@ void character_callback( GLFWwindow* window, uint32_t key_code )
 
 void mouse_wheel_callback( GLFWwindow* window, double_t xoffset, double_t yoffset )
 {
-	g_engine->input_mgr.mouse_wheel_delta.x += (float)( xoffset );
-	g_engine->input_mgr.mouse_wheel_delta.y += (float)( yoffset );
+	g_engine->input_mgr.mouse_wheel_delta.x += (float_t)( xoffset );
+	g_engine->input_mgr.mouse_wheel_delta.y += (float_t)( yoffset );
 }
 
 // ----------------------------------------------------------------------------
@@ -41,8 +41,8 @@ static Vec2 last_mouse_pos = Vec2::zero;
 
 void mouse_motion_callback( GLFWwindow* window, double_t xpos, double_t ypos )
 {
-	auto fxpos = (float)xpos;
-	auto fypos = (float)ypos;
+	auto fxpos = (float_t)xpos;
+	auto fypos = (float_t)ypos;
 
 	// compute movement delta in window space
 	g_engine->input_mgr.mouse_move_delta.x += fxpos - last_mouse_pos.x;
@@ -539,8 +539,8 @@ Vec2 Input_Mgr::get_axis_state( e_input_id_t input_id, bool use_dead_zone )
 	{
 		case e_input_id::gamepad_left_stick:
 		{
-			value.x = glm::max( -1.f, (float)gamepad->xinput_state.Gamepad.sThumbLX / 32767.f );
-			value.y = glm::max( -1.f, (float)gamepad->xinput_state.Gamepad.sThumbLY / 32767.f ) * -1.f;
+			value.x = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbLX / 32767.f );
+			value.y = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbLY / 32767.f ) * -1.f;
 
 			if( use_dead_zone )
 			{
@@ -555,8 +555,8 @@ Vec2 Input_Mgr::get_axis_state( e_input_id_t input_id, bool use_dead_zone )
 
 		case e_input_id::gamepad_right_stick:
 		{
-			value.x = glm::max( -1.f, (float)gamepad->xinput_state.Gamepad.sThumbRX / 32767.f );
-			value.y = glm::max( -1.f, (float)gamepad->xinput_state.Gamepad.sThumbRY / 32767.f ) * -1.f;
+			value.x = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbRX / 32767.f );
+			value.y = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbRY / 32767.f ) * -1.f;
 
 			if( use_dead_zone )
 			{

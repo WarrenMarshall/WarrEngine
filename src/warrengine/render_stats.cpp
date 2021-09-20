@@ -86,7 +86,7 @@ void Render_Stats::draw()
 				Render::state->color = make_color( 0, 0.5f );
 				Render::draw_filled_rect(
 					Rect( 0.f, 0.f,
-					ui_w, (float)( g_engine->pixel_font->get_max_height() * stat_strings.size() ) )
+					ui_w, (float_t)( g_engine->pixel_font->get_max_height() * stat_strings.size() ) )
 				);
 
 				Render::state->z += zdepth_nudge;
