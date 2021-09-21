@@ -504,3 +504,11 @@ enum_begin( tnkf_type )
 	reset_scene_stack_to_main_menu,
 	max,
 enum_end
+
+// ----------------------------------------------------------------------------
+
+enum_begin( sensor_type )
+	one_shot,
+	repeating,
+	continuous
+enum_end

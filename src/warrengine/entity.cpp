@@ -418,6 +418,7 @@ bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
+		log( "false" );
 		sensor->parent_entity->simple.is_in_air = false;
 	}
 
@@ -438,6 +439,7 @@ bool Entity::on_touching_end( Simple_Collision_Body* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
+		log( "true" );
 		sensor->parent_entity->simple.is_in_air = true;
 	}
 

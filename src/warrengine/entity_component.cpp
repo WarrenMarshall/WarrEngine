@@ -785,7 +785,24 @@ void Mesh_Component::draw()
 Simple_Collision_Body::Simple_Collision_Body( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
-	trigger.time_next = g_engine->clock.now();
+	sensor.time_next = g_engine->clock.now();
+}
+
+void Simple_Collision_Body::set_sensor_as_one_shot()
+{
+	sensor.type = e_sensor_type::one_shot;
+}
+
+void Simple_Collision_Body::set_sensor_as_repeating( time_ms delay )
+{
+	sensor.type = e_sensor_type::repeating;
+	sensor.time_delay = delay;
+	sensor.time_next = g_engine->clock.now();
+}
+
+void Simple_Collision_Body::set_sensor_as_continuous()
+{
+	sensor.type = e_sensor_type::continuous;
 }
 
 void Simple_Collision_Body::draw()
@@ -935,11 +952,6 @@ void Simple_Collision_Body::set_as_polygon( std::vector<Vec2> vs )
 	verts.clear();
 	verts.reserve( verts.size() );
 	verts.insert( verts.end(), vs.begin(), vs.end() );
-}
-
-void Simple_Collision_Body::set_body_collider_type( e_sc_body_collider_type_t type )
-{
-	this->collider_type = type;
 }
 
 // does a broad phase check against "scc" to see if these bodies are intersecting
@@ -1242,10 +1254,6 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 		return std::nullopt;
 	}
 
-	// if any of these assert, something weird is happening
-	//assert( !isnan( collision.manifold.n.x ) );
-	//assert( !isnan( collision.manifold.n.y ) );
-
 	// fill out the collision structure and return a positive result
 
 	collision.entity_a = parent_entity;
@@ -1312,12 +1320,14 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 		case e_sc_prim_type::aabb:
 		{
 			assert( false );	// this has never been tested
+/*
 			auto aabb_ws = as_simple_aabb();
 
 			Vec2 extents = { aabb_ws.max.x - aabb_ws.min.x, aabb_ws.max.y - aabb_ws.min.y };
 
 			circle.p = { extents.x / 2.f, extents.y / 2.f };
 			circle.r = glm::max( extents.x, extents.y );
+*/
 		}
 		break;
 
@@ -1325,6 +1335,7 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 		{
 			assert( false );	// this has never been tested
 
+/*
 			auto poly_ws = as_simple_poly();
 
 			Bounding_Box bbox;
@@ -1337,6 +1348,7 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 
 			circle.p = { extents.x / 2.f, extents.y / 2.f };
 			circle.r = glm::max( extents.x, extents.y );
+*/
 		}
 		break;
 	}
@@ -1584,8 +1596,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 						{
 							std::string wk = std::string( *value );
 							String_Util::erase_char( wk, '\"' );
-							ec->trigger.time_delay = Text_Parser::uint_from_str( wk );
-							ec->trigger.one_shot = false;
+							ec->set_sensor_as_repeating( Text_Parser::uint_from_str( wk ) );
 						}
 					}
 				}
@@ -1631,7 +1642,7 @@ Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const
 	}
 
 	ec->set_collision_flags( collision_mask, collides_with_mask );
-	ec->set_body_collider_type( collider_type );
+	ec->type = collider_type;
 
 	return ec;
 }
@@ -1665,7 +1676,5 @@ void Tile_Map_Component::draw()
 
 	Render::draw_tile_map( tile_set, tile_map, Vec2( 0.f, 0.f ) );
 }
-
-// ----------------------------------------------------------------------------
 
 }

@@ -265,9 +265,11 @@ bool Tile_Map_Asset::create()
 				if( *key == "name" )
 				{
 					std::string value = std::string( *subtok.get_next_token() );
+
 					String_Util::erase_char( value, '\"' );
 					String_Util::erase_char( value, '/' );
 					String_Util::erase_char( value, '>' );
+
 					current_object_group->tag = value;
 				}
 				else if( *key == "visible" )

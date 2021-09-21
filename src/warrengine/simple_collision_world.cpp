@@ -436,7 +436,7 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 			if( !last_frame and this_frame )
 			{
 				// if sensor is one-shot and has already triggered, skip it
-				if( sensor->trigger.one_shot and sensor->trigger.expired )
+				if( sensor->sensor.is_one_shot() and sensor->sensor.is_expired() )
 				{
 					continue;
 				}
@@ -450,9 +450,9 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 
 				// if it's a repeating sensor, set the next available time to
 				// right now
-				if( !sensor->trigger.one_shot )
+				if( sensor->sensor.is_repeating() )
 				{
-					sensor->trigger.time_next = g_engine->clock.now();
+					sensor->sensor.time_next = g_engine->clock.now();
 				}
 			}
 
@@ -461,14 +461,14 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 			if( last_frame and this_frame )
 			{
 				// if sensor is one-shot and has already triggered, skip it
-				if( sensor->trigger.one_shot and sensor->trigger.expired )
+				if( sensor->sensor.is_one_shot() and sensor->sensor.is_expired() )
 				{
 					continue;
 				}
 
 				// if this is a repeating sensor but we are still in the delay
 				// period, skip it
-				if( sensor->trigger.time_next == 0 or g_engine->clock.now() < sensor->trigger.time_next )
+				if( sensor->sensor.is_repeating() and g_engine->clock.now() < sensor->sensor.time_next )
 				{
 					continue;
 				}
@@ -482,13 +482,13 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 
 				// if this is a repeating trigger, set the next time it is
 				// available to fire. otherwise mark it as triggered.
-				if( sensor->trigger.time_delay > 0 )
+				if( sensor->sensor.is_repeating() )
 				{
-					sensor->trigger.time_next = g_engine->clock.now() + sensor->trigger.time_delay;
+					sensor->sensor.time_next = g_engine->clock.now() + sensor->sensor.time_delay;
 				}
 				else
 				{
-					sensor->trigger.expired = true;
+					sensor->sensor.expired = true;
 				}
 			}
 
@@ -497,7 +497,7 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 			if( last_frame and !this_frame )
 			{
 				// if sensor is one-shot and has already triggered, skip it
-				if( sensor->trigger.one_shot and sensor->trigger.expired )
+				if( sensor->sensor.is_one_shot() and sensor->sensor.is_expired() )
 				{
 					continue;
 				}

@@ -292,17 +292,28 @@ struct Simple_Collision_Body : Entity_Component
 		std::vector<Vec2> verts = {};
 	} ws;
 
+	void set_sensor_as_one_shot();
+	void set_sensor_as_repeating( time_ms delay );
+	void set_sensor_as_continuous();
+
 	struct
 	{
+		e_sensor_type_t type = e_sensor_type::one_shot;
+
 		// how long this sensor will wait between registering collision
 		time_ms time_delay = 0;
 		// the next time this sensor is available for collision
 		time_ms time_next = 0;
 
-		bool one_shot = true;
+		//bool one_shot = true;
 		bool expired = false;
 
-	} trigger;
+		bool is_one_shot() { return (type == e_sensor_type::one_shot ); }
+		bool is_repeating() { return (type == e_sensor_type::repeating ); }
+		bool is_continuous() { return (type == e_sensor_type::continuous ); }
+		bool is_expired() { return expired; }
+
+	} sensor;
 
 	virtual void draw() override;
 	void update_to_match_parent_transform();
@@ -310,7 +321,6 @@ struct Simple_Collision_Body : Entity_Component
 	void set_as_centered_box( float_t w, float_t h );
 	void set_as_circle( float_t r );
 	void set_as_polygon( std::vector<Vec2> verts );
-	void set_body_collider_type( e_sc_body_collider_type_t type );
 
 	bool does_intersect( Simple_Collision_Body* scc );
 	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other );

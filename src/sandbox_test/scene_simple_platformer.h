@@ -40,6 +40,7 @@ struct Scene_Simple_Platformer final : Scene
 	Scene_Simple_Platformer();
 
 	virtual void draw() override;
+	virtual void draw_ui() override;
 	virtual void pushed() override;
 	virtual void update() override;
 

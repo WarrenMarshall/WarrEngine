@@ -72,14 +72,16 @@ void Scene_Simple_Sensors::pushed()
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw / 4.f, 0.f } );
 			ec->set_as_circle( 16.f );
-			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
+			ec->collider_type = e_sc_body_collider_type::sensor;
+			ec->set_sensor_as_continuous();
 			ec->set_collision_flags( coll_flags.sensor, 0 );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw / 2.f, 16.f } );
 			ec->set_as_circle( 32.f );
-			ec->set_body_collider_type( e_sc_body_collider_type::sensor );
+			ec->collider_type = e_sc_body_collider_type::sensor;
+			ec->set_sensor_as_continuous();
 			ec->set_collision_flags( coll_flags.sensor, 0 );
 		}
 	}

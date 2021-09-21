@@ -21,9 +21,9 @@ struct Emitter_Parameters_Asset final : Asset
 	float_t a_dir = 0.f;					// the base direction that particles start moving in when they spawn
 	float_t s_max_alive = 0.f;			// if > 0, dictates the maximum number of particles that can be alive at one time
 
-	bool needs_warm_up = false;
-	bool is_one_shot = false;
-	bool uses_gravity = false;
+	bool needs_warm_up : 1 = false;
+	bool is_one_shot : 1 = false;
+	bool uses_gravity : 1 = false;
 
 	Emitter_Parameters_Asset();
 };
