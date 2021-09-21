@@ -222,13 +222,16 @@ bool Tile_Map_Asset::create()
 					auto value = subtok.get_next_token();
 					assert( value.has_value() );
 
-					current_layer->tag = *value;
-					String_Util::erase_char( current_layer->tag, '\"' );
-					String_Util::erase_char( current_layer->tag, '/' );
-					String_Util::erase_char( current_layer->tag, '>' );
+					std::string wk = std::string( *value );
+
+					String_Util::erase_char( wk, '\"' );
+					String_Util::erase_char( wk, '/' );
+					String_Util::erase_char( wk, '>' );
+
+					current_layer->tag = H( wk.c_str() );
 
 					// some layer names mean special things
-					if( current_layer->tag == "entities" )
+					if( current_layer->tag == H( "entities" ) )
 					{
 						current_layer->flags.should_draw = false;
 					}

@@ -1636,14 +1636,14 @@ Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const
 	return ec;
 }
 
-// loops through any layer with the name "entities" and calls the callback
+// loops through any layer with the tag "entities" and calls the callback
 // function with that index so the layer in question can spawn it
 
 void Tile_Map_Component::spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback )
 {
 	for( auto& layer : tile_map->layers )
 	{
-		if( layer.tag == "entities" )
+		if( layer.tag == H( "entities" ) )
 		{
 			for( auto& chunk : layer.chunks )
 			{

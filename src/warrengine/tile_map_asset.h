@@ -53,7 +53,7 @@ struct Tile_Map_Asset final : Asset
 			bool is_visible : 1 = true;
 			bool should_draw : 1 = true;
 		} flags;
-		std::string tag;
+		hash tag;
 		std::vector<Chunk> chunks = {};
 	};
 
