@@ -566,13 +566,7 @@ void Render::draw_tile_map( const Tile_Set_Asset* tile_set, const Tile_Map_Asset
 {
 	for( auto& layer : tile_map->layers )
 	{
-		if( !layer.is_visible )
-		{
-			continue;
-		}
-
-		// skip special utility layers
-		if( layer.tag == "entities" )
+		if( !layer.flags.is_visible or !layer.flags.should_draw )
 		{
 			continue;
 		}

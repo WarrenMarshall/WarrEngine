@@ -1394,7 +1394,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 	for( auto& layer : tile_map->layers )
 	{
-		if( !layer.is_visible )
+		if( !layer.flags.is_visible )
 		{
 			continue;
 		}

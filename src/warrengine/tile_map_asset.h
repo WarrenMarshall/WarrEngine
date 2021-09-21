@@ -48,9 +48,13 @@ struct Tile_Map_Asset final : Asset
 
 	struct Layer final
 	{
+		struct
+		{
+			bool is_visible : 1 = true;
+			bool should_draw : 1 = true;
+		} flags;
 		std::string tag;
 		std::vector<Chunk> chunks = {};
-		bool is_visible = true;
 	};
 
 	// global info about the tile map

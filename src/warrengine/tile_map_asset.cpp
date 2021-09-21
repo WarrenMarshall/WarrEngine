@@ -226,13 +226,19 @@ bool Tile_Map_Asset::create()
 					String_Util::erase_char( current_layer->tag, '\"' );
 					String_Util::erase_char( current_layer->tag, '/' );
 					String_Util::erase_char( current_layer->tag, '>' );
+
+					// some layer names mean special things
+					if( current_layer->tag == "entities" )
+					{
+						current_layer->flags.should_draw = false;
+					}
 				}
 				else if( *key == "visible" )
 				{
 					auto value = subtok.get_next_token();
 					assert( value.has_value() );
 
-					current_layer->is_visible = Text_Parser::bool_from_str( *value );
+					current_layer->flags.is_visible = Text_Parser::bool_from_str( *value );
 				}
 			}
 		}
