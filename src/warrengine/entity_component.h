@@ -261,7 +261,7 @@ struct Simple_Collision_Body : Entity_Component
 	Simple_Collision_Body( Entity* parent_entity );
 	virtual ~Simple_Collision_Body() = default;
 
-	e_sc_prim_type_t type = e_sc_prim_type::circle;
+	e_sc_prim_type_t prim_type = e_sc_prim_type::circle;
 
 	bool is_platform = false;
 
@@ -277,10 +277,10 @@ struct Simple_Collision_Body : Entity_Component
 	// verts
 	std::vector<Vec2> verts = {};
 
-	e_sc_body_collider_type_t collider_type = e_sc_body_collider_type::solid;
+	e_solidity_t solidity = e_solidity::solid;
 
-	[[nodiscard]] bool is_solid()	{ return collider_type == e_sc_body_collider_type::solid; }
-	[[nodiscard]] bool is_sensor()	{ return collider_type == e_sc_body_collider_type::sensor; }
+	[[nodiscard]] bool is_solid()	{ return solidity == e_solidity::solid; }
+	[[nodiscard]] bool is_sensor()	{ return solidity == e_solidity::sensor; }
 
 	// worlspace positions - these are computed as needed and are necessary for
 	// testing collisions in the proper locations
@@ -305,7 +305,6 @@ struct Simple_Collision_Body : Entity_Component
 		// the next time this sensor is available for collision
 		time_ms time_next = 0;
 
-		//bool one_shot = true;
 		bool expired = false;
 
 		bool is_one_shot() { return (type == e_sensor_type::one_shot ); }
@@ -354,7 +353,7 @@ struct Tile_Map_Component final : Entity_Component
 	virtual void draw() override;
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
-	Simple_Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_sc_body_collider_type_t collider_type );
+	Simple_Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_solidity_t collider_type );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
 

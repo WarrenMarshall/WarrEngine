@@ -39,7 +39,7 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 
 		c2Raycast raycast = {};
 
-		switch( scc->type )
+		switch( scc->prim_type )
 		{
 			case e_sc_prim_type::circle:
 			{
@@ -410,18 +410,18 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 	}
 }
 
-void Simple_Collision_World::init_sensor_sets_for_new_frame( Scene* scene ) const
+void Simple_Collision_World::init_sensor_sets_for_new_frame() const
 {
-	for( auto& entity : scene->entities )
+	for( auto& entity : parent_scene->entities )
 	{
 		entity->sensors_last_frame = entity->sensors_this_frame;
 		entity->sensors_this_frame.clear();
 	}
 }
 
-void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
+void Simple_Collision_World::process_sensor_sets() const
 {
-	for( auto& entity : scene->entities )
+	for( auto& entity : parent_scene->entities )
 	{
 		std::set<Simple_Collision_Body*> common_set = entity->sensors_last_frame;
 		common_set.insert( entity->sensors_this_frame.begin(), entity->sensors_this_frame.end() );
@@ -443,7 +443,7 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 
 				// give the scene a chance to handle the event, otherwise pass
 				// to the entity doing the touching
-				if( !scene->on_entity_and_sensor_touching_begin( entity.get(), sensor ) )
+				if( !parent_scene->on_entity_and_sensor_touching_begin( entity.get(), sensor ) )
 				{
 					entity->on_touching_begin( sensor );
 				}
@@ -475,7 +475,7 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 
 				// give the scene a chance to handle the event, otherwise pass
 				// to the entity doing the touching
-				if( !scene->on_entity_and_sensor_touching( entity.get(), sensor) )
+				if( !parent_scene->on_entity_and_sensor_touching( entity.get(), sensor) )
 				{
 					entity->on_touching( sensor );
 				}
@@ -504,7 +504,7 @@ void Simple_Collision_World::process_sensor_sets( Scene* scene ) const
 
 				// give the scene a chance to handle the event, otherwise pass
 				// to the entity doing the touching
-				if( !scene->on_entity_and_sensor_touching_end( entity.get(), sensor ) )
+				if( !parent_scene->on_entity_and_sensor_touching_end( entity.get(), sensor ) )
 				{
 					entity->on_touching_end( sensor );
 				}

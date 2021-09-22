@@ -190,7 +190,7 @@
   </data>
  </layer>
  <objectgroup id="3" name="collision"/>
- <objectgroup id="4" name="triggers">
+ <objectgroup id="4" name="sensors">
   <object id="44" name="tag=trigger_shake,delay=1000" x="16" y="0" width="64" height="16"/>
   <object id="49" name="tag=trigger_hallway" x="160" y="48" width="64" height="16"/>
  </objectgroup>

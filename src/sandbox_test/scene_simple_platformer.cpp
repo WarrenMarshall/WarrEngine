@@ -56,7 +56,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			}
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
-				ec->collider_type = e_sc_body_collider_type::sensor;
+				ec->solidity = e_solidity::sensor;
 				ec->set_sensor_as_continuous();
 				ec->set_as_centered_box( 16.f, 6.f );
 				ec->get_transform()->add_pos( { 0.f, 4.f } );
@@ -95,7 +95,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
 				ec->tag = H( "ground_sensor" );
-				ec->collider_type = e_sc_body_collider_type::sensor;
+				ec->solidity = e_solidity::sensor;
 				ec->set_sensor_as_continuous();
 				ec->set_as_circle( 4.f );
 				ec->get_transform()->set_pos( { 0.f, 8.f } );
@@ -169,7 +169,7 @@ void Scene_Simple_Platformer::pushed()
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
-			ec->collider_type = e_sc_body_collider_type::sensor;
+			ec->solidity = e_solidity::sensor;
 			ec->set_sensor_as_continuous();
 			ec->set_as_centered_box( 48.f, 4.f );
 			ec->get_transform()->add_pos( { 0.f, -8.0f } );
@@ -200,7 +200,7 @@ void Scene_Simple_Platformer::pushed()
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
-			ec->collider_type = e_sc_body_collider_type::sensor;
+			ec->collider_type = e_solidity::sensor;
 			ec->set_sensor_as_continuous();
 			//ec->set_as_centered_box( 48.f, 4.f );
 			//ec->get_transform()->add_pos( { 0.f, -8.0f } );

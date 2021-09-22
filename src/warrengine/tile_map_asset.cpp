@@ -335,7 +335,7 @@ bool Tile_Map_Asset::create()
 						// polygonal shape for collision to work properly. AABBs
 						// can't be rotated, obviously.
 
-						current_object->collision_type = e_sc_prim_type::polygon;
+						current_object->collision_prim_type = e_sc_prim_type::polygon;
 
 						auto w = current_object->rc.w;
 						auto h = current_object->rc.h;
@@ -371,7 +371,7 @@ bool Tile_Map_Asset::create()
 			assert( current_object_group );
 			assert( current_object );
 
-			current_object->collision_type = e_sc_prim_type::polygon;
+			current_object->collision_prim_type = e_sc_prim_type::polygon;
 			current_object->vertices.clear();
 
 			Tokenizer tok( line, " ", true );
@@ -419,7 +419,7 @@ bool Tile_Map_Asset::create()
 		{
 			assert( current_object );
 
-			current_object->collision_type = e_sc_prim_type::circle;
+			current_object->collision_prim_type = e_sc_prim_type::circle;
 			current_object->radius = current_object->rc.w / 2.f;
 		}
 		else if( line.starts_with( "</object" ) )

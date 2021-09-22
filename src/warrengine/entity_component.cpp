@@ -790,11 +790,13 @@ Simple_Collision_Body::Simple_Collision_Body( Entity* parent_entity )
 
 void Simple_Collision_Body::set_sensor_as_one_shot()
 {
+	solidity = e_solidity::sensor;
 	sensor.type = e_sensor_type::one_shot;
 }
 
 void Simple_Collision_Body::set_sensor_as_repeating( time_ms delay )
 {
+	solidity = e_solidity::sensor;
 	sensor.type = e_sensor_type::repeating;
 	sensor.time_delay = delay;
 	sensor.time_next = g_engine->clock.now();
@@ -802,6 +804,7 @@ void Simple_Collision_Body::set_sensor_as_repeating( time_ms delay )
 
 void Simple_Collision_Body::set_sensor_as_continuous()
 {
+	solidity = e_solidity::sensor;
 	sensor.type = e_sensor_type::continuous;
 }
 
@@ -818,9 +821,9 @@ void Simple_Collision_Body::draw()
 
 		// determine the color from the type
 
-		switch( collider_type )
+		switch( solidity )
 		{
-			case e_sc_body_collider_type::solid:
+			case e_solidity::solid:
 			{
 				Render::state->color = make_color( Color::light_green );
 
@@ -841,7 +844,7 @@ void Simple_Collision_Body::draw()
 			}
 			break;
 
-			case e_sc_body_collider_type::sensor:
+			case e_solidity::sensor:
 			{
 				Render::state->color = make_color( Color::light_blue );
 			}
@@ -850,7 +853,7 @@ void Simple_Collision_Body::draw()
 
 		// draw the primitive
 
-		switch( type )
+		switch( prim_type )
 		{
 			case e_sc_prim_type::circle:
 			{
@@ -886,7 +889,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 	tform = get_transform();
 	g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, 0.f, tform->scale );
 
-	switch( type )
+	switch( prim_type )
 	{
 		case e_sc_prim_type::circle:
 		{
@@ -922,7 +925,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 void Simple_Collision_Body::set_as_box( float_t w, float_t h )
 {
-	type = e_sc_prim_type::aabb;
+	prim_type = e_sc_prim_type::aabb;
 	aabb.x = 0.f;
 	aabb.y = 0.f;
 	aabb.w = w;
@@ -933,7 +936,7 @@ void Simple_Collision_Body::set_as_box( float_t w, float_t h )
 
 void Simple_Collision_Body::set_as_centered_box( float_t w, float_t h )
 {
-	type = e_sc_prim_type::aabb;
+	prim_type = e_sc_prim_type::aabb;
 	aabb.x = -w / 2.f;
 	aabb.y = -h / 2.f;
 	aabb.w = w;
@@ -942,13 +945,13 @@ void Simple_Collision_Body::set_as_centered_box( float_t w, float_t h )
 
 void Simple_Collision_Body::set_as_circle( float_t r )
 {
-	type = e_sc_prim_type::circle;
+	prim_type = e_sc_prim_type::circle;
 	radius = r;
 }
 
 void Simple_Collision_Body::set_as_polygon( std::vector<Vec2> vs )
 {
-	type = e_sc_prim_type::polygon;
+	prim_type = e_sc_prim_type::polygon;
 	verts.clear();
 	verts.reserve( verts.size() );
 	verts.insert( verts.end(), vs.begin(), vs.end() );
@@ -978,11 +981,11 @@ bool Simple_Collision_Body::does_intersect( Simple_Collision_Body* scc )
 
 	// perform different checks based on body types
 
-	switch( type )
+	switch( prim_type )
 	{
 		case e_sc_prim_type::circle:
 		{
-			switch( scc->type )
+			switch( scc->prim_type )
 			{
 				case e_sc_prim_type::circle:
 				{
@@ -1022,7 +1025,7 @@ bool Simple_Collision_Body::does_intersect( Simple_Collision_Body* scc )
 
 		case e_sc_prim_type::aabb:
 		{
-			switch( scc->type )
+			switch( scc->prim_type )
 			{
 				case e_sc_prim_type::circle:
 				{
@@ -1062,7 +1065,7 @@ bool Simple_Collision_Body::does_intersect( Simple_Collision_Body* scc )
 
 		case e_sc_prim_type::polygon:
 		{
-			switch( scc->type )
+			switch( scc->prim_type )
 			{
 				case e_sc_prim_type::circle:
 				{
@@ -1110,11 +1113,11 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 {
 	simple_collision::Pending_Collision collision;
 
-	switch( type )
+	switch( prim_type )
 	{
 		case e_sc_prim_type::circle:
 		{
-			switch( other->type )
+			switch( other->prim_type )
 			{
 				case e_sc_prim_type::circle:
 				{
@@ -1154,7 +1157,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 
 		case e_sc_prim_type::aabb:
 		{
-			switch( other->type )
+			switch( other->prim_type )
 			{
 				case e_sc_prim_type::circle:
 				{
@@ -1197,7 +1200,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 
 		case e_sc_prim_type::polygon:
 		{
-			switch( other->type )
+			switch( other->prim_type )
 			{
 				case e_sc_prim_type::circle:
 				{
@@ -1309,7 +1312,7 @@ c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
 {
 	c2Circle circle = {};
 
-	switch( type )
+	switch( prim_type )
 	{
 		case e_sc_prim_type::circle:
 		{
@@ -1434,7 +1437,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 					for( auto& obj : tile_definition->objects )
 					{
-						switch( obj.collision_type )
+						switch( obj.collision_prim_type )
 						{
 							case e_sc_prim_type::aabb:
 							{
@@ -1558,7 +1561,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 				}
 				else
 				{
-					add_collision_body_from_object( obj, e_sc_body_collider_type::solid );
+					add_collision_body_from_object( obj, e_solidity::solid );
 				}
 			}
 		}
@@ -1567,11 +1570,12 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 			// this doesn't exist yet - if you want it, we gotta write it!
 			assert( false );
 		}
-		else if( og.tag == "triggers" )
+		else if( og.tag == "sensors" )
 		{
 			for( auto& obj : og.objects )
 			{
-				auto ec = add_collision_body_from_object( obj, e_sc_body_collider_type::sensor );
+				auto ec = add_collision_body_from_object( obj, e_solidity::sensor );
+				ec->set_sensor_as_one_shot();
 
 				if( !obj.name.empty() )
 				{
@@ -1613,11 +1617,11 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 // adds an appropriate simple_collision_body based on a Tiled_Object we read
 // from the tile map
 
-Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_sc_body_collider_type_t collider_type )
+Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_solidity_t collider_type )
 {
 	auto ec = parent_entity->add_component<Simple_Collision_Body>();
 
-	switch( obj.collision_type )
+	switch( obj.collision_prim_type )
 	{
 		case e_sc_prim_type::aabb:
 		{
@@ -1642,7 +1646,6 @@ Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const
 	}
 
 	ec->set_collision_flags( collision_mask, collides_with_mask );
-	ec->type = collider_type;
 
 	return ec;
 }

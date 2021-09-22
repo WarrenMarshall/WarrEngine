@@ -56,8 +56,8 @@ struct Simple_Collision_World final
 	void push_apart( simple_collision::Pending_Collision& coll );
 	void resolve_solid_collision( simple_collision::Pending_Collision& coll );
 	void resolve_sensor_collision( simple_collision::Pending_Collision& coll );
-	void init_sensor_sets_for_new_frame( Scene* scene ) const;
-	void process_sensor_sets( Scene* scene ) const;
+	void init_sensor_sets_for_new_frame() const;
+	void process_sensor_sets() const;
 };
 
 }

@@ -153,7 +153,7 @@ void Scene::update()
 
 void Scene::post_update()
 {
-	sc_world.init_sensor_sets_for_new_frame( this );
+	sc_world.init_sensor_sets_for_new_frame();
 
 	// simple collision detection
 
@@ -180,7 +180,7 @@ void Scene::post_update()
 		}
 	}
 
-	sc_world.process_sensor_sets( this );
+	sc_world.process_sensor_sets();
 
 	// update entities and components, after physics have run
 

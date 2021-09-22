@@ -36,7 +36,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			e->tag = H( "player" );
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
-			e->simple.friction = 0.5f;
+			e->simple.friction = 0.1f;
 			// #warren - this player should have a little movement drift/slide - why doesn't that work anymore?
 
 			{
@@ -168,7 +168,7 @@ bool Scene_Simple_Top_Down::on_input_motion( const Input_Event* evt )
 			auto mtx = player->get_transform()->to_matrix_vec();
 			dir = mtx.transform_vec2( dir );
 
-			player->add_force( { dir, 50.5f } );
+			player->add_force( { dir, 10.0f } );
 			return true;
 		}
 		break;

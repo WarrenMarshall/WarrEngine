@@ -470,7 +470,7 @@ enum_end
 
 // ----------------------------------------------------------------------------
 
-enum_begin( sc_body_collider_type )
+enum_begin( solidity )
 	solid = 0,
 	sensor,
 enum_end
