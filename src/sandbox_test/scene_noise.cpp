@@ -45,13 +45,13 @@ void Scene_Noise::draw_ui()
 		{
 			y_pos += g_engine->pixel_font->get_max_height();
 
-			Render::state->color = make_color( 1, 0.5f );
+			Render::state->color = make_color( e_pal::darker, 0.5f );
 			Render::draw_filled_rect( Rect( 0.f, y_pos, ui_w, noise_sz * 2.5f ) );
 
-			Render::state->color = make_color( 0, 0.5f );
+			Render::state->color = make_color( e_pal::darkest, 0.5f );
 			Render::draw_filled_rect( Rect( 0.f, y_pos + ( noise_sz * 1.25f ), ui_w, 1.f ) );
 
-			Render::state->color = make_color( 4, 1.f );
+			Render::state->color = make_color( e_pal::brightest, 1.f );
 
 			Vec2 start = { 0.f, y_pos + ( noise_sz * 1.25f ) };
 			Vec2 end;

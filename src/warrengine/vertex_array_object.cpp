@@ -4,13 +4,13 @@
 namespace war
 {
 
-Vertex_Array_Object::Vertex_Array_Object( Primitive_Batch* batch, e_render_prim_t render_prim )
+Vertex_Array_Object::Vertex_Array_Object( Primitive_Batch* batch, e_render_prim render_prim )
 	: render_prim( render_prim ), batch( batch )
 {
 	init( batch, render_prim );
 }
 
-void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim_t render_prim )
+void Vertex_Array_Object::init( Primitive_Batch* batch, e_render_prim render_prim )
 {
 	this->batch = batch;
 	this->render_prim = render_prim;
@@ -154,7 +154,7 @@ void Vertex_Array_Object::update_stats()
 			log(
 				">> draw call >> {} {}{} (v: {}, i: {})",
 				f_commas( prim_count ),
-				prim_type_desc[ render_prim ],
+				prim_type_desc[ (int32_t)render_prim ],
 				( prim_count > 1.f ) ? "s" : "",
 				f_commas( (float_t)( vb->vertices.num_objects_in_pool() ) ),
 				f_commas( vb->vertices.num_objects_in_pool() * indices_to_verts_factor )
@@ -173,7 +173,7 @@ void Vertex_Array_Object::update_stats()
 #endif
 }
 
-void Vertex_Array_Object::flush_and_reset( e_draw_call_t draw_call )
+void Vertex_Array_Object::flush_and_reset( e_draw_call draw_call )
 {
 	if( !vb->vertices.empty() )
 	{
@@ -193,7 +193,7 @@ void Vertex_Array_Object::upload_vertices_to_gpu()
 	vb->upload_vertices_to_gpu();
 }
 
-void Vertex_Array_Object::flush_and_reset_internal( e_draw_call_t draw_call )
+void Vertex_Array_Object::flush_and_reset_internal( e_draw_call draw_call )
 {
 	if( vb->vertices.empty() )
 	{
@@ -205,7 +205,7 @@ void Vertex_Array_Object::flush_and_reset_internal( e_draw_call_t draw_call )
 	reset();
 }
 
-void Vertex_Array_Object::draw( e_draw_call_t draw_call )
+void Vertex_Array_Object::draw( e_draw_call draw_call )
 {
 	if( vb->vertices.empty() )
 	{

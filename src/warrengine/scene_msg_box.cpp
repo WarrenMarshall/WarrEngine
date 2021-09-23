@@ -48,7 +48,7 @@ void Scene_Msg_Box::draw_ui()
 	{
 		scoped_render_state;
 
-		Render::state->color = make_color( 0, 0.75f );
+		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
 	}
 

@@ -15,7 +15,7 @@ namespace war
 struct Texture_Source_Asset final : Texture_Source_Base
 {
 	// how the edges of the texture are handled
-	e_tiling_t tiling = e_tiling::repeat;
+	e_tiling tiling = e_tiling::repeat;
 
 	// set to false if you never want this texture to generate mipmaps
 	bool use_mipmaps = true;

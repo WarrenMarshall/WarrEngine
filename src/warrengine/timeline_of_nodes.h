@@ -8,7 +8,7 @@ struct Timeline_Of_Nodes final
 {
 	struct Key_Frame final
 	{
-		e_tnkf_type_t type = e_tnkf_type::none;
+		e_tnkf_type type = e_tnkf_type::none;
 		Life_Cycle life_cycle;
 		float_t pct_marker = 0.f;
 		bool should_restore_state = false;
@@ -72,7 +72,7 @@ struct Timeline_Of_Nodes final
 			} scene_pop;
 		};
 
-		Key_Frame( e_tnkf_type_t type, bool should_restore_state, float_t pct_marker, time_ms duration );
+		Key_Frame( e_tnkf_type type, bool should_restore_state, float_t pct_marker, time_ms duration );
 
 		void on_started_running();
 		void update();

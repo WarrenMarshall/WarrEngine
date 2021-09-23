@@ -347,7 +347,7 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 
 	Render::state->z -= zdepth_nudge;
 
-	if( g_ui->result.code & e_im_result::left_clicked )
+	if( (int32_t)(g_ui->result.code & e_im_result::left_clicked) )
 	{
 		control_data->set_expanded( !control_data->is_expanded() );
 		g_engine->scene_mgr.current_scene->ui_expanded_tag_begin = control_data->is_expanded() ? dropdown_control_tag : hash_none;
@@ -431,9 +431,9 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 	}
 }
 
-float_t UI_Control::get_default_width( e_ui_control_type_t control_type )
+float_t UI_Control::get_default_width( e_ui_control_type control_type )
 {
-	static const std::array<float_t, e_ui_control_type::max> values =
+	static const std::array<float_t, (int32_t)e_ui_control_type::max> values =
 	{
 		100.f,	// panel
 		100.f,	// caption
@@ -451,12 +451,12 @@ float_t UI_Control::get_default_width( e_ui_control_type_t control_type )
 		120.f,	// dropdown
 	};
 
-	return values[ control_type ];
+	return values[ (int32_t)control_type ];
 }
 
-float_t UI_Control::get_default_height( e_ui_control_type_t control_type )
+float_t UI_Control::get_default_height( e_ui_control_type control_type )
 {
-	static const std::array<float_t, e_ui_control_type::max> values =
+	static const std::array<float_t, (int32_t)e_ui_control_type::max> values =
 	{
 		100.f,	// panel
 		12.f,	// caption
@@ -474,12 +474,12 @@ float_t UI_Control::get_default_height( e_ui_control_type_t control_type )
 		16.f,	// dropdown
 	};
 
-	return values[ control_type ];
+	return values[ (int32_t)control_type ];
 }
 
 Vec2 UI_Control::get_control_inner_margins()
 {
-	static const std::array<Vec2, e_ui_control_type::max> values =
+	static const std::array<Vec2, (int32_t)e_ui_control_type::max> values =
 	{
 		Vec2( 1.f, 2.f ),	// panel
 		Vec2( 1.f, 2.f ),	// caption
@@ -497,7 +497,7 @@ Vec2 UI_Control::get_control_inner_margins()
 		Vec2( 1.f, 2.f ),	// dropdown
 	};
 
-	return values[ type ];
+	return values[ (int32_t)type ];
 }
 
 }

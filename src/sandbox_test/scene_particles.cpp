@@ -42,7 +42,7 @@ void Scene_Particles::pushed()
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
-			ec->rs_opt.color = make_color( 4, 0.25f );
+			ec->rs_opt.color = make_color( e_pal::brightest, 0.25f );
 		}
 	}
 

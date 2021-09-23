@@ -32,9 +32,9 @@ struct Timeline_Of_Values final
 	};
 
 	std::vector<Timeline_Of_Values::Key_Frame> key_frames;
-	e_timeline_type_t type = e_timeline_type::invalid;
+	e_timeline_type type = e_timeline_type::invalid;
 
-	Timeline_Of_Values( e_timeline_type_t type );
+	Timeline_Of_Values( e_timeline_type type );
 
 	Timeline_Of_Values* clear_key_frames();
 	Timeline_Of_Values* add_key_frame( const Timeline_Of_Values::Key_Frame& kf );

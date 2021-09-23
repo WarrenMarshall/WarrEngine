@@ -53,13 +53,13 @@ void Scene_Tweens_Timers::draw_ui()
 
 		auto l_draw_label = [&] ( const std::string& desc, float& ypos )
 		{
-			Render::state->color = make_color( 0, 0.35f );
+			Render::state->color = make_color( e_pal::darkest, 0.35f );
 			Render::draw_filled_rect( Rect( 96.f, ypos - 5.f, 200.f, 10.f ) );
 
-			Render::state->color = make_color( 0, 0.25f );
+			Render::state->color = make_color( e_pal::darkest, 0.25f );
 			Render::draw_filled_rect( Rect( 0.f, ypos - 7.f, ui_w, 14.f ) );
 
-			Render::state->color = make_color( 4, 1.f );
+			Render::state->color = make_color( e_pal::brightest, 1.f );
 			Render::state->scale = 1.f;
 			Render::state->align = e_align::vcenter;
 			Render::draw_string( desc, Vec2( 12.f, ypos ) );

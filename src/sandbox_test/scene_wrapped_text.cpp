@@ -74,19 +74,19 @@ void Scene_Wrapped_Text::draw_ui()
 		rc_big_text_block_01.grow( 4.f );
 		rc_big_text_block_02.grow( 4.f );
 
-		Render::state->color = make_color( 0, 0.5f );
+		Render::state->color = make_color( e_pal::darkest, 0.5f );
 		Render::draw_rounded_filled_rect( rc_big_text_block_01, 4.f );
-		Render::state->color = make_color( 0, 0.75f );
+		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_rounded_rect( rc_big_text_block_01, 4.f );
 
-		Render::state->color = make_color( 0, 0.5f );
+		Render::state->color = make_color( e_pal::darkest, 0.5f );
 		Render::draw_rounded_filled_rect( rc_big_text_block_02, 4.f );
-		Render::state->color = make_color( 0, 0.75f );
+		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_rounded_rect( rc_big_text_block_02, 4.f );
 
 		Render::state->color = make_color( e_pal::brighter );
 
-		std::array<e_align_t, 3> alignments = { e_align::left, e_align::hcenter, e_align::right };
+		std::array<e_align, 3> alignments = { e_align::left, e_align::hcenter, e_align::right };
 		Render::state->align = alignments[ cb->radio_alignment_data.int_value() ];
 
 		rc_big_text_block_01.shrink( 4.f );

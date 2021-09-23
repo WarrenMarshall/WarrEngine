@@ -144,7 +144,7 @@ Vec2 Text_Parser::vec2_from_str( std::string_view str )
 	return vec2;
 }
 
-std::unique_ptr<Timeline_Of_Values> Text_Parser::timeline_from_str( e_timeline_type_t type, std::string_view str )
+std::unique_ptr<Timeline_Of_Values> Text_Parser::timeline_from_str( e_timeline_type type, std::string_view str )
 {
 	std::unique_ptr<Timeline_Of_Values> tl = std::make_unique<Timeline_Of_Values>( type );
 	tl->clear_key_frames();

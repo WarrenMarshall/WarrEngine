@@ -5,7 +5,7 @@
 namespace war
 {
 
-void Life_Cycle::set( e_life_cycle_t lc )
+void Life_Cycle::set( e_life_cycle lc )
 {
 	_life_cycle = lc;
 
@@ -17,7 +17,7 @@ void Life_Cycle::set( e_life_cycle_t lc )
 	}
 }
 
-e_life_cycle_t Life_Cycle::get()
+e_life_cycle Life_Cycle::get()
 {
 	return _life_cycle;
 }

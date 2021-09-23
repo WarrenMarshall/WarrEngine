@@ -17,7 +17,7 @@ struct Entity_Simple_Force final
 
 struct Entity_Simple_Collision final
 {
-	e_sc_type_t type = e_sc_type::dynamic;
+	e_sc_type type = e_sc_type::dynamic;
 
 	[[nodiscard]] bool is_dynamic()
 	{
@@ -119,7 +119,7 @@ struct Entity
 	void update_physics_components_to_match_transform();
 	void update_transform_to_match_physics_components();
 
-	virtual void set_life_cycle( e_life_cycle_t lc );
+	virtual void set_life_cycle( e_life_cycle lc );
 
 	void set_tag( hash tag );
 

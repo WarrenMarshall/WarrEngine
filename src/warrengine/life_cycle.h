@@ -4,8 +4,8 @@ namespace war
 
 struct Life_Cycle
 {
-	void set( e_life_cycle_t life_cycle );
-	e_life_cycle_t get();
+	void set( e_life_cycle life_cycle );
+	e_life_cycle get();
 
 	[[nodiscard]] bool is_alive() const;
 	[[nodiscard]] bool is_dying() const;
@@ -24,7 +24,7 @@ struct Life_Cycle
 	int32_t death_delay = 0;
 
 private:
-	e_life_cycle_t _life_cycle = e_life_cycle::alive;
+	e_life_cycle _life_cycle = e_life_cycle::alive;
 };
 
 }

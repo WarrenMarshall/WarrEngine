@@ -20,10 +20,10 @@ struct Game_Controller final
 
 	Game_Controller( int32_t player_id );
 
-	void update_button_state( e_input_id_t input_id, int32_t xinput_button_bit );
+	void update_button_state( e_input_id input_id, int32_t xinput_button_bit );
 	void update_state();
 	void update();
-	void play_rumble( e_rumble_effect_t effect );
+	void play_rumble( e_rumble_effect effect );
 	void play_rumble( int32_t intensity, int32_t ms );
 };
 

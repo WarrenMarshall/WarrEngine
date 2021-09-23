@@ -5,7 +5,7 @@
 namespace war
 {
 
-void Entity_Component::set_life_cycle( e_life_cycle_t lc )
+void Entity_Component::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 }
@@ -138,7 +138,7 @@ Primitive_Shape_Component::Primitive_Shape_Component( Entity* parent_entity )
 	shapes.clear();
 }
 
-Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape prim_shape, const Rect& rc, const Vec2& pos_offset )
 {
 	Shape shape;
 
@@ -151,7 +151,7 @@ Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_
 	return this;
 }
 
-Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, float_t radius, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape prim_shape, float_t radius, const Vec2& pos_offset )
 {
 	Shape shape;
 
@@ -164,7 +164,7 @@ Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_
 	return this;
 }
 
-Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape prim_shape, const Vec2& pos_offset )
 {
 	Shape shape;
 
@@ -300,7 +300,7 @@ void Emitter_Component::update()
 	emitter.update();
 }
 
-void Emitter_Component::set_life_cycle( e_life_cycle_t lc )
+void Emitter_Component::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
@@ -1617,7 +1617,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 // adds an appropriate simple_collision_body based on a Tiled_Object we read
 // from the tile map
 
-Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_solidity_t collider_type )
+Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type )
 {
 	auto ec = parent_entity->add_component<Simple_Collision_Body>();
 

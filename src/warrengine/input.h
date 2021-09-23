@@ -7,10 +7,10 @@ struct Input_Event final
 	Input_Event();
 
 	// which event this is. required when processing events through the queue.
-	e_event_id_t event_id = e_event_id::invalid;
+	e_event_id event_id = e_event_id::invalid;
 
 	// the key, mouse button, or controller button generating the event
-	e_input_id_t input_id = e_input_id::invalid;
+	e_input_id input_id = e_input_id::invalid;
 
 	// the char representation of the key that was pressed
 	char ch = 0;
@@ -47,27 +47,27 @@ struct Input_Mgr final
 
 	std::optional<Game_Controller> gamepad = std::nullopt;
 
-	std::array<bool, e_input_id::max> button_states = {};
-	std::array<bool, e_input_id::max> button_states_last_frame = {};
+	std::array<bool, (int32_t)e_input_id::max> button_states = {};
+	std::array<bool, (int32_t)e_input_id::max> button_states_last_frame = {};
 
-	[[nodiscard]] bool is_button_down( e_input_id_t input_id );
-	[[nodiscard]] bool is_button_held( e_input_id_t input_id );
+	[[nodiscard]] bool is_button_down( e_input_id input_id );
+	[[nodiscard]] bool is_button_held( e_input_id input_id );
 	[[nodiscard]] bool is_shift_down();
 	[[nodiscard]] bool is_control_down();
 	[[nodiscard]] bool is_alt_down();
 
-	[[nodiscard]] e_button_state_t get_button_state( e_input_id_t input_id );
-	[[nodiscard]] Vec2 get_axis_state( e_input_id_t input_id, bool use_dead_zone = true );
+	[[nodiscard]] e_button_state get_button_state( e_input_id input_id );
+	[[nodiscard]] Vec2 get_axis_state( e_input_id input_id, bool use_dead_zone = true );
 
 	void init();
 	void deinit();
 	void queue_presses();
 	void queue_motion();
-	void update_axis_delta( e_input_id_t input_id ) const;
+	void update_axis_delta( e_input_id input_id ) const;
 	void dispatch_event_queue();
 
-	void update_button_state( e_input_id_t input_id, int32_t glfw_state );
-	void play_rumble( e_rumble_effect_t effect );
+	void update_button_state( e_input_id input_id, int32_t glfw_state );
+	void play_rumble( e_rumble_effect effect );
 	void refresh_connected_gamepads();
 };
 

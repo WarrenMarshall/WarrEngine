@@ -169,7 +169,7 @@ void OpenGL_Mgr::clear_depth_buffer()
 	glClear( GL_DEPTH_BUFFER_BIT );
 }
 
-void OpenGL_Mgr::set_blend( e_opengl_blend_t blend ) const
+void OpenGL_Mgr::set_blend( e_opengl_blend blend ) const
 {
 	switch( blend )
 	{

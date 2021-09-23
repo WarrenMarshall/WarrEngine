@@ -360,7 +360,7 @@ void Engine::do_draw_finished_frame()
 	g_engine->opengl_mgr.set_uniform_float( "u_viewport_w", viewport_w );
 	g_engine->opengl_mgr.set_uniform_float( "u_viewport_h", viewport_h );
 
-	Render::draw_quad( frame_buffer->color_attachments[ e_framebuffer::glow ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+	Render::draw_quad( frame_buffer->color_attachments[ (int32_t)e_framebuffer::glow ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
 	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 	blur_frame_buffer->unbind();

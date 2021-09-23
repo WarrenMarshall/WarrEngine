@@ -50,6 +50,9 @@
 	#define GLFW_EXPOSE_NATIVE_WIN32
 	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3native.h>
 
+	//#define _X86_
+	#include "winnt.h"
+
 	// Box2D - physics
 	#include "box2d-master/include/box2d/box2d.h"
 

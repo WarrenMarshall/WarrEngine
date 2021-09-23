@@ -17,10 +17,10 @@ struct Primitive_Batch final
 
 	Primitive_Batch() = default;
 	Primitive_Batch( Primitive_Batch& ) = delete;
-	Primitive_Batch( e_render_prim_t render_prim );
+	Primitive_Batch( e_render_prim render_prim );
 
-	void init( e_render_prim_t render_prim );
-	std::array< Vertex_Array_Object, e_draw_call::max> vao;
+	void init( e_render_prim render_prim );
+	std::array< Vertex_Array_Object, (int32_t)e_draw_call::max> vao;
 
 	void add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 );
 	void add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 );
@@ -30,7 +30,7 @@ struct Primitive_Batch final
 	bool is_empty();
 
 private:
-	virtual void add_vert( e_draw_call_t draw_call, const Texture_Asset* texture, const Render_Vertex* render_vert );
+	virtual void add_vert( e_draw_call draw_call, const Texture_Asset* texture, const Render_Vertex* render_vert );
 };
 
 // ----------------------------------------------------------------------------
@@ -43,8 +43,8 @@ struct Primitive_Batch_Group final
 
 	void init();
 	bool is_empty();
-	void flush_and_reset( e_draw_call_t draw_call );
-	void flush_and_reset_internal( e_draw_call_t draw_call );
+	void flush_and_reset( e_draw_call draw_call );
+	void flush_and_reset_internal( e_draw_call draw_call );
 
 	void add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 );
 	void add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 );

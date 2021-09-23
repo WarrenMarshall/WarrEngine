@@ -88,7 +88,7 @@ void Input_Mgr::init()
 	glfwSetCharCallback( g_engine->window.glfw_window, character_callback );
 
 	// init button states so everything is considered "unpressed" at the start
-	for( auto x = 0; x < e_input_id::max; ++x )
+	for( auto x = 0; x < (int32_t)e_input_id::max; ++x )
 	{
 		button_states[ x ] = false;
 		button_states_last_frame[ x ] = false;
@@ -259,7 +259,7 @@ void Input_Mgr::queue_motion()
 	}
 }
 
-void Input_Mgr::update_axis_delta( e_input_id_t input_id ) const
+void Input_Mgr::update_axis_delta( e_input_id input_id ) const
 {
 	Vec2 delta = g_engine->input_mgr.get_axis_state( input_id );
 
@@ -359,9 +359,9 @@ void Input_Mgr::dispatch_event_queue()
 	event_queue.clear();
 }
 
-void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
+void Input_Mgr::update_button_state( e_input_id input_id, int32_t glfw_state )
 {
-	button_states[ input_id ] = glfw_state;
+	button_states[ (int32_t)input_id ] = glfw_state;
 
 	switch( get_button_state( input_id ) )
 	{
@@ -405,7 +405,7 @@ void Input_Mgr::update_button_state( e_input_id_t input_id, int32_t glfw_state )
 	}
 }
 
-void Input_Mgr::play_rumble( e_rumble_effect_t effect )
+void Input_Mgr::play_rumble( e_rumble_effect effect )
 {
 	if( !gamepad or !gamepad->is_being_used )
 	{
@@ -444,22 +444,22 @@ void Input_Mgr::refresh_connected_gamepads()
 	}
 }
 
-bool Input_Mgr::is_button_down( e_input_id_t input_id )
+bool Input_Mgr::is_button_down( e_input_id input_id )
 {
-	e_button_state_t bs = get_button_state( input_id );
+	e_button_state bs = get_button_state( input_id );
 	return ( bs == e_button_state::pressed or bs == e_button_state::held );
 }
 
-bool Input_Mgr::is_button_held( e_input_id_t input_id )
+bool Input_Mgr::is_button_held( e_input_id input_id )
 {
-	e_button_state_t bs = get_button_state( input_id );
+	e_button_state bs = get_button_state( input_id );
 	return ( bs == e_button_state::held );
 }
 
 bool Input_Mgr::is_shift_down()
 {
-	e_button_state_t bs_left = get_button_state( e_input_id::key_shift_left );
-	e_button_state_t bs_right = get_button_state( e_input_id::key_shift_right );
+	e_button_state bs_left = get_button_state( e_input_id::key_shift_left );
+	e_button_state bs_right = get_button_state( e_input_id::key_shift_right );
 
 	return (
 		bs_left == e_button_state::pressed
@@ -471,8 +471,8 @@ bool Input_Mgr::is_shift_down()
 
 bool Input_Mgr::is_control_down()
 {
-	e_button_state_t bs_left = get_button_state( e_input_id::key_control_left );
-	e_button_state_t bs_right = get_button_state( e_input_id::key_control_right );
+	e_button_state bs_left = get_button_state( e_input_id::key_control_left );
+	e_button_state bs_right = get_button_state( e_input_id::key_control_right );
 
 	return (
 		bs_left == e_button_state::pressed
@@ -484,8 +484,8 @@ bool Input_Mgr::is_control_down()
 
 bool Input_Mgr::is_alt_down()
 {
-	e_button_state_t bs_left = get_button_state( e_input_id::key_alt_left );
-	e_button_state_t bs_right = get_button_state( e_input_id::key_alt_right );
+	e_button_state bs_left = get_button_state( e_input_id::key_alt_left );
+	e_button_state bs_right = get_button_state( e_input_id::key_alt_right );
 
 	return (
 		bs_left == e_button_state::pressed
@@ -498,12 +498,12 @@ bool Input_Mgr::is_alt_down()
 // determines the state of a button by comparing it's current state with the
 // previous frame.
 
-e_button_state_t Input_Mgr::get_button_state( e_input_id_t input_id )
+e_button_state Input_Mgr::get_button_state( e_input_id input_id )
 {
-	e_button_state_t bs = e_button_state::up;
+	e_button_state bs = e_button_state::up;
 
-	bool state = button_states[ input_id ];
-	bool state_last_frame = button_states_last_frame[ input_id ];
+	bool state = button_states[ (int32_t)input_id ];
+	bool state_last_frame = button_states_last_frame[ (int32_t)input_id ];
 
 	if( state and state_last_frame )
 	{
@@ -525,7 +525,7 @@ e_button_state_t Input_Mgr::get_button_state( e_input_id_t input_id )
 //
 // these values are updated once per frame.
 
-Vec2 Input_Mgr::get_axis_state( e_input_id_t input_id, bool use_dead_zone )
+Vec2 Input_Mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 {
 	if( !gamepad )
 	{

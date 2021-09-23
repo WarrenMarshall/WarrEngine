@@ -20,7 +20,7 @@ struct Rect final
 	Vec2 top_left() const;
 	Vec2 bottom_right() const;
 	Vec2 get_midpoint() const;
-	Vec2 get_pos_from_alignment( e_align_t align ) const;
+	Vec2 get_pos_from_alignment( e_align align ) const;
 	Rect grow( float_t val );
 	Rect shrink( float_t val );
 	bool contains_point( Vec2 pos );

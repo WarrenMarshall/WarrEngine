@@ -40,7 +40,7 @@ struct Color final
 	static void scale( Color & color, float_t s );
 
 	static Color make( const Color & clr, float_t alpha = 1.f );
-	static Color make( e_pal_t pal_idx, float_t alpha = 1.f );
+	static Color make( e_pal pal_idx, float_t alpha = 1.f );
 };
 
 }

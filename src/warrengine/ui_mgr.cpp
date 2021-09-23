@@ -89,7 +89,7 @@ UI_Mgr* UI_Mgr::dropdown_control( hash tag )
 	return do_control( e_ui_control_type::dropdown, tag );
 }
 
-UI_Mgr* UI_Mgr::do_control( e_ui_control_type_t control_type, hash tag )
+UI_Mgr* UI_Mgr::do_control( e_ui_control_type control_type, hash tag )
 {
 	current_control = std::make_unique<UI_Control>();
 
@@ -221,7 +221,7 @@ UI_Mgr* UI_Mgr::adjust_layout_to_client_area()
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_text_align( e_align_t align )
+UI_Mgr* UI_Mgr::set_text_align( e_align align )
 {
 	current_control->text_align = align;
 	return this;
@@ -334,11 +334,11 @@ Rect UI_Mgr::compute_client_rect_from_ui_rect( Rect rc_ui )
 
 	if( current_control->slice_def )
 	{
-		result.x += current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.w;
-		result.y += current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.h;
+		result.x += current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.w;
+		result.y += current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.h;
 
-		result.w -= current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.w + current_control->slice_def->patches[ e_slice_def_patch::bottom_right ]->rc.w;
-		result.h -= current_control->slice_def->patches[ e_slice_def_patch::top_left ]->rc.h + current_control->slice_def->patches[ e_slice_def_patch::bottom_right ]->rc.h;
+		result.w -= current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.w + current_control->slice_def->patches[ (int32_t)e_slice_def_patch::bottom_right ]->rc.w;
+		result.h -= current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.h + current_control->slice_def->patches[ (int32_t)e_slice_def_patch::bottom_right ]->rc.h;
 	}
 
 	return result;
@@ -373,7 +373,7 @@ bool UI_Mgr::done()
 		Render::state->z += zdepth_nudge;
 	}
 
-	return ( result.code & e_im_result::left_clicked );
+	return (int32_t)( result.code & e_im_result::left_clicked );
 }
 
 void UI_Mgr::end_static_control()
@@ -431,9 +431,9 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 
 	result.code = e_im_result::none;
 
-	e_button_state_t bs_left = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_left );
-	e_button_state_t bs_middle = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_middle );
-	e_button_state_t bs_right = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_right );
+	e_button_state bs_left = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_left );
+	e_button_state bs_middle = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_middle );
+	e_button_state bs_right = g_engine->input_mgr.get_button_state( e_input_id::mouse_button_right );
 
 	auto rc_ui_offset = control->rc_ui;
 	if( is_mouse_inside( rc_ui_offset ) )
@@ -486,7 +486,7 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 
 	// client rect position of mouse cursor
 
-	if( result.code & e_im_result::left_clicked or control->type == e_ui_control_type::slider )
+	if( (int32_t)(result.code & e_im_result::left_clicked) or control->type == e_ui_control_type::slider )
 	{
 		// convert mouse location to client rect position inside control
 

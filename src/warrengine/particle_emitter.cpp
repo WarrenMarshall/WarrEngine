@@ -132,7 +132,7 @@ void Particle_Emitter::spawn_particle()
 	auto save_particle_position_at_origin = p->pos;
 	g_engine->opengl_mgr.top_matrix->transform_vec2( &p->pos );
 
-	switch( (e_particle_spawn_dir_t)params->a_dir )
+	switch( (e_particle_spawn_dir)params->a_dir )
 	{
 		case e_particle_spawn_dir::inherit_from_owner:
 		{

@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Tile_Map_Asset::Tile::Tile( int32_t idx, int32_t x_idx, int32_t y_idx, e_tile_flags_t flags )
+Tile_Map_Asset::Tile::Tile( int32_t idx, int32_t x_idx, int32_t y_idx, e_tile_flags flags )
 	: idx( idx ), x_idx( x_idx ), y_idx( y_idx ), flags( flags )
 {
 }
@@ -177,11 +177,11 @@ bool Tile_Map_Asset::create()
 			{
 				uint32_t idx = String_Util::to_uint( std::string( *tok.get_next_token() ) );
 
-				e_tile_flags_t flags = 0;
+				e_tile_flags flags = e_tile_flags::none;
 
-				flags |= ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0 ? e_tile_flags::flipped_horizontally : 0;
-				flags |= ( idx & FLIPPED_VERTICALLY_FLAG ) > 0 ? e_tile_flags::flipped_vertically : 0;
-				flags |= ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0 ? e_tile_flags::flipped_diagonally : 0;
+				flags |= (e_tile_flags)( ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0 ? (int32_t)e_tile_flags::flipped_horizontally : 0 );
+				flags |= (e_tile_flags)( ( idx & FLIPPED_VERTICALLY_FLAG ) > 0 ? (int32_t)e_tile_flags::flipped_vertically : 0 );
+				flags |= (e_tile_flags)( ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0 ? (int32_t)e_tile_flags::flipped_diagonally : 0 );
 
 				idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
 

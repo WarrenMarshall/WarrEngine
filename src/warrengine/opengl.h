@@ -33,7 +33,7 @@ struct OpenGL_Mgr final
 
 	void init();
 	void clear_depth_buffer();
-	void set_blend( e_opengl_blend_t blend ) const;
+	void set_blend( e_opengl_blend blend ) const;
 
 	void set_projection_matrix() const;
 	void set_view_matrix_identity();

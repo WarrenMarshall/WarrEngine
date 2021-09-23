@@ -144,7 +144,7 @@ void OS_Window::set_title( std::string_view title )
 	glfwSetWindowTitle( glfw_window, title.data() );
 }
 
-void OS_Window::set_mouse_mode( e_mouse_mode_t mouse_mode )
+void OS_Window::set_mouse_mode( e_mouse_mode mouse_mode )
 {
 	this->mouse_mode = mouse_mode;
 	refresh_mouse_mode();

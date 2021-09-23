@@ -490,7 +490,7 @@ void Entity::make_pickable()
 	pick_id = w_entity_last_pick_id;
 }
 
-void Entity::set_life_cycle( e_life_cycle_t lc )
+void Entity::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 

@@ -4,7 +4,7 @@ namespace war
 
 struct Particle_Spawner final
 {
-	e_particle_spawner_type_t type = e_particle_spawner_type::point;
+	e_particle_spawner_type type = e_particle_spawner_type::point;
 
 	union
 	{

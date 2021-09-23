@@ -33,7 +33,7 @@ struct UI_Mgr final
 	struct
 	{
 		hash tag = hash_none;
-		e_ui_control_type_t type = e_ui_control_type::none;
+		e_ui_control_type type = e_ui_control_type::none;
 	} focused;
 
 	// layout stack control
@@ -59,14 +59,14 @@ struct UI_Mgr final
 	UI_Mgr* dropdown_control( hash tag = hash_none );
 
 private:
-	UI_Mgr* do_control( e_ui_control_type_t control_type, hash tag = hash_none );
+	UI_Mgr* do_control( e_ui_control_type control_type, hash tag = hash_none );
 
 public:
 
 	UI_Mgr* set_text( std::string text );
 	UI_Mgr* center_control_on_screen();
 	UI_Mgr* adjust_layout_to_client_area();
-	UI_Mgr* set_text_align( e_align_t align );
+	UI_Mgr* set_text_align( e_align align );
 	UI_Mgr* set_text_color( Color color );
 	UI_Mgr* set_color( Color color );
 	UI_Mgr* set_image( std::string_view tex_tag );

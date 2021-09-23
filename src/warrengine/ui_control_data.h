@@ -15,7 +15,7 @@ namespace war
 struct UI_Control_Data final
 {
 	UI_Control_Data();
-	UI_Control_Data( e_ui_control_type_t type );
+	UI_Control_Data( e_ui_control_type type );
 	~UI_Control_Data();	// need this to quiet the compiler
 
 	bool is_expanded();
@@ -36,7 +36,7 @@ struct UI_Control_Data final
 	[[nodiscard]] int32_t int_value();
 	void set_int_value( int32_t value );
 
-	e_ui_control_type_t type = e_ui_control_type::none;
+	e_ui_control_type type = e_ui_control_type::none;
 
 	// hot data
 	bool _bool_value = false;

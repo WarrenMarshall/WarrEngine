@@ -4,11 +4,11 @@ namespace war
 
 struct UI_Control final
 {
-	e_ui_control_type_t type = e_ui_control_type::none;
+	e_ui_control_type type = e_ui_control_type::none;
 
 	hash tag;
 	std::string text;
-	e_align_t text_align = e_align::hcenter | e_align::vcenter;
+	e_align text_align = e_align::hcenter | e_align::vcenter;
 	Color text_color = Color::white;
 	Color primary_color = Color::black;
 	Slice_Def_Asset* slice_def = nullptr;
@@ -62,8 +62,8 @@ struct UI_Control final
 	void draw_list_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
 	void draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
 
-	static float_t get_default_width( e_ui_control_type_t type );
-	static float_t get_default_height( e_ui_control_type_t type );
+	static float_t get_default_width( e_ui_control_type type );
+	static float_t get_default_height( e_ui_control_type type );
 	Vec2 get_control_inner_margins();
 
 	float_t default_width = 0.f;

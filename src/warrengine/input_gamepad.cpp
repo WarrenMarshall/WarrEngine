@@ -11,12 +11,12 @@ Game_Controller::Game_Controller( int32_t player_id )
 	timer_repeat = Timer( 150 );
 }
 
-void Game_Controller::update_button_state( e_input_id_t input_id, int32_t xinput_button_bit )
+void Game_Controller::update_button_state( e_input_id input_id, int32_t xinput_button_bit )
 {
-	bool last_state = g_engine->input_mgr.button_states_last_frame[ input_id ];
+	bool last_state = g_engine->input_mgr.button_states_last_frame[ (int32_t)input_id ];
 
 	bool current_state = ( xinput_state.Gamepad.wButtons & xinput_button_bit ) > 0;
-	g_engine->input_mgr.button_states[ input_id ] = current_state;
+	g_engine->input_mgr.button_states[ (int32_t)input_id ] = current_state;
 
 	if( !last_state and current_state )
 	{
@@ -75,7 +75,7 @@ void Game_Controller::update()
 	update_state();
 }
 
-void Game_Controller::play_rumble( e_rumble_effect_t effect )
+void Game_Controller::play_rumble( e_rumble_effect effect )
 {
 	int32_t rumble_max = 65535;
 	int32_t intensity = 65535;

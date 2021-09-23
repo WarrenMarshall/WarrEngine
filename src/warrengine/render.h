@@ -57,9 +57,9 @@ struct Render final
 	static void draw_quad( const Texture_Asset* texture, const Vec2& dst );
 	static void draw_quad( const Texture_Asset* texture, const Rect& dst );
 
-	static auto get_circle_start_end_indices( e_corner_t corner );
-	static void draw_circle( const Vec2& origin, float_t radius, e_corner_t corner = e_corner::all );
-	static void draw_filled_circle( const Vec2& origin, float_t radius, e_corner_t corner = e_corner::all );
+	static auto get_circle_start_end_indices( e_corner corner );
+	static void draw_circle( const Vec2& origin, float_t radius, e_corner corner = e_corner::all );
+	static void draw_filled_circle( const Vec2& origin, float_t radius, e_corner corner = e_corner::all );
 
 	static void draw_rect( const Rect& dst );
 	static void draw_filled_rect( const Rect& dst );

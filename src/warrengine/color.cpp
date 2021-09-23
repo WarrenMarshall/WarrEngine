@@ -45,7 +45,7 @@ Color::Color( std::string& str )
 		// strings starting with a '@' char are palette indices
 		Tokenizer tok( str, "@" );
 		int32_t idx = String_Util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
-		*this = make_color( idx );
+		*this = make_color( (e_pal)idx );
 	}
 	else if( str[ 0 ] == '$' )
 	{
@@ -138,9 +138,9 @@ Color Color::make( const Color& clr, float_t alpha )
 	return Color( clr.r, clr.g, clr.b, alpha );
 }
 
-Color Color::make( e_pal_t pal_idx, float_t alpha )
+Color Color::make( e_pal pal_idx, float_t alpha )
 {
-	return make_color( Render::palette[ pal_idx ], alpha );
+	return make_color( Render::palette[ (int32_t)pal_idx ], alpha );
 }
 
 }

@@ -9,7 +9,7 @@ UI_Control_Data::UI_Control_Data()
 {
 }
 
-UI_Control_Data::UI_Control_Data( e_ui_control_type_t type )
+UI_Control_Data::UI_Control_Data( e_ui_control_type type )
 	: type( type )
 {
 }

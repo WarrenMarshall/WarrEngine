@@ -241,17 +241,17 @@ Vec2 Render::draw_string( const std::string& text, const Vec2& pos )
 
 	Vec2 alignment_pos_adjustment( 0.f, 0.f );
 
-	if( Render::state->align & e_align::hcenter )
+	if( (int32_t)(Render::state->align & e_align::hcenter) )
 	{
 		alignment_pos_adjustment.x -= ( extents.x * Render::state->scale.x ) / 2.f;
 	}
 
-	if( Render::state->align & e_align::right )
+	if( (int32_t)(Render::state->align & e_align::right) )
 	{
 		alignment_pos_adjustment.x -= extents.x * Render::state->scale.x;
 	}
 
-	if( Render::state->align & e_align::vcenter )
+	if( (int32_t)(Render::state->align & e_align::vcenter) )
 	{
 		alignment_pos_adjustment.y += ( Render::state->font->get_max_height() * Render::state->scale.y ) / 2.f;
 	}
@@ -287,15 +287,15 @@ Vec2 Render::draw_string( const std::vector<std::string>& text, const Rect& rc )
 {
 	Vec2 wk_pos = { rc.x, rc.y };
 
-	if( Render::state->align & e_align::right )
+	if( (int32_t)( Render::state->align & e_align::right) )
 	{
 		wk_pos.x = rc.x + rc.w;
 	}
-	if( Render::state->align & e_align::hcenter )
+	if( (int32_t)( Render::state->align & e_align::hcenter) )
 	{
 		wk_pos.x = rc.x + ( rc.w / 2.f );
 	}
-	if( Render::state->align & e_align::vcenter )
+	if( (int32_t)( Render::state->align & e_align::vcenter) )
 	{
 		wk_pos.y = rc.y - ( ( Render::state->font->get_max_height() * text.size() ) / 2.f );
 	}
@@ -584,9 +584,9 @@ void Render::draw_tile_map( const Tile_Set_Asset* tile_set, const Tile_Map_Asset
 						continue;
 					}
 
-					bool flip_h = tile->flags & e_tile_flags::flipped_horizontally;
-					bool flip_v = tile->flags & e_tile_flags::flipped_vertically;
-					bool flip_d = tile->flags & e_tile_flags::flipped_diagonally;
+					bool flip_h = (int32_t)(tile->flags & e_tile_flags::flipped_horizontally);
+					bool flip_v = (int32_t)(tile->flags & e_tile_flags::flipped_vertically);
+					bool flip_d = (int32_t)(tile->flags & e_tile_flags::flipped_diagonally);
 
 					Render::state->scale = Vec2( 1.f, 1.f );
 					Render::state->angle = 0.f;
@@ -668,7 +668,7 @@ void Render::draw_filled_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v
 	Render::state->batch_render_target->add_triangle( g_engine->tex_white, &rv0, &rv1, &rv2 );
 }
 
-auto Render::get_circle_start_end_indices( e_corner_t corner )
+auto Render::get_circle_start_end_indices( e_corner corner )
 {
 	int32_t start, end;
 	int32_t quarter_circle = circle_sample_points_max / 4;
@@ -713,7 +713,7 @@ auto Render::get_circle_start_end_indices( e_corner_t corner )
 
 // draws a circle with line segments
 
-void Render::draw_circle( const Vec2& origin, float_t radius, e_corner_t corner )
+void Render::draw_circle( const Vec2& origin, float_t radius, e_corner corner )
 {
 	Render_Vertex v0( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
@@ -736,7 +736,7 @@ void Render::draw_circle( const Vec2& origin, float_t radius, e_corner_t corner 
 	}
 }
 
-void Render::draw_filled_circle( const Vec2& origin, float_t radius, e_corner_t corner )
+void Render::draw_filled_circle( const Vec2& origin, float_t radius, e_corner corner )
 {
 	Render_Vertex v0( origin, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( v0 );
@@ -828,15 +828,15 @@ void Render::draw_point( const Vec2& pos )
 
 void Render::draw_sliced( const Slice_Def_Asset* slice_def, const Rect& dst )
 {
-	Texture_Asset* p_00 = slice_def->patches[ e_slice_def_patch::top_left ];
-	Texture_Asset* p_10 = slice_def->patches[ e_slice_def_patch::top_middle ];
-	Texture_Asset* p_20 = slice_def->patches[ e_slice_def_patch::top_right ];
-	Texture_Asset* p_01 = slice_def->patches[ e_slice_def_patch::middle_left ];
-	Texture_Asset* p_11 = slice_def->patches[ e_slice_def_patch::middle_middle ];
-	Texture_Asset* p_21 = slice_def->patches[ e_slice_def_patch::middle_right ];
-	Texture_Asset* p_02 = slice_def->patches[ e_slice_def_patch::bottom_left ];
-	Texture_Asset* p_12 = slice_def->patches[ e_slice_def_patch::bottom_middle ];
-	Texture_Asset* p_22 = slice_def->patches[ e_slice_def_patch::bottom_right ];
+	Texture_Asset* p_00 = slice_def->patches[ (int32_t)e_slice_def_patch::top_left ];
+	Texture_Asset* p_10 = slice_def->patches[ (int32_t)e_slice_def_patch::top_middle ];
+	Texture_Asset* p_20 = slice_def->patches[ (int32_t)e_slice_def_patch::top_right ];
+	Texture_Asset* p_01 = slice_def->patches[ (int32_t)e_slice_def_patch::middle_left ];
+	Texture_Asset* p_11 = slice_def->patches[ (int32_t)e_slice_def_patch::middle_middle ];
+	Texture_Asset* p_21 = slice_def->patches[ (int32_t)e_slice_def_patch::middle_right ];
+	Texture_Asset* p_02 = slice_def->patches[ (int32_t)e_slice_def_patch::bottom_left ];
+	Texture_Asset* p_12 = slice_def->patches[ (int32_t)e_slice_def_patch::bottom_middle ];
+	Texture_Asset* p_22 = slice_def->patches[ (int32_t)e_slice_def_patch::bottom_right ];
 
 	float_t xpos = dst.x;
 	float_t ypos = dst.y;

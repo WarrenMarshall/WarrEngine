@@ -95,7 +95,7 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Source_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
-	asset_ptr->tiling = g_engine->find_int_from_symbol( key_values_for_asset_def.find_value_or( "tiling", "tiling.repeat" ) );
+	asset_ptr->tiling = (e_tiling)g_engine->find_int_from_symbol( key_values_for_asset_def.find_value_or( "tiling", "tiling.repeat" ) );
 	asset_ptr->use_mipmaps = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( " ", "true" ) );
 
 	asset_ptr->create();
@@ -146,7 +146,7 @@ void Asset_File_Definition::precache_src_gradient( const Key_Values& key_values_
 
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Gradient_Source_Asset>(), tag.data(), "" );
 
-	asset_ptr->alignment = g_engine->find_int_from_symbol( key_values_for_asset_def.find_value( "alignment" ) );
+	asset_ptr->alignment = (e_align)g_engine->find_int_from_symbol( key_values_for_asset_def.find_value( "alignment" ) );
 
 	asset_ptr->colors.clear();
 	std::vector<Color> color_list = Text_Parser::color_list_from_str( key_values_for_asset_def.find_value( "colors" ) );
@@ -212,21 +212,21 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 
 	auto src_texture_tag = texture->get_src_texture()->tag.data();
 
-	asset_ptr->patches[ e_slice_def_patch::top_left ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::top_left ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_00", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
-	asset_ptr->patches[ e_slice_def_patch::top_middle ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::top_middle ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_10", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
-	asset_ptr->patches[ e_slice_def_patch::top_right ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::top_right ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_20", tag.data() ), ""
 		);
@@ -238,21 +238,21 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	w = x_slices.l;
 	h = texture->rc.h - y_slices.t - y_slices.b;
 
-	asset_ptr->patches[ e_slice_def_patch::middle_left ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::middle_left ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_01", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
-	asset_ptr->patches[ e_slice_def_patch::middle_middle ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::middle_middle ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_11", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
-	asset_ptr->patches[ e_slice_def_patch::middle_right ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::middle_right ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_21", tag.data() ), ""
 		);
@@ -264,21 +264,21 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	w = x_slices.l;
 	h = y_slices.b;
 
-	asset_ptr->patches[ e_slice_def_patch::bottom_left ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::bottom_left ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_02", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
-	asset_ptr->patches[ e_slice_def_patch::bottom_middle ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::bottom_middle ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_12", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
-	asset_ptr->patches[ e_slice_def_patch::bottom_right ] =
+	asset_ptr->patches[ (int32_t)e_slice_def_patch::bottom_right ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_22", tag.data() ), ""
 		);
@@ -313,7 +313,7 @@ void Asset_File_Definition::precache_anim_texture( const Key_Values& key_values_
 	assert( key_values_for_asset_def.does_key_exist( "tween" ) );
 
 	auto frames_per_sec = Text_Parser::int_from_str( key_values_for_asset_def.find_value( "frames_per_sec" ) );
-	auto tween_type = (e_tween_type_t)( Text_Parser::int_from_str( key_values_for_asset_def.find_value( "tween" ) ) );
+	auto tween_type = (e_tween_type)( Text_Parser::int_from_str( key_values_for_asset_def.find_value( "tween" ) ) );
 
 	std::string_view frames = key_values_for_asset_def.find_value( "frame_tags" );
 

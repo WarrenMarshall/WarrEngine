@@ -153,7 +153,7 @@ float_t UI_Callback::get_control_padding()
 //
 // i.e. between 2 buttons sitting side by side
 
-Vec2 UI_Callback::get_control_margin( e_ui_control_type_t control_type )
+Vec2 UI_Callback::get_control_margin( e_ui_control_type control_type )
 {
 	Vec2 result = { 2.f, 2.f };
 

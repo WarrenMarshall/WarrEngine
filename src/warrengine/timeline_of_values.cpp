@@ -5,7 +5,7 @@
 namespace war
 {
 
-Timeline_Of_Values::Timeline_Of_Values( e_timeline_type_t type )
+Timeline_Of_Values::Timeline_Of_Values( e_timeline_type type )
 	: type( type )
 {
 	key_frames.clear();

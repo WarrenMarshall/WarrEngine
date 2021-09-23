@@ -5,7 +5,7 @@
 namespace war
 {
 
-Tween::Tween( float_t start, float_t end, time_ms duration_ms, e_tween_type_t type, e_tween_via_t via )
+Tween::Tween( float_t start, float_t end, time_ms duration_ms, e_tween_type type, e_tween_via via )
 	: start( start ), end( end )
 {
 	_tween = tweeny::from( start ).to( end ).during( duration_ms );
@@ -105,7 +105,7 @@ bool on_step_pingpong( tweeny::tween<float_t>& tween )
 	return false;
 }
 
-void Tween::set_type( e_tween_type_t type )
+void Tween::set_type( e_tween_type type )
 {
 	switch( type )
 	{
@@ -119,7 +119,7 @@ void Tween::set_type( e_tween_type_t type )
 	}
 }
 
-void Tween::set_via( e_tween_via_t via )
+void Tween::set_via( e_tween_via via )
 {
 	switch( via )
 	{

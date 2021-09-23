@@ -6,7 +6,7 @@ struct Entity_Component
 {
 	Life_Cycle life_cycle;
 
-	virtual void set_life_cycle( e_life_cycle_t lc );
+	virtual void set_life_cycle( e_life_cycle lc );
 
 	Transform _tform;
 	[[nodiscard]] Transform* get_transform()
@@ -87,7 +87,7 @@ struct Primitive_Shape_Component final : Entity_Component
 {
 	struct Shape final
 	{
-		e_primitive_shape_t prim_shape = e_primitive_shape::rect;
+		e_primitive_shape prim_shape = e_primitive_shape::rect;
 		Rect rc = {};
 		float_t radius = 0.f;
 		Vec2 pos_offset = {};
@@ -98,9 +98,9 @@ struct Primitive_Shape_Component final : Entity_Component
 	Primitive_Shape_Component() = delete;
 	Primitive_Shape_Component( Entity* parent_entity );
 
-	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
-	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, float_t radius, const Vec2& pos_offset = Vec2::zero );
-	Entity_Component* add_shape( const e_primitive_shape_t prim_shape, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape prim_shape, const Rect& rc, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape prim_shape, float_t radius, const Vec2& pos_offset = Vec2::zero );
+	Entity_Component* add_shape( const e_primitive_shape prim_shape, const Vec2& pos_offset = Vec2::zero );
 
 	virtual void draw() override;
 };
@@ -115,7 +115,7 @@ struct Emitter_Component final : Entity_Component
 	Particle_Emitter emitter = {};
 
 	Entity_Component* init( std::string_view params_tag );
-	virtual void set_life_cycle( e_life_cycle_t lc ) override;
+	virtual void set_life_cycle( e_life_cycle lc ) override;
 	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
 	virtual void update() override;
@@ -261,7 +261,7 @@ struct Simple_Collision_Body : Entity_Component
 	Simple_Collision_Body( Entity* parent_entity );
 	virtual ~Simple_Collision_Body() = default;
 
-	e_sc_prim_type_t prim_type = e_sc_prim_type::circle;
+	e_sc_prim_type prim_type = e_sc_prim_type::circle;
 
 	bool is_platform = false;
 
@@ -277,7 +277,7 @@ struct Simple_Collision_Body : Entity_Component
 	// verts
 	std::vector<Vec2> verts = {};
 
-	e_solidity_t solidity = e_solidity::solid;
+	e_solidity solidity = e_solidity::solid;
 
 	[[nodiscard]] bool is_solid()	{ return solidity == e_solidity::solid; }
 	[[nodiscard]] bool is_sensor()	{ return solidity == e_solidity::sensor; }
@@ -298,7 +298,7 @@ struct Simple_Collision_Body : Entity_Component
 
 	struct
 	{
-		e_sensor_type_t type = e_sensor_type::one_shot;
+		e_sensor_type type = e_sensor_type::one_shot;
 
 		// how long this sensor will wait between registering collision
 		time_ms time_delay = 0;
@@ -353,7 +353,7 @@ struct Tile_Map_Component final : Entity_Component
 	virtual void draw() override;
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
-	Simple_Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_solidity_t collider_type );
+	Simple_Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
 

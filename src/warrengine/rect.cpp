@@ -61,27 +61,27 @@ Vec2 Rect::get_midpoint() const
 // the best spot to start drawing from, given the alignment
 // requested.
 
-Vec2 Rect::get_pos_from_alignment( e_align_t align ) const
+Vec2 Rect::get_pos_from_alignment( e_align align ) const
 {
 	Vec2 pos = { x, y };
 
 	auto mid = get_midpoint();
 	auto br = bottom_right();
 
-	if( align & e_align::right )
+	if( (int32_t)(align & e_align::right) )
 	{
 		pos.x = br.x;
 	}
-	if( align & e_align::hcenter )
+	if( (int32_t)( align & e_align::hcenter) )
 	{
 		pos.x = mid.x;
 	}
 
-	if( align & e_align::bottom )
+	if( (int32_t)( align & e_align::bottom) )
 	{
 		pos.y = br.y;
 	}
-	if( align & e_align::vcenter )
+	if( (int32_t)( align & e_align::vcenter) )
 	{
 		pos.y = mid.y;
 	}
