@@ -145,7 +145,7 @@ struct Entity
 	template<typename T> T* add_component()
 	{
 		components.push_back( std::make_unique<T>( this ) );
-		auto new_component = static_cast<T*>( components.back().get() );
+		auto new_component = (T*)( components.back().get() );
 
 		return new_component;
 	}
@@ -163,7 +163,7 @@ struct Entity
 		{
 			if( dynamic_cast<T*>( ec.get() ) and ( tag == hash_none or ec->tag == tag ) )
 			{
-				return static_cast<T*>( ec.get() );
+				return (T*)( ec.get() );
 			}
 		}
 
@@ -190,7 +190,7 @@ struct Entity
 		{
 			if( dynamic_cast<T*>( ec.get() ) and ( tag == hash_none or ec->tag == tag ) )
 			{
-				ecs.push_back( static_cast<T*>( ec.get() ) );
+				ecs.push_back( (T*)( ec.get() ) );
 			}
 		}
 
@@ -209,7 +209,7 @@ struct Entity
 		{
 			if( dynamic_cast<T*>( ec.get() ) )
 			{
-				ecs.push_back( static_cast<B*>( ec.get() ) );
+				ecs.push_back( (B*)( ec.get() ) );
 			}
 		}
 	}

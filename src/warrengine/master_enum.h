@@ -397,7 +397,6 @@ enum struct e_framebuffer
 	pick_ids,
 	blurred,
 	composited,
-	Scene_Angle_Dirs,
 	max,
 };
 

@@ -56,7 +56,7 @@ struct Asset_Cache_Mgr final
 			log_fatal( "not found : [{}]", full_tag );
 		}
 
-		return static_cast<T*>( iter->second.get() );
+		return (T*)( iter->second.get() );
 	}
 
 	template<typename T>
@@ -73,7 +73,7 @@ struct Asset_Cache_Mgr final
 			return nullptr;
 		}
 
-		return static_cast<T*>( iter->second.get() );
+		return (T*)( iter->second.get() );
 	}
 };
 
