@@ -3,8 +3,9 @@ using namespace war;
 
 struct E_Sensor_Player final : Entity
 {
+	int32_t touch_count = 0;
+
 	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
-	virtual bool on_touching( Simple_Collision_Body* sensor ) override;
 	virtual bool on_touching_end( Simple_Collision_Body* sensor ) override;
 };
 
@@ -24,6 +25,7 @@ struct Scene_Simple_Sensors final : Scene
 	Entity* player = nullptr;
 	Entity* world_geo = nullptr;
 
+	void spawn_sensor( Entity* entity );
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;

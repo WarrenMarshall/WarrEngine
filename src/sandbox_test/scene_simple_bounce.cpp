@@ -57,7 +57,7 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 		ec->add_shape( e_primitive_shape::point );
 	}
 
-	e->add_impulse( { Random::get_random_unit_vector(), 20.f } );
+	e->add_impulse( { Random::get_random_unit_vector(), 2.f } );
 
 	first_time = false;
 
