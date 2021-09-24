@@ -13,11 +13,11 @@ Scene_Simple_Bounce::Scene_Simple_Bounce()
 	flags.is_debug_physics_scene = true;
 }
 
-Entity* Scene_Simple_Bounce::spawn_player()
+Entity* Scene_Simple_Bounce::spawn_shape()
 {
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
-	e->set_scale( Random::getf_range( 1.0f, 2.0f ) );
+	e->set_scale( Random::getf_range( 1.0f, 1.5f ) );
 	e->simple.friction = 0.0f;
 	e->simple.is_bouncy = true;
 
@@ -30,26 +30,26 @@ Entity* Scene_Simple_Bounce::spawn_player()
 		{
 			case 0:
 			{
-				ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
+				ec->set_as_centered_box( radius * Random::getf_range( 1.0f, 3.0f ), radius * Random::getf_range( 1.0f, 3.0f ) );
 			}
 			break;
 
 			case 1:
 			{
-				ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
+				ec->set_as_circle( radius * Random::getf_range( 0.5f, 1.5f ) );
 			}
 			break;
 
 			case 2:
 			{
 				auto s = Random::geti_range( 3, 8 );
-				auto r = radius * Random::getf_range( 0.5f, 3.0f );
+				auto r = radius * Random::getf_range( 0.5f, 2.0f );
 				ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
 			}
 			break;
 		}
 
-		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
+		ec->set_collision_flags( coll_flags.shape, coll_flags.geo | coll_flags.shape );
 	}
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
@@ -57,12 +57,7 @@ Entity* Scene_Simple_Bounce::spawn_player()
 		ec->add_shape( e_primitive_shape::point );
 	}
 
-	if( first_time )
-	{
-		player = e;
-	}
-
-	e->add_impulse( { Random::get_random_unit_vector(), 2.f } );
+	e->add_impulse( { Random::get_random_unit_vector(), 20.f } );
 
 	first_time = false;
 
@@ -139,8 +134,6 @@ void Scene_Simple_Bounce::pushed()
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
-
-		world_geo = e;
 	}
 }
 
@@ -154,19 +147,13 @@ void Scene_Simple_Bounce::draw()
 	}
 
 	Scene::draw();
-	//render::draw_world_axis();
 }
 
 void Scene_Simple_Bounce::draw_ui()
 {
 	Scene::draw_ui();
-	//draw_title( "Space Drifter" );
+	draw_title( "Bounce" );
 
-	//if( player )
-	//{
-	//	render::draw_string( std::format( "Velocity : {:.1f}, {:.1f}",
-	//		player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
-	//}
 }
 
 void Scene_Simple_Bounce::post_update()
@@ -193,23 +180,7 @@ bool Scene_Simple_Bounce::on_input_pressed( const Input_Event* evt )
 		case e_input_id::gamepad_button_y:
 		case e_input_id::key_space:
 		{
-			spawn_player();
-		}
-		break;
-	}
-
-	return false;
-}
-
-bool Scene_Simple_Bounce::on_input_motion( const Input_Event* evt )
-{
-	switch( evt->input_id )
-	{
-		case e_input_id::gamepad_left_stick:
-		{
-			player->add_force( { evt->delta, 1.0f } );
-
-			return true;
+			spawn_shape();
 		}
 		break;
 	}

@@ -307,7 +307,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 	}
 
 	// if an entity is bouncy and it uses gravity, then we need to dampen it's
-	// vertical velocity each time we compiled the velocity, otherwise it'll
+	// vertical velocity each time we compile the velocity, otherwise it'll
 	// just bounce forever at the same height.
 
 	if( ent_a->simple.is_bouncy and ent_a->simple.is_affected_by_gravity )

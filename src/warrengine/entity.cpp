@@ -195,11 +195,10 @@ void Entity::apply_forces()
 
 		if( simple.bounce_needs_dampening )
 		{
-			simple.bounce_needs_dampening = false;
-
 			// only dampen the vertical velocity on the way up
 			if( velocity.y < 0.0f )
 			{
+				simple.bounce_needs_dampening = false;
 				velocity.y *= 0.5f;
 			}
 		}

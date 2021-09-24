@@ -19,21 +19,11 @@ struct Entity_Simple_Collision final
 {
 	e_sc_type type = e_sc_type::dynamic;
 
-	[[nodiscard]] bool is_dynamic()
-	{
-		return ( type == e_sc_type::dynamic );
-	}
-	[[nodiscard]] bool is_stationary()
-	{
-		return ( type == e_sc_type::stationary );
-	}
-	[[nodiscard]] bool is_kinematic()
-	{
-		return ( type == e_sc_type::kinematic );
-	}
+	[[nodiscard]] bool is_dynamic() { return ( type == e_sc_type::dynamic ); }
+	[[nodiscard]] bool is_stationary() { return ( type == e_sc_type::stationary ); }
+	[[nodiscard]] bool is_kinematic() { return ( type == e_sc_type::kinematic ); }
 
 	float_t friction = 1.0f;
-	float_t bounce_dampen = 0.75f;
 	Range<float_t> max_velocity_x = { -5.0f, 5.0f };
 	Range<float_t> max_velocity_y = { -5.0f, 5.0f };
 
@@ -41,11 +31,6 @@ struct Entity_Simple_Collision final
 	bool is_affected_by_gravity : 1 = false;
 	bool is_bouncy : 1 = false;
 	bool bounce_needs_dampening : 1 = false;
-
-	struct
-	{
-		bool is_affected_by_gravity : 1 = false;
-	} save;
 };
 
 // ----------------------------------------------------------------------------
