@@ -246,6 +246,8 @@
     <ClCompile Include="scene_angle_dirs.cpp" />
     <ClCompile Include="scene_box2d.cpp" />
     <ClCompile Include="scene_box2d_entities.cpp" />
+    <ClCompile Include="scene_cameras.cpp" />
+    <ClCompile Include="scene_constraints.cpp" />
     <ClCompile Include="scene_controller.cpp" />
     <ClCompile Include="scene_coords.cpp" />
     <ClCompile Include="scene_entity_picking.cpp" />
@@ -262,6 +264,7 @@
     <ClCompile Include="scene_simple_sensors.cpp" />
     <ClCompile Include="scene_simple_top_down.cpp" />
     <ClCompile Include="scene_sound_music.cpp" />
+    <ClCompile Include="scene_spatial.cpp" />
     <ClCompile Include="scene_textures.cpp" />
     <ClCompile Include="scene_wrapped_text.cpp" />
     <ClCompile Include="scene_tile_map.cpp" />
@@ -275,6 +278,8 @@
     <ClInclude Include="scene_angle_dirs.h" />
     <ClInclude Include="scene_box2d.h" />
     <ClInclude Include="scene_box2d_entities.h" />
+    <ClInclude Include="scene_cameras.h" />
+    <ClInclude Include="scene_constraints.h" />
     <ClInclude Include="scene_controller.h" />
     <ClInclude Include="scene_coords.h" />
     <ClInclude Include="scene_entity_picking.h" />
@@ -291,6 +296,7 @@
     <ClInclude Include="scene_simple_sensors.h" />
     <ClInclude Include="scene_simple_top_down.h" />
     <ClInclude Include="scene_sound_music.h" />
+    <ClInclude Include="scene_spatial.h" />
     <ClInclude Include="scene_textures.h" />
     <ClInclude Include="scene_wrapped_text.h" />
     <ClInclude Include="scene_tile_map.h" />

@@ -75,6 +75,15 @@
     <ClCompile Include="scene_simple_sensors.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="scene_constraints.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_cameras.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_spatial.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene_main_menu.h">
@@ -149,6 +158,15 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_sensors.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_constraints.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_cameras.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_spatial.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

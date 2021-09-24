@@ -64,16 +64,20 @@ void Scene_Main_Menu::draw_ui()
 			do_menu_button<Scene_Meshes>( H( "button_meshes" ), "Meshes" );
 			do_menu_button<Scene_Particles>( H( "button_particles" ), "Particles" );
 			do_menu_button<Scene_Tile_Map>( H( "button_tilemap" ), "Tile Map" );
-		}
 
-		{
-			scoped_ui_layout( g_ui->layout_top().cut_right( 0.5f ) );
-
+			g_ui->divider_control()->done();
 			do_menu_button<Scene_Entity_Picking>( H( "button_entity_picking" ), "Entity Picking" );
 			do_menu_button<Scene_Tweens_Timers>( H( "button_tweens" ), "Tweens / Timers" );
 			do_menu_button<Scene_Sound_Music>( H( "button_sound_board" ), "Sound Board" );
 
 			g_ui->divider_control()->done();
+			do_menu_button<Scene_Controller>( H( "button_controller" ), "Game Controller" );
+			do_menu_button<Scene_Noise>( H( "button_noise" ), "Noise" );
+		}
+
+		{
+			scoped_ui_layout( g_ui->layout_top().cut_right( 0.5f ) );
+
 			do_menu_button<Scene_Box2D>( H( "button_box2d" ), "Box2D Collision" );
 			do_menu_button<Scene_Simple_Collision>( H( "button_simple_collision" ), "Simple Collision" );
 			do_menu_button<Scene_Simple_Sensors>( H( "button_simple_sensors" ), "Simple Sensors" );
@@ -86,8 +90,9 @@ void Scene_Main_Menu::draw_ui()
 			do_menu_button<Scene_Simple_Top_Down>( H( "button_simple_top_down" ), "Top Down" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<Scene_Controller>( H( "button_controller" ), "Game Controller" );
-			do_menu_button<Scene_Noise>( H( "button_noise" ), "Noise" );
+			do_menu_button<Scene_Constraints>( H( "button_constraints" ), "Constraints" );
+			do_menu_button<Scene_Spatial>( H( "button_spatial" ), "Spatial" );
+			do_menu_button<Scene_Cameras>( H( "button_cameras" ), "Cameras" );
 		}
 	}
 }
