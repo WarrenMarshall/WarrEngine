@@ -56,7 +56,7 @@ Vec2 Random::get_random_on_circle( float_t radius )
 
 Vec2 Random::get_random_unit_vector()
 {
-	Vec2 v = { Random::getf(), Random::getf() };
+	Vec2 v = { Random::getf_range( -1.f, 1.f ), Random::getf_range( -1.f, 1.f ) };
 	return Vec2::normalize( v );
 }
 
