@@ -7,7 +7,7 @@ namespace war
 
 Render_State* Render::state = nullptr;
 
-// the current palette that all rendering references
+// the current palette being used
 Palette_Asset Render::palette = {};
 
 void Render::init()

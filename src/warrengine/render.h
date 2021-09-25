@@ -5,6 +5,7 @@ namespace war
 struct Render final
 {
 	static Palette_Asset palette;
+	Texture_Asset* tex_lut = nullptr;
 
 	// rendering batches that are recreated every frame. the bulk of the
 	// rendered geo goes through these batches.

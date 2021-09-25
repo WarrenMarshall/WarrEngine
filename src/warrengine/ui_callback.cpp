@@ -40,21 +40,21 @@ void UI_Callback::on_control_left_clicked( hash tag, const UI_Result& result )
 		{
 			control_data->set_bool_value( !control_data->bool_value() );
 			on_value_changed( tag );
-			break;
 		}
+		break;
 
 		case e_ui_control_type::radio:
 		{
 			control_data->set_int_value( g_ui->current_control->idx );
 			on_value_changed( tag );
-			break;
 		}
+		break;
 
 		case e_ui_control_type::slider:
 		{
 			on_motion( tag, result );
-			break;
 		}
+		break;
 	}
 }
 

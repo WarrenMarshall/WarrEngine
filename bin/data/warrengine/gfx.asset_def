@@ -23,9 +23,8 @@
 
 {
 	"type" "src_texture"
-	"tag" "tex_default_lut"
+	"tag" "tex_lut_default"
 	"filename" "gfx/lut_default.psd"
 	"tiling" "tiling.clamp"
 	"use_mipmaps" "false"
-	"use_linear_filtering" "true"
 }

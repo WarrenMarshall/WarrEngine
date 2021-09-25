@@ -72,3 +72,33 @@
 	"tag" "tex_skull"
 	"filename" "gfx/skull.png"
 }
+
+{
+	"type" "src_texture"
+	"tag" "tex_color_test"
+	"filename" "gfx/color_test.jpg"
+}
+
+{
+	"type" "src_texture"
+	"tag" "tex_lut_over_exposed"
+	"filename" "gfx/lut_over_exposed.psd"
+	"tiling" "tiling.clamp"
+	"use_mipmaps" "false"
+}
+
+{
+	"type" "src_texture"
+	"tag" "tex_lut_sepia"
+	"filename" "gfx/lut_sepia.psd"
+	"tiling" "tiling.clamp"
+	"use_mipmaps" "false"
+}
+
+{
+	"type" "src_texture"
+	"tag" "tex_lut_underwater"
+	"filename" "gfx/lut_underwater.psd"
+	"tiling" "tiling.clamp"
+	"use_mipmaps" "false"
+}

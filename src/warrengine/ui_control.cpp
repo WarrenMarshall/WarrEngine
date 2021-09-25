@@ -379,6 +379,8 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 
 		// draw background
 
+		Render::state->z += zdepth_nudge;
+		Render::state->z += zdepth_nudge;
 		Render::state->color = make_color( e_pal::darker );
 		Render::draw_sliced( slice_def_dropdown_list, item_list_rc );
 
@@ -410,6 +412,7 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 				{
 					// if the item was clicked, that index becomes the current one
 					control_data->set_int_value( idx );
+					g_ui->current_callback->on_value_changed( dropdown_control_tag );
 
 					control_data->set_expanded( false );
 					g_engine->scene_mgr.current_scene->ui_expanded_tag_begin = g_engine->scene_mgr.current_scene->ui_expanded_tag_end = hash_none;

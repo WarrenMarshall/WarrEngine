@@ -31,6 +31,7 @@ bool Texture_Source_Asset::create()
 
 	auto filter = GL_NEAREST;
 	auto filter_mipmap = GL_LINEAR_MIPMAP_NEAREST;
+
 	if( use_linear_filtering )
 	{
 		filter = GL_LINEAR;

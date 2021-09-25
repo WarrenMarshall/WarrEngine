@@ -69,7 +69,6 @@ void Engine::launch( int32_t argc, char* argv [] )
 
 	// used for solid drawing
 	g_engine->tex_white = g_engine->find_asset<Texture_Asset>( "engine_white" );
-	g_engine->tex_default_lut = g_engine->find_asset<Texture_Asset>( "tex_default_lut" );
 
 	// there's a simple pixel font that always lives inside of engine so there
 	// is always a font available, regardless of ui theme settings.
@@ -77,6 +76,7 @@ void Engine::launch( int32_t argc, char* argv [] )
 
 	log( "Initializing renderer" );
 	g_engine->render.init();
+	g_engine->render.tex_lut = g_engine->find_asset<Texture_Asset>( "tex_lut_default" );
 
 	log( "Initializing game" );
 	g_base_game->init();
@@ -418,7 +418,7 @@ void Engine::do_draw_finished_frame()
 		);
 
 		Render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer->color_attachments[ 0 ].texture );
-		Render::state->batch_render_target->assign_texture_slot_manual( g_engine->tex_default_lut );
+		Render::state->batch_render_target->assign_texture_slot_manual( g_engine->render.tex_lut );
 
 		Render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );

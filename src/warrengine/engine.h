@@ -36,7 +36,6 @@ struct Engine final
 	std::vector<std::future<void>> threads;
 
 	Texture_Asset* tex_white = nullptr;
-	Texture_Asset* tex_default_lut = nullptr;
 	Font_Asset* pixel_font = nullptr;
 
 	bool is_running = false;

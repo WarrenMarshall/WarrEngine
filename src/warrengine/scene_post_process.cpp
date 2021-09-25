@@ -162,12 +162,12 @@ void Scene_Post_Process::draw_ui()
 	// default lut
 
 	g_ui->image_control()
-		->set_image( g_engine->tex_default_lut )
-		->cut_top( g_engine->tex_default_lut->height() )
-		->set_size( { viewport_w, g_engine->tex_default_lut->height() } )
+		->set_image( g_engine->render.tex_lut )
+		->cut_top( g_engine->render.tex_lut->height() )
+		->set_size( { viewport_w, g_engine->render.tex_lut->height() } )
 		->done();
 
-	rc_layout = Rect( 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
+	rc_layout = Rect( 8.f, 30.f + g_engine->render.tex_lut->height(), ui_hw, ui_h );
 	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
@@ -332,7 +332,7 @@ void Scene_Post_Process::draw_ui()
 
 	// move to right side of screen
 
-	rc_layout = Rect( ui_hw + 8.f, 30.f + g_engine->tex_default_lut->height(), ui_hw, ui_h );
+	rc_layout = Rect( ui_hw + 8.f, 30.f + g_engine->render.tex_lut->height(), ui_hw, ui_h );
 	g_ui->layout_init( rc_layout );
 
 	// ----------------------------------------------------------------------------
