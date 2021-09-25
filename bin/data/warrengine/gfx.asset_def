@@ -27,4 +27,5 @@
 	"filename" "gfx/lut_default.psd"
 	"tiling" "tiling.clamp"
 	"use_mipmaps" "false"
+	"use_linear_filtering" "true"
 }

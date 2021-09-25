@@ -3,6 +3,8 @@
 
 using namespace war;
 
+// #warren - the glow in here is terrible looking - tame that value and then see about doing a nice outline effect instead
+
 Scene_Entity_Picking::Scene_Entity_Picking()
 {
 	flags.blocks_further_drawing = true;

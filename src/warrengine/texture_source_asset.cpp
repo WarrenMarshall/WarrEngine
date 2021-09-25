@@ -29,8 +29,16 @@ bool Texture_Source_Asset::create()
 	glCreateTextures( GL_TEXTURE_2D, 1, &gl_id );
 	glBindTextureUnit( 0, gl_id );
 
-	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, ( use_mipmaps ) ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST );
-	glTextureParameteri( gl_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+	auto filter = GL_NEAREST;
+	auto filter_mipmap = GL_LINEAR_MIPMAP_NEAREST;
+	if( use_linear_filtering )
+	{
+		filter = GL_LINEAR;
+		filter_mipmap = GL_LINEAR_MIPMAP_LINEAR;
+	}
+
+	glTextureParameteri( gl_id, GL_TEXTURE_MIN_FILTER, ( use_mipmaps ) ? filter_mipmap : filter );
+	glTextureParameteri( gl_id, GL_TEXTURE_MAG_FILTER, filter );
 
 	glTextureParameteri( gl_id, GL_TEXTURE_WRAP_S, ( tiling == e_tiling::clamp ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );
 	glTextureParameteri( gl_id, GL_TEXTURE_WRAP_T, ( tiling == e_tiling::clamp ) ? GL_CLAMP_TO_EDGE : GL_REPEAT );

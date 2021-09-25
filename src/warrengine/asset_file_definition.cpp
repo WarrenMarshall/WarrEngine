@@ -96,7 +96,8 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Source_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
 	asset_ptr->tiling = (e_tiling)g_engine->find_int_from_symbol( key_values_for_asset_def.find_value_or( "tiling", "tiling.repeat" ) );
-	asset_ptr->use_mipmaps = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( " ", "true" ) );
+	asset_ptr->use_mipmaps = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( "use_mipmaps", "true" ) );
+	asset_ptr->use_linear_filtering = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( "use_linear_filtering", "false" ) );
 
 	asset_ptr->create();
 

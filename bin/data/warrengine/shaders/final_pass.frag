@@ -105,23 +105,18 @@ void main()
 	uv_coord = fx_pixelate( uv_coord );
 	uv_coord = fx_crt_warp( uv_coord );
 
-	// #test
+	// sample the appropriate texture
+	out_color_buffer = get_sample_from_texture( fs_texture_id, uv_coord );
 
 	// adjust final_color to be fully black if outside the 0-1 range in UV coords
 	if( uv_coord.x < 0.0f || uv_coord.x > 1.0f || uv_coord.y < 0.0f || uv_coord.y > 1.0f )
 	{
 		out_color_buffer = vec4(0,0,0,1);
 	}
-	else
-	{
-		out_color_buffer = get_sample_from_texture( fs_texture_id, uv_coord );
-	}
 
-	/*
-	// note : it is assumed that texture 1 is the LUT texture
-	//
 	// using the r,g,b values from the color buffer, look up the final color
 	// in the LUT texture.
+	// NOTE : it is assumed that texture 1 is the LUT texture
 
 	float r = clamp( out_color_buffer.r, 0.f, 1.f );
 	float g = clamp( out_color_buffer.g, 0.f, 1.f );
@@ -134,5 +129,4 @@ void main()
 	);
 
 	out_color_buffer.rgb = lut;
-	*/
 }

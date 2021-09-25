@@ -1,16 +1,6 @@
 
 using namespace war;
 
-struct E_Sensor_Player final : Entity
-{
-	int32_t touch_count = 0;
-
-	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
-	virtual bool on_touching_end( Simple_Collision_Body* sensor ) override;
-};
-
-// ----------------------------------------------------------------------------
-
 struct Scene_Simple_Sensors final : Scene
 {
 	struct

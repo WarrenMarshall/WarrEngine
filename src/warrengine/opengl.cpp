@@ -33,15 +33,21 @@ void OpenGL_Mgr::init()
 
 #ifdef _DEBUG
 	// this is set low in debug mode so we'll know if the texture unit batching code breaks.
-	max_texture_image_units = 1;
+	// NOTE : we need at least 2 units or the LUT texture look up won't work and things get funky
+	max_texture_image_units = 2;
 #endif
 
 	if( g_engine->cmdline.nobatch )
 	{
-		max_texture_image_units = 1;
+		max_texture_image_units = 2;
 	}
 
 	log( "GL_MAX_TEXTURE_IMAGE_UNITS : {}", max_texture_image_units );
+
+	if( max_texture_image_units < 2 )
+	{
+		log_fatal( "WarrEngine needs at least 2 texture units on the GPU to function correctly (found : {}).", max_texture_image_units );
+	}
 
 	// how many color attachments can be added to a frame buffer object
 	int32_t max_color_attachments = 0;

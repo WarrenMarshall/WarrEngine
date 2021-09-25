@@ -20,6 +20,9 @@ struct Texture_Source_Asset final : Texture_Source_Base
 	// set to false if you never want this texture to generate mipmaps
 	bool use_mipmaps = true;
 
+	// set to true if you want bilinear filtering on the texture
+	bool use_linear_filtering = false;
+
 	virtual bool create() override;
 };
 

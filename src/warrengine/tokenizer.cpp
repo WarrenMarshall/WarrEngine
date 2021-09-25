@@ -93,7 +93,6 @@ std::optional<std::string_view> Tokenizer::get_next_token()
 	// extract the token
 	ret = tokens[ idx ];
 
-	// move the index to the next token
 	idx++;
 
 	// trim the token before sending it back

@@ -3,34 +3,6 @@
 
 using namespace war;
 
-// ----------------------------------------------------------------------------
-
-bool E_Sensor_Player::on_touching_begin( Simple_Collision_Body* sensor )
-{
-	Entity::on_touching_begin( sensor );
-
-	touch_count++;
-	if( touch_count )
-	{
-		rs_opt.color = make_color( e_pal::brighter );
-	}
-	return true;
-};
-
-bool E_Sensor_Player::on_touching_end( Simple_Collision_Body* sensor )
-{
-	Entity::on_touching_end( sensor );
-
-	touch_count--;
-	if( !touch_count )
-	{
-		rs_opt.color = make_color( e_pal::darker );
-	}
-	return true;
-};
-
-// ----------------------------------------------------------------------------
-
 Scene_Simple_Sensors::Scene_Simple_Sensors()
 {
 	flags.blocks_further_drawing = true;
@@ -81,7 +53,7 @@ void Scene_Simple_Sensors::pushed()
 
 	// KINEMATIC CIRCLE
 	{
-		auto e = add_entity<E_Sensor_Player>();
+		auto e = add_entity<Entity>();
 		e->tag = H( "the_player" );
 		e->simple.type = e_sc_type::kinematic;
 		{

@@ -3,77 +3,108 @@
 
 using namespace war;
 
+// ----------------------------------------------------------------------------
+
+bool E_Sensor_Player::on_touching_begin( Simple_Collision_Body* sensor )
+{
+	Entity::on_touching_begin( sensor );
+
+	touch_count++;
+	if( touch_count )
+	{
+		rs_opt.color = make_color( e_pal::brighter );
+	}
+	return true;
+};
+
+bool E_Sensor_Player::on_touching_end( Simple_Collision_Body* sensor )
+{
+	Entity::on_touching_end( sensor );
+
+	touch_count--;
+	if( !touch_count )
+	{
+		rs_opt.color = make_color( e_pal::darker );
+	}
+	return true;
+};
+
+// ----------------------------------------------------------------------------
+
 Scene_Constraints::Scene_Constraints()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
+	flags.requires_controller = false;
+	flags.is_debug_physics_scene = true;
 }
 
 void Scene_Constraints::pushed()
 {
 	Scene::pushed();
 
-	// stars
-	{
-		auto e = add_entity<Entity>();
-		e->tag = H( "stars" );
-		e->set_pos( { -150.f, -100.f } );
+	g_engine->render.debug.draw_debug_info = true;
+	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
-		{
-			auto ec = e->add_component<Emitter_Component>();
-			ec->init( "em_stars" );
-		}
+	// KINEMATIC CIRCLE
+	{
+		auto e = add_entity<E_Sensor_Player>();
+		e->tag = H( "the_player" );
+		e->simple.type = e_sc_type::kinematic;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
-			ec->add_shape( e_primitive_shape::circle, 30.f );
-			ec->rs_opt.color = make_color( e_pal::brightest );
+			ec->add_shape( e_primitive_shape::circle, 16.f );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->set_as_circle( 32.f );
+			ec->set_collision_flags( coll_flags.player, coll_flags.world | coll_flags.sensor );
 		}
 	}
 
-	// jumping coins
-	{
-		auto e = add_entity<Entity>();
-		e->set_pos( { 0.f, viewport_hh } );
+	// WORLD GEO
 
+	{
+		auto e = add_entity<Entity>( "world" );
+		e->simple.type = e_sc_type::stationary;
+
+		// 4 walls
 		{
-			auto ec = e->add_component<Emitter_Component>();
-			ec->init( "em_coin_fountain" );
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Primitive_Shape_Component>();
-			ec->add_shape( e_primitive_shape::filled_rect, Rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
-			ec->rs_opt.color = make_color( e_pal::brightest, 0.25f );
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
+			ec->set_as_box( viewport_w, 16.f );
+			ec->set_collision_flags( coll_flags.world, 0 );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( coll_flags.world, 0 );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
+			ec->set_as_box( 16.f, viewport_h );
+			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 	}
-
-	// torch emitter attached to mouse cursor
-	{
-		auto e = add_entity<Entity>();
-		e->set_pos( { 50.f, -100.f } );
-		e->tag = H( "mouse_torch" );
-
-		{
-			auto ec = e->add_component<Emitter_Component>();
-			ec->init( "em_torch" );
-		}
-		{
-			auto ec = e->add_component<Emitter_Component>();
-			ec->init( "em_torch_embers" );
-		}
-		{
-			auto ec = e->add_component<Primitive_Shape_Component>();
-			ec->add_shape( e_primitive_shape::filled_circle, 10.f );
-			ec->rs_opt.color = make_color( e_pal::brightest );
-			ec->rs_opt.color->a = 0.25f;
-		}
-	}
-
-	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 }
 
 void Scene_Constraints::draw()
 {
-	draw_tiled_background();
+	{
+		scoped_render_state;
+		Render::state->color = make_color( e_pal::darker );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
+			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+	}
+
 	Scene::draw();
 	Render::draw_world_axis();
 }
@@ -81,34 +112,38 @@ void Scene_Constraints::draw()
 void Scene_Constraints::draw_ui()
 {
 	Scene::draw_ui();
-	draw_title( "Constraints" );
+}
 
-	// compute where the torch is in UI space and draw a label there
+void Scene_Constraints::update()
+{
+	Scene::update();
+}
 
-	auto viewport_pos = Coord_System::world_to_viewport_pos( find_entity( H( "mouse_torch" ) )->get_pos() );
-	viewport_pos += { 24.f, 0.f };
-	auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
-
-	Render::state->align = e_align::left | e_align::vcenter;
-	Render::state->color = make_color( e_pal::brighter );
-	Render::draw_string( "My Light In The Dark", ui_pos );
+bool Scene_Constraints::on_input_pressed( const Input_Event* evt )
+{
+	return false;
 }
 
 bool Scene_Constraints::on_input_motion( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::mouse )
+	switch( evt->input_id )
 	{
-		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+		case e_input_id::mouse:
 		{
-			auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
-			find_entity( H( "mouse_torch" ) )->set_pos( wpos );
-		}
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			{
+				if( !evt->shift_down and !evt->control_down )
+				{
+					auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 
-		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
-		{
-			auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
-			find_entity( H( "stars" ) )->set_pos( wpos );
+					auto e = find_entity( H( "the_player" ) );
+					e->set_pos( world_pos );
+
+					return true;
+				}
+			}
 		}
+		break;
 	}
 
 	return false;
