@@ -14,8 +14,9 @@ Scene_Spatial::Scene_Spatial()
 void Scene_Spatial::spawn_entity()
 {
 	auto e = add_entity<Entity>();
-	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
+	Rect rc( -viewport_w, -viewport_h, viewport_w * 2.f, viewport_h * 2.f );
 	e->set_pos( rc.find_random_pos_within() );
+	e->set_scale( Random::getf_range( 1.f, 2.f ) );
 	e->rs_opt.color = make_color( e_pal::brighter );
 	{
 		auto ec = e->add_component<Sprite_Component>();
@@ -24,8 +25,14 @@ void Scene_Spatial::spawn_entity()
 	}
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
-		//ec->set_as_circle( 16.f );
-		ec->set_as_centered_box( 16.f, 16.f );
+		if( Random::getb() )
+		{
+			ec->set_as_circle( 8.f );
+		}
+		else
+		{
+			ec->set_as_centered_box( 16.f, 16.f );
+		}
 		ec->set_collision_flags( coll_flags.skull, coll_flags.skull );
 	}
 }
@@ -36,8 +43,8 @@ void Scene_Spatial::pushed()
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
-	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	spatial_map.init( rc, 2 );
+	Rect rc( -viewport_w, -viewport_h, viewport_w * 2.f, viewport_h * 2.f );
+	spatial_map.init( rc, 3 );
 
 	// kinematic circle
 	{
@@ -48,10 +55,10 @@ void Scene_Spatial::pushed()
 				{
 					auto ec = e->add_component<Simple_Collision_Body>();
 
-					ec->set_as_polygon( Geo_Util::generate_convex_shape( 6, 24.f ) );
-					//ec->set_as_circle( 24.f );
-					//ec->set_as_centered_box( 24.f, 24.f );
-					//ec->set_as_box( 24.f, 24.f );
+					ec->set_as_polygon( Geo_Util::generate_convex_shape( 6, 16.f ) );
+					//ec->set_as_circle( 16.f );
+					//ec->set_as_centered_box( 16.f, 16.f );
+					//ec->set_as_box( 16.f, 16.f );
 					ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 				}
 			}
@@ -60,9 +67,11 @@ void Scene_Spatial::pushed()
 				ec->add_shape( e_primitive_shape::point );
 			}
 		}
+
+		player_shape = e;
 	}
 
-	for( auto x = 0 ; x < 116 ; ++x )
+	for( auto x = 0 ; x < 64 ; ++x )
 	{
 		spawn_entity();
 	}
@@ -75,6 +84,16 @@ void Scene_Spatial::draw()
 	//Render::draw_world_axis();
 
 	spatial_map.debug_draw();
+
+	// show entities that COULD collide with player shape
+
+	auto potential_entities = spatial_map.get_potential_entity_colliding_set( player_shape );
+
+	Render::state->color = make_color( Color::teal, 0.5f );
+	for( auto& e : potential_entities )
+	{
+		Render::draw_line( player_shape->get_transform()->pos, e->get_transform()->pos );
+	}
 }
 
 void Scene_Spatial::draw_ui()
@@ -95,8 +114,7 @@ bool Scene_Spatial::on_input_motion( const Input_Event* evt )
 				{
 					auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 
-					auto e = find_entity( H( "main_ball" ) );
-					e->set_pos( world_pos );
+					player_shape->set_pos( world_pos );
 
 					return true;
 				}

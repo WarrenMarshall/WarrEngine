@@ -28,6 +28,7 @@ struct Spatial_Map final
 	void init( const Rect& bounds, int32_t subd_count );
 	void debug_draw() const;
 	std::vector<Spatial_Map::Node*> get_nodes_entity_is_touching( Entity* e );
+	std::set<Entity*> get_potential_entity_colliding_set( Entity* e );
 
 	void pre_update();
 	void update();

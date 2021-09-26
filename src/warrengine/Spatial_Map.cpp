@@ -20,8 +20,8 @@ void Spatial_Map::Node::debug_draw() const
 
 	if( !entities.empty() )
 	{
-		Render::draw_filled_rect( bounds );
-		Render::state->color = make_color( e_pal::brighter );
+		//Render::draw_filled_rect( bounds );
+		//Render::state->color = make_color( e_pal::brighter );
 	}
 
 	Render::draw_rect( bounds );
@@ -93,6 +93,26 @@ std::vector<Spatial_Map::Node*> Spatial_Map::get_nodes_entity_is_touching( Entit
 	}
 
 	return touching_nodes;
+}
+
+std::set<Entity*> Spatial_Map::get_potential_entity_colliding_set( Entity* e )
+{
+	auto touching_nodes = get_nodes_entity_is_touching( e );
+
+	std::set<Entity*> entities;
+
+	for( auto& node : touching_nodes )
+	{
+		for( auto& ent : node->entities )
+		{
+			if( ent != e )
+			{
+				entities.insert( ent );
+			}
+		}
+	}
+
+	return entities;
 }
 
 void Spatial_Map::insert_entity( Entity* e )

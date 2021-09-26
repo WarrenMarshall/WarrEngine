@@ -9,6 +9,8 @@ struct Scene_Spatial final : Scene
 		uint16_t skull = 0b0000010;
 	} coll_flags;
 
+	Entity* player_shape = nullptr;
+
 	Scene_Spatial();
 
 	void spawn_entity();
