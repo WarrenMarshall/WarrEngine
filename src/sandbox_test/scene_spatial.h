@@ -5,8 +5,7 @@ struct Scene_Spatial final : Scene
 {
 	Scene_Spatial();
 
-	float_t glow_val = 0.f;
-
+	void spawn_entity();
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;

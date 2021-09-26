@@ -23,7 +23,6 @@ struct Entity_Simple_Collision final
 	[[nodiscard]] bool is_stationary() { return ( type == e_sc_type::stationary ); }
 	[[nodiscard]] bool is_kinematic() { return ( type == e_sc_type::kinematic ); }
 
-	float_t friction = 1.0f;
 	Range<float_t> max_velocity_x = { -5.0f, 5.0f };
 	Range<float_t> max_velocity_y = { -5.0f, 5.0f };
 
@@ -31,6 +30,28 @@ struct Entity_Simple_Collision final
 	bool is_affected_by_gravity : 1 = false;
 	bool is_bouncy : 1 = false;
 	bool bounce_needs_dampening : 1 = false;
+
+	Entity_Simple_Collision()
+	{
+		set_friction( 5.0f );
+	}
+
+	void set_friction( float value )
+	{
+		assert( value >= 0.0f );
+		assert( value <= 10.0f );
+
+		friction = fixed_time_step::per_second( value );
+	}
+
+protected:
+	// 0.f = full sliding
+	// 5.f = normal
+	// 10.f = no drift
+
+	float_t friction = 0.f;
+
+	friend struct Entity;
 };
 
 // ----------------------------------------------------------------------------

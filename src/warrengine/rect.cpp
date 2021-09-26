@@ -190,6 +190,31 @@ Rect Rect::cut()
 	return result;
 }
 
+// creates 4 smaller rectangles from this one and returns them
+
+std::vector<Rect> Rect::subdivide()
+{
+	std::vector<Rect> subrects;
+	subrects.reserve( 4 );
+
+	auto hw = w / 2.f;
+	auto hh = h / 2.f;
+
+	subrects.emplace_back( Rect( x, y, hw, hh ) );
+	subrects.emplace_back( Rect( x + hw, y, hw, hh ) );
+	subrects.emplace_back( Rect( x + hw, y + hh, hw, hh ) );
+	subrects.emplace_back( Rect( x, y + hh, hw, hh ) );
+
+	return subrects;
+}
+
+// generates a random location within this rectangle
+
+Vec2 Rect::find_random_pos_within()
+{
+	return Vec2( x + ( w * Random::getf() ), y + ( h * Random::getf() ) );
+}
+
 bool Rect::operator==( const Rect& rhs ) const
 {
 	return( fequals( rhs.x, x ) and fequals( rhs.y, y ) and fequals( rhs.w, w ) and fequals( rhs.h, h ) );

@@ -18,7 +18,7 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
 	e->set_scale( Random::getf_range( 1.0f, 1.5f ) );
-	e->simple.friction = 0.0f;
+	e->simple.set_friction( 0.f );
 	e->simple.is_bouncy = true;
 
 	{

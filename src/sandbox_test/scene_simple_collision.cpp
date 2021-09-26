@@ -94,7 +94,7 @@ void Scene_Simple_Collision::spawn_ball_at( Vec2 world_pos )
 	e->set_pos( world_pos );
 	e->rs_opt.color = Color( Random::getf(), Random::getf(), Random::getf() );
 	e->make_pickable();
-	e->simple.friction = 0.01f;
+	e->simple.set_friction( 5.f );
 	e->simple.is_affected_by_gravity = true;
 	e->simple.max_velocity_y = { -5.f, sc_world.settings.gravity_max_speed };
 	e->simple.is_bouncy = true;
@@ -123,7 +123,7 @@ void Scene_Simple_Collision::spawn_box_at( Vec2 world_pos )
 	auto e = add_entity<Entity>();
 	e->set_pos( world_pos );
 	e->make_pickable();
-	e->simple.friction = 0.5f;
+	e->simple.set_friction( 5.f );
 	e->simple.is_affected_by_gravity = true;
 	e->simple.is_bouncy = true;
 	e->simple.max_velocity_y = { -5.f, sc_world.settings.gravity_max_speed };

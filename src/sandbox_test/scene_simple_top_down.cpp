@@ -36,7 +36,6 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			e->tag = H( "player" );
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
-			e->simple.friction = 0.1f;
 
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();

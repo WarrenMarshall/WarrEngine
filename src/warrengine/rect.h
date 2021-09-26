@@ -31,7 +31,10 @@ struct Rect final
 	Rect cut_bottom( float_t sz );
 	Rect cut();
 
-	bool operator==( const Rect & rhs ) const;
+	std::vector<Rect> subdivide();
+	Vec2 find_random_pos_within();
+
+	bool operator==( const Rect& rhs ) const;
 	Rect operator+( const Vec2 & v ) const;
 	Rect operator+=( const Vec2 & v );
 	Rect operator-( const Vec2 & v ) const;

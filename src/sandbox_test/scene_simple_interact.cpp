@@ -24,7 +24,7 @@ Entity* Scene_Simple_Interact::spawn_entity()
 	e->debug_name = "player";
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
-	e->simple.friction = 0.1f;
+	e->simple.set_friction( 3.0f );
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 

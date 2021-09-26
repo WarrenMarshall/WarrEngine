@@ -79,6 +79,8 @@
 	"filename" "gfx/color_test.jpg"
 }
 
+# look up textures
+
 {
 	"type" "src_texture"
 	"tag" "tex_lut_over_exposed"
