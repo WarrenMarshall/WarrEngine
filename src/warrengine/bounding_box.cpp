@@ -29,8 +29,8 @@ void Bounding_Box::add( const Vec2& vtx )
 
 void Bounding_Box::reset()
 {
-	min.x = min.y = std::numeric_limits<float_t>::max();
-	max.x = max.y = std::numeric_limits<float_t>::min();
+	min.x = min.y = 999999.f;// std::numeric_limits<float_t>::max();
+	max.x = max.y = -999999.f;//std::numeric_limits<float_t>::min();
 }
 
 Vec2 Bounding_Box::get_random_spot() const
@@ -39,6 +39,11 @@ Vec2 Bounding_Box::get_random_spot() const
 	auto dist_y = ( Vec2( 0.f, max.y ) - Vec2( 0.f, min.y ) ).get_size();
 
 	return Vec2( min.x + ( dist_x * Random::getf() ), min.y + ( dist_y * Random::getf() ) );
+}
+
+Rect Bounding_Box::as_rect() const
+{
+	return Rect( min.x, max.y, max.x - min.x, max.y - min.y );
 }
 
 Bounding_Box Bounding_Box::operator+( const Vec2& v ) const
@@ -54,6 +59,21 @@ Bounding_Box Bounding_Box::operator+( const Vec2& v ) const
 Bounding_Box Bounding_Box::operator+=( const Vec2& v )
 {
 	*this = *this + v;
+	return *this;
+}
+
+Bounding_Box Bounding_Box::operator+( const Rect& r ) const
+{
+	Bounding_Box bb = *this;
+	bb.add( { r.x, r.y } );
+	bb.add( { r.x + r.w, r.y - r.h } );
+
+	return bb;
+}
+
+Bounding_Box Bounding_Box::operator+=( const Rect& r )
+{
+	*this = *this + r;
 	return *this;
 }
 

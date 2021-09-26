@@ -267,7 +267,7 @@
     <ClCompile Include="asset_file_definition.cpp" />
     <ClCompile Include="bounding_box.cpp" />
     <ClCompile Include="color.cpp" />
-    <ClCompile Include="quad_tree.cpp" />
+    <ClCompile Include="Spatial_Map.cpp" />
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="scene_transient.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
@@ -368,7 +368,7 @@
     <ClInclude Include="bounding_box.h" />
     <ClInclude Include="cache.h" />
     <ClInclude Include="color.h" />
-    <ClInclude Include="quad_tree.h" />
+    <ClInclude Include="Spatial_Map.h" />
     <ClInclude Include="rect.h" />
     <ClInclude Include="scene_transient.h" />
     <ClInclude Include="simple_collision_world.h" />

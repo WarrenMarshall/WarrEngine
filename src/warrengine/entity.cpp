@@ -351,17 +351,13 @@ void Entity::add_delta_pos( const Vec2& delta )
 {
 	_tform.add_pos( delta );
 
+	// if there are entities stuck to this one, move them at the same time
 	for( auto e : sticky_set )
 	{
 		e->add_delta_pos( delta );
 	}
 
-	// note : without this check, box2d bodies stop reacting to gravity - not
-	// sure why, but for now, leave this alone.
-	if( !delta.is_zero() )
-	{
-		update_physics_components_to_match_transform();
-	}
+	update_physics_components_to_match_transform();
 }
 
 void Entity::add_delta_angle( const float_t delta )
@@ -539,6 +535,48 @@ void Entity::apply_movement_walk( Vec2 delta, float_t speed )
 	{
 		add_force( { delta * Vec2::x_axis, 12.f } );
 	}
+}
+
+// looks at the simple collision bodies for this entity and generates an all
+// encompassing AABB in world space that represents the entire bounds of the
+// entity
+
+Bounding_Box Entity::get_ws_bbox() const
+{
+	Bounding_Box bbox;
+
+	std::vector<Simple_Collision_Body*> scbs;
+	get_components<Simple_Collision_Body, Simple_Collision_Body>( scbs );
+
+	for( const auto& ec : scbs )
+	{
+		if( !ec->is_sensor() )
+		{
+			switch( ec->prim_type )
+			{
+				case e_sc_prim_type::circle:
+				{
+					assert( false );
+				}
+				break;
+
+				case e_sc_prim_type::aabb:
+				{
+					bbox += ec->ws.aabb;
+				}
+				break;
+
+				case e_sc_prim_type::polygon:
+				{
+					assert( false );
+				}
+				break;
+			}
+		}
+	}
+
+	return bbox;
+
 }
 
 Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const

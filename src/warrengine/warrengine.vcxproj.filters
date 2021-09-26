@@ -277,7 +277,7 @@
     <ClCompile Include="scene_transient.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="quad_tree.cpp">
+    <ClCompile Include="Spatial_Map.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -567,7 +567,7 @@
     <ClInclude Include="cache.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="quad_tree.h">
+    <ClInclude Include="Spatial_Map.h">
       <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>

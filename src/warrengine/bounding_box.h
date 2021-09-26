@@ -13,8 +13,12 @@ struct Bounding_Box final
 	void reset();
 	[[nodiscard]] Vec2 get_random_spot() const;
 
+	[[nodiscard]] Rect as_rect() const;
+
 	Bounding_Box operator+( const Vec2& v ) const;
 	Bounding_Box operator+=( const Vec2& v );
+	Bounding_Box operator+( const Rect& r ) const;
+	Bounding_Box operator+=( const Rect& r );
 	Bounding_Box operator+( const Bounding_Box& bbox ) const;
 	Bounding_Box operator+=( const Bounding_Box& bbox );
 };
