@@ -275,6 +275,18 @@ c2AABB Rect::to_c2AABB() const
 	return aabb;
 }
 
+c2AABB Rect::as_c2AABB() const
+{
+	c2AABB aabb = {};
+
+	aabb.min.x = x;
+	aabb.min.y = y;
+	aabb.max.x = x + w;
+	aabb.max.y = y + h;
+
+	return aabb;
+}
+
 Rect Rect::create_centered( float_t sz )
 {
 	return Rect::create_centered( sz, sz );

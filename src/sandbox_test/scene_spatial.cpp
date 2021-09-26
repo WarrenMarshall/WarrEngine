@@ -47,8 +47,10 @@ void Scene_Spatial::pushed()
 			{
 				{
 					auto ec = e->add_component<Simple_Collision_Body>();
-					//ec->set_as_circle( 25.f );
-					ec->set_as_centered_box( 24.f, 24.f );
+
+					ec->set_as_polygon( Geo_Util::generate_convex_shape( 6, 24.f ) );
+					//ec->set_as_circle( 24.f );
+					//ec->set_as_centered_box( 24.f, 24.f );
 					//ec->set_as_box( 24.f, 24.f );
 					ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 				}
@@ -60,11 +62,10 @@ void Scene_Spatial::pushed()
 		}
 	}
 
-	//spawn_entity();
-	//spawn_entity();
-	//spawn_entity();
-	spawn_entity();
-	spawn_entity();
+	for( auto x = 0 ; x < 116 ; ++x )
+	{
+		spawn_entity();
+	}
 }
 
 void Scene_Spatial::draw()

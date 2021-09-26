@@ -82,11 +82,11 @@ std::vector<Spatial_Map::Node*> Spatial_Map::get_nodes_entity_is_touching( Entit
 		return touching_nodes;
 	}
 
-	c2AABB entity_ws_aabb = e->get_ws_bbox().as_rect().to_c2AABB();
+	c2AABB entity_ws_aabb = e->get_ws_bbox().as_rect().as_c2AABB();
 
 	for( auto& node : nodes )
 	{
-		if( c2AABBtoAABB( entity_ws_aabb, node.bounds.to_c2AABB() ) )
+		if( c2AABBtoAABB( entity_ws_aabb, node.bounds.as_c2AABB() ) )
 		{
 			touching_nodes.push_back( &node );
 		}

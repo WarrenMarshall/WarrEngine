@@ -552,26 +552,7 @@ Bounding_Box Entity::get_ws_bbox() const
 	{
 		if( !ec->is_sensor() )
 		{
-			switch( ec->prim_type )
-			{
-				case e_sc_prim_type::circle:
-				{
-					assert( false );
-				}
-				break;
-
-				case e_sc_prim_type::aabb:
-				{
-					bbox += ec->ws.aabb;
-				}
-				break;
-
-				case e_sc_prim_type::polygon:
-				{
-					assert( false );
-				}
-				break;
-			}
+			bbox += ec->ws.aabb;
 		}
 	}
 

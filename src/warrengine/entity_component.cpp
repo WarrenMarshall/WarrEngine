@@ -895,6 +895,9 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 		{
 			ws.pos = g_engine->opengl_mgr.top_matrix->transform_vec2( Vec2( 0.f, 0.f ) );
 			ws.radius = radius * scale;
+
+			auto r = ws.radius;
+			ws.aabb = Rect( ws.pos.x - r, ws.pos.y - r, r * 2.f, r * 2.f );
 		}
 		break;
 
@@ -910,12 +913,19 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 		case e_sc_prim_type::polygon:
 		{
+			Bounding_Box ws_aabb;
+
 			ws.verts.clear();
 			for( auto& v : verts )
 			{
 				auto ws_v = g_engine->opengl_mgr.top_matrix->transform_vec2( v );
 				ws.verts.push_back( ws_v );
+
+				ws_aabb.add( ws_v );
 			}
+
+			ws.aabb = ws_aabb.as_rect();
+			ws.aabb.y -= ws.aabb.h;
 		}
 		break;
 	}

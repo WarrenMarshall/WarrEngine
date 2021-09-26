@@ -45,6 +45,7 @@ struct Rect final
 	Rect operator*=( float_t v );
 
 	c2AABB to_c2AABB() const;
+	c2AABB as_c2AABB() const;
 
 	static Rect create_centered( float_t sz );
 	static Rect create_centered( float_t w, float_t h );

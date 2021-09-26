@@ -48,9 +48,7 @@ Rect Bounding_Box::as_rect() const
 
 Bounding_Box Bounding_Box::operator+( const Vec2& v ) const
 {
-	Bounding_Box bb;
-	bb.add( this->min );
-	bb.add( this->max );
+	Bounding_Box bb = *this;
 	bb.add( v );
 
 	return bb;
