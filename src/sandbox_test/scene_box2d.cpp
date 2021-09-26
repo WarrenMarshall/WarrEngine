@@ -89,7 +89,7 @@ void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 	auto e = add_entity<E_Emoji_Ball>();
 	e->set_pos( world_pos );
 	e->rs_opt.color = Color( Random::getf(), Random::getf(), Random::getf() );
-	e->make_pickable();
+	e->set_pickable();
 	{
 		float_t random_radius = Random::getf_range( 16.f, 32.f );
 
@@ -120,7 +120,7 @@ void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 
 	auto e = add_entity<Entity>();
 	e->set_pos( world_pos );
-	e->make_pickable();
+	e->set_pickable();
 	{
 		float_t random_radius = Random::getf_range( 16.f, 32.f );
 

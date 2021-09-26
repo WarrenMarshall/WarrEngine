@@ -479,7 +479,7 @@ void Entity::set_tag( hash tag )
 
 static int32_t w_entity_last_pick_id = 0;
 
-void Entity::make_pickable()
+void Entity::set_pickable()
 {
 	w_entity_last_pick_id++;
 	pick_id = w_entity_last_pick_id;

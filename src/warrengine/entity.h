@@ -129,7 +129,7 @@ struct Entity
 
 	void set_tag( hash tag );
 
-	void make_pickable();
+	void set_pickable();
 
 	[[nodiscard]] virtual bool can_be_deleted();
 

@@ -17,6 +17,7 @@ void Scene_Spatial::spawn_entity()
 	Rect rc( -viewport_w, -viewport_h, viewport_w * 2.f, viewport_h * 2.f );
 	e->set_pos( rc.find_random_pos_within() );
 	e->set_scale( Random::getf_range( 1.f, 2.f ) );
+	e->set_pickable();
 	e->rs_opt.color = make_color( e_pal::brighter );
 	{
 		auto ec = e->add_component<Sprite_Component>();
@@ -44,7 +45,7 @@ void Scene_Spatial::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
 	Rect rc( -viewport_w, -viewport_h, viewport_w * 2.f, viewport_h * 2.f );
-	spatial_map.init( rc, 3 );
+	spatial_map.init( rc, 4 );
 
 	// kinematic circle
 	{
@@ -52,15 +53,13 @@ void Scene_Spatial::pushed()
 		e->tag = H( "main_ball" );
 		{
 			{
-				{
-					auto ec = e->add_component<Simple_Collision_Body>();
+				auto ec = e->add_component<Simple_Collision_Body>();
 
-					ec->set_as_polygon( Geo_Util::generate_convex_shape( 6, 16.f ) );
-					//ec->set_as_circle( 16.f );
-					//ec->set_as_centered_box( 16.f, 16.f );
-					//ec->set_as_box( 16.f, 16.f );
-					ec->set_collision_flags( coll_flags.player, coll_flags.skull );
-				}
+				ec->set_as_polygon( Geo_Util::generate_convex_shape( 6, 16.f ) );
+				//ec->set_as_circle( 16.f );
+				//ec->set_as_centered_box( 16.f, 16.f );
+				//ec->set_as_box( 16.f, 16.f );
+				ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 			}
 			{
 				auto ec = e->add_component<Primitive_Shape_Component>();
@@ -100,6 +99,23 @@ void Scene_Spatial::draw_ui()
 {
 	Scene::draw_ui();
 	draw_title( "Spatial Partitioning" );
+}
+
+bool Scene_Spatial::on_input_pressed( const Input_Event* evt )
+{
+	// delete entities with right click
+	if( evt->input_id == e_input_id::mouse_button_right )
+	{
+		auto pick_id = Render::sample_pick_id_at( Coord_System::window_to_viewport_pos( evt->mouse_pos ) );
+		auto e = find_entity_by_pick_id( pick_id );
+
+		if( e && e != player_shape )
+		{
+			e->set_life_cycle( e_life_cycle::dying );
+		}
+	}
+
+	return false;
 }
 
 bool Scene_Spatial::on_input_motion( const Input_Event* evt )

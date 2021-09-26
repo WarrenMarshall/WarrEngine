@@ -19,7 +19,7 @@ void Scene_Entity_Picking::pushed()
 
 	{
 		auto e = add_entity<Entity>();
-		e->make_pickable();
+		e->set_pickable();
 		e->set_pos( { 100.f, 75.f } );
 		e->set_scale( 2.f );
 		{
@@ -32,7 +32,7 @@ void Scene_Entity_Picking::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "player" );
-		e->make_pickable();
+		e->set_pickable();
 		e->set_pos( { 64.f, 64.f } );
 		e->set_scale( 3.f );
 		{
@@ -43,7 +43,7 @@ void Scene_Entity_Picking::pushed()
 
 	{
 		auto e = add_entity<Entity>();
-		e->make_pickable();
+		e->set_pickable();
 		e->set_pos_angle_scale( { 150.f, 200.f }, 15.f, 2.f );
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
