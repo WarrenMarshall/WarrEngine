@@ -31,7 +31,7 @@ struct Rect final
 	Rect cut_bottom( float_t sz );
 	Rect cut();
 
-	std::vector<Rect> subdivide();
+	std::vector<Rect> subdivide() const;
 	Vec2 find_random_pos_within();
 
 	bool operator==( const Rect& rhs ) const;
@@ -49,6 +49,7 @@ struct Rect final
 
 	static Rect create_centered( float_t sz );
 	static Rect create_centered( float_t w, float_t h );
+	int32_t area();
 };
 
 }

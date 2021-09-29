@@ -36,6 +36,8 @@ void Entity::pre_update()
 	life_cycle.pre_update();
 
 	apply_forces();
+
+	nodes.clear();
 }
 
 void Entity::update()
@@ -88,6 +90,7 @@ void Entity::post_update_components()
 		}
 		log( "P : {:.2f}, {:.2f}", tform->pos.x, tform->pos.y );
 		log( "V : {:.8f}, {:.8f}", velocity.x, velocity.y );
+		log( "QT Nodes : {}", nodes.size() );
 		log( "---" );
 	}
 #endif
@@ -413,7 +416,6 @@ bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
-		log( "false" );
 		sensor->parent_entity->simple.is_in_air = false;
 	}
 
@@ -434,7 +436,6 @@ bool Entity::on_touching_end( Simple_Collision_Body* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
-		log( "true" );
 		sensor->parent_entity->simple.is_in_air = true;
 	}
 

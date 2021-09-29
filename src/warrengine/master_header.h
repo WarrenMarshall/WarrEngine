@@ -14,7 +14,7 @@
 #include "vec2.h"
 #include "vec3.h"
 #include "rect.h"
-#include "spatial_map.h"
+#include "quad_tree.h"
 #include "bounding_box.h"
 #include "range.h"
 #include "color.h"

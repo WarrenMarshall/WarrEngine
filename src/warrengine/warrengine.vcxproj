@@ -267,7 +267,7 @@
     <ClCompile Include="asset_file_definition.cpp" />
     <ClCompile Include="bounding_box.cpp" />
     <ClCompile Include="color.cpp" />
-    <ClCompile Include="Spatial_Map.cpp" />
+    <ClCompile Include="quad_tree.cpp" />
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="scene_transient.cpp" />
     <ClCompile Include="simple_collision_world.cpp" />
@@ -368,7 +368,7 @@
     <ClInclude Include="bounding_box.h" />
     <ClInclude Include="cache.h" />
     <ClInclude Include="color.h" />
-    <ClInclude Include="Spatial_Map.h" />
+    <ClInclude Include="quad_tree.h" />
     <ClInclude Include="rect.h" />
     <ClInclude Include="scene_transient.h" />
     <ClInclude Include="simple_collision_world.h" />
@@ -469,6 +469,10 @@
     <None Include="..\..\bin\data\warrengine\shaders\blur_gaussian.frag" />
     <None Include="..\..\bin\data\warrengine\shaders\inc\get_sample_from_texture.frag" />
     <None Include="..\..\bin\data\warrengine\shaders\final_pass.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="bugs.txt" />
+    <Text Include="features.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

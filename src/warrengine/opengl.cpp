@@ -193,7 +193,7 @@ void OpenGL_Mgr::set_blend( e_opengl_blend blend ) const
 
 		case e_opengl_blend::multiply:
 		{
-			glBlendFunc( GL_DST_COLOR, GL_ZERO );
+			glBlendFunc( GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA );
 			break;
 		}
 

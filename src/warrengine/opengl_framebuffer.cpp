@@ -13,6 +13,13 @@ OpenGL_Frame_Buffer::OpenGL_Frame_Buffer( std::string_view base_name )
 	bind();
 }
 
+void OpenGL_Frame_Buffer::init( std::string name )
+{
+	base_name = name;
+	glCreateFramebuffers(1, &fb_id);
+	bind();
+}
+
 void OpenGL_Frame_Buffer::add_color_attachment( Vec2 sz, const Color& clear_color )
 {
 	color_attachments.emplace_back( this, sz, clear_color );

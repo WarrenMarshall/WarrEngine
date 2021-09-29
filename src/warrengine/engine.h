@@ -54,9 +54,9 @@ struct Engine final
 
 	Cmdline_Args cmdline;
 
-	std::unique_ptr<OpenGL_Frame_Buffer> frame_buffer = nullptr;
-	std::unique_ptr<OpenGL_Frame_Buffer> blur_frame_buffer = nullptr;
-	std::unique_ptr<OpenGL_Frame_Buffer> composite_frame_buffer = nullptr;
+	OpenGL_Frame_Buffer frame_buffer;
+	OpenGL_Frame_Buffer blur_frame_buffer;
+	OpenGL_Frame_Buffer composite_frame_buffer;
 
 	struct
 	{

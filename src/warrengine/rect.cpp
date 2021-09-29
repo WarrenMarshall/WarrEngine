@@ -192,7 +192,7 @@ Rect Rect::cut()
 
 // creates 4 smaller rectangles from this one and returns them
 
-std::vector<Rect> Rect::subdivide()
+std::vector<Rect> Rect::subdivide() const
 {
 	std::vector<Rect> subrects;
 	subrects.reserve( 4 );
@@ -298,6 +298,11 @@ Rect Rect::create_centered( float_t w, float_t h )
 	auto hh = h / 2.f;
 
 	return Rect( -hw, -hh, w, h );
+}
+
+int32_t Rect::area()
+{
+	return (int32_t)( w * h );
 }
 
 }

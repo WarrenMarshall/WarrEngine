@@ -118,10 +118,10 @@ uniform bool ub_crt_tint = false;
 
 // a scaling factor for the number of crt lines (2.0 = twice as many, 0.5 = half as many).
 // it's subjective depending on your resolution so play with it.
-uniform float u_crt_tint_scaling_factor = 1.0;
+uniform float u_crt_tint_scaling_factor = 2.0;
 
 // how intense the light/dark shift should be between the crt lines. (0 - invisible, 1 - harsh)
-uniform float u_crt_tint_intensity = 0.2;
+uniform float u_crt_tint_intensity = 0.1;
 
 vec4 fx_crt_tint_lines( vec4 output_color )
 {

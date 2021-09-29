@@ -1,0 +1,13 @@
+
+- static rendering buffers
+	- see if current buffer batches can be made easier to use in any way first
+
+- POI
+	- pops up a dialog box
+	- text displays, one letter at a time, until complete
+	- user can trigger the full text display with a keypress
+	- press 'A' to close diialog
+
+- Dialog
+	- system where choosing from a menu of options
+	-

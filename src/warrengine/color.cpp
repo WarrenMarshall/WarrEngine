@@ -29,6 +29,11 @@ Color::Color( float_t r, float_t g, float_t b, float_t a )
 {
 }
 
+Color::Color( float_t v, float_t a )
+	: r( v ), g( v ), b( v ), a( a )
+{
+}
+
 // integer values are assumed to be in the 0-255 range and are converted to float
 Color::Color( int32_t r, int32_t g, int32_t b, int32_t a )
 	: Color( byte_color_to_float( r ), byte_color_to_float( g ), byte_color_to_float( b ), byte_color_to_float( a ) )

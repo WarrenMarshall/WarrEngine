@@ -390,18 +390,6 @@ enum struct e_cut
 
 // ----------------------------------------------------------------------------
 
-enum struct e_framebuffer
-{
-	color,
-	glow,
-	pick_ids,
-	blurred,
-	composited,
-	max,
-};
-
-// ----------------------------------------------------------------------------
-
 enum struct e_sc_prim_type
 {
 	aabb,

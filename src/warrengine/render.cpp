@@ -426,9 +426,9 @@ void Render::begin_frame()
 	glViewport( 0, 0, (int32_t)viewport_w, (int32_t)viewport_h );
 
 	// clear color attachments
-	g_engine->frame_buffer->clear_color_attachments();
-	g_engine->blur_frame_buffer->clear_color_attachments();
-	g_engine->composite_frame_buffer->clear_color_attachments();
+	g_engine->frame_buffer.clear_color_attachments();
+	g_engine->blur_frame_buffer.clear_color_attachments();
+	g_engine->composite_frame_buffer.clear_color_attachments();
 }
 
 // called at end of each frame to finalize and render all buffers
@@ -891,7 +891,7 @@ float_t Render::calc_interpolated_per_sec_value( float_t current_value, float_t 
 
 int32_t Render::sample_pick_id_at( Vec2 viewport_click_pos )
 {
-	g_engine->frame_buffer->bind();
+	g_engine->frame_buffer.bind();
 	glReadBuffer( GL_COLOR_ATTACHMENT0 + 2 );
 
 	// texture is flipped vertically from screen space

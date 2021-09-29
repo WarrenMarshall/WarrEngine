@@ -72,7 +72,7 @@ std::vector<Entity*> Scene::get_selected()
 void Scene::pushed()
 {
 	sc_world = Simple_Collision_World( this );
-	spatial_map.parent_scene = this;
+	qt.parent_scene = this;
 }
 
 void Scene::popped()
@@ -122,7 +122,7 @@ void Scene::pre_update()
 		}
 	}
 
-	spatial_map.pre_update();
+	qt.pre_update();
 }
 
 void Scene::update()
@@ -153,7 +153,7 @@ void Scene::update()
 		}
 	}
 
-	spatial_map.update();
+	qt.update();
 }
 
 void Scene::post_update()
@@ -200,7 +200,7 @@ void Scene::post_update()
 		entity->post_update_components();
 	}
 
-	spatial_map.post_update();
+	qt.post_update();
 }
 
 // ----------------------------------------------------------------------------

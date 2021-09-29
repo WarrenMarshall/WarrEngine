@@ -13,7 +13,7 @@ struct Scene_Spatial final : Scene
 
 	Scene_Spatial();
 
-	void spawn_entity();
+	void spawn_entity( Vec2 pos );
 	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;

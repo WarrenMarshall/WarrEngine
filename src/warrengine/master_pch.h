@@ -33,6 +33,7 @@
 	#include <format>
 	#include <numeric>
 	#include <any>
+	#include <unordered_set>
 
 	// SMFL
 	#include <SFML/Audio.hpp>		// sound/music playing

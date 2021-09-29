@@ -46,25 +46,25 @@ void Engine::launch( int32_t argc, char* argv [] )
 
 	Vec2 viewport_sz = { viewport_w, viewport_h };
 
-	g_engine->frame_buffer = std::make_unique<OpenGL_Frame_Buffer>( "game" );
+	g_engine->frame_buffer.init( "game" );
 	{
-		g_engine->frame_buffer->add_color_attachment( viewport_sz, g_engine->window.window_clear_color );	// color
-		g_engine->frame_buffer->add_color_attachment( viewport_sz );										// glow
-		g_engine->frame_buffer->add_color_attachment( viewport_sz );										// pick_ids
-		g_engine->frame_buffer->add_depth_attachment( viewport_sz );										// depth/stencil
-		g_engine->frame_buffer->finalize();
+		g_engine->frame_buffer.add_color_attachment(viewport_sz, g_engine->window.window_clear_color);	// color
+		g_engine->frame_buffer.add_color_attachment(viewport_sz);										// glow
+		g_engine->frame_buffer.add_color_attachment(viewport_sz);										// pick_ids
+		g_engine->frame_buffer.add_depth_attachment(viewport_sz);										// depth/stencil
+		g_engine->frame_buffer.finalize();
 	}
 
-	g_engine->blur_frame_buffer = std::make_unique<OpenGL_Frame_Buffer>( "blur" );
+	g_engine->blur_frame_buffer.init( "blur" );
 	{
-		g_engine->blur_frame_buffer->add_color_attachment( viewport_sz );
-		g_engine->blur_frame_buffer->finalize();
+		g_engine->blur_frame_buffer.add_color_attachment( viewport_sz );
+		g_engine->blur_frame_buffer.finalize();
 	}
 
-	g_engine->composite_frame_buffer = std::make_unique<OpenGL_Frame_Buffer>( "composite" );
+	g_engine->composite_frame_buffer.init( "composite" );
 	{
-		g_engine->composite_frame_buffer->add_color_attachment( viewport_sz );
-		g_engine->composite_frame_buffer->finalize();
+		g_engine->composite_frame_buffer.add_color_attachment( viewport_sz );
+		g_engine->composite_frame_buffer.finalize();
 	}
 
 	// used for solid drawing
@@ -98,7 +98,7 @@ void Engine::launch( int32_t argc, char* argv [] )
 
 void Engine::parse_command_line( int32_t argc, char* argv [] )
 {
-	for( auto x = 1 ; x < argc ; ++x )
+	for( auto x = 1; x < argc; ++x )
 	{
 		std::string arg = argv[ x ];
 
@@ -176,7 +176,7 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "viewport_h" ] = std::format( "{}", viewport_h );
 	g_engine->_symbol_to_value[ "viewport_hw" ] = std::format( "{}", viewport_hw );
 	g_engine->_symbol_to_value[ "viewport_hh" ] = std::format( "{}", viewport_hh );
-	log( "V Window Res: {}x{}", (int32_t)viewport_w, (int32_t)viewport_h );
+	log( "V Window Res: {}x{}", ( int32_t )viewport_w, ( int32_t )viewport_h );
 
 	tok.init( g_engine->config_vars.find_value_or( "ui_res", "640x480" ), "x" );
 	ui_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
@@ -185,18 +185,18 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "ui_h" ] = std::format( "{}", ui_h );
 	g_engine->_symbol_to_value[ "ui_hw" ] = std::format( "{}", ui_hw );
 	g_engine->_symbol_to_value[ "ui_hh" ] = std::format( "{}", ui_hh );
-	log( "UI Window Res: {}x{}", (int32_t)ui_w, (int32_t)ui_h );
+	log( "UI Window Res: {}x{}", ( int32_t )ui_w, ( int32_t )ui_h );
 
 
 	g_engine->render.init_set_up_default_palette();
 	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
 
 	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
-	glfwSetWindowPos( g_engine->window.glfw_window, (int32_t)( rc.x ), (int32_t)( rc.y ) );
-	glfwSetWindowSize( g_engine->window.glfw_window, (int32_t)( rc.w ), (int32_t)( rc.h ) );
+	glfwSetWindowPos( g_engine->window.glfw_window, ( int32_t )( rc.x ), ( int32_t )( rc.y ) );
+	glfwSetWindowSize( g_engine->window.glfw_window, ( int32_t )( rc.w ), ( int32_t )( rc.h ) );
 	glfwSetWindowAspectRatio( g_engine->window.glfw_window,
 		100,
-		(int32_t)( ( viewport_h / viewport_w ) * 100 ) );
+		( int32_t )( ( viewport_h / viewport_w ) * 100 ) );
 
 	bool vsync = Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "v_sync", "false" ) );
 	log( "VSync: {}", vsync ? "true" : "false" );
@@ -255,7 +255,7 @@ void Engine::main_loop()
 		//
 		// it is passed a percentage for easier use : 0.f-1.f
 
-		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / (float_t)fixed_time_step::ms_per_step;
+		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / ( float_t )fixed_time_step::ms_per_step;
 
 		// if due for a fixed time step ...
 
@@ -288,7 +288,7 @@ void Engine::main_loop()
 
 			g_engine->stats.update();
 
-			g_engine->opengl_mgr.set_uniform_float( "u_current_time", (float_t)clock.now() / 1000.f );
+			g_engine->opengl_mgr.set_uniform_float( "u_current_time", ( float_t )clock.now() / 1000.f );
 			g_engine->opengl_mgr.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
 		}
 
@@ -302,7 +302,7 @@ void Engine::main_loop()
 		// 3. entity pick ids
 
 		g_engine->opengl_mgr.clear_depth_buffer();
-		frame_buffer->bind();
+		frame_buffer.bind();
 		g_engine->opengl_mgr.shaders[ "base_pass" ].bind();
 		g_engine->render.begin_frame();
 		{
@@ -327,7 +327,7 @@ void Engine::main_loop()
 			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
 		}
 		g_engine->render.end_frame();
-		frame_buffer->unbind();
+		frame_buffer.unbind();
 
 		do_draw_finished_frame();
 
@@ -351,7 +351,7 @@ void Engine::do_draw_finished_frame()
 	// ----------------------------------------------------------------------------
 
 	g_engine->opengl_mgr.set_view_matrix_identity_no_camera();
-	blur_frame_buffer->bind();
+	blur_frame_buffer.bind();
 
 	g_engine->opengl_mgr.shaders[ blur_shader_name ].bind();
 
@@ -360,13 +360,13 @@ void Engine::do_draw_finished_frame()
 	g_engine->opengl_mgr.set_uniform_float( "u_viewport_w", viewport_w );
 	g_engine->opengl_mgr.set_uniform_float( "u_viewport_h", viewport_h );
 
-	Render::draw_quad( frame_buffer->color_attachments[ (int32_t)e_framebuffer::glow ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+	Render::draw_quad( frame_buffer.color_attachments[ 1 /* glow color attachment */ ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
 	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
-	blur_frame_buffer->unbind();
+	blur_frame_buffer.unbind();
 
 	{
-		composite_frame_buffer->bind();
+		composite_frame_buffer.bind();
 
 		// ----------------------------------------------------------------------------
 		// draw the base frame buffer into the compositing frame buffer
@@ -377,7 +377,7 @@ void Engine::do_draw_finished_frame()
 
 			g_engine->opengl_mgr.shaders[ "compositing_pass" ].bind();
 
-			Render::draw_quad( frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+			Render::draw_quad( frame_buffer.color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
 			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 		}
@@ -390,14 +390,15 @@ void Engine::do_draw_finished_frame()
 			g_engine->opengl_mgr.shaders[ "simple" ].bind();
 			g_engine->opengl_mgr.set_blend( e_opengl_blend::glow );
 
-			Render::draw_quad( blur_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+			Render::draw_quad( blur_frame_buffer.color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+
 			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
 			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 
 			g_engine->opengl_mgr.set_blend( e_opengl_blend::alpha );
 		}
 
-		composite_frame_buffer->unbind();
+		composite_frame_buffer.unbind();
 	}
 
 	// ----------------------------------------------------------------------------
@@ -411,126 +412,126 @@ void Engine::do_draw_finished_frame()
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
-			(int32_t)window.viewport_pos_sz.x,
-			(int32_t)window.viewport_pos_sz.y,
-			(int32_t)window.viewport_pos_sz.w,
-			(int32_t)window.viewport_pos_sz.h
+			( int32_t )window.viewport_pos_sz.x,
+			( int32_t )window.viewport_pos_sz.y,
+			( int32_t )window.viewport_pos_sz.w,
+			( int32_t )window.viewport_pos_sz.h
 		);
 
-		Render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer->color_attachments[ 0 ].texture );
+		Render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer.color_attachments[ 0 ].texture );
 		Render::state->batch_render_target->assign_texture_slot_manual( g_engine->render.tex_lut );
 
-		Render::draw_quad( composite_frame_buffer->color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+		Render::draw_quad( composite_frame_buffer.color_attachments[0].texture, Rect(0.f, 0.f, viewport_w, viewport_h));
+		g_engine->render.dynamic_batches.flush_and_reset_internal(e_draw_call::opaque);
+		g_engine->render.dynamic_batches.flush_and_reset_internal(e_draw_call::transparent);
 	}
 }
 
 // checks if 'symbol' exists in the map
 
-bool Engine::is_symbol_in_map( std::string_view symbol )
+bool Engine::is_symbol_in_map(std::string_view symbol)
 {
-	return _symbol_to_value.count( std::string( symbol ) ) > 0;
+	return _symbol_to_value.count(std::string(symbol)) > 0;
 }
 
 // returns a string containing the value stored for 'symbol'
-std::optional<std::string> Engine::find_string_from_symbol( std::string_view symbol )
+std::optional<std::string> Engine::find_string_from_symbol(std::string_view symbol)
 {
-	if( !is_symbol_in_map( symbol ) )
+	if (!is_symbol_in_map(symbol))
 	{
 		return std::nullopt;
 	}
 
-	return _symbol_to_value[ std::string( symbol ) ];
+	return _symbol_to_value[std::string(symbol)];
 }
 
 // returns a value to the caller based on the contents of 'symbol'
 //
 // if no value is found for 'symbol', the default value is returned
 
-bool Engine::find_bool_from_symbol( std::string_view symbol, bool def_value )
+bool Engine::find_bool_from_symbol(std::string_view symbol, bool def_value)
 {
-	auto sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol(symbol);
 
-	if( !sval.has_value() )
+	if (!sval.has_value())
 	{
-		sval = std::format( "{}", def_value );
+		sval = std::format("{}", def_value);
 	}
 
-	return String_Util::to_int( std::string( *sval ) );
+	return String_Util::to_int(std::string(*sval));
 }
 
-int32_t Engine::find_int_from_symbol( std::string_view symbol, int32_t def_value )
+int32_t Engine::find_int_from_symbol(std::string_view symbol, int32_t def_value)
 {
-	auto sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol(symbol);
 
-	if( !sval.has_value() )
+	if (!sval.has_value())
 	{
-		sval = std::format( "{}", def_value );
+		sval = std::format("{}", def_value);
 	}
 
-	return String_Util::to_int( std::string( *sval ) );
+	return String_Util::to_int(std::string(*sval));
 }
 
-float_t Engine::find_float_from_symbol( std::string_view symbol, float_t def_value )
+float_t Engine::find_float_from_symbol(std::string_view symbol, float_t def_value)
 {
-	auto sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol(symbol);
 
-	if( !sval.has_value() )
+	if (!sval.has_value())
 	{
-		sval = std::format( "{}", def_value );
+		sval = std::format("{}", def_value);
 	}
 
-	return String_Util::to_float( *sval );
+	return String_Util::to_float(*sval);
 }
 
-Color Engine::find_color_from_symbol( std::string_view symbol, const Color& def_value )
+Color Engine::find_color_from_symbol(std::string_view symbol, const Color& def_value)
 {
-	auto sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol(symbol);
 
-	if( !sval.has_value() )
+	if (!sval.has_value())
 	{
-		sval = std::format( "{},{},{},{}", def_value.r, def_value.g, def_value.b, def_value.a );
+		sval = std::format("{},{},{},{}", def_value.r, def_value.g, def_value.b, def_value.a);
 	}
 
-	return Color( *sval );
+	return Color(*sval);
 }
 
-Range<float_t> Engine::find_range_from_symbol( std::string_view symbol, const Range<float_t>& def_value )
+Range<float_t> Engine::find_range_from_symbol(std::string_view symbol, const Range<float_t>& def_value)
 {
-	auto sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol(symbol);
 
-	if( !sval.has_value() )
+	if (!sval.has_value())
 	{
-		sval = std::format( "{},{}", def_value.start, def_value.end );
+		sval = std::format("{},{}", def_value.start, def_value.end);
 	}
 
-	return Range<float_t>( *sval );
+	return Range<float_t>(*sval);
 }
 
-Vec2 Engine::find_vec2_from_symbol( std::string_view symbol, const Vec2& def_value )
+Vec2 Engine::find_vec2_from_symbol(std::string_view symbol, const Vec2& def_value)
 {
-	auto sval = find_string_from_symbol( symbol );
+	auto sval = find_string_from_symbol(symbol);
 
-	if( !sval.has_value() )
+	if (!sval.has_value())
 	{
-		sval = std::format( "{},{}", def_value.x, def_value.y );
+		sval = std::format("{},{}", def_value.x, def_value.y);
 	}
 
-	return Vec2( *sval );
+	return Vec2(*sval);
 }
 
 void Engine::new_physics_world()
 {
 	// box2d
 
-	g_engine->box2d.world = std::make_unique<b2World>( b2Vec2( 0.f, b2d_gravity_default ) );
+	g_engine->box2d.world = std::make_unique<b2World>(b2Vec2(0.f, b2d_gravity_default));
 
 	g_engine->box2d.listener = {};
-	g_engine->box2d.world->SetContactListener( &g_engine->box2d.listener );
+	g_engine->box2d.world->SetContactListener(&g_engine->box2d.listener);
 
 	g_engine->box2d.debug_draw = {};
-	g_engine->box2d.world->SetDebugDraw( &g_engine->box2d.debug_draw );
+	g_engine->box2d.world->SetDebugDraw(&g_engine->box2d.debug_draw);
 
 	g_engine->box2d.debug_draw.SetFlags(
 		0
@@ -568,32 +569,32 @@ void Engine::draw()
 {
 	// If engine is paused, draw a border around the screen for visibility
 
-	if( is_paused() )
+	if (is_paused())
 	{
 		{
 			scoped_render_state;
 
 			Render::state->z = zdepth_topmost;
 
-			Rect rc( 0.f, 0.f, ui_w, ui_h );
+			Rect rc(0.f, 0.f, ui_w, ui_h);
 
-			Render::state->color = make_color( e_pal::darker );
-			Render::draw_line_loop( rc );
+			Render::state->color = make_color(e_pal::darker);
+			Render::draw_line_loop(rc);
 
-			rc.shrink( 1.f );
-			Render::state->color = make_color( e_pal::middle );
-			Render::draw_line_loop( rc );
+			rc.shrink(1.f);
+			Render::state->color = make_color(e_pal::middle);
+			Render::draw_line_loop(rc);
 
-			rc.shrink( 1.f );
-			Render::state->color = make_color( e_pal::brighter );
-			Render::draw_line_loop( rc );
+			rc.shrink(1.f);
+			Render::state->color = make_color(e_pal::brighter);
+			Render::draw_line_loop(rc);
 		}
 	}
 }
 
 void Engine::toggle_pause()
 {
-	toggle_bool( pause_state.toggle );
+	toggle_bool(pause_state.toggle);
 }
 
 void Engine::pause()
@@ -613,51 +614,51 @@ bool Engine::is_paused()
 
 // loads and caches every "*.asset_def" file it sees in the "asset_def" folder
 
-void Engine::cache_asset_definition_files( std::string_view folder_name )
+void Engine::cache_asset_definition_files(std::string_view folder_name)
 {
 	std::vector<std::string> filenames;
-	File_System::scan_folder_for_ext( &filenames, std::format( "{}", folder_name ), ".asset_def" );
+	File_System::scan_folder_for_ext(&filenames, std::format("{}", folder_name), ".asset_def");
 
-	for( const auto& iter : filenames )
+	for (const auto& iter : filenames)
 	{
 		Asset_File_Definition asset_def_file = {};
 		asset_def_file.original_filename = iter;
 
-		if( asset_def_file.create_internals() )
+		if (asset_def_file.create_internals())
 		{
-			asset_def_file_cache.push_back( asset_def_file );
+			asset_def_file_cache.push_back(asset_def_file);
 		}
 	}
 }
 
-void Engine::parse_config_files( std::string_view folder_name )
+void Engine::parse_config_files(std::string_view folder_name)
 {
 	std::vector<std::string> filenames;
-	File_System::scan_folder_for_ext( &filenames, std::format( "{}", folder_name ), ".ini" );
+	File_System::scan_folder_for_ext(&filenames, std::format("{}", folder_name), ".ini");
 
-	for( const auto& iter : filenames )
+	for (const auto& iter : filenames)
 	{
-		g_engine->parse_config_file( iter );
+		g_engine->parse_config_file(iter);
 	}
 }
 
-void Engine::parse_config_file( std::string_view filename )
+void Engine::parse_config_file(std::string_view filename)
 {
-	auto file = File_System::load_text_file( filename );
+	auto file = File_System::load_text_file(filename);
 
-	for( const auto& line : file->lines )
+	for (const auto& line : file->lines)
 	{
-		if( line.substr( 0, 1 ) == "\"" )
+		if (line.substr(0, 1) == "\"")
 		{
-			Tokenizer tok_kv( line, "\"" );
+			Tokenizer tok_kv(line, "\"");
 
 			auto key = tok_kv.get_next_token();
 			tok_kv.get_next_token(); // skip blank
 			auto value = tok_kv.get_next_token();
 
-			if( key.has_value() and value.has_value() )
+			if (key.has_value() and value.has_value())
 			{
-				config_vars.kv.insert_or_assign( std::string( *key ), std::string( *value ) );
+				config_vars.kv.insert_or_assign(std::string(*key), std::string(*value));
 			}
 		}
 	}
@@ -668,14 +669,14 @@ void Engine::parse_config_file( std::string_view filename )
 //
 // things like texture files, sound files, etc.
 
-void Engine::precache_asset_resources( int32_t pass )
+void Engine::precache_asset_resources(int32_t pass)
 {
-	for( auto& iter : asset_def_file_cache )
+	for (auto& iter : asset_def_file_cache)
 	{
-		iter.precache_asset_resources( pass );
+		iter.precache_asset_resources(pass);
 	}
 
-	log( "Pass: {} / {} total assets precached", pass, f_commas( (float_t)( g_engine->asset_cache.cache.size() ) ) );
+	log("Pass: {} / {} total assets precached", pass, f_commas((float_t)(g_engine->asset_cache.cache.size())));
 }
 
 // loops through all threads we have a handle for and waits until they finish
@@ -683,9 +684,9 @@ void Engine::precache_asset_resources( int32_t pass )
 
 void Engine::wait_for_thread_pool_to_finish()
 {
-	log_verbose( "Waiting for {} threads to finish.", threads.size() );
+	log_verbose("Waiting for {} threads to finish.", threads.size());
 
-	for( auto& thread : threads )
+	for (auto& thread : threads)
 	{
 		thread.wait();
 	}
@@ -693,29 +694,29 @@ void Engine::wait_for_thread_pool_to_finish()
 	threads.clear();
 }
 
-bool Engine::on_input_motion( const Input_Event* evt )
+bool Engine::on_input_motion(const Input_Event* evt)
 {
 	auto cam_transform = scene_mgr.get_transform();
 
-	switch( evt->input_id )
+	switch (evt->input_id)
 	{
 		case e_input_id::mouse:
 		{
 			// camera control
-			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_middle ) )
+			if (g_engine->input_mgr.is_button_held(e_input_id::mouse_button_middle))
 			{
-				if( evt->control_down )
+				if (evt->control_down)
 				{
-					cam_transform->add_angle( Coord_System::window_to_viewport_vec( evt->delta ).x );
+					cam_transform->add_angle(Coord_System::window_to_viewport_vec(evt->delta).x);
 				}
-				else if( evt->alt_down )
+				else if (evt->alt_down)
 				{
-					cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).x * 0.01f );
+					cam_transform->add_scale(Coord_System::window_to_viewport_vec(evt->delta).x * 0.01f);
 				}
 				else
 				{
-					Vec2 delta = Coord_System::window_to_world_vec( evt->delta );
-					cam_transform->add_pos( delta );
+					Vec2 delta = Coord_System::window_to_world_vec(evt->delta);
+					cam_transform->add_pos(delta);
 				}
 
 				return true;
@@ -725,7 +726,7 @@ bool Engine::on_input_motion( const Input_Event* evt )
 
 		case e_input_id::mouse_wheel:
 		{
-			cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).y * 0.25f );
+			cam_transform->add_scale(Coord_System::window_to_viewport_vec(evt->delta).y * 0.25f);
 
 			return true;
 		}
@@ -735,9 +736,9 @@ bool Engine::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool Engine::on_input_pressed( const Input_Event* evt )
+bool Engine::on_input_pressed(const Input_Event* evt)
 {
-	switch( evt->input_id )
+	switch (evt->input_id)
 	{
 		// toggle engine pause
 		case e_input_id::key_pause:
@@ -750,14 +751,14 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		// slow down game clock
 		case e_input_id::key_left_bracket:
 		{
-			set_time_dilation( g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f );
+			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f);
 			return true;
 		}
 
 		// speed up game clock
 		case e_input_id::key_right_bracket:
 		{
-			set_time_dilation( g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f );
+			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f);
 			return true;
 		}
 
@@ -766,7 +767,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		{
 			g_engine->render.debug.entity_info_log = true;
 			log_div();
-			log( "-- Entity Info" );
+			log("-- Entity Info");
 			log_div();
 
 			return true;
@@ -776,7 +777,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		{
 			g_engine->render.debug.single_frame_log = true;
 			log_div();
-			log( "-- Single Frame Debugger" );
+			log("-- Single Frame Debugger");
 			log_div();
 
 			return true;
@@ -785,7 +786,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 		// toggle debug physics drawing
 		case e_input_id::key_f5:
 		{
-			toggle_bool( g_engine->render.debug.draw_debug_info );
+			toggle_bool(g_engine->render.debug.draw_debug_info);
 			return true;
 		}
 	#endif
@@ -808,7 +809,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 
 		case e_input_id::key_enter:
 		{
-			if( g_engine->input_mgr.is_alt_down() )
+			if (g_engine->input_mgr.is_alt_down())
 			{
 				window.toggle_fullscreen();
 			}
@@ -825,7 +826,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 			// then hitting ESC will force them closed instead of toggling the
 			// ESC menu.
 
-			if( scene_ptr->ui_expanded_tag_begin != hash_none )
+			if (scene_ptr->ui_expanded_tag_begin != hash_none)
 			{
 				scene_ptr->force_close_expanded_controls();
 				return true;
@@ -833,7 +834,7 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 
 			// if we've reached this point, toggle the ESC menu as normal.
 
-			if( typeid( *scene_ptr ) == typeid( Scene_Esc_Menu ) )
+			if (typeid(*scene_ptr) == typeid(Scene_Esc_Menu))
 			{
 				scene_mgr.pop();
 			}
@@ -855,9 +856,9 @@ bool Engine::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool Engine::on_input_released( const Input_Event* evt )
+bool Engine::on_input_released(const Input_Event* evt)
 {
-	switch( evt->input_id )
+	switch (evt->input_id)
 	{
 		case e_input_id::key_f8:
 		{
@@ -872,55 +873,55 @@ bool Engine::on_input_released( const Input_Event* evt )
 void Engine::dispatch_collision_queue()
 {
 	dispatch_box2d_collisions();
-	//scenes.dispatch_simple_collisions();
 }
 
 void Engine::dispatch_box2d_collisions()
 {
 	// begin contact
 
-	for( auto& iter : box2d.begin_contact_queue )
+	for (auto& iter : box2d.begin_contact_queue)
 	{
-		iter.entity_a->on_box2d_collision_begin( iter, iter.entity_b );
-		iter.entity_b->on_box2d_collision_begin( iter, iter.entity_a );
+		iter.entity_a->on_box2d_collision_begin(iter, iter.entity_b);
+		iter.entity_b->on_box2d_collision_begin(iter, iter.entity_a);
 	}
 
 	box2d.begin_contact_queue.clear();
 
 	// end contact
 
-	for( auto& iter : box2d.end_contact_queue )
+	for (auto& iter : box2d.end_contact_queue)
 	{
+		// #ugly
 		// sometimes we get garbage entities/fixtures in this iterator when
 		// shutting down the world. i think checking the restitution value like
 		// this is hacky and feels bad but it seems to work. i don't know what a
 		// proper solution looks like yet.
 
-		if( iter.fixture_a->GetRestitution() < 0.f or iter.fixture_b->GetRestitution() < 0.f )
+		if (iter.fixture_a->GetRestitution() < 0.f or iter.fixture_b->GetRestitution() < 0.f)
 		{
 			continue;
 		}
 
-		iter.entity_a->on_box2d_collision_end( iter, iter.entity_b );
-		iter.entity_b->on_box2d_collision_end( iter, iter.entity_a );
+		iter.entity_a->on_box2d_collision_end(iter, iter.entity_b);
+		iter.entity_b->on_box2d_collision_end(iter, iter.entity_a);
 	}
 
 	box2d.end_contact_queue.clear();
 }
 
-void Engine::set_time_dilation( float_t dilation )
+void Engine::set_time_dilation(float_t dilation)
 {
-	clock.dilation = glm::clamp( dilation, 0.1f, 5.f );
+	clock.dilation = glm::clamp(dilation, 0.1f, 5.f);
 
 	// give all assets a chance to respond to the time dilation change
 
-	for( auto& [name, Asset] : asset_cache.cache )
+	for (auto& [name, Asset] : asset_cache.cache)
 	{
 		Asset->adjust_for_time_dilation();
 	}
 }
 
-void Engine::show_msg_box( std::string_view msg )
+void Engine::show_msg_box(std::string_view msg)
 {
 	msg_box.msg = msg;
 	g_engine->scene_mgr.push<Scene_Msg_Box>();
@@ -932,30 +933,32 @@ void Engine::debug_draw_buffers()
 	// ---------------------------------------------------------------------------
 	// debug helper
 	//
-	// draw all the color attachments in quads at the bottom of the viewport
+	// draw all the color attachments for the main frame buffer in quads at the
+	// bottom of the viewport
 	// ----------------------------------------------------------------------------
 
-	g_engine->render_api.shaders[ "simple" ].bind();
+	g_engine->opengl_mgr.shaders["simple"].bind();
 
-	auto num_color_attachments = frame_buffer->color_attachments.size();
+	auto num_color_attachments = frame_buffer.color_attachments.size();
 	float_t scale_factor = 1.f / (float_t)num_color_attachments;
 	float_t w = viewport_w * scale_factor;
 	float_t h = viewport_h * scale_factor;
-	rect rc = { 0.f, viewport_h - h, w, h };
+	Rect rc = { 0.f, viewport_h - h, w, h };
 
-	std::array<const char*, e_framebuffer::max> names = { "color", "glow", "pick", "blur", "comp", "final" };
+	std::vector<const char*> names = { "color", "glow", "pick" };
 
 	{
 		scoped_render_state;
 
-		for( auto x = 0 ; x < num_color_attachments ; ++x )
+		for (auto x = 0; x < num_color_attachments; ++x)
 		{
-			render::draw_quad( frame_buffer->color_attachments[ x ].texture, rc );
-			render::draw_string( names[ x ], { rc.x, rc.y } );
+			Render::draw_quad(frame_buffer.color_attachments[ x ].texture, rc );
+			Render::draw_string( names[ x ], { rc.x, rc.y } );
 			rc.x += w;
 		}
 
-		g_engine->renderer.dynamic_batches.flush_and_reset_internal();
+		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 	}
 
 #endif

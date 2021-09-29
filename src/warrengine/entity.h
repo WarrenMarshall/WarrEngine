@@ -86,6 +86,9 @@ struct Entity
 
 	std::vector<std::unique_ptr<Entity_Component>> components;
 
+	// the nodes in the parent scenes spatial map that this entity is touching
+	std::set<Quad_Tree::Node*> nodes;
+
 #ifndef _FINAL_RELEASE
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier

@@ -277,7 +277,7 @@
     <ClCompile Include="scene_transient.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Spatial_Map.cpp">
+    <ClCompile Include="quad_tree.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -567,7 +567,7 @@
     <ClInclude Include="cache.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Spatial_Map.h">
+    <ClInclude Include="quad_tree.h">
       <Filter>include\core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -662,6 +662,9 @@
     <Filter Include="src\core">
       <UniqueIdentifier>{9e9be2a0-fcf1-4899-932a-3b6beda3a849}</UniqueIdentifier>
     </Filter>
+    <Filter Include="notes">
+      <UniqueIdentifier>{5acfdf0f-f49a-45ee-a681-07cd2f440114}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\bin\data\warrengine\shaders\simple.frag">
@@ -688,5 +691,13 @@
     <None Include="..\..\bin\data\warrengine\shaders\inc\get_sample_from_texture.frag">
       <Filter>shaders\inc</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="features.txt">
+      <Filter>notes</Filter>
+    </Text>
+    <Text Include="bugs.txt">
+      <Filter>notes</Filter>
+    </Text>
   </ItemGroup>
 </Project>
