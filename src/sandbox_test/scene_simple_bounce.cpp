@@ -68,13 +68,16 @@ void Scene_Simple_Bounce::pushed()
 {
 	Scene::pushed();
 
+	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
+	qt.init( rc );
+
 	g_engine->render.debug.draw_debug_info = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// WORLD GEO
 
 	{
-		int num_colliders = 5;
+		int num_colliders = 0;
 
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
@@ -142,9 +145,11 @@ void Scene_Simple_Bounce::draw()
 	{
 		scoped_render_state;
 		Render::state->color = make_color( e_pal::darker );
-		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
-			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		//Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
+		//	Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
+
+	qt.debug_draw();
 
 	Scene::draw();
 }

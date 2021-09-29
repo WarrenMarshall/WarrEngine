@@ -10,7 +10,6 @@ struct Quad_Tree final
 	{
 		// where this node lies in world space
 		Rect bounds = {};
-		int32_t depth = 0;
 
 		// the entities that are inside this node
 		std::set<Entity*> entities = {};
@@ -23,8 +22,8 @@ struct Quad_Tree final
 
 	// ----------------------------------------------------------------------------
 
-	static int32_t max_entities_per_node;
-	static int32_t min_node_area;
+	int32_t max_entities_per_node = 3;
+	int32_t min_node_area = 16 * 16;
 
 	Scene* parent_scene = nullptr;
 	std::list<std::unique_ptr<Quad_Tree::Node>> nodes;

@@ -5,9 +5,6 @@
 namespace war
 {
 
-int32_t Quad_Tree::max_entities_per_node = 6;
-int32_t Quad_Tree::min_node_area = 32*32;
-
 // ----------------------------------------------------------------------------
 
 Quad_Tree::Node::Node( const Rect& rc )
@@ -142,7 +139,7 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 
 	for( auto& node : nodes )
 	{
-		if( node->entities.size() >= Quad_Tree::max_entities_per_node and node->bounds.area() >= Quad_Tree::min_node_area )
+		if( node->entities.size() >= max_entities_per_node and node->bounds.area() >= min_node_area )
 		{
 			// save the list of entities touching the node we are subdividing.
 			// they will be reinserted later.
@@ -168,7 +165,6 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 				new_node_list.push_back( std::make_unique<Quad_Tree::Node>( rc ) );
 
 				Quad_Tree::Node* new_node = new_node_list.back().get();
-				new_node->depth = node->depth + 1;
 
 				new_nodes.push_back( new_node );
 			}
