@@ -16,9 +16,10 @@ void Quad_Tree::Node::debug_draw() const
 {
 	scoped_render_state;
 
-	Render::state->color = make_color( e_pal::darker, 0.25f );
-	Render::draw_filled_rect( bounds );
-	Render::state->color = make_color( e_pal::darker, 1.0f );
+	Render::state->z += zdepth_nudge;
+	//Render::state->color = make_color( Color::yellow, 0.5f );
+	//Render::draw_filled_rect( bounds );
+	Render::state->color = make_color( Color::yellow, 0.15f );
 	Render::draw_rect( bounds );
 }
 
@@ -57,10 +58,6 @@ void Quad_Tree::debug_draw() const
 		return;
 	}
 
-	scoped_render_state;
-
-	Render::state->color = make_color( Color::teal );
-
 	for( const auto& node : nodes )
 	{
 		node->debug_draw();
@@ -70,7 +67,7 @@ void Quad_Tree::debug_draw() const
 // looks at all the nodes and returns a list of nodes that the specified entity
 // is touching, using a computed AABB as the bounds checker.
 
-std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e )
+std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) const
 {
 	std::vector<Quad_Tree::Node*> touching_nodes;
 
@@ -92,20 +89,90 @@ std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e
 	return touching_nodes;
 }
 
-std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( Entity* e )
+std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const
+{
+	std::vector<Quad_Tree::Node*> touching_nodes;
+
+	if( nodes.empty() )
+	{
+		return touching_nodes;
+	}
+
+	c2Circle ws_circle = { pos.as_c2v(), radius };
+
+	for( auto& node : nodes )
+	{
+		if( c2CircletoAABB( ws_circle, node->bounds.as_c2AABB() ) )
+		{
+			touching_nodes.push_back( node.get() );
+		}
+	}
+
+	return touching_nodes;
+}
+
+// take a position and a radius, and returns the colliding set based on which
+// nodes that circle touches
+
+std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( const Vec2& pos, float_t radius ) const
 {
 	std::set<Entity*> entities;
 
-	for( auto& node : e->nodes )
+	auto touching_nodes = get_nodes_circle_is_touching( pos, radius );
+
+	for( auto& node : touching_nodes )
 	{
 		for( auto& ent : node->entities )
 		{
-			if( ent == e )
-			{
-				continue;
-			}
-
 			entities.insert( ent );
+		}
+	}
+
+	return entities;
+}
+
+std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( Entity* e ) const
+{
+	std::set<Entity*> entities;
+
+	if( e->flags.include_in_quad_tree )
+	{
+		// if the entity is in the quad_tree, then we can easily get the
+		// colliding set by looking at which nodes it is part of and which
+		// entities are included in those nodes.
+
+		for( auto& node : e->nodes )
+		{
+			for( auto& ent : node->entities )
+			{
+				if( ent == e )
+				{
+					continue;
+				}
+
+				entities.insert( ent );
+			}
+		}
+	}
+	else
+	{
+		// if entity is NOT included in the quad_tree, then we need to figure
+		// out which nodes it's bounding box touches and then use that to figure
+		// out the colliding set.
+
+		auto touching_nodes = get_nodes_entity_is_touching( e );
+
+		for( auto& node : touching_nodes )
+		{
+			for( auto& ent : node->entities )
+			{
+				if( ent == e )
+				{
+					continue;
+				}
+
+				entities.insert( ent );
+			}
 		}
 	}
 
@@ -139,7 +206,7 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 
 	for( auto& node : nodes )
 	{
-		if( node->entities.size() >= max_entities_per_node and node->bounds.area() >= min_node_area )
+		if( node->entities.size() >= max_entities_per_node and node->bounds.area() >= ( min_node_area.x * min_node_area.y ) )
 		{
 			// save the list of entities touching the node we are subdividing.
 			// they will be reinserted later.
@@ -222,7 +289,10 @@ void Quad_Tree::update()
 
 	for( auto& e : parent_scene->entities )
 	{
-		insert_entity( e.get() );
+		if( e->flags.include_in_quad_tree )
+		{
+			insert_entity( e.get() );
+		}
 	}
 }
 

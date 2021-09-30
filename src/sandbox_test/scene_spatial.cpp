@@ -52,6 +52,7 @@ void Scene_Spatial::pushed()
 		auto e = add_entity<Entity>();
 		e->tag = H( "main_ball" );
 		e->set_scale( 1.0f );
+		e->flags.include_in_quad_tree = false;
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
@@ -69,7 +70,7 @@ void Scene_Spatial::pushed()
 		player_shape = e;
 	}
 
-	for( auto x = 0 ; x < 100 ; ++x )
+	for( auto x = 0 ; x < 3 ; ++x )
 	{
 		spawn_entity( rc.find_random_pos_within() );
 	}
@@ -85,7 +86,8 @@ void Scene_Spatial::draw()
 
 	// show entities that COULD collide with player shape
 
-	auto potential_entities = qt.get_potential_entity_colliding_set( player_shape );
+	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape );
+	auto potential_entities = qt.get_potential_entity_colliding_set( player_shape->get_pos(), 32.f );
 
 	Render::state->color = make_color( Color::teal, 0.5f );
 	for( auto& e : potential_entities )

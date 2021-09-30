@@ -540,7 +540,11 @@ void Entity::apply_movement_walk( Vec2 delta, float_t speed )
 
 // looks at the simple collision bodies for this entity and generates an all
 // encompassing AABB in world space that represents the entire bounds of the
-// entity
+// entity.
+//
+// this doesn't care about the actual shape of the collider, it only cares about
+// it's AABB in world space. all colliders compute their AABB automatically
+// during their update.
 
 Bounding_Box Entity::get_ws_bbox() const
 {

@@ -22,8 +22,18 @@ struct Quad_Tree final
 
 	// ----------------------------------------------------------------------------
 
+	// how many entities can be inside a node before it gets subdivided
+
 	int32_t max_entities_per_node = 3;
-	int32_t min_node_area = 16 * 16;
+
+	// the smallest area that a node can be before we can't split it anymore.
+	// this prevents nodes from getting super tiny. this is computed out as
+	// (min_node_area.x * min_node_area.y).
+	//
+	// use different values for rectangular nodes or just a single value for
+	// squares.
+
+	Vec2 min_node_area = 16;
 
 	Scene* parent_scene = nullptr;
 	std::list<std::unique_ptr<Quad_Tree::Node>> nodes;
@@ -32,8 +42,10 @@ struct Quad_Tree final
 	void init( const Rect& bounds );
 	void reset();
 	void debug_draw() const;
-	std::vector<Quad_Tree::Node*> get_nodes_entity_is_touching( Entity* e );
-	std::set<Entity*> get_potential_entity_colliding_set( Entity* e );
+	[[nodiscard]] std::vector<Quad_Tree::Node*> get_nodes_entity_is_touching( Entity* e ) const;
+	[[nodiscard]] std::vector<Quad_Tree::Node*> get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const;
+	[[nodiscard]] std::set<Entity*> get_potential_entity_colliding_set( Entity* e ) const;
+	[[nodiscard]] std::set<Entity*> get_potential_entity_colliding_set( const Vec2& pos, float_t radius ) const;
 
 	void pre_update();
 	void update();

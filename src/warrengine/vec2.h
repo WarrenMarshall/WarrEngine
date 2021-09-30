@@ -69,6 +69,7 @@ struct Vec2 final
 
 	[[nodiscard]] b2Vec2 to_b2Vec2() const;
 	[[nodiscard]] c2v to_c2v() const;
+	[[nodiscard]] c2v as_c2v() const;
 	[[nodiscard]] Vec2 to_box2d() const;
 	[[nodiscard]] Vec2 from_box2d() const;
 	[[nodiscard]] Vec2 to_simple() const;

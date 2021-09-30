@@ -53,6 +53,12 @@ b2Vec2 Vec2::to_b2Vec2() const
 	return b2Vec2( x, y );
 }
 
+c2v Vec2::as_c2v() const
+{
+	c2v v = { x, y };
+	return v;
+}
+
 c2v Vec2::to_c2v() const
 {
 	c2v v = { war::to_simple( x ), war::to_simple( y ) };

@@ -58,6 +58,12 @@ protected:
 
 struct Entity
 {
+	struct
+	{
+		bool pickable : 1 = false;
+		bool include_in_quad_tree : 1 = true;
+	} flags;
+
 	Life_Cycle life_cycle;
 
 	hash tag = hash_none;
