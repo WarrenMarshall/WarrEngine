@@ -87,7 +87,8 @@ void Scene_Spatial::draw()
 	// show entities that COULD collide with player shape
 
 	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape );
-	auto potential_entities = qt.get_potential_entity_colliding_set( player_shape->get_pos(), 32.f );
+	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape->get_pos(), 32.f );
+	auto potential_entities = qt.get_potential_entity_colliding_set( Rect::create_centered( 64.f, 8.f ) + player_shape->get_pos() );
 
 	Render::state->color = make_color( Color::teal, 0.5f );
 	for( auto& e : potential_entities )

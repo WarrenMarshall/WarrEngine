@@ -44,8 +44,10 @@ struct Quad_Tree final
 	void debug_draw() const;
 	[[nodiscard]] std::vector<Quad_Tree::Node*> get_nodes_entity_is_touching( Entity* e ) const;
 	[[nodiscard]] std::vector<Quad_Tree::Node*> get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const;
+	[[nodiscard]] std::vector<Quad_Tree::Node*> get_nodes_rect_is_touching( const Rect& rc_aabb ) const;
 	[[nodiscard]] std::set<Entity*> get_potential_entity_colliding_set( Entity* e ) const;
 	[[nodiscard]] std::set<Entity*> get_potential_entity_colliding_set( const Vec2& pos, float_t radius ) const;
+	[[nodiscard]] std::set<Entity*> get_potential_entity_colliding_set( const Rect& rc_aabb ) const;
 
 	void pre_update();
 	void update();

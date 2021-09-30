@@ -111,6 +111,28 @@ std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec
 	return touching_nodes;
 }
 
+std::vector<war::Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc_aabb ) const
+{
+	std::vector<Quad_Tree::Node*> touching_nodes;
+
+	if( nodes.empty() )
+	{
+		return touching_nodes;
+	}
+
+	c2AABB ws_aabb = rc_aabb.as_c2AABB();
+
+	for( auto& node : nodes )
+	{
+		if( c2AABBtoAABB( ws_aabb, node->bounds.as_c2AABB() ) )
+		{
+			touching_nodes.push_back( node.get() );
+		}
+	}
+
+	return touching_nodes;
+}
+
 // take a position and a radius, and returns the colliding set based on which
 // nodes that circle touches
 
@@ -173,6 +195,23 @@ std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( Entity* e ) con
 
 				entities.insert( ent );
 			}
+		}
+	}
+
+	return entities;
+}
+
+std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( const Rect& rc_aabb ) const
+{
+	std::set<Entity*> entities;
+
+	auto touching_nodes = get_nodes_rect_is_touching( rc_aabb );
+
+	for( auto& node : touching_nodes )
+	{
+		for( auto& ent : node->entities )
+		{
+			entities.insert( ent );
 		}
 	}
 
