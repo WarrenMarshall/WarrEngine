@@ -95,6 +95,10 @@ struct Entity
 	// the nodes in the parent scenes spatial map that this entity is touching
 	std::set<Quad_Tree::Node*> nodes;
 
+	// updated once per frame, this is the world space bounding box of all
+	// the entities collision primitives
+	Bounding_Box ws_aabb;
+
 #ifndef _FINAL_RELEASE
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier

@@ -13,8 +13,7 @@ Bounding_Box::Bounding_Box()
 Bounding_Box::Bounding_Box( const Vec2& v1, const Vec2& v2 )
 {
 	reset();
-	min = v1;
-	max = v1;
+	add( v1 );
 	add( v2 );
 }
 
@@ -29,8 +28,8 @@ void Bounding_Box::add( const Vec2& vtx )
 
 void Bounding_Box::reset()
 {
-	min.x = min.y = 999999.f;// std::numeric_limits<float_t>::max();
-	max.x = max.y = -999999.f;//std::numeric_limits<float_t>::min();
+	min.x = min.y = 999999.f;
+	max.x = max.y = -999999.f;
 }
 
 Vec2 Bounding_Box::get_random_spot() const
@@ -64,7 +63,9 @@ Bounding_Box Bounding_Box::operator+( const Rect& r ) const
 {
 	Bounding_Box bb = *this;
 	bb.add( { r.x, r.y } );
-	bb.add( { r.x + r.w, r.y - r.h } );
+	// warren
+	//bb.add( { r.x + r.w, r.y - r.h } );
+	bb.add( { r.x + r.w, r.y + r.h } );
 
 	return bb;
 }

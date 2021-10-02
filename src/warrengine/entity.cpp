@@ -78,6 +78,8 @@ void Entity::post_update_components()
 		component->post_update();
 	}
 
+	ws_aabb = get_ws_bbox();
+
 #ifndef _FINAL_RELEASE
 
 	if( g_engine->render.debug.is_entity_info_logging() )
@@ -548,10 +550,8 @@ void Entity::apply_movement_walk( Vec2 delta, float_t speed )
 
 Bounding_Box Entity::get_ws_bbox() const
 {
+	auto scbs = get_components<Simple_Collision_Body, Simple_Collision_Body>();
 	Bounding_Box bbox;
-
-	std::vector<Simple_Collision_Body*> scbs;
-	get_components<Simple_Collision_Body, Simple_Collision_Body>( scbs );
 
 	for( const auto& ec : scbs )
 	{
@@ -562,7 +562,6 @@ Bounding_Box Entity::get_ws_bbox() const
 	}
 
 	return bbox;
-
 }
 
 Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const

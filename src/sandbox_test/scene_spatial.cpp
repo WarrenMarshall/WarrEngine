@@ -46,20 +46,35 @@ void Scene_Spatial::pushed()
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
 	//Rect rc( -200, -200, 400, 400 );
 	qt.init( rc );
+	qt.max_entities_per_node = 1;
 
 	// PLAYER SHAPE
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "main_ball" );
 		e->set_scale( 1.0f );
-		e->flags.include_in_quad_tree = false;
+		e->flags.include_in_quad_tree = true;
+/*
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			//ec->set_as_polygon( Geo_Util::generate_convex_shape( 6, 10.f ) );
-			//ec->set_as_circle( 8.f );
 			ec->set_as_centered_box( 16.f, 16.f );
-			//ec->set_as_box( 16.f, 16.f );
+			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
+		}
+*/
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+
+			ec->set_as_circle( 8.f );
+			ec->get_transform()->set_pos( { 24.f, 32.f } );
+			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+
+			ec->set_as_circle( 8.f );
+			//ec->set_as_centered_box( 32.f, 16.f );
+			ec->get_transform()->set_pos( { -32.f, -32.f } );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
 		{
@@ -70,7 +85,7 @@ void Scene_Spatial::pushed()
 		player_shape = e;
 	}
 
-	for( auto x = 0 ; x < 3 ; ++x )
+	for( auto x = 0 ; x < 0 ; ++x )
 	{
 		spawn_entity( rc.find_random_pos_within() );
 	}
@@ -86,15 +101,33 @@ void Scene_Spatial::draw()
 
 	// show entities that COULD collide with player shape
 
-	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape );
+	auto potential_entities = qt.get_potential_entity_colliding_set( player_shape );
 	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape->get_pos(), 32.f );
-	auto potential_entities = qt.get_potential_entity_colliding_set( Rect::create_centered( 64.f, 8.f ) + player_shape->get_pos() );
+	//auto potential_entities = qt.get_potential_entity_colliding_set( Rect::create_centered( 64.f, 8.f ) + player_shape->get_pos() );
 
 	Render::state->color = make_color( Color::teal, 0.5f );
 	for( auto& e : potential_entities )
 	{
 		Render::draw_line( player_shape->get_transform()->pos, e->get_transform()->pos );
 	}
+
+#if 1
+	auto bbox = player_shape->ws_aabb;//player_shape->get_ws_bbox();
+#else
+	Bounding_Box bbox;
+	auto scbs = player_shape->get_components<Simple_Collision_Body, Simple_Collision_Body>();
+
+	for( const auto& ec : scbs )
+	{
+		if( !ec->is_sensor() )
+		{
+			bbox += ec->ws.aabb;
+		}
+	}
+#endif
+
+	Render::state->color = Color::light_blue;
+	Render::draw_rect( bbox.as_rect() );
 }
 
 void Scene_Spatial::draw_ui()

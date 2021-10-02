@@ -56,6 +56,37 @@ Entity* Scene_Simple_Interact::spawn_entity()
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 	}
 	{
+		auto ec = e->add_component<Simple_Collision_Body>();
+		ec->get_transform()->set_pos( { 16.f, 32.f } );
+
+		static int32_t last_spawned_type = 0;
+		last_spawned_type++;
+		switch( last_spawned_type % 3 )
+		{
+		case 0:
+		{
+			ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
+		}
+		break;
+
+		case 1:
+		{
+			ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
+		}
+		break;
+
+		case 2:
+		{
+			auto s = Random::geti_range( 3, 8 );
+			auto r = radius * Random::getf_range( 0.5f, 3.0f );
+			ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
+		}
+		break;
+		}
+
+		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
+	}
+	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );
 	}

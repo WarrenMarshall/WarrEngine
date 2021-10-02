@@ -17,9 +17,9 @@ void Quad_Tree::Node::debug_draw() const
 	scoped_render_state;
 
 	Render::state->z += zdepth_nudge;
-	//Render::state->color = make_color( Color::yellow, 0.5f );
-	//Render::draw_filled_rect( bounds );
-	Render::state->color = make_color( Color::yellow, 0.15f );
+	Render::state->color = make_color( Color::dark_grey, 0.5f );
+	Render::draw_filled_rect( bounds );
+	Render::state->color = make_color( Color::white, 0.15f );
 	Render::draw_rect( bounds );
 }
 
