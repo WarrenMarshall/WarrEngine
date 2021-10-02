@@ -241,70 +241,77 @@ void Quad_Tree::insert_entity( Entity* e )
 
 void Quad_Tree::subdivide_nodes_as_necessary()
 {
-	std::list<std::unique_ptr<Quad_Tree::Node>> new_node_list;
+	bool did_split_a_node = true;
 
-	for( auto& node : nodes )
+	while( did_split_a_node )
 	{
-		if( node->entities.size() >= max_entities_per_node and node->bounds.area() >= ( min_node_area.x * min_node_area.y ) )
+		std::list<std::unique_ptr<Quad_Tree::Node>> new_node_list;
+		did_split_a_node = false;
+
+		for( auto& node : nodes )
 		{
-			// save the list of entities touching the node we are subdividing.
-			// they will be reinserted later.
-
-			auto saved_entities = node->entities;
-
-			// remove the current_node pointer from the nodes list inside the saved
-			// entities.
-
-			for( auto& se : saved_entities )
+			if( node->entities.size() > max_entities_per_node and node->bounds.area() >= ( min_node_area.x * min_node_area.y ) )
 			{
-				se->nodes.erase( node.get() );
-			}
+				did_split_a_node = true;
 
-			// subdivide current_node into 4 quadrants
-			auto rcs = node->bounds.subdivide();
-			std::vector<Quad_Tree::Node*> new_nodes;
-			new_nodes.reserve( 4 );
+				// save the list of entities touching the node we are subdividing.
+				// they will be reinserted later.
 
-			// add the 4 new nodes into the node list
-			for( auto& rc : rcs )
-			{
-				new_node_list.push_back( std::make_unique<Quad_Tree::Node>( rc ) );
+				auto saved_entities = node->entities;
 
-				Quad_Tree::Node* new_node = new_node_list.back().get();
+				// remove the current_node pointer from the nodes list inside the saved
+				// entities.
 
-				new_nodes.push_back( new_node );
-			}
-
-			// look at each saved entity and place it into whichever of the new
-			// nodes it is touching.
-
-			for( auto& se : saved_entities )
-			{
-				c2AABB entity_ws_aabb = se->simple_collision_ws_aabb.as_c2AABB();
-
-				for( auto& nn : new_nodes )
+				for( auto& se : saved_entities )
 				{
-					c2AABB node_aabb = nn->bounds.as_c2AABB();
-					if( c2AABBtoAABB( entity_ws_aabb, node_aabb ) )
+					se->nodes.erase( node.get() );
+				}
+
+				// subdivide current_node into 4 quadrants
+				auto rcs = node->bounds.subdivide();
+				std::vector<Quad_Tree::Node*> new_nodes;
+				new_nodes.reserve( 4 );
+
+				// add the 4 new nodes into the node list
+				for( auto& rc : rcs )
+				{
+					new_node_list.push_back( std::make_unique<Quad_Tree::Node>( rc ) );
+
+					Quad_Tree::Node* new_node = new_node_list.back().get();
+
+					new_nodes.push_back( new_node );
+				}
+
+				// look at each saved entity and place it into whichever of the new
+				// nodes it is touching.
+
+				for( auto& se : saved_entities )
+				{
+					c2AABB entity_ws_aabb = se->simple_collision_ws_aabb.as_c2AABB();
+
+					for( auto& nn : new_nodes )
 					{
-						nn->entities.insert( se );
-						se->nodes.insert( nn );
+						c2AABB node_aabb = nn->bounds.as_c2AABB();
+						if( c2AABBtoAABB( entity_ws_aabb, node_aabb ) )
+						{
+							nn->entities.insert( se );
+							se->nodes.insert( nn );
+						}
 					}
 				}
 			}
+			else
+			{
+				new_node_list.push_back( std::move( node ) );
+			}
 		}
-		else
-		{
-			new_node_list.push_back( std::move( node ) );
-		}
-	}
 
-	nodes.clear();
-	for( auto& node : new_node_list )
-	{
-		nodes.push_back( std::move( node ) );
+		nodes.clear();
+		for( auto& node : new_node_list )
+		{
+			nodes.push_back( std::move( node ) );
+		}
 	}
-//	nodes = new_node_list;
 }
 
 void Quad_Tree::pre_update()

@@ -15,7 +15,6 @@ void Scene_Spatial::spawn_entity( Vec2 pos )
 {
 	auto e = add_entity<Entity>();
 	e->set_pos( pos );
-	e->set_scale( Random::getf_range( 0.5f, 0.75f ) );
 	e->set_pickable();
 	e->rs_opt.color = make_color( e_pal::brighter );
 	{
@@ -33,6 +32,7 @@ void Scene_Spatial::spawn_entity( Vec2 pos )
 		{
 			ec->set_as_centered_box( 16.f, 16.f );
 		}
+		ec->get_transform()->set_scale( Random::getf_range( 1.f, 2.f ) );
 		ec->set_collision_flags( coll_flags.skull, coll_flags.skull );
 	}
 }
@@ -44,40 +44,36 @@ void Scene_Spatial::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	//Rect rc( -200, -200, 400, 400 );
 	qt.init( rc );
-	qt.max_entities_per_node = 1;
-	qt.min_node_area = 64;
 
 	// PLAYER SHAPE
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "main_ball" );
-		e->set_scale( 1.0f );
+		e->set_angle( 40.0f );
 		e->flags.include_in_quad_tree = true;
 
 #if 1
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			ec->set_as_circle( 12.f );
+			ec->set_as_circle( Random::getf_range( 8.f, 16.f ) );
+			//ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 7 ), Random::getf_range( 12.f, 24.f ) ) );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
 #else
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			//ec->set_as_circle( 8.f );
-			ec->set_as_centered_box( 16.f, 16.f );
-			ec->get_transform()->set_pos( { 32.f, 32.f } );
+			ec->set_as_circle( Random::getf_range( 8.f, 16.f ) );
+			ec->get_transform()->set_pos( Random::get_random_unit_vector() * 32.f );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			//ec->set_as_circle( 8.f );
-			ec->set_as_centered_box( 16.f, 16.f );
-			ec->get_transform()->set_pos( { -32.f, -32.f } );
+			ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 7 ), Random::getf_range( 12.f, 24.f ) ) );
+			ec->get_transform()->set_pos( Random::get_random_unit_vector() * 32.f );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
 #endif
@@ -89,7 +85,7 @@ void Scene_Spatial::pushed()
 		player_shape = e;
 	}
 
-	for( auto x = 0 ; x < 0 ; ++x )
+	for( auto x = 0 ; x < 32 ; ++x )
 	{
 		spawn_entity( rc.find_random_pos_within() );
 	}

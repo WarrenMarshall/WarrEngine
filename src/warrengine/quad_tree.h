@@ -23,6 +23,10 @@ struct Quad_Tree final
 	// ----------------------------------------------------------------------------
 
 	// how many entities can be inside a node before it gets subdivided
+	//
+	// NOTE : it's best to keep this at 3 or higher. going too low creates a lot
+	// of needless subdividing of the spatial grid. you hit diminishing returns
+	// pretty quickly.
 
 	int32_t max_entities_per_node = 3;
 
@@ -32,8 +36,12 @@ struct Quad_Tree final
 	//
 	// use different values for rectangular nodes or just a single value for
 	// squares.
+	//
+	// NOTE : this is best set so that you have a reasonable number of
+	// subdivides per frame. doing too many leads to diminishing returns pretty
+	// quickly.
 
-	Vec2 min_node_area = 16;
+	Vec2 min_node_area = 64;
 
 	Scene* parent_scene = nullptr;
 	std::list<std::unique_ptr<Quad_Tree::Node>> nodes;

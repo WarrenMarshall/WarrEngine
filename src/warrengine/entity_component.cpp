@@ -918,7 +918,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 		case e_sc_prim_type::polygon:
 		{
-			Bounding_Box ws_aabb, os_aabb;
+			Bounding_Box ws_aabb;
 
 			ws.verts.clear();
 
@@ -928,12 +928,9 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 				ws.verts.push_back( ws_v );
 
 				ws_aabb.add( ws_v );
-
-				os_aabb.add( v );
 			}
 
 			ws.aabb = ws_aabb.as_rect();
-			ws.aabb.y -= ws.aabb.h;
 		}
 		break;
 	}
