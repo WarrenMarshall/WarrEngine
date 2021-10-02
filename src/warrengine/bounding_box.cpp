@@ -42,7 +42,7 @@ Vec2 Bounding_Box::get_random_spot() const
 
 Rect Bounding_Box::as_rect() const
 {
-	return Rect( min.x, max.y, max.x - min.x, max.y - min.y );
+	return Rect( min.x, min.y, max.x - min.x, max.y - min.y );
 }
 
 Bounding_Box Bounding_Box::operator+( const Vec2& v ) const
