@@ -884,10 +884,12 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 	scoped_opengl;
 
 	g_engine->opengl_mgr.top_matrix->identity();
-	auto tform = parent_entity->get_transform();
-	g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
-	tform = get_transform();
-	g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, 0.f, tform->scale );
+
+	auto e_tform = parent_entity->get_transform();
+	g_engine->opengl_mgr.top_matrix->apply_transform( e_tform->pos, e_tform->angle, e_tform->scale );
+
+	auto ec_tform = get_transform();
+	g_engine->opengl_mgr.top_matrix->apply_transform( ec_tform->pos, 0.f, ec_tform->scale );
 
 	switch( prim_type )
 	{
@@ -913,15 +915,18 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 		case e_sc_prim_type::polygon:
 		{
-			Bounding_Box ws_aabb;
+			Bounding_Box ws_aabb, os_aabb;
 
 			ws.verts.clear();
+
 			for( auto& v : verts )
 			{
 				auto ws_v = g_engine->opengl_mgr.top_matrix->transform_vec2( v );
 				ws.verts.push_back( ws_v );
 
 				ws_aabb.add( ws_v );
+
+				os_aabb.add( v );
 			}
 
 			ws.aabb = ws_aabb.as_rect();
@@ -1314,58 +1319,6 @@ c2Poly Simple_Collision_Body::as_simple_poly()
 	c2MakePoly( &poly );
 
 	return poly;
-}
-
-// looks at the bounds of this body and returns a bounding circle
-
-c2Circle Simple_Collision_Body::get_bounds_as_simple_circle()
-{
-	c2Circle circle = {};
-
-	switch( prim_type )
-	{
-		case e_sc_prim_type::circle:
-		{
-			circle = as_simple_circle();
-		}
-		break;
-
-		case e_sc_prim_type::aabb:
-		{
-			assert( false );	// this has never been tested
-/*
-			auto aabb_ws = as_simple_aabb();
-
-			Vec2 extents = { aabb_ws.max.x - aabb_ws.min.x, aabb_ws.max.y - aabb_ws.min.y };
-
-			circle.p = { extents.x / 2.f, extents.y / 2.f };
-			circle.r = glm::max( extents.x, extents.y );
-*/
-		}
-		break;
-
-		case e_sc_prim_type::polygon:
-		{
-			assert( false );	// this has never been tested
-
-/*
-			auto poly_ws = as_simple_poly();
-
-			Bounding_Box bbox;
-			for( auto v = 0 ; v < poly_ws.count ; ++v )
-			{
-				bbox.add( { poly_ws.verts[ v ].x, poly_ws.verts[ v ].y } );
-			}
-
-			Vec2 extents = { bbox.max.x - bbox.min.x, bbox.max.y - bbox.min.y };
-
-			circle.p = { extents.x / 2.f, extents.y / 2.f };
-			circle.r = glm::max( extents.x, extents.y );
-*/
-		}
-		break;
-	}
-	return circle;
 }
 
 // ----------------------------------------------------------------------------

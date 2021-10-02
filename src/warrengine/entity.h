@@ -216,8 +216,9 @@ struct Entity
 	// and have a base class of "B"
 
 	template<typename B, typename T>
-	void get_components( std::vector<B*>& ecs ) const
+	std::vector<B*> get_components() const
 	{
+		std::vector<B*> ecs;
 		ecs.reserve( this->components.size() );
 
 		for( auto& ec : this->components )
@@ -225,6 +226,22 @@ struct Entity
 			if( dynamic_cast<T*>( ec.get() ) )
 			{
 				ecs.push_back( (B*)( ec.get() ) );
+			}
+		}
+
+		return ecs;
+	}
+
+	template<typename B, typename T>
+	void get_components( std::vector<B*>& ecs) const
+	{
+		ecs.reserve( this->components.size() );
+
+		for( auto& ec : this->components )
+		{
+			if( dynamic_cast< T* >( ec.get() ) )
+			{
+				ecs.push_back( ( B* )( ec.get() ) );
 			}
 		}
 	}

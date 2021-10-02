@@ -282,7 +282,7 @@ struct Simple_Collision_Body : Entity_Component
 	[[nodiscard]] bool is_solid()	{ return solidity == e_solidity::solid; }
 	[[nodiscard]] bool is_sensor()	{ return solidity == e_solidity::sensor; }
 
-	// worlspace positions - these are computed as needed and are necessary for
+	// world space values - these are computed as needed and are necessary for
 	// testing collisions in the proper locations
 	struct
 	{
@@ -327,7 +327,6 @@ struct Simple_Collision_Body : Entity_Component
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
 	c2Poly as_simple_poly();
-	c2Circle get_bounds_as_simple_circle();
 };
 
 // ----------------------------------------------------------------------------
