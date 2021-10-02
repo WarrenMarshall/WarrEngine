@@ -78,7 +78,7 @@ void Entity::post_update_components()
 		component->post_update();
 	}
 
-	ws_aabb = get_ws_bbox();
+	simple_collision_ws_aabb = compute_ws_aabb();
 
 #ifndef _FINAL_RELEASE
 
@@ -214,6 +214,7 @@ void Entity::apply_forces()
 
 void Entity::draw()
 {
+	// #selection
 	// super hacky way to indicate a selected entity. it just pumps up the glow
 	// on it. we need a nicer system for this eventually.
 	rs_opt.glow = rs_opt.glow.value_or( 0.f ) + ( is_selected * 2.f );
@@ -548,7 +549,7 @@ void Entity::apply_movement_walk( Vec2 delta, float_t speed )
 // it's AABB in world space. all colliders compute their AABB automatically
 // during their update.
 
-Bounding_Box Entity::get_ws_bbox() const
+Rect Entity::compute_ws_aabb() const
 {
 	auto scbs = get_components<Simple_Collision_Body, Simple_Collision_Body>();
 	Bounding_Box bbox;
@@ -561,7 +562,7 @@ Bounding_Box Entity::get_ws_bbox() const
 		}
 	}
 
-	return bbox;
+	return bbox.as_rect();
 }
 
 Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const

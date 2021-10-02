@@ -47,6 +47,7 @@ void Scene_Spatial::pushed()
 	//Rect rc( -200, -200, 400, 400 );
 	qt.init( rc );
 	qt.max_entities_per_node = 1;
+	qt.min_node_area = 64;
 
 	// PLAYER SHAPE
 	{
@@ -54,29 +55,32 @@ void Scene_Spatial::pushed()
 		e->tag = H( "main_ball" );
 		e->set_scale( 1.0f );
 		e->flags.include_in_quad_tree = true;
-/*
+
+#if 1
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
+			ec->set_as_circle( 12.f );
+			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
+		}
+#else
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+
+			//ec->set_as_circle( 8.f );
 			ec->set_as_centered_box( 16.f, 16.f );
-			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
-		}
-*/
-		{
-			auto ec = e->add_component<Simple_Collision_Body>();
-
-			ec->set_as_circle( 8.f );
-			ec->get_transform()->set_pos( { 24.f, 32.f } );
+			ec->get_transform()->set_pos( { 32.f, 32.f } );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			ec->set_as_circle( 8.f );
-			//ec->set_as_centered_box( 32.f, 16.f );
+			//ec->set_as_circle( 8.f );
+			ec->set_as_centered_box( 16.f, 16.f );
 			ec->get_transform()->set_pos( { -32.f, -32.f } );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
+#endif
 		{
 			auto ec = e->add_component<Sprite_Component>();
 			ec->init( "tex_player" );
@@ -111,23 +115,14 @@ void Scene_Spatial::draw()
 		Render::draw_line( player_shape->get_transform()->pos, e->get_transform()->pos );
 	}
 
-#if 1
-	auto bbox = player_shape->ws_aabb;//player_shape->get_ws_bbox();
-#else
-	Bounding_Box bbox;
-	auto scbs = player_shape->get_components<Simple_Collision_Body, Simple_Collision_Body>();
-
-	for( const auto& ec : scbs )
-	{
-		if( !ec->is_sensor() )
-		{
-			bbox += ec->ws.aabb;
-		}
-	}
-#endif
-
+	// debug
+	// debug
+	// debug
 	Render::state->color = Color::light_blue;
-	Render::draw_rect( bbox.as_rect() );
+	Render::draw_rect( player_shape->simple_collision_ws_aabb );
+	// debug
+	// debug
+	// debug
 }
 
 void Scene_Spatial::draw_ui()

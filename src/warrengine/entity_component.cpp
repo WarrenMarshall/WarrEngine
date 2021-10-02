@@ -891,6 +891,9 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 	auto ec_tform = get_transform();
 	g_engine->opengl_mgr.top_matrix->apply_transform( ec_tform->pos, 0.f, ec_tform->scale );
 
+	auto e_matrix = e_tform->to_matrix();
+	auto ec_matrix = ec_tform->to_matrix();
+
 	switch( prim_type )
 	{
 		case e_sc_prim_type::circle:

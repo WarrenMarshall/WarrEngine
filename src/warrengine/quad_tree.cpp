@@ -76,7 +76,7 @@ std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e
 		return touching_nodes;
 	}
 
-	c2AABB entity_ws_aabb = e->get_ws_bbox().as_rect().as_c2AABB();
+	c2AABB entity_ws_aabb = e->simple_collision_ws_aabb.as_c2AABB();
 
 	for( auto& node : nodes )
 	{
@@ -280,7 +280,7 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 
 			for( auto& se : saved_entities )
 			{
-				c2AABB entity_ws_aabb = se->get_ws_bbox().as_rect().as_c2AABB();
+				c2AABB entity_ws_aabb = se->simple_collision_ws_aabb.as_c2AABB();
 
 				for( auto& nn : new_nodes )
 				{
