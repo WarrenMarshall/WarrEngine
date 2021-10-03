@@ -7,8 +7,10 @@ namespace war
 
 float_t viewport_w = 320;
 float_t viewport_h = 240;
-float_t ui_w = 640;
-float_t ui_h = 480;
+float_t ui_w = 320;
+float_t ui_h = 240;
+float_t final_pixel_w = 320;
+float_t final_pixel_h = 240;
 
 std::unique_ptr<Log_File> g_logfile = nullptr;
 std::unique_ptr<Game> g_base_game = nullptr;

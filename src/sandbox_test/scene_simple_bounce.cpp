@@ -70,9 +70,8 @@ void Scene_Simple_Bounce::pushed()
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
 	qt.init( rc );
-	qt.max_entities_per_node = 1;
 
-	g_engine->render.debug.draw_debug_info = true;
+	g_engine->render.debug.draw_colliders = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// WORLD GEO

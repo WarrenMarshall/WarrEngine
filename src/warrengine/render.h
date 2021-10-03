@@ -24,11 +24,13 @@ struct Render final
 		// to the log file. this is useful for debugging things like the
 		// batching system and to get a look at how many draw calls we're using
 		// and what they are composed of.
-		bool single_frame_log = false;
-		bool entity_info_log = false;
+		bool single_frame_log : 1 = false;
+		bool entity_info_log : 1 = false;
 
 		// if true, draw the extra debug information like box2d primitives and mesh wireframes
-		bool draw_debug_info = false;
+		bool draw_colliders : 1 = false;
+		// if true, draws the nodes in the currently active quad_tree
+		bool draw_spatial : 1 = false;
 
 		bool is_single_frame_logging()
 		{
@@ -42,7 +44,12 @@ struct Render final
 
 		bool is_drawing_debug_info()
 		{
-			return draw_debug_info;
+			return draw_colliders;
+		}
+
+		bool is_drawing_debug_spatial()
+		{
+			return draw_spatial;
 		}
 	} debug;
 #endif

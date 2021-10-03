@@ -187,6 +187,9 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "ui_hh" ] = std::format( "{}", ui_hh );
 	log( "UI Window Res: {}x{}", ( int32_t )ui_w, ( int32_t )ui_h );
 
+	tok.init( g_engine->config_vars.find_value_or( "final_pixel_res", "320x240" ), "x" );
+	final_pixel_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
+	final_pixel_h = Text_Parser::float_from_str( tok.tokens[ 1 ] );
 
 	g_engine->render.init_set_up_default_palette();
 	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
@@ -359,6 +362,8 @@ void Engine::do_draw_finished_frame()
 
 	g_engine->opengl_mgr.set_uniform_float( "u_viewport_w", viewport_w );
 	g_engine->opengl_mgr.set_uniform_float( "u_viewport_h", viewport_h );
+	g_engine->opengl_mgr.set_uniform_float( "u_final_pixel_w", final_pixel_w );
+	g_engine->opengl_mgr.set_uniform_float( "u_final_pixel_h", final_pixel_h );
 
 	Render::draw_quad( frame_buffer.color_attachments[ 1 /* glow color attachment */ ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
 	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
@@ -783,13 +788,19 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 			return true;
 		}
 
-		// toggle debug physics drawing
+		// toggle debug drawing
 		case e_input_id::key_f5:
 		{
-			toggle_bool(g_engine->render.debug.draw_debug_info);
+			toggle_bool(g_engine->render.debug.draw_colliders);
 			return true;
 		}
-	#endif
+
+		case e_input_id::key_f6:
+		{
+			toggle_bool( g_engine->render.debug.draw_spatial );
+			return true;
+		}
+#endif
 
 		// post process tweaker
 		case e_input_id::key_f4:
@@ -891,7 +902,7 @@ void Engine::dispatch_box2d_collisions()
 
 	for (auto& iter : box2d.end_contact_queue)
 	{
-		// #ugly
+		// #hack
 		// sometimes we get garbage entities/fixtures in this iterator when
 		// shutting down the world. i think checking the restitution value like
 		// this is hacky and feels bad but it seems to work. i don't know what a

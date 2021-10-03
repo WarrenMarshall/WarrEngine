@@ -16,7 +16,7 @@ struct OpenGL_Mgr final
 	bool using_camera = false;
 
 	// the set of shaders we have loaded
-	std::unordered_map<std::string, Shader> shaders;
+	std::map<std::string, Shader> shaders;
 
 	// this value is polled from opengl at initialization. this allows the code
 	// to dynamically work with various video cards.

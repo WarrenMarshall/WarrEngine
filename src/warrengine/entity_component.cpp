@@ -813,7 +813,7 @@ void Simple_Collision_Body::draw()
 #ifndef _FINAL_RELEASE
 	// optional debug mode drawing
 
-	if( g_engine->render.debug.draw_debug_info )
+	if( g_engine->render.debug.draw_colliders )
 	{
 		scoped_render_state;
 

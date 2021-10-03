@@ -27,6 +27,8 @@ flat in int fs_pick_id;
 uniform float u_current_time;		// updated by the engine each frame
 uniform float u_viewport_w = 320.0;
 uniform float u_viewport_h = 240.0;
+uniform float u_final_pixel_w = 320.0;
+uniform float u_final_pixel_h = 240.0;
 
 float PI = 3.14159;
 
@@ -216,10 +218,25 @@ vec4 fx_desaturation( vec4 output_color )
 }
 
 // ----------------------------------------------------------------------------
+// > fx_pixelate_to_target_res
+// ----------------------------------------------------------------------------
+
+vec2 fx_pixelate_to_target_res( vec2 output_uvs )
+{
+	// #pixelate - not working properly yet but it feels like a feature worth having eventually
+	//output_uvs.x = round( output_uvs.x * u_final_pixel_w ) / u_final_pixel_w;
+	//output_uvs.y = round( output_uvs.y * u_final_pixel_h ) / u_final_pixel_h;
+
+	return output_uvs;
+}
+
+// ----------------------------------------------------------------------------
 
 void main()
 {
-	out_color_buffer = get_sample_from_texture( fs_texture_id, fs_tex_coord ) * fs_color;
+	vec2 final_uvs = fx_pixelate_to_target_res( fs_tex_coord );
+
+	out_color_buffer = get_sample_from_texture( fs_texture_id, final_uvs ) * fs_color;
 
 	// post process stack
 

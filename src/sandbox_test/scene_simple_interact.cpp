@@ -21,7 +21,6 @@ Scene_Simple_Interact::Scene_Simple_Interact()
 Entity* Scene_Simple_Interact::spawn_entity()
 {
 	auto e = add_entity<Entity>();
-	e->debug_name = "player";
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
 	e->simple.set_friction( 3.0f );
@@ -105,7 +104,10 @@ void Scene_Simple_Interact::pushed()
 	qt.init( rc );
 	qt.min_node_area = 128;
 
-	g_engine->render.debug.draw_debug_info = true;
+#ifndef _FINAL_RELEASE
+	g_engine->render.debug.draw_colliders = true;
+#endif
+
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// PLAYER

@@ -16,9 +16,11 @@ void Quad_Tree::Node::debug_draw() const
 {
 	scoped_render_state;
 
+/*
 	Render::state->z += zdepth_nudge;
 	Render::state->color = make_color( Color::dark_grey, 0.5f );
 	Render::draw_filled_rect( bounds );
+*/
 	Render::state->color = make_color( Color::white, 0.15f );
 	Render::draw_rect( bounds );
 }
@@ -35,24 +37,16 @@ void Quad_Tree::init( const Rect& bounds )
 void Quad_Tree::reset()
 {
 	nodes.clear();
-
-	// break the initial bounds into 4 quadrants. we start with 1 level of
-	// subdivision because why would you be using a spatial map if everything is
-	// in a single node?
-#if 0
-	auto rcs = bounds.subdivide();
-
-	nodes.emplace_back( rcs[ 0 ] );
-	nodes.emplace_back( rcs[ 1 ] );
-	nodes.emplace_back( rcs[ 2 ] );
-	nodes.emplace_back( rcs[ 3 ] );
-#else
 	nodes.push_back( std::make_unique<Quad_Tree::Node>( bounds ) );
-#endif
 }
 
 void Quad_Tree::debug_draw() const
 {
+	if( !g_engine->render.debug.draw_spatial )
+	{
+		return;
+	}
+
 	if( nodes.empty() )
 	{
 		return;

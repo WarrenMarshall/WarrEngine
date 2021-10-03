@@ -315,6 +315,12 @@ extern float_t viewport_h;
 #define viewport_hw (viewport_w * 0.5f)
 #define viewport_hh (viewport_h * 0.5f)
 
+// the size to render the UI at. this allows the game to run at a different
+// resolution from the UI.
+//
+// this has advantages like letting you author UI graphics at a specific
+// resolution and having them work across multiple games.
+
 extern float_t ui_w;
 extern float_t ui_h;
 
@@ -322,6 +328,13 @@ extern float_t ui_h;
 #define ui_hh (ui_h * 0.5f)
 
 #define ui_scale (viewport_w / ui_w)
+
+// the final res that we want to present the screen at. this is useful for cases
+// where you want to render the game at a higher res but actually present it to
+// the user at a smaller res. or you're in a 128x128 game jam, or what-not.
+
+extern float_t final_pixel_w;
+extern float_t final_pixel_h;
 
 // ----------------------------------------------------------------------------
 

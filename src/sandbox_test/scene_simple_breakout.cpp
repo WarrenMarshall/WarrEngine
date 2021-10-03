@@ -53,7 +53,7 @@ void Scene_Simple_Breakout::pushed()
 {
 	Scene::pushed();
 
-	g_engine->render.debug.draw_debug_info = true;
+	g_engine->render.debug.draw_colliders = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// paddle

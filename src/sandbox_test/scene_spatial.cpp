@@ -50,7 +50,6 @@ void Scene_Spatial::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "main_ball" );
-		e->set_angle( 40.0f );
 		e->flags.include_in_quad_tree = true;
 
 #if 1
@@ -85,7 +84,7 @@ void Scene_Spatial::pushed()
 		player_shape = e;
 	}
 
-	for( auto x = 0 ; x < 32 ; ++x )
+	for( auto x = 0 ; x < 150 ; ++x )
 	{
 		spawn_entity( rc.find_random_pos_within() );
 	}
@@ -112,12 +111,8 @@ void Scene_Spatial::draw()
 	}
 
 	// debug
-	// debug
-	// debug
-	Render::state->color = Color::light_blue;
-	Render::draw_rect( player_shape->simple_collision_ws_aabb );
-	// debug
-	// debug
+	//Render::state->color = Color::light_blue;
+	//Render::draw_rect( player_shape->simple_collision_ws_aabb );
 	// debug
 }
 

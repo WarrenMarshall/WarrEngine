@@ -253,7 +253,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 			auto velocity_a = ent_a->velocity;
 			auto velocity_b = ent_b->velocity;
 
-			// #prevent_nan_town
+			// #hack - prevents nan values from getting through but feels ugly
 			if( velocity_a.is_zero() or velocity_b.is_zero() ) { return; }
 
 			auto dot = Vec2::dot( velocity_a, velocity_b );
@@ -274,7 +274,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 			}
 
 			{
-				// #prevent_nan_town
+				// #hack - prevents nan values from getting through but feels ugly
 				if( velocity_a.is_zero() ) { velocity_a = velocity_b * -1.f; }
 				if( velocity_b.is_zero() ) { velocity_b = velocity_a * -1.f; }
 			}

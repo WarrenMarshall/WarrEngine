@@ -119,7 +119,7 @@ void Scene_Simple_Platformer::pushed()
 	viewport_pivot = { viewport_hw, viewport_hh };
 	get_transform()->set_scale( 2.0f );
 
-	g_engine->render.debug.draw_debug_info = true;
+	g_engine->render.debug.draw_colliders = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	fx_red_alert.clear( 1000 );
