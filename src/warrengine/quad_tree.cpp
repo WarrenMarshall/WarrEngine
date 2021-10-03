@@ -61,9 +61,9 @@ void Quad_Tree::debug_draw() const
 // looks at all the nodes and returns a list of nodes that the specified entity
 // is touching, using a computed AABB as the bounds checker.
 
-std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) const
+std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) const
 {
-	std::vector<Quad_Tree::Node*> touching_nodes;
+	std::set<Quad_Tree::Node*> touching_nodes;
 
 	if( nodes.empty() )
 	{
@@ -76,16 +76,16 @@ std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e
 	{
 		if( c2AABBtoAABB( entity_ws_aabb, node->bounds.as_c2AABB() ) )
 		{
-			touching_nodes.push_back( node.get() );
+			touching_nodes.insert( node.get() );
 		}
 	}
 
 	return touching_nodes;
 }
 
-std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const
+std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const
 {
-	std::vector<Quad_Tree::Node*> touching_nodes;
+	std::set<Quad_Tree::Node*> touching_nodes;
 
 	if( nodes.empty() )
 	{
@@ -98,16 +98,16 @@ std::vector<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec
 	{
 		if( c2CircletoAABB( ws_circle, node->bounds.as_c2AABB() ) )
 		{
-			touching_nodes.push_back( node.get() );
+			touching_nodes.insert( node.get() );
 		}
 	}
 
 	return touching_nodes;
 }
 
-std::vector<war::Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc_aabb ) const
+std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc_aabb ) const
 {
-	std::vector<Quad_Tree::Node*> touching_nodes;
+	std::set<Quad_Tree::Node*> touching_nodes;
 
 	if( nodes.empty() )
 	{
@@ -120,7 +120,7 @@ std::vector<war::Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const 
 	{
 		if( c2AABBtoAABB( ws_aabb, node->bounds.as_c2AABB() ) )
 		{
-			touching_nodes.push_back( node.get() );
+			touching_nodes.insert( node.get() );
 		}
 	}
 
