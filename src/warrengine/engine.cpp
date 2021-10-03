@@ -599,7 +599,7 @@ void Engine::draw()
 
 void Engine::toggle_pause()
 {
-	toggle_bool(pause_state.toggle);
+	toggle_bool( pause_state.toggle );
 }
 
 void Engine::pause()
@@ -614,7 +614,7 @@ void Engine::resume()
 
 bool Engine::is_paused()
 {
-	return pause_state.toggle or pause_state.ref_count > 0;
+	return pause_state.toggle + pause_state.ref_count;
 }
 
 // loads and caches every "*.asset_def" file it sees in the "asset_def" folder

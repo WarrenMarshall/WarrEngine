@@ -214,6 +214,10 @@ std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( const Rect& rc_
 
 void Quad_Tree::insert_entity( Entity* e )
 {
+	// sanity checking these values
+	assert( max_entities_per_node > 1 );
+	assert( min_node_area.x > 16 and min_node_area.y > 16 );
+
 	if( nodes.empty() )
 	{
 		return;
