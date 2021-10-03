@@ -42,6 +42,7 @@ void Quad_Tree::reset()
 
 void Quad_Tree::debug_draw() const
 {
+#ifndef _FINAL_RELEASE
 	if( !g_engine->render.debug.draw_spatial )
 	{
 		return;
@@ -56,6 +57,7 @@ void Quad_Tree::debug_draw() const
 	{
 		node->debug_draw();
 	}
+#endif
 }
 
 // looks at all the nodes and returns a list of nodes that the specified entity
