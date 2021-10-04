@@ -98,6 +98,8 @@ void Scene_Mgr::pre_update()
 
 void Scene_Mgr::update()
 {
+	// transition timeline
+
 	if( transition_timeline.life_cycle.is_alive() )
 	{
 		transition_timeline.update();
@@ -107,6 +109,8 @@ void Scene_Mgr::update()
 			pop();
 		}
 	}
+
+	// update scenes
 
 	for( auto& iter : scene_stack )
 	{
@@ -129,6 +133,8 @@ void Scene_Mgr::update()
 
 void Scene_Mgr::post_update()
 {
+	// update scenes
+
 	for( auto& iter : scene_stack )
 	{
 		iter->post_update();
@@ -149,49 +155,38 @@ void Scene_Mgr::draw()
 		// Locate the first completely opaque scene, starting at the top
 		// and moving backward.
 
-		int32_t starting_scene_idx = find_first_fully_opaque_scene();
+		int32_t starting_scene_idx = -1;
+
+		for( const auto& iter : scene_stack )
+		{
+			starting_scene_idx++;
+
+			if( iter->flags.blocks_further_drawing )
+			{
+				break;
+			}
+		}
+
+		// if we never find an opaque scene something has been set up
+		// wrong. make sure that at least 1 scene in the stack is marked as
+		// "draws_completely_solid = true"
+
+		assert( starting_scene_idx > -1 );
 
 		// draw starting from the starting_scene_idx and iterate through every
 		// scene above it
 
-		draw_scene( starting_scene_idx );
+		draw_scene_stack( starting_scene_idx );
 
 		// does not respond to scene transforms. UI is always drawn with the
 		// origin in the top/left corner of the viewport and doesn't move,
 		// rotate, shake, etc.
 
-		draw_scene_ui( starting_scene_idx );
+		draw_scene_stack_ui( starting_scene_idx );
 	}
 }
 
-// iterates through the scene list, front to back, looking for the first scene
-// that is drawing opaquely. drawing will start from there and walk back up the
-// stack to the top.
-
-int32_t Scene_Mgr::find_first_fully_opaque_scene()
-{
-	int32_t idx = -1;
-
-	for( const auto& iter : scene_stack )
-	{
-		idx++;
-
-		if( iter->flags.blocks_further_drawing )
-		{
-			break;
-		}
-	}
-
-	// if we never find an opaque scene something has been set up
-	// wrong. make sure that at least 1 scene in the stack is marked as
-	// "draws_completely_solid = true"
-
-	assert( idx > -1 );
-
-	return idx;
-}
-
-void Scene_Mgr::draw_scene( int32_t starting_scene_idx )
+void Scene_Mgr::draw_scene_stack( int32_t starting_scene_idx )
 {
 	scoped_render_state;
 	auto scene_depth_start = 0.f;
@@ -233,7 +228,7 @@ void Scene_Mgr::draw_scene( int32_t starting_scene_idx )
 	}
 }
 
-void Scene_Mgr::draw_scene_ui( int32_t starting_scene_idx )
+void Scene_Mgr::draw_scene_stack_ui( int32_t starting_scene_idx )
 {
 	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 
@@ -276,7 +271,7 @@ void Scene_Mgr::draw_scene_ui( int32_t starting_scene_idx )
 
 			#ifndef _FINAL_RELEASE
 
-				// draw a circle so we can visualize the viewport offset location
+				// draw an indicator so we can visualize the viewport offset location
 				if( g_engine->render.debug.is_drawing_debug_info() )
 				{
 					Render::draw_crosshair( scene->viewport_pivot / ui_scale );
