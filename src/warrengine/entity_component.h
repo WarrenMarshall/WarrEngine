@@ -321,7 +321,7 @@ struct Simple_Collision_Body : Entity_Component
 	void set_as_circle( float_t r );
 	void set_as_polygon( std::vector<Vec2> verts );
 
-	bool does_intersect( Simple_Collision_Body* scc );
+	bool does_intersect_broadly( Simple_Collision_Body* scc );
 	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other );
 
 	c2Circle as_simple_circle();

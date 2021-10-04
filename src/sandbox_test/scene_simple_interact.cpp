@@ -101,8 +101,8 @@ void Scene_Simple_Interact::pushed()
 	Scene::pushed();
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	qt.init( rc );
-	qt.min_node_area = 128;
+	spatial_map.init( rc );
+	spatial_map.min_node_area = 128;
 
 #ifndef _FINAL_RELEASE
 	g_engine->render.debug.draw_colliders = true;
@@ -209,7 +209,7 @@ void Scene_Simple_Interact::draw()
 		//	Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	qt.debug_draw();
+	spatial_map.debug_draw();
 
 	Scene::draw();
 	//render::draw_world_axis();

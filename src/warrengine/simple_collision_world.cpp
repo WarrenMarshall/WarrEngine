@@ -92,36 +92,55 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 
 void Simple_Collision_World::handle_collisions()
 {
-	colliding_bodies_set.clear();
-
+	// ----------------------------------------------------------------------------
 	// broad phase
+	//
+	// look through all entities with colliders and see if they could
+	// potentially collide with each other. this is done very loosely just to
+	// pair down the list.
+	// ----------------------------------------------------------------------------
 
-	for( auto scc_a : active_bodies )
+	std::set<ec_simple_body_pair> potentially_colliding_bodies;
+
+	for( auto& ea : parent_scene->entities )
 	{
-		for( auto scc_b : active_bodies )
+		auto sccs_a = ea->get_components<Simple_Collision_Body>();
+
+		if( sccs_a.empty() )
 		{
-			// don't test self->self
-			if( scc_a == scc_b )
-			{
-				continue;
-			}
+			continue;
+		}
 
-			// don't test if both bodies belong to same entity. entities can't
-			// collide with their own collision bodies.
-			if( scc_a->parent_entity == scc_b->parent_entity )
-			{
-				continue;
-			}
+		auto potential_entities = parent_scene->spatial_map.find_potentially_colliding_entities( ea.get() );
 
-			if( scc_a->does_intersect( scc_b ) )
+		for( auto& eb : potential_entities )
+		{
+			assert( ea.get() != eb );
+
+			auto sccs_b = eb->get_components<Simple_Collision_Body>();
+
+			for( auto scc_a : sccs_a )
 			{
-				assert( scc_a->parent_entity != scc_b->parent_entity );
-				colliding_bodies_set.insert( std::make_pair( scc_a, scc_b ) );
+				for( auto scc_b : sccs_b )
+				{
+					if( scc_a->does_intersect_broadly( scc_b ) )
+					{
+						assert( scc_a->parent_entity != scc_b->parent_entity );
+						potentially_colliding_bodies.insert( std::make_pair( scc_a, scc_b ) );
+					}
+				}
 			}
 		}
 	}
 
-	for( auto& [body_a, body_b] : colliding_bodies_set )
+	// ----------------------------------------------------------------------------
+	// granular phase
+	//
+	// look through the list of potential colliders and if they actually ARE
+	// colliding, handle that accordingly.
+	// ----------------------------------------------------------------------------
+
+	for( auto& [body_a, body_b] : potentially_colliding_bodies )
 	{
 		if( body_a->parent_entity == body_b->parent_entity )
 		{

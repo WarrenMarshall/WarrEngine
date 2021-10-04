@@ -15,6 +15,7 @@ Scene::Scene()
 
 // ----------------------------------------------------------------------------
 
+// #mouse_mode - change the mouse save/restore stuff into a proper stack - then multiple things can change it and it will still work
 void Scene::save_mouse_mode()
 {
 	saved_mouse_mode = g_engine->window.mouse_mode;
@@ -30,6 +31,7 @@ void Scene::restore_mouse_mode()
 
 // ----------------------------------------------------------------------------
 
+// #selection - selected entities should be store in a set inside the scene. this would be easier than tracking the entity boolean flags themselves.
 void Scene::select_by_pick_id( int32_t pick_id )
 {
 	if( !pick_id )
@@ -72,7 +74,7 @@ std::vector<Entity*> Scene::get_selected()
 void Scene::pushed()
 {
 	sc_world = Simple_Collision_World( this );
-	qt.parent_scene = this;
+	spatial_map.parent_scene = this;
 }
 
 void Scene::popped()
@@ -91,17 +93,6 @@ void Scene::getting_covered()
 
 void Scene::pre_update()
 {
-	for( auto& entity : entities )
-	{
-		scoped_opengl;
-
-		auto tform = entity->get_transform();
-		g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
-
-		entity->pre_update();
-		entity->pre_update_components();
-	}
-
 	// remove dead entities
 
 	for( auto iter = entities.begin(); iter != entities.end(); iter++ )
@@ -122,27 +113,45 @@ void Scene::pre_update()
 		}
 	}
 
-	qt.pre_update();
+	// living entities
+
+	for( auto& entity : entities )
+	{
+		scoped_opengl;
+		{
+			// apply the entity transform. we do this here because the
+			// components will need this to be applied as well.
+
+			auto tform = entity->get_transform();
+			g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
+
+			entity->pre_update();
+			entity->pre_update_components();
+		}
+	}
+
+	spatial_map.pre_update();
 }
 
 void Scene::update()
 {
-	if( !entities.empty() )
+	sc_world.active_bodies.clear();
+
+	// living entities
+
+	for( auto& entity : entities )
 	{
-		sc_world.active_bodies.clear();
-
-		// update entities and components
-
-		for( auto& entity : entities )
+		scoped_opengl;
 		{
-			scoped_opengl;
+			// apply the entity transform. we do this here because the
+			// components will need this to be applied as well.
 
 			auto tform = entity->get_transform();
 			g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
 			entity->update();
 			entity->update_components();
-			entity->update_from_physics();
+			entity->update_transform_to_match_box2d_components();
 
 			// collect the simple collision bodies active in the scene
 			auto sccs = entity->get_components<Simple_Collision_Body>();
@@ -153,7 +162,7 @@ void Scene::update()
 		}
 	}
 
-	qt.update();
+	spatial_map.update();
 }
 
 void Scene::post_update()
@@ -162,7 +171,7 @@ void Scene::post_update()
 
 	// simple collision detection
 
-	for( auto iter_counter = 0 ; iter_counter < sc_world.settings.num_pos_iterations ; ++iter_counter )
+	for( auto iter_counter = 0 ; iter_counter < sc_world.settings.max_pos_iterations ; ++iter_counter )
 	{
 		// make sure the collision bodies are in the correct world space
 		// position, relative to their parent entities
@@ -192,15 +201,16 @@ void Scene::post_update()
 	for( auto& entity : entities )
 	{
 		scoped_opengl;
+		{
+			auto tform = entity->get_transform();
+			g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
 
-		auto tform = entity->get_transform();
-		g_engine->opengl_mgr.top_matrix->apply_transform( tform->pos, tform->angle, tform->scale );
-
-		entity->post_update();
-		entity->post_update_components();
+			entity->post_update();
+			entity->post_update_components();
+		}
 	}
 
-	qt.post_update();
+	spatial_map.post_update();
 }
 
 // ----------------------------------------------------------------------------

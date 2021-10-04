@@ -4,7 +4,7 @@ namespace war
 
 struct Scene
 {
-	Quad_Tree qt;
+	Quad_Tree spatial_map;
 	Life_Cycle life_cycle;
 
 	void save_mouse_mode();

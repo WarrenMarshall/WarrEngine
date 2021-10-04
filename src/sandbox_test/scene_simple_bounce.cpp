@@ -69,7 +69,7 @@ void Scene_Simple_Bounce::pushed()
 	Scene::pushed();
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	qt.init( rc );
+	spatial_map.init( rc );
 
 	g_engine->render.debug.draw_colliders = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
@@ -149,7 +149,7 @@ void Scene_Simple_Bounce::draw()
 		//	Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	qt.debug_draw();
+	spatial_map.debug_draw();
 
 	Scene::draw();
 }

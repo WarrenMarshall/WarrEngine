@@ -135,8 +135,8 @@ struct Entity
 	void add_delta_angle( const float_t delta );
 	void add_delta_scale( const float_t delta );
 
-	void update_physics_components_to_match_transform();
-	void update_transform_to_match_physics_components();
+	void update_box2d_components_to_match_transform();
+	void update_transform_to_match_box2d_components();
 
 	virtual void set_life_cycle( e_life_cycle lc );
 
@@ -146,7 +146,6 @@ struct Entity
 
 	[[nodiscard]] virtual bool can_be_deleted();
 
-	void update_from_physics();
 	virtual void pre_update();
 	virtual void update();
 	virtual void post_update();

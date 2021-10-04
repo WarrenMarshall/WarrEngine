@@ -26,11 +26,6 @@ Entity::Entity( std::string debug_name )
 #endif
 }
 
-void Entity::update_from_physics()
-{
-	update_transform_to_match_physics_components();
-}
-
 void Entity::pre_update()
 {
 	life_cycle.pre_update();
@@ -246,7 +241,7 @@ void Entity::draw()
 // you have physics, let the physics engine control what the entity transform is
 // via the regular update() cycle.
 
-void Entity::update_physics_components_to_match_transform()
+void Entity::update_box2d_components_to_match_transform()
 {
 	// ----------------------------------------------------------------------------
 	// BOX2D
@@ -270,7 +265,7 @@ void Entity::update_physics_components_to_match_transform()
 	}
 }
 
-void Entity::update_transform_to_match_physics_components()
+void Entity::update_transform_to_match_box2d_components()
 {
 	// ----------------------------------------------------------------------------
 	// BOX2D
@@ -303,7 +298,7 @@ Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float_t angle, co
 	_tform.set_angle( angle );
 	_tform.set_scale( scale );
 
-	update_physics_components_to_match_transform();
+	update_box2d_components_to_match_transform();
 
 	return &_tform;
 }
@@ -311,7 +306,7 @@ Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float_t angle, co
 Transform* Entity::set_angle( const float_t angle )
 {
 	_tform.set_angle( angle );
-	update_physics_components_to_match_transform();
+	update_box2d_components_to_match_transform();
 
 	return &_tform;
 }
@@ -348,7 +343,7 @@ Transform* Entity::set_pos( const Vec2& pos )
 {
 	_tform.set_pos( pos );
 
-	update_physics_components_to_match_transform();
+	update_box2d_components_to_match_transform();
 
 	return &_tform;
 }
@@ -363,14 +358,14 @@ void Entity::add_delta_pos( const Vec2& delta )
 		e->add_delta_pos( delta );
 	}
 
-	update_physics_components_to_match_transform();
+	update_box2d_components_to_match_transform();
 }
 
 void Entity::add_delta_angle( const float_t delta )
 {
 	_tform.add_angle( delta );
 
-	update_physics_components_to_match_transform();
+	update_box2d_components_to_match_transform();
 }
 
 void Entity::add_delta_scale( const float_t delta )

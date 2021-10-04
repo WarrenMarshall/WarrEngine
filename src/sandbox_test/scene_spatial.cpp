@@ -44,7 +44,7 @@ void Scene_Spatial::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	qt.init( rc );
+	spatial_map.init( rc );
 
 	// PLAYER SHAPE
 	{
@@ -56,8 +56,9 @@ void Scene_Spatial::pushed()
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			ec->set_as_circle( Random::getf_range( 8.f, 16.f ) );
+			//ec->set_as_circle( Random::getf_range( 8.f, 16.f ) );
 			//ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 7 ), Random::getf_range( 12.f, 24.f ) ) );
+			ec->set_as_centered_box( 16.f, 16.f );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
 #else
@@ -96,19 +97,21 @@ void Scene_Spatial::draw()
 	Scene::draw();
 	//Render::draw_world_axis();
 
-	qt.debug_draw();
+	spatial_map.debug_draw();
 
 	// show entities that COULD collide with player shape
 
-	auto potential_entities = qt.get_potential_entity_colliding_set( player_shape );
+	auto potential_entities = spatial_map.find_potentially_colliding_entities( player_shape );
 	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape->get_pos(), 32.f );
 	//auto potential_entities = qt.get_potential_entity_colliding_set( Rect::create_centered( 64.f, 8.f ) + player_shape->get_pos() );
 
+#if 0
 	Render::state->color = make_color( Color::teal, 0.5f );
 	for( auto& e : potential_entities )
 	{
 		Render::draw_line( player_shape->get_transform()->pos, e->get_transform()->pos );
 	}
+#endif
 
 	// debug
 	//Render::state->color = Color::light_blue;
@@ -121,7 +124,7 @@ void Scene_Spatial::draw_ui()
 	Scene::draw_ui();
 	draw_title( "Spatial Partitioning" );
 
-	Render::draw_string( std::format( "{} nodes", qt.nodes.size() ), Vec2( 4, 4 ) );
+	Render::draw_string( std::format( "{} nodes", spatial_map.nodes.size() ), Vec2( 4, 4 ) );
 }
 
 bool Scene_Spatial::on_input_pressed( const Input_Event* evt )

@@ -974,13 +974,16 @@ void Simple_Collision_Body::set_as_polygon( std::vector<Vec2> vs )
 
 // does a broad phase check against "scc" to see if these bodies are intersecting
 
-bool Simple_Collision_Body::does_intersect( Simple_Collision_Body* scc )
+bool Simple_Collision_Body::does_intersect_broadly( Simple_Collision_Body* scc )
 {
 	// simple_collision_components can't collide with themselves
+	assert( this != scc );
+/*
 	if( this == scc )
 	{
 		return false;
 	}
+*/
 
 	// entities can't collide with themselves
 	if( this->parent_entity == scc->parent_entity )

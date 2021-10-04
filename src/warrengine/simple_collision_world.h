@@ -31,7 +31,7 @@ struct Simple_Collision_World final
 		// 3 = good enough for platforming and most games
 		// 20 = pushing 10+ entities at a time
 
-		size_t num_pos_iterations = 3;
+		size_t max_pos_iterations = 3;
 
 		// collisions do better if you can add a little padding between collision bodies
 		// after resolution. 1.0 would be exactly snug against each other. Anything
@@ -44,7 +44,6 @@ struct Simple_Collision_World final
 	} settings;
 
 	std::vector<Simple_Collision_Body*> active_bodies;
-	std::set<ec_simple_body_pair> colliding_bodies_set;
 	bool need_another_iteration = false;
 
 	Simple_Collision_World() = default;

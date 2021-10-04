@@ -132,7 +132,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc
 // take a position and a radius, and returns the colliding set based on which
 // nodes that circle touches
 
-std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( const Vec2& pos, float_t radius ) const
+std::set<Entity*> Quad_Tree::find_potentially_colliding_entities( const Vec2& pos, float_t radius ) const
 {
 	std::set<Entity*> entities;
 
@@ -149,7 +149,10 @@ std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( const Vec2& pos
 	return entities;
 }
 
-std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( Entity* e ) const
+// looks through the tree, and returns a set of all entities that could
+// potentially be interacting with the specified entity
+
+std::set<Entity*> Quad_Tree::find_potentially_colliding_entities( Entity* e ) const
 {
 	std::set<Entity*> entities;
 
@@ -197,7 +200,7 @@ std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( Entity* e ) con
 	return entities;
 }
 
-std::set<Entity*> Quad_Tree::get_potential_entity_colliding_set( const Rect& rc_aabb ) const
+std::set<Entity*> Quad_Tree::find_potentially_colliding_entities( const Rect& rc_aabb ) const
 {
 	std::set<Entity*> entities;
 
