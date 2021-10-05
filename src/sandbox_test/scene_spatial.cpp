@@ -34,6 +34,10 @@ void Scene_Spatial::spawn_entity( Vec2 pos )
 		}
 		ec->get_transform()->set_scale( Random::getf_range( 1.f, 2.f ) );
 		ec->set_collision_flags( coll_flags.skull, coll_flags.skull );
+		if( Random::getb() )
+		{
+			ec->set_sensor_as_continuous();
+		}
 	}
 }
 
@@ -97,34 +101,23 @@ void Scene_Spatial::draw()
 	Scene::draw();
 	//Render::draw_world_axis();
 
-	spatial_map.debug_draw();
-
 	// show entities that COULD collide with player shape
 
+#if 1
 	auto potential_entities = spatial_map.find_potentially_colliding_entities( player_shape );
-	//auto potential_entities = qt.get_potential_entity_colliding_set( player_shape->get_pos(), 32.f );
-	//auto potential_entities = qt.get_potential_entity_colliding_set( Rect::create_centered( 64.f, 8.f ) + player_shape->get_pos() );
 
-#if 0
 	Render::state->color = make_color( Color::teal, 0.5f );
 	for( auto& e : potential_entities )
 	{
 		Render::draw_line( player_shape->get_transform()->pos, e->get_transform()->pos );
 	}
 #endif
-
-	// debug
-	//Render::state->color = Color::light_blue;
-	//Render::draw_rect( player_shape->simple_collision_ws_aabb );
-	// debug
 }
 
 void Scene_Spatial::draw_ui()
 {
 	Scene::draw_ui();
 	draw_title( "Spatial Partitioning" );
-
-	Render::draw_string( std::format( "{} nodes", spatial_map.nodes.size() ), Vec2( 4, 4 ) );
 }
 
 bool Scene_Spatial::on_input_pressed( const Input_Event* evt )

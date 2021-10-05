@@ -265,7 +265,7 @@ struct Simple_Collision_Body : Entity_Component
 
 	bool is_platform = false;
 
-	// if true, then any entities touching this sensor need to move WITH the sensor.
+	// if true, then any entities touching this collider need to move WITH this collider.
 	bool is_sticky = false;
 
 	// box

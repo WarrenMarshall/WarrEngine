@@ -62,13 +62,13 @@ struct Entity
 	{
 		bool pickable : 1 = false;
 		bool include_in_quad_tree : 1 = true;
+		bool is_selected : 1 = false;
 	} flags;
 
 	Life_Cycle life_cycle;
 
 	hash tag = hash_none;
 	int32_t pick_id = 0;
-	bool is_selected = false;
 	Render_State_Optional rs_opt;
 
 	Scene* parent_scene = nullptr;

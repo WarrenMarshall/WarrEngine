@@ -11,42 +11,53 @@ Scene_Simple_Sensors::Scene_Simple_Sensors()
 	flags.is_debug_physics_scene = true;
 }
 
-void Scene_Simple_Sensors::spawn_sensor( Entity* entity )
+void Scene_Simple_Sensors::spawn_sensor()
 {
-	auto ec = entity->add_component<Simple_Collision_Body>();
-	ec->get_transform()->set_pos( { -viewport_hw + ( Random::getf() * viewport_w ), -viewport_hh + ( Random::getf() * viewport_h ) } );
-	ec->set_sensor_as_continuous();
-	ec->set_collision_flags( coll_flags.sensor, 0 );
-
-	static int32_t last_spawned_type = 0;
-	last_spawned_type++;
-	switch( last_spawned_type % 3 )
+	auto e = add_entity<Entity>();
+	e->simple.type = e_sc_type::stationary;
+	e->set_pos( { -viewport_hw + ( Random::getf() * viewport_w ), -viewport_hh + ( Random::getf() * viewport_h ) } );
 	{
-		case 0:
-		{
-			ec->set_as_centered_box( Random::getf_range( 10.0f, 30.0f ), Random::getf_range( 10.0f, 30.0f ) );
-		}
-		break;
+		auto ec = e->add_component<Sprite_Component>();
+		ec->init( "tex_skull" );
+	}
+	{
+		auto ec = e->add_component<Simple_Collision_Body>();
+		ec->set_sensor_as_continuous();
+		ec->set_collision_flags( coll_flags.sensor, 0 );
 
-		case 1:
+		static int32_t last_spawned_type = 0;
+		last_spawned_type++;
+		switch( last_spawned_type % 3 )
 		{
-			ec->set_as_circle( Random::getf_range( 20.0f, 40.0f ) );
-		}
-		break;
+			case 0:
+			{
+				ec->set_as_centered_box( Random::getf_range( 10.0f, 30.0f ), Random::getf_range( 10.0f, 30.0f ) );
+			}
+			break;
 
-		case 2:
-		{
-			auto s = Random::geti_range( 3, 8 );
-			auto r = Random::getf_range( 10.f, 30.0f );
-			ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
+			case 1:
+			{
+				ec->set_as_circle( Random::getf_range( 20.0f, 40.0f ) );
+			}
+			break;
+
+			case 2:
+			{
+				auto s = Random::geti_range( 3, 8 );
+				auto r = Random::getf_range( 10.f, 30.0f );
+				ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
+			}
+			break;
 		}
-		break;
 	}
 }
 
 void Scene_Simple_Sensors::pushed()
 {
 	Scene::pushed();
+
+	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
+	spatial_map.init( rc );
 
 	g_engine->render.debug.draw_colliders = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
@@ -70,12 +81,9 @@ void Scene_Simple_Sensors::pushed()
 	// SENSORS
 
 	{
-		auto e = add_entity<Entity>();
-		e->simple.type = e_sc_type::stationary;
-
 		for( auto x = 0 ; x < 10 ; ++x )
 		{
-			spawn_sensor( e );
+			spawn_sensor();
 		}
 	}
 
@@ -115,34 +123,6 @@ void Scene_Simple_Sensors::pushed()
 	}
 }
 
-void Scene_Simple_Sensors::draw()
-{
-	{
-		scoped_render_state;
-		Render::state->color = make_color( e_pal::darker );
-		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
-			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
-	}
-
-	Scene::draw();
-	Render::draw_world_axis();
-}
-
-void Scene_Simple_Sensors::draw_ui()
-{
-	Scene::draw_ui();
-}
-
-void Scene_Simple_Sensors::update()
-{
-	Scene::update();
-}
-
-bool Scene_Simple_Sensors::on_input_pressed( const Input_Event* evt )
-{
-	return false;
-}
-
 bool Scene_Simple_Sensors::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
@@ -167,3 +147,16 @@ bool Scene_Simple_Sensors::on_input_motion( const Input_Event* evt )
 
 	return false;
 }
+
+bool Scene_Simple_Sensors::on_entity_and_sensor_touching_begin( Entity* entity, Simple_Collision_Body* sensor )
+{
+	sensor->parent_entity->rs_opt.color = Color::red;
+	return true;
+}
+
+bool Scene_Simple_Sensors::on_entity_and_sensor_touching_end( Entity* entity, Simple_Collision_Body* sensor )
+{
+	sensor->parent_entity->rs_opt.color = Color::white;
+	return true;
+}
+

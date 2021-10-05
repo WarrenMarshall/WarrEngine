@@ -48,11 +48,6 @@ void Quad_Tree::debug_draw() const
 		return;
 	}
 
-	if( nodes.empty() )
-	{
-		return;
-	}
-
 	for( const auto& node : nodes )
 	{
 		node->debug_draw();
@@ -66,11 +61,6 @@ void Quad_Tree::debug_draw() const
 std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) const
 {
 	std::set<Quad_Tree::Node*> touching_nodes;
-
-	if( nodes.empty() )
-	{
-		return touching_nodes;
-	}
 
 	c2AABB entity_ws_aabb = e->simple_collision_ws_aabb.as_c2AABB();
 
@@ -89,11 +79,6 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& 
 {
 	std::set<Quad_Tree::Node*> touching_nodes;
 
-	if( nodes.empty() )
-	{
-		return touching_nodes;
-	}
-
 	c2Circle ws_circle = { pos.as_c2v(), radius };
 
 	for( auto& node : nodes )
@@ -110,11 +95,6 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& 
 std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc_aabb ) const
 {
 	std::set<Quad_Tree::Node*> touching_nodes;
-
-	if( nodes.empty() )
-	{
-		return touching_nodes;
-	}
 
 	c2AABB ws_aabb = rc_aabb.as_c2AABB();
 
@@ -223,11 +203,6 @@ void Quad_Tree::insert_entity( Entity* e )
 	assert( max_entities_per_node > 1 );
 	assert( min_node_area.x > 16 and min_node_area.y > 16 );
 
-	if( nodes.empty() )
-	{
-		return;
-	}
-
 	auto touching_nodes = get_nodes_entity_is_touching( e );
 
 	for( auto& node : touching_nodes )
@@ -319,21 +294,11 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 
 void Quad_Tree::pre_update()
 {
-	if( nodes.empty() )
-	{
-		return;
-	}
-
 	reset();
 }
 
 void Quad_Tree::update()
 {
-	if( nodes.empty() )
-	{
-		return;
-	}
-
 	// insert all needed entities into the nodes
 
 	for( auto& e : parent_scene->entities )

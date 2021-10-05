@@ -59,6 +59,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 void Scene_Simple_Top_Down::pushed()
 {
 	get_transform()->set_scale( 2.f );
+	//spatial_map.init( Rect( -375, -375, 750, 750 ) );
 
 	Scene::pushed();
 

@@ -212,7 +212,7 @@ void Entity::draw()
 	// #selection
 	// super hacky way to indicate a selected entity. it just pumps up the glow
 	// on it. we need a nicer system for this eventually.
-	rs_opt.glow = rs_opt.glow.value_or( 0.f ) + ( is_selected * 2.f );
+	rs_opt.glow = rs_opt.glow.value_or( 0.f ) + ( flags.is_selected * 2.f );
 
 	for( const auto& component : components )
 	{
@@ -551,10 +551,7 @@ Rect Entity::compute_ws_aabb() const
 
 	for( const auto& ec : scbs )
 	{
-		if( !ec->is_sensor() )
-		{
-			bbox += ec->ws.aabb;
-		}
+		bbox += ec->ws.aabb;
 	}
 
 	return bbox.as_rect();

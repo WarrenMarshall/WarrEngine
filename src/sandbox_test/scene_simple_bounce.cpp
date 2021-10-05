@@ -149,8 +149,6 @@ void Scene_Simple_Bounce::draw()
 		//	Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
 
-	spatial_map.debug_draw();
-
 	Scene::draw();
 }
 

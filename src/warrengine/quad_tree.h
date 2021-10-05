@@ -45,14 +45,16 @@ struct Quad_Tree final
 
 	Scene* parent_scene = nullptr;
 	std::list<std::unique_ptr<Quad_Tree::Node>> nodes;
-	Rect bounds;
+	Rect bounds = { -750, -750, 1'500, 1'500 };
 
 	void init( const Rect& bounds );
 	void reset();
 	void debug_draw() const;
+
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_entity_is_touching( Entity* e ) const;
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const;
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_rect_is_touching( const Rect& rc_aabb ) const;
+
 	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( Entity* e ) const;
 	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( const Vec2& pos, float_t radius ) const;
 	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( const Rect& rc_aabb ) const;

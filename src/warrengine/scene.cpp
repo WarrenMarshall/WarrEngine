@@ -43,7 +43,7 @@ void Scene::select_by_pick_id( int32_t pick_id )
 	{
 		if( e->pick_id == pick_id )
 		{
-			e->is_selected = true;
+			e->flags.is_selected = true;
 		}
 	}
 }
@@ -52,7 +52,7 @@ void Scene::deselect_all()
 {
 	for( const auto& e : entities )
 	{
-		e->is_selected = false;
+		e->flags.is_selected = false;
 	}
 }
 
@@ -62,7 +62,7 @@ std::vector<Entity*> Scene::get_selected()
 
 	for( const auto& e : entities )
 	{
-		if( e->is_selected )
+		if( e->flags.is_selected )
 		{
 			selections.push_back( e.get() );
 		}
@@ -230,6 +230,8 @@ void Scene::draw()
 			entity->draw();
 		}
 	}
+
+	spatial_map.debug_draw();
 }
 
 void Scene::draw_ui()

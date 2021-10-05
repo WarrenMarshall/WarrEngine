@@ -74,6 +74,10 @@ void Render_Stats::draw()
 				cam_transform->pos.x, cam_transform->pos.y, cam_transform->angle, cam_transform->scale )
 			);
 
+			stat_strings.push_back( std::format( "qt: {} nodes",
+				g_engine->scene_mgr.current_scene->spatial_map.nodes.size() )
+			);
+
 			if( stat_custom_string.length() )
 			{
 				stat_strings.push_back( stat_custom_string );

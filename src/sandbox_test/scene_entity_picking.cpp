@@ -94,7 +94,7 @@ bool Scene_Entity_Picking::on_input_pressed( const Input_Event* evt )
 
 		for( auto& e : entities )
 		{
-			e->rs_opt.glow = ( e->is_selected * 1.5f );
+			e->rs_opt.glow = ( e->flags.is_selected * 1.5f );
 		}
 
 		return true;
