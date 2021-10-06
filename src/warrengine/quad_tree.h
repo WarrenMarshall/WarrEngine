@@ -8,6 +8,8 @@ struct Quad_Tree final
 
 	struct Node final
 	{
+		bool is_alive = false;
+
 		// where this node lies in world space
 		Rect bounds = {};
 
@@ -17,6 +19,7 @@ struct Quad_Tree final
 		Node() = default;
 		Node( const Rect& rc );
 
+		void init( const Rect& rc );
 		void debug_draw() const;
 	};
 
@@ -43,8 +46,16 @@ struct Quad_Tree final
 
 	Vec2 min_node_area = 64;
 
+	// how many nodes we allow, total, in the object pool. exceeding this number
+	// is bad as we will start overwriting nodes that are being used.
+	//
+	// if the nodes are looking wrong or queries are returning bizarre results
+	// that are seemingly impossible, increase this number.
+
+	const int32_t max_nodes_in_pool = 300;
+
 	Scene* parent_scene = nullptr;
-	std::list<std::unique_ptr<Quad_Tree::Node>> nodes;
+	Object_Pool<Quad_Tree::Node> nodes;
 	Rect bounds = { -750, -750, 1'500, 1'500 };
 
 	void init( const Rect& bounds );
@@ -67,5 +78,7 @@ protected:
 	void insert_entity( Entity* e );
 	void subdivide_nodes_as_necessary();
 };
+
+static_assert( sizeof( Quad_Tree::Node ) <= 64 );
 
 }

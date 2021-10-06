@@ -62,9 +62,9 @@ struct Object_Pool
 		return _objects.capacity();
 	}
 
-protected:
-
 	std::vector<T> _objects;
+
+protected:
 
 	// how many objects have been added into this pool since the last time it
 	// was reset

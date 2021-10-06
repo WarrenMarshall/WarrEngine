@@ -67,12 +67,14 @@ void Scene_Simple_Collision::pushed()
 
 void Scene_Simple_Collision::draw()
 {
+/*
 	{
 		scoped_render_state;
 		Render::state->color = make_color( e_pal::darker );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
 			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
 	}
+*/
 
 	Scene::draw();
 	//render::draw_world_axis();
