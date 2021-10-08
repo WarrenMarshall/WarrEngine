@@ -52,15 +52,17 @@ struct Quad_Tree final
 	// if the nodes are looking wrong or queries are returning bizarre results
 	// that are seemingly impossible, increase this number.
 
-	const int32_t max_nodes_in_pool = 300;
+	int32_t max_nodes_in_pool = 255;
 
 	Scene* parent_scene = nullptr;
 	Object_Pool<Quad_Tree::Node> nodes;
 	Rect bounds = { -750, -750, 1'500, 1'500 };
 
-	void init( const Rect& bounds );
+	Quad_Tree();
+	void set_bounds( const Rect& bounds );
 	void reset();
 	void debug_draw() const;
+	void set_max_nodes_in_pool( int32_t value );
 
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_entity_is_touching( Entity* e ) const;
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const;

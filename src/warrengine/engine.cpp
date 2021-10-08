@@ -201,7 +201,12 @@ void Engine::apply_config_settings()
 		100,
 		( int32_t )( ( viewport_h / viewport_w ) * 100 ) );
 
+#if 0
+	bool vsync = true;
+#else
 	bool vsync = Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "v_sync", "false" ) );
+#endif
+
 	log( "VSync: {}", vsync ? "true" : "false" );
 	glfwSwapInterval( vsync ? 1 : 0 );
 	g_engine->window.set_title( g_engine->config_vars.find_value_or( "app_title", "WarrEngine" ) );

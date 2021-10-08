@@ -48,7 +48,9 @@ void Scene_Spatial::pushed()
 	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	spatial_map.init( rc );
+	spatial_map.set_bounds( rc );
+	spatial_map.min_node_area = 32;
+	spatial_map.set_max_nodes_in_pool( 350 );
 
 	// PLAYER SHAPE
 	{

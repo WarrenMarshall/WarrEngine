@@ -126,9 +126,9 @@ void Vertex_Buffer::upload_vertices_to_gpu()
 	// the number of objects in the pool needs to be evenly divisible by the
 	// primitive types being stored in this vertex buffer. if not, something is
 	// off in the batching code.
-	assert( ( vertices.num_objects_in_pool() % verts_per_element ) == 0 );
+	assert( ( vertices.count % verts_per_element ) == 0 );
 
-	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.num_objects_in_pool() * sizeof( Render_Vertex ), vertices.data() );
+	glBufferSubData( GL_ARRAY_BUFFER, 0, vertices.count * sizeof( Render_Vertex ), vertices.data_ptr );
 }
 
 }

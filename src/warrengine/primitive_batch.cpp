@@ -31,49 +31,53 @@ void Primitive_Batch::add_quad( const Texture_Asset* texture, const Render_Verte
 	add_vert( draw_call, texture, v2 );
 	add_vert( draw_call, texture, v3 );
 
-	if( vao[ (int32_t)draw_call ].vb->vertices.num_objects_in_pool() >= vao[ (int32_t)draw_call ].vb->vertices.capacity() )
+	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
+	if( vb.count >= vb.capacity() )
 	{
-		vao[ (int32_t)draw_call ].flush_and_reset( draw_call );
+		vao[ ( int32_t )draw_call ].flush_and_reset( draw_call );
 	}
 }
 
 void Primitive_Batch::add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a );
-	e_draw_call draw_call = (e_draw_call)( (int32_t)e_draw_call::transparent * ( alpha != 3.f ) );
+	e_draw_call draw_call = ( e_draw_call )( ( int32_t )e_draw_call::transparent * ( alpha != 3.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
 	add_vert( draw_call, texture, v2 );
 
-	if( vao[ (int32_t)draw_call ].vb->vertices.num_objects_in_pool() >= vao[ (int32_t)draw_call ].vb->vertices.capacity() )
+	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
+	if( vb.count >= vb.capacity() )
 	{
-		vao[ (int32_t)draw_call ].flush_and_reset( draw_call );
+		vao[ ( int32_t )draw_call ].flush_and_reset( draw_call );
 	}
 }
 
 void Primitive_Batch::add_line( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
 {
 	auto alpha = ( v0->a + v1->a );
-	e_draw_call draw_call = (e_draw_call)( (int32_t)e_draw_call::transparent * ( alpha != 2.f ) );
+	e_draw_call draw_call = ( e_draw_call )( ( int32_t )e_draw_call::transparent * ( alpha != 2.f ) );
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
 
-	if( vao[ (int32_t)draw_call ].vb->vertices.num_objects_in_pool() >= vao[ (int32_t)draw_call ].vb->vertices.capacity() )
+	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
+	if( vb.count >= vb.capacity() )
 	{
-		vao[ (int32_t)draw_call ].flush_and_reset( draw_call );
+		vao[ ( int32_t )draw_call ].flush_and_reset( draw_call );
 	}
 }
 
 void Primitive_Batch::add_point( const Texture_Asset* texture, const Render_Vertex* v0 )
 {
 	auto alpha = ( v0->a );
-	e_draw_call draw_call = (e_draw_call)( (int32_t)e_draw_call::transparent * ( alpha != 1.f ) );
+	e_draw_call draw_call = ( e_draw_call )( ( int32_t )e_draw_call::transparent * ( alpha != 1.f ) );
 
 	add_vert( draw_call, texture, v0 );
 
-	if( vao[ (int32_t)draw_call ].vb->vertices.num_objects_in_pool() >= vao[ (int32_t)draw_call ].vb->vertices.capacity() )
+	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
+	if( vb.count >= vb.capacity() )
 	{
 		vao[ (int32_t)draw_call ].flush_and_reset( draw_call );
 	}

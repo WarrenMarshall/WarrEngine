@@ -75,7 +75,7 @@ void Render_Stats::draw()
 			);
 
 			stat_strings.push_back( std::format( "qt: {} nodes",
-				g_engine->scene_mgr.current_scene->spatial_map.nodes.num_objects_in_pool() )
+				g_engine->scene_mgr.current_scene->spatial_map.nodes.count )
 			);
 
 			if( stat_custom_string.length() )

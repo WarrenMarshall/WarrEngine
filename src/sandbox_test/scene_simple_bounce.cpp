@@ -69,7 +69,7 @@ void Scene_Simple_Bounce::pushed()
 	Scene::pushed();
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	spatial_map.init( rc );
+	spatial_map.set_bounds( rc );
 
 	g_engine->render.debug.draw_colliders = true;
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );

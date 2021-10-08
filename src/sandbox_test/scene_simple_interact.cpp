@@ -101,7 +101,7 @@ void Scene_Simple_Interact::pushed()
 	Scene::pushed();
 
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
-	spatial_map.init( rc );
+	spatial_map.set_bounds( rc );
 	spatial_map.min_node_area = 128;
 
 #ifndef _FINAL_RELEASE

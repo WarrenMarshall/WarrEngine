@@ -28,9 +28,17 @@ void Quad_Tree::Node::debug_draw() const
 
 // ----------------------------------------------------------------------------
 
-void Quad_Tree::init( const Rect& bounds )
+Quad_Tree::Quad_Tree()
+{
+	nodes.init_to_size( Quad_Tree::max_nodes_in_pool );
+	reset();
+}
+
+
+void Quad_Tree::set_bounds( const Rect& bounds )
 {
 	this->bounds = bounds;
+	nodes.init_to_size( Quad_Tree::max_nodes_in_pool );
 
 	reset();
 }
@@ -41,12 +49,12 @@ void Quad_Tree::reset()
 	assert( max_entities_per_node > 1 );
 	assert( min_node_area.x > 16 and min_node_area.y > 16 );
 
-	for( auto& node : nodes._objects )
+	for( auto& node : nodes.objects )
 	{
 		node.is_alive = false;
 	}
 
-	nodes.init_to_size( Quad_Tree::max_nodes_in_pool );
+	//nodes.init_to_size( Quad_Tree::max_nodes_in_pool );
 	nodes.reset();
 
 	auto node = nodes.get_next();
@@ -61,7 +69,7 @@ void Quad_Tree::debug_draw() const
 		return;
 	}
 
-	for( const auto& node : nodes._objects )
+	for( const auto& node : nodes.objects )
 	{
 		if( !node.is_alive )
 		{
@@ -73,6 +81,13 @@ void Quad_Tree::debug_draw() const
 #endif
 }
 
+void Quad_Tree::set_max_nodes_in_pool( int32_t value )
+{
+	Quad_Tree::max_nodes_in_pool = value;
+	nodes.init_to_size( value );
+	nodes.reset();
+}
+
 // looks at all the nodes and returns a list of nodes that the specified entity
 // is touching, using a computed AABB as the bounds checker.
 
@@ -82,7 +97,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) 
 
 	c2AABB entity_ws_aabb = e->simple_collision_ws_aabb.as_c2AABB();
 
-	for( auto& node : nodes._objects )
+	for( auto& node : nodes.objects )
 	{
 		if( !node.is_alive )
 		{
@@ -104,7 +119,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& 
 
 	c2Circle ws_circle = { pos.as_c2v(), radius };
 
-	for( auto& node : nodes._objects )
+	for( auto& node : nodes.objects )
 	{
 		if( !node.is_alive )
 		{
@@ -126,7 +141,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc
 
 	c2AABB ws_aabb = rc_aabb.as_c2AABB();
 
-	for( auto& node : nodes._objects )
+	for( auto& node : nodes.objects )
 	{
 		if( !node.is_alive )
 		{
@@ -254,61 +269,60 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 	{
 		did_split_a_node = false;
 
-		for( auto& node : nodes._objects )
+		for( auto& node : nodes.objects )
 		{
-			if( !node.is_alive )
+			if( !node.is_alive
+				or node.entities.size() <= max_entities_per_node
+				or node.bounds.area() <= ( min_node_area.x * min_node_area.y ) )
 			{
 				continue;
 			}
 
-			if( node.entities.size() > max_entities_per_node and node.bounds.area() >= ( min_node_area.x * min_node_area.y ) )
+			did_split_a_node = true;
+
+			// save the list of entities touching the node we are subdividing.
+			// they will be reinserted later.
+
+			std::set<Entity*> saved_entities = node.entities;
+
+			// remove the current_node pointer from the nodes list inside the saved
+			// entities.
+
+			for( auto& se : saved_entities )
 			{
-				did_split_a_node = true;
+				se->nodes.erase( ( Quad_Tree::Node * )&node );
+			}
 
-				// save the list of entities touching the node we are subdividing.
-				// they will be reinserted later.
+			// subdivide current_node into 4 quadrants
+			auto rcs = node.bounds.subdivide();
+			std::vector<Quad_Tree::Node*> new_nodes;
+			new_nodes.reserve( 4 );
 
-				auto saved_entities = node.entities;
+			node.is_alive = false;
 
-				// remove the current_node pointer from the nodes list inside the saved
-				// entities.
+			// add the 4 new nodes into the node list
+			for( auto& rc : rcs )
+			{
+				auto new_node = nodes.get_next();
+				*new_node = { rc };
 
-				for( auto& se : saved_entities )
+				new_nodes.push_back( new_node );
+			}
+
+			// look at each saved entity and place it into whichever of the new
+			// nodes it is touching.
+
+			for( auto& se : saved_entities )
+			{
+				c2AABB entity_ws_aabb = se->simple_collision_ws_aabb.as_c2AABB();
+
+				for( auto& nn : new_nodes )
 				{
-					se->nodes.erase( ( Quad_Tree::Node * )&node );
-				}
-
-				// subdivide current_node into 4 quadrants
-				auto rcs = node.bounds.subdivide();
-				std::vector<Quad_Tree::Node*> new_nodes;
-				new_nodes.reserve( 4 );
-
-				node.is_alive = false;
-
-				// add the 4 new nodes into the node list
-				for( auto& rc : rcs )
-				{
-					auto new_node = nodes.get_next();
-					*new_node = { rc };
-
-					new_nodes.push_back( new_node );
-				}
-
-				// look at each saved entity and place it into whichever of the new
-				// nodes it is touching.
-
-				for( auto& se : saved_entities )
-				{
-					c2AABB entity_ws_aabb = se->simple_collision_ws_aabb.as_c2AABB();
-
-					for( auto& nn : new_nodes )
+					c2AABB node_aabb = nn->bounds.as_c2AABB();
+					if( c2AABBtoAABB( entity_ws_aabb, node_aabb ) )
 					{
-						c2AABB node_aabb = nn->bounds.as_c2AABB();
-						if( c2AABBtoAABB( entity_ws_aabb, node_aabb ) )
-						{
-							nn->entities.insert( se );
-							se->nodes.insert( nn );
-						}
+						nn->entities.insert( se );
+						se->nodes.insert( nn );
 					}
 				}
 			}
@@ -333,7 +347,7 @@ void Quad_Tree::update()
 		}
 	}
 
-	assert( nodes.num_objects_in_pool() <= Quad_Tree::max_nodes_in_pool );
+	assert( nodes.count <= Quad_Tree::max_nodes_in_pool );
 }
 
 void Quad_Tree::post_update()

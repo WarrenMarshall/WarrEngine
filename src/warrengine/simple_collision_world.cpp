@@ -31,6 +31,12 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 			continue;
 		}
 
+		// traces don't hit sensors
+		if( scc->is_sensor() )
+		{
+			continue;
+		}
+
 		// if collision mask don't match, skip
 		if( callback->collision_mask > 0 and ( scc->collides_with_mask & callback->collision_mask ) )
 		{

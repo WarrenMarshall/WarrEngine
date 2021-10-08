@@ -7,7 +7,7 @@ namespace war
 
 void Particle_Pool::draw()
 {
-	for( const auto& particle : _objects )
+	for( const auto& particle : objects )
 	{
 		if( !particle.is_alive )
 		{
@@ -47,7 +47,7 @@ void Particle_Pool::update()
 {
 	num_alive = 0;
 
-	for( auto& particle : _objects )
+	for( auto& particle : objects )
 	{
 		if( particle.is_alive )
 		{
