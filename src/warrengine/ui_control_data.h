@@ -54,7 +54,7 @@ struct UI_Control_Data final
 	} dropdown;
 	struct
 	{
-		Range<float_t> range = Range<float_t>( 0.f, 1.f );
+		Range range = Range( 0.f, 1.f );
 	} slider;
 	struct
 	{

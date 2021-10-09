@@ -23,8 +23,8 @@ struct Entity_Simple_Collision final
 	[[nodiscard]] bool is_stationary() { return ( type == e_sc_type::stationary ); }
 	[[nodiscard]] bool is_kinematic() { return ( type == e_sc_type::kinematic ); }
 
-	Range<float_t> max_velocity_x = { -5.0f, 5.0f };
-	Range<float_t> max_velocity_y = { -5.0f, 5.0f };
+	Range max_velocity_x = { -5.0f, 5.0f };
+	Range max_velocity_y = { -5.0f, 5.0f };
 
 	bool is_in_air : 1 = true;
 	bool is_affected_by_gravity : 1 = false;

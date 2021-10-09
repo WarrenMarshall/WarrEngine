@@ -446,8 +446,7 @@ void Render::end_frame()
 
 	// flush the final batches
 
-	dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-	dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+	Render::flush_buffers();
 
 	// there should be a single model matrix left on the stack (the identity
 	// matrix we created at renderer start up). If there is any other number,
@@ -902,6 +901,12 @@ int32_t Render::sample_pick_id_at( Vec2 viewport_click_pos )
 	glReadPixels( (int32_t)viewport_click_pos.x, (int32_t)viewport_click_pos.y, 1, 1, GL_RGBA, GL_FLOAT, &pixel );
 
 	return (int32_t)( pixel[ 0 ] );
+}
+
+void Render::flush_buffers()
+{
+	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
+	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
 }
 
 }

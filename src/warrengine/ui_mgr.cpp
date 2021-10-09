@@ -394,8 +394,8 @@ void UI_Mgr::end_active_control()
 
 	if( auto current_scene = g_engine->scene_mgr.current_scene ; current_scene == g_engine->scene_mgr.get_top() )
 	{
-		Range expanded_tag_range( current_scene->ui_expanded_tag_begin, current_scene->ui_expanded_tag_end );
-		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( current_control->tag ) )
+		Range expanded_tag_range( ( float_t )current_scene->ui_expanded_tag_begin, ( float_t )current_scene->ui_expanded_tag_end );
+		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( ( float_t )current_control->tag ) )
 		{
 			update_im_state( current_control.get(), is_hovered, is_hot );
 

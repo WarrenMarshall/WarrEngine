@@ -69,6 +69,7 @@ void Scene_Esc_Menu::draw_ui()
 
 		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+		Render::flush_buffers();
 	}
 
 	int32_t num_buttons = 3 + g_base_game->flags.has_main_menu;
@@ -95,7 +96,8 @@ void Scene_Esc_Menu::draw_ui()
 		->done();
 
 	{
-		Render::state->z += zdepth_nudge;
+		//scoped_render_state;
+		//Render::state->z += zdepth_nudge;
 
 		g_ui->caption_control()
 			->set_text( "PAUSE MENU" )

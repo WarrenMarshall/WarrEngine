@@ -235,7 +235,7 @@ void Vertex_Array_Object::draw( e_draw_call draw_call )
 	bind();
 
 	// only write to the depth buffer for opaque primitives
-	glDepthMask( draw_call == e_draw_call::opaque );
+	glDepthMask( ( draw_call == e_draw_call::opaque ) );
 
 	glDrawElements( get_gl_prim_type(), ( int32_t )( vb->vertices.count * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 

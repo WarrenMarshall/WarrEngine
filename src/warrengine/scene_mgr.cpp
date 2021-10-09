@@ -222,8 +222,7 @@ void Scene_Mgr::draw_scene_stack( int32_t starting_scene_idx )
 
 			current_scene = get_top();
 
-			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
-			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
+			Render::flush_buffers();
 		}
 	}
 }
@@ -279,8 +278,7 @@ void Scene_Mgr::draw_scene_stack_ui( int32_t starting_scene_idx )
 			#endif
 			}
 
-			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
-			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
+			Render::flush_buffers();
 		}
 	}
 }

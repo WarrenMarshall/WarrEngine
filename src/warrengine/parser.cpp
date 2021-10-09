@@ -90,7 +90,7 @@ Color Text_Parser::color_from_str( std::string_view str )
 	return Color( color_str );
 }
 
-Range<float_t> Text_Parser::range_from_str( std::string_view str )
+Range Text_Parser::range_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -103,7 +103,7 @@ Range<float_t> Text_Parser::range_from_str( std::string_view str )
 
 	Tokenizer tok( str, "," );
 
-	Range<float_t> range(
+	Range range(
 		Text_Parser::float_from_str( *tok.get_next_token() ),
 		Text_Parser::float_from_str( *tok.get_next_token() )
 	);

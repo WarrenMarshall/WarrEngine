@@ -341,8 +341,7 @@ void Engine::main_loop()
 			// engine specific things, like pause borders
 			draw();
 
-			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
-			g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
+			Render::flush_buffers();
 		}
 		g_engine->render.end_frame();
 		frame_buffer.unbind();
@@ -381,8 +380,7 @@ void Engine::do_draw_finished_frame()
 	g_engine->opengl_mgr.set_uniform_float( "u_final_pixel_h", final_pixel_h );
 
 	Render::draw_quad( frame_buffer.color_attachments[ 1 /* glow color attachment */ ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+	Render::flush_buffers();
 	blur_frame_buffer.unbind();
 
 	{
@@ -398,8 +396,7 @@ void Engine::do_draw_finished_frame()
 			g_engine->opengl_mgr.shaders[ "compositing_pass" ].bind();
 
 			Render::draw_quad( frame_buffer.color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+			Render::flush_buffers();
 		}
 
 		// ----------------------------------------------------------------------------
@@ -411,9 +408,7 @@ void Engine::do_draw_finished_frame()
 			g_engine->opengl_mgr.set_blend( e_opengl_blend::glow );
 
 			Render::draw_quad( blur_frame_buffer.color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-
-			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-			g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+			Render::flush_buffers();
 
 			g_engine->opengl_mgr.set_blend( e_opengl_blend::alpha );
 		}
@@ -517,7 +512,7 @@ Color Engine::find_color_from_symbol(std::string_view symbol, const Color& def_v
 	return Color(*sval);
 }
 
-Range<float_t> Engine::find_range_from_symbol(std::string_view symbol, const Range<float_t>& def_value)
+Range Engine::find_range_from_symbol(std::string_view symbol, const Range& def_value)
 {
 	auto sval = find_string_from_symbol(symbol);
 
@@ -526,7 +521,7 @@ Range<float_t> Engine::find_range_from_symbol(std::string_view symbol, const Ran
 		sval = std::format("{},{}", def_value.start, def_value.end);
 	}
 
-	return Range<float_t>(*sval);
+	return Range(*sval);
 }
 
 Vec2 Engine::find_vec2_from_symbol(std::string_view symbol, const Vec2& def_value)
@@ -971,20 +966,28 @@ void Engine::debug_draw_buffers()
 	float_t h = viewport_h * scale_factor;
 	Rect rc = { 0.f, viewport_h - h, w, h };
 
-	std::vector<const char*> names = { "color", "glow", "pick" };
-
 	{
 		scoped_render_state;
 
-		for (auto x = 0; x < num_color_attachments; ++x)
-		{
-			Render::draw_quad(frame_buffer.color_attachments[ x ].texture, rc );
-			Render::draw_string( names[ x ], { rc.x, rc.y } );
-			rc.x += w;
-		}
+#if 1	// COLOR
+		Render::draw_quad( frame_buffer.color_attachments[ 0 ].texture, rc );
+		Render::draw_string( "color", { rc.x, rc.y } );
+		rc.x += w;
+#endif
 
-		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-		g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+#if 1	// GLOW
+		Render::draw_quad( frame_buffer.color_attachments[ 1 ].texture, rc );
+		Render::draw_string( "glow", { rc.x, rc.y } );
+		rc.x += w;
+#endif
+
+#if 1	// PICK
+		Render::draw_quad( frame_buffer.color_attachments[ 2 ].texture, rc );
+		Render::draw_string( "pick", { rc.x, rc.y } );
+		rc.x += w;
+#endif
+
+		Render::flush_buffers();
 	}
 
 #endif

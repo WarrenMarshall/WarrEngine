@@ -49,6 +49,6 @@ struct UI_Result;
 struct Vec2;
 struct Vec3;
 struct Vertex_Array_Object;
-template<typename T> struct Range;
+struct Range;
 
 }

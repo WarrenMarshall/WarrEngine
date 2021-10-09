@@ -10,12 +10,12 @@ struct Emitter_Parameters_Asset final : Asset
 	Timeline_Of_Values t_scale = Timeline_Of_Values( e_timeline_type::float_type );
 	Particle_Spawner particle_spawner;
 
-	Range<float_t> r_velocity_spawn = Range<float_t>( 50, 50 );	// initial velocity
-	Range<float_t> r_scale_spawn = Range<float_t>( 1, 1 );		// scale - spawn value and timeline
-	Range<float_t> r_lifespan = Range<float_t>( 500, 1000 );	// lifetime in milliseconds
-	Range<float_t> r_spin_per_sec = Range<float_t>( 0, 0 );		// ranges for controlling angle values
-	Range<float_t> r_spin_spawn = Range<float_t>( 0, 0 );
-	Range<float_t> r_dir_var = Range<float_t>( 0, 0 );			// variance for the spawn direction
+	Range r_velocity_spawn = Range( 50, 50 );	// initial velocity
+	Range r_scale_spawn = Range( 1, 1 );		// scale - spawn value and timeline
+	Range r_lifespan = Range( 500, 1000 );	// lifetime in milliseconds
+	Range r_spin_per_sec = Range( 0, 0 );		// ranges for controlling angle values
+	Range r_spin_spawn = Range( 0, 0 );
+	Range r_dir_var = Range( 0, 0 );			// variance for the spawn direction
 
 	float_t s_spawn_rate = 100.f;			// how many particles to spawn from this emitter, per second. aka the spawn rate.
 	float_t a_dir = 0.f;					// the base direction that particles start moving in when they spawn

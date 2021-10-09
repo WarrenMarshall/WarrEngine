@@ -50,6 +50,7 @@ void Scene_Msg_Box::draw_ui()
 
 		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+		Render::flush_buffers();
 	}
 
 	auto panel_w = ui_w * .75f;

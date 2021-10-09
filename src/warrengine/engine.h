@@ -102,7 +102,7 @@ struct Engine final
 	[[nodiscard]] int32_t find_int_from_symbol( std::string_view str, int32_t def_value = 0 );
 	[[nodiscard]] float_t find_float_from_symbol( std::string_view str, float_t def_value = 0.f );
 	[[nodiscard]] Color find_color_from_symbol( std::string_view str, const Color& def_value = Color::white );
-	[[nodiscard]] Range<float_t> find_range_from_symbol( std::string_view str, const Range<float_t>& def_value = Range<float_t>( 0, 1 ) );
+	[[nodiscard]] Range find_range_from_symbol( std::string_view str, const Range& def_value = Range( 0, 1 ) );
 	[[nodiscard]] Vec2 find_vec2_from_symbol( std::string_view str, const Vec2& def_value = Vec2( 0, 0 ) );
 
 	[[nodiscard]] bool on_input_motion( const Input_Event* evt );

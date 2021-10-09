@@ -114,6 +114,8 @@ struct Render final
 	Render* pop();
 
 	[[nodiscard]] static int32_t sample_pick_id_at( Vec2 viewport_click_pos );
+
+	static void flush_buffers();
 };
 
 }
