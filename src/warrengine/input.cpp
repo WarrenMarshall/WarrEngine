@@ -104,109 +104,128 @@ void Input_Mgr::deinit()
 
 void Input_Mgr::queue_presses()
 {
-	button_states_last_frame = button_states;
-
-	update_button_state( e_input_id::key_backspace, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_BACKSPACE ) );
-	update_button_state( e_input_id::key_shift_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_SHIFT ) );
-	update_button_state( e_input_id::key_shift_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_SHIFT ) );
-	update_button_state( e_input_id::key_control_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_CONTROL ) );
-	update_button_state( e_input_id::key_control_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_CONTROL ) );
-	update_button_state( e_input_id::key_alt_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_ALT ) );
-	update_button_state( e_input_id::key_alt_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_ALT ) );
-	update_button_state( e_input_id::mouse_button_left, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_LEFT ) );
-	update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_MIDDLE ) );
-	update_button_state( e_input_id::mouse_button_right, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_RIGHT ) );
-	update_button_state( e_input_id::key_esc, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_ESCAPE ) );
-	update_button_state( e_input_id::key_pause, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAUSE ) );
-	update_button_state( e_input_id::key_left_bracket, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_BRACKET ) );
-	update_button_state( e_input_id::key_right_bracket, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_BRACKET ) );
-	update_button_state( e_input_id::key_enter, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_ENTER ) );
-	update_button_state( e_input_id::key_space, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_SPACE ) );
-	update_button_state( e_input_id::key_f1, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F1 ) );
-	update_button_state( e_input_id::key_f2, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F2 ) );
-	update_button_state( e_input_id::key_f3, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F3 ) );
-	update_button_state( e_input_id::key_f4, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F4 ) );
-	update_button_state( e_input_id::key_f5, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F5 ) );
-	update_button_state( e_input_id::key_f6, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F6 ) );
-	update_button_state( e_input_id::key_f7, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F7 ) );
-	update_button_state( e_input_id::key_f8, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F8 ) );
-	update_button_state( e_input_id::key_f9, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F9 ) );
-	update_button_state( e_input_id::key_f10, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F10 ) );
-	update_button_state( e_input_id::key_f11, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F11 ) );
-	update_button_state( e_input_id::key_f12, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F12 ) );
-	update_button_state( e_input_id::key_a, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_A ) );
-	update_button_state( e_input_id::key_b, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_B ) );
-	update_button_state( e_input_id::key_c, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_C ) );
-	update_button_state( e_input_id::key_d, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_D ) );
-	update_button_state( e_input_id::key_e, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_E ) );
-	update_button_state( e_input_id::key_f, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F ) );
-	update_button_state( e_input_id::key_g, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_G ) );
-	update_button_state( e_input_id::key_h, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_H ) );
-	update_button_state( e_input_id::key_i, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_I ) );
-	update_button_state( e_input_id::key_j, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_I ) );
-	update_button_state( e_input_id::key_k, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_K ) );
-	update_button_state( e_input_id::key_l, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_L ) );
-	update_button_state( e_input_id::key_m, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_M ) );
-	update_button_state( e_input_id::key_n, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_N ) );
-	update_button_state( e_input_id::key_o, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_O ) );
-	update_button_state( e_input_id::key_p, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_P ) );
-	update_button_state( e_input_id::key_q, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_Q ) );
-	update_button_state( e_input_id::key_r, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_R ) );
-	update_button_state( e_input_id::key_s, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_S ) );
-	update_button_state( e_input_id::key_t, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_T ) );
-	update_button_state( e_input_id::key_u, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_U ) );
-	update_button_state( e_input_id::key_v, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_V ) );
-	update_button_state( e_input_id::key_w, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_W ) );
-	update_button_state( e_input_id::key_x, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_X ) );
-	update_button_state( e_input_id::key_y, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_Y ) );
-	update_button_state( e_input_id::key_z, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_Z ) );
-	update_button_state( e_input_id::key_0, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_0 ) );
-	update_button_state( e_input_id::key_1, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_1 ) );
-	update_button_state( e_input_id::key_2, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_2 ) );
-	update_button_state( e_input_id::key_3, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_3 ) );
-	update_button_state( e_input_id::key_4, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_4 ) );
-	update_button_state( e_input_id::key_5, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_5 ) );
-	update_button_state( e_input_id::key_6, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_6 ) );
-	update_button_state( e_input_id::key_7, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_7 ) );
-	update_button_state( e_input_id::key_8, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_8 ) );
-	update_button_state( e_input_id::key_9, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_9 ) );
-	update_button_state( e_input_id::key_up, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_UP ) );
-	update_button_state( e_input_id::key_down, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_DOWN ) );
-	update_button_state( e_input_id::key_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT ) );
-	update_button_state( e_input_id::key_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT ) );
-	update_button_state( e_input_id::key_period, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PERIOD ) );
-	update_button_state( e_input_id::key_comma, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_COMMA ) );
-	update_button_state( e_input_id::key_slash, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_SLASH ) );
-	update_button_state( e_input_id::key_tilde, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_GRAVE_ACCENT ) );
-	update_button_state( e_input_id::key_insert, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_INSERT ) );
-	update_button_state( e_input_id::key_delete, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_DELETE ) );
-	update_button_state( e_input_id::key_home, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_HOME ) );
-	update_button_state( e_input_id::key_end, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_END ) );
-	update_button_state( e_input_id::key_page_up, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAGE_UP ) );
-	update_button_state( e_input_id::key_page_down, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAGE_DOWN ) );
-
-	// update game controller states
-
-	if( gamepad.has_value() )
+	if( g_engine->is_paused() )
 	{
-		gamepad->update();
+		// if the engine is currently paused, the only certain keypresses will
+		// be acknowledged so we can unpause the game as well as use the pause
+		// state for inspection/debugging.
 
-		// update state information and queue events
+		button_states_last_frame[ ( int32_t )e_input_id::key_pause ] = button_states[ ( int32_t )e_input_id::key_pause ];
+		button_states_last_frame[ ( int32_t )e_input_id::mouse_button_middle ] = button_states[ ( int32_t )e_input_id::mouse_button_middle ];
+		button_states_last_frame[ ( int32_t )e_input_id::key_f5 ] = button_states[ ( int32_t )e_input_id::key_f5 ];
+		button_states_last_frame[ ( int32_t )e_input_id::key_f6 ] = button_states[ ( int32_t )e_input_id::key_f6 ];
 
-		gamepad->update_button_state( e_input_id::gamepad_button_a, XINPUT_GAMEPAD_A );
-		gamepad->update_button_state( e_input_id::gamepad_button_b, XINPUT_GAMEPAD_B );
-		gamepad->update_button_state( e_input_id::gamepad_button_x, XINPUT_GAMEPAD_X );
-		gamepad->update_button_state( e_input_id::gamepad_button_y, XINPUT_GAMEPAD_Y );
-		gamepad->update_button_state( e_input_id::gamepad_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
-		gamepad->update_button_state( e_input_id::gamepad_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
-		gamepad->update_button_state( e_input_id::gamepad_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
-		gamepad->update_button_state( e_input_id::gamepad_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
-		gamepad->update_button_state( e_input_id::gamepad_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
-		gamepad->update_button_state( e_input_id::gamepad_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
-		gamepad->update_button_state( e_input_id::gamepad_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
-		gamepad->update_button_state( e_input_id::gamepad_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
-		gamepad->update_button_state( e_input_id::gamepad_button_start, XINPUT_GAMEPAD_START );
-		gamepad->update_button_state( e_input_id::gamepad_button_back, XINPUT_GAMEPAD_BACK );
+		update_button_state( e_input_id::key_pause, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAUSE ) );
+		update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_MIDDLE ) );
+		update_button_state( e_input_id::key_f5, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F5 ) );
+		update_button_state( e_input_id::key_f6, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F6 ) );
+	}
+	else
+	{
+		button_states_last_frame = button_states;
+
+		update_button_state( e_input_id::key_backspace, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_BACKSPACE ) );
+		update_button_state( e_input_id::key_shift_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_SHIFT ) );
+		update_button_state( e_input_id::key_shift_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_SHIFT ) );
+		update_button_state( e_input_id::key_control_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_CONTROL ) );
+		update_button_state( e_input_id::key_control_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_CONTROL ) );
+		update_button_state( e_input_id::key_alt_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_ALT ) );
+		update_button_state( e_input_id::key_alt_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_ALT ) );
+		update_button_state( e_input_id::mouse_button_left, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_LEFT ) );
+		update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_MIDDLE ) );
+		update_button_state( e_input_id::mouse_button_right, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_RIGHT ) );
+		update_button_state( e_input_id::key_esc, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_ESCAPE ) );
+		update_button_state( e_input_id::key_pause, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAUSE ) );
+		update_button_state( e_input_id::key_left_bracket, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT_BRACKET ) );
+		update_button_state( e_input_id::key_right_bracket, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT_BRACKET ) );
+		update_button_state( e_input_id::key_enter, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_ENTER ) );
+		update_button_state( e_input_id::key_space, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_SPACE ) );
+		update_button_state( e_input_id::key_f1, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F1 ) );
+		update_button_state( e_input_id::key_f2, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F2 ) );
+		update_button_state( e_input_id::key_f3, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F3 ) );
+		update_button_state( e_input_id::key_f4, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F4 ) );
+		update_button_state( e_input_id::key_f5, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F5 ) );
+		update_button_state( e_input_id::key_f6, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F6 ) );
+		update_button_state( e_input_id::key_f7, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F7 ) );
+		update_button_state( e_input_id::key_f8, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F8 ) );
+		update_button_state( e_input_id::key_f9, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F9 ) );
+		update_button_state( e_input_id::key_f10, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F10 ) );
+		update_button_state( e_input_id::key_f11, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F11 ) );
+		update_button_state( e_input_id::key_f12, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F12 ) );
+		update_button_state( e_input_id::key_a, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_A ) );
+		update_button_state( e_input_id::key_b, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_B ) );
+		update_button_state( e_input_id::key_c, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_C ) );
+		update_button_state( e_input_id::key_d, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_D ) );
+		update_button_state( e_input_id::key_e, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_E ) );
+		update_button_state( e_input_id::key_f, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F ) );
+		update_button_state( e_input_id::key_g, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_G ) );
+		update_button_state( e_input_id::key_h, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_H ) );
+		update_button_state( e_input_id::key_i, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_I ) );
+		update_button_state( e_input_id::key_j, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_I ) );
+		update_button_state( e_input_id::key_k, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_K ) );
+		update_button_state( e_input_id::key_l, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_L ) );
+		update_button_state( e_input_id::key_m, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_M ) );
+		update_button_state( e_input_id::key_n, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_N ) );
+		update_button_state( e_input_id::key_o, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_O ) );
+		update_button_state( e_input_id::key_p, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_P ) );
+		update_button_state( e_input_id::key_q, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_Q ) );
+		update_button_state( e_input_id::key_r, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_R ) );
+		update_button_state( e_input_id::key_s, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_S ) );
+		update_button_state( e_input_id::key_t, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_T ) );
+		update_button_state( e_input_id::key_u, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_U ) );
+		update_button_state( e_input_id::key_v, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_V ) );
+		update_button_state( e_input_id::key_w, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_W ) );
+		update_button_state( e_input_id::key_x, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_X ) );
+		update_button_state( e_input_id::key_y, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_Y ) );
+		update_button_state( e_input_id::key_z, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_Z ) );
+		update_button_state( e_input_id::key_0, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_0 ) );
+		update_button_state( e_input_id::key_1, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_1 ) );
+		update_button_state( e_input_id::key_2, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_2 ) );
+		update_button_state( e_input_id::key_3, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_3 ) );
+		update_button_state( e_input_id::key_4, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_4 ) );
+		update_button_state( e_input_id::key_5, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_5 ) );
+		update_button_state( e_input_id::key_6, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_6 ) );
+		update_button_state( e_input_id::key_7, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_7 ) );
+		update_button_state( e_input_id::key_8, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_8 ) );
+		update_button_state( e_input_id::key_9, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_9 ) );
+		update_button_state( e_input_id::key_up, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_UP ) );
+		update_button_state( e_input_id::key_down, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_DOWN ) );
+		update_button_state( e_input_id::key_left, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_LEFT ) );
+		update_button_state( e_input_id::key_right, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_RIGHT ) );
+		update_button_state( e_input_id::key_period, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PERIOD ) );
+		update_button_state( e_input_id::key_comma, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_COMMA ) );
+		update_button_state( e_input_id::key_slash, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_SLASH ) );
+		update_button_state( e_input_id::key_tilde, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_GRAVE_ACCENT ) );
+		update_button_state( e_input_id::key_insert, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_INSERT ) );
+		update_button_state( e_input_id::key_delete, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_DELETE ) );
+		update_button_state( e_input_id::key_home, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_HOME ) );
+		update_button_state( e_input_id::key_end, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_END ) );
+		update_button_state( e_input_id::key_page_up, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAGE_UP ) );
+		update_button_state( e_input_id::key_page_down, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAGE_DOWN ) );
+
+		// update game controller states
+
+		if( gamepad.has_value() )
+		{
+			gamepad->update();
+
+			// update state information and queue events
+
+			gamepad->update_button_state( e_input_id::gamepad_button_a, XINPUT_GAMEPAD_A );
+			gamepad->update_button_state( e_input_id::gamepad_button_b, XINPUT_GAMEPAD_B );
+			gamepad->update_button_state( e_input_id::gamepad_button_x, XINPUT_GAMEPAD_X );
+			gamepad->update_button_state( e_input_id::gamepad_button_y, XINPUT_GAMEPAD_Y );
+			gamepad->update_button_state( e_input_id::gamepad_button_dpad_left, XINPUT_GAMEPAD_DPAD_LEFT );
+			gamepad->update_button_state( e_input_id::gamepad_button_dpad_right, XINPUT_GAMEPAD_DPAD_RIGHT );
+			gamepad->update_button_state( e_input_id::gamepad_button_dpad_up, XINPUT_GAMEPAD_DPAD_UP );
+			gamepad->update_button_state( e_input_id::gamepad_button_dpad_down, XINPUT_GAMEPAD_DPAD_DOWN );
+			gamepad->update_button_state( e_input_id::gamepad_button_left_thumb, XINPUT_GAMEPAD_LEFT_THUMB );
+			gamepad->update_button_state( e_input_id::gamepad_button_right_thumb, XINPUT_GAMEPAD_RIGHT_THUMB );
+			gamepad->update_button_state( e_input_id::gamepad_button_left_shoulder, XINPUT_GAMEPAD_LEFT_SHOULDER );
+			gamepad->update_button_state( e_input_id::gamepad_button_right_shoulder, XINPUT_GAMEPAD_RIGHT_SHOULDER );
+			gamepad->update_button_state( e_input_id::gamepad_button_start, XINPUT_GAMEPAD_START );
+			gamepad->update_button_state( e_input_id::gamepad_button_back, XINPUT_GAMEPAD_BACK );
+		}
 	}
 }
 

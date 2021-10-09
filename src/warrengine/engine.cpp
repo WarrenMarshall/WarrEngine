@@ -299,6 +299,16 @@ void Engine::main_loop()
 			g_engine->opengl_mgr.set_uniform_float( "u_current_time", ( float_t )clock.now() / 1000.f );
 			g_engine->opengl_mgr.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
 		}
+		else
+		{
+			if( is_paused() )
+			{
+				input_mgr.queue_presses();
+				input_mgr.queue_motion();
+
+				input_mgr.dispatch_event_queue();
+			}
+		}
 
 		// ----------------------------------------------------------------------------
 		// draw the scene to the engine frame buffer

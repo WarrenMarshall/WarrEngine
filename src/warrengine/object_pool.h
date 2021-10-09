@@ -45,10 +45,6 @@ struct Object_Pool
 
 		count++;
 
-		// make sure we're not overwriting objects - if this fires, increase
-		// your pool size by calling "init_to_size" with a larger value.
-		assert( count < objects.capacity() + 1 );
-
 		// return a pointer to the current object
 		return result;
 	}
