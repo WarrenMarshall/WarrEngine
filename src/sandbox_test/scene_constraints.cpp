@@ -43,7 +43,9 @@ void Scene_Constraints::pushed()
 {
 	Scene::pushed();
 
+#ifndef _RELEASE
 	g_engine->render.debug.draw_spatial = true;
+#endif
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// KINEMATIC CIRCLE

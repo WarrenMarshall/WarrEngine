@@ -810,7 +810,8 @@ void Simple_Collision_Body::set_sensor_as_continuous()
 
 void Simple_Collision_Body::draw()
 {
-#ifndef _FINAL_RELEASE
+#ifndef _RELEASE
+
 	// optional debug mode drawing
 
 	if( g_engine->render.debug.draw_colliders )

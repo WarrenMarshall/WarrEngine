@@ -223,7 +223,7 @@ void Scene_Mgr::draw_scene_stack( int32_t starting_scene_idx )
 				scene->draw();
 
 
-				#ifndef _FINAL_RELEASE
+				#ifndef _RELEASE
 					// draw any debug information that lives in world space.
 					if( scene->flags.is_debug_physics_scene && g_engine->render.debug.is_drawing_debug_info() )
 					{
@@ -281,7 +281,7 @@ void Scene_Mgr::draw_scene_stack_ui( int32_t starting_scene_idx )
 					g_ui->draw_topmost();
 				}
 
-			#ifndef _FINAL_RELEASE
+			#ifndef _RELEASE
 
 				// draw an indicator so we can visualize the viewport offset location
 				if( g_engine->render.debug.is_drawing_debug_info() )

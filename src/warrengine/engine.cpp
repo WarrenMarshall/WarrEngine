@@ -7,7 +7,7 @@ namespace war
 
 void Engine::launch( int32_t argc, char* argv [] )
 {
-#if defined(_FINAL_RELEASE)
+#if defined(_RELEASE)
 	// in final release, we don't want to bother the user with the visual
 	// clutter of the console window
 	FreeConsole();
@@ -118,12 +118,6 @@ void Engine::parse_command_line( int32_t argc, char* argv [] )
 		{
 			g_engine->cmdline.force_vsync = true;
 			log_verbose( "cmdline : \"{}\" : V-Sync forced to on.", arg );
-		}
-
-		if( arg == "-developer" )
-		{
-			g_engine->cmdline.developer = true;
-			log_verbose( "cmdline : \"{}\" : Developer mode is on.", arg );
 		}
 	}
 }
@@ -784,53 +778,43 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 		// slow down game clock
 		case e_input_id::key_left_bracket:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
-
+#ifndef _RELEASE
 			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f);
+#endif
 			return true;
 		}
 
 		// speed up game clock
 		case e_input_id::key_right_bracket:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
+#ifndef _RELEASE
 
 			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f);
+#endif
 			return true;
 		}
 
 		case e_input_id::key_f9:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
-
+#ifndef _RELEASE
 			g_engine->render.debug.entity_info_log = true;
 			log_div();
 			log("-- Entity Info");
 			log_div();
+#endif
 
 			return true;
 		}
 
 		case e_input_id::key_f10:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
+#ifndef _RELEASE
 
 			g_engine->render.debug.single_frame_log = true;
 			log_div();
 			log("-- Single Frame Debugger");
 			log_div();
+#endif
 
 			return true;
 		}
@@ -838,23 +822,17 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 		// toggle debug drawing
 		case e_input_id::key_f5:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
-
+#ifndef _RELEASE
 			toggle_bool( g_engine->render.debug.draw_colliders );
+#endif
 			return true;
 		}
 
 		case e_input_id::key_f6:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
-
+#ifndef _RELEASE
 			toggle_bool( g_engine->render.debug.draw_spatial );
+#endif
 			return true;
 		}
 
@@ -915,7 +893,9 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 
 		case e_input_id::key_f8:
 		{
+#ifndef _RELEASE
 			stats_update( stats.draw_verbose = true );
+#endif
 			return true;
 		}
 	}
@@ -929,12 +909,9 @@ bool Engine::on_input_released(const Input_Event* evt)
 	{
 		case e_input_id::key_f8:
 		{
-			if( !g_engine->cmdline.developer )
-			{
-				return false;
-			}
-
+#ifndef _RELEASE
 			stats_update( stats.draw_verbose = false );
+#endif
 			return true;
 		}
 	}

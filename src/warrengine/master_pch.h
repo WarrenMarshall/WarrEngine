@@ -227,7 +227,7 @@ extern std::unique_ptr<Game> g_base_game;
 
 // ----------------------------------------------------------------------------
 
-#if defined(_FINAL_RELEASE)
+#ifdef _RELEASE
 	#define stats_update( code )
 #else
 	#define stats_update( code ) code;

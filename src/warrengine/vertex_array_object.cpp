@@ -118,7 +118,7 @@ void Vertex_Array_Object::unbind()
 
 void Vertex_Array_Object::update_stats()
 {
-#ifndef _FINAL_RELEASE
+#ifndef _RELEASE
 
 	if( vb->vertices.empty() )
 	{

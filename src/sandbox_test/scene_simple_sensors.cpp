@@ -58,7 +58,9 @@ void Scene_Simple_Sensors::pushed()
 
 	spatial_map.set_bounds( { -viewport_hw, -viewport_hh, viewport_w, viewport_h } );
 
+#ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
+#endif
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	// KINEMATIC CIRCLE

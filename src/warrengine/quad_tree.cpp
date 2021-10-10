@@ -63,7 +63,7 @@ void Quad_Tree::reset()
 
 void Quad_Tree::debug_draw() const
 {
-#ifndef _FINAL_RELEASE
+#ifndef _RELEASE
 	if( !g_engine->render.debug.draw_spatial )
 	{
 		return;

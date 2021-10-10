@@ -106,8 +106,8 @@ void Scene_Simple_Interact::pushed()
 	spatial_map.set_bounds( rc );
 	spatial_map.min_node_area = 128;
 
-#ifndef _FINAL_RELEASE
-	g_engine->render.debug.draw_colliders = true;
+#ifndef _RELEASE
+		g_engine->render.debug.draw_colliders = true;
 #endif
 
 	g_engine->window.set_mouse_mode( e_mouse_mode::os );

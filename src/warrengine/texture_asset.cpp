@@ -27,7 +27,7 @@ Texture_Asset::Texture_Asset( std::string_view src_texture_tag )
 
 	rc = { 0.f, 0.f, src_texture->w, src_texture->h };
 
-#ifndef _FINAL_RELEASE
+#ifndef _RELEASE
 	if( ( rc.x + rc.w ) > src_texture->w or ( rc.y + rc.h ) > src_texture->h )
 	{
 		log_fatal( "texture extends outside the bounds of the src_texture : {}", std::string( src_texture_tag ) );

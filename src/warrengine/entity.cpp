@@ -75,8 +75,7 @@ void Entity::post_update_components()
 
 	simple_collision_ws_aabb = compute_ws_aabb();
 
-#ifndef _FINAL_RELEASE
-
+#ifndef _RELEASE
 	if( g_engine->render.debug.is_entity_info_logging() )
 	{
 

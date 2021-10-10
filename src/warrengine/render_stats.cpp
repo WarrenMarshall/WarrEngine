@@ -5,24 +5,21 @@
 namespace war
 {
 
+#ifdef _RELEASE
+
+	void Render_Stats::init() {}
+	void Render_Stats::update() {}
+	void Render_Stats::draw() {}
+
+#else
+
 void Render_Stats::init()
 {
-	if( !g_engine->cmdline.developer )
-	{
-		return;
-	}
-
 	stat_timer = Timer( 1000 );
 }
 
 void Render_Stats::update()
 {
-	if( !g_engine->cmdline.developer )
-	{
-		return;
-	}
-
-
 	if( stat_timer.is_elapsed() )
 	{
 		stat_timer.restart();
@@ -44,11 +41,6 @@ void Render_Stats::update()
 
 void Render_Stats::draw()
 {
-	if( !g_engine->cmdline.developer )
-	{
-		return;
-	}
-
 	scoped_render_state;
 
 	stat_strings.clear();
@@ -132,5 +124,7 @@ void Render_Stats::draw()
 		}
 	}
 }
+
+#endif
 
 }

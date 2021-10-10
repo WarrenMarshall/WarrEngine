@@ -99,11 +99,9 @@ struct Entity
 	// the entities collision primitives
 	Rect simple_collision_ws_aabb;
 
-#ifndef _FINAL_RELEASE
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier
 	std::string debug_name;
-#endif
 
 	Entity();
 	Entity( std::string debug_name );

@@ -4,7 +4,7 @@ namespace war
 
 struct Render_Stats final
 {
-#if !defined(_FINAL_RELEASE)
+#ifndef _RELEASE
 
 	Timer stat_timer;
 

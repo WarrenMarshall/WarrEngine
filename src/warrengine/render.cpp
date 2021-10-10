@@ -108,7 +108,7 @@ void Render::draw_mesh( const Mesh_Asset* mesh )
 			}
 		}
 
-	#ifndef _FINAL_RELEASE
+	#ifndef _RELEASE
 		if( g_engine->render.debug.is_drawing_debug_info() )
 		{
 			// wireframe overlay
@@ -456,7 +456,7 @@ void Render::end_frame()
 
 	clear_render_state_stack();
 
-#ifndef _FINAL_RELEASE
+#ifndef _RELEASE
 	g_engine->render.debug.single_frame_log = false;
 	g_engine->render.debug.entity_info_log = false;
 #endif

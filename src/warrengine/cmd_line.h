@@ -15,15 +15,6 @@ struct Cmdline_Args final
 	// "-force_vsync" to set TRUE
 	//		* forces the GPU to use vsync
 	bool force_vsync = false;
-
-	// "-developer" to set TRUE
-	//		* allows the display of stats and debug info
-
-#ifdef _DEBUG
-	bool developer = true;
-#else
-	bool developer = false;
-#endif
 };
 
 }

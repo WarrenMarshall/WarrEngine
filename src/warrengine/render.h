@@ -17,7 +17,7 @@ struct Render final
 
 	float_t frame_interpolate_pct = 0.f;
 
-#ifndef _FINAL_RELEASE
+#ifndef _RELEASE
 	struct
 	{
 		// if true, we are logging renderer information about the current frame
