@@ -346,8 +346,6 @@ void Quad_Tree::update()
 			insert_entity( e.get() );
 		}
 	}
-
-	assert( nodes.count <= Quad_Tree::max_nodes_in_pool );
 }
 
 void Quad_Tree::post_update()

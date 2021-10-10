@@ -905,8 +905,8 @@ int32_t Render::sample_pick_id_at( Vec2 viewport_click_pos )
 
 void Render::flush_buffers()
 {
-	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::opaque );
-	g_engine->render.dynamic_batches.flush_and_reset_internal( e_draw_call::transparent );
+	g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
+	g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );
 }
 
 }

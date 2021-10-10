@@ -88,8 +88,7 @@ size_t Vertex_Buffer::assign_texture_slot( const Texture_Asset* texture )
 
 	if( total_texture_slots_used == g_engine->opengl_mgr.max_texture_image_units )
 	{
-		vao->flush_and_reset( e_draw_call::opaque );
-		vao->flush_and_reset( e_draw_call::transparent );
+		Render::flush_buffers();
 
 		reset();
 	}

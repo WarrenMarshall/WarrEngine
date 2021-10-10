@@ -437,8 +437,8 @@ void Engine::do_draw_finished_frame()
 		Render::state->batch_render_target->assign_texture_slot_manual( g_engine->render.tex_lut );
 
 		Render::draw_quad( composite_frame_buffer.color_attachments[0].texture, Rect(0.f, 0.f, viewport_w, viewport_h));
-		g_engine->render.dynamic_batches.flush_and_reset_internal(e_draw_call::opaque);
-		g_engine->render.dynamic_batches.flush_and_reset_internal(e_draw_call::transparent);
+		g_engine->render.dynamic_batches.flush_and_reset(e_draw_call::opaque);
+		g_engine->render.dynamic_batches.flush_and_reset(e_draw_call::transparent);
 	}
 }
 

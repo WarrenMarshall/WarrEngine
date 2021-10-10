@@ -44,7 +44,6 @@ struct Primitive_Batch_Group final
 	void init();
 	bool is_empty();
 	void flush_and_reset( e_draw_call draw_call );
-	void flush_and_reset_internal( e_draw_call draw_call );
 
 	void add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 );
 	void add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 );

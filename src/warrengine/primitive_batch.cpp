@@ -34,7 +34,7 @@ void Primitive_Batch::add_quad( const Texture_Asset* texture, const Render_Verte
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		vao[ ( int32_t )draw_call ].flush_and_reset( draw_call );
+		Render::flush_buffers();
 	}
 }
 
@@ -50,7 +50,7 @@ void Primitive_Batch::add_triangle( const Texture_Asset* texture, const Render_V
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		vao[ ( int32_t )draw_call ].flush_and_reset( draw_call );
+		Render::flush_buffers();
 	}
 }
 
@@ -65,7 +65,7 @@ void Primitive_Batch::add_line( const Texture_Asset* texture, const Render_Verte
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		vao[ ( int32_t )draw_call ].flush_and_reset( draw_call );
+		Render::flush_buffers();
 	}
 }
 
@@ -79,7 +79,7 @@ void Primitive_Batch::add_point( const Texture_Asset* texture, const Render_Vert
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		vao[ (int32_t)draw_call ].flush_and_reset( draw_call );
+		Render::flush_buffers();
 	}
 }
 
@@ -146,14 +146,6 @@ void Primitive_Batch_Group::flush_and_reset( e_draw_call draw_call )
 	for( auto& b : batches )
 	{
 		b.vao[ (int32_t)draw_call ].flush_and_reset( draw_call );
-	}
-}
-
-void Primitive_Batch_Group::flush_and_reset_internal( e_draw_call draw_call )
-{
-	for( auto& b : batches )
-	{
-		b.vao[ (int32_t)draw_call ].flush_and_reset_internal( draw_call );
 	}
 }
 

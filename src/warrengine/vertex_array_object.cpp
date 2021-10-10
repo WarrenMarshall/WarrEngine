@@ -173,15 +173,6 @@ void Vertex_Array_Object::update_stats()
 #endif
 }
 
-void Vertex_Array_Object::flush_and_reset( e_draw_call draw_call )
-{
-	if( !vb->vertices.empty() )
-	{
-		update_stats();
-		flush_and_reset_internal( draw_call );
-	}
-}
-
 void Vertex_Array_Object::upload_vertices_to_gpu()
 {
 	if( vb->vertices.empty() )
@@ -193,7 +184,7 @@ void Vertex_Array_Object::upload_vertices_to_gpu()
 	vb->upload_vertices_to_gpu();
 }
 
-void Vertex_Array_Object::flush_and_reset_internal( e_draw_call draw_call )
+void Vertex_Array_Object::flush_and_reset( e_draw_call draw_call )
 {
 	if( vb->vertices.empty() )
 	{
@@ -201,6 +192,7 @@ void Vertex_Array_Object::flush_and_reset_internal( e_draw_call draw_call )
 	}
 
 	upload_vertices_to_gpu();
+	update_stats();
 	draw( draw_call );
 	reset();
 }
