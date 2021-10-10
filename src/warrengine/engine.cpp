@@ -119,6 +119,12 @@ void Engine::parse_command_line( int32_t argc, char* argv [] )
 			g_engine->cmdline.force_vsync = true;
 			log_verbose( "cmdline : \"{}\" : V-Sync forced to on.", arg );
 		}
+
+		if( arg == "-developer" )
+		{
+			g_engine->cmdline.developer = true;
+			log_verbose( "cmdline : \"{}\" : Developer mode is on.", arg );
+		}
 	}
 }
 
@@ -778,6 +784,11 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 		// slow down game clock
 		case e_input_id::key_left_bracket:
 		{
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
 			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f);
 			return true;
 		}
@@ -785,13 +796,22 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 		// speed up game clock
 		case e_input_id::key_right_bracket:
 		{
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
 			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f);
 			return true;
 		}
 
-	#ifndef _FINAL_RELEASE
 		case e_input_id::key_f9:
 		{
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
 			g_engine->render.debug.entity_info_log = true;
 			log_div();
 			log("-- Entity Info");
@@ -802,6 +822,11 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 
 		case e_input_id::key_f10:
 		{
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
 			g_engine->render.debug.single_frame_log = true;
 			log_div();
 			log("-- Single Frame Debugger");
@@ -813,16 +838,25 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 		// toggle debug drawing
 		case e_input_id::key_f5:
 		{
-			toggle_bool(g_engine->render.debug.draw_colliders);
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
+			toggle_bool( g_engine->render.debug.draw_colliders );
 			return true;
 		}
 
 		case e_input_id::key_f6:
 		{
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
 			toggle_bool( g_engine->render.debug.draw_spatial );
 			return true;
 		}
-#endif
 
 		// post process tweaker
 		case e_input_id::key_f4:
@@ -895,6 +929,11 @@ bool Engine::on_input_released(const Input_Event* evt)
 	{
 		case e_input_id::key_f8:
 		{
+			if( !g_engine->cmdline.developer )
+			{
+				return false;
+			}
+
 			stats_update( stats.draw_verbose = false );
 			return true;
 		}
