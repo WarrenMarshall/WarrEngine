@@ -11,6 +11,10 @@ struct Cmdline_Args final
 	// "-nobatch" to set TRUE
 	//		* pretend like the video card has a single texture unit
 	bool nobatch = false;
+
+	// "-force_vsync" to set TRUE
+	//		* forces the GPU to use vsync
+	bool force_vsync = false;
 };
 
 }

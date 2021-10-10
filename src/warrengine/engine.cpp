@@ -113,6 +113,12 @@ void Engine::parse_command_line( int32_t argc, char* argv [] )
 			g_engine->cmdline.nobatch = true;
 			log_verbose( "cmdline : \"{}\" : Batch rendering disabled.", arg );
 		}
+
+		if( arg == "-force_vsync" )
+		{
+			g_engine->cmdline.force_vsync = true;
+			log_verbose( "cmdline : \"{}\" : V-Sync forced to on.", arg );
+		}
 	}
 }
 
@@ -201,14 +207,20 @@ void Engine::apply_config_settings()
 		100,
 		( int32_t )( ( viewport_h / viewport_w ) * 100 ) );
 
-#if 0
-	bool vsync = true;
-#else
+	// vsync defaults to false.
+	// it is then read from the game config file if it's in there.
+	// finally, it can be overridden from the command line by passing in "-force_sync"
+
 	bool vsync = Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "v_sync", "false" ) );
-#endif
+	if( g_engine->cmdline.force_vsync )
+	{
+		vsync = true;
+	}
+
 
 	log( "VSync: {}", vsync ? "true" : "false" );
 	glfwSwapInterval( vsync ? 1 : 0 );
+
 	g_engine->window.set_title( g_engine->config_vars.find_value_or( "app_title", "WarrEngine" ) );
 	glfwSetWindowAttrib( g_engine->window.glfw_window, GLFW_FLOATING, Text_Parser::bool_from_str( g_engine->config_vars.find_value_or( "always_on_top", "false" ) ) );
 	g_engine->window.viewport_clear_color = Text_Parser::color_from_str( g_engine->config_vars.find_value_or( "viewport_clear_color", "64,64,64" ) );
