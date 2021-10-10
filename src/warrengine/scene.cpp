@@ -219,7 +219,7 @@ void Scene::draw()
 {
 	for( const auto& entity : entities )
 	{
-		g_engine->stats.entities++;
+		stats_update( g_engine->stats.entities++ );
 
 		{
 			scoped_opengl;

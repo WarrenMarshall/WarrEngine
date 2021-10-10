@@ -439,8 +439,8 @@ void Render::end_frame()
 
 	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 
-	g_engine->stats.frame_times_ms += g_engine->clock.delta_ms;
-	g_engine->stats.frame_count++;
+	stats_update( g_engine->stats.frame_times_ms += g_engine->clock.delta_ms );
+	stats_update( g_engine->stats.frame_count++ );
 
 	g_engine->stats.draw();
 

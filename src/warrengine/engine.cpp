@@ -869,7 +869,7 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 
 		case e_input_id::key_f8:
 		{
-			stats.draw_verbose = true;
+			stats_update( stats.draw_verbose = true );
 			return true;
 		}
 	}
@@ -883,7 +883,7 @@ bool Engine::on_input_released(const Input_Event* evt)
 	{
 		case e_input_id::key_f8:
 		{
-			stats.draw_verbose = false;
+			stats_update( stats.draw_verbose = false );
 			return true;
 		}
 	}
