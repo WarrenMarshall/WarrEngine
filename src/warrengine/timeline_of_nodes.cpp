@@ -145,7 +145,7 @@ Timeline_Of_Nodes::Timeline_Of_Nodes()
 	life_cycle.set( e_life_cycle::dead );
 }
 
-void Timeline_Of_Nodes::clear( time_ms duration )
+void Timeline_Of_Nodes::init( time_ms duration )
 {
 	key_frames.clear();
 

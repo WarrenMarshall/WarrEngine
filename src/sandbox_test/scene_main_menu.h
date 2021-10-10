@@ -20,11 +20,10 @@ struct Scene_Main_Menu final : Scene
 			->done() )
 		{
 			Timeline_Of_Nodes tl;
-			tl.clear( 1000 );
+			tl.init( 1000 );
 
 			tl.add_kf_pp_color_overlay( false, 0.25f, 250, make_color( Color::black, 1.f ) );
 			tl.add_kf_pp_pixelate( false, 0.0f, 500, 32.f );
-			//tl.add_kf_scene_pop_under( false, 0.5f );
 			tl.add_kf_scene_push_under( false, 0.5f, std::make_unique<T>() );
 			tl.add_kf_pp_pixelate( false, 0.5f, 500, 0.f );
 			tl.add_kf_pp_color_overlay( false, 0.5f, 250, make_color( Color::black, 0.f ) );

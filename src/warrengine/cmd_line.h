@@ -18,7 +18,12 @@ struct Cmdline_Args final
 
 	// "-developer" to set TRUE
 	//		* allows the display of stats and debug info
+
+#ifdef _DEBUG
+	bool developer = true;
+#else
 	bool developer = false;
+#endif
 };
 
 }

@@ -86,7 +86,7 @@ struct Timeline_Of_Nodes final
 	Timeline_Of_Nodes();
 	~Timeline_Of_Nodes() = default;
 
-	void clear( time_ms duration );
+	void init( time_ms duration );
 	void go();
 	void update();
 

@@ -96,9 +96,6 @@ void Scene_Esc_Menu::draw_ui()
 		->done();
 
 	{
-		//scoped_render_state;
-		//Render::state->z += zdepth_nudge;
-
 		g_ui->caption_control()
 			->set_text( "PAUSE MENU" )
 			->done();
@@ -120,7 +117,7 @@ void Scene_Esc_Menu::draw_ui()
 				->done() )
 			{
 				Timeline_Of_Nodes tl;
-				tl.clear( 1000 );
+				tl.init( 1000 );
 
 				tl.add_kf_pp_color_overlay(	false, 0.0f, 500, make_color( Color::black, 1.f ) );
 				tl.add_kf_pp_pixelate(		false, 0.0f, 500, 32.f );

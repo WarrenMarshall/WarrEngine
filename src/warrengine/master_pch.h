@@ -158,7 +158,7 @@ constexpr float_t byte_color_to_float( int32_t value )
 constexpr float_t zdepth_nudge = 10.f;
 
 constexpr float_t zdepth_background = 100.f;
-constexpr float_t zdepth_scene_start = 1000.f;
+constexpr float_t zdepth_scene_range = 1000.f;
 constexpr float_t zdepth_stats = 45000.f;
 constexpr float_t zdepth_topmost = 50000.f;
 constexpr float_t zdepth_max = 50000.f;

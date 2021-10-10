@@ -95,7 +95,7 @@ void Scene_Simple_Top_Down::pushed()
 		}
 	}
 
-	fx_hurt.clear( 200 );
+	fx_hurt.init( 200 );
 	fx_hurt.add_kf_pp_color_overlay( true, 0.0f, 100, make_color( Color::red, 0.25f ) );
 	fx_hurt.add_kf_pp_color_overlay( true, 0.5f, 100, make_color( Color::red, 0.25f ) );
 }

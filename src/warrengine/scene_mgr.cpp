@@ -200,7 +200,7 @@ void Scene_Mgr::draw_scene_stack( int32_t starting_scene_idx )
 			current_scene = scene;
 
 			g_engine->opengl_mgr.clear_depth_buffer();
-			scene_depth_start += zdepth_scene_start;
+			scene_depth_start += zdepth_scene_range;
 			Render::state->z = scene_depth_start;
 
 			g_engine->opengl_mgr.set_view_matrix_identity();
@@ -243,8 +243,8 @@ void Scene_Mgr::draw_scene_stack_ui( int32_t starting_scene_idx )
 			current_scene = scene;
 
 			g_engine->opengl_mgr.clear_depth_buffer();
-			scene_depth_start += zdepth_scene_start;
-			Render::state->z = scene_depth_start;
+			scene_depth_start += zdepth_scene_range;
+			Render::state->z = scene_depth_start + ( zdepth_scene_range / 2.0f );
 
 			{
 				scoped_opengl;

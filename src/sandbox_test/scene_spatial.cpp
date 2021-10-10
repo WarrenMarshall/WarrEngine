@@ -58,31 +58,14 @@ void Scene_Spatial::pushed()
 		e->tag = H( "main_ball" );
 		e->flags.include_in_quad_tree = true;
 
-#if 1
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 
-			//ec->set_as_circle( Random::getf_range( 8.f, 16.f ) );
+			//ec->set_as_circle( Random::getf_+range( 8.f, 16.f ) );
 			//ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 7 ), Random::getf_range( 12.f, 24.f ) ) );
 			ec->set_as_centered_box( 16.f, 16.f );
 			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
 		}
-#else
-		{
-			auto ec = e->add_component<Simple_Collision_Body>();
-
-			ec->set_as_circle( Random::getf_range( 8.f, 16.f ) );
-			ec->get_transform()->set_pos( Random::get_random_unit_vector() * 32.f );
-			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
-		}
-		{
-			auto ec = e->add_component<Simple_Collision_Body>();
-
-			ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 7 ), Random::getf_range( 12.f, 24.f ) ) );
-			ec->get_transform()->set_pos( Random::get_random_unit_vector() * 32.f );
-			ec->set_collision_flags( coll_flags.player, coll_flags.skull );
-		}
-#endif
 		{
 			auto ec = e->add_component<Sprite_Component>();
 			ec->init( "tex_player" );
@@ -99,13 +82,13 @@ void Scene_Spatial::pushed()
 
 void Scene_Spatial::draw()
 {
-	//draw_tiled_background();
+	draw_tiled_background();
 	Scene::draw();
-	//Render::draw_world_axis();
+	Render::draw_world_axis();
 
-	// show entities that COULD collide with player shape
 
 #if 1
+	// show entities that COULD collide with player shape
 	auto potential_entities = spatial_map.find_potentially_colliding_entities( player_shape );
 
 	Render::state->color = make_color( Color::teal, 0.5f );
@@ -118,8 +101,8 @@ void Scene_Spatial::draw()
 
 void Scene_Spatial::draw_ui()
 {
-	Scene::draw_ui();
 	draw_title( "Spatial Partitioning" );
+	Scene::draw_ui();
 }
 
 bool Scene_Spatial::on_input_pressed( const Input_Event* evt )
