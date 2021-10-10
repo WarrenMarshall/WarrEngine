@@ -8,7 +8,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)..\..\bin</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>-force_vsync</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>
+    </LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-San|x64'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)..\..\bin</LocalDebuggerWorkingDirectory>
