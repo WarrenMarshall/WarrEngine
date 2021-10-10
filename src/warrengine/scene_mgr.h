@@ -104,6 +104,7 @@ struct Scene_Mgr final
 	void pop();
 	void pop_under();
 	[[nodiscard]] Scene* get_top();
+	[[nodiscard]] Scene* get_under();
 
 	void pre_update();
 	void update();

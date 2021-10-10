@@ -72,7 +72,7 @@ void Scene_Esc_Menu::draw_ui()
 		Render::flush_buffers();
 	}
 
-	int32_t num_buttons = 3 + g_base_game->flags.has_main_menu;
+	int32_t num_buttons = 3 + ( g_base_game->flags.has_main_menu and !g_engine->scene_mgr.get_under()->flags.is_main_menu );
 
 	auto slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
 
@@ -110,7 +110,7 @@ void Scene_Esc_Menu::draw_ui()
 			g_engine->scene_mgr.pop();
 		}
 
-		if( g_base_game->flags.has_main_menu )
+		if( g_base_game->flags.has_main_menu and !g_engine->scene_mgr.get_under()->flags.is_main_menu )
 		{
 			if( g_ui->button_control( H( "button_main_menu" ) )
 				->set_text( "Main Menu" )

@@ -55,8 +55,7 @@ void Scene_Mgr::pop_under()
 	assert( !scene_stack.empty() );
 
 	Scene* scene = nullptr;
-	size_t idx = 1;
-	scene = scene_stack[ idx ].get();
+	scene = scene_stack[ 1 ].get();
 	scene->popped();
 	scene->life_cycle.set( e_life_cycle::dead );
 }
@@ -66,6 +65,20 @@ Scene* Scene_Mgr::get_top()
 	assert( !scene_stack.empty() );
 
 	return scene_stack.front().get();
+}
+
+// returns the scene that sits immediately under the one on top
+
+Scene* Scene_Mgr::get_under()
+{
+	assert( !scene_stack.empty() );
+
+	if( scene_stack.size() == 1 )
+	{
+		return nullptr;
+	}
+
+	return scene_stack[ 1 ].get();
 }
 
 // ----------------------------------------------------------------------------
@@ -214,7 +227,7 @@ void Scene_Mgr::draw_scene_stack( int32_t starting_scene_idx )
 					// draw any debug information that lives in world space.
 					if( scene->flags.is_debug_physics_scene && g_engine->render.debug.is_drawing_debug_info() )
 					{
-						Render::state->z += zdepth_debug_bias;
+						Render::state->z += zdepth_nudge;
 						g_engine->box2d.world->DebugDraw();
 					}
 				#endif

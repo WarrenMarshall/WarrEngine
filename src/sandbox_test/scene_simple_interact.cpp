@@ -54,6 +54,7 @@ Entity* Scene_Simple_Interact::spawn_entity()
 
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 	}
+/*
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 		ec->get_transform()->set_pos( { 16.f, 32.f } );
@@ -85,6 +86,7 @@ Entity* Scene_Simple_Interact::spawn_entity()
 
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 	}
+*/
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );
@@ -123,7 +125,7 @@ void Scene_Simple_Interact::pushed()
 		auto e = add_entity<Entity>();
 		e->tag = H( "hit_marker" );
 		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.z_bias = zdepth_debug_bias;
+		e->rs_opt.z_bias = zdepth_nudge;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->rs_opt.color = make_color( Color::yellow );

@@ -71,7 +71,7 @@ void Scene_Simple_Top_Down::pushed()
 		auto e = add_entity<Entity>();
 		e->tag = H( "hit_marker" );
 		e->set_pos( { 0.f, 0.f } );
-		e->rs_opt.z_bias = zdepth_debug_bias;
+		e->rs_opt.z_bias = zdepth_nudge;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->rs_opt.color = make_color( Color::yellow );

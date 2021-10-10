@@ -163,8 +163,6 @@ constexpr float_t zdepth_stats = 45000.f;
 constexpr float_t zdepth_topmost = 50000.f;
 constexpr float_t zdepth_max = 50000.f;
 
-constexpr float_t zdepth_debug_bias = 1000.f;
-
 // ----------------------------------------------------------------------------
 // if (a - b) is smaller than epsilon, return true.
 //

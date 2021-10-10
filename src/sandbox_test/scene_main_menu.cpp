@@ -7,6 +7,7 @@ Scene_Main_Menu::Scene_Main_Menu()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
+	flags.is_main_menu = true;
 }
 
 void Scene_Main_Menu::pushed()

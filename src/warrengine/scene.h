@@ -72,14 +72,17 @@ struct Scene
 		// any expanded UI controls that are waiting for the user to do something.
 		// this is a handy way to close out things like dropdown controls without
 		// having to actually click on them.
-
 		bool clear_expanded_tag_this_frame : 1 = false;
 
 		// if true, this game requires a controller to play. if a controller is
 		// not connected, the "controller required" scene will be displayed
 		// automatically whenever the engine can't find a connected controller.
-
 		bool requires_controller : 1 = false;
+
+		// if true, this scene represents the main menu of the game. we use this
+		// to determine if we should display the "Main Menu" button on the ESC
+		// dialog box.
+		bool is_main_menu : 1 = false;
 	} flags;
 
 	Scene();
