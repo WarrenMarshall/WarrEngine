@@ -278,7 +278,7 @@ bool Scene_Simple_Platformer::on_input_pressed( const Input_Event* evt )
 	{
 		if( !fx_red_alert.life_cycle.is_alive() )
 		{
-			fx_red_alert.go();
+			fx_red_alert.restart();
 		}
 	}
 

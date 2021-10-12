@@ -46,7 +46,7 @@ struct Scene_Mgr final
 
 		transition_timeline = timeline;
 		push<Scene_Transient>();
-		transition_timeline.go();
+		transition_timeline.restart();
 	}
 
 	// pushes a new scene underneath the current one on top. this is most useful

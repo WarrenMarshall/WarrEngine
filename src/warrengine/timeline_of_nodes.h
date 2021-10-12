@@ -87,7 +87,7 @@ struct Timeline_Of_Nodes final
 	~Timeline_Of_Nodes() = default;
 
 	void init( time_ms duration );
-	void go();
+	void restart();
 	void update();
 
 	void add_kf_shake_angle( bool should_restore_state, float_t pct_marker, time_ms duration, Transform* tform, float_t strength );

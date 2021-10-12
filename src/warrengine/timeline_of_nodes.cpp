@@ -156,7 +156,7 @@ void Timeline_Of_Nodes::init( time_ms duration )
 	this->duration = duration;
 }
 
-void Timeline_Of_Nodes::go()
+void Timeline_Of_Nodes::restart()
 {
 	start = g_engine->clock.now();
 	end = start + duration;

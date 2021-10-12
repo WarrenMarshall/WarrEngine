@@ -7,7 +7,7 @@ namespace war
 
 void Engine::launch( int32_t argc, char* argv [] )
 {
-#if defined(_RELEASE)
+#if _RELEASE
 	// in final release, we don't want to bother the user with the visual
 	// clutter of the console window
 	FreeConsole();

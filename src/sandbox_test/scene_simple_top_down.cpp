@@ -28,6 +28,8 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 
 	switch( tile->idx )
 	{
+		// PLAYER
+
 		case 4:
 		{
 			auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
@@ -36,6 +38,11 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			e->tag = H( "player" );
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
+
+			e->simple.set_friction( 0.1f );
+			e->simple.max_velocity_x = 1.f;
+			e->simple.max_velocity_y = 1.f;
+			e->simple.is_bouncy = true;
 
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();
@@ -78,7 +85,6 @@ void Scene_Simple_Top_Down::pushed()
 		}
 
 		hit_marker = e;
-
 	}
 
 	// GEO
@@ -196,7 +202,7 @@ bool Scene_Simple_Top_Down::on_entity_and_sensor_touching( Entity* entity, Simpl
 		{
 			case H( "trigger_shake" ):
 			{
-				fx_hurt.go();
+				fx_hurt.restart();
 				return true;
 			}
 		}

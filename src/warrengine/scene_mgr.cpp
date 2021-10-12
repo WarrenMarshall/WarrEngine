@@ -131,7 +131,7 @@ void Scene_Mgr::update()
 
 		if( iter->flags.blocks_further_update )
 		{
-			return;
+			break;
 		}
 	}
 

@@ -65,6 +65,7 @@ void Scene_Controller_Required::draw_ui()
 
 		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_white" ), { 0.f, 0.f, ui_w, ui_h } );
+		Render::flush_buffers();
 	}
 
 	float_t panel_w = ( ui_w / 3.f ) * 2.f;
