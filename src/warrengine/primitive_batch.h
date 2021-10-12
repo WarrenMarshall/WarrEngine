@@ -12,7 +12,7 @@ struct Primitive_Batch final
 	// this is set low in debug mode so we'll know if the batching code breaks.
 	static const int32_t max_elements_per_draw_call = 50;
 #else
-	static const int32_t max_elements_per_draw_call = 2'500;
+	static const int32_t max_elements_per_draw_call = 5'000;
 #endif
 
 	Primitive_Batch() = default;

@@ -126,23 +126,24 @@ void Vertex_Array_Object::update_stats()
 	}
 
 	// update stats and clean up
-	g_engine->stats.draw_calls++;
+
+	g_engine->stats.inc( g_engine->stats._draw_calls );
 
 	if( render_prim == e_render_prim::quad )
 	{
-		g_engine->stats.quads += vb->vertices.count / 4.f;
+		g_engine->stats.add( g_engine->stats._quads, vb->vertices.count / 4.f );
 	}
 	else if( render_prim == e_render_prim::triangle )
 	{
-		g_engine->stats.triangles += vb->vertices.count / 3.f;
+		g_engine->stats.add( g_engine->stats._triangles, vb->vertices.count / 3.f );
 	}
 	else if( render_prim == e_render_prim::line )
 	{
-		g_engine->stats.lines += vb->vertices.count / 2.f;
+		g_engine->stats.add( g_engine->stats._lines, vb->vertices.count / 2.f );
 	}
 	else if( render_prim == e_render_prim::point )
 	{
-		g_engine->stats.points += vb->vertices.count / 1.f;
+		g_engine->stats.add( g_engine->stats._points, vb->vertices.count / 1.f );
 	}
 
 	// frame debugger

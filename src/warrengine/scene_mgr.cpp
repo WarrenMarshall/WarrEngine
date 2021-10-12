@@ -235,7 +235,7 @@ void Scene_Mgr::draw_scene_stack( int32_t starting_scene_idx )
 
 			current_scene = get_top();
 
-			Render::flush_buffers();
+			Render::flush();
 		}
 	}
 }
@@ -291,7 +291,7 @@ void Scene_Mgr::draw_scene_stack_ui( int32_t starting_scene_idx )
 			#endif
 			}
 
-			Render::flush_buffers();
+			Render::flush();
 		}
 	}
 }

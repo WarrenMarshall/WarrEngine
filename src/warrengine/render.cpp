@@ -12,8 +12,6 @@ Palette_Asset Render::palette = {};
 
 void Render::init()
 {
-	init_generate_circle_sample_points();
-
 	// renderer batches
 	dynamic_batches.init();
 
@@ -29,10 +27,7 @@ void Render::init()
 
 	//render_states.reserve( max_render_states );
 	clear_render_state_stack();
-}
 
-void Render::init_set_up_default_palette()
-{
 	// create a default palette in case the app doesn't specify one
 
 	Render::palette = {};
@@ -41,14 +36,11 @@ void Render::init_set_up_default_palette()
 	Render::palette.colors.push_back( Color::grey );
 	Render::palette.colors.push_back( Color::light_grey );
 	Render::palette.colors.push_back( Color::white );
-}
 
-// generate the sample points for drawing a circle. these verts sit on a
-// unit circle and are scaled to match the radius requested for each circle
-// we draw.
+	// generate the sample points for drawing a circle. these verts sit on a
+	// unit circle and are scaled to match the radius requested for each circle
+	// we draw.
 
-void Render::init_generate_circle_sample_points()
-{
 	circle_sample_points.clear();
 	circle_sample_points.reserve( circle_sample_points_max );
 
@@ -439,14 +431,14 @@ void Render::end_frame()
 
 	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 
-	stats_update( g_engine->stats.frame_times_ms += g_engine->clock.delta_ms );
-	stats_update( g_engine->stats.frame_count++ );
+	g_engine->stats.add( g_engine->stats._frame_times_ms, g_engine->clock.delta_ms );
+	g_engine->stats.inc( g_engine->stats._frame_count );
 
 	g_engine->stats.draw();
 
 	// flush the final batches
 
-	Render::flush_buffers();
+	Render::flush();
 
 	// there should be a single model matrix left on the stack (the identity
 	// matrix we created at renderer start up). If there is any other number,
@@ -903,7 +895,7 @@ int32_t Render::sample_pick_id_at( Vec2 viewport_click_pos )
 	return (int32_t)( pixel[ 0 ] );
 }
 
-void Render::flush_buffers()
+void Render::flush()
 {
 	g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::opaque );
 	g_engine->render.dynamic_batches.flush_and_reset( e_draw_call::transparent );

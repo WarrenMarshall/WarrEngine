@@ -54,13 +54,15 @@ struct Render final
 	} debug;
 #endif
 
+	// render state stack
+	std::vector<Render_State> render_states;
+	static Render_State* state;
+
 	// circle sample points are stored in a unit circle
 	constexpr static int32_t circle_sample_points_max = 16;
 	std::vector<Vec2> circle_sample_points;
 
 	void init();
-	void init_set_up_default_palette();
-	void init_generate_circle_sample_points();
 
 	static void draw_quad( const Texture_Asset* texture, const Vec2& dst );
 	static void draw_quad( const Texture_Asset* texture, const Rect& dst );
@@ -107,15 +109,13 @@ struct Render final
 
 	void clear_render_state_stack();
 
-	std::vector<Render_State> render_states;
-	static Render_State* state;
-
 	Render* push();
 	Render* pop();
 
 	[[nodiscard]] static int32_t sample_pick_id_at( Vec2 viewport_click_pos );
 
-	static void flush_buffers();
+	// forces a flushing of the render buffers that are currently in progress
+	static void flush();
 };
 
 }

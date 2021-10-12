@@ -226,14 +226,6 @@ extern std::unique_ptr<war::Log_File> g_logfile;
 extern std::unique_ptr<Game> g_base_game;
 
 // ----------------------------------------------------------------------------
-
-#ifdef _RELEASE
-	#define stats_update( code )
-#else
-	#define stats_update( code ) code;
-#endif
-
-// ----------------------------------------------------------------------------
 // attempts to make logging things easier
 //
 // i.e. log( "a log entry" );

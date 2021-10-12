@@ -34,7 +34,7 @@ void Primitive_Batch::add_quad( const Texture_Asset* texture, const Render_Verte
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		Render::flush_buffers();
+		Render::flush();
 	}
 }
 
@@ -50,7 +50,7 @@ void Primitive_Batch::add_triangle( const Texture_Asset* texture, const Render_V
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		Render::flush_buffers();
+		Render::flush();
 	}
 }
 
@@ -65,7 +65,7 @@ void Primitive_Batch::add_line( const Texture_Asset* texture, const Render_Verte
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		Render::flush_buffers();
+		Render::flush();
 	}
 }
 
@@ -79,7 +79,7 @@ void Primitive_Batch::add_point( const Texture_Asset* texture, const Render_Vert
 	auto& vb = vao[ ( int32_t )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
 	{
-		Render::flush_buffers();
+		Render::flush();
 	}
 }
 

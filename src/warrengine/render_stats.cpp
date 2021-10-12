@@ -10,6 +10,8 @@ namespace war
 	void Render_Stats::init() {}
 	void Render_Stats::update() {}
 	void Render_Stats::draw() {}
+	void Render_Stats::add( Value_Accumulator& accum, float_t val ) {}
+	void Render_Stats::inc( Value_Accumulator& accum ) {}
 
 #else
 
@@ -24,16 +26,16 @@ void Render_Stats::update()
 	{
 		stat_timer.restart();
 
-		frame_count.update_value();
-		auto steps = ( int32_t )( frame_count.value );
+		_frame_count.update_value();
+		auto steps = ( int32_t )( _frame_count.value );
 
-		frame_times_ms.update_value( steps );
-		draw_calls.update_value( steps );
-		entities.update_value( steps );
-		quads.update_value( steps );
-		triangles.update_value( steps );
-		lines.update_value( steps );
-		points.update_value( steps );
+		_frame_times_ms.update_value( steps );
+		_draw_calls.update_value( steps );
+		_entities.update_value( steps );
+		_quads.update_value( steps );
+		_triangles.update_value( steps );
+		_lines.update_value( steps );
+		_points.update_value( steps );
 	}
 }
 
@@ -41,26 +43,30 @@ void Render_Stats::update()
 
 void Render_Stats::draw()
 {
+	flags.pause = true;
+
+	Render::flush();
+
 	scoped_render_state;
 
 	stat_strings.clear();
 	Render::state->z = zdepth_stats;
 
-	if( draw_verbose )
+	if( flags.draw_verbose )
 	{
 		stat_strings.clear();
 		stat_strings.push_back( std::format( "RENDER : {} FPS ({:.1f} ms) / FTS: {} FPS",
-			f_commas( frame_count.value ),
-			frame_times_ms.value,
+			f_commas( _frame_count.value ),
+			_frame_times_ms.value,
 			fixed_time_step::frames_per_second ) );
 		stat_strings.push_back( std::format( "DC:{} / Q:{} / T:{} / L:{} / P:{}",
-			f_commas( draw_calls.value ),
-			f_commas( quads.value ),
-			f_commas( triangles.value ),
-			f_commas( lines.value ),
-			f_commas( points.value ) )
+			f_commas( _draw_calls.value ),
+			f_commas( _quads.value ),
+			f_commas( _triangles.value ),
+			f_commas( _lines.value ),
+			f_commas( _points.value ) )
 		);
-		stat_strings.push_back( std::format( "Scenes : {}, Entities : {}", g_engine->scene_mgr.scene_stack.size(), f_commas( entities.value ) ) );
+		stat_strings.push_back( std::format( "Scenes : {}, Entities : {}", g_engine->scene_mgr.scene_stack.size(), f_commas( _entities.value ) ) );
 		stat_strings.push_back( std::format( "Time Dilation: {:.2f}", g_engine->clock.dilation ) );
 
 		auto window_pos = g_engine->input_mgr.mouse_window_pos;
@@ -113,16 +119,40 @@ void Render_Stats::draw()
 	}
 	else
 	{
-		if( frame_count.value > 1.f )
+		if( _frame_count.value > 1.f )
 		{
 			scoped_render_state;
 
 			Render::state->align = e_align::right;
 			Render::draw_string(
-				std::format( "{} FPS ({:.2f} ms)", f_commas( frame_count.value ), frame_times_ms.value ),
+				std::format( "{} FPS ({:.2f} ms)", f_commas( _frame_count.value ), _frame_times_ms.value ),
 				{ ui_w, 0.f } );
 		}
 	}
+
+	Render::flush();
+
+	flags.pause = false;
+}
+
+void Render_Stats::add( Value_Accumulator& accum, float_t val )
+{
+	if( flags.pause )
+	{
+		return;
+	}
+
+	accum += val;
+}
+
+void Render_Stats::inc( Value_Accumulator& accum )
+{
+	if( flags.pause )
+	{
+		return;
+	}
+
+	accum++;
 }
 
 #endif

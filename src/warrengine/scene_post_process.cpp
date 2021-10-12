@@ -151,7 +151,7 @@ void Scene_Post_Process::draw_ui()
 
 		Render::state->color = make_color( Color::black, background_alpha );
 		Render::draw_quad( g_engine->tex_white, { 0.f, 0.f, ui_w, ui_h } );
-		Render::flush_buffers();
+		Render::flush();
 	}
 
 	Scene::draw_ui();

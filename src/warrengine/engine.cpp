@@ -197,7 +197,7 @@ void Engine::apply_config_settings()
 	final_pixel_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
 	final_pixel_h = Text_Parser::float_from_str( tok.tokens[ 1 ] );
 
-	g_engine->render.init_set_up_default_palette();
+	//g_engine->render.init_set_up_default_palette();
 	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
 
 	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
@@ -353,7 +353,7 @@ void Engine::main_loop()
 			// engine specific things, like pause borders
 			draw();
 
-			Render::flush_buffers();
+			Render::flush();
 		}
 		g_engine->render.end_frame();
 		frame_buffer.unbind();
@@ -392,7 +392,7 @@ void Engine::do_draw_finished_frame()
 	g_engine->opengl_mgr.set_uniform_float( "u_final_pixel_h", final_pixel_h );
 
 	Render::draw_quad( frame_buffer.color_attachments[ 1 /* glow color attachment */ ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-	Render::flush_buffers();
+	Render::flush();
 	blur_frame_buffer.unbind();
 
 	{
@@ -408,7 +408,7 @@ void Engine::do_draw_finished_frame()
 			g_engine->opengl_mgr.shaders[ "compositing_pass" ].bind();
 
 			Render::draw_quad( frame_buffer.color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			Render::flush_buffers();
+			Render::flush();
 		}
 
 		// ----------------------------------------------------------------------------
@@ -420,7 +420,7 @@ void Engine::do_draw_finished_frame()
 			g_engine->opengl_mgr.set_blend( e_opengl_blend::glow );
 
 			Render::draw_quad( blur_frame_buffer.color_attachments[ 0 ].texture, Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-			Render::flush_buffers();
+			Render::flush();
 
 			g_engine->opengl_mgr.set_blend( e_opengl_blend::alpha );
 		}
@@ -894,7 +894,7 @@ bool Engine::on_input_pressed(const Input_Event* evt)
 		case e_input_id::key_f8:
 		{
 #ifndef _RELEASE
-			stats_update( stats.draw_verbose = true );
+			stats.flags.draw_verbose = true;
 #endif
 			return true;
 		}
@@ -910,7 +910,7 @@ bool Engine::on_input_released(const Input_Event* evt)
 		case e_input_id::key_f8:
 		{
 #ifndef _RELEASE
-			stats_update( stats.draw_verbose = false );
+			stats.flags.draw_verbose = false;
 #endif
 			return true;
 		}
