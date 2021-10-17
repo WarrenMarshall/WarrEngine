@@ -183,6 +183,8 @@ void Vec2::operator=( const float& v )
 
 void Vec2::operator=( const Vec2& v )
 {
+	// safety net in case bad values get in here. if these trigger, figure out
+	// what is passing in bad data and clean it up.
 	assert( !isnan( v.x ) );
 	assert( !isnan( v.y ) );
 
@@ -192,6 +194,11 @@ void Vec2::operator=( const Vec2& v )
 
 Vec2 Vec2::normalize( const Vec2& v )
 {
+	if( v.is_zero() )
+	{
+		Vec2( 0.f, 0.f );
+	}
+
 	auto nv = glm::normalize( glm::vec2( v.x, v.y ) );
 	return Vec2( nv.x, nv.y );
 }
@@ -271,6 +278,11 @@ Vec2 Vec2::cross( const Vec2& a, const Vec2& b )
 
 float_t Vec2::dot( const Vec2& a, const Vec2& b )
 {
+	if( a.is_zero() or b.is_zero() )
+	{
+		return 0.0f;
+	}
+
 	return glm::dot(
 		glm::normalize( glm::vec2( a.x, a.y ) ),
 		glm::normalize( glm::vec2( b.x, b.y ) )

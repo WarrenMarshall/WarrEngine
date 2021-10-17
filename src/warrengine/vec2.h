@@ -78,7 +78,7 @@ struct Vec2 final
 	[[nodiscard]] float_t get_size_fast() const;
 	[[nodiscard]] bool is_zero() const;
 	[[nodiscard]] bool is_nan() const;
-	[[nodiscard]] Vec2 normalize();
+	Vec2 normalize();
 	[[nodiscard]] Vec2 normalize() const;
 	Vec2 clamp( float_t value );
 

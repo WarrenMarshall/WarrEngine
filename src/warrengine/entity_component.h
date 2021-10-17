@@ -263,6 +263,10 @@ struct Simple_Collision_Body : Entity_Component
 
 	e_sc_prim_type prim_type = e_sc_prim_type::circle;
 
+	[[nodiscard]] bool is_circle();
+	[[nodiscard]] bool is_aabb();
+	[[nodiscard]] bool is_polygon();
+
 	bool is_platform = false;
 
 	// if true, then any entities touching this collider need to move WITH this collider.

@@ -410,8 +410,8 @@ enum struct e_solidity
 enum struct e_sc_type
 {
 	dynamic,
-	stationary,
 	kinematic,
+	stationary,
 };
 
 // ----------------------------------------------------------------------------

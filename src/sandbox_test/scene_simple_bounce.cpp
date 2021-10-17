@@ -26,6 +26,8 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 
 		static int32_t last_spawned_type = 0;
 		last_spawned_type++;
+
+		//last_spawned_type = 1;
 		switch( last_spawned_type % 3 )
 		{
 			case 0:
@@ -71,6 +73,8 @@ void Scene_Simple_Bounce::pushed()
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
 	spatial_map.set_bounds( rc );
 
+	sc_world.settings.max_pos_iterations = 1;
+
 #ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
 #endif
@@ -79,7 +83,7 @@ void Scene_Simple_Bounce::pushed()
 	// WORLD GEO
 
 	{
-		int num_colliders = 0;
+		int num_colliders = 3;
 
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
@@ -147,8 +151,9 @@ void Scene_Simple_Bounce::draw()
 	{
 		scoped_render_state;
 		Render::state->color = make_color( e_pal::darker );
-		//Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
-		//	Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ),
+			Rect( -viewport_hw, -viewport_hh, viewport_w, viewport_h ) );
+		Render::flush();
 	}
 
 	Scene::draw();

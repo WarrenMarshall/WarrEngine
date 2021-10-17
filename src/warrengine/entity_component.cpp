@@ -788,6 +788,21 @@ Simple_Collision_Body::Simple_Collision_Body( Entity* parent_entity )
 	sensor.time_next = g_engine->clock.now();
 }
 
+bool Simple_Collision_Body::is_circle()
+{
+	return ( prim_type == e_sc_prim_type::circle );
+}
+
+bool Simple_Collision_Body::is_aabb()
+{
+	return ( prim_type == e_sc_prim_type::aabb );
+}
+
+bool Simple_Collision_Body::is_polygon()
+{
+	return ( prim_type == e_sc_prim_type::polygon );
+}
+
 void Simple_Collision_Body::set_sensor_as_one_shot()
 {
 	solidity = e_solidity::sensor;
