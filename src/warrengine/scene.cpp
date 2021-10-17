@@ -43,29 +43,23 @@ void Scene::select_by_pick_id( int32_t pick_id )
 	{
 		if( e->pick_id == pick_id )
 		{
-			e->flags.is_selected = true;
+			selected_entities.insert( e.get() );
 		}
 	}
 }
 
 void Scene::deselect_all()
 {
-	for( const auto& e : entities )
-	{
-		e->flags.is_selected = false;
-	}
+	selected_entities.clear();
 }
 
 std::vector<Entity*> Scene::get_selected()
 {
 	std::vector<Entity*> selections;
 
-	for( const auto& e : entities )
+	for( const auto& e : selected_entities )
 	{
-		if( e->flags.is_selected )
-		{
-			selections.push_back( e.get() );
-		}
+		selections.push_back( e );
 	}
 
 	return selections;

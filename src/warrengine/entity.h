@@ -60,9 +60,11 @@ struct Entity
 {
 	struct
 	{
+		// if true, this entity will be given a selection ID and be drawn into the picking frame buffer
 		bool pickable : 1 = false;
+
+		// if true, this entity is included in the scene's quad tree spatial map
 		bool include_in_quad_tree : 1 = true;
-		bool is_selected : 1 = false;
 	} flags;
 
 	Life_Cycle life_cycle;

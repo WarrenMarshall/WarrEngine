@@ -95,6 +95,8 @@ struct Scene
 	void deselect_all();
 	std::vector<Entity*> get_selected();
 
+	std::set<Entity*> selected_entities;
+
 	// ----------------------------------------------------------------------------
 
 	// called each time the scene is pushed onto the stack

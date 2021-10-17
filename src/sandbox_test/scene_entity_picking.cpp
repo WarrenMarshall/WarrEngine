@@ -3,8 +3,6 @@
 
 using namespace war;
 
-// #warren - the glow in here is terrible looking - tame that value and then see about doing a nice outline effect instead
-
 Scene_Entity_Picking::Scene_Entity_Picking()
 {
 	flags.blocks_further_drawing = true;
@@ -92,9 +90,15 @@ bool Scene_Entity_Picking::on_input_pressed( const Input_Event* evt )
 		deselect_all();
 		select_by_pick_id( pick_id );
 
+		// #selection - this glow stuff is a temp hack. we need a nice way to outline entities or something cool like that.
 		for( auto& e : entities )
 		{
-			e->rs_opt.glow = ( e->flags.is_selected * 1.5f );
+			e->rs_opt.glow = 0.0f;
+		}
+
+		for( auto& e : selected_entities )
+		{
+			e->rs_opt.glow = 1.5f;
 		}
 
 		return true;
