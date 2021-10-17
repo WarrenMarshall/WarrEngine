@@ -178,11 +178,14 @@ bool Vec2::is_nan() const
 
 void Vec2::operator=( const float& v )
 {
-	x = y = v;
+	*this = { v, v };
 }
 
 void Vec2::operator=( const Vec2& v )
 {
+	assert( !isnan( v.x ) );
+	assert( !isnan( v.y ) );
+
 	x = v.x;
 	y = v.y;
 }
