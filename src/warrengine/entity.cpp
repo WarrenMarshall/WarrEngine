@@ -101,6 +101,11 @@ void Entity::post_update()
 // this is good for moving a character or applying things like gravity or wind.
 void Entity::add_force( const Entity_Simple_Force& force )
 {
+	if( simple.is_kinematic() )
+	{
+		return;
+	}
+
 	pending_forces.emplace_back( force.normal, fixed_time_step::per_second( force.strength ) );
 }
 
@@ -109,6 +114,11 @@ void Entity::add_force( const Entity_Simple_Force& force )
 // this is for things like jumping or bouncing off of things.
 void Entity::add_impulse( const Entity_Simple_Force& force )
 {
+	if( simple.is_kinematic() )
+	{
+		return;
+	}
+
 	pending_forces.push_back( force );
 }
 
