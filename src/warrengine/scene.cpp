@@ -31,7 +31,6 @@ void Scene::restore_mouse_mode()
 
 // ----------------------------------------------------------------------------
 
-// #selection - selected entities should be store in a set inside the scene. this would be easier than tracking the entity boolean flags themselves.
 void Scene::select_by_pick_id( int32_t pick_id )
 {
 	if( !pick_id )

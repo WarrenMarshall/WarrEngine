@@ -218,13 +218,6 @@ void Entity::apply_forces()
 
 void Entity::draw()
 {
-	// #selection
-	// super hacky way to indicate a selected entity. it just pumps up the glow
-	// on it. we need a nicer system for this eventually.
-/*
-	rs_opt.glow = rs_opt.glow.value_or( 0.f ) + ( flags.is_selected * 2.f );
-*/
-
 	for( const auto& component : components )
 	{
 		if( component->life_cycle.is_dead() )
