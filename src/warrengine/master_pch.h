@@ -47,9 +47,9 @@
 	#include <glew-2.2.0/include/GL/glew.h>
 
 	// GLFW - window handling, input, time/ticks
-	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3.h>
+	#include <glfw/include/GLFW/glfw3.h>
 	#define GLFW_EXPOSE_NATIVE_WIN32
-	#include <glfw-3.3.2.bin.WIN64/include/GLFW/glfw3native.h>
+	#include <glfw/include/GLFW/glfw3native.h>
 
 	//#define _X86_
 	#include "winnt.h"
