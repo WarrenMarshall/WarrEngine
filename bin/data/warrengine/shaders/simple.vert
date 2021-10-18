@@ -34,10 +34,10 @@ void main()
 	// sizes that are slightly off and text not aligning and such. leave this
 	// enabled or face the demons.
 	//
-	// 9/25/21 - but then I DID disable it and everything seems fine. should this just be deleted?
+	// #option - maybe this should be an option thae games can set in thier INI files
 
-	//fs_pos.x = floor( fs_pos.x + 0.5 );
-	//fs_pos.y = floor( fs_pos.y + 0.5 );
+	fs_pos.x = floor( fs_pos.x + 0.5 );
+	fs_pos.y = floor( fs_pos.y + 0.5 );
 
 	gl_Position = u_projection_matrix * u_viewport_pivot_matrix * u_view_matrix * vec4( fs_pos, 1.0 );
 
