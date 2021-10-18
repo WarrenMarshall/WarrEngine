@@ -26,10 +26,13 @@ struct Entity_Simple_Collision final
 	Range max_velocity_x = { -5.0f, 5.0f };
 	Range max_velocity_y = { -5.0f, 5.0f };
 
-	bool is_in_air : 1 = true;
-	bool is_affected_by_gravity : 1 = false;
-	bool is_bouncy : 1 = false;
-	bool bounce_needs_dampening : 1 = false;
+	struct
+	{
+		bool is_in_air : 1 = true;
+		bool is_affected_by_gravity : 1 = false;
+		bool is_bouncy : 1 = false;
+		bool bounce_needs_dampening : 1 = false;
+	} flags;
 
 	Entity_Simple_Collision()
 	{

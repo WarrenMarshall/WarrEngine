@@ -148,7 +148,7 @@ void Entity::reflect_across( Vec2 normal )
 
 void Entity::apply_forces()
 {
-	if( simple.is_affected_by_gravity )
+	if( simple.flags.is_affected_by_gravity )
 	{
 		auto accel = 1.0f;
 
@@ -190,7 +190,7 @@ void Entity::apply_forces()
 		);
 
 		// only apply friction to the vertical axis if we are not affected by gravity
-		if( !simple.is_affected_by_gravity )
+		if( !simple.flags.is_affected_by_gravity )
 		{
 			velocity.y = lerp(
 				velocity.y,
@@ -202,12 +202,12 @@ void Entity::apply_forces()
 		// "bounce_needs_dampening" flag gets set when the entity is bouncy and it
 		// hit something last frame.
 
-		if( simple.bounce_needs_dampening )
+		if( simple.flags.bounce_needs_dampening )
 		{
 			// only dampen the vertical velocity on the way up
 			if( velocity.y < 0.0f )
 			{
-				simple.bounce_needs_dampening = false;
+				simple.flags.bounce_needs_dampening = false;
 				velocity.y *= 0.5f;
 			}
 		}
@@ -418,7 +418,7 @@ bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
-		sensor->parent_entity->simple.is_in_air = false;
+		sensor->parent_entity->simple.flags.is_in_air = false;
 	}
 
 	return false;
@@ -438,7 +438,7 @@ bool Entity::on_touching_end( Simple_Collision_Body* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
-		sensor->parent_entity->simple.is_in_air = true;
+		sensor->parent_entity->simple.flags.is_in_air = true;
 	}
 
 	return false;
@@ -519,7 +519,7 @@ void Entity::remove_dead_components()
 
 void Entity::apply_movement_jump()
 {
-	if( !simple.is_in_air )
+	if( !simple.flags.is_in_air )
 	{
 		//g_engine->find_asset<sound_asset>( "sfx_platformer_jump" )->play();
 		add_impulse( { Vec2( 0.0f, -1.0f ), 3.5f } );

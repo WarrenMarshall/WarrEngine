@@ -42,7 +42,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			e->simple.set_friction( 0.1f );
 			e->simple.max_velocity_x = 1.f;
 			e->simple.max_velocity_y = 1.f;
-			e->simple.is_bouncy = true;
+			e->simple.flags.is_bouncy = true;
 
 			{
 				auto ec = e->add_component<Simple_Collision_Body>();

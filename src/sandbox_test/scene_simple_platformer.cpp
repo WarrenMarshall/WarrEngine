@@ -24,7 +24,7 @@ void Scene_Simple_Platformer::draw()
 
 void Scene_Simple_Platformer::draw_ui()
 {
-	Render::draw_string( std::format( "{}", player->simple.is_in_air ), { 4, 4 } );
+	Render::draw_string( std::format( "{}", player->simple.flags.is_in_air ), { 4, 4 } );
 }
 
 f_decl_tile_map_spawn_entity( platformer_spawn_entity )
@@ -75,7 +75,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 		{
 			auto e = scene->add_entity<E_Player>();
 			e->set_pos( tile_pos );
-			e->simple.is_affected_by_gravity = true;
+			e->simple.flags.is_affected_by_gravity = true;
 			e->simple.set_friction( 5.0f );
 
 			{
@@ -261,7 +261,7 @@ bool Scene_Simple_Platformer::on_input_pressed( const Input_Event* evt )
 		or evt->input_id == e_input_id::key_space )
 	{
 
-		if( !player->simple.is_in_air
+		if( !player->simple.flags.is_in_air
 			and g_engine->input_mgr.get_axis_state( e_input_id::gamepad_left_stick, true ).y > 0.5f )
 		{
 			player->add_delta_pos( Vec2::y_axis * player_collision_radius );

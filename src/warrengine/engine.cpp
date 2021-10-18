@@ -270,6 +270,8 @@ void Engine::main_loop()
 		clock.update();
 		g_ui->reset();
 
+		post_process.film_grain_amount += 0.01f;
+
 		// whatever remaining ms are left in time.fts_accum_ms should be passed
 		// to the render functions for interpolation/prediction
 		//
@@ -290,8 +292,6 @@ void Engine::main_loop()
 				clock.fts_accum_ms -= fixed_time_step::ms_per_step;
 				num_time_steps++;
 			}
-
-			post_process.film_grain_amount += 0.01f;
 
 			input_mgr.queue_presses();
 			input_mgr.queue_motion();
@@ -349,7 +349,7 @@ void Engine::main_loop()
 			draw();
 		}
 		g_engine->render.end_frame();
-		frame_buffer.unbind();
+		//frame_buffer.unbind();
 
 		do_draw_finished_frame();
 

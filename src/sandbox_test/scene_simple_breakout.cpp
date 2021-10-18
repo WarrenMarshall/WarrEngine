@@ -35,7 +35,7 @@ void Scene_Simple_Breakout::spawn_ball()
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
 	e->simple.set_friction( 0.f );
-	e->simple.is_bouncy = true;
+	e->simple.flags.is_bouncy = true;
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );
