@@ -140,6 +140,9 @@ void OpenGL_Mgr::init()
 	ib_tris = std::make_unique<Index_Buffer_Tris>();
 	ib_lines = std::make_unique<Index_Buffer_Lines>();
 	ib_points = std::make_unique<Index_Buffer_Points>();
+
+	// this matrix never changes so do it once
+	set_projection_matrix();
 }
 
 // pushes a new matrix on top of the stack.

@@ -45,10 +45,12 @@ void Scene_Spatial::pushed()
 {
 	Scene::pushed();
 
-	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
+	Rect rc( -viewport_w, -viewport_h, viewport_w * 2, viewport_h * 2 );
 	spatial_map.set_bounds( rc );
 	spatial_map.min_node_area = 32;
 	spatial_map.set_max_nodes_in_pool( 350 );
+
+	get_transform()->set_scale( 0.5f );
 
 	// PLAYER SHAPE
 	{
