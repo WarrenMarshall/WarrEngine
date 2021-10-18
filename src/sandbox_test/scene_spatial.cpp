@@ -45,8 +45,6 @@ void Scene_Spatial::pushed()
 {
 	Scene::pushed();
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
-
 	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
 	spatial_map.set_bounds( rc );
 	spatial_map.min_node_area = 32;

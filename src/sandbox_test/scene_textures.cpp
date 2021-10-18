@@ -24,7 +24,6 @@ void Scene_Textures::pushed()
 	anim_offsets[ 2 ] = Random::getf();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void Scene_Textures::draw()

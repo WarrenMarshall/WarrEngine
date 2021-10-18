@@ -18,7 +18,6 @@ void Scene_Noise::pushed()
 	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 
 	generate_noise_samples();
 }

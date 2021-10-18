@@ -38,8 +38,6 @@ void Scene_Meshes::pushed()
 			mesh_crate->init( "mesh_crate" );
 		}
 	}
-
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void Scene_Meshes::draw()

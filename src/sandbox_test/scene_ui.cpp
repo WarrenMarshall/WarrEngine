@@ -22,6 +22,14 @@ Scene_UI_Callback::Scene_UI_Callback()
 	progress_data.progress.draw_percentage_as_text = true;
 }
 
+Scene_UI_Callback::~Scene_UI_Callback()
+{
+	if( checkbox_data.bool_value() )
+	{
+		g_engine->window.pop_mouse_mode();
+	}
+}
+
 UI_Control_Data* Scene_UI_Callback::get_data( hash tag )
 {
 	switch( tag )
@@ -83,7 +91,14 @@ void Scene_UI_Callback::on_value_changed( hash tag )
 	{
 		case H( "check_box" ):
 		{
-			g_engine->window.set_mouse_mode( checkbox_data.bool_value() ? e_mouse_mode::custom : e_mouse_mode::os );
+			if( checkbox_data.bool_value() )
+			{
+				g_engine->window.push_mouse_mode( e_mouse_mode::custom );
+			}
+			else
+			{
+				g_engine->window.pop_mouse_mode();
+			}
 		}
 		break;
 	}
@@ -104,7 +119,6 @@ void Scene_UI::pushed()
 	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 }
 
 void Scene_UI::draw()

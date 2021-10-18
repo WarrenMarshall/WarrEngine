@@ -49,15 +49,14 @@ void Scene_Esc_Menu::pushed()
 {
 	Scene::pushed();
 
-	save_mouse_mode();
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
+	g_engine->window.push_mouse_mode( e_mouse_mode::os );
 }
 
 void Scene_Esc_Menu::popped()
 {
 	Scene::popped();
 
-	restore_mouse_mode();
+	g_engine->window.pop_mouse_mode();
 }
 
 void Scene_Esc_Menu::draw_ui()

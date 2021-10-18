@@ -24,6 +24,7 @@
 	#include <string>
 	#include <string_view>
 	#include <vector>
+	#include <stack>
 	#include <map>
 	#include <array>
 	#include <filesystem>

@@ -138,7 +138,14 @@ void Scene_Post_Process::pushed()
 	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
+	g_engine->window.push_mouse_mode( e_mouse_mode::custom );
+}
+
+void Scene_Post_Process::popped()
+{
+	Scene::popped();
+
+	g_engine->window.pop_mouse_mode();
 }
 
 void Scene_Post_Process::draw_ui()

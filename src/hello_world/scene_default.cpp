@@ -18,7 +18,15 @@ void Scene_Default::pushed()
 	scale_tween = Tween( .5f, 5.f, 9000, e_tween_type::pingpong, e_tween_via::sinusoidal );
 	tilt_tween = Tween( -25.f, 25.f, 20000, e_tween_type::pingpong, e_tween_via::cubic );
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
+	g_engine->window.push_mouse_mode( e_mouse_mode::os );
+
+}
+
+void Scene_Default::popped()
+{
+	Scene::popped();
+
+	g_engine->window.pop_mouse_mode();
 
 }
 

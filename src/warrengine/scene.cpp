@@ -15,22 +15,6 @@ Scene::Scene()
 
 // ----------------------------------------------------------------------------
 
-// #mouse_mode - change the mouse save/restore stuff into a proper stack - then multiple things can change it and it will still work
-void Scene::save_mouse_mode()
-{
-	saved_mouse_mode = g_engine->window.mouse_mode;
-}
-
-void Scene::restore_mouse_mode()
-{
-	// mouse mode has never been saved
-	assert( saved_mouse_mode.has_value() );
-
-	g_engine->window.set_mouse_mode( *saved_mouse_mode );
-}
-
-// ----------------------------------------------------------------------------
-
 void Scene::select_by_pick_id( int32_t pick_id )
 {
 	if( !pick_id )

@@ -70,8 +70,6 @@ void Scene_Simple_Top_Down::pushed()
 
 	Scene::pushed();
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	// HIT MARKER
 
 	{

@@ -122,7 +122,6 @@ void Scene_Simple_Platformer::pushed()
 #ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
 #endif
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	fx_red_alert.init( 1000 );
 	fx_red_alert.add_kf_shake_angle( true, 0.0f, 1000, get_transform(), 2.0f );

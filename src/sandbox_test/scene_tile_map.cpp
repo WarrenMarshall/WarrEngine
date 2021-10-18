@@ -13,8 +13,6 @@ void Scene_Tile_Map::pushed()
 {
 	Scene::pushed();
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	ts_ultima = g_engine->find_asset<Tile_Set_Asset>( "ts_ultima" );
 	tm_overworld = g_engine->find_asset<Tile_Map_Asset>( "tm_overworld" );
 }

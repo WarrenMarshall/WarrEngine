@@ -110,8 +110,6 @@ void Scene_Simple_Interact::pushed()
 		g_engine->render.debug.draw_colliders = true;
 #endif
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	// PLAYER
 
 	player = spawn_entity();

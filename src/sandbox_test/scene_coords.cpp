@@ -15,8 +15,6 @@ void Scene_Coords::pushed()
 {
 	Scene::pushed();
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "crosshair" );

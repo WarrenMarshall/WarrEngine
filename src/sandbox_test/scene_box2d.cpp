@@ -16,8 +16,6 @@ void Scene_Box2D::pushed()
 {
 	Scene::pushed();
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	// kinematic circle
 	{
 		auto e = add_entity<Entity>();

@@ -11,13 +11,6 @@ Scene_Angle_Dirs::Scene_Angle_Dirs()
 	flags.blocks_further_update = true;
 }
 
-void Scene_Angle_Dirs::pushed()
-{
-	Scene::pushed();
-
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-}
-
 void Scene_Angle_Dirs::draw()
 {
 	draw_tiled_background();

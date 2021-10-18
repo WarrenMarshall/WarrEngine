@@ -144,15 +144,28 @@ void OS_Window::set_title( std::string_view title )
 	glfwSetWindowTitle( glfw_window, title.data() );
 }
 
-void OS_Window::set_mouse_mode( e_mouse_mode mouse_mode )
+void OS_Window::push_mouse_mode( e_mouse_mode mouse_mode )
 {
-	this->mouse_mode = mouse_mode;
+	mouse_mode_stack.push( mouse_mode );
+	refresh_mouse_mode();
+}
+
+void OS_Window::pop_mouse_mode()
+{
+	mouse_mode_stack.pop();
 	refresh_mouse_mode();
 }
 
 void OS_Window::refresh_mouse_mode()
 {
-	switch( mouse_mode )
+	// if the mouse mode stack is empty, default back to the OS cursor
+	if( mouse_mode_stack.empty() )
+	{
+		glfwSetInputMode( glfw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL );
+		return;
+	}
+
+	switch( mouse_mode_stack.top() )
 	{
 		case e_mouse_mode::os:
 		{

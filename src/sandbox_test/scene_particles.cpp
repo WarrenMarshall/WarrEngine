@@ -67,8 +67,6 @@ void Scene_Particles::pushed()
 			ec->rs_opt.color->a = 0.25f;
 		}
 	}
-
-	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 }
 
 void Scene_Particles::draw()

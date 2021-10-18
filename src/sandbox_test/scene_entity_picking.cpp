@@ -13,8 +13,6 @@ void Scene_Entity_Picking::pushed()
 {
 	Scene::pushed();
 
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	{
 		auto e = add_entity<Entity>();
 		e->set_pickable();

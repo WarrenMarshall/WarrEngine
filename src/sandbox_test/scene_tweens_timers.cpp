@@ -14,7 +14,6 @@ void Scene_Tweens_Timers::pushed()
 	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
 
 	tween_tex = g_engine->find_asset<Texture_Asset>( "tex_particle_02" );
 

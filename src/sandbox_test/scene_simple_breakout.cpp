@@ -56,8 +56,6 @@ void Scene_Simple_Breakout::pushed()
 #ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
 #endif
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	// paddle
 	{
 		auto e = add_entity<E_Breakout_Paddle>();

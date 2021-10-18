@@ -15,8 +15,6 @@ void Scene_Main_Menu::pushed()
 	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 }
 
 void Scene_Main_Menu::draw()

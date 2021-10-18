@@ -12,8 +12,7 @@ void Scene_Controller_Required::pushed()
 	tex_game_controller = g_engine->find_asset<Texture_Asset>( "engine_game_controller" );
 	anim_tween = Tween( 0.f, 1.f, 500, e_tween_type::pingpong, e_tween_via::sinusoidal );
 
-	save_mouse_mode();
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
+	g_engine->window.push_mouse_mode( e_mouse_mode::os );
 	flags.blocks_further_update = true;
 }
 
@@ -21,7 +20,7 @@ void Scene_Controller_Required::popped()
 {
 	Scene::popped();
 
-	restore_mouse_mode();
+	g_engine->window.pop_mouse_mode();
 }
 
 // ----------------------------------------------------------------------------

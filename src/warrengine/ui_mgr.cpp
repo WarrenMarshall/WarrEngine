@@ -670,10 +670,9 @@ UI_Mgr* UI_Mgr::cut_right( float_t sz )
 
 void UI_Mgr::draw_topmost()
 {
-	// mouse cursor
-
-	if( mouse_cursor and g_engine->window.mouse_mode == e_mouse_mode::custom )
+	if( mouse_cursor )
 	{
+		if( !g_engine->window.mouse_mode_stack.empty() and g_engine->window.mouse_mode_stack.top() == e_mouse_mode::custom )
 		{
 			scoped_render_state;
 

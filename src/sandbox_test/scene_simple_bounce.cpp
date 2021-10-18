@@ -78,8 +78,6 @@ void Scene_Simple_Bounce::pushed()
 #ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
 #endif
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	// WORLD GEO
 
 	{

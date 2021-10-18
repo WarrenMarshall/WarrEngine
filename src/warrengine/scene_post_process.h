@@ -42,6 +42,7 @@ struct Scene_Post_Process final : Scene
 	Scene_Post_Process();
 
 	virtual void pushed() override;
+	virtual void popped() override;
 	virtual void draw_ui() override;
 	virtual bool on_input_motion( const Input_Event* evt ) override;
 };

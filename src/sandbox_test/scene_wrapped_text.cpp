@@ -35,7 +35,6 @@ void Scene_Wrapped_Text::pushed()
 	Scene::pushed();
 
 	viewport_pivot = Vec2::zero;
-	g_engine->window.set_mouse_mode( e_mouse_mode::custom );
 	rc_big_text_block_01 = { 8.f, 32.f, 100.f, 100.f };
 	rc_big_text_block_02 = { 120.f, 32.f, 185.f, 200.f };
 

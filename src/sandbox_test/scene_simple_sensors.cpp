@@ -61,8 +61,6 @@ void Scene_Simple_Sensors::pushed()
 #ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
 #endif
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-
 	// KINEMATIC CIRCLE
 	{
 		auto e = add_entity<Entity>();

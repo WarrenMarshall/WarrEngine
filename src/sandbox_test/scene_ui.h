@@ -9,6 +9,7 @@ struct Scene_UI_Callback final : UI_Callback
 	// ----------------------------------------------------------------------------
 
 	Scene_UI_Callback();
+	virtual ~Scene_UI_Callback();
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
 	virtual size_t get_item_count( hash tag ) override;

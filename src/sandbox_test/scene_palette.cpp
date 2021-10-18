@@ -108,13 +108,6 @@ Scene_Palette::Scene_Palette()
 	flags.blocks_further_update = true;
 }
 
-void Scene_Palette::pushed()
-{
-	Scene::pushed();
-
-	g_engine->window.set_mouse_mode( e_mouse_mode::os );
-}
-
 void Scene_Palette::draw()
 {
 	Render::draw_world_axis();

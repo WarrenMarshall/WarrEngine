@@ -7,10 +7,6 @@ struct Scene
 	Quad_Tree spatial_map;
 	Life_Cycle life_cycle;
 
-	void save_mouse_mode();
-	void restore_mouse_mode();
-	std::optional<e_mouse_mode> saved_mouse_mode = std::nullopt;
-
 	// scenes can have a camera attached to them. this is applied against the
 	// view matrix.
 	[[nodiscard]] Transform* get_transform()

@@ -8,5 +8,6 @@ struct Scene_Default final : Scene
 	Scene_Default();
 
 	virtual void pushed() override;
+	virtual void popped() override;
 	virtual void draw() override;
 };

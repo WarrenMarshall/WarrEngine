@@ -7,7 +7,6 @@ struct Scene_Angle_Dirs final : Scene
 
 	Vec2 marker_pos = Vec2::zero;
 
-	virtual void pushed() override;
 	virtual void draw() override;
 	virtual void draw_ui() override;
 
