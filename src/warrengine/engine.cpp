@@ -345,18 +345,17 @@ void Engine::main_loop()
 			// scenes and entities
 			scene_mgr.draw();
 
-
 			// engine specific things, like pause borders
 			draw();
-
-			Render::flush();
 		}
 		g_engine->render.end_frame();
 		frame_buffer.unbind();
 
 		do_draw_finished_frame();
 
+#ifndef _RELEASE
 		debug_draw_buffers();
+#endif
 
 		glfwSwapBuffers( window.glfw_window );
 
