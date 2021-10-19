@@ -17,13 +17,13 @@ std::unique_ptr<Game> g_base_game = nullptr;
 std::unique_ptr<Engine> g_engine = nullptr;
 std::unique_ptr<UI_Mgr> g_ui = nullptr;
 
-float_t lerp( float_t a, float_t b, float_t lerp_factor )
+[[nodiscard]] float_t lerp( float_t a, float_t b, float_t lerp_factor )
 {
 	float_t result = ( ( 1.f - lerp_factor ) * a ) + ( lerp_factor * b );
 	return result;
 }
 
-Vec2 lerp( Vec2 a, Vec2 b, float_t lerp_factor )
+[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, float_t lerp_factor )
 {
 	Vec2 result = Vec2::zero;
 
@@ -35,7 +35,8 @@ Vec2 lerp( Vec2 a, Vec2 b, float_t lerp_factor )
 
 }
 
-// yoinked from: http://stevendebock.blogspot.com/2013/07/nvidia-optimus.html
+// yoinked from:
+// http://stevendebock.blogspot.com/2013/07/nvidia-optimus.html
 // https://www.reddit.com/r/gamedev/comments/bk7xbe/psa_for_anyone_developing_a_gameengine_in_c/
 //
 // these lines fix the problem where laptops will sometimes select their

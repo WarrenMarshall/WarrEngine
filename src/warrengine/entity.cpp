@@ -129,8 +129,8 @@ void Entity::compile_velocity()
 		velocity += f.normal * f.strength;
 	}
 
-	velocity.x = simple.max_velocity_x.clamp_value( velocity.x );
-	velocity.y = simple.max_velocity_y.clamp_value( velocity.y );
+	velocity.x = simple.settings.max_velocity_x.clamp_value( velocity.x );
+	velocity.y = simple.settings.max_velocity_y.clamp_value( velocity.y );
 
 	pending_forces.clear();
 }
@@ -181,36 +181,6 @@ void Entity::apply_forces()
 	if( !velocity.is_zero() )
 	{
 		add_delta_pos( velocity );
-
-		// apply friction to the horizontal velocity
-		velocity.x = lerp(
-			velocity.x,
-			0.f,
-			simple.friction
-		);
-
-		// only apply friction to the vertical axis if we are not affected by gravity
-		if( !simple.flags.is_affected_by_gravity )
-		{
-			velocity.y = lerp(
-				velocity.y,
-				0.f,
-				simple.friction
-			);
-		}
-
-		// "bounce_needs_dampening" flag gets set when the entity is bouncy and it
-		// hit something last frame.
-
-		if( simple.flags.bounce_needs_dampening )
-		{
-			// only dampen the vertical velocity on the way up
-			if( velocity.y < 0.0f )
-			{
-				simple.flags.bounce_needs_dampening = false;
-				velocity.y *= 0.5f;
-			}
-		}
 	}
 }
 

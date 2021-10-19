@@ -39,9 +39,8 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
 
-			e->simple.set_friction( 0.1f );
-			e->simple.max_velocity_x = 1.f;
-			e->simple.max_velocity_y = 1.f;
+			e->simple.settings.max_velocity_x = 1.f;
+			e->simple.settings.max_velocity_y = 1.f;
 			e->simple.flags.is_bouncy = true;
 
 			{

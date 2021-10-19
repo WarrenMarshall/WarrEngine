@@ -76,7 +76,6 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 			auto e = scene->add_entity<E_Player>();
 			e->set_pos( tile_pos );
 			e->simple.flags.is_affected_by_gravity = true;
-			e->simple.set_friction( 5.0f );
 
 			{
 				auto ec = e->add_component<Sprite_Component>();

@@ -34,7 +34,6 @@ void Scene_Simple_Breakout::spawn_ball()
 	auto e = add_entity<Entity>();
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
-	e->simple.set_friction( 0.f );
 	e->simple.flags.is_bouncy = true;
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
@@ -61,7 +60,6 @@ void Scene_Simple_Breakout::pushed()
 		auto e = add_entity<E_Breakout_Paddle>();
 		e->tag = H( "THE_PADDLE" );
 		e->set_pos( { 0.f, 0.f } );
-		e->simple.set_friction( 5.f );
 		e->simple.type = e_sc_type::kinematic;
 		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;

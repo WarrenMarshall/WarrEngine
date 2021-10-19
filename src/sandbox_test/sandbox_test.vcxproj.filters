@@ -66,9 +66,6 @@
     <ClCompile Include="scene_simple_bounce.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_collision.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="scene_simple_top_down.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -149,9 +146,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_bounce.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_simple_collision.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_simple_top_down.h">

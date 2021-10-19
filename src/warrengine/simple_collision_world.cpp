@@ -195,8 +195,6 @@ void Simple_Collision_World::handle_collisions()
 	}
 }
 
-#if 1
-
 void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& coll )
 {
 	if( glm::abs( coll.depth ) < settings.push_apart_tolerance )
@@ -355,13 +353,10 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				break;
 			}
 
-			//dir_attacker.normalize();
 			dir_victim.normalize();
 
-			//ent_attacker->add_impulse( { dir_attacker, vel_attacker.get_size() } );
 			ent_victim->add_impulse( { dir_victim, vel_victim.get_size() } );
 
-			//ent_attacker->velocity = Vec2::zero;
 			ent_victim->velocity = Vec2::zero;
 		}
 		break;
@@ -395,212 +390,6 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 		break;
 	}
 }
-
-#else
-
-// pushes two entities apart so they are no longer intersecting
-
-void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& coll )
-{
-	if( glm::abs( coll.depth ) < settings.push_apart_tolerance )
-	{
-		return;
-	}
-
-	auto ent_a = coll.entity_a;
-	auto ent_b = coll.entity_b;
-
-	auto a_is_dynamic = ent_a->simple.is_dynamic();
-	auto b_is_dynamic = ent_b->simple.is_dynamic();
-
-	if( a_is_dynamic and b_is_dynamic )
-	{
-		ent_a->add_delta_pos( -coll.normal * coll.depth * settings.skin_thickness * 0.5f );
-		ent_b->add_delta_pos( coll.normal * coll.depth * settings.skin_thickness * 0.5f );
-	}
-	else if( b_is_dynamic )
-	{
-		ent_b->add_delta_pos( coll.normal * coll.depth * settings.skin_thickness );
-	}
-	else
-	{
-		ent_a->add_delta_pos( -coll.normal * coll.depth * settings.skin_thickness );
-	}
-}
-
-// responds to a collision between 2 entities
-
-void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_Collision& coll )
-{
-
-	// ----------------------------------------------------------------------------
-
-	auto ent_attacker = coll.entity_a;
-	auto ent_victim = coll.entity_b;
-
-	// tell entity_a about the collision
-
-	if( ent_attacker->on_collided( coll ) )
-	{
-		return;
-	}
-
-	// swap the entity info, and then tell entityb about the collision
-
-	simple_collision::Pending_Collision coll_b = coll;
-	std::swap( coll_b.entity_a, coll_b.entity_b );
-	std::swap( coll_b.body_a, coll_b.body_b );
-
-	if( ent_victim->on_collided( coll_b ) )
-	{
-		return;
-	}
-
-	// ----------------------------------------------------------------------------
-
-	// if we're here, then the entities didn't fully handle the collision and we
-	// should resolve it using the default behaviors
-
-	if( !ent_attacker->simple.is_stationary() and !ent_victim->simple.is_stationary() )
-	{
-		auto velocity_attacker = ent_attacker->velocity;
-		auto velocity_victim = ent_victim->velocity;
-
-		if( velocity_attacker.is_zero() and velocity_victim.is_zero() )
-		{
-			return;
-		}
-
-		if( ent_attacker->simple.is_bouncy or ent_victim->simple.is_bouncy )
-		{
-			// bouncy
-
-			auto dot = Vec2::dot( velocity_attacker, velocity_victim );
-
-			// entities are heading in the same direction, so swap their
-			// velocities and exit. this is a cheap way to resolve that
-			// situation.
-
-			if( dot > 0.f )
-			{
-#if 1
-				assert( !velocity_attacker.is_zero() );
-				assert( !velocity_victim.is_zero() );
-
-				ent_attacker->add_impulse( { velocity_victim, velocity_victim.get_size() } );
-				ent_victim->add_impulse( { velocity_attacker, velocity_attacker.get_size() } );
-
-/*
-				ent_attacker->add_impulse( { velocity_victim, velocity_victim.get_size() } );
-				ent_victim->add_impulse( { velocity_attacker, velocity_attacker.get_size() } );
-*/
-#else
-				if( velocity_attacker.is_zero() )
-				{
-					ent_attacker->add_impulse( { velocity_victim, velocity_victim.get_size() } );
-					ent_victim->add_impulse( { -velocity_victim, velocity_victim.get_size() } );
-				}
-				else if( velocity_victim.is_zero() )
-				{
-					ent_attacker->add_impulse( { velocity_attacker, velocity_attacker.get_size() } );
-					ent_victim->add_impulse( { -velocity_attacker, velocity_attacker.get_size() } );
-				}
-				else
-				{
-					ent_attacker->add_impulse( { velocity_victim, velocity_victim.get_size() } );
-					ent_victim->add_impulse( { velocity_attacker, velocity_attacker.get_size() } );
-				}
-#endif
-
-				ent_attacker->velocity = Vec2::zero;
-				ent_victim->velocity = Vec2::zero;
-
-				return;
-			}
-
-			// if we've made it this far, the entities need their velocities
-			// mirrored around the collision normal and then each takes half the
-			// force of the impact
-
-			assert( !velocity_attacker.is_zero() );
-			assert( !velocity_victim.is_zero() );
-
-			auto total_velocity = velocity_attacker.get_size() + velocity_victim.get_size();
-			auto new_dir_attacker = Vec2::reflect_across_normal( velocity_attacker, coll.normal );
-			auto new_dir_victim = Vec2::reflect_across_normal( velocity_victim, -coll.normal );
-
-			ent_attacker->add_impulse( { new_dir_attacker, total_velocity * 0.5f } );
-			ent_victim->add_impulse( { new_dir_victim, total_velocity * 0.5f } );
-
-			ent_attacker->velocity = Vec2::zero;
-			ent_victim->velocity = Vec2::zero;
-		}
-	}
-	else
-	{
-		// ----------------------------------------------------------------------------
-		// dynamic-to-stationary
-
-		if( ent_attacker->simple.is_bouncy )
-		{
-			ent_attacker->reflect_across( coll.normal );
-		}
-		if( ent_victim->simple.is_bouncy )
-		{
-			ent_victim->reflect_across( coll.normal );
-		}
-	}
-
-	// if an entity uses gravity, then we need to dampen it's vertical velocity
-	// each time we compile the velocity, otherwise it'll just bounce forever at
-	// the same height.
-
-/*
-	if( ent_attacker->simple.is_affected_by_gravity )
-	{
-		// hitting the ceiling or the floor means we need to dampen next update
-		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
-		{
-			ent_attacker->simple.bounce_needs_dampening = true;
-			ent_attacker->velocity = Vec2::zero;
-		}
-	}
-*/
-
-/*
-	{
-		// when landing on the ground, kill any velocity on the Y axis. this
-		// stops it from accruing to the maximum as you run around on flat
-		// geo.
-
-		if( coll.normal.y < -0.75f or coll.normal.y > 0.75f )
-		{
-			ent_attacker->velocity.y = 0.f;
-		}
-
-		// hitting a wall kills horizontal velocity
-
-		if( coll.normal.x < -0.75f or coll.normal.x > 0.75f )
-		{
-			ent_attacker->velocity.x = 0.f;
-		}
-	}
-*/
-
-/*
-	if( ent_victim->simple.is_affected_by_gravity )
-	{
-		// hitting the ceiling or the floor means we need to dampen next update
-		if( glm::abs( coll.normal.y ) > 0.75f )
-		{
-			ent_victim->simple.bounce_needs_dampening = true;
-			ent_victim->velocity = Vec2::zero;
-		}
-	}
-*/
-}
-
-#endif
 
 void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending_Collision& coll )
 {

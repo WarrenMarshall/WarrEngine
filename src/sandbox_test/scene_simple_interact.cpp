@@ -23,7 +23,6 @@ Entity* Scene_Simple_Interact::spawn_entity()
 	auto e = add_entity<Entity>();
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
-	e->simple.set_friction( 3.0f );
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 

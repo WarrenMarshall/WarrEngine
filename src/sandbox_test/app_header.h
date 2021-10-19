@@ -51,7 +51,6 @@ static void draw_title( const std::string& title )
 #include "scene_sound_music.h"
 #include "scene_tweens_timers.h"
 #include "scene_box2d.h"
-#include "scene_simple_collision.h"
 #include "scene_simple_sensors.h"
 #include "scene_simple_interact.h"
 #include "scene_simple_top_down.h"

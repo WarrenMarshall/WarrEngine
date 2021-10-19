@@ -340,13 +340,16 @@ void Engine::main_loop()
 			// render the game frame
 			// ----------------------------------------------------------------------------
 
-			scoped_opengl;
+			g_engine->opengl_mgr.set_projection_matrix();
+			{
+				scoped_opengl;
 
-			// scenes and entities
-			scene_mgr.draw();
+				// scenes and entities
+				scene_mgr.draw();
 
-			// engine specific things, like pause borders
-			draw();
+				// engine specific things, like pause borders
+				draw();
+			}
 		}
 		g_engine->render.end_frame();
 		//frame_buffer.unbind();

@@ -18,7 +18,6 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
 	e->set_scale( Random::getf_range( 1.0f, 1.5f ) );
-	e->simple.set_friction( 0.f );
 	e->simple.flags.is_bouncy = true;
 
 	{
@@ -51,7 +50,7 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 			break;
 		}
 
-		ec->set_collision_flags( coll_flags.shape, coll_flags.geo | coll_flags.shape );
+		ec->set_collision_flags( coll_flags.shape, coll_flags.geo | coll_flags.shape | coll_flags.ball );
 	}
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
@@ -60,8 +59,6 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 	}
 
 	e->add_impulse( { Random::get_random_unit_vector(), 2.f } );
-
-	first_time = false;
 
 	return e;
 }
@@ -78,6 +75,24 @@ void Scene_Simple_Bounce::pushed()
 #ifndef _RELEASE
 	g_engine->render.debug.draw_colliders = true;
 #endif
+
+	// BALL
+
+	{
+		auto e = add_entity<Entity>();
+		e->tag = H( "main_ball" );
+		e->simple.type = e_sc_type::kinematic;
+		{
+			auto ec = e->add_component<Primitive_Shape_Component>();
+			ec->add_shape( e_primitive_shape::point );
+		}
+		{
+			auto ec = e->add_component<Simple_Collision_Body>();
+			ec->set_as_circle( 24.f );
+			ec->set_collision_flags( coll_flags.ball, coll_flags.shape | coll_flags.geo );
+		}
+	}
+
 	// WORLD GEO
 
 	{
@@ -191,6 +206,31 @@ bool Scene_Simple_Bounce::on_input_pressed( const Input_Event* evt )
 			spawn_shape();
 		}
 		break;
+	}
+
+	return false;
+}
+
+bool Scene_Simple_Bounce::on_input_motion( const Input_Event* evt )
+{
+	switch( evt->input_id )
+	{
+	case e_input_id::mouse:
+	{
+		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+		{
+			if( !evt->shift_down and !evt->control_down )
+			{
+				auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+
+				auto e = find_entity( H( "main_ball" ) );
+				e->set_pos( world_pos );
+
+				return true;
+			}
+		}
+	}
+	break;
 	}
 
 	return false;
