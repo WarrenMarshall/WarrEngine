@@ -19,7 +19,6 @@ struct Scene_Simple_Interact final : Scene
 	bool b_show_ray = false;
 	Vec2 ray_dir = {};
 
-	bool first_player = true;
 	Entity* spawn_entity();
 
 	virtual void pushed() override;

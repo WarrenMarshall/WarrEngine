@@ -153,7 +153,7 @@ void Simple_Collision_World::handle_collisions()
 			continue;
 		}
 
-		if( body_a->is_platform )
+		if( body_a->flags.is_platform )
 		{
 			auto coll = body_a->intersects_with_manifold( body_b );
 			if( !coll.has_value() )
@@ -162,7 +162,7 @@ void Simple_Collision_World::handle_collisions()
 			}
 		}
 
-		if( body_b->is_platform )
+		if( body_b->flags.is_platform )
 		{
 			auto coll = body_b->intersects_with_manifold( body_a );
 			if( !coll.has_value() )

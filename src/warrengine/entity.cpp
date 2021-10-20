@@ -381,7 +381,7 @@ bool Entity::add_sensor_to_touch_list( Simple_Collision_Body* sensor )
 
 bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 {
-	if( sensor->is_sticky )
+	if( sensor->flags.is_sticky )
 	{
 		sensor->parent_entity->sticky_set.insert( this );
 	}
@@ -401,7 +401,7 @@ bool Entity::on_touching( Simple_Collision_Body* sensor )
 
 bool Entity::on_touching_end( Simple_Collision_Body* sensor )
 {
-	if( sensor->is_sticky )
+	if( sensor->flags.is_sticky )
 	{
 		sensor->parent_entity->sticky_set.erase( this );
 	}

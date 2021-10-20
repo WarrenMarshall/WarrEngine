@@ -825,72 +825,82 @@ void Simple_Collision_Body::set_sensor_as_continuous()
 
 void Simple_Collision_Body::draw()
 {
-#ifndef _RELEASE
+	// optional drawing
 
-	// optional debug mode drawing
+#ifdef _RELEASE
+	if( !flags.draw_as_shape )
+#else
+	if( !flags.draw_as_shape and !g_engine->render.debug.draw_colliders )
+#endif
+	{
+		return;
 
+	}
+
+	scoped_render_state;
+
+#ifdef _RELEASE
+	Render::state->set_from_opt( rs_opt );
+#else
 	if( g_engine->render.debug.draw_colliders )
 	{
-		scoped_render_state;
-
-		Render::state->set_from_opt( rs_opt );
-
 		// determine the color from the type
-
 		switch( solidity )
 		{
-			case e_solidity::solid:
-			{
-				Render::state->color = make_color( Color::light_green );
-
-				if( parent_entity->simple.is_stationary() )
-				{
-					Render::state->color = make_color( Color::green );
-				}
-
-				if( parent_entity->simple.is_kinematic() )
-				{
-					Render::state->color = make_color( Color::teal );
-				}
-
-				if( is_platform )
-				{
-					Render::state->color = make_color( Color::magenta );
-				}
-			}
-			break;
-
-			case e_solidity::sensor:
-			{
-				Render::state->color = make_color( Color::light_blue );
-			}
-			break;
-		}
-
-		// draw the primitive
-
-		switch( prim_type )
+		case e_solidity::solid:
 		{
-			case e_sc_prim_type::circle:
-			{
-				Render::draw_circle( { 0.f, 0.f }, radius );
-			}
-			break;
+			Render::state->color = make_color( Color::light_green );
 
-			case e_sc_prim_type::aabb:
+			if( parent_entity->simple.is_stationary() )
 			{
-				Render::draw_rect( aabb );
+				Render::state->color = make_color( Color::green );
 			}
-			break;
+			else if( parent_entity->simple.is_kinematic() )
+			{
+				Render::state->color = make_color( Color::teal );
+			}
+			else if( flags.is_platform )
+			{
+				Render::state->color = make_color( Color::magenta );
+			}
+		}
+		break;
 
-			case e_sc_prim_type::polygon:
-			{
-				Render::draw_lines( verts );
-			}
-			break;
+		case e_solidity::sensor:
+		{
+			Render::state->color = make_color( Color::light_blue );
+		}
+		break;
 		}
 	}
+	else
+	{
+		Render::state->set_from_opt( rs_opt );
+	}
 #endif
+
+	// draw the primitive
+
+	switch( prim_type )
+	{
+	case e_sc_prim_type::circle:
+	{
+		Render::draw_circle( { 0.f, 0.f }, radius );
+	}
+	break;
+
+	case e_sc_prim_type::aabb:
+	{
+		Render::draw_rect( aabb );
+	}
+	break;
+
+	case e_sc_prim_type::polygon:
+	{
+		Render::draw_lines( verts );
+	}
+	break;
+	}
 }
 
 void Simple_Collision_Body::update_to_match_parent_transform()
@@ -1345,7 +1355,7 @@ c2Poly Simple_Collision_Body::as_simple_poly()
 Simple_Collision_Platform_Body::Simple_Collision_Platform_Body( Entity* parent_entity )
 	: Simple_Collision_Body( parent_entity )
 {
-	is_platform = true;
+	flags.is_platform = true;
 }
 
 std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Platform_Body::intersects_with_manifold( Simple_Collision_Body* other )

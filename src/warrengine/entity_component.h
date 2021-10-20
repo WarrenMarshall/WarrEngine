@@ -267,10 +267,21 @@ struct Simple_Collision_Body : Entity_Component
 	[[nodiscard]] bool is_aabb();
 	[[nodiscard]] bool is_polygon();
 
-	bool is_platform = false;
+	struct
+	{
+		// if true, this is a platform collider. meaning the player can pass
+		// through it from the bottom but not the top.
+		bool is_platform : 1 = false;
 
-	// if true, then any entities touching this collider need to move WITH this collider.
-	bool is_sticky = false;
+		// if true, then any entities touching this collider need to move WITH this collider.
+		bool is_sticky : 1 = false;
+
+		// if true, then this collision body will draw itself during the regular
+		// draw cycle. this is a convenience to remove the need to add a
+		// Primitive_Shape_Component to every entity you want to see without
+		// turning on debug drawing.
+		bool draw_as_shape : 1 = false;
+	} flags;
 
 	// box
 	Rect aabb = {};

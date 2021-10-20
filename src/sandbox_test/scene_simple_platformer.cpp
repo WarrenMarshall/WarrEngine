@@ -173,7 +173,7 @@ void Scene_Simple_Platformer::pushed()
 			ec->set_sensor_as_continuous();
 			ec->set_as_centered_box( 48.f, 4.f );
 			ec->get_transform()->add_pos( { 0.f, -8.0f } );
-			ec->is_sticky = true;
+			ec->flags.is_sticky = true;
 
 			ec->set_collision_flags(
 				coll_flags.geo,
@@ -206,7 +206,7 @@ void Scene_Simple_Platformer::pushed()
 			//ec->get_transform()->add_pos( { 0.f, -8.0f } );
 			ec->set_as_centered_box( 34.f, 34.f );
 			ec->get_transform()->add_pos( { 0.f, -0.0f } );
-			ec->is_sticky = true;
+			ec->flags.is_sticky = true;
 
 			ec->set_collision_flags(
 				coll_flags.geo,
