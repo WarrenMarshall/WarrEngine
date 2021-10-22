@@ -7,18 +7,18 @@ namespace war
 
 const Rect Rect::zero = Rect( 0, 0, 0, 0 );
 
-Rect::Rect( float_t x, float_t y )
+Rect::Rect( f32 x, f32 y )
 	: x( x ), y( y )
 {
 }
 
-Rect::Rect( float_t x, float_t y, float_t w, float_t h )
+Rect::Rect( f32 x, f32 y, f32 w, f32 h )
 	: x( x ), y( y ), w( w ), h( h )
 {
 }
 
-Rect::Rect( int32_t x, int32_t y, int32_t w, int32_t h )
-	: x( (float_t)x ), y( (float_t)y ), w( (float_t)w ), h( (float_t)h )
+Rect::Rect( i32 x, i32 y, i32 w, i32 h )
+	: x( (f32)x ), y( (f32)y ), w( (f32)w ), h( (f32)h )
 {
 }
 
@@ -27,7 +27,7 @@ Rect::Rect( const Vec2& top_left, const Vec2& width_height )
 {
 }
 
-Rect::Rect( const Vec2& top_left, float_t width, float_t height )
+Rect::Rect( const Vec2& top_left, f32 width, f32 height )
 	: x( top_left.x ), y( top_left.y ), w( width ), h( height )
 {
 }
@@ -68,20 +68,20 @@ Vec2 Rect::get_pos_from_alignment( e_align align ) const
 	auto mid = get_midpoint();
 	auto br = bottom_right();
 
-	if( (int32_t)(align & e_align::right) )
+	if( (i32)(align & e_align::right) )
 	{
 		pos.x = br.x;
 	}
-	if( (int32_t)( align & e_align::hcenter) )
+	if( (i32)( align & e_align::hcenter) )
 	{
 		pos.x = mid.x;
 	}
 
-	if( (int32_t)( align & e_align::bottom) )
+	if( (i32)( align & e_align::bottom) )
 	{
 		pos.y = br.y;
 	}
-	if( (int32_t)( align & e_align::vcenter) )
+	if( (i32)( align & e_align::vcenter) )
 	{
 		pos.y = mid.y;
 	}
@@ -91,7 +91,7 @@ Vec2 Rect::get_pos_from_alignment( e_align align ) const
 
 // inflates/deflates a rectangle by "val". this affects all 4 sides.
 
-Rect Rect::grow( float_t val )
+Rect Rect::grow( f32 val )
 {
 	x -= val;
 	y -= val;
@@ -101,7 +101,7 @@ Rect Rect::grow( float_t val )
 	return *this;
 }
 
-Rect Rect::shrink( float_t val )
+Rect Rect::shrink( f32 val )
 {
 	x += val;
 	y += val;
@@ -121,7 +121,7 @@ bool Rect::contains_point( Vec2 pos )
 // NOTE : passing in a sz of < 1.f is translated as passing in a percentage of
 // the existing width or height.
 
-Rect Rect::cut_left( float_t sz )
+Rect Rect::cut_left( f32 sz )
 {
 	if( sz < 1.f )
 	{
@@ -136,7 +136,7 @@ Rect Rect::cut_left( float_t sz )
 	return result;
 }
 
-Rect Rect::cut_right( float_t sz )
+Rect Rect::cut_right( f32 sz )
 {
 	if( sz < 1.f )
 	{
@@ -150,7 +150,7 @@ Rect Rect::cut_right( float_t sz )
 	return result;
 }
 
-Rect Rect::cut_top( float_t sz )
+Rect Rect::cut_top( f32 sz )
 {
 	if( sz < 1.f )
 	{
@@ -165,7 +165,7 @@ Rect Rect::cut_top( float_t sz )
 	return result;
 }
 
-Rect Rect::cut_bottom( float_t sz )
+Rect Rect::cut_bottom( f32 sz )
 {
 	if( sz < 1.f )
 	{
@@ -252,12 +252,12 @@ Rect Rect::operator-( const Rect& rhs ) const
 	return Rect( x - rhs.x, y - rhs.y, w - rhs.w, h - rhs.h );
 }
 
-Rect Rect::operator*( float_t v ) const
+Rect Rect::operator*( f32 v ) const
 {
 	return Rect( this->x * v, this->y * v, this->w * v, this->h * v );
 }
 
-Rect Rect::operator*=( float_t v )
+Rect Rect::operator*=( f32 v )
 {
 	*this = *this * v;
 	return *this;
@@ -287,12 +287,12 @@ c2AABB Rect::as_c2AABB() const
 	return aabb;
 }
 
-Rect Rect::create_centered( float_t sz )
+Rect Rect::create_centered( f32 sz )
 {
 	return Rect::create_centered( sz, sz );
 }
 
-Rect Rect::create_centered( float_t w, float_t h )
+Rect Rect::create_centered( f32 w, f32 h )
 {
 	auto hw = w / 2.f;
 	auto hh = h / 2.f;
@@ -300,9 +300,9 @@ Rect Rect::create_centered( float_t w, float_t h )
 	return Rect( -hw, -hh, w, h );
 }
 
-int32_t Rect::area()
+i32 Rect::area()
 {
-	return (int32_t)( w * h );
+	return (i32)( w * h );
 }
 
 }

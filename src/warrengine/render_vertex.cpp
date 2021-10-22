@@ -5,7 +5,7 @@
 namespace war
 {
 
-Render_Vertex::Render_Vertex( const Vec2& pos, const Vec2& uv, const Color& color, float_t glow )
+Render_Vertex::Render_Vertex( const Vec2& pos, const Vec2& uv, const Color& color, f32 glow )
 	: x( pos.x ), y( pos.y ), z( Render::state->z + Render::state->z_bias ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
@@ -21,7 +21,7 @@ Render_Vertex::Render_Vertex( const Vec2& pos )
 {
 }
 
-Render_Vertex::Render_Vertex( const Vec3& pos, const Vec2& uv, const Color& color, float_t glow )
+Render_Vertex::Render_Vertex( const Vec3& pos, const Vec2& uv, const Color& color, f32 glow )
 	: x( pos.x ), y( pos.y ), z( pos.z + Render::state->z + Render::state->z_bias ),
 	u( uv.u ), v( uv.v ),
 	r( color.r ), g( color.g ), b( color.b ), a( color.a ),
@@ -55,7 +55,7 @@ Render_Vertex::Render_Vertex( const Render_Vertex& other )
 
 // ----------------------------------------------------------------------------
 
-Render_Triangle::Render_Triangle( const Render_Vertex& v0, const Render_Vertex& v1, const Render_Vertex& v2, const Color& color, float_t glow )
+Render_Triangle::Render_Triangle( const Render_Vertex& v0, const Render_Vertex& v1, const Render_Vertex& v2, const Color& color, f32 glow )
 {
 	auto l_copy_render_vert = [&] ( size_t idx, const Render_Vertex& rv )
 	{

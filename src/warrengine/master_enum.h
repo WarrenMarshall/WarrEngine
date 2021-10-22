@@ -24,7 +24,7 @@ DEFINE_ENUM_FLAG_OPERATORS( e_align );
 enum struct e_timeline_type
 {
 	invalid,
-	float_type,
+	f32ype,
 	color_type
 };
 

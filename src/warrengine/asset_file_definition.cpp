@@ -114,7 +114,7 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 	{
 		std::string_view texture_list = key_values_for_asset_def.find_value( "texture_tags" );
 
-		int32_t comma_count = (int32_t)( std::count( texture_list.begin(), texture_list.end(), ',' ) );
+		i32 comma_count = (i32)( std::count( texture_list.begin(), texture_list.end(), ',' ) );
 
 		// each texture_tag is expected to have 5 args : name,x,y,w,h
 		if( ( comma_count % 5 ) != 4 )
@@ -128,10 +128,10 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 		{
 			auto texture_tag = std::string( *tok.get_next_token() );
 
-			float_t x = Text_Parser::float_from_str( *tok.get_next_token() );
-			float_t y = Text_Parser::float_from_str( *tok.get_next_token() );
-			float_t w = Text_Parser::float_from_str( *tok.get_next_token() );
-			float_t h = Text_Parser::float_from_str( *tok.get_next_token() );
+			f32 x = Text_Parser::float_from_str( *tok.get_next_token() );
+			f32 y = Text_Parser::float_from_str( *tok.get_next_token() );
+			f32 w = Text_Parser::float_from_str( *tok.get_next_token() );
+			f32 h = Text_Parser::float_from_str( *tok.get_next_token() );
 
 			Rect rc( x, y, w, h );
 
@@ -202,7 +202,7 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	Vec2 x_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "x_slices" ) );
 	Vec2 y_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "y_slices" ) );
 
-	float_t x, y, w, h;
+	f32 x, y, w, h;
 
 	// top row
 
@@ -213,21 +213,21 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 
 	auto src_texture_tag = texture->get_src_texture()->tag.data();
 
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::top_left ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::top_left ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_00", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::top_middle ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::top_middle ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_10", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::top_right ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::top_right ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_20", tag.data() ), ""
 		);
@@ -239,21 +239,21 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	w = x_slices.l;
 	h = texture->rc.h - y_slices.t - y_slices.b;
 
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::middle_left ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::middle_left ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_01", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::middle_middle ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::middle_middle ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_11", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::middle_right ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::middle_right ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_21", tag.data() ), ""
 		);
@@ -265,21 +265,21 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 	w = x_slices.l;
 	h = y_slices.b;
 
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::bottom_left ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::bottom_left ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_02", tag.data() ), ""
 		);
 
 	x = texture->rc.x + x_slices.l;
 	w = texture->rc.w - x_slices.l - x_slices.r;
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::bottom_middle ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::bottom_middle ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_12", tag.data() ), ""
 		);
 
 	x = texture->rc.x + texture->rc.w - x_slices.r;
 	w = x_slices.r;
-	asset_ptr->patches[ (int32_t)e_slice_def_patch::bottom_right ] =
+	asset_ptr->patches[ (i32)e_slice_def_patch::bottom_right ] =
 		g_engine->asset_cache.add(
 			std::make_unique<Texture_Asset>( src_texture_tag, Rect( x, y, w, h ) ), std::format( "{}_22", tag.data() ), ""
 		);
@@ -394,7 +394,7 @@ void Asset_File_Definition::precache_emitter_params( const Key_Values& key_value
 		}
 		else if( key == "t_scale" )
 		{
-			asset_ptr->t_scale = *Text_Parser::timeline_from_str( e_timeline_type::float_type, value );
+			asset_ptr->t_scale = *Text_Parser::timeline_from_str( e_timeline_type::f32ype, value );
 		}
 		else if( key == "s_spawn_rate" )
 		{
@@ -426,7 +426,7 @@ void Asset_File_Definition::precache_emitter_params( const Key_Values& key_value
 		}
 		else if( key == "t_alpha" )
 		{
-			asset_ptr->t_alpha = *Text_Parser::timeline_from_str( e_timeline_type::float_type, value );
+			asset_ptr->t_alpha = *Text_Parser::timeline_from_str( e_timeline_type::f32ype, value );
 		}
 		else
 		{

@@ -6,8 +6,8 @@ struct OpenGL_Frame_Buffer final
 {
 	std::vector<OpenGL_Color_Attachment> color_attachments;
 	std::string base_name;
-	uint32_t fb_id = 0;
-	uint32_t rbo_id = 0;
+	ui32 fb_id = 0;
+	ui32 rbo_id = 0;
 
 	OpenGL_Frame_Buffer() = default;
 	OpenGL_Frame_Buffer( std::string_view base_name );

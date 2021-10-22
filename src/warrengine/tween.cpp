@@ -5,7 +5,7 @@
 namespace war
 {
 
-Tween::Tween( float_t start, float_t end, time_ms duration_ms, e_tween_type type, e_tween_via via )
+Tween::Tween( f32 start, f32 end, time_ms duration_ms, e_tween_type type, e_tween_via via )
 	: start( start ), end( end )
 {
 	_tween = tweeny::from( start ).to( end ).during( duration_ms );
@@ -23,20 +23,20 @@ Tween::Tween()
 // when a tween is dereferenced, it is updated with the amount of time that has
 // passed since the last time. the value is then returned.
 
-float_t Tween::operator*()
+f32 Tween::operator*()
 {
 	time_ms delta = g_engine->clock.now() - time_last;
 	time_last = g_engine->clock.now();
 
-	return _tween.step( (int32_t)delta );
+	return _tween.step( (i32)delta );
 }
 
-float_t Tween::value()
+f32 Tween::value()
 {
 	time_ms delta = g_engine->clock.now() - time_last;
 	time_last = g_engine->clock.now();
 
-	return _tween.step( (int32_t)delta );
+	return _tween.step( (i32)delta );
 }
 
 void Tween::restart()
@@ -74,7 +74,7 @@ void Tween::set_backwards()
 //
 // - when the end is reached, reset to the start
 
-bool on_step_loop( tweeny::tween<float_t>& tween )
+bool on_step_loop( tweeny::tween<f32>& tween )
 {
 	if( tween.progress() >= 1.f )
 	{
@@ -90,7 +90,7 @@ bool on_step_loop( tweeny::tween<float_t>& tween )
 // - when end is reached, start moving backwards
 // - when start is reached, start moving forwards
 
-bool on_step_pingpong( tweeny::tween<float_t>& tween )
+bool on_step_pingpong( tweeny::tween<f32>& tween )
 {
 	if( tween.progress() >= 1.f )
 	{

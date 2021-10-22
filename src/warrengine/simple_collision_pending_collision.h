@@ -13,7 +13,7 @@ struct Pending_Collision final
 
 	Vec2 closest_point = Vec2::zero;
 	Vec2 normal = Vec2::zero;
-	float_t depth = 0.f;
+	f32 depth = 0.f;
 
 	c2Manifold manifold = {};
 };

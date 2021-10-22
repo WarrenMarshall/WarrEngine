@@ -5,7 +5,7 @@
 namespace war
 {
 
-void Engine::launch( int32_t argc, char* argv [] )
+void Engine::launch( i32 argc, char* argv [] )
 {
 #if _RELEASE
 	// in final release, we don't want to bother the user with the visual
@@ -96,7 +96,7 @@ void Engine::launch( int32_t argc, char* argv [] )
 	g_engine->shutdown();
 }
 
-void Engine::parse_command_line( int32_t argc, char* argv [] )
+void Engine::parse_command_line( i32 argc, char* argv [] )
 {
 	for( auto x = 1; x < argc; ++x )
 	{
@@ -182,7 +182,7 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "viewport_h" ] = std::format( "{}", viewport_h );
 	g_engine->_symbol_to_value[ "viewport_hw" ] = std::format( "{}", viewport_hw );
 	g_engine->_symbol_to_value[ "viewport_hh" ] = std::format( "{}", viewport_hh );
-	log( "V Window Res: {}x{}", ( int32_t )viewport_w, ( int32_t )viewport_h );
+	log( "V Window Res: {}x{}", ( i32 )viewport_w, ( i32 )viewport_h );
 
 	tok.init( g_engine->config_vars.find_value_or( "ui_res", "640x480" ), "x" );
 	ui_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
@@ -191,7 +191,7 @@ void Engine::apply_config_settings()
 	g_engine->_symbol_to_value[ "ui_h" ] = std::format( "{}", ui_h );
 	g_engine->_symbol_to_value[ "ui_hw" ] = std::format( "{}", ui_hw );
 	g_engine->_symbol_to_value[ "ui_hh" ] = std::format( "{}", ui_hh );
-	log( "UI Window Res: {}x{}", ( int32_t )ui_w, ( int32_t )ui_h );
+	log( "UI Window Res: {}x{}", ( i32 )ui_w, ( i32 )ui_h );
 
 	tok.init( g_engine->config_vars.find_value_or( "final_pixel_res", "320x240" ), "x" );
 	final_pixel_w = Text_Parser::float_from_str( tok.tokens[ 0 ] );
@@ -201,11 +201,11 @@ void Engine::apply_config_settings()
 	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
 
 	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
-	glfwSetWindowPos( g_engine->window.glfw_window, ( int32_t )( rc.x ), ( int32_t )( rc.y ) );
-	glfwSetWindowSize( g_engine->window.glfw_window, ( int32_t )( rc.w ), ( int32_t )( rc.h ) );
+	glfwSetWindowPos( g_engine->window.glfw_window, ( i32 )( rc.x ), ( i32 )( rc.y ) );
+	glfwSetWindowSize( g_engine->window.glfw_window, ( i32 )( rc.w ), ( i32 )( rc.h ) );
 	glfwSetWindowAspectRatio( g_engine->window.glfw_window,
 		100,
-		( int32_t )( ( viewport_h / viewport_w ) * 100 ) );
+		( i32 )( ( viewport_h / viewport_w ) * 100 ) );
 
 	// vsync defaults to false.
 	// it is then read from the game config file if it's in there.
@@ -277,7 +277,7 @@ void Engine::main_loop()
 		//
 		// it is passed a percentage for easier use : 0.f-1.f
 
-		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / ( float_t )fixed_time_step::ms_per_step;
+		g_engine->render.frame_interpolate_pct = clock.fts_accum_ms / ( f32 )fixed_time_step::ms_per_step;
 
 		// if due for a fixed time step ...
 
@@ -285,7 +285,7 @@ void Engine::main_loop()
 
 		if( fixed_time_step_due )
 		{
-			int32_t num_time_steps = 0;
+			i32 num_time_steps = 0;
 
 			while( clock.fts_accum_ms >= fixed_time_step::ms_per_step )
 			{
@@ -308,7 +308,7 @@ void Engine::main_loop()
 
 			g_engine->stats.update();
 
-			g_engine->opengl_mgr.set_uniform_float( "u_current_time", ( float_t )clock.now() / 1000.f );
+			g_engine->opengl_mgr.set_uniform_float( "u_current_time", ( f32 )clock.now() / 1000.f );
 			g_engine->opengl_mgr.set_uniform_float( "u_film_grain_amount", post_process.film_grain_amount );
 		}
 		else
@@ -437,10 +437,10 @@ void Engine::do_draw_finished_frame()
 
 		// reset the viewport to the size of the actual window size
 		glViewport(
-			( int32_t )window.viewport_pos_sz.x,
-			( int32_t )window.viewport_pos_sz.y,
-			( int32_t )window.viewport_pos_sz.w,
-			( int32_t )window.viewport_pos_sz.h
+			( i32 )window.viewport_pos_sz.x,
+			( i32 )window.viewport_pos_sz.y,
+			( i32 )window.viewport_pos_sz.w,
+			( i32 )window.viewport_pos_sz.h
 		);
 
 		Render::state->batch_render_target->assign_texture_slot_manual( composite_frame_buffer.color_attachments[ 0 ].texture );
@@ -486,7 +486,7 @@ bool Engine::find_bool_from_symbol(std::string_view symbol, bool def_value)
 	return String_Util::to_int(std::string(*sval));
 }
 
-int32_t Engine::find_int_from_symbol(std::string_view symbol, int32_t def_value)
+i32 Engine::find_int_from_symbol(std::string_view symbol, i32 def_value)
 {
 	auto sval = find_string_from_symbol(symbol);
 
@@ -498,7 +498,7 @@ int32_t Engine::find_int_from_symbol(std::string_view symbol, int32_t def_value)
 	return String_Util::to_int(std::string(*sval));
 }
 
-float_t Engine::find_float_from_symbol(std::string_view symbol, float_t def_value)
+f32 Engine::find_float_from_symbol(std::string_view symbol, f32 def_value)
 {
 	auto sval = find_string_from_symbol(symbol);
 
@@ -694,14 +694,14 @@ void Engine::parse_config_file(std::string_view filename)
 //
 // things like texture files, sound files, etc.
 
-void Engine::precache_asset_resources(int32_t pass)
+void Engine::precache_asset_resources(i32 pass)
 {
 	for (auto& iter : asset_def_file_cache)
 	{
 		iter.precache_asset_resources(pass);
 	}
 
-	log("Pass: {} / {} total assets precached", pass, f_commas((float_t)(g_engine->asset_cache.cache.size())));
+	log("Pass: {} / {} total assets precached", pass, f_commas((f32)(g_engine->asset_cache.cache.size())));
 }
 
 // loops through all threads we have a handle for and waits until they finish
@@ -956,7 +956,7 @@ void Engine::dispatch_box2d_collisions()
 	box2d.end_contact_queue.clear();
 }
 
-void Engine::set_time_dilation(float_t dilation)
+void Engine::set_time_dilation(f32 dilation)
 {
 	clock.dilation = glm::clamp(dilation, 0.1f, 5.f);
 
@@ -987,9 +987,9 @@ void Engine::debug_draw_buffers()
 	g_engine->opengl_mgr.shaders["simple"].bind();
 
 	auto num_color_attachments = frame_buffer.color_attachments.size();
-	float_t scale_factor = 1.f / (float_t)num_color_attachments;
-	float_t w = viewport_w * scale_factor;
-	float_t h = viewport_h * scale_factor;
+	f32 scale_factor = 1.f / (f32)num_color_attachments;
+	f32 w = viewport_w * scale_factor;
+	f32 h = viewport_h * scale_factor;
 	Rect rc = { 0.f, viewport_h - h, w, h };
 
 	{

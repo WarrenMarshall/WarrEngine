@@ -26,7 +26,7 @@ std::string_view String_Util::trim( std::string_view s )
 	return String_Util::rtrim( String_Util::ltrim( s ) );
 }
 
-const std::string String_Util::format_with_commas( float_t value )
+const std::string String_Util::format_with_commas( f32 value )
 {
 	std::string str = std::format( "{:.0f}", value );
 	auto sz = str.size();
@@ -90,9 +90,9 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 	str.erase( std::remove( str.begin(), str.end(), char_to_erase ), str.end() );
 }
 
-[[nodiscard]] int32_t String_Util::to_int( std::string_view str )
+[[nodiscard]] i32 String_Util::to_int( std::string_view str )
 {
-	int32_t value = 0;
+	i32 value = 0;
 
 	if( str[ 0 ] == '$' )
 	{
@@ -107,9 +107,9 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 	return value;
 }
 
-[[nodiscard]] uint32_t String_Util::to_uint( std::string_view str )
+[[nodiscard]] ui32 String_Util::to_uint( std::string_view str )
 {
-	uint32_t value = 0;
+	ui32 value = 0;
 
 	if( str[ 0 ] == '$' )
 	{
@@ -124,9 +124,9 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 	return value;
 }
 
-[[nodiscard]] float_t String_Util::to_float( std::string_view str )
+[[nodiscard]] f32 String_Util::to_float( std::string_view str )
 {
-	float_t value = 0.f;
+	f32 value = 0.f;
 
 	std::from_chars( str.data(), str.data() + str.size(), value );
 
@@ -136,12 +136,12 @@ void String_Util::erase_char( std::string& str, char char_to_erase )
 
 // ----------------------------------------------------------------------------
 
-std::vector<war::Vec2> Geo_Util::generate_convex_shape( int32_t sides, float_t radius )
+std::vector<war::Vec2> Geo_Util::generate_convex_shape( i32 sides, f32 radius )
 {
 	std::vector<Vec2> verts;
 
-	float_t angle = 0;
-	float_t angle_step = 360.f / (float_t)( sides );
+	f32 angle = 0;
+	f32 angle_step = 360.f / (f32)( sides );
 
 	for( auto x = 0 ; x < sides ; ++x )
 	{

@@ -81,7 +81,7 @@ void Quad_Tree::debug_draw() const
 #endif
 }
 
-void Quad_Tree::set_max_nodes_in_pool( int32_t value )
+void Quad_Tree::set_max_nodes_in_pool( i32 value )
 {
 	Quad_Tree::max_nodes_in_pool = value;
 	nodes.init_to_size( value );
@@ -113,7 +113,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) 
 	return touching_nodes;
 }
 
-std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const
+std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_circle_is_touching( const Vec2& pos, f32 radius ) const
 {
 	std::set<Quad_Tree::Node*> touching_nodes;
 
@@ -160,7 +160,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_rect_is_touching( const Rect& rc
 // take a position and a radius, and returns the colliding set based on which
 // nodes that circle touches
 
-std::set<Entity*> Quad_Tree::find_potentially_colliding_entities( const Vec2& pos, float_t radius ) const
+std::set<Entity*> Quad_Tree::find_potentially_colliding_entities( const Vec2& pos, f32 radius ) const
 {
 	std::set<Entity*> entities;
 

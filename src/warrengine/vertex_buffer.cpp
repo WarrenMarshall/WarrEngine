@@ -5,7 +5,7 @@
 namespace war
 {
 
-Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, int32_t verts_per_element )
+Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, i32 verts_per_element )
 	: vao( vao ), verts_per_element( verts_per_element )
 {
 	glCreateBuffers( 1, &gl_id );

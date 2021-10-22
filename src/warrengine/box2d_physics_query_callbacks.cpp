@@ -25,7 +25,7 @@ namespace war::box2d_physics
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-float_t Raycast_Closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction )
+f32 Raycast_Closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, f32 fraction )
 {
 	if( collision_mask > 0 )
 	{
@@ -48,7 +48,7 @@ float_t Raycast_Closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point,
 
 // ----------------------------------------------------------------------------
 
-float_t Raycast_Simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction )
+f32 Raycast_Simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, f32 fraction )
 {
 	if( collision_mask > 0 )
 	{
@@ -71,7 +71,7 @@ float_t Raycast_Simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, 
 
 // ----------------------------------------------------------------------------
 
-float_t Raycast_All::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float_t fraction )
+f32 Raycast_All::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, f32 fraction )
 {
 	if( collision_mask > 0 )
 	{

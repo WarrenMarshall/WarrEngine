@@ -21,8 +21,8 @@ bool Texture_Source_Asset::create()
 	}
 
 	auto sz = image->getSize();
-	w = (float_t)sz.x;
-	h = (float_t)sz.y;
+	w = (f32)sz.x;
+	h = (f32)sz.y;
 
 	image->flipVertically();
 
@@ -46,7 +46,7 @@ bool Texture_Source_Asset::create()
 
 	glTexImage2D(
 		GL_TEXTURE_2D, 0, GL_RGBA8,
-		(int32_t)w, (int32_t)h,
+		(i32)w, (i32)h,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, (void*)( image->getPixelsPtr() ) );
 
 	if( use_mipmaps )

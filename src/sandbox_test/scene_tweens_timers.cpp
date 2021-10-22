@@ -66,7 +66,7 @@ void Scene_Tweens_Timers::draw_ui()
 			ypos += 16.f;
 		};
 
-		float_t ypos = 40.f;
+		f32 ypos = 40.f;
 
 		{
 			scoped_render_state;
@@ -85,7 +85,7 @@ void Scene_Tweens_Timers::draw_ui()
 		}
 	}
 
-	float_t ypos = 40.f;
+	f32 ypos = 40.f;
 
 	auto l_draw_marker = [&] ( float& ypos, Tween& tweener )
 	{

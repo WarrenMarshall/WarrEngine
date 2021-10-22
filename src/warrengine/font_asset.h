@@ -43,7 +43,7 @@ struct Font_Asset final : Asset
 	Font_Def_Asset* font_def = nullptr;
 
 	[[nodiscard]] Vec2 get_string_extents( std::string_view text ) const;
-	[[nodiscard]] float_t get_max_height();
+	[[nodiscard]] f32 get_max_height();
 };
 
 }

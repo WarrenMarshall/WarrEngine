@@ -139,7 +139,7 @@ bool Scene_Coords::on_input_motion( const Input_Event* evt )
 				{
 					// rotate crosshair
 					glow_val += evt->delta.x / 100.f;
-					glow_val = glm::clamp<float_t>( glow_val, 0.f, 100.f );
+					glow_val = glm::clamp<f32>( glow_val, 0.f, 100.f );
 
 				}
 				else

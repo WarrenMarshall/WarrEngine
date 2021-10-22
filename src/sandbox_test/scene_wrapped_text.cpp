@@ -3,6 +3,8 @@
 
 using namespace war;
 
+// #perf - make sure that the text is only being stored ONCE and that we are pessimistic in design
+
 // ----------------------------------------------------------------------------
 
 UI_Control_Data* Scene_Wrapped_Text_UI_Callback::get_data( hash tag )

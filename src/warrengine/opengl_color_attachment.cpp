@@ -10,7 +10,7 @@ OpenGL_Color_Attachment::OpenGL_Color_Attachment( OpenGL_Frame_Buffer* fb_owner,
 {
 
 	// figure out how to identify the internal texture
-	auto texture_num = (int32_t)fb_owner->color_attachments.size();
+	auto texture_num = (i32)fb_owner->color_attachments.size();
 	std::string tex_name( std::format( "tex_{}_{}_fb", texture_num, fb_owner->base_name ) );
 
 	// create the internal texture
@@ -25,7 +25,7 @@ OpenGL_Color_Attachment::OpenGL_Color_Attachment( OpenGL_Frame_Buffer* fb_owner,
 	glCreateTextures( GL_TEXTURE_2D, 1, &src_texture->gl_id );
 	glBindTextureUnit( 0, src_texture->gl_id );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, (int32_t)sz.w, (int32_t)sz.h, 0, GL_RGB, GL_FLOAT, nullptr );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, (i32)sz.w, (i32)sz.h, 0, GL_RGB, GL_FLOAT, nullptr );
 
 	glTextureParameteri( src_texture->gl_id, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTextureParameteri( src_texture->gl_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST );

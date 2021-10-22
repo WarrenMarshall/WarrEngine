@@ -37,7 +37,7 @@ struct Scene_Post_Process_UI_Callback final : UI_Callback
 struct Scene_Post_Process final : Scene
 {
 	Scene_Post_Process_UI_Callback uic;
-	float_t background_alpha = 0.5f;
+	f32 background_alpha = 0.5f;
 
 	Scene_Post_Process();
 

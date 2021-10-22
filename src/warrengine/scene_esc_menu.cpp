@@ -71,16 +71,16 @@ void Scene_Esc_Menu::draw_ui()
 		Render::flush();
 	}
 
-	int32_t num_buttons = 3 + ( g_base_game->flags.has_main_menu and !g_engine->scene_mgr.get_under()->flags.is_main_menu );
+	i32 num_buttons = 3 + ( g_base_game->flags.has_main_menu and !g_engine->scene_mgr.get_under()->flags.is_main_menu );
 
 	auto slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
 
-	float_t panel_w =
+	f32 panel_w =
 		slice_def->get_left_slice_sz()
 		+ UI_Control::get_default_width( e_ui_control_type::button )
 		+ slice_def->get_right_slice_sz();
 
-	float_t panel_h =
+	f32 panel_h =
 		( UI_Control::get_default_height( e_ui_control_type::button ) * num_buttons )
 		+ slice_def->get_top_slice_sz()
 		+ ( get_ui_callback()->get_control_margin( e_ui_control_type::button ).y * ( num_buttons - 1 ) )

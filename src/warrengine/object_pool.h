@@ -16,16 +16,16 @@ struct Object_Pool
 
 	// how many objects have been added into this pool since the last time it
 	// was reset
-	int32_t count = 0;
+	i32 count = 0;
 
 	// which object we're going to use next. this wraps around the vector
 	// above, endlessly re-using objects.
-	int32_t idx = 0;
+	i32 idx = 0;
 
 	Object_Pool() = default;
 	virtual ~Object_Pool() = default;
 
-	void init_to_size( int32_t size )
+	void init_to_size( i32 size )
 	{
 		// pre-allocate the needed number of objects in the pool
 		objects.resize( size );
@@ -60,9 +60,9 @@ struct Object_Pool
 		return ( count == 0 );
 	}
 
-	[[nodiscard]] int32_t capacity()
+	[[nodiscard]] i32 capacity()
 	{
-		return (int32_t)objects.capacity();
+		return (i32)objects.capacity();
 	}
 };
 

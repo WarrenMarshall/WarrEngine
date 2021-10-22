@@ -81,14 +81,14 @@ void Entity_Component::stop()
 {
 }
 
-void Entity_Component::set_life_timer( int32_t life_in_ms )
+void Entity_Component::set_life_timer( i32 life_in_ms )
 {
 	assert( !life_timer.has_value() );
 
 	life_timer = Timer( life_in_ms );
 }
 
-void Entity_Component::set_collision_flags( int32_t collision_mask, int32_t collides_with )
+void Entity_Component::set_collision_flags( i32 collision_mask, i32 collides_with )
 {
 	this->collision_mask = collision_mask;
 	this->collides_with_mask = collides_with;
@@ -151,7 +151,7 @@ Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape 
 	return this;
 }
 
-Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape prim_shape, float_t radius, const Vec2& pos_offset )
+Entity_Component* Primitive_Shape_Component::add_shape( const e_primitive_shape prim_shape, f32 radius, const Vec2& pos_offset )
 {
 	Shape shape;
 
@@ -365,7 +365,7 @@ Box2D_Physics_Component::Box2D_Physics_Component( Entity* parent_entity )
 
 }
 
-void Box2D_Physics_Component::set_collision_flags( int32_t collision_mask, int32_t collides_with )
+void Box2D_Physics_Component::set_collision_flags( i32 collision_mask, i32 collides_with )
 {
 	Entity_Component::set_collision_flags( collision_mask, collides_with );
 
@@ -404,7 +404,7 @@ Box2D_Physics_Body_Component* Box2D_Physics_Component::get_primary_body()
 }
 
 // friction : 0 - slide, 1 - stick
-void Box2D_Physics_Component::set_friction( float_t friction )
+void Box2D_Physics_Component::set_friction( f32 friction )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -413,7 +413,7 @@ void Box2D_Physics_Component::set_friction( float_t friction )
 }
 
 // restitution : 0 = no bounce, 1 = full bounce
-void Box2D_Physics_Component::set_restitution( float_t restitution )
+void Box2D_Physics_Component::set_restitution( f32 restitution )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -422,7 +422,7 @@ void Box2D_Physics_Component::set_restitution( float_t restitution )
 }
 
 // density : 0 = no density, 1 = full density
-void Box2D_Physics_Component::set_density( float_t density )
+void Box2D_Physics_Component::set_density( f32 density )
 {
 	for( b2Fixture* fixture = get_primary_body()->body->GetFixtureList(); fixture; fixture = fixture->GetNext() )
 	{
@@ -510,12 +510,12 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, const Rect& 
 
 // pos - middle of box, relative to body
 // w/h - size of box
-b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, Vec2 pos, float_t w, float_t h )
+b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, Vec2 pos, f32 w, f32 h )
 {
 	return add_fixture_box( tag, { pos.x, pos.y, w, h } );
 }
 
-b2Fixture* Box2D_Physics_Body_Component::add_fixture_circle( hash tag, Vec2 pos, float_t radius )
+b2Fixture* Box2D_Physics_Body_Component::add_fixture_circle( hash tag, Vec2 pos, f32 radius )
 {
 	body->SetTransform( parent_entity->get_pos().to_box2d().to_b2Vec2(), 0.f );
 
@@ -552,7 +552,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_line( hash tag, Vec2 pos, V
 		start += pos;
 		end += pos;
 
-		float_t length = ( end - start ).get_size() / 2.f;
+		f32 length = ( end - start ).get_size() / 2.f;
 
 		shape.SetOneSided(
 			( start + Vec2( -length, length ) ).to_box2d().to_b2Vec2(),
@@ -603,7 +603,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_line_loop( hash tag, Vec2 p
 
 	b2ChainShape shape;
 	{
-		shape.CreateLoop( b2verts.data(), (int32_t)( b2verts.size() ) );
+		shape.CreateLoop( b2verts.data(), (i32)( b2verts.size() ) );
 	}
 
 	b2FixtureDef fixture_def;
@@ -639,7 +639,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_polygon( hash tag, Vec2 pos
 
 	b2PolygonShape shape;
 	{
-		shape.Set( b2verts.data(), (int32_t)( b2verts.size() ) );
+		shape.Set( b2verts.data(), (i32)( b2verts.size() ) );
 	}
 
 	b2FixtureDef fixture_def;
@@ -671,7 +671,7 @@ void Box2D_Physics_Body_Component::add_physics_component_if_needed()
 	}
 }
 
-void Box2D_Physics_Body_Component::set_collision_flags( int32_t collision_mask, int32_t collides_with )
+void Box2D_Physics_Body_Component::set_collision_flags( i32 collision_mask, i32 collides_with )
 {
 	std::vector<b2Fixture*> existing_fixtures;
 
@@ -964,7 +964,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
 
-void Simple_Collision_Body::set_as_box( float_t w, float_t h )
+void Simple_Collision_Body::set_as_box( f32 w, f32 h )
 {
 	prim_type = e_sc_prim_type::aabb;
 	aabb.x = 0.f;
@@ -975,7 +975,7 @@ void Simple_Collision_Body::set_as_box( float_t w, float_t h )
 
 // sets the dimensions of the collision box, centered around the components position.
 
-void Simple_Collision_Body::set_as_centered_box( float_t w, float_t h )
+void Simple_Collision_Body::set_as_centered_box( f32 w, f32 h )
 {
 	prim_type = e_sc_prim_type::aabb;
 	aabb.x = -w / 2.f;
@@ -984,7 +984,7 @@ void Simple_Collision_Body::set_as_centered_box( float_t w, float_t h )
 	aabb.h = h;
 }
 
-void Simple_Collision_Body::set_as_circle( float_t r )
+void Simple_Collision_Body::set_as_circle( f32 r )
 {
 	prim_type = e_sc_prim_type::circle;
 	radius = r;
@@ -1338,7 +1338,7 @@ c2AABB Simple_Collision_Body::as_simple_aabb()
 c2Poly Simple_Collision_Body::as_simple_poly()
 {
 	c2Poly poly = {};
-	poly.count = (int32_t)ws.verts.size();
+	poly.count = (i32)ws.verts.size();
 
 	for( auto x = 0 ; x < ws.verts.size() ; ++x )
 	{
@@ -1412,7 +1412,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 			{
 				for( auto x = 0 ; x < chunk.tilemap_bounds.w ; ++x )
 				{
-					auto tile = &( chunk.tiles[ ( y * (int32_t)chunk.tilemap_bounds.w ) + x ] );
+					auto tile = &( chunk.tiles[ ( y * (i32)chunk.tilemap_bounds.w ) + x ] );
 
 					if( tile->idx == Tile_Map_Asset::Tile::empty )
 					{

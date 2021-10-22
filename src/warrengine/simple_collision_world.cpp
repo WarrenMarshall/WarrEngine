@@ -278,17 +278,14 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				// dynamic -> dynamic
 				case e_sc_type::dynamic:
 				{
-					if( coll.body_a->is_aabb() or coll.body_b->is_aabb() )
+					if( ent_attacker->simple.flags.is_bouncy )
 					{
-						auto coll_normal = Vec2( coll.normal.x, coll.normal.y );
-						assert( !coll_normal.is_zero() );
-
-						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll_normal );
-						dir_victim = Vec2::reflect_across_normal( vel_victim, coll_normal );
-					}
-					else
-					{
+						// #slide ?
 						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
+					}
+					if( ent_victim->simple.flags.is_bouncy )
+					{
+						// #slide ?
 						dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
 					}
 				}
@@ -297,14 +294,22 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				// dynamic -> kinematic
 				case e_sc_type::kinematic:
 				{
-					dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
+					if( ent_attacker->simple.flags.is_bouncy )
+					{
+						// #slide ?
+						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
+					}
 				}
 				break;
 
 				// dynamic -> stationary
 				case e_sc_type::stationary:
 				{
-					ent_attacker->reflect_across( coll.normal );
+					if( ent_attacker->simple.flags.is_bouncy )
+					{
+						// #slide ?
+						ent_attacker->reflect_across( coll.normal );
+					}
 				}
 				break;
 			}
@@ -334,7 +339,11 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				// kinematic -> dynamic
 				case e_sc_type::dynamic:
 				{
-					dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
+					if( ent_victim->simple.flags.is_bouncy )
+					{
+						// #slide ?
+						dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
+					}
 				}
 				break;
 

@@ -5,10 +5,10 @@ namespace war
 struct Vertex_Array_Object final
 {
 	e_render_prim render_prim = e_render_prim::quad;
-	uint32_t gl_id = 0;
+	ui32 gl_id = 0;
 	Primitive_Batch* batch = nullptr;
 
-	float_t indices_to_verts_factor = 0.f;
+	f32 indices_to_verts_factor = 0.f;
 
 	std::unique_ptr<Vertex_Buffer> vb = nullptr;
 	Index_Buffer* ib = nullptr;

@@ -29,11 +29,11 @@ struct Scene_Mgr final
 	{
 		return get_transform()->pos;
 	}
-	[[nodiscard]] float_t get_angle()
+	[[nodiscard]] f32 get_angle()
 	{
 		return get_transform()->angle;
 	}
-	[[nodiscard]] float_t get_scale()
+	[[nodiscard]] f32 get_scale()
 	{
 		return get_transform()->scale;
 	}
@@ -112,8 +112,8 @@ struct Scene_Mgr final
 
 	void draw();
 
-	void draw_scene_stack( int32_t starting_scene_idx );
-	void draw_scene_stack_ui( int32_t starting_scene_idx );
+	void draw_scene_stack( i32 starting_scene_idx );
+	void draw_scene_stack_ui( i32 starting_scene_idx );
 
 	virtual void new_game();
 

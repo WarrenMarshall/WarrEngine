@@ -21,7 +21,7 @@ std::string_view Text_Parser::key_from_str( std::string_view src_string, std::st
 	return value;
 }
 
-int32_t Text_Parser::int_from_str( std::string_view str )
+i32 Text_Parser::int_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -34,7 +34,7 @@ int32_t Text_Parser::int_from_str( std::string_view str )
 	return String_Util::to_int( str );
 }
 
-uint32_t Text_Parser::uint_from_str( std::string_view str )
+ui32 Text_Parser::uint_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -64,7 +64,7 @@ bool Text_Parser::bool_from_str( std::string_view str )
 	return false;
 }
 
-float_t Text_Parser::float_from_str( std::string_view str )
+f32 Text_Parser::float_from_str( std::string_view str )
 {
 	// If this str is a known symbol, return the value from the lookup table
 
@@ -162,7 +162,7 @@ std::unique_ptr<Timeline_Of_Values> Text_Parser::timeline_from_str( e_timeline_t
 
 		switch( type )
 		{
-			case e_timeline_type::float_type:
+			case e_timeline_type::f32ype:
 			{
 				kf.float_value = Text_Parser::float_from_str( *tok.get_next_token() );
 				break;
@@ -223,7 +223,7 @@ std::vector<Color> Text_Parser::color_list_from_str( std::string_view str )
 	// repeating entries
 
 	std::vector<std::string> color_values;
-	int32_t repeat_count;
+	i32 repeat_count;
 	for( auto& color_value : wk_values )
 	{
 		repeat_count = 1;

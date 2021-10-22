@@ -149,9 +149,9 @@ void Scene_UI::draw_ui()
 
 	Scene::draw_ui();
 
-	float_t half_panel_w = 120.f;
-	float_t panel_w = ( half_panel_w * 2.f ) + 16.f;
-	float_t panel_h = 196.f;
+	f32 half_panel_w = 120.f;
+	f32 panel_w = ( half_panel_w * 2.f ) + 16.f;
+	f32 panel_h = 196.f;
 
 	Rect rc_panel = { 0.f, 0.f, panel_w, panel_h };
 	g_ui->layout_init( rc_panel );

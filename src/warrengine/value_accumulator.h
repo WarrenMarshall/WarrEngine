@@ -8,24 +8,24 @@ namespace war
 
 struct Value_Accumulator final
 {
-	float_t value = 0.f;
+	f32 value = 0.f;
 
 	void init();
-	void update_value( int32_t steps );
+	void update_value( i32 steps );
 	void update_value();
 
 	Value_Accumulator& operator++();
-	Value_Accumulator operator++( int32_t );
+	Value_Accumulator operator++( i32 );
 	Value_Accumulator& operator--();
-	Value_Accumulator operator--( int32_t );
-	Value_Accumulator operator+( float_t value ) const;
-	Value_Accumulator operator+=( float_t v );
+	Value_Accumulator operator--( i32 );
+	Value_Accumulator operator+( f32 value ) const;
+	Value_Accumulator operator+=( f32 v );
 	Value_Accumulator operator+( time_ms value ) const;
 	Value_Accumulator operator+=( time_ms v );
 
 private:
 
-	float_t accumulator = 0.f;
+	f32 accumulator = 0.f;
 };
 
 }

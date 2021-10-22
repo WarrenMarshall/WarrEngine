@@ -15,8 +15,8 @@ void Particle_Pool::draw()
 		}
 
 		// lifetime
-		float_t interp_life_span = g_engine->render.calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
-		float_t pct_of_life = glm::abs( 1.f - ( interp_life_span / particle.life_span_save ) );
+		f32 interp_life_span = g_engine->render.calc_interpolated_per_sec_value( particle.life_span, -fixed_time_step::ms_per_step );
+		f32 pct_of_life = glm::abs( 1.f - ( interp_life_span / particle.life_span_save ) );
 
 		// color + alpha
 		Color color;
@@ -24,7 +24,7 @@ void Particle_Pool::draw()
 		color.a = particle.params->t_alpha.get_float_value( pct_of_life );
 
 		// scale
-		float_t scale = particle.params->t_scale.get_float_value( pct_of_life );
+		f32 scale = particle.params->t_scale.get_float_value( pct_of_life );
 
 
 		// render state

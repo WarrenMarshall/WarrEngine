@@ -5,18 +5,18 @@
 namespace war
 {
 
-Game_Controller::Game_Controller( int32_t player_id )
+Game_Controller::Game_Controller( i32 player_id )
 	: player_id( player_id )
 {
 	timer_repeat = Timer( 150 );
 }
 
-void Game_Controller::update_button_state( e_input_id input_id, int32_t xinput_button_bit )
+void Game_Controller::update_button_state( e_input_id input_id, i32 xinput_button_bit )
 {
-	bool last_state = g_engine->input_mgr.button_states_last_frame[ (int32_t)input_id ];
+	bool last_state = g_engine->input_mgr.button_states_last_frame[ (i32)input_id ];
 
 	bool current_state = ( xinput_state.Gamepad.wButtons & xinput_button_bit ) > 0;
-	g_engine->input_mgr.button_states[ (int32_t)input_id ] = current_state;
+	g_engine->input_mgr.button_states[ (i32)input_id ] = current_state;
 
 	if( !last_state and current_state )
 	{
@@ -77,29 +77,29 @@ void Game_Controller::update()
 
 void Game_Controller::play_rumble( e_rumble_effect effect )
 {
-	int32_t rumble_max = 65535;
-	int32_t intensity = 65535;
-	int32_t duration_ms = 600;
+	i32 rumble_max = 65535;
+	i32 intensity = 65535;
+	i32 duration_ms = 600;
 
 	switch( effect )
 	{
 		case e_rumble_effect::medium:
 		{
-			intensity = (int32_t)( rumble_max * 0.75f );
+			intensity = (i32)( rumble_max * 0.75f );
 			duration_ms = 400;
 			break;
 		}
 
 		case e_rumble_effect::small:
 		{
-			intensity = (int32_t)( rumble_max * 0.5f );
+			intensity = (i32)( rumble_max * 0.5f );
 			duration_ms = 300;
 			break;
 		}
 
 		case e_rumble_effect::tiny:
 		{
-			intensity = (int32_t)( rumble_max * 0.35f );
+			intensity = (i32)( rumble_max * 0.35f );
 			duration_ms = 200;
 			break;
 		}
@@ -115,14 +115,14 @@ void Game_Controller::play_rumble( e_rumble_effect effect )
 	play_rumble( intensity, duration_ms );
 }
 
-void Game_Controller::play_rumble( int32_t intensity, int32_t ms )
+void Game_Controller::play_rumble( i32 intensity, i32 ms )
 {
 	XINPUT_VIBRATION rumbler {};
 	rumbler.wLeftMotorSpeed = (WORD)( intensity );
 	rumbler.wRightMotorSpeed = (WORD)( intensity );
 	XInputSetState( player_id, &rumbler );
 
-	rumble_time_remaining_ms = (float_t)( ms );
+	rumble_time_remaining_ms = (f32)( ms );
 }
 
 }

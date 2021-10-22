@@ -15,7 +15,7 @@ Scene::Scene()
 
 // ----------------------------------------------------------------------------
 
-void Scene::select_by_pick_id( int32_t pick_id )
+void Scene::select_by_pick_id( i32 pick_id )
 {
 	if( !pick_id )
 	{
@@ -242,7 +242,7 @@ Entity* Scene::find_entity( hash tag )
 	return e;
 }
 
-Entity* Scene::find_entity_by_pick_id( int32_t pick_id )
+Entity* Scene::find_entity_by_pick_id( i32 pick_id )
 {
 	if( pick_id )
 	{

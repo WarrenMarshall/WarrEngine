@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Tile_Map_Asset::Tile::Tile( int32_t idx, int32_t x_idx, int32_t y_idx, e_tile_flags flags )
+Tile_Map_Asset::Tile::Tile( i32 idx, i32 x_idx, i32 y_idx, e_tile_flags flags )
 	: idx( idx ), x_idx( x_idx ), y_idx( y_idx ), flags( flags )
 {
 }
@@ -22,13 +22,13 @@ bool Tile_Map_Asset::create()
 	Chunk* current_chunk = nullptr;
 	Tiled_Object_Group* current_object_group = nullptr;
 	Tiled_Object* current_object = nullptr;
-	float_t current_object_rotation = 0.f;
+	f32 current_object_rotation = 0.f;
 	bool inside_data_block = false;
 	bool inside_editor_settings = false;
 	bool inside_chunk_block = false;
 	size_t chunk_w = Chunk::default_chunk_sz, chunk_h = Chunk::default_chunk_sz;
 	Rect chunk_bounds;
-	int32_t data_block_y = 0;
+	i32 data_block_y = 0;
 
 	for( const auto& raw_line : file->lines )
 	{
@@ -175,13 +175,13 @@ bool Tile_Map_Asset::create()
 
 			for( auto x = 0 ; x < current_chunk->tilemap_bounds.w ; ++x )
 			{
-				uint32_t idx = String_Util::to_uint( std::string( *tok.get_next_token() ) );
+				ui32 idx = String_Util::to_uint( std::string( *tok.get_next_token() ) );
 
 				e_tile_flags flags = e_tile_flags::none;
 
-				flags |= (e_tile_flags)( ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0 ? (int32_t)e_tile_flags::flipped_horizontally : 0 );
-				flags |= (e_tile_flags)( ( idx & FLIPPED_VERTICALLY_FLAG ) > 0 ? (int32_t)e_tile_flags::flipped_vertically : 0 );
-				flags |= (e_tile_flags)( ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0 ? (int32_t)e_tile_flags::flipped_diagonally : 0 );
+				flags |= (e_tile_flags)( ( idx & FLIPPED_HORIZONTALLY_FLAG ) > 0 ? (i32)e_tile_flags::flipped_horizontally : 0 );
+				flags |= (e_tile_flags)( ( idx & FLIPPED_VERTICALLY_FLAG ) > 0 ? (i32)e_tile_flags::flipped_vertically : 0 );
+				flags |= (e_tile_flags)( ( idx & FLIPPED_DIAGONALLY_FLAG ) > 0 ? (i32)e_tile_flags::flipped_diagonally : 0 );
 
 				idx &= ~( FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG );
 
@@ -203,8 +203,8 @@ bool Tile_Map_Asset::create()
 				current_layer->chunks.emplace_back();
 				current_chunk = &current_layer->chunks.back();
 
-				current_chunk->tilemap_bounds.w = (float_t)width;
-				current_chunk->tilemap_bounds.h = (float_t)height;
+				current_chunk->tilemap_bounds.w = (f32)width;
+				current_chunk->tilemap_bounds.h = (f32)height;
 
 				current_chunk->tiles.reserve( (size_t)( current_chunk->tilemap_bounds.w* current_chunk->tilemap_bounds.h ) );
 			}

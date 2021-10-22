@@ -5,9 +5,9 @@ struct Scene_Simple_Interact final : Scene
 {
 	struct
 	{
-		uint16_t player	= 0b00000001;
-		uint16_t geo	= 0b00000010;
-		uint16_t npc	= 0b00000100;
+		ui16 player	= 0b00000001;
+		ui16 geo	= 0b00000010;
+		ui16 npc	= 0b00000100;
 	} coll_flags;
 
 	Scene_Simple_Interact();

@@ -5,7 +5,7 @@ namespace war::box2d_physics
 struct Raycast_Hit final
 {
 	// how far along the ray did the hit occur?
-	float_t fraction = 0.f;
+	f32 fraction = 0.f;
 
 	// the normal direction resulting from the hit.
 	Vec2 normal = Vec2::zero;
@@ -22,11 +22,11 @@ struct Raycast_Hit final
 struct Raycast_Closest final : b2RayCastCallback
 {
 	bool hit_something = false;
-	int32_t collision_mask = 0;
+	i32 collision_mask = 0;
 	Raycast_Hit result;
 
-	virtual float_t ReportFixture( b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float_t fraction ) override;
+	virtual f32 ReportFixture( b2Fixture* fixture, const b2Vec2& point,
+		const b2Vec2& normal, f32 fraction ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -38,11 +38,11 @@ struct Raycast_Closest final : b2RayCastCallback
 struct Raycast_Simple final : b2RayCastCallback
 {
 	bool hit_something = false;
-	int32_t collision_mask = 0;
+	i32 collision_mask = 0;
 	Raycast_Hit result;
 
-	virtual float_t ReportFixture( b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float_t fraction ) override;
+	virtual f32 ReportFixture( b2Fixture* fixture, const b2Vec2& point,
+		const b2Vec2& normal, f32 fraction ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -53,11 +53,11 @@ struct Raycast_Simple final : b2RayCastCallback
 struct Raycast_All final : b2RayCastCallback
 {
 	bool hit_something = false;
-	int32_t collision_mask = 0;
+	i32 collision_mask = 0;
 	std::vector<Raycast_Hit> results;
 
-	virtual float_t ReportFixture( b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float_t fraction ) override;
+	virtual f32 ReportFixture( b2Fixture* fixture, const b2Vec2& point,
+		const b2Vec2& normal, f32 fraction ) override;
 };
 
 // ----------------------------------------------------------------------------

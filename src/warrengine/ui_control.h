@@ -12,12 +12,12 @@ struct UI_Control final
 	Color text_color = Color::white;
 	Color primary_color = Color::black;
 	Slice_Def_Asset* slice_def = nullptr;
-	int32_t idx = -1;
+	i32 idx = -1;
 	const Texture_Asset* image = nullptr;
 	f_draw_control func_draw_control = nullptr;
 
 	// expressed as a 0-1 percentage.  So 0.2 would be 5 intervals, 0.1 would be 10, etc.
-	float_t interval = 0.f;
+	f32 interval = 0.f;
 
 	// the ui and client rectangles
 	Rect rc_ui = {};
@@ -62,12 +62,12 @@ struct UI_Control final
 	void draw_list_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
 	void draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client, bool is_hovered, bool is_hot );
 
-	static float_t get_default_width( e_ui_control_type type );
-	static float_t get_default_height( e_ui_control_type type );
+	static f32 get_default_width( e_ui_control_type type );
+	static f32 get_default_height( e_ui_control_type type );
 	Vec2 get_control_inner_margins();
 
-	float_t default_width = 0.f;
-	float_t default_height = 0.f;
+	f32 default_width = 0.f;
+	f32 default_height = 0.f;
 };
 
 }

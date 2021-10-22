@@ -43,7 +43,7 @@ void Particle_Spawner::parse_from_config_string( std::string_view value )
 	Tokenizer tok( value, "," );
 
 	type = (e_particle_spawner_type)g_engine->find_int_from_symbol( *tok.get_next_token() );
-	assert( (int32_t)type > 0 );
+	assert( (i32)type > 0 );
 
 	switch( type )
 	{

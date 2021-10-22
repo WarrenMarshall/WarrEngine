@@ -8,8 +8,8 @@ namespace war
 
 Vec2 Coord_System::window_to_viewport_pos( const Vec2& window_pos )
 {
-	float_t scale_w = ( viewport_w / g_engine->window.viewport_pos_sz.w );
-	float_t scale_h = ( viewport_h / g_engine->window.viewport_pos_sz.h );
+	f32 scale_w = ( viewport_w / g_engine->window.viewport_pos_sz.w );
+	f32 scale_h = ( viewport_h / g_engine->window.viewport_pos_sz.h );
 
 	return
 	{
@@ -96,8 +96,8 @@ Vec2 Coord_System::world_to_ui_pos( const Vec2& world_pos )
 
 Vec2 Coord_System::window_to_viewport_vec( const Vec2& window_delta )
 {
-	float_t scale_w = ( viewport_w / g_engine->window.viewport_pos_sz.w );
-	float_t scale_h = ( viewport_h / g_engine->window.viewport_pos_sz.h );
+	f32 scale_w = ( viewport_w / g_engine->window.viewport_pos_sz.w );
+	f32 scale_h = ( viewport_h / g_engine->window.viewport_pos_sz.h );
 
 	return
 	{

@@ -50,12 +50,12 @@ void OpenGL_Mgr::init()
 	}
 
 	// how many color attachments can be added to a frame buffer object
-	int32_t max_color_attachments = 0;
+	i32 max_color_attachments = 0;
 	glGetIntegerv( GL_MAX_COLOR_ATTACHMENTS, &max_color_attachments );
 	log( "GL_MAX_COLOR_ATTACHMENTS : {} (per frame buffer object)", max_color_attachments );
 
 	// the maximum number of buffers that can be written to at once from a fragment shader
-	int32_t max_draw_buffers = 0;
+	i32 max_draw_buffers = 0;
 	glGetIntegerv( GL_MAX_DRAW_BUFFERS, &max_draw_buffers );
 	log( "GL_MAX_DRAW_BUFFERS : {}", max_draw_buffers );
 
@@ -211,7 +211,7 @@ void OpenGL_Mgr::set_projection_matrix() const
 {
 	glm::mat4 projection = glm::mat4( 1.f );
 
-	projection = glm::ortho<float_t>(
+	projection = glm::ortho<f32>(
 		0.f,
 		viewport_w,
 		viewport_h,
@@ -341,9 +341,9 @@ void OpenGL_Mgr::set_view_matrix_identity_ui()
 // the requested uniform name. they will read and return the first one they
 // find.
 
-float_t OpenGL_Mgr::get_uniform_float( std::string_view name )
+f32 OpenGL_Mgr::get_uniform_float( std::string_view name )
 {
-	float_t result = 0.f;
+	f32 result = 0.f;
 
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -361,7 +361,7 @@ float_t OpenGL_Mgr::get_uniform_float( std::string_view name )
 
 bool OpenGL_Mgr::get_uniform_bool( std::string_view name )
 {
-	int32_t result = 0;
+	i32 result = 0;
 
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -387,7 +387,7 @@ Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 
 		if( loc != -1 )
 		{
-			glGetnUniformfv( Shader.gl_id, loc, 4 * sizeof( float_t ), &result.r );
+			glGetnUniformfv( Shader.gl_id, loc, 4 * sizeof( f32 ), &result.r );
 			break;
 		}
 	}
@@ -398,7 +398,7 @@ Color OpenGL_Mgr::get_uniform_color( std::string_view name )
 // the "set_uniform" functions loop through all shaders and attempt to set a
 // uniform value in each one, if it exists.
 
-void OpenGL_Mgr::set_uniform_float( std::string_view name, float_t value )
+void OpenGL_Mgr::set_uniform_float( std::string_view name, f32 value )
 {
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -434,7 +434,7 @@ void OpenGL_Mgr::set_uniform_color( std::string_view name, const Color& value )
 	}
 }
 
-void OpenGL_Mgr::set_uniform_array( std::string_view name, int32_t* value, int32_t count )
+void OpenGL_Mgr::set_uniform_array( std::string_view name, i32* value, i32 count )
 {
 	for( auto& [shader_name, Shader] : g_engine->opengl_mgr.shaders )
 	{
@@ -453,7 +453,7 @@ void OpenGL_Mgr::set_uniform_array( std::string_view name, int32_t* value, int32
 //
 // note : buffer must already be bound or this will crash
 
-void OpenGL_Mgr::allocate_vertex_buffer_on_gpu( int32_t max_verts, bool is_static )
+void OpenGL_Mgr::allocate_vertex_buffer_on_gpu( i32 max_verts, bool is_static )
 {
 	glBufferData(
 		GL_ARRAY_BUFFER,

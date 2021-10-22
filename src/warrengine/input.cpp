@@ -18,31 +18,31 @@ Input_Event::Input_Event()
 
 // ----------------------------------------------------------------------------
 
-void character_callback( GLFWwindow* window, uint32_t key_code )
+void character_callback( GLFWwindow* window, ui32 key_code )
 {
 	Input_Event evt;
 	evt.event_id = e_event_id::input_key;
-	evt.ch = (uint8_t)key_code;
+	evt.ch = (ui8)key_code;
 
 	g_engine->input_mgr.event_queue.push_back( evt );
 }
 
 // ----------------------------------------------------------------------------
 
-void mouse_wheel_callback( GLFWwindow* window, double_t xoffset, double_t yoffset )
+void mouse_wheel_callback( GLFWwindow* window, d64 xoffset, d64 yoffset )
 {
-	g_engine->input_mgr.mouse_wheel_delta.x += (float_t)( xoffset );
-	g_engine->input_mgr.mouse_wheel_delta.y += (float_t)( yoffset );
+	g_engine->input_mgr.mouse_wheel_delta.x += (f32)( xoffset );
+	g_engine->input_mgr.mouse_wheel_delta.y += (f32)( yoffset );
 }
 
 // ----------------------------------------------------------------------------
 
 static Vec2 last_mouse_pos = Vec2::zero;
 
-void mouse_motion_callback( GLFWwindow* window, double_t xpos, double_t ypos )
+void mouse_motion_callback( GLFWwindow* window, d64 xpos, d64 ypos )
 {
-	auto fxpos = (float_t)xpos;
-	auto fypos = (float_t)ypos;
+	auto fxpos = (f32)xpos;
+	auto fypos = (f32)ypos;
 
 	// compute movement delta in window space
 	g_engine->input_mgr.mouse_move_delta.x += fxpos - last_mouse_pos.x;
@@ -57,7 +57,7 @@ void mouse_motion_callback( GLFWwindow* window, double_t xpos, double_t ypos )
 
 // ----------------------------------------------------------------------------
 
-void joystick_callback( int32_t jid, int32_t event )
+void joystick_callback( i32 jid, i32 event )
 {
 	if( event == GLFW_CONNECTED )
 	{
@@ -88,7 +88,7 @@ void Input_Mgr::init()
 	glfwSetCharCallback( g_engine->window.glfw_window, character_callback );
 
 	// init button states so everything is considered "unpressed" at the start
-	for( auto x = 0; x < (int32_t)e_input_id::max; ++x )
+	for( auto x = 0; x < (i32)e_input_id::max; ++x )
 	{
 		button_states[ x ] = false;
 		button_states_last_frame[ x ] = false;
@@ -110,10 +110,10 @@ void Input_Mgr::queue_presses()
 		// be acknowledged so we can unpause the game as well as use the pause
 		// state for inspection/debugging.
 
-		button_states_last_frame[ ( int32_t )e_input_id::key_pause ] = button_states[ ( int32_t )e_input_id::key_pause ];
-		button_states_last_frame[ ( int32_t )e_input_id::mouse_button_middle ] = button_states[ ( int32_t )e_input_id::mouse_button_middle ];
-		button_states_last_frame[ ( int32_t )e_input_id::key_f5 ] = button_states[ ( int32_t )e_input_id::key_f5 ];
-		button_states_last_frame[ ( int32_t )e_input_id::key_f6 ] = button_states[ ( int32_t )e_input_id::key_f6 ];
+		button_states_last_frame[ ( i32 )e_input_id::key_pause ] = button_states[ ( i32 )e_input_id::key_pause ];
+		button_states_last_frame[ ( i32 )e_input_id::mouse_button_middle ] = button_states[ ( i32 )e_input_id::mouse_button_middle ];
+		button_states_last_frame[ ( i32 )e_input_id::key_f5 ] = button_states[ ( i32 )e_input_id::key_f5 ];
+		button_states_last_frame[ ( i32 )e_input_id::key_f6 ] = button_states[ ( i32 )e_input_id::key_f6 ];
 
 		update_button_state( e_input_id::key_pause, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAUSE ) );
 		update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_MIDDLE ) );
@@ -378,9 +378,9 @@ void Input_Mgr::dispatch_event_queue()
 	event_queue.clear();
 }
 
-void Input_Mgr::update_button_state( e_input_id input_id, int32_t glfw_state )
+void Input_Mgr::update_button_state( e_input_id input_id, i32 glfw_state )
 {
-	button_states[ (int32_t)input_id ] = glfw_state;
+	button_states[ (i32)input_id ] = glfw_state;
 
 	switch( get_button_state( input_id ) )
 	{
@@ -449,7 +449,7 @@ void Input_Mgr::refresh_connected_gamepads()
 	XINPUT_STATE state;
 	ZeroMemory( &state, sizeof( XINPUT_STATE ) );
 
-	int32_t xinput_player_id = -1;
+	i32 xinput_player_id = -1;
 	for( auto pn = 0 ; pn < XUSER_MAX_COUNT and xinput_player_id == -1 ; ++pn )
 	{
 		if( XInputGetState( pn, &state ) == ERROR_SUCCESS )
@@ -521,8 +521,8 @@ e_button_state Input_Mgr::get_button_state( e_input_id input_id )
 {
 	e_button_state bs = e_button_state::up;
 
-	bool state = button_states[ (int32_t)input_id ];
-	bool state_last_frame = button_states_last_frame[ (int32_t)input_id ];
+	bool state = button_states[ (i32)input_id ];
+	bool state_last_frame = button_states_last_frame[ (i32)input_id ];
 
 	if( state and state_last_frame )
 	{
@@ -551,15 +551,15 @@ Vec2 Input_Mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 		return Vec2::zero;
 	}
 
-	static float_t gamepad_dead_zone = war::Text_Parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
+	static f32 gamepad_dead_zone = war::Text_Parser::float_from_str( g_engine->config_vars.find_value_or( "gamepad_dead_zone", "0.25" ) );
 	Vec2 value;
 
 	switch( input_id )
 	{
 		case e_input_id::gamepad_left_stick:
 		{
-			value.x = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbLX / 32767.f );
-			value.y = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbLY / 32767.f ) * -1.f;
+			value.x = glm::max( -1.f, (f32)gamepad->xinput_state.Gamepad.sThumbLX / 32767.f );
+			value.y = glm::max( -1.f, (f32)gamepad->xinput_state.Gamepad.sThumbLY / 32767.f ) * -1.f;
 
 			if( use_dead_zone )
 			{
@@ -574,8 +574,8 @@ Vec2 Input_Mgr::get_axis_state( e_input_id input_id, bool use_dead_zone )
 
 		case e_input_id::gamepad_right_stick:
 		{
-			value.x = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbRX / 32767.f );
-			value.y = glm::max( -1.f, (float_t)gamepad->xinput_state.Gamepad.sThumbRY / 32767.f ) * -1.f;
+			value.x = glm::max( -1.f, (f32)gamepad->xinput_state.Gamepad.sThumbRX / 32767.f );
+			value.y = glm::max( -1.f, (f32)gamepad->xinput_state.Gamepad.sThumbRY / 32767.f ) * -1.f;
 
 			if( use_dead_zone )
 			{

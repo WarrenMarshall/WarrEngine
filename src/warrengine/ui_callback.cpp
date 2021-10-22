@@ -90,7 +90,7 @@ size_t UI_Callback::get_item_count( hash tag )
 	return 0;
 }
 
-std::string_view UI_Callback::get_item_for_idx( hash tag, int32_t idx )
+std::string_view UI_Callback::get_item_for_idx( hash tag, i32 idx )
 {
 	return "n/a";
 }
@@ -143,7 +143,7 @@ bool UI_Callback::validate_value_change( hash tag, UI_Control_Data* old_value, U
 //
 // i.e between a checkbox and it's label
 
-float_t UI_Callback::get_control_padding()
+f32 UI_Callback::get_control_padding()
 {
 	return 4.f;
 }

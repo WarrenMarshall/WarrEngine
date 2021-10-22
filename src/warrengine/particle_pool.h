@@ -12,7 +12,7 @@ struct Particle_Pool final : Object_Pool<Particle>
 
 	// the number of particles in the pool that are currently alive. this is
 	// updated with each "update" cycle.
-	int32_t num_alive = 0;
+	i32 num_alive = 0;
 
 	void draw();
 	void update();

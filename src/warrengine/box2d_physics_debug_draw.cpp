@@ -48,7 +48,7 @@ void Box2D_Debug_Draw::DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCou
 }
 
 // Draw a circle.
-void Box2D_Debug_Draw::DrawCircle( const b2Vec2& center, float_t radius, const b2Color& color )
+void Box2D_Debug_Draw::DrawCircle( const b2Vec2& center, f32 radius, const b2Color& color )
 {
 	Vec2 position = Vec2( center ).from_box2d();
 
@@ -66,7 +66,7 @@ void Box2D_Debug_Draw::DrawCircle( const b2Vec2& center, float_t radius, const b
 }
 
 // Draw a solid circle.
-void Box2D_Debug_Draw::DrawSolidCircle( const b2Vec2& center, float_t radius, const b2Vec2& axis, const b2Color& color )
+void Box2D_Debug_Draw::DrawSolidCircle( const b2Vec2& center, f32 radius, const b2Vec2& axis, const b2Color& color )
 {
 	Vec2 position = Vec2( center ).from_box2d();
 
@@ -101,7 +101,7 @@ void Box2D_Debug_Draw::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const b2
 // @param xf a transform.
 void Box2D_Debug_Draw::DrawTransform( const b2Transform& xf )
 {
-	constexpr float_t debug_line_length = 10.f;
+	constexpr f32 debug_line_length = 10.f;
 
 	Vec2 v = Vec2( xf.p ).from_box2d();
 
@@ -124,7 +124,7 @@ void Box2D_Debug_Draw::DrawTransform( const b2Transform& xf )
 }
 
 // Draw a point.
-void Box2D_Debug_Draw::DrawPoint( const b2Vec2& p, float_t size, const b2Color& color )
+void Box2D_Debug_Draw::DrawPoint( const b2Vec2& p, f32 size, const b2Color& color )
 {
 	Vec2 v = Vec2( p ).from_box2d();
 

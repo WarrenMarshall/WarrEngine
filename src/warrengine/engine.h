@@ -6,15 +6,15 @@ struct Engine final
 {
 	// the function that all games/apps call to get the engine up and running
 	template<typename T>
-	static void go( int32_t argc, char* argv [] )
+	static void go( i32 argc, char* argv [] )
 	{
 		g_base_game = std::make_unique<T>();
 
 		launch( argc, argv );
 	}
 
-	static void launch( int32_t argc, char* argv [] );
-	static void parse_command_line( int32_t argc, char* argv [] );
+	static void launch( i32 argc, char* argv [] );
+	static void parse_command_line( i32 argc, char* argv [] );
 	static void precache();
 	static void apply_config_settings();
 
@@ -28,7 +28,7 @@ struct Engine final
 	// all the info it needs
 	struct
 	{
-		float_t film_grain_amount = 0.f;
+		f32 film_grain_amount = 0.f;
 	} post_process;
 
 	std::vector<Asset_File_Definition> asset_def_file_cache;
@@ -75,7 +75,7 @@ struct Engine final
 	void deinit();
 	void draw();
 	void cache_asset_definition_files( std::string_view folder_name );
-	void precache_asset_resources( int32_t pass );
+	void precache_asset_resources( i32 pass );
 	void wait_for_thread_pool_to_finish();
 
 	void debug_draw_buffers();
@@ -99,8 +99,8 @@ struct Engine final
 	[[nodiscard]] bool is_symbol_in_map( std::string_view str );
 	[[nodiscard]] std::optional<std::string> find_string_from_symbol( std::string_view str );
 	[[nodiscard]] bool find_bool_from_symbol( std::string_view str, bool def_value = true );
-	[[nodiscard]] int32_t find_int_from_symbol( std::string_view str, int32_t def_value = 0 );
-	[[nodiscard]] float_t find_float_from_symbol( std::string_view str, float_t def_value = 0.f );
+	[[nodiscard]] i32 find_int_from_symbol( std::string_view str, i32 def_value = 0 );
+	[[nodiscard]] f32 find_float_from_symbol( std::string_view str, f32 def_value = 0.f );
 	[[nodiscard]] Color find_color_from_symbol( std::string_view str, const Color& def_value = Color::white );
 	[[nodiscard]] Range find_range_from_symbol( std::string_view str, const Range& def_value = Range( 0, 1 ) );
 	[[nodiscard]] Vec2 find_vec2_from_symbol( std::string_view str, const Vec2& def_value = Vec2( 0, 0 ) );
@@ -129,7 +129,7 @@ struct Engine final
 	void dispatch_collision_queue();
 	void dispatch_box2d_collisions();
 
-	void set_time_dilation( float_t dilation );
+	void set_time_dilation( f32 dilation );
 
 	// message box
 

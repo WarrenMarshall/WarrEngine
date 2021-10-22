@@ -25,7 +25,7 @@ void Scene_Simple_Sensors::spawn_sensor()
 		ec->set_sensor_as_continuous();
 		ec->set_collision_flags( coll_flags.sensor, 0 );
 
-		static int32_t last_spawned_type = 0;
+		static i32 last_spawned_type = 0;
 		last_spawned_type++;
 		switch( last_spawned_type % 3 )
 		{

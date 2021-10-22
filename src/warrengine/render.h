@@ -15,7 +15,7 @@ struct Render final
 	// tick. this is used to interpolate/predict rendering for smooth movement
 	// and rotations even at low FTS values.
 
-	float_t frame_interpolate_pct = 0.f;
+	f32 frame_interpolate_pct = 0.f;
 
 #ifndef _RELEASE
 	struct
@@ -59,7 +59,7 @@ struct Render final
 	static Render_State* state;
 
 	// circle sample points are stored in a unit circle
-	constexpr static int32_t circle_sample_points_max = 16;
+	constexpr static i32 circle_sample_points_max = 16;
 	std::vector<Vec2> circle_sample_points;
 
 	void init();
@@ -68,14 +68,14 @@ struct Render final
 	static void draw_quad( const Texture_Asset* texture, const Rect& dst );
 
 	static auto get_circle_start_end_indices( e_corner corner );
-	static void draw_circle( const Vec2& origin, float_t radius, e_corner corner = e_corner::all );
-	static void draw_filled_circle( const Vec2& origin, float_t radius, e_corner corner = e_corner::all );
+	static void draw_circle( const Vec2& origin, f32 radius, e_corner corner = e_corner::all );
+	static void draw_filled_circle( const Vec2& origin, f32 radius, e_corner corner = e_corner::all );
 
 	static void draw_rect( const Rect& dst );
 	static void draw_filled_rect( const Rect& dst );
 
-	static void draw_rounded_rect( const Rect& dst, float_t radius );
-	static void draw_rounded_filled_rect( const Rect& dst, float_t radius );
+	static void draw_rounded_rect( const Rect& dst, f32 radius );
+	static void draw_rounded_filled_rect( const Rect& dst, f32 radius );
 
 	static void draw_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 );
 	static void draw_filled_triangle( const Vec2& v0, const Vec2& v1, const Vec2& v2 );
@@ -96,14 +96,14 @@ struct Render final
 	static void draw_tile_map( const Tile_Set_Asset* tile_set, const Tile_Map_Asset* tile_map, const Vec2& pos );
 	static void draw_crosshair( Vec2 pos );
 
-	static std::vector<std::string> wrap_string_to_width( std::string_view text, float_t width );
+	static std::vector<std::string> wrap_string_to_width( std::string_view text, f32 width );
 
 	static void draw_world_axis();
 
 	void begin_frame();
 	void end_frame();
 
-	[[nodiscard]] float_t calc_interpolated_per_sec_value( float_t current_value, float_t step_per_second ) const;
+	[[nodiscard]] f32 calc_interpolated_per_sec_value( f32 current_value, f32 step_per_second ) const;
 
 	// ----------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ struct Render final
 	Render* push();
 	Render* pop();
 
-	[[nodiscard]] static int32_t sample_pick_id_at( Vec2 viewport_click_pos );
+	[[nodiscard]] static i32 sample_pick_id_at( Vec2 viewport_click_pos );
 
 	// forces a flushing of the render buffers that are currently in progress
 	static void flush();

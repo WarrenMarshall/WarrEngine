@@ -23,21 +23,21 @@ struct Texture_Asset final : Asset
 	std::vector<Texture_Asset*> frames;
 	Tween frame_tween;
 	e_tween_type tween_type = e_tween_type::loop;
-	int32_t frames_per_second = 0;
+	i32 frames_per_second = 0;
 
 	Texture_Asset() = default;
 	Texture_Asset( std::string_view src_texture_tag );
 	Texture_Asset( std::string_view src_texture_tag, const Rect& rc_tex );
-	Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, int32_t frames_per_second );
+	Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, i32 frames_per_second );
 
 	Texture_Source_Base* find_texture_source_base( std::string_view src_texture_tag );
 
-	[[nodiscard]] const Texture_Asset* get_frame( float_t anim_offset ) const;
+	[[nodiscard]] const Texture_Asset* get_frame( f32 anim_offset ) const;
 	void randomize();
 	bool is_animated() const;
 
-	float_t width() const;
-	float_t height() const;
+	f32 width() const;
+	f32 height() const;
 
 private:
 	Texture_Source_Base* src_texture = nullptr;

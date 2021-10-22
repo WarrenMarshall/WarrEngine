@@ -25,10 +25,10 @@ struct Scene_Simple_Platformer final : Scene
 {
 	struct
 	{
-		uint16_t player		= 0b00000001;
-		uint16_t geo		= 0b00000010;
-		uint16_t jump_pad	= 0b00000100;
-		uint16_t mover		= 0b00001000;
+		ui16 player		= 0b00000001;
+		ui16 geo		= 0b00000010;
+		ui16 jump_pad	= 0b00000100;
+		ui16 mover		= 0b00001000;
 	} coll_flags;
 
 	Entity* world = nullptr;

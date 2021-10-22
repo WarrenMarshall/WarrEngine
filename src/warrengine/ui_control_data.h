@@ -27,21 +27,21 @@ struct UI_Control_Data final
 	[[nodiscard]] bool bool_value();
 	void set_bool_value( bool value );
 
-	[[nodiscard]] float_t float_value();
-	void set_float_value( float_t value );
+	[[nodiscard]] f32 float_value();
+	void set_float_value( f32 value );
 
-	[[nodiscard]] float_t float_value_internal();
-	void set_float_value_internal( float_t value );
+	[[nodiscard]] f32 float_value_internal();
+	void set_float_value_internal( f32 value );
 
-	[[nodiscard]] int32_t int_value();
-	void set_int_value( int32_t value );
+	[[nodiscard]] i32 int_value();
+	void set_int_value( i32 value );
 
 	e_ui_control_type type = e_ui_control_type::none;
 
 	// hot data
 	bool _bool_value = false;
-	int32_t _int_value = 0;
-	float_t _float_value = 0.f;
+	i32 _int_value = 0;
+	f32 _float_value = 0.f;
 	std::string _string_value;
 
 	struct

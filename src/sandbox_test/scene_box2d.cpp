@@ -89,7 +89,7 @@ void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 	e->rs_opt.color = Color( Random::getf(), Random::getf(), Random::getf() );
 	e->set_pickable();
 	{
-		float_t random_radius = Random::getf_range( 16.f, 32.f );
+		f32 random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
 			auto ec = e->add_component<Box2D_Dynamic_Body_Component>();
@@ -111,16 +111,16 @@ void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 
 void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 {
-	float_t base_size = 8.f;
-	float_t w = Random::getf_range( base_size, base_size * 10.f );
-	float_t h = ( base_size * 15.f ) - w;
+	f32 base_size = 8.f;
+	f32 w = Random::getf_range( base_size, base_size * 10.f );
+	f32 h = ( base_size * 15.f ) - w;
 	Rect rc_box = { 0.f, 0.f, w, h };
 
 	auto e = add_entity<Entity>();
 	e->set_pos( world_pos );
 	e->set_pickable();
 	{
-		float_t random_radius = Random::getf_range( 16.f, 32.f );
+		f32 random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
 			auto ec = e->add_component<Box2D_Dynamic_Body_Component>();

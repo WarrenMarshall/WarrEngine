@@ -31,7 +31,7 @@ struct Quad_Tree final
 	// of needless subdividing of the spatial grid. you hit diminishing returns
 	// pretty quickly.
 
-	int32_t max_entities_per_node = 3;
+	i32 max_entities_per_node = 3;
 
 	// the smallest area that a node can be before we can't split it anymore.
 	// this prevents nodes from getting super tiny. this is computed out as
@@ -52,7 +52,7 @@ struct Quad_Tree final
 	// if the nodes are looking wrong or queries are returning bizarre results
 	// that are seemingly impossible, increase this number.
 
-	int32_t max_nodes_in_pool = 255;
+	i32 max_nodes_in_pool = 255;
 
 	Scene* parent_scene = nullptr;
 	Object_Pool<Quad_Tree::Node> nodes;
@@ -62,14 +62,14 @@ struct Quad_Tree final
 	void set_bounds( const Rect& bounds );
 	void reset();
 	void debug_draw() const;
-	void set_max_nodes_in_pool( int32_t value );
+	void set_max_nodes_in_pool( i32 value );
 
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_entity_is_touching( Entity* e ) const;
-	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_circle_is_touching( const Vec2& pos, float_t radius ) const;
+	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_circle_is_touching( const Vec2& pos, f32 radius ) const;
 	[[nodiscard]] std::set<Quad_Tree::Node*> get_nodes_rect_is_touching( const Rect& rc_aabb ) const;
 
 	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( Entity* e ) const;
-	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( const Vec2& pos, float_t radius ) const;
+	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( const Vec2& pos, f32 radius ) const;
 	[[nodiscard]] std::set<Entity*> find_potentially_colliding_entities( const Rect& rc_aabb ) const;
 
 	void pre_update();

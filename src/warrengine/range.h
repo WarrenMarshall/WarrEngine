@@ -4,15 +4,15 @@ namespace war
 
 struct Range final
 {
-	float_t start = 0.f;
-	float_t end = 0.f;
+	f32 start = 0.f;
+	f32 end = 0.f;
 
 	Range() = default;
-	Range( float_t start, float_t end )
+	Range( f32 start, f32 end )
 		: start( start ), end( end )
 	{
 	}
-	Range( float_t value )
+	Range( f32 value )
 		: start( -value ), end( value )
 	{
 	}
@@ -25,31 +25,31 @@ struct Range final
 		end = Text_Parser::float_from_str( *tok.get_next_token() );
 	}
 
-	float_t clamp_value( float_t value )
+	f32 clamp_value( f32 value )
 	{
 		return glm::clamp( value, start, end );
 	}
 
-	[[nodiscard]] float_t get_random_value()
+	[[nodiscard]] f32 get_random_value()
 	{
-		float_t rand = Random::getf_range( 0.f, 1.f );
+		f32 rand = Random::getf_range( 0.f, 1.f );
 		return start + ( ( end - start ) * rand );
 	}
 
-	[[nodiscard]] float_t get_value_at_pct( float_t pct )
+	[[nodiscard]] f32 get_value_at_pct( f32 pct )
 	{
 		pct = glm::clamp( pct, 0.f, 1.f );
 		return start + ( ( end - start ) * pct );
 	}
 
-	[[nodiscard]] float_t get_pct_from_value( float_t value )
+	[[nodiscard]] f32 get_pct_from_value( f32 value )
 	{
-		float_t pct = ( value - start ) / ( end - start );
+		f32 pct = ( value - start ) / ( end - start );
 
 		return glm::clamp( pct, 0.f, 1.f );
 	}
 
-	[[nodiscard]] bool is_within( float_t val )
+	[[nodiscard]] bool is_within( f32 val )
 	{
 		return ( val >= start and val <= end );
 	}

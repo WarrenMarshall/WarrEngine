@@ -7,10 +7,10 @@ namespace war
 struct Entity_Simple_Force final
 {
 	Entity_Simple_Force() = default;
-	Entity_Simple_Force( Vec2 normal, float_t strength );
+	Entity_Simple_Force( Vec2 normal, f32 strength );
 
 	Vec2 normal = Vec2::zero;
-	float_t strength = 0.f;
+	f32 strength = 0.f;
 };
 
 // ----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ struct Entity
 	Life_Cycle life_cycle;
 
 	hash tag = hash_none;
-	int32_t pick_id = 0;
+	i32 pick_id = 0;
 	Render_State_Optional rs_opt;
 
 	Scene* parent_scene = nullptr;
@@ -110,20 +110,20 @@ struct Entity
 
 	// direct transforms
 
-	Transform* set_pos_angle_scale( const Vec2& pos, const float_t angle, const float_t scale );
+	Transform* set_pos_angle_scale( const Vec2& pos, const f32 angle, const f32 scale );
 	Transform* set_pos( const Vec2& pos );
-	Transform* set_angle( const float_t angle );
-	Transform* set_scale( const float_t scale );
+	Transform* set_angle( const f32 angle );
+	Transform* set_scale( const f32 scale );
 
 	[[nodiscard]] Vec2 get_pos();
-	[[nodiscard]] float_t get_angle();
-	[[nodiscard]] float_t get_scale();
+	[[nodiscard]] f32 get_angle();
+	[[nodiscard]] f32 get_scale();
 
 	// delta transforms
 
 	void add_delta_pos( const Vec2& delta );
-	void add_delta_angle( const float_t delta );
-	void add_delta_scale( const float_t delta );
+	void add_delta_angle( const f32 delta );
+	void add_delta_scale( const f32 delta );
 
 	void update_box2d_components_to_match_transform();
 	void update_transform_to_match_box2d_components();
@@ -253,7 +253,7 @@ struct Entity
 	void reflect_across( Vec2 normal );
 
 	virtual void apply_movement_jump();
-	virtual void apply_movement_walk( Vec2 delta, float_t speed );
+	virtual void apply_movement_walk( Vec2 delta, f32 speed );
 
 	Rect compute_ws_aabb() const;
 

@@ -153,7 +153,7 @@ void UI_Control::draw_slider_control( const Rect& rc_ui, const Rect& rc_client, 
 		auto tex_tick = g_engine->find_asset<Texture_Asset>( "ui_slider_tick" );
 
 		Vec2 tick_pos = Vec2( rc_client.x, rc_ui.y + 5.f );
-		auto steps = (int32_t)( 1.f / interval );
+		auto steps = (i32)( 1.f / interval );
 		auto stride = rc_client.w * interval;
 
 		for( auto x = 0 ; x <= steps ; ++x )
@@ -249,7 +249,7 @@ void UI_Control::draw_progress_control( const Rect& rc_ui, const Rect& rc_client
 	draw_slice_def( rc_ui, is_hovered, is_hot );
 
 	// progress bar
-	float_t pct = control_data->float_value_internal();
+	f32 pct = control_data->float_value_internal();
 
 	Rect shrunken_rc = rc_client;
 	shrunken_rc.shrink( 1.f );
@@ -265,7 +265,7 @@ void UI_Control::draw_progress_control( const Rect& rc_ui, const Rect& rc_client
 	{
 		Render::state->color = make_color( e_pal::brightest );
 		Render::state->align = e_align::centered;
-		Render::draw_string( std::format( "{}%", (int32_t)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
+		Render::draw_string( std::format( "{}%", (i32)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
 	}
 }
 
@@ -347,7 +347,7 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 
 	Render::state->z -= zdepth_nudge;
 
-	if( (int32_t)(g_ui->result.code & e_im_result::left_clicked) )
+	if( (i32)(g_ui->result.code & e_im_result::left_clicked) )
 	{
 		control_data->set_expanded( !control_data->is_expanded() );
 		g_engine->scene_mgr.current_scene->ui_expanded_tag_begin = control_data->is_expanded() ? dropdown_control_tag : hash_none;
@@ -434,9 +434,9 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 	}
 }
 
-float_t UI_Control::get_default_width( e_ui_control_type control_type )
+f32 UI_Control::get_default_width( e_ui_control_type control_type )
 {
-	static const std::array<float_t, (int32_t)e_ui_control_type::max> values =
+	static const std::array<f32, (i32)e_ui_control_type::max> values =
 	{
 		100.f,	// panel
 		100.f,	// caption
@@ -454,12 +454,12 @@ float_t UI_Control::get_default_width( e_ui_control_type control_type )
 		120.f,	// dropdown
 	};
 
-	return values[ (int32_t)control_type ];
+	return values[ (i32)control_type ];
 }
 
-float_t UI_Control::get_default_height( e_ui_control_type control_type )
+f32 UI_Control::get_default_height( e_ui_control_type control_type )
 {
-	static const std::array<float_t, (int32_t)e_ui_control_type::max> values =
+	static const std::array<f32, (i32)e_ui_control_type::max> values =
 	{
 		100.f,	// panel
 		12.f,	// caption
@@ -477,12 +477,12 @@ float_t UI_Control::get_default_height( e_ui_control_type control_type )
 		16.f,	// dropdown
 	};
 
-	return values[ (int32_t)control_type ];
+	return values[ (i32)control_type ];
 }
 
 Vec2 UI_Control::get_control_inner_margins()
 {
-	static const std::array<Vec2, (int32_t)e_ui_control_type::max> values =
+	static const std::array<Vec2, (i32)e_ui_control_type::max> values =
 	{
 		Vec2( 1.f, 2.f ),	// panel
 		Vec2( 1.f, 2.f ),	// caption
@@ -500,7 +500,7 @@ Vec2 UI_Control::get_control_inner_margins()
 		Vec2( 1.f, 2.f ),	// dropdown
 	};
 
-	return values[ (int32_t)type ];
+	return values[ (i32)type ];
 }
 
 }

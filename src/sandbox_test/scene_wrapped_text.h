@@ -23,7 +23,7 @@ struct Scene_Wrapped_Text final : Scene
 
 	std::vector<std::string> wrapped_lines_02;
 	Rect rc_big_text_block_02 = {};
-	float_t text_pct = 0.0f;
+	f32 text_pct = 0.0f;
 
 	Scene_Wrapped_Text();
 

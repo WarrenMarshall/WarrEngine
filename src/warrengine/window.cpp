@@ -5,12 +5,12 @@
 namespace war
 {
 
-void glfw_error_callback( [[maybe_unused]] int32_t error_code, const char* description )
+void glfw_error_callback( [[maybe_unused]] i32 error_code, const char* description )
 {
 	log_fatal( "\"{}\"", description );
 }
 
-void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int32_t width, int32_t height )
+void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, i32 width, i32 height )
 {
 	// This chunk of code:
 	//
@@ -20,10 +20,10 @@ void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int32_t wid
 	// This allows us to work with a set size screen (viewport) and not have to worry about
 	// the user changing the window to some weird size.
 
-	g_engine->window.viewport_pos_sz = Rect( 0.f, 0.f, (float_t)( width ), (float_t)( height ) );
+	g_engine->window.viewport_pos_sz = Rect( 0.f, 0.f, (f32)( width ), (f32)( height ) );
 
-	float_t w_ratio = width / viewport_w;
-	float_t h_ratio = height / viewport_h;
+	f32 w_ratio = width / viewport_w;
+	f32 h_ratio = height / viewport_h;
 
 	if( w_ratio > h_ratio )
 	{
@@ -37,7 +37,7 @@ void framebuffer_size_callback( [[maybe_unused]] GLFWwindow* window, int32_t wid
 	}
 }
 
-void focus_change_callback( [[maybe_unused]] GLFWwindow* window, int32_t focused )
+void focus_change_callback( [[maybe_unused]] GLFWwindow* window, i32 focused )
 {
 	focused ? g_engine->resume() : g_engine->pause();
 }
@@ -46,15 +46,15 @@ void focus_change_callback( [[maybe_unused]] GLFWwindow* window, int32_t focused
 
 Rect OS_Window::compute_max_window_size_for_desktop()
 {
-	float_t desktop_w = vidmode->width - viewport_hw;
-	float_t desktop_h = vidmode->height - viewport_hh;
+	f32 desktop_w = vidmode->width - viewport_hw;
+	f32 desktop_h = vidmode->height - viewport_hh;
 
 	// figure out a maximal size for the window to be to fill the screen neatly and the
 	// window to be positioned in the center of the screen.
 
-	auto wdiv = (int32_t)( std::floorf( desktop_w / (float_t)( viewport_w ) ) );
-	auto hdiv = (int32_t)( std::floorf( desktop_h / (float_t)( viewport_h ) ) );
-	int32_t div = glm::min( wdiv, hdiv );
+	auto wdiv = (i32)( std::floorf( desktop_w / (f32)( viewport_w ) ) );
+	auto hdiv = (i32)( std::floorf( desktop_h / (f32)( viewport_h ) ) );
+	i32 div = glm::min( wdiv, hdiv );
 
 	Rect window_pos( 0.f, 0.f, viewport_w * div, viewport_h * div );
 	window_pos.x = ( vidmode->width - window_pos.w ) / 2;
@@ -86,7 +86,7 @@ bool OS_Window::init()
 	//glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
 	glfw_window = glfwCreateWindow(
-		(int32_t)( window_pos.w ), (int32_t)( window_pos.h ),
+		(i32)( window_pos.w ), (i32)( window_pos.h ),
 		"WarrEngine", nullptr, nullptr
 	);
 
@@ -96,8 +96,8 @@ bool OS_Window::init()
 	}
 
 	glfwSetWindowPos( glfw_window,
-		(int32_t)( window_pos.x ),
-		(int32_t)( window_pos.y ) );
+		(i32)( window_pos.x ),
+		(i32)( window_pos.y ) );
 
 	glfwSetFramebufferSizeCallback( glfw_window, framebuffer_size_callback );
 	glfwSetWindowFocusCallback( glfw_window, focus_change_callback );

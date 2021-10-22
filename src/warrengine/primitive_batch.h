@@ -10,9 +10,9 @@ struct Primitive_Batch final
 
 #ifdef _DEBUG
 	// this is set low in debug mode so we'll know if the batching code breaks.
-	static const int32_t max_elements_per_draw_call = 50;
+	static const i32 max_elements_per_draw_call = 50;
 #else
-	static const int32_t max_elements_per_draw_call = 5'000;
+	static const i32 max_elements_per_draw_call = 5'000;
 #endif
 
 	Primitive_Batch() = default;
@@ -20,7 +20,7 @@ struct Primitive_Batch final
 	Primitive_Batch( e_render_prim render_prim );
 
 	void init( e_render_prim render_prim );
-	std::array< Vertex_Array_Object, (int32_t)e_draw_call::max> vao;
+	std::array< Vertex_Array_Object, (i32)e_draw_call::max> vao;
 
 	void add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 );
 	void add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 );

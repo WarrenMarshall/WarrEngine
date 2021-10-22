@@ -23,7 +23,7 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 
-		static int32_t last_spawned_type = 0;
+		static i32 last_spawned_type = 0;
 		last_spawned_type++;
 
 		//last_spawned_type = 1;

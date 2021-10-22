@@ -13,7 +13,7 @@ bool Tile_Set_Asset::create()
 
 	Tile_Def* current_tile_def = nullptr;
 	Tiled_Object* current_object = nullptr;
-	float_t current_object_rotation = 0.f;
+	f32 current_object_rotation = 0.f;
 
 	for( const auto& raw_line : file->lines )
 	{
@@ -82,7 +82,7 @@ bool Tile_Set_Asset::create()
 		}
 		else if( line.starts_with( "<tile " ) )
 		{
-			int32_t tile_idx = -1;
+			i32 tile_idx = -1;
 			Tokenizer tok( line, " " );
 
 			while( !tok.is_eos() )

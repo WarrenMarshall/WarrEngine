@@ -4,7 +4,7 @@ namespace war
 
 struct UI_Mgr final
 {
-	static uint32_t automatic_id;
+	static ui32 automatic_id;
 
 	Cursor_Asset* mouse_cursor = nullptr;
 
@@ -74,14 +74,14 @@ public:
 	UI_Mgr* set_func_draw( f_draw_control func_draw_control );
 	UI_Mgr* set_slice_def( std::string_view slice_def_name );
 	UI_Mgr* set_rect( const Rect& rect );
-	UI_Mgr* cut_top( float_t sz = 0.f );
-	UI_Mgr* cut_bottom( float_t sz = 0.f );
-	UI_Mgr* cut_left( float_t sz = 0.f );
-	UI_Mgr* cut_right( float_t sz = 0.f );
+	UI_Mgr* cut_top( f32 sz = 0.f );
+	UI_Mgr* cut_bottom( f32 sz = 0.f );
+	UI_Mgr* cut_left( f32 sz = 0.f );
+	UI_Mgr* cut_right( f32 sz = 0.f );
 	UI_Mgr* set_pos( const Vec2& pos );
 	UI_Mgr* set_size( const Vec2& sz );
-	UI_Mgr* set_interval( float_t interval );
-	UI_Mgr* set_idx( int32_t idx );
+	UI_Mgr* set_interval( f32 interval );
+	UI_Mgr* set_idx( i32 idx );
 
 	Rect compute_client_rect_from_ui_rect( Rect rc_ui );
 	bool done();

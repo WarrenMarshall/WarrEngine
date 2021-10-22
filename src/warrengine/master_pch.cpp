@@ -4,7 +4,7 @@
 namespace war
 {
 
-float_t snap_to_int( float_t val )
+f32 snap_to_int( f32 val )
 {
 	return glm::floor( val + ( 0.5f * glm::sign( val ) ) );
 }

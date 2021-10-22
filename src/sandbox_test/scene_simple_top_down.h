@@ -6,8 +6,8 @@ struct Scene_Simple_Top_Down final : Scene
 {
 	struct
 	{
-		uint16_t player = 0b00000001;
-		uint16_t geo	= 0b00000010;
+		ui16 player = 0b00000001;
+		ui16 geo	= 0b00000010;
 	} coll_flags;
 
 	Scene_Simple_Top_Down();
@@ -18,7 +18,7 @@ struct Scene_Simple_Top_Down final : Scene
 
 	Timeline_Of_Nodes fx_hurt;
 
-	float_t ray_cast_length_hit = 0.0f;
+	f32 ray_cast_length_hit = 0.0f;
 
 	virtual void pushed() override;
 	virtual void draw() override;

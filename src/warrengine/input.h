@@ -47,8 +47,8 @@ struct Input_Mgr final
 
 	std::optional<Game_Controller> gamepad = std::nullopt;
 
-	std::array<bool, (int32_t)e_input_id::max> button_states = {};
-	std::array<bool, (int32_t)e_input_id::max> button_states_last_frame = {};
+	std::array<bool, (i32)e_input_id::max> button_states = {};
+	std::array<bool, (i32)e_input_id::max> button_states_last_frame = {};
 
 	[[nodiscard]] bool is_button_down( e_input_id input_id );
 	[[nodiscard]] bool is_button_held( e_input_id input_id );
@@ -66,7 +66,7 @@ struct Input_Mgr final
 	void update_axis_delta( e_input_id input_id ) const;
 	void dispatch_event_queue();
 
-	void update_button_state( e_input_id input_id, int32_t glfw_state );
+	void update_button_state( e_input_id input_id, i32 glfw_state );
 	void play_rumble( e_rumble_effect effect );
 	void refresh_connected_gamepads();
 };

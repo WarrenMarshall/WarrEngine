@@ -5,8 +5,8 @@ namespace war
 struct Game_Controller final
 {
 	Timer timer_repeat;
-	int32_t player_id = -1;
-	float_t rumble_time_remaining_ms = 0.f;
+	i32 player_id = -1;
+	f32 rumble_time_remaining_ms = 0.f;
 
 	XINPUT_STATE xinput_state = { 0 };
 
@@ -18,13 +18,13 @@ struct Game_Controller final
 
 	bool is_being_used = false;
 
-	Game_Controller( int32_t player_id );
+	Game_Controller( i32 player_id );
 
-	void update_button_state( e_input_id input_id, int32_t xinput_button_bit );
+	void update_button_state( e_input_id input_id, i32 xinput_button_bit );
 	void update_state();
 	void update();
 	void play_rumble( e_rumble_effect effect );
-	void play_rumble( int32_t intensity, int32_t ms );
+	void play_rumble( i32 intensity, i32 ms );
 };
 
 }

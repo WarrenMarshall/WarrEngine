@@ -117,8 +117,8 @@ namespace war
 namespace war
 {
 
-[[nodiscard]] float_t lerp( float_t a, float_t b, float_t lerp_factor );
-[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, float_t lerp_factor );
+[[nodiscard]] f32 lerp( f32 a, f32 b, f32 lerp_factor );
+[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, f32 lerp_factor );
 
 extern std::unique_ptr<Engine> g_engine;
 extern std::unique_ptr<UI_Mgr> g_ui;

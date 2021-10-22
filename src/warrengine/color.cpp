@@ -24,18 +24,18 @@ const Color Color::grey = Color( 0.5f, 0.5f, 0.5f );
 const Color Color::light_grey = Color( 0.75f, 0.75f, 0.75f );
 const Color Color::magenta = Color( 0.96f, 0.32f, 0.65f );
 
-Color::Color( float_t r, float_t g, float_t b, float_t a )
+Color::Color( f32 r, f32 g, f32 b, f32 a )
 	: r( r ), g( g ), b( b ), a( a )
 {
 }
 
-Color::Color( float_t v, float_t a )
+Color::Color( f32 v, f32 a )
 	: r( v ), g( v ), b( v ), a( a )
 {
 }
 
 // integer values are assumed to be in the 0-255 range and are converted to float
-Color::Color( int32_t r, int32_t g, int32_t b, int32_t a )
+Color::Color( i32 r, i32 g, i32 b, i32 a )
 	: Color( byte_color_to_float( r ), byte_color_to_float( g ), byte_color_to_float( b ), byte_color_to_float( a ) )
 {
 }
@@ -49,7 +49,7 @@ Color::Color( std::string& str )
 	{
 		// strings starting with a '@' char are palette indices
 		Tokenizer tok( str, "@" );
-		int32_t idx = String_Util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
+		i32 idx = String_Util::to_int( std::string( tok.get_next_token().value_or( "0" ) ) );
 		*this = make_color( (e_pal)idx );
 	}
 	else if( str[ 0 ] == '$' )
@@ -98,12 +98,12 @@ Color::Color( std::string& str )
 	}
 }
 
-Color Color::operator*( float_t v ) const
+Color Color::operator*( f32 v ) const
 {
 	return Color( this->r * v, this->g * v, this->b * v );
 }
 
-Color Color::operator*=( float_t v )
+Color Color::operator*=( f32 v )
 {
 	*this = *this * v;
 	return *this;
@@ -131,21 +131,21 @@ Color Color::operator+=( Color v )
 	return *this;
 }
 
-void Color::scale( Color& color, float_t s )
+void Color::scale( Color& color, f32 s )
 {
 	color.r *= s;
 	color.g *= s;
 	color.b *= s;
 }
 
-Color Color::make( const Color& clr, float_t alpha )
+Color Color::make( const Color& clr, f32 alpha )
 {
 	return Color( clr.r, clr.g, clr.b, alpha );
 }
 
-Color Color::make( e_pal pal_idx, float_t alpha )
+Color Color::make( e_pal pal_idx, f32 alpha )
 {
-	return make_color( Render::palette[ (int32_t)pal_idx ], alpha );
+	return make_color( Render::palette[ (i32)pal_idx ], alpha );
 }
 
 }

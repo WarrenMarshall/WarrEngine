@@ -71,16 +71,15 @@ namespace war
 {
 
 // simple data types
-// #warren - sweep these across the code base whenever the code is stable again
 
 using i64 = int64_t;
-using u64 = uint64_t;
+using ui64 = uint64_t;
 using i32 = int32_t;
-using u32 = uint32_t;
+using ui32 = uint32_t;
 using i16 = int16_t;
-using u16 = uint16_t;
+using ui16 = uint16_t;
 using i8 = int8_t;
-using u8 = uint8_t;
+using ui8 = uint8_t;
 using f32 = float_t;
 using d64 = double_t;
 
@@ -90,11 +89,11 @@ using d64 = double_t;
 namespace fixed_time_step
 {
 	// how many fixed time steps, per second
-	constexpr int32_t frames_per_second = 60;
+	constexpr i32 frames_per_second = 60;
 
 	// how many milliseconds will have passed each time a fixed time step update
 	// occurs
-	constexpr int32_t ms_per_step = (int32_t)( 1000.f / (float_t)frames_per_second );
+	constexpr i32 ms_per_step = (i32)( 1000.f / (f32)frames_per_second );
 
 	// any value you want to update as a "per second" value in an update
 	// function should be multiplied against this constant.
@@ -104,7 +103,7 @@ namespace fixed_time_step
 	//
 	// angle += 15.f * fixed_time_step::per_second_scaler;
 
-	constexpr float_t _per_second_scaler = 1.f / (float_t)frames_per_second;
+	constexpr f32 _per_second_scaler = 1.f / (f32)frames_per_second;
 
 	template<typename T>
 	constexpr T per_second( T val )
@@ -116,7 +115,7 @@ namespace fixed_time_step
 // ----------------------------------------------------------------------------
 //	useful type definitions to increase code readability
 
-using time_ms = uint64_t;
+using time_ms = ui64;
 
 // ----------------------------------------------------------------------------
 // strings to validate text input against
@@ -154,7 +153,7 @@ namespace war
 // used to convert color values in the range 0-255 to 0-1
 // i.e. color.r = 168.f * byte_color_to_float;
 
-constexpr float_t byte_color_to_float( int32_t value )
+constexpr f32 byte_color_to_float( i32 value )
 {
 	return value / 255.f;
 }
@@ -170,28 +169,28 @@ constexpr float_t byte_color_to_float( int32_t value )
 // positive because of the projection flip.
 // ----------------------------------------------------------------------------
 
-constexpr float_t zdepth_nudge = 10.f;
+constexpr f32 zdepth_nudge = 10.f;
 
-constexpr float_t zdepth_background = 100.f;
-constexpr float_t zdepth_scene_range = 1000.f;
-constexpr float_t zdepth_stats = 45000.f;
-constexpr float_t zdepth_topmost = 50000.f;
-constexpr float_t zdepth_max = 50000.f;
+constexpr f32 zdepth_background = 100.f;
+constexpr f32 zdepth_scene_range = 1000.f;
+constexpr f32 zdepth_stats = 45000.f;
+constexpr f32 zdepth_topmost = 50000.f;
+constexpr f32 zdepth_max = 50000.f;
 
 // ----------------------------------------------------------------------------
 // if (a - b) is smaller than epsilon, return true.
 //
-// this allows float_t values to be compared with some slack for accuracy drift.
+// this allows f32 values to be compared with some slack for accuracy drift.
 
-static auto epsilon = glm::epsilon<float_t>();
+static auto epsilon = glm::epsilon<f32>();
 
-[[nodiscard]] constexpr bool fequals( float_t a, float_t b )
+[[nodiscard]] constexpr bool fequals( f32 a, f32 b )
 {
 	auto diff = a - b;
 	return ( diff < epsilon && diff > -epsilon );
 }
 
-[[nodiscard]] float_t snap_to_int( float_t val );
+[[nodiscard]] f32 snap_to_int( f32 val );
 
 // ----------------------------------------------------------------------------
 // physics constants and helpers
@@ -208,12 +207,12 @@ constexpr auto b2d_world_scale_factor = 100.f;
 constexpr auto b2d_velocity_iterations = 8;
 constexpr auto b2d_pos_iterations = 3;
 
-[[nodiscard]] constexpr float_t to_box2d( float_t v )
+[[nodiscard]] constexpr f32 to_box2d( f32 v )
 {
 	return ( v / b2d_world_scale_factor );
 }
 
-[[nodiscard]] constexpr float_t from_box2d( float_t v )
+[[nodiscard]] constexpr f32 from_box2d( f32 v )
 {
 	return ( v * b2d_world_scale_factor );
 }
@@ -225,12 +224,12 @@ constexpr auto b2d_pos_iterations = 3;
 constexpr auto simple_collision_gravity_default = 9.81f;
 constexpr auto simple_world_scale_factor = 100.f;
 
-[[nodiscard]] constexpr float_t to_simple( float_t v )
+[[nodiscard]] constexpr f32 to_simple( f32 v )
 {
 	return ( v / simple_world_scale_factor );
 }
 
-[[nodiscard]] constexpr float_t from_simple( float_t v )
+[[nodiscard]] constexpr f32 from_simple( f32 v )
 {
 	return ( v * simple_world_scale_factor );
 }
@@ -280,9 +279,9 @@ constexpr void _log_fatal_( Params&&... params )
 // what:
 //
 // this is a super simple hasher for string literals, but all it's for is to
-// generate unique uint32_t values for arbitrary string literals that are
+// generate unique ui32 values for arbitrary string literals that are
 // passed to it. it also needs to be constexpr friendly so it melts away in
-// release builds. this allows the engine to compare uint32_ts instead of
+// release builds. this allows the engine to compare ui32s instead of
 // strings in places like the UI code, which is WAY faster.
 //
 // how:
@@ -295,7 +294,7 @@ constexpr void _log_fatal_( Params&&... params )
 //
 // in other words H("AB") != H("BA"), which is what we want.
 
-using hash = uint32_t;
+using hash = ui32;
 constexpr hash hash_none = 0;
 
 constexpr hash hash_it( const char* str )
@@ -303,7 +302,7 @@ constexpr hash hash_it( const char* str )
 	hash result = hash_none;
 
 	const char* rp = str;
-	int32_t i = 0;
+	i32 i = 0;
 
 	while( *rp )
 	{
@@ -322,8 +321,8 @@ constexpr hash hash_it( const char* str )
 // the assumption of these dimensions. the renderer handles scaling this up to
 // the actual game window the player sees. this makes a lot of things simpler.
 
-extern float_t viewport_w;
-extern float_t viewport_h;
+extern f32 viewport_w;
+extern f32 viewport_h;
 
 #define viewport_hw (viewport_w * 0.5f)
 #define viewport_hh (viewport_h * 0.5f)
@@ -334,8 +333,8 @@ extern float_t viewport_h;
 // this has advantages like letting you author UI graphics at a specific
 // resolution and having them work across multiple games.
 
-extern float_t ui_w;
-extern float_t ui_h;
+extern f32 ui_w;
+extern f32 ui_h;
 
 #define ui_hw (ui_w * 0.5f)
 #define ui_hh (ui_h * 0.5f)
@@ -346,8 +345,8 @@ extern float_t ui_h;
 // where you want to render the game at a higher res but actually present it to
 // the user at a smaller res. or you're in a 128x128 game jam, or what-not.
 
-extern float_t final_pixel_w;
-extern float_t final_pixel_h;
+extern f32 final_pixel_w;
+extern f32 final_pixel_h;
 
 // ----------------------------------------------------------------------------
 

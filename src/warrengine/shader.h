@@ -4,7 +4,7 @@ namespace war
 
 struct Shader final
 {
-	uint32_t gl_id = 0;
+	ui32 gl_id = 0;
 
 	Shader() = default;
 	Shader( std::string_view vert_filename, std::string_view frag_filename );

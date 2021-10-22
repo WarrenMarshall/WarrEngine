@@ -10,7 +10,7 @@ struct Timeline_Of_Nodes final
 	{
 		e_tnkf_type type = e_tnkf_type::none;
 		Life_Cycle life_cycle;
-		float_t pct_marker = 0.f;
+		f32 pct_marker = 0.f;
 		bool should_restore_state = false;
 		time_ms started = 0, duration = 0;
 
@@ -24,12 +24,12 @@ struct Timeline_Of_Nodes final
 			{
 				struct
 				{
-					float_t angle;
+					f32 angle;
 				} save;
 
 				Simplex_Noise noise;
 				Transform* tform;
-				float_t strength;
+				f32 strength;
 			} shake_angle;
 
 			// ----------------------------------------------------------------------------
@@ -48,10 +48,10 @@ struct Timeline_Of_Nodes final
 			{
 				struct
 				{
-					float_t pixelate_factor;
+					f32 pixelate_factor;
 				} save;
 
-				float_t pixelate_factor;
+				f32 pixelate_factor;
 			} pp_pixelate;
 
 			// ----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ struct Timeline_Of_Nodes final
 			} scene_pop;
 		};
 
-		Key_Frame( e_tnkf_type type, bool should_restore_state, float_t pct_marker, time_ms duration );
+		Key_Frame( e_tnkf_type type, bool should_restore_state, f32 pct_marker, time_ms duration );
 
 		void on_started_running();
 		void update();
@@ -90,13 +90,13 @@ struct Timeline_Of_Nodes final
 	void restart();
 	void update();
 
-	void add_kf_shake_angle( bool should_restore_state, float_t pct_marker, time_ms duration, Transform* tform, float_t strength );
-	void add_kf_pp_color_overlay( bool should_restore_state, float_t pct_marker, time_ms duration, Color color );
-	void add_kf_pp_pixelate( bool should_restore_state, float_t pct_marker, time_ms duration, float_t pixelate_factor );
-	void add_kf_play_sound( bool should_restore_state, float_t pct_marker, const Sound_Asset* snd );
-	void add_kf_scene_push_under( bool should_restore_state, float_t pct_marker, std::unique_ptr<Scene> scene_to_push );
-	void add_kf_scene_pop_under( bool should_restore_state, float_t pct_marker );
-	void add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, float_t pct_marker );
+	void add_kf_shake_angle( bool should_restore_state, f32 pct_marker, time_ms duration, Transform* tform, f32 strength );
+	void add_kf_pp_color_overlay( bool should_restore_state, f32 pct_marker, time_ms duration, Color color );
+	void add_kf_pp_pixelate( bool should_restore_state, f32 pct_marker, time_ms duration, f32 pixelate_factor );
+	void add_kf_play_sound( bool should_restore_state, f32 pct_marker, const Sound_Asset* snd );
+	void add_kf_scene_push_under( bool should_restore_state, f32 pct_marker, std::unique_ptr<Scene> scene_to_push );
+	void add_kf_scene_pop_under( bool should_restore_state, f32 pct_marker );
+	void add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, f32 pct_marker );
 };
 
 }

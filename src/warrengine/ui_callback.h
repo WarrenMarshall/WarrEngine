@@ -23,12 +23,12 @@ struct UI_Callback
 	virtual void on_motion( hash tag, const UI_Result& result );
 
 	virtual size_t get_item_count( hash tag );
-	virtual std::string_view get_item_for_idx( hash tag, int32_t idx );
+	virtual std::string_view get_item_for_idx( hash tag, i32 idx );
 
 	virtual void on_value_changed( hash tag );
 	virtual bool validate_value_change( hash tag, UI_Control_Data* old_value, UI_Control_Data* new_value );
 
-	virtual float_t get_control_padding();
+	virtual f32 get_control_padding();
 	virtual Vec2 get_control_margin( e_ui_control_type control_type );
 
 	virtual bool on_input_motion( const Input_Event* evt );

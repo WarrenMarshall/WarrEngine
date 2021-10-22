@@ -5,7 +5,7 @@
 namespace war
 {
 
-Timeline_Of_Nodes::Key_Frame::Key_Frame( e_tnkf_type type, bool should_restore_state, float_t pct_marker, time_ms duration )
+Timeline_Of_Nodes::Key_Frame::Key_Frame( e_tnkf_type type, bool should_restore_state, f32 pct_marker, time_ms duration )
 	: type( type ), should_restore_state( should_restore_state ), pct_marker( pct_marker ), duration( duration )
 {
 }
@@ -80,7 +80,7 @@ void Timeline_Of_Nodes::Key_Frame::update()
 	}
 
 	auto time_now = g_engine->clock.now();
-	auto pct = glm::clamp( ( time_now - started ) / (float_t)duration, 0.f, 1.f );
+	auto pct = glm::clamp( ( time_now - started ) / (f32)duration, 0.f, 1.f );
 
 	switch( type )
 	{
@@ -182,7 +182,7 @@ void Timeline_Of_Nodes::update()
 		return;
 	}
 
-	float_t pct_on_timeline = glm::clamp( ( g_engine->clock.now() - start ) / (float_t)duration, 0.f, 1.f );
+	f32 pct_on_timeline = glm::clamp( ( g_engine->clock.now() - start ) / (f32)duration, 0.f, 1.f );
 
 	// for every node_key_frame that is behind the current pct marker of this
 	// timeline, call it's update() function.
@@ -201,7 +201,7 @@ void Timeline_Of_Nodes::update()
 	}
 }
 
-void Timeline_Of_Nodes::add_kf_shake_angle( bool should_restore_state, float_t pct_marker, time_ms duration, Transform* tform, float_t strength )
+void Timeline_Of_Nodes::add_kf_shake_angle( bool should_restore_state, f32 pct_marker, time_ms duration, Transform* tform, f32 strength )
 {
 	key_frames.emplace_back( e_tnkf_type::shake_angle, should_restore_state, pct_marker, duration );
 	auto kf = &key_frames.back();
@@ -210,7 +210,7 @@ void Timeline_Of_Nodes::add_kf_shake_angle( bool should_restore_state, float_t p
 	kf->shake_angle.strength = strength;
 }
 
-void Timeline_Of_Nodes::add_kf_pp_color_overlay( bool should_restore_state, float_t pct_marker, time_ms duration, Color color )
+void Timeline_Of_Nodes::add_kf_pp_color_overlay( bool should_restore_state, f32 pct_marker, time_ms duration, Color color )
 {
 	key_frames.emplace_back( e_tnkf_type::pp_color_overlay, should_restore_state, pct_marker, duration );
 	auto kf = &key_frames.back();
@@ -218,7 +218,7 @@ void Timeline_Of_Nodes::add_kf_pp_color_overlay( bool should_restore_state, floa
 	kf->pp_color_overlay.color = color;
 }
 
-void Timeline_Of_Nodes::add_kf_pp_pixelate( bool should_restore_state, float_t pct_marker, time_ms duration, float_t pixelate_factor )
+void Timeline_Of_Nodes::add_kf_pp_pixelate( bool should_restore_state, f32 pct_marker, time_ms duration, f32 pixelate_factor )
 {
 	key_frames.emplace_back( e_tnkf_type::pp_pixelate, should_restore_state, pct_marker, duration );
 	auto kf = &key_frames.back();
@@ -226,7 +226,7 @@ void Timeline_Of_Nodes::add_kf_pp_pixelate( bool should_restore_state, float_t p
 	kf->pp_pixelate.pixelate_factor = pixelate_factor;
 }
 
-void Timeline_Of_Nodes::add_kf_play_sound( bool should_restore_state, float_t pct_marker, const Sound_Asset* snd )
+void Timeline_Of_Nodes::add_kf_play_sound( bool should_restore_state, f32 pct_marker, const Sound_Asset* snd )
 {
 	key_frames.emplace_back( e_tnkf_type::play_sound, should_restore_state, pct_marker, 0 );
 	auto kf = &key_frames.back();
@@ -234,7 +234,7 @@ void Timeline_Of_Nodes::add_kf_play_sound( bool should_restore_state, float_t pc
 	kf->play_sound.snd = const_cast<Sound_Asset*>( snd );
 }
 
-void Timeline_Of_Nodes::add_kf_scene_push_under( bool should_restore_state, float_t pct_marker, std::unique_ptr<Scene> scene_to_push )
+void Timeline_Of_Nodes::add_kf_scene_push_under( bool should_restore_state, f32 pct_marker, std::unique_ptr<Scene> scene_to_push )
 {
 	key_frames.emplace_back( e_tnkf_type::scene_push_under, should_restore_state, pct_marker, 0 );
 	auto kf = &key_frames.back();
@@ -243,12 +243,12 @@ void Timeline_Of_Nodes::add_kf_scene_push_under( bool should_restore_state, floa
 	scene_to_push.release();
 }
 
-void Timeline_Of_Nodes::add_kf_scene_pop_under( bool should_restore_state, float_t pct_marker )
+void Timeline_Of_Nodes::add_kf_scene_pop_under( bool should_restore_state, f32 pct_marker )
 {
 	key_frames.emplace_back( e_tnkf_type::scene_pop_under, should_restore_state, pct_marker, 0 );
 }
 
-void Timeline_Of_Nodes::add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, float_t pct_marker )
+void Timeline_Of_Nodes::add_kf_reset_scene_stack_to_main_menu( bool should_restore_state, f32 pct_marker )
 {
 	key_frames.emplace_back( e_tnkf_type::reset_scene_stack_to_main_menu, should_restore_state, pct_marker, 0 );
 }

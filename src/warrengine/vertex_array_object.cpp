@@ -151,13 +151,13 @@ void Vertex_Array_Object::update_stats()
 		if( g_engine->render.debug.is_single_frame_logging() )
 		{
 			const char* prim_type_desc [] = { "quad", "triangle", "line", "point" };
-			auto prim_count = vb->vertices.count / ( float_t )vb->verts_per_element;
+			auto prim_count = vb->vertices.count / ( f32 )vb->verts_per_element;
 			log(
 				">> draw call >> {} {}{} (v: {}, i: {})",
 				f_commas( prim_count ),
-				prim_type_desc[ ( int32_t )render_prim ],
+				prim_type_desc[ ( i32 )render_prim ],
 				( prim_count > 1.f ) ? "s" : "",
-				f_commas( ( float_t )( vb->vertices.count ) ),
+				f_commas( ( f32 )( vb->vertices.count ) ),
 				f_commas( vb->vertices.count * indices_to_verts_factor )
 			);
 
@@ -210,10 +210,10 @@ void Vertex_Array_Object::draw( e_draw_call draw_call )
 	auto gl_prim_type = get_gl_prim_type();
 	if( gl_prim_type == GL_LINES or gl_prim_type == GL_POINTS )
 	{
-		float_t line_width = 1.f;
-		float_t point_sz = 2.f;
+		f32 line_width = 1.f;
+		f32 point_sz = 2.f;
 
-		float_t scale = g_engine->scene_mgr.get_scale();
+		f32 scale = g_engine->scene_mgr.get_scale();
 		line_width *= 1.f + ( scale * g_engine->opengl_mgr.using_camera );
 		point_sz *= 1.f + ( scale * g_engine->opengl_mgr.using_camera );
 
@@ -230,7 +230,7 @@ void Vertex_Array_Object::draw( e_draw_call draw_call )
 	// only write to the depth buffer for opaque primitives
 	glDepthMask( ( draw_call == e_draw_call::opaque ) );
 
-	glDrawElements( get_gl_prim_type(), ( int32_t )( vb->vertices.count * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
+	glDrawElements( get_gl_prim_type(), ( i32 )( vb->vertices.count * indices_to_verts_factor ), GL_UNSIGNED_INT, nullptr );
 
 	unbind();
 }

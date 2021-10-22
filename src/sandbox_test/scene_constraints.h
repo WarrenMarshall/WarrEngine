@@ -3,7 +3,7 @@ using namespace war;
 
 struct E_Sensor_Player final : Entity
 {
-	int32_t touch_count = 0;
+	i32 touch_count = 0;
 
 	virtual bool on_touching_begin( Simple_Collision_Body* sensor ) override;
 	virtual bool on_touching_end( Simple_Collision_Body* sensor ) override;
@@ -15,9 +15,9 @@ struct Scene_Constraints final : Scene
 {
 	struct
 	{
-		uint16_t player = 0b0000001;
-		uint16_t world	= 0b0000010;
-		uint16_t sensor = 0b0000100;
+		ui16 player = 0b0000001;
+		ui16 world	= 0b0000010;
+		ui16 sensor = 0b0000100;
 	} coll_flags;
 
 	Scene_Constraints();

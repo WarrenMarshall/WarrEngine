@@ -67,8 +67,8 @@ void Scene_Controller_Required::draw_ui()
 		Render::flush();
 	}
 
-	float_t panel_w = ( ui_w / 3.f ) * 2.f;
-	float_t panel_h = 80.f;	// the height of the panel without the text lines. the text height is added below.
+	f32 panel_w = ( ui_w / 3.f ) * 2.f;
+	f32 panel_h = 80.f;	// the height of the panel without the text lines. the text height is added below.
 
 	if( g_engine->input_mgr.gamepad )
 	{

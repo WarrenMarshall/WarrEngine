@@ -12,12 +12,12 @@ Shader::Shader( std::string_view vert_filename, std::string_view frag_filename )
 
 void Shader::create_and_compile( std::string_view vert_filename, std::string_view frag_filename )
 {
-	int32_t success;
+	i32 success;
 	char infoLog[ 512 ];
 	const char* cptr;
 
 	// vertex shader
-	uint32_t vertex_id;
+	ui32 vertex_id;
 	{
 		auto vertex_shader_src = File_System::load_binary_file( std::format( "data/warrengine/shaders/{}", vert_filename ) );
 		auto wk = std::string( vertex_shader_src->buffer.begin(), vertex_shader_src->buffer.end() );
@@ -37,7 +37,7 @@ void Shader::create_and_compile( std::string_view vert_filename, std::string_vie
 
 	// fragment shader
 	std::string wk;
-	uint32_t fragment_id;
+	ui32 fragment_id;
 	{
 		auto fragment_shader_src = File_System::load_text_file_raw( std::format( "data/warrengine/shaders/{}", frag_filename ) );
 

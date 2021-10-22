@@ -30,19 +30,19 @@ bool Timer::is_elapsed()
 //
 // this is good for: repeating timers
 
-int32_t Timer::get_elapsed()
+i32 Timer::get_elapsed()
 {
 	delta_accum += ( g_engine->clock.now() - time_last );
 	time_last = g_engine->clock.now();
-	return (int32_t)( delta_accum / interval_ms );
+	return (i32)( delta_accum / interval_ms );
 }
 
 // returns the percentage of completion for this time, expressed as 0-1
 
-float_t Timer::get_pct_complete()
+f32 Timer::get_pct_complete()
 {
-	float_t pct = ( g_engine->clock.now() - time_last ) / (float_t)interval_ms;
-	return glm::clamp<float_t>( pct, 0.f, 1.f );
+	f32 pct = ( g_engine->clock.now() - time_last ) / (f32)interval_ms;
+	return glm::clamp<f32>( pct, 0.f, 1.f );
 }
 
 }

@@ -26,7 +26,7 @@ Entity* Scene_Simple_Interact::spawn_entity()
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();
 
-		static int32_t last_spawned_type = 0;
+		static i32 last_spawned_type = 0;
 		last_spawned_type++;
 		switch( last_spawned_type % 3 )
 		{
@@ -115,6 +115,7 @@ void Scene_Simple_Interact::pushed()
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( coll_flags.geo, 0 );
+				ec->flags.draw_as_shape = true;
 			}
 		}
 
@@ -129,6 +130,7 @@ void Scene_Simple_Interact::pushed()
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( coll_flags.geo, 0 );
+				ec->flags.draw_as_shape = true;
 			}
 		}
 
@@ -138,24 +140,28 @@ void Scene_Simple_Interact::pushed()
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.geo, 0 );
+			ec->flags.draw_as_shape = true;
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.geo, 0 );
+			ec->flags.draw_as_shape = true;
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );
+			ec->flags.draw_as_shape = true;
 		}
 		{
 			auto ec = e->add_component<Simple_Collision_Body>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );
+			ec->flags.draw_as_shape = true;
 		}
 
 		world_geo = e;

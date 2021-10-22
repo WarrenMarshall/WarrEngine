@@ -5,8 +5,8 @@ struct Scene_Spatial final : Scene
 {
 	struct
 	{
-		uint16_t player = 0b0000001;
-		uint16_t skull = 0b0000010;
+		ui16 player = 0b0000001;
+		ui16 skull = 0b0000010;
 	} coll_flags;
 
 	Entity* player_shape = nullptr;

@@ -12,24 +12,24 @@ struct Particle final
 	Vec2 pos;
 
 	// how long this particle should live, in ticks
-	float_t life_span = 0.f;
-	float_t life_span_save = 0.f;	// !! // saves the original life span for reference
+	f32 life_span = 0.f;
+	f32 life_span_save = 0.f;	// !! // saves the original life span for reference
 
 	// angle of movement
 	Vec2 v_dir = { 0, 0 };
 
 	// world units to move, per second
-	float_t velocity_per_sec = 0.f;
+	f32 velocity_per_sec = 0.f;
 
 	// current particle state
-	float_t base_scale = 0.f;
+	f32 base_scale = 0.f;
 
-	float_t spin = 0.f;
-	float_t spin_per_sec = 0.f;
+	f32 spin = 0.f;
+	f32 spin_per_sec = 0.f;
 
-	float_t anim_offset = 0.f;
+	f32 anim_offset = 0.f;
 
-	float_t gravity_accum = 0.f;
+	f32 gravity_accum = 0.f;
 };
 
 // make sure the particle struct doesn't get above 64 bytes

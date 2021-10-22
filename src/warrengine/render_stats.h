@@ -37,7 +37,7 @@ struct Render_Stats final
 	void init();
 	void update();
 	void draw();
-	void add( Value_Accumulator& accum, float_t val );
+	void add( Value_Accumulator& accum, f32 val );
 	void inc( Value_Accumulator& accum );
 };
 

@@ -10,7 +10,7 @@ namespace war
 	void Render_Stats::init() {}
 	void Render_Stats::update() {}
 	void Render_Stats::draw() {}
-	void Render_Stats::add( Value_Accumulator& accum, float_t val ) {}
+	void Render_Stats::add( Value_Accumulator& accum, f32 val ) {}
 	void Render_Stats::inc( Value_Accumulator& accum ) {}
 
 #else
@@ -27,7 +27,7 @@ void Render_Stats::update()
 		stat_timer.restart();
 
 		_frame_count.update_value();
-		auto steps = ( int32_t )( _frame_count.value );
+		auto steps = ( i32 )( _frame_count.value );
 
 		_frame_times_ms.update_value( steps );
 		_draw_calls.update_value( steps );
@@ -102,7 +102,7 @@ void Render_Stats::draw()
 			Render::state->color = make_color( e_pal::darkest, 0.5f );
 			Render::draw_filled_rect(
 				Rect( 0.f, 0.f,
-					ui_w, ( float_t )( g_engine->pixel_font->get_max_height() * stat_strings.size() ) )
+					ui_w, ( f32 )( g_engine->pixel_font->get_max_height() * stat_strings.size() ) )
 			);
 
 			Render::state->z += zdepth_nudge;
@@ -135,7 +135,7 @@ void Render_Stats::draw()
 	flags.pause = false;
 }
 
-void Render_Stats::add( Value_Accumulator& accum, float_t val )
+void Render_Stats::add( Value_Accumulator& accum, f32 val )
 {
 	if( flags.pause )
 	{

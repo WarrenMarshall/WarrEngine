@@ -10,12 +10,12 @@ struct Tiled_Object final
 	e_sc_prim_type collision_prim_type = e_sc_prim_type::aabb;
 
 	Rect rc;
-	float_t radius;
+	f32 radius;
 	std::vector<Vec2> vertices;
 	std::string name;
 	std::string type;
 
-	void rotate( float_t angle )
+	void rotate( f32 angle )
 	{
 		Matrix mtx;
 		mtx.rotate( angle );
@@ -51,7 +51,7 @@ struct Tile_Set_Asset final : Asset
 		std::vector<Tiled_Object> objects;
 	};
 
-	int32_t tile_width = 0, tile_height = 0, tile_count = 0, columns = 0;
+	i32 tile_width = 0, tile_height = 0, tile_count = 0, columns = 0;
 	Texture_Asset* texture = nullptr;	// the source texture containing the tile set atlas
 	std::vector<Tile_Def> tile_definitions;
 

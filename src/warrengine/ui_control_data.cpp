@@ -63,7 +63,7 @@ void UI_Control_Data::set_bool_value( bool value )
 	_bool_value = value;
 }
 
-float_t UI_Control_Data::float_value()
+f32 UI_Control_Data::float_value()
 {
 	switch( type )
 	{
@@ -79,7 +79,7 @@ float_t UI_Control_Data::float_value()
 	return _float_value;
 }
 
-void UI_Control_Data::set_float_value( float_t value )
+void UI_Control_Data::set_float_value( f32 value )
 {
 	switch( type )
 	{
@@ -109,22 +109,22 @@ void UI_Control_Data::set_float_value( float_t value )
 // if you really do want that 0-1 range, use the _internal functions. otherwise,
 // call the standard functions for getting/setting the float.
 
-float_t UI_Control_Data::float_value_internal()
+f32 UI_Control_Data::float_value_internal()
 {
 	return _float_value;
 }
 
-void UI_Control_Data::set_float_value_internal( float_t value )
+void UI_Control_Data::set_float_value_internal( f32 value )
 {
 	_float_value = value;
 }
 
-int32_t UI_Control_Data::int_value()
+i32 UI_Control_Data::int_value()
 {
 	return _int_value;
 }
 
-void UI_Control_Data::set_int_value( int32_t value )
+void UI_Control_Data::set_int_value( i32 value )
 {
 	_int_value = value;
 }

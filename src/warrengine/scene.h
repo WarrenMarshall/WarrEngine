@@ -18,11 +18,11 @@ struct Scene
 	{
 		return get_transform()->pos;
 	}
-	[[nodiscard]] float_t get_angle()
+	[[nodiscard]] f32 get_angle()
 	{
 		return get_transform()->angle;
 	}
-	[[nodiscard]] float_t get_scale()
+	[[nodiscard]] f32 get_scale()
 	{
 		return get_transform()->scale;
 	}
@@ -87,7 +87,7 @@ struct Scene
 	// ----------------------------------------------------------------------------
 	// entity selections
 
-	void select_by_pick_id( int32_t pick_id );
+	void select_by_pick_id( i32 pick_id );
 	void deselect_all();
 	std::vector<Entity*> get_selected();
 
@@ -145,7 +145,7 @@ struct Scene
 
 	[[nodiscard]] bool is_topmost_scene() const;
 	[[nodiscard]] Entity* find_entity( hash tag );
-	[[nodiscard]] Entity* find_entity_by_pick_id( int32_t pick_id );
+	[[nodiscard]] Entity* find_entity_by_pick_id( i32 pick_id );
 
 	virtual void new_game();
 	void follow_cam( const Transform* follow_target );

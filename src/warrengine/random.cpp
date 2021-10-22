@@ -7,12 +7,12 @@ namespace war
 
 void Random::seed()
 {
-	std::srand( (uint32_t)std::time( nullptr ) );
+	std::srand( (ui32)std::time( nullptr ) );
 }
 
 // returns a float value between 0.0 and 1.0
 
-float_t Random::getf()
+f32 Random::getf()
 {
 	return glm::linearRand( 0.f, 1.f );
 }
@@ -26,21 +26,21 @@ bool Random::getb()
 
 // returns a float value between min and max
 
-float_t Random::getf_range( float_t min, float_t max )
+f32 Random::getf_range( f32 min, f32 max )
 {
 	return glm::linearRand( min, max );
 }
 
 // returns an integer value between min and max
 
-int32_t Random::geti_range( int32_t min, int32_t max )
+i32 Random::geti_range( i32 min, i32 max )
 {
-	return (int32_t)( glm::floor( getf_range( (float_t)( min ), (float_t)( max ) ) + 0.5f ) );
+	return (i32)( glm::floor( getf_range( (f32)( min ), (f32)( max ) ) + 0.5f ) );
 }
 
 // returns a vec2 inside of a circle
 
-Vec2 Random::get_random_in_circle( float_t radius )
+Vec2 Random::get_random_in_circle( f32 radius )
 {
 	auto result = glm::diskRand( radius );
 	return { result.x, result.y };
@@ -48,7 +48,7 @@ Vec2 Random::get_random_in_circle( float_t radius )
 
 // returns a vec2 on the outside of a circle
 
-Vec2 Random::get_random_on_circle( float_t radius )
+Vec2 Random::get_random_on_circle( f32 radius )
 {
 	auto result = glm::circularRand( radius );
 	return { result.x, result.y };

@@ -12,20 +12,20 @@ const Vec2 Vec2::up = Vec2( 0.f, 1.f );
 const Vec2 Vec2::down = Vec2( 0.f, -1.f );
 const Vec2 Vec2::x_axis = Vec2( 1.f, 0.f );
 const Vec2 Vec2::y_axis = Vec2( 0.f, 1.f );
-const float_t Vec2::defaulted = -1.f;
-const float_t Vec2::ignored = -2.f;
+const f32 Vec2::defaulted = -1.f;
+const f32 Vec2::ignored = -2.f;
 
 Vec2::Vec2()
 	: x( 0.f ), y( 0.f )
 {
 }
 
-Vec2::Vec2( int32_t x, int32_t y )
-	: x( (float_t)( x ) ), y( (float_t)( y ) )
+Vec2::Vec2( i32 x, i32 y )
+	: x( (f32)( x ) ), y( (f32)( y ) )
 {
 }
 
-Vec2::Vec2( float_t x, float_t y )
+Vec2::Vec2( f32 x, f32 y )
 	: x( x ), y( y )
 {
 }
@@ -43,7 +43,7 @@ Vec2::Vec2( const b2Vec2& b2v2 )
 {
 }
 
-Vec2::Vec2( float_t v )
+Vec2::Vec2( f32 v )
 	: x( v ), y( v )
 {
 }
@@ -122,7 +122,7 @@ Vec2 Vec2::operator-() const
 	return *this * -1.f;
 }
 
-Vec2 Vec2::operator*( float_t v ) const
+Vec2 Vec2::operator*( f32 v ) const
 {
 	return Vec2( this->x * v, this->y * v );
 }
@@ -132,7 +132,7 @@ Vec2 Vec2::operator*( Vec2 v ) const
 	return Vec2( x * v.x, y * v.y );
 }
 
-Vec2 Vec2::operator*=( float_t v )
+Vec2 Vec2::operator*=( f32 v )
 {
 	*this = *this * v;
 	return *this;
@@ -145,23 +145,23 @@ Vec2 Vec2::operator*=( Vec2 v )
 	return *this;
 }
 
-Vec2 Vec2::operator/( float_t v ) const
+Vec2 Vec2::operator/( f32 v ) const
 {
 	return Vec2( this->x / v, this->y / v );
 }
 
-Vec2 Vec2::operator/=( float_t v )
+Vec2 Vec2::operator/=( f32 v )
 {
 	*this = *this / v;
 	return *this;
 }
 
-float_t Vec2::get_size() const
+f32 Vec2::get_size() const
 {
 	return glm::length( glm::vec2( x, y ) );
 }
 
-float_t Vec2::get_size_fast() const
+f32 Vec2::get_size_fast() const
 {
 	return ( x * x ) + ( y * y );
 }
@@ -214,7 +214,7 @@ Vec2 Vec2::normalize() const
 	return Vec2::normalize( *this );
 }
 
-Vec2 Vec2::clamp( float_t value )
+Vec2 Vec2::clamp( f32 value )
 {
 	Range r( value );
 	x = r.clamp_value( x );
@@ -225,11 +225,11 @@ Vec2 Vec2::clamp( float_t value )
 
 // takes an angle, in degrees, and returns a unit vector for it
 
-Vec2 Vec2::dir_from_angle( float_t angle )
+Vec2 Vec2::dir_from_angle( f32 angle )
 {
 	Vec2 v;
 
-	float_t rad = glm::radians( angle );
+	f32 rad = glm::radians( angle );
 
 	v.x = glm::sin( rad );
 	v.y = -glm::cos( rad );
@@ -237,17 +237,17 @@ Vec2 Vec2::dir_from_angle( float_t angle )
 	return v;
 }
 
-float_t Vec2::angle_from_dir( const Vec2& dir )
+f32 Vec2::angle_from_dir( const Vec2& dir )
 {
-	return glm::atan( dir.x, -dir.y ) * 180.f / glm::pi<float_t>();
+	return glm::atan( dir.x, -dir.y ) * 180.f / glm::pi<f32>();
 }
 
 // call this function instead of angle_from_dir if you'd like the resulting
 // angle to be positive and clamped to be within 0-360.
 
-float_t Vec2::clamped_angle_from_dir( const Vec2& dir )
+f32 Vec2::clamped_angle_from_dir( const Vec2& dir )
 {
-	return glm::mod<float_t>( angle_from_dir( dir ), 360.f );
+	return glm::mod<f32>( angle_from_dir( dir ), 360.f );
 }
 
 // computes the reflection angle of "v" across the normal "n"
@@ -276,7 +276,7 @@ Vec2 Vec2::cross( const Vec2& a, const Vec2& b )
 	return Vec2( v.x, v.y );
 }
 
-float_t Vec2::dot( const Vec2& a, const Vec2& b )
+f32 Vec2::dot( const Vec2& a, const Vec2& b )
 {
 	if( a.is_zero() or b.is_zero() )
 	{

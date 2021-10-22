@@ -24,7 +24,7 @@ void Clock::update()
 	current_frame_ms = get_ticks();
 
 	// compute the delta since the last frame
-	delta_ms = (float_t)( current_frame_ms - prev_frame_ms );
+	delta_ms = (f32)( current_frame_ms - prev_frame_ms );
 
 	if( g_engine->is_paused() )
 	{

@@ -13,8 +13,8 @@ bool Gradient_Source_Asset::create()
 	// asset_def file. they are a list of colors either running vertically or
 	// horizontally, which implies the other dimension is 1 pixel in size.
 
-	w = (float_t)( ( alignment == e_align::horizontal ) ? ( colors.size() / 4 ) : 1 );
-	h = (float_t)( ( alignment == e_align::vertical ) ? ( colors.size() / 4 ) : 1 );
+	w = (f32)( ( alignment == e_align::horizontal ) ? ( colors.size() / 4 ) : 1 );
+	h = (f32)( ( alignment == e_align::vertical ) ? ( colors.size() / 4 ) : 1 );
 
 	assert( colors.size() == w * h * 4 );
 

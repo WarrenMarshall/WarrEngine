@@ -4,7 +4,7 @@
 namespace war
 {
 
-Transform* Transform::set( Vec2 pos, float_t angle, float_t scale )
+Transform* Transform::set( Vec2 pos, f32 angle, f32 scale )
 {
 	set_pos( pos );
 	set_angle( angle );
@@ -19,13 +19,13 @@ Transform* Transform::set_pos( Vec2 pos )
 	return this;
 }
 
-Transform* Transform::set_angle( float_t angle )
+Transform* Transform::set_angle( f32 angle )
 {
 	this->angle = angle;
 	return this;
 }
 
-Transform* Transform::set_scale( float_t scale )
+Transform* Transform::set_scale( f32 scale )
 {
 	this->scale = glm::max( scale, 0.01f );
 	return this;
@@ -36,17 +36,17 @@ Transform* Transform::add_pos( Vec2 delta )
 	return set_pos( this->pos + delta );
 }
 
-Transform* Transform::add_angle( float_t delta )
+Transform* Transform::add_angle( f32 delta )
 {
 	return set_angle( this->angle + delta );
 }
 
-Transform* Transform::add_scale( float_t delta )
+Transform* Transform::add_scale( f32 delta )
 {
 	return set_scale( this->scale + delta );
 }
 
-Transform* Transform::multiply_scale( float_t delta )
+Transform* Transform::multiply_scale( f32 delta )
 {
 	return set_scale( this->scale * delta );
 }

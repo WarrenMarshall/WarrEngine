@@ -5,7 +5,7 @@ struct Scene_Cameras final : Scene
 {
 	Scene_Cameras();
 
-	float_t glow_val = 0.f;
+	f32 glow_val = 0.f;
 
 	virtual void pushed() override;
 	virtual void draw() override;

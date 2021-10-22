@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-float_t Perlin_Noise::get()
+f32 Perlin_Noise::get()
 {
 	if( seed < 1.0f )
 	{
@@ -21,7 +21,7 @@ float_t Perlin_Noise::get()
 
 // ----------------------------------------------------------------------------
 
-float_t Simplex_Noise::get()
+f32 Simplex_Noise::get()
 {
 	if( seed < 1.0f )
 	{
@@ -35,7 +35,7 @@ float_t Simplex_Noise::get()
 
 // ----------------------------------------------------------------------------
 
-float_t Random_Noise::get()
+f32 Random_Noise::get()
 {
 	if( seed < 1.0f )
 	{

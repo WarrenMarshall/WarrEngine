@@ -11,12 +11,12 @@ struct Particle_Spawner final
 		struct
 		{
 			// for e_particle_spawner_type::box
-			int32_t w, h;
+			i32 w, h;
 		};
 		struct
 		{
 			// for e_particle_spawner_type::circle
-			float_t radius;
+			f32 radius;
 		};
 	};
 

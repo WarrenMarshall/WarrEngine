@@ -5,25 +5,25 @@
 namespace war
 {
 
-float_t viewport_w = 320;
-float_t viewport_h = 240;
-float_t ui_w = 320;
-float_t ui_h = 240;
-float_t final_pixel_w = 320;
-float_t final_pixel_h = 240;
+f32 viewport_w = 320;
+f32 viewport_h = 240;
+f32 ui_w = 320;
+f32 ui_h = 240;
+f32 final_pixel_w = 320;
+f32 final_pixel_h = 240;
 
 std::unique_ptr<Log_File> g_logfile = nullptr;
 std::unique_ptr<Game> g_base_game = nullptr;
 std::unique_ptr<Engine> g_engine = nullptr;
 std::unique_ptr<UI_Mgr> g_ui = nullptr;
 
-[[nodiscard]] float_t lerp( float_t a, float_t b, float_t lerp_factor )
+[[nodiscard]] f32 lerp( f32 a, f32 b, f32 lerp_factor )
 {
-	float_t result = ( ( 1.f - lerp_factor ) * a ) + ( lerp_factor * b );
+	f32 result = ( ( 1.f - lerp_factor ) * a ) + ( lerp_factor * b );
 	return result;
 }
 
-[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, float_t lerp_factor )
+[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, f32 lerp_factor )
 {
 	Vec2 result = Vec2::zero;
 

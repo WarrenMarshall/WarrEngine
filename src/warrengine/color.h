@@ -4,7 +4,7 @@ namespace war
 
 struct Color final
 {
-	float_t r = 0.f, g = 0.f, b = 0.f, a = 1.f;
+	f32 r = 0.f, g = 0.f, b = 0.f, a = 1.f;
 
 	static const Color white;
 	static const Color black;
@@ -26,22 +26,22 @@ struct Color final
 	static const Color magenta;
 
 	Color() = default;
-	Color( float_t r, float_t g, float_t b, float_t a = 1.f );
-	Color( float_t v, float_t a = 1.f );
-	Color( int32_t r, int32_t g, int32_t b, int32_t a = 255 );
+	Color( f32 r, f32 g, f32 b, f32 a = 1.f );
+	Color( f32 v, f32 a = 1.f );
+	Color( i32 r, i32 g, i32 b, i32 a = 255 );
 	Color( std::string & str );
 
-	Color operator*( float_t v ) const;
-	Color operator*=( float_t v );
+	Color operator*( f32 v ) const;
+	Color operator*=( f32 v );
 	Color operator-( Color v ) const;
 	Color operator-=( Color v );
 	Color operator+( Color v ) const;
 	Color operator+=( Color v );
 
-	static void scale( Color & color, float_t s );
+	static void scale( Color & color, f32 s );
 
-	static Color make( const Color & clr, float_t alpha = 1.f );
-	static Color make( e_pal pal_idx, float_t alpha = 1.f );
+	static Color make( const Color & clr, f32 alpha = 1.f );
+	static Color make( e_pal pal_idx, f32 alpha = 1.f );
 };
 
 }

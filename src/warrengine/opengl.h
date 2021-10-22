@@ -20,7 +20,7 @@ struct OpenGL_Mgr final
 
 	// this value is polled from opengl at initialization. this allows the code
 	// to dynamically work with various video cards.
-	int32_t max_texture_image_units = -1;
+	i32 max_texture_image_units = -1;
 
 	// rendering the various primitive types always uses the same layout for the
 	// index buffers. this means we can generate these one time, at start up,
@@ -40,16 +40,16 @@ struct OpenGL_Mgr final
 	void set_view_matrix_identity_no_camera();
 	void set_view_matrix_identity_ui();
 
-	float_t get_uniform_float( std::string_view name );
+	f32 get_uniform_float( std::string_view name );
 	bool get_uniform_bool( std::string_view name );
 	Color get_uniform_color( std::string_view name );
 
-	void set_uniform_float( std::string_view name, float_t value );
+	void set_uniform_float( std::string_view name, f32 value );
 	void set_uniform_bool( std::string_view name, bool value );
 	void set_uniform_color( std::string_view name, const Color& value );
-	void set_uniform_array( std::string_view name, int32_t* value, int32_t count );
+	void set_uniform_array( std::string_view name, i32* value, i32 count );
 
-	void allocate_vertex_buffer_on_gpu( int32_t max_verts, bool is_static );
+	void allocate_vertex_buffer_on_gpu( i32 max_verts, bool is_static );
 };
 
 }

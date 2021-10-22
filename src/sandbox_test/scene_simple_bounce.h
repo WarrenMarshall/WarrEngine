@@ -5,9 +5,9 @@ struct Scene_Simple_Bounce final : Scene
 {
 	struct
 	{
-		uint16_t ball	= 0b00000001;
-		uint16_t shape	= 0b00000010;
-		uint16_t geo	= 0b00000100;
+		ui16 ball	= 0b00000001;
+		ui16 shape	= 0b00000010;
+		ui16 geo	= 0b00000100;
 	} coll_flags;
 
 	Scene_Simple_Bounce();

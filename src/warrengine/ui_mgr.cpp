@@ -5,7 +5,7 @@
 namespace war
 {
 
-uint32_t UI_Mgr::automatic_id;
+ui32 UI_Mgr::automatic_id;
 
 UI_Mgr::UI_Mgr()
 {
@@ -313,13 +313,13 @@ UI_Mgr* UI_Mgr::set_size( const Vec2& sz )
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_interval( float_t interval )
+UI_Mgr* UI_Mgr::set_interval( f32 interval )
 {
 	current_control->interval = interval;
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_idx( int32_t idx )
+UI_Mgr* UI_Mgr::set_idx( i32 idx )
 {
 	current_control->idx = idx;
 	return this;
@@ -334,11 +334,11 @@ Rect UI_Mgr::compute_client_rect_from_ui_rect( Rect rc_ui )
 
 	if( current_control->slice_def )
 	{
-		result.x += current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.w;
-		result.y += current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.h;
+		result.x += current_control->slice_def->patches[ (i32)e_slice_def_patch::top_left ]->rc.w;
+		result.y += current_control->slice_def->patches[ (i32)e_slice_def_patch::top_left ]->rc.h;
 
-		result.w -= current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.w + current_control->slice_def->patches[ (int32_t)e_slice_def_patch::bottom_right ]->rc.w;
-		result.h -= current_control->slice_def->patches[ (int32_t)e_slice_def_patch::top_left ]->rc.h + current_control->slice_def->patches[ (int32_t)e_slice_def_patch::bottom_right ]->rc.h;
+		result.w -= current_control->slice_def->patches[ (i32)e_slice_def_patch::top_left ]->rc.w + current_control->slice_def->patches[ (i32)e_slice_def_patch::bottom_right ]->rc.w;
+		result.h -= current_control->slice_def->patches[ (i32)e_slice_def_patch::top_left ]->rc.h + current_control->slice_def->patches[ (i32)e_slice_def_patch::bottom_right ]->rc.h;
 	}
 
 	return result;
@@ -373,7 +373,7 @@ bool UI_Mgr::done()
 		Render::state->z += zdepth_nudge;
 	}
 
-	return (int32_t)( result.code & e_im_result::left_clicked );
+	return (i32)( result.code & e_im_result::left_clicked );
 }
 
 void UI_Mgr::end_static_control()
@@ -394,8 +394,8 @@ void UI_Mgr::end_active_control()
 
 	if( auto current_scene = g_engine->scene_mgr.current_scene ; current_scene == g_engine->scene_mgr.get_top() )
 	{
-		Range expanded_tag_range( ( float_t )current_scene->ui_expanded_tag_begin, ( float_t )current_scene->ui_expanded_tag_end );
-		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( ( float_t )current_control->tag ) )
+		Range expanded_tag_range( ( f32 )current_scene->ui_expanded_tag_begin, ( f32 )current_scene->ui_expanded_tag_end );
+		if( current_scene->ui_expanded_tag_begin == hash_none or expanded_tag_range.is_within( ( f32 )current_control->tag ) )
 		{
 			update_im_state( current_control.get(), is_hovered, is_hot );
 
@@ -486,7 +486,7 @@ void UI_Mgr::update_im_state( UI_Control* control, bool is_hovered, bool is_hot 
 
 	// client rect position of mouse cursor
 
-	if( (int32_t)(result.code & e_im_result::left_clicked) or control->type == e_ui_control_type::slider )
+	if( (i32)(result.code & e_im_result::left_clicked) or control->type == e_ui_control_type::slider )
 	{
 		// convert mouse location to client rect position inside control
 
@@ -640,28 +640,28 @@ Rect* UI_Mgr::layout_top_ptr()
 	return &( layout_stack.back() );
 }
 
-UI_Mgr* UI_Mgr::cut_top( float_t sz )
+UI_Mgr* UI_Mgr::cut_top( f32 sz )
 {
 	set_rect( layout_top_ptr()->cut_top( sz > 0.f ? sz : current_control->default_height + current_control->get_control_inner_margins().y ) );
 	return this;
 
 }
 
-UI_Mgr* UI_Mgr::cut_bottom( float_t sz )
+UI_Mgr* UI_Mgr::cut_bottom( f32 sz )
 {
 	set_rect( layout_top_ptr()->cut_bottom( sz > 0.f ? sz : current_control->default_height + current_control->get_control_inner_margins().y ) );
 	return this;
 
 }
 
-UI_Mgr* UI_Mgr::cut_left( float_t sz )
+UI_Mgr* UI_Mgr::cut_left( f32 sz )
 {
 	set_rect( layout_top_ptr()->cut_left( sz > 0.f ? sz : current_control->default_width + current_control->get_control_inner_margins().x ) );
 	return this;
 
 }
 
-UI_Mgr* UI_Mgr::cut_right( float_t sz )
+UI_Mgr* UI_Mgr::cut_right( f32 sz )
 {
 	set_rect( layout_top_ptr()->cut_right( sz > 0.f ? sz : current_control->default_width + current_control->get_control_inner_margins().x ) );
 	return this;

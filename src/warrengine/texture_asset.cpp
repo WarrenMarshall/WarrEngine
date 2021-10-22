@@ -68,11 +68,11 @@ Texture_Asset::Texture_Asset( std::string_view src_texture_tag, const Rect& rc_t
 
 // animated, uses a series of textures on a timed loop
 
-Texture_Asset::Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, int32_t frames_per_second )
+Texture_Asset::Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, i32 frames_per_second )
 	: frames( frames ), tween_type( tween_type ), frames_per_second( frames_per_second )
 {
 	auto duration_ms = ( 1000 / frames_per_second ) * frames.size();
-	frame_tween = Tween( 0.f, (float_t)( frames.size() ), duration_ms, tween_type, e_tween_via::linear );
+	frame_tween = Tween( 0.f, (f32)( frames.size() ), duration_ms, tween_type, e_tween_via::linear );
 }
 
 Texture_Source_Base* Texture_Asset::find_texture_source_base( std::string_view src_texture_tag )
@@ -88,7 +88,7 @@ Texture_Source_Base* Texture_Asset::find_texture_source_base( std::string_view s
 	return result;
 }
 
-const Texture_Asset* Texture_Asset::get_frame( float_t anim_offset ) const
+const Texture_Asset* Texture_Asset::get_frame( f32 anim_offset ) const
 {
 	if( !is_animated() )
 	{
@@ -96,7 +96,7 @@ const Texture_Asset* Texture_Asset::get_frame( float_t anim_offset ) const
 	}
 
 	// use the tween to get the animation frame index, clamped to the value range
-	auto idx = (size_t)( glm::clamp<float_t>( const_cast<Texture_Asset*>( this )->frame_tween.value(), 0.f, (float_t)frames.size() ) );
+	auto idx = (size_t)( glm::clamp<f32>( const_cast<Texture_Asset*>( this )->frame_tween.value(), 0.f, (f32)frames.size() ) );
 	idx += (size_t)( anim_offset * frames.size() );
 	idx = idx % frames.size();
 
@@ -115,12 +115,12 @@ bool Texture_Asset::is_animated() const
 	return frames_per_second;
 }
 
-float_t Texture_Asset::width() const
+f32 Texture_Asset::width() const
 {
 	return get_frame( 0.f )->rc.w;
 }
 
-float_t Texture_Asset::height() const
+f32 Texture_Asset::height() const
 {
 	return get_frame( 0.f )->rc.h;
 }

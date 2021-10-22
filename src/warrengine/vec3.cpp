@@ -12,12 +12,12 @@ Vec3::Vec3()
 {
 }
 
-Vec3::Vec3( int32_t x, int32_t y, int32_t z )
-	: x( (float_t)( x ) ), y( (float_t)( y ) ), z( (float_t)( z ) )
+Vec3::Vec3( i32 x, i32 y, i32 z )
+	: x( (f32)( x ) ), y( (f32)( y ) ), z( (f32)( z ) )
 {
 }
 
-Vec3::Vec3( float_t x, float_t y, float_t z )
+Vec3::Vec3( f32 x, f32 y, f32 z )
 	: x( x ), y( y ), z( z )
 {
 }

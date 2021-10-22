@@ -5,9 +5,9 @@ struct Scene_Simple_Sensors final : Scene
 {
 	struct
 	{
-		uint16_t player = 0b0000001;
-		uint16_t world	= 0b0000010;
-		uint16_t sensor = 0b0000100;
+		ui16 player = 0b0000001;
+		ui16 world	= 0b0000010;
+		ui16 sensor = 0b0000100;
 	} coll_flags;
 
 	Scene_Simple_Sensors();

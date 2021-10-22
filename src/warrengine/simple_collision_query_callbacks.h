@@ -7,7 +7,7 @@ namespace war::simple_collision
 struct Raycast_Hit final
 {
 	// how far along the ray did the hit occur?
-	float_t dist = 999999.f;
+	f32 dist = 999999.f;
 
 	// the normal direction from the hit location. this is NOT the normal of the
 	// ray that was cast, this is the normal of the impact.
@@ -34,9 +34,9 @@ struct Raycast_Callback
 	virtual ~Raycast_Callback() = default;
 
 	bool hit_something = false;
-	int32_t collision_mask = 0;
+	i32 collision_mask = 0;
 
-	virtual float_t report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) = 0;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ struct Raycast_Closest final : Raycast_Callback
 {
 	Raycast_Hit result;
 
-	virtual float_t report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ struct Raycast_Closest final : Raycast_Callback
 
 struct Raycast_Quick final : Raycast_Callback
 {
-	virtual float_t report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ struct Raycast_All final : Raycast_Callback
 {
 	std::vector<Raycast_Hit> results;
 
-	virtual float_t report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 }

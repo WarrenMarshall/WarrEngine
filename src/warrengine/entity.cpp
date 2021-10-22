@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Entity_Simple_Force::Entity_Simple_Force( Vec2 normal, float_t strength )
+Entity_Simple_Force::Entity_Simple_Force( Vec2 normal, f32 strength )
 	: strength( strength )
 {
 	this->normal = Vec2::normalize( normal );
@@ -266,7 +266,7 @@ const war::Transform* Entity::get_transform()
 	return &_tform;
 }
 
-Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float_t angle, const float_t scale )
+Transform* Entity::set_pos_angle_scale( const Vec2& pos, const f32 angle, const f32 scale )
 {
 	_tform.set_pos( pos );
 	_tform.set_angle( angle );
@@ -277,7 +277,7 @@ Transform* Entity::set_pos_angle_scale( const Vec2& pos, const float_t angle, co
 	return &_tform;
 }
 
-Transform* Entity::set_angle( const float_t angle )
+Transform* Entity::set_angle( const f32 angle )
 {
 	_tform.set_angle( angle );
 	update_box2d_components_to_match_transform();
@@ -285,7 +285,7 @@ Transform* Entity::set_angle( const float_t angle )
 	return &_tform;
 }
 
-Transform* Entity::set_scale( const float_t scale )
+Transform* Entity::set_scale( const f32 scale )
 {
 	_tform.set_scale( scale );
 
@@ -303,12 +303,12 @@ Vec2 Entity::get_pos()
 	return get_transform()->pos;
 }
 
-float_t Entity::get_angle()
+f32 Entity::get_angle()
 {
 	return get_transform()->angle;
 }
 
-float_t Entity::get_scale()
+f32 Entity::get_scale()
 {
 	return get_transform()->scale;
 }
@@ -335,14 +335,14 @@ void Entity::add_delta_pos( const Vec2& delta )
 	update_box2d_components_to_match_transform();
 }
 
-void Entity::add_delta_angle( const float_t delta )
+void Entity::add_delta_angle( const f32 delta )
 {
 	_tform.add_angle( delta );
 
 	update_box2d_components_to_match_transform();
 }
 
-void Entity::add_delta_scale( const float_t delta )
+void Entity::add_delta_scale( const f32 delta )
 {
 	_tform.add_scale( delta );
 
@@ -450,7 +450,7 @@ void Entity::set_tag( hash tag )
 	this->tag = tag;
 }
 
-static int32_t w_entity_last_pick_id = 0;
+static i32 w_entity_last_pick_id = 0;
 
 void Entity::set_pickable()
 {
@@ -496,7 +496,7 @@ void Entity::apply_movement_jump()
 	}
 }
 
-void Entity::apply_movement_walk( Vec2 delta, float_t speed )
+void Entity::apply_movement_walk( Vec2 delta, f32 speed )
 {
 	auto dot = Vec2::dot( delta, Vec2::down );
 

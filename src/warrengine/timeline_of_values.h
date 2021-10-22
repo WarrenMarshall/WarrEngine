@@ -8,23 +8,23 @@ struct Timeline_Of_Values final
 {
 	struct Key_Frame final
 	{
-		float_t pct_marker = 0.f;
+		f32 pct_marker = 0.f;
 
 		union
 		{
-			float_t float_value;
+			f32 float_value;
 			Color color_value;
 		};
 
 		Key_Frame()
 		{
 		}
-		Key_Frame( float_t pct_marker, float_t value )
+		Key_Frame( f32 pct_marker, f32 value )
 			: pct_marker( pct_marker ), float_value( value )
 		{
 		}
 
-		Key_Frame( float_t pct_marker, const Color& value )
+		Key_Frame( f32 pct_marker, const Color& value )
 			: pct_marker( pct_marker ), color_value( value )
 		{
 
@@ -39,10 +39,10 @@ struct Timeline_Of_Values final
 	Timeline_Of_Values* clear_key_frames();
 	Timeline_Of_Values* add_key_frame( const Timeline_Of_Values::Key_Frame& kf );
 
-	size_t find_next_key_frame_idx_from_pct( float_t pct );
+	size_t find_next_key_frame_idx_from_pct( f32 pct );
 
-	float_t get_float_value( float_t pct_on_timeline );
-	Color get_color_value( float_t pct_on_timeline );
+	f32 get_float_value( f32 pct_on_timeline );
+	Color get_color_value( f32 pct_on_timeline );
 };
 
 }

@@ -13,9 +13,9 @@ struct Scene_Simple_Breakout final : Scene
 {
 	struct
 	{
-		uint16_t ball	= 0b00000001;
-		uint16_t paddle = 0b00000010;
-		uint16_t geo	= 0b00000100;
+		ui16 ball	= 0b00000001;
+		ui16 paddle = 0b00000010;
+		ui16 geo	= 0b00000100;
 	} coll_flags;
 
 	Scene_Simple_Breakout();

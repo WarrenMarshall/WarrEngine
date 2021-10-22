@@ -9,7 +9,7 @@ struct Scene_Textures final : Scene
 	Texture_Asset* anim_player = nullptr;
 	Texture_Asset* anim_coin = nullptr;
 
-	float_t anim_offsets[ 3 ] = {};
+	f32 anim_offsets[ 3 ] = {};
 
 	Scene_Textures();
 
