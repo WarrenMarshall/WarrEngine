@@ -263,7 +263,7 @@ void UI_Control::draw_progress_control( const Rect& rc_ui, const Rect& rc_client
 
 	if( control_data->progress.draw_percentage_as_text and pct >= 0.01f )
 	{
-		Render::state->color = make_color( e_pal::brightest );
+		Render::state->color = make_color( e_pal::lightest );
 		Render::state->align = e_align::centered;
 		Render::draw_string( std::format( "{}%", (i32)glm::round( pct * 100.f ) ), rc_client.get_midpoint() );
 	}

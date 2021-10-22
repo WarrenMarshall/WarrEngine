@@ -25,7 +25,7 @@ static void draw_title( const std::string& title )
 	scoped_render_state;
 
 	Render::state->align = e_align::centered;
-	Render::state->color = make_color( e_pal::brightest );
+	Render::state->color = make_color( e_pal::lightest );
 	Render::state->scale = 2.f;
 
 	Render::draw_string( title, { ui_w / 2.f, 16.f } );

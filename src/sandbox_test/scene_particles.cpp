@@ -26,7 +26,7 @@ void Scene_Particles::pushed()
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::circle, 30.f );
-			ec->rs_opt.color = make_color( e_pal::brightest );
+			ec->rs_opt.color = make_color( e_pal::lightest );
 		}
 	}
 
@@ -42,7 +42,7 @@ void Scene_Particles::pushed()
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -viewport_hw, -2.f, viewport_w, 4.f ) );
-			ec->rs_opt.color = make_color( e_pal::brightest, 0.25f );
+			ec->rs_opt.color = make_color( e_pal::lightest, 0.25f );
 		}
 	}
 
@@ -63,7 +63,7 @@ void Scene_Particles::pushed()
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_circle, 10.f );
-			ec->rs_opt.color = make_color( e_pal::brightest );
+			ec->rs_opt.color = make_color( e_pal::lightest );
 			ec->rs_opt.color->a = 0.25f;
 		}
 	}
@@ -88,7 +88,7 @@ void Scene_Particles::draw_ui()
 	auto ui_pos = Coord_System::viewport_to_ui_pos( viewport_pos );
 
 	Render::state->align = e_align::left | e_align::vcenter;
-	Render::state->color = make_color( e_pal::brighter );
+	Render::state->color = make_color( e_pal::lighter );
 	Render::draw_string( "My Light In The Dark", ui_pos );
 }
 

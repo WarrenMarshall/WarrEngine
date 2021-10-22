@@ -58,7 +58,7 @@ void Scene_Tweens_Timers::draw_ui()
 			Render::state->color = make_color( e_pal::darkest, 0.25f );
 			Render::draw_filled_rect( Rect( 0.f, ypos - 7.f, ui_w, 14.f ) );
 
-			Render::state->color = make_color( e_pal::brightest, 1.f );
+			Render::state->color = make_color( e_pal::lightest, 1.f );
 			Render::state->scale = 1.f;
 			Render::state->align = e_align::vcenter;
 			Render::draw_string( desc, Vec2( 12.f, ypos ) );

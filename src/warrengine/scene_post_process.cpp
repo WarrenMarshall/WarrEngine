@@ -325,14 +325,14 @@ void Scene_Post_Process::draw_ui()
 
 			g_ui->label_control()->set_text( "Pixelate:" )
 				->cut_left( 56.f )
-				->set_text_color( make_color( e_pal::brightest ) )
+				->set_text_color( make_color( e_pal::lightest ) )
 				->done();
 			g_ui->slider_control( H( "slider_pixelate_factor" ) )->cut_left( 64.f )->done();
 			g_ui->spacer_control()->cut_left()->done();
 
 			g_ui->label_control()
 				->set_text( std::format( "{:.2f}", cb->u_pixelate_factor.float_value() ) )
-				->set_text_color( make_color( e_pal::brightest ) )
+				->set_text_color( make_color( e_pal::lightest ) )
 				->cut_left( 32.f )
 				->done();
 		}

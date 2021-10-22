@@ -374,8 +374,8 @@ enum struct e_pal
 	darkest,
 	darker,
 	middle,
-	brighter,
-	brightest,
+	lighter,
+	lightest,
 };
 
 // ----------------------------------------------------------------------------

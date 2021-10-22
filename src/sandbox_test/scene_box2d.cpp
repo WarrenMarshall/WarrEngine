@@ -29,7 +29,7 @@ void Scene_Box2D::pushed()
 			{
 				auto ec = e->add_component<Primitive_Shape_Component>();
 				ec->add_shape( e_primitive_shape::filled_circle, 32.f );
-				ec->rs_opt.color = make_color( e_pal::brighter );
+				ec->rs_opt.color = make_color( e_pal::lighter );
 				ec->rs_opt.glow = 1.f;
 			}
 		}
@@ -55,7 +55,7 @@ void Scene_Box2D::pushed()
 				ec->add_shape( e_primitive_shape::filled_rect, rc_floor );
 				ec->add_shape( e_primitive_shape::filled_rect, rc_left_wall );
 				ec->add_shape( e_primitive_shape::filled_rect, rc_right_wall );
-				ec->rs_opt.color = make_color( e_pal::brighter );
+				ec->rs_opt.color = make_color( e_pal::lighter );
 			}
 		}
 	}

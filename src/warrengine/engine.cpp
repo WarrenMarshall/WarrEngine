@@ -611,7 +611,7 @@ void Engine::draw()
 			Render::draw_line_loop(rc);
 
 			rc.shrink(1.f);
-			Render::state->color = make_color(e_pal::brighter);
+			Render::state->color = make_color(e_pal::lighter);
 			Render::draw_line_loop(rc);
 		}
 	}

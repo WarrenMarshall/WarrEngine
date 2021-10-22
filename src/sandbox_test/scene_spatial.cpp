@@ -16,11 +16,11 @@ void Scene_Spatial::spawn_entity( Vec2 pos )
 	auto e = add_entity<Entity>();
 	e->set_pos( pos );
 	e->set_pickable();
-	e->rs_opt.color = make_color( e_pal::brighter );
+	e->rs_opt.color = make_color( e_pal::lighter );
 	{
 		auto ec = e->add_component<Sprite_Component>();
 		ec->init( "tex_skull" );
-		ec->rs_opt.color = make_color( e_pal::brightest );
+		ec->rs_opt.color = make_color( e_pal::lightest );
 	}
 	{
 		auto ec = e->add_component<Simple_Collision_Body>();

@@ -147,7 +147,7 @@ void Scene_Controller::draw_ui()
 			Render::draw_filled_rect( Rect( 0.f, ui_h - 14.f, ui_w, 14.f ) );
 
 			Render::state->align = e_align::centered;
-			Render::state->color = make_color( e_pal::brightest, 1.f );
+			Render::state->color = make_color( e_pal::lightest, 1.f );
 			Render::draw_string( std::format( "Use controller 'dead zone': {}", use_controller_dead_zone ), Vec2( ui_hw, ui_h - 8.f ) );
 
 			return;
@@ -157,7 +157,7 @@ void Scene_Controller::draw_ui()
 		Render::draw_filled_rect( Rect( 0.f, ui_hh - 7.f, ui_w, 14.f ) );
 
 		Render::state->align = e_align::centered;
-		Render::state->color = make_color( e_pal::brighter, *fader );
+		Render::state->color = make_color( e_pal::lighter, *fader );
 		Render::draw_string( "no game controller detected - plug one in!", Vec2( ui_hw, ui_hh ) );
 	}
 }

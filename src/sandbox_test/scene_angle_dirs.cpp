@@ -18,7 +18,7 @@ void Scene_Angle_Dirs::draw()
 	Render::draw_world_axis();
 
 	// circle at world origin
-	Render::state->color = make_color( e_pal::brighter );
+	Render::state->color = make_color( e_pal::lighter );
 	Render::draw_filled_circle( Vec2::zero, 6.f );
 
 	// marker
@@ -34,11 +34,11 @@ void Scene_Angle_Dirs::draw()
 	// marker2
 	//
 	// circle at marker position
-	Render::state->color = make_color( e_pal::brighter );
+	Render::state->color = make_color( e_pal::lighter );
 	Render::draw_filled_circle( marker_pos2, 6.f );
 
 	// connecting line
-	Render::state->color = make_color( e_pal::brighter );
+	Render::state->color = make_color( e_pal::lighter );
 	Render::draw_line( Vec2::zero, marker_pos2 );
 }
 
@@ -54,7 +54,7 @@ void Scene_Angle_Dirs::draw_ui()
 	{
 		Rect ui_pos( Coord_System::world_to_ui_pos( marker_pos + Vec2( 16.f, 0.f ) ), 0.f, 64.f );
 
-		Render::state->color = make_color( e_pal::brightest );
+		Render::state->color = make_color( e_pal::lightest );
 
 		auto angle = Vec2::clamped_angle_from_dir( Vec2::normalize( marker_pos ) );
 		auto dir = Vec2::dir_from_angle( angle );

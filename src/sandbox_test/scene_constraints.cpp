@@ -12,7 +12,7 @@ bool E_Sensor_Player::on_touching_begin( Simple_Collision_Body* sensor )
 	touch_count++;
 	if( touch_count )
 	{
-		rs_opt.color = make_color( e_pal::brighter );
+		rs_opt.color = make_color( e_pal::lighter );
 	}
 	return true;
 };

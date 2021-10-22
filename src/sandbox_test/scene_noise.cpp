@@ -50,7 +50,7 @@ void Scene_Noise::draw_ui()
 			Render::state->color = make_color( e_pal::darkest, 0.5f );
 			Render::draw_filled_rect( Rect( 0.f, y_pos + ( noise_sz * 1.25f ), ui_w, 1.f ) );
 
-			Render::state->color = make_color( e_pal::brightest, 1.f );
+			Render::state->color = make_color( e_pal::lightest, 1.f );
 
 			Vec2 start = { 0.f, y_pos + ( noise_sz * 1.25f ) };
 			Vec2 end;
@@ -65,12 +65,12 @@ void Scene_Noise::draw_ui()
 
 				end.y = y_pos + ( noise_sz * 1.25f ) + ( samples[ x ] * noise_sz );
 
-				Render::state->color = make_color( e_pal::brighter, 0.5f );
+				Render::state->color = make_color( e_pal::lighter, 0.5f );
 				Render::state->glow = 0.f;
 				Render::draw_line( start, end );
 
 
-				Render::state->color = make_color( e_pal::brightest, 1.f );
+				Render::state->color = make_color( e_pal::lightest, 1.f );
 				Render::state->glow = 6.f;
 				Render::draw_point( start );
 
@@ -80,7 +80,7 @@ void Scene_Noise::draw_ui()
 			Render::state->glow = 0.f;
 		};
 
-		Render::state->color = make_color( e_pal::brightest );
+		Render::state->color = make_color( e_pal::lightest );
 
 		Render::draw_string( "Simplex", { 4.f, 64.f } );
 		l_draw_noise( 64.f, simplex_samples );

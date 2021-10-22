@@ -44,7 +44,7 @@ void Scene_Entity_Picking::pushed()
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_rect, Rect( -32, -16, 64, 32 ) );
-			ec->rs_opt.color = make_color( e_pal::brighter );
+			ec->rs_opt.color = make_color( e_pal::lighter );
 		}
 	}
 }

@@ -85,7 +85,7 @@ void Scene_Wrapped_Text::draw_ui()
 		Render::state->color = make_color( e_pal::darkest, 0.75f );
 		Render::draw_rounded_rect( rc_big_text_block_02, 4.f );
 
-		Render::state->color = make_color( e_pal::brighter );
+		Render::state->color = make_color( e_pal::lighter );
 
 		std::array<e_align, 3> alignments = { e_align::left, e_align::hcenter, e_align::right };
 		Render::state->align = alignments[ cb->radio_alignment_data.int_value() ];
