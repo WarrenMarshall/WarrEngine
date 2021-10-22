@@ -17,12 +17,12 @@ void Scene_Angle_Dirs::draw()
 	Scene::draw();
 	Render::draw_world_axis();
 
-	//	scoped_render_state;
-
-		// circle at world origin
+	// circle at world origin
 	Render::state->color = make_color( e_pal::brighter );
 	Render::draw_filled_circle( Vec2::zero, 6.f );
 
+	// marker
+	//
 	// circle at marker position
 	Render::state->color = make_color( e_pal::middle );
 	Render::draw_filled_circle( marker_pos, 6.f );
@@ -30,6 +30,16 @@ void Scene_Angle_Dirs::draw()
 	// connecting line
 	Render::state->color = make_color( e_pal::middle );
 	Render::draw_line( Vec2::zero, marker_pos );
+
+	// marker2
+	//
+	// circle at marker position
+	Render::state->color = make_color( e_pal::brighter );
+	Render::draw_filled_circle( marker_pos2, 6.f );
+
+	// connecting line
+	Render::state->color = make_color( e_pal::brighter );
+	Render::draw_line( Vec2::zero, marker_pos2 );
 }
 
 void Scene_Angle_Dirs::draw_ui()
@@ -49,11 +59,16 @@ void Scene_Angle_Dirs::draw_ui()
 		auto angle = Vec2::clamped_angle_from_dir( Vec2::normalize( marker_pos ) );
 		auto dir = Vec2::dir_from_angle( angle );
 
-		const std::vector<std::string> info_lines =
+		std::vector<std::string> info_lines =
 		{
 			std::format( "Angle : {:.0f} d", angle ),
 			std::format( "Dir   : {:.1f}, {:.1f}", dir.x, dir.y )
 		};
+
+		if( !marker_pos2.is_zero() )
+		{
+			info_lines.push_back( std::format( "Dot   : {:.3f}", Vec2::dot( marker_pos, marker_pos2 ) ) );
+		}
 
 		Render::draw_string( info_lines, ui_pos );
 	}
@@ -68,6 +83,12 @@ bool Scene_Angle_Dirs::on_input_motion( const Input_Event* evt )
 			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 			{
 				marker_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+				return true;
+			}
+
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
+			{
+				marker_pos2 = Coord_System::window_to_world_pos( evt->mouse_pos );
 				return true;
 			}
 		}
