@@ -3,7 +3,7 @@
 
 int main( int argc, char* argv [] )
 {
-	war::Engine::go<Gauntlet_App>( argc, argv );
+	war::Engine::go<Robotron_App>( argc, argv );
 
 	return EXIT_SUCCESS;
 }

@@ -1,9 +1,9 @@
 
 using namespace war;
 
-struct Gauntlet_App final : Game
+struct Robotron_App final : Game
 {
-	Gauntlet_App();
+	Robotron_App();
 
 	virtual void init() override;
 	virtual void new_game() override;

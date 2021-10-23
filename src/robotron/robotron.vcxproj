@@ -21,10 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{E8B339C3-E17E-44D9-ACD9-FA265C671FE0}</ProjectGuid>
-    <RootNamespace>gauntlet</RootNamespace>
+    <ProjectGuid>{504E5DC7-10D7-4BF1-99FF-2F4B74AF74A5}</ProjectGuid>
+    <RootNamespace>robotron</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>gauntlet</ProjectName>
+    <ProjectName>robotron</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -206,12 +206,12 @@
   <ItemGroup>
     <ClCompile Include="scene_default.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="gauntlet_app.cpp" />
+    <ClCompile Include="robotron_app.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
     <ClInclude Include="scene_default.h" />
-    <ClInclude Include="gauntlet_app.h" />
+    <ClInclude Include="robotron_app.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\warrengine\warrengine.vcxproj">

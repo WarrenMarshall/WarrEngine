@@ -13,7 +13,7 @@ void Scene_Default::pushed()
 	Scene::pushed();
 
 	gradient = g_engine->find_asset<Texture_Asset>( "background_gradient" );
-	tex_gauntlet = g_engine->find_asset<Texture_Asset>( "tex_hello_world" );
+	tex_robotron = g_engine->find_asset<Texture_Asset>( "tex_hello_world" );
 	movement_tween = Tween( -175, 175, 4000, e_tween_type::pingpong, e_tween_via::quadratic );
 	scale_tween = Tween( .5f, 5.f, 9000, e_tween_type::pingpong, e_tween_via::sinusoidal );
 	tilt_tween = Tween( -25.f, 25.f, 20000, e_tween_type::pingpong, e_tween_via::cubic );
@@ -40,5 +40,5 @@ void Scene_Default::draw()
 
 	Render::state->angle = *tilt_tween;
 	Render::state->scale = *scale_tween;
-	Render::draw_sprite( tex_gauntlet, Vec2( *movement_tween, 0.f ) );
+	Render::draw_sprite( tex_robotron, Vec2( *movement_tween, 0.f ) );
 }

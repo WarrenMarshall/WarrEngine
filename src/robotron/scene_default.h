@@ -2,7 +2,7 @@
 struct Scene_Default final : Scene
 {
 	Texture_Asset* gradient = nullptr;
-	Texture_Asset* tex_gauntlet = nullptr;
+	Texture_Asset* tex_robotron = nullptr;
 	Tween movement_tween, scale_tween, tilt_tween;
 
 	Scene_Default();
