@@ -446,3 +446,12 @@ enum struct e_sensor_type
 	repeating,
 	continuous
 };
+
+// ----------------------------------------------------------------------------
+
+enum struct e_on_input_result
+{
+	handled,
+	handled_with_blocking,
+	not_handled
+};

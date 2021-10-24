@@ -204,6 +204,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entities.cpp" />
     <ClCompile Include="scene_background.cpp" />
     <ClCompile Include="scene_gameplay.cpp" />
     <ClCompile Include="main.cpp" />
@@ -212,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
+    <ClInclude Include="entities.h" />
     <ClInclude Include="scene_background.h" />
     <ClInclude Include="scene_gameplay.h" />
     <ClInclude Include="robotron_app.h" />

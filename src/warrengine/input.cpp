@@ -304,12 +304,19 @@ void Input_Mgr::dispatch_event_queue()
 		{
 			case e_event_id::input_pressed:
 			{
+				auto ret = g_engine->scene_mgr.on_input_pressed( &evt );
+
+				if( ret == e_on_input_result::handled )
+				{
+					break;
+				}
+
 				if( g_engine->on_input_pressed( &evt ) )
 				{
 					break;
 				}
 
-				if( g_engine->scene_mgr.on_input_pressed( &evt ) )
+				if( ret == e_on_input_result::handled_with_blocking )
 				{
 					break;
 				}
@@ -319,7 +326,9 @@ void Input_Mgr::dispatch_event_queue()
 
 			case e_event_id::input_held:
 			{
-				if( g_engine->scene_mgr.on_input_held( &evt ) )
+				auto ret = g_engine->scene_mgr.on_input_held( &evt );
+
+				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
@@ -328,12 +337,20 @@ void Input_Mgr::dispatch_event_queue()
 				{
 					break;
 				}
+
+				if( ret == e_on_input_result::handled_with_blocking )
+				{
+					break;
+				}
+
 				break;
 			}
 
 			case e_event_id::input_released:
 			{
-				if( g_engine->scene_mgr.on_input_released( &evt ) )
+				auto ret = g_engine->scene_mgr.on_input_released( &evt );
+
+				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
@@ -342,12 +359,20 @@ void Input_Mgr::dispatch_event_queue()
 				{
 					break;
 				}
+
+				if( ret == e_on_input_result::handled_with_blocking )
+				{
+					break;
+				}
+
 				break;
 			}
 
 			case e_event_id::input_motion:
 			{
-				if( g_engine->scene_mgr.on_input_motion( &evt ) )
+				auto ret = g_engine->scene_mgr.on_input_motion( &evt );
+
+				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
@@ -356,12 +381,20 @@ void Input_Mgr::dispatch_event_queue()
 				{
 					break;
 				}
+
+				if( ret == e_on_input_result::handled_with_blocking )
+				{
+					break;
+				}
+
 				break;
 			}
 
 			case e_event_id::input_key:
 			{
-				if( g_engine->scene_mgr.on_input_key( &evt ) )
+				auto ret = g_engine->scene_mgr.on_input_key( &evt );
+
+				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
@@ -370,6 +403,12 @@ void Input_Mgr::dispatch_event_queue()
 				{
 					break;
 				}
+
+				if( ret == e_on_input_result::handled_with_blocking )
+				{
+					break;
+				}
+
 				break;
 			}
 		}

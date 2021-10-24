@@ -1,9 +1,7 @@
 
 struct Scene_Gameplay final : Scene
 {
-	Texture_Asset* gradient = nullptr;
-	Texture_Asset* tex_robotron = nullptr;
-	Tween movement_tween, scale_tween, tilt_tween;
+	E_Player* player = nullptr;
 
 	Scene_Gameplay();
 

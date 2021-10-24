@@ -131,6 +131,7 @@ Scene_Post_Process::Scene_Post_Process()
 	ui_callback = &uic;
 
 	flags.blocks_further_drawing = false;
+	flags.blocks_further_input = true;
 }
 
 void Scene_Post_Process::pushed()

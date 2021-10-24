@@ -87,8 +87,10 @@ struct Scene_Mgr final
 
 			if( top_scene->life_cycle.is_alive() and typeid( *top_scene ) == typeid( *new_scene ) )
 			{
-				log_fatal( "Duplicate scene types at top of stack : {}", typeid( *top_scene ).name() );
-				assert( false );
+				log_warning( "Duplicate scene types at top of stack : {}", typeid( *top_scene ).name() );
+				new_scene = nullptr;
+				return;
+				//assert( false );
 			}
 
 			top_scene->getting_covered();
@@ -117,11 +119,11 @@ struct Scene_Mgr final
 
 	virtual void new_game();
 
-	bool on_input_motion( const Input_Event* evt );
-	bool on_input_pressed( const Input_Event* evt );
-	bool on_input_held( const Input_Event* evt );
-	bool on_input_released( const Input_Event* evt );
-	bool on_input_key( const Input_Event* evt );
+	e_on_input_result on_input_motion( const Input_Event* evt );
+	e_on_input_result on_input_pressed( const Input_Event* evt );
+	e_on_input_result on_input_held( const Input_Event* evt );
+	e_on_input_result on_input_released( const Input_Event* evt );
+	e_on_input_result on_input_key( const Input_Event* evt );
 };
 
 }
