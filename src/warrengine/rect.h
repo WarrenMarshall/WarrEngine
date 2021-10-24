@@ -37,6 +37,7 @@ struct Rect final
 	bool operator==( const Rect& rhs ) const;
 	Rect operator+( const Vec2 & v ) const;
 	Rect operator+=( const Vec2 & v );
+	Rect operator+=( const Rect& r );
 	Rect operator-( const Vec2 & v ) const;
 	Rect operator-=( const Vec2 & v );
 	Rect operator+( const Rect & rhs ) const;

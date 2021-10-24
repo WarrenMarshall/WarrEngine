@@ -145,7 +145,7 @@ std::vector<war::Vec2> Geo_Util::generate_convex_shape( i32 sides, f32 radius )
 
 	for( auto x = 0 ; x < sides ; ++x )
 	{
-		verts.push_back( Vec2::dir_from_angle( angle ) * radius );
+		verts.push_back( Vec2::angle_to_dir( angle ) * radius );
 		angle += angle_step;
 	}
 

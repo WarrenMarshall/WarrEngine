@@ -49,7 +49,7 @@ void Render::init()
 
 	for( auto x = 0 ; x < circle_sample_points_max ; ++x )
 	{
-		circle_sample_points.push_back( Vec2::dir_from_angle( angle ) );
+		circle_sample_points.push_back( Vec2::angle_to_dir( angle ) );
 		angle += angle_step;
 	}
 }

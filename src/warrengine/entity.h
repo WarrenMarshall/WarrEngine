@@ -101,6 +101,7 @@ struct Entity
 
 	void add_force( const Entity_Simple_Force& force );
 	void add_impulse( const Entity_Simple_Force& force );
+	void add_impulse( f32 strength );
 
 	void compile_velocity();
 

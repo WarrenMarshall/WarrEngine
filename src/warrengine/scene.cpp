@@ -196,6 +196,11 @@ void Scene::draw()
 {
 	for( const auto& entity : entities )
 	{
+		if( entity->life_cycle.is_dead() )
+		{
+			continue;
+		}
+
 		g_engine->stats.inc( g_engine->stats._entities );
 
 		{
@@ -338,6 +343,11 @@ bool Scene::on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body
 }
 
 bool Scene::on_entity_and_sensor_touching_end( Entity* entity, Simple_Collision_Body* sensor )
+{
+	return false;
+}
+
+bool Scene::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, simple_collision::Pending_Collision& coll )
 {
 	return false;
 }

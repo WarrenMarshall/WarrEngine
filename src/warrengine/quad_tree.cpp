@@ -43,6 +43,11 @@ void Quad_Tree::set_bounds( const Rect& bounds )
 	reset();
 }
 
+void Quad_Tree::set_bounds_to_viewport()
+{
+	set_bounds( Rect( 0.f, 0.f, viewport_w, viewport_h ) );
+}
+
 void Quad_Tree::reset()
 {
 	// sanity checking these values

@@ -138,7 +138,7 @@ void Particle_Emitter::spawn_particle()
 		{
 			auto a_dir = parent_component->parent_entity->get_angle();
 			a_dir += params->r_dir_var.get_random_value();
-			p->v_dir = Vec2::dir_from_angle( a_dir );
+			p->v_dir = Vec2::angle_to_dir( a_dir );
 			break;
 		}
 
@@ -152,7 +152,7 @@ void Particle_Emitter::spawn_particle()
 		{
 			auto a_dir = params->a_dir;
 			a_dir += params->r_dir_var.get_random_value();
-			p->v_dir = Vec2::dir_from_angle( a_dir );
+			p->v_dir = Vec2::angle_to_dir( a_dir );
 			break;
 		}
 	}

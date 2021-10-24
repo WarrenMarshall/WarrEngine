@@ -231,6 +231,12 @@ Rect Rect::operator+=( const Vec2& v )
 	return *this;
 }
 
+Rect Rect::operator+=( const Rect& r )
+{
+	*this = *this + r;
+	return *this;
+}
+
 Rect Rect::operator-( const Vec2& v ) const
 {
 	return Rect( this->x - v.x, this->y - v.y, this->w, this->h );

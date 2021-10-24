@@ -60,6 +60,7 @@ struct Quad_Tree final
 
 	Quad_Tree();
 	void set_bounds( const Rect& bounds );
+	void set_bounds_to_viewport();
 	void reset();
 	void debug_draw() const;
 	void set_max_nodes_in_pool( i32 value );

@@ -225,7 +225,7 @@ Vec2 Vec2::clamp( f32 value )
 
 // takes an angle, in degrees, and returns a unit vector for it
 
-Vec2 Vec2::dir_from_angle( f32 angle )
+Vec2 Vec2::angle_to_dir( f32 angle )
 {
 	Vec2 v;
 
@@ -237,7 +237,7 @@ Vec2 Vec2::dir_from_angle( f32 angle )
 	return v;
 }
 
-f32 Vec2::angle_from_dir( const Vec2& dir )
+f32 Vec2::dir_to_angle( const Vec2& dir )
 {
 	return glm::atan( dir.x, -dir.y ) * 180.f / glm::pi<f32>();
 }
@@ -247,7 +247,7 @@ f32 Vec2::angle_from_dir( const Vec2& dir )
 
 f32 Vec2::clamped_angle_from_dir( const Vec2& dir )
 {
-	return glm::mod<f32>( angle_from_dir( dir ), 360.f );
+	return glm::mod<f32>( dir_to_angle( dir ), 360.f );
 }
 
 // computes the reflection angle of "v" across the normal "n"

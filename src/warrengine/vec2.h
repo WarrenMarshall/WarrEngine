@@ -57,8 +57,8 @@ struct Vec2 final
 
 	[[nodiscard]] static Vec2 compute_uv_tiling( const Texture_Asset* texture, const Rect& rc );
 	[[nodiscard]] static Vec2 normalize( const Vec2& v );
-	[[nodiscard]] static Vec2 dir_from_angle( f32 angle );
-	[[nodiscard]] static f32 angle_from_dir( const Vec2& dir );
+	[[nodiscard]] static Vec2 angle_to_dir( f32 angle );
+	[[nodiscard]] static f32 dir_to_angle( const Vec2& dir );
 	[[nodiscard]] static f32 clamped_angle_from_dir( const Vec2& dir );
 	[[nodiscard]] static Vec2 reflect_across_normal( const Vec2& v, const Vec2& n );
 	[[nodiscard]] static Vec2 snap_to_int( const Vec2& v );

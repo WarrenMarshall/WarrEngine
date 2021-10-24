@@ -227,19 +227,25 @@ void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& co
 
 void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_Collision& coll )
 {
-	// ----------------------------------------------------------------------------
-
 	auto ent_attacker = coll.entity_a;
 	auto ent_victim = coll.entity_b;
 
-	// tell entity_a about the collision
+	// ----------------------------------------------------------------------------
+	// give the scene the first shot at handling the collision
+
+	if( parent_scene->on_entity_collided_with_entity( coll.entity_a, coll.entity_b, coll ) )
+	{
+		return;
+	}
+
+	// give entity_a a shot at handling it
 
 	if( ent_attacker->on_collided( coll ) )
 	{
 		return;
 	}
 
-	// swap the entity info, and then tell entityb about the collision
+	// swap the entity info, and give entityb a shot at handling it
 
 	simple_collision::Pending_Collision coll_b = coll;
 	std::swap( coll_b.entity_a, coll_b.entity_b );

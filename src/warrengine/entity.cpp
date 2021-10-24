@@ -112,6 +112,7 @@ void Entity::add_force( const Entity_Simple_Force& force )
 // impulses are immediate and applied at full strength.
 //
 // this is for things like jumping or bouncing off of things.
+
 void Entity::add_impulse( const Entity_Simple_Force& force )
 {
 	if( simple.is_kinematic() )
@@ -120,6 +121,13 @@ void Entity::add_impulse( const Entity_Simple_Force& force )
 	}
 
 	pending_forces.push_back( force );
+}
+
+// convenience function - applies an impulse in the direction that the entity is currently facing
+
+void Entity::add_impulse( f32 strength )
+{
+	add_impulse( { Vec2::angle_to_dir( get_transform()->angle ), strength } );
 }
 
 void Entity::compile_velocity()
