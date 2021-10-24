@@ -27,6 +27,8 @@ void Robotron_App::init()
 	//g_engine->render_api.set_uniform( "u_pixelate_factor", 0.0f );
 #endif
 
+	flags.has_main_menu = true;
+
 	g_engine->scene_mgr.push<Scene_Background>();
 	g_engine->scene_mgr.push<Scene_Menu>();
 }

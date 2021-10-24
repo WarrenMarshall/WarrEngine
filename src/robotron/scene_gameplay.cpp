@@ -36,6 +36,11 @@ void Scene_Gameplay::draw()
 
 bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 {
-	return true;
+	if( Scene::on_input_pressed( evt ) )
+	{
+		return true;
+	}
+
+	return false;
 }
 

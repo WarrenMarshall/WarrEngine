@@ -150,24 +150,7 @@ bool Scene_Controller_Required::on_input_pressed( const Input_Event* evt )
 	}
 
 	// any input from the controller will dismiss this screen
-	if( evt->input_id == e_input_id::gamepad_button_a
-		or evt->input_id == e_input_id::gamepad_button_b
-		or evt->input_id == e_input_id::gamepad_button_x
-		or evt->input_id == e_input_id::gamepad_button_y
-		or evt->input_id == e_input_id::gamepad_button_back
-		or evt->input_id == e_input_id::gamepad_button_dpad_down
-		or evt->input_id == e_input_id::gamepad_button_dpad_left
-		or evt->input_id == e_input_id::gamepad_button_dpad_right
-		or evt->input_id == e_input_id::gamepad_button_dpad_up
-		or evt->input_id == e_input_id::gamepad_button_left_shoulder
-		or evt->input_id == e_input_id::gamepad_button_left_thumb
-		or evt->input_id == e_input_id::gamepad_button_right_shoulder
-		or evt->input_id == e_input_id::gamepad_button_right_thumb
-		or evt->input_id == e_input_id::gamepad_button_start
-		or evt->input_id == e_input_id::gamepad_left_stick
-		or evt->input_id == e_input_id::gamepad_left_trigger
-		or evt->input_id == e_input_id::gamepad_right_stick
-		or evt->input_id == e_input_id::gamepad_right_trigger )
+	if( evt->is_a_gamepad_button() )
 	{
 		g_engine->scene_mgr.pop();
 		return true;

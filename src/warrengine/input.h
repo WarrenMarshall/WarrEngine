@@ -25,6 +25,24 @@ struct Input_Event final
 	bool shift_down = false;
 	bool control_down = false;
 	bool alt_down = false;
+
+	[[nodiscard]] bool is_a_gamepad_button() const
+	{
+		return( input_id == e_input_id::gamepad_button_a
+			or input_id == e_input_id::gamepad_button_b
+			or input_id == e_input_id::gamepad_button_x
+			or input_id == e_input_id::gamepad_button_y
+			or input_id == e_input_id::gamepad_button_dpad_down
+			or input_id == e_input_id::gamepad_button_dpad_left
+			or input_id == e_input_id::gamepad_button_dpad_right
+			or input_id == e_input_id::gamepad_button_dpad_up
+			or input_id == e_input_id::gamepad_button_left_shoulder
+			or input_id == e_input_id::gamepad_button_left_thumb
+			or input_id == e_input_id::gamepad_button_right_shoulder
+			or input_id == e_input_id::gamepad_button_right_thumb
+			or input_id == e_input_id::gamepad_button_start
+			or input_id == e_input_id::gamepad_button_back );
+	}
 };
 
 static_assert( sizeof( Input_Event ) <= 64 );

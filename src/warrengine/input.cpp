@@ -304,12 +304,12 @@ void Input_Mgr::dispatch_event_queue()
 		{
 			case e_event_id::input_pressed:
 			{
-				if( g_engine->scene_mgr.on_input_pressed( &evt ) )
+				if( g_engine->on_input_pressed( &evt ) )
 				{
 					break;
 				}
 
-				if( g_engine->on_input_pressed( &evt ) )
+				if( g_engine->scene_mgr.on_input_pressed( &evt ) )
 				{
 					break;
 				}
