@@ -387,9 +387,7 @@ void Box2D_Physics_Component::clear_collision_flags()
 
 Box2D_Physics_Body_Component* Box2D_Physics_Component::get_primary_body()
 {
-	std::vector<Box2D_Physics_Body_Component*> ecs;
-	parent_entity->get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
-	parent_entity->get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
+	std::vector<Box2D_Physics_Body_Component*> ecs = parent_entity->get_components<Box2D_Physics_Body_Component>();
 
 	for( auto& ec : ecs )
 	{
@@ -432,9 +430,23 @@ void Box2D_Physics_Component::set_density( f32 density )
 
 // ----------------------------------------------------------------------------
 
-Box2D_Physics_Body_Component::Box2D_Physics_Body_Component( Entity* parent_entity )
+Box2D_Physics_Body_Component::Box2D_Physics_Body_Component( Entity* parent_entity, e_physics_body_type type )
 	: Entity_Component( parent_entity )
 {
+	add_physics_component_if_needed();
+
+	body_type = b2_staticBody;
+
+	if( type == e_physics_body_type::dynamic )
+	{
+		body_type = b2_dynamicBody;
+	}
+	else if( type == e_physics_body_type::kinematic )
+	{
+		body_type = b2_kinematicBody;
+	}
+
+	init_body();
 }
 
 Box2D_Physics_Body_Component::~Box2D_Physics_Body_Component()
@@ -719,42 +731,6 @@ void Box2D_Physics_Body_Component::set_collision_flags( i32 collision_mask, i32 
 		fixture_to_shape.erase( fixture );
 		body->DestroyFixture( fixture );
 	}
-}
-
-// ----------------------------------------------------------------------------
-
-Box2D_Static_Body_Component::Box2D_Static_Body_Component( Entity* parent_entity )
-	: Box2D_Physics_Body_Component( parent_entity )
-{
-	add_physics_component_if_needed();
-
-	body_type = b2_staticBody;
-
-	init_body();
-}
-
-// ----------------------------------------------------------------------------
-
-Box2D_Dynamic_Body_Component::Box2D_Dynamic_Body_Component( Entity* parent_entity )
-	: Box2D_Physics_Body_Component( parent_entity )
-{
-	add_physics_component_if_needed();
-
-	body_type = b2_dynamicBody;
-
-	init_body();
-}
-
-// ----------------------------------------------------------------------------
-
-Box2D_Kinematic_Body_Component::Box2D_Kinematic_Body_Component( Entity* parent_entity )
-	: Box2D_Physics_Body_Component( parent_entity )
-{
-	add_physics_component_if_needed();
-
-	body_type = b2_kinematicBody;
-
-	init_body();
 }
 
 // ----------------------------------------------------------------------------

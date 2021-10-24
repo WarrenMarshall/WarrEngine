@@ -81,7 +81,7 @@ void Scene_Simple_Bounce::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "main_ball" );
-		e->simple.type = e_sc_type::kinematic;
+		e->simple.type = e_physics_body_type::kinematic;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
@@ -100,7 +100,7 @@ void Scene_Simple_Bounce::pushed()
 
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = e_sc_type::stationary;
+		e->simple.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_colliders ; ++i )
 		{

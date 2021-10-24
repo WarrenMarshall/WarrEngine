@@ -222,19 +222,20 @@ void Entity::update_box2d_components_to_match_transform()
 
 	if( has_component<Box2D_Physics_Component>() )
 	{
-		std::vector<Box2D_Physics_Body_Component*> ecs;
-		get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
-		get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
+		std::vector<Box2D_Physics_Body_Component*> ecs = get_components<Box2D_Physics_Body_Component>();
 
 		for( auto ec : ecs )
 		{
-			ec->body->SetTransform( _tform.pos.to_box2d().to_b2Vec2(), glm::radians( _tform.angle ) );
+			if( ec->body_type != b2_staticBody )
+			{
+				ec->body->SetTransform( _tform.pos.to_box2d().to_b2Vec2(), glm::radians( _tform.angle ) );
 
-			// reset velocity
-			ec->body->SetLinearVelocity( { 0, 0 } );
-			ec->body->SetAngularVelocity( 0 );
+				// reset velocity
+				ec->body->SetLinearVelocity( { 0, 0 } );
+				ec->body->SetAngularVelocity( 0 );
 
-			ec->body->SetAwake( true );
+				ec->body->SetAwake( true );
+			}
 		}
 	}
 }
@@ -520,7 +521,7 @@ void Entity::apply_movement_walk( Vec2 delta, f32 speed )
 
 Rect Entity::compute_ws_aabb() const
 {
-	auto scbs = get_components<Simple_Collision_Body, Simple_Collision_Body>();
+	auto scbs = get_components<Simple_Collision_Body>();
 	Bounding_Box bbox;
 
 	for( const auto& ec : scbs )
@@ -533,9 +534,7 @@ Rect Entity::compute_ws_aabb() const
 
 Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const
 {
-	std::vector<Box2D_Physics_Body_Component*> ecs;
-	get_components<Box2D_Physics_Body_Component, Box2D_Dynamic_Body_Component>( ecs );
-	get_components<Box2D_Physics_Body_Component, Box2D_Kinematic_Body_Component>( ecs );
+	std::vector<Box2D_Physics_Body_Component*> ecs = get_components<Box2D_Physics_Body_Component>();
 
 	for( auto& ec : ecs )
 	{

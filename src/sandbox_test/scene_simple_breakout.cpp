@@ -60,7 +60,7 @@ void Scene_Simple_Breakout::pushed()
 		auto e = add_entity<E_Breakout_Paddle>();
 		e->tag = H( "THE_PADDLE" );
 		e->set_pos( { 0.f, 0.f } );
-		e->simple.type = e_sc_type::kinematic;
+		e->simple.type = e_physics_body_type::kinematic;
 		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;
 		{
@@ -86,7 +86,7 @@ void Scene_Simple_Breakout::pushed()
 		auto num_primitives = 2;
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = e_sc_type::stationary;
+		e->simple.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{

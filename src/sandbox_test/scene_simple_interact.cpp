@@ -101,7 +101,7 @@ void Scene_Simple_Interact::pushed()
 		int num_primitives = 4;
 
 		auto e = add_entity<Entity>( "world" );
-		e->simple.type = e_sc_type::stationary;
+		e->simple.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{

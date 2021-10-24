@@ -17,11 +17,11 @@ struct Entity_Simple_Force final
 
 struct Entity_Simple_Collision final
 {
-	e_sc_type type = e_sc_type::dynamic;
+	e_physics_body_type type = e_physics_body_type::dynamic;
 
-	[[nodiscard]] bool is_dynamic() { return ( type == e_sc_type::dynamic ); }
-	[[nodiscard]] bool is_stationary() { return ( type == e_sc_type::stationary ); }
-	[[nodiscard]] bool is_kinematic() { return ( type == e_sc_type::kinematic ); }
+	[[nodiscard]] bool is_dynamic() { return ( type == e_physics_body_type::dynamic ); }
+	[[nodiscard]] bool is_stationary() { return ( type == e_physics_body_type::stationary ); }
+	[[nodiscard]] bool is_kinematic() { return ( type == e_physics_body_type::kinematic ); }
 
 	struct
 	{
@@ -150,9 +150,9 @@ struct Entity
 
 	virtual void draw();
 
-	template<typename T> T* add_component()
+	template<typename T, typename ...Params> T* add_component( Params&&... params )
 	{
-		components.push_back( std::make_unique<T>( this ) );
+		components.push_back( std::make_unique<T>( this, std::forward<Params>( params )... ) );
 		auto new_component = (T*)( components.back().get() );
 
 		return new_component;
@@ -203,40 +203,6 @@ struct Entity
 		}
 
 		return ecs;
-	}
-
-	// fills a vector with all the components it finds that match the class "T"
-	// and have a base class of "B"
-
-	template<typename B, typename T>
-	std::vector<B*> get_components() const
-	{
-		std::vector<B*> ecs;
-		ecs.reserve( this->components.size() );
-
-		for( auto& ec : this->components )
-		{
-			if( dynamic_cast<T*>( ec.get() ) )
-			{
-				ecs.push_back( (B*)( ec.get() ) );
-			}
-		}
-
-		return ecs;
-	}
-
-	template<typename B, typename T>
-	void get_components( std::vector<B*>& ecs) const
-	{
-		ecs.reserve( this->components.size() );
-
-		for( auto& ec : this->components )
-		{
-			if( dynamic_cast< T* >( ec.get() ) )
-			{
-				ecs.push_back( ( B* )( ec.get() ) );
-			}
-		}
 	}
 
 	virtual void on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* touched_by );

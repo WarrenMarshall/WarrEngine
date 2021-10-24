@@ -133,7 +133,7 @@ void Scene_Simple_Platformer::pushed()
 
 	{
 		world = add_entity<Entity>();
-		world->simple.type = e_sc_type::stationary;
+		world->simple.type = e_physics_body_type::stationary;
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
@@ -148,7 +148,7 @@ void Scene_Simple_Platformer::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->set_pos( { 0.f, -8.f } );
-		e->simple.type = e_sc_type::kinematic;
+		e->simple.type = e_physics_body_type::kinematic;
 
 	#if 1
 		// flying rectangle with platform collision

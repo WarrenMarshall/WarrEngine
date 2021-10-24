@@ -51,7 +51,7 @@ void Scene_Constraints::pushed()
 	{
 		auto e = add_entity<E_Sensor_Player>();
 		e->tag = H( "the_player" );
-		e->simple.type = e_sc_type::kinematic;
+		e->simple.type = e_physics_body_type::kinematic;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::circle, 16.f );
@@ -67,7 +67,7 @@ void Scene_Constraints::pushed()
 
 	{
 		auto e = add_entity<Entity>( "world" );
-		e->simple.type = e_sc_type::stationary;
+		e->simple.type = e_physics_body_type::stationary;
 
 		// 4 walls
 		{

@@ -179,7 +179,7 @@ struct Box2D_Physics_Component final : Entity_Component
 // ----------------------------------------------------------------------------
 // physics bodies
 
-struct Box2D_Physics_Body_Component : Entity_Component
+struct Box2D_Physics_Body_Component final : Entity_Component
 {
 	b2BodyType body_type = b2_staticBody;
 	b2Body* body = nullptr;
@@ -191,7 +191,7 @@ struct Box2D_Physics_Body_Component : Entity_Component
 	bool is_primary_body = false;
 
 	Box2D_Physics_Body_Component() = delete;
-	Box2D_Physics_Body_Component( Entity* parent_entity );
+	Box2D_Physics_Body_Component( Entity* parent_entity, e_physics_body_type type );
 	virtual ~Box2D_Physics_Body_Component() override;
 
 	void init_body();
@@ -212,32 +212,6 @@ struct Box2D_Physics_Body_Component : Entity_Component
 	void add_physics_component_if_needed();
 
 	virtual void set_collision_flags( i32 collision_mask, i32 collides_with ) override;
-};
-
-// ----------------------------------------------------------------------------
-
-struct Box2D_Static_Body_Component final : Box2D_Physics_Body_Component
-{
-	Box2D_Static_Body_Component() = delete;
-	Box2D_Static_Body_Component( Entity* parent_entity );
-};
-
-// ----------------------------------------------------------------------------
-// NOTE :	entities can have a SINGLE dynamic body attached to them.
-
-struct Box2D_Dynamic_Body_Component final : Box2D_Physics_Body_Component
-{
-	Box2D_Dynamic_Body_Component() = delete;
-	Box2D_Dynamic_Body_Component( Entity* parent_entity );
-};
-
-// ----------------------------------------------------------------------------
-// kinematic bodies
-
-struct Box2D_Kinematic_Body_Component final : Box2D_Physics_Body_Component
-{
-	Box2D_Kinematic_Body_Component() = delete;
-	Box2D_Kinematic_Body_Component( Entity* parent_entity );
 };
 
 // ----------------------------------------------------------------------------

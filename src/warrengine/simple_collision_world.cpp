@@ -269,14 +269,14 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 
 	switch( ent_attacker->simple.type )
 	{
-		case e_sc_type::dynamic:
+		case e_physics_body_type::dynamic:
 		{
 			std::optional<Vec2> dir_attacker, dir_victim;
 
 			switch( ent_victim->simple.type )
 			{
 				// dynamic -> dynamic
-				case e_sc_type::dynamic:
+				case e_physics_body_type::dynamic:
 				{
 					if( ent_attacker->simple.flags.is_bouncy )
 					{
@@ -292,7 +292,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				break;
 
 				// dynamic -> kinematic
-				case e_sc_type::kinematic:
+				case e_physics_body_type::kinematic:
 				{
 					if( ent_attacker->simple.flags.is_bouncy )
 					{
@@ -303,7 +303,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				break;
 
 				// dynamic -> stationary
-				case e_sc_type::stationary:
+				case e_physics_body_type::stationary:
 				{
 					if( ent_attacker->simple.flags.is_bouncy )
 					{
@@ -330,14 +330,14 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 		}
 		break;
 
-		case e_sc_type::kinematic:
+		case e_physics_body_type::kinematic:
 		{
 			Vec2 dir_victim;
 
 			switch( ent_victim->simple.type )
 			{
 				// kinematic -> dynamic
-				case e_sc_type::dynamic:
+				case e_physics_body_type::dynamic:
 				{
 					if( ent_victim->simple.flags.is_bouncy )
 					{
@@ -348,14 +348,14 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 				break;
 
 				// kinematic -> kinematic
-				case e_sc_type::kinematic:
+				case e_physics_body_type::kinematic:
 				{
 					assert( false );
 				}
 				break;
 
 				// kinematic -> stationary
-				case e_sc_type::stationary:
+				case e_physics_body_type::stationary:
 				{
 					assert( false );
 				}
@@ -370,26 +370,26 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 		}
 		break;
 
-		case e_sc_type::stationary:
+		case e_physics_body_type::stationary:
 		{
 			switch( ent_victim->simple.type )
 			{
 				// stationary -> dynamic
-				case e_sc_type::dynamic:
+				case e_physics_body_type::dynamic:
 				{
 					assert( false );
 				}
 				break;
 
 				// stationary -> kinematic
-				case e_sc_type::kinematic:
+				case e_physics_body_type::kinematic:
 				{
 					assert( false );
 				}
 				break;
 
 				// stationary -> stationary
-				case e_sc_type::stationary:
+				case e_physics_body_type::stationary:
 				{
 					assert( false );
 				}

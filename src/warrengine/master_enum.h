@@ -407,7 +407,7 @@ enum struct e_solidity
 
 // ----------------------------------------------------------------------------
 
-enum struct e_sc_type
+enum struct e_physics_body_type
 {
 	dynamic,
 	kinematic,

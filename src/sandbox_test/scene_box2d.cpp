@@ -22,7 +22,7 @@ void Scene_Box2D::pushed()
 		e->tag = H( "main_ball" );
 		{
 			{
-				auto ec = e->add_component<Box2D_Kinematic_Body_Component>();
+				auto ec = e->add_component<Box2D_Physics_Body_Component>( e_physics_body_type::kinematic );
 				ec->add_fixture_circle( hash_none, { 0.f, 0.f }, 32.f );
 				ec->set_collision_flags( coll_flags.world, coll_flags.ball );
 			}
@@ -44,7 +44,7 @@ void Scene_Box2D::pushed()
 			Rect rc_left_wall = { -viewport_hw, -viewport_hh * 6.f, 8.f, viewport_hh * 6.f };
 			Rect rc_right_wall = { viewport_hw - 8.f, -viewport_hh * 6.f, 8.f, viewport_hh * 6.f };
 			{
-				auto ec = e->add_component<Box2D_Static_Body_Component>();
+				auto ec = e->add_component<Box2D_Physics_Body_Component>( e_physics_body_type::stationary );
 				ec->add_fixture_box( hash_none, rc_floor );
 				ec->add_fixture_box( hash_none, rc_left_wall );
 				ec->add_fixture_box( hash_none, rc_right_wall );
@@ -92,7 +92,7 @@ void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 		f32 random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
-			auto ec = e->add_component<Box2D_Dynamic_Body_Component>();
+			auto ec = e->add_component<Box2D_Physics_Body_Component>( e_physics_body_type::dynamic );
 			ec->is_primary_body = true;
 			ec->add_fixture_circle( hash_none, Vec2::zero, random_radius );
 			ec->set_collision_flags( coll_flags.ball, coll_flags.ball | coll_flags.world );
@@ -123,7 +123,7 @@ void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 		f32 random_radius = Random::getf_range( 16.f, 32.f );
 
 		{
-			auto ec = e->add_component<Box2D_Dynamic_Body_Component>();
+			auto ec = e->add_component<Box2D_Physics_Body_Component>( e_physics_body_type::dynamic );
 			ec->is_primary_body = true;
 			ec->add_fixture_box( hash_none, rc_box );
 			ec->set_collision_flags( coll_flags.ball, coll_flags.ball | coll_flags.world );

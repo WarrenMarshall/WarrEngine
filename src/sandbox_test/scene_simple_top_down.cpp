@@ -88,7 +88,7 @@ void Scene_Simple_Top_Down::pushed()
 
 	{
 		world = add_entity<Entity>( "world" );
-		world->simple.type = e_sc_type::stationary;
+		world->simple.type = e_physics_body_type::stationary;
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
