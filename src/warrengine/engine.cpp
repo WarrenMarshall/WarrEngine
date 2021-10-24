@@ -293,6 +293,8 @@ void Engine::main_loop()
 				num_time_steps++;
 			}
 
+			scene_mgr.pre_update();
+
 			input_mgr.queue_presses();
 			input_mgr.queue_motion();
 
@@ -300,7 +302,6 @@ void Engine::main_loop()
 
 			box2d.world->Step( fixed_time_step::per_second( 1.f ) * num_time_steps, b2d_velocity_iterations, b2d_pos_iterations );
 
-			scene_mgr.pre_update();
 			scene_mgr.update();
 			scene_mgr.post_update();
 
