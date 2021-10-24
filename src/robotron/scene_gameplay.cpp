@@ -3,12 +3,13 @@
 
 using namespace war;
 
-Scene_Default::Scene_Default()
+Scene_Gameplay::Scene_Gameplay()
 {
 	flags.blocks_further_drawing = true;
+	flags.blocks_further_input = true;
 }
 
-void Scene_Default::pushed()
+void Scene_Gameplay::pushed()
 {
 	Scene::pushed();
 
@@ -18,19 +19,9 @@ void Scene_Default::pushed()
 	scale_tween = Tween( .5f, 5.f, 9000, e_tween_type::pingpong, e_tween_via::sinusoidal );
 	tilt_tween = Tween( -25.f, 25.f, 20000, e_tween_type::pingpong, e_tween_via::cubic );
 
-	g_engine->window.push_mouse_mode( e_mouse_mode::os );
-
 }
 
-void Scene_Default::popped()
-{
-	Scene::popped();
-
-	g_engine->window.pop_mouse_mode();
-
-}
-
-void Scene_Default::draw()
+void Scene_Gameplay::draw()
 {
 	Scene::draw();
 
@@ -42,3 +33,9 @@ void Scene_Default::draw()
 	Render::state->scale = *scale_tween;
 	Render::draw_sprite( tex_robotron, Vec2( *movement_tween, 0.f ) );
 }
+
+bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
+{
+	return true;
+}
+

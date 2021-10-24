@@ -2,4 +2,7 @@
 #include <warrengine.h>
 
 #include "robotron_app.h"
-#include "scene_default.h"
+
+#include "scene_background.h"
+#include "scene_menu.h"
+#include "scene_gameplay.h"

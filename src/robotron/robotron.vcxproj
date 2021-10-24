@@ -204,14 +204,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="scene_default.cpp" />
+    <ClCompile Include="scene_background.cpp" />
+    <ClCompile Include="scene_gameplay.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="robotron_app.cpp" />
+    <ClCompile Include="scene_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_header.h" />
-    <ClInclude Include="scene_default.h" />
+    <ClInclude Include="scene_background.h" />
+    <ClInclude Include="scene_gameplay.h" />
     <ClInclude Include="robotron_app.h" />
+    <ClInclude Include="scene_menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\warrengine\warrengine.vcxproj">
