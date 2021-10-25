@@ -23,7 +23,7 @@ void Scene_Spatial::spawn_entity( Vec2 pos )
 		ec->rs_opt.color = make_color( e_pal::lightest );
 	}
 	{
-		auto ec = e->add_component<Simple_Collision_Body>();
+		auto ec = e->add_component<Collision_Body>();
 		if( Random::getb() )
 		{
 			ec->set_as_circle( 8.f );
@@ -59,7 +59,7 @@ void Scene_Spatial::pushed()
 		e->flags.include_in_quad_tree = true;
 
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 
 			//ec->set_as_circle( Random::getf_+range( 8.f, 16.f ) );
 			//ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 7 ), Random::getf_range( 12.f, 24.f ) ) );

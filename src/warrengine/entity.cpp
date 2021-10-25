@@ -73,7 +73,7 @@ void Entity::post_update_components()
 		component->post_update();
 	}
 
-	simple_collision_ws_aabb = compute_ws_aabb();
+	collision_ws_aabb = compute_ws_aabb();
 
 #ifndef _RELEASE
 	if( g_engine->render.debug.is_entity_info_logging() )
@@ -382,13 +382,13 @@ bool Entity::on_collided( simple_collision::Pending_Collision& coll )
 }
 
 // returns TRUE if the touch was handled
-bool Entity::add_sensor_to_touch_list( Simple_Collision_Body* sensor )
+bool Entity::add_sensor_to_touch_list( Collision_Body* sensor )
 {
 	sensors_this_frame.insert( sensor );
 	return false;
 }
 
-bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
+bool Entity::on_touching_begin( Collision_Body* sensor )
 {
 	if( sensor->flags.is_sticky )
 	{
@@ -403,12 +403,12 @@ bool Entity::on_touching_begin( Simple_Collision_Body* sensor )
 	return false;
 }
 
-bool Entity::on_touching( Simple_Collision_Body* sensor )
+bool Entity::on_touching( Collision_Body* sensor )
 {
 	return false;
 }
 
-bool Entity::on_touching_end( Simple_Collision_Body* sensor )
+bool Entity::on_touching_end( Collision_Body* sensor )
 {
 	if( sensor->flags.is_sticky )
 	{
@@ -529,12 +529,14 @@ void Entity::apply_movement_walk( Vec2 delta, f32 speed )
 
 Rect Entity::compute_ws_aabb() const
 {
-	auto scbs = get_components<Simple_Collision_Body>();
 	Bounding_Box bbox;
 
-	for( const auto& ec : scbs )
+	for( auto& ec : components )
 	{
-		bbox += ec->ws.aabb;
+		if( ec->is_a( e_component_type::collision_body ) )
+		{
+			bbox += ((Collision_Body*)ec.get())->ws.aabb;
+		}
 	}
 
 	return bbox.as_rect();
@@ -542,13 +544,16 @@ Rect Entity::compute_ws_aabb() const
 
 Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const
 {
-	std::vector<Box2D_Physics_Body_Component*> ecs = get_components<Box2D_Physics_Body_Component>();
-
-	for( auto& ec : ecs )
+	for( auto& ec : components )
 	{
-		if( ec->is_primary_body )
+		if( ec->is_a( e_component_type::box2d_physics_body ) )
 		{
-			return ec;
+			auto bpb = ( Box2D_Physics_Body_Component* )ec.get();
+
+			if( bpb->is_primary_body )
+			{
+				return bpb;
+			}
 		}
 	}
 

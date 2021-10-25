@@ -5,6 +5,11 @@ namespace war
 struct Entity_Component
 {
 	Life_Cycle life_cycle;
+	e_component_type component_type;
+	[[nodiscard]] bool is_a( e_component_type type )
+	{
+		return ( component_type == type );
+	}
 
 	virtual void set_life_cycle( e_life_cycle lc );
 
@@ -229,11 +234,11 @@ struct Mesh_Component final : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Simple_Collision_Body : Entity_Component
+struct Collision_Body : Entity_Component
 {
-	Simple_Collision_Body() = delete;
-	Simple_Collision_Body( Entity* parent_entity );
-	virtual ~Simple_Collision_Body() = default;
+	Collision_Body() = delete;
+	Collision_Body( Entity* parent_entity );
+	virtual ~Collision_Body() = default;
 
 	e_sc_prim_type prim_type = e_sc_prim_type::circle;
 
@@ -310,22 +315,12 @@ struct Simple_Collision_Body : Entity_Component
 	void set_as_circle( f32 r );
 	void set_as_polygon( std::vector<Vec2> verts );
 
-	bool does_intersect_broadly( Simple_Collision_Body* scc );
-	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other );
+	bool does_intersect_broadly( Collision_Body* scc );
+	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Collision_Body* other );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
 	c2Poly as_simple_poly();
-};
-
-// ----------------------------------------------------------------------------
-
-struct Simple_Collision_Platform_Body final : Simple_Collision_Body
-{
-	Simple_Collision_Platform_Body() = delete;
-	Simple_Collision_Platform_Body( Entity* parent_entity );
-
-	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Simple_Collision_Body* other ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -341,7 +336,7 @@ struct Tile_Map_Component final : Entity_Component
 	virtual void draw() override;
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
-	Simple_Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type );
+	Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
 

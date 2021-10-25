@@ -100,7 +100,7 @@ std::set<Quad_Tree::Node*> Quad_Tree::get_nodes_entity_is_touching( Entity* e ) 
 {
 	std::set<Quad_Tree::Node*> touching_nodes;
 
-	c2AABB entity_ws_aabb = e->simple_collision_ws_aabb.as_c2AABB();
+	c2AABB entity_ws_aabb = e->collision_ws_aabb.as_c2AABB();
 
 	for( auto& node : nodes.objects )
 	{
@@ -319,7 +319,7 @@ void Quad_Tree::subdivide_nodes_as_necessary()
 
 			for( auto& se : saved_entities )
 			{
-				c2AABB entity_ws_aabb = se->simple_collision_ws_aabb.as_c2AABB();
+				c2AABB entity_ws_aabb = se->collision_ws_aabb.as_c2AABB();
 
 				for( auto& nn : new_nodes )
 				{

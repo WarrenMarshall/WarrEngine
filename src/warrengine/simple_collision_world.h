@@ -43,7 +43,7 @@ struct Simple_Collision_World final
 
 	} settings;
 
-	std::vector<Simple_Collision_Body*> active_bodies;
+	std::vector<Collision_Body*> active_bodies;
 	bool need_another_iteration = false;
 
 	Simple_Collision_World() = default;

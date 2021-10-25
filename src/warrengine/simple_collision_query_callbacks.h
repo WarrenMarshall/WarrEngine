@@ -24,7 +24,7 @@ struct Raycast_Hit final
 
 	// the collision component that was hit by the ray. this belongs to the
 	// entity that was hit, not the one doing the tracing.
-	Simple_Collision_Body* scc = nullptr;
+	Collision_Body* scc = nullptr;
 };
 
 // ----------------------------------------------------------------------------
@@ -36,7 +36,7 @@ struct Raycast_Callback
 	bool hit_something = false;
 	i32 collision_mask = 0;
 
-	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) = 0;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast ) = 0;
 };
 
 // ----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ struct Raycast_Closest final : Raycast_Callback
 {
 	Raycast_Hit result;
 
-	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ struct Raycast_Closest final : Raycast_Callback
 
 struct Raycast_Quick final : Raycast_Callback
 {
-	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ struct Raycast_All final : Raycast_Callback
 {
 	std::vector<Raycast_Hit> results;
 
-	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Simple_Collision_Body* scc, const c2Raycast& raycast ) override;
+	virtual f32 report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast ) override;
 };
 
 }

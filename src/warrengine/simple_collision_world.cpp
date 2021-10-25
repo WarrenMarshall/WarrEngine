@@ -110,7 +110,7 @@ void Simple_Collision_World::handle_collisions()
 
 	for( auto& ea : parent_scene->entities )
 	{
-		auto sccs_a = ea->get_components<Simple_Collision_Body>();
+		auto sccs_a = ea->get_components<Collision_Body>();
 
 		if( sccs_a.empty() )
 		{
@@ -123,7 +123,7 @@ void Simple_Collision_World::handle_collisions()
 		{
 			assert( ea.get() != eb );
 
-			auto sccs_b = eb->get_components<Simple_Collision_Body>();
+			auto sccs_b = eb->get_components<Collision_Body>();
 
 			for( auto scc_a : sccs_a )
 			{
@@ -432,7 +432,7 @@ void Simple_Collision_World::process_sensor_sets() const
 {
 	for( auto& entity : parent_scene->entities )
 	{
-		std::set<Simple_Collision_Body*> common_set = entity->sensors_last_frame;
+		std::set<Collision_Body*> common_set = entity->sensors_last_frame;
 		common_set.insert( entity->sensors_this_frame.begin(), entity->sensors_this_frame.end() );
 
 		for( auto sensor : common_set )

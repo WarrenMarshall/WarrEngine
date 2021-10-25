@@ -69,8 +69,8 @@ struct Entity
 	// moves, the entities in this list move as well.
 	std::set<Entity*> sticky_set;
 
-	std::set<Simple_Collision_Body*> sensors_this_frame;
-	std::set<Simple_Collision_Body*> sensors_last_frame;
+	std::set<Collision_Body*> sensors_this_frame;
+	std::set<Collision_Body*> sensors_last_frame;
 
 	Entity_Simple_Collision simple;
 
@@ -89,7 +89,7 @@ struct Entity
 
 	// updated once per frame, this is the world space bounding box of all
 	// the entities collision primitives
-	Rect simple_collision_ws_aabb;
+	Rect collision_ws_aabb;
 
 	// a handy string to throw info or a name in debug builds to make figuring
 	// out which entity you're looking at in the debugger easier
@@ -211,11 +211,11 @@ struct Entity
 
 	virtual bool on_collided( simple_collision::Pending_Collision& coll );
 
-	bool add_sensor_to_touch_list( Simple_Collision_Body* sensor );
+	bool add_sensor_to_touch_list( Collision_Body* sensor );
 
-	virtual bool on_touching_begin( Simple_Collision_Body* sensor );
-	virtual bool on_touching( Simple_Collision_Body* sensor );
-	virtual bool on_touching_end( Simple_Collision_Body* sensor );
+	virtual bool on_touching_begin( Collision_Body* sensor );
+	virtual bool on_touching( Collision_Body* sensor );
+	virtual bool on_touching_end( Collision_Body* sensor );
 
 	void reflect_across( Vec2 normal );
 

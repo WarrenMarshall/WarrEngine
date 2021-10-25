@@ -104,6 +104,7 @@ void Entity_Component::clear_collision_flags()
 Sprite_Component::Sprite_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::sprite;
 	anim_offset = Random::getf();
 }
 
@@ -135,6 +136,7 @@ void Sprite_Component::draw()
 Primitive_Shape_Component::Primitive_Shape_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::primitive_shape;
 	shapes.clear();
 }
 
@@ -226,6 +228,7 @@ void Primitive_Shape_Component::draw()
 Emitter_Component::Emitter_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::emitter;
 }
 
 Entity_Component* Emitter_Component::init( std::string_view params_tag )
@@ -316,6 +319,7 @@ void Emitter_Component::set_life_cycle( e_life_cycle lc )
 Sound_Component::Sound_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::sound;
 }
 
 Entity_Component* Sound_Component::init( std::string_view snd_tag, bool one_shot, bool auto_play )
@@ -362,7 +366,7 @@ void Sound_Component::stop()
 Box2D_Physics_Component::Box2D_Physics_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
-
+	component_type = e_component_type::box2d_physics;
 }
 
 void Box2D_Physics_Component::set_collision_flags( i32 collision_mask, i32 collides_with )
@@ -433,6 +437,8 @@ void Box2D_Physics_Component::set_density( f32 density )
 Box2D_Physics_Body_Component::Box2D_Physics_Body_Component( Entity* parent_entity, e_physics_body_type type )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::box2d_physics_body;
+
 	add_physics_component_if_needed();
 
 	body_type = b2_staticBody;
@@ -738,6 +744,7 @@ void Box2D_Physics_Body_Component::set_collision_flags( i32 collision_mask, i32 
 Mesh_Component::Mesh_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::mesh;
 }
 
 Entity_Component* Mesh_Component::init( std::string_view mesh_tag )
@@ -758,34 +765,35 @@ void Mesh_Component::draw()
 
 // ----------------------------------------------------------------------------
 
-Simple_Collision_Body::Simple_Collision_Body( Entity* parent_entity )
+Collision_Body::Collision_Body( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::collision_body;
 	sensor.time_next = g_engine->clock.now();
 }
 
-bool Simple_Collision_Body::is_circle()
+bool Collision_Body::is_circle()
 {
 	return ( prim_type == e_sc_prim_type::circle );
 }
 
-bool Simple_Collision_Body::is_aabb()
+bool Collision_Body::is_aabb()
 {
 	return ( prim_type == e_sc_prim_type::aabb );
 }
 
-bool Simple_Collision_Body::is_polygon()
+bool Collision_Body::is_polygon()
 {
 	return ( prim_type == e_sc_prim_type::polygon );
 }
 
-void Simple_Collision_Body::set_sensor_as_one_shot()
+void Collision_Body::set_sensor_as_one_shot()
 {
 	solidity = e_solidity::sensor;
 	sensor.type = e_sensor_type::one_shot;
 }
 
-void Simple_Collision_Body::set_sensor_as_repeating( time_ms delay )
+void Collision_Body::set_sensor_as_repeating( time_ms delay )
 {
 	solidity = e_solidity::sensor;
 	sensor.type = e_sensor_type::repeating;
@@ -793,13 +801,13 @@ void Simple_Collision_Body::set_sensor_as_repeating( time_ms delay )
 	sensor.time_next = g_engine->clock.now();
 }
 
-void Simple_Collision_Body::set_sensor_as_continuous()
+void Collision_Body::set_sensor_as_continuous()
 {
 	solidity = e_solidity::sensor;
 	sensor.type = e_sensor_type::continuous;
 }
 
-void Simple_Collision_Body::draw()
+void Collision_Body::draw()
 {
 	// optional drawing
 
@@ -879,7 +887,7 @@ void Simple_Collision_Body::draw()
 	}
 }
 
-void Simple_Collision_Body::update_to_match_parent_transform()
+void Collision_Body::update_to_match_parent_transform()
 {
 	auto scale = ( parent_entity->get_scale() * get_scale() );
 
@@ -940,7 +948,7 @@ void Simple_Collision_Body::update_to_match_parent_transform()
 
 // sets the dimensions of the collision box, with the component position being the top left corner..
 
-void Simple_Collision_Body::set_as_box( f32 w, f32 h )
+void Collision_Body::set_as_box( f32 w, f32 h )
 {
 	prim_type = e_sc_prim_type::aabb;
 	aabb.x = 0.f;
@@ -951,7 +959,7 @@ void Simple_Collision_Body::set_as_box( f32 w, f32 h )
 
 // sets the dimensions of the collision box, centered around the components position.
 
-void Simple_Collision_Body::set_as_centered_box( f32 w, f32 h )
+void Collision_Body::set_as_centered_box( f32 w, f32 h )
 {
 	prim_type = e_sc_prim_type::aabb;
 	aabb.x = -w / 2.f;
@@ -960,13 +968,13 @@ void Simple_Collision_Body::set_as_centered_box( f32 w, f32 h )
 	aabb.h = h;
 }
 
-void Simple_Collision_Body::set_as_circle( f32 r )
+void Collision_Body::set_as_circle( f32 r )
 {
 	prim_type = e_sc_prim_type::circle;
 	radius = r;
 }
 
-void Simple_Collision_Body::set_as_polygon( std::vector<Vec2> vs )
+void Collision_Body::set_as_polygon( std::vector<Vec2> vs )
 {
 	prim_type = e_sc_prim_type::polygon;
 	verts.clear();
@@ -976,7 +984,7 @@ void Simple_Collision_Body::set_as_polygon( std::vector<Vec2> vs )
 
 // does a broad phase check against "scc" to see if these bodies are intersecting
 
-bool Simple_Collision_Body::does_intersect_broadly( Simple_Collision_Body* scc )
+bool Collision_Body::does_intersect_broadly( Collision_Body* scc )
 {
 	// simple_collision_components can't collide with themselves
 	assert( this != scc );
@@ -1129,8 +1137,18 @@ bool Simple_Collision_Body::does_intersect_broadly( Simple_Collision_Body* scc )
 
 // NOTE : this function assumes that this body and "other" ARE colliding.
 
-std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::intersects_with_manifold( Simple_Collision_Body* other )
+std::optional<war::simple_collision::Pending_Collision> Collision_Body::intersects_with_manifold( Collision_Body* other )
 {
+	// platforms have extra logic for rejecting collisions once they've been detected
+	if( flags.is_platform )
+	{
+		// an entity moving upwards won't collide with a platform
+		if( other->parent_entity->simple.is_dynamic() and other->parent_entity->velocity.y < 0.0f )
+		{
+			return std::nullopt;
+		}
+	}
+
 	simple_collision::Pending_Collision collision;
 
 	switch( prim_type )
@@ -1296,7 +1314,7 @@ std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Body::i
 	return collision;
 }
 
-c2Circle Simple_Collision_Body::as_simple_circle()
+c2Circle Collision_Body::as_simple_circle()
 {
 	c2Circle circle = {};
 
@@ -1306,12 +1324,12 @@ c2Circle Simple_Collision_Body::as_simple_circle()
 	return circle;
 }
 
-c2AABB Simple_Collision_Body::as_simple_aabb()
+c2AABB Collision_Body::as_simple_aabb()
 {
 	return ws.aabb.to_c2AABB();
 }
 
-c2Poly Simple_Collision_Body::as_simple_poly()
+c2Poly Collision_Body::as_simple_poly()
 {
 	c2Poly poly = {};
 	poly.count = (i32)ws.verts.size();
@@ -1328,33 +1346,10 @@ c2Poly Simple_Collision_Body::as_simple_poly()
 
 // ----------------------------------------------------------------------------
 
-Simple_Collision_Platform_Body::Simple_Collision_Platform_Body( Entity* parent_entity )
-	: Simple_Collision_Body( parent_entity )
-{
-	flags.is_platform = true;
-}
-
-std::optional<war::simple_collision::Pending_Collision> Simple_Collision_Platform_Body::intersects_with_manifold( Simple_Collision_Body* other )
-{
-	// platforms have extra logic for rejecting collisions once they've been detected
-
-	if( other->parent_entity->simple.is_dynamic() and other->parent_entity->velocity.y < 0.0f )
-	{
-		// the entity won't collide with the platform if it is currently
-		// moving upwards
-
-		return std::nullopt;
-	}
-
-	auto coll = Simple_Collision_Body::intersects_with_manifold( other );
-	return coll;
-}
-
-// ----------------------------------------------------------------------------
-
 Tile_Map_Component::Tile_Map_Component( Entity* parent_entity )
 	: Entity_Component( parent_entity )
 {
+	component_type = e_component_type::tile_map;
 }
 
 void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view tile_map_tag )
@@ -1364,7 +1359,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 	// remove any existing collision components
 
-	auto existing_components = parent_entity->get_components<Simple_Collision_Body>();
+	auto existing_components = parent_entity->get_components<Collision_Body>();
 
 	for( auto& component : existing_components )
 	{
@@ -1415,7 +1410,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 							case e_sc_prim_type::circle:
 							{
-								auto ec = parent_entity->add_component<Simple_Collision_Body>();
+								auto ec = parent_entity->add_component<Collision_Body>();
 								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x + obj.radius, tile_pos.y + obj.rc.y + obj.radius } );
 								ec->set_as_circle( obj.radius );
 								ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1424,7 +1419,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 							case e_sc_prim_type::polygon:
 							{
-								auto ec = parent_entity->add_component<Simple_Collision_Body>();
+								auto ec = parent_entity->add_component<Collision_Body>();
 								ec->get_transform()->set_pos( { tile_pos.x + obj.rc.x, tile_pos.y + obj.rc.y } );
 								ec->set_as_polygon( obj.vertices );
 								ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1493,7 +1488,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 	for( auto& rect : aabbs )
 	{
-		auto ec = parent_entity->add_component<Simple_Collision_Body>();
+		auto ec = parent_entity->add_component<Collision_Body>();
 		ec->get_transform()->set_pos( { rect.x, rect.y } );
 		ec->set_as_box( rect.w, rect.h );
 		ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1522,7 +1517,8 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 					// is discarded and it's turned into a single line (aka a
 					// box with no height)
 
-					auto ec = parent_entity->add_component<Simple_Collision_Platform_Body>();
+					auto ec = parent_entity->add_component<Collision_Body>();
+					ec->flags.is_platform = true;
 					ec->get_transform()->set_pos( { obj.rc.x, obj.rc.y } );
 					ec->set_as_box( obj.rc.w, 0.f );
 					ec->set_collision_flags( collision_mask, collides_with_mask );
@@ -1582,12 +1578,12 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 	}
 }
 
-// adds an appropriate simple_collision_body based on a Tiled_Object we read
+// adds an appropriate Collision_Body based on a Tiled_Object we read
 // from the tile map
 
-Simple_Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type )
+Collision_Body* Tile_Map_Component::add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type )
 {
-	auto ec = parent_entity->add_component<Simple_Collision_Body>();
+	auto ec = parent_entity->add_component<Collision_Body>();
 
 	switch( obj.collision_prim_type )
 	{

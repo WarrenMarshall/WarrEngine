@@ -12,7 +12,7 @@ E_Player::E_Player()
 	fire_cooldown = Timer( 1000 );
 
 	{
-		auto ec = add_component<Simple_Collision_Body>();
+		auto ec = add_component<Collision_Body>();
 		ec->set_as_centered_box( 8, 16 );
 		ec->set_collision_flags( coll_flags.player, coll_flags.world );
 	}
@@ -65,7 +65,7 @@ E_Player_Bullet::E_Player_Bullet()
 	tag = H( "player_bullet" );
 
 	{
-		auto ec = add_component<Simple_Collision_Body>();
+		auto ec = add_component<Collision_Body>();
 		ec->set_as_circle( 6 );
 		ec->set_collision_flags( coll_flags.player_bullet, coll_flags.world );
 	}

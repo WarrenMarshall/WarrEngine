@@ -455,3 +455,19 @@ enum struct e_on_input_result
 	handled_with_blocking,
 	not_handled
 };
+
+// ----------------------------------------------------------------------------
+
+enum struct e_component_type
+{
+	none,
+	sprite,
+	primitive_shape,
+	emitter,
+	sound,
+	box2d_physics,
+	box2d_physics_body,
+	mesh,
+	collision_body,
+	tile_map,
+};

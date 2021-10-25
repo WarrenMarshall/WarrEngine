@@ -55,7 +55,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				e->sprite_component = ec;
 			}
 			{
-				auto ec = e->add_component<Simple_Collision_Body>();
+				auto ec = e->add_component<Collision_Body>();
 				ec->solidity = e_solidity::sensor;
 				ec->set_sensor_as_continuous();
 				ec->set_as_centered_box( 16.f, 6.f );
@@ -82,7 +82,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				ec->init( "tex_player" );
 			}
 			{
-				auto ec = e->add_component<Simple_Collision_Body>();
+				auto ec = e->add_component<Collision_Body>();
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( player_collision_radius );
 
@@ -92,7 +92,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 				);
 			}
 			{
-				auto ec = e->add_component<Simple_Collision_Body>();
+				auto ec = e->add_component<Collision_Body>();
 				ec->tag = H( "ground_sensor" );
 				ec->solidity = e_solidity::sensor;
 				ec->set_sensor_as_continuous();
@@ -158,7 +158,8 @@ void Scene_Simple_Platformer::pushed()
 			ec->rs_opt.color = make_color( Color::teal, 0.25f );
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Platform_Body>();
+			auto ec = e->add_component<Collision_Body>();
+			ec->flags.is_platform = true;
 			ec->set_as_centered_box( 48.f, 1.f );
 			ec->get_transform()->add_pos( { 0.f, -8.0f } );
 
@@ -168,7 +169,7 @@ void Scene_Simple_Platformer::pushed()
 			);
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->solidity = e_solidity::sensor;
 			ec->set_sensor_as_continuous();
 			ec->set_as_centered_box( 48.f, 4.f );
@@ -189,7 +190,7 @@ void Scene_Simple_Platformer::pushed()
 		}
 		{
 			//auto ec = e->add_component<Simple_Collision_Platform_Body>();
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->set_as_centered_box( 32.f, 32.f );
 			ec->get_transform()->add_pos( { 0.f, -0.0f } );
 
@@ -199,7 +200,7 @@ void Scene_Simple_Platformer::pushed()
 			);
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->collider_type = e_solidity::sensor;
 			ec->set_sensor_as_continuous();
 			//ec->set_as_centered_box( 48.f, 4.f );
@@ -285,7 +286,7 @@ bool Scene_Simple_Platformer::on_input_pressed( const Input_Event* evt )
 
 // ----------------------------------------------------------------------------
 
-bool E_Player::on_touching_begin( Simple_Collision_Body* sensor )
+bool E_Player::on_touching_begin( Collision_Body* sensor )
 {
 	Entity::on_touching_begin( sensor );
 

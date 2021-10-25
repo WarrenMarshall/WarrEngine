@@ -44,7 +44,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			e->simple.flags.is_bouncy = true;
 
 			{
-				auto ec = e->add_component<Simple_Collision_Body>();
+				auto ec = e->add_component<Collision_Body>();
 				ec->tag = H( "player_body" );
 				ec->set_as_circle( player_collision_radius );
 
@@ -113,7 +113,7 @@ void Scene_Simple_Top_Down::draw()
 	Render::state->color = make_color( Color::red, 0.15f );
 
 	auto start = player->get_pos();
-	auto dir = Vec2::dir_from_angle( player->get_angle() );
+	auto dir = Vec2::angle_to_dir( player->get_angle() );
 	auto end = start + ( dir * ray_cast_length_hit );
 	Render::draw_line( start, end );
 }
@@ -128,7 +128,7 @@ void Scene_Simple_Top_Down::update()
 	reset_collision_trace_results();
 
 	auto start = player->get_pos();
-	auto dir = Vec2::dir_from_angle( player->get_angle() );
+	auto dir = Vec2::angle_to_dir( player->get_angle() );
 	auto end = start + ( dir * 1024.f );
 
 	simple_collision::Raycast_Closest callback;
@@ -144,7 +144,7 @@ void Scene_Simple_Top_Down::reset_collision_trace_results()
 {
 	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
 
-	for( auto& iter : world->get_components<Simple_Collision_Body>() )
+	for( auto& iter : world->get_components<Collision_Body>() )
 	{
 		iter->rs_opt.color = make_color( Color::dark_teal );
 	}
@@ -191,7 +191,7 @@ bool Scene_Simple_Top_Down::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Top_Down::on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor )
+bool Scene_Simple_Top_Down::on_entity_and_sensor_touching( Entity* entity, Collision_Body* sensor )
 {
 	if( entity->tag == H( "player" ) )
 	{

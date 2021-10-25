@@ -57,7 +57,7 @@ void Scene_Angle_Dirs::draw_ui()
 		Render::state->color = make_color( e_pal::lightest );
 
 		auto angle = Vec2::clamped_angle_from_dir( Vec2::normalize( marker_pos ) );
-		auto dir = Vec2::dir_from_angle( angle );
+		auto dir = Vec2::angle_to_dir( angle );
 
 		std::vector<std::string> info_lines =
 		{

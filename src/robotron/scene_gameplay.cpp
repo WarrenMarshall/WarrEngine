@@ -26,25 +26,25 @@ void Scene_Gameplay::pushed()
 		e->simple.type = e_physics_body_type::stationary;
 
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 16.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh + 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Simple_Collision_Body>();
+			auto ec = e->add_component<Collision_Body>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.world, 0 );

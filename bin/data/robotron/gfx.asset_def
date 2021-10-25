@@ -26,7 +26,7 @@
 {
 	"type" "anim_texture"
 	"tag" "anim_player_walk_left"
-	"frames_per_sec" "4"
+	"frames_per_sec" "8"
 	"tween" "tween.loop"
 	"frame_tags" "player_walk_left_1, player_walk_left_2, player_walk_left_1, player_walk_left_3"
 }
@@ -34,7 +34,7 @@
 {
 	"type" "anim_texture"
 	"tag" "anim_player_walk_right"
-	"frames_per_sec" "4"
+	"frames_per_sec" "8"
 	"tween" "tween.loop"
 	"frame_tags" "player_walk_right_1, player_walk_right_2, player_walk_right_1, player_walk_right_3"
 }
@@ -42,7 +42,7 @@
 {
 	"type" "anim_texture"
 	"tag" "anim_player_walk_down"
-	"frames_per_sec" "4"
+	"frames_per_sec" "8"
 	"tween" "tween.loop"
 	"frame_tags" "player_walk_down_1, player_walk_down_2, player_walk_down_1, player_walk_down_3"
 }
@@ -50,7 +50,7 @@
 {
 	"type" "anim_texture"
 	"tag" "anim_player_walk_up"
-	"frames_per_sec" "4"
+	"frames_per_sec" "8"
 	"tween" "tween.loop"
 	"frame_tags" "player_walk_up_1, player_walk_up_2, player_walk_up_1, player_walk_up_3"
 }

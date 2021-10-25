@@ -131,7 +131,7 @@ void Scene::update()
 			entity->update_transform_to_match_box2d_components();
 
 			// collect the simple collision bodies active in the scene
-			auto sccs = entity->get_components<Simple_Collision_Body>();
+			auto sccs = entity->get_components<Collision_Body>();
 			sc_world.active_bodies.insert(
 				sc_world.active_bodies.end(),
 				sccs.begin(), sccs.end()
@@ -332,17 +332,17 @@ bool Scene::on_input_key( const Input_Event* evt )
 	return false;
 }
 
-bool Scene::on_entity_and_sensor_touching_begin( Entity* entity, Simple_Collision_Body* sensor )
+bool Scene::on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body* sensor )
 {
 	return false;
 }
 
-bool Scene::on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor )
+bool Scene::on_entity_and_sensor_touching( Entity* entity, Collision_Body* sensor )
 {
 	return false;
 }
 
-bool Scene::on_entity_and_sensor_touching_end( Entity* entity, Simple_Collision_Body* sensor )
+bool Scene::on_entity_and_sensor_touching_end( Entity* entity, Collision_Body* sensor )
 {
 	return false;
 }

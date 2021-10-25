@@ -162,9 +162,9 @@ struct Scene
 	// called every time an entity in this scene registers a touch with a sensor
 	// in this scene. this allows the scene to be the main handler of triggers
 	// and related events.
-	virtual bool on_entity_and_sensor_touching_begin( Entity* entity, Simple_Collision_Body* sensor );
-	virtual bool on_entity_and_sensor_touching( Entity* entity, Simple_Collision_Body* sensor );
-	virtual bool on_entity_and_sensor_touching_end( Entity* entity, Simple_Collision_Body* sensor );
+	virtual bool on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body* sensor );
+	virtual bool on_entity_and_sensor_touching( Entity* entity, Collision_Body* sensor );
+	virtual bool on_entity_and_sensor_touching_end( Entity* entity, Collision_Body* sensor );
 
 	// called whenever 2 entities in this scene collide with each other
 	virtual bool on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, simple_collision::Pending_Collision& coll );

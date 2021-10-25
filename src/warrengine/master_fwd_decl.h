@@ -35,7 +35,7 @@ struct Scene;
 struct Scene_Mgr;
 struct Scene_Transient;
 struct Shader;
-struct Simple_Collision_Body;
+struct Collision_Body;
 struct Simple_Collision_World;
 struct Sound_Asset;
 struct Texture_Asset;
