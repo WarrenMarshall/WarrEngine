@@ -9,6 +9,10 @@ struct E_Player : Entity
 	void fire_weapon( i32 angle );
 
 	Timer fire_cooldown;
+	Sprite_Component* sprite_component = nullptr;
+	Sound_Asset* snd_player_shoot = nullptr;
+
+	virtual void pre_update() override;
 };
 
 // ----------------------------------------------------------------------------

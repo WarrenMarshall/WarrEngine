@@ -5,6 +5,58 @@
 
 {
 	"type" "src_texture"
-	"tag" "tex_hello_world"
-	"filename" "gfx/hello_world.png"
+	"tag" "sprite_sheet_01"
+	"filename" "gfx/sprite_sheet.png"
+	"texture_tags" "\
+		player_walk_left_1, 0, 48, 8, 16,\
+		player_walk_left_2, 8, 48, 8, 16,\
+		player_walk_left_3, 16, 48, 8, 16,\
+		player_walk_right_1, 24, 48, 8, 16,\
+		player_walk_right_2, 32, 48, 8, 16,\
+		player_walk_right_3, 40, 48, 8, 16,\
+		player_walk_down_1, 48, 48, 8, 16,\
+		player_walk_down_2, 56, 48, 8, 16,\
+		player_walk_down_3, 64, 48, 8, 16,\
+		player_walk_up_1, 72, 48, 8, 16,\
+		player_walk_up_2, 80, 48, 8, 16,\
+		player_walk_up_3, 88, 48, 8, 16,\
+		coin_4, 48, 32, 16, 16"
+}
+
+{
+	"type" "anim_texture"
+	"tag" "anim_player_walk_left"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frame_tags" "player_walk_left_1, player_walk_left_2, player_walk_left_1, player_walk_left_3"
+}
+
+{
+	"type" "anim_texture"
+	"tag" "anim_player_walk_right"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frame_tags" "player_walk_right_1, player_walk_right_2, player_walk_right_1, player_walk_right_3"
+}
+
+{
+	"type" "anim_texture"
+	"tag" "anim_player_walk_down"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frame_tags" "player_walk_down_1, player_walk_down_2, player_walk_down_1, player_walk_down_3"
+}
+
+{
+	"type" "anim_texture"
+	"tag" "anim_player_walk_up"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frame_tags" "player_walk_up_1, player_walk_up_2, player_walk_up_1, player_walk_up_3"
+}
+
+{
+	"type" "src_texture"
+	"tag" "particle_simple_01"
+	"filename" "gfx/particle_simple_01.png"
 }

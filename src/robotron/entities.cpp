@@ -8,14 +8,21 @@ E_Player::E_Player()
 {
 	tag = H( "player" );
 
-	fire_cooldown = Timer( 100 );
+	//fire_cooldown = Timer( 100 );
+	fire_cooldown = Timer( 1000 );
 
 	{
 		auto ec = add_component<Simple_Collision_Body>();
 		ec->set_as_centered_box( 8, 16 );
-		ec->flags.draw_as_shape = true;
 		ec->set_collision_flags( coll_flags.player, coll_flags.world );
 	}
+	{
+		auto ec = add_component<Sprite_Component>();
+		ec->init( "anim_player_walk_down" );
+		sprite_component = ec;
+	}
+
+	snd_player_shoot = g_engine->find_asset<Sound_Asset>( "player_shoot" );
 }
 
 bool E_Player::can_fire_weapon()
@@ -38,8 +45,17 @@ void E_Player::fire_weapon( i32 angle )
 			e->set_angle( final_angle );
 
 			e->add_impulse( 3.f );
+
+			snd_player_shoot->play();
 		}
 	}
+}
+
+void E_Player::pre_update()
+{
+
+	sprite_component->init( "player_walk_down_1" );
+	Entity::pre_update();
 }
 
 // ----------------------------------------------------------------------------

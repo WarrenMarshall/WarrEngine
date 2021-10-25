@@ -12,13 +12,13 @@ struct Emitter_Parameters_Asset final : Asset
 
 	Range r_velocity_spawn = Range( 50, 50 );	// initial velocity
 	Range r_scale_spawn = Range( 1, 1 );		// scale - spawn value and timeline
-	Range r_lifespan = Range( 500, 1000 );	// lifetime in milliseconds
+	Range r_lifespan = Range( 500, 1000 );		// lifetime in milliseconds
 	Range r_spin_per_sec = Range( 0, 0 );		// ranges for controlling angle values
 	Range r_spin_spawn = Range( 0, 0 );
 	Range r_dir_var = Range( 0, 0 );			// variance for the spawn direction
 
-	f32 s_spawn_rate = 100.f;			// how many particles to spawn from this emitter, per second. aka the spawn rate.
-	f32 a_dir = 0.f;					// the base direction that particles start moving in when they spawn
+	f32 s_spawn_rate = 100.f;		// how many particles to spawn from this emitter, per second. aka the spawn rate.
+	f32 a_dir = 0.f;				// the base direction that particles start moving in when they spawn
 	f32 s_max_alive = 0.f;			// if > 0, dictates the maximum number of particles that can be alive at one time
 
 	bool needs_warm_up : 1 = false;

@@ -8,7 +8,7 @@ namespace war
 void Sound_Asset::play()
 {
 	sound.play();
-	sound.setPitch( g_engine->clock.dilation );
+	sound.setPitch( g_engine->clock.dilation + Random::getf_range( -0.25f, .5f ) );
 }
 
 void Sound_Asset::pause()

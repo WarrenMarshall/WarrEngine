@@ -1,8 +1,8 @@
 
 # SFX
 
-# {
-# 	"type" "sound"
-# 	"tag" "name_of_asset"
-# 	"filename" "sfx/filename.wav"
-# }
+{
+	"type" "sound"
+	"tag" "player_shoot"
+	"filename" "sfx/player_shoot.wav"
+}

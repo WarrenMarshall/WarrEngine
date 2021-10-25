@@ -6,6 +6,7 @@ struct Scene_Gameplay final : Scene
 	Scene_Gameplay();
 
 	virtual void pushed() override;
+	virtual void popped() override;
 	virtual void draw() override;
 	virtual bool on_input_pressed( const Input_Event* evt ) override;
 	virtual bool on_input_motion( const Input_Event* evt ) override;

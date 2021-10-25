@@ -13,6 +13,8 @@ void Scene_Gameplay::pushed()
 {
 	Scene::pushed();
 
+	g_engine->window.push_mouse_mode( e_mouse_mode::locked );
+
 	spatial_map.set_bounds( { -viewport_hw, -viewport_hh, viewport_w, viewport_h } );
 
 	// ----------------------------------------------------------------------------
@@ -63,6 +65,13 @@ void Scene_Gameplay::pushed()
 	player = add_entity<E_Player>();
 }
 
+void Scene_Gameplay::popped()
+{
+	Scene::popped();
+
+	g_engine->window.pop_mouse_mode();
+}
+
 void Scene_Gameplay::draw()
 {
 	Scene::draw();
@@ -74,6 +83,20 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 	if( Scene::on_input_pressed( evt ) )
 	{
 		return true;
+	}
+
+	if( evt->input_id == e_input_id::gamepad_button_a )
+	{
+		{
+			auto e = add_entity<Entity_Transient>();
+			{
+				auto ec = e->add_component<Emitter_Component>();
+				ec->init( "em_death_spark" );
+			}
+		}
+
+		return true;
+
 	}
 
 	return false;
@@ -95,14 +118,36 @@ bool Scene_Gameplay::on_input_motion( const Input_Event* evt )
 			{
 				movement.normalize();
 				player->add_delta_pos( movement );
+
+				if( glm::abs( evt->delta.x ) > glm::abs( evt->delta.y ) )
+				{
+					if( glm::sign( evt->delta.x ) > 0.f )
+					{
+						player->sprite_component->init( "anim_player_walk_right" );
+					}
+					else
+					{
+						player->sprite_component->init( "anim_player_walk_left" );
+					}
+				}
+				else
+				{
+					if( glm::sign( evt->delta.y ) < 0.f )
+					{
+						player->sprite_component->init( "anim_player_walk_up" );
+					}
+					else
+					{
+						player->sprite_component->init( "anim_player_walk_down" );
+					}
+				}
 			}
 			return true;
 		}
 
 		case e_input_id::gamepad_right_stick:
 		{
-			i32 angle = (i32)Vec2::dir_to_angle( evt->delta );
-			player->fire_weapon( angle );
+			player->fire_weapon( ( i32 )Vec2::dir_to_angle( evt->delta ) );
 
 			return true;
 		}
@@ -116,6 +161,16 @@ bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* e
 	if( entity_a->tag == H( "player_bullet" ) and entity_b->tag == H( "world_geo" ) )
 	{
 		entity_a->life_cycle.set( e_life_cycle::dead );
+
+		{
+			auto e = add_entity<Entity_Transient>();
+			e->set_pos( entity_a->get_transform()->pos );
+			{
+				auto ec = e->add_component<Emitter_Component>();
+				ec->init( "em_death_spark" );
+			}
+		}
+
 		return true;
 	}
 
