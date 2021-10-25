@@ -78,14 +78,14 @@ void Scene_Main_Menu::draw_ui()
 			scoped_ui_layout( g_ui->layout_top().cut_right( 0.5f ) );
 
 			do_menu_button<Scene_Box2D>( H( "button_box2d" ), "Box2D Collision" );
-			do_menu_button<Scene_Simple_Sensors>( H( "button_simple_sensors" ), "Simple Sensors" );
-			do_menu_button<Scene_Simple_Interact>( H( "button_simple_interact" ), "Simple Interaction" );
-			do_menu_button<Scene_Simple_Bounce>( H( "button_simple_bounce" ), "Simple Bouncing" );
+			do_menu_button<Scene_Sensors>( H( "button_simple_sensors" ), "Simple Sensors" );
+			do_menu_button<Scene_Interact>( H( "button_simple_interact" ), "Simple Interaction" );
+			do_menu_button<Scene_Bounce>( H( "button_simple_bounce" ), "Simple Bouncing" );
 
 			g_ui->divider_control()->done();
-			do_menu_button<Scene_Simple_Breakout>( H( "button_simple_breakout" ), "Break Out" );
-			do_menu_button<Scene_Simple_Platformer>( H( "button_simple_platformer" ), "Platformer" );
-			do_menu_button<Scene_Simple_Top_Down>( H( "button_simple_top_down" ), "Top Down" );
+			do_menu_button<Scene_Breakout>( H( "button_simple_breakout" ), "Break Out" );
+			do_menu_button<Scene_Platformer>( H( "button_simple_platformer" ), "Platformer" );
+			do_menu_button<Scene_Top_Down>( H( "button_simple_top_down" ), "Top Down" );
 
 			g_ui->divider_control()->done();
 			do_menu_button<Scene_Constraints>( H( "button_constraints" ), "Constraints" );

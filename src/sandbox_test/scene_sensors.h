@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Simple_Sensors final : Scene
+struct Scene_Sensors final : Scene
 {
 	struct
 	{
@@ -10,7 +10,7 @@ struct Scene_Simple_Sensors final : Scene
 		ui16 sensor = 0b0000100;
 	} coll_flags;
 
-	Scene_Simple_Sensors();
+	Scene_Sensors();
 
 	Entity* player = nullptr;
 	Entity* world_geo = nullptr;

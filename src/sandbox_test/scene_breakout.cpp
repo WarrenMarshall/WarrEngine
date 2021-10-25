@@ -21,7 +21,7 @@ bool E_Breakout_Paddle::on_collided( collision::Pending_Collision& coll )
 
 // ----------------------------------------------------------------------------
 
-Scene_Simple_Breakout::Scene_Simple_Breakout()
+Scene_Breakout::Scene_Breakout()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
@@ -29,7 +29,7 @@ Scene_Simple_Breakout::Scene_Simple_Breakout()
 	flags.is_debug_physics_scene = true;
 }
 
-void Scene_Simple_Breakout::spawn_ball()
+void Scene_Breakout::spawn_ball()
 {
 	auto e = add_entity<Entity>();
 	e->tag = H( "BALL" );
@@ -48,7 +48,7 @@ void Scene_Simple_Breakout::spawn_ball()
 	e->add_impulse( { Random::get_random_unit_vector(), 2.5f } );
 }
 
-void Scene_Simple_Breakout::pushed()
+void Scene_Breakout::pushed()
 {
 	Scene::pushed();
 
@@ -147,7 +147,7 @@ void Scene_Simple_Breakout::pushed()
 	}
 }
 
-void Scene_Simple_Breakout::draw()
+void Scene_Breakout::draw()
 {
 	{
 		scoped_render_state;
@@ -160,17 +160,17 @@ void Scene_Simple_Breakout::draw()
 	//render::draw_world_axis();
 }
 
-void Scene_Simple_Breakout::draw_ui()
+void Scene_Breakout::draw_ui()
 {
 	Scene::draw_ui();
 }
 
-void Scene_Simple_Breakout::update()
+void Scene_Breakout::update()
 {
 	Scene::update();
 }
 
-bool Scene_Simple_Breakout::on_input_pressed( const Input_Event* evt )
+bool Scene_Breakout::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -185,13 +185,13 @@ bool Scene_Simple_Breakout::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Breakout::on_input_held( const Input_Event* evt )
+bool Scene_Breakout::on_input_held( const Input_Event* evt )
 {
 
 	return false;
 }
 
-bool Scene_Simple_Breakout::on_input_motion( const Input_Event* evt )
+bool Scene_Breakout::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

@@ -2,7 +2,7 @@
 using namespace war;
 
 
-struct Scene_Simple_Top_Down final : Scene
+struct Scene_Top_Down final : Scene
 {
 	struct
 	{
@@ -10,7 +10,7 @@ struct Scene_Simple_Top_Down final : Scene
 		ui16 geo	= 0b00000010;
 	} coll_flags;
 
-	Scene_Simple_Top_Down();
+	Scene_Top_Down();
 
 	Entity* player = nullptr;
 	Entity* hit_marker = nullptr;

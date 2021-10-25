@@ -5,7 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-Scene_Simple_Bounce::Scene_Simple_Bounce()
+Scene_Bounce::Scene_Bounce()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
@@ -13,7 +13,7 @@ Scene_Simple_Bounce::Scene_Simple_Bounce()
 	flags.is_debug_physics_scene = true;
 }
 
-Entity* Scene_Simple_Bounce::spawn_shape()
+Entity* Scene_Bounce::spawn_shape()
 {
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
@@ -63,7 +63,7 @@ Entity* Scene_Simple_Bounce::spawn_shape()
 	return e;
 }
 
-void Scene_Simple_Bounce::pushed()
+void Scene_Bounce::pushed()
 {
 	Scene::pushed();
 
@@ -159,7 +159,7 @@ void Scene_Simple_Bounce::pushed()
 	}
 }
 
-void Scene_Simple_Bounce::draw()
+void Scene_Bounce::draw()
 {
 	{
 		scoped_render_state;
@@ -172,14 +172,14 @@ void Scene_Simple_Bounce::draw()
 	Scene::draw();
 }
 
-void Scene_Simple_Bounce::draw_ui()
+void Scene_Bounce::draw_ui()
 {
 	Scene::draw_ui();
 	draw_title( "Bounce" );
 
 }
 
-void Scene_Simple_Bounce::post_update()
+void Scene_Bounce::post_update()
 {
 	Scene::post_update();
 
@@ -196,7 +196,7 @@ void Scene_Simple_Bounce::post_update()
 	}
 }
 
-bool Scene_Simple_Bounce::on_input_pressed( const Input_Event* evt )
+bool Scene_Bounce::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -211,7 +211,7 @@ bool Scene_Simple_Bounce::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Bounce::on_input_motion( const Input_Event* evt )
+bool Scene_Bounce::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

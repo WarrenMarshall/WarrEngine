@@ -21,7 +21,7 @@ struct E_Player final : Entity
 };
 
 // ----------------------------------------------------------------------------
-struct Scene_Simple_Platformer final : Scene
+struct Scene_Platformer final : Scene
 {
 	struct
 	{
@@ -37,7 +37,7 @@ struct Scene_Simple_Platformer final : Scene
 
 	Timeline_Of_Nodes fx_red_alert;
 
-	Scene_Simple_Platformer();
+	Scene_Platformer();
 
 	virtual void draw() override;
 	virtual void draw_ui() override;

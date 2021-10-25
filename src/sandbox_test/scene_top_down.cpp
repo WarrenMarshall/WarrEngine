@@ -14,7 +14,7 @@ constexpr auto radius = 12.f;
 
 // ----------------------------------------------------------------------------
 
-Scene_Simple_Top_Down::Scene_Simple_Top_Down()
+Scene_Top_Down::Scene_Top_Down()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
@@ -24,7 +24,7 @@ Scene_Simple_Top_Down::Scene_Simple_Top_Down()
 
 f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 {
-	auto gameplay_scene = (Scene_Simple_Top_Down*)scene;
+	auto gameplay_scene = (Scene_Top_Down*)scene;
 
 	switch( tile->idx )
 	{
@@ -62,7 +62,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 	}
 }
 
-void Scene_Simple_Top_Down::pushed()
+void Scene_Top_Down::pushed()
 {
 	get_transform()->set_scale( 2.f );
 	//spatial_map.init( Rect( -375, -375, 750, 750 ) );
@@ -103,7 +103,7 @@ void Scene_Simple_Top_Down::pushed()
 	fx_hurt.add_kf_pp_color_overlay( true, 0.5f, 100, make_color( Color::red, 0.25f ) );
 }
 
-void Scene_Simple_Top_Down::draw()
+void Scene_Top_Down::draw()
 {
 	Scene::draw();
 
@@ -118,7 +118,7 @@ void Scene_Simple_Top_Down::draw()
 	Render::draw_line( start, end );
 }
 
-void Scene_Simple_Top_Down::update()
+void Scene_Top_Down::update()
 {
 	Scene::update();
 	follow_cam( player->get_transform() );
@@ -140,7 +140,7 @@ void Scene_Simple_Top_Down::update()
 	}
 }
 
-void Scene_Simple_Top_Down::reset_collision_trace_results()
+void Scene_Top_Down::reset_collision_trace_results()
 {
 	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
 
@@ -150,14 +150,14 @@ void Scene_Simple_Top_Down::reset_collision_trace_results()
 	}
 }
 
-bool Scene_Simple_Top_Down::on_input_pressed( const Input_Event* evt )
+bool Scene_Top_Down::on_input_pressed( const Input_Event* evt )
 {
 	// #topdown - add a keypress toggle to switch into a mode where the player
 	// rotates based on the right_stick direction but the world stays upright
 	return false;
 }
 
-bool Scene_Simple_Top_Down::on_input_motion( const Input_Event* evt )
+bool Scene_Top_Down::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -191,7 +191,7 @@ bool Scene_Simple_Top_Down::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Top_Down::on_entity_and_sensor_touching( Entity* entity, Collision_Body_Component* sensor )
+bool Scene_Top_Down::on_entity_and_sensor_touching( Entity* entity, Collision_Body_Component* sensor )
 {
 	if( entity->tag == H( "player" ) )
 	{

@@ -10,7 +10,7 @@ constexpr auto radius = 12.f;
 
 // ----------------------------------------------------------------------------
 
-Scene_Simple_Interact::Scene_Simple_Interact()
+Scene_Interact::Scene_Interact()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
@@ -18,7 +18,7 @@ Scene_Simple_Interact::Scene_Simple_Interact()
 	flags.is_debug_physics_scene = true;
 }
 
-Entity* Scene_Simple_Interact::spawn_entity()
+Entity* Scene_Interact::spawn_entity()
 {
 	auto e = add_entity<Entity>();
 	e->set_pos( { 0.f, 0.f } );
@@ -60,7 +60,7 @@ Entity* Scene_Simple_Interact::spawn_entity()
 }
 
 
-void Scene_Simple_Interact::pushed()
+void Scene_Interact::pushed()
 {
 	Scene::pushed();
 
@@ -168,7 +168,7 @@ void Scene_Simple_Interact::pushed()
 	}
 }
 
-void Scene_Simple_Interact::draw()
+void Scene_Interact::draw()
 {
 	{
 		scoped_render_state;
@@ -191,7 +191,7 @@ void Scene_Simple_Interact::draw()
 	}
 }
 
-void Scene_Simple_Interact::draw_ui()
+void Scene_Interact::draw_ui()
 {
 	Scene::draw_ui();
 	draw_title( "Interact" );
@@ -200,7 +200,7 @@ void Scene_Simple_Interact::draw_ui()
 	//	player->velocity.x, player->velocity.y ), vec2( 8.f, 24.f ) );
 }
 
-void Scene_Simple_Interact::update()
+void Scene_Interact::update()
 {
 	Scene::update();
 
@@ -210,7 +210,7 @@ void Scene_Simple_Interact::update()
 	follow_cam( player->get_transform() );
 }
 
-void Scene_Simple_Interact::reset_collision_trace_results()
+void Scene_Interact::reset_collision_trace_results()
 {
 	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
 
@@ -220,7 +220,7 @@ void Scene_Simple_Interact::reset_collision_trace_results()
 	}
 }
 
-bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
+bool Scene_Interact::on_input_pressed( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -317,7 +317,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Interact::on_input_motion( const Input_Event* evt )
+bool Scene_Interact::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{

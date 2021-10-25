@@ -51,25 +51,25 @@
     <ClCompile Include="scene_noise.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_interact.cpp">
+    <ClCompile Include="scene_interact.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_angle_dirs.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_breakout.cpp">
+    <ClCompile Include="scene_breakout.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_platformer.cpp">
+    <ClCompile Include="scene_platformer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_bounce.cpp">
+    <ClCompile Include="scene_bounce.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_top_down.cpp">
+    <ClCompile Include="scene_top_down.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_simple_sensors.cpp">
+    <ClCompile Include="scene_sensors.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="scene_constraints.cpp">
@@ -133,25 +133,25 @@
     <ClInclude Include="scene_noise.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_interact.h">
+    <ClInclude Include="scene_interact.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_angle_dirs.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_breakout.h">
+    <ClInclude Include="scene_breakout.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_platformer.h">
+    <ClInclude Include="scene_platformer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_bounce.h">
+    <ClInclude Include="scene_bounce.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_top_down.h">
+    <ClInclude Include="scene_top_down.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="scene_simple_sensors.h">
+    <ClInclude Include="scene_sensors.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_constraints.h">

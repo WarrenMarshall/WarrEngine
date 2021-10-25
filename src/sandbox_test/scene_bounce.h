@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Simple_Bounce final : Scene
+struct Scene_Bounce final : Scene
 {
 	struct
 	{
@@ -10,7 +10,7 @@ struct Scene_Simple_Bounce final : Scene
 		ui16 geo	= 0b00000100;
 	} coll_flags;
 
-	Scene_Simple_Bounce();
+	Scene_Bounce();
 
 	Entity* spawn_shape();
 

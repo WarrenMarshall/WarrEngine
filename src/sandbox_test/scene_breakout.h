@@ -9,7 +9,7 @@ struct E_Breakout_Paddle final : Entity
 };
 
 // ----------------------------------------------------------------------------
-struct Scene_Simple_Breakout final : Scene
+struct Scene_Breakout final : Scene
 {
 	struct
 	{
@@ -18,7 +18,7 @@ struct Scene_Simple_Breakout final : Scene
 		ui16 geo	= 0b00000100;
 	} coll_flags;
 
-	Scene_Simple_Breakout();
+	Scene_Breakout();
 
 	Entity* paddle = nullptr;
 	Entity* world_geo = nullptr;

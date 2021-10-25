@@ -7,7 +7,7 @@ using namespace war;
 
 constexpr auto player_collision_radius = 8.f;
 
-Scene_Simple_Platformer::Scene_Simple_Platformer()
+Scene_Platformer::Scene_Platformer()
 {
 	flags.is_debug_physics_scene = true;
 	flags.requires_controller = true;
@@ -15,21 +15,21 @@ Scene_Simple_Platformer::Scene_Simple_Platformer()
 	flags.blocks_further_update = true;
 }
 
-void Scene_Simple_Platformer::draw()
+void Scene_Platformer::draw()
 {
 	Render::draw_world_axis();
 
 	Scene::draw();
 }
 
-void Scene_Simple_Platformer::draw_ui()
+void Scene_Platformer::draw_ui()
 {
 	Render::draw_string( std::format( "{}", player->simple.flags.is_in_air ), { 4, 4 } );
 }
 
 f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 {
-	auto gameplay_scene = (Scene_Simple_Platformer*)scene;
+	auto gameplay_scene = (Scene_Platformer*)scene;
 	auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
 
 	Vec2 tile_pos =
@@ -111,7 +111,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 	}
 }
 
-void Scene_Simple_Platformer::pushed()
+void Scene_Platformer::pushed()
 {
 	Scene::pushed();
 
@@ -221,7 +221,7 @@ void Scene_Simple_Platformer::pushed()
 	}
 }
 
-void Scene_Simple_Platformer::update()
+void Scene_Platformer::update()
 {
 	Scene::update();
 
@@ -241,7 +241,7 @@ void Scene_Simple_Platformer::update()
 	}
 }
 
-bool Scene_Simple_Platformer::on_input_motion( const Input_Event* evt )
+bool Scene_Platformer::on_input_motion( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::gamepad_left_stick )
 	{
@@ -255,7 +255,7 @@ bool Scene_Simple_Platformer::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Platformer::on_input_pressed( const Input_Event* evt )
+bool Scene_Platformer::on_input_pressed( const Input_Event* evt )
 {
 	if( evt->input_id == e_input_id::gamepad_button_a
 		or evt->input_id == e_input_id::key_space )

@@ -1,7 +1,7 @@
 
 using namespace war;
 
-struct Scene_Simple_Interact final : Scene
+struct Scene_Interact final : Scene
 {
 	struct
 	{
@@ -10,7 +10,7 @@ struct Scene_Simple_Interact final : Scene
 		ui16 npc	= 0b00000100;
 	} coll_flags;
 
-	Scene_Simple_Interact();
+	Scene_Interact();
 
 	Entity* player = nullptr;
 	Entity* hit_marker = nullptr;

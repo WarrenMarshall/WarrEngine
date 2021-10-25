@@ -3,7 +3,7 @@
 
 using namespace war;
 
-Scene_Simple_Sensors::Scene_Simple_Sensors()
+Scene_Sensors::Scene_Sensors()
 {
 	flags.blocks_further_drawing = true;
 	flags.blocks_further_update = true;
@@ -11,7 +11,7 @@ Scene_Simple_Sensors::Scene_Simple_Sensors()
 	flags.is_debug_physics_scene = true;
 }
 
-void Scene_Simple_Sensors::spawn_sensor()
+void Scene_Sensors::spawn_sensor()
 {
 	auto e = add_entity<Entity>();
 	e->simple.type = e_physics_body_type::stationary;
@@ -52,7 +52,7 @@ void Scene_Simple_Sensors::spawn_sensor()
 	}
 }
 
-void Scene_Simple_Sensors::pushed()
+void Scene_Sensors::pushed()
 {
 	Scene::pushed();
 
@@ -122,7 +122,7 @@ void Scene_Simple_Sensors::pushed()
 	}
 }
 
-bool Scene_Simple_Sensors::on_input_motion( const Input_Event* evt )
+bool Scene_Sensors::on_input_motion( const Input_Event* evt )
 {
 	switch( evt->input_id )
 	{
@@ -147,13 +147,13 @@ bool Scene_Simple_Sensors::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Simple_Sensors::on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body_Component* sensor )
+bool Scene_Sensors::on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body_Component* sensor )
 {
 	sensor->parent_entity->rs_opt.color = Color::red;
 	return true;
 }
 
-bool Scene_Simple_Sensors::on_entity_and_sensor_touching_end( Entity* entity, Collision_Body_Component* sensor )
+bool Scene_Sensors::on_entity_and_sensor_touching_end( Entity* entity, Collision_Body_Component* sensor )
 {
 	sensor->parent_entity->rs_opt.color = Color::white;
 	return true;
