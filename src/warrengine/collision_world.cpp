@@ -7,12 +7,12 @@
 namespace war
 {
 
-Simple_Collision_World::Simple_Collision_World( Scene* parent_scene )
+Collision_World::Collision_World( Scene* parent_scene )
 	: parent_scene( parent_scene )
 {
 }
 
-void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callback, const Entity* entity, const Vec2& start, const Vec2& end ) const
+void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Entity* entity, const Vec2& start, const Vec2& end ) const
 {
 	auto delta = ( end - start );
 	auto ray_normal = Vec2::normalize( delta );
@@ -96,7 +96,7 @@ void Simple_Collision_World::ray_cast( simple_collision::Raycast_Callback* callb
 // - push themselves apart so they aren't colliding anymore
 // - react to the collision (changing direction, or whatever)
 
-void Simple_Collision_World::handle_collisions()
+void Collision_World::handle_collisions()
 {
 	// ----------------------------------------------------------------------------
 	// broad phase
@@ -110,7 +110,7 @@ void Simple_Collision_World::handle_collisions()
 
 	for( auto& ea : parent_scene->entities )
 	{
-		auto sccs_a = ea->get_components<Collision_Body>();
+		auto sccs_a = ea->get_components<Collision_Body_Component>();
 
 		if( sccs_a.empty() )
 		{
@@ -123,7 +123,7 @@ void Simple_Collision_World::handle_collisions()
 		{
 			assert( ea.get() != eb );
 
-			auto sccs_b = eb->get_components<Collision_Body>();
+			auto sccs_b = eb->get_components<Collision_Body_Component>();
 
 			for( auto scc_a : sccs_a )
 			{
@@ -195,7 +195,7 @@ void Simple_Collision_World::handle_collisions()
 	}
 }
 
-void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& coll )
+void Collision_World::push_apart( collision::Pending_Collision& coll )
 {
 	if( glm::abs( coll.depth ) < settings.push_apart_tolerance )
 	{
@@ -225,7 +225,7 @@ void Simple_Collision_World::push_apart( simple_collision::Pending_Collision& co
 
 // Two bodies have collided. We now need to decide what to do about that.
 
-void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_Collision& coll )
+void Collision_World::resolve_solid_collision( collision::Pending_Collision& coll )
 {
 	auto ent_attacker = coll.entity_a;
 	auto ent_victim = coll.entity_b;
@@ -247,7 +247,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 
 	// swap the entity info, and give entityb a shot at handling it
 
-	simple_collision::Pending_Collision coll_b = coll;
+	collision::Pending_Collision coll_b = coll;
 	std::swap( coll_b.entity_a, coll_b.entity_b );
 	std::swap( coll_b.body_a, coll_b.body_b );
 
@@ -406,7 +406,7 @@ void Simple_Collision_World::resolve_solid_collision( simple_collision::Pending_
 	}
 }
 
-void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending_Collision& coll )
+void Collision_World::resolve_sensor_collision( collision::Pending_Collision& coll )
 {
 	if( coll.body_b->is_sensor() )
 	{
@@ -419,7 +419,7 @@ void Simple_Collision_World::resolve_sensor_collision( simple_collision::Pending
 	}
 }
 
-void Simple_Collision_World::init_sensor_sets_for_new_frame() const
+void Collision_World::init_sensor_sets_for_new_frame() const
 {
 	for( auto& entity : parent_scene->entities )
 	{
@@ -428,11 +428,11 @@ void Simple_Collision_World::init_sensor_sets_for_new_frame() const
 	}
 }
 
-void Simple_Collision_World::process_sensor_sets() const
+void Collision_World::process_sensor_sets() const
 {
 	for( auto& entity : parent_scene->entities )
 	{
-		std::set<Collision_Body*> common_set = entity->sensors_last_frame;
+		std::set<Collision_Body_Component*> common_set = entity->sensors_last_frame;
 		common_set.insert( entity->sensors_this_frame.begin(), entity->sensors_this_frame.end() );
 
 		for( auto sensor : common_set )

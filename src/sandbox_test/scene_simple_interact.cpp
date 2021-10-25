@@ -24,7 +24,7 @@ Entity* Scene_Simple_Interact::spawn_entity()
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
 	{
-		auto ec = e->add_component<Collision_Body>();
+		auto ec = e->add_component<Collision_Body_Component>();
 
 		static i32 last_spawned_type = 0;
 		last_spawned_type++;
@@ -111,7 +111,7 @@ void Scene_Simple_Interact::pushed()
 			auto h = Random::getf_range( 16.f, 80.f );
 
 			{
-				auto ec = e->add_component<Collision_Body>();
+				auto ec = e->add_component<Collision_Body_Component>();
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( coll_flags.geo, 0 );
@@ -126,7 +126,7 @@ void Scene_Simple_Interact::pushed()
 			auto r = Random::getf_range( 8.f, 40.f );
 
 			{
-				auto ec = e->add_component<Collision_Body>();
+				auto ec = e->add_component<Collision_Body_Component>();
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( coll_flags.geo, 0 );
@@ -136,28 +136,28 @@ void Scene_Simple_Interact::pushed()
 
 		// 4 walls
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->flags.draw_as_shape = true;
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->flags.draw_as_shape = true;
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->flags.draw_as_shape = true;
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );
@@ -214,7 +214,7 @@ void Scene_Simple_Interact::reset_collision_trace_results()
 {
 	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
 
-	for( auto& iter : world_geo->get_components<Collision_Body>() )
+	for( auto& iter : world_geo->get_components<Collision_Body_Component>() )
 	{
 		iter->rs_opt.color = make_color( Color::dark_teal );
 	}
@@ -226,21 +226,21 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 	{
 		case e_input_id::key_1:
 		{
-			auto ec = player->get_component<Collision_Body>();
+			auto ec = player->get_component<Collision_Body_Component>();
 			ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
 		}
 		break;
 
 		case e_input_id::key_2:
 		{
-			auto ec = player->get_component<Collision_Body>();
+			auto ec = player->get_component<Collision_Body_Component>();
 			ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
 		}
 		break;
 
 		case e_input_id::key_3:
 		{
-			auto ec = player->get_component<Collision_Body>();
+			auto ec = player->get_component<Collision_Body_Component>();
 
 			auto s = Random::geti_range( 3, 8 );
 			auto r = radius * Random::getf_range( 0.5f, 3.0f );
@@ -272,7 +272,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 			auto start = player->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
-			simple_collision::Raycast_All callback;
+			collision::Raycast_All callback;
 			sc_world.ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )
@@ -299,7 +299,7 @@ bool Scene_Simple_Interact::on_input_pressed( const Input_Event* evt )
 			auto start = player->get_pos();
 			auto end = start + ( ray_dir * max_raycast_length );
 
-			simple_collision::Raycast_Closest callback;
+			collision::Raycast_Closest callback;
 			sc_world.ray_cast( &callback, player, start, end );
 
 			if( callback.hit_something )

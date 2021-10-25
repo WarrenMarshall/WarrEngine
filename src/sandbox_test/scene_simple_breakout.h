@@ -5,7 +5,7 @@ using namespace war;
 
 struct E_Breakout_Paddle final : Entity
 {
-	virtual bool on_collided( simple_collision::Pending_Collision& coll ) override;
+	virtual bool on_collided( collision::Pending_Collision& coll ) override;
 };
 
 // ----------------------------------------------------------------------------

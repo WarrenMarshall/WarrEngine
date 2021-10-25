@@ -365,30 +365,30 @@ void Entity::add_delta_scale( const f32 delta )
 
 // entities are starting to collide
 
-void Entity::on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* touched_by )
+void Entity::on_box2d_collision_begin( box2d::Pending_Collision& coll, Entity* touched_by )
 {
 }
 
 // entities are no longer colliding
 
-void Entity::on_box2d_collision_end( box2d_physics::Pending_Collision& coll, Entity* touched_by )
+void Entity::on_box2d_collision_end( box2d::Pending_Collision& coll, Entity* touched_by )
 {
 }
 
 // returns TRUE if the collision was handled
-bool Entity::on_collided( simple_collision::Pending_Collision& coll )
+bool Entity::on_collided( collision::Pending_Collision& coll )
 {
 	return false;
 }
 
 // returns TRUE if the touch was handled
-bool Entity::add_sensor_to_touch_list( Collision_Body* sensor )
+bool Entity::add_sensor_to_touch_list( Collision_Body_Component* sensor )
 {
 	sensors_this_frame.insert( sensor );
 	return false;
 }
 
-bool Entity::on_touching_begin( Collision_Body* sensor )
+bool Entity::on_touching_begin( Collision_Body_Component* sensor )
 {
 	if( sensor->flags.is_sticky )
 	{
@@ -403,12 +403,12 @@ bool Entity::on_touching_begin( Collision_Body* sensor )
 	return false;
 }
 
-bool Entity::on_touching( Collision_Body* sensor )
+bool Entity::on_touching( Collision_Body_Component* sensor )
 {
 	return false;
 }
 
-bool Entity::on_touching_end( Collision_Body* sensor )
+bool Entity::on_touching_end( Collision_Body_Component* sensor )
 {
 	if( sensor->flags.is_sticky )
 	{
@@ -535,7 +535,7 @@ Rect Entity::compute_ws_aabb() const
 	{
 		if( ec->is_a( e_component_type::collision_body ) )
 		{
-			bbox += ((Collision_Body*)ec.get())->ws.aabb;
+			bbox += ((Collision_Body_Component*)ec.get())->ws.aabb;
 		}
 	}
 

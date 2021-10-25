@@ -61,10 +61,10 @@ struct Engine final
 	struct
 	{
 		std::unique_ptr<b2World> world = nullptr;
-		box2d_physics::Box2D_Debug_Draw debug_draw;
-		box2d_physics::Contact_Listener listener;
-		std::vector<box2d_physics::Pending_Collision> begin_contact_queue;
-		std::vector<box2d_physics::Pending_Collision> end_contact_queue;
+		box2d::Box2D_Debug_Draw debug_draw;
+		box2d::Contact_Listener listener;
+		std::vector<box2d::Pending_Collision> begin_contact_queue;
+		std::vector<box2d::Pending_Collision> end_contact_queue;
 	} box2d;
 
 	Render_Stats stats;

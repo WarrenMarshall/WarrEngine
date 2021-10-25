@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war::box2d_physics
+namespace war::box2d
 {
 
 void Contact_Listener::BeginContact( b2Contact* contact )
@@ -10,7 +10,7 @@ void Contact_Listener::BeginContact( b2Contact* contact )
 	this->contact = contact;
 	manifold = contact->GetManifold();
 
-	box2d_physics::Pending_Collision pc;
+	box2d::Pending_Collision pc;
 
 	pc.entity_a = ( (Entity_Component*)( contact->GetFixtureA()->GetBody()->GetUserData().pointer ) )->parent_entity;
 	pc.entity_b = ( (Entity_Component*)( contact->GetFixtureB()->GetBody()->GetUserData().pointer ) )->parent_entity;
@@ -30,7 +30,7 @@ void Contact_Listener::BeginContact( b2Contact* contact )
 
 void Contact_Listener::EndContact( b2Contact* contact )
 {
-	box2d_physics::Pending_Collision pc;
+	box2d::Pending_Collision pc;
 
 	this->contact = contact;
 	manifold = contact->GetManifold();

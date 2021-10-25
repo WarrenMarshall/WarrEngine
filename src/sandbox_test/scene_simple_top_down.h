@@ -29,5 +29,5 @@ struct Scene_Simple_Top_Down final : Scene
 	virtual bool on_input_pressed( const Input_Event* evt ) override;
 	virtual bool on_input_motion( const Input_Event* evt ) override;
 
-	virtual bool on_entity_and_sensor_touching( Entity* entity, Collision_Body* sensor ) override;
+	virtual bool on_entity_and_sensor_touching( Entity* entity, Collision_Body_Component* sensor ) override;
 };

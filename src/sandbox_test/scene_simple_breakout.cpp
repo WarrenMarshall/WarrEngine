@@ -5,7 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-bool E_Breakout_Paddle::on_collided( simple_collision::Pending_Collision& coll )
+bool E_Breakout_Paddle::on_collided( collision::Pending_Collision& coll )
 {
 	if( coll.entity_b->tag == H( "BALL" ) )
 	{
@@ -40,7 +40,7 @@ void Scene_Simple_Breakout::spawn_ball()
 		ec->add_shape( e_primitive_shape::point );
 	}
 	{
-		auto ec = e->add_component<Collision_Body>();
+		auto ec = e->add_component<Collision_Body_Component>();
 		ec->set_as_circle( 12.f );
 		ec->set_collision_flags( coll_flags.ball, coll_flags.geo | coll_flags.ball | coll_flags.paddle );
 	}
@@ -68,7 +68,7 @@ void Scene_Simple_Breakout::pushed()
 			ec->add_shape( e_primitive_shape::point );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->set_as_centered_box( paddle_w, paddle_h );
 			ec->set_collision_flags( coll_flags.paddle, coll_flags.ball );
 		}
@@ -96,7 +96,7 @@ void Scene_Simple_Breakout::pushed()
 			auto h = Random::getf_range( 16.f, 80.f );
 
 			{
-				auto ec = e->add_component<Collision_Body>();
+				auto ec = e->add_component<Collision_Body_Component>();
 				ec->set_as_centered_box( w, h );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( coll_flags.geo, 0 );
@@ -110,7 +110,7 @@ void Scene_Simple_Breakout::pushed()
 			auto r = Random::getf_range( 8.f, 40.f );
 
 			{
-				auto ec = e->add_component<Collision_Body>();
+				auto ec = e->add_component<Collision_Body_Component>();
 				ec->set_as_circle( r );
 				ec->get_transform()->set_pos( { x, y } );
 				ec->set_collision_flags( coll_flags.geo, 0 );
@@ -119,25 +119,25 @@ void Scene_Simple_Breakout::pushed()
 
 		// 4 walls
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.geo, 0 );

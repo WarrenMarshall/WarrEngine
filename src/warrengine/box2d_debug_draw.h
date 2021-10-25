@@ -1,5 +1,5 @@
 
-namespace war::box2d_physics
+namespace war::box2d
 {
 
 struct Box2D_Debug_Draw final : public b2Draw

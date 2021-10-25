@@ -26,25 +26,25 @@ void Scene_Gameplay::pushed()
 		e->simple.type = e_physics_body_type::stationary;
 
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 16.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh + 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.world, 0 );
@@ -156,7 +156,7 @@ bool Scene_Gameplay::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
-bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, simple_collision::Pending_Collision& coll )
+bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll )
 {
 	if( entity_a->tag == H( "player_bullet" ) and entity_b->tag == H( "world_geo" ) )
 	{

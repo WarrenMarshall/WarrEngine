@@ -38,7 +38,7 @@ struct Scene
 
 	std::vector<std::unique_ptr<Entity>> entities;
 
-	Simple_Collision_World sc_world;
+	Collision_World sc_world;
 
 	// if set to anything other than hash_none, some control is in it's expanded
 	// state. this means that we don't want mouse input going to other controls
@@ -162,12 +162,12 @@ struct Scene
 	// called every time an entity in this scene registers a touch with a sensor
 	// in this scene. this allows the scene to be the main handler of triggers
 	// and related events.
-	virtual bool on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body* sensor );
-	virtual bool on_entity_and_sensor_touching( Entity* entity, Collision_Body* sensor );
-	virtual bool on_entity_and_sensor_touching_end( Entity* entity, Collision_Body* sensor );
+	virtual bool on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body_Component* sensor );
+	virtual bool on_entity_and_sensor_touching( Entity* entity, Collision_Body_Component* sensor );
+	virtual bool on_entity_and_sensor_touching_end( Entity* entity, Collision_Body_Component* sensor );
 
 	// called whenever 2 entities in this scene collide with each other
-	virtual bool on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, simple_collision::Pending_Collision& coll );
+	virtual bool on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll );
 
 private:
 	Transform camera_transform;

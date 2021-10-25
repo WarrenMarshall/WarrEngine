@@ -1,5 +1,5 @@
 
-namespace war::box2d_physics
+namespace war::box2d
 {
 
 // called by box2d when collisions begin or end between bodies

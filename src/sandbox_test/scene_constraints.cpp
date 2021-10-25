@@ -5,7 +5,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-bool E_Sensor_Player::on_touching_begin( Collision_Body* sensor )
+bool E_Sensor_Player::on_touching_begin( Collision_Body_Component* sensor )
 {
 	Entity::on_touching_begin( sensor );
 
@@ -17,7 +17,7 @@ bool E_Sensor_Player::on_touching_begin( Collision_Body* sensor )
 	return true;
 };
 
-bool E_Sensor_Player::on_touching_end( Collision_Body* sensor )
+bool E_Sensor_Player::on_touching_end( Collision_Body_Component* sensor )
 {
 	Entity::on_touching_end( sensor );
 
@@ -57,7 +57,7 @@ void Scene_Constraints::pushed()
 			ec->add_shape( e_primitive_shape::circle, 16.f );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->set_as_circle( 32.f );
 			ec->set_collision_flags( coll_flags.player, coll_flags.world | coll_flags.sensor );
 		}
@@ -71,25 +71,25 @@ void Scene_Constraints::pushed()
 
 		// 4 walls
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
 			ec->set_as_box( viewport_w, 16.f );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.world, 0 );
 		}
 		{
-			auto ec = e->add_component<Collision_Body>();
+			auto ec = e->add_component<Collision_Body_Component>();
 			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
 			ec->set_as_box( 16.f, viewport_h );
 			ec->set_collision_flags( coll_flags.world, 0 );

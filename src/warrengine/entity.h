@@ -69,8 +69,8 @@ struct Entity
 	// moves, the entities in this list move as well.
 	std::set<Entity*> sticky_set;
 
-	std::set<Collision_Body*> sensors_this_frame;
-	std::set<Collision_Body*> sensors_last_frame;
+	std::set<Collision_Body_Component*> sensors_this_frame;
+	std::set<Collision_Body_Component*> sensors_last_frame;
 
 	Entity_Simple_Collision simple;
 
@@ -206,16 +206,16 @@ struct Entity
 		return ecs;
 	}
 
-	virtual void on_box2d_collision_begin( box2d_physics::Pending_Collision& coll, Entity* touched_by );
-	virtual void on_box2d_collision_end( box2d_physics::Pending_Collision& coll, Entity* touched_by );
+	virtual void on_box2d_collision_begin( box2d::Pending_Collision& coll, Entity* touched_by );
+	virtual void on_box2d_collision_end( box2d::Pending_Collision& coll, Entity* touched_by );
 
-	virtual bool on_collided( simple_collision::Pending_Collision& coll );
+	virtual bool on_collided( collision::Pending_Collision& coll );
 
-	bool add_sensor_to_touch_list( Collision_Body* sensor );
+	bool add_sensor_to_touch_list( Collision_Body_Component* sensor );
 
-	virtual bool on_touching_begin( Collision_Body* sensor );
-	virtual bool on_touching( Collision_Body* sensor );
-	virtual bool on_touching_end( Collision_Body* sensor );
+	virtual bool on_touching_begin( Collision_Body_Component* sensor );
+	virtual bool on_touching( Collision_Body_Component* sensor );
+	virtual bool on_touching_end( Collision_Body_Component* sensor );
 
 	void reflect_across( Vec2 normal );
 

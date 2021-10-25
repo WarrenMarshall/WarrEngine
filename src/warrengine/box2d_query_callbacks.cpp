@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war::box2d_physics
+namespace war::box2d
 {
 
 // ----------------------------------------------------------------------------

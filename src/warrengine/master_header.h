@@ -67,7 +67,7 @@ namespace war
 	using f_tile_map_spawn_entity = std::function<void( Scene* Scene, const Tile_Map_Asset* tile_map, const Tile_Map_Asset::Chunk* chunk, const Tile_Map_Asset::Tile* tile )>;
 	#define f_decl_tile_map_spawn_entity( func_name ) void func_name ( Scene* scene, const Tile_Map_Asset* tile_map, const Tile_Map_Asset::Chunk* chunk, const Tile_Map_Asset::Tile* tile )
 
-	using ec_simple_body_pair = std::pair<Collision_Body*, Collision_Body*>;
+	using ec_simple_body_pair = std::pair<Collision_Body_Component*, Collision_Body_Component*>;
 }
 
 #include "cursor_asset.h"
@@ -84,9 +84,9 @@ namespace war
 #include "ui_mgr.h"
 #include "render_stats.h"
 
-#include "simple_collision_query_callbacks.h"
-#include "simple_collision_pending_collision.h"
-#include "simple_collision_world.h"
+#include "collision_query_callbacks.h"
+#include "collision_pending_collision.h"
+#include "collision_world.h"
 
 #include "asset_cache_mgr.h"
 #include "window.h"
@@ -95,11 +95,11 @@ namespace war
 #include "render_state.h"
 #include "render.h"
 
-#include "box2d_physics_contact_listener.h"
-#include "box2d_physics_query_callbacks.h"
-#include "box2d_physics_query.h"
-#include "box2d_physics_debug_draw.h"
-#include "box2d_physics_pending_collision.h"
+#include "box2d_contact_listener.h"
+#include "box2d_query_callbacks.h"
+#include "box2d_query.h"
+#include "box2d_debug_draw.h"
+#include "box2d_pending_collision.h"
 
 #include "engine.h"
 

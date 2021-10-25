@@ -43,16 +43,16 @@
     <ClCompile Include="clock.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="box2d_physics_contact_listener.cpp">
+    <ClCompile Include="box2d_contact_listener.cpp">
       <Filter>src\box2d_physics_</Filter>
     </ClCompile>
-    <ClCompile Include="box2d_physics_debug_draw.cpp">
+    <ClCompile Include="box2d_debug_draw.cpp">
       <Filter>src\box2d_physics_</Filter>
     </ClCompile>
-    <ClCompile Include="box2d_physics_query.cpp">
+    <ClCompile Include="box2d_query.cpp">
       <Filter>src\box2d_physics_</Filter>
     </ClCompile>
-    <ClCompile Include="box2d_physics_query_callbacks.cpp">
+    <ClCompile Include="box2d_query_callbacks.cpp">
       <Filter>src\box2d_physics_</Filter>
     </ClCompile>
     <ClCompile Include="slice_def_asset.cpp">
@@ -208,7 +208,7 @@
     <ClCompile Include="cmd_line.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="box2d_physics_pending_collision.cpp">
+    <ClCompile Include="box2d_pending_collision.cpp">
       <Filter>src\box2d_physics_</Filter>
     </ClCompile>
     <ClCompile Include="tile_set_asset.cpp">
@@ -238,13 +238,13 @@
     <ClCompile Include="scene_post_process.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="simple_collision_pending_collision.cpp">
+    <ClCompile Include="collision_pending_collision.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
-    <ClCompile Include="simple_collision_query_callbacks.cpp">
+    <ClCompile Include="collision_query_callbacks.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
-    <ClCompile Include="simple_collision_world.cpp">
+    <ClCompile Include="collision_world.cpp">
       <Filter>src\collision</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
@@ -324,16 +324,16 @@
     <ClInclude Include="clock.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="box2d_physics_contact_listener.h">
+    <ClInclude Include="box2d_contact_listener.h">
       <Filter>include\box2d_physics</Filter>
     </ClInclude>
-    <ClInclude Include="box2d_physics_debug_draw.h">
+    <ClInclude Include="box2d_debug_draw.h">
       <Filter>include\box2d_physics</Filter>
     </ClInclude>
-    <ClInclude Include="box2d_physics_query.h">
+    <ClInclude Include="box2d_query.h">
       <Filter>include\box2d_physics</Filter>
     </ClInclude>
-    <ClInclude Include="box2d_physics_query_callbacks.h">
+    <ClInclude Include="box2d_query_callbacks.h">
       <Filter>include\box2d_physics</Filter>
     </ClInclude>
     <ClInclude Include="slice_def_asset.h">
@@ -495,7 +495,7 @@
     <ClInclude Include="cmd_line.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="box2d_physics_pending_collision.h">
+    <ClInclude Include="box2d_pending_collision.h">
       <Filter>include\box2d_physics</Filter>
     </ClInclude>
     <ClInclude Include="tile_set_asset.h">
@@ -525,13 +525,13 @@
     <ClInclude Include="scene_post_process.h">
       <Filter>include\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="simple_collision_pending_collision.h">
+    <ClInclude Include="collision_pending_collision.h">
       <Filter>include\collision</Filter>
     </ClInclude>
-    <ClInclude Include="simple_collision_query_callbacks.h">
+    <ClInclude Include="collision_query_callbacks.h">
       <Filter>include\collision</Filter>
     </ClInclude>
-    <ClInclude Include="simple_collision_world.h">
+    <ClInclude Include="collision_world.h">
       <Filter>include\collision</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">

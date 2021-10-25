@@ -2,7 +2,7 @@
 namespace war
 {
 
-struct Simple_Collision_World final
+struct Collision_World final
 {
 	Scene* parent_scene = nullptr;
 
@@ -43,18 +43,18 @@ struct Simple_Collision_World final
 
 	} settings;
 
-	std::vector<Collision_Body*> active_bodies;
+	std::vector<Collision_Body_Component*> active_bodies;
 	bool need_another_iteration = false;
 
-	Simple_Collision_World() = default;
-	Simple_Collision_World( Scene* parent_scene );
+	Collision_World() = default;
+	Collision_World( Scene* parent_scene );
 
-	void ray_cast( simple_collision::Raycast_Callback* callback, const Entity* entity, const Vec2& start, const Vec2& end ) const;
+	void ray_cast( collision::Raycast_Callback* callback, const Entity* entity, const Vec2& start, const Vec2& end ) const;
 
 	void handle_collisions();
-	void push_apart( simple_collision::Pending_Collision& coll );
-	void resolve_solid_collision( simple_collision::Pending_Collision& coll );
-	void resolve_sensor_collision( simple_collision::Pending_Collision& coll );
+	void push_apart( collision::Pending_Collision& coll );
+	void resolve_solid_collision( collision::Pending_Collision& coll );
+	void resolve_sensor_collision( collision::Pending_Collision& coll );
 	void init_sensor_sets_for_new_frame() const;
 	void process_sensor_sets() const;
 };

@@ -1,5 +1,5 @@
 
-namespace war::box2d_physics
+namespace war::box2d
 {
 
 struct Query final

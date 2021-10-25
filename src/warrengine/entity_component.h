@@ -76,8 +76,12 @@ struct Sprite_Component final : Entity_Component
 {
 	Texture_Asset* texture = nullptr;
 	f32 anim_offset = 0.f;
-	bool flip_x = false;
-	bool flip_y = false;
+
+	struct
+	{
+		bool flip_x : 1 = false;
+		bool flip_y : 1 = false;
+	} flags;
 
 	Sprite_Component() = delete;
 	Sprite_Component( Entity* parent_entity );
@@ -234,11 +238,11 @@ struct Mesh_Component final : Entity_Component
 
 // ----------------------------------------------------------------------------
 
-struct Collision_Body : Entity_Component
+struct Collision_Body_Component : Entity_Component
 {
-	Collision_Body() = delete;
-	Collision_Body( Entity* parent_entity );
-	virtual ~Collision_Body() = default;
+	Collision_Body_Component() = delete;
+	Collision_Body_Component( Entity* parent_entity );
+	virtual ~Collision_Body_Component() = default;
 
 	e_sc_prim_type prim_type = e_sc_prim_type::circle;
 
@@ -315,8 +319,8 @@ struct Collision_Body : Entity_Component
 	void set_as_circle( f32 r );
 	void set_as_polygon( std::vector<Vec2> verts );
 
-	bool does_intersect_broadly( Collision_Body* scc );
-	virtual std::optional<simple_collision::Pending_Collision> intersects_with_manifold( Collision_Body* other );
+	bool does_intersect_broadly( Collision_Body_Component* scc );
+	virtual std::optional<collision::Pending_Collision> intersects_with_manifold( Collision_Body_Component* other );
 
 	c2Circle as_simple_circle();
 	c2AABB as_simple_aabb();
@@ -336,7 +340,7 @@ struct Tile_Map_Component final : Entity_Component
 	virtual void draw() override;
 
 	void init( std::string_view tile_set_name, std::string_view tile_map_name );
-	Collision_Body* add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type );
+	Collision_Body_Component* add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };
 

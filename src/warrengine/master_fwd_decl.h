@@ -1,5 +1,5 @@
 
-namespace war::simple_collision
+namespace war::collision
 {
 struct Raycast_Callback;
 }
@@ -35,8 +35,8 @@ struct Scene;
 struct Scene_Mgr;
 struct Scene_Transient;
 struct Shader;
-struct Collision_Body;
-struct Simple_Collision_World;
+struct Collision_Body_Component;
+struct Collision_World;
 struct Sound_Asset;
 struct Texture_Asset;
 struct Timeline_Of_Values;

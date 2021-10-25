@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war::box2d_physics
+namespace war::box2d
 {
 
 bool Query::trace_quick( const Vec2& start, const Vec2& normal, f32 dist, i32 collision_mask )

@@ -2,7 +2,7 @@
 #include "master_pch.h"
 #include "master_header.h"
 
-namespace war::simple_collision
+namespace war::collision
 {
 
 // #comment - this comment needs to be updated once all the simple ray casting is working
@@ -24,7 +24,7 @@ namespace war::simple_collision
 // returning -1 from any ReportFixture function means you want to ignore that fixture
 // ----------------------------------------------------------------------------
 
-f32 Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast )
+f32 Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray, Collision_Body_Component* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
@@ -51,7 +51,7 @@ f32 Raycast_Closest::report_component( const Entity* entity, const c2Ray& ray, C
 
 // ----------------------------------------------------------------------------
 
-f32 Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast )
+f32 Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, Collision_Body_Component* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 
@@ -61,7 +61,7 @@ f32 Raycast_Quick::report_component( const Entity* entity, const c2Ray& ray, Col
 
 // ----------------------------------------------------------------------------
 
-f32 Raycast_All::report_component( const Entity* entity, const c2Ray& ray, Collision_Body* scc, const c2Raycast& raycast )
+f32 Raycast_All::report_component( const Entity* entity, const c2Ray& ray, Collision_Body_Component* scc, const c2Raycast& raycast )
 {
 	hit_something = true;
 

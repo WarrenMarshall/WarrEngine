@@ -5,8 +5,8 @@ struct E_Sensor_Player final : Entity
 {
 	i32 touch_count = 0;
 
-	virtual bool on_touching_begin( Collision_Body* sensor ) override;
-	virtual bool on_touching_end( Collision_Body* sensor ) override;
+	virtual bool on_touching_begin( Collision_Body_Component* sensor ) override;
+	virtual bool on_touching_end( Collision_Body_Component* sensor ) override;
 };
 
 // ----------------------------------------------------------------------------
