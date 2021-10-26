@@ -433,7 +433,7 @@ bool Entity::can_be_deleted()
 		return false;
 	}
 
-	if( life_cycle.death_delay )
+	if( life_cycle.death_delay > -1 )
 	{
 		return false;
 	}

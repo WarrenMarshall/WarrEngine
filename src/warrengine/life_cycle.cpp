@@ -5,13 +5,13 @@
 namespace war
 {
 
-void Life_Cycle::set( e_life_cycle lc )
+void Life_Cycle::set( e_life_cycle life_cycle )
 {
-	_life_cycle = lc;
+	_life_cycle = life_cycle;
 
 	// adds a delay of a few frames to make sure that anyone
 	// who needs to clean up re: this object, can do so.
-	if( is_dying() )
+	if( is_dying() and !death_delay )
 	{
 		death_delay = 20;
 	}
@@ -39,8 +39,10 @@ bool Life_Cycle::is_dead() const
 
 void Life_Cycle::pre_update()
 {
-	// tick the death delay down, stopping at zero
-	death_delay = glm::max( death_delay - 1, 0 );
+	if( death_delay > -1 )
+	{
+		death_delay--;
+	}
 }
 
 }

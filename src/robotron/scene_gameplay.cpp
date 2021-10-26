@@ -91,6 +91,8 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 			auto e = add_entity<Entity_Transient>();
 			e->set_pos( Coord_System::window_to_world_pos( evt->mouse_pos ) );
 			{
+				//auto ec = e->add_component<Sprite_Component>();
+				//ec->init( "engine_white" );
 				auto ec = e->add_component<Emitter_Component>();
 				ec->init( "em_death_spark" );
 			}

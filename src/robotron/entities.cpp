@@ -8,8 +8,8 @@ E_Player::E_Player()
 {
 	tag = H( "player" );
 
-	//fire_cooldown = Timer( 100 );
-	fire_cooldown = Timer( 1000 );
+	fire_cooldown = Timer( 100 );
+	//fire_cooldown = Timer( 1000 );
 
 	{
 		auto ec = add_component<Collision_Body_Component>();

@@ -21,7 +21,7 @@ struct Life_Cycle
 	// box2d a chance to stop talking about certain entities
 	// for example.
 
-	i32 death_delay = 0;
+	i32 death_delay{0};
 
 private:
 	e_life_cycle _life_cycle = e_life_cycle::alive;

@@ -1,4 +1,5 @@
 
+
 #include "master_pch.h"
 #include "master_header.h"
 
@@ -117,6 +118,7 @@ void Particle_Emitter::spawn_particle()
 
 	*p = {};
 	p->is_alive = true;
+	pool.num_alive++;
 
 	// particle spawn locations are determined in stages. particles are
 	// different from most things in that they are spawned and updated in world
