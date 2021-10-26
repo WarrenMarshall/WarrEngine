@@ -19,9 +19,9 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 	auto ray_length = delta.get_size();
 
 	c2Ray ray = {};
-	ray.p = { to_simple( start.x ), to_simple( start.y ) };
+	ray.p = { to_c2( start.x ), to_c2( start.y ) };
 	ray.d = { ray_normal.x, ray_normal.y };
-	ray.t = to_simple( ray_length );
+	ray.t = to_c2( ray_length );
 
 	for( auto scc : active_bodies )
 	{
@@ -49,9 +49,9 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 		{
 			case e_sc_prim_type::circle:
 			{
-				if( c2RaytoCircle( ray, scc->as_simple_circle(), &raycast ) )
+				if( c2RaytoCircle( ray, scc->as_c2_circle(), &raycast ) )
 				{
-					raycast.t = from_simple( raycast.t );
+					raycast.t = from_c2( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
 						return;
@@ -62,9 +62,9 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 
 			case e_sc_prim_type::aabb:
 			{
-				if( c2RaytoAABB( ray, scc->as_simple_aabb(), &raycast ) )
+				if( c2RaytoAABB( ray, scc->as_c2_aabb(), &raycast ) )
 				{
-					raycast.t = from_simple( raycast.t );
+					raycast.t = from_c2( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
 						return;
@@ -75,10 +75,10 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 
 			case e_sc_prim_type::polygon:
 			{
-				auto poly = scc->as_simple_poly();
+				auto poly = scc->as_c2_poly();
 				if( c2RaytoPoly( ray, &poly, nullptr, &raycast ) )
 				{
-					raycast.t = from_simple( raycast.t );
+					raycast.t = from_c2( raycast.t );
 					if( !callback->report_component( entity, ray, scc, raycast ) )
 					{
 						return;

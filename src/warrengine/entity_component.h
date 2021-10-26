@@ -322,9 +322,9 @@ struct Collision_Body_Component : Entity_Component
 	bool does_intersect_broadly( Collision_Body_Component* scc );
 	virtual std::optional<collision::Pending_Collision> intersects_with_manifold( Collision_Body_Component* other );
 
-	c2Circle as_simple_circle();
-	c2AABB as_simple_aabb();
-	c2Poly as_simple_poly();
+	c2Circle as_c2_circle();
+	c2AABB as_c2_aabb();
+	c2Poly as_c2_poly();
 };
 
 // ----------------------------------------------------------------------------

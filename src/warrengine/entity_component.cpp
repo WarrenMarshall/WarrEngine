@@ -984,14 +984,8 @@ void Collision_Body_Component::set_as_polygon( std::vector<Vec2> vs )
 
 bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component* scc )
 {
-	// simple_collision_components can't collide with themselves
+	// collision_body_components can't collide with themselves
 	assert( this != scc );
-/*
-	if( this == scc )
-	{
-		return false;
-	}
-*/
 
 	// entities can't collide with themselves
 	if( this->parent_entity == scc->parent_entity )
@@ -1017,8 +1011,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// circle to circle
 
-					c2Circle circle_a = as_simple_circle();
-					c2Circle circle_b = scc->as_simple_circle();
+					c2Circle circle_a = as_c2_circle();
+					c2Circle circle_b = scc->as_c2_circle();
 
 					return c2CircletoCircle( circle_a, circle_b );
 				}
@@ -1028,8 +1022,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// circle to aabb
 
-					c2Circle circle_a = as_simple_circle();
-					c2AABB aabb_ws_b = scc->as_simple_aabb();
+					c2Circle circle_a = as_c2_circle();
+					c2AABB aabb_ws_b = scc->as_c2_aabb();
 
 					return c2CircletoAABB( circle_a, aabb_ws_b );
 				}
@@ -1039,8 +1033,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// circle to polygon
 
-					c2Circle circle_a = as_simple_circle();
-					c2Poly poly_b = scc->as_simple_poly();
+					c2Circle circle_a = as_c2_circle();
+					c2Poly poly_b = scc->as_c2_poly();
 
 					return c2CircletoPoly( circle_a, &poly_b, nullptr );
 				}
@@ -1057,8 +1051,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// aabb to circle
 
-					c2Circle circle_b = scc->as_simple_circle();
-					c2AABB aabb_ws_a = as_simple_aabb();
+					c2Circle circle_b = scc->as_c2_circle();
+					c2AABB aabb_ws_a = as_c2_aabb();
 
 					return c2CircletoAABB( circle_b, aabb_ws_a );
 				}
@@ -1068,8 +1062,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// aabb to aabb
 
-					c2AABB aabb_ws_a = as_simple_aabb();
-					c2AABB aabb_ws_b = scc->as_simple_aabb();
+					c2AABB aabb_ws_a = as_c2_aabb();
+					c2AABB aabb_ws_b = scc->as_c2_aabb();
 
 					return c2AABBtoAABB( aabb_ws_a, aabb_ws_b );
 				}
@@ -1079,8 +1073,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// aabb to polygon
 
-					c2AABB aabb_ws_a = as_simple_aabb();
-					c2Poly poly_b = scc->as_simple_poly();
+					c2AABB aabb_ws_a = as_c2_aabb();
+					c2Poly poly_b = scc->as_c2_poly();
 
 					return c2AABBtoPoly( aabb_ws_a, &poly_b, nullptr );
 				}
@@ -1097,8 +1091,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// polygon to circle
 
-					c2Circle circle_b = scc->as_simple_circle();
-					c2Poly poly_a = as_simple_poly();
+					c2Circle circle_b = scc->as_c2_circle();
+					c2Poly poly_a = as_c2_poly();
 
 					return c2CircletoPoly( circle_b, &poly_a, nullptr );
 				}
@@ -1108,8 +1102,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// polygon to aabb
 
-					c2AABB aabb_ws_b = scc->as_simple_aabb();
-					c2Poly poly_a = as_simple_poly();
+					c2AABB aabb_ws_b = scc->as_c2_aabb();
+					c2Poly poly_a = as_c2_poly();
 
 					return c2AABBtoPoly( aabb_ws_b, &poly_a, nullptr );
 				}
@@ -1119,8 +1113,8 @@ bool Collision_Body_Component::does_intersect_broadly( Collision_Body_Component*
 				{
 					// polygon to polygon
 
-					c2Poly poly_a = as_simple_poly();
-					c2Poly poly_b = scc->as_simple_poly();
+					c2Poly poly_a = as_c2_poly();
+					c2Poly poly_b = scc->as_c2_poly();
 
 					return c2PolytoPoly( &poly_a, nullptr, &poly_b, nullptr );
 				}
@@ -1159,8 +1153,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// circle to circle
 
-					c2Circle circle_a = as_simple_circle();
-					c2Circle circle_b = other->as_simple_circle();
+					c2Circle circle_a = as_c2_circle();
+					c2Circle circle_b = other->as_c2_circle();
 
 					c2CircletoCircleManifold( circle_a, circle_b, &collision.manifold );
 				}
@@ -1170,8 +1164,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// circle to aabb
 
-					c2Circle circle_a = as_simple_circle();
-					c2AABB aabb_ws_b = other->as_simple_aabb();
+					c2Circle circle_a = as_c2_circle();
+					c2AABB aabb_ws_b = other->as_c2_aabb();
 
 					c2CircletoAABBManifold( circle_a, aabb_ws_b, &collision.manifold );
 				}
@@ -1181,8 +1175,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// circle to polygon
 
-					c2Circle circle_a = as_simple_circle();
-					c2Poly poly_b = other->as_simple_poly();
+					c2Circle circle_a = as_c2_circle();
+					c2Poly poly_b = other->as_c2_poly();
 
 					c2CircletoPolyManifold( circle_a, &poly_b, nullptr, &collision.manifold );
 				}
@@ -1199,8 +1193,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// aabb to circle
 
-					c2Circle circle_b = other->as_simple_circle();
-					c2AABB aabb_ws_a = as_simple_aabb();
+					c2Circle circle_b = other->as_c2_circle();
+					c2AABB aabb_ws_a = as_c2_aabb();
 
 					c2CircletoAABBManifold( circle_b, aabb_ws_a, &collision.manifold );
 
@@ -1213,8 +1207,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// aabb to aabb
 
-					c2AABB aabb_ws_a = as_simple_aabb();
-					c2AABB aabb_ws_b = other->as_simple_aabb();
+					c2AABB aabb_ws_a = as_c2_aabb();
+					c2AABB aabb_ws_b = other->as_c2_aabb();
 
 					c2AABBtoAABBManifold( aabb_ws_a, aabb_ws_b, &collision.manifold );
 				}
@@ -1224,8 +1218,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// aabb to polygon
 
-					c2AABB aabb_ws_a = as_simple_aabb();
-					c2Poly poly_b = other->as_simple_poly();
+					c2AABB aabb_ws_a = as_c2_aabb();
+					c2Poly poly_b = other->as_c2_poly();
 
 					c2AABBtoPolyManifold( aabb_ws_a, &poly_b, nullptr, &collision.manifold );
 				}
@@ -1242,8 +1236,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// polygon to circle
 
-					c2Circle circle_b = other->as_simple_circle();
-					c2Poly poly_a = as_simple_poly();
+					c2Circle circle_b = other->as_c2_circle();
+					c2Poly poly_a = as_c2_poly();
 
 					c2CircletoPolyManifold( circle_b, &poly_a, nullptr, &collision.manifold );
 
@@ -1256,8 +1250,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// polygon to aabb
 
-					c2AABB aabb_ws_b = other->as_simple_aabb();
-					c2Poly poly_a = as_simple_poly();
+					c2AABB aabb_ws_b = other->as_c2_aabb();
+					c2Poly poly_a = as_c2_poly();
 
 					c2AABBtoPolyManifold( aabb_ws_b, &poly_a, nullptr, &collision.manifold );
 
@@ -1270,8 +1264,8 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 				{
 					// polygon to polygon
 
-					c2Poly poly_a = as_simple_poly();
-					c2Poly poly_b = other->as_simple_poly();
+					c2Poly poly_a = as_c2_poly();
+					c2Poly poly_b = other->as_c2_poly();
 
 					c2PolytoPolyManifold( &poly_a, nullptr, &poly_b, nullptr, &collision.manifold );
 				}
@@ -1307,34 +1301,34 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 			collision.manifold.contact_points[ 0 ].y
 		).from_simple();
 	collision.normal = Vec2( collision.manifold.n.x, collision.manifold.n.y );
-	collision.depth = from_simple( collision.manifold.depths[ 0 ] );
+	collision.depth = from_c2( collision.manifold.depths[ 0 ] );
 
 	return collision;
 }
 
-c2Circle Collision_Body_Component::as_simple_circle()
+c2Circle Collision_Body_Component::as_c2_circle()
 {
 	c2Circle circle = {};
 
-	circle.p = { to_simple( ws.pos.x ), to_simple( ws.pos.y ) };
-	circle.r = to_simple( ws.radius );
+	circle.p = { to_c2( ws.pos.x ), to_c2( ws.pos.y ) };
+	circle.r = to_c2( ws.radius );
 
 	return circle;
 }
 
-c2AABB Collision_Body_Component::as_simple_aabb()
+c2AABB Collision_Body_Component::as_c2_aabb()
 {
 	return ws.aabb.to_c2AABB();
 }
 
-c2Poly Collision_Body_Component::as_simple_poly()
+c2Poly Collision_Body_Component::as_c2_poly()
 {
 	c2Poly poly = {};
 	poly.count = (i32)ws.verts.size();
 
 	for( auto x = 0 ; x < ws.verts.size() ; ++x )
 	{
-		poly.verts[ x ] = { to_simple( ws.verts[ x ].x ), to_simple( ws.verts[ x ].y ) };
+		poly.verts[ x ] = { to_c2( ws.verts[ x ].x ), to_c2( ws.verts[ x ].y ) };
 	}
 
 	c2MakePoly( &poly );

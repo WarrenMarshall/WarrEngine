@@ -11,8 +11,8 @@
 
 {
 	"type" "src_texture"
-	"tag" "simple_ui"
-	"filename" "ui/simple_ui.png"
+	"tag" "default_ui"
+	"filename" "ui/default_ui.png"
 	"texture_tags" "\
 		ui_cursor, 0, 24, 14, 16,\
 		ui_panel, 0, 0, 24, 24,\
@@ -52,7 +52,7 @@
 # panel
 {
 	"type" "slice_def"
-	"tag" "simple_ui_panel"
+	"tag" "default_ui_panel"
 	"texture_tag" "ui_panel"
 	"x_slices" "8, 8"
 	"y_slices" "7, 7"
@@ -61,7 +61,7 @@
 # push button
 {
 	"type" "slice_def"
-	"tag" "simple_ui_button"
+	"tag" "default_ui_button"
 	"texture_tag" "ui_button"
 	"x_slices" "5, 5"
 	"y_slices" "5, 5"
@@ -70,7 +70,7 @@
 # divider
 {
 	"type" "slice_def"
-	"tag" "simple_ui_divider"
+	"tag" "default_ui_divider"
 	"texture_tag" "ui_divider"
 	"x_slices" "1, 1"
 	"y_slices" "1, 1"
@@ -79,7 +79,7 @@
 # slider
 {
 	"type" "slice_def"
-	"tag" "simple_ui_slider_body"
+	"tag" "default_ui_slider_body"
 	"texture_tag" "ui_slider_body"
 	"x_slices" "2, 2"
 	"y_slices" "2, 2"
@@ -88,7 +88,7 @@
 # edit box
 {
 	"type" "slice_def"
-	"tag" "simple_ui_text"
+	"tag" "default_ui_text"
 	"texture_tag" "ui_text"
 	"x_slices" "4, 4"
 	"y_slices" "5, 5"
@@ -97,7 +97,7 @@
 # list
 {
 	"type" "slice_def"
-	"tag" "simple_ui_list"
+	"tag" "default_ui_list"
 	"texture_tag" "ui_list"
 	"x_slices" "4, 4"
 	"y_slices" "4, 4"
@@ -110,7 +110,7 @@
 # from behind the button when it draws.
 {
 	"type" "slice_def"
-	"tag" "simple_ui_dropdown_list"
+	"tag" "default_ui_dropdown_list"
 	"texture_tag" "ui_dropdown_list"
 	"x_slices" "4, 4"
 	"y_slices" "1, 4"
@@ -119,7 +119,7 @@
 # tab
 {
 	"type" "slice_def"
-	"tag" "simple_ui_tab"
+	"tag" "default_ui_tab"
 	"texture_tag" "ui_tab"
 	"x_slices" "4, 6"
 	"y_slices" "4, 1"

@@ -96,7 +96,7 @@ UI_Mgr* UI_Mgr::do_control( e_ui_control_type control_type, hash tag )
 	switch( control_type )
 	{
 		case e_ui_control_type::panel:
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_panel" );
 			break;
 
 		case e_ui_control_type::caption:
@@ -106,7 +106,7 @@ UI_Mgr* UI_Mgr::do_control( e_ui_control_type control_type, hash tag )
 
 		case e_ui_control_type::button:
 			current_control->is_active = true;
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_button" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_button" );
 			current_control->text_align = e_align::centered;
 			break;
 
@@ -116,7 +116,7 @@ UI_Mgr* UI_Mgr::do_control( e_ui_control_type control_type, hash tag )
 			break;
 
 		case e_ui_control_type::divider:
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_divider" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_divider" );
 			break;
 
 		case e_ui_control_type::label:
@@ -126,13 +126,13 @@ UI_Mgr* UI_Mgr::do_control( e_ui_control_type control_type, hash tag )
 		case e_ui_control_type::slider:
 			current_control->is_active = true;
 			current_control->text_align = e_align::left | e_align::vcenter;
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_slider_body" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_slider_body" );
 			current_control->uses_click_offset = false;
 			break;
 
 		case e_ui_control_type::text:
 			current_control->is_active = true;
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_text" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_text" );
 			current_control->text_align = e_align::left | e_align::vcenter;
 			current_control->uses_click_offset = false;
 			current_control->can_retain_focus = true;
@@ -145,12 +145,12 @@ UI_Mgr* UI_Mgr::do_control( e_ui_control_type control_type, hash tag )
 
 		case e_ui_control_type::list:
 			current_control->text_align = e_align::left | e_align::top;
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_list" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_list" );
 			break;
 
 		case e_ui_control_type::dropdown:
 			current_control->is_active = true;
-			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_button" );
+			current_control->slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_button" );
 			current_control->text_align = e_align::left | e_align::vcenter;
 			current_control->uses_click_offset = true;
 			break;

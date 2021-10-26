@@ -73,7 +73,7 @@ void Scene_Esc_Menu::draw_ui()
 
 	i32 num_buttons = 3 + ( g_base_game->flags.has_main_menu and !g_engine->scene_mgr.get_under()->flags.is_main_menu );
 
-	auto slice_def = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_panel" );
+	auto slice_def = g_engine->find_asset<Slice_Def_Asset>( "default_ui_panel" );
 
 	f32 panel_w =
 		slice_def->get_left_slice_sz()

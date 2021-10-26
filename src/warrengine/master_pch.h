@@ -218,20 +218,20 @@ constexpr auto b2d_pos_iterations = 3;
 }
 
 // ----------------------------------------------------------------------------
-// simple collision constants and helpers
+// collision constants and helpers
 // ----------------------------------------------------------------------------
 
 constexpr auto collision_gravity_default = 9.81f;
-constexpr auto simple_world_scale_factor = 100.f;
+constexpr auto c2_world_scale_factor = 100.f;
 
-[[nodiscard]] constexpr f32 to_simple( f32 v )
+[[nodiscard]] constexpr f32 to_c2( f32 v )
 {
-	return ( v / simple_world_scale_factor );
+	return ( v / c2_world_scale_factor );
 }
 
-[[nodiscard]] constexpr f32 from_simple( f32 v )
+[[nodiscard]] constexpr f32 from_c2( f32 v )
 {
-	return ( v * simple_world_scale_factor );
+	return ( v * c2_world_scale_factor );
 }
 
 // ----------------------------------------------------------------------------

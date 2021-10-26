@@ -273,10 +273,10 @@ c2AABB Rect::to_c2AABB() const
 {
 	c2AABB aabb = {};
 
-	aabb.min.x = to_simple( x );
-	aabb.min.y = to_simple( y );
-	aabb.max.x = to_simple( x + w );
-	aabb.max.y = to_simple( y + h );
+	aabb.min.x = to_c2( x );
+	aabb.min.y = to_c2( y );
+	aabb.max.x = to_c2( x + w );
+	aabb.max.y = to_c2( y + h );
 
 	return aabb;
 }

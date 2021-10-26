@@ -364,7 +364,7 @@ void UI_Control::draw_dropdown_control( const Rect& rc_ui, const Rect& rc_client
 		// and massage it so it sits below the button and has enough height to
 		// hold all the items.
 
-		auto slice_def_dropdown_list = g_engine->find_asset<Slice_Def_Asset>( "simple_ui_dropdown_list" );
+		auto slice_def_dropdown_list = g_engine->find_asset<Slice_Def_Asset>( "default_ui_dropdown_list" );
 
 		Rect item_list_rc = rc_ui;
 		item_list_rc.x += interior_margin.x * 2.f;

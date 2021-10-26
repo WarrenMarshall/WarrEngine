@@ -61,7 +61,7 @@ c2v Vec2::as_c2v() const
 
 c2v Vec2::to_c2v() const
 {
-	c2v v = { war::to_simple( x ), war::to_simple( y ) };
+	c2v v = { war::to_c2( x ), war::to_c2( y ) };
 	return v;
 }
 
@@ -77,12 +77,12 @@ Vec2 Vec2::from_box2d() const
 
 Vec2 Vec2::to_simple() const
 {
-	return Vec2( war::to_simple( x ), war::to_simple( y ) );
+	return Vec2( war::to_c2( x ), war::to_c2( y ) );
 }
 
 Vec2 Vec2::from_simple() const
 {
-	return Vec2( war::from_simple( x ), war::from_simple( y ) );
+	return Vec2( war::from_c2( x ), war::from_c2( y ) );
 }
 
 bool Vec2::operator==( const Vec2& v ) const
