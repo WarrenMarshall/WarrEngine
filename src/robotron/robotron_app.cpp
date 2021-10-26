@@ -31,6 +31,7 @@ void Robotron_App::init()
 
 	g_engine->scene_mgr.push<Scene_Background>();
 	g_engine->scene_mgr.push<Scene_Menu>();
+	g_engine->scene_mgr.push<Scene_Gameplay>();
 }
 
 void Robotron_App::new_game()

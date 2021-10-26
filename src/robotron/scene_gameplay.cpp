@@ -13,7 +13,7 @@ void Scene_Gameplay::pushed()
 {
 	Scene::pushed();
 
-	g_engine->window.push_mouse_mode( e_mouse_mode::locked );
+	//g_engine->window.push_mouse_mode( e_mouse_mode::locked );
 
 	spatial_map.set_bounds( { -viewport_hw, -viewport_hh, viewport_w, viewport_h } );
 
@@ -69,7 +69,7 @@ void Scene_Gameplay::popped()
 {
 	Scene::popped();
 
-	g_engine->window.pop_mouse_mode();
+	//g_engine->window.pop_mouse_mode();
 }
 
 void Scene_Gameplay::draw()
@@ -85,10 +85,11 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 		return true;
 	}
 
-	if( evt->input_id == e_input_id::gamepad_button_a )
+	if( evt->input_id == e_input_id::mouse_button_left )
 	{
 		{
 			auto e = add_entity<Entity_Transient>();
+			e->set_pos( Coord_System::window_to_world_pos( evt->mouse_pos ) );
 			{
 				auto ec = e->add_component<Emitter_Component>();
 				ec->init( "em_death_spark" );
