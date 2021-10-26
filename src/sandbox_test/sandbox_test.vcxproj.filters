@@ -30,9 +30,6 @@
     <ClCompile Include="scene_box2d.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="scene_box2d_entities.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="scene_controller.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -110,9 +107,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_box2d.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="scene_box2d_entities.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="scene_controller.h">

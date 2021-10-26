@@ -204,7 +204,6 @@
   <ItemGroup>
     <ClCompile Include="scene_angle_dirs.cpp" />
     <ClCompile Include="scene_box2d.cpp" />
-    <ClCompile Include="scene_box2d_entities.cpp" />
     <ClCompile Include="scene_cameras.cpp" />
     <ClCompile Include="scene_constraints.cpp" />
     <ClCompile Include="scene_controller.cpp" />
@@ -235,7 +234,6 @@
     <ClInclude Include="app_header.h" />
     <ClInclude Include="scene_angle_dirs.h" />
     <ClInclude Include="scene_box2d.h" />
-    <ClInclude Include="scene_box2d_entities.h" />
     <ClInclude Include="scene_cameras.h" />
     <ClInclude Include="scene_constraints.h" />
     <ClInclude Include="scene_controller.h" />

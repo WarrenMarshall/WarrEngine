@@ -15,7 +15,6 @@
 	"a_dir" "away_from_owner"
 	"r_dir_var" "-40,40"
 	"r_scale_spawn" "0.5, .75"
-	#"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
 	"r_lifespan" "125, 500"
 	"r_velocity_spawn" "100,100"
 	"t_color" "0,color.white, 0.15,color.teal, 1.0,color.teal"

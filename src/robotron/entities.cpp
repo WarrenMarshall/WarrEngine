@@ -13,7 +13,7 @@ E_Player::E_Player()
 
 	{
 		auto ec = add_component<Collision_Body_Component>();
-		ec->set_as_centered_box( 8, 16 );
+		ec->set_as_centered_box( 12, 20 );
 		ec->set_collision_flags( coll_flags.player, coll_flags.world );
 	}
 	{
@@ -66,13 +66,13 @@ E_Player_Bullet::E_Player_Bullet()
 
 	{
 		auto ec = add_component<Collision_Body_Component>();
-		ec->set_as_circle( 6 );
+		ec->set_as_circle( 3 );
 		ec->set_collision_flags( coll_flags.player_bullet, coll_flags.world );
 	}
 	{
-		auto ec = add_component<Primitive_Shape_Component>();
-		ec->add_shape( e_primitive_shape::point );
+		auto ec = add_component<Sprite_Component>();
+		ec->init( "particle_simple_01" );
+		ec->get_transform()->set_scale( 0.75f );
 		ec->rs_opt.color = make_color( Color::teal );
-		ec->rs_opt.glow = 3.f;
 	}
 }

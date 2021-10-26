@@ -84,7 +84,7 @@ void Scene_Box2D::draw_ui()
 
 void Scene_Box2D::spawn_ball_at( Vec2 world_pos )
 {
-	auto e = add_entity<E_Emoji_Ball>();
+	auto e = add_entity<Entity>();
 	e->set_pos( world_pos );
 	e->rs_opt.color = Color( Random::getf(), Random::getf(), Random::getf() );
 	e->set_pickable();

@@ -35,8 +35,6 @@ static void draw_title( const std::string& title )
 
 #include "sandbox_test.h"
 
-#include "scene_box2d_entities.h"
-
 #include "scene_palette.h"
 #include "scene_angle_dirs.h"
 #include "scene_coords.h"
