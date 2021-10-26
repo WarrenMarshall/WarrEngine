@@ -30,7 +30,8 @@ void Scene_Platformer::draw_ui()
 f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 {
 	auto gameplay_scene = (Scene_Platformer*)scene;
-	auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
+	// #warren
+	//auto tmc = gameplay_scene->world->get_component( e_component_type::tile_map );
 
 	Vec2 tile_pos =
 	{

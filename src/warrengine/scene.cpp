@@ -131,7 +131,7 @@ void Scene::update()
 			entity->update_transform_to_match_box2d_components();
 
 			// collect the simple collision bodies active in the scene
-			auto sccs = entity->get_components<Collision_Body_Component>();
+			auto sccs = entity->get_components( e_component_type::collision_body );
 			sc_world.active_bodies.insert(
 				sc_world.active_bodies.end(),
 				sccs.begin(), sccs.end()
@@ -155,7 +155,7 @@ void Scene::post_update()
 
 		for( auto& scc : sc_world.active_bodies )
 		{
-			scc->update_to_match_parent_transform();
+			( ( Collision_Body_Component* )scc )->update_to_match_parent_transform();
 		}
 
 		// detect and handle intersecting colliders

@@ -149,51 +149,53 @@ struct Entity
 		return new_component;
 	}
 
-	// returns the first component it finds that matches the type bit mask.
-	[[nodiscard]] Entity_Component* get_component( hash tag = hash_none ) const
-	{
-		return get_component<Entity_Component>( tag );
-	}
+	// quickly check to see if an entity has at least one of the specified
+	// components attached
 
-	template<typename T>
-	[[nodiscard]] T* get_component( hash tag = hash_none ) const
+	[[nodiscard]] bool has_component( e_component_type type, hash tag = hash_none ) const
 	{
-		for( auto& ec : components )
+		for( auto& ec : this->components )
 		{
-			if( dynamic_cast<T*>( ec.get() ) and ( tag == hash_none or ec->tag == tag ) )
+			if( ec.get()->component_type == type and ( tag == hash_none or ec->tag == tag ) )
 			{
-				return (T*)( ec.get() );
+				return true;
 			}
 		}
 
-		return nullptr;
+		return false;
 	}
 
-	// quickly check to see if an entity has at least one of the specified
-	// components attached
-	template<typename T>
-	[[nodiscard]] bool has_component( hash tag = hash_none ) const
-	{
-		return get_component<T>( tag ) != nullptr;
-	}
+	// fills a vector with all the components that match the type
 
-	// fills a vector with all the components it finds that match the class "T"
-
-	template<typename T>
-	std::vector<T*> get_components( hash tag = hash_none ) const
+	[[nodiscard]] std::vector<Entity_Component*> get_components( e_component_type type, hash tag = hash_none ) const
 	{
-		std::vector<T*> ecs;
+		std::vector<Entity_Component*> ecs;
 		ecs.reserve( this->components.size() );
 
 		for( auto& ec : this->components )
 		{
-			if( dynamic_cast<T*>( ec.get() ) and ( tag == hash_none or ec->tag == tag ) )
+			if( ec.get()->component_type == type and ( tag == hash_none or ec->tag == tag ) )
 			{
-				ecs.push_back( (T*)( ec.get() ) );
+				ecs.push_back( ec.get() );
 			}
 		}
 
 		return ecs;
+	}
+
+	// returns the first component that matches the type
+
+	[[nodiscard]] Entity_Component* get_component( e_component_type type, hash tag = hash_none ) const
+	{
+		for( auto& ec : this->components )
+		{
+			if( ec.get()->component_type == type and ( tag == hash_none or ec->tag == tag ) )
+			{
+				return ec.get();
+			}
+		}
+
+		return nullptr;
 	}
 
 	virtual void on_box2d_collision_begin( box2d::Pending_Collision& coll, Entity* touched_by );

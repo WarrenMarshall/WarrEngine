@@ -228,21 +228,23 @@ void Entity::update_box2d_components_to_match_transform()
 	// ----------------------------------------------------------------------------
 	// BOX2D
 
-	if( has_component<Box2D_Physics_Component>() )
+	if( has_component( e_component_type::box2d_physics ) )
 	{
-		std::vector<Box2D_Physics_Body_Component*> ecs = get_components<Box2D_Physics_Body_Component>();
+		auto ecs = get_components( e_component_type::box2d_physics_body );
 
 		for( auto ec : ecs )
 		{
-			if( ec->body_type != b2_staticBody )
+			auto cec = ( Box2D_Physics_Body_Component* )ec;
+
+			if( cec->body_type != b2_staticBody )
 			{
-				ec->body->SetTransform( _tform.pos.to_box2d().to_b2Vec2(), glm::radians( _tform.angle ) );
+				cec->body->SetTransform( _tform.pos.to_box2d().to_b2Vec2(), glm::radians( _tform.angle ) );
 
 				// reset velocity
-				ec->body->SetLinearVelocity( { 0, 0 } );
-				ec->body->SetAngularVelocity( 0 );
+				cec->body->SetLinearVelocity( { 0, 0 } );
+				cec->body->SetAngularVelocity( 0 );
 
-				ec->body->SetAwake( true );
+				cec->body->SetAwake( true );
 			}
 		}
 	}
@@ -302,7 +304,7 @@ Transform* Entity::set_scale( const f32 scale )
 	// don't have a way to scale the physics components at the same time. so
 	// collision will remain the original size which is likely not what you
 	// want.
-	assert( !has_component<Box2D_Physics_Component>() );
+	assert( !has_component( e_component_type::box2d_physics ) );
 
 	return &_tform;
 }
@@ -360,7 +362,7 @@ void Entity::add_delta_scale( const f32 delta )
 	// don't have a way to scale the physics components at the same time. so
 	// collision will remain the original size which is likely not what you
 	// want.
-	assert( !has_component<Box2D_Physics_Component>() );
+	assert( !has_component( e_component_type::box2d_physics ) );
 }
 
 // entities are starting to collide
@@ -471,7 +473,7 @@ void Entity::set_life_cycle( e_life_cycle lc )
 {
 	life_cycle.set( lc );
 
-	if( auto ec = get_component<Box2D_Physics_Component>() ; ec and !life_cycle.is_alive() )
+	if( auto ec = get_component( e_component_type::box2d_physics ) ; ec and !life_cycle.is_alive() )
 	{
 		ec->clear_collision_flags();
 	}

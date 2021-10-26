@@ -212,9 +212,9 @@ void Scene_Interact::update()
 
 void Scene_Interact::reset_collision_trace_results()
 {
-	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
+	( ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape ) )->shapes.clear();
 
-	for( auto& iter : world_geo->get_components<Collision_Body_Component>() )
+	for( auto& iter : world_geo->get_components( e_component_type::collision_body ) )
 	{
 		iter->rs_opt.color = make_color( Color::dark_teal );
 	}
@@ -226,21 +226,21 @@ bool Scene_Interact::on_input_pressed( const Input_Event* evt )
 	{
 		case e_input_id::key_1:
 		{
-			auto ec = player->get_component<Collision_Body_Component>();
+			auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
 			ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
 		}
 		break;
 
 		case e_input_id::key_2:
 		{
-			auto ec = player->get_component<Collision_Body_Component>();
+			auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
 			ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
 		}
 		break;
 
 		case e_input_id::key_3:
 		{
-			auto ec = player->get_component<Collision_Body_Component>();
+			auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
 
 			auto s = Random::geti_range( 3, 8 );
 			auto r = radius * Random::getf_range( 0.5f, 3.0f );
@@ -277,7 +277,7 @@ bool Scene_Interact::on_input_pressed( const Input_Event* evt )
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<Primitive_Shape_Component>();
+				auto ec = ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape );
 				ec->shapes.clear();
 
 				for( auto& hit : callback.results )
@@ -304,7 +304,7 @@ bool Scene_Interact::on_input_pressed( const Input_Event* evt )
 
 			if( callback.hit_something )
 			{
-				auto ec = hit_marker->get_component<Primitive_Shape_Component>();
+				auto ec = ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape );
 				ec->shapes.clear();
 				ec->add_shape( e_primitive_shape::rect, Rect::create_centered( 6.f ), callback.result.pos );
 

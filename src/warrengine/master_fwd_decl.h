@@ -11,6 +11,7 @@ struct Color;
 struct Emitter_Component;
 struct Emitter_Parameters_Asset;
 struct Entity;
+struct Entity_Component;
 struct Mem_File;
 struct Mem_File_Text;
 struct Zip_File;

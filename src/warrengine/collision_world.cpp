@@ -25,34 +25,36 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 
 	for( auto scc : active_bodies )
 	{
+		auto cscc = ( Collision_Body_Component* )scc;
+
 		// don't trace against self
-		if( scc->parent_entity == entity )
+		if( cscc->parent_entity == entity )
 		{
 			continue;
 		}
 
 		// traces don't hit sensors
-		if( scc->is_sensor() )
+		if( cscc->is_sensor() )
 		{
 			continue;
 		}
 
 		// if collision mask don't match, skip
-		if( callback->collision_mask > 0 and ( scc->collides_with_mask & callback->collision_mask ) )
+		if( callback->collision_mask > 0 and ( cscc->collides_with_mask & callback->collision_mask ) )
 		{
 			continue;
 		}
 
 		c2Raycast raycast = {};
 
-		switch( scc->prim_type )
+		switch( cscc->prim_type )
 		{
 			case e_sc_prim_type::circle:
 			{
-				if( c2RaytoCircle( ray, scc->as_c2_circle(), &raycast ) )
+				if( c2RaytoCircle( ray, cscc->as_c2_circle(), &raycast ) )
 				{
 					raycast.t = from_c2( raycast.t );
-					if( !callback->report_component( entity, ray, scc, raycast ) )
+					if( !callback->report_component( entity, ray, cscc, raycast ) )
 					{
 						return;
 					}
@@ -62,10 +64,10 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 
 			case e_sc_prim_type::aabb:
 			{
-				if( c2RaytoAABB( ray, scc->as_c2_aabb(), &raycast ) )
+				if( c2RaytoAABB( ray, cscc->as_c2_aabb(), &raycast ) )
 				{
 					raycast.t = from_c2( raycast.t );
-					if( !callback->report_component( entity, ray, scc, raycast ) )
+					if( !callback->report_component( entity, ray, cscc, raycast ) )
 					{
 						return;
 					}
@@ -75,11 +77,11 @@ void Collision_World::ray_cast( collision::Raycast_Callback* callback, const Ent
 
 			case e_sc_prim_type::polygon:
 			{
-				auto poly = scc->as_c2_poly();
+				auto poly = cscc->as_c2_poly();
 				if( c2RaytoPoly( ray, &poly, nullptr, &raycast ) )
 				{
 					raycast.t = from_c2( raycast.t );
-					if( !callback->report_component( entity, ray, scc, raycast ) )
+					if( !callback->report_component( entity, ray, cscc, raycast ) )
 					{
 						return;
 					}
@@ -110,7 +112,7 @@ void Collision_World::handle_collisions()
 
 	for( auto& ea : parent_scene->entities )
 	{
-		auto sccs_a = ea->get_components<Collision_Body_Component>();
+		auto sccs_a = ea->get_components( e_component_type::collision_body );
 
 		if( sccs_a.empty() )
 		{
@@ -123,16 +125,16 @@ void Collision_World::handle_collisions()
 		{
 			assert( ea.get() != eb );
 
-			auto sccs_b = eb->get_components<Collision_Body_Component>();
+			auto sccs_b = eb->get_components( e_component_type::collision_body );
 
 			for( auto scc_a : sccs_a )
 			{
 				for( auto scc_b : sccs_b )
 				{
-					if( scc_a->does_intersect_broadly( scc_b ) )
+					if( (( Collision_Body_Component* )scc_a)->does_intersect_broadly( ( Collision_Body_Component* )scc_b ) )
 					{
 						assert( scc_a->parent_entity != scc_b->parent_entity );
-						potentially_colliding_bodies.insert( std::make_pair( scc_a, scc_b ) );
+						potentially_colliding_bodies.insert( std::make_pair( ( Collision_Body_Component* )scc_a, ( Collision_Body_Component* )scc_b ) );
 					}
 				}
 			}

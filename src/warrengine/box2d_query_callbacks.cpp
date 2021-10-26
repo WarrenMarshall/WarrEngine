@@ -29,7 +29,7 @@ f32 Raycast_Closest::ReportFixture( b2Fixture* fixture, const b2Vec2& point, con
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component( e_component_type::box2d_physics );
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -52,7 +52,7 @@ f32 Raycast_Simple::ReportFixture( b2Fixture* fixture, const b2Vec2& point, cons
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component( e_component_type::box2d_physics );
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{
@@ -75,7 +75,7 @@ f32 Raycast_All::ReportFixture( b2Fixture* fixture, const b2Vec2& point, const b
 {
 	if( collision_mask > 0 )
 	{
-		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = ( (Entity_Component*)( fixture->GetBody()->GetUserData().pointer ) )->parent_entity->get_component( e_component_type::box2d_physics );
 
 		if( ( ecp->collision_mask & collision_mask ) == 0 )
 		{

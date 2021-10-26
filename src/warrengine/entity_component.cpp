@@ -373,7 +373,7 @@ void Box2D_Physics_Component::set_collision_flags( i32 collision_mask, i32 colli
 
 	// update all attached bodies to have matching flags
 
-	auto ecs = parent_entity->get_components<Box2D_Physics_Body_Component>();
+	auto ecs = parent_entity->get_components( e_component_type::box2d_physics_body );
 
 	for( auto ec : ecs )
 	{
@@ -389,13 +389,13 @@ void Box2D_Physics_Component::clear_collision_flags()
 
 Box2D_Physics_Body_Component* Box2D_Physics_Component::get_primary_body()
 {
-	std::vector<Box2D_Physics_Body_Component*> ecs = parent_entity->get_components<Box2D_Physics_Body_Component>();
+	auto ecs = parent_entity->get_components( e_component_type::box2d_physics_body );
 
-	for( auto& ec : ecs )
+	for( auto ec : ecs )
 	{
-		if( ec->is_primary_body )
+		if( (( Box2D_Physics_Body_Component *) ec)->is_primary_body )
 		{
-			return ec;
+			return ( Box2D_Physics_Body_Component* )ec;
 		}
 	}
 
@@ -508,7 +508,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_box( hash tag, const Rect& 
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = parent_entity->get_component( e_component_type::box2d_physics );
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -543,7 +543,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_circle( hash tag, Vec2 pos,
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = parent_entity->get_component( e_component_type::box2d_physics );
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -580,7 +580,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_line( hash tag, Vec2 pos, V
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = parent_entity->get_component( e_component_type::box2d_physics );
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -624,7 +624,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_line_loop( hash tag, Vec2 p
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = parent_entity->get_component( e_component_type::box2d_physics );
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -660,7 +660,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_polygon( hash tag, Vec2 pos
 
 	b2FixtureDef fixture_def;
 	{
-		auto ecp = parent_entity->get_component<Box2D_Physics_Component>();
+		auto ecp = parent_entity->get_component( e_component_type::box2d_physics );
 
 		fixture_def.shape = &shape;
 		fixture_def.density = 1.f;
@@ -681,7 +681,7 @@ b2Fixture* Box2D_Physics_Body_Component::add_fixture_polygon( hash tag, Vec2 pos
 
 void Box2D_Physics_Body_Component::add_physics_component_if_needed()
 {
-	if( !parent_entity->has_component<Box2D_Physics_Component>() )
+	if( !parent_entity->has_component( e_component_type::box2d_physics ) )
 	{
 		parent_entity->add_component<Box2D_Physics_Component>();
 	}
@@ -1351,7 +1351,7 @@ void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view t
 
 	// remove any existing collision components
 
-	auto existing_components = parent_entity->get_components<Collision_Body_Component>();
+	auto existing_components = parent_entity->get_components( e_component_type::collision_body );
 
 	for( auto& component : existing_components )
 	{

@@ -32,7 +32,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 
 		case 4:
 		{
-			auto tmc = gameplay_scene->world->get_component<Tile_Map_Component>();
+			auto tmc = (Tile_Map_Component*)gameplay_scene->world->get_component( e_component_type::tile_map );
 
 			auto e = scene->add_entity<Entity>();
 			e->tag = H( "player" );
@@ -142,9 +142,9 @@ void Scene_Top_Down::update()
 
 void Scene_Top_Down::reset_collision_trace_results()
 {
-	hit_marker->get_component<Primitive_Shape_Component>()->shapes.clear();
+	( ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape ) )->shapes.clear();
 
-	for( auto& iter : world->get_components<Collision_Body_Component>() )
+	for( auto& iter : world->get_components( e_component_type::collision_body ) )
 	{
 		iter->rs_opt.color = make_color( Color::dark_teal );
 	}
