@@ -34,7 +34,7 @@ void Scene_Breakout::spawn_ball()
 	auto e = add_entity<Entity>();
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
-	e->simple.flags.is_bouncy = true;
+	e->collision.flags.is_bouncy = true;
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );
@@ -60,7 +60,7 @@ void Scene_Breakout::pushed()
 		auto e = add_entity<E_Breakout_Paddle>();
 		e->tag = H( "THE_PADDLE" );
 		e->set_pos( { 0.f, 0.f } );
-		e->simple.type = e_physics_body_type::kinematic;
+		e->collision.type = e_physics_body_type::kinematic;
 		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;
 		{
@@ -86,7 +86,7 @@ void Scene_Breakout::pushed()
 		auto num_primitives = 2;
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = e_physics_body_type::stationary;
+		e->collision.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{

@@ -39,7 +39,7 @@ struct Collision_World final
 		f32 skin_thickness = 1.1f;
 
 		// the maximum speed that we allow things to fall when applying gravity
-		f32 gravity_max_speed = simple_collision_gravity_default * 3.0f;
+		f32 gravity_max_speed = collision_gravity_default * 3.0f;
 
 	} settings;
 

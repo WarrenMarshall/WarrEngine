@@ -24,7 +24,7 @@ void Scene_Platformer::draw()
 
 void Scene_Platformer::draw_ui()
 {
-	Render::draw_string( std::format( "{}", player->simple.flags.is_in_air ), { 4, 4 } );
+	Render::draw_string( std::format( "{}", player->collision.flags.is_in_air ), { 4, 4 } );
 }
 
 f_decl_tile_map_spawn_entity( platformer_spawn_entity )
@@ -75,7 +75,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 		{
 			auto e = scene->add_entity<E_Player>();
 			e->set_pos( tile_pos );
-			e->simple.flags.is_affected_by_gravity = true;
+			e->collision.flags.is_affected_by_gravity = true;
 
 			{
 				auto ec = e->add_component<Sprite_Component>();
@@ -133,7 +133,7 @@ void Scene_Platformer::pushed()
 
 	{
 		world = add_entity<Entity>();
-		world->simple.type = e_physics_body_type::stationary;
+		world->collision.type = e_physics_body_type::stationary;
 
 		{
 			auto ec = world->add_component<Tile_Map_Component>();
@@ -148,7 +148,7 @@ void Scene_Platformer::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->set_pos( { 0.f, -8.f } );
-		e->simple.type = e_physics_body_type::kinematic;
+		e->collision.type = e_physics_body_type::kinematic;
 
 	#if 1
 		// flying rectangle with platform collision
@@ -189,7 +189,6 @@ void Scene_Platformer::pushed()
 			ec->rs_opt.color = make_color( Color::teal, 0.25f );
 		}
 		{
-			//auto ec = e->add_component<Simple_Collision_Platform_Body>();
 			auto ec = e->add_component<Collision_Body_Component>();
 			ec->set_as_centered_box( 32.f, 32.f );
 			ec->get_transform()->add_pos( { 0.f, -0.0f } );
@@ -261,7 +260,7 @@ bool Scene_Platformer::on_input_pressed( const Input_Event* evt )
 		or evt->input_id == e_input_id::key_space )
 	{
 
-		if( !player->simple.flags.is_in_air
+		if( !player->collision.flags.is_in_air
 			and g_engine->input_mgr.get_axis_state( e_input_id::gamepad_left_stick, true ).y > 0.5f )
 		{
 			player->add_delta_pos( Vec2::y_axis * player_collision_radius );

@@ -833,11 +833,11 @@ void Collision_Body_Component::draw()
 		{
 			Render::state->color = make_color( Color::light_green );
 
-			if( parent_entity->simple.is_stationary() )
+			if( parent_entity->collision.is_stationary() )
 			{
 				Render::state->color = make_color( Color::green );
 			}
-			else if( parent_entity->simple.is_kinematic() )
+			else if( parent_entity->collision.is_kinematic() )
 			{
 				Render::state->color = make_color( Color::teal );
 			}
@@ -1141,7 +1141,7 @@ std::optional<war::collision::Pending_Collision> Collision_Body_Component::inter
 	if( flags.is_platform )
 	{
 		// an entity moving upwards won't collide with a platform
-		if( other->parent_entity->simple.is_dynamic() and other->parent_entity->velocity.y < 0.0f )
+		if( other->parent_entity->collision.is_dynamic() and other->parent_entity->velocity.y < 0.0f )
 		{
 			return std::nullopt;
 		}

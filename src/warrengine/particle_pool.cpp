@@ -57,7 +57,7 @@ void Particle_Pool::update()
 
 				particle.pos += particle.v_dir * ( fixed_time_step::per_second( particle.velocity_per_sec ) );
 
-				particle.gravity_accum += fixed_time_step::per_second( simple_collision_gravity_default ) * particle.params->uses_gravity;
+				particle.gravity_accum += fixed_time_step::per_second( collision_gravity_default ) * particle.params->uses_gravity;
 				particle.pos.y += particle.gravity_accum;
 
 				particle.spin += fixed_time_step::per_second( particle.spin_per_sec );

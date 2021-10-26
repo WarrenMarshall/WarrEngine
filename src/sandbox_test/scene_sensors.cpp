@@ -14,7 +14,7 @@ Scene_Sensors::Scene_Sensors()
 void Scene_Sensors::spawn_sensor()
 {
 	auto e = add_entity<Entity>();
-	e->simple.type = e_physics_body_type::stationary;
+	e->collision.type = e_physics_body_type::stationary;
 	e->set_pos( { -viewport_hw + ( Random::getf() * viewport_w ), -viewport_hh + ( Random::getf() * viewport_h ) } );
 	{
 		auto ec = e->add_component<Sprite_Component>();
@@ -65,7 +65,7 @@ void Scene_Sensors::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "the_player" );
-		e->simple.type = e_physics_body_type::kinematic;
+		e->collision.type = e_physics_body_type::kinematic;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::filled_circle, 32.f );
@@ -90,7 +90,7 @@ void Scene_Sensors::pushed()
 
 	{
 		auto e = add_entity<Entity>( "world" );
-		e->simple.type = e_physics_body_type::stationary;
+		e->collision.type = e_physics_body_type::stationary;
 
 		// 4 walls
 		{

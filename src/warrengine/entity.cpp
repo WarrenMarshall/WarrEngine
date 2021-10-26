@@ -7,7 +7,7 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-Entity_Simple_Force::Entity_Simple_Force( Vec2 normal, f32 strength )
+Physics_Force::Physics_Force( Vec2 normal, f32 strength )
 	: strength( strength )
 {
 	this->normal = Vec2::normalize( normal );
@@ -99,9 +99,9 @@ void Entity::post_update()
 // forces are gradual and build up over time.
 //
 // this is good for moving a character or applying things like gravity or wind.
-void Entity::add_force( const Entity_Simple_Force& force )
+void Entity::add_force( const Physics_Force& force )
 {
-	if( simple.is_kinematic() )
+	if( collision.is_kinematic() )
 	{
 		return;
 	}
@@ -113,9 +113,9 @@ void Entity::add_force( const Entity_Simple_Force& force )
 //
 // this is for things like jumping or bouncing off of things.
 
-void Entity::add_impulse( const Entity_Simple_Force& force )
+void Entity::add_impulse( const Physics_Force& force )
 {
-	if( simple.is_kinematic() )
+	if( collision.is_kinematic() )
 	{
 		return;
 	}
@@ -137,8 +137,8 @@ void Entity::compile_velocity()
 		velocity += f.normal * f.strength;
 	}
 
-	velocity.x = simple.settings.max_velocity_x.clamp_value( velocity.x );
-	velocity.y = simple.settings.max_velocity_y.clamp_value( velocity.y );
+	velocity.x = collision.settings.max_velocity_x.clamp_value( velocity.x );
+	velocity.y = collision.settings.max_velocity_y.clamp_value( velocity.y );
 
 	pending_forces.clear();
 }
@@ -156,7 +156,7 @@ void Entity::reflect_across( Vec2 normal )
 
 void Entity::apply_forces()
 {
-	if( simple.flags.is_affected_by_gravity )
+	if( collision.flags.is_affected_by_gravity )
 	{
 		auto accel = 1.0f;
 
@@ -167,13 +167,13 @@ void Entity::apply_forces()
 			accel = 2.0f;
 		}
 
-		add_force( { Vec2::y_axis, simple_collision_gravity_default * accel } );
+		add_force( { Vec2::y_axis, collision_gravity_default * accel } );
 	}
 
 	compile_velocity();
 
 	// if the velocity has reached a point where it's so small we're just jittering, clear it out.
-	if( simple.is_dynamic() )
+	if( collision.is_dynamic() )
 	{
 		if( glm::abs( velocity.y ) < 0.1f )
 		{
@@ -397,7 +397,7 @@ bool Entity::on_touching_begin( Collision_Body_Component* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
-		sensor->parent_entity->simple.flags.is_in_air = false;
+		sensor->parent_entity->collision.flags.is_in_air = false;
 	}
 
 	return false;
@@ -417,7 +417,7 @@ bool Entity::on_touching_end( Collision_Body_Component* sensor )
 
 	if( sensor->tag == H( "ground_sensor" ) )
 	{
-		sensor->parent_entity->simple.flags.is_in_air = true;
+		sensor->parent_entity->collision.flags.is_in_air = true;
 	}
 
 	return false;
@@ -498,7 +498,7 @@ void Entity::remove_dead_components()
 
 void Entity::apply_movement_jump()
 {
-	if( !simple.flags.is_in_air )
+	if( !collision.flags.is_in_air )
 	{
 		//g_engine->find_asset<sound_asset>( "sfx_platformer_jump" )->play();
 		add_impulse( { Vec2( 0.0f, -1.0f ), 3.5f } );

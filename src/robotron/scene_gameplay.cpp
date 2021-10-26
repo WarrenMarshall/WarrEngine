@@ -23,7 +23,7 @@ void Scene_Gameplay::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = e_physics_body_type::stationary;
+		e->collision.type = e_physics_body_type::stationary;
 
 		{
 			auto ec = e->add_component<Collision_Body_Component>();

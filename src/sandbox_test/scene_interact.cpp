@@ -54,7 +54,7 @@ Entity* Scene_Interact::spawn_entity()
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 		ec->flags.draw_as_shape = true;
 	}
-	e->simple.flags.is_bouncy = false;
+	e->collision.flags.is_bouncy = false;
 
 	return e;
 }
@@ -101,7 +101,7 @@ void Scene_Interact::pushed()
 		int num_primitives = 4;
 
 		auto e = add_entity<Entity>( "world" );
-		e->simple.type = e_physics_body_type::stationary;
+		e->collision.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )
 		{

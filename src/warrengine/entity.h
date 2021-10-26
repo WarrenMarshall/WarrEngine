@@ -4,44 +4,13 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-struct Entity_Simple_Force final
+struct Physics_Force final
 {
-	Entity_Simple_Force() = default;
-	Entity_Simple_Force( Vec2 normal, f32 strength );
+	Physics_Force() = default;
+	Physics_Force( Vec2 normal, f32 strength );
 
 	Vec2 normal = Vec2::zero;
 	f32 strength = 0.f;
-};
-
-// ----------------------------------------------------------------------------
-
-struct Entity_Simple_Collision final
-{
-	e_physics_body_type type = e_physics_body_type::dynamic;
-
-	[[nodiscard]] bool is_dynamic() { return ( type == e_physics_body_type::dynamic ); }
-	[[nodiscard]] bool is_stationary() { return ( type == e_physics_body_type::stationary ); }
-	[[nodiscard]] bool is_kinematic() { return ( type == e_physics_body_type::kinematic ); }
-
-	struct
-	{
-		Range max_velocity_x = { -5.0f, 5.0f };
-		Range max_velocity_y = { -5.0f, 5.0f };
-	} settings;
-
-	struct
-	{
-		bool is_in_air : 1 = true;
-		bool is_affected_by_gravity : 1 = false;
-		bool is_bouncy : 1 = false;
-	} flags;
-
-	Entity_Simple_Collision()
-	{
-	}
-
-protected:
-	friend struct Entity;
 };
 
 // ----------------------------------------------------------------------------
@@ -72,12 +41,33 @@ struct Entity
 	std::set<Collision_Body_Component*> sensors_this_frame;
 	std::set<Collision_Body_Component*> sensors_last_frame;
 
-	Entity_Simple_Collision simple;
+	struct
+	{
+		e_physics_body_type type = e_physics_body_type::dynamic;
+
+		[[nodiscard]] bool is_dynamic() { return ( type == e_physics_body_type::dynamic ); }
+		[[nodiscard]] bool is_stationary() { return ( type == e_physics_body_type::stationary ); }
+		[[nodiscard]] bool is_kinematic() { return ( type == e_physics_body_type::kinematic ); }
+
+		struct
+		{
+			Range max_velocity_x = { -5.0f, 5.0f };
+			Range max_velocity_y = { -5.0f, 5.0f };
+		} settings;
+
+		struct
+		{
+			bool is_in_air : 1 = true;
+			bool is_affected_by_gravity : 1 = false;
+			bool is_bouncy : 1 = false;
+		} flags;
+
+	} collision;
 
 	// forces and impulses
 
 	Vec2 velocity = Vec2::zero;
-	std::vector<Entity_Simple_Force> pending_forces;
+	std::vector<Physics_Force> pending_forces;
 
 	// transforms
 	Transform _tform;
@@ -99,8 +89,8 @@ struct Entity
 	Entity( std::string debug_name );
 	virtual ~Entity() = default;
 
-	void add_force( const Entity_Simple_Force& force );
-	void add_impulse( const Entity_Simple_Force& force );
+	void add_force( const Physics_Force& force );
+	void add_impulse( const Physics_Force& force );
 	void add_impulse( f32 strength );
 
 	void compile_velocity();

@@ -106,7 +106,7 @@ void Collision_World::handle_collisions()
 	// pair down the list.
 	// ----------------------------------------------------------------------------
 
-	std::set<ec_simple_body_pair> potentially_colliding_bodies;
+	std::set<ec_collision_body_pair> potentially_colliding_bodies;
 
 	for( auto& ea : parent_scene->entities )
 	{
@@ -205,8 +205,8 @@ void Collision_World::push_apart( collision::Pending_Collision& coll )
 	auto ent_a = coll.entity_a;
 	auto ent_b = coll.entity_b;
 
-	auto a_is_dynamic = ent_a->simple.is_dynamic();
-	auto b_is_dynamic = ent_b->simple.is_dynamic();
+	auto a_is_dynamic = ent_a->collision.is_dynamic();
+	auto b_is_dynamic = ent_b->collision.is_dynamic();
 
 	if( a_is_dynamic and b_is_dynamic )
 	{
@@ -273,23 +273,23 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 		return;
 	}
 
-	switch( ent_attacker->simple.type )
+	switch( ent_attacker->collision.type )
 	{
 		case e_physics_body_type::dynamic:
 		{
 			std::optional<Vec2> dir_attacker, dir_victim;
 
-			switch( ent_victim->simple.type )
+			switch( ent_victim->collision.type )
 			{
 				// dynamic -> dynamic
 				case e_physics_body_type::dynamic:
 				{
-					if( ent_attacker->simple.flags.is_bouncy )
+					if( ent_attacker->collision.flags.is_bouncy )
 					{
 						// #slide ?
 						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
 					}
-					if( ent_victim->simple.flags.is_bouncy )
+					if( ent_victim->collision.flags.is_bouncy )
 					{
 						// #slide ?
 						dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
@@ -300,7 +300,7 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 				// dynamic -> kinematic
 				case e_physics_body_type::kinematic:
 				{
-					if( ent_attacker->simple.flags.is_bouncy )
+					if( ent_attacker->collision.flags.is_bouncy )
 					{
 						// #slide ?
 						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
@@ -311,7 +311,7 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 				// dynamic -> stationary
 				case e_physics_body_type::stationary:
 				{
-					if( ent_attacker->simple.flags.is_bouncy )
+					if( ent_attacker->collision.flags.is_bouncy )
 					{
 						// #slide ?
 						ent_attacker->reflect_across( coll.normal );
@@ -340,12 +340,12 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 		{
 			Vec2 dir_victim;
 
-			switch( ent_victim->simple.type )
+			switch( ent_victim->collision.type )
 			{
 				// kinematic -> dynamic
 				case e_physics_body_type::dynamic:
 				{
-					if( ent_victim->simple.flags.is_bouncy )
+					if( ent_victim->collision.flags.is_bouncy )
 					{
 						// #slide ?
 						dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
@@ -378,7 +378,7 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 
 		case e_physics_body_type::stationary:
 		{
-			switch( ent_victim->simple.type )
+			switch( ent_victim->collision.type )
 			{
 				// stationary -> dynamic
 				case e_physics_body_type::dynamic:

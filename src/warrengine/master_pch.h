@@ -221,7 +221,7 @@ constexpr auto b2d_pos_iterations = 3;
 // simple collision constants and helpers
 // ----------------------------------------------------------------------------
 
-constexpr auto simple_collision_gravity_default = 9.81f;
+constexpr auto collision_gravity_default = 9.81f;
 constexpr auto simple_world_scale_factor = 100.f;
 
 [[nodiscard]] constexpr f32 to_simple( f32 v )

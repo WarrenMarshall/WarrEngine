@@ -18,7 +18,7 @@ Entity* Scene_Bounce::spawn_shape()
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
 	e->set_scale( Random::getf_range( 1.0f, 1.5f ) );
-	e->simple.flags.is_bouncy = true;
+	e->collision.flags.is_bouncy = true;
 
 	{
 		auto ec = e->add_component<Collision_Body_Component>();
@@ -81,7 +81,7 @@ void Scene_Bounce::pushed()
 	{
 		auto e = add_entity<Entity>();
 		e->tag = H( "main_ball" );
-		e->simple.type = e_physics_body_type::kinematic;
+		e->collision.type = e_physics_body_type::kinematic;
 		{
 			auto ec = e->add_component<Primitive_Shape_Component>();
 			ec->add_shape( e_primitive_shape::point );
@@ -100,7 +100,7 @@ void Scene_Bounce::pushed()
 
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
-		e->simple.type = e_physics_body_type::stationary;
+		e->collision.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_colliders ; ++i )
 		{
