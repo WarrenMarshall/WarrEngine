@@ -87,7 +87,7 @@ void Scene_Top_Down::pushed()
 	// GEO
 
 	{
-		world = add_entity<Entity>( "world" );
+		world = add_entity<Entity>();
 		world->collision.type = e_physics_body_type::stationary;
 
 		{

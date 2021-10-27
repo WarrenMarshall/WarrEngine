@@ -89,7 +89,7 @@ void Scene_Sensors::pushed()
 	// WORLD GEO
 
 	{
-		auto e = add_entity<Entity>( "world" );
+		auto e = add_entity<Entity>();
 		e->collision.type = e_physics_body_type::stationary;
 
 		// 4 walls

@@ -100,7 +100,7 @@ void Scene_Interact::pushed()
 	{
 		int num_primitives = 4;
 
-		auto e = add_entity<Entity>( "world" );
+		auto e = add_entity<Entity>();
 		e->collision.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )

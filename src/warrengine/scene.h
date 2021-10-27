@@ -134,15 +134,6 @@ struct Scene
 		return e;
 	}
 
-	template<typename T>
-	T* add_entity( std::string debug_name )
-	{
-		entities.push_back( std::make_unique<T>( debug_name ) );
-		auto e = (T*)entities.back().get();
-		e->parent_scene = this;
-		return e;
-	}
-
 	[[nodiscard]] bool is_topmost_scene() const;
 	[[nodiscard]] Entity* find_entity( hash tag );
 	[[nodiscard]] Entity* find_entity_by_pick_id( i32 pick_id );

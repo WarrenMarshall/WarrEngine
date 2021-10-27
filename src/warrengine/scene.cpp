@@ -148,7 +148,7 @@ void Scene::post_update()
 
 	// simple collision detection
 
-	for( auto iter_counter = 0 ; iter_counter < sc_world.settings.max_pos_iterations ; ++iter_counter )
+	for( auto iter_counter = 0; iter_counter < sc_world.settings.max_pos_iterations; ++iter_counter )
 	{
 		// make sure the collision bodies are in the correct world space
 		// position, relative to their parent entities
