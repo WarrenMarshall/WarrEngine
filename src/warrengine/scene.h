@@ -160,6 +160,8 @@ struct Scene
 	// called whenever 2 entities in this scene collide with each other
 	virtual bool on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll );
 
+	std::list<Entity*> gen_entity_list( e_life_cycle life_cycle_flags );
+
 private:
 	Transform camera_transform;
 };

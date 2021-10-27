@@ -5,8 +5,8 @@ namespace war
 struct Life_Cycle
 {
 	void set( e_life_cycle life_cycle );
-	e_life_cycle get();
 
+	[[nodiscard]] i32 get();
 	[[nodiscard]] bool is_alive() const;
 	[[nodiscard]] bool is_dying() const;
 	[[nodiscard]] bool is_dead() const;
@@ -21,10 +21,10 @@ struct Life_Cycle
 	// box2d a chance to stop talking about certain entities
 	// for example.
 
-	i32 death_delay{0};
+	i32 death_delay = 0;
 
 private:
-	e_life_cycle _life_cycle = e_life_cycle::alive;
+	i32 flags = ( i32 )( e_life_cycle::alive );
 };
 
 }

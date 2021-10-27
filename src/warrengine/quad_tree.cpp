@@ -59,7 +59,6 @@ void Quad_Tree::reset()
 		node.is_alive = false;
 	}
 
-	//nodes.init_to_size( Quad_Tree::max_nodes_in_pool );
 	nodes.reset();
 
 	auto node = nodes.get_next();
@@ -344,11 +343,11 @@ void Quad_Tree::update()
 {
 	// insert all needed entities into the nodes
 
-	for( auto& e : parent_scene->entities )
+	for( auto& e : parent_scene->gen_entity_list( e_life_cycle::alive ) )
 	{
 		if( e->flags.include_in_quad_tree )
 		{
-			insert_entity( e.get() );
+			insert_entity( e );
 		}
 	}
 }

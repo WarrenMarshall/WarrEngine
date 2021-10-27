@@ -352,6 +352,21 @@ bool Scene::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, 
 	return false;
 }
 
+std::list<Entity*> Scene::gen_entity_list( e_life_cycle life_cycle_flags )
+{
+	std::list<Entity*> list;
+
+	for( auto& entity : entities )
+	{
+		if( ( i32 )( entity->life_cycle.get() ) & ( i32 )( life_cycle_flags ) )
+		{
+			list.push_back( entity.get() );
+		}
+	}
+
+	return list;
+}
+
 Vec2 Scene::get_viewport_pivot()
 {
 	return viewport_pivot;

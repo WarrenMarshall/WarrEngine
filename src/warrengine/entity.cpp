@@ -460,12 +460,26 @@ void Entity::set_pickable()
 
 void Entity::set_life_cycle( e_life_cycle lc )
 {
+	// set entity to new life cycle
 	life_cycle.set( lc );
 
-	if( auto ec = get_component( e_component_type::box2d_physics ) ; ec and !life_cycle.is_alive() )
+	// if entity is being marked as something other than living, clean up a
+	// little so entity doesn't keep interacting in the next frame
+	if( !life_cycle.is_alive() )
 	{
-		ec->clear_collision_flags();
+		if( auto ec = get_component( e_component_type::box2d_physics ) )
+		{
+			ec->clear_collision_flags();
+		}
+
+		auto collision_bodies = get_components( e_component_type::collision_body );
+		for( auto& cb : collision_bodies )
+		{
+			cb->clear_collision_flags();
+		}
 	}
+
+	// set the same life cycle on all components
 
 	for( const auto& iter : components )
 	{
