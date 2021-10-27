@@ -15,17 +15,6 @@ Physics_Force::Physics_Force( Vec2 normal, f32 strength )
 
 // ----------------------------------------------------------------------------
 
-Entity::Entity()
-{
-}
-
-Entity::Entity( std::string debug_name )
-{
-#ifdef _DEBUG
-	this->debug_name = debug_name;
-#endif
-}
-
 void Entity::pre_update()
 {
 	life_cycle.pre_update();

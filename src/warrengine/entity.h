@@ -85,8 +85,7 @@ struct Entity
 	// out which entity you're looking at in the debugger easier
 	std::string debug_name;
 
-	Entity();
-	Entity( std::string debug_name );
+	Entity() = default;
 	virtual ~Entity() = default;
 
 	void add_force( const Physics_Force& force );

@@ -163,8 +163,7 @@ bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* e
 {
 	if( entity_a->tag == H( "player_bullet" ) and entity_b->tag == H( "world_geo" ) )
 	{
-		entity_a->life_cycle.set( e_life_cycle::dead );
-
+/*
 		{
 			auto e = add_entity<Entity_Transient>();
 			e->set_pos( entity_a->get_transform()->pos );
@@ -173,6 +172,9 @@ bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* e
 				ec->init( "em_death_spark" );
 			}
 		}
+*/
+
+		entity_a->life_cycle.set( e_life_cycle::dying );
 
 		return true;
 	}
