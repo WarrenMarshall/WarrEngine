@@ -123,10 +123,10 @@ enum struct e_rumble_effect
 
 enum struct e_life_cycle
 {
-	invalid,
-	alive,
-	dying,			// pending delete whenever the object is finished doing everything (components are finished, etc)
-	dead			// delete next update iteration, this object isn't needed anymore and has finished all of it's work
+	invalid		= 0,
+	alive		= 0b00000001,
+	dying		= 0b00000010,	// pending delete whenever the object is finished doing everything (components are finished, etc)
+	dead		= 0b00000100,	// delete next update iteration, this object isn't needed anymore and has finished all of it's work
 };
 
 // ----------------------------------------------------------------------------
