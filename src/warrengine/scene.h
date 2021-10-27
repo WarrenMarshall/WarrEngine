@@ -36,7 +36,8 @@ struct Scene
 	Vec2 get_viewport_pivot();
 	Vec2 viewport_pivot = { viewport_hw - 1.f, viewport_hh - 1.f };
 
-	std::vector<std::unique_ptr<Entity>> entities;
+	// the master list of entities in this scene
+	std::list<std::unique_ptr<Entity>> entities;
 
 	Collision_World sc_world;
 

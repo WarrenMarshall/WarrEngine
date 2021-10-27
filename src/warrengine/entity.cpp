@@ -422,6 +422,7 @@ bool Entity::can_be_deleted()
 		return false;
 	}
 
+	// entity is dying but is still waiting for it's death delay to decay
 	if( life_cycle.death_delay > -1 )
 	{
 		return false;
@@ -429,8 +430,8 @@ bool Entity::can_be_deleted()
 
 	if( life_cycle.is_dying() )
 	{
-		// entity is dying, but can't be deleted until all
-		// components are dead.
+		// entity is dying, but can't be deleted unless all of it's components
+		// are also dead.
 
 		for( const auto& iter : components )
 		{
@@ -441,7 +442,7 @@ bool Entity::can_be_deleted()
 		}
 	}
 
-	// entity is fully dead, delete it
+	// OK, entity is fully dead and can be deleted
 	return true;
 }
 
@@ -489,14 +490,13 @@ void Entity::set_life_cycle( e_life_cycle lc )
 
 void Entity::remove_dead_components()
 {
-	for( size_t x = 0; x < components.size(); ++x )
+	for( auto iter = components.begin(); iter != components.end(); iter++ )
 	{
-		Entity_Component* ec = components[ x ].get();
-
-		if( ec->is_fully_dead() )
+		if( iter->get()->is_fully_dead() )
 		{
-			components.erase( components.begin() + x );
-			x--;
+			// we remove a single dead component each update to amortize the cost
+			components.erase( iter );
+			break;
 		}
 	}
 }
@@ -505,7 +505,6 @@ void Entity::apply_movement_jump()
 {
 	if( !collision.flags.is_in_air )
 	{
-		//g_engine->find_asset<sound_asset>( "sfx_platformer_jump" )->play();
 		add_impulse( { Vec2( 0.0f, -1.0f ), 3.5f } );
 	}
 }

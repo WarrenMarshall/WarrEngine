@@ -72,7 +72,7 @@ struct Entity
 	// transforms
 	Transform _tform;
 
-	std::vector<std::unique_ptr<Entity_Component>> components;
+	std::list<std::unique_ptr<Entity_Component>> components;
 
 	// the nodes in the parent scenes spatial map that this entity is touching
 	std::set<Quad_Tree::Node*> nodes;
