@@ -39,7 +39,7 @@ void Scene_Angle_Dirs::draw()
 
 	// connecting line
 	Render::state->color = make_color( e_pal::lighter );
-	Render::draw_line( Vec2::zero, marker_pos2 );
+	Render::draw_line( marker_pos2_start, marker_pos2 );
 }
 
 void Scene_Angle_Dirs::draw_ui()
@@ -67,11 +67,26 @@ void Scene_Angle_Dirs::draw_ui()
 
 		if( !marker_pos2.is_zero() )
 		{
-			info_lines.push_back( std::format( "Dot   : {:.3f}", Vec2::dot( marker_pos, marker_pos2 ) ) );
+			info_lines.push_back( std::format( "Dot   : {:.3f}", Vec2::dot( marker_pos, marker_pos2 - marker_pos2_start ) ) );
 		}
 
 		Render::draw_string( info_lines, ui_pos );
 	}
+}
+
+bool Scene_Angle_Dirs::on_input_pressed( const Input_Event* evt )
+{
+	switch( evt->input_id )
+	{
+		case e_input_id::mouse_button_right:
+		{
+			marker_pos2_start = Coord_System::window_to_world_pos( evt->mouse_pos );
+			return true;
+		}
+		break;
+	}
+
+	return false;
 }
 
 bool Scene_Angle_Dirs::on_input_motion( const Input_Event* evt )

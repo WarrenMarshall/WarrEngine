@@ -23,7 +23,7 @@ struct Entity
 		bool pickable : 1 = false;
 
 		// if true, this entity is included in the scene's quad tree spatial map
-		bool include_in_quad_tree : 1 = true;
+		bool include_in_quad_tree : 1 = false;
 	} flags;
 
 	Life_Cycle life_cycle;

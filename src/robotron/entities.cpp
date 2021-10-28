@@ -7,6 +7,7 @@ using namespace war;
 E_Player::E_Player()
 {
 	tag = H( "player" );
+	flags.include_in_quad_tree = true;
 
 	fire_cooldown = Timer( 100 );
 	//fire_cooldown = Timer( 1000 );
@@ -63,6 +64,7 @@ void E_Player::pre_update()
 E_Player_Bullet::E_Player_Bullet()
 {
 	tag = H( "player_bullet" );
+	flags.include_in_quad_tree = true;
 
 	{
 		auto ec = add_component<Collision_Body_Component>();

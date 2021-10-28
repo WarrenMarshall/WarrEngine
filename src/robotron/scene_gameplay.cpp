@@ -24,6 +24,7 @@ void Scene_Gameplay::pushed()
 		auto e = add_entity<Entity>();
 		e->tag = H( "world_geo" );
 		e->collision.type = e_physics_body_type::stationary;
+		e->flags.include_in_quad_tree = true;
 
 		{
 			auto ec = e->add_component<Collision_Body_Component>();
