@@ -6,3 +6,15 @@
 	"tag" "player_shoot"
 	"filename" "sfx/player_shoot.wav"
 }
+
+{
+	"type" "sound"
+	"tag" "player_bullet_hit_enemy_drone"
+	"filename" "sfx/enemy_drone_hit.wav"
+}
+
+{
+	"type" "sound"
+	"tag" "player_bullet_hit_world"
+	"filename" "sfx/player_bullet_hit_world.wav"
+}

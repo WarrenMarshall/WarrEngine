@@ -64,6 +64,19 @@ void Scene_Gameplay::pushed()
 	// PLAYER
 
 	player = add_entity<E_Player>();
+
+	// ----------------------------------------------------------------------------
+	// RANDO ENEMIES
+
+	for( auto x = 0 ; x < 16 ; ++x )
+	{
+		auto e = add_entity<E_Enemy_Drone>();
+		auto pos = Random::get_random_in_circle( 1.f );
+		pos.x *= viewport_hw / 2.f;
+		pos.y *= viewport_hh / 2.f;
+		e->set_pos( pos );
+	}
+
 }
 
 void Scene_Gameplay::popped()
@@ -181,6 +194,10 @@ bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* e
 				auto ec = e->add_component<Emitter_Component>();
 				ec->init( "em_player_bullet_hit_world_geo" );
 			}
+			{
+				auto ec = e->add_component<Sound_Component>();
+				ec->init( "player_bullet_hit_world", true, true );
+			}
 		}
 
 		return true;
@@ -197,6 +214,10 @@ bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* e
 			{
 				auto ec = e->add_component<Emitter_Component>();
 				ec->init( "em_player_bullet_hit_enemy_drone" );
+			}
+			{
+				auto ec = e->add_component<Sound_Component>();
+				ec->init( "player_bullet_hit_enemy_drone", true, true );
 			}
 		}
 
