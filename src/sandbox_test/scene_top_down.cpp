@@ -35,6 +35,7 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 			auto tmc = (Tile_Map_Component*)gameplay_scene->world->get_component( e_component_type::tile_map );
 
 			auto e = scene->add_entity<Entity>();
+			e->flags.include_in_quad_tree = true;
 			e->tag = H( "player" );
 			e->set_pos( Vec2( tile->x_idx * tmc->tile_map->tile_sz, tile->y_idx * tmc->tile_map->tile_sz ) );
 			e->add_delta_pos( Vec2( tmc->tile_map->tile_sz / 2.f, tmc->tile_map->tile_sz / 2.f ) );
@@ -65,7 +66,6 @@ f_decl_tile_map_spawn_entity( topdown_spawn_entity )
 void Scene_Top_Down::pushed()
 {
 	get_transform()->set_scale( 2.f );
-	//spatial_map.init( Rect( -375, -375, 750, 750 ) );
 
 	Scene::pushed();
 
@@ -87,11 +87,13 @@ void Scene_Top_Down::pushed()
 	// GEO
 
 	{
-		world = add_entity<Entity>();
-		world->collision.type = e_physics_body_type::stationary;
+		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
+		e->collision.type = e_physics_body_type::stationary;
+		world = e;
 
 		{
-			auto ec = world->add_component<Tile_Map_Component>();
+			auto ec = e->add_component<Tile_Map_Component>();
 			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->init( "ts_top_down", "tm_top_down" );
 			ec->spawn_entities( this, topdown_spawn_entity );
@@ -148,13 +150,6 @@ void Scene_Top_Down::reset_collision_trace_results()
 	{
 		iter->rs_opt.color = make_color( Color::dark_teal );
 	}
-}
-
-bool Scene_Top_Down::on_input_pressed( const Input_Event* evt )
-{
-	// #topdown - add a keypress toggle to switch into a mode where the player
-	// rotates based on the right_stick direction but the world stays upright
-	return false;
 }
 
 bool Scene_Top_Down::on_input_motion( const Input_Event* evt )

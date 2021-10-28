@@ -14,6 +14,7 @@ Scene_Spatial::Scene_Spatial()
 void Scene_Spatial::spawn_entity( Vec2 pos )
 {
 	auto e = add_entity<Entity>();
+	e->flags.include_in_quad_tree = true;
 	e->set_pos( pos );
 	e->set_pickable();
 	e->rs_opt.color = make_color( e_pal::lighter );
@@ -55,6 +56,7 @@ void Scene_Spatial::pushed()
 	// PLAYER SHAPE
 	{
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->tag = H( "main_ball" );
 		e->flags.include_in_quad_tree = true;
 

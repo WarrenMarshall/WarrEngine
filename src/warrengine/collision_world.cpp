@@ -112,6 +112,13 @@ void Collision_World::handle_collisions()
 
 	for( auto& ea : parent_scene->entities )
 	{
+		// entities MUST be in the quad tree to participate in collisions
+
+		if( !ea->flags.include_in_quad_tree )
+		{
+			continue;
+		}
+
 		auto sccs_a = ea->get_components( e_component_type::collision_body );
 
 		if( sccs_a.empty() )

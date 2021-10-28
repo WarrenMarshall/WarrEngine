@@ -19,6 +19,7 @@ Entity* Scene_Bounce::spawn_shape()
 	auto e = add_entity<Entity>();
 	e->set_scale( Random::getf_range( 1.0f, 1.5f ) );
 	e->collision.flags.is_bouncy = true;
+	e->flags.include_in_quad_tree = true;
 
 	{
 		auto ec = e->add_component<Collision_Body_Component>();
@@ -26,7 +27,6 @@ Entity* Scene_Bounce::spawn_shape()
 		static i32 last_spawned_type = 0;
 		last_spawned_type++;
 
-		//last_spawned_type = 1;
 		switch( last_spawned_type % 3 )
 		{
 			case 0:
@@ -80,6 +80,7 @@ void Scene_Bounce::pushed()
 
 	{
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->tag = H( "main_ball" );
 		e->collision.type = e_physics_body_type::kinematic;
 		{
@@ -99,6 +100,7 @@ void Scene_Bounce::pushed()
 		int num_colliders = 3;
 
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->tag = H( "world_geo" );
 		e->collision.type = e_physics_body_type::stationary;
 
@@ -176,7 +178,6 @@ void Scene_Bounce::draw_ui()
 {
 	Scene::draw_ui();
 	draw_title( "Bounce" );
-
 }
 
 void Scene_Bounce::post_update()

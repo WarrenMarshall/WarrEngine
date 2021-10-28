@@ -44,6 +44,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 		case 107:
 		{
 			auto e = scene->add_entity<E_Jump_Pad>();
+			e->flags.include_in_quad_tree = true;
 			e->tag = H( "JUMP_PAD" );
 			e->set_pos( tile_pos );
 
@@ -73,6 +74,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 		case 145:
 		{
 			auto e = scene->add_entity<E_Player>();
+			e->flags.include_in_quad_tree = true;
 			e->set_pos( tile_pos );
 			e->collision.flags.is_affected_by_gravity = true;
 
@@ -131,21 +133,25 @@ void Scene_Platformer::pushed()
 	// world
 
 	{
-		world = add_entity<Entity>();
-		world->collision.type = e_physics_body_type::stationary;
+		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
+		e->collision.type = e_physics_body_type::stationary;
 
 		{
-			auto ec = world->add_component<Tile_Map_Component>();
+			auto ec = e->add_component<Tile_Map_Component>();
 			ec->set_collision_flags( coll_flags.geo, 0 );
 			ec->init( "ts_platformer", "tm_platformer_level_01" );
 			ec->spawn_entities( this, platformer_spawn_entity );
 		}
+
+		world = e;
 	}
 
 	// mover
 
 	{
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->set_pos( { 0.f, -8.f } );
 		e->collision.type = e_physics_body_type::kinematic;
 

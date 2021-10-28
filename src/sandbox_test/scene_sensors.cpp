@@ -14,6 +14,7 @@ Scene_Sensors::Scene_Sensors()
 void Scene_Sensors::spawn_sensor()
 {
 	auto e = add_entity<Entity>();
+	e->flags.include_in_quad_tree = true;
 	e->collision.type = e_physics_body_type::stationary;
 	e->set_pos( { -viewport_hw + ( Random::getf() * viewport_w ), -viewport_hh + ( Random::getf() * viewport_h ) } );
 	{
@@ -64,6 +65,7 @@ void Scene_Sensors::pushed()
 	// KINEMATIC CIRCLE
 	{
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->tag = H( "the_player" );
 		e->collision.type = e_physics_body_type::kinematic;
 		{
@@ -73,7 +75,7 @@ void Scene_Sensors::pushed()
 		{
 			auto ec = e->add_component<Collision_Body_Component>();
 			ec->set_as_circle( 32.f );
-			ec->set_collision_flags( coll_flags.player, coll_flags.world | coll_flags.sensor );
+			ec->set_collision_flags( coll_flags.player, coll_flags.sensor );
 		}
 	}
 
@@ -84,41 +86,6 @@ void Scene_Sensors::pushed()
 		{
 			spawn_sensor();
 		}
-	}
-
-	// WORLD GEO
-
-	{
-		auto e = add_entity<Entity>();
-		e->collision.type = e_physics_body_type::stationary;
-
-		// 4 walls
-		{
-			auto ec = e->add_component<Collision_Body_Component>();
-			ec->get_transform()->set_pos( { -viewport_hw, viewport_hh - 8.f } );
-			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( coll_flags.world, 0 );
-		}
-		{
-			auto ec = e->add_component<Collision_Body_Component>();
-			ec->get_transform()->set_pos( { -viewport_hw, -viewport_hh - 8.f } );
-			ec->set_as_box( viewport_w, 16.f );
-			ec->set_collision_flags( coll_flags.world, 0 );
-		}
-		{
-			auto ec = e->add_component<Collision_Body_Component>();
-			ec->get_transform()->set_pos( { -viewport_hw - 8.f, -viewport_hh } );
-			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( coll_flags.world, 0 );
-		}
-		{
-			auto ec = e->add_component<Collision_Body_Component>();
-			ec->get_transform()->set_pos( { viewport_hw - 8.f, -viewport_hh } );
-			ec->set_as_box( 16.f, viewport_h );
-			ec->set_collision_flags( coll_flags.world, 0 );
-		}
-
-		world_geo = e;
 	}
 }
 

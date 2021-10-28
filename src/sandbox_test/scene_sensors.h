@@ -6,14 +6,12 @@ struct Scene_Sensors final : Scene
 	struct
 	{
 		ui16 player = 0b0000001;
-		ui16 world	= 0b0000010;
-		ui16 sensor = 0b0000100;
+		ui16 sensor = 0b0000010;
 	} coll_flags;
 
 	Scene_Sensors();
 
 	Entity* player = nullptr;
-	Entity* world_geo = nullptr;
 
 	void spawn_sensor();
 	virtual void pushed() override;

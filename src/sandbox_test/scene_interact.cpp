@@ -21,6 +21,7 @@ Scene_Interact::Scene_Interact()
 Entity* Scene_Interact::spawn_entity()
 {
 	auto e = add_entity<Entity>();
+	e->flags.include_in_quad_tree = true;
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
 	{
@@ -101,6 +102,7 @@ void Scene_Interact::pushed()
 		int num_primitives = 4;
 
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->collision.type = e_physics_body_type::stationary;
 
 		for( int i = 0 ; i < num_primitives ; ++i )

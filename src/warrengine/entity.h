@@ -22,7 +22,8 @@ struct Entity
 		// if true, this entity will be given a selection ID and be drawn into the picking frame buffer
 		bool pickable : 1 = false;
 
-		// if true, this entity is included in the scene's quad tree spatial map
+		// if true, this entity is included in the scene's quad tree spatial map.
+		// this defaults to false for performance reasons. entities must specifically opt-in.
 		bool include_in_quad_tree : 1 = false;
 	} flags;
 

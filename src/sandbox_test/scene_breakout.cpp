@@ -32,6 +32,7 @@ Scene_Breakout::Scene_Breakout()
 void Scene_Breakout::spawn_ball()
 {
 	auto e = add_entity<Entity>();
+	e->flags.include_in_quad_tree = true;
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
 	e->collision.flags.is_bouncy = true;
@@ -58,8 +59,8 @@ void Scene_Breakout::pushed()
 	// paddle
 	{
 		auto e = add_entity<E_Breakout_Paddle>();
+		e->flags.include_in_quad_tree = true;
 		e->tag = H( "THE_PADDLE" );
-		e->set_pos( { 0.f, 0.f } );
 		e->collision.type = e_physics_body_type::kinematic;
 		auto paddle_w = 200.f;
 		auto paddle_h = 16.f;
@@ -84,7 +85,9 @@ void Scene_Breakout::pushed()
 
 	{
 		auto num_primitives = 2;
+
 		auto e = add_entity<Entity>();
+		e->flags.include_in_quad_tree = true;
 		e->tag = H( "world_geo" );
 		e->collision.type = e_physics_body_type::stationary;
 
@@ -197,7 +200,7 @@ bool Scene_Breakout::on_input_motion( const Input_Event* evt )
 	{
 		case e_input_id::gamepad_left_stick:
 		{
-			paddle->add_force( { evt->delta * Vec2::x_axis, 150.f } );
+			paddle->add_force( { evt->delta * Vec2::x_axis, 500.f } );
 
 			return true;
 		}
