@@ -10,7 +10,6 @@ E_Player::E_Player()
 	flags.include_in_quad_tree = true;
 
 	fire_cooldown = Timer( 100 );
-	//fire_cooldown = Timer( 1000 );
 
 	{
 		auto ec = add_component<Collision_Body_Component>();
@@ -76,5 +75,23 @@ E_Player_Bullet::E_Player_Bullet()
 		ec->init( "particle_simple_01" );
 		ec->get_transform()->set_scale( 0.75f );
 		ec->rs_opt.color = make_color( Color::teal );
+	}
+}
+
+// ----------------------------------------------------------------------------
+
+E_Enemy_Drone::E_Enemy_Drone()
+{
+	tag = H( "enemy_drone" );
+	flags.include_in_quad_tree = true;
+
+	{
+		auto ec = add_component<Collision_Body_Component>();
+		ec->set_as_centered_box( 12, 12 );
+		ec->set_collision_flags( coll_flags.enemy_drone, coll_flags.world | coll_flags.player | coll_flags.player_bullet );
+	}
+	{
+		auto ec = add_component<Sprite_Component>();
+		ec->init( "anim_enemy_drone_walk" );
 	}
 }

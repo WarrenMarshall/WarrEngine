@@ -3,7 +3,7 @@
 
 {
 	"type" "emitter_params"
-	"tag" "em_death_spark"
+	"tag" "em_player_bullet_hit_world_geo"
 	"texture_tag" "particle_simple_01"
 	"spawner_type" "spawner_type.in_circle,2"
 
@@ -18,5 +18,24 @@
 	"r_lifespan" "125, 250"
 	"r_velocity_spawn" "100,100"
 	"t_color" "0,color.white, 0.15,color.teal, 1.0,color.teal"
+	"t_alpha" "0,1, 1,1"
+}
+
+{
+	"type" "emitter_params"
+	"tag" "em_player_bullet_hit_enemy_drone"
+	"texture_tag" "engine_white"
+	"spawner_type" "spawner_type.point"
+
+	"s_max_alive" "3"
+	"s_spawn_rate" "3"
+	"b_needs_warm_up" "false"
+	"b_uses_gravity" "false"
+	"b_one_shot" "true"
+	"r_dir_var" "0,0"
+	"r_scale_spawn" "0.5, 0.75"
+	"r_lifespan" "200, 300"
+	"r_velocity_spawn" "0,0"
+	"t_color" "0,color.red, 0.15,color.red, 1.0,color.orange"
 	"t_alpha" "0,1, 1,1"
 }

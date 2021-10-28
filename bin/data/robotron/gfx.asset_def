@@ -20,7 +20,17 @@
 		player_walk_up_1, 72, 48, 8, 16,\
 		player_walk_up_2, 80, 48, 8, 16,\
 		player_walk_up_3, 88, 48, 8, 16,\
-		coin_4, 48, 32, 16, 16"
+		enemy_drone_walk_1, 208, 0, 16, 16,\
+		enemy_drone_walk_2, 224, 0, 16, 16\
+		"
+}
+
+{
+	"type" "anim_texture"
+	"tag" "anim_enemy_drone_walk"
+	"frames_per_sec" "4"
+	"tween" "tween.loop"
+	"frame_tags" "enemy_drone_walk_1, enemy_drone_walk_2"
 }
 
 {

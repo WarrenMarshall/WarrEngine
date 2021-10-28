@@ -21,3 +21,10 @@ struct E_Player_Bullet : Entity
 {
 	E_Player_Bullet();
 };
+
+// ----------------------------------------------------------------------------
+
+struct E_Enemy_Drone : Entity
+{
+	E_Enemy_Drone();
+};

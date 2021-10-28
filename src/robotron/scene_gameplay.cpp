@@ -89,14 +89,8 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 	if( evt->input_id == e_input_id::mouse_button_left )
 	{
 		{
-			auto e = add_entity<Entity_Transient>();
+			auto e = add_entity<E_Enemy_Drone>();
 			e->set_pos( Coord_System::window_to_world_pos( evt->mouse_pos ) );
-			{
-				//auto ec = e->add_component<Sprite_Component>();
-				//ec->init( "engine_white" );
-				auto ec = e->add_component<Emitter_Component>();
-				ec->init( "em_death_spark" );
-			}
 		}
 
 		return true;
@@ -160,24 +154,54 @@ bool Scene_Gameplay::on_input_motion( const Input_Event* evt )
 	return false;
 }
 
+[[nodiscard]] Entity* find_entity_in_map( std::map<hash, Entity*>& map, hash tag )
+{
+	auto iter = map.find( tag );
+	return ( iter == map.end() ) ? nullptr : iter->second;
+}
+
 bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll )
 {
-	if( entity_a->tag == H( "player_bullet" ) and entity_b->tag == H( "world_geo" ) )
+	std::map<hash, Entity*> map;
+	map.insert( std::make_pair( entity_a->tag, entity_a ) );
+	map.insert( std::make_pair( entity_b->tag, entity_b ) );
+
+	auto world_geo = find_entity_in_map( map, H( "world_geo" ) );
+	auto player_bullet = find_entity_in_map( map, H( "player_bullet" ) );
+	auto enemy_drone = find_entity_in_map( map, H( "enemy_drone" ) );
+
+	if( player_bullet and world_geo )
 	{
-		entity_a->set_life_cycle( e_life_cycle::dying );
+		player_bullet->set_life_cycle( e_life_cycle::dying );
 
 		{
 			auto e = add_entity<Entity_Transient>();
 			e->set_pos( entity_a->get_transform()->pos );
 			{
 				auto ec = e->add_component<Emitter_Component>();
-				ec->init( "em_death_spark" );
+				ec->init( "em_player_bullet_hit_world_geo" );
 			}
 		}
 
 		return true;
 	}
 
+	if( player_bullet and enemy_drone )
+	{
+		player_bullet->set_life_cycle( e_life_cycle::dying );
+		enemy_drone->set_life_cycle( e_life_cycle::dying );
+
+		{
+			auto e = add_entity<Entity_Transient>();
+			e->set_pos( entity_a->get_transform()->pos );
+			{
+				auto ec = e->add_component<Emitter_Component>();
+				ec->init( "em_player_bullet_hit_enemy_drone" );
+			}
+		}
+
+		return true;
+	}
 
 	return false;
 }

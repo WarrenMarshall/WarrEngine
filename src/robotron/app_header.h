@@ -8,6 +8,7 @@ constexpr struct
 	ui16 world			= 0b00000001;
 	ui16 player			= 0b00000010;
 	ui16 player_bullet	= 0b00000100;
+	ui16 enemy_drone	= 0b00001000;
 } coll_flags;
 
 #include "entities.h"
