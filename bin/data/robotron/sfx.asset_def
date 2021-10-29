@@ -1,6 +1,13 @@
 
 # SFX
 
+# table:SFX
+# {
+# 	tag:"player_shoot", filename:"sfx/player_shoot.wav"
+# 	player_bullet_hit_enemy_drone, "sfx/enemy_drone_hit.wav"
+# }
+
+
 {
 	"type" "sound"
 	"tag" "player_shoot"

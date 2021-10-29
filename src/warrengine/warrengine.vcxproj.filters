@@ -564,11 +564,11 @@
     <ClInclude Include="scene_transient.h">
       <Filter>include\scenes</Filter>
     </ClInclude>
-    <ClInclude Include="cache.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="quad_tree.h">
       <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="cache.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

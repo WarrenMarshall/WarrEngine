@@ -5,6 +5,8 @@
 namespace war
 {
 
+static Cache<const Texture_Asset*, size_t> cached_texture_slot;
+
 Vertex_Buffer::Vertex_Buffer( Vertex_Array_Object* vao, i32 verts_per_element )
 	: vao( vao ), verts_per_element( verts_per_element )
 {
@@ -98,7 +100,7 @@ size_t Vertex_Buffer::assign_texture_slot( const Texture_Asset* texture )
 	texture_slots[ total_texture_slots_used ] = texture;
 	total_texture_slots_used++;
 
-	assert( texture );
+	//assert( texture );
 	cached_texture_slot.set( texture, total_texture_slots_used - 1 );
 
 	return total_texture_slots_used - 1;

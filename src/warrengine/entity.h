@@ -154,9 +154,9 @@ struct Entity
 
 	[[nodiscard]] bool has_component( e_component_type type, hash tag = hash_none ) const
 	{
-		for( auto& ec : this->components )
+		for( auto& ec : components )
 		{
-			if( ec.get()->component_type == type and ( tag == hash_none or ec->tag == tag ) )
+			if( ec->component_type == type and ( tag == hash_none or ec->tag == tag ) )
 			{
 				return true;
 			}
@@ -170,11 +170,11 @@ struct Entity
 	[[nodiscard]] std::vector<Entity_Component*> get_components( e_component_type type, hash tag = hash_none ) const
 	{
 		std::vector<Entity_Component*> ecs;
-		ecs.reserve( this->components.size() );
+		ecs.reserve( components.size() );
 
-		for( auto& ec : this->components )
+		for( auto& ec : components )
 		{
-			if( ec.get()->component_type == type and ( tag == hash_none or ec->tag == tag ) )
+			if( ec->component_type == type and ( tag == hash_none or ec->tag == tag ) )
 			{
 				ecs.push_back( ec.get() );
 			}
@@ -187,9 +187,9 @@ struct Entity
 
 	[[nodiscard]] Entity_Component* get_component( e_component_type type, hash tag = hash_none ) const
 	{
-		for( auto& ec : this->components )
+		for( auto& ec : components )
 		{
-			if( ec.get()->component_type == type and ( tag == hash_none or ec->tag == tag ) )
+			if( ec->component_type == type and ( tag == hash_none or ec->tag == tag ) )
 			{
 				return ec.get();
 			}

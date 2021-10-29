@@ -9,8 +9,6 @@ struct Vertex_Buffer final
 	// pool of contiguous vertex data
 	Object_Pool<Render_Vertex> vertices;
 	std::vector<const Texture_Asset*> texture_slots;
-
-	Cache<const Texture_Asset*,size_t> cached_texture_slot;
 	size_t total_texture_slots_used = 0;
 
 	// how many vertices make up a single element.

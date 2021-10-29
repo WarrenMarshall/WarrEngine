@@ -8,28 +8,32 @@ namespace war
 template<typename T_Key, typename T_Value>
 struct Cache final
 {
-	T_Key key;
-	T_Value value;
+	std::map<T_Key, T_Value> values;
 
 	void set( T_Key key, T_Value value )
 	{
-		this->key = key;
-		this->value = value;
+		values.insert_or_assign( key, value );
+
+		// if this fires, review the called code and make sure the caching is
+		// worth it. with this many look ups, it might not be saving anything.
+		assert( values.size() < 10 );
 	}
 
 	void clear()
 	{
-		key = {};
+		values.clear();
 	}
 
 	[[nodiscard]] std::optional<T_Value> get( T_Key key ) const
 	{
-		if( this->key == key )
+		auto iter = values.find( key );
+
+		if( iter == values.end() )
 		{
-			return value;
+			return std::nullopt;
 		}
 
-		return std::nullopt;
+		return iter->second;
 	}
 };
 
