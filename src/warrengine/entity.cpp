@@ -566,8 +566,23 @@ Box2D_Physics_Body_Component* Entity::find_primary_box2d_body() const
 
 // ----------------------------------------------------------------------------
 
+Entity_Transient::Entity_Transient()
+{
+#if _DEBUG
+	time_spawned = g_engine->clock.now();
+#endif
+}
+
 void Entity_Transient::update()
 {
+#ifdef _DEBUG
+	// this is a debug warning system that checks if a transient entity is still
+	// alive after 'max_time_alive' milliseconds. if it is, something is likely
+	// wrong. review the code/set_up and make sure it's dying off when it should.
+	const time_ms max_time_alive = 1000;
+	assert( g_engine->clock.now() - time_spawned < max_time_alive );
+#endif
+
 	Entity::update();
 
 	// once all of the components have died, the fx container entity can die.

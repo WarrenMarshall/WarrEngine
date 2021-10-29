@@ -232,6 +232,11 @@ private:
 
 struct Entity_Transient : Entity
 {
+	Entity_Transient();
+
+#ifdef _DEBUG
+	time_ms time_spawned = 0;
+#endif
 	virtual void update() override;
 };
 

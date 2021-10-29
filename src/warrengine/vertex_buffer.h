@@ -10,6 +10,7 @@ struct Vertex_Buffer final
 	Object_Pool<Render_Vertex> vertices;
 	std::vector<const Texture_Asset*> texture_slots;
 	size_t total_texture_slots_used = 0;
+	Cache<const Texture_Asset*, size_t> cached_texture_slot;
 
 	// how many vertices make up a single element.
 	// i.e. quad = 4, triangles = 3, line = 2, point = 1
