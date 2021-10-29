@@ -579,7 +579,7 @@ void Entity_Transient::update()
 	// this is a debug warning system that checks if a transient entity is still
 	// alive after 'max_time_alive' milliseconds. if it is, something is likely
 	// wrong. review the code/set_up and make sure it's dying off when it should.
-	const time_ms max_time_alive = 1000;
+	const time_ms max_time_alive = 2000;
 	assert( g_engine->clock.now() - time_spawned < max_time_alive );
 #endif
 
