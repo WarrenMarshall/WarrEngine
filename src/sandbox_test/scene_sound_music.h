@@ -3,8 +3,6 @@ using namespace war;
 
 struct Scene_Sound_Music final : Scene
 {
-	Texture_Asset* gradient = nullptr;
-
 	Scene_Sound_Music();
 
 	virtual void draw() override;

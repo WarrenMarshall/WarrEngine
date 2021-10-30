@@ -4,7 +4,7 @@
 namespace war
 {
 
-war::Texture_Source_Base* Texture_Asset::get_src_texture() const
+Texture_Source_Asset* Texture_Asset::get_src_texture() const
 {
 	// this shouldn't be called for animated textures, only their frames
 	//
@@ -24,7 +24,7 @@ Texture_Asset::Texture_Asset( std::string_view src_texture_tag )
 {
 	src_texture = find_texture_source_base( src_texture_tag );
 
-	rc = { 0.f, 0.f, src_texture->w, src_texture->h };
+	rc = { 0.f, 0.f, ( f32 )src_texture->w, ( f32 )src_texture->h };
 
 #ifndef _RELEASE
 	if( ( rc.x + rc.w ) > src_texture->w or ( rc.y + rc.h ) > src_texture->h )
@@ -74,14 +74,9 @@ Texture_Asset::Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type 
 	frame_tween = Tween( 0.f, (f32)( frames.size() ), duration_ms, tween_type, e_tween_via::linear );
 }
 
-Texture_Source_Base* Texture_Asset::find_texture_source_base( std::string_view src_texture_tag )
+Texture_Source_Asset* Texture_Asset::find_texture_source_base( std::string_view src_texture_tag )
 {
-	Texture_Source_Base* result = g_engine->find_asset_safe<Texture_Source_Asset>( src_texture_tag );
-
-	if( !result )
-	{
-		result = g_engine->find_asset_safe<Gradient_Source_Asset>( src_texture_tag );
-	}
+	auto result = g_engine->find_asset_safe<Texture_Source_Asset>( src_texture_tag );
 	assert( result );
 
 	return result;

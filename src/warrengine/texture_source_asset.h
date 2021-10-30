@@ -12,16 +12,26 @@
 namespace war
 {
 
-struct Texture_Source_Asset final : Texture_Source_Base
+struct Texture_Source_Asset final : Asset
 {
+	ui32 gl_id = 0;
+	ui16 w = 0;
+	ui16 h = 0;
+
 	// how the edges of the texture are handled
 	e_tiling tiling = e_tiling::repeat;
 
-	// set to false if you never want this texture to generate mipmaps
-	bool use_mipmaps = true;
+	struct
+	{
+		// set to false if you never want this texture to generate mipmaps
+		bool use_mipmaps : 1 = true;
 
-	// set to true if you want bilinear filtering on the texture
-	bool use_linear_filtering = false;
+		// set to true if you want bilinear filtering on the texture
+		bool use_linear_filtering : 1 = false;
+
+	} flags;
+
+	virtual ~Texture_Source_Asset() override;
 
 	virtual bool create() override;
 };

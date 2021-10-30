@@ -13,13 +13,6 @@ static void draw_tiled_background()
 	Render::draw_tiled( g_engine->find_asset<Texture_Asset>( "engine_tile_background_stripe" ), Rect( -viewport_w, -viewport_h, viewport_w * 2.f, viewport_h * 2.f ) );
 }
 
-static void draw_gradient_background()
-{
-	scoped_render_state;
-
-	Render::draw_quad( g_engine->find_asset<Texture_Asset>( "background_gradient" ), Rect( 0.f, 0.f, viewport_w, viewport_h ) );
-}
-
 static void draw_title( const std::string& title )
 {
 	scoped_render_state;

@@ -14,8 +14,6 @@ void Scene_Textures::pushed()
 	Scene::pushed();
 
 	tex_crate = g_engine->find_asset<Texture_Asset>( "tex_crate_01" );
-	grad_horizontal = g_engine->find_asset<Texture_Asset>( "gradient_horizontal" );
-	grad_vertical = g_engine->find_asset<Texture_Asset>( "gradient_vertical" );
 	anim_player = g_engine->find_asset<Texture_Asset>( "anim_player_run" );
 	anim_coin = g_engine->find_asset<Texture_Asset>( "anim_coin" );
 
@@ -57,7 +55,6 @@ void Scene_Textures::draw_ui()
 
 		l_draw_info_box( "quads", { 6.f, 32.f, 84.f, 92.f } );
 		l_draw_info_box( "sprites", { 96.f, 32.f, 84.f, 92.f } );
-		l_draw_info_box( "gradients", { 186.f, 32.f, 116.f, 76.f } );
 		l_draw_info_box( "tiled", { 10.f, 132.f, 174.f, 104.f } );
 		l_draw_info_box( "animated", { 194.f, 128.f, 108.f, 108.f } );
 
@@ -80,16 +77,6 @@ void Scene_Textures::draw_ui()
 
 		origin = { 16.f, 152.f };
 		Render::draw_tiled( tex_crate, Rect( origin.x, origin.y, 160.f, 76.f ) );
-
-		// gradient, horizontal
-
-		origin = { 192.f, 52.f };
-		Render::draw_quad( grad_horizontal, Rect( origin.x, origin.y, 48.f, 48.f ) );
-
-		// gradient, vertical
-
-		origin = { 248.f, 52.f };
-		Render::draw_quad( grad_vertical, Rect( origin.x, origin.y, 48.f, 48.f ) );
 
 		// player, animating
 

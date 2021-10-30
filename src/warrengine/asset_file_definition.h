@@ -18,7 +18,6 @@ struct Asset_File_Definition final
 	void precache_preproc( const Key_Values& key_values_for_asset_def );
 	void precache_palette( const Key_Values& key_values_for_asset_def, std::string_view tag );
 	void precache_src_texture( const Key_Values& key_values_for_asset_def, std::string_view tag );
-	void precache_src_gradient( const Key_Values& key_values_for_asset_def, std::string_view tag );
 	void precache_font_def( const Key_Values& key_values_for_asset_def, std::string_view tag );
 	void precache_slice_def( const Key_Values& key_values_for_asset_def, std::string_view tag );
 	void precache_sound( const Key_Values& key_values_for_asset_def, std::string_view tag );

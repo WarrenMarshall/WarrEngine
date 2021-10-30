@@ -10,7 +10,7 @@ namespace war
 struct Texture_Asset final : Asset
 {
 	// the raw_image asset this texture sources from
-	Texture_Source_Base* get_src_texture() const;
+	Texture_Source_Asset* get_src_texture() const;
 
 	// the rectangle on the raw image that defines this texture
 	Rect rc = {};
@@ -30,7 +30,7 @@ struct Texture_Asset final : Asset
 	Texture_Asset( std::string_view src_texture_tag, const Rect& rc_tex );
 	Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, i32 frames_per_second );
 
-	Texture_Source_Base* find_texture_source_base( std::string_view src_texture_tag );
+	Texture_Source_Asset* find_texture_source_base( std::string_view src_texture_tag );
 
 	[[nodiscard]] const Texture_Asset* get_frame( f32 anim_offset ) const;
 	void randomize();
@@ -40,7 +40,7 @@ struct Texture_Asset final : Asset
 	f32 height() const;
 
 private:
-	Texture_Source_Base* src_texture = nullptr;
+	Texture_Source_Asset* src_texture;
 };
 
 }

@@ -20,7 +20,6 @@ void Scene_Main_Menu::pushed()
 void Scene_Main_Menu::draw()
 {
 	Scene::draw();
-	draw_gradient_background();
 	Render::draw_world_axis();
 }
 

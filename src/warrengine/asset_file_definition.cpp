@@ -38,7 +38,6 @@ void Asset_File_Definition::precache_asset_resources( size_t pass_num )
 			case 2:
 			{
 				if( type == "src_texture" )			precache_src_texture( key_values_for_asset_def, tag );
-				else if( type == "src_gradient" )	precache_src_gradient( key_values_for_asset_def, tag );
 				else if( type == "font_def" )		precache_font_def( key_values_for_asset_def, tag );
 				else if( type == "slice_def" )		precache_slice_def( key_values_for_asset_def, tag );
 				else if( type == "sound" )			precache_sound( key_values_for_asset_def, tag );
@@ -95,8 +94,8 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Source_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
 	asset_ptr->tiling = (e_tiling)g_engine->find_int_from_symbol( key_values_for_asset_def.find_value_or( "tiling", "tiling.repeat" ) );
-	asset_ptr->use_mipmaps = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( "use_mipmaps", "true" ) );
-	asset_ptr->use_linear_filtering = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( "use_linear_filtering", "false" ) );
+	asset_ptr->flags.use_mipmaps = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( "use_mipmaps", "true" ) );
+	asset_ptr->flags.use_linear_filtering = g_engine->find_bool_from_symbol( key_values_for_asset_def.find_value_or( "use_linear_filtering", "false" ) );
 
 	asset_ptr->create();
 
@@ -137,41 +136,6 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 			g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag, rc ), texture_tag, "" );
 		}
 	}
-}
-
-void Asset_File_Definition::precache_src_gradient( const Key_Values& key_values_for_asset_def, std::string_view tag )
-{
-	assert( key_values_for_asset_def.does_key_exist( "alignment" ) );
-	assert( key_values_for_asset_def.does_key_exist( "colors" ) );
-
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Gradient_Source_Asset>(), tag.data(), "" );
-
-	asset_ptr->alignment = (e_align)g_engine->find_int_from_symbol( key_values_for_asset_def.find_value( "alignment" ) );
-
-	asset_ptr->colors.clear();
-	std::vector<Color> color_list = Text_Parser::color_list_from_str( key_values_for_asset_def.find_value( "colors" ) );
-
-	// must reverse the order or else vertical gradient textures end up
-	// backwards on the screen
-
-	if( asset_ptr->alignment == e_align::vertical )
-	{
-		std::reverse( color_list.begin(), color_list.end() );
-	}
-
-	for( const auto& iter : color_list )
-	{
-		asset_ptr->colors.push_back( iter.r );
-		asset_ptr->colors.push_back( iter.g );
-		asset_ptr->colors.push_back( iter.b );
-		asset_ptr->colors.push_back( iter.a );
-	}
-
-	// every gradient automatically creates an a_texture with the same name
-
-	g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag.data() ), tag.data(), "" );
-
-	asset_ptr->create();
 }
 
 void Asset_File_Definition::precache_font_def( const Key_Values& key_values_for_asset_def, std::string_view tag )

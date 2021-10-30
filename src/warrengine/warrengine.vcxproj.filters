@@ -58,28 +58,16 @@
     <ClCompile Include="slice_def_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
-    <ClCompile Include="cursor_asset.cpp">
-      <Filter>src\assets</Filter>
-    </ClCompile>
     <ClCompile Include="emitter_parameters_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
     <ClCompile Include="font_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
-    <ClCompile Include="gradient_source_asset.cpp">
-      <Filter>src\assets</Filter>
-    </ClCompile>
     <ClCompile Include="mesh_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
-    <ClCompile Include="palette_asset.cpp">
-      <Filter>src\assets</Filter>
-    </ClCompile>
     <ClCompile Include="sound_asset.cpp">
-      <Filter>src\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="texture_source_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
     <ClCompile Include="texture_asset.cpp">
@@ -229,9 +217,6 @@
     <ClCompile Include="scene_controller_required.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="texture_source_base.cpp">
-      <Filter>src\assets</Filter>
-    </ClCompile>
     <ClCompile Include="object_pool.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -279,6 +264,9 @@
     </ClCompile>
     <ClCompile Include="quad_tree.cpp">
       <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="texture_source_asset.cpp">
+      <Filter>src\assets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,9 +334,6 @@
       <Filter>include\assets</Filter>
     </ClInclude>
     <ClInclude Include="font_asset.h">
-      <Filter>include\assets</Filter>
-    </ClInclude>
-    <ClInclude Include="gradient_source_asset.h">
       <Filter>include\assets</Filter>
     </ClInclude>
     <ClInclude Include="mesh_asset.h">
@@ -512,9 +497,6 @@
     </ClInclude>
     <ClInclude Include="scene_controller_required.h">
       <Filter>include\scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="texture_source_base.h">
-      <Filter>include\assets</Filter>
     </ClInclude>
     <ClInclude Include="object_pool.h">
       <Filter>include</Filter>
