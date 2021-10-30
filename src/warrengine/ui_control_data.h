@@ -48,14 +48,17 @@ struct UI_Control_Data final
 	{
 		bool draw_percentage_as_text = true;
 	} progress;
+
 	struct
 	{
 		bool expanded = false;
 	} dropdown;
+
 	struct
 	{
 		Range range = Range( 0.f, 1.f );
 	} slider;
+
 	struct
 	{
 		size_t max_length = 0;

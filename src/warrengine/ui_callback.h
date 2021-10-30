@@ -10,9 +10,9 @@ namespace war
 
 struct UI_Callback
 {
-	virtual ~UI_Callback() = default;
-
 	UI_Control_Data default_data;
+
+	virtual ~UI_Callback() = default;
 
 	virtual UI_Control_Data* get_data( hash tag );
 

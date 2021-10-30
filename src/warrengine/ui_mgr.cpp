@@ -1,6 +1,5 @@
 
 #include "master_pch.h"
-#include "master_header.h"
 
 namespace war
 {
@@ -214,7 +213,7 @@ UI_Mgr* UI_Mgr::adjust_layout_to_client_area()
 
 	current_control->rc_client = compute_client_rect_from_ui_rect( current_control->rc_ui );
 
-	// #layout : NOTE : this doesn't allow for panels within panels since this clears the
+	// NOTE : this doesn't allow for panels within panels since this clears the
 	// stack entirely but that can be added in the future if needed
 	layout_init( current_control->rc_client );
 

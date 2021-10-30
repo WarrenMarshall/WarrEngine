@@ -88,7 +88,6 @@ bool Scene_Entity_Picking::on_input_pressed( const Input_Event* evt )
 		deselect_all();
 		select_by_pick_id( pick_id );
 
-		// #selection - this glow stuff is a temp hack. we need a nice way to outline entities or something cool like that.
 		for( auto& e : entities )
 		{
 			e->rs_opt.glow = 0.0f;

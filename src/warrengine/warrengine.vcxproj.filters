@@ -420,9 +420,6 @@
     <ClInclude Include="master_fwd_decl.h">
       <Filter>include\master</Filter>
     </ClInclude>
-    <ClInclude Include="master_header.h">
-      <Filter>include\master</Filter>
-    </ClInclude>
     <ClInclude Include="master_pch.h">
       <Filter>include\master</Filter>
     </ClInclude>

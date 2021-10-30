@@ -449,7 +449,6 @@
     <ClInclude Include="timer.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="logfile.h" />
-    <ClInclude Include="master_header.h" />
     <ClInclude Include="value_accumulator.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="render.h" />
