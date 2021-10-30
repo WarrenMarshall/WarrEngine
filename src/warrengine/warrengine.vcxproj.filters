@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="asset_cache_mgr.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="engine.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -93,9 +90,6 @@
     </ClCompile>
     <ClCompile Include="scene_mgr.cpp">
       <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="particle.cpp">
-      <Filter>src\particles</Filter>
     </ClCompile>
     <ClCompile Include="particle_emitter.cpp">
       <Filter>src\particles</Filter>
@@ -193,12 +187,6 @@
     <ClCompile Include="input_gamepad.cpp">
       <Filter>src\input</Filter>
     </ClCompile>
-    <ClCompile Include="cmd_line.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="box2d_pending_collision.cpp">
-      <Filter>src\box2d_physics_</Filter>
-    </ClCompile>
     <ClCompile Include="tile_set_asset.cpp">
       <Filter>src\assets</Filter>
     </ClCompile>
@@ -217,14 +205,8 @@
     <ClCompile Include="scene_controller_required.cpp">
       <Filter>src\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="object_pool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="scene_post_process.cpp">
       <Filter>src\scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="collision_pending_collision.cpp">
-      <Filter>src\collision</Filter>
     </ClCompile>
     <ClCompile Include="collision_query_callbacks.cpp">
       <Filter>src\collision</Filter>

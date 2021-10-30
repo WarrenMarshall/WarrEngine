@@ -273,8 +273,6 @@
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="scene_transient.cpp" />
     <ClCompile Include="collision_world.cpp" />
-    <ClCompile Include="collision_pending_collision.cpp" />
-    <ClCompile Include="object_pool.cpp" />
     <ClCompile Include="scene_post_process.cpp" />
     <ClCompile Include="collision_query_callbacks.cpp" />
     <ClCompile Include="slice_def_asset.cpp" />
@@ -286,8 +284,6 @@
     <ClCompile Include="texture_source_asset.cpp" />
     <ClCompile Include="tile_map_asset.cpp" />
     <ClCompile Include="tile_set_asset.cpp" />
-    <ClCompile Include="asset_cache_mgr.cpp" />
-    <ClCompile Include="cmd_line.cpp" />
     <ClCompile Include="coord.cpp" />
     <ClCompile Include="entity_component.cpp" />
     <ClCompile Include="range.cpp" />
@@ -325,7 +321,6 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="particle_pool.cpp" />
     <ClCompile Include="particle_spawner.cpp" />
-    <ClCompile Include="box2d_pending_collision.cpp" />
     <ClCompile Include="box2d_query.cpp" />
     <ClCompile Include="box2d_query_callbacks.cpp" />
     <ClCompile Include="box2d_debug_draw.cpp" />
@@ -353,7 +348,6 @@
     <ClCompile Include="render.cpp" />
     <ClCompile Include="scene_mgr.cpp" />
     <ClCompile Include="tween.cpp" />
-    <ClCompile Include="particle.cpp" />
     <ClCompile Include="particle_emitter.cpp" />
     <ClCompile Include="window.cpp" />
     <ClCompile Include="primitive_batch.cpp" />
