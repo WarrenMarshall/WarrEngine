@@ -24,7 +24,7 @@
 {
 	"type" "emitter_params"
 	"tag" "em_player_bullet_hit_enemy_drone"
-	"texture_tag" "engine_white"
+	"texture_tag" "anim_enemy_drone_walk"
 	"spawner_type" "spawner_type.point"
 
 	"s_max_alive" "3"
@@ -33,7 +33,7 @@
 	"b_uses_gravity" "false"
 	"b_one_shot" "true"
 	"r_dir_var" "0,0"
-	"r_scale_spawn" "0.5, 0.75"
+	"r_scale_spawn" "1.25, 1.5"
 	"r_lifespan" "200, 300"
 	"r_velocity_spawn" "0,0"
 	"t_color" "0,color.red, 0.15,color.red, 1.0,color.orange"

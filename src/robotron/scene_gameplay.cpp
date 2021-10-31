@@ -68,15 +68,22 @@ void Scene_Gameplay::pushed()
 	// ----------------------------------------------------------------------------
 	// RANDO ENEMIES
 
+/*
 	for( auto x = 0 ; x < 16 ; ++x )
 	{
-		auto e = add_entity<E_Enemy_Drone>();
-		auto pos = Random::get_random_in_circle( 1.f );
-		pos.x *= viewport_hw / 2.f;
-		pos.y *= viewport_hh / 2.f;
-		e->set_pos( pos );
+		spawn_random_drone();
 	}
+*/
 
+}
+
+void Scene_Gameplay::spawn_random_drone()
+{
+	auto e = add_entity<E_Enemy_Drone>();
+	auto pos = Random::get_random_in_circle( 1.f );
+	pos.x *= viewport_hw / 2.f;
+	pos.y *= viewport_hh / 2.f;
+	e->set_pos( pos );
 }
 
 void Scene_Gameplay::popped()
@@ -99,17 +106,23 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 		return true;
 	}
 
-	if( evt->input_id == e_input_id::mouse_button_left )
+	switch( evt->input_id )
 	{
+		case e_input_id::mouse_button_left:
 		{
 			auto e = add_entity<E_Enemy_Drone>();
 			e->set_pos( Coord_System::window_to_world_pos( evt->mouse_pos ) );
+
+			return true;
 		}
 
-		return true;
 
+		case e_input_id::gamepad_button_y:
+		{
+			spawn_random_drone();
+			return true;
+		}
 	}
-
 	return false;
 }
 
