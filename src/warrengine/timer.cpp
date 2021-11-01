@@ -4,14 +4,22 @@
 namespace war
 {
 
-Timer::Timer( time_ms interval_ms, bool start_elapsed )
+Timer::Timer( time_ms interval_ms, e_timer_start timer_start )
 	: interval_ms( interval_ms )
 {
 	restart();
 
-	if( start_elapsed )
+	switch( timer_start )
 	{
-		time_last = g_engine->clock.now() + interval_ms;
+		case e_timer_start::elapsed:
+			delta_accum = interval_ms;
+			time_last = g_engine->clock.now() + delta_accum;
+			break;
+
+		case e_timer_start::random:
+			delta_accum = Random::geti_range( 0, (i32)interval_ms );
+			time_last = g_engine->clock.now() + delta_accum;
+			break;
 	}
 }
 

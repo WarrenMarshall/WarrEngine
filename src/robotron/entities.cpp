@@ -95,8 +95,8 @@ Enemy_Drone_Entity::Enemy_Drone_Entity()
 		ec->init( "anim_enemy_drone_walk" );
 	}
 
-	next_move_timer = Timer( 150 );
-	next_find_new_target_timer = Timer( 5000, b_start_elapsed );
+	next_move_timer = Timer( 500, e_timer_start::random );
+	next_find_new_target_timer = Timer( 5000, e_timer_start::elapsed );
 }
 
 void Enemy_Drone_Entity::update()

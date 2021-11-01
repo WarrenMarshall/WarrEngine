@@ -471,3 +471,12 @@ enum struct e_component_type
 	collision_body,
 	tile_map,
 };
+
+// ----------------------------------------------------------------------------
+
+enum struct e_timer_start
+{
+	from_start,		// normal timer, starts from zero
+	elapsed,		// timers starts as tho it's already elapsed
+	random			// starts at a random point between 0 and the interval
+};

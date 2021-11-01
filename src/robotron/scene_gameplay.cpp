@@ -13,9 +13,10 @@ void Scene_Gameplay::pushed()
 {
 	Scene::pushed();
 
-	//g_engine->window.push_mouse_mode( e_mouse_mode::locked );
+	g_engine->window.push_mouse_mode( e_mouse_mode::locked );
 
 	spatial_map.set_bounds( { -viewport_hw, -viewport_hh, viewport_w, viewport_h } );
+	spatial_map.min_node_area = 32;
 
 	// ----------------------------------------------------------------------------
 	// WORLD
@@ -79,7 +80,7 @@ void Scene_Gameplay::popped()
 {
 	Scene::popped();
 
-	//g_engine->window.pop_mouse_mode();
+	g_engine->window.pop_mouse_mode();
 }
 
 void Scene_Gameplay::draw()

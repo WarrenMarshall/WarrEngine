@@ -10,7 +10,7 @@ struct Timer final
 	time_ms delta_accum = 0;
 
 	Timer() = default;
-	Timer( time_ms interval_ms, bool start_elapsed = false );
+	Timer( time_ms interval_ms, e_timer_start timer_start = e_timer_start::from_start );
 
 	void restart();
 	[[nodiscard]] bool is_elapsed();
