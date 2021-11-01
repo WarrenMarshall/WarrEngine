@@ -269,6 +269,12 @@
     <ClCompile Include="asset_file_definition.cpp" />
     <ClCompile Include="bounding_box.cpp" />
     <ClCompile Include="color.cpp" />
+    <ClCompile Include="master_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-San|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="quad_tree.cpp" />
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="scene_transient.cpp" />
@@ -298,12 +304,6 @@
     <ClCompile Include="scene_esc_menu.cpp" />
     <ClCompile Include="scene_msg_box.cpp" />
     <ClCompile Include="master_header.cpp" />
-    <ClCompile Include="master_pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-San|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="input.cpp" />
     <ClCompile Include="zip_file.cpp" />
     <ClCompile Include="life_cycle.cpp" />

@@ -190,10 +190,13 @@ static auto epsilon = glm::epsilon<f32>();
 	return ( diff < epsilon && diff > -epsilon );
 }
 
-[[nodiscard]] f32 snap_to_int( f32 val );
+[[nodiscard]] inline f32 snap_to_int( f32 val )
+{
+	return glm::floor( val + ( 0.5f * glm::sign( val ) ) );
+}
 
 // ----------------------------------------------------------------------------
-// physics constants and helpers
+// box2d constants and helpers
 // ----------------------------------------------------------------------------
 
 constexpr auto b2d_gravity_default = 9.81f;
@@ -222,16 +225,16 @@ constexpr auto b2d_pos_iterations = 3;
 // ----------------------------------------------------------------------------
 
 constexpr auto collision_gravity_default = 9.81f;
-constexpr auto c2_world_scale_factor = 100.f;
+constexpr auto collision_world_scale_factor = 100.f;
 
 [[nodiscard]] constexpr f32 to_c2( f32 v )
 {
-	return ( v / c2_world_scale_factor );
+	return ( v / collision_world_scale_factor );
 }
 
 [[nodiscard]] constexpr f32 from_c2( f32 v )
 {
-	return ( v * c2_world_scale_factor );
+	return ( v * collision_world_scale_factor );
 }
 
 // ----------------------------------------------------------------------------
@@ -477,3 +480,8 @@ extern std::unique_ptr<Engine> g_engine;
 extern std::unique_ptr<UI_Mgr> g_ui;
 
 }
+
+// boolean helpers that make code easier to read without having to flip into a
+// function definition to see what a flag does.
+
+constexpr bool b_start_elapsed = true;

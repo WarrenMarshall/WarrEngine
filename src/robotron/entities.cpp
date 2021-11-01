@@ -4,7 +4,7 @@ using namespace war;
 
 // ----------------------------------------------------------------------------
 
-E_Player::E_Player()
+Player_Entity::Player_Entity()
 {
 	tag = H( "player" );
 	flags.include_in_quad_tree = true;
@@ -25,12 +25,12 @@ E_Player::E_Player()
 	snd_player_shoot = g_engine->find_asset<Sound_Asset>( "player_shoot" );
 }
 
-bool E_Player::can_fire_weapon()
+bool Player_Entity::can_fire_weapon()
 {
 	return fire_cooldown.is_elapsed();
 }
 
-void E_Player::fire_weapon( i32 angle )
+void Player_Entity::fire_weapon( i32 angle )
 {
 	if( can_fire_weapon() )
 	{
@@ -40,7 +40,7 @@ void E_Player::fire_weapon( i32 angle )
 		final_angle = snap_to_int( final_angle * 45.f );
 
 		{
-			auto e = parent_scene->add_entity<E_Player_Bullet>();
+			auto e = parent_scene->add_entity<Player_Bullet_Entity>();
 			e->set_pos( get_transform()->pos );
 			e->set_angle( final_angle );
 
@@ -51,7 +51,7 @@ void E_Player::fire_weapon( i32 angle )
 	}
 }
 
-void E_Player::pre_update()
+void Player_Entity::pre_update()
 {
 
 	sprite_component->init( "player_walk_down_1" );
@@ -60,7 +60,7 @@ void E_Player::pre_update()
 
 // ----------------------------------------------------------------------------
 
-E_Player_Bullet::E_Player_Bullet()
+Player_Bullet_Entity::Player_Bullet_Entity()
 {
 	tag = H( "player_bullet" );
 	flags.include_in_quad_tree = true;
@@ -80,7 +80,7 @@ E_Player_Bullet::E_Player_Bullet()
 
 // ----------------------------------------------------------------------------
 
-E_Enemy_Drone::E_Enemy_Drone()
+Enemy_Drone_Entity::Enemy_Drone_Entity()
 {
 	tag = H( "enemy_drone" );
 	flags.include_in_quad_tree = true;
@@ -88,10 +88,47 @@ E_Enemy_Drone::E_Enemy_Drone()
 	{
 		auto ec = add_component<Collision_Body_Component>();
 		ec->set_as_centered_box( 12, 12 );
-		ec->set_collision_flags( coll_flags.enemy_drone, coll_flags.world | coll_flags.player | coll_flags.player_bullet );
+		ec->set_collision_flags( coll_flags.enemy_drone, coll_flags.enemy_drone | coll_flags.world | coll_flags.player | coll_flags.player_bullet );
 	}
 	{
 		auto ec = add_component<Sprite_Component>();
 		ec->init( "anim_enemy_drone_walk" );
 	}
+
+	next_move_timer = Timer( 150 );
+	next_find_new_target_timer = Timer( 5000, b_start_elapsed );
+}
+
+void Enemy_Drone_Entity::update()
+{
+	Entity::update();
+
+	if( next_find_new_target_timer.is_elapsed() )
+	{
+		next_find_new_target_timer.restart();
+		find_new_target();
+	}
+
+	if( next_move_timer.is_elapsed() )
+	{
+		next_move_timer.restart();
+		move_towards_target();
+	}
+}
+
+void Enemy_Drone_Entity::find_new_target()
+{
+	target = parent_scene->find_entity( H( "player" ) );
+	assert( target );
+}
+
+void Enemy_Drone_Entity::move_towards_target()
+{
+	assert( target );
+
+	auto player = parent_scene->find_entity( H( "player" ) );
+	assert( player );
+
+	auto dir = ( player->get_pos() - get_pos() ).normalize();
+	add_delta_pos( dir );
 }

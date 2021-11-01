@@ -1,9 +1,9 @@
 
 // ----------------------------------------------------------------------------
 
-struct E_Player : Entity
+struct Player_Entity : Entity
 {
-	E_Player();
+	Player_Entity();
 
 	[[nodiscard]] bool can_fire_weapon();
 	void fire_weapon( i32 angle );
@@ -17,14 +17,30 @@ struct E_Player : Entity
 
 // ----------------------------------------------------------------------------
 
-struct E_Player_Bullet : Entity
+struct Player_Bullet_Entity : Entity
 {
-	E_Player_Bullet();
+	Player_Bullet_Entity();
 };
 
 // ----------------------------------------------------------------------------
 
-struct E_Enemy_Drone : Entity
+struct Enemy_Entity : Entity
 {
-	E_Enemy_Drone();
+	// the entity that this enemy is targetting. this can mean moving towards or
+	// shooting at, depending on what this enemy can do.
+	Entity* target = nullptr;
+
+	Timer next_move_timer;
+	Timer next_find_new_target_timer;
+
+};
+
+struct Enemy_Drone_Entity : Enemy_Entity
+{
+	Enemy_Drone_Entity();
+
+	virtual void update() override;
+private:
+	void find_new_target();
+	void move_towards_target();
 };

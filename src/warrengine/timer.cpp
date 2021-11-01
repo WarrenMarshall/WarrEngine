@@ -4,10 +4,15 @@
 namespace war
 {
 
-Timer::Timer( time_ms interval_ms )
+Timer::Timer( time_ms interval_ms, bool start_elapsed )
 	: interval_ms( interval_ms )
 {
 	restart();
+
+	if( start_elapsed )
+	{
+		time_last = g_engine->clock.now() + interval_ms;
+	}
 }
 
 void Timer::restart()
@@ -18,7 +23,7 @@ void Timer::restart()
 
 // call to see if timer has run over it's duration
 //
-// this is good for: one-shot timers
+// best for: one-shot timers
 
 bool Timer::is_elapsed()
 {
@@ -27,7 +32,7 @@ bool Timer::is_elapsed()
 
 // call repeatedly to see how many times the timer has elapsed
 //
-// this is good for: repeating timers
+// best for: repeating timers
 
 i32 Timer::get_elapsed()
 {

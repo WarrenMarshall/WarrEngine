@@ -73,7 +73,7 @@ f_decl_tile_map_spawn_entity( platformer_spawn_entity )
 
 		case 145:
 		{
-			auto e = scene->add_entity<E_Player>();
+			auto e = scene->add_entity<Player_Entity>();
 			e->flags.include_in_quad_tree = true;
 			e->set_pos( tile_pos );
 			e->collision.flags.is_affected_by_gravity = true;
@@ -290,7 +290,7 @@ bool Scene_Platformer::on_input_pressed( const Input_Event* evt )
 
 // ----------------------------------------------------------------------------
 
-bool E_Player::on_touching_begin( Collision_Body_Component* sensor )
+bool Player_Entity::on_touching_begin( Collision_Body_Component* sensor )
 {
 	Entity::on_touching_begin( sensor );
 

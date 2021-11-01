@@ -10,7 +10,7 @@ struct Timer final
 	time_ms delta_accum = 0;
 
 	Timer() = default;
-	Timer( time_ms interval_ms );
+	Timer( time_ms interval_ms, bool start_elapsed = false );
 
 	void restart();
 	[[nodiscard]] bool is_elapsed();

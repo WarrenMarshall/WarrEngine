@@ -15,7 +15,7 @@ struct E_Jump_Pad final : Entity
 
 // ----------------------------------------------------------------------------
 
-struct E_Player final : Entity
+struct Player_Entity final : Entity
 {
 	virtual bool on_touching_begin( Collision_Body_Component* sensor ) override;
 };

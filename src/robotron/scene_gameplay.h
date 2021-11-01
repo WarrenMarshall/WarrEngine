@@ -1,7 +1,7 @@
 
 struct Scene_Gameplay final : Scene
 {
-	E_Player* player = nullptr;
+	Player_Entity* player = nullptr;
 
 	Scene_Gameplay();
 
