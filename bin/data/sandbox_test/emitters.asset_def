@@ -87,11 +87,10 @@
 	"b_uses_gravity" "true"
 	"a_dir" "0"
 	"r_dir_var" "-20,20"
-	"r_scale_spawn" "0.25, 0.4"
+	"r_scale_spawn" "0.5, 0.75"
 	"t_scale" "0.0,1.0, 0.25,1.0, 1.0,0.0"
 	"r_lifespan" "1000, 2000"
 	"r_velocity_spawn" "200,350"
 	"t_color" "0,[2,0,0], 0.25,color.yellow, 1.0,color.black"
 	"t_alpha" "0,1, 1,0"
 }
-

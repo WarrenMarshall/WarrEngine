@@ -708,21 +708,21 @@ void Render::draw_circle( const Vec2& origin, f32 radius, e_corner corner )
 	Render_Vertex v0( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 	Render_Vertex v1( Vec2::zero, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 
+	auto [circle_start, circle_end] = get_circle_start_end_indices( corner );
+
+	v0.x = origin.x + ( g_engine->render.circle_sample_points[ circle_start ].x * radius );
+	v0.y = origin.y + ( g_engine->render.circle_sample_points[ circle_start ].y * radius );
+
+	for( auto x = circle_start ; x < circle_end; ++x )
 	{
-		scoped_render_state;
+		auto idx = ( x + 1 ) % circle_sample_points_max;
 
-		auto [circle_start, circle_end] = get_circle_start_end_indices( corner );
+		v1.x = origin.x + ( g_engine->render.circle_sample_points[ idx ].x * radius );
+		v1.y = origin.y + ( g_engine->render.circle_sample_points[ idx ].y * radius );
 
-		for( auto x = circle_start; x < circle_end; ++x )
-		{
-			v0.x = origin.x + ( g_engine->render.circle_sample_points[ x ].x * radius );
-			v0.y = origin.y + ( g_engine->render.circle_sample_points[ x ].y * radius );
+		Render::state->batch_render_target->add_line( g_engine->tex_white, &v0, &v1 );
 
-			v1.x = origin.x + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-			v1.y = origin.y + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
-
-			Render::state->batch_render_target->add_line( g_engine->tex_white, &v0, &v1 );
-		}
+		v0 = std::move( v1 );
 	}
 }
 
@@ -732,21 +732,21 @@ void Render::draw_filled_circle( const Vec2& origin, f32 radius, e_corner corner
 	Render_Vertex v1( v0 );
 	Render_Vertex v2( v0 );
 
+	auto [circle_start, circle_end] = get_circle_start_end_indices( corner );
+
+	v1.x = origin.x + ( g_engine->render.circle_sample_points[ circle_start ].x * radius );
+	v1.y = origin.y + ( g_engine->render.circle_sample_points[ circle_start ].y * radius );
+
+	for( auto x = circle_start; x < circle_end; ++x )
 	{
-		scoped_render_state;
+		auto idx = ( x + 1 ) % circle_sample_points_max;
 
-		auto [circle_start, circle_end] = get_circle_start_end_indices( corner );
+		v2.x = origin.x + ( g_engine->render.circle_sample_points[ idx ].x * radius );
+		v2.y = origin.y + ( g_engine->render.circle_sample_points[ idx ].y * radius );
 
-		for( auto x = circle_start; x < circle_end; ++x )
-		{
-			v1.x = origin.x + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].x * radius );
-			v1.y = origin.y + ( g_engine->render.circle_sample_points[ ( x + 1 ) % circle_sample_points_max ].y * radius );
+		Render::state->batch_render_target->add_triangle( g_engine->tex_white, &v0, &v1, &v2 );
 
-			v2.x = origin.x + ( g_engine->render.circle_sample_points[ x ].x * radius );
-			v2.y = origin.y + ( g_engine->render.circle_sample_points[ x ].y * radius );
-
-			Render::state->batch_render_target->add_triangle( g_engine->tex_white, &v0, &v1, &v2 );
-		}
+		v1 = std::move( v2 );
 	}
 }
 
@@ -789,9 +789,9 @@ void Render::draw_line_loop( const Rect& rc )
 	Render::draw_line_loop(
 		{
 			{ left, top },
-		{ right, top },
-		{ right, bottom },
-		{ left, bottom }
+			{ right, top },
+			{ right, bottom },
+			{ left, bottom }
 		}
 	);
 }
@@ -809,11 +809,7 @@ void Render::draw_point( const Vec2& pos )
 {
 	Render_Vertex v0( pos, Vec2( 0, 0 ), Render::state->color, Render::state->glow );
 
-	{
-		scoped_render_state;
-
-		Render::state->batch_render_target->add_point( g_engine->tex_white, &v0 );
-	}
+	Render::state->batch_render_target->add_point( g_engine->tex_white, &v0 );
 }
 
 void Render::draw_sliced( const Slice_Def_Asset* slice_def, const Rect& dst )
@@ -867,13 +863,6 @@ void Render::draw_sliced( const Slice_Def_Asset* slice_def, const Rect& dst )
 
 	xpos += inner_w;
 	draw_quad( p_22, Rect( xpos, ypos, p_22->rc.w, p_22->rc.h ) );
-}
-
-// call this function to figure out a new value based on the frame interpolation percentage.
-
-f32 Render::calc_interpolated_per_sec_value( f32 current_value, f32 step_per_second ) const
-{
-	return current_value + ( fixed_time_step::per_second( step_per_second ) * g_engine->render.frame_interpolate_pct );
 }
 
 // samples the "pick" frame buffer at click_pos and returns the pick_id found

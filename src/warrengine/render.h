@@ -103,10 +103,6 @@ struct Render final
 	void begin_frame();
 	void end_frame();
 
-	[[nodiscard]] f32 calc_interpolated_per_sec_value( f32 current_value, f32 step_per_second ) const;
-
-	// ----------------------------------------------------------------------------
-
 	void clear_render_state_stack();
 
 	Render* push();

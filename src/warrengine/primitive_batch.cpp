@@ -20,7 +20,7 @@ void Primitive_Batch::init( e_render_prim render_prim )
 	vao[ (i32)e_draw_call::transparent ].reset();
 }
 
-void Primitive_Batch::add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
+void Primitive_Batch::add_quad( const Texture_Asset* texture, Render_Vertex* v0, Render_Vertex* v1, Render_Vertex* v2, Render_Vertex* v3 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a + v3->a );
 	auto draw_call = (e_draw_call)( (i32)e_draw_call::transparent * ( alpha != 4.f ) );
@@ -37,7 +37,7 @@ void Primitive_Batch::add_quad( const Texture_Asset* texture, const Render_Verte
 	}
 }
 
-void Primitive_Batch::add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
+void Primitive_Batch::add_triangle( const Texture_Asset* texture, Render_Vertex* v0, Render_Vertex* v1, Render_Vertex* v2 )
 {
 	auto alpha = ( v0->a + v1->a + v2->a );
 	auto draw_call = ( e_draw_call )( ( i32 )e_draw_call::transparent * ( alpha != 3.f ) );
@@ -53,10 +53,11 @@ void Primitive_Batch::add_triangle( const Texture_Asset* texture, const Render_V
 	}
 }
 
-void Primitive_Batch::add_line( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
+void Primitive_Batch::add_line( const Texture_Asset* texture, Render_Vertex* v0, Render_Vertex* v1 )
 {
 	auto alpha = ( v0->a + v1->a );
 	auto draw_call = ( e_draw_call )( ( i32 )e_draw_call::transparent * ( alpha != 2.f ) );
+
 
 	add_vert( draw_call, texture, v0 );
 	add_vert( draw_call, texture, v1 );
@@ -68,7 +69,7 @@ void Primitive_Batch::add_line( const Texture_Asset* texture, const Render_Verte
 	}
 }
 
-void Primitive_Batch::add_point( const Texture_Asset* texture, const Render_Vertex* v0 )
+void Primitive_Batch::add_point( const Texture_Asset* texture, Render_Vertex* v0 )
 {
 	auto alpha = ( v0->a );
 	auto draw_call = ( e_draw_call )( ( i32 )e_draw_call::transparent * ( alpha != 1.f ) );
@@ -87,14 +88,14 @@ bool Primitive_Batch::is_empty()
 	return vao[ (i32)e_draw_call::opaque ].vb->vertices.empty() and vao[ (i32)e_draw_call::transparent ].vb->vertices.empty();
 }
 
-void Primitive_Batch::add_vert( e_draw_call draw_call, const Texture_Asset* texture, const Render_Vertex* render_vert )
+void Primitive_Batch::add_vert( e_draw_call draw_call, const Texture_Asset* texture, Render_Vertex* render_vert )
 {
 	auto texture_id = vao[ (i32)draw_call ].vb->assign_texture_slot( texture );
 
 	// get a new render_vertex from the pool
 
 	Render_Vertex* rvtx = vao[ (i32)draw_call ].vb->vertices.get_next();
-	*rvtx = *render_vert;
+	*rvtx = std::move( *render_vert );
 
 	// multiply the current modelview matrix against the vertex being rendered.
 	//
@@ -148,22 +149,22 @@ void Primitive_Batch_Group::flush_and_reset( e_draw_call draw_call )
 	}
 }
 
-void Primitive_Batch_Group::add_quad( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2, const Render_Vertex* v3 )
+void Primitive_Batch_Group::add_quad( const Texture_Asset* texture, Render_Vertex* v0, Render_Vertex* v1, Render_Vertex* v2, Render_Vertex* v3 )
 {
 	batches[ (i32)e_render_prim::quad ].add_quad( texture, v0, v1, v2, v3 );
 }
 
-void Primitive_Batch_Group::add_triangle( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1, const Render_Vertex* v2 )
+void Primitive_Batch_Group::add_triangle( const Texture_Asset* texture, Render_Vertex* v0, Render_Vertex* v1, Render_Vertex* v2 )
 {
 	batches[ (i32)e_render_prim::triangle ].add_triangle( texture, v0, v1, v2 );
 }
 
-void Primitive_Batch_Group::add_line( const Texture_Asset* texture, const Render_Vertex* v0, const Render_Vertex* v1 )
+void Primitive_Batch_Group::add_line( const Texture_Asset* texture, Render_Vertex* v0, Render_Vertex* v1 )
 {
 	batches[ (i32)e_render_prim::line ].add_line( texture, v0, v1 );
 }
 
-void Primitive_Batch_Group::add_point( const Texture_Asset* texture, const Render_Vertex* v0 )
+void Primitive_Batch_Group::add_point( const Texture_Asset* texture, Render_Vertex* v0 )
 {
 	batches[ (i32)e_render_prim::point ].add_point( texture, v0 );
 }

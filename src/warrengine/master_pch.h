@@ -153,7 +153,7 @@ namespace war
 // used to convert color values in the range 0-255 to 0-1
 // i.e. color.r = 168.f * byte_color_to_float;
 
-constexpr f32 byte_color_to_float( i32 value )
+[[nodiscard]] constexpr f32 byte_color_to_float( i32 value )
 {
 	return value / 255.f;
 }
@@ -472,13 +472,17 @@ namespace war
 
 namespace war
 {
+	extern std::unique_ptr<Engine> g_engine;
+	extern std::unique_ptr<UI_Mgr> g_ui;
 
-[[nodiscard]] f32 lerp( f32 a, f32 b, f32 lerp_factor );
-[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, f32 lerp_factor );
+	[[nodiscard]] f32 lerp( f32 a, f32 b, f32 lerp_factor );
+	[[nodiscard]] Vec2 lerp( Vec2 a, Vec2 b, f32 lerp_factor );
 
-extern std::unique_ptr<Engine> g_engine;
-extern std::unique_ptr<UI_Mgr> g_ui;
-
+	// call this function to figure out a new value based on the frame interpolation percentage.
+	[[nodiscard]] inline f32 calc_interpolated_per_sec_value( f32 current_value, f32 step_per_second )
+	{
+		return current_value + ( fixed_time_step::per_second( step_per_second ) * g_engine->render.frame_interpolate_pct );
+	}
 }
 
 // boolean helpers that make code easier to read without having to flip into a
