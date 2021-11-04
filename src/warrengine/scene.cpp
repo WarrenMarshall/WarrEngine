@@ -200,7 +200,9 @@ void Scene::draw()
 			continue;
 		}
 
+#ifndef _RELEASE
 		g_engine->stats.inc( g_engine->stats._entities );
+#endif
 
 		{
 			scoped_opengl;

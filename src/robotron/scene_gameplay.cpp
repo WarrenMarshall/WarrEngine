@@ -113,6 +113,15 @@ void Scene_Gameplay::handle_player_movement_input( const Vec2& delta )
 	}
 }
 
+void Scene_Gameplay::update()
+{
+	Scene::update();
+
+	// handle user input here as a test
+
+	//auto state = g_engine->input_mgr.get_group_state( H( "right" );
+}
+
 void Scene_Gameplay::popped()
 {
 	Scene::popped();
@@ -149,6 +158,33 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 
 bool Scene_Gameplay::on_input_held( const Input_Event* evt )
 {
+	switch( evt->input_id )
+	{
+		case e_input_id::key_left:
+		{
+			handle_player_movement_input( { -4.f, 0.f } );
+			return true;
+		}
+
+		case e_input_id::key_right:
+		{
+			handle_player_movement_input( { 4.f, 0.f } );
+			return true;
+		}
+
+		case e_input_id::key_up:
+		{
+			handle_player_movement_input( { 0.f, -4.f } );
+			return true;
+		}
+
+		case e_input_id::key_down:
+		{
+			handle_player_movement_input( { 0.f, 4.f } );
+			return true;
+		}
+
+	}
 
 	return false;
 }

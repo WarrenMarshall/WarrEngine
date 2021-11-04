@@ -13,18 +13,16 @@ Input_Event::Input_Event()
 	alt_down = g_engine->input_mgr.is_alt_down();
 
 	mouse_pos = g_engine->input_mgr.mouse_window_pos;
+}
 
-	group_bindings.insert( std::make_pair( H( "up" ), e_input_id::gamepad_button_dpad_up ) );
-	group_bindings.insert( std::make_pair( H( "up" ), e_input_id::key_up ) );
+Input_Event::Input_Event( e_event_id event_id, e_input_id input_id )
+	: event_id( event_id ), input_id( input_id )
+{
+	shift_down = g_engine->input_mgr.is_shift_down();
+	control_down = g_engine->input_mgr.is_control_down();
+	alt_down = g_engine->input_mgr.is_alt_down();
 
-	group_bindings.insert( std::make_pair( H( "down" ), e_input_id::gamepad_button_dpad_down ) );
-	group_bindings.insert( std::make_pair( H( "down" ), e_input_id::key_down ) );
-
-	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::gamepad_button_dpad_left ) );
-	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::key_left ) );
-
-	group_bindings.insert( std::make_pair( H( "right" ), e_input_id::gamepad_button_dpad_right ) );
-	group_bindings.insert( std::make_pair( H( "right" ), e_input_id::key_right ) );
+	mouse_pos = g_engine->input_mgr.mouse_window_pos;
 }
 
 // ----------------------------------------------------------------------------
@@ -106,6 +104,12 @@ void Input_Mgr::init()
 	}
 
 	timer_repeat = Timer( 150 );
+
+	// grouped key bindings
+
+	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::gamepad_button_dpad_left ) );
+	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::key_left ) );
+	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::gamepad_left_stick ) );
 }
 
 void Input_Mgr::deinit()
@@ -122,14 +126,20 @@ void Input_Mgr::queue_presses()
 		// state for inspection/debugging.
 
 		button_states_last_frame[ ( i32 )e_input_id::key_pause ] = button_states[ ( i32 )e_input_id::key_pause ];
+
+#ifndef _FINAL_RELEASE
 		button_states_last_frame[ ( i32 )e_input_id::mouse_button_middle ] = button_states[ ( i32 )e_input_id::mouse_button_middle ];
 		button_states_last_frame[ ( i32 )e_input_id::key_f5 ] = button_states[ ( i32 )e_input_id::key_f5 ];
 		button_states_last_frame[ ( i32 )e_input_id::key_f6 ] = button_states[ ( i32 )e_input_id::key_f6 ];
+#endif
 
 		update_button_state( e_input_id::key_pause, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAUSE ) );
+
+#ifndef _FINAL_RELEASE
 		update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_MIDDLE ) );
 		update_button_state( e_input_id::key_f5, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F5 ) );
 		update_button_state( e_input_id::key_f6, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_F6 ) );
+#endif
 	}
 	else
 	{
@@ -436,11 +446,7 @@ void Input_Mgr::update_button_state( e_input_id input_id, i32 glfw_state )
 	{
 		case e_button_state::pressed:
 		{
-			Input_Event evt;
-			evt.event_id = e_event_id::input_pressed;
-			evt.input_id = input_id;
-
-			g_engine->input_mgr.event_queue.push_back( evt );
+			g_engine->input_mgr.event_queue.emplace_back( e_event_id::input_pressed, input_id );
 
 			timer_repeat.restart();
 			break;
@@ -448,11 +454,7 @@ void Input_Mgr::update_button_state( e_input_id input_id, i32 glfw_state )
 
 		case e_button_state::released:
 		{
-			Input_Event evt;
-			evt.event_id = e_event_id::input_released;
-			evt.input_id = input_id;
-
-			g_engine->input_mgr.event_queue.push_back( evt );
+			g_engine->input_mgr.event_queue.emplace_back( e_event_id::input_released, input_id );
 			break;
 		}
 
@@ -460,11 +462,7 @@ void Input_Mgr::update_button_state( e_input_id input_id, i32 glfw_state )
 		{
 			if( timer_repeat.get_elapsed() )
 			{
-				Input_Event evt;
-				evt.event_id = e_event_id::input_held;
-				evt.input_id = input_id;
-
-				g_engine->input_mgr.event_queue.push_back( evt );
+				g_engine->input_mgr.event_queue.emplace_back( e_event_id::input_held, input_id );
 
 				timer_repeat.restart();
 				g_ui->caret_blink_tween.restart();

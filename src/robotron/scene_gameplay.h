@@ -7,6 +7,7 @@ struct Scene_Gameplay final : Scene
 
 	void handle_player_movement_input( const Vec2& delta );
 
+	virtual void update() override;
 	virtual void pushed() override;
 	virtual void popped() override;
 	virtual bool on_input_pressed( const Input_Event* evt ) override;

@@ -3,7 +3,11 @@
 
 using namespace war;
 
-// #perf - make sure that the text is only being stored ONCE and that we are pessimistic in design
+// #perf
+//
+// make sure that the text is only being stored ONCE and that we are pessimistic
+// in design. right now lots of extra strings are being created and stored and
+// it's a little hokey.
 
 // ----------------------------------------------------------------------------
 

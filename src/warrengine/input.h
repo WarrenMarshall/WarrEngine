@@ -5,8 +5,7 @@ namespace war
 struct Input_Event final
 {
 	Input_Event();
-
-	std::multimap<hash, e_input_id> group_bindings;
+	Input_Event( e_event_id event_id, e_input_id input_id );
 
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = e_event_id::invalid;
@@ -53,6 +52,8 @@ static_assert( sizeof( Input_Event ) <= 64 );
 
 struct Input_Mgr final
 {
+	std::multimap<hash, e_input_id> group_bindings;
+
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
 	std::vector<Input_Event> event_queue;

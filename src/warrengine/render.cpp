@@ -430,10 +430,12 @@ void Render::end_frame()
 
 	g_engine->opengl_mgr.set_view_matrix_identity_ui();
 
+#ifndef _RELEASE
 	g_engine->stats.add( g_engine->stats._frame_times_ms, g_engine->clock.delta_ms );
 	g_engine->stats.inc( g_engine->stats._frame_count );
 
 	g_engine->stats.draw();
+#endif
 
 	// flush the final batches
 
