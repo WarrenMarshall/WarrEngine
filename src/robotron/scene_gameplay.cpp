@@ -3,6 +3,19 @@
 
 using namespace war;
 
+// ----------------------------------------------------------------------------
+
+void spawn_random_drone( Scene* scene )
+{
+	auto e = scene->add_entity<Enemy_Drone_Entity>();
+	auto pos = Random::get_random_in_circle( 1.f );
+	pos.x *= viewport_hw / 2.f;
+	pos.y *= viewport_hh / 2.f;
+	e->set_pos( pos );
+}
+
+// ----------------------------------------------------------------------------
+
 Scene_Gameplay::Scene_Gameplay()
 {
 	flags.blocks_further_drawing = true;
@@ -67,13 +80,37 @@ void Scene_Gameplay::pushed()
 	player = add_entity<Player_Entity>();
 }
 
-void Scene_Gameplay::spawn_random_drone()
+void Scene_Gameplay::handle_player_movement_input( const Vec2& delta )
 {
-	auto e = add_entity<Enemy_Drone_Entity>();
-	auto pos = Random::get_random_in_circle( 1.f );
-	pos.x *= viewport_hw / 2.f;
-	pos.y *= viewport_hh / 2.f;
-	e->set_pos( pos );
+	Vec2 movement = Vec2::snap_to_int( delta );
+	if( !movement.is_zero() )
+	{
+		movement.normalize();
+		player->add_delta_pos( movement );
+
+		if( glm::abs( delta.x ) > glm::abs( delta.y ) )
+		{
+			if( glm::sign( delta.x ) > 0.f )
+			{
+				player->sprite_component->init( "anim_player_walk_right" );
+			}
+			else
+			{
+				player->sprite_component->init( "anim_player_walk_left" );
+			}
+		}
+		else
+		{
+			if( glm::sign( delta.y ) < 0.f )
+			{
+				player->sprite_component->init( "anim_player_walk_up" );
+			}
+			else
+			{
+				player->sprite_component->init( "anim_player_walk_down" );
+			}
+		}
+	}
 }
 
 void Scene_Gameplay::popped()
@@ -81,12 +118,6 @@ void Scene_Gameplay::popped()
 	Scene::popped();
 
 	g_engine->window.pop_mouse_mode();
-}
-
-void Scene_Gameplay::draw()
-{
-	Scene::draw();
-
 }
 
 bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
@@ -109,10 +140,16 @@ bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
 
 		case e_input_id::gamepad_button_y:
 		{
-			spawn_random_drone();
+			spawn_random_drone( this );
 			return true;
 		}
 	}
+	return false;
+}
+
+bool Scene_Gameplay::on_input_held( const Input_Event* evt )
+{
+
 	return false;
 }
 
@@ -127,35 +164,7 @@ bool Scene_Gameplay::on_input_motion( const Input_Event* evt )
 	{
 		case e_input_id::gamepad_left_stick:
 		{
-			Vec2 movement = Vec2::snap_to_int( evt->delta );
-			if( !movement.is_zero() )
-			{
-				movement.normalize();
-				player->add_delta_pos( movement );
-
-				if( glm::abs( evt->delta.x ) > glm::abs( evt->delta.y ) )
-				{
-					if( glm::sign( evt->delta.x ) > 0.f )
-					{
-						player->sprite_component->init( "anim_player_walk_right" );
-					}
-					else
-					{
-						player->sprite_component->init( "anim_player_walk_left" );
-					}
-				}
-				else
-				{
-					if( glm::sign( evt->delta.y ) < 0.f )
-					{
-						player->sprite_component->init( "anim_player_walk_up" );
-					}
-					else
-					{
-						player->sprite_component->init( "anim_player_walk_down" );
-					}
-				}
-			}
+			handle_player_movement_input( evt->delta );
 			return true;
 		}
 
@@ -168,12 +177,6 @@ bool Scene_Gameplay::on_input_motion( const Input_Event* evt )
 	}
 
 	return false;
-}
-
-[[nodiscard]] Entity* find_entity_in_map( std::map<hash, Entity*>& map, hash tag )
-{
-	auto iter = map.find( tag );
-	return ( iter == map.end() ) ? nullptr : iter->second;
 }
 
 bool Scene_Gameplay::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll )

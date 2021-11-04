@@ -13,6 +13,18 @@ Input_Event::Input_Event()
 	alt_down = g_engine->input_mgr.is_alt_down();
 
 	mouse_pos = g_engine->input_mgr.mouse_window_pos;
+
+	group_bindings.insert( std::make_pair( H( "up" ), e_input_id::gamepad_button_dpad_up ) );
+	group_bindings.insert( std::make_pair( H( "up" ), e_input_id::key_up ) );
+
+	group_bindings.insert( std::make_pair( H( "down" ), e_input_id::gamepad_button_dpad_down ) );
+	group_bindings.insert( std::make_pair( H( "down" ), e_input_id::key_down ) );
+
+	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::gamepad_button_dpad_left ) );
+	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::key_left ) );
+
+	group_bindings.insert( std::make_pair( H( "right" ), e_input_id::gamepad_button_dpad_right ) );
+	group_bindings.insert( std::make_pair( H( "right" ), e_input_id::key_right ) );
 }
 
 // ----------------------------------------------------------------------------

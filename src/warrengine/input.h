@@ -6,6 +6,8 @@ struct Input_Event final
 {
 	Input_Event();
 
+	std::multimap<hash, e_input_id> group_bindings;
+
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = e_event_id::invalid;
 

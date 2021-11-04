@@ -483,6 +483,13 @@ namespace war
 	{
 		return current_value + ( fixed_time_step::per_second( step_per_second ) * g_engine->render.frame_interpolate_pct );
 	}
+
+	// called from entity collision functions to see if a specific entity hash was involved.
+	[[nodiscard]] inline Entity* find_entity_in_map( std::map<hash, Entity*>& map, hash tag )
+	{
+		auto iter = map.find( tag );
+		return ( iter == map.end() ) ? nullptr : iter->second;
+	}
 }
 
 // boolean helpers that make code easier to read without having to flip into a

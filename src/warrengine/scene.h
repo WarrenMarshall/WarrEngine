@@ -14,19 +14,6 @@ struct Scene
 		return &camera_transform;
 	}
 
-	[[nodiscard]] Vec2 get_pos()
-	{
-		return get_transform()->pos;
-	}
-	[[nodiscard]] f32 get_angle()
-	{
-		return get_transform()->angle;
-	}
-	[[nodiscard]] f32 get_scale()
-	{
-		return get_transform()->scale;
-	}
-
 	// rendering starts in the top left corner of the screen by default. this
 	// provides a way to move that anywhere within the viewport using a simple
 	// offset.
