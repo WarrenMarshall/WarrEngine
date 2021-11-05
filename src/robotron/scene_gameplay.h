@@ -10,8 +10,6 @@ struct Scene_Gameplay final : Scene
 	virtual void update() override;
 	virtual void pushed() override;
 	virtual void popped() override;
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
-	virtual bool on_input_held( const Input_Event* evt ) override;
-	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 	virtual bool on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll ) override;
 };

@@ -162,12 +162,20 @@ void Scene_Controller::draw_ui()
 	}
 }
 
-bool Scene_Controller::on_input_pressed( const Input_Event* evt )
+bool Scene_Controller::on_input( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::key_d )
+	if( Scene::on_input( evt ) )
 	{
-		toggle_bool( use_controller_dead_zone );
 		return true;
+	}
+
+	if( evt->is_pressed() )
+	{
+		if( evt->input_id == e_input_id::key_d )
+		{
+			toggle_bool( use_controller_dead_zone );
+			return true;
+		}
 	}
 
 	return false;

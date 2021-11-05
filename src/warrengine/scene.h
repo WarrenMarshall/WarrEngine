@@ -132,11 +132,7 @@ struct Scene
 	UI_Callback* ui_callback = nullptr;
 	virtual war::UI_Callback* get_ui_callback();
 
-	virtual bool on_input_motion( const Input_Event* evt );
-	virtual bool on_input_pressed( const Input_Event* evt );
-	virtual bool on_input_held( const Input_Event* evt );
-	virtual bool on_input_released( const Input_Event* evt );
-	virtual bool on_input_key( const Input_Event* evt );
+	virtual bool on_input( const Input_Event* evt );
 
 	// called every time an entity in this scene registers a touch with a sensor
 	// in this scene. this allows the scene to be the main handler of triggers

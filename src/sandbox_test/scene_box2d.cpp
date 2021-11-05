@@ -148,78 +148,83 @@ void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 	}
 }
 
-bool Scene_Box2D::on_input_pressed( const Input_Event* evt )
+bool Scene_Box2D::on_input( const Input_Event* evt )
 {
-	// spawn ball at random location
-	if( evt->input_id == e_input_id::key_r )
+	if( Scene::on_input( evt ) )
 	{
-		auto num_new_balls = 1;
-
-		if( evt->shift_down )
-		{
-			num_new_balls = 20;
-		}
-
-		Bounding_Box spawn_area( { -viewport_hw + 8, -8.f }, { viewport_hw - 8, -viewport_hh } );
-
-		for( auto x = 0 ; x < num_new_balls ; ++x )
-		{
-			spawn_ball_at( spawn_area.get_random_spot() );
-		}
-	}
-
-	// delete entities with right click
-	if( evt->input_id == e_input_id::mouse_button_right )
-	{
-		auto pick_id = Render::sample_pick_id_at( Coord_System::window_to_viewport_pos( evt->mouse_pos ) );
-		auto e = find_entity_by_pick_id( pick_id );
-
-		if( e )
-		{
-			e->set_life_cycle( e_life_cycle::dying );
-			g_engine->find_asset<Sound_Asset>( "sfx_entity_delete" )->play();
-		}
-	}
-
-	// shift_lclick to spawn new ball at mouse position
-	if( evt->input_id == e_input_id::mouse_button_left and evt->shift_down )
-	{
-		auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
-		spawn_ball_at( world_click_location );
 		return true;
 	}
 
-	// control_lclick to spawn new box at mouse position
-	if( evt->input_id == e_input_id::mouse_button_left and evt->control_down )
+	if( evt->is_pressed() )
 	{
-		auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
-		spawn_box_at( world_click_location );
-		return true;
-	}
-
-	return false;
-}
-
-bool Scene_Box2D::on_input_motion( const Input_Event* evt )
-{
-	switch( evt->input_id )
-	{
-		case e_input_id::mouse:
+		// spawn ball at random location
+		if( evt->input_id == e_input_id::key_r )
 		{
-			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			auto num_new_balls = 1;
+
+			if( evt->shift_down )
 			{
-				if( !evt->shift_down and !evt->control_down )
-				{
-					auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+				num_new_balls = 20;
+			}
 
-					auto e = find_entity( H( "main_ball" ) );
-					e->set_pos( world_pos );
+			Bounding_Box spawn_area( { -viewport_hw + 8, -8.f }, { viewport_hw - 8, -viewport_hh } );
 
-					return true;
-				}
+			for( auto x = 0 ; x < num_new_balls ; ++x )
+			{
+				spawn_ball_at( spawn_area.get_random_spot() );
 			}
 		}
-		break;
+
+		// delete entities with right click
+		if( evt->input_id == e_input_id::mouse_button_right )
+		{
+			auto pick_id = Render::sample_pick_id_at( Coord_System::window_to_viewport_pos( evt->mouse_pos ) );
+			auto e = find_entity_by_pick_id( pick_id );
+
+			if( e )
+			{
+				e->set_life_cycle( e_life_cycle::dying );
+				g_engine->find_asset<Sound_Asset>( "sfx_entity_delete" )->play();
+			}
+		}
+
+		// shift_lclick to spawn new ball at mouse position
+		if( evt->input_id == e_input_id::mouse_button_left and evt->shift_down )
+		{
+			auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
+			spawn_ball_at( world_click_location );
+			return true;
+		}
+
+		// control_lclick to spawn new box at mouse position
+		if( evt->input_id == e_input_id::mouse_button_left and evt->control_down )
+		{
+			auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
+			spawn_box_at( world_click_location );
+			return true;
+		}
+	}
+	else if( evt->is_motion() )
+	{
+		switch( evt->input_id )
+		{
+			case e_input_id::mouse:
+			{
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+				{
+					if( !evt->shift_down and !evt->control_down )
+					{
+						auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+
+						auto e = find_entity( H( "main_ball" ) );
+						e->set_pos( world_pos );
+
+						return true;
+					}
+				}
+			}
+			break;
+		}
 	}
 
 	return false;

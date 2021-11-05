@@ -27,6 +27,5 @@ struct Scene_Constraints final : Scene
 	virtual void draw_ui() override;
 	virtual void update() override;
 
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
-	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };

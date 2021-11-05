@@ -30,17 +30,20 @@ void Scene_Menu::draw_ui()
 	Render::draw_string( "Press any button to play...", Vec2( viewport_hw, viewport_hh + 24 ) );
 }
 
-bool Scene_Menu::on_input_pressed( const Input_Event* evt )
+bool Scene_Menu::on_input( const Input_Event* evt )
 {
-	if( Scene::on_input_pressed( evt ) )
+	if( Scene::on_input( evt ) )
 	{
 		return true;
 	}
 
-	if( evt->is_a_gamepad_button() )
+	if( evt->is_pressed() )
 	{
-		g_engine->scene_mgr.push<Scene_Gameplay>();
-		return true;
+		if( evt->is_a_gamepad_button() )
+		{
+			g_engine->scene_mgr.push<Scene_Gameplay>();
+			return true;
+		}
 	}
 
 	return false;

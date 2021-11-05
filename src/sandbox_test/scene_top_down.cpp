@@ -152,35 +152,43 @@ void Scene_Top_Down::reset_collision_trace_results()
 	}
 }
 
-bool Scene_Top_Down::on_input_motion( const Input_Event* evt )
+bool Scene_Top_Down::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::gamepad_left_stick:
+		return true;
+	}
+
+	if( evt->is_motion() )
+	{
+		switch( evt->input_id )
 		{
-			// take the input delta and apply the scene matrix to it. this
-			// allows proper walking angles regardless of scene rotation.
+			case e_input_id::gamepad_left_stick:
+			{
+				// take the input delta and apply the scene matrix to it. this
+				// allows proper walking angles regardless of scene rotation.
 
-			Vec2 dir = evt->delta;
-			auto mtx = player->get_transform()->to_matrix_vec();
-			dir = mtx.transform_vec2( dir );
+				Vec2 dir = evt->delta;
+				auto mtx = player->get_transform()->to_matrix_vec();
+				dir = mtx.transform_vec2( dir );
 
-			player->add_force( { dir, 10.0f } );
-			return true;
+				player->add_force( { dir, 10.0f } );
+				return true;
+			}
+			break;
+
+			case e_input_id::gamepad_right_stick:
+			{
+				// rotate the player and the scene in opposite directions, which
+				// leaves the player facing north
+
+				get_transform()->add_angle( -evt->delta.x * 1.5f );
+				player->add_delta_angle( evt->delta.x * 1.5f );
+
+				return true;
+			}
+			break;
 		}
-		break;
-
-		case e_input_id::gamepad_right_stick:
-		{
-			// rotate the player and the scene in opposite directions, which
-			// leaves the player facing north
-
-			get_transform()->add_angle( -evt->delta.x * 1.5f );
-			player->add_delta_angle( evt->delta.x * 1.5f );
-
-			return true;
-		}
-		break;
 	}
 
 	return false;

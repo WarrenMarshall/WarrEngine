@@ -130,13 +130,21 @@ void Scene_Wrapped_Text::draw_ui()
 		->done();
 }
 
-bool Scene_Wrapped_Text::on_input_motion( const Input_Event* evt )
+bool Scene_Wrapped_Text::on_input( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::mouse_wheel )
+	if( Scene::on_input( evt ) )
 	{
-		text_pct += evt->delta.y;
-
 		return true;
+	}
+
+	if( evt->is_motion() )
+	{
+		if( evt->input_id == e_input_id::mouse_wheel )
+		{
+			text_pct += evt->delta.y;
+
+			return true;
+		}
 	}
 
 	return false;

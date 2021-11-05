@@ -197,41 +197,46 @@ void Scene_Bounce::post_update()
 	}
 }
 
-bool Scene_Bounce::on_input_pressed( const Input_Event* evt )
+bool Scene_Bounce::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::gamepad_button_y:
-		case e_input_id::key_space:
-		{
-			spawn_shape();
-		}
-		break;
+		return true;
 	}
 
-	return false;
-}
-
-bool Scene_Bounce::on_input_motion( const Input_Event* evt )
-{
-	switch( evt->input_id )
+	if( evt->is_pressed() )
 	{
-	case e_input_id::mouse:
-	{
-		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+		switch( evt->input_id )
 		{
-			if( !evt->shift_down and !evt->control_down )
+			case e_input_id::gamepad_button_y:
+			case e_input_id::key_space:
 			{
-				auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
-
-				auto e = find_entity( H( "main_ball" ) );
-				e->set_pos( world_pos );
-
-				return true;
+				spawn_shape();
 			}
+			break;
 		}
 	}
-	break;
+	else if( evt->is_motion() )
+	{
+		switch( evt->input_id )
+		{
+			case e_input_id::mouse:
+			{
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+				{
+					if( !evt->shift_down and !evt->control_down )
+					{
+						auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+
+						auto e = find_entity( H( "main_ball" ) );
+						e->set_pos( world_pos );
+
+						return true;
+					}
+				}
+			}
+			break;
+		}
 	}
 
 	return false;

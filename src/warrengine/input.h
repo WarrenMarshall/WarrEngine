@@ -10,6 +10,12 @@ struct Input_Event final
 	// which event this is. required when processing events through the queue.
 	e_event_id event_id = e_event_id::invalid;
 
+	[[nodiscard]] bool is_pressed() const { return event_id == e_event_id::input_pressed; }
+	[[nodiscard]] bool is_held() const { return event_id == e_event_id::input_held; }
+	[[nodiscard]] bool is_released() const { return event_id == e_event_id::input_released; }
+	[[nodiscard]] bool is_key() const { return event_id == e_event_id::input_key; }
+	[[nodiscard]] bool is_motion() const { return event_id == e_event_id::input_motion; }
+
 	// the key, mouse button, or controller button generating the event
 	e_input_id input_id = e_input_id::invalid;
 

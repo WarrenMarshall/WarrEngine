@@ -306,83 +306,11 @@ void Scene_Mgr::new_game()
 	}
 }
 
-e_on_input_result Scene_Mgr::on_input_motion( const Input_Event* evt )
+e_on_input_result Scene_Mgr::on_input( const Input_Event* evt )
 {
 	for( const auto& iter : scene_stack )
 	{
-		if( iter->on_input_motion( evt ) )
-		{
-			return e_on_input_result::handled;
-		}
-
-		if( iter->flags.blocks_further_input )
-		{
-			return e_on_input_result::handled_with_blocking;
-		}
-	}
-
-	return e_on_input_result::not_handled;
-}
-
-e_on_input_result Scene_Mgr::on_input_pressed( const Input_Event* evt )
-{
-	for( const auto& iter : scene_stack )
-	{
-		if( iter->on_input_pressed( evt ) )
-		{
-			return e_on_input_result::handled;
-		}
-
-		if( iter->flags.blocks_further_input )
-		{
-			return e_on_input_result::handled_with_blocking;
-		}
-	}
-
-	return e_on_input_result::not_handled;
-}
-
-e_on_input_result Scene_Mgr::on_input_held( const Input_Event* evt )
-{
-	for( const auto& iter : scene_stack )
-	{
-		if( iter->on_input_held( evt ) )
-		{
-			return e_on_input_result::handled;
-		}
-
-		if( iter->flags.blocks_further_input )
-		{
-			return e_on_input_result::handled_with_blocking;
-		}
-	}
-
-	return e_on_input_result::not_handled;
-}
-
-e_on_input_result Scene_Mgr::on_input_released( const Input_Event* evt )
-{
-	for( const auto& iter : scene_stack )
-	{
-		if( iter->on_input_released( evt ) )
-		{
-			return e_on_input_result::handled;
-		}
-
-		if( iter->flags.blocks_further_input )
-		{
-			return e_on_input_result::handled_with_blocking;
-		}
-	}
-
-	return e_on_input_result::not_handled;
-}
-
-e_on_input_result Scene_Mgr::on_input_key( const Input_Event* evt )
-{
-	for( const auto& iter : scene_stack )
-	{
-		if( iter->on_input_key( evt ) )
+		if( iter->on_input( evt ) )
 		{
 			return e_on_input_result::handled;
 		}

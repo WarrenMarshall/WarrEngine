@@ -89,26 +89,34 @@ void Scene_Sensors::pushed()
 	}
 }
 
-bool Scene_Sensors::on_input_motion( const Input_Event* evt )
+bool Scene_Sensors::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::mouse:
+		return true;
+	}
+
+	if( evt->is_motion() )
+	{
+		switch( evt->input_id )
 		{
-			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			case e_input_id::mouse:
 			{
-				if( !evt->shift_down and !evt->control_down )
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 				{
-					auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+					if( !evt->shift_down and !evt->control_down )
+					{
+						auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 
-					auto e = find_entity( H( "the_player" ) );
-					e->set_pos( world_pos );
+						auto e = find_entity( H( "the_player" ) );
+						e->set_pos( world_pos );
 
-					return true;
+						return true;
+					}
 				}
 			}
+			break;
 		}
-		break;
 	}
 
 	return false;

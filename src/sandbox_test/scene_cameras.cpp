@@ -125,48 +125,11 @@ void Scene_Cameras::draw_ui()
 	}
 }
 
-bool Scene_Cameras::on_input_motion( const Input_Event* evt )
+bool Scene_Cameras::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::mouse:
-		{
-			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
-			{
-				auto e = find_entity( H( "crosshair" ) );
-
-				if( evt->control_down )
-				{
-					// rotate crosshair
-					glow_val += evt->delta.x / 100.f;
-					glow_val = glm::clamp<f32>( glow_val, 0.f, 100.f );
-
-				}
-				else
-				{
-					// move crosshair to mouse location
-					auto viewport_pos = Coord_System::window_to_viewport_pos( evt->mouse_pos );
-					auto world_pos = Coord_System::viewport_to_world_pos( viewport_pos );
-
-					e->set_pos( world_pos );
-				}
-
-				return true;
-			}
-		}
-		break;
-
-		case e_input_id::mouse_wheel:
-		{
-			if( evt->control_down )
-			{
-				// scale crosshair
-				auto e = find_entity( H( "crosshair" ) );
-				e->add_delta_scale( evt->delta.y * 0.1f );
-				return true;
-			}
-		}
-		break;
+		return true;
 	}
 
 	return false;

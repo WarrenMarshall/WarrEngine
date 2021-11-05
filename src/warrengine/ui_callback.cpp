@@ -174,11 +174,6 @@ Vec2 UI_Callback::get_control_margin( e_ui_control_type control_type )
 	return result;
 }
 
-bool UI_Callback::on_input_motion( const Input_Event* evt )
-{
-	return false;
-}
-
 bool UI_Callback::handle_editing_key( const Input_Event* evt )
 {
 	if( g_ui->focused.type == e_ui_control_type::text )
@@ -260,10 +255,15 @@ bool UI_Callback::handle_editing_key( const Input_Event* evt )
 	return false;
 }
 
-bool UI_Callback::on_input_pressed( const Input_Event* evt )
+bool UI_Callback::on_input( const Input_Event* evt )
 {
-	if( g_ui->focused.tag != hash_none )
+	if( evt->is_pressed() )
 	{
+		if( g_ui->focused.tag == hash_none )
+		{
+			return false;
+		}
+
 		if( handle_editing_key( evt ) )
 		{
 			return true;
@@ -277,14 +277,12 @@ bool UI_Callback::on_input_pressed( const Input_Event* evt )
 			return true;
 		}
 	}
-
-	return false;
-}
-
-bool UI_Callback::on_input_held( const Input_Event* evt )
-{
-	if( g_ui->focused.tag != hash_none )
+	else if( evt->is_held() )
 	{
+		if( g_ui->focused.tag == hash_none )
+		{
+			return false;
+		}
 
 		if( handle_editing_key( evt ) )
 		{
@@ -294,19 +292,13 @@ bool UI_Callback::on_input_held( const Input_Event* evt )
 		// if a ui control has focus, we want to eat all of these events regardless
 		return true;
 	}
-
-	return false;
-}
-
-bool UI_Callback::on_input_released( const Input_Event* evt )
-{
-	return false;
-}
-
-bool UI_Callback::on_input_key( const Input_Event* evt )
-{
-	if( g_ui->focused.tag != hash_none )
+	else if( evt->is_key() )
 	{
+		if( g_ui->focused.tag == hash_none )
+		{
+			return false;
+		}
+
 		// text controls want keypresses
 
 		if( g_ui->focused.type == e_ui_control_type::text )

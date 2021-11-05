@@ -245,43 +245,48 @@ void Scene_Platformer::update()
 	}
 }
 
-bool Scene_Platformer::on_input_motion( const Input_Event* evt )
+bool Scene_Platformer::on_input( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::gamepad_left_stick )
+	if( Scene::on_input( evt ) )
 	{
-		player->apply_movement_walk( evt->delta, 12.f );
-	}
-	if( evt->input_id == e_input_id::gamepad_right_stick )
-	{
-		mover->add_delta_pos( evt->delta );
+		return true;
 	}
 
-	return false;
-}
-
-bool Scene_Platformer::on_input_pressed( const Input_Event* evt )
-{
-	if( evt->input_id == e_input_id::gamepad_button_a
-		or evt->input_id == e_input_id::key_space )
+	if( evt->is_motion() )
 	{
-
-		if( !player->collision.flags.is_in_air
-			and g_engine->input_mgr.get_axis_state( e_input_id::gamepad_left_stick, true ).y > 0.5f )
+		if( evt->input_id == e_input_id::gamepad_left_stick )
 		{
-			player->add_delta_pos( Vec2::y_axis * player_collision_radius );
-			player->velocity.x = 0.f;
+			player->apply_movement_walk( evt->delta, 12.f );
 		}
-		else
+		if( evt->input_id == e_input_id::gamepad_right_stick )
 		{
-			player->apply_movement_jump();
+			mover->add_delta_pos( evt->delta );
 		}
 	}
-
-	if( evt->input_id == e_input_id::gamepad_button_x )
+	else if( evt->is_pressed() )
 	{
-		if( !fx_red_alert.life_cycle.is_alive() )
+		if( evt->input_id == e_input_id::gamepad_button_a
+			or evt->input_id == e_input_id::key_space )
 		{
-			fx_red_alert.restart();
+
+			if( !player->collision.flags.is_in_air
+				and g_engine->input_mgr.get_axis_state( e_input_id::gamepad_left_stick, true ).y > 0.5f )
+			{
+				player->add_delta_pos( Vec2::y_axis * player_collision_radius );
+				player->velocity.x = 0.f;
+			}
+			else
+			{
+				player->apply_movement_jump();
+			}
+		}
+
+		if( evt->input_id == e_input_id::gamepad_button_x )
+		{
+			if( !fx_red_alert.life_cycle.is_alive() )
+			{
+				fx_red_alert.restart();
+			}
 		}
 	}
 

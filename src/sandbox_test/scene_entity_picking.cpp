@@ -78,48 +78,53 @@ void Scene_Entity_Picking::post_update()
 
 }
 
-bool Scene_Entity_Picking::on_input_pressed( const Input_Event* evt )
+bool Scene_Entity_Picking::on_input( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::mouse_button_left )
+	if( Scene::on_input( evt ) )
 	{
-		Vec2 click_pos = Coord_System::window_to_viewport_pos( g_engine->input_mgr.mouse_window_pos );
-		auto pick_id = Render::sample_pick_id_at( click_pos );
-
-		deselect_all();
-		select_by_pick_id( pick_id );
-
-		for( auto& e : entities )
-		{
-			e->rs_opt.glow = 0.0f;
-		}
-
-		for( auto& e : selected_entities )
-		{
-			e->rs_opt.glow = 1.5f;
-		}
-
 		return true;
 	}
 
-	return false;
-}
-
-bool Scene_Entity_Picking::on_input_motion( const Input_Event* evt )
-{
-	if( evt->input_id == e_input_id::mouse )
+	if( evt->is_pressed() )
 	{
-		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+		if( evt->input_id == e_input_id::mouse_button_left )
 		{
-			Vec2 delta = Coord_System::window_to_world_vec( evt->delta );
+			Vec2 click_pos = Coord_System::window_to_viewport_pos( g_engine->input_mgr.mouse_window_pos );
+			auto pick_id = Render::sample_pick_id_at( click_pos );
 
-			auto selected_entities = get_selected();
+			deselect_all();
+			select_by_pick_id( pick_id );
+
+			for( auto& e : entities )
+			{
+				e->rs_opt.glow = 0.0f;
+			}
 
 			for( auto& e : selected_entities )
 			{
-				e->add_delta_pos( delta );
+				e->rs_opt.glow = 1.5f;
 			}
 
 			return true;
+		}
+	}
+	else if( evt->is_motion() )
+	{
+		if( evt->input_id == e_input_id::mouse )
+		{
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			{
+				Vec2 delta = Coord_System::window_to_world_vec( evt->delta );
+
+				auto selected_entities = get_selected();
+
+				for( auto& e : selected_entities )
+				{
+					e->add_delta_pos( delta );
+				}
+
+				return true;
+			}
 		}
 	}
 

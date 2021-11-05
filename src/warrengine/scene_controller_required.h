@@ -13,7 +13,7 @@ struct Scene_Controller_Required final : Scene
 	virtual void draw_ui() override;
 	virtual void update() override;
 
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };
 
 }

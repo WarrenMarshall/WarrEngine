@@ -29,7 +29,7 @@ struct Scene_Post_Process_UI_Callback final : UI_Callback
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
 	virtual void on_value_changed( hash tag ) override;
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };
 
 // ----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ struct Scene_Post_Process final : Scene
 	virtual void pushed() override;
 	virtual void popped() override;
 	virtual void draw_ui() override;
-	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };
 
 }

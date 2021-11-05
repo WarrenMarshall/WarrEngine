@@ -20,15 +20,23 @@ UI_Control_Data* Scene_Esc_Menu_UI_Callback::get_data( hash tag )
 	return UI_Callback::get_data( tag );
 }
 
-bool Scene_Esc_Menu_UI_Callback::on_input_pressed( const Input_Event* evt )
+bool Scene_Esc_Menu_UI_Callback::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( UI_Callback::on_input( evt ) )
 	{
-		case e_input_id::key_esc:
-		{
-			g_engine->scene_mgr.pop();
-			return true;
+		return true;
+	}
 
+	if( evt->is_pressed() )
+	{
+		switch( evt->input_id )
+		{
+			case e_input_id::key_esc:
+			{
+				g_engine->scene_mgr.pop();
+				return true;
+
+			}
 		}
 	}
 

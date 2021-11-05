@@ -719,198 +719,176 @@ void Engine::wait_for_thread_pool_to_finish()
 	threads.clear();
 }
 
-bool Engine::on_input_motion(const Input_Event* evt)
+bool Engine::on_input(const Input_Event* evt)
 {
 	auto cam_transform = scene_mgr.get_transform();
 
-	switch (evt->input_id)
+	if( evt->is_motion() )
 	{
-		case e_input_id::mouse:
+		switch( evt->input_id )
 		{
-			// camera control
-			if (g_engine->input_mgr.is_button_held(e_input_id::mouse_button_middle))
+			case e_input_id::mouse:
 			{
-				if (evt->control_down)
+				// camera control
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_middle ) )
 				{
-					cam_transform->add_angle(Coord_System::window_to_viewport_vec(evt->delta).x);
+					if( evt->control_down )
+					{
+						cam_transform->add_angle( Coord_System::window_to_viewport_vec( evt->delta ).x );
+					}
+					else if( evt->alt_down )
+					{
+						cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).x * 0.01f );
+					}
+					else
+					{
+						Vec2 delta = Coord_System::window_to_world_vec( evt->delta );
+						cam_transform->add_pos( delta );
+					}
+
+					return true;
 				}
-				else if (evt->alt_down)
+			}
+			break;
+
+			case e_input_id::mouse_wheel:
+			{
+				cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).y * 0.25f );
+
+				return true;
+			}
+			break;
+		}
+	}
+	else if( evt->is_pressed() )
+	{
+		switch( evt->input_id )
+		{
+			// toggle engine pause
+			case e_input_id::key_pause:
+			{
+				toggle_pause();
+
+				return true;
+			}
+
+			// slow down game clock
+			case e_input_id::key_left_bracket:
+			{
+				set_time_dilation( g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f );
+				return true;
+			}
+
+			// speed up game clock
+			case e_input_id::key_right_bracket:
+			{
+
+				set_time_dilation( g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f );
+				return true;
+			}
+
+			case e_input_id::key_f9:
+			{
+				g_engine->render.debug.entity_info_log = true;
+				log_div();
+				log( "-- Entity Info" );
+				log_div();
+				return true;
+			}
+
+			case e_input_id::key_f10:
+			{
+				g_engine->render.debug.single_frame_log = true;
+				log_div();
+				log( "-- Single Frame Debugger" );
+				log_div();
+				return true;
+			}
+
+			// toggle debug drawing
+			case e_input_id::key_f5:
+			{
+				toggle_bool( g_engine->render.debug.draw_colliders );
+				return true;
+			}
+
+			case e_input_id::key_f6:
+			{
+				toggle_bool( g_engine->render.debug.draw_spatial );
+				return true;
+			}
+
+			// post process tweaker
+			case e_input_id::key_f4:
+			{
+				g_engine->scene_mgr.push<Scene_Post_Process>();
+
+				return true;
+			}
+
+			// toggle full screen
+			case e_input_id::key_f11:
+			{
+				window.toggle_fullscreen();
+
+				return true;
+			}
+
+			case e_input_id::key_enter:
+			{
+				if( g_engine->input_mgr.is_alt_down() )
 				{
-					cam_transform->add_scale(Coord_System::window_to_viewport_vec(evt->delta).x * 0.01f);
+					window.toggle_fullscreen();
+				}
+
+				return true;
+			}
+
+			// toggle esc menu
+			case e_input_id::key_esc:
+			{
+				auto scene_ptr = scene_mgr.get_top();
+
+				// if there are UI controls in the current scene that are expanded,
+				// then hitting ESC will force them closed instead of toggling the
+				// ESC menu.
+
+				if( scene_ptr->ui_expanded_tag_begin != hash_none )
+				{
+					scene_ptr->force_close_expanded_controls();
+					return true;
+				}
+
+				// if we've reached this point, toggle the ESC menu as normal.
+
+				if( typeid( *scene_ptr ) == typeid( Scene_Esc_Menu ) )
+				{
+					scene_mgr.pop();
 				}
 				else
 				{
-					Vec2 delta = Coord_System::window_to_world_vec(evt->delta);
-					cam_transform->add_pos(delta);
+					scene_mgr.push<Scene_Esc_Menu>();
 				}
 
 				return true;
 			}
-		}
-		break;
 
-		case e_input_id::mouse_wheel:
-		{
-			cam_transform->add_scale(Coord_System::window_to_viewport_vec(evt->delta).y * 0.25f);
-
-			return true;
-		}
-		break;
-	}
-
-	return false;
-}
-
-bool Engine::on_input_pressed(const Input_Event* evt)
-{
-	switch (evt->input_id)
-	{
-		// toggle engine pause
-		case e_input_id::key_pause:
-		{
-			toggle_pause();
-
-			return true;
-		}
-
-		// slow down game clock
-		case e_input_id::key_left_bracket:
-		{
-#ifndef _RELEASE
-			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 1.f : clock.dilation - 0.1f);
-#endif
-			return true;
-		}
-
-		// speed up game clock
-		case e_input_id::key_right_bracket:
-		{
-#ifndef _RELEASE
-
-			set_time_dilation(g_engine->input_mgr.is_shift_down() ? 5.f : clock.dilation + 0.1f);
-#endif
-			return true;
-		}
-
-		case e_input_id::key_f9:
-		{
-#ifndef _RELEASE
-			g_engine->render.debug.entity_info_log = true;
-			log_div();
-			log("-- Entity Info");
-			log_div();
-#endif
-
-			return true;
-		}
-
-		case e_input_id::key_f10:
-		{
-#ifndef _RELEASE
-
-			g_engine->render.debug.single_frame_log = true;
-			log_div();
-			log("-- Single Frame Debugger");
-			log_div();
-#endif
-
-			return true;
-		}
-
-		// toggle debug drawing
-		case e_input_id::key_f5:
-		{
-#ifndef _RELEASE
-			toggle_bool( g_engine->render.debug.draw_colliders );
-#endif
-			return true;
-		}
-
-		case e_input_id::key_f6:
-		{
-#ifndef _RELEASE
-			toggle_bool( g_engine->render.debug.draw_spatial );
-#endif
-			return true;
-		}
-
-		// post process tweaker
-		case e_input_id::key_f4:
-		{
-			g_engine->scene_mgr.push<Scene_Post_Process>();
-
-			return true;
-		}
-
-		// toggle full screen
-		case e_input_id::key_f11:
-		{
-			window.toggle_fullscreen();
-
-			return true;
-		}
-
-		case e_input_id::key_enter:
-		{
-			if (g_engine->input_mgr.is_alt_down())
+			case e_input_id::key_f8:
 			{
-				window.toggle_fullscreen();
-			}
-
-			return true;
-		}
-
-		// toggle esc menu
-		case e_input_id::key_esc:
-		{
-			auto scene_ptr = scene_mgr.get_top();
-
-			// if there are UI controls in the current scene that are expanded,
-			// then hitting ESC will force them closed instead of toggling the
-			// ESC menu.
-
-			if (scene_ptr->ui_expanded_tag_begin != hash_none)
-			{
-				scene_ptr->force_close_expanded_controls();
+				stats.flags.draw_verbose = true;
 				return true;
 			}
-
-			// if we've reached this point, toggle the ESC menu as normal.
-
-			if (typeid(*scene_ptr) == typeid(Scene_Esc_Menu))
-			{
-				scene_mgr.pop();
-			}
-			else
-			{
-				scene_mgr.push<Scene_Esc_Menu>();
-			}
-
-			return true;
-		}
-
-		case e_input_id::key_f8:
-		{
-#ifndef _RELEASE
-			stats.flags.draw_verbose = true;
-#endif
-			return true;
 		}
 	}
-
-	return false;
-}
-
-bool Engine::on_input_released(const Input_Event* evt)
-{
-	switch (evt->input_id)
+	else if( evt->is_released() )
 	{
-		case e_input_id::key_f8:
+		switch( evt->input_id )
 		{
-#ifndef _RELEASE
-			stats.flags.draw_verbose = false;
-#endif
-			return true;
+			case e_input_id::key_f8:
+			{
+				stats.flags.draw_verbose = false;
+				return true;
+			}
 		}
 	}
 

@@ -141,18 +141,21 @@ void Scene_Controller_Required::draw_ui()
 	}
 }
 
-bool Scene_Controller_Required::on_input_pressed( const Input_Event* evt )
+bool Scene_Controller_Required::on_input( const Input_Event* evt )
 {
-	if( Scene::on_input_pressed( evt ) )
+	if( Scene::on_input( evt ) )
 	{
 		return true;
 	}
 
-	// any input from the controller will dismiss this screen
-	if( evt->is_a_gamepad_button() )
+	if( evt->is_pressed() )
 	{
-		g_engine->scene_mgr.pop();
-		return true;
+		// any input from the controller will dismiss this screen
+		if( evt->is_a_gamepad_button() )
+		{
+			g_engine->scene_mgr.pop();
+			return true;
+		}
 	}
 
 	return false;

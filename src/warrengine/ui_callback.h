@@ -31,12 +31,8 @@ struct UI_Callback
 	virtual f32 get_control_padding();
 	virtual Vec2 get_control_margin( e_ui_control_type control_type );
 
-	virtual bool on_input_motion( const Input_Event* evt );
+	virtual bool on_input( const Input_Event* evt );
 	bool handle_editing_key( const Input_Event* evt );
-	virtual bool on_input_pressed( const Input_Event* evt );
-	virtual bool on_input_held( const Input_Event* evt );
-	virtual bool on_input_released( const Input_Event* evt );
-	virtual bool on_input_key( const Input_Event* evt );
 };
 
 }

@@ -274,59 +274,18 @@ UI_Callback* Scene::get_ui_callback()
 	return ( ui_callback ) ? ui_callback : &( g_ui->default_callback );
 }
 
-bool Scene::on_input_motion( const Input_Event* evt )
-{
-	return false;
-}
-
-bool Scene::on_input_pressed( const Input_Event* evt )
+bool Scene::on_input( const Input_Event* evt )
 {
 	if( g_engine->scene_mgr.get_top() == this )
 	{
-		if( get_ui_callback()->on_input_pressed( evt ) )
+		if( get_ui_callback()->on_input( evt ) )
 		{
 			return true;
 		}
 
-		g_ui->focused.tag = hash_none;
-	}
-
-	return false;
-}
-
-bool Scene::on_input_held( const Input_Event* evt )
-{
-	if( g_engine->scene_mgr.get_top() == this )
-	{
-		if( get_ui_callback()->on_input_held( evt ) )
+		if( evt->is_pressed() )
 		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool Scene::on_input_released( const Input_Event* evt )
-{
-	if( g_engine->scene_mgr.get_top() == this )
-	{
-		if( get_ui_callback()->on_input_released( evt ) )
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool Scene::on_input_key( const Input_Event* evt )
-{
-	if( g_engine->scene_mgr.get_top() == this )
-	{
-		if( get_ui_callback()->on_input_key( evt ) )
-		{
-			return true;
+			g_ui->focused.tag = hash_none;
 		}
 	}
 

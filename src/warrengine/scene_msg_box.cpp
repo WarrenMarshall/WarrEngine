@@ -6,15 +6,23 @@ namespace war
 
 // ----------------------------------------------------------------------------
 
-bool Scene_Msg_Box_UI_Callback::on_input_pressed( const Input_Event* evt )
+bool Scene_Msg_Box_UI_Callback::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( UI_Callback::on_input( evt ) )
 	{
-		case e_input_id::key_enter:
-		case e_input_id::key_esc:
+		return true;
+	}
+
+	if( evt->is_pressed() )
+	{
+		switch( evt->input_id )
 		{
-			g_engine->scene_mgr.pop();
-			return true;
+			case e_input_id::key_enter:
+			case e_input_id::key_esc:
+			{
+				g_engine->scene_mgr.pop();
+				return true;
+			}
 		}
 	}
 

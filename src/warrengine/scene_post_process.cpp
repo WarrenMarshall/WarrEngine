@@ -108,15 +108,23 @@ void Scene_Post_Process_UI_Callback::on_value_changed( hash tag )
 	update_shader_uniforms( this );
 }
 
-bool Scene_Post_Process_UI_Callback::on_input_pressed( const Input_Event* evt )
+bool Scene_Post_Process_UI_Callback::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( UI_Callback::on_input( evt ) )
 	{
-		case e_input_id::key_f4:
-		case e_input_id::key_esc:
+		return true;
+	}
+
+	if( evt->is_pressed() )
+	{
+		switch( evt->input_id )
 		{
-			g_engine->scene_mgr.pop();
-			return true;
+			case e_input_id::key_f4:
+			case e_input_id::key_esc:
+			{
+				g_engine->scene_mgr.pop();
+				return true;
+			}
 		}
 	}
 
@@ -436,14 +444,22 @@ void Scene_Post_Process::draw_ui()
 	}
 }
 
-bool Scene_Post_Process::on_input_motion( const Input_Event* evt )
+bool Scene_Post_Process::on_input( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::mouse_wheel )
+	if( Scene::on_input( evt ) )
 	{
-		background_alpha += evt->delta.y * 0.05f;
-		background_alpha = glm::clamp( background_alpha, 0.f, 1.f );
-
 		return true;
+	}
+
+	if( evt->is_motion() )
+	{
+		if( evt->input_id == e_input_id::mouse_wheel )
+		{
+			background_alpha += evt->delta.y * 0.05f;
+			background_alpha = glm::clamp( background_alpha, 0.f, 1.f );
+
+			return true;
+		}
 	}
 
 	return false;

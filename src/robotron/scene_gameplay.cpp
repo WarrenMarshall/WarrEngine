@@ -129,86 +129,79 @@ void Scene_Gameplay::popped()
 	g_engine->window.pop_mouse_mode();
 }
 
-bool Scene_Gameplay::on_input_pressed( const Input_Event* evt )
+bool Scene_Gameplay::on_input( const Input_Event* evt )
 {
-	if( Scene::on_input_pressed( evt ) )
+	if( Scene::on_input( evt ) )
 	{
 		return true;
 	}
 
-	switch( evt->input_id )
+	if( evt->is_pressed() )
 	{
-		case e_input_id::mouse_button_left:
+		switch( evt->input_id )
 		{
-			auto e = add_entity<Enemy_Drone_Entity>();
-			e->set_pos( Coord_System::window_to_world_pos( evt->mouse_pos ) );
+			case e_input_id::mouse_button_left:
+			{
+				auto e = add_entity<Enemy_Drone_Entity>();
+				e->set_pos( Coord_System::window_to_world_pos( evt->mouse_pos ) );
 
-			return true;
-		}
+				return true;
+			}
 
 
-		case e_input_id::gamepad_button_y:
-		{
-			spawn_random_drone( this );
-			return true;
+			case e_input_id::gamepad_button_y:
+			{
+				spawn_random_drone( this );
+				return true;
+			}
 		}
 	}
-	return false;
-}
-
-bool Scene_Gameplay::on_input_held( const Input_Event* evt )
-{
-	switch( evt->input_id )
+	else if( evt->is_held() )
 	{
-		case e_input_id::key_left:
+		switch( evt->input_id )
 		{
-			handle_player_movement_input( { -4.f, 0.f } );
-			return true;
-		}
+			case e_input_id::key_left:
+			{
+				handle_player_movement_input( { -4.f, 0.f } );
+				return true;
+			}
 
-		case e_input_id::key_right:
-		{
-			handle_player_movement_input( { 4.f, 0.f } );
-			return true;
-		}
+			case e_input_id::key_right:
+			{
+				handle_player_movement_input( { 4.f, 0.f } );
+				return true;
+			}
 
-		case e_input_id::key_up:
-		{
-			handle_player_movement_input( { 0.f, -4.f } );
-			return true;
-		}
+			case e_input_id::key_up:
+			{
+				handle_player_movement_input( { 0.f, -4.f } );
+				return true;
+			}
 
-		case e_input_id::key_down:
-		{
-			handle_player_movement_input( { 0.f, 4.f } );
-			return true;
-		}
+			case e_input_id::key_down:
+			{
+				handle_player_movement_input( { 0.f, 4.f } );
+				return true;
+			}
 
+		}
 	}
-
-	return false;
-}
-
-bool Scene_Gameplay::on_input_motion( const Input_Event* evt )
-{
-	if( Scene::on_input_motion( evt ) )
+	else if( evt->is_motion() )
 	{
-		return true;
-	}
-
-	switch( evt->input_id )
-	{
-		case e_input_id::gamepad_left_stick:
+		switch( evt->input_id )
 		{
-			handle_player_movement_input( evt->delta );
-			return true;
-		}
+			case e_input_id::gamepad_left_stick:
+			{
+				handle_player_movement_input( evt->delta );
+				return true;
+			}
 
-		case e_input_id::gamepad_right_stick:
-		{
-			player->fire_weapon( ( i32 )Vec2::dir_to_angle( evt->delta ) );
+			case e_input_id::gamepad_right_stick:
+			{
+				player->fire_weapon( ( i32 )Vec2::dir_to_angle( evt->delta ) );
 
-			return true;
+				return true;
+			}
 		}
 	}
 

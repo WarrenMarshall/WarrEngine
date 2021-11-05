@@ -74,40 +74,45 @@ void Scene_Angle_Dirs::draw_ui()
 	}
 }
 
-bool Scene_Angle_Dirs::on_input_pressed( const Input_Event* evt )
+bool Scene_Angle_Dirs::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::mouse_button_right:
-		{
-			marker_pos2_start = Coord_System::window_to_world_pos( evt->mouse_pos );
-			return true;
-		}
-		break;
+		return true;
 	}
 
-	return false;
-}
-
-bool Scene_Angle_Dirs::on_input_motion( const Input_Event* evt )
-{
-	switch( evt->input_id )
+	if( evt->is_pressed() )
 	{
-		case e_input_id::mouse:
+		switch( evt->input_id )
 		{
-			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			case e_input_id::mouse_button_right:
 			{
-				marker_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+				marker_pos2_start = Coord_System::window_to_world_pos( evt->mouse_pos );
 				return true;
 			}
-
-			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
-			{
-				marker_pos2 = Coord_System::window_to_world_pos( evt->mouse_pos );
-				return true;
-			}
+			break;
 		}
-		break;
+	}
+	if( evt->is_motion() )
+	{
+		switch( evt->input_id )
+		{
+			case e_input_id::mouse:
+			{
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+				{
+					marker_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+					return true;
+				}
+
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
+				{
+					marker_pos2 = Coord_System::window_to_world_pos( evt->mouse_pos );
+					return true;
+				}
+			}
+			break;
+		}
 	}
 
 	return false;

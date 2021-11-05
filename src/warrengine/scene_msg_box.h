@@ -4,7 +4,7 @@ namespace war
 
 struct Scene_Msg_Box_UI_Callback final : UI_Callback
 {
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };
 
 // ----------------------------------------------------------------------------

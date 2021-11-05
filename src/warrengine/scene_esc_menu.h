@@ -10,7 +10,7 @@ struct Scene_Esc_Menu_UI_Callback final : UI_Callback
 
 	virtual UI_Control_Data* get_data( hash tag ) override;
 
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };
 
 // ----------------------------------------------------------------------------

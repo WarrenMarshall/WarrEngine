@@ -173,38 +173,37 @@ void Scene_Breakout::update()
 	Scene::update();
 }
 
-bool Scene_Breakout::on_input_pressed( const Input_Event* evt )
+bool Scene_Breakout::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::gamepad_button_y:
-		case e_input_id::key_space:
-		{
-			spawn_ball();
-		}
-		break;
+		return true;
 	}
 
-	return false;
-}
-
-bool Scene_Breakout::on_input_held( const Input_Event* evt )
-{
-
-	return false;
-}
-
-bool Scene_Breakout::on_input_motion( const Input_Event* evt )
-{
-	switch( evt->input_id )
+	if( evt->is_pressed() )
 	{
-		case e_input_id::gamepad_left_stick:
+		switch( evt->input_id )
 		{
-			paddle->add_force( { evt->delta * Vec2::x_axis, 500.f } );
-
-			return true;
+			case e_input_id::gamepad_button_y:
+			case e_input_id::key_space:
+			{
+				spawn_ball();
+			}
+			break;
 		}
-		break;
+	}
+	else if( evt->is_motion() )
+	{
+		switch( evt->input_id )
+		{
+			case e_input_id::gamepad_left_stick:
+			{
+				paddle->add_force( { evt->delta * Vec2::x_axis, 500.f } );
+
+				return true;
+			}
+			break;
+		}
 	}
 
 	return false;

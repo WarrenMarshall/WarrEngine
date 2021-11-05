@@ -12,6 +12,5 @@ struct Scene_Angle_Dirs final : Scene
 	virtual void draw() override;
 	virtual void draw_ui() override;
 
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
-	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };

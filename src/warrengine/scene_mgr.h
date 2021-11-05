@@ -119,11 +119,7 @@ struct Scene_Mgr final
 
 	virtual void new_game();
 
-	e_on_input_result on_input_motion( const Input_Event* evt );
-	e_on_input_result on_input_pressed( const Input_Event* evt );
-	e_on_input_result on_input_held( const Input_Event* evt );
-	e_on_input_result on_input_released( const Input_Event* evt );
-	e_on_input_result on_input_key( const Input_Event* evt );
+	e_on_input_result on_input( const Input_Event* evt );
 };
 
 }

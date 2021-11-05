@@ -28,6 +28,5 @@ struct Scene_Interact final : Scene
 
 	void reset_collision_trace_results();
 
-	virtual bool on_input_pressed( const Input_Event* evt ) override;
-	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 };

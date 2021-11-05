@@ -16,7 +16,7 @@ struct Scene_Sensors final : Scene
 	void spawn_sensor();
 	virtual void pushed() override;
 
-	virtual bool on_input_motion( const Input_Event* evt ) override;
+	virtual bool on_input( const Input_Event* evt ) override;
 
 	virtual bool on_entity_and_sensor_touching_begin( Entity* entity, Collision_Body_Component* sensor ) override;
 	virtual bool on_entity_and_sensor_touching_end( Entity* entity, Collision_Body_Component* sensor ) override;

@@ -105,17 +105,7 @@ struct Engine final
 	[[nodiscard]] Range find_range_from_symbol( std::string_view str, const Range& def_value = Range( 0, 1 ) );
 	[[nodiscard]] Vec2 find_vec2_from_symbol( std::string_view str, const Vec2& def_value = Vec2( 0, 0 ) );
 
-	[[nodiscard]] bool on_input_motion( const Input_Event* evt );
-	[[nodiscard]] bool on_input_pressed( const Input_Event* evt );
-	[[nodiscard]] bool on_input_held( const Input_Event* evt )
-	{
-		return false;
-	}
-	[[nodiscard]] bool on_input_released( const Input_Event* evt );
-	[[nodiscard]] bool on_input_key( const Input_Event* evt )
-	{
-		return false;
-	}
+	[[nodiscard]] bool on_input( const Input_Event* evt );
 
 	Clock clock;
 	Asset_Cache_Mgr asset_cache;

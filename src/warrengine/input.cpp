@@ -325,14 +325,14 @@ void Input_Mgr::dispatch_event_queue()
 		{
 			case e_event_id::input_pressed:
 			{
-				auto ret = g_engine->scene_mgr.on_input_pressed( &evt );
+				auto ret = g_engine->scene_mgr.on_input( &evt );
 
 				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
 
-				if( g_engine->on_input_pressed( &evt ) )
+				if( g_engine->on_input( &evt ) )
 				{
 					break;
 				}
@@ -347,14 +347,14 @@ void Input_Mgr::dispatch_event_queue()
 
 			case e_event_id::input_held:
 			{
-				auto ret = g_engine->scene_mgr.on_input_held( &evt );
+				auto ret = g_engine->scene_mgr.on_input( &evt );
 
 				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
 
-				if( g_engine->on_input_held( &evt ) )
+				if( g_engine->on_input( &evt ) )
 				{
 					break;
 				}
@@ -369,14 +369,14 @@ void Input_Mgr::dispatch_event_queue()
 
 			case e_event_id::input_released:
 			{
-				auto ret = g_engine->scene_mgr.on_input_released( &evt );
+				auto ret = g_engine->scene_mgr.on_input( &evt );
 
 				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
 
-				if( g_engine->on_input_released( &evt ) )
+				if( g_engine->on_input( &evt ) )
 				{
 					break;
 				}
@@ -391,14 +391,14 @@ void Input_Mgr::dispatch_event_queue()
 
 			case e_event_id::input_motion:
 			{
-				auto ret = g_engine->scene_mgr.on_input_motion( &evt );
+				auto ret = g_engine->scene_mgr.on_input( &evt );
 
 				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
 
-				if( g_engine->on_input_motion( &evt ) )
+				if( g_engine->on_input( &evt ) )
 				{
 					break;
 				}
@@ -413,14 +413,14 @@ void Input_Mgr::dispatch_event_queue()
 
 			case e_event_id::input_key:
 			{
-				auto ret = g_engine->scene_mgr.on_input_key( &evt );
+				auto ret = g_engine->scene_mgr.on_input( &evt );
 
 				if( ret == e_on_input_result::handled )
 				{
 					break;
 				}
 
-				if( g_engine->on_input_key( &evt ) )
+				if( g_engine->on_input( &evt ) )
 				{
 					break;
 				}

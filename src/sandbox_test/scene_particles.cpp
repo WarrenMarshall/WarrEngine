@@ -92,20 +92,28 @@ void Scene_Particles::draw_ui()
 	Render::draw_string( "My Light In The Dark", ui_pos );
 }
 
-bool Scene_Particles::on_input_motion( const Input_Event* evt )
+bool Scene_Particles::on_input( const Input_Event* evt )
 {
-	if( evt->input_id == e_input_id::mouse )
+	if( Scene::on_input( evt ) )
 	{
-		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
-		{
-			auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
-			find_entity( H( "mouse_torch" ) )->set_pos( wpos );
-		}
+		return true;
+	}
 
-		if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
+	if( evt->is_motion() )
+	{
+		if( evt->input_id == e_input_id::mouse )
 		{
-			auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
-			find_entity( H( "stars" ) )->set_pos( wpos );
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
+			{
+				auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
+				find_entity( H( "mouse_torch" ) )->set_pos( wpos );
+			}
+
+			if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
+			{
+				auto wpos = Coord_System::window_to_world_pos( evt->mouse_pos );
+				find_entity( H( "stars" ) )->set_pos( wpos );
+			}
 		}
 	}
 

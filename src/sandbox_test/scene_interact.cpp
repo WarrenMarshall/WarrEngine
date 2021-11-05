@@ -222,123 +222,127 @@ void Scene_Interact::reset_collision_trace_results()
 	}
 }
 
-bool Scene_Interact::on_input_pressed( const Input_Event* evt )
+bool Scene_Interact::on_input( const Input_Event* evt )
 {
-	switch( evt->input_id )
+	if( Scene::on_input( evt ) )
 	{
-		case e_input_id::key_1:
+		return true;
+	}
+
+	if( evt->is_pressed() )
+	{
+		switch( evt->input_id )
 		{
-			auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
-			ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
-		}
-		break;
-
-		case e_input_id::key_2:
-		{
-			auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
-			ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
-		}
-		break;
-
-		case e_input_id::key_3:
-		{
-			auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
-
-			auto s = Random::geti_range( 3, 8 );
-			auto r = radius * Random::getf_range( 0.5f, 3.0f );
-			ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
-		}
-		break;
-
-		case e_input_id::gamepad_button_y:
-		case e_input_id::key_space:
-		{
-			spawn_entity();
-		}
-		break;
-
-		case e_input_id::mouse_button_right:
-		{
-			auto pos = Coord_System::window_to_world_pos( evt->mouse_pos );
-			player->set_pos( pos );
-		}
-		break;
-
-		// ALL
-
-		case e_input_id::gamepad_button_left_shoulder:
-		case e_input_id::key_a:
-		{
-			reset_collision_trace_results();
-
-			auto start = player->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			collision::Raycast_All callback;
-			sc_world.ray_cast( &callback, player, start, end );
-
-			if( callback.hit_something )
+			case e_input_id::key_1:
 			{
-				auto ec = ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape );
-				ec->shapes.clear();
+				auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
+				ec->set_as_centered_box( radius * Random::getf_range( 0.5f, 3.0f ), radius * Random::getf_range( 0.5f, 3.0f ) );
+			}
+			break;
 
-				for( auto& hit : callback.results )
+			case e_input_id::key_2:
+			{
+				auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
+				ec->set_as_circle( radius * Random::getf_range( 0.5f, 2.0f ) );
+			}
+			break;
+
+			case e_input_id::key_3:
+			{
+				auto ec = ( Collision_Body_Component* )player->get_component( e_component_type::collision_body );
+
+				auto s = Random::geti_range( 3, 8 );
+				auto r = radius * Random::getf_range( 0.5f, 3.0f );
+				ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
+			}
+			break;
+
+			case e_input_id::gamepad_button_y:
+			case e_input_id::key_space:
+			{
+				spawn_entity();
+			}
+			break;
+
+			case e_input_id::mouse_button_right:
+			{
+				auto pos = Coord_System::window_to_world_pos( evt->mouse_pos );
+				player->set_pos( pos );
+			}
+			break;
+
+			// ALL
+
+			case e_input_id::gamepad_button_left_shoulder:
+			case e_input_id::key_a:
+			{
+				reset_collision_trace_results();
+
+				auto start = player->get_pos();
+				auto end = start + ( ray_dir * max_raycast_length );
+
+				collision::Raycast_All callback;
+				sc_world.ray_cast( &callback, player, start, end );
+
+				if( callback.hit_something )
 				{
-					ec->add_shape( e_primitive_shape::rect, Rect::create_centered( 6.f ), hit.pos );
-					hit.scc->rs_opt.color = make_color( Color::teal );
+					auto ec = ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape );
+					ec->shapes.clear();
+
+					for( auto& hit : callback.results )
+					{
+						ec->add_shape( e_primitive_shape::rect, Rect::create_centered( 6.f ), hit.pos );
+						hit.scc->rs_opt.color = make_color( Color::teal );
+					}
 				}
 			}
-		}
-		break;
+			break;
 
-		// CLOSEST
+			// CLOSEST
 
-		case e_input_id::gamepad_button_right_shoulder:
-		case e_input_id::key_c:
-		{
-			reset_collision_trace_results();
-
-			auto start = player->get_pos();
-			auto end = start + ( ray_dir * max_raycast_length );
-
-			collision::Raycast_Closest callback;
-			sc_world.ray_cast( &callback, player, start, end );
-
-			if( callback.hit_something )
+			case e_input_id::gamepad_button_right_shoulder:
+			case e_input_id::key_c:
 			{
-				auto ec = ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape );
-				ec->shapes.clear();
-				ec->add_shape( e_primitive_shape::rect, Rect::create_centered( 6.f ), callback.result.pos );
+				reset_collision_trace_results();
 
-				callback.result.scc->rs_opt.color = make_color( Color::teal );
+				auto start = player->get_pos();
+				auto end = start + ( ray_dir * max_raycast_length );
+
+				collision::Raycast_Closest callback;
+				sc_world.ray_cast( &callback, player, start, end );
+
+				if( callback.hit_something )
+				{
+					auto ec = ( Primitive_Shape_Component* )hit_marker->get_component( e_component_type::primitive_shape );
+					ec->shapes.clear();
+					ec->add_shape( e_primitive_shape::rect, Rect::create_centered( 6.f ), callback.result.pos );
+
+					callback.result.scc->rs_opt.color = make_color( Color::teal );
+				}
 			}
+			break;
 		}
-		break;
 	}
-
-	return false;
-}
-
-bool Scene_Interact::on_input_motion( const Input_Event* evt )
-{
-	switch( evt->input_id )
+	else if( evt->is_motion() )
 	{
-		case e_input_id::gamepad_left_stick:
+		switch( evt->input_id )
 		{
-			player->add_force( { evt->delta, 10.f } );
+			case e_input_id::gamepad_left_stick:
+			{
+				player->add_force( { evt->delta, 10.f } );
 
-			return true;
-		}
-		break;
+				return true;
+			}
+			break;
 
-		case e_input_id::gamepad_right_stick:
-		{
-			ray_dir = evt->delta;
-			return true;
+			case e_input_id::gamepad_right_stick:
+			{
+				ray_dir = evt->delta;
+				return true;
+			}
+			break;
 		}
-		break;
 	}
 
 	return false;
 }
-
