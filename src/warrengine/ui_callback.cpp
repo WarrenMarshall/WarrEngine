@@ -48,12 +48,6 @@ void UI_Callback::on_control_left_clicked( hash tag, const UI_Result& result )
 			on_value_changed( tag );
 		}
 		break;
-
-		case e_ui_control_type::slider:
-		{
-			on_motion( tag, result );
-		}
-		break;
 	}
 }
 

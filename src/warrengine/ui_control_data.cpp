@@ -88,14 +88,11 @@ void UI_Control_Data::set_float_value( f32 value )
 			// perctanges and the values in their range slider.
 
 			_float_value = slider.range.get_pct_from_value( value );
-		}
-		break;
-
-		default:
-		{
-			_float_value = value;
+			return;
 		}
 	}
+
+	_float_value = value;
 }
 
 // the _internal functions work with the literal 0-1 range that some controls

@@ -112,33 +112,7 @@ void Primitive_Batch::add_vert( e_draw_call draw_call, const Texture_Asset* text
 	// get a new render_vertex from the pool
 
 	Render_Vertex* rvtx = vao[ (i32)draw_call ].vb->vertices.get_next();
-	*rvtx = render_vert;
-
-	/*
-	auto texture_id = vao[ (i32)draw_call ].vb->assign_texture_slot( texture );
-
-	// get a new render_vertex from the pool
-
-	Render_Vertex* rvtx = vao[ (i32)draw_call ].vb->vertices.get_next();
-	*rvtx = std::move( *render_vert );
-
-	// multiply the current modelview matrix against the vertex being rendered.
-	//
-	// until this point, the vertex has been in object space. this
-	// moves it into world space.
-
-	auto transformed_vtx = g_engine->opengl_mgr.top_matrix->transform_vec2( Vec2( rvtx->x, rvtx->y ) );
-
-	// update the position to the transformed position
-
-	rvtx->x = transformed_vtx.x;
-	rvtx->y = transformed_vtx.y;
-
-	// fill in the details
-
-	rvtx->texture_id = texture_id;
-	rvtx->pick_id = Render::state->pick_id;
-	*/
+	*rvtx = std::move( render_vert );
 }
 
 // ----------------------------------------------------------------------------

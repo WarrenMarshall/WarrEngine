@@ -38,7 +38,6 @@ struct UI_Control_Data final
 
 	e_ui_control_type type = e_ui_control_type::none;
 
-	// hot data
 	bool _bool_value = false;
 	i32 _int_value = 0;
 	f32 _float_value = 0.f;
