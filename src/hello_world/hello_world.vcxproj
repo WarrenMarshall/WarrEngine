@@ -86,12 +86,12 @@
     <IntDir>r:\intermediate_files\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
     <IntDir>r:\intermediate_files\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\</OutDir>
     <IntDir>r:\intermediate_files\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -171,6 +171,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw\lib-vc2019;$(SolutionDir)..\external\SFML\lib;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-window-s.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DRelease|x64'">
@@ -201,6 +202,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)..\external\bass24\c\x64;$(SolutionDir)..\external\glfw\lib-vc2019;$(SolutionDir)..\external\SFML\lib;$(SolutionDir)..\external\glew-2.2.0\lib\Release\x64;$(SolutionDir)..\external\box2d-master\build\bin\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;Xinput9_1_0.lib;box2d.lib;flac.lib;ogg.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;openal32.lib;sfml-system-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-window-s.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

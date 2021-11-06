@@ -25,10 +25,10 @@ void Primitive_Batch::add_quad( const Texture_Asset* texture, Render_Vertex* v0,
 	auto alpha = ( v0->a + v1->a + v2->a + v3->a );
 	auto draw_call = (e_draw_call)( (i32)e_draw_call::transparent * ( alpha != 4.f ) );
 
-	add_vert( draw_call, texture, v0 );
-	add_vert( draw_call, texture, v1 );
-	add_vert( draw_call, texture, v2 );
-	add_vert( draw_call, texture, v3 );
+	add_vert( draw_call, texture, *v0 );
+	add_vert( draw_call, texture, *v1 );
+	add_vert( draw_call, texture, *v2 );
+	add_vert( draw_call, texture, *v3 );
 
 	auto& vb = vao[ ( i32 )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
@@ -42,9 +42,9 @@ void Primitive_Batch::add_triangle( const Texture_Asset* texture, Render_Vertex*
 	auto alpha = ( v0->a + v1->a + v2->a );
 	auto draw_call = ( e_draw_call )( ( i32 )e_draw_call::transparent * ( alpha != 3.f ) );
 
-	add_vert( draw_call, texture, v0 );
-	add_vert( draw_call, texture, v1 );
-	add_vert( draw_call, texture, v2 );
+	add_vert( draw_call, texture, *v0 );
+	add_vert( draw_call, texture, *v1 );
+	add_vert( draw_call, texture, *v2 );
 
 	auto& vb = vao[ ( i32 )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
@@ -59,8 +59,8 @@ void Primitive_Batch::add_line( const Texture_Asset* texture, Render_Vertex* v0,
 	auto draw_call = ( e_draw_call )( ( i32 )e_draw_call::transparent * ( alpha != 2.f ) );
 
 
-	add_vert( draw_call, texture, v0 );
-	add_vert( draw_call, texture, v1 );
+	add_vert( draw_call, texture, *v0 );
+	add_vert( draw_call, texture, *v1 );
 
 	auto& vb = vao[ ( i32 )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
@@ -74,7 +74,7 @@ void Primitive_Batch::add_point( const Texture_Asset* texture, Render_Vertex* v0
 	auto alpha = ( v0->a );
 	auto draw_call = ( e_draw_call )( ( i32 )e_draw_call::transparent * ( alpha != 1.f ) );
 
-	add_vert( draw_call, texture, v0 );
+	add_vert( draw_call, texture, *v0 );
 
 	auto& vb = vao[ ( i32 )draw_call ].vb->vertices;
 	if( vb.count >= vb.capacity() )
@@ -88,8 +88,33 @@ bool Primitive_Batch::is_empty()
 	return vao[ (i32)e_draw_call::opaque ].vb->vertices.empty() and vao[ (i32)e_draw_call::transparent ].vb->vertices.empty();
 }
 
-void Primitive_Batch::add_vert( e_draw_call draw_call, const Texture_Asset* texture, Render_Vertex* render_vert )
+void Primitive_Batch::add_vert( e_draw_call draw_call, const Texture_Asset* texture, Render_Vertex render_vert )
 {
+	auto texture_id = vao[ (i32)draw_call ].vb->assign_texture_slot( texture );
+
+	// multiply the current modelview matrix against the vertex being rendered.
+	//
+	// until this point, the vertex has been in object space. this
+	// moves it into world space.
+
+	auto transformed_vtx = g_engine->opengl_mgr.top_matrix->transform_vec2( Vec2( render_vert.x, render_vert.y ) );
+
+	// update the position to the transformed position
+
+	render_vert.x = transformed_vtx.x;
+	render_vert.y = transformed_vtx.y;
+
+	// fill in the details
+
+	render_vert.texture_id = texture_id;
+	render_vert.pick_id = Render::state->pick_id;
+
+	// get a new render_vertex from the pool
+
+	Render_Vertex* rvtx = vao[ (i32)draw_call ].vb->vertices.get_next();
+	*rvtx = render_vert;
+
+	/*
 	auto texture_id = vao[ (i32)draw_call ].vb->assign_texture_slot( texture );
 
 	// get a new render_vertex from the pool
@@ -113,6 +138,7 @@ void Primitive_Batch::add_vert( e_draw_call draw_call, const Texture_Asset* text
 
 	rvtx->texture_id = texture_id;
 	rvtx->pick_id = Render::state->pick_id;
+	*/
 }
 
 // ----------------------------------------------------------------------------

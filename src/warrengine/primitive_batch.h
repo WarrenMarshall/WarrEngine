@@ -30,7 +30,7 @@ struct Primitive_Batch final
 	bool is_empty();
 
 private:
-	void add_vert( e_draw_call draw_call, const Texture_Asset* texture, Render_Vertex* render_vert );
+	void add_vert( e_draw_call draw_call, const Texture_Asset* texture, Render_Vertex render_vert );
 };
 
 // ----------------------------------------------------------------------------

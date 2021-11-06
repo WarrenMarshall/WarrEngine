@@ -789,7 +789,9 @@ bool Engine::on_input(const Input_Event* evt)
 
 			case e_input_id::key_f9:
 			{
+#ifndef _RELEASE
 				g_engine->render.debug.entity_info_log = true;
+#endif
 				log_div();
 				log( "-- Entity Info" );
 				log_div();
@@ -798,7 +800,9 @@ bool Engine::on_input(const Input_Event* evt)
 
 			case e_input_id::key_f10:
 			{
+#ifndef _RELEASE
 				g_engine->render.debug.single_frame_log = true;
+#endif
 				log_div();
 				log( "-- Single Frame Debugger" );
 				log_div();
@@ -808,13 +812,17 @@ bool Engine::on_input(const Input_Event* evt)
 			// toggle debug drawing
 			case e_input_id::key_f5:
 			{
+#ifndef _RELEASE
 				toggle_bool( g_engine->render.debug.draw_colliders );
+#endif
 				return true;
 			}
 
 			case e_input_id::key_f6:
 			{
+#ifndef _RELEASE
 				toggle_bool( g_engine->render.debug.draw_spatial );
+#endif
 				return true;
 			}
 
@@ -875,7 +883,9 @@ bool Engine::on_input(const Input_Event* evt)
 
 			case e_input_id::key_f8:
 			{
+#ifndef _RELEASE
 				stats.flags.draw_verbose = true;
+#endif
 				return true;
 			}
 		}
@@ -886,7 +896,9 @@ bool Engine::on_input(const Input_Event* evt)
 		{
 			case e_input_id::key_f8:
 			{
+#ifndef _RELEASE
 				stats.flags.draw_verbose = false;
+#endif
 				return true;
 			}
 		}
