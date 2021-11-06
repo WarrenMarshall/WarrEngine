@@ -18,11 +18,7 @@ Input_Event::Input_Event()
 Input_Event::Input_Event( e_event_id event_id, e_input_id input_id )
 	: event_id( event_id ), input_id( input_id )
 {
-	shift_down = g_engine->input_mgr.is_shift_down();
-	control_down = g_engine->input_mgr.is_control_down();
-	alt_down = g_engine->input_mgr.is_alt_down();
-
-	mouse_pos = g_engine->input_mgr.mouse_window_pos;
+	Input_Event();
 }
 
 // ----------------------------------------------------------------------------
