@@ -86,7 +86,7 @@ struct Sprite_Component final : Entity_Component
 	Sprite_Component() = delete;
 	Sprite_Component( Entity* parent_entity );
 
-	Entity_Component* init( std::string_view tex_tag );
+	Entity_Component* init( const std::string& tex_tag );
 	virtual void draw() override;
 };
 
@@ -123,7 +123,7 @@ struct Emitter_Component final : Entity_Component
 
 	Particle_Emitter emitter = {};
 
-	Entity_Component* init( std::string_view params_tag );
+	Entity_Component* init( const std::string& params_tag );
 	virtual void set_life_cycle( e_life_cycle lc ) override;
 	[[nodiscard]] virtual bool is_fully_dead() override;
 	virtual void draw() override;
@@ -161,7 +161,7 @@ struct Sound_Component final : Entity_Component
 	Sound_Component() = delete;
 	Sound_Component( Entity* parent_entity );
 
-	Entity_Component* init( std::string_view snd_tag, bool one_shot, bool auto_play );
+	Entity_Component* init( const std::string& snd_tag, bool one_shot, bool auto_play );
 	virtual void update() override;
 	virtual void play() override;
 	virtual void stop() override;
@@ -232,7 +232,7 @@ struct Mesh_Component final : Entity_Component
 	Mesh_Component() = delete;
 	Mesh_Component( Entity* parent_entity );
 
-	Entity_Component* init( std::string_view mesh_tag );
+	Entity_Component* init( const std::string& mesh_tag );
 	virtual void draw() override;
 };
 
@@ -339,7 +339,7 @@ struct Tile_Map_Component final : Entity_Component
 
 	virtual void draw() override;
 
-	void init( std::string_view tile_set_name, std::string_view tile_map_name );
+	void init( const std::string& tile_set_name, const std::string& tile_map_name );
 	Collision_Body_Component* add_collision_body_from_object( const Tiled_Object& obj, e_solidity collider_type );
 	void spawn_entities( Scene* scene, f_tile_map_spawn_entity func_callback );
 };

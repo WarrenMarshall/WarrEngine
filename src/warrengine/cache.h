@@ -9,6 +9,7 @@ template<typename T_Key, typename T_Value>
 struct Cache final
 {
 	std::map<T_Key, T_Value> values;
+	i32 cache_size_limit = 10;
 
 	void set( T_Key key, T_Value value )
 	{
@@ -16,7 +17,7 @@ struct Cache final
 
 		// if this fires, review the called code and make sure the caching is
 		// worth it. with this many look ups, it might not be saving anything.
-		assert( values.size() < 10 );
+		assert( values.size() < cache_size_limit );
 	}
 
 	void clear()

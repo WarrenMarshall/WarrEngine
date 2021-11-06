@@ -20,7 +20,7 @@ Texture_Source_Asset* Texture_Asset::get_src_texture() const
 
 // single frame, uses entire source texture
 
-Texture_Asset::Texture_Asset( std::string_view src_texture_tag )
+Texture_Asset::Texture_Asset( const std::string& src_texture_tag )
 {
 	src_texture = find_texture_source_base( src_texture_tag );
 
@@ -34,7 +34,7 @@ Texture_Asset::Texture_Asset( std::string_view src_texture_tag )
 #endif
 }
 
-Texture_Asset::Texture_Asset( std::string_view src_texture_tag, const Rect& rc_tex )
+Texture_Asset::Texture_Asset( const std::string& src_texture_tag, const Rect& rc_tex )
 {
 	src_texture = find_texture_source_base( src_texture_tag );
 
@@ -74,7 +74,7 @@ Texture_Asset::Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type 
 	frame_tween = Tween( 0.f, (f32)( frames.size() ), duration_ms, tween_type, e_tween_via::linear );
 }
 
-Texture_Source_Asset* Texture_Asset::find_texture_source_base( std::string_view src_texture_tag )
+Texture_Source_Asset* Texture_Asset::find_texture_source_base( const std::string& src_texture_tag )
 {
 	auto result = g_engine->find_asset_safe<Texture_Source_Asset>( src_texture_tag );
 	assert( result );

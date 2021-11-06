@@ -107,7 +107,7 @@ Sprite_Component::Sprite_Component( Entity* parent_entity )
 	anim_offset = Random::getf();
 }
 
-Entity_Component* Sprite_Component::init( std::string_view tex_tag )
+Entity_Component* Sprite_Component::init( const std::string& tex_tag )
 {
 	texture = g_engine->find_asset<Texture_Asset>( tex_tag );
 	return this;
@@ -228,7 +228,7 @@ Emitter_Component::Emitter_Component( Entity* parent_entity )
 	component_type = e_component_type::emitter;
 }
 
-Entity_Component* Emitter_Component::init( std::string_view params_tag )
+Entity_Component* Emitter_Component::init( const std::string& params_tag )
 {
 	emitter.set_params( g_engine->find_asset<Emitter_Parameters_Asset>( params_tag ) );
 	emitter.parent_component = this;
@@ -319,7 +319,7 @@ Sound_Component::Sound_Component( Entity* parent_entity )
 	component_type = e_component_type::sound;
 }
 
-Entity_Component* Sound_Component::init( std::string_view snd_tag, bool one_shot, bool auto_play )
+Entity_Component* Sound_Component::init( const std::string& snd_tag, bool one_shot, bool auto_play )
 {
 	snd = g_engine->find_asset<Sound_Asset>( snd_tag );
 	this->one_shot = one_shot;
@@ -744,7 +744,7 @@ Mesh_Component::Mesh_Component( Entity* parent_entity )
 	component_type = e_component_type::mesh;
 }
 
-Entity_Component* Mesh_Component::init( std::string_view mesh_tag )
+Entity_Component* Mesh_Component::init( const std::string& mesh_tag )
 {
 	mesh = g_engine->find_asset<Mesh_Asset>( mesh_tag );
 	return this;
@@ -1343,7 +1343,7 @@ Tile_Map_Component::Tile_Map_Component( Entity* parent_entity )
 	component_type = e_component_type::tile_map;
 }
 
-void Tile_Map_Component::init( std::string_view tile_set_tag, std::string_view tile_map_tag )
+void Tile_Map_Component::init( const std::string& tile_set_tag, const std::string& tile_map_tag )
 {
 	tile_set = g_engine->find_asset<Tile_Set_Asset>( tile_set_tag );
 	tile_map = g_engine->find_asset<Tile_Map_Asset>( tile_map_tag );

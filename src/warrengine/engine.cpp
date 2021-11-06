@@ -197,7 +197,7 @@ void Engine::apply_config_settings()
 	final_pixel_h = Text_Parser::float_from_str( tok.tokens[ 1 ] );
 
 	//g_engine->render.init_set_up_default_palette();
-	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ) ) );
+	Render::palette = *( g_engine->find_asset<Palette_Asset>( g_engine->config_vars.find_value_or( "palette_tag", "pal_default" ).data() ) );
 
 	Rect rc = g_engine->window.compute_max_window_size_for_desktop();
 	glfwSetWindowPos( g_engine->window.glfw_window, ( i32 )( rc.x ), ( i32 )( rc.y ) );

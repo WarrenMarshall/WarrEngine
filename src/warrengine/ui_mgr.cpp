@@ -238,7 +238,7 @@ UI_Mgr* UI_Mgr::set_color( Color color )
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_image( std::string_view tex_tag )
+UI_Mgr* UI_Mgr::set_image( const std::string& tex_tag )
 {
 	return set_image( g_engine->find_asset<Texture_Asset>( tex_tag ) );
 }
@@ -256,7 +256,7 @@ UI_Mgr* UI_Mgr::set_func_draw( f_draw_control func_draw_control )
 	return this;
 }
 
-UI_Mgr* UI_Mgr::set_slice_def( std::string_view slice_def_name )
+UI_Mgr* UI_Mgr::set_slice_def( const std::string& slice_def_name )
 {
 	current_control->slice_def = nullptr;
 

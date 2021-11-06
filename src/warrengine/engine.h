@@ -81,13 +81,13 @@ struct Engine final
 	void debug_draw_buffers();
 
 	template<typename T>
-	[[nodiscard]] T* find_asset( std::string_view name )
+	[[nodiscard]] T* find_asset( const std::string& name )
 	{
 		return asset_cache.find<T>( name );
 	}
 
 	template<typename T>
-	[[nodiscard]] T* find_asset_safe( std::string_view name )
+	[[nodiscard]] T* find_asset_safe( const std::string& name )
 	{
 		return asset_cache.find_safe<T>( name );
 	}

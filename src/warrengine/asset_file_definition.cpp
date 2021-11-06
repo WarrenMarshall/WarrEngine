@@ -102,7 +102,7 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 	// ----------------------------------------------------------------------------
 	// every src_texture automatically creates an a_texture with the same name
 
-	g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag ), tag.data(), "" );
+	g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag.data() ), tag.data(), "" );
 
 	// the texture_tags" k/v is a convenient way to specify a set
 	// of textures belonging to a src_texture. it's an easy way to break
@@ -133,7 +133,7 @@ void Asset_File_Definition::precache_src_texture( const Key_Values& key_values_f
 
 			Rect rc( x, y, w, h );
 
-			g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag, rc ), texture_tag, "" );
+			g_engine->asset_cache.add( std::make_unique<Texture_Asset>( tag.data(), rc ), texture_tag, "" );
 		}
 	}
 }
@@ -148,7 +148,7 @@ void Asset_File_Definition::precache_font_def( const Key_Values& key_values_for_
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Font_Def_Asset>(), tag.data(), filename );
 
 	asset_ptr->original_filename = filename;
-	asset_ptr->src_texture = g_engine->find_asset<Texture_Source_Asset>( key_values_for_asset_def.find_value( "src_texture_tag" ) );
+	asset_ptr->src_texture = g_engine->find_asset<Texture_Source_Asset>( key_values_for_asset_def.find_value( "src_texture_tag" ).data() );
 
 	asset_ptr->create();
 }
@@ -161,7 +161,7 @@ void Asset_File_Definition::precache_slice_def( const Key_Values& key_values_for
 
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Slice_Def_Asset>(), tag.data(), "" );
 
-	auto texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	auto texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ).data() );
 	Vec2 x_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "x_slices" ) );
 	Vec2 y_slices = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "y_slices" ) );
 
@@ -285,7 +285,7 @@ void Asset_File_Definition::precache_anim_texture( const Key_Values& key_values_
 	Tokenizer tok( frames, "," );
 	while( !tok.is_eos() )
 	{
-		anim_frames.push_back( g_engine->find_asset<Texture_Asset>( *tok.get_next_token() ) );
+		anim_frames.push_back( g_engine->find_asset<Texture_Asset>( std::string( *tok.get_next_token() ) ) );
 	}
 
 	auto asset_ptr = g_engine->asset_cache.add(
@@ -303,7 +303,7 @@ void Asset_File_Definition::precache_texture( const Key_Values& key_values_for_a
 	assert( key_values_for_asset_def.does_key_exist( "texture_tag" ) );
 
 	Rect rc = Text_Parser::rect_from_str( key_values_for_asset_def.find_value( "rect" ) );
-	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ), rc ),
+	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ).data(), rc ),
 		tag.data(), "" );
 
 	asset_ptr->create();
@@ -405,7 +405,7 @@ void Asset_File_Definition::precache_font( const Key_Values& key_values_for_asse
 	assert( key_values_for_asset_def.does_key_exist( "font_def_tag" ) );
 
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Font_Asset>(), tag.data(), "" );
-	asset_ptr->font_def = g_engine->find_asset<Font_Def_Asset>( key_values_for_asset_def.find_value( "font_def_tag" ) );
+	asset_ptr->font_def = g_engine->find_asset<Font_Def_Asset>( key_values_for_asset_def.find_value( "font_def_tag" ).data() );
 	asset_ptr->create();
 }
 
@@ -428,7 +428,7 @@ void Asset_File_Definition::precache_cursor( const Key_Values& key_values_for_as
 
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Cursor_Asset>(), tag.data(), "" );
 
-	asset_ptr->texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	asset_ptr->texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ).data() );
 	asset_ptr->hotspot_offset = Text_Parser::vec2_from_str( key_values_for_asset_def.find_value( "hotspot" ) );
 
 	asset_ptr->create();
@@ -443,7 +443,7 @@ void Asset_File_Definition::precache_tile_set( const Key_Values& key_values_for_
 	auto asset_ptr = g_engine->asset_cache.add( std::make_unique<Tile_Set_Asset>(), tag.data(), filename );
 	asset_ptr->original_filename = filename;
 
-	asset_ptr->texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ) );
+	asset_ptr->texture = g_engine->find_asset<Texture_Asset>( key_values_for_asset_def.find_value( "texture_tag" ).data() );
 
 	asset_ptr->create();
 }

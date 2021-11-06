@@ -26,11 +26,11 @@ struct Texture_Asset final : Asset
 	i32 frames_per_second = 0;
 
 	Texture_Asset() = default;
-	Texture_Asset( std::string_view src_texture_tag );
-	Texture_Asset( std::string_view src_texture_tag, const Rect& rc_tex );
+	Texture_Asset( const std::string& src_texture_tag );
+	Texture_Asset( const std::string& src_texture_tag, const Rect& rc_tex );
 	Texture_Asset( std::vector<Texture_Asset*>& frames, e_tween_type tween_type, i32 frames_per_second );
 
-	Texture_Source_Asset* find_texture_source_base( std::string_view src_texture_tag );
+	Texture_Source_Asset* find_texture_source_base( const std::string& src_texture_tag );
 
 	[[nodiscard]] const Texture_Asset* get_frame( f32 anim_offset ) const;
 	void randomize();

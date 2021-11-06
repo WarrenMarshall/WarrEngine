@@ -48,7 +48,7 @@ bool Mesh_Asset::create()
 			Tokenizer tok( line, " " );
 
 			tok.get_next_token();	// eat "usemtl "
-			current_texture = g_engine->find_asset<Texture_Asset>( *tok.get_next_token() );
+			current_texture = g_engine->find_asset<Texture_Asset>( std::string( *tok.get_next_token() ) );
 		}
 		else if( line.substr( 0, 2 ) == "f " )
 		{

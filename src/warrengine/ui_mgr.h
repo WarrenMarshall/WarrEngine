@@ -69,10 +69,10 @@ public:
 	UI_Mgr* set_text_align( e_align align );
 	UI_Mgr* set_text_color( Color color );
 	UI_Mgr* set_color( Color color );
-	UI_Mgr* set_image( std::string_view tex_tag );
+	UI_Mgr* set_image( const std::string& tex_tag );
 	UI_Mgr* set_image( const Texture_Asset* tex );
 	UI_Mgr* set_func_draw( f_draw_control func_draw_control );
-	UI_Mgr* set_slice_def( std::string_view slice_def_name );
+	UI_Mgr* set_slice_def( const std::string& slice_def_name );
 	UI_Mgr* set_rect( const Rect& rect );
 	UI_Mgr* cut_top( f32 sz = 0.f );
 	UI_Mgr* cut_bottom( f32 sz = 0.f );
