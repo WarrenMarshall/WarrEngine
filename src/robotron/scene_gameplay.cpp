@@ -113,15 +113,6 @@ void Scene_Gameplay::handle_player_movement_input( const Vec2& delta )
 	}
 }
 
-void Scene_Gameplay::update()
-{
-	Scene::update();
-
-	// handle user input here as a test
-
-	//auto state = g_engine->input_mgr.get_group_state( H( "right" );
-}
-
 void Scene_Gameplay::popped()
 {
 	Scene::popped();

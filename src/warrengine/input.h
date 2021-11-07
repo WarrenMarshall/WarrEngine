@@ -58,8 +58,6 @@ static_assert( sizeof( Input_Event ) <= 64 );
 
 struct Input_Mgr final
 {
-	std::multimap<hash, e_input_id> group_bindings;
-
 	// holds onto generated input events until the update
 	// function can send them to anyone listening
 	std::vector<Input_Event> event_queue;

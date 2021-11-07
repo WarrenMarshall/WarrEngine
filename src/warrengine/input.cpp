@@ -100,12 +100,6 @@ void Input_Mgr::init()
 	}
 
 	timer_repeat = Timer( 150 );
-
-	// grouped key bindings
-
-	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::gamepad_button_dpad_left ) );
-	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::key_left ) );
-	group_bindings.insert( std::make_pair( H( "left" ), e_input_id::gamepad_left_stick ) );
 }
 
 void Input_Mgr::deinit()
