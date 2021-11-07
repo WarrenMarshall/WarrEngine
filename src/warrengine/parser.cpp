@@ -102,10 +102,10 @@ Range Text_Parser::range_from_str( std::string_view str )
 
 	Tokenizer tok( str, "," );
 
-	Range range(
-		Text_Parser::float_from_str( *tok.get_next_token() ),
-		Text_Parser::float_from_str( *tok.get_next_token() )
-	);
+	Range range;
+
+	range.start = Text_Parser::float_from_str( *tok.get_next_token() );
+	range.end = Text_Parser::float_from_str( *tok.get_next_token() );
 
 	return range;
 }
@@ -115,6 +115,7 @@ Rect Text_Parser::rect_from_str( std::string_view str )
 	Tokenizer tok( str, "," );
 
 	Rect rect;
+
 	rect.x = Text_Parser::float_from_str( *tok.get_next_token() );
 	rect.y = Text_Parser::float_from_str( *tok.get_next_token() );
 	rect.w = Text_Parser::float_from_str( *tok.get_next_token() );
@@ -137,6 +138,7 @@ Vec2 Text_Parser::vec2_from_str( std::string_view str )
 	Tokenizer tok( str, "," );
 
 	Vec2 vec2;
+
 	vec2.x = Text_Parser::float_from_str( *tok.get_next_token() );
 	vec2.y = Text_Parser::float_from_str( *tok.get_next_token() );
 

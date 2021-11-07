@@ -5,7 +5,7 @@ struct Scene_Gameplay final : Scene
 
 	Scene_Gameplay();
 
-	void handle_player_movement_input( const Vec2& delta );
+	void move_player_by_delta( const Vec2& delta );
 
 	virtual void pushed() override;
 	virtual void popped() override;

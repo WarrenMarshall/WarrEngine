@@ -80,35 +80,39 @@ void Scene_Gameplay::pushed()
 	player = add_entity<Player_Entity>();
 }
 
-void Scene_Gameplay::handle_player_movement_input( const Vec2& delta )
+void Scene_Gameplay::move_player_by_delta( const Vec2& delta )
 {
-	Vec2 movement = Vec2::snap_to_int( delta );
-	if( !movement.is_zero() )
+	if( delta.is_zero() )
 	{
-		movement.normalize();
-		player->add_delta_pos( movement );
+		return;
+	}
 
-		if( glm::abs( delta.x ) > glm::abs( delta.y ) )
+	// move the player
+
+	player->add_delta_pos( delta );
+
+	// selects an animation sequence based on which direction the player is most moving in
+
+	if( glm::abs( delta.x ) > glm::abs( delta.y ) )
+	{
+		if( glm::sign( delta.x ) > 0.f )
 		{
-			if( glm::sign( delta.x ) > 0.f )
-			{
-				player->sprite_component->init( "anim_player_walk_right" );
-			}
-			else
-			{
-				player->sprite_component->init( "anim_player_walk_left" );
-			}
+			player->sprite_component->init( "anim_player_walk_right" );
 		}
 		else
 		{
-			if( glm::sign( delta.y ) < 0.f )
-			{
-				player->sprite_component->init( "anim_player_walk_up" );
-			}
-			else
-			{
-				player->sprite_component->init( "anim_player_walk_down" );
-			}
+			player->sprite_component->init( "anim_player_walk_left" );
+		}
+	}
+	else
+	{
+		if( glm::sign( delta.y ) < 0.f )
+		{
+			player->sprite_component->init( "anim_player_walk_up" );
+		}
+		else
+		{
+			player->sprite_component->init( "anim_player_walk_down" );
 		}
 	}
 }
@@ -147,43 +151,14 @@ bool Scene_Gameplay::on_input( const Input_Event* evt )
 			}
 		}
 	}
-	else if( evt->is_held() )
-	{
-		switch( evt->input_id )
-		{
-			case e_input_id::key_left:
-			{
-				handle_player_movement_input( { -4.f, 0.f } );
-				return true;
-			}
-
-			case e_input_id::key_right:
-			{
-				handle_player_movement_input( { 4.f, 0.f } );
-				return true;
-			}
-
-			case e_input_id::key_up:
-			{
-				handle_player_movement_input( { 0.f, -4.f } );
-				return true;
-			}
-
-			case e_input_id::key_down:
-			{
-				handle_player_movement_input( { 0.f, 4.f } );
-				return true;
-			}
-
-		}
-	}
 	else if( evt->is_motion() )
 	{
 		switch( evt->input_id )
 		{
 			case e_input_id::gamepad_left_stick:
 			{
-				handle_player_movement_input( evt->delta );
+				Vec2 ndelta = evt->delta.normalize();
+				move_player_by_delta( ndelta * 1.f );
 				return true;
 			}
 

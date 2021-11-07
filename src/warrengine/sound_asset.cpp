@@ -7,7 +7,12 @@ namespace war
 void Sound_Asset::play()
 {
 	sound.play();
-	sound.setPitch( g_engine->clock.dilation + Random::getf_range( -0.25f, .5f ) );
+
+	if( flags.vary_pitch )
+	{
+		//sound.setPitch( g_engine->clock.dilation + Random::getf_range( -0.25f, .5f ) );
+		sound.setPitch( g_engine->clock.dilation + pitch_variance.get_random_value() );
+	}
 }
 
 void Sound_Asset::pause()
@@ -27,7 +32,7 @@ bool Sound_Asset::create()
 	if( buffer.loadFromMemory( file_data->buffer.data(), file_data->buffer.size() ) )
 	{
 		sound.setBuffer( buffer );
-		sound.setLoop( looped );
+		sound.setLoop( flags.looped );
 
 		return true;
 	}

@@ -263,7 +263,15 @@ void Asset_File_Definition::precache_sound( const Key_Values& key_values_for_ass
 	{
 		if( key == "looped" )
 		{
-			asset_ptr->looped = bool( value == "true" );
+			asset_ptr->flags.looped = bool( value == "true" );
+		}
+		else if( key == "b_vary_pitch" )
+		{
+			asset_ptr->flags.vary_pitch = bool( value == "true" );
+		}
+		else if( key == "r_pitch_variance" )
+		{
+			asset_ptr->pitch_variance = Text_Parser::range_from_str( value );
 		}
 	}
 

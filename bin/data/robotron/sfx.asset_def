@@ -12,16 +12,21 @@
 	"type" "sound"
 	"tag" "player_shoot"
 	"filename" "sfx/player_shoot.wav"
+	"b_vary_pitch" "true"
+	"r_pitch_variance" "-0.25f, .5f"
 }
 
 {
 	"type" "sound"
 	"tag" "player_bullet_hit_enemy_drone"
 	"filename" "sfx/enemy_drone_hit.wav"
+	"b_vary_pitch" "true"
+	"r_pitch_variance" "-0.05f, .05f"
 }
 
 {
 	"type" "sound"
 	"tag" "player_bullet_hit_world"
 	"filename" "sfx/player_bullet_hit_world.wav"
+	"b_vary_pitch" "true"
 }
