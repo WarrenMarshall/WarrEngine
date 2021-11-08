@@ -285,82 +285,89 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 	{
 		case e_physics_body_type::dynamic:
 		{
-			std::optional<Vec2> dir_attacker, dir_victim;
-
 			switch( ent_victim->collision.type )
 			{
 				// dynamic -> dynamic
 				case e_physics_body_type::dynamic:
 				{
-					if( ent_attacker->collision.flags.is_bouncy )
+					// #physics - add a frame counter to the entities so that once they are considered
+					// once, they don't take part again? this MIGHT be why entities sometimes end up
+					// reflecting in the same direction.  Might.
+
+					// when colliding with an entity with zero velocity, give
+					// that entity our velocity and set it along the collision
+					// normal. this is correct most of the time.
+
+					if( ent_attacker->velocity.is_zero() and !ent_victim->velocity.is_zero() )
 					{
-						// #slide ?
-						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
+						auto reflected_dir = Vec2::reflect_across_normal( ent_victim->velocity, coll.normal );
+						ent_attacker->add_impulse( { reflected_dir, ent_victim->velocity.get_size() * 0.5f } );
+						ent_victim->add_impulse( { -reflected_dir, ent_victim->velocity.get_size() * 0.5f } );
+
+						break;
 					}
-					if( ent_victim->collision.flags.is_bouncy )
+
+					if( ent_victim->velocity.is_zero() and !ent_attacker->velocity.is_zero() )
 					{
-						// #slide ?
-						dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
+						auto reflected_dir = Vec2::reflect_across_normal( ent_attacker->velocity, coll.normal );
+						ent_victim->add_impulse( { reflected_dir, ent_attacker->velocity.get_size() * 0.5f } );
+						ent_attacker->add_impulse( { -reflected_dir, ent_attacker->velocity.get_size() * 0.5f } );
+
+						break;
 					}
+
+					auto dot = Vec2::dot( ent_attacker->velocity, ent_victim->velocity );
+
+					if( dot > 0.75f )
+					{
+						// if 2 dynamic entities collide but they are
+						// basically heading in the same direction, ignore
+						// the collision. this prevents the collision
+						// reaction from looking weird or requiring specialc
+						// case handling.
+
+						ent_attacker->add_impulse( { -ent_victim->velocity, ent_victim->velocity.get_size() } );
+						ent_victim->add_impulse( { ent_attacker->velocity, ent_attacker->velocity.get_size() } );
+
+						log( "dot : {}", dot );
+
+						break;
+					}
+
+					ent_attacker->reflect_across( coll.normal );
+					ent_victim->reflect_across( coll.normal );
 				}
 				break;
 
 				// dynamic -> kinematic
 				case e_physics_body_type::kinematic:
 				{
-					if( ent_attacker->collision.flags.is_bouncy )
-					{
-						// #slide ?
-						dir_attacker = Vec2::reflect_across_normal( vel_attacker, coll.normal );
-					}
+					ent_attacker->reflect_across( coll.normal );
 				}
 				break;
 
 				// dynamic -> stationary
 				case e_physics_body_type::stationary:
 				{
-					if( ent_attacker->collision.flags.is_bouncy )
-					{
-						// #slide ?
-						ent_attacker->reflect_across( coll.normal );
-					}
+					ent_attacker->reflect_across( coll.normal );
 				}
 				break;
-			}
-
-			if( dir_attacker.has_value() and !vel_attacker.is_zero() )
-			{
-				dir_attacker->normalize();
-				ent_attacker->add_impulse( { *dir_attacker, vel_attacker.get_size() } );
-				ent_attacker->velocity = Vec2::zero;
-			}
-
-			if( dir_victim.has_value() and !vel_victim.is_zero() )
-			{
-				dir_victim->normalize();
-				ent_victim->add_impulse( { *dir_victim, vel_victim.get_size() } );
-				ent_victim->velocity = Vec2::zero;
 			}
 		}
 		break;
 
 		case e_physics_body_type::kinematic:
 		{
-			Vec2 dir_victim;
-
 			switch( ent_victim->collision.type )
 			{
 				// kinematic -> dynamic
 				case e_physics_body_type::dynamic:
 				{
-					if( ent_victim->collision.flags.is_bouncy )
-					{
-						// #slide ?
-						dir_victim = Vec2::reflect_across_normal( vel_victim, coll.normal );
-					}
+					ent_victim->reflect_across( coll.normal );
 				}
 				break;
 
+				/*
 				// kinematic -> kinematic
 				case e_physics_body_type::kinematic:
 				{
@@ -374,16 +381,12 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 					assert( false );
 				}
 				break;
+				*/
 			}
-
-			dir_victim.normalize();
-
-			ent_victim->add_impulse( { dir_victim, vel_victim.get_size() } );
-
-			ent_victim->velocity = Vec2::zero;
 		}
 		break;
 
+		/*
 		case e_physics_body_type::stationary:
 		{
 			switch( ent_victim->collision.type )
@@ -411,6 +414,7 @@ void Collision_World::resolve_solid_collision( collision::Pending_Collision& col
 			}
 		}
 		break;
+		*/
 	}
 }
 

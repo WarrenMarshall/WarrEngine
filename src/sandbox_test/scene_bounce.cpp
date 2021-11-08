@@ -18,8 +18,9 @@ Entity* Scene_Bounce::spawn_shape()
 	constexpr auto radius = 12.f;
 	auto e = add_entity<Entity>();
 	e->set_scale( Random::getf_range( 1.0f, 1.5f ) );
-	e->collision.flags.is_bouncy = true;
 	e->flags.include_in_quad_tree = true;
+	e->collision.set_restitution( 0.0f );
+	e->collision.set_friction( 0.5f );
 
 	{
 		auto ec = e->add_component<Collision_Body_Component>();
@@ -29,25 +30,9 @@ Entity* Scene_Bounce::spawn_shape()
 
 		switch( last_spawned_type % 3 )
 		{
-			case 0:
-			{
-				ec->set_as_centered_box( radius * Random::getf_range( 1.0f, 3.0f ), radius * Random::getf_range( 1.0f, 3.0f ) );
-			}
-			break;
-
-			case 1:
-			{
-				ec->set_as_circle( radius * Random::getf_range( 0.5f, 1.5f ) );
-			}
-			break;
-
-			case 2:
-			{
-				auto s = Random::geti_range( 3, 8 );
-				auto r = radius * Random::getf_range( 0.5f, 2.0f );
-				ec->set_as_polygon( Geo_Util::generate_convex_shape( s, r ) );
-			}
-			break;
+			case 0:	ec->set_as_centered_box( radius * Random::getf_range( 1.0f, 3.0f ), radius * Random::getf_range( 1.0f, 3.0f ) );	break;
+			case 1: ec->set_as_circle( radius * Random::getf_range( 0.5f, 1.5f ) );	break;
+			case 2:	ec->set_as_polygon( Geo_Util::generate_convex_shape( Random::geti_range( 3, 8 ), radius * Random::getf_range( 0.5f, 2.0f ) ) );	break;
 		}
 
 		ec->set_collision_flags( coll_flags.shape, coll_flags.geo | coll_flags.shape | coll_flags.ball );

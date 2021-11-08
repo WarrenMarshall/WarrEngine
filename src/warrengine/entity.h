@@ -50,17 +50,37 @@ struct Entity
 		[[nodiscard]] bool is_stationary() { return ( type == e_physics_body_type::stationary ); }
 		[[nodiscard]] bool is_kinematic() { return ( type == e_physics_body_type::kinematic ); }
 
+		// friction : 0 - slide, 1 - stick
+		void set_friction( f32 friction )
+		{
+			settings.friction = friction;
+		}
+
+		// restitution : 0 = no bounce, 1 = full bounce
+		void set_restitution( f32 restitution )
+		{
+			settings.restitution = restitution;
+		}
+
+		// density : 0 = no density, 1 = full density
+		void set_density( f32 density )
+		{
+			settings.density = density;
+		}
+
 		struct
 		{
-			Range max_velocity_x = { -5.0f, 5.0f };
-			Range max_velocity_y = { -5.0f, 5.0f };
+			Range max_velocity_x = { -2.0f, 2.0f };
+			Range max_velocity_y = { -2.0f, 2.0f };
+			f32 friction = 0.3f;
+			f32 restitution = 0.0f;
+			f32 density = 1.0f;
 		} settings;
 
 		struct
 		{
 			bool is_in_air : 1 = true;
 			bool is_affected_by_gravity : 1 = false;
-			bool is_bouncy : 1 = false;
 		} flags;
 
 	} collision;
@@ -73,7 +93,7 @@ struct Entity
 	// transforms
 	Transform _tform;
 
-	std::list<std::unique_ptr<Entity_Component>> components;
+	std::forward_list<std::unique_ptr<Entity_Component>> components;
 
 	// the nodes in the parent scenes spatial map that this entity is touching
 	std::set<Quad_Tree::Node*> nodes;
@@ -143,8 +163,8 @@ struct Entity
 
 	template<typename T, typename ...Params> T* add_component( Params&&... params )
 	{
-		components.push_back( std::make_unique<T>( this, std::forward<Params>( params )... ) );
-		auto new_component = (T*)( components.back().get() );
+		components.push_front( std::make_unique<T>( this, std::forward<Params>( params )... ) );
+		auto new_component = (T*)( components.front().get() );
 
 		return new_component;
 	}
@@ -170,7 +190,6 @@ struct Entity
 	[[nodiscard]] std::vector<Entity_Component*> get_components( e_component_type type, hash tag = hash_none ) const
 	{
 		std::vector<Entity_Component*> ecs;
-		ecs.reserve( components.size() );
 
 		for( auto& ec : components )
 		{

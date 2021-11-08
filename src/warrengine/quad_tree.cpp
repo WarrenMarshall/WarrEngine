@@ -342,11 +342,16 @@ void Quad_Tree::update()
 {
 	// insert all needed entities into the nodes
 
-	for( auto& e : parent_scene->gen_entity_list( e_life_cycle::alive ) )
+	for( auto& e : parent_scene->entities )
 	{
+		if( !e->life_cycle.is_alive() )
+		{
+			continue;
+		}
+
 		if( e->flags.include_in_quad_tree )
 		{
-			insert_entity( e );
+			insert_entity( e.get() );
 		}
 	}
 }

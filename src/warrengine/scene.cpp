@@ -83,7 +83,7 @@ void Scene::pre_update()
 			}
 
 			// we remove a single dead entity each update to amortize the cost
-			entities.erase( iter );
+			std::erase( entities, *iter );
 
 			break;
 		}
@@ -310,21 +310,6 @@ bool Scene::on_entity_and_sensor_touching_end( Entity* entity, Collision_Body_Co
 bool Scene::on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll )
 {
 	return false;
-}
-
-std::list<Entity*> Scene::gen_entity_list( e_life_cycle life_cycle_flags )
-{
-	std::list<Entity*> list;
-
-	for( auto& entity : entities )
-	{
-		if( ( i32 )( entity->life_cycle.get() ) & ( i32 )( life_cycle_flags ) )
-		{
-			list.push_back( entity.get() );
-		}
-	}
-
-	return list;
 }
 
 Vec2 Scene::get_viewport_pivot()

@@ -24,6 +24,7 @@ Entity* Scene_Interact::spawn_entity()
 	e->flags.include_in_quad_tree = true;
 	e->set_pos( { 0.f, 0.f } );
 	e->set_scale( 1.5f );
+	e->collision.set_friction( 0.3f );
 	{
 		auto ec = e->add_component<Collision_Body_Component>();
 
@@ -55,7 +56,6 @@ Entity* Scene_Interact::spawn_entity()
 		ec->set_collision_flags( coll_flags.player, coll_flags.geo | coll_flags.player );
 		ec->flags.draw_as_shape = true;
 	}
-	e->collision.flags.is_bouncy = false;
 
 	return e;
 }

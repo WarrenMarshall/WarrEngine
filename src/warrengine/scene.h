@@ -24,7 +24,7 @@ struct Scene
 	Vec2 viewport_pivot = { viewport_hw - 1.f, viewport_hh - 1.f };
 
 	// the master list of entities in this scene
-	std::list<std::unique_ptr<Entity>> entities;
+	std::forward_list<std::unique_ptr<Entity>> entities;
 
 	Collision_World sc_world;
 
@@ -116,8 +116,8 @@ struct Scene
 	template<typename T>
 	T* add_entity()
 	{
-		entities.push_back( std::make_unique<T>() );
-		auto e = (T*)entities.back().get();
+		entities.push_front( std::make_unique<T>() );
+		auto e = (T*)entities.front().get();
 		e->parent_scene = this;
 		return e;
 	}
@@ -143,8 +143,6 @@ struct Scene
 
 	// called whenever 2 entities in this scene collide with each other
 	virtual bool on_entity_collided_with_entity( Entity* entity_a, Entity* entity_b, collision::Pending_Collision& coll );
-
-	std::list<Entity*> gen_entity_list( e_life_cycle life_cycle_flags );
 
 private:
 	Transform camera_transform;

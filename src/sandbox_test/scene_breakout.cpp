@@ -35,7 +35,8 @@ void Scene_Breakout::spawn_ball()
 	e->flags.include_in_quad_tree = true;
 	e->tag = H( "BALL" );
 	e->set_pos( { 0.f, -64.f } );
-	e->collision.flags.is_bouncy = true;
+	e->collision.set_restitution( 1.0f );
+
 	{
 		auto ec = e->add_component<Primitive_Shape_Component>();
 		ec->add_shape( e_primitive_shape::point );

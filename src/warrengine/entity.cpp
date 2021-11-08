@@ -178,6 +178,8 @@ void Entity::apply_forces()
 	{
 		add_delta_pos( velocity );
 	}
+
+	velocity = lerp( velocity, Vec2::zero, fixed_time_step::per_second( collision.settings.friction ) );
 }
 
 // ----------------------------------------------------------------------------
@@ -491,10 +493,10 @@ void Entity::remove_dead_components()
 {
 	for( auto iter = components.begin(); iter != components.end(); iter++ )
 	{
+		// we remove a single dead component each update to amortize the cost
 		if( iter->get()->is_fully_dead() )
 		{
-			// we remove a single dead component each update to amortize the cost
-			components.erase( iter );
+			std::erase( components, *iter );
 			break;
 		}
 	}

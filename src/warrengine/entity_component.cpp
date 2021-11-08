@@ -864,23 +864,23 @@ void Collision_Body_Component::draw()
 
 	switch( prim_type )
 	{
-	case e_sc_prim_type::circle:
-	{
-		Render::draw_circle( { 0.f, 0.f }, radius );
-	}
-	break;
+		case e_sc_prim_type::circle:
+		{
+			Render::draw_circle( { 0.f, 0.f }, radius );
+		}
+		break;
 
-	case e_sc_prim_type::aabb:
-	{
-		Render::draw_rect( aabb );
-	}
-	break;
+		case e_sc_prim_type::aabb:
+		{
+			Render::draw_rect( aabb );
+		}
+		break;
 
-	case e_sc_prim_type::polygon:
-	{
-		Render::draw_lines( verts );
-	}
-	break;
+		case e_sc_prim_type::polygon:
+		{
+			Render::draw_lines( verts );
+		}
+		break;
 	}
 }
 

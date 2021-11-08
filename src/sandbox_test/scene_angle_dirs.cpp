@@ -18,8 +18,8 @@ void Scene_Angle_Dirs::draw()
 	Render::draw_world_axis();
 
 	// circle at world origin
-	Render::state->color = make_color( e_pal::lighter );
-	Render::draw_filled_circle( Vec2::zero, 6.f );
+	//Render::state->color = make_color( e_pal::lighter );
+	//Render::draw_filled_circle( Vec2::zero, 6.f );
 
 	// marker
 	//
@@ -87,13 +87,12 @@ bool Scene_Angle_Dirs::on_input( const Input_Event* evt )
 		{
 			case e_input_id::mouse_button_right:
 			{
-				marker_pos2_start = Coord_System::window_to_world_pos( evt->mouse_pos );
+				marker_pos2_start = Vec2::zero;
 				return true;
 			}
-			break;
 		}
 	}
-	if( evt->is_motion() )
+	else if( evt->is_motion() )
 	{
 		switch( evt->input_id )
 		{
@@ -108,6 +107,11 @@ bool Scene_Angle_Dirs::on_input( const Input_Event* evt )
 				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
 				{
 					marker_pos2 = Coord_System::window_to_world_pos( evt->mouse_pos );
+
+					if( marker_pos2_start.is_zero() )
+					{
+						marker_pos2_start = marker_pos2;
+					}
 					return true;
 				}
 			}
