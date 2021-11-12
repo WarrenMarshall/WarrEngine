@@ -46,12 +46,12 @@ void Scene_Spatial::pushed()
 {
 	Scene::pushed();
 
-	Rect rc( -viewport_w, -viewport_h, viewport_w * 2, viewport_h * 2 );
+	Rect rc( -viewport_hw, -viewport_hh, viewport_w, viewport_h );
 	spatial_map.set_bounds( rc );
 	spatial_map.min_node_area = 32;
 	spatial_map.set_max_nodes_in_pool( 350 );
 
-	get_transform()->set_scale( 0.5f );
+	//get_transform()->set_scale( 0.5f );
 
 	// PLAYER SHAPE
 	{
@@ -76,7 +76,7 @@ void Scene_Spatial::pushed()
 		player_shape = e;
 	}
 
-	for( auto x = 0 ; x < 150 ; ++x )
+	for( auto x = 0 ; x < 50 ; ++x )
 	{
 		spawn_entity( rc.find_random_pos_within() );
 	}
@@ -88,8 +88,6 @@ void Scene_Spatial::draw()
 	Scene::draw();
 	Render::draw_world_axis();
 
-
-#if 1
 	// show entities that COULD collide with player shape
 	auto potential_entities = spatial_map.find_potentially_colliding_entities( player_shape );
 
@@ -98,7 +96,14 @@ void Scene_Spatial::draw()
 	{
 		Render::draw_line( player_shape->get_transform()->pos, e->get_transform()->pos );
 	}
-#endif
+
+	// show ray trace indicator
+
+	if( !trace_end.is_zero() )
+	{
+		Render::state->color = make_color( Color::yellow, 0.5f );
+		Render::draw_line( player_shape->get_transform()->pos, trace_end );
+	}
 }
 
 void Scene_Spatial::draw_ui()
@@ -121,12 +126,6 @@ bool Scene_Spatial::on_input( const Input_Event* evt )
 		{
 			if( evt->shift_down )
 			{
-				auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
-				spawn_entity( world_pos );
-
-			}
-			else
-			{
 				auto pick_id = Render::sample_pick_id_at( Coord_System::window_to_viewport_pos( evt->mouse_pos ) );
 				auto e = find_entity_by_pick_id( pick_id );
 
@@ -135,6 +134,10 @@ bool Scene_Spatial::on_input( const Input_Event* evt )
 					e->set_life_cycle( e_life_cycle::dying );
 				}
 			}
+		}
+		else if( evt->input_id == e_input_id::key_backspace )
+		{
+			trace_end = Vec2::zero;
 		}
 	}
 	else if( evt->is_motion() )
@@ -151,6 +154,15 @@ bool Scene_Spatial::on_input( const Input_Event* evt )
 
 						player_shape->set_pos( world_pos );
 
+						return true;
+					}
+				}
+
+				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
+				{
+					if( !evt->shift_down and !evt->control_down )
+					{
+						trace_end = Coord_System::window_to_world_pos( evt->mouse_pos );
 						return true;
 					}
 				}

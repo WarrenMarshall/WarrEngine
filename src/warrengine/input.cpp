@@ -77,6 +77,8 @@ void joystick_callback( i32 jid, i32 event )
 }
 
 // ----------------------------------------------------------------------------
+// #input - double clicking - detect if the same mouse button was pressed again
+// with X milliseconds and send a custom "pressed" message
 
 void Input_Mgr::init()
 {

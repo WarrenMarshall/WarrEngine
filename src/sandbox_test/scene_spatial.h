@@ -10,6 +10,7 @@ struct Scene_Spatial final : Scene
 	} coll_flags;
 
 	Entity* player_shape = nullptr;
+	Vec2 trace_end = Vec2::zero;
 
 	Scene_Spatial();
 
