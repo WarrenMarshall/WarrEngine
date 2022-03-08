@@ -139,23 +139,23 @@ void Render::draw_sprite( const Texture_Asset* texture, const Vec2& dst )
 	f32 hh = frame->rc.h / 2.f;
 
 	Render_Vertex v0(
-		Vec2( -hw, -hh ),
-		Vec2( frame->uv00.u, frame->uv11.v ),
+		{ -hw, -hh },
+		{ frame->uv00.u, frame->uv11.v },
 		Render::state->color, Render::state->glow );
 
 	Render_Vertex v1(
-		Vec2( hw, -hh ),
-		Vec2( frame->uv11.u * Render::state->uv_tiling.u, frame->uv11.v ),
+		{ hw, -hh },
+		{ frame->uv11.u * Render::state->uv_tiling.u, frame->uv11.v },
 		Render::state->color, Render::state->glow );
 
 	Render_Vertex v2(
-		Vec2( hw, hh ),
-		Vec2( frame->uv11.u * Render::state->uv_tiling.u, frame->uv00.v * Render::state->uv_tiling.v ),
+		{ hw, hh },
+		{ frame->uv11.u * Render::state->uv_tiling.u, frame->uv00.v * Render::state->uv_tiling.v },
 		Render::state->color, Render::state->glow );
 
 	Render_Vertex v3(
-		Vec2( -hw, hh ),
-		Vec2( frame->uv00.u, frame->uv00.v * Render::state->uv_tiling.v ),
+		{ -hw, hh },
+		{ frame->uv00.u, frame->uv00.v * Render::state->uv_tiling.v },
 		Render::state->color, Render::state->glow );
 
 	{
