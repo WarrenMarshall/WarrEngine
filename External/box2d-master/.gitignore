@@ -5,7 +5,6 @@ build/testbed
 build/unit-test
 build/x64
 build/*vcx*
-build/bin/Debug
 build/CMake*
 build/*.sln
 imgui.ini

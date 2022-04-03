@@ -18,3 +18,7 @@ bin/*.lib
 *.blend1
 *.tmp
 *.mtl
+External/box2d-master/build/bin/Debug/glad.lib
+External/box2d-master/build/bin/Debug/glfw.lib
+External/box2d-master/build/bin/Debug/imgui.lib
+External/box2d-master/build/bin/Debug/sajson.lib
