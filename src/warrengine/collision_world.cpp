@@ -1,6 +1,8 @@
 
 #include "master_pch.h"
 
+// #shader - screen wipes would be nice. just simple black bars that cover and uncover the screen in various directions.
+
 namespace war
 {
 
