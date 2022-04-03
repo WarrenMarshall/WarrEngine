@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{31BE6741-8D54-39ED-95A6-0E5D7FD4EF8E}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>testbed</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <LocalDebuggerWorkingDirectory Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/WarrenDev/External/box2d-master/testbed</LocalDebuggerWorkingDirectory>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\WarrenDev\External\box2d-master\build\bin\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">testbed.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">testbed</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <LocalDebuggerWorkingDirectory Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/WarrenDev/External/box2d-master/testbed</LocalDebuggerWorkingDirectory>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\WarrenDev\External\box2d-master\build\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">testbed.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">testbed</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <LocalDebuggerWorkingDirectory Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/WarrenDev/External/box2d-master/testbed</LocalDebuggerWorkingDirectory>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\WarrenDev\External\box2d-master\build\bin\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">testbed.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">testbed</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <LocalDebuggerWorkingDirectory Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/WarrenDev/External/box2d-master/testbed</LocalDebuggerWorkingDirectory>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\WarrenDev\External\box2d-master\build\bin\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">testbed.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">testbed</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/WarrenDev/External/box2d-master/testbed/data/ C:/WarrenDev/External/box2d-master/build/testbed/data/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\bin\Debug\box2d.lib;..\bin\Debug\glfw.lib;..\bin\Debug\imgui.lib;..\bin\Debug\sajson.lib;..\bin\Debug\glad.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/WarrenDev/External/box2d-master/build/bin/Debug/testbed.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/WarrenDev/External/box2d-master/build/bin/Debug/testbed.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/WarrenDev/External/box2d-master/testbed/data/ C:/WarrenDev/External/box2d-master/build/testbed/data/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\bin\Release\box2d.lib;..\bin\Release\glfw.lib;..\bin\Release\imgui.lib;..\bin\Release\sajson.lib;..\bin\Release\glad.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/WarrenDev/External/box2d-master/build/bin/Release/testbed.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/WarrenDev/External/box2d-master/build/bin/Release/testbed.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/WarrenDev/External/box2d-master/testbed/data/ C:/WarrenDev/External/box2d-master/build/testbed/data/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\bin\MinSizeRel\box2d.lib;..\bin\MinSizeRel\glfw.lib;..\bin\MinSizeRel\imgui.lib;..\bin\MinSizeRel\sajson.lib;..\bin\MinSizeRel\glad.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/WarrenDev/External/box2d-master/build/bin/MinSizeRel/testbed.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/WarrenDev/External/box2d-master/build/bin/MinSizeRel/testbed.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\WarrenDev\External\box2d-master\testbed;C:\WarrenDev\External\box2d-master\src\..\include;C:\WarrenDev\External\box2d-master\extern\glfw\include;C:\WarrenDev\External\box2d-master\extern\imgui\..;C:\WarrenDev\External\box2d-master\extern\sajson\..;C:\WarrenDev\External\box2d-master\extern\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/WarrenDev/External/box2d-master/testbed/data/ C:/WarrenDev/External/box2d-master/build/testbed/data/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\bin\RelWithDebInfo\box2d.lib;..\bin\RelWithDebInfo\glfw.lib;..\bin\RelWithDebInfo\imgui.lib;..\bin\RelWithDebInfo\sajson.lib;..\bin\RelWithDebInfo\glad.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/WarrenDev/External/box2d-master/build/bin/RelWithDebInfo/testbed.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/WarrenDev/External/box2d-master/build/bin/RelWithDebInfo/testbed.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\WarrenDev\External\box2d-master\testbed\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/WarrenDev/External/box2d-master/testbed/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/WarrenDev/External/box2d-master -BC:/WarrenDev/External/box2d-master/build --check-stamp-file C:/WarrenDev/External/box2d-master/build/testbed/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\WarrenDev\External\box2d-master\build\testbed\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/WarrenDev/External/box2d-master/testbed/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/WarrenDev/External/box2d-master -BC:/WarrenDev/External/box2d-master/build --check-stamp-file C:/WarrenDev/External/box2d-master/build/testbed/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\WarrenDev\External\box2d-master\build\testbed\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/WarrenDev/External/box2d-master/testbed/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/WarrenDev/External/box2d-master -BC:/WarrenDev/External/box2d-master/build --check-stamp-file C:/WarrenDev/External/box2d-master/build/testbed/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\WarrenDev\External\box2d-master\build\testbed\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/WarrenDev/External/box2d-master/testbed/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/WarrenDev/External/box2d-master -BC:/WarrenDev/External/box2d-master/build --check-stamp-file C:/WarrenDev/External/box2d-master/build/testbed/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\WarrenDev\External\box2d-master\build\testbed\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\draw.cpp" />
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\testbed\draw.h" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\imgui_impl_glfw.cpp" />
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\testbed\imgui_impl_glfw.h" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\imgui_impl_opengl3.cpp" />
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\testbed\imgui_impl_opengl3.h" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\main.cpp" />
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\testbed\settings.h" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\settings.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\test.cpp" />
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\testbed\test.h" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\add_pair.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\apply_force.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\body_types.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\box_stack.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\breakable.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\bridge.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\bullet_test.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\cantilever.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\car.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\chain.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\chain_problem.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\character_collision.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\circle_stack.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\collision_filtering.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\collision_processing.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\compound_shapes.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\confined.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\continuous_test.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\convex_hull.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\conveyor_belt.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\distance_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\distance_test.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\dominos.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\dump_loader.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\dynamic_tree.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\edge_shapes.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\edge_test.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\friction.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\gear_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\heavy1.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\heavy2.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\mobile_balanced.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\mobile_unbalanced.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\motor_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\pinball.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\platformer.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\polygon_collision.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\polygon_shapes.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\prismatic_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\pulley_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\pyramid.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\ray_cast.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\restitution.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\revolute_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\rope.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\sensor.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\shape_cast.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\shape_editing.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\skier.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\slider_crank_1.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\slider_crank_2.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\theo_jansen.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\tiles.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\time_of_impact.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\tumbler.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\web.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\wheel_joint.cpp" />
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\testbed\tests\wrecking_ball.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\WarrenDev\External\box2d-master\build\ZERO_CHECK.vcxproj">
+      <Project>{ECD8DD0E-656D-31DD-8D67-852D83CBD289}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\WarrenDev\External\box2d-master\build\src\box2d.vcxproj">
+      <Project>{3A02EF74-1B92-30A9-972F-1628B08B7B00}</Project>
+      <Name>box2d</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\WarrenDev\External\box2d-master\build\extern\glad\glad.vcxproj">
+      <Project>{94F1AE15-EE2B-3F79-AD08-C1346A0B61CE}</Project>
+      <Name>glad</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\WarrenDev\External\box2d-master\build\extern\glfw\glfw.vcxproj">
+      <Project>{A2C06DDE-652A-3E74-AE58-FD8EF99E363F}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\WarrenDev\External\box2d-master\build\extern\imgui\imgui.vcxproj">
+      <Project>{F5180BB9-DA16-36A6-B0A7-C78A3752672A}</Project>
+      <Name>imgui</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\WarrenDev\External\box2d-master\build\extern\sajson\sajson.vcxproj">
+      <Project>{48F1C06B-A3B8-3A7C-9CD9-61B06FC97879}</Project>
+      <Name>sajson</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glad\src\gl.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glad\include\glad\gl.h">
+      <Filter>include\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glad\include\KHR\khrplatform.h">
+      <Filter>include\KHR</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\WarrenDev\External\box2d-master\extern\glad\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{9B5A06DD-EA83-320B-97A6-D5DA0AE892B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\KHR">
+      <UniqueIdentifier>{E6FB8699-B0D6-31E7-A9AB-70F039FCF368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\glad">
+      <UniqueIdentifier>{E19ACEC6-74CD-3D55-B8AD-1FD626555516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{DAA303D0-4DB9-3DE5-B087-C035F5779D08}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

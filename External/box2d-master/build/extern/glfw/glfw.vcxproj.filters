@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\init.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\input.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\monitor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\vulkan.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\window.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_init.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_joystick.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_monitor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_time.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_thread.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_window.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\wgl_context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\egl_context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\osmesa_context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\mappings.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\include\GLFW\glfw3.h">
+      <Filter>include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\include\GLFW\glfw3native.h">
+      <Filter>include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_platform.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\win32_joystick.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\wgl_context.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\egl_context.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\WarrenDev\External\box2d-master\extern\glfw\src\osmesa_context.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\WarrenDev\External\box2d-master\extern\glfw\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{9B5A06DD-EA83-320B-97A6-D5DA0AE892B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\GLFW">
+      <UniqueIdentifier>{324C19BE-B1C3-3FC1-A2A9-25AFA80BF7D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{DAA303D0-4DB9-3DE5-B087-C035F5779D08}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+^C:\WARRENDEV\EXTERNAL\BOX2D-MASTER\EXTERN\GLAD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/WarrenDev/External/box2d-master -BC:/WarrenDev/External/box2d-master/build --check-stamp-file C:/WarrenDev/External/box2d-master/build/extern/glad/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
