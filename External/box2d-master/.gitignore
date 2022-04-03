@@ -1,4 +1,13 @@
-build/
+build/CMakeFiles
+build/extern
+build/src
+build/testbed
+build/unit-test
+build/x64
+build/*vcx*
+build/bin/Debug
+build/CMake*
+build/*.sln
 imgui.ini
 settings.ini
 .vscode/
