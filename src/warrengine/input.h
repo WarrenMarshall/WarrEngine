@@ -29,9 +29,9 @@ struct Input_Event final
 	Vec2 delta = Vec2::zero;
 
 	// modifier keys
-	bool shift_down = false;
-	bool control_down = false;
-	bool alt_down = false;
+	//bool shift_down = false;
+	//bool control_down = false;
+	//bool alt_down = false;
 
 	[[nodiscard]] bool is_a_gamepad_button() const
 	{

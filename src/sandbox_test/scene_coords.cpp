@@ -142,7 +142,7 @@ bool Scene_Coords::on_input( const Input_Event* evt )
 				{
 					auto e = find_entity( H( "crosshair" ) );
 
-					if( evt->control_down )
+					if( g_engine->input_mgr.is_control_down() )
 					{
 						// rotate crosshair
 						glow_val += evt->delta.x / 100.f;
@@ -165,7 +165,7 @@ bool Scene_Coords::on_input( const Input_Event* evt )
 
 			case e_input_id::mouse_wheel:
 			{
-				if( evt->control_down )
+				if( g_engine->input_mgr.is_control_down() )
 				{
 					// scale crosshair
 					auto e = find_entity( H( "crosshair" ) );

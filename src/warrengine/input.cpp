@@ -8,9 +8,9 @@ namespace war
 
 Input_Event::Input_Event()
 {
-	shift_down = g_engine->input_mgr.is_shift_down();
-	control_down = g_engine->input_mgr.is_control_down();
-	alt_down = g_engine->input_mgr.is_alt_down();
+	//shift_down = g_engine->input_mgr.is_shift_down();
+	//control_down = g_engine->input_mgr.is_control_down();
+	//alt_down = g_engine->input_mgr.is_alt_down();
 
 	mouse_pos = g_engine->input_mgr.mouse_window_pos;
 }
@@ -23,11 +23,13 @@ Input_Event::Input_Event( e_event_id event_id, e_input_id input_id )
 
 // ----------------------------------------------------------------------------
 
-void character_callback( GLFWwindow* window, ui32 key_code )
+void character_callback( GLFWwindow* window, ui32 key_code )//, int scancode, int action, int mode )
 {
 	Input_Event evt;
 	evt.event_id = e_event_id::input_key;
 	evt.ch = (ui8)key_code;
+
+	//GLFW_MOD_SHIFT
 
 	g_engine->input_mgr.event_queue.push_back( evt );
 }
@@ -113,7 +115,7 @@ void Input_Mgr::queue_presses()
 {
 	if( g_engine->is_paused() )
 	{
-		// if the engine is currently paused, the only certain keypresses will
+		// if the engine is currently paused, the only certain key presses will
 		// be acknowledged so we can unpause the game as well as use the pause
 		// state for inspection/debugging.
 
@@ -124,8 +126,8 @@ void Input_Mgr::queue_presses()
 		button_states_last_frame[ ( i32 )e_input_id::key_f5 ] = button_states[ ( i32 )e_input_id::key_f5 ];
 		button_states_last_frame[ ( i32 )e_input_id::key_f6 ] = button_states[ ( i32 )e_input_id::key_f6 ];
 #endif
-
 		update_button_state( e_input_id::key_pause, glfwGetKey( g_engine->window.glfw_window, GLFW_KEY_PAUSE ) );
+
 
 #ifndef _FINAL_RELEASE
 		update_button_state( e_input_id::mouse_button_middle, glfwGetMouseButton( g_engine->window.glfw_window, GLFW_MOUSE_BUTTON_MIDDLE ) );

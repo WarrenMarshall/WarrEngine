@@ -124,7 +124,7 @@ bool Scene_Spatial::on_input( const Input_Event* evt )
 		// delete entities with right click
 		if( evt->input_id == e_input_id::mouse_button_right )
 		{
-			if( evt->shift_down )
+			if( g_engine->input_mgr.is_shift_down() )
 			{
 				auto pick_id = Render::sample_pick_id_at( Coord_System::window_to_viewport_pos( evt->mouse_pos ) );
 				auto e = find_entity_by_pick_id( pick_id );
@@ -148,7 +148,7 @@ bool Scene_Spatial::on_input( const Input_Event* evt )
 			{
 				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 				{
-					if( !evt->shift_down and !evt->control_down )
+					if( !g_engine->input_mgr.is_shift_down() and !g_engine->input_mgr.is_control_down() )
 					{
 						auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 
@@ -160,7 +160,7 @@ bool Scene_Spatial::on_input( const Input_Event* evt )
 
 				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_right ) )
 				{
-					if( !evt->shift_down and !evt->control_down )
+					if( !g_engine->input_mgr.is_shift_down() and !g_engine->input_mgr.is_control_down() )
 					{
 						trace_end = Coord_System::window_to_world_pos( evt->mouse_pos );
 						return true;

@@ -21,6 +21,9 @@ void Scene_Main_Menu::draw()
 {
 	Scene::draw();
 	Render::draw_world_axis();
+
+	// DEBUG
+	//Render::draw_string( std::format( "SHIFT : {}", g_engine->input_mgr.is_shift_down() ), Vec2::zero );
 }
 
 void Scene_Main_Menu::draw_ui()

@@ -732,11 +732,11 @@ bool Engine::on_input(const Input_Event* evt)
 				// camera control
 				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_middle ) )
 				{
-					if( evt->control_down )
+					if( g_engine->input_mgr.is_control_down() )
 					{
 						cam_transform->add_angle( Coord_System::window_to_viewport_vec( evt->delta ).x );
 					}
-					else if( evt->alt_down )
+					else if( g_engine->input_mgr.is_alt_down() )
 					{
 						cam_transform->add_scale( Coord_System::window_to_viewport_vec( evt->delta ).x * 0.01f );
 					}

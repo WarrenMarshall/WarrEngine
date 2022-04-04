@@ -104,7 +104,7 @@ bool Scene_Sensors::on_input( const Input_Event* evt )
 			{
 				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 				{
-					if( !evt->shift_down and !evt->control_down )
+					if( !g_engine->input_mgr.is_shift_down() and !g_engine->input_mgr.is_control_down() )
 					{
 						auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 

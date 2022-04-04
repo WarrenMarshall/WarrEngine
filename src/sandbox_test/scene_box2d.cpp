@@ -150,6 +150,7 @@ void Scene_Box2D::spawn_box_at( Vec2 world_pos )
 
 bool Scene_Box2D::on_input( const Input_Event* evt )
 {
+
 	if( Scene::on_input( evt ) )
 	{
 		return true;
@@ -162,7 +163,7 @@ bool Scene_Box2D::on_input( const Input_Event* evt )
 		{
 			auto num_new_balls = 1;
 
-			if( evt->shift_down )
+			if( g_engine->input_mgr.is_shift_down() )
 			{
 				num_new_balls = 20;
 			}
@@ -189,7 +190,7 @@ bool Scene_Box2D::on_input( const Input_Event* evt )
 		}
 
 		// shift_lclick to spawn new ball at mouse position
-		if( evt->input_id == e_input_id::mouse_button_left and evt->shift_down )
+		if( evt->input_id == e_input_id::mouse_button_left and g_engine->input_mgr.is_shift_down() )
 		{
 			auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
 			spawn_ball_at( world_click_location );
@@ -197,7 +198,7 @@ bool Scene_Box2D::on_input( const Input_Event* evt )
 		}
 
 		// control_lclick to spawn new box at mouse position
-		if( evt->input_id == e_input_id::mouse_button_left and evt->control_down )
+		if( evt->input_id == e_input_id::mouse_button_left and g_engine->input_mgr.is_control_down() )
 		{
 			auto world_click_location = Coord_System::window_to_world_pos( evt->mouse_pos );
 			spawn_box_at( world_click_location );
@@ -212,7 +213,7 @@ bool Scene_Box2D::on_input( const Input_Event* evt )
 			{
 				if( g_engine->input_mgr.is_button_held( e_input_id::mouse_button_left ) )
 				{
-					if( !evt->shift_down and !evt->control_down )
+					if( !g_engine->input_mgr.is_shift_down() and !g_engine->input_mgr.is_control_down() )
 					{
 						auto world_pos = Coord_System::window_to_world_pos( evt->mouse_pos );
 
